@@ -3439,7 +3439,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               medications: ['Labetalol 10-20 mg IV', 'Nicardipine 5 mg/hr IV'],
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
@@ -3458,7 +3458,7 @@ Clinician Name`;
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               medications: ['Labetalol 10-20 mg IV', 'Nicardipine 5 mg/hr IV'],
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
@@ -3474,7 +3474,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               medications: ['Labetalol IV PRN', 'Nicardipine infusion'],
               conditions: (data) => {
                 return !!data.telestrokeNote?.tnkAdminTime;
@@ -3489,7 +3489,7 @@ Clinician Name`;
               classOfRec: 'III',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               caveats: 'Based on ENCHANTED2/MT (Lancet 2022) and OPTIMAL-BP (JAMA 2023). Applies to successful reperfusion (mTICI 2b-3).',
               conditions: (data) => {
                 return !!data.telestrokeNote?.evtRecommended;
@@ -3535,7 +3535,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
@@ -3557,7 +3557,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               medications: ['TNK 0.25 mg/kg IV bolus (max 25 mg)'],
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
@@ -3574,7 +3574,7 @@ Clinician Name`;
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026; EXTEND; WAKE-UP.',
+              reference: 'Prabhakaran S et al. Stroke. 2026; EXTEND; WAKE-UP.',
               medications: ['TNK 0.25 mg/kg IV bolus (max 25 mg)'],
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
@@ -3620,7 +3620,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
@@ -3639,7 +3639,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               caveats: 'Collateral grading on multiphase CTA or single-phase CTA may support EVT candidacy when CTP unavailable.',
               conditions: (data) => {
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
@@ -3727,7 +3727,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
@@ -3786,7 +3786,7 @@ Clinician Name`;
               classOfRec: 'IIa',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026 + CATALYST Meta-Analysis 2025',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513; Fischer U et al. Lancet Neurol. 2025.',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513; Fischer U et al. Lancet Neurol. 2025.',
               medications: ['Apixaban 5 mg BID (preferred)', 'Rivaroxaban 20 mg daily', 'Dabigatran 150 mg BID'],
               caveats: 'Timing categories per CATALYST: mild (NIHSS <8, small infarct) 48h; moderate (NIHSS 8-15) day 3-5; severe (NIHSS ≥16 or large infarct) day 6-14. Reassess imaging before starting if any concern for hemorrhagic transformation.',
               conditions: (data) => {
@@ -4118,7 +4118,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /ica|m1|mca|basilar/i.test(v)
@@ -4172,7 +4172,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const age = parseInt(data.telestrokeNote?.age, 10) || 0;
@@ -4369,7 +4369,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 return !!cat && cat !== 'mimic';
@@ -4400,7 +4400,7 @@ Clinician Name`;
               classOfRec: 'III',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
+              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
                 const glucoseRaw = data.telestrokeNote?.glucose;
                 const glucose = parseInt(glucoseRaw, 10);
@@ -4797,7 +4797,7 @@ Clinician Name`;
               classOfRec: 'IIa',
               levelOfEvidence: 'C-LD',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026.',
+              reference: 'Prabhakaran S et al. Stroke. 2026.',
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
@@ -4989,7 +4989,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026.',
+              reference: 'Prabhakaran S et al. Stroke. 2026.',
               conditions: (data) => {
                 return !!data.telestrokeNote?.tnkAdminTime || !!data.telestrokeNote?.hemorrhagicTransformation?.detected;
               }
@@ -5004,7 +5004,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026. Yayan J. Int J Gen Med. 2013;6:539-544.',
+              reference: 'Prabhakaran S et al. Stroke. 2026. Yayan J. Int J Gen Med. 2013;6:539-544.',
               conditions: (data) => {
                 return !!data.telestrokeNote?.angioedema?.detected || (!!data.telestrokeNote?.tnkAdminTime && (data.telestrokeNote?.medications || '').toLowerCase().match(/lisinopril|enalapril|ramipril|captopril|benazepril|fosinopril|perindopril|quinapril|trandolapril|ace.?i/));
               }
@@ -5022,7 +5022,7 @@ Clinician Name`;
               classOfRec: 'III',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026; ADA Standards of Care 2026.',
+              reference: 'Prabhakaran S et al. Stroke. 2026; ADA Standards of Care 2026.',
               caveats: 'Class III: Harm applies to the intensive target of 80-130 mg/dL, NOT to treating hyperglycemia above 180.',
               conditions: (data) => {
                 const glucose = parseFloat(data.telestrokeNote?.glucose) || 0;
@@ -5061,7 +5061,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026.',
+              reference: 'Prabhakaran S et al. Stroke. 2026.',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 return !!cat && cat !== 'mimic';
@@ -5099,7 +5099,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Powers WJ et al. Stroke. 2026.',
+              reference: 'Prabhakaran S et al. Stroke. 2026.',
               conditions: (data) => {
                 const ct = (data.telestrokeNote?.ctResults || '').toLowerCase();
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
@@ -5319,7 +5319,7 @@ Clinician Name`;
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026; Suggested Protocol',
-              reference: 'Powers WJ et al. Stroke. 2026.',
+              reference: 'Prabhakaran S et al. Stroke. 2026.',
               conditions: (data) => {
                 return !!data.telestrokeNote?.evtRecommended;
               }
@@ -16426,7 +16426,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         role="combobox"
                         aria-expanded={searchOpen && searchResults.length > 0}
                         aria-controls="search-listbox"
-                        aria-activedescendant={searchActiveIndex >= 0 ? `search-opt-${searchActiveIndex}` : undefined}
+                        aria-activedescendant={(searchOpen && searchResults.length > 0 && searchActiveIndex >= 0) ? `search-opt-${searchActiveIndex}` : undefined}
                         className="pl-8 pr-16 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 w-full sm:w-72 md:w-96 lg:w-[26rem] dark:border-strong"
                         aria-label="Search trials, management tools, and references"
                       />
@@ -17206,7 +17206,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* ===== PATIENT SUMMARY STRIP ===== */}
                     {/* v6 inline strip — kept during transition; Phase 5 removes it. */}
                     {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) ? (
-                      <div className="sticky top-14 z-20 bg-white/95 dark:bg-card/95 backdrop-blur-sm border border-line rounded-md  px-4 py-2.5">
+                      <div className="sticky top-14 z-20 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-line rounded-md  px-4 py-2.5">
                         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
                           {telestrokeNote.age && (
                             <span className="font-medium text-slate-700 dark:text-ink-2">
@@ -19602,8 +19602,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {telestrokeNote.age && parseInt(telestrokeNote.age, 10) > 120 && <p className="text-xs text-crit-600 mt-0.5 dark:text-crit-300">Check age value</p>}
                             </div>
                             <div>
-                              <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-ink-2">Sex</label>
+                              <label htmlFor="telestroke-sex" className="block text-sm font-medium text-slate-700 mb-1 dark:text-ink-2">Sex</label>
                               <select
+                                id="telestroke-sex"
                                 value={telestrokeNote.sex}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, sex: v})); }}
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
@@ -19759,6 +19760,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <label className="block text-xs text-slate-600 mb-1 dark:text-ink-2">Last Dose (date/time)</label>
                                   <input
                                     type="datetime-local"
+                                    aria-label="Anticoagulant last dose date and time"
                                     value={telestrokeNote.lastDOACDose}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, lastDOACDose: v})); }}
                                     className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
@@ -20070,6 +20072,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   />
                                   <input
                                     type="time"
+                                    aria-label="Current BP measurement time"
                                     value={telestrokeNote.bpPreTNKTime}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, bpPreTNKTime: v})); }}
                                     className="w-24 px-2 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
@@ -20141,6 +20144,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-ink-2">INR</label>
                                 <input
                                   type="number"
+                                  aria-label="INR"
                                   value={telestrokeNote.inr}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, inr: v})); }}
                                   placeholder=""
@@ -20199,6 +20203,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="flex items-center">
                                   <input
                                     type="number"
+                                    aria-label="aPTT"
                                     value={telestrokeNote.ptt}
                                     onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ptt: v})); }}
                                     placeholder=""
@@ -20244,12 +20249,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="grid grid-cols-2 gap-2 mb-2">
                                 <input
                                   type="date"
+                                  aria-label="Head CT date"
                                   value={telestrokeNote.ctDate}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctDate: v})); }}
                                   className="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
                                 />
                                 <input
                                   type="time"
+                                  aria-label="Head CT time reviewed"
                                   value={telestrokeNote.ctTime}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctTime: v})); }}
                                   placeholder="Time reviewed"
@@ -20392,12 +20399,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="grid grid-cols-2 gap-2 mb-2">
                                 <input
                                   type="date"
+                                  aria-label="CTA head and neck date"
                                   value={telestrokeNote.ctaDate}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctaDate: v})); }}
                                   className="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
                                 />
                                 <input
                                   type="time"
+                                  aria-label="CTA head and neck time reviewed"
                                   value={telestrokeNote.ctaTime}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctaTime: v})); }}
                                   placeholder="Time reviewed"
@@ -21842,7 +21851,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </p>
                                   );
                                 })()}
-                                <p className="text-xs text-cobalt-700 mt-2 italic dark:text-cobalt-300">Powers WJ et al. AHA/ASA Early Management of Acute Ischemic Stroke. Stroke. 2026. DOI: 10.1161/STR.0000000000000513</p>
+                                <p className="text-xs text-cobalt-700 mt-2 italic dark:text-cobalt-300">Prabhakaran S et al. AHA/ASA Early Management of Acute Ischemic Stroke. Stroke. 2026. DOI: 10.1161/STR.0000000000000513</p>
                               </div>
                             )}
 
@@ -21906,6 +21915,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <label className="block text-sm font-medium text-slate-700 dark:text-ink-2">Rationale for Recommendation</label>
                               </div>
                               <textarea
+                                aria-label="Rationale for recommendation"
                                 value={telestrokeNote.rationale}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, rationale: v})); }}
                                 placeholder=""
@@ -22175,7 +22185,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                         {/* Key takeaways */}
                                         {config.keyTakeaways && config.keyTakeaways.length > 0 && (
-                                          <div className="bg-white/70 dark:bg-card/70 border border-line rounded px-2.5 py-1.5 space-y-0.5">
+                                          <div className="bg-white/70 dark:bg-slate-900/70 border border-line rounded px-2.5 py-1.5 space-y-0.5">
                                             {config.keyTakeaways.map((t, i) => (
                                               <p key={i} className="text-xs text-slate-700 flex gap-1.5 dark:text-ink-2">
                                                 <span className="text-cobalt-500 mt-px shrink-0">&#8227;</span>
@@ -26865,6 +26875,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <span className="text-sm font-medium text-slate-700 dark:text-ink-2">Recommendation Summary</span>
                             </div>
                             <textarea
+                              aria-label="Recommendation summary"
                               value={telestrokeNote.recommendationsText}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, recommendationsText: v})); }}
                               placeholder=""
@@ -27019,6 +27030,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                         <select
                               value={noteTemplate}
                               onChange={(e) => setNoteTemplate(e.target.value)}
+                              aria-label="Note template"
                               className="text-xs border border-slate-300 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-cobalt-500 flex-1 min-w-0 dark:border-strong"
                             >
                               <option value="consult">Acute Consult</option>
@@ -27117,7 +27129,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </button>
                           </div>
                           {/* Note preview */}
-                          <div className="bg-white p-3 rounded border border-line max-h-96 overflow-y-auto dark:bg-card">
+                          <div tabIndex={0} role="region" aria-label="Generated telestroke note" className="bg-white p-3 rounded border border-line max-h-96 overflow-y-auto dark:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">
                             <pre className="whitespace-pre-wrap text-xs text-slate-800 font-mono dark:text-ink">
                               {generateTelestrokeNote()}
                             </pre>
@@ -27695,7 +27707,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                          reach the top-right of the Encounter to copy their work.
                          Hidden ≥md (desktop has the inline buttons in scroll). */}
                     <div className="md:hidden fixed bottom-16 left-0 right-0 z-50 px-3 pb-2 pointer-events-none">
-                      <div className="pointer-events-auto bg-white/95 dark:bg-card/95 dark:bg-slate-900/95 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-2 flex gap-2">
+                      <div className="pointer-events-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-2 flex gap-2">
                         <V7Button
                           variant="primary"
                           size="md"
@@ -30644,7 +30656,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <span className="font-semibold">Grade {f.grade}</span>
                                     <span className={`block text-sm ${isSelected ? 'opacity-80' : 'text-slate-600 dark:text-ink-2'}`}>{f.ct}</span>
                                   </div>
-                                  <span className={`text-sm font-bold px-2 py-0.5 rounded ${isSelected ? 'bg-white/20 dark:bg-card/20' : f.badge}`}>
+                                  <span className={`text-sm font-bold px-2 py-0.5 rounded ${isSelected ? 'bg-white/20 dark:bg-slate-900/20' : f.badge}`}>
                                     Spasm risk: {f.risk}
                                   </span>
                                 </div>
