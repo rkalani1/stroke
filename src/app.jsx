@@ -17742,7 +17742,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </header>
 
                         {/* Consultation Metadata */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
                           <div>
                             <label htmlFor="input-caller-name" className="block text-xs font-medium text-slate-600 mb-1 dark:text-ink-2">Caller Name</label>
                             <input id="input-caller-name" type="text" value={telestrokeNote.callerName}
@@ -17974,7 +17974,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </h3>
 
                           {/* Demographics Row */}
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-3">
                             <div>
                               <label htmlFor="input-age" className="block text-xs font-medium text-slate-600 mb-1 dark:text-ink-2">Age</label>
                               <input
@@ -18391,7 +18391,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h3 className="text-md font-bold text-ok-900 mb-3 flex items-center gap-2 dark:text-ok-300">
                                                         Vitals & Labs
                           </h3>
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                             <div>
                               <label htmlFor="input-bp" className="block text-xs text-slate-600 mb-1 dark:text-ink-2">BP</label>
                               <input
@@ -19579,7 +19579,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h2 className="text-lg font-bold text-cobalt-900 dark:text-cobalt-300">1. Patient Info</h2>
                             <i aria-hidden="true" data-lucide="user" className="w-5 h-5 text-cobalt-600 dark:text-cobalt-300"></i>
                           </div>
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                             <div>
                               <label htmlFor="phone-input-age" className="block text-sm font-medium text-slate-700 mb-1 dark:text-ink-2">Age</label>
                               <input
@@ -20104,7 +20104,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <span className="text-cobalt-700 ml-2 dark:text-cobalt-300">&lt;180/105 for 24 hours after thrombolysis</span>
                               </div>
                             )}
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                               <div>
                                 <label htmlFor="input-glucose" className="block text-sm font-medium text-slate-700 mb-1 dark:text-ink-2">Glucose</label>
                                 <div className="flex items-center">
@@ -24757,7 +24757,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <span className="text-xs text-slate-700 dark:text-ink-2">ODS/CPM Safety Monitor</span>
                                     </div>
 
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
                                       <div>
                                         <label className="block text-xs font-medium text-slate-600 mb-0.5 dark:text-ink-2">Baseline Na+ (mEq/L)</label>
                                         <div className="flex items-center gap-1">
@@ -25064,7 +25064,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {/* Structured mRS */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
                                 <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Modified Rankin Scale (mRS) Tracking</h3>
-                                <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2">
                                   {[
                                     { key: 'discharge', label: 'Discharge' },
                                     { key: 'day30', label: '30 days' },
@@ -28496,7 +28496,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </span>
                               )}
                             </div>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-sm">
                               <div>
                                 <label className="block text-xs text-slate-500 mb-1 dark:text-mute">A (cm)</label>
                                 <input
@@ -33088,7 +33088,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <span>ICH Volume Calculator (ABC/2 Method)</span>
                       </summary>
                       <div className="p-4">
-                        <div className="grid grid-cols-3 gap-3 mb-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
                           <div>
                             <label className="text-xs text-slate-600 dark:text-ink-2">A: Largest diameter (cm)</label>
                             <input type="number" step="0.1" min="0" max="50" value={(telestrokeNote.ichVolumeCalc || {}).lengthCm || ''}
@@ -33205,7 +33205,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         )}
                       </summary>
                       <div className="p-4">
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-3">
                           <div>
                             <label className="text-xs text-slate-600 dark:text-ink-2">Age</label>
                             <input type="number" min="18" max="120" value={(telestrokeNote.crclCalc || {}).age || telestrokeNote.age || ''}
