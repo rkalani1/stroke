@@ -995,7 +995,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
 
         const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
 
-        const RESEARCH_SUBTABS = ['whatsnew', 'guidelines', 'references'];
+        const RESEARCH_SUBTABS = ['guidelines', 'references'];
 
         const LEGACY_MANAGEMENT_TABS = {
           ich: 'ich',
@@ -2169,14 +2169,14 @@ Clinician Name`;
            const [managementSubTab, setManagementSubTab] = useState(initialManagementSubTab);
           const initialResearchSubTab = (() => {
             const hash = window.location.hash;
-            if (!hash) return 'whatsnew';
+            if (!hash) return 'guidelines';
             const cleaned = hash.replace(/^#\/?/, '').trim();
             const parts = cleaned.split('/').filter(Boolean);
             if (parts[0] === 'research' && parts[1]) {
               const sub = normalizeResearchSubTab(parts[1]);
               if (sub) return sub;
             }
-            return 'whatsnew';
+            return 'guidelines';
           })();
           const [researchSubTab, setResearchSubTab] = useState(initialResearchSubTab);
 
@@ -15858,7 +15858,7 @@ Clinician Name`;
                     'ich';
                   setManagementSubTab(resolvedSubTab);
                 } else if (parsed.tab === 'research') {
-                  setResearchSubTab(normalizeResearchSubTab(parsed.sub) || 'whatsnew');
+                  setResearchSubTab(normalizeResearchSubTab(parsed.sub) || 'guidelines');
                 } else if (parsed.tab === 'education') {
                   setEducationSubTab(parsed.sub || null);
                 }
@@ -27370,8 +27370,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       if (!d || !t) return null;
                       try { return new Date(`${d}T${t}:00`).toISOString(); } catch (_) { return null; }
                     })();
-                    let railNotePreview = '';
-                    try { railNotePreview = (generateTelestrokeNote() || '').trim(); } catch (_) { railNotePreview = ''; }
+                    let railPulsaraPreview = '';
+                    try { railPulsaraPreview = (generatePulsaraSummary() || '').trim(); } catch (_) { railPulsaraPreview = ''; }
                     const railHasPatient = telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis;
                     return (
                       <aside
@@ -27440,23 +27440,23 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             ) : null}
                           </div>
 
-                          {/* Live note / handoff preview (compact, scrollable) */}
+                          {/* Live Pulsara case summary preview (compact, scrollable) */}
                           <div className="px-4 py-3">
                             <div className="flex items-center justify-between mb-2">
-                              <p className="font-mono uppercase text-eyebrow text-mute">Note preview</p>
+                              <p className="font-mono uppercase text-eyebrow text-mute">Pulsara Summary</p>
                               <button
                                 type="button"
-                                onClick={() => { copyToClipboard(generateTelestrokeNote(), 'encounter-note'); }}
-                                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors min-h-[32px] ${copiedText === 'encounter-note' ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}
+                                onClick={() => { copyToClipboard(generatePulsaraSummary(), 'encounter-pulsara'); }}
+                                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors min-h-[32px] ${copiedText === 'encounter-pulsara' ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}
                               >
-                                <i aria-hidden="true" data-lucide={copiedText === 'encounter-note' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                                {copiedText === 'encounter-note' ? 'Copied' : 'Copy'}
+                                <i aria-hidden="true" data-lucide={copiedText === 'encounter-pulsara' ? 'check' : 'copy'} className="w-3 h-3"></i>
+                                {copiedText === 'encounter-pulsara' ? 'Copied' : 'Copy'}
                               </button>
                             </div>
-                            {railNotePreview ? (
-                              <pre tabIndex={0} role="region" aria-label="Live clinical note preview" className="text-2xs leading-snug text-ink-2 whitespace-pre-wrap break-words font-mono max-h-48 overflow-y-auto bg-paper-2 border border-line rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-cobalt-500">{railNotePreview.length > 1400 ? railNotePreview.slice(0, 1400) + '\n…' : railNotePreview}</pre>
+                            {railPulsaraPreview ? (
+                              <pre tabIndex={0} role="region" aria-label="Live Pulsara case summary preview" className="text-2xs leading-snug text-ink-2 whitespace-pre-wrap break-words font-mono max-h-48 overflow-y-auto bg-paper-2 border border-line rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-cobalt-500">{railPulsaraPreview}</pre>
                             ) : (
-                              <p className="text-xs text-mute italic">Fill the encounter to build a live note.</p>
+                              <p className="text-xs text-mute italic">Fill the encounter to build a Pulsara summary.</p>
                             )}
                           </div>
                         </div>
@@ -33316,7 +33316,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Research sub-tabs navigation */}
                     <div className="bg-white border border-line rounded-md p-2 flex flex-wrap gap-2 sticky top-0 z-30 dark:bg-card" role="tablist" aria-label="References & Guidelines sub-sections">
                       {[
-                        { id: 'whatsnew', name: "What's New" },
                         { id: 'guidelines', name: "Guidelines" },
                         { id: 'references', name: "Reference Library" }
                       ].map((tab) => {
@@ -33345,185 +33344,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         );
                       })}
                     </div>
-
-                    {researchSubTab === 'whatsnew' && (
-                      <div id="research-tabpanel-whatsnew" role="tabpanel" aria-labelledby="research-tab-whatsnew" className="space-y-6">
-                        {/* ===== WHAT'S NEW ===== */}
-                    {(() => {
-                      const items = (whatsNewData && Array.isArray(whatsNewData.items)) ? whatsNewData.items : [];
-                      const verifiedCount = (typeof whatsNewData?.verifiedCount === 'number')
-                        ? whatsNewData.verifiedCount
-                        : items.filter((i) => i.verificationStatus === 'verified').length;
-                      const unverifiedCount = (typeof whatsNewData?.unverifiedCount === 'number')
-                        ? whatsNewData.unverifiedCount
-                        : items.length - verifiedCount;
-                      // Map atlas topic → v7 left-stripe family. Default teal.
-                      const topicFamily = (topic) => {
-                        const t = String(topic || '');
-                        if (t === 'ich' || t.startsWith('ich-')) return 't-ich';
-                        if (t === 'secondary-prevention' || t.startsWith('af-') || t.startsWith('dapt-')) return 't-prevent';
-                        if (t === 'special-populations') return 't-workflow';
-                        return ''; // default teal stripe
-                      };
-                      const stypeClass = (et) => et === 'rct' ? 'rct' : (et === 'meta-analysis' ? 'meta' : 'obs');
-                      const stypeLabel = (et) => et === 'rct' ? 'RCT' : (et === 'meta-analysis' ? 'Meta-analysis' : 'Observational');
-                      // Teal for benefit; coral for harm / no-benefit; neutral inherits ink.
-                      const effectClass = (dir) => dir === 'benefit'
-                        ? 'text-cobalt-700 dark:text-cobalt-300'
-                        : (dir === 'harm' || dir === 'no-benefit') ? 'text-crit-700 dark:text-crit-300' : 'text-ink';
-
-                      return (
-                        <section aria-labelledby="research-whatsnew-heading" className="space-y-4">
-                          <header>
-                            <p className="font-mono uppercase text-eyebrow text-mute mb-1">Evidence</p>
-                            <h2 id="research-whatsnew-heading" className="font-serif text-section text-ink flex items-center gap-2">
-                              What's New
-                            </h2>
-                            <p className="font-sans text-body text-ink-2 mt-1 text-pretty">
-                              Recent practice-changing &amp; informing studies from this month's clinical-intelligence briefing
-                            </p>
-                            {items.length > 0 ? (
-                              <p className="font-mono text-[11px] text-mute uppercase tracking-wide mt-1">
-                                {verifiedCount} PubMed-verified · {unverifiedCount} pending index
-                              </p>
-                            ) : null}
-                          </header>
-
-                          {items.length === 0 ? (
-                            <div className="bg-card border border-line rounded-md p-6 text-center">
-                              <p className="font-sans text-body text-ink-2">No recent updates.</p>
-                            </div>
-                          ) : (
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                              {items.map((item) => {
-                                const fam = topicFamily(item.topic);
-                                const dir = item.result?.direction;
-                                const isVerified = item.verificationStatus === 'verified';
-
-                                return (
-                                  <article key={item.id} className={`v7-study v7-fresh ${fam}`}>
-                                    {/* header row: study design + journal · year + verification marker */}
-                                    <div className="flex items-start justify-between gap-3 mb-2 flex-wrap">
-                                      <div className="flex items-center gap-2 flex-wrap text-xs">
-                                        <span className={`v7-stype ${stypeClass(item.evidenceType)}`}>{stypeLabel(item.evidenceType)}</span>
-                                        <span className="font-mono text-[11px] text-mute uppercase tracking-wide">{item.journal} · {item.year}</span>
-                                      </div>
-                                      {isVerified ? (
-                                        <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-ok-700 whitespace-nowrap dark:text-ok-300" title="PubMed-verified">
-                                          <span className="v7-pulse" aria-hidden="true"></span>
-                                          verified
-                                        </span>
-                                      ) : (
-                                        <span className="v7-tag inline-block max-w-full min-w-0 whitespace-normal break-words text-right leading-snug [overflow-wrap:anywhere]" title={item.unverifiedReason || 'Not yet PubMed-indexed'}>
-                                          {item.unverifiedReason || 'Not yet PubMed-indexed'}
-                                        </span>
-                                      )}
-                                    </div>
-
-                                    {/* study title */}
-                                    <h3 className="font-serif text-md text-ink font-bold leading-snug text-pretty mb-3">{item.fullName}</h3>
-
-                                    {/* result definition list — exposes clinical detail
-                                        (drug names, doses, CI/p, jargon). */}
-                                    <dl className="space-y-2 text-sm">
-                                      {item.shortName && (
-                                        <div>
-                                          <dt className="font-mono uppercase text-[10px] text-mute tracking-wider">Study Acronym</dt>
-                                          <dd className="text-ink-2 font-mono font-semibold">{item.shortName}</dd>
-                                        </div>
-                                      )}
-                                      {item.topicLabel && (
-                                        <div>
-                                          <dt className="font-mono uppercase text-[10px] text-mute tracking-wider">Topic</dt>
-                                          <dd className="text-ink-2">{item.topicLabel}</dd>
-                                        </div>
-                                      )}
-                                      {(() => {
-                                        const designLine = [
-                                          item.design?.n ? `n=${item.design.n.toLocaleString?.() || item.design.n}` : null,
-                                          item.design?.population || null,
-                                          item.design?.comparator ? `vs ${item.design.comparator}` : null
-                                        ].filter(Boolean).join(' · ');
-                                        return designLine ? (
-                                          <div>
-                                            <dt className="font-mono uppercase text-[10px] text-mute tracking-wider">Design</dt>
-                                            <dd className="text-ink-2">{designLine}</dd>
-                                          </div>
-                                        ) : null;
-                                      })()}
-                                      <div>
-                                        <dt className="font-mono uppercase text-[10px] text-mute tracking-wider">Result</dt>
-                                        <dd>
-                                          <span className={`font-medium ${effectClass(dir)}`}>{item.result?.effect}</span>
-                                          {(item.result?.ci || item.result?.p) ? (
-                                            <span className="text-ink-2"> {' '}
-                                              {[item.result?.ci, item.result?.p].filter(Boolean).join('; ')}
-                                            </span>
-                                          ) : null}
-                                        </dd>
-                                      </div>
-                                      <div>
-                                        <dt className="font-mono uppercase text-[10px] text-mute tracking-wider">What it changes</dt>
-                                        <dd className="text-ink-2 text-pretty">{item.practiceImpact}</dd>
-                                      </div>
-                                      {item.observationalCaveat ? (
-                                        <div>
-                                          <dd className="text-mute text-xs italic text-pretty">{item.observationalCaveat}</dd>
-                                        </div>
-                                      ) : null}
-                                    </dl>
-
-                                    {/* expandable critical appraisal (PICO · methodology · results) */}
-                                    {item.appraisal && (item.appraisal.picoQuestion || item.appraisal.methodology || item.appraisal.results) ? (
-                                      <details className="mt-3 group">
-                                        <summary className="inline-flex items-center min-h-[44px] font-mono uppercase text-[10px] text-mute tracking-wider cursor-pointer select-none hover:text-ink-2">
-                                          Critical appraisal
-                                        </summary>
-                                        <div className="mt-2 space-y-2 text-xs text-ink-2 text-pretty">
-                                          {item.appraisal.picoQuestion ? <p><span className="font-semibold text-ink">PICO.</span> {item.appraisal.picoQuestion}</p> : null}
-                                          {item.appraisal.methodology ? <p><span className="font-semibold text-ink">Methodology.</span> {item.appraisal.methodology}</p> : null}
-                                          {item.appraisal.results ? <p><span className="font-semibold text-ink">Results.</span> {item.appraisal.results}</p> : null}
-                                        </div>
-                                      </details>
-                                    ) : null}
-
-                                    {/* footer: certainty + source/verify link (tier-dependent) */}
-                                    <div className="flex items-center justify-between gap-2 mt-4 pt-3 border-t border-line flex-wrap">
-                                      <span className={`v7-cert ${item.certainty === 'high' ? 'high' : (item.certainty === 'moderate' ? 'moderate' : '')}`}>
-                                        {String(item.certainty || 'low')} certainty
-                                      </span>
-                                      {isVerified ? (
-                                        <a
-                                          href={item.pubmedUrl}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="v7-verify"
-                                          aria-label={`Open PubMed record for ${item.shortName} (opens in new tab)`}
-                                        >
-                                          PubMed ↗
-                                        </a>
-                                      ) : item.sourceUrl ? (
-                                        <a
-                                          href={item.sourceUrl}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="inline-flex items-center min-h-[44px] font-mono text-[11px] text-ink-2 hover:text-ink underline decoration-line underline-offset-2 whitespace-nowrap"
-                                          aria-label={`Open briefing source for ${item.shortName} (opens in new tab)`}
-                                        >
-                                          Source ↗
-                                        </a>
-                                      ) : null}
-                                    </div>
-                                  </article>
-                                );
-                              })}
-                            </div>
-                          )}
-                        </section>
-                      );
-                    })()}
-                      </div>
-                    )}
 
                     {researchSubTab === 'guidelines' && (
                       <div id="research-tabpanel-guidelines" role="tabpanel" aria-labelledby="research-tab-guidelines" className="space-y-6">
