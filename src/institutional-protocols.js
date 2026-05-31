@@ -4,8 +4,8 @@
 // must be adapted to local policy before clinical use. Do not rely on this
 // module as the sole source of truth for any patient encounter.
 //
-// EVIDENCE AUDIT: Last comprehensive review 2026-04-23 against:
-// — AHA/ASA AIS 2019 (Powers) + 2019 focused update
+// EVIDENCE AUDIT: Last comprehensive review 2026-05-31 against:
+// — AHA/ASA AIS 2026 Guidelines
 // — AHA/ASA ICH 2022 (Greenberg)
 // — AHA/ASA aSAH 2023
 // — AHA/ASA CVT 2024
@@ -54,10 +54,10 @@ export const INSTITUTIONAL_BP_PROTOCOLS = {
   },
   sbpLT140EVT: {
     scenario: 'SBP <140 after EVT (×72h)',
-    status: 'Likely harmful',
-    cor: '—',
+    status: 'Likely harmful / Class III (Harm)',
+    cor: '3 (Harm)',
     loe: 'A (4 RCTs negative/harm)',
-    rationale: 'No formal COR; the AHA/ASA 2019 AIS formal target is SBP <180, and the post-EVT floor below is extrapolated from negative/harm RCTs. ENCHANTED2-MT (Lancet 2022, n=821) worse mRS shift with <120 × 72h; OPTIMAL-BP (JAMA 2023, n=306) worse mRS 0-2 with <140; BP-TARGET (Lancet Neurol 2021, n=324) neutral/trend harm with 100-129; BEST-II (JAMA 2023) futility for lower targets. Practical extrapolation: maintain SBP floor of 140 for ≥72h post-successful EVT.'
+    rationale: 'Formal Class III (Potential Harm) COR in AHA/ASA 2026 Guidelines. Lowering SBP below 140 mm Hg after successful endovascular therapy is associated with increased risk of death or disability. ENCHANTED2-MT (Lancet 2022, n=821) worse mRS shift with <120 × 72h; OPTIMAL-BP (JAMA 2023, n=306) worse mRS 0-2 with <140; BP-TARGET (Lancet Neurol 2021, n=324) neutral/trend harm with 100-129; BEST-II (JAMA 2023) futility for lower targets. Practical implication: maintain SBP floor of 140 (typically 140-180 target) for ≥72h post-successful EVT.'
   },
   noReperfusion: {
     scenario: 'Ischemic stroke (no reperfusion therapy)',

@@ -110,7 +110,7 @@ export const activeTrials = [
       { id: 'pregnancy', field: 'pregnancy', operator: '==', value: true, label: 'Pregnancy' },
       { id: 'hemorrhage', field: 'hemorrhage', operator: '==', value: true, label: 'Evidence of hemorrhage on imaging' },
     ],
-    relatedCompletedTrialIds: ['dawn', 'defuse-3'],
+    relatedCompletedTrialIds: ['dawn', 'defuse-3', 'escape-mevo', 'distal'],
     link: 'https://clinicaltrials.gov/study/NCT06289985',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',

@@ -42,76 +42,11 @@
     <link rel="apple-touch-startup-image" href="assets/splash/splash-ipad-mini.png"
           media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
     <title>Stroke</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Google-Fonts CSS loaded non-blocking via media-trick + font-display:swap to keep
-         render unblocked on first paint. Fallback inside <noscript> for non-JS environments. -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400..700;1,400..600&display=swap"></noscript>
-    <link rel="preload" as="script" href="app.js?v=6.8.9">
-    <link rel="stylesheet" href="tailwind.css?v=6.8.9">
+
+    <link rel="preload" as="script" href="app.js?v=6.9.0">
+    <link rel="stylesheet" href="tailwind.css?v=6.9.0">
     <style>
-        :root {
-            color-scheme: light;
-
-            /* Brand — v7 deep teal */
-            --accent:        #0C7C8C;
-            --accent-2:      #0A6571;
-            --accent-soft:   #E2F0F1;
-            --accent-ink:    #0A3A4D;
-
-            /* Surfaces — v7 warm paper */
-            --app-bg:        #FBFAF6;
-            --app-bg-accent: #F2EFE6;
-            --surface:       #FFFFFF;
-            --surface-2:     #FBFAF6;
-            --surface-3:     #F2EFE6;
-
-            /* Shell / panels (legacy aliases — re-pointed to token surfaces) */
-            --shell-bg:      rgba(255, 255, 255, 0.96);
-            --shell-border:  rgba(15, 23, 42, 0.06);
-            --shell-shadow:  0 1px 0 rgba(15, 23, 42, .04), 0 18px 40px -22px rgba(15, 23, 42, .22);
-            --panel-bg:      rgba(255, 255, 255, 0.94);
-            --panel-border:  rgba(15, 23, 42, 0.06);
-            --card-shadow:   0 1px 0 rgba(15, 23, 42, .04), 0 6px 16px -10px rgba(15, 23, 42, .18);
-
-            /* Type colors — kept tone names for compatibility */
-            --text-strong:   #14171D;
-            --text-muted:    #5b6577;
-
-            /* Geometry / elevation */
-            --radius:        14px;
-            --radius-lg:     20px;
-            --shadow-pop:    0 24px 60px -20px rgba(15, 23, 42, .35), 0 4px 12px rgba(15, 23, 42, .06);
-        }
-
-        /* Dark theme overrides. Toggled by adding .dark to <html>. */
-        html.dark {
-            color-scheme: dark;
-
-            --accent:        #3FB6C4;
-            --accent-2:      #2C99A6;
-            --accent-soft:   #11272B;
-            --accent-ink:    #8FD9E2;
-
-            --app-bg:        #101317;
-            --app-bg-accent: #171B21;
-            --surface:       #171B21;
-            --surface-2:     #14171D;
-            --surface-3:     #1E232B;
-
-            --shell-bg:      rgba(12, 22, 38, 0.94);
-            --shell-border:  rgba(148, 163, 184, 0.12);
-            --shell-shadow:  0 1px 0 rgba(255, 255, 255, .02), 0 24px 60px -28px rgba(0, 0, 0, .8);
-            --panel-bg:      rgba(12, 22, 38, 0.92);
-            --panel-border:  rgba(148, 163, 184, 0.12);
-            --card-shadow:   0 1px 0 rgba(255, 255, 255, .02), 0 10px 30px -16px rgba(0, 0, 0, .7);
-
-            --text-strong:   #ECEAE2;
-            --text-muted:    #A39E92;
-
-            --shadow-pop:    0 24px 60px -20px rgba(0, 0, 0, .8), 0 4px 12px rgba(0, 0, 0, .4);
-        }
+        /* CSS variables consolidated in tokens.css */
         html.dark body {
             background: radial-gradient(900px circle at 10% -10%, var(--app-bg-accent), transparent 60%),
                         linear-gradient(180deg, var(--app-bg) 0%, #0B0D10 100%);
@@ -742,7 +677,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = '6.8.9'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
+            const APP_VERSION = '6.9.0'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
             const STORAGE_PREFIX = 'strokeApp:';
             const APP_DATA_KEY = 'stroke.appData.v2';
             const IS_PUBLIC_PAGES = /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -961,7 +896,7 @@
         document.currentScript.parentNode.insertBefore(s, document.currentScript);
       })();
     </script>
-    <script src="app.js?v=6.8.9" defer></script>
+    <script src="app.js?v=6.9.0" defer></script>
     <footer style="margin-top: 40px; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb;">
       <p>This is a synthetic public demo site for educational and reference purposes only. Not for clinical decision-making or real patient care.</p>
     </footer>

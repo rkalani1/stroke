@@ -62,6 +62,7 @@ import {
 import { HeroReadout as V7HeroReadout } from './design/hero-readout.jsx';
 import { DrugChip as V7DrugChip } from './design/drug-chip.jsx';
 import { PatientStripMobile as V7PatientStripMobile, PatientStripRail as V7PatientStripRail } from './design/patient-strip.jsx';
+import { TimeWindowRing } from './design/time-window-ring.jsx';
 import { TrialScreener } from './components/TrialScreener.jsx';
 import { EligibilityTables } from './components/EligibilityTables.jsx';
 import { EvdIcpSimulator } from './simulators/EvdIcpSimulator.jsx';
@@ -2628,7 +2629,7 @@ Clinician Name`;
             },
             TXA: {
               title: 'Tranexamic Acid (TXA)',
-              dosing: '1 g IV over 10 min.',
+              dosing: 'Tranexamic acid 1000 mg IV over 10 min STAT',
               note: 'For post-thrombolytic ICH after cryoprecipitate. Give when intracranial blood confirmed on CT.'
             },
             METHYLPRED: {
@@ -5275,8 +5276,8 @@ Clinician Name`;
               id: 'mevo_evt_not_recommended',
               category: 'EVT',
               title: 'MeVO/distal occlusion EVT: NOT recommended (Class III — No Benefit / Potential Harm)',
-              recommendation: 'EVT for nondominant/codominant M2, distal MCA, ACA, and PCA occlusions is NOT recommended (COR III, LOE A). DISTAL trial showed increased mortality with EVT (aHR 1.82). EXCEPTION: For dominant proximal M2 within 6h, mRS 0-1, NIHSS ≥6, ASPECTS ≥6, EVT is reasonable (COR IIa, LOE B-NR, AHA/ASA 2026).',
-              detail: 'Dominant proximal M2 within 6h: EVT is reasonable (Class IIa, LOE B-NR per AHA/ASA 2026) — benefits uncertain but reasonable to consider with favorable profile. Nondominant/codominant M2, M3-M4, ACA, PCA: EVT is NOT recommended (Class III, LOE A per AHA/ASA 2026). ESCAPE-MeVO (N=530): no functional improvement (ordinal mRS OR 0.90, NS). DISTAL (N=543): no benefit AND increased mortality with EVT (13.3% vs 8.4%, aHR 1.82, 95% CI 1.06-3.12) and higher sICH (5.4% vs 2.2%). DISCOUNT (2025): negative for M2 thrombectomy. This is a safety signal beyond neutral efficacy — Class III: Potential Harm (DISTAL). Flag eligible patients for clinical trial enrollment (for example STEP-EVT).',
+              recommendation: 'EVT for nondominant/codominant M2, distal MCA, ACA, and PCA occlusions is NOT recommended (COR III, LOE A). ESCAPE-MeVO trial showed increased mortality with EVT (aHR 1.82). EXCEPTION: For dominant proximal M2 within 6h, mRS 0-1, NIHSS ≥6, ASPECTS ≥6, EVT is reasonable (COR IIa, LOE B-NR, AHA/ASA 2026).',
+              detail: 'Dominant proximal M2 within 6h: EVT is reasonable (Class IIa, LOE B-NR per AHA/ASA 2026) — benefits uncertain but reasonable to consider with favorable profile. Nondominant/codominant M2, M3-M4, ACA, PCA: EVT is NOT recommended (Class III, LOE A per AHA/ASA 2026). ESCAPE-MeVO (N=530): no functional improvement (ordinal mRS OR 0.90, NS) but showed increased 90-day mortality with EVT (13.3% vs 8.4%, aHR 1.82, 95% CI 1.06-3.12) and higher sICH (5.4% vs 2.2%). DISTAL (N=543): no functional benefit (adjusted common OR 0.82, NS) with 90-day mortality of 15.5% vs 14.0% (NS) and sICH of 5.9% vs 2.6%. DISCOUNT (2025): negative for M2 thrombectomy. This is a safety signal beyond neutral efficacy — Class III: Potential Harm (ESCAPE-MeVO). Flag eligible patients for clinical trial enrollment (for example STEP-EVT).',
               classOfRec: 'III',
               levelOfEvidence: 'B-R',
               guideline: 'ESCAPE-MeVO (NEJM 2025); DISTAL (2025); DISCOUNT (2025)',
@@ -17025,6 +17026,62 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </p>
                           </section>
 
+                          {/* Active Case Tracker / Dashboard Hero */}
+                          <section aria-label="Active case progress" className="bg-card border border-line rounded-md p-4 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+                            <div className="flex-shrink-0">
+                              <TimeWindowRing timeFromLKW={timeFromLKW} onNavigate={navigateTo} />
+                            </div>
+                            <div className="flex-1 min-w-0 w-full text-center sm:text-left">
+                              {timeFromLKW ? (
+                                <>
+                                  <h3 className="text-md font-bold text-ink leading-tight font-serif">Active Stroke Encounter</h3>
+                                  <p className="text-xs text-ink-2 mt-1">
+                                    Patient: <span className="font-semibold text-ink">{telestrokeNote.age || '—'}{telestrokeNote.sex || ''}</span>
+                                    {telestrokeNote.weight && <span> · Weight: <span className="font-semibold text-ink">{telestrokeNote.weight} kg</span></span>}
+                                  </p>
+                                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 mt-2.5">
+                                    <span className="inline-flex items-center gap-1 rounded bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-2xs font-mono text-ink-2">
+                                      NIHSS: <strong className="text-ink">{telestrokeNote.nihss || nihssScore || '—'}</strong>
+                                    </span>
+                                    <span className="inline-flex items-center gap-1 rounded bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-2xs font-mono text-ink-2">
+                                      ASPECTS: <strong className="text-ink">{Number.isFinite(aspectsScore) ? aspectsScore : '—'}</strong>
+                                    </span>
+                                    {telestrokeNote.anticoagBridging?.doacType && (
+                                      <span className="inline-flex items-center gap-1 rounded bg-warn-50 dark:bg-warn-950/40 border border-warn-200 dark:border-warn-900 px-2 py-0.5 text-2xs font-mono text-warn-800 dark:text-warn-300">
+                                        Anticoag: {telestrokeNote.anticoagBridging.doacType}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="mt-3 flex items-center justify-center sm:justify-start gap-2">
+                                    <button 
+                                      type="button" 
+                                      onClick={() => navigateTo('encounter')} 
+                                      className="inline-flex items-center gap-1 rounded bg-cobalt-50 hover:bg-cobalt-100 text-cobalt-800 border border-cobalt-200 text-xs font-semibold px-2.5 py-1 transition-colors dark:bg-cobalt-950/40 dark:border-cobalt-900 dark:text-cobalt-300 dark:hover:bg-cobalt-950"
+                                    >
+                                      Go to Encounter
+                                    </button>
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <h3 className="text-md font-bold text-ink leading-tight font-serif">Acute Stroke Decision Support</h3>
+                                  <p className="text-xs text-ink-2 mt-1 leading-normal max-w-md text-pretty">
+                                    Start a new encounter to track last known well, check treatment eligibility (TNK/EVT), calculate drug dosages, and run active trial screening.
+                                  </p>
+                                  <div className="mt-3.5 flex items-center justify-center sm:justify-start">
+                                    <button 
+                                      type="button" 
+                                      onClick={() => navigateTo('encounter', { clearSearch: true })} 
+                                      className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-br from-cobalt-500 to-cobalt-600 hover:from-cobalt-600 hover:to-cobalt-700 text-white text-xs font-semibold px-4 py-2 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+                                    >
+                                      Start Acute Encounter
+                                    </button>
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          </section>
+
                           {/* ---- Fast route tiles ---- */}
                           <section aria-label="Fast navigation">
                             <p className="font-mono uppercase text-eyebrow text-mute mb-2 px-0.5">Jump to</p>
@@ -28400,7 +28457,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <p className="text-xs font-semibold text-crit-700 mb-1 dark:text-crit-300">YES — Blood confirmed:</p>
                                     <ol className="text-sm space-y-1 ml-4 list-decimal">
                                       <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">2 pools Cryo</button> over 10-30 min (or continue if already started)</li>
-                                      <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.TXA)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">TXA 1 g IV</button> over 10 min (or aminocaproic acid 4-5 g IV if TXA unavailable)</li>
+                                      <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.TXA)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Tranexamic acid 1000 mg IV over 10 min STAT</button> (or aminocaproic acid 4-5 g IV if TXA unavailable)</li>
                                       <li>Repeat hemorrhage panel</li>
                                       <li>Call Stroke/Neuro attending</li>
                                       <li>Consult neurosurgery</li>
@@ -29983,7 +30040,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h3 className="font-semibold mb-2">Reversal (if blood on CT)</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Cryoprecipitate:</strong> 2 pools IV over 10-30 min (empirically if CT delayed &gt;30 min and fibrinogen &lt;200)</li>
-                                <li><strong>TXA:</strong> 1 g IV over 10 min (or aminocaproic acid 4-5 g IV if TXA unavailable)</li>
+                                <li><strong>TXA:</strong> Tranexamic acid 1000 mg IV over 10 min STAT (or aminocaproic acid 4-5 g IV if TXA unavailable)</li>
                                 <li><strong>Repeat hemorrhage panel</strong></li>
                                 <li><strong>Consult neurosurgery</strong></li>
                               </ul>

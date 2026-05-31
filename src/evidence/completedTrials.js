@@ -1258,9 +1258,54 @@ export const completedTrials = [
     limitations: 'Open-label; benefit not excluded in subgroups.',
     certainty: 'high',
     evidenceType: 'rct',
-    citationIds: ['cit-distal-2026'],
-    relatedActiveTrialIds: [],
+    citationIds: ['cit-distal-2025', 'cit-distal-2026'],
+    relatedActiveTrialIds: ['step-evt'],
     practiceImpact: 'No long-term benefit of EVT in mild-to-moderate medium/distal vessel occlusion — routine thrombectomy not supported in this population.',
+    lastReviewed: '2026-05-30',
+    promotedDate: '2026-05-30',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'escape-mevo',
+    shortName: 'ESCAPE-MeVO',
+    fullName: 'Endovascular Treatment for Medium Vessel Occlusion Stroke',
+    topic: 'evt-mevo',
+    diseaseArea: ['acute-ischemic-stroke', 'evt-mevo'],
+    population: {
+      n: 530,
+      ageRange: 'Mean 69.8',
+      nihssRange: 'Median 8',
+      timeWindow: '≤24 h (median 4.6 h)',
+      keyInclusion: ['Medium vessel occlusion (M2/M3 branches of MCA, A2/A3 branches of ACA, P2/P3 branches of PCA)', 'NIHSS ≥5 or disabling NIHSS 2-4', 'ASPECTS ≥5 on CT (or ≥6 on MRI)'],
+      keyExclusion: []
+    },
+    intervention: 'Endovascular treatment + best medical management',
+    comparator: 'Best medical management alone',
+    primaryEndpoint: {
+      definition: 'Disability on ordinal mRS',
+      timepoint: '90 d',
+      result: 'No difference (adjusted common OR 0.90)',
+      effectSize: 'Adjusted common OR 0.90',
+      confidenceInterval: '95% CI 0.68 to 1.18',
+      pValue: 'p=0.45'
+    },
+    secondaryEndpoints: [
+      { name: 'mRS 0-1 at 90 d', result: '47.5% vs 46.2% (aOR 0.99, 95% CI 0.69 to 1.43)' },
+      { name: 'mRS 0-2 at 90 d', result: '60.3% vs 60.1% (aOR 0.98, 95% CI 0.67 to 1.43)' }
+    ],
+    safetyFindings: {
+      sich: '5.4% vs 2.2% (aOR 2.37, 95% CI 0.90 to 6.27)',
+      mortality: '13.3% vs 8.4% (aHR 1.82, 95% CI 1.06 to 3.12)',
+      other: 'Higher 90-day mortality in the EVT group (safety signal)'
+    },
+    imagingCriteria: 'CTA/MRA-selected MeVO',
+    applicabilityNotes: 'No functional benefit and showed a signal of increased 90-day mortality and sICH.',
+    limitations: 'Open-label trial; ended early for enrollment feasibility.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-escape-mevo-2025'],
+    relatedActiveTrialIds: ['step-evt'],
+    practiceImpact: 'Does not support routine endovascular thrombectomy for isolated medium vessel occlusion stroke outside of clinical trials.',
     lastReviewed: '2026-05-30',
     promotedDate: '2026-05-30',
     verificationStatus: 'verified-pubmed'

@@ -843,6 +843,32 @@ export const citations = [
     url: 'https://pubmed.ncbi.nlm.nih.gov/42206304/',
     verificationStatus: 'verified-pubmed',
     verificationNotes: 'Front Neurol is online-only; 1826373 is the article number, not a page range.'
+  }),
+  makeCitation({
+    id: 'cit-escape-mevo-2025',
+    authors: 'Goyal M et al.',
+    title: 'Endovascular Treatment for Medium Vessel Occlusion Stroke (ESCAPE-MeVO)',
+    journal: 'N Engl J Med',
+    year: 2025,
+    volume: '392',
+    pages: '1244-1254',
+    pmid: '39908448',
+    doi: '10.1056/NEJMoa2411668',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/39908448/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-distal-2025',
+    authors: 'Fischer U et al.',
+    title: 'Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke (DISTAL)',
+    journal: 'N Engl J Med',
+    year: 2025,
+    volume: '392',
+    pages: '1232-1243',
+    pmid: '39908430',
+    doi: '10.1056/NEJMoa2408954',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/39908430/',
+    verificationStatus: 'verified-pubmed'
   })
 ];
 

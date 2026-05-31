@@ -14,8 +14,8 @@
    Cache-name bumped to stroke-cache-v6-8-9. Old caches are cleared on activate.
 */
 
-const APP_VERSION = '6.8.9';
-const CACHE_NAME  = 'stroke-cache-v6-8-9';
+const APP_VERSION = '6.9.0';
+const CACHE_NAME  = 'stroke-cache-v6-9-0';
 
 const CORE_ASSETS = [
   './',
@@ -25,7 +25,22 @@ const CORE_ASSETS = [
   './icon-512.png',
   './app.js',
   './tailwind.css',
-  './offline.html'
+  './offline.html',
+  './assets/fonts/bricolage-400.ttf',
+  './assets/fonts/bricolage-500.ttf',
+  './assets/fonts/bricolage-600.ttf',
+  './assets/fonts/bricolage-700.ttf',
+  './assets/fonts/bricolage-800.ttf',
+  './assets/fonts/ibmplexmono-400.ttf',
+  './assets/fonts/ibmplexmono-500.ttf',
+  './assets/fonts/ibmplexmono-600.ttf',
+  './assets/fonts/publicsans-italic-400.ttf',
+  './assets/fonts/publicsans-italic-500.ttf',
+  './assets/fonts/publicsans-italic-600.ttf',
+  './assets/fonts/publicsans-normal-400.ttf',
+  './assets/fonts/publicsans-normal-500.ttf',
+  './assets/fonts/publicsans-normal-600.ttf',
+  './assets/fonts/publicsans-normal-700.ttf'
 ];
 
 const CDN_ASSETS = [];

@@ -52,68 +52,7 @@
    primitives migrate them.
    ============================================================ */
 @layer base {
-  :root {
-    color-scheme: light;
 
-    /* Neutrals — do 90% of the work. (v7 teal/coral/gold re-skin) */
-    --ink:     #14171D;
-    --ink-2:   #3A414C;
-    --mute:    #545E6B;
-    --line:    #E7E2D6;
-    --paper:   #FBFAF6;
-    --paper-2: #F4F2EB;
-    --card:    #FFFFFF;
-
-    /* Semantic — used sparingly, never decoratively.
-       --critical: contraindications, time breaches (coral).
-       --confirm:  eligible, target met (green).
-       --caution:  approaching breach, soft warnings (gold).
-       --reference: informational notes, citation links (teal). */
-    --critical:       #9E2623;
-    --critical-soft:  #FBE7E5;
-    --confirm:        #1E5438;
-    --confirm-soft:   #E2F0E8;
-    --caution:        #7C5616;
-    --caution-soft:   #F6ECD6;
-    --reference:      #0A6571;
-    --reference-soft: #E2F0F1;
-
-    --radius-sm: 6px;
-    --radius-md: 12px;
-    --radius-pill: 9999px;
-    --shadow-1: 0 1px 2px rgba(15, 23, 42, .06);
-    --shadow-2: 0 8px 20px rgba(15, 23, 42, .08);
-    --surface: #ffffff;
-    --surface-elevated: #ffffff;
-    --neutral-bg: #f8fafc;
-    --text-strong: #0f172a;
-    --text-muted: #475569;
-    --text-subtle: #94a3b8;
-    --border: rgba(15, 23, 42, .08);
-    --focus-ring: 0 0 0 3px rgba(12, 124, 140, .35);
-  }
-
-  html.dark {
-    color-scheme: dark;
-    --focus-ring: 0 0 0 3px rgba(63, 182, 196, .45);
-
-    --ink:     #ECEAE2;
-    --ink-2:   #C3C0B6;
-    --mute:    #A39F94;
-    --line:    #272D35;
-    --paper:   #101317;
-    --paper-2: #1E232B;
-    --card:    #171B21;
-
-    --critical:       #F06B62;
-    --critical-soft:  #2A1715;
-    --confirm:        #5FB489;
-    --confirm-soft:   #13241B;
-    --caution:        #D6A24E;
-    --caution-soft:   #2A2113;
-    --reference:      #3FB6C4;
-    --reference-soft: #11272B;
-  }
 
   body {
     @apply bg-slate-50 text-slate-900 antialiased;
