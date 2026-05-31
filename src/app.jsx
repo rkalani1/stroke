@@ -1015,7 +1015,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         };
 
         const VALID_TABS = [
-          'home',
           'encounter',
           'protocols',
           'research',
@@ -1026,10 +1025,10 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         ];
 
         const parseHashRoute = (hash) => {
-          if (!hash) return { tab: 'home' };
+          if (!hash) return { tab: 'encounter' };
           const cleaned = hash.replace(/^#\/?/, '').trim();
           if (!cleaned) {
-            return { tab: 'home' };
+            return { tab: 'encounter' };
           }
           const parts = cleaned.split('/').filter(Boolean);
           const root = parts[0];
@@ -1038,7 +1037,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           switch (root) {
             case 'dashboard':
             case 'home':
-              return { tab: 'home' };
+              return { tab: 'encounter' };
             case 'encounter':
               return { tab: 'encounter' };
             case 'protocols':
@@ -1080,7 +1079,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         const buildHashRoute = (tab, sub) => {
           switch (tab) {
             case 'home':
-              return '#/home';
+              return '#/encounter';
             case 'encounter':
               return '#/encounter';
             case 'protocols':
@@ -1939,11 +1938,11 @@ Clinician Name`;
           };
 
           const initialActiveTab = (() => {
-            // Home (Acute Stroke Pathways) is the default landing. A returning user with a
+            // Encounter is the default landing. A returning user with a
             // saved lastActiveTab keeps their last surface; first-load / no-saved-tab
-            // lands on Home.
-            const storedTab = appData.uiState.lastActiveTab || 'home';
-            if (storedTab === 'dashboard') return 'home';
+            // lands on Encounter.
+            const storedTab = appData.uiState.lastActiveTab || 'encounter';
+            if (storedTab === 'dashboard' || storedTab === 'home') return 'encounter';
             if (storedTab === 'settings') return 'encounter';
             if (LEGACY_MANAGEMENT_TABS[storedTab]) return 'protocols';
             if (storedTab === 'management' || storedTab === 'library') return 'protocols';
@@ -7678,11 +7677,11 @@ Clinician Name`;
               // Ctrl/Cmd + 0..4 — tab navigation (0 = Acute Stroke Pathways home)
               if (primary && !e.shiftKey && !e.altKey) {
                 const tabMap = {
-                  '0': { tab: 'home' },
                   '1': { tab: 'encounter' },
                   '2': { tab: 'protocols' },
                   '3': { tab: 'research' },
-                  '4': { tab: 'trials' }
+                  '4': { tab: 'trials' },
+                  '5': { tab: 'education' }
                 };
                 if (tabMap[key]) {
                   e.preventDefault();
@@ -7930,7 +7929,6 @@ Clinician Name`;
           // open-in-new-tab tools. Order = display order within a group.
           const paletteCommands = React.useMemo(() => [
             // ---- Top-level sections ----
-            { id: 'go-home', group: 'Go to', label: 'Home', hint: 'Overview', icon: 'grid-3x3', keywords: ['home', 'dashboard', 'start'], run: () => navigateTo('home', { clearSearch: true }) },
             { id: 'go-encounter', group: 'Go to', label: 'Acute Encounter', hint: 'Active stroke workup', icon: 'activity', keywords: ['encounter', 'acute', 'consult', 'telestroke', 'patient', 'workup'], run: () => navigateTo('encounter', { clearSearch: true }) },
             { id: 'go-protocols', group: 'Go to', label: 'Institutional Protocols & Algorithms', hint: 'Pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library'], run: () => navigateTo('protocols', { clearSearch: true }) },
             { id: 'go-research', group: 'Go to', label: 'Research & Guidelines', hint: 'Guidelines & What’s New', icon: 'book-open', keywords: ['research', 'guidelines', 'whats new', "what's new", 'evidence', 'updates'], run: () => navigateTo('research', { clearSearch: true }) },
@@ -7963,8 +7961,6 @@ Clinician Name`;
             { id: 'calc-phases', group: 'Calculators', label: 'PHASES', hint: 'Aneurysm rupture risk', icon: 'table', keywords: ['phases', 'aneurysm', 'rupture'], run: () => gotoProtocolsSub('calculators', 'calc-phases', 'phases') },
             { id: 'calc-toast', group: 'Calculators', label: 'TOAST Classification', hint: 'Ischemic stroke etiology', icon: 'clipboard-list', keywords: ['toast', 'classification', 'etiology', 'subtype'], run: () => navigateTo('education', { subTab: 'reference-library' }) },
             // ---- External / legacy tools ----
-            { id: 'ext-nepi', group: 'External Tools', label: 'Statistical & Research Methods (n-epi)', hint: 'Biostats / appraisal — new tab', icon: 'external-link', external: true, keywords: ['n-epi', 'nepi', 'statistics', 'biostats', 'meta-analysis', 'appraisal', 'methods', 'research'], run: () => openExternal('https://rkalani1.github.io/n-epi/') },
-            { id: 'ext-proteomics', group: 'External Tools', label: 'Proteomics Power Calculator', hint: 'PWAS power — new tab', icon: 'external-link', external: true, keywords: ['proteomics', 'power', 'sample size', 'pwas'], run: () => openExternal('https://rkalani1.github.io/proteomics-power-calc/') },
             { id: 'ext-telestroke-map', group: 'External Tools', label: 'Telestroke Network Map', hint: 'Service planning — new tab', icon: 'external-link', external: true, keywords: ['telestroke', 'network', 'map', 'expansion', 'coverage', 'service planning', 'admin'], run: () => openExternal('https://rkalani1.github.io/telestroke-expansion-map/') }
           ], []);
 
@@ -15912,7 +15908,7 @@ Clinician Name`;
                   return;
                 }
               }
-              setActiveTab('home');
+              setActiveTab('encounter');
             };
 
             resolveRoute();
@@ -16936,7 +16932,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   (z-40) so the two stack cleanly instead of overlapping. */}
               <div className="hidden sm:block mb-4 sm:mb-6 sticky top-0 md:top-[var(--app-header-h,0px)] z-30 app-nav" role="navigation" aria-label="Main navigation">
                 <nav className="flex flex-nowrap items-stretch gap-0 bg-white border border-line rounded-md p-1 overflow-x-auto no-scrollbar dark:bg-card" role="tablist" aria-label="Main sections" onKeyDown={(e) => {
-                  const tabs = ['home', 'encounter', 'protocols', 'research', 'trials', 'education'];
+                  const tabs = ['encounter', 'protocols', 'research', 'trials', 'education'];
                   const currentIndex = tabs.indexOf(activeTab);
                   let nextIndex;
                   if (e.key === 'ArrowRight') { e.preventDefault(); nextIndex = (currentIndex + 1) % tabs.length; }
@@ -16951,7 +16947,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     // flex-1 pills can't hold the canonical name without overprinting
                     // (Cycle2 U2). Full canonical name stays as title/aria-label and
                     // is shown at lg+; the section H1/title is unchanged elsewhere.
-                    { id: 'home', name: 'Home', short: 'Home' },
                     { id: 'encounter', name: 'Encounter', short: 'Encounter' },
                     { id: 'protocols', name: 'Institutional Protocols & Algorithms', short: 'Protocols' },
                     { id: 'research', name: 'Research & Guidelines', short: 'Research' },
@@ -17007,190 +17002,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               {/* Content — v7 semantic landmark (main) replaces div role=region */}
               <main id="main" className="space-y-6 pb-24 sm:space-y-8 sm:pb-0" aria-label="Main content area">
 
-                {/* ============================================================ */}
-                {/* COMMAND CENTER — Home (default landing). Dense attending     */}
-                {/* workspace: status strip, fast-route tiles, external launcher. */}
-                {/* Quiet, exact, v7 tokens, warm paper. NOT a marketing page.  */}
-                {/* ============================================================ */}
-                {activeTab === 'home' && (
-                  <ErrorBoundary>
-                  <div key="home-tab" id="tabpanel-home" role="tabpanel" aria-labelledby="tab-home" className="space-y-5">
-                    {(() => {
-                      const appVer = (window.strokeAppStorage && window.strokeAppStorage.appVersion) || '';
-                      const wnItems = (whatsNewData && Array.isArray(whatsNewData.items)) ? whatsNewData.items : [];
-                      const latestYear = wnItems.reduce((max, i) => {
-                        const y = parseInt(i && i.year, 10);
-                        return Number.isFinite(y) && y > max ? y : max;
-                      }, 0);
-                      const freshness = latestYear ? `evidence as of ${latestYear}` : 'see Research';
-                      const tiles = [
-                        { id: 'acute-encounter', label: 'Acute Encounter', purpose: 'Active stroke workup, decisions & note', icon: 'activity', run: () => navigateTo('encounter', { clearSearch: true }) },
-                        { id: 'protocols-algorithms', label: 'Protocols & Algorithms', purpose: 'Institutional pathways & step-cards', icon: 'library', run: () => navigateTo('protocols', { clearSearch: true }) },
-                        { id: 'trials-evidence', label: 'Trials & Evidence', purpose: 'Bedside screener, eligibility, atlas', icon: 'flask-conical', run: () => navigateTo('trials', { clearSearch: true }) },
-                        { id: 'bedside-simulators', label: 'Bedside Simulators', purpose: 'EVD/ICP, HINTS+, pupillometry, exams', icon: 'test-tubes', run: () => { navigateTo('education'); setEducationSubTab('simulators'); } },
-                        { id: 'research-whats-new', label: 'Research & What’s New', purpose: 'Guidelines + verified evidence feed', icon: 'book-open', run: () => navigateTo('research', { clearSearch: true }) },
-                        { id: 'calculators', label: 'Calculators', purpose: 'NIHSS, ASPECTS, ICH, ABCD2, PHASES…', icon: 'table', run: () => gotoProtocolsSub('calculators') },
-                        { id: 'education-tab', label: 'Educational Resources', purpose: 'Onboarding, ICU, nursing curricula & interactive simulators', icon: 'brain', run: () => navigateTo('education', { clearSearch: true }) },
-                        { id: 'pocket-cards-tab', label: 'Pocket Cards', purpose: 'Bedside references & pocket cards', icon: 'badge-check', run: () => { navigateTo('education'); setEducationSubTab('pocket-cards'); } }
-                      ];
-                      const externalLinks = [
-                        { id: 'home-ext-nepi', label: 'Statistical & Research Methods (n-epi)', reason: 'study design, biostats, meta-analysis, critical appraisal — research/teaching, not bedside', url: 'https://rkalani1.github.io/n-epi/' },
-                        { id: 'home-ext-proteomics', label: 'Proteomics Power Calculator', reason: 'PWAS sample-size / power for research study design', url: 'https://rkalani1.github.io/proteomics-power-calc/' },
-                        { id: 'home-ext-telestroke', label: 'Telestroke Network Map', reason: 'regional telestroke coverage / expansion map — service planning, NOT a clinical decision tool', url: 'https://rkalani1.github.io/telestroke-expansion-map/' }
-                      ];
-                      return (
-                        <>
-                          {/* ---- Top status strip ---- */}
-                          <section aria-label="Application status" className="bg-card border border-line rounded-md">
-                            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3 border-b border-line">
-                              <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-cobalt-200 bg-cobalt-50 text-cobalt-700 dark:border-cobalt-700 dark:bg-cobalt-900 dark:text-cobalt-300" aria-hidden="true">
-                                <i data-lucide="activity" className="w-4 h-4"></i>
-                              </span>
-                              <div className="min-w-0">
-                                <p className="font-mono uppercase text-eyebrow text-mute leading-none">Overview</p>
-                                <h2 className="font-serif text-section text-ink leading-tight">Acute stroke overview</h2>
-                              </div>
-                              <div className="ml-auto flex flex-wrap items-center gap-1.5">
-                                {appVer && (
-                                  <span className="inline-flex items-center gap-1 rounded-md border border-line bg-paper-2 px-2 py-1 text-2xs font-mono text-ink-2">
-                                    v{appVer}
-                                  </span>
-                                )}
-                                <span className="inline-flex items-center gap-1 rounded-md border border-ok-200 bg-ok-50 px-2 py-1 text-2xs font-medium text-ok-800 dark:border-ok-800 dark:bg-ok-950 dark:text-ok-300">
-                                  <i aria-hidden="true" data-lucide="shield" className="w-3 h-3"></i>
-                                  Offline-ready
-                                </span>
-                                <button
-                                  type="button"
-                                  onClick={() => navigateTo('research', { clearSearch: true })}
-                                  className="inline-flex items-center gap-1 rounded-md border border-cobalt-200 bg-cobalt-50 px-2 py-1 text-2xs font-medium text-cobalt-800 hover:bg-cobalt-100 transition-colors focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-cobalt-700 dark:bg-cobalt-900 dark:text-cobalt-300 dark:hover:bg-cobalt-800"
-                                  title="Open Research & What’s New"
-                                >
-                                  <i aria-hidden="true" data-lucide="book-open" className="w-3 h-3"></i>
-                                  What’s New — {freshness}
-                                </button>
-                              </div>
-                            </div>
-                            <p className="px-4 py-2.5 text-2xs sm:text-xs text-warn-900 bg-warn-50 rounded-b-md flex items-start gap-2 dark:text-warn-300 dark:bg-warn-950">
-                              <i aria-hidden="true" data-lucide="alert-triangle" className="w-3.5 h-3.5 mt-0.5 shrink-0 text-warn-600 dark:text-warn-300"></i>
-                              <span>Synthetic public demo — not medical advice, not an official system, no PHI. Verify against your institution’s protocols.</span>
-                            </p>
-                          </section>
-
-                          {/* Active Case Tracker / Dashboard Hero */}
-                          <section aria-label="Active case progress" className="bg-card border border-line rounded-md p-4 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-                            <div className="flex-shrink-0">
-                              <TimeWindowRing timeFromLKW={timeFromLKW} onNavigate={navigateTo} />
-                            </div>
-                            <div className="flex-1 min-w-0 w-full text-center sm:text-left">
-                              {timeFromLKW ? (
-                                <>
-                                  <h3 className="text-md font-bold text-ink leading-tight font-serif">Active Stroke Encounter</h3>
-                                  <p className="text-xs text-ink-2 mt-1">
-                                    Patient: <span className="font-semibold text-ink">{telestrokeNote.age || '—'}{telestrokeNote.sex || ''}</span>
-                                    {telestrokeNote.weight && <span> · Weight: <span className="font-semibold text-ink">{telestrokeNote.weight} kg</span></span>}
-                                  </p>
-                                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 mt-2.5">
-                                    <span className="inline-flex items-center gap-1 rounded bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-2xs font-mono text-ink-2">
-                                      NIHSS: <strong className="text-ink">{telestrokeNote.nihss || nihssScore || '—'}</strong>
-                                    </span>
-                                    <span className="inline-flex items-center gap-1 rounded bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-2xs font-mono text-ink-2">
-                                      ASPECTS: <strong className="text-ink">{Number.isFinite(aspectsScore) ? aspectsScore : '—'}</strong>
-                                    </span>
-                                    {telestrokeNote.anticoagBridging?.doacType && (
-                                      <span className="inline-flex items-center gap-1 rounded bg-warn-50 dark:bg-warn-950/40 border border-warn-200 dark:border-warn-900 px-2 py-0.5 text-2xs font-mono text-warn-800 dark:text-warn-300">
-                                        Anticoag: {telestrokeNote.anticoagBridging.doacType}
-                                      </span>
-                                    )}
-                                  </div>
-                                  <div className="mt-3 flex items-center justify-center sm:justify-start gap-2">
-                                    <button 
-                                      type="button" 
-                                      onClick={() => navigateTo('encounter')} 
-                                      className="inline-flex items-center gap-1 rounded bg-cobalt-50 hover:bg-cobalt-100 text-cobalt-800 border border-cobalt-200 text-xs font-semibold px-2.5 py-1 transition-colors dark:bg-cobalt-950/40 dark:border-cobalt-900 dark:text-cobalt-300 dark:hover:bg-cobalt-950"
-                                    >
-                                      Go to Encounter
-                                    </button>
-                                  </div>
-                                </>
-                              ) : (
-                                <>
-                                  <h3 className="text-md font-bold text-ink leading-tight font-serif">Acute Stroke Decision Support</h3>
-                                  <p className="text-xs text-ink-2 mt-1 leading-normal max-w-md text-pretty">
-                                    Start a new encounter to track last known well, check treatment eligibility (TNK/EVT), calculate drug dosages, and run active trial screening.
-                                  </p>
-                                  <div className="mt-3.5 flex items-center justify-center sm:justify-start">
-                                    <button 
-                                      type="button" 
-                                      onClick={() => navigateTo('encounter', { clearSearch: true })} 
-                                      className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-br from-cobalt-500 to-cobalt-600 hover:from-cobalt-600 hover:to-cobalt-700 text-white text-xs font-semibold px-4 py-2 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-cobalt-500"
-                                    >
-                                      Start Acute Encounter
-                                    </button>
-                                  </div>
-                                </>
-                              )}
-                            </div>
-                          </section>
-
-                          {/* ---- Fast route tiles ---- */}
-                          <section aria-label="Fast navigation">
-                            <p className="font-mono uppercase text-eyebrow text-mute mb-2 px-0.5">Jump to</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                              {tiles.map((tile) => (
-                                <button
-                                  key={tile.id}
-                                  type="button"
-                                  onClick={tile.run}
-                                  className="group flex items-start gap-3 text-left bg-card border border-line rounded-md p-3.5 min-h-[44px] hover:border-cobalt-300 hover:bg-cobalt-50/40 transition-colors focus:outline-none focus:ring-2 focus:ring-cobalt-500"
-                                >
-                                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-cobalt-200 bg-cobalt-50 text-cobalt-700 group-hover:bg-cobalt-100 dark:border-cobalt-700 dark:bg-cobalt-900 dark:text-cobalt-300" aria-hidden="true">
-                                    <i data-lucide={tile.icon} className="w-4 h-4"></i>
-                                  </span>
-                                  <span className="min-w-0">
-                                    <span className="block font-semibold text-ink leading-tight">{tile.label}</span>
-                                    <span className="block text-xs text-ink-2 mt-0.5 text-pretty">{tile.purpose}</span>
-                                  </span>
-                                </button>
-                              ))}
-                            </div>
-                          </section>
-
-                          {/* ---- Supplemental external links ---- */}
-                          <section aria-label="Supplemental external links">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                              {externalLinks.map((tool) => (
-                                <a
-                                  key={tool.id}
-                                  href={tool.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="group flex items-start gap-3 bg-card border border-line rounded-md p-3.5 min-h-[44px] hover:border-cobalt-300 hover:bg-cobalt-50/40 transition-colors focus:outline-none focus:ring-2 focus:ring-cobalt-500"
-                                >
-                                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-600 group-hover:bg-slate-100 dark:border-strong dark:bg-paper-2 dark:text-mute" aria-hidden="true">
-                                    <i data-lucide="external-link" className="w-4 h-4"></i>
-                                  </span>
-                                  <span className="min-w-0">
-                                    <span className="block font-semibold text-ink leading-tight">{tool.label}</span>
-                                    <span className="block text-xs text-ink-2 mt-0.5 text-pretty">{tool.reason}</span>
-                                  </span>
-                                </a>
-                              ))}
-                            </div>
-                          </section>
-
-                          {/* ---- Palette hint ---- */}
-                          <p className="text-2xs text-mute text-center">
-                            Press <kbd className="px-1.5 py-0.5 mx-0.5 text-2xs font-mono text-ink-2 bg-paper-2 border border-line rounded">⌘K</kbd>
-                            or <kbd className="px-1.5 py-0.5 mx-0.5 text-2xs font-mono text-ink-2 bg-paper-2 border border-line rounded">/</kbd>
-                            to open the command palette and jump anywhere.
-                          </p>
-                        </>
-                      );
-                    })()}
-                  </div>
-                  </ErrorBoundary>
-                )}
 
                 {/* CONSOLIDATED ENCOUNTER TAB */}
                 {activeTab === 'encounter' && (
@@ -34155,7 +33966,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <Education
                       activeSubTab={educationSubTab}
                       onSubTabChange={setEducationSubTab}
-                      onBack={() => navigateTo('home')}
+                      onBack={() => navigateTo('encounter')}
                       copyToClipboard={copyToClipboard}
                       addToast={addToast}
                       navigateTo={navigateTo}
@@ -34440,7 +34251,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-[0_-1px_3px_rgba(0,0,0,0.08)] sm:hidden dark:bg-card dark:border-line" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }} role="navigation" aria-label="Mobile navigation">
               <div className="flex items-stretch justify-around" role="tablist" aria-label="Mobile sections">
                 {[
-                  { id: 'home', name: 'Home', icon: 'grid-3x3' },
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },
                   { id: 'protocols', name: 'Protocols', icon: 'library' },
                   { id: 'research', name: 'Research', icon: 'book-open' },

@@ -203,7 +203,18 @@ const PLACEHOLDERS = {
   CONFIRM_PUBLIC_SAFE_ROUTING_TEXT: "Tele-consult routing logic (your network)",
 };
 
-const EDUCATION_MODULES = [];
+const EDUCATION_MODULES = [
+  {
+    id: 'telestroke-map',
+    title: 'Telestroke Network Map',
+    purpose: 'Regional telestroke coverage and expansion map for service planning. NOT a clinical decision tool.',
+    actions: 'Open map in new tab',
+    lastReviewed: '2026-05-30',
+    categories: ['printable', 'pocket-card'],
+    external: true,
+    url: 'https://rkalani1.github.io/telestroke-expansion-map/'
+  }
+];
 
 // =====================================================================
 // MAIN EDUCATION MODULE EXPORT
@@ -414,7 +425,13 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
         {filteredModules.map(m => (
           <article
             key={m.id}
-            onClick={() => onNavigate(m.id)}
+            onClick={() => {
+              if (m.external && m.url) {
+                window.open(m.url, '_blank', 'noopener,noreferrer');
+              } else {
+                onNavigate(m.id);
+              }
+            }}
             className="v7-card cursor-pointer flex flex-col justify-between hover:scale-[1.01] transition-all bg-card min-h-[220px]"
           >
             <div className="space-y-3">
@@ -445,6 +462,25 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
 // =====================================================================
 function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard, addToast) {
   switch (moduleId) {
+    case 'telestroke-map':
+      return (
+        <div className="flex flex-col items-center justify-center p-8 text-center space-y-4 border border-line rounded-lg bg-paper-2">
+          <i data-lucide="map" className="w-12 h-12 text-cobalt-600 dark:text-cobalt-400"></i>
+          <h3 className="font-serif text-lg font-bold text-ink">Telestroke Network Map</h3>
+          <p className="text-sm text-ink-2 max-w-md">
+            This external resource shows regional telestroke coverage and expansion map for service planning.
+          </p>
+          <a
+            href="https://rkalani1.github.io/telestroke-expansion-map/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-cobalt-600 text-white font-semibold rounded-md hover:bg-cobalt-700 transition-colors"
+          >
+            Open Map in New Tab
+            <i data-lucide="external-link" className="w-4 h-4"></i>
+          </a>
+        </div>
+      );
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
