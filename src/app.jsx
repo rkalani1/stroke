@@ -65,11 +65,8 @@ import { PatientStripMobile as V7PatientStripMobile, PatientStripRail as V7Patie
 import { TimeWindowRing } from './design/time-window-ring.jsx';
 import { TrialScreener } from './components/TrialScreener.jsx';
 import { EligibilityTables } from './components/EligibilityTables.jsx';
-import { EvdIcpSimulator } from './simulators/EvdIcpSimulator.jsx';
-import { HintsSimulator } from './simulators/HintsSimulator.jsx';
-import { PupillometrySimulator } from './simulators/PupillometrySimulator.jsx';
-import { NeuroExamsTool } from './simulators/NeuroExamsTool.jsx';
 import {
+
   evaluateDAWN,
   evaluateDEFUSE3,
   recommendAcuteDAPT,
@@ -997,7 +994,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           : DEFAULT_TTL_HOURS;
         const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
 
-        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'simulators', 'calculators', 'references'];
+        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
 
         const LEGACY_MANAGEMENT_TABS = {
           ich: 'ich',
@@ -1047,9 +1044,15 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             case 'encounter':
               return { tab: 'encounter' };
             case 'protocols':
+              if (sub === 'simulators') {
+                return { tab: 'education', sub: 'simulators' };
+              }
               return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
             case 'library':
             case 'management':
+              if (sub === 'simulators') {
+                return { tab: 'education', sub: 'simulators' };
+              }
               return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
             case 'settings':
               return { tab: 'encounter' };
@@ -7910,12 +7913,12 @@ Clinician Name`;
             { id: 'sub-icu', group: 'Education', label: 'ICU Curriculum', hint: 'Stroke ICU teaching packet', icon: 'brain', keywords: ['icu', 'curriculum', 'intensive care', 'education'], run: () => { navigateTo('education'); setEducationSubTab('icu'); } },
             { id: 'sub-nursing', group: 'Education', label: 'Nurse Education', hint: 'Stroke nurse curriculum', icon: 'brain', keywords: ['nurse', 'nursing', 'education', 'curriculum'], run: () => { navigateTo('education'); setEducationSubTab('nursing'); } },
             { id: 'sub-pocket-cards', group: 'Education', label: 'Pocket Cards', hint: 'Clinical pocket references', icon: 'brain', keywords: ['pocket cards', 'references', 'cheat sheets', 'cards'], run: () => { navigateTo('education'); setEducationSubTab('pocket-cards'); } },
-            // ---- Simulators (each card lives in the Simulators sub-tab) ----
-            { id: 'sim-all', group: 'Bedside Simulators', label: 'Bedside Simulators', hint: 'All teaching simulators', icon: 'test-tubes', keywords: ['simulators', 'simulation', 'teaching', 'bedside'], run: () => gotoProtocolsSub('simulators') },
-            { id: 'sim-evd', group: 'Bedside Simulators', label: 'EVD & ICP Simulator', hint: 'Drain & pressure trace', icon: 'activity', keywords: ['evd', 'icp', 'drain', 'intracranial pressure', 'ventriculostomy'], run: () => gotoProtocolsSub('simulators', 'sim-evd-icp') },
-            { id: 'sim-hints', group: 'Bedside Simulators', label: 'HINTS+ Eye-Movement Simulator', hint: 'Vestibular exam', icon: 'eye', keywords: ['hints', 'eye movement', 'vestibular', 'nystagmus', 'vertigo', 'dizziness'], run: () => gotoProtocolsSub('simulators', 'sim-hints') },
-            { id: 'sim-pupil', group: 'Bedside Simulators', label: 'Pupillometry / NPi Simulator', hint: 'Pupil reactivity', icon: 'circle', keywords: ['pupillometry', 'npi', 'pupil', 'reactivity'], run: () => gotoProtocolsSub('simulators', 'sim-pupillometry') },
-            { id: 'sim-neuroexam', group: 'Bedside Simulators', label: 'Neuro-Exams (Aphasia / Delirium / Coma)', hint: 'Bedside exam tools', icon: 'brain', keywords: ['neuro exam', 'aphasia', 'delirium', 'coma', 'exam', 'classifier'], run: () => gotoProtocolsSub('simulators', 'sim-neuro-exams') },
+            // ---- Simulators (each card lives in the Simulators sub-tab of Education) ----
+            { id: 'sim-all', group: 'Bedside Simulators', label: 'Bedside Simulators', hint: 'All teaching simulators', icon: 'test-tubes', keywords: ['simulators', 'simulation', 'teaching', 'bedside'], run: () => { navigateTo('education'); setEducationSubTab('simulators'); } },
+            { id: 'sim-evd', group: 'Bedside Simulators', label: 'EVD & ICP Simulator', hint: 'Drain & pressure trace', icon: 'activity', keywords: ['evd', 'icp', 'drain', 'intracranial pressure', 'ventriculostomy'], run: () => { navigateTo('education'); setEducationSubTab('evd-icp'); } },
+            { id: 'sim-hints', group: 'Bedside Simulators', label: 'HINTS+ Eye-Movement Simulator', hint: 'Vestibular exam', icon: 'eye', keywords: ['hints', 'eye movement', 'vestibular', 'nystagmus', 'vertigo', 'dizziness'], run: () => { navigateTo('education'); setEducationSubTab('hints-simulator'); } },
+            { id: 'sim-pupil', group: 'Bedside Simulators', label: 'Pupillometry / NPi Simulator', hint: 'Pupil reactivity', icon: 'circle', keywords: ['pupillometry', 'npi', 'pupil', 'reactivity'], run: () => { navigateTo('education'); setEducationSubTab('pupillometry'); } },
+            { id: 'sim-neuroexam', group: 'Bedside Simulators', label: 'Neuro-Exams (Aphasia / Delirium / Coma)', hint: 'Bedside exam tools', icon: 'brain', keywords: ['neuro exam', 'aphasia', 'delirium', 'coma', 'exam', 'classifier'], run: () => { navigateTo('education'); setEducationSubTab('neuro-exams-simulator'); } },
             // ---- Calculators ----
             { id: 'calc-all', group: 'Calculators', label: 'All Calculators', hint: 'Scores & dosing', icon: 'table', keywords: ['calculators', 'scores', 'calc'], run: () => gotoProtocolsSub('calculators') },
             { id: 'calc-nihss', group: 'Calculators', label: 'NIHSS', hint: 'Stroke severity scale', icon: 'table', keywords: ['nihss', 'severity', 'stroke scale'], run: () => gotoProtocolsSub('calculators', 'calc-nihss', 'nihss') },
@@ -16989,7 +16992,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'acute-encounter', label: 'Acute Encounter', purpose: 'Active stroke workup, decisions & note', icon: 'activity', run: () => navigateTo('encounter', { clearSearch: true }) },
                         { id: 'protocols-algorithms', label: 'Protocols & Algorithms', purpose: 'Institutional pathways & step-cards', icon: 'library', run: () => navigateTo('protocols', { clearSearch: true }) },
                         { id: 'trials-evidence', label: 'Trials & Evidence', purpose: 'Bedside screener, eligibility, atlas', icon: 'flask-conical', run: () => navigateTo('trials', { clearSearch: true }) },
-                        { id: 'bedside-simulators', label: 'Bedside Simulators', purpose: 'EVD/ICP, HINTS+, pupillometry, exams', icon: 'test-tubes', run: () => gotoProtocolsSub('simulators') },
+                        { id: 'bedside-simulators', label: 'Bedside Simulators', purpose: 'EVD/ICP, HINTS+, pupillometry, exams', icon: 'test-tubes', run: () => { navigateTo('education'); setEducationSubTab('simulators'); } },
                         { id: 'research-whats-new', label: 'Research & What’s New', purpose: 'Guidelines + verified evidence feed', icon: 'book-open', run: () => navigateTo('research', { clearSearch: true }) },
                         { id: 'calculators', label: 'Calculators', purpose: 'NIHSS, ASPECTS, ICH, ABCD2, PHASES…', icon: 'table', run: () => gotoProtocolsSub('calculators') },
                         { id: 'education-tab', label: 'Education & Curricula', purpose: 'Onboarding, ICU, & nursing curricula', icon: 'brain', run: () => navigateTo('education', { clearSearch: true }) },
@@ -28047,7 +28050,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {(() => {
                       const subTabLabels = {
                         ich: 'ICH', ischemic: 'Ischemic', sah: 'SAH', tia: 'TIA', cvt: 'CVT',
-                        simulators: 'Simulators', calculators: 'Calculators', references: 'References'
+                        calculators: 'Calculators', references: 'References'
                       };
                       const activeLabel = subTabLabels[managementSubTab] || managementSubTab;
                       return (
@@ -28062,7 +28065,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       );
                     })()}
                     <div className="bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-9 z-30 dark:bg-card " role="tablist" aria-label="Protocols & Algorithms sub-sections" onKeyDown={(e) => {
-                      const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'simulators', 'calculators', 'references'];
+                      const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
                       const ci = subTabs.indexOf(managementSubTab);
                       let ni;
                       if (e.key === 'ArrowRight') { e.preventDefault(); ni = (ci + 1) % subTabs.length; }
@@ -28094,7 +28097,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'sah', label: 'SAH' },
                         { id: 'tia', label: 'TIA' },
                         { id: 'cvt', label: 'CVT' },
-                        { id: 'simulators', label: 'Simulators' },
+
                         { id: 'calculators', label: 'Calculators' },
                         { id: 'references', label: 'References' }
                       ].map((tab) => {
@@ -35790,78 +35793,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 )}
                 {/* End of References/Evidence Content */}
 
-                    {/* Bedside Simulators Content */}
-                    {managementSubTab === 'simulators' && (
-                    <div id="mgmt-tabpanel-simulators" role="tabpanel" aria-labelledby="mgmt-tab-simulators" className="space-y-4">
-                      <div className="bg-white border border-line rounded-lg p-4 dark:bg-card">
-                        <h2 className="text-xl font-semibold text-slate-900 dark:text-ink">Bedside Simulators</h2>
-                        <p className="text-sm text-slate-600 mt-1 dark:text-ink-2">
-                          Interactive teaching tools that model neurocritical-care bedside skills. Adjust the controls, run scenarios, and read the live trace to build pattern recognition. More simulators (ventilator, hemodynamics, neuro-exam) are planned for this section.
-                        </p>
-                      </div>
 
-                      <details id="sim-evd-icp" className="bg-white border border-line rounded-lg dark:bg-card" open>
-                        <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between dark:text-ink dark:hover:bg-paper-2">
-                          <span className="flex items-center gap-2">
-                            <i aria-hidden="true" data-lucide="activity" className="w-4 h-4 text-cobalt-600 dark:text-cobalt-300"></i>
-                            EVD &amp; ICP Simulator
-                          </span>
-                          <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                        </summary>
-                        <div className="p-4 pt-0">
-                          <ErrorBoundary>
-                            <EvdIcpSimulator />
-                          </ErrorBoundary>
-                        </div>
-                      </details>
-
-                      <details id="sim-hints" className="bg-white border border-line rounded-lg dark:bg-card">
-                        <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between dark:text-ink dark:hover:bg-paper-2">
-                          <span className="flex items-center gap-2">
-                            <i aria-hidden="true" data-lucide="eye" className="w-4 h-4 text-teal-600 dark:text-teal-300"></i>
-                            HINTS+ Eye-Movement Simulator
-                          </span>
-                          <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                        </summary>
-                        <div className="p-4 pt-0">
-                          <ErrorBoundary>
-                            <HintsSimulator />
-                          </ErrorBoundary>
-                        </div>
-                      </details>
-
-                      <details id="sim-pupillometry" className="bg-white border border-line rounded-lg dark:bg-card">
-                        <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between dark:text-ink dark:hover:bg-paper-2">
-                          <span className="flex items-center gap-2">
-                            <i aria-hidden="true" data-lucide="circle-dot" className="w-4 h-4 text-teal-600 dark:text-teal-300"></i>
-                            Pupillometry / NPi Simulator
-                          </span>
-                          <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                        </summary>
-                        <div className="p-4 pt-0">
-                          <ErrorBoundary>
-                            <PupillometrySimulator />
-                          </ErrorBoundary>
-                        </div>
-                      </details>
-
-                      <details id="sim-neuro-exams" className="bg-white border border-line rounded-lg dark:bg-card">
-                        <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between dark:text-ink dark:hover:bg-paper-2">
-                          <span className="flex items-center gap-2">
-                            <i aria-hidden="true" data-lucide="brain" className="w-4 h-4 text-teal-600 dark:text-teal-300"></i>
-                            Neuro-Exams (Aphasia Classifier + Delirium Matrix + Coma Exam)
-                          </span>
-                          <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                        </summary>
-                        <div className="p-4 pt-0">
-                          <ErrorBoundary>
-                            <NeuroExamsTool />
-                          </ErrorBoundary>
-                        </div>
-                      </details>
-                    </div>
-                    )}
-                    {/* End of Bedside Simulators Content */}
 
                   </div>
                 </ErrorBoundary>
