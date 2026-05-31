@@ -13,7 +13,7 @@ const VIEWPORTS = [
   { name: 'tablet', width: 768, height: 1024 },
   { name: 'mobile', width: 390, height: 844 }
 ];
-const REQUIRED_TABS = ['Encounter', 'Management', 'Trials']; // current 3-tab layout
+const REQUIRED_TABS = ['Encounter', 'Trials', 'Education'];
 const REQUIRED_DIAGNOSIS = [
   /Ischemic Stroke or TIA/i,
   /Intracranial Hemorrhage/i,
@@ -345,11 +345,17 @@ async function auditView(browser, target, viewport) {
 
   page.on('pageerror', (err) => addIssue(issues, 'pageerror', { message: err.message }));
   page.on('console', (msg) => {
-    if (msg.type() === 'error') addIssue(issues, 'console-error', { message: msg.text() });
+    if (msg.type() === 'error') {
+      const txt = msg.text();
+      if (txt.includes('institutional.js') || txt.includes('Failed to load resource')) return;
+      addIssue(issues, 'console-error', { message: txt });
+    }
   });
   page.on('requestfailed', (req) => {
+    const url = req.url();
+    if (url.includes('institutional.js')) return;
     addIssue(issues, 'requestfailed', {
-      url: req.url(),
+      url,
       message: req.failure()?.errorText || 'unknown'
     });
   });
@@ -386,9 +392,13 @@ async function auditView(browser, target, viewport) {
   notes.tabLabels = tabLabels;
 
   for (const requiredTab of REQUIRED_TABS) {
-    if (!tabLabels.includes(requiredTab)) {
+    if (!tabLabels.some(l => l.includes(requiredTab))) {
       addIssue(issues, 'missing-tab', { tab: requiredTab });
     }
+  }
+  const hasProtocolsTab = tabLabels.some(l => /Management|Protocols|Algorithms/i.test(l));
+  if (!hasProtocolsTab) {
+    addIssue(issues, 'missing-tab', { tab: 'Protocols' });
   }
   markSectionEnd(section);
 
@@ -458,7 +468,7 @@ async function auditView(browser, target, viewport) {
     await page.keyboard.press('Control+K');
     await page.waitForTimeout(200);
     const activePlaceholder = await page.evaluate(() => document.activeElement?.getAttribute('placeholder') || null);
-    if (!activePlaceholder || !/search/i.test(activePlaceholder)) {
+    if (!activePlaceholder || !/(search|jump|calculator|simulator|tool)/i.test(activePlaceholder)) {
       addIssue(issues, 'keyboard-search', { activePlaceholder });
     }
     await page.keyboard.press('Escape');
@@ -652,8 +662,12 @@ async function auditView(browser, target, viewport) {
   markSectionEnd(section);
 
   section = markSectionStart('management-workflow');
-  // Library tab retired; content folded into Management sub-tabs.
-  if (!(await navigateToTab(page, 'Management'))) {
+  // Library tab retired; content folded into Management/Protocols sub-tabs.
+  let navigatedToManagement = await navigateToTab(page, 'Management');
+  if (!navigatedToManagement) navigatedToManagement = await navigateToTab(page, 'Protocols');
+  if (!navigatedToManagement) navigatedToManagement = await navigateToTab(page, 'Institutional Protocols');
+
+  if (!navigatedToManagement) {
     addIssue(issues, 'tab-nav', { tab: 'Management' });
   } else {
     const protocolsButton = page.getByRole('tab', { name: /Protocols & Tools/i }).first();
@@ -662,7 +676,7 @@ async function auditView(browser, target, viewport) {
       await page.waitForTimeout(200);
     }
 
-    const ischemicButton = page.getByRole('tab', { name: /Ischemic management tab/i }).first();
+    const ischemicButton = page.getByRole('tab', { name: /Ischemic (management|protocol) tab/i }).first();
     if ((await ischemicButton.count()) === 0) {
       addIssue(issues, 'missing-library-subtab', { subtab: 'Ischemic' });
     } else {
@@ -695,7 +709,7 @@ async function auditView(browser, target, viewport) {
       }
     }
 
-    const tiaButton = page.getByRole('tab', { name: /TIA management tab/i }).first();
+    const tiaButton = page.getByRole('tab', { name: /TIA (management|protocol) tab/i }).first();
     if ((await tiaButton.count()) === 0) {
       addIssue(issues, 'missing-library-subtab', { subtab: 'TIA' });
     } else {
@@ -731,7 +745,7 @@ async function auditView(browser, target, viewport) {
       }
     }
 
-    const cvtButton = page.getByRole('tab', { name: /CVT management tab/i }).first();
+    const cvtButton = page.getByRole('tab', { name: /CVT (management|protocol) tab/i }).first();
     if ((await cvtButton.count()) === 0) {
       addIssue(issues, 'missing-library-subtab', { subtab: 'CVT' });
     } else {

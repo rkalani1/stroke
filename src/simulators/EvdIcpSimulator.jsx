@@ -51,67 +51,69 @@ const C = {
 const SCENARIOS = {
   normal: {
     id: 'normal',
-    label: 'Normal',
+    label: 'Stable Stroke',
     tone: 'ok',
-    state: { trueMeanICP: 12, brainCompliance: 2, evdHeight: 10, transducerOffset: 0, stopcockPosition: 0, isKinked: false, hasAirBubble: false, isClotted: false },
-    status: 'Baseline: ICP 12 mmHg, normal compliance, EVD open to drain at 10 cmH₂O. Triphasic waveform with P1 > P2 > P3.',
+    state: { trueMeanICP: 12, brainCompliance: 3, evdHeight: 10, transducerOffset: 0, stopcockPosition: 0, isKinked: false, hasAirBubble: false, isClotted: false },
+    status: 'Baseline Stroke: ICP 12 mmHg, normal compliance (P1 > P2 > P3), EVD open and draining at 10 cmH₂O.',
     checklist: [
-      'Transducer leveled at the tragus (foramen of Monro)',
+      'Transducer leveled at the tragus (0.0 cm offset)',
       'Stopcock OPEN to patient and drip chamber',
       'Drip chamber height set to ordered level (10 cmH₂O)',
-      'Waveform crisp and triphasic (P1 > P2 > P3)'
+      'Waveform crisp and triphasic (P1 > P2 > P3)',
+      'Assess pupils and GCS motor score hourly'
     ]
   },
   kinked: {
     id: 'kinked',
-    label: 'Kinked / Damped',
-    tone: 'warn',
-    state: { trueMeanICP: 16, brainCompliance: 2, evdHeight: 10, transducerOffset: 0, stopcockPosition: 0, isKinked: true, hasAirBubble: false, isClotted: false },
-    status: 'Tubing is KINKED — the trace has flattened and reads a falsely low ~2 mmHg. Do NOT trust this number.',
+    label: 'Kinked Line',
+    tone: 'crit',
+    state: { trueMeanICP: 16, brainCompliance: 0, evdHeight: 10, transducerOffset: 0, stopcockPosition: 0, isKinked: true, hasAirBubble: false, isClotted: false },
+    status: 'EVD tubing is KINKED — trace has flatlined and reads a falsely low ~2 mmHg. Patient line CSF fluctuation has ceased.',
     checklist: [
-      'Recognize the flatline / damped trace as artifact',
-      'Trace the tubing from patient to transducer for kinks',
-      'Confirm no clots in the catheter (CSF column should swing)',
-      'Re-establish a crisp pulsatile waveform after correction'
+      'Identify flatline trace as mechanical artifact',
+      'Trace tubing from patient head to manifold for kinks',
+      'Optimize patient neck alignment midline',
+      'Confirm stopcock is open to patient'
     ]
   },
   air: {
     id: 'air',
-    label: 'Air in Line',
+    label: 'Air Bubble',
     tone: 'warn',
-    state: { trueMeanICP: 15, brainCompliance: 2, evdHeight: 10, transducerOffset: 0, stopcockPosition: 0, isKinked: false, hasAirBubble: true, isClotted: false },
-    status: 'AIR BUBBLE in the tubing — the waveform is dampened (peaks blunted) and the reading is offset ~+1.5 mmHg.',
+    state: { trueMeanICP: 15, brainCompliance: 0, evdHeight: 10, transducerOffset: 0, stopcockPosition: 0, isKinked: false, hasAirBubble: true, isClotted: false },
+    status: 'AIR BUBBLE in transducer — waveform is blunted (no defined peaks) and reading is offset.',
     checklist: [
-      'Identify the dampened, low-amplitude waveform',
-      'Locate the air bubble in the pressure tubing',
-      'Flush per protocol (sterile, away from patient) to clear air',
-      'Re-zero / re-level after the line is bubble-free'
+      'Identify blunted/dampened waveform morphology',
+      'Prepare sterile distal flush equipment',
+      'Flush line distally (away from patient) to clear air bubble',
+      'Re-level and zero transducer after bubble is gone'
     ]
   },
   overdrain: {
     id: 'overdrain',
     label: 'Over-drainage',
     tone: 'crit',
-    state: { trueMeanICP: 12, brainCompliance: 2, evdHeight: 2, transducerOffset: 10, stopcockPosition: 0, isKinked: false, hasAirBubble: false, isClotted: false },
-    status: 'OVER-DRAINAGE RISK: drip chamber dropped to 2 cmH₂O AND transducer is 10 cm below the tragus (reads falsely high, masking rapid CSF egress). Risk of upward herniation / SDH.',
+    state: { trueMeanICP: 12, brainCompliance: 3, evdHeight: 2, transducerOffset: 10, stopcockPosition: 0, isKinked: false, hasAirBubble: false, isClotted: false },
+    status: 'OVER-DRAINAGE ALERT: bed raised without re-leveling (transducer 10 cm below tragus) and drip height set to 2. Falsely high measured ICP is driving excess drainage. Severe posture headache.',
     checklist: [
-      'Recognize the low drip-chamber height + leveling error',
-      'STEP 1 — Clamp / close the EVD to the patient to stop drainage',
-      'STEP 2 — Re-level the transducer to the tragus',
-      'Resume drainage at the ordered height once corrected'
+      'STEP 1 — Clamp the EVD immediately to halt drainage',
+      'STEP 2 — Re-level transducer to the tragus (0 cm offset)',
+      'STEP 3 — Adjust drip height back to ordered level (10 cmH₂O)',
+      'Unclamp EVD and monitor output closely'
     ]
   },
   stiff: {
     id: 'stiff',
-    label: 'Low Compliance Crisis',
+    label: 'Malignant MCA Swelling',
     tone: 'crit',
-    state: { trueMeanICP: 24, brainCompliance: 0, evdHeight: 10, transducerOffset: 0, stopcockPosition: 2, isKinked: false, hasAirBubble: false, isClotted: false },
-    status: 'LOW-COMPLIANCE ICP CRISIS: ICP 24 mmHg, P2 > P1 ("rounded" waveform). Stopcock is closed to the drip — no drainage occurring. Begin tiered management.',
+    state: { trueMeanICP: 26, brainCompliance: 1, evdHeight: 10, transducerOffset: 0, stopcockPosition: 2, isKinked: false, hasAirBubble: false, isClotted: false },
+    status: 'MALIGNANT MCA SWELLING: ICP 26 mmHg, severe pressure crisis (P2 >> P1). Spontaneous decrease in GCS motor score of 1 point and sluggish asymmetric right pupil. EVD is closed.',
     checklist: [
-      'Recognize P2 > P1 — the brain is on the steep part of the curve',
-      'Open the stopcock to the drip and drain CSF (lowers ICP)',
-      'Give osmotherapy (3% HTS or mannitol) per Tier 1',
-      'Reassess waveform morphology and ICP after each intervention'
+      'Notify Stroke & Neurocritical Care Fellow / Attending STAT',
+      'Open stopcock to drip to drain CSF immediately',
+      'Prepare HTS bolus (3% HTS or 23.4% HTS via central line)',
+      'Initiate emergent hyperventilation as short-term bridge',
+      'STAT Neurosurgery consult for decompressive hemicraniectomy'
     ]
   }
 };
@@ -127,7 +129,7 @@ const TIERS = [
       'Isotonic fluids only — 0.9% NS; avoid hypotonic solutions',
       'Normothermia — target core temp < 37.8 °C',
       'Light sedation/analgesia (propofol / fentanyl) to limit surges',
-      'Avoid corticosteroids (no benefit; harmful in TBI)'
+      'Avoid corticosteroids in stroke (no benefit; increased risk)'
     ]
   },
   {
@@ -138,7 +140,7 @@ const TIERS = [
       'Drain 5–10 mL CSF, or continuous drainage at 10–15 cmH₂O',
       '3% hypertonic saline bolus 250–500 mL (Na⁺ target 145–155)',
       'OR 20% mannitol 0.5–1.0 g/kg',
-      'Hold mannitol if serum osm > 320 or osmolar gap > 55'
+      'HTS generally preferred in stroke to avoid diuresis-induced hypotension'
     ]
   },
   {
@@ -157,7 +159,7 @@ const TIERS = [
     name: 'TIER 3 · Salvage Therapy',
     trigger: 'ICP refractory to Tier 2',
     items: [
-      'STAT neurosurgery — decompressive hemicraniectomy / suboccipital craniectomy',
+      'STAT neurosurgery — decompressive hemicraniectomy (supratentorial) or suboccipital craniectomy (cerebellar)',
       'Barbiturate coma (pentobarbital) to EEG burst-suppression',
       'Mild therapeutic hypothermia 32–34 °C'
     ]
@@ -167,24 +169,24 @@ const TIERS = [
 /* ── Waveform amplitude profiles by compliance ────────────────────── */
 /* Each peak: amplitude, mean (μ, in cardiac-cycle fraction 0..1), σ width. */
 const WAVE_PROFILES = {
-  // brainCompliance 2 → high/normal compliance: classic P1 > P2 > P3
-  2: [{ a: 18, mu: 0.6, sig: 0.08 }, { a: 11, mu: 1.2, sig: 0.15 }, { a: 6, mu: 1.9, sig: 0.2 }],
-  // brainCompliance 1 → moderate: P1 ≈ P2
-  1: [{ a: 14, mu: 0.6, sig: 0.08 }, { a: 14, mu: 1.2, sig: 0.15 }, { a: 7, mu: 1.9, sig: 0.2 }],
-  // brainCompliance 0 → low/stiff: P2 dominant ("rounded" waveform)
-  0: [{ a: 10, mu: 0.6, sig: 0.08 }, { a: 22, mu: 1.2, sig: 0.15 }, { a: 5, mu: 1.9, sig: 0.2 }]
+  // brainCompliance 3 → high/normal compliance: classic P1 > P2 > P3
+  3: [{ a: 18, mu: 0.6, sig: 0.08 }, { a: 11, mu: 1.2, sig: 0.15 }, { a: 6, mu: 1.9, sig: 0.2 }],
+  // brainCompliance 2 → compromised: P2 >= P1
+  2: [{ a: 14, mu: 0.6, sig: 0.08 }, { a: 16, mu: 1.2, sig: 0.15 }, { a: 7, mu: 1.9, sig: 0.2 }],
+  // brainCompliance 1 → severe crisis: P2 >> P1
+  1: [{ a: 10, mu: 0.6, sig: 0.08 }, { a: 28, mu: 1.2, sig: 0.15 }, { a: 5, mu: 1.9, sig: 0.2 }]
 };
 
 const round1 = (n) => Math.round(n * 10) / 10;
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 
 /* Exported pure helpers — used by the UI and by unit tests. */
-export function computeMeasuredICP({ trueMeanICP, transducerOffset, stopcockPosition, isKinked, isClotted, hasAirBubble }) {
+export function computeMeasuredICP({ trueMeanICP, transducerOffset, stopcockPosition, isKinked, isClotted, hasAirBubble, brainCompliance }) {
   let icp;
   if (stopcockPosition === 1) {
     // Closed to patient — transducer no longer sees the ventricle.
     icp = 0;
-  } else if (isKinked || isClotted) {
+  } else if (isKinked || isClotted || brainCompliance === 0) {
     // Damped column reads a flat, falsely-low value.
     icp = 2;
   } else {
@@ -194,23 +196,23 @@ export function computeMeasuredICP({ trueMeanICP, transducerOffset, stopcockPosi
   return round1(icp);
 }
 
-export function computeActiveTier(trueMeanICP) {
-  if (trueMeanICP >= 24) return 3;
+export function computeActiveTier(trueMeanICP, brainCompliance) {
+  if (trueMeanICP >= 24 || brainCompliance === 1) return 3;
   if (trueMeanICP >= 22) return 2;
-  if (trueMeanICP >= 20) return 1;
+  if (trueMeanICP >= 20 || brainCompliance === 2) return 1;
   return 0;
 }
 
 export function computeComplianceBadge(measuredICP, brainCompliance) {
-  if (measuredICP >= 22) return { level: 'CRITICAL', tone: 'crit' };
+  if (measuredICP >= 22 || brainCompliance === 1) return { level: 'CRITICAL', tone: 'crit' };
   if (measuredICP >= 16 || brainCompliance === 0) return { level: 'COMPROMISED', tone: 'warn' };
   return { level: 'NORMAL', tone: 'ok' };
 }
 
-export function computeDripInterval({ trueMeanICP, evdHeight, transducerOffset, stopcockPosition, isKinked, isClotted }) {
+export function computeDripInterval({ trueMeanICP, evdHeight, transducerOffset, stopcockPosition, isKinked, isClotted, brainCompliance }) {
   // Driving pressure (mmHg) pushing CSF over the drip-chamber lip.
   const drivingPressure = trueMeanICP - (evdHeight + transducerOffset) * CMH2O_TO_MMHG;
-  const drips = stopcockPosition === 0 && !isKinked && !isClotted && drivingPressure > 0;
+  const drips = stopcockPosition === 0 && !isKinked && !isClotted && brainCompliance !== 0 && drivingPressure > 0;
   if (!drips) return { drips: false, intervalMs: null, drivingPressure };
   const intervalMs = clamp(3000 - drivingPressure * 100, 400, 3000);
   return { drips: true, intervalMs, drivingPressure };
@@ -220,13 +222,14 @@ export function computeDripInterval({ trueMeanICP, evdHeight, transducerOffset, 
 const TONE = {
   ok:   { chip: 'bg-ok-50 text-ok-800 border-ok-200 dark:bg-ok-950 dark:text-ok-300 dark:border-ok-800',     dot: 'bg-ok-500',   text: 'text-ok-700 dark:text-ok-300' },
   warn: { chip: 'bg-warn-50 text-warn-800 border-warn-200 dark:bg-warn-950 dark:text-warn-300 dark:border-warn-800', dot: 'bg-warn-500', text: 'text-warn-700 dark:text-warn-300' },
-  crit: { chip: 'bg-crit-50 text-crit-800 border-crit-200 dark:bg-crit-950 dark:text-crit-300 dark:border-crit-800', dot: 'bg-crit-500', text: 'text-crit-700 dark:text-crit-300' }
+  crit: { chip: 'bg-crit-50 text-crit-800 border-crit-200 dark:bg-crit-950 dark:text-crit-300 dark:border-crit-800', dot: 'bg-crit-500', text: 'text-crit-700 dark:text-crit-300' },
+  neutral: { chip: 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700', dot: 'bg-slate-400', text: 'text-slate-600 dark:text-slate-400' }
 };
 
 /* ── Component ────────────────────────────────────────────────────── */
 export function EvdIcpSimulator() {
   const [trueMeanICP, setTrueMeanICP] = useState(12);
-  const [brainCompliance, setBrainCompliance] = useState(2); // 0 stiff · 1 mod · 2 high
+  const [brainCompliance, setBrainCompliance] = useState(3); // 3: Normal, 2: Compromised, 1: Severe, 0: Dampened
   const [map, setMap] = useState(90);
   const [evdHeight, setEvdHeight] = useState(10);            // cmH2O above tragus
   const [transducerOffset, setTransducerOffset] = useState(0); // cm; + = below tragus
@@ -240,17 +243,31 @@ export function EvdIcpSimulator() {
 
   /* ── Derived values ── */
   const measuredICP = useMemo(
-    () => computeMeasuredICP({ trueMeanICP, transducerOffset, stopcockPosition, isKinked, isClotted, hasAirBubble }),
-    [trueMeanICP, transducerOffset, stopcockPosition, isKinked, isClotted, hasAirBubble]
+    () => computeMeasuredICP({ trueMeanICP, transducerOffset, stopcockPosition, isKinked, isClotted, hasAirBubble, brainCompliance }),
+    [trueMeanICP, transducerOffset, stopcockPosition, isKinked, isClotted, hasAirBubble, brainCompliance]
   );
   const cpp = round1(map - measuredICP);
   const badge = computeComplianceBadge(measuredICP, brainCompliance);
-  const activeTier = computeActiveTier(trueMeanICP);
+  const isFlatline = isKinked || isClotted || stopcockPosition === 1 || brainCompliance === 0;
+  const displayLevel = isFlatline
+    ? 'DAMPENED / BLOCKED'
+    : (badge.level === 'CRITICAL' || brainCompliance === 1)
+      ? 'SEVERE PRESSURE CRISIS'
+      : (badge.level === 'COMPROMISED' || brainCompliance === 2)
+        ? 'COMPROMISED COMPLIANCE'
+        : 'NORMAL COMPLIANCE';
+  const displayTone = isFlatline
+    ? 'neutral'
+    : (badge.level === 'CRITICAL' || brainCompliance === 1)
+      ? 'crit'
+      : (badge.level === 'COMPROMISED' || brainCompliance === 2)
+        ? 'warn'
+        : 'ok';
+  const activeTier = computeActiveTier(trueMeanICP, brainCompliance);
   const levelingError = round1(transducerOffset * CMH2O_TO_MMHG);
-  const isFlatline = isKinked || isClotted || stopcockPosition === 1;
   const drip = useMemo(
-    () => computeDripInterval({ trueMeanICP, evdHeight, transducerOffset, stopcockPosition, isKinked, isClotted }),
-    [trueMeanICP, evdHeight, transducerOffset, stopcockPosition, isKinked, isClotted]
+    () => computeDripInterval({ trueMeanICP, evdHeight, transducerOffset, stopcockPosition, isKinked, isClotted, brainCompliance }),
+    [trueMeanICP, evdHeight, transducerOffset, stopcockPosition, isKinked, isClotted, brainCompliance]
   );
 
   /* ── Scenario loader ── */
@@ -268,18 +285,31 @@ export function EvdIcpSimulator() {
     setIsClotted(sc.state.isClotted);
   };
 
-  /* Scenario resolution state — whether the active case has been solved. */
+  /* Scenario resolution state ── whether the active case has been solved. */
   const scenario = SCENARIOS[currentCase] || SCENARIOS.normal;
-  const stiffResolved = trueMeanICP < 15 && brainCompliance === 2 && stopcockPosition === 0;
+  const stiffResolved = trueMeanICP < 15 && brainCompliance === 3 && stopcockPosition === 0;
   const isResolved = (() => {
     switch (currentCase) {
       case 'kinked': return !isKinked;
       case 'air': return !hasAirBubble;
-      case 'overdrain': return transducerOffset === 0 && evdHeight >= 5;
+      case 'overdrain': return transducerOffset === 0 && evdHeight >= 10 && stopcockPosition === 0;
       case 'stiff': return stiffResolved;
       default: return true;
     }
   })();
+
+  const selectMorphology = (v) => {
+    setBrainCompliance(v);
+    if (v === 3) {
+      setTrueMeanICP(12);
+    } else if (v === 2) {
+      setTrueMeanICP(17);
+    } else if (v === 1) {
+      setTrueMeanICP(25);
+    } else if (v === 0) {
+      setTrueMeanICP(2);
+    }
+  };
 
   /* ── ICP waveform canvas (rAF) ── */
   useEffect(() => {
@@ -289,14 +319,14 @@ export function EvdIcpSimulator() {
     let raf = 0;
     let scroll = 0;
 
-    const profile = WAVE_PROFILES[brainCompliance] || WAVE_PROFILES[2];
-    const damped = isFlatline || hasAirBubble;
+    const profile = WAVE_PROFILES[brainCompliance] || WAVE_PROFILES[3];
+    const damped = isFlatline || hasAirBubble || brainCompliance === 0;
 
     // Line color: gray when damped/flat, else by severity.
     let lineColor;
     if (damped) lineColor = C.slate400;
-    else if (measuredICP >= 22) lineColor = C.coral;
-    else if (measuredICP >= 16 || brainCompliance === 0) lineColor = C.gold;
+    else if (measuredICP >= 22 || brainCompliance === 1) lineColor = C.coral;
+    else if (measuredICP >= 16 || brainCompliance === 2) lineColor = C.gold;
     else lineColor = C.green;
 
     // One cardiac cycle waveform value at phase t ∈ [0, 2.4].
@@ -339,12 +369,16 @@ export function EvdIcpSimulator() {
         const globalPhase = (x + scroll) / pxPerCycle * cycleLen;
         const t = globalPhase % cycleLen;
         let amp;
-        if (isFlatline) {
+        if (isFlatline && brainCompliance !== 0) {
           // Flatline = low noise around baseline.
           amp = (Math.random() - 0.5) * 1.2;
         } else {
-          amp = cycle(t);
-          if (hasAirBubble) amp *= 0.15;       // air dampens peaks
+          if (brainCompliance === 0 || hasAirBubble) {
+            // Dampened wave
+            amp = 3 * Math.sin(t * 2);
+          } else {
+            amp = cycle(t);
+          }
         }
         // Respiratory swing rides on top.
         const resp = respSwingAmpScale * 4 * Math.sin((x + scroll) / 4);
@@ -364,7 +398,7 @@ export function EvdIcpSimulator() {
         };
         const peaks = [
           { name: 'P1', mu: 0.6, color: C.slate500 },
-          { name: 'P2', mu: 1.2, color: brainCompliance === 0 ? C.coral : C.slate500 },
+          { name: 'P2', mu: 1.2, color: brainCompliance === 1 ? C.coral : brainCompliance === 2 ? C.gold : C.slate500 },
           { name: 'P3', mu: 1.9, color: C.slate500 }
         ];
         ctx.font = '700 11px ui-monospace, monospace';
@@ -423,16 +457,16 @@ export function EvdIcpSimulator() {
 
       {/* Header readouts */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        <Readout label="Measured ICP" value={`${measuredICP}`} unit="mmHg" tone={badge.tone} />
+        <Readout label="Measured ICP" value={`${measuredICP}`} unit="mmHg" tone={displayTone} />
         <Readout label="True mean ICP" value={`${trueMeanICP}`} unit="mmHg" tone="neutral" hint="ground truth" />
         <Readout label="CPP" value={`${cpp}`} unit="mmHg" tone={cpp < 60 ? 'crit' : cpp < 70 ? 'warn' : 'ok'} />
         <Readout label="MAP" value={`${map}`} unit="mmHg" tone="neutral" />
       </div>
 
       {/* Compliance badge */}
-      <div className={cx('flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold', TONE[badge.tone].chip)}>
-        <span className={cx('inline-block w-2.5 h-2.5 rounded-full', TONE[badge.tone].dot)} aria-hidden="true" />
-        Compliance status: {badge.level}
+      <div className={cx('flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold', TONE[displayTone].chip)}>
+        <span className={cx('inline-block w-2.5 h-2.5 rounded-full', TONE[displayTone].dot)} aria-hidden="true" />
+        Compliance status: {displayLevel}
         {levelingError !== 0 && (
           <span className="ml-auto font-mono text-xs font-normal">
             Leveling error {levelingError > 0 ? '+' : ''}{levelingError} mmHg
@@ -448,15 +482,17 @@ export function EvdIcpSimulator() {
             <span className="font-mono text-2xs text-slate-500 dark:text-mute">P1 percussion · P2 tidal · P3 dicrotic</span>
           </div>
           <canvas ref={canvasRef} width={520} height={180} className="evd-canvas" role="img"
-            aria-label={`ICP waveform; ${isFlatline ? 'damped flatline' : badge.level.toLowerCase() + ' compliance'}, mean ICP ${measuredICP} millimeters mercury`} />
+            aria-label={`ICP waveform; ${isFlatline ? 'damped flatline' : displayLevel.toLowerCase()}, mean ICP ${measuredICP} millimeters mercury`} />
           <p className="mt-2 text-xs text-slate-600 dark:text-ink-2">
-            {isFlatline
+            {isFlatline && brainCompliance !== 0
               ? 'Damped / flat trace — no pulsatile signal (check stopcock, kinks, clots).'
               : brainCompliance === 0
-                ? 'Low-compliance morphology: P2 exceeds P1 ("rounded" peak) — the brain is on the steep part of the pressure–volume curve.'
+                ? 'Dampened waveform morphology: blunted wave without distinct P1/P2/P3 peaks (check for air bubble/transducer damping).'
                 : brainCompliance === 1
-                  ? 'Moderate compliance: P1 and P2 nearly equal — early warning sign.'
-                  : 'Normal triphasic morphology: P1 > P2 > P3.'}
+                  ? 'Severe pressure crisis morphology: P2 dominates P1 dramatically with high pulse amplitude — impending herniation risk.'
+                  : brainCompliance === 2
+                    ? 'Compromised compliance morphology: P2 is equal to or taller than P1 — early warning sign of exhausted buffers.'
+                    : 'Normal triphasic morphology: P1 > P2 > P3.'}
           </p>
         </section>
 
@@ -512,13 +548,6 @@ export function EvdIcpSimulator() {
               <rect x="216" y={tragusY - 9} width="34" height="18" rx="3" fill="#fff" stroke={C.tealDk} strokeWidth="2" />
               <text x="233" y={tragusY + 4} fontSize="8" fill={C.tealDk} textAnchor="middle" fontFamily="ui-monospace, monospace">XDCR</text>
             </g>
-            {/* "±X mmHg error" annotation — pinned at a FIXED bottom-right position
-                OUTSIDE the transducer translate group. Previously it lived inside the
-                group at y=tragusY+20, so at negative (bed-raised) offsets it climbed UP
-                into the stationary TRAGUS label (same coral) and overprinted. Fixed
-                screen-y (226, in-bounds for the 240-tall viewBox) sits clear of the
-                TRAGUS label (y~137) and the stopcock label (y=206, x=150) at EVERY
-                offset across the full −15..+15 slider range. */}
             {transducerOffset !== 0 && (
               <text x="312" y="226" fontSize="9" fill={C.coral} textAnchor="end" fontWeight="700">
                 {levelingError > 0 ? '+' : ''}{levelingError} mmHg error
@@ -537,9 +566,34 @@ export function EvdIcpSimulator() {
       <section className="bg-slate-50 border border-line rounded-lg p-3 space-y-3 dark:bg-paper-2">
         <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Controls</h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <Slider label="Brain compliance" value={brainCompliance} min={0} max={2} step={1}
-            display={['Low (stiff)', 'Moderate', 'High (normal)'][brainCompliance]}
-            onChange={(v) => setBrainCompliance(v)} />
+          
+          {/* Waveform Selector button-group */}
+          <div className="flex flex-col justify-center">
+            <span className="text-xs font-semibold text-slate-700 mb-1.5 dark:text-ink-2">ICP Waveform Morphology</span>
+            <div className="grid grid-cols-2 gap-1.5">
+              <button type="button" onClick={() => selectMorphology(3)}
+                className={cx('px-2 py-1 text-2xs font-semibold rounded border text-center transition-all',
+                  brainCompliance === 3 ? 'bg-cobalt-600 text-white border-cobalt-600' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 dark:bg-card dark:border-slate-800 dark:text-ink-2')}>
+                Normal compliance
+              </button>
+              <button type="button" onClick={() => selectMorphology(2)}
+                className={cx('px-2 py-1 text-2xs font-semibold rounded border text-center transition-all',
+                  brainCompliance === 2 ? 'bg-cobalt-600 text-white border-cobalt-600' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 dark:bg-card dark:border-slate-800 dark:text-ink-2')}>
+                Compromised compliance
+              </button>
+              <button type="button" onClick={() => selectMorphology(1)}
+                className={cx('px-2 py-1 text-2xs font-semibold rounded border text-center transition-all',
+                  brainCompliance === 1 ? 'bg-cobalt-600 text-white border-cobalt-600' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 dark:bg-card dark:border-slate-800 dark:text-ink-2')}>
+                Severe pressure crisis
+              </button>
+              <button type="button" onClick={() => selectMorphology(0)}
+                className={cx('px-2 py-1 text-2xs font-semibold rounded border text-center transition-all',
+                  brainCompliance === 0 ? 'bg-cobalt-600 text-white border-cobalt-600' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 dark:bg-card dark:border-slate-800 dark:text-ink-2')}>
+                Dampened / Blocked
+              </button>
+            </div>
+          </div>
+
           <Slider label="MAP" value={map} min={50} max={130} step={5} display={`${map} mmHg`}
             onChange={(v) => setMap(v)} />
           <Slider label="True mean ICP" value={trueMeanICP} min={0} max={40} step={1} display={`${trueMeanICP} mmHg`}
@@ -606,13 +660,13 @@ export function EvdIcpSimulator() {
         {/* Dynamic resolve buttons */}
         <div className="flex flex-wrap gap-2 pt-1">
           {currentCase === 'kinked' && (
-            <button type="button" onClick={() => setIsKinked(false)} disabled={!isKinked}
+            <button type="button" onClick={() => { setIsKinked(false); setBrainCompliance(3); }} disabled={!isKinked}
               className="px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-sm font-semibold bg-ok-600 text-white hover:bg-ok-700 disabled:opacity-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500">
               Straighten tubing
             </button>
           )}
           {currentCase === 'air' && (
-            <button type="button" onClick={() => setHasAirBubble(false)} disabled={!hasAirBubble}
+            <button type="button" onClick={() => { setHasAirBubble(false); setBrainCompliance(3); }} disabled={!hasAirBubble}
               className="px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-sm font-semibold bg-ok-600 text-white hover:bg-ok-700 disabled:opacity-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500">
               Flush the line
             </button>
@@ -631,13 +685,13 @@ export function EvdIcpSimulator() {
           )}
           {currentCase === 'stiff' && (
             <>
-              <button type="button" onClick={() => { setStopcockPosition(0); setTrueMeanICP(18); }}
+              <button type="button" onClick={() => { setStopcockPosition(0); setTrueMeanICP(20); }}
                 className="px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-sm font-semibold bg-cobalt-600 text-white hover:bg-cobalt-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500">
-                Drain CSF (→ ICP 18)
+                1. Open EVD (Drain CSF)
               </button>
-              <button type="button" onClick={() => { setTrueMeanICP(13); setBrainCompliance(2); }}
+              <button type="button" onClick={() => { setTrueMeanICP(12); setBrainCompliance(3); }}
                 className="px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-sm font-semibold bg-cobalt-600 text-white hover:bg-cobalt-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500">
-                Osmotherapy (→ ICP 13)
+                2. Administer HTS Osmotherapy
               </button>
             </>
           )}
@@ -645,6 +699,139 @@ export function EvdIcpSimulator() {
             className="px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-sm font-semibold bg-slate-200 text-slate-800 hover:bg-slate-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 dark:bg-overlay dark:text-ink dark:hover:bg-overlay">
             Reset / Resolve
           </button>
+        </div>
+      </section>
+
+      {/* Critical Neuroworsening & Herniation Protocol */}
+      <section className="bg-white border border-line rounded-lg overflow-hidden dark:bg-card">
+        <div className="bg-gradient-to-r from-blue-700 to-blue-600 px-4 py-2 border-b border-blue-800">
+          <h4 className="text-sm font-bold text-white uppercase tracking-wide">Critical Neuroworsening &amp; Herniation Protocol</h4>
+        </div>
+        <div className="p-4 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="border border-blue-600 bg-blue-50/5 dark:bg-blue-950/10 rounded-lg overflow-hidden">
+              <div className="bg-blue-600 text-white text-center py-1.5 text-xs font-bold font-header">
+                Critical Neuroworsening Criteria
+              </div>
+              <div className="p-3 space-y-2">
+                <p className="text-xs font-semibold text-slate-800 dark:text-ink">A serious deterioration in clinical neurologic status such as:</p>
+                <ul className="list-disc pl-4 text-2xs text-slate-600 dark:text-ink-2 space-y-1">
+                  <li>Spontaneous GCS motor score decrease of <strong className="text-red-500 font-bold">&ge; 1 points</strong> (compared with previous examination)</li>
+                  <li>New decrease in pupillary reactivity</li>
+                  <li>New pupillary asymmetry or bilateral mydriasis</li>
+                  <li>New focal motor deficit</li>
+                  <li>Herniation syndrome or Cushing's Triad which requires an immediate physician response</li>
+                </ul>
+              </div>
+            </div>
+            <div className="border border-blue-600 bg-blue-50/5 dark:bg-blue-950/10 rounded-lg overflow-hidden">
+              <div className="bg-blue-600 text-white text-center py-1.5 text-xs font-bold font-header">
+                Response to Critical Neuroworsening
+              </div>
+              <div className="p-3 space-y-2">
+                <ul className="list-disc pl-4 text-2xs text-slate-600 dark:text-ink-2 space-y-1">
+                  <li>Emergent evaluation to identify possible cause* of neuroworsening</li>
+                  <li><strong>If herniation is suspected, initiate empiric treatment:</strong>
+                    <ul className="list-[square] pl-4 mt-1 text-red-400 font-medium">
+                      <li><strong>hyperventilation**</strong></li>
+                      <li><strong>bolus of hypertonic solution</strong></li>
+                    </ul>
+                  </li>
+                  <li>Consider emergent imaging or other testing</li>
+                  <li>Rapid escalation of treatment</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="pt-3 border-t border-slate-100 dark:border-slate-800 text-3xs text-slate-500 dark:text-mute space-y-1">
+            <p><strong>* Possible causes of neuroworsening include:</strong> expanding intracranial mass lesion, cerebral edema, elevated ICP, stroke, electrolyte or other metabolic disturbance, medical comorbidity, medication effect, impaired renal/hepatic function, systemic hypotension, seizure/post-ictal, hypoxemia/tissue hypoxia, CNS infection, sepsis/infection, substance withdrawal, dehydration, hyper/hypothermia.</p>
+            <p className="text-red-400 font-semibold mt-1">** the hyperventilation PaCO₂ limit of 30 mmHg/4.0 kPa does not apply here</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Stroke Osmotherapy Dosing Guide */}
+      <section className="bg-white border border-line rounded-lg p-3 dark:bg-card">
+        <h4 className="text-sm font-semibold text-slate-800 mb-2 dark:text-ink">Stroke Osmotherapy Dosing Guide</h4>
+        <div className="overflow-x-auto rounded border border-slate-100 dark:border-slate-800">
+          <table className="w-full text-left text-2xs border-collapse">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-100 dark:bg-card-border dark:border-slate-800 text-slate-700 dark:text-ink font-semibold">
+                <th className="p-2">Agent</th>
+                <th className="p-2">Standard Dose</th>
+                <th className="p-2">Administration &amp; Access</th>
+                <th className="p-2">Precautions &amp; Limits</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-600 dark:text-ink-2">
+              <tr>
+                <td className="p-2 font-bold text-slate-800 dark:text-ink">3% HTS</td>
+                <td className="p-2">250–500 mL bolus over 15–30 min</td>
+                <td className="p-2">Peripheral line acceptable for acute boluses. Central line preferred for continuous infusions (30–100 mL/h).</td>
+                <td className="p-2">Target Na 145–155 mEq/L. Stop if Na &gt; 155 or Osm &gt; 360. Check Na/Osm q4-6h.</td>
+              </tr>
+              <tr>
+                <td className="p-2 font-bold text-slate-800 dark:text-ink">23.4% HTS</td>
+                <td className="p-2">30 mL bolus over 10–20 min</td>
+                <td className="p-2"><strong>CENTRAL LINE ONLY</strong>. Extreme peripheral sclerosing hazard.</td>
+                <td className="p-2">Emergency herniation rescue. Measure Na/Osm 1h post-bolus. Hold if Na &gt; 155.</td>
+              </tr>
+              <tr>
+                <td className="p-2 font-bold text-slate-800 dark:text-ink">20% Mannitol</td>
+                <td className="p-2">0.5–1.0 g/kg bolus over 20–30 min</td>
+                <td className="p-2">Peripheral line acceptable. <strong>Must use inline filter</strong> (crystallization hazard).</td>
+                <td className="p-2">Hold if serum Osm &gt; 320 mOsm/kg or Osm Gap &gt; 55. Avoid if hypovolemic.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-3 bg-amber-500/5 border border-amber-500/20 rounded p-2.5">
+          <p className="text-3xs text-amber-600 dark:text-amber-400 leading-normal">
+            <strong>⚠️ Stroke MAP Precaution:</strong> Mannitol acts as an osmotic diuretic which can trigger systemic hypotension. In acute stroke, penumbral perfusion is pressure-dependent. Hypotension drops MAP, reducing Cerebral Perfusion Pressure (CPP = MAP - ICP) and expanding the infarct. Hypertonic saline (HTS) is generally preferred to expand volume and preserve blood pressure while lowering ICP.
+          </p>
+        </div>
+      </section>
+
+      {/* Day-to-Day EVD & ICP Management in Stroke */}
+      <section className="bg-white border border-line rounded-lg p-3 dark:bg-card">
+        <h4 className="text-sm font-semibold text-slate-800 mb-2 dark:text-ink">Day-to-Day EVD &amp; ICP Management in Stroke</h4>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="bg-slate-50/50 dark:bg-card-border/20 border border-slate-100 dark:border-slate-800 rounded p-3 space-y-1.5">
+            <h5 className="text-xs font-bold text-slate-800 dark:text-ink">🧠 EVD Mechanics &amp; Use Cases</h5>
+            <p className="text-2xs text-slate-600 dark:text-ink-2 leading-relaxed">
+              An EVD drainage system utilizes gravity to drain CSF. The drip chamber height sets the pressure threshold (in cmH₂O). Flow only occurs when ventricles exceed this pressure.
+            </p>
+            <p className="text-2xs text-slate-600 dark:text-ink-2 leading-relaxed font-semibold mt-1">
+              Primary Stroke Use Cases:
+            </p>
+            <ul className="list-disc pl-4 text-2xs text-slate-600 dark:text-ink-2 space-y-0.5">
+              <li><strong>ICH with IVH</strong>: Intraventricular blood obstructing CSF pathways, causing obstructive hydrocephalus.</li>
+              <li><strong>Cerebellar Stroke</strong>: Large edema compressing the 4th ventricle, causing acute hydrocephalus.</li>
+            </ul>
+          </div>
+          <div className="bg-slate-50/50 dark:bg-card-border/20 border border-slate-100 dark:border-slate-800 rounded p-3 space-y-1.5">
+            <h5 className="text-xs font-bold text-slate-800 dark:text-ink">📋 Daily Safety Rounds Checklist</h5>
+            <p className="text-2xs text-slate-600 dark:text-ink-2 leading-relaxed">
+              Ensure these steps are checked on every nursing shift and physician round:
+            </p>
+            <ul className="list-disc pl-4 text-2xs text-slate-600 dark:text-ink-2 space-y-1">
+              <li><strong>Verify Leveling:</strong> Transducer must align to the tragus (external auditory meatus) q1-2h and after ANY bed movement.</li>
+              <li><strong>Tubing Oscillation:</strong> Ensure CSF column is oscillating with patient breathing/heartbeat. If static, check for obstruction.</li>
+              <li><strong>Transducer Zeroing:</strong> Zero the transducer to atmosphere at target height.</li>
+              <li><strong>Drainage Safety:</strong> Clamp EVD during mobilization, coughing, or suctioning to prevent postural collapse.</li>
+            </ul>
+          </div>
+          <div className="bg-slate-50/50 dark:bg-card-border/20 border border-slate-100 dark:border-slate-800 rounded p-3 space-y-1.5">
+            <h5 className="text-xs font-bold text-slate-800 dark:text-ink">⏱️ EVD Weaning &amp; Clamping Trials</h5>
+            <p className="text-2xs text-slate-600 dark:text-ink-2 leading-relaxed">
+              Weaning checks if the patient can re-absorb CSF naturally without EVD drainage:
+            </p>
+            <ul className="list-disc pl-4 text-2xs text-slate-600 dark:text-ink-2 space-y-1">
+              <li><strong>Step-up protocol:</strong> Gradually raise the EVD threshold (e.g. from 10 to 15, then 20 cmH₂O) q24h.</li>
+              <li><strong>Clamping trial:</strong> Clamp the EVD for 24 hours. Monitor q1h for symptoms (headache, somnolence, lethargy) or ICP spikes.</li>
+              <li><strong>CT Confirmation:</strong> Obtain head CT at 24h to verify no ventriculomegaly or midline shift before EVD pull.</li>
+            </ul>
+          </div>
         </div>
       </section>
 

@@ -60,7 +60,7 @@ export const PatientStripMobile = ({ patient, completion, onJump, className }) =
   // it stacks beneath the header instead of overprinting its search/action
   // rows. z-30 keeps it under the z-40 header. Mirrors the app-nav offset.
   <div className={cx(
-    'sticky top-0 md:top-[var(--app-header-h,0px)] z-30 bg-white/95 dark:bg-card/95 dark:bg-slate-950/95 backdrop-blur',
+    'sticky top-0 md:top-[var(--app-header-h,0px)] z-30 bg-white/95 dark:bg-slate-950/95 backdrop-blur',
     'border-b border-slate-200 dark:border-slate-800',
     className
   )}>

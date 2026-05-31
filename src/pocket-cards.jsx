@@ -473,7 +473,7 @@ export const PocketCards = ({ defaults = {} }) => {
           <h3 className="font-bold text-sm">Protocol Cards — Example Institutional Patterns</h3>
           <p className="text-xs opacity-90">Illustrative decision-support cards based on current published evidence. Not endorsed by any named institution.</p>
         </div>
-        <span className="text-[10px] bg-white/20 dark:bg-card/20 rounded px-2 py-0.5">v2</span>
+        <span className="text-[10px] bg-white/20 dark:bg-slate-900/20 rounded px-2 py-0.5">v2</span>
       </div>
       <IVTEligibilityCard defaults={defaults} />
       <ContraindicationsCard />
