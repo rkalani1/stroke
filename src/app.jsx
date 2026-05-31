@@ -1045,19 +1045,27 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               if (sub === 'simulators') {
                 return { tab: 'education', sub: 'simulators' };
               }
+              if (sub === 'references') {
+                return { tab: 'education', sub: 'reference-library' };
+              }
               return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
             case 'library':
             case 'management':
               if (sub === 'simulators') {
                 return { tab: 'education', sub: 'simulators' };
               }
+              if (sub === 'references') {
+                return { tab: 'education', sub: 'reference-library' };
+              }
               return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
             case 'settings':
               return { tab: 'encounter' };
             case 'ich':
             case 'calculators':
-            case 'evidence':
               return { tab: 'protocols', sub: LEGACY_MANAGEMENT_TABS[root] };
+            case 'evidence':
+            case 'teaching':
+              return { tab: 'education', sub: 'reference-library' };
             case 'research':
               return { tab: 'research' };
             case 'trials':
@@ -7953,7 +7961,7 @@ Clinician Name`;
             { id: 'calc-ich', group: 'Calculators', label: 'ICH Score', hint: '30-day mortality', icon: 'table', keywords: ['ich score', 'hemorrhage', 'mortality'], run: () => gotoProtocolsSub('calculators', 'calc-ich-score', 'ich score') },
             { id: 'calc-abcd2', group: 'Calculators', label: 'ABCD2', hint: 'TIA stroke risk', icon: 'table', keywords: ['abcd2', 'tia', 'risk'], run: () => gotoProtocolsSub('calculators', 'calc-abcd2', 'abcd2') },
             { id: 'calc-phases', group: 'Calculators', label: 'PHASES', hint: 'Aneurysm rupture risk', icon: 'table', keywords: ['phases', 'aneurysm', 'rupture'], run: () => gotoProtocolsSub('calculators', 'calc-phases', 'phases') },
-            { id: 'calc-toast', group: 'Calculators', label: 'TOAST Classification', hint: 'Ischemic stroke etiology', icon: 'clipboard-list', keywords: ['toast', 'classification', 'etiology', 'subtype'], run: () => gotoProtocolsSub('references', null, '') },
+            { id: 'calc-toast', group: 'Calculators', label: 'TOAST Classification', hint: 'Ischemic stroke etiology', icon: 'clipboard-list', keywords: ['toast', 'classification', 'etiology', 'subtype'], run: () => navigateTo('education', { subTab: 'reference-library' }) },
             // ---- External / legacy tools ----
             { id: 'ext-nepi', group: 'External Tools', label: 'Statistical & Research Methods (n-epi)', hint: 'Biostats / appraisal — new tab', icon: 'external-link', external: true, keywords: ['n-epi', 'nepi', 'statistics', 'biostats', 'meta-analysis', 'appraisal', 'methods', 'research'], run: () => openExternal('https://rkalani1.github.io/n-epi/') },
             { id: 'ext-proteomics', group: 'External Tools', label: 'Proteomics Power Calculator', hint: 'PWAS power — new tab', icon: 'external-link', external: true, keywords: ['proteomics', 'power', 'sample size', 'pwas'], run: () => openExternal('https://rkalani1.github.io/proteomics-power-calc/') },
@@ -27944,7 +27952,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
 
 
-                {/* Protocols Tab (Ischemic, ICH, Calculators, References) */}
+                {/* Protocols Tab (Ischemic, ICH, Calculators) */}
                 {activeTab === 'protocols' && (
                   <ErrorBoundary>
                   <div id="tabpanel-protocols" role="tabpanel" aria-labelledby="tab-protocols" className="space-y-6">
@@ -28081,7 +28089,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {(() => {
                       const subTabLabels = {
                         ich: 'ICH', ischemic: 'Ischemic', sah: 'SAH', tia: 'TIA', cvt: 'CVT',
-                        calculators: 'Calculators', references: 'References'
+                        calculators: 'Calculators'
                       };
                       const activeLabel = subTabLabels[managementSubTab] || managementSubTab;
                       return (
@@ -33801,7 +33809,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   </div>
                 </ErrorBoundary>
                 )}
-                {/* End of Combined Management Tab (Ischemic, ICH, Calculators, References) */}
+                {/* End of Combined Management Tab (Ischemic, ICH, Calculators) */}
 
                 {/* ============================================ */}
                 {/* RESEARCH & GUIDELINES TAB                    */}
@@ -33993,7 +34001,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <p className="font-mono uppercase text-eyebrow text-mute mb-1">Reference</p>
                         <h2 id="research-guidelines-heading" className="font-serif text-section text-ink">Guidelines</h2>
                         <p className="font-sans text-body text-ink-2 mt-1 text-pretty">
-                          AHA/ASA &amp; society statements indexed in the Atlas. Open the full searchable library under Protocols & Algorithms → References.
+                          AHA/ASA &amp; society statements indexed in the Atlas. Open the full searchable library under Educational Resources → Guideline &amp; Reference Library.
                         </p>
                       </header>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
