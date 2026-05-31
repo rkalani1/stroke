@@ -326,7 +326,7 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
 // Blood Pressure Management card
 // ----------------------------------------------------------------------
 const BPProtocolCard = () => (
-  <div className="p-3 rounded-lg border border-rose-300 bg-white dark:bg-card dark:border-rose-800">
+  <div className="min-w-0 p-3 rounded-lg border border-rose-300 bg-white dark:bg-card dark:border-rose-800">
     <h4 className="font-bold text-rose-900 mb-2 flex items-center gap-2 dark:text-rose-300">
       <span className="inline-block px-2 py-0.5 bg-rose-700 text-white text-xs rounded">EX</span>
       Blood Pressure Management
@@ -429,10 +429,10 @@ const SafePauseCard = ({ defaults = {} }) => {
 // COR/LOE reference card
 // ----------------------------------------------------------------------
 const CorLoeKeyCard = () => (
-  <div className="p-3 rounded-lg border border-slate-300 bg-white dark:border-strong dark:bg-card">
+  <div className="min-w-0 p-3 rounded-lg border border-slate-300 bg-white dark:border-strong dark:bg-card">
     <h4 className="font-bold text-slate-900 mb-2 dark:text-ink">Class of Recommendation / Level of Evidence</h4>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-      <section>
+      <section className="min-w-0">
         <h5 className="font-semibold text-slate-800 mb-1 dark:text-ink">Class of Recommendation</h5>
         <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: Class of Recommendation key">
         <table className="w-full">
@@ -446,7 +446,7 @@ const CorLoeKeyCard = () => (
         </table>
         </div>
       </section>
-      <section>
+      <section className="min-w-0">
         <h5 className="font-semibold text-slate-800 mb-1 dark:text-ink">Level of Evidence</h5>
         <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: Level of Evidence key">
         <table className="w-full">
@@ -467,7 +467,7 @@ const CorLoeKeyCard = () => (
 // ----------------------------------------------------------------------
 export const PocketCards = ({ defaults = {} }) => {
   return (
-    <div className="flex flex-col gap-3" role="region" aria-label="Protocol cards">
+    <div className="flex flex-col gap-3 [&>*]:min-w-0 [&>*]:max-w-full" role="region" aria-label="Protocol cards">
       <div className="px-3 py-2 bg-gradient-to-r from-cobalt-900 to-cobalt-800 text-white rounded-lg flex items-center justify-between">
         <div>
           <h3 className="font-bold text-sm">Protocol Cards — Example Institutional Patterns</h3>

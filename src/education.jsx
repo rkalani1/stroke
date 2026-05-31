@@ -711,7 +711,7 @@ function renderSubModuleContent(moduleId, onNavigate) {
             <p className="text-xs">
               Every stroke note template must contain structured sections covering the following metrics:
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-2xs font-semibold text-slate-700 dark:text-ink-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-2xs font-semibold text-slate-700 dark:text-ink-2">
               <div className="p-2 border border-line bg-card rounded">Stroke Timeline</div>
               <div className="p-2 border border-line bg-card rounded">NIHSS/Severity</div>
               <div className="p-2 border border-line bg-card rounded">Imaging Summary</div>
