@@ -993,12 +993,15 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           : DEFAULT_TTL_HOURS;
         const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
 
-        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
+        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators', 'references'];
 
         const LEGACY_MANAGEMENT_TABS = {
           ich: 'ich',
           protocols: 'ischemic',
           calculators: 'calculators',
+          references: 'references',
+          evidence: 'references',
+          teaching: 'references',
           // Removed sub-tabs — redirect persisted user state to a sensible neighbor.
           clinic: 'ischemic',
           wards: 'ischemic',
@@ -1044,7 +1047,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
                 return { tab: 'education', sub: 'simulators' };
               }
               if (sub === 'references') {
-                return { tab: 'education', sub: 'reference-library' };
+                return { tab: 'protocols', sub: 'references' };
               }
               return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
             case 'library':
@@ -1053,17 +1056,16 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
                 return { tab: 'education', sub: 'simulators' };
               }
               if (sub === 'references') {
-                return { tab: 'education', sub: 'reference-library' };
+                return { tab: 'protocols', sub: 'references' };
               }
               return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
             case 'settings':
               return { tab: 'encounter' };
             case 'ich':
             case 'calculators':
-              return { tab: 'protocols', sub: LEGACY_MANAGEMENT_TABS[root] };
             case 'evidence':
             case 'teaching':
-              return { tab: 'education', sub: 'reference-library' };
+              return { tab: 'protocols', sub: LEGACY_MANAGEMENT_TABS[root] };
             case 'research':
               return { tab: 'research' };
             case 'trials':
@@ -7825,29 +7827,7 @@ Clinician Name`;
             let { clearSearch = false, subTab = null } = options;
             const rawTab = tab || 'encounter';
 
-            // Redirect any old references target to the new education library
-            if (
-              rawTab === 'evidence' ||
-              rawTab === 'teaching' ||
-              ((rawTab === 'protocols' || rawTab === 'management') && subTab === 'references')
-            ) {
-              setActiveTab('education');
-              setEducationSubTab('reference-library');
-              updateAppData((prev) => ({
-                ...prev,
-                uiState: {
-                  ...prev.uiState,
-                  lastActiveTab: 'education'
-                }
-              }));
-              if (clearSearch) {
-                setSearchQuery('');
-                setSearchResults([]);
-                setSearchOpen(false);
-                setSearchContext('header');
-              }
-              return;
-            }
+
 
             const legacySubTab = LEGACY_MANAGEMENT_TABS[rawTab];
             let nextTab = rawTab;
@@ -7895,11 +7875,7 @@ Clinician Name`;
           // Navigate to a Protocols & Algorithms sub-tab (optionally deep-link to
           // an anchor inside it, e.g. a calculator or simulator card).
           const gotoProtocolsSub = (subTab, anchorId, calcFilter) => {
-            if (subTab === 'references') {
-              navigateTo('education', { clearSearch: true, subTab: 'reference-library' });
-            } else {
-              navigateTo('protocols', { clearSearch: true, subTab });
-            }
+            navigateTo('protocols', { clearSearch: true, subTab });
             if (typeof setCalculatorFilter === 'function') {
               setCalculatorFilter(calcFilter || '');
             }
@@ -7941,7 +7917,7 @@ Clinician Name`;
             { id: 'sub-icu', group: 'Education', label: 'ICU Curriculum', hint: 'Stroke ICU teaching packet', icon: 'brain', keywords: ['icu', 'curriculum', 'intensive care', 'education'], run: () => { navigateTo('education'); setEducationSubTab('icu'); } },
             { id: 'sub-nursing', group: 'Education', label: 'Nurse Education', hint: 'Stroke nurse curriculum', icon: 'brain', keywords: ['nurse', 'nursing', 'education', 'curriculum'], run: () => { navigateTo('education'); setEducationSubTab('nursing'); } },
             { id: 'sub-pocket-cards', group: 'Education', label: 'Pocket Cards', hint: 'Clinical pocket references', icon: 'brain', keywords: ['pocket cards', 'references', 'cheat sheets', 'cards'], run: () => { navigateTo('education'); setEducationSubTab('pocket-cards'); } },
-            { id: 'sub-references', group: 'Education', label: 'Guideline & Reference Library', hint: 'Landmark trials, guidelines, HINTS & CVT', icon: 'clipboard-list', keywords: ['reference library', 'references', 'docs', 'toast', 'classification', 'guidelines', 'trials'], run: () => { navigateTo('education'); setEducationSubTab('reference-library'); } },
+            { id: 'sub-references', group: 'Protocols', label: 'Guideline & Reference Library', hint: 'Landmark trials, guidelines, HINTS & CVT', icon: 'clipboard-list', keywords: ['reference library', 'references', 'docs', 'toast', 'classification', 'guidelines', 'trials'], run: () => gotoProtocolsSub('references') },
             // ---- Simulators (each card lives in the Simulators sub-tab of Education) ----
             { id: 'sim-all', group: 'Bedside Simulators', label: 'Bedside Simulators', hint: 'All teaching simulators', icon: 'test-tubes', keywords: ['simulators', 'simulation', 'teaching', 'bedside'], run: () => { navigateTo('education'); setEducationSubTab('simulators'); } },
             { id: 'sim-evd', group: 'Bedside Simulators', label: 'EVD & ICP Simulator', hint: 'Drain & pressure trace', icon: 'activity', keywords: ['evd', 'icp', 'drain', 'intracranial pressure', 'ventriculostomy'], run: () => { navigateTo('education'); setEducationSubTab('evd-icp'); } },
@@ -7955,7 +7931,7 @@ Clinician Name`;
             { id: 'calc-ich', group: 'Calculators', label: 'ICH Score', hint: '30-day mortality', icon: 'table', keywords: ['ich score', 'hemorrhage', 'mortality'], run: () => gotoProtocolsSub('calculators', 'calc-ich-score', 'ich score') },
             { id: 'calc-abcd2', group: 'Calculators', label: 'ABCD2', hint: 'TIA stroke risk', icon: 'table', keywords: ['abcd2', 'tia', 'risk'], run: () => gotoProtocolsSub('calculators', 'calc-abcd2', 'abcd2') },
             { id: 'calc-phases', group: 'Calculators', label: 'PHASES', hint: 'Aneurysm rupture risk', icon: 'table', keywords: ['phases', 'aneurysm', 'rupture'], run: () => gotoProtocolsSub('calculators', 'calc-phases', 'phases') },
-            { id: 'calc-toast', group: 'Calculators', label: 'TOAST Classification', hint: 'Ischemic stroke etiology', icon: 'clipboard-list', keywords: ['toast', 'classification', 'etiology', 'subtype'], run: () => navigateTo('education', { subTab: 'reference-library' }) },
+            { id: 'calc-toast', group: 'Calculators', label: 'TOAST Classification', hint: 'Ischemic stroke etiology', icon: 'clipboard-list', keywords: ['toast', 'classification', 'etiology', 'subtype'], run: () => navigateTo('education', { subTab: 'toast-classification' }) },
             // ---- External / legacy tools ----
             { id: 'ext-telestroke-map', group: 'External Tools', label: 'Telestroke Network Map', hint: 'Service planning — new tab', icon: 'external-link', external: true, keywords: ['telestroke', 'network', 'map', 'expansion', 'coverage', 'service planning', 'admin'], run: () => openExternal('https://rkalani1.github.io/telestroke-expansion-map/') }
           ], []);
@@ -14539,15 +14515,15 @@ Clinician Name`;
               { name: 'Transfer Checklist', keywords: ['transfer', 'spoke', 'hub', 'transport'], tab: 'encounter' },
               { name: 'Hemorrhagic Transformation', keywords: ['hemorrhagic transformation', 'sich', 'symptomatic ich', 'post-tnk bleeding', 'ecass'], tab: 'management', subTab: 'ischemic' },
               { name: 'Stroke Mimic Workup', keywords: ['mimic', 'mimic workup', 'differential', 'seizure', 'migraine', 'conversion', 'functional'], tab: 'encounter' },
-              { name: 'Code Stroke Activation Criteria', keywords: ['code stroke', 'activation', 'alert', 'lvo alert', 'race scale', 'de-escalation', 'when to activate'], tab: 'education', subTab: 'reference-library' },
+              { name: 'Code Stroke Activation Criteria', keywords: ['code stroke', 'activation', 'alert', 'lvo alert', 'race scale', 'de-escalation', 'when to activate'], tab: 'protocols', subTab: 'references' },
               { name: 'Acute Deterioration', keywords: ['deterioration', 'worsening', 'decline', 'neuro change', 'acute change'], tab: 'management', subTab: 'ischemic' },
               { name: 'DOAC Reversal', keywords: ['doac reversal', 'pcc', 'kcentra', 'idarucizumab', 'praxbind', 'andexanet', 'xa inhibitor'], tab: 'management', subTab: 'ich' },
               { name: 'VTE Prophylaxis', keywords: ['vte', 'dvt', 'pe', 'prophylaxis', 'enoxaparin', 'heparin', 'scds', 'ipc'], tab: 'management', subTab: 'ischemic' },
               { name: 'Post-EVT Management', keywords: ['post evt', 'post thrombectomy', 'dect', 'reperfusion', 'tici'], tab: 'management', subTab: 'ischemic' },
               { name: 'Dissection Management', keywords: ['dissection', 'carotid dissection', 'vertebral dissection', 'cervical'], tab: 'management', subTab: 'ischemic' },
-              { name: 'Depression Screening', keywords: ['depression', 'phq', 'phq-2', 'phq-9', 'ssri', 'mood'], tab: 'encounter' },
-              { name: 'Alteplase (tPA) Dosing', keywords: ['alteplase', 'tpa', 'activase', 'thrombolysis dose', 'bolus infusion'], tab: 'management', subTab: 'calculators' },
-              { name: 'Bridging IVT + EVT', keywords: ['bridging', 'ivt before evt', 'direct to evt', 'swift direct', 'mr clean no iv'], tab: 'management', subTab: 'ischemic' },
+              { name: 'Stroke Chameleons', keywords: ['chameleon', 'missed stroke', 'vertigo stroke', 'confusional state', 'psychiatric stroke'], tab: 'protocols', subTab: 'references' },
+              { name: 'Spinal Cord Stroke', keywords: ['spinal cord', 'anterior spinal artery', 'myelopathy', 'aortic dissection', 'paraplegia'], tab: 'protocols', subTab: 'references' },
+              { name: 'CTP Interpretation Guide', keywords: ['ctp', 'perfusion', 'tmax', 'cbv', 'cbf', 'rapid', 'penumbra', 'core'], tab: 'protocols', subTab: 'references' },
               { name: 'ARCADIA (Atrial Cardiopathy)', keywords: ['arcadia', 'atrial cardiopathy', 'esus', 'cryptogenic', 'p-wave'], tab: 'management', subTab: 'ischemic' },
               { name: 'LAA Closure After ICH', keywords: ['laao', 'stroke-close', 'watchman', 'left atrial appendage', 'ich af'], tab: 'management', subTab: 'ich' },
               { name: 'Triple Therapy Warning', keywords: ['triple therapy', 'dapt doac', 'dual antiplatelet anticoagulant'], tab: 'encounter' },
@@ -14555,13 +14531,14 @@ Clinician Name`;
               { name: 'Post-EVT Groin Care', keywords: ['groin', 'access site', 'post thrombectomy groin', 'hematoma', 'pulse check'], tab: 'management', subTab: 'ischemic' },
               { name: 'Pregnancy + EVT', keywords: ['pregnancy evt', 'pregnant thrombectomy', 'obstetric stroke'], tab: 'management', subTab: 'ischemic' },
               { name: 'Pediatric Stroke Pathway', keywords: ['pediatric stroke', 'child stroke', 'adolescent stroke', 'pediatric nihss', 'moyamoya'], tab: 'management', subTab: 'ischemic' },
-              { name: 'Stroke Chameleons', keywords: ['chameleon', 'missed stroke', 'vertigo stroke', 'confusional state', 'psychiatric stroke'], tab: 'education', subTab: 'reference-library' },
-              { name: 'Spinal Cord Stroke', keywords: ['spinal cord', 'anterior spinal artery', 'myelopathy', 'aortic dissection', 'paraplegia'], tab: 'education', subTab: 'reference-library' },
-              { name: 'CTP Interpretation Guide', keywords: ['ctp', 'perfusion', 'tmax', 'cbv', 'cbf', 'rapid', 'penumbra', 'core'], tab: 'education', subTab: 'reference-library' },
+              { name: 'Depression Screening', keywords: ['depression', 'phq', 'phq-2', 'phq-9', 'ssri', 'mood'], tab: 'encounter' },
+              { name: 'Alteplase (tPA) Dosing', keywords: ['alteplase', 'tpa', 'activase', 'thrombolysis dose', 'bolus infusion'], tab: 'management', subTab: 'calculators' },
+              { name: 'Bridging IVT + EVT', keywords: ['bridging', 'ivt before evt', 'direct to evt', 'swift direct', 'mr clean no iv'], tab: 'management', subTab: 'ischemic' },
+
               { name: 'FUNC Score', keywords: ['func', 'functional outcome', 'ich prognosis'], tab: 'management', subTab: 'calculators' },
               { name: 'COMPASS Trial', keywords: ['compass', 'rivaroxaban aspirin', 'dual pathway', 'polyvascular', 'pad cad'], tab: 'management', subTab: 'ischemic' },
               { name: 'Nursing Parameters', keywords: ['nursing', 'parameters', 'call md', 'neuro checks', 'nurse communication'], tab: 'management', subTab: 'ischemic' },
-              { name: 'Collateral Assessment', keywords: ['collateral', 'tan score', 'asitn', 'multiphase cta'], tab: 'education', subTab: 'reference-library' },
+              { name: 'Collateral Assessment', keywords: ['collateral', 'tan score', 'asitn', 'multiphase cta'], tab: 'protocols', subTab: 'references' },
               { name: 'Cancer-Associated Stroke', keywords: ['cancer', 'malignancy', 'trousseau', 'nbte', 'marantic', 'tumor', 'oncology'], tab: 'management', subTab: 'ischemic' },
               { name: 'Sickle Cell Stroke', keywords: ['sickle cell', 'scd', 'exchange transfusion', 'hbs', 'hemoglobin s'], tab: 'management', subTab: 'ischemic' },
               { name: 'Infective Endocarditis', keywords: ['endocarditis', 'mycotic aneurysm', 'vegetation', 'ie stroke', 'blood cultures'], tab: 'management', subTab: 'ischemic' },
@@ -14625,7 +14602,7 @@ Clinician Name`;
                   description: `${doc.section} section`,
                   score,
                   action: () => {
-                    navigateTo('education', { clearSearch: true, subTab: 'reference-library' });
+                    navigateTo('protocols', { clearSearch: true, subTab: 'references' });
                   }
                 });
               }
@@ -22064,7 +22041,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                       <button
                                                         type="button"
                                                         onClick={() => {
-                                                          navigateTo('education', { subTab: 'reference-library' });
+                                                          navigateTo('protocols', { subTab: 'references' });
                                                           requestAnimationFrame(() => {
                                                             window.setTimeout(() => {
                                                               const wrapper = document.getElementById('ref-trials');
