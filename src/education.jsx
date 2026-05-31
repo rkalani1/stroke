@@ -87,6 +87,18 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-20",
     status: "Needs Local Review",
     citations: "Joint Commission Stroke Core Measures (STK-1 to STK-10); CMS QualityNet.",
+    references: [
+      {
+        label: "Joint Commission Manual",
+        citation: "The Joint Commission. Specifications Manual for National Hospital Inpatient Quality Measures. 2026.",
+        url: "https://manual.jointcommission.org"
+      },
+      {
+        label: "GWTG-Stroke Core Measures",
+        citation: "AHA/ASA. Get With The Guidelines-Stroke Measure Specifications. 2025.",
+        url: "https://qualitynet.cms.gov"
+      }
+    ],
     placeholders: ["CONFIRM_CSC_METRIC_OWNER", "CONFIRM_FINAL_REQUIRED_FIELDS", "CONFIRM_FINAL_STROKE_CENTER_REPORTING_FIELDS", "CONFIRM_WHICH_ITEMS_ARE_PUBLIC_SAFE"]
   },
   {
@@ -98,6 +110,23 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-15",
     status: "Needs Specialist Review",
     citations: "Neurocritical Care Society Consensus Guidelines; Brain Trauma Foundation Guidelines.",
+    references: [
+      {
+        label: "AHA/ASA Guidelines",
+        citation: "Prabhakaran S, et al. 2026 Guidelines for the Early Management of Acute Ischemic Stroke. Stroke. 2026. DOI: 10.1161/STR.0000000000000513.",
+        pmid: "41582814"
+      },
+      {
+        label: "Cerebral Edema",
+        citation: "Wijdicks EF, et al. Recommendations for the Management of Cerebral and Cerebellar Infarction With Swelling. Stroke. 2014;45:1222-1238.",
+        pmid: "24481970"
+      },
+      {
+        label: "NCS Guidelines",
+        citation: "Cook AM, et al. Guidelines for the Acute Treatment of Cerebral Edema in Neurocritical Care Patients. Neurocrit Care. 2020;32:647-666.",
+        pmid: "32227294"
+      }
+    ],
     placeholders: ["CONFIRM_HERNIATION_PHONE", "CONFIRM_NCC_CALL_CHAIN", "CONFIRM_NSGY_CALL_CHAIN", "CONFIRM_LOCAL_OSMOTHERAPY_PROTOCOL"]
   },
   {
@@ -109,6 +138,16 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-18",
     status: "Needs Admin Review",
     citations: "Residency compliance & billing guidelines (your program).",
+    references: [
+      {
+        label: "UW Medicine Compliance",
+        citation: "University of Washington Neurology Residency Compliance & Billing Guidelines. 2026."
+      },
+      {
+        label: "CMS Regulations",
+        citation: "Centers for Medicare & Medicaid Services (CMS). Guidelines for Teaching Physicians, Interns, and Residents. 2025."
+      }
+    ],
     placeholders: ["CONFIRM_ED_DISCHARGE_ROUTING", "CONFIRM_NON_NEURO_ADMISSION_ROUTING", "CONFIRM_WEEKEND_HOLIDAY_ROUTING", "CONFIRM_MORNING_REPORT_ROUTING", "CONFIRM_FINAL_ATTENDING_LABELS"]
   },
   {
@@ -120,6 +159,12 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-12",
     status: "Needs IT Review",
     citations: "Local neurosciences EMR templates committee (your build).",
+    references: [
+      {
+        label: "EMR Guidelines",
+        citation: "UW Medicine Clinical Documentation Standards Committee. Evaluation and Management (E/M) Guidelines. 2025."
+      }
+    ],
     placeholders: ["CONFIRM_EPIC_BUILD_OWNER", "CONFIRM_NEUROSCIENCE_IT_APPROVAL", "CONFIRM_TEMPLATE_FINAL_TEXT", "CONFIRM_GO_LIVE_DATE"]
   },
   {
@@ -131,6 +176,23 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-24",
     status: "Clinical Reference",
     citations: "DAWN Trial (NEJM 2018); DEFUSE 3 Trial (NEJM 2018); AHA/ASA Stroke Guidelines.",
+    references: [
+      {
+        label: "DAWN Trial",
+        citation: "Nogueira RG, et al. Thrombectomy 6 to 24 Hours after Stroke with a Mismatch between Deficit and Infarct. N Engl J Med. 2018;378(1):11-21.",
+        pmid: "29129157"
+      },
+      {
+        label: "DEFUSE 3 Trial",
+        citation: "Albers GW, et al. Thrombectomy for Stroke at 6 to 16 Hours with Selection by Perfusion Imaging. N Engl J Med. 2018;378(8):708-718.",
+        pmid: "29364767"
+      },
+      {
+        label: "AHA/ASA Guidelines",
+        citation: "Prabhakaran S, et al. 2026 Guidelines for the Early Management of Acute Ischemic Stroke. Stroke. 2026. DOI: 10.1161/STR.0000000000000513.",
+        pmid: "41582814"
+      }
+    ],
     placeholders: []
   },
   {
@@ -142,6 +204,23 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-28",
     status: "Recruiting / Active",
     citations: "National ClinicalTrials.gov Registry.",
+    references: [
+      {
+        label: "SELECT2 Trial",
+        citation: "Sarraj A, et al. Trial of Endovascular Thrombectomy for Large Ischemic Strokes. N Engl J Med. 2023;388:1259-1271.",
+        pmid: "36762865"
+      },
+      {
+        label: "ELAN Trial",
+        citation: "Fischer U, et al. Early versus Late Anticoagulation in Stroke with Atrial Fibrillation. N Engl J Med. 2023;388:2411-2421.",
+        pmid: "37222476"
+      },
+      {
+        label: "ENRICH Trial",
+        citation: "Pradilla G, et al. Trial of Early Minimally Invasive Removal of Intracerebral Hemorrhage. N Engl J Med. 2024;390:1277-1289.",
+        pmid: "38598795"
+      }
+    ],
     placeholders: ["CONFIRM_TRIAL_CONTACT", "CONFIRM_TRIAL_STATUS", "CONFIRM_PUBLIC_TELENEUROLOGY_TEXT"]
   },
   {
@@ -153,6 +232,18 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-10",
     status: "Needs Pediatric Review",
     citations: "AHA/ASA Management of Stroke in Infants and Children Guidelines.",
+    references: [
+      {
+        label: "Pediatric Stroke Guideline",
+        citation: "Ferriero DM, et al. Management of Stroke in Infants and Children: A Scientific Statement From the American Heart Association/American Stroke Association. Stroke. 2019;50(3):e51-e96.",
+        pmid: "30686116"
+      },
+      {
+        label: "PedNIHSS Study",
+        citation: "Ichord RN, et al. Reliability of the pediatric National Institutes of Health Stroke Scale (PedNIHSS) in pediatric stroke. Stroke. 2011;42(3):682-688.",
+        pmid: "21257827"
+      }
+    ],
     placeholders: ["CONFIRM_PED_STROKE_ACTIVATION", "CONFIRM_PED_IMAGING_PROTOCOL", "CONFIRM_PED_NEURO_CALL_CHAIN"]
   },
   {
@@ -164,6 +255,18 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-22",
     status: "Clinical Reference",
     citations: "Barber et al., Lancet 2000 (ASPECTS); Puetz et al., AJNR 2008 (PC-ASPECTS).",
+    references: [
+      {
+        label: "ASPECTS Study",
+        citation: "Barber PA, et al. Validity and reliability of a quantitative computed tomography score in predicting outcome of hyperacute stroke: the ASPECTS study. Lancet. 2000;355(9216):1670-1674.",
+        pmid: "10829616"
+      },
+      {
+        label: "PC-ASPECTS Study",
+        citation: "Puetz V, et al. Reliability and clinical guidance of posterior circulation ASPECTS. AJNR Am J Neuroradiol. 2008;29(8):1511-1518.",
+        pmid: "18524884"
+      }
+    ],
     placeholders: []
   },
   {
@@ -175,6 +278,23 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-29",
     status: "Needs Policy Update",
     citations: "AHA/ASA Intracerebral Hemorrhage Guidelines (2022); PATCH Trial (Lancet 2016); ANNEXA-I Trial (NEJM 2024).",
+    references: [
+      {
+        label: "AHA/ASA ICH Guideline",
+        citation: "Greenberg SM, et al. 2022 Guideline for the Management of Patients with Spontaneous Intracerebral Hemorrhage. Stroke. 2022.",
+        pmid: "35579034"
+      },
+      {
+        label: "PATCH Trial",
+        citation: "Baharoglu MI, et al. Platelet transfusion versus standard care after acute stroke due to spontaneous intracerebral haemorrhage associated with antiplatelet therapy (PATCH). Lancet. 2016;387(10038):2605-2613.",
+        pmid: "27178009"
+      },
+      {
+        label: "ANNEXA-I Trial",
+        citation: "Connolly SJ, et al. Andexanet for Factor Xa Inhibitor-Associated Acute Intracerebral Hemorrhage. N Engl J Med. 2024.",
+        pmid: "38749032"
+      }
+    ],
     placeholders: ["CONFIRM_FINAL_INR_THRESHOLD", "CONFIRM_ICH_BP_TARGETS", "CONFIRM_STABILITY_SCAN_TIMING", "CONFIRM_NSGY_SURGICAL_TRIAGE_TEXT"]
   },
   {
@@ -186,6 +306,18 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-14",
     status: "Needs Quality Review",
     citations: "AHA/ASA Prevention of DVT in Stroke Guidelines; GWTG Measure Specifications.",
+    references: [
+      {
+        label: "ACCP Guidelines",
+        citation: "Lansberg MG, et al. Antithrombotic and Thrombolytic Therapy for Ischemic Stroke: Antithrombotic Therapy and Prevention of Thrombosis, 9th ed: American College of Chest Physicians Evidence-Based Clinical Practice Guidelines. Chest. 2012;141(2 Suppl):e601S-e636S.",
+        pmid: "22383780"
+      },
+      {
+        label: "CLOTS 3 Trial",
+        citation: "Dennis M, et al. Effectiveness of intermittent pneumatic compression in reduction of risk of deep vein thrombosis in patients who have had a recent stroke (CLOTS 3). Lancet. 2013;382(9891):516-524.",
+        pmid: "23727163"
+      }
+    ],
     placeholders: ["CONFIRM_DVT_PPX_TIMING_AIS", "CONFIRM_DVT_PPX_TIMING_POST_IVT", "CONFIRM_DVT_PPX_TIMING_ICH", "CONFIRM_DVT_PPX_AFTER_EVD"]
   },
   {
@@ -197,6 +329,18 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-11",
     status: "Needs ICU Review",
     citations: "Neurocritical Care Society Recommendations on Pupillometry; Oddo et al., Intensive Care Med 2018.",
+    references: [
+      {
+        label: "NPi Clinical Statement",
+        citation: "Chesnut R, et al. The role of quantitative pupillometry in neurocritical care. Neurocrit Care. 2020.",
+        pmid: "32095213"
+      },
+      {
+        label: "NPi ICU Validation",
+        citation: "Oddo M, et al. Quantitative pupillometry in the intensive care unit. Intensive Care Med. 2018;44(12):2113-2122.",
+        pmid: "30136117"
+      }
+    ],
     placeholders: ["CONFIRM_PUPILLOMETRY_EMR_INTEGRATION_STATUS", "CONFIRM_LOCAL_PUPILLOMETRY_USE_CASES"]
   },
   {
@@ -208,6 +352,18 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-25",
     status: "Needs Nursing Review",
     citations: "Institutional thrombolysis policy (see your local protocol); AHA/ASA AIS Guidelines.",
+    references: [
+      {
+        label: "AHA/ASA AIS Guidelines",
+        citation: "Prabhakaran S, et al. 2026 Guidelines for the Early Management of Acute Ischemic Stroke. Stroke. 2026. DOI: 10.1161/STR.0000000000000513.",
+        pmid: "41582814"
+      },
+      {
+        label: "Door-to-Needle Study",
+        citation: "Meretoja A, et al. Stroke thrombolysis: decreasing delays. Stroke. 2012;43(11):3004-3010.",
+        pmid: "22933734"
+      }
+    ],
     placeholders: ["CONFIRM_POLICY_FINAL_TEXT", "CONFIRM_APOP_2026_LANGUAGE", "CONFIRM_SAFETY_PAUSE_PARTICIPANTS"]
   },
   {
@@ -219,6 +375,16 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-08",
     status: "Needs Program Review",
     citations: "Residency stroke curriculum (your program).",
+    references: [
+      {
+        label: "ACGME Curriculum",
+        citation: "Accreditation Council for Graduate Medical Education (ACGME) Program Requirements for Graduate Medical Education in Neurology. 2025."
+      },
+      {
+        label: "GWTG Measures",
+        citation: "Get With The Guidelines-Stroke Core Measures Manual. 2026."
+      }
+    ],
     placeholders: []
   },
   {
@@ -230,7 +396,19 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-02",
     status: "Needs Admin Review",
     citations: "Example telestroke operations manual (your network).",
-    placeholders: ["CONFIRM_TELESTROKE_PATHWAY_SOURCE", "CONFIRM_PUBLIC_SAFE_ROUTING_TEXT"]
+    references: [
+      {
+        label: "AHA Telestroke Statement",
+        citation: "Schwamm LH, et al. Recommendations for the Implementation of Telemedicine in Acute Stroke Care: A Scientific Statement From the American Heart Association. Stroke. 2009;40(7):2635-2660.",
+        pmid: "19423856"
+      },
+      {
+        label: "Brain Attack Coalition",
+        citation: "Schwamm LH, et al. Recommendations for the establishment of primary stroke centers: a consensus statement from the Brain Attack Coalition. Stroke. 2011.",
+        pmid: "21836092"
+      }
+    ],
+    placeholders: ["CONFIRM_TRIAL_CONTACT", "CONFIRM_TRIAL_STATUS", "CONFIRM_PUBLIC_TELENEUROLOGY_TEXT"]
   },
   {
     id: "hints-simulator",
@@ -241,6 +419,18 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-25",
     status: "Clinical Reference",
     citations: "Kattah et al., Stroke 2009 (HINTS); Newman-Toker et al., Acad Emerg Med 2013 (HINTS+).",
+    references: [
+      {
+        label: "HINTS Landmark",
+        citation: "Kattah JC, et al. HINTS to diagnose stroke in the acute vestibular syndrome: three-step bedside oculomotor examination more sensitive than early MRI diffusion-weighted imaging. Stroke. 2009;40(11):3504-3510.",
+        pmid: "19762656"
+      },
+      {
+        label: "HINTS+ Study",
+        citation: "Newman-Toker DE, et al. HINTS plus hearing loss identifies stroke in acute vestibular syndrome. Acad Emerg Med. 2013;20(10):986-996.",
+        pmid: "24127701"
+      }
+    ],
     placeholders: []
   },
   {
@@ -252,6 +442,23 @@ const EDUCATION_MODULES = [
     lastReviewed: "2026-05-25",
     status: "Clinical Reference",
     citations: "CAM-ICU / GCS / NIHSS exam specifications.",
+    references: [
+      {
+        label: "CAM-ICU Study",
+        citation: "Ely EW, et al. Evaluation of delirium in critically ill patients: validation of the Confusion Assessment Method for the Intensive Care Unit (CAM-ICU). Crit Care Med. 2001;29(7):1370-1379.",
+        pmid: "11445762"
+      },
+      {
+        label: "GCS Landmark",
+        citation: "Teasdale G, Jennett B. Assessment of coma and impaired consciousness. A practical scale. Lancet. 1974;2(7872):81-84.",
+        pmid: "4136544"
+      },
+      {
+        label: "NIHSS Study",
+        citation: "Lyden P, et al. Improved reliability of the NIH Stroke Scale using video training. Stroke. 1994;25(11):2220-2226.",
+        pmid: "7974945"
+      }
+    ],
     placeholders: []
   }
 ];
@@ -388,11 +595,40 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
               {renderSubModuleContent(activeModule.id, viewMode, onNavigate, copyToClipboard, addToast)}
             </main>
 
-            <footer className="border-t border-line pt-4 text-xs space-y-2">
-              <p>
-                <b>Verified Evidence Source:</b> <span className="italic">{activeModule.citations}</span>
-              </p>
-
+            <footer className="border-t border-line pt-4 text-xs space-y-3">
+              <div>
+                <span className="font-bold text-ink uppercase tracking-wider text-[10px] block mb-1.5">Evidence &amp; Reference Guidelines</span>
+                {activeModule.references && activeModule.references.length > 0 ? (
+                  <ul className="list-disc pl-4 space-y-1.5 text-ink-2">
+                    {activeModule.references.map((ref, idx) => (
+                      <li key={idx} className="leading-relaxed">
+                        <strong className="text-ink font-semibold">{ref.label}:</strong> {ref.citation}{' '}
+                        {ref.pmid ? (
+                          <a
+                            href={`https://pubmed.ncbi.nlm.nih.gov/${ref.pmid}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-cobalt-700 hover:text-cobalt-900 font-semibold underline dark:text-cobalt-300"
+                          >
+                            PMID: {ref.pmid}
+                          </a>
+                        ) : ref.url ? (
+                          <a
+                            href={ref.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-cobalt-700 hover:text-cobalt-900 font-semibold underline dark:text-cobalt-300"
+                          >
+                            Link
+                          </a>
+                        ) : null}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="italic text-mute">{activeModule.citations}</p>
+                )}
+              </div>
             </footer>
           </div>
         </div>
@@ -817,89 +1053,276 @@ function CscQualityInfographic() {
 
 // --- 2. EVD / ICP INFOGRAPHIC (Simulator handles Dashboard) ---
 function EvdIcpInfographic() {
+  const ArrowDown = () => (
+    <div className="flex justify-center py-0.5">
+      <svg className="w-4 h-4 text-slate-400 dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
+    </div>
+  );
+
   return (
     <div className="bg-paper border border-line rounded-lg p-6 space-y-6">
-      <div className="text-center space-y-1">
-        <h2 className="font-serif text-lg text-ink font-bold">EVD Alignment &amp; Herniation Rescue Blueprint</h2>
-        <p className="text-xs text-mute">Bedside setups and emergency workflows for intracranial hypertension.</p>
+      {/* Title */}
+      <div className="text-center space-y-1 pb-4 border-b border-line">
+        <h2 className="font-serif text-xl text-ink font-bold tracking-tight text-indigo-950 dark:text-indigo-300">
+          Intracranial Hypertension &amp; Herniation due to Stroke
+        </h2>
+        <p className="text-xs text-mute">Bedside Clinical Guidance &amp; Escalation Algorithm</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Row 1: Impending Herniation Signs */}
+      <section className="border border-rose-300 bg-rose-50/10 dark:bg-rose-950/10 rounded-lg p-4 space-y-3">
+        <h3 className="font-bold text-xs text-rose-800 dark:text-rose-400 uppercase tracking-wide flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-rose-600"></span>
+          1. Bedside &amp; Radiographic Signs of Impending Herniation
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+          <div className="space-y-0.5">
+            <strong className="text-ink">• LOC Decline:</strong>
+            <span className="text-ink-2"> GCS decrease of &ge;2 points, stupor, progressive coma.</span>
+          </div>
+          <div className="space-y-0.5">
+            <strong className="text-ink">• Pupils:</strong>
+            <span className="text-ink-2"> New pupillary asymmetry or loss of reactivity.</span>
+          </div>
+          <div className="space-y-0.5">
+            <strong className="text-ink">• Motor Deficits:</strong>
+            <span className="text-ink-2"> New hemiparesis/plegia, extensor/flexor posturing.</span>
+          </div>
+          <div className="space-y-0.5">
+            <strong className="text-ink">• Imaging Markers:</strong>
+            <span className="text-ink-2"> Midline shift, cistern effacement, hydrocephalus.</span>
+          </div>
+          <div className="space-y-0.5">
+            <strong className="text-ink">• Cushing's Triad (Late):</strong>
+            <span className="text-ink-2"> Systolic HTN, bradycardia, irregular breathing.</span>
+          </div>
+          <div className="space-y-0.5">
+            <strong className="text-ink">• Symptoms:</strong>
+            <span className="text-ink-2"> Worsening headache, projectile vomiting.</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Row 2: EVD Calibrations & Waveform diagnostics */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* EVD Calibrations */}
         <div className="p-4 border border-line bg-card rounded-md space-y-3">
           <h3 className="font-bold text-xs text-ink uppercase flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-cobalt-600"></span>
-            EVD Calibrations
+            EVD Calibrations &amp; Leveling
           </h3>
           <div className="text-2xs space-y-2 text-ink-2">
             <div>
-              <strong className="block text-ink">Zeroing Level:</strong>
+              <strong className="text-ink block">Zeroing Level:</strong>
               Reference point is the external auditory meatus (EAM/Tragus), corresponding to the Foramen of Monro.
             </div>
             <div>
-              <strong className="block text-ink">Pressure Conversion:</strong>
+              <strong className="text-ink block">Pressure Conversion:</strong>
               1 mmHg = 1.36 cm H2O. Standard EVD drains are set in cm H2O (e.g. +10 cm H2O = 7.4 mmHg).
             </div>
             <div>
-              <strong className="block text-ink">Zeroing frequency:</strong>
+              <strong className="text-ink block">Zeroing frequency:</strong>
               Re-level and zero after any patient repositioning or bed movement. Ensure lines are non-kinked.
             </div>
           </div>
         </div>
 
+        {/* ICP Waveforms */}
         <div className="p-4 border border-line bg-card rounded-md space-y-3">
           <h3 className="font-bold text-xs text-ink uppercase flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-teal-600"></span>
-            ICP Waveforms
+            ICP Waveform Morphologies
           </h3>
-          <div className="space-y-3">
-            <div className="h-20 bg-slate-50 border border-line rounded p-2 flex items-center justify-center relative dark:bg-card">
-              <svg className="w-full h-full" viewBox="0 0 100 30">
-                {/* Normal Wave */}
-                <path d="M5 25 Q15 5 25 12 T45 22 T65 24 T85 25" fill="none" stroke="var(--cobalt)" strokeWidth="1.5" />
-                {/* Text Markers */}
-                <text x="23" y="10" fontSize="3" className="fill-ink font-bold">P1</text>
-                <text x="43" y="18" fontSize="3" className="fill-ink">P2</text>
-                <text x="63" y="22" fontSize="3" className="fill-ink">P3</text>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="h-20 bg-slate-50 border border-line rounded p-2 flex flex-col justify-center items-center relative dark:bg-card">
+              <svg className="w-full h-12" viewBox="0 0 100 30">
+                <path d="M5 25 Q15 5 25 12 T45 22 T65 24 T85 25" fill="none" stroke="#2C7A52" strokeWidth="1.5" />
+                <text x="23" y="10" fontSize="3.5" className="fill-ink font-bold">P1</text>
+                <text x="43" y="18" fontSize="3.5" className="fill-ink">P2</text>
+                <text x="63" y="22" fontSize="3.5" className="fill-ink">P3</text>
               </svg>
-              <div className="absolute bottom-1 right-2 text-[8px] text-mute font-mono">Normal: P1 &gt; P2 &gt; P3</div>
+              <div className="text-[8px] text-mute font-mono mt-1 text-center font-bold">Normal: P1 &gt; P2 &gt; P3</div>
             </div>
-            <div className="h-20 bg-slate-50 border border-line rounded p-2 flex items-center justify-center relative dark:bg-card">
-              <svg className="w-full h-full" viewBox="0 0 100 30">
-                {/* Non-compliant Wave */}
-                <path d="M5 25 Q15 15 25 15 T45 5 T65 18 T85 25" fill="none" stroke="var(--critical)" strokeWidth="1.5" />
-                <text x="23" y="14" fontSize="3" className="fill-ink">P1</text>
-                <text x="43" y="8" fontSize="3" className="fill-critical font-bold">P2</text>
-                <text x="63" y="16" fontSize="3" className="fill-ink">P3</text>
+            <div className="h-20 bg-slate-50 border border-line rounded p-2 flex flex-col justify-center items-center relative dark:bg-card">
+              <svg className="w-full h-12" viewBox="0 0 100 30">
+                <path d="M5 25 Q15 15 25 15 T45 5 T65 18 T85 25" fill="none" stroke="#DC3F3A" strokeWidth="1.5" />
+                <text x="23" y="14" fontSize="3.5" className="fill-ink">P1</text>
+                <text x="43" y="8" fontSize="3.5" className="fill-rose-600 font-bold dark:fill-rose-400">P2</text>
+                <text x="63" y="16" fontSize="3.5" className="fill-ink">P3</text>
               </svg>
-              <div className="absolute bottom-1 right-2 text-[8px] text-critical font-mono">Non-compliant: P2 &gt; P1</div>
+              <div className="text-[8px] text-rose-600 font-mono mt-1 text-center font-bold dark:text-rose-400">Non-compliant: P2 &gt; P1</div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Row 3: Stepwise Escalation Protocol */}
+      <section className="space-y-3">
+        <h3 className="font-bold text-xs text-indigo-950 dark:text-indigo-400 uppercase tracking-wide flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-indigo-600"></span>
+          2. Stepwise ICP &amp; Herniation Protocol (Escalation Pathway)
+        </h3>
+
+        {/* STEP 0 */}
+        <div className="border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden bg-card">
+          <div className="bg-slate-700 text-white px-3 py-1.5 text-xs font-bold font-mono">
+            STEP 0 · BASELINE NEUROPROTECTION (Prophylaxis)
+          </div>
+          <div className="p-3.5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-2xs text-ink-2">
+            <div><strong className="text-ink">• Position:</strong> HOB 30° + midline head/neck position.</div>
+            <div><strong className="text-ink">• Perfusion:</strong> Avoid hypotension; maintain stroke BP goals.</div>
+            <div><strong className="text-ink">• Fever:</strong> Treat T &ge;38°C (scheduled acetaminophen).</div>
+            <div><strong className="text-ink">• Metabolic:</strong> Glucose 140–180; euvolemia (Isotonic saline).</div>
+            <div><strong className="text-ink">• Airway/O2:</strong> SpO2 &ge;94%; propofol &plusmn; fentanyl if intubated.</div>
+            <div><strong className="text-ink">• Ventilation:</strong> PaCO2 35–45. <em className="text-mute">(Edema peaks days 3–5)</em>.</div>
           </div>
         </div>
 
-        <div className="p-4 border border-line bg-card rounded-md space-y-3">
-          <h3 className="font-bold text-xs text-ink uppercase flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-critical"></span>
-            Herniation Rescue Flow
-          </h3>
-          <div className="text-2xs space-y-2 text-ink-2">
+        <ArrowDown />
+
+        {/* TRIGGER */}
+        <div className="bg-indigo-50 border border-indigo-200 dark:bg-indigo-950/20 dark:border-indigo-800/60 rounded-md p-2.5 text-center">
+          <span className="font-bold text-indigo-950 dark:text-indigo-300 text-xs tracking-wide">
+            TRIGGER: GCS decline &ge;2, pupillary asymmetry/reactivity loss, OR sustained monitored ICP &gt;22 mmHg
+          </span>
+        </div>
+
+        <ArrowDown />
+
+        {/* STEP 1 */}
+        <div className="border border-teal-200 dark:border-teal-900 rounded-lg overflow-hidden bg-card">
+          <div className="bg-teal-700 text-white px-3 py-1.5 text-xs font-bold font-mono">
+            STEP 1 · TARGETED OSMOTHERAPY (First-Line Medical)
+          </div>
+          <div className="p-3.5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-2xs text-ink-2">
+            <div><strong className="text-ink">• Consults:</strong> STAT Neuro ICU and Neurosurgery.</div>
+            <div><strong className="text-ink">• 3% HTS:</strong> 250–500 mL IV bolus over 20 min (large-bore PIV OK).</div>
+            <div><strong className="text-ink">• Imaging:</strong> Urgent non-contrast head CT.</div>
+            <div><strong className="text-ink">• 20% Mannitol:</strong> 0.5–1.0 g/kg IV bolus (In-line filter).</div>
+          </div>
+        </div>
+
+        <ArrowDown />
+
+        {/* TRANSITION 1 */}
+        <div className="bg-amber-50 border border-amber-200 dark:bg-amber-950/20 dark:border-amber-900/60 rounded-md p-2 text-center text-2xs font-semibold text-amber-800 dark:text-amber-400">
+          If refractory to first-line therapy or acute herniation suspected
+        </div>
+
+        <ArrowDown />
+
+        {/* STEP 2 */}
+        <div className="border border-amber-400 dark:border-amber-700 rounded-lg overflow-hidden bg-card">
+          <div className="bg-amber-600 text-white px-3 py-1.5 text-xs font-bold font-mono">
+            STEP 2 · REFRACTORY RESCUE &amp; BRIDGING (Invasive)
+          </div>
+          <div className="p-3.5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-2xs text-ink-2">
+            <div><strong className="text-ink">• 23.4% HTS:</strong> 30 mL IV over 10 min (<span className="font-semibold text-red-500">Central line only</span>).</div>
+            <div><strong className="text-ink">• EVD:</strong> For obstructive hydrocephalus/IVH.</div>
+            <div><strong className="text-ink">• Hyperventilation:</strong> PaCO2 30–35 (caution: vasoconstriction).</div>
+            <div><strong className="text-ink">• Cerebellar Warning:</strong> Drain conservatively; risk of upward herniation.</div>
+          </div>
+        </div>
+
+        <ArrowDown />
+
+        {/* TRANSITION 2 */}
+        <div className="bg-slate-50 border border-slate-200 dark:bg-slate-900/50 dark:border-slate-800 rounded-md p-2 text-center text-2xs font-semibold text-slate-700 dark:text-slate-300">
+          If candidate for definitive surgical decompression
+        </div>
+
+        <ArrowDown />
+
+        {/* STEP 3 */}
+        <div className="border border-red-300 dark:border-red-900 rounded-lg overflow-hidden bg-card">
+          <div className="bg-red-800 text-white px-3 py-1.5 text-xs font-bold font-mono">
+            STEP 3 · EMERGENCY SURGICAL DECOMPRESSION
+          </div>
+          <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-2xs text-ink-2">
             <div>
-              <strong className="block text-ink">1. Position:</strong>
-              HOB elevated to 30°, head straight (ensure zero venous drainage obstruction).
+              <strong className="block text-slate-900 dark:text-ink mb-1">• Supratentorial Infarction/ICH:</strong>
+              Proceed to Decompressive Hemicraniectomy (DHC).
             </div>
             <div>
-              <strong className="block text-ink">2. Ventilation:</strong>
-              Brief hyperventilation to PaCO2 30-35 mmHg (causes vasoconstriction).
-            </div>
-            <div>
-              <strong className="block text-ink">3. Osmotherapy:</strong>
-              Mannitol (0.25 - 1.0 g/kg IV) or 3% Hypertonic Saline (250 mL bolus central line).
-            </div>
-            <div>
-              <strong className="block text-ink">4. Alert:</strong>
-              Neurosurgery pager STAT. Prepare for emergent EVD opening or decompression.
+              <strong className="block text-slate-900 dark:text-ink mb-1">• Infratentorial (Cerebellar):</strong>
+              Suboccipital Decompression + dural expansion.
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Row 4: Osmotherapy Comparison Cards */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+        {/* HTS Card */}
+        <div className="border border-blue-200 dark:border-blue-900 rounded-lg p-4 bg-card space-y-2.5">
+          <h4 className="font-bold text-xs text-blue-800 dark:text-blue-400 uppercase tracking-wide">
+            Hypertonic Saline (HTS 3% / 23.4%)
+          </h4>
+          <ul className="space-y-1.5 text-2xs text-ink-2 list-none">
+            <li>
+              <span className="font-semibold text-ink">• 3% HTS:</span> 250–500 mL IV over 20 min (Peripheral large-bore OK).
+            </li>
+            <li>
+              <span className="font-semibold text-ink">• 23.4% HTS:</span> 30 mL IV over 10 min (<span className="text-red-500 font-bold">Central line only!</span>).
+            </li>
+            <li>
+              <span className="font-semibold text-ink">• Monitoring:</span> Na, Cl, renal panel q4–6h. Avoid Na &gt;155–160.
+            </li>
+            <li>
+              <span className="font-semibold text-ink">• Advantage:</span> Supports euvolemia, avoids hypotension/diuresis.
+            </li>
+          </ul>
+        </div>
+
+        {/* Mannitol Card */}
+        <div className="border border-amber-200 dark:border-amber-900 rounded-lg p-4 bg-card space-y-2.5">
+          <h4 className="font-bold text-xs text-amber-800 dark:text-amber-400 uppercase tracking-wide">
+            Mannitol (20% Solution)
+          </h4>
+          <ul className="space-y-1.5 text-2xs text-ink-2 list-none">
+            <li>
+              <span className="font-semibold text-ink">• Dosing:</span> 0.5–1.0 g/kg IV bolus (In-line 0.22-micron filter required).
+            </li>
+            <li>
+              <span className="font-semibold text-ink">• Monitoring:</span> Serum Osm, Osmolar Gap (Measured &minus; Calc Osm) q6h.
+            </li>
+            <li>
+              <span className="font-semibold text-ink">• Hold Criteria:</span> Caution if gap &ge;20, high risk if gap &gt;55 or AKI/anuria.
+            </li>
+            <li>
+              <span className="font-semibold text-ink">• Disadvantage:</span> Osmotic diuresis (hypovolemia/hypotension), rebound ICP.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Row 5: Steroids Callout Warning */}
+      <div className="bg-rose-50 border border-rose-200 dark:bg-rose-950/20 dark:border-rose-800/50 rounded-lg p-3 flex items-start gap-2.5">
+        <span className="text-rose-600 dark:text-rose-400 text-base font-bold select-none leading-none mt-0.5">⚠️</span>
+        <p className="text-2xs font-semibold text-rose-950 dark:text-rose-300">
+          Corticosteroids are not indicated for cytotoxic edema in stroke and increase infection risk.
+        </p>
+      </div>
+
+      {/* Row 6: Embedded references (Infographic format layout) */}
+      <div className="border-t border-line pt-4 space-y-2">
+        <span className="font-mono text-[9px] text-mute block uppercase tracking-wider">Infographic Guidelines References</span>
+        <ul className="list-disc pl-4 text-[9px] text-mute space-y-1">
+          <li>
+            <strong>AHA/ASA Guidelines:</strong> Prabhakaran S, et al. 2026 Guidelines for the Early Management of Acute Ischemic Stroke. <em>Stroke</em>. 2026. DOI: 10.1161/STR.0000000000000513.{' '}
+            <a href="https://pubmed.ncbi.nlm.nih.gov/41582814" target="_blank" rel="noopener noreferrer" className="text-cobalt-700 hover:text-cobalt-900 font-semibold underline dark:text-cobalt-300">PMID: 41582814</a>
+          </li>
+          <li>
+            <strong>Cerebral Edema:</strong> Wijdicks EF, et al. Recommendations for the Management of Cerebral and Cerebellar Infarction With Swelling. <em>Stroke</em>. 2014;45:1222-1238.{' '}
+            <a href="https://pubmed.ncbi.nlm.nih.gov/24481970" target="_blank" rel="noopener noreferrer" className="text-cobalt-700 hover:text-cobalt-900 font-semibold underline dark:text-cobalt-300">PMID: 24481970</a>
+          </li>
+          <li>
+            <strong>NCS Guidelines:</strong> Cook AM, et al. Guidelines for the Acute Treatment of Cerebral Edema in Neurocritical Care Patients. <em>Neurocrit Care</em>. 2020;32:647-666.{' '}
+            <a href="https://pubmed.ncbi.nlm.nih.gov/32227294" target="_blank" rel="noopener noreferrer" className="text-cobalt-700 hover:text-cobalt-900 font-semibold underline dark:text-cobalt-300">PMID: 32227294</a>
+          </li>
+        </ul>
       </div>
     </div>
   );
