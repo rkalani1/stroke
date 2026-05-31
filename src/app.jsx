@@ -7916,10 +7916,7 @@ Clinician Name`;
               }, 260);
             });
           };
-          const gotoTrialsView = (view) => {
-            updateTrialsView(view);
-            navigateTo('trials', { clearSearch: true });
-          };
+
           const openExternal = (url) => {
             window.open(url, '_blank', 'noopener,noreferrer');
           };
@@ -14299,32 +14296,7 @@ Clinician Name`;
                 }
               });
             }
-            const recruitingOnlyCommand = lowerQuery.match(/^(?:recruiting only|trials recruiting|show recruiting trials)$/i);
-            if (recruitingOnlyCommand) {
-              results.push({
-                type: 'Command',
-                title: 'Show recruiting trials only',
-                description: 'Switches Trials to recruiting-only filter',
-                score: 968,
-                action: () => {
-                  setTrialsRecruitingOnly(true);
-                  navigateTo('trials', { clearSearch: true });
-                }
-              });
-            }
-            const showAllTrialsCommand = lowerQuery.match(/^(?:show all trials|all trials)$/i);
-            if (showAllTrialsCommand) {
-              results.push({
-                type: 'Command',
-                title: 'Show all trials',
-                description: 'Clears recruiting-only trial filter',
-                score: 967,
-                action: () => {
-                  setTrialsRecruitingOnly(false);
-                  navigateTo('trials', { clearSearch: true });
-                }
-              });
-            }
+
             const openPathwayCommand = lowerQuery.match(/^(?:open pathway|pathway)$/i);
             if (openPathwayCommand) {
               const pathway = telestrokeNote.diagnosisCategory || getPathwayForDiagnosis(telestrokeNote.diagnosis || '');
@@ -19341,118 +19313,38 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Section 7: Compact Note Output — clinician-only (Phase 4).
                             Note-template generator (consult/transfer/discharge/etc.);
                             hidden from patient mode. */}
-                        <div className="clinician-only bg-slate-50 border border-line rounded-lg p-3  space-y-2 dark:bg-paper-2">
-                          {/* Primary row: template + copy note */}
-                          <div className="flex items-center gap-2">
-                            <select value={noteTemplate} onChange={(e) => setNoteTemplate(e.target.value)}
-                              aria-label="Note template"
-                              className="text-xs border border-slate-300 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-cobalt-500 flex-1 min-w-0 dark:border-strong">
-                              <option value="consult">Consult Note</option>
-                              <option value="transfer">Transfer Summary</option>
-                              <option value="signout">Signout</option>
-                              <option value="followup">Follow-up Brief</option>
-                              <option value="discharge">Discharge Summary</option>
-                              <option value="procedure">EVT Procedure Note</option>
-                              <option value="progress">Inpatient Progress Note</option>
-                              <option value="patient-ed">Patient Education</option>
-                            </select>
-                            <button
-                              onClick={() => {
-                                const note = generateTelestrokeNote();
-                                copyToClipboard(note, 'telephone-note');
-                              }}
-                              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors shrink-0 ${copiedText === 'telephone-note' ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'telephone-note' ? 'check' : 'copy'} className="w-3.5 h-3.5"></i>
-                              {copiedText === 'telephone-note' ? 'Copied!' : 'Copy Note'}
-                            </button>
-                          </div>
-                          {/* Secondary row: compact section buttons */}
-                          <div className="flex flex-wrap gap-1.5">
+                        {/* Section 7: Pulsara Case Summary Output — clinician-only (Phase 4).
+                            hidden from patient mode. */}
+                        <div className="clinician-only bg-slate-50 border border-line rounded-lg p-3 space-y-2 dark:bg-paper-2">
+                          <select
+                            value={noteTemplate}
+                            onChange={(e) => setNoteTemplate(e.target.value)}
+                            aria-label="Note template"
+                            className="sr-only"
+                          >
+                            <option value="consult">Consult Note</option>
+                            <option value="transfer">Transfer Summary</option>
+                            <option value="signout">Signout</option>
+                            <option value="followup">Follow-up Brief</option>
+                            <option value="discharge">Discharge Summary</option>
+                            <option value="procedure">EVT Procedure Note</option>
+                            <option value="progress">Inpatient Progress Note</option>
+                            <option value="patient-ed">Patient Education</option>
+                          </select>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-semibold text-slate-700 dark:text-ink-2">Pulsara Case Summary</span>
                             <button
                               onClick={() => { copyToClipboard(generatePulsaraSummary(), 'tel-pulsara'); }}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${copiedText === 'tel-pulsara' ? 'bg-ok-600 text-white' : 'bg-cobalt-100 text-cobalt-700 hover:bg-cobalt-200 dark:bg-cobalt-900 dark:text-cobalt-300 dark:hover:bg-cobalt-800'}`}
+                              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${copiedText === 'tel-pulsara' ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}
                             >
                               <i aria-hidden="true" data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                              Pulsara
-                            </button>
-                            <button
-                              onClick={() => { copyToClipboard(buildSmartNote(), 'smart-note'); }}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${copiedText === 'smart-note' ? 'bg-ok-600 text-white' : 'bg-ok-100 text-ok-700 hover:bg-ok-200 dark:bg-ok-900 dark:text-ok-300'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'smart-note' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                              Smart Note
-                            </button>
-                            <button
-                              onClick={() => {
-                                const age = telestrokeNote.age || '***';
-                                const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
-                                let hpi = `HPI: ${age} year old ${sex}`;
-                                if (telestrokeNote.pmh) hpi += ` with PMH of ${telestrokeNote.pmh}`;
-                                hpi += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
-                                if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
-                                if (telestrokeNote.medications) hpi += `Medications: ${telestrokeNote.medications}\n`;
-                                if (telestrokeNote.lastDOACType) {
-                                  const hpiDoseDate = telestrokeNote.lastDOACDose ? new Date(telestrokeNote.lastDOACDose) : null;
-                                  const hpiDoseStr = hpiDoseDate && !Number.isNaN(hpiDoseDate.getTime()) ? `, last dose: ${hpiDoseDate.toLocaleString()}` : '';
-                                  hpi += `Anticoag: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}${hpiDoseStr}\n`;
-                                }
-                                copyToClipboard(hpi, 'tel-hpi');
-                              }}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${copiedText === 'tel-hpi' ? 'bg-ok-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-overlay dark:text-ink-2 dark:hover:bg-overlay'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'tel-hpi' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                              HPI
-                            </button>
-                            <button
-                              onClick={() => {
-                                let exam = `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
-                                if (telestrokeNote.nihssDetails) exam += ` (${telestrokeNote.nihssDetails})`;
-                                exam += `\nBP: ${telestrokeNote.presentingBP || 'N/A'}, Glucose: ${telestrokeNote.glucose || 'N/A'}, INR: ${telestrokeNote.inr || 'N/A'}, Plt: ${telestrokeNote.plateletCount || 'N/A'}`;
-                                copyToClipboard(exam, 'tel-exam');
-                              }}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${copiedText === 'tel-exam' ? 'bg-ok-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-overlay dark:text-ink-2 dark:hover:bg-overlay'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'tel-exam' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                              Exam
-                            </button>
-                            <button
-                              onClick={() => {
-                                let mdm = `ASSESSMENT: ${telestrokeNote.diagnosis || '***'}\n\nPLAN:\n`;
-                                mdm += `TNK: ${telestrokeNote.tnkRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
-                                mdm += `EVT: ${telestrokeNote.evtRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
-                                if (telestrokeNote.rationale) mdm += `Rationale: ${telestrokeNote.rationale}\n`;
-                                if (telestrokeNote.disposition) mdm += `Disposition: ${telestrokeNote.disposition}\n`;
-                                copyToClipboard(mdm, 'tel-mdm');
-                              }}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${copiedText === 'tel-mdm' ? 'bg-ok-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-overlay dark:text-ink-2 dark:hover:bg-overlay'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'tel-mdm' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                              MDM
+                              {copiedText === 'tel-pulsara' ? 'Copied!' : 'Copy Pulsara Note'}
                             </button>
                           </div>
-                          {/* Tertiary row: Follow-up + Share */}
-                          <div className="flex flex-wrap gap-1.5">
-                            <button
-                              onClick={() => { copyToClipboard(generateFollowUpBrief(), 'tel-followup'); }}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${copiedText === 'tel-followup' ? 'bg-ok-600 text-white' : 'bg-cobalt-100 text-cobalt-800 hover:bg-cobalt-200 dark:bg-cobalt-900 dark:text-cobalt-300 dark:hover:bg-cobalt-800'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'tel-followup' ? 'check' : 'file-output'} className="w-3 h-3"></i>
-                              Follow-up Brief
-                            </button>
-                            {typeof navigator !== 'undefined' && navigator.share && (
-                              <button
-                                onClick={async () => {
-                                  try {
-                                    const note = generateTelestrokeNote();
-                                    await navigator.share({ title: `Stroke Consult — ${telestrokeNote.diagnosis || 'Note'}`, text: note });
-                                  } catch (err) { /* user cancelled */ }
-                                }}
-                                className="px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-200 text-slate-700 hover:bg-slate-300 transition-colors flex items-center gap-1 dark:bg-overlay dark:text-ink-2 dark:hover:bg-overlay"
-                              >
-                                                                Share
-                              </button>
-                            )}
+                          <div tabIndex={0} role="region" aria-label="Pulsara summary preview" className="bg-white p-2.5 rounded border border-line max-h-40 overflow-y-auto dark:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">
+                            <pre className="whitespace-pre-wrap text-[11px] text-slate-700 font-mono dark:text-slate-300">
+                              {generatePulsaraSummary()}
+                            </pre>
                           </div>
                         </div>
                       </div>
@@ -26923,115 +26815,37 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
 
-                        {/* Telestroke Note - Epic */}
-                        <div className="bg-slate-50 border border-line rounded-lg p-3  mt-4 space-y-2 dark:bg-paper-2">
-                          {/* Primary row: template + copy note */}
-                          <div className="flex items-center gap-2">
-                                                        <select
-                              value={noteTemplate}
-                              onChange={(e) => setNoteTemplate(e.target.value)}
-                              aria-label="Note template"
-                              className="text-xs border border-slate-300 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-cobalt-500 flex-1 min-w-0 dark:border-strong"
-                            >
-                              <option value="consult">Acute Consult</option>
-                              <option value="transfer">Transfer Summary</option>
-                              <option value="signout">Signout</option>
-                              <option value="followup">Clinic Follow-up</option>
-                              <option value="discharge">Discharge Summary</option>
-                              <option value="procedure">EVT Procedure Note</option>
-                              <option value="progress">Progress Note</option>
-                              <option value="patient-ed">Patient Education</option>
-                            </select>
-                            <button
-                              onClick={() => {
-                                const note = generateTelestrokeNote();
-                                copyToClipboard(note, 'encounter-note');
-                              }}
-                              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors shrink-0 ${copiedText === 'encounter-note' ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'encounter-note' ? 'check' : 'copy'} className="w-3.5 h-3.5"></i>
-                              {copiedText === 'encounter-note' ? 'Copied!' : 'Copy Note'}
-                            </button>
-                          </div>
-                          {/* Secondary row: compact section buttons */}
-                          <div className="flex flex-wrap gap-1.5">
+                        {/* Telestroke Note - Pulsara Only */}
+                        <div className="bg-slate-50 border border-line rounded-lg p-3 mt-4 space-y-2 dark:bg-paper-2">
+                          <select
+                            value={noteTemplate}
+                            onChange={(e) => setNoteTemplate(e.target.value)}
+                            aria-label="Note template"
+                            className="sr-only"
+                          >
+                            <option value="consult">Acute Consult</option>
+                            <option value="transfer">Transfer Summary</option>
+                            <option value="signout">Signout</option>
+                            <option value="followup">Clinic Follow-up</option>
+                            <option value="discharge">Discharge Summary</option>
+                            <option value="procedure">EVT Procedure Note</option>
+                            <option value="progress">Progress Note</option>
+                            <option value="patient-ed">Patient Education</option>
+                          </select>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-semibold text-slate-700 dark:text-ink-2">Pulsara Case Summary</span>
                             <button
                               onClick={() => { copyToClipboard(generatePulsaraSummary(), 'tel-pulsara'); }}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${copiedText === 'tel-pulsara' ? 'bg-ok-600 text-white' : 'bg-cobalt-100 text-cobalt-700 hover:bg-cobalt-200 dark:bg-cobalt-900 dark:text-cobalt-300 dark:hover:bg-cobalt-800'}`}
+                              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${copiedText === 'tel-pulsara' ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}
                             >
                               <i aria-hidden="true" data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                              Pulsara
-                            </button>
-                            <button
-                              onClick={() => { copyToClipboard(buildSmartNote(), 'smart-note-encounter'); }}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${copiedText === 'smart-note-encounter' ? 'bg-ok-600 text-white' : 'bg-ok-100 text-ok-700 hover:bg-ok-200 dark:bg-ok-900 dark:text-ok-300'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'smart-note-encounter' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                              Smart Note
-                            </button>
-                            <button
-                              onClick={() => {
-                                const age = telestrokeNote.age || '***';
-                                const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
-                                let hpi = `HPI: ${age} year old ${sex}`;
-                                if (telestrokeNote.pmh) hpi += ` with PMH of ${telestrokeNote.pmh}`;
-                                hpi += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
-                                if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
-                                if (telestrokeNote.medications) hpi += `Medications: ${telestrokeNote.medications}\n`;
-                                if (telestrokeNote.lastDOACType) {
-                                  const vidDoseDate = telestrokeNote.lastDOACDose ? new Date(telestrokeNote.lastDOACDose) : null;
-                                  const vidDoseStr = vidDoseDate && !Number.isNaN(vidDoseDate.getTime()) ? `, last dose: ${vidDoseDate.toLocaleString()}` : '';
-                                  hpi += `Anticoag: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}${vidDoseStr}\n`;
-                                }
-                                copyToClipboard(hpi, 'vid-hpi');
-                              }}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${copiedText === 'vid-hpi' ? 'bg-ok-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-overlay dark:text-ink-2 dark:hover:bg-overlay'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'vid-hpi' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                              HPI
-                            </button>
-                            <button
-                              onClick={() => {
-                                let exam = `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
-                                if (telestrokeNote.nihssDetails) exam += ` (${telestrokeNote.nihssDetails})`;
-                                exam += `\n\nVITALS:\nBP: ${telestrokeNote.presentingBP || 'N/A'}\nGlucose: ${telestrokeNote.glucose || 'N/A'}\nINR: ${telestrokeNote.inr || 'N/A'}\nPlt: ${telestrokeNote.plateletCount || 'N/A'}`;
-                                exam += `\n\nIMAGING:\nCT Head: ${telestrokeNote.ctResults || 'N/A'}\nCTA: ${telestrokeNote.ctaResults || 'N/A'}`;
-                                if (telestrokeNote.ctpResults) exam += `\nCTP: ${telestrokeNote.ctpResults}`;
-                                if (aspectsScore != null) exam += `\nASPECTS: ${aspectsScore}`;
-                                copyToClipboard(exam, 'vid-exam');
-                              }}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${copiedText === 'vid-exam' ? 'bg-ok-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-overlay dark:text-ink-2 dark:hover:bg-overlay'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'vid-exam' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                              Exam
-                            </button>
-                            <button
-                              onClick={() => {
-                                let mdm = `ASSESSMENT: ${telestrokeNote.diagnosis || '***'}\n\nPLAN:\n`;
-                                mdm += `TNK: ${telestrokeNote.tnkRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
-                                mdm += `EVT: ${telestrokeNote.evtRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
-                                if (telestrokeNote.rationale) mdm += `Rationale: ${telestrokeNote.rationale}\n`;
-                                if (telestrokeNote.disposition) mdm += `Disposition: ${telestrokeNote.disposition}\n`;
-                                if (telestrokeNote.recommendationsText) mdm += `\n${telestrokeNote.recommendationsText}`;
-                                copyToClipboard(mdm, 'vid-mdm');
-                              }}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${copiedText === 'vid-mdm' ? 'bg-ok-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-overlay dark:text-ink-2 dark:hover:bg-overlay'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'vid-mdm' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                              MDM
-                            </button>
-                            <button
-                              onClick={() => { copyToClipboard(generateFollowUpBrief(), 'vid-followup'); }}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${copiedText === 'vid-followup' ? 'bg-ok-600 text-white' : 'bg-cobalt-100 text-cobalt-800 hover:bg-cobalt-200 dark:bg-cobalt-900 dark:text-cobalt-300 dark:hover:bg-cobalt-800'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'vid-followup' ? 'check' : 'file-output'} className="w-3 h-3"></i>
-                              Follow-up
+                              {copiedText === 'tel-pulsara' ? 'Copied!' : 'Copy Pulsara Note'}
                             </button>
                           </div>
                           {/* Note preview */}
-                          <div tabIndex={0} role="region" aria-label="Generated telestroke note" className="bg-white p-3 rounded border border-line max-h-96 overflow-y-auto dark:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">
+                          <div tabIndex={0} role="region" aria-label="Generated Pulsara note preview" className="bg-white p-3 rounded border border-line max-h-96 overflow-y-auto dark:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">
                             <pre className="whitespace-pre-wrap text-xs text-slate-800 font-mono dark:text-ink">
-                              {generateTelestrokeNote()}
+                              {generatePulsaraSummary()}
                             </pre>
                           </div>
                         </div>
@@ -27387,74 +27201,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           );
                         })()}
 
-                        {/* Active trial snapshot (uses the same trial source as Library > Trials) */}
-                        {(() => {
-                          const trialCategory = getTrialTabCategory(telestrokeNote.diagnosisCategory, telestrokeNote.diagnosis);
-                          if (!trialCategory) return null;
-                          const categoryData = trialsData[trialCategory];
-                          if (!categoryData) return null;
-                          const categoryTrials = categoryData.hasSubsections
-                            ? Object.values(categoryData.subsections).reduce((acc, subsection) => acc.concat(subsection.trials || []), [])
-                            : (categoryData.trials || []);
-                          if (!categoryTrials.length) return null;
 
-                          const trialStatusByNct = Object.values(trialEligibility || {}).reduce((acc, result) => {
-                            if (result && result.nct) acc[result.nct] = result.status;
-                            return acc;
-                          }, {});
-                          const statusTone = {
-                            eligible: 'bg-ok-100 text-ok-800 border-ok-200 dark:bg-ok-950 dark:text-ok-300 dark:border-ok-800',
-                            needs_info: 'bg-warn-100 text-warn-800 border-warn-200 dark:bg-warn-950 dark:text-warn-300 dark:border-warn-800',
-                            not_eligible: 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-paper-2 dark:text-ink-2 dark:border-line',
-                            pending: 'bg-cobalt-50 text-cobalt-700 border-cobalt-200 dark:bg-cobalt-900 dark:text-cobalt-300 dark:border-cobalt-700'
-                          };
-                          const statusLabel = {
-                            eligible: 'Eligible',
-                            needs_info: 'Needs Info',
-                            not_eligible: 'Not Eligible',
-                            pending: 'Review'
-                          };
-
-                          return (
-                            <details className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700 " open>
-                              <summary className="cursor-pointer px-3 py-2.5 font-semibold text-cobalt-900 hover:bg-cobalt-50 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                                <span className="flex items-center gap-2">
-                                                                    Active Trials ({trialCategory === 'ich' ? 'ICH' : 'Ischemic'})
-                                </span>
-                                <button
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    navigateTo('trials');
-                                    setTrialsCategory(trialCategory);
-                                  }}
-                                  className="text-xs font-semibold text-cobalt-700 hover:text-cobalt-900 underline dark:text-cobalt-300"
-                                >
-                                  Open full library
-                                </button>
-                              </summary>
-                              <div className="px-3 pb-3 space-y-2">
-                                {categoryTrials.slice(0, 6).map((trial) => {
-                                  const status = trialStatusByNct[trial.nct] || 'pending';
-                                  return (
-                                    <div key={trial.nct || trial.name} className="border border-line rounded-lg p-2.5 bg-slate-50 dark:bg-paper-2">
-                                      <div className="flex items-center justify-between gap-2">
-                                        <p className="text-sm font-semibold text-slate-900 dark:text-ink">{trial.name}</p>
-                                        <span className={`px-2 py-0.5 rounded-full text-[11px] font-semibold border ${statusTone[status] || statusTone.not_eligible}`}>
-                                          {statusLabel[status] || 'Not Eligible'}
-                                        </span>
-                                      </div>
-                                      <p className="text-xs text-slate-600 mt-1 dark:text-ink-2">{trial.description}</p>
-                                      {trial.nct && (
-                                        <p className="text-[11px] text-slate-500 mt-1 dark:text-mute">{trial.nct}</p>
-                                      )}
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </details>
-                          );
-                        })()}
 
 
                         {/* ============================================ */}
@@ -27555,51 +27302,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </details>
                     )}
 
-                    {/* ============================================ */}
-                    {/* TRIAL SCREENING TOOLS (launcher card)         */}
-                    {/* Quick-access to the Bedside Screener and the  */}
-                    {/* Eligibility Tables sub-views in the Trials    */}
-                    {/* tab. Patient context auto-flows via URL hash. */}
-                    {/* ============================================ */}
-                    <section aria-labelledby="trial-screening-tools-heading" className="clinician-only bg-card border border-line rounded-md p-6">
-                      <div className="flex flex-col gap-4">
-                        <div>
-                          <p className="font-mono uppercase text-eyebrow text-mute mb-1">Trial screening</p>
-                          <h2 id="trial-screening-tools-heading" className="font-serif text-section text-ink">
-                            Active stroke trials
-                          </h2>
-                          <p className="font-sans text-body text-ink-2 mt-1 text-pretty">
-                            Live trial-eligibility screening and reference tables — patient context from this encounter flows automatically into the Bedside Screener.
-                          </p>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                          <button
-                            type="button"
-                            onClick={() => { updateTrialsView('screener'); navigateTo('trials'); }}
-                            className="group flex items-start gap-3 rounded-lg border border-ok-200 bg-ok-50 hover:bg-ok-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-ok-500 px-4 py-3 text-left transition-colors dark:border-ok-800 dark:bg-ok-950 dark:hover:bg-ok-900"
-                          >
-                            <i aria-hidden="true" data-lucide="stethoscope" className="w-5 h-5 text-ok-700 mt-0.5 flex-shrink-0 dark:text-ok-300"></i>
-                            <span className="flex-1 min-w-0">
-                              <span className="block font-semibold text-ok-900 dark:text-ok-300">Bedside Trial Screener</span>
-                              <span className="block text-xs text-ok-800 mt-0.5 dark:text-ok-300">Auto-evaluates trial eligibility from age, NIHSS, ASPECTS, pre-mRS</span>
-                            </span>
-                            <i aria-hidden="true" data-lucide="arrow-right" className="w-4 h-4 text-ok-700 group-hover:translate-x-0.5 transition-transform mt-1 dark:text-ok-300"></i>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => { updateTrialsView('eligibility'); navigateTo('trials'); }}
-                            className="group flex items-start gap-3 rounded-lg border border-warn-200 bg-warn-50 hover:bg-warn-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-warn-500 px-4 py-3 text-left transition-colors dark:border-warn-800 dark:bg-warn-950 dark:hover:bg-warn-900"
-                          >
-                            <i aria-hidden="true" data-lucide="table" className="w-5 h-5 text-warn-700 mt-0.5 flex-shrink-0 dark:text-warn-300"></i>
-                            <span className="flex-1 min-w-0">
-                              <span className="block font-semibold text-warn-900 dark:text-warn-300">Eligibility Tables</span>
-                              <span className="block text-xs text-warn-800 mt-0.5 dark:text-warn-300">public-reference reference for ischemic stroke and ICH pathways</span>
-                            </span>
-                            <i aria-hidden="true" data-lucide="arrow-right" className="w-4 h-4 text-warn-700 group-hover:translate-x-0.5 transition-transform mt-1 dark:text-warn-300"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </section>
+
 
                     {/* ===== v7 MOBILE FLOATING ACTION BAR ============================
                          Thumb-zone duplicates of Copy Note + Copy Handoff so a
@@ -29215,28 +28918,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           </div>
                         </div>
-                          <div className="bg-white border border-cobalt-200 rounded-md p-4 dark:bg-card dark:border-cobalt-700">
-                            <h3 className="text-sm font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Telestroke rapid decision stack (phone or video)</h3>
-                            <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
-                              <li>Confirm LKW and thrombolysis window; screen for contraindications and disabling deficit.</li>
-                              <li>Use the EVT Eligibility Builder and activate transfer for LVO or large core candidates.</li>
-                              <li>Set BP phase target and treat if above goal.</li>
-                              <li>Document consent, contraindication review, and disposition; copy the consult note.</li>
-                            </ul>
-                            <p className="text-xs text-slate-500 mt-2 dark:text-mute">
-                              {consultationType === 'telephone'
-                                ? 'Telephone: request NIHSS and exam details from the bedside team and review imaging together.'
-                                : 'Video: perform a focused remote NIHSS and confirm imaging review.'}
-                            </p>
-                          </div>
-                          <div className="bg-white border border-cobalt-200 rounded-md p-4 dark:bg-card dark:border-cobalt-700">
-                            <h3 className="text-sm font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Inpatient priorities</h3>
-                            <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
-                              <li>Post-lytic and post-EVT monitoring with phase-appropriate BP targets.</li>
-                              <li>Manage complications (sICH, angioedema) and ensure nursing flowsheet compliance.</li>
-                              <li>Initiate secondary prevention: antithrombotic plan, statin, and risk-factor control.</li>
-                            </ul>
-                          </div>
+
                           <div className="bg-white border border-cobalt-200 rounded-md p-4 space-y-2 dark:bg-card dark:border-cobalt-700">
                             <h3 className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">Post-EVT BP Guardrail</h3>
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-2 text-sm">
@@ -29515,10 +29197,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           })()}
                         </div>
 
-                        <div className="bg-white border border-cobalt-200 rounded-lg p-4 dark:bg-card dark:border-cobalt-700">
-                          <h2 className="text-lg font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Mobile Stroke Units (MSU)</h2>
-                          <p className="text-sm text-slate-700 dark:text-ink-2">Use MSUs where available for rapid stroke identification and IV thrombolysis delivery. MSUs reduce onset-to-treatment time and improve outcomes (Class I, LOE A).</p>
-                        </div>
+
 
                         <div className="bg-white border border-cobalt-200 rounded-lg p-4 dark:bg-card dark:border-cobalt-700">
                           <h2 className="text-lg font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Pediatric Reperfusion (28 days–18 years)</h2>
@@ -33837,21 +33516,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </ul>
                     </section>
 
-                    {/* ===== EVIDENCE ATLAS ENTRY ===== */}
-                    <section aria-labelledby="research-atlas-heading" className="space-y-4">
-                      <h2 id="research-atlas-heading" className="sr-only">Evidence Atlas</h2>
-                      <button
-                        type="button"
-                        onClick={() => navigateTo('trials')}
-                        className="v7-card t-workflow w-full text-left flex items-center justify-between gap-4 hover:border-cobalt-300"
-                      >
-                        <div>
-                          <h3 className="font-serif text-md text-ink">Evidence Atlas</h3>
-                          <p className="font-sans text-body text-ink-2 mt-1 text-pretty">Browse all verified active &amp; completed trials</p>
-                        </div>
-                        <span className="font-mono text-sm text-cobalt-700 whitespace-nowrap dark:text-cobalt-300" aria-hidden="true">Open →</span>
-                      </button>
-                    </section>
+
 
                   </div>
                   </ErrorBoundary>
@@ -33860,7 +33525,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                 {/* ============================================ */}
                 {/* CLINICAL TRIALS TAB                          */}
-                {/* Uses trialsData object and TrialCard component */}
                 {/* ============================================ */}
                 {activeTab === 'trials' && (
                   <ErrorBoundary>
@@ -33881,21 +33545,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               : 'Bedside screener — auto-evaluates trial eligibility from current encounter parameters'}
                           </p>
                         </div>
-
                       </div>
-
                     </header>
 
-                    {/* ============================================ */}
-                    {/* Trials sub-view tablist (v5.37.0)            */}
-                    {/* Bedside Screener (default) iframes            */}
-                    {/* example.github.io/stroke-trials-screener as  */}
-                    {/* the canonical trial DB + live eligibility.    */}
-                    {/* Eligibility Tables iframes example.github.   */}
-                    {/* io/stroke-eligibility-tables-embed for static */}
-                    {/* reference. Single source of truth — no native */}
-                    {/* trial database to drift.                      */}
-                    {/* ============================================ */}
                     {/* v7 SubTabs — replaces emerald/amber colored pill bar.
                         Single accent (cobalt) for the active item; no per-tab
                         colors. Caption baseline-aligned with the SubTabs row. */}
@@ -33916,34 +33568,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </span>
                     </div>
 
-                    {/* ============================================ */}
-                    {/* Sub-view: Bedside Screener (NATIVE)           */}
-                    {/* v7: the standalone stroke-trials-screener was   */}
-                    {/* ported natively into <TrialScreener/> — no more  */}
-                    {/* iframe / DeviceFrame / postMessage handshake.    */}
-                    {/* 15-trial dual-eval engine lives in              */}
-                    {/* src/evidence/screener-eval.js. Synthetic public  */}
-                    {/* demo only — institution-clean, no PHI capture.   */}
-                    {/* ============================================ */}
+                    {/* Sub-view: Bedside Screener (NATIVE) */}
                     {trialsView === 'screener' && (
                       <div id="trials-screener-panel">
                         <TrialScreener copyToClipboard={copyToClipboard} addToast={addToast} />
                       </div>
                     )}
 
-                    {/* ============================================ */}
-                    {/* Sub-view: Eligibility Tables (NATIVE)         */}
-                    {/* v7: the standalone stroke-eligibility-tables-  */}
-                    {/* embed was ported natively into                 */}
-                    {/* <EligibilityTables/> — no more iframe /         */}
-                    {/* DeviceFrame. 6 phase-grouped trial-eligibility */}
-                    {/* tables (ischemic & ICH × acute/inpatient/       */}
-                    {/* outpatient) live in                             */}
-                    {/* src/evidence/eligibilityTables.js, with per-    */}
-                    {/* table Copy-as-HTML (v7 teal/gold hexes) and     */}
-                    {/* Copy-as-Markdown. Synthetic public demo only —  */}
-                    {/* institution-clean, no UW purple/gold.           */}
-                    {/* ============================================ */}
+                    {/* Sub-view: Eligibility Tables (NATIVE) */}
                     {trialsView === 'eligibility' && (
                       <div id="trials-eligibility-panel" className="space-y-3">
                         <p className="font-mono uppercase text-2xs tracking-[0.06em] text-slate-500 dark:text-slate-400">
@@ -33952,13 +33584,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <EligibilityTables copyToClipboard={copyToClipboard} addToast={addToast} />
                       </div>
                     )}
-
                   </div>
                   </ErrorBoundary>
                 )}
-                {/* End Clinical Trials Tab */}
-
-                {/* ============================================ */}
                 {/* EDUCATION & CURRICULA TAB                     */}
                 {/* ============================================ */}
                 {activeTab === 'education' && (
