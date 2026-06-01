@@ -303,15 +303,15 @@ async function main() {
       <style>
         @page {
           size: letter;
-          margin: 0.16in 0.16in 0.16in 0.16in;
+          margin: 0.18in 0.18in 0.18in 0.18in;
         }
         body {
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
           margin: 0;
           padding: 0;
           color: #1e293b;
-          font-size: 8pt;
-          line-height: 1.2;
+          font-size: 8.6pt;
+          line-height: 1.22;
           background: white;
         }
         .container {
@@ -336,7 +336,7 @@ async function main() {
           color: white;
           text-align: center;
           padding: 3px;
-          font-size: 9.5pt;
+          font-size: 9.8pt;
           font-weight: bold;
           letter-spacing: 0.5px;
           text-transform: uppercase;
@@ -360,7 +360,7 @@ async function main() {
         }
         .list-section li {
           margin-bottom: 1.5px;
-          font-size: 8pt;
+          font-size: 8.6pt;
         }
         .list-section ul ul {
           margin-top: 1.5px;
@@ -368,15 +368,15 @@ async function main() {
         }
         .list-section ul ul li {
           margin-bottom: 1.5px;
-          font-size: 7.8pt;
+          font-size: 8.2pt;
         }
         
         .herniation-table {
           width: 100%;
           border-collapse: collapse;
           margin-top: 5px;
-          font-size: 7.2pt;
-          line-height: 1.15;
+          font-size: 7.6pt;
+          line-height: 1.18;
         }
         .herniation-table th, .herniation-table td {
           border: 1px solid #fed7aa;
@@ -397,10 +397,10 @@ async function main() {
           background-color: #fef2f2;
           color: #991b1b;
           border-radius: 4px;
-          padding: 4px 6px;
+          padding: 3px 5px;
           margin-top: 5px;
-          font-size: 7.5pt;
-          line-height: 1.2;
+          font-size: 8.0pt;
+          line-height: 1.25;
           width: 98%;
         }
         .perfusion-trap-box strong {
@@ -421,6 +421,7 @@ async function main() {
           overflow: hidden;
           margin-bottom: 4px;
           border: 1px solid #e2e8f0;
+          padding: 4px 0;
         }
         .waveform-bullets {
           width: 100%;
@@ -431,7 +432,7 @@ async function main() {
         }
         .waveform-bullets li {
           margin-bottom: 1.5px;
-          font-size: 8pt;
+          font-size: 8.6pt;
         }
 
       </style>
@@ -524,7 +525,7 @@ async function main() {
         <div class="section-title blue">ICP WAVEFORM ANALYSIS</div>
         <div class="waveform-section">
           <div class="waveform-container">
-            <svg viewBox="0 0 420 150" style="width: 100%; height: auto; display: block;" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 420 150" style="display: block; width: 100%; max-width: 440px; height: auto; margin: 0 auto;" xmlns="http://www.w3.org/2000/svg">
               <line x1="10" y1="25" x2="410" y2="25" stroke="#1e293b" stroke-width="1" />
               <line x1="10" y1="50" x2="410" y2="50" stroke="#1e293b" stroke-width="1" />
               <line x1="10" y1="75" x2="410" y2="75" stroke="#1e293b" stroke-width="1" />
@@ -586,7 +587,7 @@ async function main() {
     path: 'documents/references/Intracranial Hypertension & Herniation.pdf',
     format: 'letter',
     printBackground: true,
-    margin: { top: '0.16in', bottom: '0.16in', left: '0.16in', right: '0.16in' }
+    margin: { top: '0.18in', bottom: '0.18in', left: '0.18in', right: '0.18in' }
   });
   console.log('Generated documents/references/Intracranial Hypertension & Herniation.pdf');
 
