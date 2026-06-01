@@ -7943,7 +7943,7 @@ Clinician Name`;
             { id: 'sub-references', group: 'Protocols', label: 'Guideline & Reference Library', hint: 'Landmark trials, guidelines, HINTS & CVT', icon: 'clipboard-list', keywords: ['reference library', 'references', 'docs', 'toast', 'classification', 'guidelines', 'trials'], run: () => gotoProtocolsSub('references') },
             // ---- Simulators (each card lives in the Simulators sub-tab of Education) ----
             { id: 'sim-all', group: 'Bedside Simulators', label: 'Bedside Simulators', hint: 'All teaching simulators', icon: 'test-tubes', keywords: ['simulators', 'simulation', 'teaching', 'bedside'], run: () => { navigateTo('education'); setEducationSubTab('simulators'); } },
-            { id: 'sim-evd', group: 'Bedside Simulators', label: 'EVD Maintenance & Leveling', hint: 'Interactive system simulator', icon: 'activity', keywords: ['evd', 'drain', 'ventriculostomy', 'leveling', 'zeroing', 'overdrainage'], run: () => { navigateTo('education'); setEducationSubTab('evd-maintenance'); } },
+            { id: 'sim-evd', group: 'Bedside Simulators', label: 'External Ventricular Drain', hint: 'Interactive system simulator', icon: 'activity', keywords: ['evd', 'drain', 'ventriculostomy', 'leveling', 'zeroing', 'overdrainage'], run: () => { navigateTo('education'); setEducationSubTab('evd-maintenance'); } },
             { id: 'sim-icp', group: 'Bedside Simulators', label: 'ICP & Herniation Management', hint: 'Waveform analyzer & osmotherapy calculator', icon: 'alert-triangle', keywords: ['icp', 'intracranial pressure', 'herniation', 'compliance', 'osmotherapy', 'mannitol'], run: () => { navigateTo('education'); setEducationSubTab('herniation-icp'); } },
             { id: 'sim-hints', group: 'Bedside Simulators', label: 'HINTS+ Eye-Movement Simulator', hint: 'Vestibular exam', icon: 'eye', keywords: ['hints', 'eye movement', 'vestibular', 'nystagmus', 'vertigo', 'dizziness'], run: () => { navigateTo('education'); setEducationSubTab('hints-simulator'); } },
             { id: 'sim-pupil', group: 'Bedside Simulators', label: 'Pupillometry / NPi Simulator', hint: 'Pupil reactivity', icon: 'circle', keywords: ['pupillometry', 'npi', 'pupil', 'reactivity'], run: () => { navigateTo('education'); setEducationSubTab('pupillometry'); } },
@@ -33419,7 +33419,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       {[
                         ['ref-trials', 'Major Stroke Trials'],
                         ['ref-evidence-recs', 'Guideline Recommendations'],
-                        ['ref-evd', 'EVD Maintenance'],
+                        ['ref-evd', 'External Ventricular Drain'],
                         ['ref-icp', 'ICP & Herniation'],
                         ['ref-hints', 'HINTS Exam'],
                         ['ref-cvt', 'CVT'],
@@ -33607,11 +33607,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     </details>
 
-                    {/* EVD Maintenance & Leveling */}
+                    {/* External Ventricular Drain */}
                     <details id="ref-evd" className="bg-white border border-blue-200 rounded-lg dark:bg-card dark:border-blue-900">
                       <summary className="cursor-pointer p-4 font-semibold text-blue-800 hover:bg-blue-50 rounded-lg flex items-center gap-2 dark:text-blue-300 dark:hover:bg-slate-850">
                         <i aria-hidden="true" data-lucide="activity" className="w-4 h-4 text-blue-600 dark:text-blue-400"></i>
-                        EVD Maintenance &amp; Leveling Infographic
+                        External Ventricular Drain Infographic
                       </summary>
                       <div className="px-4 pb-4">
                         <EVDInfographic />

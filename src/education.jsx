@@ -275,7 +275,7 @@ const EDUCATION_MODULES = [
   },
   {
     id: 'evd-maintenance',
-    title: 'EVD Maintenance & Leveling',
+    title: 'External Ventricular Drain',
     purpose: 'Interactive EVD system simulator, transducer zeroing guide, and clinical complications checklist.',
     actions: 'evd external ventricular drain leveling zeroing tragus overdrainage underdrainage csf',
     categories: ['simulators', 'printable', 'icu'],
@@ -1989,8 +1989,8 @@ export const EVDInfographic = () => {
   const [showPdf, setShowPdf] = useState(false);
 
   const emailDoc = () => {
-    const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/documents/references/EVD Quick Reference.pdf';
-    const subject = encodeURIComponent('EVD Quick Reference');
+    const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/documents/references/External Ventricular Drain.pdf';
+    const subject = encodeURIComponent('External Ventricular Drain');
     const body = encodeURIComponent(fullUrl);
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
@@ -2002,7 +2002,7 @@ export const EVDInfographic = () => {
         <div className="flex items-center gap-2">
           <i aria-hidden="true" data-lucide="file-output" className="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
           <div>
-            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">EVD Quick Reference</h4>
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">External Ventricular Drain</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400">PDF Reference Guide</p>
           </div>
         </div>
@@ -2015,8 +2015,8 @@ export const EVDInfographic = () => {
             {showPdf ? "Hide PDF Preview" : "Preview PDF"}
           </button>
           <a
-            href="documents/references/EVD Quick Reference.pdf"
-            download="EVD Quick Reference.pdf"
+            href="documents/references/External Ventricular Drain.pdf"
+            download="External Ventricular Drain.pdf"
             className="px-3.5 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors flex items-center gap-1.5"
           >
             <i aria-hidden="true" data-lucide="download" className="w-3.5 h-3.5"></i>
@@ -2035,9 +2035,9 @@ export const EVDInfographic = () => {
       {showPdf && (
         <div className="border border-slate-250 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
           <iframe
-            src="documents/references/EVD Quick Reference.pdf"
+            src="documents/references/External Ventricular Drain.pdf"
             className="w-full h-full border-none"
-            title="EVD Quick Reference PDF"
+            title="External Ventricular Drain PDF"
           />
         </div>
       )}
@@ -2046,7 +2046,7 @@ export const EVDInfographic = () => {
       <div className="border border-slate-250 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
         {/* Header */}
         <div className="bg-slate-800 text-white text-center py-3.5 px-4">
-          <h3 className="font-serif text-lg font-bold tracking-wide">EVD Quick Reference</h3>
+          <h3 className="font-serif text-lg font-bold tracking-wide">External Ventricular Drain</h3>
         </div>
 
         {/* Top Split Area */}
@@ -2127,7 +2127,7 @@ export const EVDInfographic = () => {
               <ul className="list-disc pl-4 space-y-1.5 text-xs text-slate-600 dark:text-slate-350">
                 <li>Progressive enlargement of the cerebral ventricles.</li>
                 <li>Temporal horn dilation (sensitive early sign of obstruction).</li>
-                <li>High-risk factors: Intraventricular Hemorrhage (IVH) in 3rd or 4th ventricles, compression of 4th ventricle, or high volume blood (mGS &ge; 6).</li>
+                <li>High-risk factors: Intraventricular Hemorrhage (IVH) in 3rd or 4th ventricles, compression of 4th ventricle, or high volume blood.</li>
               </ul>
             </div>
           </div>
@@ -2142,9 +2142,9 @@ export const EVDInfographic = () => {
             <ul className="list-disc pl-5 space-y-1.5">
               <li><strong>Leveling:</strong> Always align the zero level of the EVD scale/transducer to the external auditory meatus (EAM) / tragus.</li>
               <li><strong>Mobilization Clamping Rules:</strong> Always CLAMP the EVD before: turning the patient, adjusting HOB, or mobilizing the patient out of bed to prevent severe overdrainage or underdrainage.</li>
-              <li><strong>Waveform Validity:</strong> ICP value and waveform morphology are valid only when the EVD is clamped.</li>
+              <li><strong>Waveform:</strong> ICP value and waveform morphology are valid only when the EVD is clamped.</li>
               <li><strong>CSF Drainage:</strong> CSF drainage is passive: occurs only when patient ICP exceeds EVD chamber height.</li>
-              <li><strong>Normal CSF Flow Benchmarks:</strong> Normal CSF production is ~20 mL/hr (~500 mL/day). Drainage &gt;20 mL/hr should trigger immediate assessment for overdrainage or chamber level escalation.</li>
+              <li><strong>Normal CSF Flow:</strong> Normal CSF production is ~20 mL/hr (~500 mL/day). Drainage &gt;20 mL/hr should trigger immediate assessment for overdrainage or chamber level escalation.</li>
             </ul>
           </div>
         </div>
