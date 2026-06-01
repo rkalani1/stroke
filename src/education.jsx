@@ -2461,26 +2461,7 @@ export const ICPInfographic = () => {
             )}
           </div>
         </div>
-
-        {/* Emergent Actions Banner */}
-        <div className="p-5 rounded-xl border border-red-500 bg-red-600 text-white shadow-lg flex flex-col gap-3 justify-center items-center text-center animate-pulse">
-          <div>
-            <h4 className="font-serif text-lg font-bold uppercase tracking-wider">🚨 Surgical Management Urgency</h4>
-            <p className="text-xs text-red-100 max-w-md mt-1">
-              If radiographic signs show mass effect (midline shift, cerebellar ICH ≥15 mL, hydrocephalus), call immediately to activate the surgical pathway.
-            </p>
-          </div>
-          
-          <a
-            href="tel:206-910-2743"
-            className="flex items-center gap-2 px-5 py-3 bg-white hover:bg-slate-100 text-red-600 rounded-xl text-sm font-bold shadow-md transition-all active:scale-95"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-              <path fillRule="evenodd" d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97a16.616 16.616 0 0 0 6.479 6.479l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z" clipRule="evenodd" />
-            </svg>
-            <span>Call Herniation Phone: (206) 910-2743</span>
-          </a>
-        </div>
+        
       </div>
     </div>
   );
