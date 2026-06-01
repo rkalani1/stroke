@@ -2246,40 +2246,90 @@ export const ICPInfographic = () => {
               <li><strong>Focal deficit:</strong> New focal motor deficit or abnormal posturing (decorticate / decerebrate).</li>
               <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <span className="font-bold text-red-600 dark:text-red-400">*Cushing's Triad is a LATE, pre-terminal sign of brainstem compression. Do not wait for its onset to initiate therapy.*</span></li>
             </ul>
+            
+            <div className="mt-4 overflow-x-auto">
+              <table className="min-w-full divide-y divide-orange-200 dark:divide-orange-900 text-[11px] text-slate-600 dark:text-slate-350 leading-relaxed">
+                <thead>
+                  <tr className="bg-orange-50/50 dark:bg-orange-950/20 text-orange-900 dark:text-orange-300 font-bold">
+                    <th scope="col" className="px-3 py-1.5 text-left font-bold border-b border-orange-200 dark:border-orange-900 w-[20%]">Syndrome</th>
+                    <th scope="col" className="px-3 py-1.5 text-left font-bold border-b border-orange-200 dark:border-orange-900 w-[35%]">Anatomy</th>
+                    <th scope="col" className="px-3 py-1.5 text-left font-bold border-b border-orange-200 dark:border-orange-900 w-[45%]">Exam &amp; Diagnostic Trap</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-orange-100 dark:divide-orange-950/50">
+                  <tr>
+                    <td className="px-3 py-2 font-semibold text-orange-850 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Uncal (Lateral)</td>
+                    <td className="px-3 py-2 border-r border-orange-100 dark:border-orange-950/30">Medial temporal lobe (uncus) pushed over tentorial edge</td>
+                    <td className="px-3 py-2">Ipsilateral sluggish/dilated pupil (CN III compressed), contralateral hemiparesis. <br/><span className="italic text-slate-500">Trap:</span> <strong>Kernohan's Notch</strong> causes false-localizing ipsilateral hemiparesis.</td>
+                  </tr>
+                  <tr>
+                    <td className="px-3 py-2 font-semibold text-orange-855 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Central (Axial)</td>
+                    <td className="px-3 py-2 border-r border-orange-100 dark:border-orange-950/30">Downward diencephalic and midbrain displacement</td>
+                    <td className="px-3 py-2">Progressive stupor, midpoint fixed pupils, decorticate to decerebrate posturing. <br/><span className="italic text-slate-500">Trap:</span> Symmetrical signs often confused with metabolic encephalopathy.</td>
+                  </tr>
+                  <tr>
+                    <td className="px-3 py-2 font-semibold text-orange-855 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Subfalcine</td>
+                    <td className="px-3 py-2 border-r border-orange-100 dark:border-orange-950/30">Cingulate gyrus displaced under the falx cerebri</td>
+                    <td className="px-3 py-2">Often clinically silent, or presents with contralateral lower extremity weakness. <br/><span className="italic text-slate-500">Trap:</span> <strong>ACA compression</strong> causes frontal/leg territory infarction.</td>
+                  </tr>
+                  <tr>
+                    <td className="px-3 py-2 font-semibold text-orange-855 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Tonsillar</td>
+                    <td className="px-3 py-2 border-r border-orange-100 dark:border-orange-950/30">Cerebellar tonsils forced through the foramen magnum</td>
+                    <td className="px-3 py-2">Cushing's triad, flaccid quadriplegia, respiratory arrest. <br/><span className="italic text-slate-500">Trap:</span> Cushing's triad is pre-terminal; do not wait for its appearance.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
         {/* Management Section */}
         <div>
           <div className="bg-emerald-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
-            Management
+            Management (Tiered Pathway)
           </div>
-          <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-emerald-50/15 dark:bg-emerald-950/5 border-b border-slate-200 dark:border-slate-800 space-y-2">
-            <ul className="list-disc pl-5 space-y-2">
-              <li><strong>Hyperosmolar Therapies &amp; Hold Parameters:</strong>
-                <ul className="list-circle pl-5 mt-1 space-y-1.5 text-[11px] text-slate-500 dark:text-slate-400">
-                  <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Osmolarity &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
-                  <li><strong>Hypertonic Saline (23.4% NaCl):</strong> 30 mL IV bolus over 5–10 min. <span className="font-bold text-red-600 dark:text-red-400">*CENTRAL LINE ACCESS ONLY*</span> to prevent extravasation necrosis.</li>
-                  <li><strong>Hypertonic Saline (3% NaCl):</strong> 150–250 mL IV bolus over 15–20 min. Large peripheral IV access is acceptable for emergent rescue. <span className="font-semibold text-red-600 dark:text-red-400">Hold HTS if Serum Sodium &gt; 155–160 mEq/L or Chloride &gt; 115–120 mEq/L.</span></li>
-                </ul>
-              </li>
-              <li><strong>Hyperventilation:</strong> Use strictly as short-term bridge therapy (target PaCO₂ 30–35 mmHg). Avoid prolonged use due to ischemia risks.</li>
-              <li><strong>Steroid Contraindication:</strong> Steroids are contraindicated for cytotoxic cerebral edema in stroke and raise infection risks.</li>
-              <li><strong>Decompressive Surgery Selection Criteria:</strong>
-                <ul className="list-circle pl-5 mt-1 space-y-1 text-[11px] text-slate-500 dark:text-slate-400">
-                  <li><strong>Malignant MCA (DHC):</strong> Age &le; 60 years, clinical decline (GCS decline &ge; 1, pupillary changes), CT/MRI infarction &ge; 50% MCA territory, within 48h of onset (DECIMAL/DESTINY trials).</li>
-                  <li><strong>Cerebellar Stroke (Suboccipital Decompression):</strong> Mass effect on brainstem, 4th ventricle effacement, cerebellar herniation, or hydrocephalus.</li>
-                </ul>
-              </li>
-              <li><strong>Simplified Escalation Pathway:</strong>
-                <div className="mt-2 grid grid-cols-2 md:grid-cols-4 gap-1.5 text-[10px] uppercase font-bold text-center">
-                  <div className="p-1 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200 rounded">Tier 1: Baseline<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">hob 30°, midline neck, sedation</span></div>
-                  <div className="p-1 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200 rounded">Tier 2: Medical<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">mannitol 1g/kg, hts 3% bolus</span></div>
-                  <div className="p-1 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 rounded">Tier 3: Bridging<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">hts 23.4%, hyperventilation</span></div>
-                  <div className="p-1 bg-rose-50 dark:bg-rose-950 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200 rounded">Tier 4: Surgical<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">dhc / suboccipital decomp</span></div>
-                </div>
-              </li>
-            </ul>
+          <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-emerald-50/15 dark:bg-emerald-950/5 border-b border-slate-200 dark:border-slate-800 space-y-3">
+            <div className="space-y-1">
+              <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Tier 0: Fundamental Optimization (For all at-risk patients)</strong>
+              <ul className="list-disc pl-5 space-y-0.5 text-[11px]">
+                <li>Elevate HOB 30°; strict neutral midline neck alignment to preserve venous outflow.</li>
+                <li>Euvolemia (isotonic saline; absolute ban on hypotonic <code className="text-rose-600 dark:text-rose-450 font-mono">D5W</code> which expands cerebral edema), normothermia (treat fever), normocapnia (target <code className="font-mono">pCO₂</code> 35–40 mmHg).</li>
+              </ul>
+            </div>
+            <div className="space-y-1">
+              <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Tier 1: Initial Interventions</strong>
+              <ul className="list-disc pl-5 space-y-0.5 text-[11px]">
+                <li>Continuous CSF drainage via EVD (typically set at 10–15 cmH₂O).</li>
+                <li>Analgesia/sedation (propofol/fentanyl) titrated to prevent coughing, agitation, or ventilator dyssynchrony.</li>
+              </ul>
+            </div>
+            <div className="space-y-1">
+              <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Tier 2: Hyperosmolar &amp; Ventilatory Escalation</strong>
+              <ul className="list-disc pl-5 space-y-1 text-[11px]">
+                <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Osmolarity &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
+                <li><strong>Hypertonic Saline (HTS):</strong> 3% (150–250 mL bolus) or 23.4% (30 mL rescue bolus; central line access only). <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Sodium &gt; 155–160 mEq/L or Chloride &gt; 115–120 mEq/L.</span></li>
+                <li><strong>Controlled Hyperventilation:</strong> Target <code className="font-mono">pCO₂</code> 30–35 mmHg. Temporary bridge only; avoid prolonged use or <code className="font-mono">pCO₂ &lt; 30</code> (ischemia risk).</li>
+                <li><strong>Steroid Contraindication:</strong> Steroids are contraindicated for cytotoxic cerebral edema in stroke and raise infection risks.</li>
+              </ul>
+            </div>
+            <div className="space-y-1">
+              <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Tier 3: Refractory &amp; Salvage Measures</strong>
+              <ul className="list-disc pl-5 space-y-1 text-[11px]">
+                <li>High-dose barbiturate therapy (pentobarbital) titrated to burst suppression on EEG.</li>
+                <li><strong>Decompressive Surgery:</strong>
+                  <ul className="list-circle pl-5 mt-0.5 space-y-0.5 text-[11px] text-slate-500 dark:text-slate-400">
+                    <li><strong>Malignant MCA (DHC):</strong> Age &le; 60 years, clinical decline (GCS decline &ge; 1, pupillary changes), CT/MRI infarction &ge; 50% MCA territory, within 48h of onset (DECIMAL/DESTINY trials).</li>
+                    <li><strong>Cerebellar Stroke (Suboccipital Decompression):</strong> Mass effect on brainstem, 4th ventricle effacement, cerebellar herniation, or hydrocephalus.</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-1.5 text-[10px] uppercase font-bold text-center">
+              <div className="p-1 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200 rounded">Tier 0: Base<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">hob 30°, midline, isotonic</span></div>
+              <div className="p-1 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200 rounded">Tier 1: Initial<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">evd drainage, sedation</span></div>
+              <div className="p-1 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 rounded">Tier 2: Medical<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">osmotherapy, bridge vent</span></div>
+              <div className="p-1 bg-rose-50 dark:bg-rose-950 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200 rounded">Tier 3: Salvage<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">barb coma, craniectomy</span></div>
+            </div>
           </div>
         </div>
 
@@ -2335,6 +2385,12 @@ export const ICPInfographic = () => {
                   </ul>
                 </li>
               </ul>
+            </div>
+
+            {/* Perfusion Trap Warning Box */}
+            <div className="w-full border border-red-200 dark:border-red-900 bg-red-50/50 dark:bg-red-950/10 p-3 rounded-lg text-slate-700 dark:text-slate-300 text-[11px] leading-relaxed">
+              <strong className="text-red-700 dark:text-red-400 block font-bold mb-1">CRITICAL WARNING: The Perfusion Trap (CPP = MAP - ICP)</strong>
+              In patients with mass effect or intracranial hypertension, cerebral perfusion is highly pressure-dependent. Trainees must avoid the reflex to aggressively lower systemic blood pressure. Lowering MAP will drop Cerebral Perfusion Pressure (CPP), causing immediate penumbral ischemia and expanding infarct volume. Maintain stroke blood pressure targets.
             </div>
           </div>
         </div>
