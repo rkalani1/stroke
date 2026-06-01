@@ -2260,22 +2260,22 @@ export const ICPInfographic = () => {
                   <tr>
                     <td className="px-3 py-2 font-semibold text-orange-850 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Uncal (Lateral)</td>
                     <td className="px-3 py-2 border-r border-orange-100 dark:border-orange-950/30">Medial temporal lobe (uncus) pushed over tentorial edge</td>
-                    <td className="px-3 py-2">Ipsilateral sluggish/dilated pupil (CN III compressed), contralateral hemiparesis. <br/><span className="italic text-slate-500">Trap:</span> <strong>Kernohan's Notch</strong> causes false-localizing ipsilateral hemiparesis.</td>
+                    <td className="px-3 py-2">Ipsilateral sluggish/dilated pupil (CN III compressed), contralateral hemiparesis. <br/><strong>Kernohan's Notch</strong> causes false-localizing ipsilateral hemiparesis.</td>
                   </tr>
                   <tr>
                     <td className="px-3 py-2 font-semibold text-orange-855 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Central (Axial)</td>
                     <td className="px-3 py-2 border-r border-orange-100 dark:border-orange-950/30">Downward diencephalic and midbrain displacement</td>
-                    <td className="px-3 py-2">Progressive stupor, midpoint fixed pupils, decorticate to decerebrate posturing. <br/><span className="italic text-slate-500">Trap:</span> Symmetrical signs often confused with metabolic encephalopathy.</td>
+                    <td className="px-3 py-2">Progressive stupor, midpoint fixed pupils, decorticate to decerebrate posturing. <br/>Symmetrical signs often confused with metabolic encephalopathy.</td>
                   </tr>
                   <tr>
                     <td className="px-3 py-2 font-semibold text-orange-855 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Subfalcine</td>
                     <td className="px-3 py-2 border-r border-orange-100 dark:border-orange-950/30">Cingulate gyrus displaced under the falx cerebri</td>
-                    <td className="px-3 py-2">Often clinically silent, or presents with contralateral lower extremity weakness. <br/><span className="italic text-slate-500">Trap:</span> <strong>ACA compression</strong> causes frontal/leg territory infarction.</td>
+                    <td className="px-3 py-2">Often clinically silent, or presents with contralateral lower extremity weakness. <br/><strong>ACA compression</strong> causes frontal/leg territory infarction.</td>
                   </tr>
                   <tr>
                     <td className="px-3 py-2 font-semibold text-orange-855 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Tonsillar</td>
                     <td className="px-3 py-2 border-r border-orange-100 dark:border-orange-950/30">Cerebellar tonsils forced through the foramen magnum</td>
-                    <td className="px-3 py-2">Cushing's triad, flaccid quadriplegia, respiratory arrest. <br/><span className="italic text-slate-500">Trap:</span> Cushing triad is a LATE sign of brainstem compression.</td>
+                    <td className="px-3 py-2">Cushing's triad, flaccid quadriplegia, respiratory arrest.</td>
                   </tr>
                 </tbody>
               </table>
