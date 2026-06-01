@@ -299,7 +299,7 @@ async function main() {
     <html lang="en">
     <head>
       <meta charset="UTF-8">
-      <title>Intracranial Hypertension & Herniation</title>
+      <title>Intracranial Hypertension &amp; Herniation</title>
       <style>
         @page {
           size: letter;
@@ -470,7 +470,7 @@ async function main() {
     </head>
     <body>
       <div class="container">
-        <div class="header">Intracranial Hypertension & Herniation</div>
+        <div class="header">Intracranial Hypertension &amp; Herniation</div>
         
         <div class="section-title">CLINICAL SIGNS OF HERNIATION</div>
         <div class="list-section peach">

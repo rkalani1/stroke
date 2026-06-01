@@ -2186,7 +2186,7 @@ export const ICPInfographic = () => {
         <div className="flex items-center gap-2">
           <i aria-hidden="true" data-lucide="file-output" className="w-5 h-5 text-red-600 dark:text-red-400"></i>
           <div>
-            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">Intracranial Hypertension & Herniation</h4>
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">Intracranial Hypertension &amp; Herniation</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400">PDF Reference Guide</p>
           </div>
         </div>
@@ -2199,8 +2199,8 @@ export const ICPInfographic = () => {
             {showPdf ? "Hide PDF Preview" : "Preview PDF"}
           </button>
           <a
-            href="documents/references/Intracranial Hypertension & Herniation.pdf"
-            download="Intracranial Hypertension & Herniation.pdf"
+            href="documents/references/Intracranial Hypertension &amp; Herniation.pdf"
+            download="Intracranial Hypertension &amp; Herniation.pdf"
             className="px-3.5 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors flex items-center gap-1.5"
           >
             <i aria-hidden="true" data-lucide="download" className="w-3.5 h-3.5"></i>
@@ -2219,9 +2219,9 @@ export const ICPInfographic = () => {
       {showPdf && (
         <div className="border border-slate-250 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
           <iframe
-            src="documents/references/Intracranial Hypertension & Herniation.pdf"
+            src="documents/references/Intracranial Hypertension &amp; Herniation.pdf"
             className="w-full h-full border-none"
-            title="Intracranial Hypertension & Herniation PDF"
+            title="Intracranial Hypertension &amp; Herniation PDF"
           />
         </div>
       )}
@@ -2230,7 +2230,7 @@ export const ICPInfographic = () => {
       <div className="icp-infographic-card border border-red-200 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
         {/* Header */}
         <div className="bg-slate-800 text-white text-center py-3.5 px-4 border-b border-red-200 dark:border-red-900/50">
-          <h3 className="font-serif text-lg font-bold tracking-wide">Intracranial Hypertension & Herniation</h3>
+          <h3 className="font-serif text-lg font-bold tracking-wide">Intracranial Hypertension &amp; Herniation</h3>
         </div>
 
         {/* Clinical Signs Section */}
