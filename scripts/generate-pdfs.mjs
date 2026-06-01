@@ -21,7 +21,7 @@ async function main() {
     <html lang="en">
     <head>
       <meta charset="UTF-8">
-      <title>EVD Quick Reference</title>
+      <title>External Ventricular Drain</title>
       <style>
         @page {
           size: letter;
@@ -193,7 +193,7 @@ async function main() {
     </head>
     <body>
       <div class="container">
-        <div class="header">EVD Quick Reference</div>
+        <div class="header">External Ventricular Drain</div>
         
         <div class="row-split">
           <div class="left-col">
@@ -254,7 +254,7 @@ async function main() {
             <ul>
               <li>Progressive enlargement of the cerebral ventricles.</li>
               <li>Temporal horn dilation (sensitive early sign of obstruction).</li>
-              <li>High-risk factors: Intraventricular Hemorrhage (IVH) in 3rd or 4th ventricles, compression of 4th ventricle, or high volume blood (mGS &ge; 6).</li>
+              <li>High-risk factors: Intraventricular Hemorrhage (IVH) in 3rd or 4th ventricles, compression of 4th ventricle, or high volume blood.</li>
             </ul>
           </div>
         </div>
@@ -264,9 +264,9 @@ async function main() {
           <ul>
             <li><strong>Leveling:</strong> Always align the zero level of the EVD scale/transducer to the external auditory meatus (EAM) / tragus.</li>
             <li><strong>Mobilization Clamping Rules:</strong> Always CLAMP the EVD before: turning the patient, adjusting HOB, or mobilizing the patient out of bed to prevent severe overdrainage or underdrainage.</li>
-            <li><strong>Waveform Validity:</strong> ICP value and waveform morphology are valid only when the EVD is clamped.</li>
+            <li><strong>Waveform:</strong> ICP value and waveform morphology are valid only when the EVD is clamped.</li>
             <li><strong>CSF Drainage:</strong> CSF drainage is passive: occurs only when patient ICP exceeds EVD chamber height.</li>
-            <li><strong>Normal CSF Flow Benchmarks:</strong> Normal CSF production is ~20 mL/hr (~500 mL/day). Drainage &gt;20 mL/hr should trigger immediate assessment for overdrainage or chamber level escalation.</li>
+            <li><strong>Normal CSF Flow:</strong> Normal CSF production is ~20 mL/hr (~500 mL/day). Drainage &gt;20 mL/hr should trigger immediate assessment for overdrainage or chamber level escalation.</li>
           </ul>
         </div>
         
@@ -284,12 +284,12 @@ async function main() {
 
   await page.setContent(evdHtml);
   await page.pdf({
-    path: 'documents/references/EVD Quick Reference.pdf',
+    path: 'documents/references/External Ventricular Drain.pdf',
     format: 'letter',
     printBackground: true,
     margin: { top: '0.3in', bottom: '0.3in', left: '0.3in', right: '0.3in' }
   });
-  console.log('Generated documents/references/EVD Quick Reference.pdf');
+  console.log('Generated documents/references/External Ventricular Drain.pdf');
 
   // ==========================================
   // 2. GENERATE INTRACRANIAL HYPERTENSION AND HERNIATION PDF
