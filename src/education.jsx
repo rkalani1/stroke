@@ -2167,14 +2167,14 @@ export const EVDInfographic = () => {
 };
 
 // =====================================================================
-// ICP CRISIS QUICK REFERENCE CARD (STATIC / PRINT-PREPARED)
+// INTRACRANIAL HYPERTENSION AND HERNIATION CARD (STATIC / PRINT-PREPARED)
 // =====================================================================
 export const ICPInfographic = () => {
   const [showPdf, setShowPdf] = useState(false);
 
   const emailDoc = () => {
-    const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/documents/references/ICP Crisis Quick Reference.pdf';
-    const subject = encodeURIComponent('ICP Crisis Quick Reference');
+    const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/documents/references/Intracranial hypertension and herniation.pdf';
+    const subject = encodeURIComponent('Intracranial hypertension and herniation');
     const body = encodeURIComponent(fullUrl);
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
@@ -2186,7 +2186,7 @@ export const ICPInfographic = () => {
         <div className="flex items-center gap-2">
           <i aria-hidden="true" data-lucide="file-output" className="w-5 h-5 text-red-600 dark:text-red-400"></i>
           <div>
-            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">ICP Crisis/Herniation Quick Reference</h4>
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">Intracranial hypertension and herniation</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400">PDF Reference Guide</p>
           </div>
         </div>
@@ -2199,8 +2199,8 @@ export const ICPInfographic = () => {
             {showPdf ? "Hide PDF Preview" : "Preview PDF"}
           </button>
           <a
-            href="documents/references/ICP Crisis Quick Reference.pdf"
-            download="ICP Crisis Quick Reference.pdf"
+            href="documents/references/Intracranial hypertension and herniation.pdf"
+            download="Intracranial hypertension and herniation.pdf"
             className="px-3.5 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors flex items-center gap-1.5"
           >
             <i aria-hidden="true" data-lucide="download" className="w-3.5 h-3.5"></i>
@@ -2219,18 +2219,18 @@ export const ICPInfographic = () => {
       {showPdf && (
         <div className="border border-slate-250 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
           <iframe
-            src="documents/references/ICP Crisis Quick Reference.pdf"
+            src="documents/references/Intracranial hypertension and herniation.pdf"
             className="w-full h-full border-none"
-            title="ICP Crisis Quick Reference PDF"
+            title="Intracranial hypertension and herniation PDF"
           />
         </div>
       )}
 
       {/* Static Quick Reference Card */}
-      <div className="border border-red-200 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
+      <div className="icp-infographic-card border border-red-200 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
         {/* Header */}
         <div className="bg-slate-800 text-white text-center py-3.5 px-4 border-b border-red-200 dark:border-red-900/50">
-          <h3 className="font-serif text-lg font-bold tracking-wide">ICP Crisis/Herniation Quick Reference</h3>
+          <h3 className="font-serif text-lg font-bold tracking-wide">Intracranial hypertension and herniation</h3>
         </div>
 
         {/* Clinical Signs Section */}
