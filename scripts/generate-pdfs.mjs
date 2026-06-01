@@ -416,7 +416,7 @@ async function main() {
         }
         .waveform-container {
           width: 100%;
-          max-height: 85px;
+          max-height: 130px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -561,7 +561,7 @@ async function main() {
         <div class="section-title blue">ICP WAVEFORM ANALYSIS</div>
         <div class="waveform-section">
           <div class="waveform-container">
-            <svg viewBox="0 0 420 150" style="width: 100%; max-height: 85px;" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 420 150" style="width: 100%; max-height: 130px;" xmlns="http://www.w3.org/2000/svg">
               <line x1="10" y1="25" x2="410" y2="25" stroke="#1e293b" stroke-width="1" />
               <line x1="10" y1="50" x2="410" y2="50" stroke="#1e293b" stroke-width="1" />
               <line x1="10" y1="75" x2="410" y2="75" stroke="#1e293b" stroke-width="1" />
