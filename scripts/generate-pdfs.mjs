@@ -479,7 +479,7 @@ async function main() {
             <li><strong>Pupillary reactivity:</strong> Decrease in pupillary reactivity (Neurological Pupil Index, NPi &lt; 3).</li>
             <li><strong>Asymmetry:</strong> New pupillary asymmetry or unilateral dilation (ipsilateral mydriasis).</li>
             <li><strong>Focal deficit:</strong> New focal motor deficit or abnormal posturing (decorticate / decerebrate).</li>
-            <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <strong style="color: #dc2626;">*Cushing's Triad is a LATE, pre-terminal sign of brainstem compression. Do not wait for its onset to initiate therapy.*</strong></li>
+            <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <strong style="color: #dc2626;">*Cushing triad is a LATE sign of brainstem compression.*</strong></li>
           </ul>
           
           <table class="herniation-table">
@@ -509,7 +509,7 @@ async function main() {
               <tr>
                 <td><strong>Tonsillar</strong> (Downward)</td>
                 <td>Cerebellar tonsils forced through the foramen magnum</td>
-                <td>Cushing's triad, flaccid quadriplegia, respiratory arrest. <br/><em>Trap:</em> Cushing's triad is pre-terminal; do not wait for its appearance.</td>
+                <td>Cushing's triad, flaccid quadriplegia, respiratory arrest. <br/><em>Trap:</em> Cushing triad is a LATE sign of brainstem compression.</td>
               </tr>
             </tbody>
           </table>
@@ -521,7 +521,7 @@ async function main() {
             <li style="margin-bottom: 3px;"><strong>Tier 0: Fundamental Optimization (For all at-risk patients)</strong>
               <ul style="padding-left: 15px;">
                 <li>Elevate HOB 30°; strict neutral midline neck alignment to preserve venous outflow.</li>
-                <li>Euvolemia (isotonic saline; absolute ban on hypotonic $D_5W$), normothermia (treat fevers), normocapnia ($pCO_2$ 35–40 mmHg).</li>
+                <li>Euvolemia (isotonic saline; avoid hypotonic $D_5W$), normothermia (treat fevers), normocapnia ($pCO_2$ 35–40 mmHg).</li>
               </ul>
             </li>
             <li style="margin-bottom: 3px;"><strong>Tier 1: Initial Interventions</strong>
@@ -535,7 +535,6 @@ async function main() {
                 <li><strong>Mannitol 20%:</strong> 1 g/kg IV bolus over 20-30 min. Must use in-line filter. <span style="color: #dc2626; font-weight: 600;">Hold if Serum Osmolarity &gt; 320 mOsm/kg or Gap &ge; 20 mOsm/kg.</span></li>
                 <li><strong>Hypertonic Saline (HTS):</strong> 3% (150-250 mL bolus) or 23.4% (30 mL rescue bolus; central line access only). <span style="color: #dc2626; font-weight: 600;">Hold if Serum Na &gt; 155 mEq/L or Cl &gt; 115 mEq/L.</span></li>
                 <li><strong>Controlled Hyperventilation:</strong> Target $pCO_2$ 30-35 mmHg. Temporary bridge only; avoid prolonged use or $pCO_2 < 30$ (ischemia risk).</li>
-                <li><strong>Steroids:</strong> Contraindicated for cytotoxic edema in stroke.</li>
               </ul>
             </li>
             <li style="margin-bottom: 3px;"><strong>Tier 3: Refractory &amp; Salvage Measures</strong>
@@ -610,8 +609,8 @@ async function main() {
           </div>
           
           <div class="perfusion-trap-box">
-            <strong>CRITICAL WARNING: The Perfusion Trap ($CPP = MAP - ICP$)</strong><br/>
-            In patients with mass effect, cerebral perfusion is highly pressure-dependent. Trainees must avoid the reflex to aggressively lower blood pressure. Lowering MAP will drop Cerebral Perfusion Pressure (CPP), causing immediate penumbral ischemia and expanding infarct volume. Maintain stroke blood pressure targets.
+            <strong>CPP = MAP - ICP</strong><br/>
+            In patients with intracranial hypertension or mass effect, cerebral perfusion is highly pressure dependent, and cautious BP lowering is recommended.
           </div>
         </div>
       </div>

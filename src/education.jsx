@@ -2244,7 +2244,7 @@ export const ICPInfographic = () => {
               <li><strong>Pupillary reactivity:</strong> Decrease in pupillary reactivity (Neurological Pupil Index, NPi &lt; 3).</li>
               <li><strong>Asymmetry:</strong> New pupillary asymmetry or unilateral dilation (ipsilateral mydriasis).</li>
               <li><strong>Focal deficit:</strong> New focal motor deficit or abnormal posturing (decorticate / decerebrate).</li>
-              <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <span className="font-bold text-red-600 dark:text-red-400">*Cushing's Triad is a LATE, pre-terminal sign of brainstem compression. Do not wait for its onset to initiate therapy.*</span></li>
+              <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <span className="font-bold text-red-600 dark:text-red-400">*Cushing triad is a LATE sign of brainstem compression.*</span></li>
             </ul>
             
             <div className="mt-4 overflow-x-auto">
@@ -2275,7 +2275,7 @@ export const ICPInfographic = () => {
                   <tr>
                     <td className="px-3 py-2 font-semibold text-orange-855 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Tonsillar</td>
                     <td className="px-3 py-2 border-r border-orange-100 dark:border-orange-950/30">Cerebellar tonsils forced through the foramen magnum</td>
-                    <td className="px-3 py-2">Cushing's triad, flaccid quadriplegia, respiratory arrest. <br/><span className="italic text-slate-500">Trap:</span> Cushing's triad is pre-terminal; do not wait for its appearance.</td>
+                    <td className="px-3 py-2">Cushing's triad, flaccid quadriplegia, respiratory arrest. <br/><span className="italic text-slate-500">Trap:</span> Cushing triad is a LATE sign of brainstem compression.</td>
                   </tr>
                 </tbody>
               </table>
@@ -2293,7 +2293,7 @@ export const ICPInfographic = () => {
               <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Tier 0: Fundamental Optimization (For all at-risk patients)</strong>
               <ul className="list-disc pl-5 space-y-0.5 text-[11px]">
                 <li>Elevate HOB 30°; strict neutral midline neck alignment to preserve venous outflow.</li>
-                <li>Euvolemia (isotonic saline; absolute ban on hypotonic <code className="text-rose-600 dark:text-rose-450 font-mono">D5W</code> which expands cerebral edema), normothermia (treat fever), normocapnia (target <code className="font-mono">pCO₂</code> 35–40 mmHg).</li>
+                <li>Euvolemia (isotonic saline; avoid hypotonic <code className="text-rose-600 dark:text-rose-450 font-mono">D5W</code>), normothermia (treat fever), normocapnia (target <code className="font-mono">pCO₂</code> 35–40 mmHg).</li>
               </ul>
             </div>
             <div className="space-y-1">
@@ -2309,7 +2309,6 @@ export const ICPInfographic = () => {
                 <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Osmolarity &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
                 <li><strong>Hypertonic Saline (HTS):</strong> 3% (150–250 mL bolus) or 23.4% (30 mL rescue bolus; central line access only). <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Sodium &gt; 155–160 mEq/L or Chloride &gt; 115–120 mEq/L.</span></li>
                 <li><strong>Controlled Hyperventilation:</strong> Target <code className="font-mono">pCO₂</code> 30–35 mmHg. Temporary bridge only; avoid prolonged use or <code className="font-mono">pCO₂ &lt; 30</code> (ischemia risk).</li>
-                <li><strong>Steroid Contraindication:</strong> Steroids are contraindicated for cytotoxic cerebral edema in stroke and raise infection risks.</li>
               </ul>
             </div>
             <div className="space-y-1">
@@ -2389,8 +2388,8 @@ export const ICPInfographic = () => {
 
             {/* Perfusion Trap Warning Box */}
             <div className="w-full border border-red-200 dark:border-red-900 bg-red-50/50 dark:bg-red-950/10 p-3 rounded-lg text-slate-700 dark:text-slate-300 text-[11px] leading-relaxed">
-              <strong className="text-red-700 dark:text-red-400 block font-bold mb-1">CRITICAL WARNING: The Perfusion Trap (CPP = MAP - ICP)</strong>
-              In patients with mass effect or intracranial hypertension, cerebral perfusion is highly pressure-dependent. Trainees must avoid the reflex to aggressively lower systemic blood pressure. Lowering MAP will drop Cerebral Perfusion Pressure (CPP), causing immediate penumbral ischemia and expanding infarct volume. Maintain stroke blood pressure targets.
+              <strong className="text-red-700 dark:text-red-400 block font-bold mb-1">CPP = MAP - ICP</strong>
+              In patients with intracranial hypertension or mass effect, cerebral perfusion is highly pressure dependent, and cautious BP lowering is recommended.
             </div>
           </div>
         </div>
