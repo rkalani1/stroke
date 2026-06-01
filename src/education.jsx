@@ -1922,547 +1922,289 @@ export function HerniationIcpCard() {
 }
 
 // =====================================================================
-// INTERACTIVE EVD INFOGRAPHIC
+// EVD QUICK REFERENCE CARD (STATIC / PRINT-PREPARED)
 // =====================================================================
 export const EVDInfographic = () => {
-  const [stopcockState, setStopcockState] = useState('clamped'); // 'clamped' (12 o'clock) or 'open' (3 o'clock)
-  const [evdSetting, setEvdSetting] = useState(10); // cmH2O (from -5 to 20)
-  const [icpValue, setIcpValue] = useState(15); // mmHg, for simulation
-
-  const isFlowing = stopcockState === 'open' && icpValue > (evdSetting * 0.735); // Convert cmH2O to mmHg: 1 cmH2O ≈ 0.735 mmHg
-
-  const handleStopcockToggle = () => {
-    setStopcockState(prev => prev === 'clamped' ? 'open' : 'clamped');
+  const emailDoc = () => {
+    const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/documents/references/EVD Quick Reference.pdf';
+    const subject = encodeURIComponent('EVD Quick Reference');
+    const body = encodeURIComponent(fullUrl);
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
 
-  // Convert cmH2O to mmHg for comparison
-  const evdSettingMmHg = (evdSetting * 0.735).toFixed(1);
-
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* Column 1: Interactive SVG Simulator */}
-      <div className="lg:col-span-6 flex flex-col gap-4">
-        <div className="p-4 rounded-xl border border-blue-100 bg-white dark:bg-slate-900 shadow-md">
-          <h3 className="font-serif text-lg font-bold text-blue-900 dark:text-blue-200 mb-3 flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 text-xs font-mono">1</span>
-            EVD System Simulator
-          </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-            Toggle the stopcock and slide the EVD pressure setting to observe clinical effects and safety states.
-          </p>
-
-          {/* SVG Diagram */}
-          <div className="relative w-full h-[320px] bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-100 dark:border-slate-800 overflow-hidden flex items-center justify-center">
-            <svg viewBox="0 0 400 300" className="w-full h-full">
-              {/* Grid background */}
-              <defs>
-                <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(148, 163, 184, 0.05)" strokeWidth="1" />
-                </pattern>
-                {/* CSF Flow Gradient */}
-                <linearGradient id="csfFlow" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#ef4444" stopOpacity="0.2" />
-                  <stop offset="50%" stopColor="#ef4444" stopOpacity="0.8" />
-                  <stop offset="100%" stopColor="#ef4444" stopOpacity="0.2" />
-                </linearGradient>
-              </defs>
-              <rect width="400" height="300" fill="url(#grid)" />
-
-              {/* Patient's Head (Silhouette) */}
-              <path d="M 50 150 A 40 45 0 0 1 130 150 A 40 45 0 0 1 50 150 Z" fill="rgba(148, 163, 184, 0.15)" stroke="rgba(148, 163, 184, 0.3)" strokeWidth="2" />
-              {/* External Auditory Meatus (EAM) - Zero Reference */}
-              <circle cx="90" cy="150" r="5" fill="#10b981" />
-              <text x="90" y="135" textAnchor="middle" className="text-[10px] font-semibold fill-emerald-600 dark:fill-emerald-400">EAM Reference</text>
-              <line x1="90" y1="150" x2="250" y2="150" stroke="#10b981" strokeDasharray="3 3" strokeWidth="1" />
-
-              {/* Ventricular Catheter */}
-              <path d="M 90 120 C 100 90, 150 90, 170 120" fill="none" stroke="#e2e8f0" strokeWidth="6" />
-              <path d="M 90 120 C 100 90, 150 90, 170 120" fill="none" stroke="#ef4444" strokeWidth="2" />
-              <text x="130" y="85" textAnchor="middle" className="text-[8px] fill-red-500 font-bold">Ventricular Catheter</text>
-
-              {/* Stopcock Junction */}
-              <circle cx="170" cy="120" r="10" fill="#3b82f6" />
-              
-              {/* Stopcock handle */}
-              {stopcockState === 'clamped' ? (
-                // 12 o'clock - blocks flow to chamber
-                <path d="M 170 120 L 170 100" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" />
-              ) : (
-                // 3 o'clock - open to chamber
-                <path d="M 170 120 L 190 120" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" />
-              )}
-              <text x="170" y="140" textAnchor="middle" className="text-[9px] font-bold fill-blue-600 dark:fill-blue-400">
-                {stopcockState === 'clamped' ? 'CLAMPED' : 'OPEN'}
-              </text>
-
-              {/* Transducer / Zeroing Line */}
-              <path d="M 170 120 L 170 160" fill="none" stroke="#64748b" strokeWidth="2" />
-              <circle cx="170" cy="160" r="6" fill="#64748b" />
-              <text x="170" y="175" textAnchor="middle" className="text-[8px] fill-slate-500">Transducer</text>
-
-              {/* Drainage tube */}
-              <path d="M 170 120 L 250 120" fill="none" stroke="#e2e8f0" strokeWidth="6" />
-              {isFlowing && (
-                // CSF flowing (animated line)
-                <path d="M 170 120 L 250 120" fill="none" stroke="url(#csfFlow)" strokeWidth="4" strokeDasharray="10 5" className="animate-[dash_1.5s_linear_infinite]" />
-              )}
-              <text x="210" y="112" textAnchor="middle" className="text-[8px] fill-slate-500">Drainage Line</text>
-
-              {/* EVD Scale Tower */}
-              <rect x="250" y="30" width="10" height="240" fill="#334155" rx="2" />
-              <line x1="250" y1="150" x2="260" y2="150" stroke="#10b981" strokeWidth="2" /> {/* Zero level mark */}
-
-              {/* Scale Ticks & Labels */}
-              {[-5, 0, 5, 10, 15, 20].map((tick) => {
-                // Calculate y coord based on tick value
-                const y = 150 - (tick * 4);
-                return (
-                  <g key={tick}>
-                    <line x1="245" y1={y} x2="250" y2={y} stroke="#ffffff" strokeWidth="1" />
-                    <text x="240" y={y + 3} textAnchor="end" className="text-[8px] fill-slate-400 font-mono">{tick}</text>
-                  </g>
-                );
-              })}
-              <text x="235" y="25" textAnchor="middle" className="text-[8px] fill-slate-400 font-mono">cmH₂O</text>
-
-              {/* Drip/Collection Chamber */}
-              {(() => {
-                const chamberY = 150 - (evdSetting * 4);
-                return (
-                  <g className="transition-transform duration-300" style={{ transform: `translateY(${chamberY - 120}px)` }}>
-                    {/* Chamber body */}
-                    <rect x="265" y="90" width="24" height="60" fill="rgba(59, 130, 246, 0.1)" stroke="#3b82f6" strokeWidth="2" rx="4" />
-                    {/* Fluid inside */}
-                    <rect x="267" y="125" width="20" height="23" fill="rgba(239, 68, 68, 0.3)" rx="2" />
-                    {/* Dripping effect if flowing */}
-                    {isFlowing && (
-                      <circle cx="277" cy="105" r="2" fill="#ef4444" className="animate-[ping_1s_infinite]" />
-                    )}
-                    <line x1="262" y1="120" x2="265" y2="120" stroke="#3b82f6" strokeWidth="2" />
-                    <text x="295" y="123" className="text-[8px] fill-blue-600 dark:fill-blue-400 font-bold">Setting: {evdSetting}</text>
-                  </g>
-                );
-              })()}
-            </svg>
-            
-            {/* CSS Animation for Flowing */}
-            <style>{`
-              @keyframes dash {
-                to {
-                  stroke-dashoffset: -15;
-                }
-              }
-            `}</style>
-          </div>
-
-          {/* Interactive Inputs */}
-          <div className="mt-4 space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <span className="block text-xs font-semibold text-slate-500">Stopcock Control</span>
-                <button
-                  type="button"
-                  onClick={handleStopcockToggle}
-                  className={`mt-1 px-4 py-2 rounded-lg text-xs font-bold transition-all min-h-[38px] ${
-                    stopcockState === 'clamped'
-                      ? 'bg-rose-600 text-white shadow-sm shadow-rose-900/20 hover:bg-rose-700'
-                      : 'bg-emerald-600 text-white shadow-sm shadow-emerald-900/20 hover:bg-emerald-700'
-                  }`}
-                >
-                  {stopcockState === 'clamped' ? '▶ Open EVD to Drain' : '■ Clamp EVD'}
-                </button>
-              </div>
-
-              <div className="flex-1 min-w-[150px]">
-                <div className="flex justify-between items-center mb-1">
-                  <label htmlFor="evd-setting-slider" className="text-xs font-semibold text-slate-500">EVD Height (cmH₂O)</label>
-                  <span className="text-xs font-bold text-blue-600 dark:text-blue-400">{evdSetting} cmH₂O (~{evdSettingMmHg} mmHg)</span>
-                </div>
-                <input
-                  id="evd-setting-slider"
-                  type="range"
-                  min="-5"
-                  max="20"
-                  step="5"
-                  value={evdSetting}
-                  onChange={(e) => setEvdSetting(parseInt(e.target.value))}
-                  className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-              </div>
-            </div>
-
-            {/* Dynamic Status / Clinical Guide Alerts */}
-            <div className={`p-3 rounded-lg border text-xs ${
-              stopcockState === 'clamped'
-                ? 'bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900/50 text-amber-800 dark:text-amber-300'
-                : evdSetting < 0
-                  ? 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900/50 text-red-800 dark:text-red-300'
-                  : 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-900/50 text-emerald-800 dark:text-emerald-300'
-            }`}>
-              {stopcockState === 'clamped' ? (
-                <div>
-                  <p className="font-bold">⚠️ SYSTEM IS CLAMPED</p>
-                  <p className="mt-0.5">CSF drainage is suspended. **ICP monitor waveform is VALID.** Always clamp during patient repositioning, transfers, or head-of-bed (HOB) height adjustments to prevent severe complications.</p>
-                </div>
-              ) : evdSetting < 0 ? (
-                <div>
-                  <p className="font-bold">🚨 HIGH OVERDRAINAGE RISK</p>
-                  <p className="mt-0.5">Setting level is negative ({evdSetting} cmH₂O). Extremely low resistance will drain large volumes of CSF rapidly, raising the risk of subdural hematomas, ventricular collapse, and upward cerebellar herniation.</p>
-                </div>
-              ) : (
-                <div>
-                  <p className="font-bold">✓ SYSTEM IS OPEN & DRAPING</p>
-                  <p className="mt-0.5">CSF drains actively when ICP spikes above {evdSetting} cmH₂O (~{evdSettingMmHg} mmHg). **Note: ICP waveform reading is DAMPED / INVALID while open.** Level is currently set to a safe resistance range.</p>
-                </div>
-              )}
-            </div>
+    <div className="flex flex-col gap-4">
+      {/* PDF Action Bar */}
+      <div className="flex flex-wrap items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-lg dark:bg-slate-800/40 dark:border-slate-700/60 gap-3">
+        <div className="flex items-center gap-2">
+          <i aria-hidden="true" data-lucide="file-output" className="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+          <div>
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">EVD Quick Reference</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">PDF Reference Guide</p>
           </div>
         </div>
-
-        {/* Leveling & Zeroing Card */}
-        <div className="p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-md">
-          <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">Zeroing & Transducer Calibration</h4>
-          <ol className="list-decimal list-inside text-xs text-slate-600 dark:text-slate-400 space-y-1">
-            <li><strong>Identify Reference:</strong> Locate the External Auditory Meatus (EAM) or tragus. This represents the level of the foramen of Monro (zero point).</li>
-            <li><strong>Align Scale:</strong> Align the zero mark of the EVD graduated scale tower to the EAM using a laser level or string level.</li>
-            <li><strong>Level Transducer:</strong> Level the transducer component to the zero line/EAM as well.</li>
-            <li><strong>Zero to Air:</strong> Turn the zeroing stopcock off to the patient, open it to the air, and press "Zero" on the physiological bedside monitor.</li>
-            <li><strong>Resume Monitoring:</strong> Turn the stopcock back to monitor the patient and close to air.</li>
-          </ol>
+        <div className="flex flex-wrap gap-2">
+          <a
+            href="documents/references/EVD Quick Reference.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3.5 py-1.5 bg-cobalt-600 text-white rounded-lg text-xs font-semibold hover:bg-cobalt-700 transition-colors flex items-center gap-1.5"
+          >
+            <i aria-hidden="true" data-lucide="eye" className="w-3.5 h-3.5"></i>
+            View PDF
+          </a>
+          <a
+            href="documents/references/EVD Quick Reference.pdf"
+            download="EVD Quick Reference.pdf"
+            className="px-3.5 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors flex items-center gap-1.5"
+          >
+            <i aria-hidden="true" data-lucide="download" className="w-3.5 h-3.5"></i>
+            Download
+          </a>
+          <button
+            onClick={emailDoc}
+            className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-855 transition-colors flex items-center gap-1.5"
+          >
+            <i aria-hidden="true" data-lucide="mail" className="w-3.5 h-3.5"></i>
+            Email
+          </button>
         </div>
       </div>
 
-      {/* Column 2: Clinical Care Reference Cards */}
-      <div className="lg:col-span-6 flex flex-col gap-4">
-        {/* Indications & Basics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
-            <h4 className="font-bold text-sm text-blue-900 dark:text-blue-300 border-b pb-1 mb-2">Primary Indications</h4>
-            <ul className="list-disc list-inside text-xs text-slate-600 dark:text-slate-400 space-y-1.5">
-              <li><strong>CSF Diversion:</strong> Relief of acute hydrocephalus secondary to intraventricular hemorrhage (IVH), subarachnoid hemorrhage (SAH), tumor, or infection.</li>
-              <li><strong>ICP Monitoring:</strong> Real-time assessment of intracranial pressure in patients with severe brain injuries (GCS ≤8).</li>
-            </ul>
+      {/* Static Quick Reference Card */}
+      <div className="border border-slate-250 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
+        {/* Header */}
+        <div className="bg-slate-800 text-white text-center py-3.5 px-4">
+          <h3 className="font-serif text-lg font-bold tracking-wide">EVD Quick Reference</h3>
+        </div>
+
+        {/* Top Split Area */}
+        <div className="grid grid-cols-1 md:grid-cols-2 border-b border-slate-200 dark:border-slate-800">
+          {/* Left Col: Photo */}
+          <div className="flex justify-center items-center p-4 bg-slate-50 dark:bg-slate-950/20 border-r border-slate-200 dark:border-slate-800">
+            <img 
+              src="assets/evd_photo_cropped.png" 
+              alt="EVD Cylinder Setup" 
+              className="max-h-[260px] object-contain rounded-md shadow-sm"
+            />
           </div>
 
-          <div className="p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
-            <h4 className="font-bold text-sm text-blue-900 dark:text-blue-300 border-b pb-1 mb-2">EVD Care Basics</h4>
-            <ul className="list-disc list-inside text-xs text-slate-600 dark:text-slate-400 space-y-1.5">
-              <li><strong>Clamp First:</strong> Always clamp EVD *before* moving the patient, raising/lowering the bed, or turning the patient.</li>
-              <li><strong>Waveform Validity:</strong> ICP value/waveform is valid *only* when the EVD is clamped.</li>
-              <li><strong>Drain Trigger:</strong> CSF drains *only* when the patient's actual ICP exceeds the drainage setting threshold.</li>
+          {/* Right Col: Components & SNACC Logo */}
+          <div className="flex flex-col">
+            <div className="bg-blue-600 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
+              Components
+            </div>
+            <div className="p-4 flex-grow text-xs text-slate-600 dark:text-slate-350 space-y-2">
+              <ol className="list-decimal pl-4 space-y-1.5">
+                <li><strong>Drainage setting:</strong> Increments of 5 cmH₂O, higher = less drainage (higher resistance).</li>
+                <li><strong>Drainage stopcock:</strong> 12 o'clock = clamp/closed, 3 o'clock = open to drain.</li>
+                <li><strong>Transducer and zeroing stopcock:</strong> Controls baseline calibration.</li>
+                <li><strong>Collection/drip chamber:</strong> Graduated cylinder measuring CSF volume.</li>
+              </ol>
+              <div className="text-[10px] text-slate-400 italic mt-2">
+                *Red arrow indicates the direction of CSF flow.
+              </div>
+            </div>
+            <div className="flex justify-center items-center p-3 border-t border-slate-150 bg-white dark:bg-slate-850 h-[55px]">
+              <img 
+                src="assets/snacc_logo_cropped.png" 
+                alt="SNACC Logo" 
+                className="max-h-[40px] max-w-[85%] object-contain dark:invert dark:opacity-80"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Indications Section */}
+        <div>
+          <div className="bg-blue-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
+            Indications
+          </div>
+          <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-slate-50/50 dark:bg-slate-950/10 border-b border-slate-200 dark:border-slate-800">
+            <ul className="list-disc pl-5 space-y-1.5">
+              <li><strong>CSF diversion</strong> for acute obstructive hydrocephalus (e.g. IVH, posterior fossa stroke/tumor).</li>
+              <li><strong>Intracranial Pressure (ICP) monitoring</strong> in patients with severe brain injury (GCS &le; 8).</li>
             </ul>
           </div>
         </div>
 
-        {/* Signs of Hydrocephalus */}
-        <div className="p-4 rounded-xl border border-purple-100 bg-purple-50/55 dark:bg-purple-950/10 dark:border-purple-900/30">
-          <h4 className="font-bold text-sm text-purple-900 dark:text-purple-300 border-b border-purple-200 dark:border-purple-900/50 pb-1 mb-2">Signs of Obstructive Hydrocephalus</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            <div>
-              <p className="font-bold text-purple-950 dark:text-purple-200 mb-1">Clinical Manifestations</p>
-              <ul className="list-disc list-inside text-slate-700 dark:text-slate-400 space-y-1">
-                <li>Progressive decline in LOC</li>
-                <li><strong>Parinaud's Syndrome:</strong>
-                  <ul className="list-circle pl-4 space-y-0.5">
-                    <li>Upward gaze palsy (setting sun sign)</li>
-                    <li>Retraction nystagmus on convergence</li>
-                    <li>Pupillary light-near dissociation</li>
+        {/* Signs of Hydrocephalus Section */}
+        <div>
+          <div className="bg-purple-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
+            Signs of Obstructive Hydrocephalus
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 bg-purple-50/20 dark:bg-purple-950/5 border-b border-slate-200 dark:border-slate-800">
+            <div className="p-4 border-r border-slate-200 dark:border-slate-800">
+              <h5 className="font-bold text-xs text-purple-800 dark:text-purple-300 mb-1.5">Clinical Signs:</h5>
+              <ul className="list-disc pl-4 space-y-1.5 text-xs text-slate-600 dark:text-slate-350">
+                <li>Decline in Level of Consciousness (LOC) or progressive somnolence.</li>
+                <li><strong>Parinaud's Syndrome:</strong> Upward gaze palsy (setting sun sign), retraction nystagmus on convergence, and pupillary light-near dissociation.</li>
+              </ul>
+            </div>
+            <div className="p-4">
+              <h5 className="font-bold text-xs text-purple-800 dark:text-purple-300 mb-1.5">Radiographic Signs (NCCT Head):</h5>
+              <ul className="list-disc pl-4 space-y-1.5 text-xs text-slate-600 dark:text-slate-350">
+                <li>Progressive enlargement of the cerebral ventricles.</li>
+                <li>Temporal horn dilation (sensitive early sign of obstruction).</li>
+                <li>High-risk factors: Intraventricular Hemorrhage (IVH) in 3rd or 4th ventricles, compression of 4th ventricle, or high volume blood (mGS &ge; 6).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Basics Section */}
+        <div>
+          <div className="bg-emerald-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
+            Basics
+          </div>
+          <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-emerald-50/15 dark:bg-emerald-950/5 border-b border-slate-200 dark:border-slate-800">
+            <ul className="list-disc pl-5 space-y-1.5">
+              <li><strong>Leveling:</strong> Always align the zero level of the EVD scale/transducer to the external auditory meatus (EAM) / tragus.</li>
+              <li><strong>Repositioning:</strong> Clamp the EVD prior to any changes in Head of Bed (HOB) angle, patient transfers, or physical therapy.</li>
+              <li><strong>Waveform Validity:</strong> ICP value and waveform morphology are valid only when the EVD is clamped.</li>
+              <li><strong>CSF Drainage:</strong> CSF will drain only when the patient's actual ICP exceeds the set drainage height setting.</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Complications Section */}
+        <div>
+          <div className="bg-rose-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
+            Complications
+          </div>
+          <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-rose-50/15 dark:bg-rose-950/5">
+            <ul className="list-disc pl-5 space-y-1.5">
+              <li><strong>Overdrainage (&gt;20 mL/hr):</strong> Risk of subdural hematomas (bridging vein tearing), ventricular collapse (slit ventricles), or upward cerebellar herniation.</li>
+              <li><strong>Underdrainage:</strong> Risk of worsening hydrocephalus, brain compression, or elevated ICP. Troubleshoot for system kinks, blood clots, air locks, or malpositioned stopcocks.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// =====================================================================
+// ICP CRISIS QUICK REFERENCE CARD (STATIC / PRINT-PREPARED)
+// =====================================================================
+export const ICPInfographic = () => {
+  const emailDoc = () => {
+    const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/documents/references/ICP Crisis Quick Reference.pdf';
+    const subject = encodeURIComponent('ICP Crisis Quick Reference');
+    const body = encodeURIComponent(fullUrl);
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+  };
+
+  return (
+    <div className="flex flex-col gap-4">
+      {/* PDF Action Bar */}
+      <div className="flex flex-wrap items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-lg dark:bg-slate-800/40 dark:border-slate-700/60 gap-3">
+        <div className="flex items-center gap-2">
+          <i aria-hidden="true" data-lucide="file-output" className="w-5 h-5 text-red-600 dark:text-red-400"></i>
+          <div>
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">ICP Crisis/Herniation Quick Reference</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">PDF Reference Guide</p>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <a
+            href="documents/references/ICP Crisis Quick Reference.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3.5 py-1.5 bg-cobalt-600 text-white rounded-lg text-xs font-semibold hover:bg-cobalt-700 transition-colors flex items-center gap-1.5"
+          >
+            <i aria-hidden="true" data-lucide="eye" className="w-3.5 h-3.5"></i>
+            View PDF
+          </a>
+          <a
+            href="documents/references/ICP Crisis Quick Reference.pdf"
+            download="ICP Crisis Quick Reference.pdf"
+            className="px-3.5 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors flex items-center gap-1.5"
+          >
+            <i aria-hidden="true" data-lucide="download" className="w-3.5 h-3.5"></i>
+            Download
+          </a>
+          <button
+            onClick={emailDoc}
+            className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-855 transition-colors flex items-center gap-1.5"
+          >
+            <i aria-hidden="true" data-lucide="mail" className="w-3.5 h-3.5"></i>
+            Email
+          </button>
+        </div>
+      </div>
+
+      {/* Static Quick Reference Card */}
+      <div className="border border-red-200 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
+        {/* Header */}
+        <div className="bg-slate-800 text-white text-center py-3.5 px-4 border-b border-red-200 dark:border-red-900/50">
+          <h3 className="font-serif text-lg font-bold tracking-wide">ICP Crisis/Herniation Quick Reference</h3>
+        </div>
+
+        {/* Clinical Signs Section */}
+        <div>
+          <div className="bg-rose-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
+            Clinical Signs of Herniation
+          </div>
+          <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-orange-50/10 dark:bg-orange-950/5 border-b border-slate-200 dark:border-slate-800">
+            <ul className="list-disc pl-5 space-y-1.5">
+              <li><strong>Motor decline:</strong> Spontaneous GCS motor score decrease of &ge; 1 point.</li>
+              <li><strong>Pupillary reactivity:</strong> Decrease in pupillary reactivity (Neurological Pupil Index, NPi &lt; 3).</li>
+              <li><strong>Asymmetry:</strong> New pupillary asymmetry or unilateral dilation (ipsilateral mydriasis).</li>
+              <li><strong>Focal deficit:</strong> New focal motor deficit or abnormal posturing (decorticate / decerebrate).</li>
+              <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations.</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Management Section */}
+        <div>
+          <div className="bg-emerald-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
+            Management
+          </div>
+          <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-emerald-50/15 dark:bg-emerald-950/5 border-b border-slate-200 dark:border-slate-800 space-y-2">
+            <ul className="list-disc pl-5 space-y-2">
+              <li><strong>Hyperosmolar Therapies:</strong>
+                <ul className="list-circle pl-5 mt-1 space-y-1 text-[11px] text-slate-500 dark:text-slate-400">
+                  <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter to catch crystals.</li>
+                  <li><strong>Hypertonic Saline (23.4% NaCl):</strong> 30 mL IV bolus over 5–10 min. <em>*Requires central venous line access.*</em></li>
+                  <li><strong>Hypertonic Saline (3% NaCl):</strong> 150–250 mL IV bolus over 15–20 min. Can be run via large peripheral IV in emergencies.</li>
+                </ul>
+              </li>
+              <li><strong>Hyperventilation:</strong> Use strictly as short-term bridge therapy (target PaCO₂ 30–35 mmHg) to buy time for definitive surgical decompression or osmotherapy. Avoid prolonged use due to cerebral vasoconstriction and ischemia risks.</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* ICP Waveform Section */}
+        <div>
+          <div className="bg-blue-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
+            ICP Waveform Analysis
+          </div>
+          <div className="p-4 bg-slate-50/50 dark:bg-slate-950/15 flex flex-col items-center gap-4">
+            <div className="bg-black p-2 rounded-lg border border-slate-250 dark:border-slate-800 w-full flex justify-center">
+              <img 
+                src="assets/icp_waveform_cropped.png" 
+                alt="ICP Waveform graph" 
+                className="max-h-[170px] object-contain"
+              />
+            </div>
+            <div className="w-full text-xs text-slate-600 dark:text-slate-350 space-y-1.5">
+              <ul className="list-disc pl-5 space-y-1">
+                <li><strong>P1 (Percussion wave):</strong> Arterial pulsation.</li>
+                <li><strong>P2 (Tidal wave):</strong> State of intracranial compliance (elastic reserve).</li>
+                <li><strong>P3 (Dicrotic wave):</strong> Dicrotic notch / venous pulsation.</li>
+                <li><strong>Compliance Interpretation:</strong>
+                  <ul className="list-circle pl-5 mt-1 space-y-0.5 text-[11px] text-slate-500 dark:text-slate-400">
+                    <li><strong>Normal Compliance:</strong> P1 &gt; P2 &gt; P3 (elastic brain tissue easily cushions pulsations).</li>
+                    <li><strong>Impaired Compliance / High ICP:</strong> P2 &gt; P1 (brain tissue reserve exhausted; high risk of herniation).</li>
                   </ul>
                 </li>
               </ul>
             </div>
-            <div>
-              <p className="font-bold text-purple-950 dark:text-purple-200 mb-1">Radiographical Findings (NCCT)</p>
-              <ul className="list-disc list-inside text-slate-700 dark:text-slate-400 space-y-1">
-                <li>Progressive ventricular enlargement</li>
-                <li>Temporal horn dilation (sensitive sign)</li>
-                <li>Transependymal edema / CSF seepage</li>
-                <li><strong>Hemorrhage Risk:</strong> IVH in 3rd/4th ventricles, compressing 4th ventricle, or high volume (mGS ≥ 6)</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Complications Checklist */}
-        <div className="p-4 rounded-xl border border-red-100 bg-red-50/30 dark:bg-red-950/10 dark:border-red-900/30">
-          <h4 className="font-bold text-sm text-red-900 dark:text-red-300 border-b border-red-200 dark:border-red-900/50 pb-1 mb-2">EVD Care Complications</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            <div>
-              <p className="font-bold text-red-950 dark:text-red-200 mb-1 flex items-center gap-1">
-                <span>⚠️ Overdrainage</span>
-                <span className="text-[10px] font-normal text-slate-500">(CSF &gt; 20 mL/hr)</span>
-              </p>
-              <ul className="list-disc list-inside text-slate-700 dark:text-slate-400 space-y-1">
-                <li><strong>Subdural Hematomas:</strong> Brain shrinking pulls bridging veins.</li>
-                <li><strong>Ventricular Collapse:</strong> Ventricles shut, blocking catheter.</li>
-                <li><strong>Upward Herniation:</strong> Cerebellar tissues pushed up.</li>
-              </ul>
-            </div>
-            <div>
-              <p className="font-bold text-red-950 dark:text-red-200 mb-1 flex items-center gap-1">
-                <span>⚠️ Underdrainage</span>
-                <span className="text-[10px] font-normal text-slate-500">(Blocked/clogged)</span>
-              </p>
-              <ul className="list-disc list-inside text-slate-700 dark:text-slate-400 space-y-1">
-                <li><strong>Worsening Hydrocephalus:</strong> CSF cannot bypass blockage.</li>
-                <li><strong>Elevated ICP:</strong> Dangerous rise in brain compression.</li>
-                <li><strong>Troubleshoot:</strong> Check for tube kinks, blood clots, air locks, or malpositioned stopcocks.</li>
-              </ul>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-// =====================================================================
-// INTERACTIVE ICP CRISIS INFOGRAPHIC
-// =====================================================================
-export const ICPInfographic = () => {
-  const [patientWeight, setPatientWeight] = useState('');
-  const [complianceState, setComplianceState] = useState('normal'); // 'normal' (P1 > P2) or 'impaired' (P2 > P1)
-
-  // Calculations for Osmotherapy based on patient weight
-  const osmotherapyDoses = useMemo(() => {
-    const weight = parseFloat(patientWeight);
-    if (isNaN(weight) || weight <= 0) {
-      return {
-        mannitolGrams: '—',
-        mannitolVolume: '—',
-        hypertonic3Percent: '150 - 250 mL',
-        hypertonic23Percent: '30 mL'
-      };
-    }
-    // Mannitol: 1 g/kg. 20% solution means 20g/100mL, which is 0.2g/mL. Volume = grams / 0.2 = grams * 5.
-    const mannitolGrams = weight.toFixed(0);
-    const mannitolVolume = (weight * 5).toFixed(0);
-    return {
-      mannitolGrams: `${mannitolGrams} g`,
-      mannitolVolume: `${mannitolVolume} mL`,
-      hypertonic3Percent: '150 - 250 mL',
-      hypertonic23Percent: '30 mL'
-    };
-  }, [patientWeight]);
-
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* Column 1: Herniation Signs & Osmotherapy Calculator */}
-      <div className="lg:col-span-6 flex flex-col gap-4">
-        {/* Clinical Checklist */}
-        <div className="p-4 rounded-xl border border-red-100 bg-white dark:bg-slate-900 shadow-md">
-          <h3 className="font-serif text-lg font-bold text-red-900 dark:text-red-300 mb-3 flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-100 dark:bg-red-950 text-red-800 dark:text-red-300 text-xs font-mono">1</span>
-            Impending Herniation Signals
-          </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-            Clinicians must check for these critical physiological parameters immediately. Any positive signal requires emergent intervention.
-          </p>
-
-          <div className="space-y-3">
-            {[
-              { title: 'Motor Decline', desc: 'Spontaneous decrease in GCS motor score of ≥1 point.' },
-              { title: 'Pupil Reactivity', desc: 'Decrease in pupillary reactivity with NPi < 3 (Neurological Pupil Index).' },
-              { title: 'Pupil Asymmetry', desc: 'New pupillary asymmetry or ipsilateral mydriasis (blown pupil).' },
-              { title: 'Motor Deficit', desc: 'New focal motor deficit (hemiparesis, decerebrate/decorticate posturing).' },
-              { title: 'Cushing\'s Triad', desc: 'Bradycardia, widened pulse pressure, and irregular respirations (late sign).' }
-            ].map((item, idx) => (
-              <div key={idx} className="flex items-start gap-3 p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
-                <input
-                  type="checkbox"
-                  id={`hn-check-${idx}`}
-                  className="mt-1 h-4 w-4 rounded border-slate-300 text-red-600 focus:ring-red-500"
-                />
-                <label htmlFor={`hn-check-${idx}`} className="select-none">
-                  <strong className="block text-xs text-slate-900 dark:text-slate-200">{item.title}</strong>
-                  <span className="text-[11px] text-slate-500 dark:text-slate-400">{item.desc}</span>
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Osmotherapy Calculator */}
-        <div className="p-4 rounded-xl border border-blue-100 bg-white dark:bg-slate-900 shadow-md">
-          <h3 className="font-serif text-lg font-bold text-blue-900 dark:text-blue-200 mb-2 flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 text-xs font-mono">2</span>
-            Emergent Osmotherapy Calculator
-          </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-            Enter patient weight to quickly calculate emergency hyperosmolar doses.
-          </p>
-
-          <div className="mb-4">
-            <label htmlFor="patient-weight-input" className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Patient Weight (kg)</label>
-            <input
-              id="patient-weight-input"
-              type="number"
-              placeholder="e.g. 70"
-              value={patientWeight}
-              onChange={(e) => setPatientWeight(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-800 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            />
-          </div>
-
-          <div className="space-y-3">
-            {/* Mannitol Card */}
-            <div className="p-3 rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Mannitol 20% (1 g/kg)</span>
-                <span className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400">{osmotherapyDoses.mannitolVolume}</span>
-              </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                Grams: <span className="font-semibold text-slate-700 dark:text-slate-300">{osmotherapyDoses.mannitolGrams}</span>. Infuse over 20–30 minutes. **Must use a filter needle** due to risk of crystallization.
-              </p>
-            </div>
-
-            {/* Hypertonic 3% */}
-            <div className="p-3 rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Hypertonic Saline (3% NaCl)</span>
-                <span className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400">{osmotherapyDoses.hypertonic3Percent}</span>
-              </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                Infuse over 15–30 minutes. Central access preferred, but can use large-bore peripheral IV for emergent rescue therapy.
-              </p>
-            </div>
-
-            {/* Hypertonic 23.4% */}
-            <div className="p-3 rounded-lg border border-red-200 bg-red-50/20 dark:bg-red-950/10">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-xs font-bold text-red-900 dark:text-red-300">Hypertonic Saline (23.4% NaCl)</span>
-                <span className="text-xs font-mono font-bold text-red-600 dark:text-red-400">{osmotherapyDoses.hypertonic23Percent}</span>
-              </div>
-              <p className="text-[11px] text-red-800 dark:text-red-400">
-                Administer over 5–10 minutes. **CENTRAL LINE ACCESS ONLY.** Extravasation causes severe tissue necrosis. Reserved for acute herniation.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Column 2: Waveform Analysis & Emergent Call Banner */}
-      <div className="lg:col-span-6 flex flex-col gap-4">
-        {/* Interactive Waveform Analyzer */}
-        <div className="p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-md">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="font-serif text-lg font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-300 text-xs font-mono">3</span>
-              ICP Waveform Analyzer
-            </h3>
-            {/* Toggle controls */}
-            <div className="flex gap-1">
-              {['normal', 'impaired'].map((st) => (
-                <button
-                  key={st}
-                  type="button"
-                  onClick={() => setComplianceState(st)}
-                  className={`px-2.5 py-1 text-xs font-semibold rounded ${
-                    complianceState === st
-                      ? 'bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-900'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
-                  }`}
-                >
-                  {st === 'normal' ? 'Normal' : 'Impaired'}
-                </button>
-              ))}
-            </div>
-          </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-            Toggle intracranial compliance state to observe waves P1, P2, and P3 changes on physiological monitors.
-          </p>
-
-          {/* SVG Waveform Area */}
-          <div className="w-full h-[180px] bg-slate-950 rounded-lg border border-slate-800 flex items-center justify-center p-3 relative">
-            <svg viewBox="0 0 400 150" className="w-full h-full">
-              {/* Reference Grid lines */}
-              <line x1="0" y1="120" x2="400" y2="120" stroke="#1e293b" strokeWidth="1" />
-              <line x1="0" y1="75" x2="400" y2="75" stroke="#1e293b" strokeWidth="1" strokeDasharray="3 3" />
-              <line x1="0" y1="30" x2="400" y2="30" stroke="#1e293b" strokeWidth="1" />
-
-              {/* Draw three beats */}
-              {complianceState === 'normal' ? (
-                // Normal Waveform path (P1 > P2 > P3)
-                <path
-                  d="M 20 120 C 30 120, 35 40, 40 40 C 45 40, 48 70, 50 70 C 55 70, 60 60, 65 60 C 70 60, 73 85, 75 85 C 80 85, 83 80, 85 80 C 95 80, 100 120, 110 120
-                     M 120 120 C 130 120, 135 40, 140 40 C 145 40, 148 70, 150 70 C 155 70, 160 60, 165 60 C 170 60, 173 85, 175 85 C 180 85, 183 80, 185 80 C 195 80, 200 120, 210 120
-                     M 220 120 C 230 120, 235 40, 240 40 C 245 40, 248 70, 250 70 C 255 70, 260 60, 265 60 C 270 60, 273 85, 275 85 C 280 85, 283 80, 285 80 C 295 80, 300 120, 310 120"
-                  fill="none"
-                  stroke="#ef4444"
-                  strokeWidth="3"
-                  className="transition-all duration-500 ease-in-out"
-                />
-              ) : (
-                // Impaired Compliance Waveform path (P2 > P1)
-                <path
-                  d="M 20 120 C 30 120, 35 65, 40 65 C 45 65, 48 80, 50 80 C 55 80, 60 25, 65 25 C 70 25, 73 80, 75 80 C 80 80, 83 75, 85 75 C 95 75, 100 120, 110 120
-                     M 120 120 C 130 120, 135 65, 140 65 C 145 65, 148 80, 150 80 C 155 80, 160 25, 165 25 C 170 25, 173 80, 175 80 C 180 80, 183 75, 185 75 C 195 75, 200 120, 210 120
-                     M 220 120 C 230 120, 235 65, 240 65 C 245 65, 248 80, 250 80 C 255 80, 260 25, 265 25 C 270 25, 273 80, 275 80 C 280 80, 283 75, 285 75 C 295 75, 300 120, 310 120"
-                  fill="none"
-                  stroke="#ef4444"
-                  strokeWidth="3"
-                  className="transition-all duration-500 ease-in-out"
-                />
-              )}
-
-              {/* Labels for Peaks */}
-              {complianceState === 'normal' ? (
-                // Normal Labels
-                <g className="transition-opacity duration-300">
-                  <circle cx="40" cy="40" r="8" fill="#3b82f6" />
-                  <text x="40" y="43" textAnchor="middle" fill="#fff" className="text-[8px] font-bold">P1</text>
-
-                  <circle cx="65" cy="60" r="8" fill="#3b82f6" />
-                  <text x="65" y="63" textAnchor="middle" fill="#fff" className="text-[8px] font-bold">P2</text>
-
-                  <circle cx="85" cy="80" r="8" fill="#3b82f6" />
-                  <text x="85" y="83" textAnchor="middle" fill="#fff" className="text-[8px] font-bold">P3</text>
-                </g>
-              ) : (
-                // Impaired Labels
-                <g className="transition-opacity duration-300">
-                  <circle cx="40" cy="65" r="8" fill="#ef4444" />
-                  <text x="40" y="68" textAnchor="middle" fill="#fff" className="text-[8px] font-bold">P1</text>
-
-                  <circle cx="65" cy="25" r="8" fill="#ef4444" className="animate-pulse" />
-                  <text x="65" y="28" textAnchor="middle" fill="#fff" className="text-[8px] font-bold">P2</text>
-
-                  <circle cx="85" cy="75" r="8" fill="#ef4444" />
-                  <text x="85" y="78" textAnchor="middle" fill="#fff" className="text-[8px] font-bold">P3</text>
-                </g>
-              )}
-            </svg>
-
-            {/* Legend Overlay */}
-            <div className="absolute top-2 left-2 bg-slate-900/80 backdrop-blur-sm border border-slate-800 rounded px-2 py-1 text-[9px] text-slate-400 font-mono">
-              Green line represents normal baseline (75)
-            </div>
-          </div>
-
-          {/* Explanation Text */}
-          <div className="mt-3 text-xs text-slate-600 dark:text-slate-400">
-            {complianceState === 'normal' ? (
-              <div>
-                <p className="font-bold text-slate-800 dark:text-slate-200">✓ Normal Compliance (P1 &gt; P2 &gt; P3)</p>
-                <p className="mt-0.5 font-normal text-slate-600 dark:text-slate-400">
-                  <strong>P1 (Percussion):</strong> Arterial blood inflow. 
-                  <strong> P2 (Tidal):</strong> State of intracranial compliance (elasticity). 
-                  <strong> P3 (Dicrotic):</strong> Venous pulsations. 
-                  Normal brain tissue has elastic reserve to damp arterial pulsations.
-                </p>
-              </div>
-            ) : (
-              <div>
-                <p className="font-bold text-red-600 dark:text-red-400">⚠️ Impaired Compliance / High ICP (P2 &gt; P1)</p>
-                <p className="mt-0.5 font-normal text-slate-600 dark:text-slate-400">
-                  Intracranial space is exhausted (brain swelling, hematoma, or severe hydrocephalus). Brain tissue cannot expand further. **Every heartbeat causes a massive pressure surge (elevated P2).** Impending herniation risk is high.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-        
-      </div>
-    </div>
-  );
-};
+    );
+  };
