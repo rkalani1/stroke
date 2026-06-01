@@ -2022,8 +2022,8 @@ export const EVDInfographic = () => {
           </div>
           <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-slate-50/50 dark:bg-slate-950/10 border-b border-slate-200 dark:border-slate-800">
             <ul className="list-disc pl-5 space-y-1.5">
-              <li><strong>CSF diversion</strong> for acute obstructive hydrocephalus (e.g. IVH, posterior fossa stroke/tumor).</li>
-              <li><strong>Intracranial Pressure (ICP) monitoring</strong> in patients with severe brain injury (GCS &le; 8).</li>
+              <li><strong>CSF Diversion</strong> for acute obstructive hydrocephalus (e.g., IVH, posterior fossa stroke).</li>
+              <li><strong>ICP Monitoring</strong> in severe brain injury (GCS &le; 8).</li>
             </ul>
           </div>
         </div>
@@ -2060,9 +2060,10 @@ export const EVDInfographic = () => {
           <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-emerald-50/15 dark:bg-emerald-950/5 border-b border-slate-200 dark:border-slate-800">
             <ul className="list-disc pl-5 space-y-1.5">
               <li><strong>Leveling:</strong> Always align the zero level of the EVD scale/transducer to the external auditory meatus (EAM) / tragus.</li>
-              <li><strong>Repositioning:</strong> Clamp the EVD prior to any changes in Head of Bed (HOB) angle, patient transfers, or physical therapy.</li>
+              <li><strong>Mobilization Clamping Rules:</strong> Always CLAMP the EVD before: turning the patient, adjusting HOB, or mobilizing the patient out of bed to prevent severe overdrainage or underdrainage.</li>
               <li><strong>Waveform Validity:</strong> ICP value and waveform morphology are valid only when the EVD is clamped.</li>
-              <li><strong>CSF Drainage:</strong> CSF will drain only when the patient's actual ICP exceeds the set drainage height setting.</li>
+              <li><strong>CSF Drainage:</strong> CSF drainage is passive: occurs only when patient ICP exceeds EVD chamber height.</li>
+              <li><strong>Normal CSF Flow Benchmarks:</strong> Normal CSF production is ~20 mL/hr (~500 mL/day). Drainage &gt;20 mL/hr should trigger immediate assessment for overdrainage or chamber level escalation.</li>
             </ul>
           </div>
         </div>
@@ -2152,7 +2153,7 @@ export const ICPInfographic = () => {
               <li><strong>Pupillary reactivity:</strong> Decrease in pupillary reactivity (Neurological Pupil Index, NPi &lt; 3).</li>
               <li><strong>Asymmetry:</strong> New pupillary asymmetry or unilateral dilation (ipsilateral mydriasis).</li>
               <li><strong>Focal deficit:</strong> New focal motor deficit or abnormal posturing (decorticate / decerebrate).</li>
-              <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations.</li>
+              <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <span className="font-bold text-red-600 dark:text-red-400">*Cushing's Triad is a LATE, pre-terminal sign of brainstem compression. Do not wait for its onset to initiate therapy.*</span></li>
             </ul>
           </div>
         </div>
@@ -2164,14 +2165,23 @@ export const ICPInfographic = () => {
           </div>
           <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-emerald-50/15 dark:bg-emerald-950/5 border-b border-slate-200 dark:border-slate-800 space-y-2">
             <ul className="list-disc pl-5 space-y-2">
-              <li><strong>Hyperosmolar Therapies:</strong>
-                <ul className="list-circle pl-5 mt-1 space-y-1 text-[11px] text-slate-500 dark:text-slate-400">
-                  <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter to catch crystals.</li>
-                  <li><strong>Hypertonic Saline (23.4% NaCl):</strong> 30 mL IV bolus over 5–10 min. <em>*Requires central venous line access.*</em></li>
-                  <li><strong>Hypertonic Saline (3% NaCl):</strong> 150–250 mL IV bolus over 15–20 min. Can be run via large peripheral IV in emergencies.</li>
+              <li><strong>Hyperosmolar Therapies &amp; Hold Parameters:</strong>
+                <ul className="list-circle pl-5 mt-1 space-y-1.5 text-[11px] text-slate-500 dark:text-slate-400">
+                  <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Osmolarity &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
+                  <li><strong>Hypertonic Saline (23.4% NaCl):</strong> 30 mL IV bolus over 5–10 min. <span className="font-bold text-red-600 dark:text-red-400">*CENTRAL LINE ACCESS ONLY*</span> to prevent extravasation necrosis.</li>
+                  <li><strong>Hypertonic Saline (3% NaCl):</strong> 150–250 mL IV bolus over 15–20 min. Large peripheral IV access is acceptable for emergent rescue. <span className="font-semibold text-red-600 dark:text-red-400">Hold HTS if Serum Sodium &gt; 155–160 mEq/L or Chloride &gt; 115–120 mEq/L.</span></li>
                 </ul>
               </li>
-              <li><strong>Hyperventilation:</strong> Use strictly as short-term bridge therapy (target PaCO₂ 30–35 mmHg) to buy time for definitive surgical decompression or osmotherapy. Avoid prolonged use due to cerebral vasoconstriction and ischemia risks.</li>
+              <li><strong>Hyperventilation:</strong> Use strictly as short-term bridge therapy (target PaCO₂ 30–35 mmHg). Avoid prolonged use due to ischemia risks.</li>
+              <li><strong>Steroid Contraindication:</strong> Steroids are contraindicated for cytotoxic cerebral edema in stroke and raise infection risks.</li>
+              <li><strong>Simplified Escalation Pathway:</strong>
+                <div className="mt-2 grid grid-cols-2 md:grid-cols-4 gap-1.5 text-[10px] uppercase font-bold text-center">
+                  <div className="p-1 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200 rounded">Tier 1: Baseline<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">hob 30°, midline neck, sedation</span></div>
+                  <div className="p-1 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200 rounded">Tier 2: Medical<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">mannitol 1g/kg, hts 3% bolus</span></div>
+                  <div className="p-1 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 rounded">Tier 3: Bridging<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">hts 23.4%, hyperventilation</span></div>
+                  <div className="p-1 bg-rose-50 dark:bg-rose-950 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200 rounded">Tier 4: Surgical<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">dhc / suboccipital decomp</span></div>
+                </div>
+              </li>
             </ul>
           </div>
         </div>

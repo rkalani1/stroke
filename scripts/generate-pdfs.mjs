@@ -230,8 +230,8 @@ async function main() {
         <div class="section-title">INDICATIONS</div>
         <div class="list-section">
           <ul>
-            <li><strong>CSF diversion</strong> for acute obstructive hydrocephalus (e.g. IVH, posterior fossa stroke/tumor).</li>
-            <li><strong>Intracranial Pressure (ICP) monitoring</strong> in patients with severe brain injury (GCS &le; 8).</li>
+            <li><strong>CSF Diversion</strong> for acute obstructive hydrocephalus (e.g., IVH, posterior fossa stroke).</li>
+            <li><strong>ICP Monitoring</strong> in severe brain injury (GCS &le; 8).</li>
           </ul>
         </div>
         
@@ -258,9 +258,10 @@ async function main() {
         <div class="basics-section">
           <ul>
             <li><strong>Leveling:</strong> Always align the zero level of the EVD scale/transducer to the external auditory meatus (EAM) / tragus.</li>
-            <li><strong>Repositioning:</strong> Clamp the EVD prior to any changes in Head of Bed (HOB) angle, patient transfers, or physical therapy.</li>
+            <li><strong>Mobilization Clamping Rules:</strong> Always CLAMP the EVD before: turning the patient, adjusting HOB, or mobilizing the patient out of bed to prevent severe overdrainage or underdrainage.</li>
             <li><strong>Waveform Validity:</strong> ICP value and waveform morphology are valid only when the EVD is clamped.</li>
-            <li><strong>CSF Drainage:</strong> CSF will drain only when the patient's actual ICP exceeds the set drainage height setting.</li>
+            <li><strong>CSF Drainage:</strong> CSF drainage is passive: occurs only when patient ICP exceeds EVD chamber height.</li>
+            <li><strong>Normal CSF Flow Benchmarks:</strong> Normal CSF production is ~20 mL/hr (~500 mL/day). Drainage &gt;20 mL/hr should trigger immediate assessment for overdrainage or chamber level escalation.</li>
           </ul>
         </div>
         
@@ -400,6 +401,35 @@ async function main() {
           margin-bottom: 4px;
           font-size: 9.5pt;
         }
+        .escalation-pathway {
+          display: flex;
+          justify-content: space-between;
+          gap: 8px;
+          margin-top: 10px;
+        }
+        .tier-card {
+          flex: 1;
+          padding: 6px;
+          border: 1px solid #cbd5e1;
+          border-radius: 4px;
+          text-align: center;
+          font-size: 8pt;
+          font-weight: bold;
+          text-transform: uppercase;
+          background-color: #f8fafc;
+        }
+        .tier-card.blue { border-color: #93c5fd; background-color: #eff6ff; color: #1e3a8a; }
+        .tier-card.green { border-color: #6ee7b7; background-color: #ecfdf5; color: #064e3b; }
+        .tier-card.amber { border-color: #fde047; background-color: #fef9c3; color: #713f12; }
+        .tier-card.rose { border-color: #fca5a5; background-color: #fff1f2; color: #7f1d1d; }
+        .tier-card span {
+          display: block;
+          font-weight: normal;
+          text-transform: none;
+          font-size: 7.5pt;
+          color: #64748b;
+          margin-top: 2px;
+        }
       </style>
     </head>
     <body>
@@ -413,21 +443,30 @@ async function main() {
             <li><strong>Pupillary reactivity:</strong> Decrease in pupillary reactivity (Neurological Pupil Index, NPi &lt; 3).</li>
             <li><strong>Asymmetry:</strong> New pupillary asymmetry or unilateral dilation (ipsilateral mydriasis).</li>
             <li><strong>Focal deficit:</strong> New focal motor deficit or abnormal posturing (decorticate / decerebrate).</li>
-            <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations.</li>
+            <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <strong style="color: #dc2626;">*Cushing's Triad is a LATE, pre-terminal sign of brainstem compression. Do not wait for its onset to initiate therapy.*</strong></li>
           </ul>
         </div>
         
         <div class="section-title green">MANAGEMENT</div>
         <div class="list-section green-bg">
           <ul>
-            <li><strong>Hyperosmolar Therapies:</strong>
+            <li><strong>Hyperosmolar Therapies &amp; Hold Parameters:</strong>
               <ul>
-                <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter to catch crystals.</li>
-                <li><strong>Hypertonic Saline (23.4% NaCl):</strong> 30 mL IV bolus over 5–10 min. <em>*Requires central venous line access.*</em></li>
-                <li><strong>Hypertonic Saline (3% NaCl):</strong> 150–250 mL IV bolus over 15–20 min. Can be run via large peripheral IV in emergencies.</li>
+                <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span style="color: #dc2626; font-weight: 600;">Hold if Serum Osmolarity &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
+                <li><strong>Hypertonic Saline (23.4% NaCl):</strong> 30 mL IV bolus over 5–10 min. <strong style="color: #dc2626;">*CENTRAL LINE ACCESS ONLY*</strong> to prevent extravasation necrosis.</li>
+                <li><strong>Hypertonic Saline (3% NaCl):</strong> 150–250 mL IV bolus over 15–20 min. Large peripheral IV access is acceptable for emergent rescue. <span style="color: #dc2626; font-weight: 600;">Hold HTS if Serum Sodium &gt; 155–160 mEq/L or Chloride &gt; 115–120 mEq/L.</span></li>
               </ul>
             </li>
-            <li><strong>Hyperventilation:</strong> Use strictly as short-term bridge therapy (target PaCO₂ 30–35 mmHg) to buy time for definitive surgical decompression or osmotherapy. Avoid prolonged use due to cerebral vasoconstriction and ischemia risks.</li>
+            <li><strong>Hyperventilation:</strong> Use strictly as short-term bridge therapy (target PaCO₂ 30–35 mmHg). Avoid prolonged use due to ischemia risks.</li>
+            <li><strong>Steroid Contraindication:</strong> Steroids are contraindicated for cytotoxic cerebral edema in stroke and raise infection risks.</li>
+            <li><strong>Simplified Escalation Pathway:</strong>
+              <div class="escalation-pathway">
+                <div class="tier-card blue">Tier 1: Baseline<span>hob 30°, midline neck, sedation</span></div>
+                <div class="tier-card green">Tier 2: Medical<span>mannitol 1g/kg, hts 3% bolus</span></div>
+                <div class="tier-card amber">Tier 3: Bridging<span>hts 23.4%, hyperventilation</span></div>
+                <div class="tier-card rose">Tier 4: Surgical<span>dhc / suboccipital decomp</span></div>
+              </div>
+            </li>
           </ul>
         </div>
         
