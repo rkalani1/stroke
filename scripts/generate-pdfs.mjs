@@ -490,7 +490,7 @@ async function main() {
             <li style="margin-bottom: 3px;"><strong>Tier 0: Fundamental Optimization (For all at-risk patients)</strong>
               <ul style="padding-left: 15px;">
                 <li>Elevate HOB 30°; strict neutral midline neck alignment to preserve venous outflow.</li>
-                <li>Euvolemia (isotonic saline; avoid hypotonic $D_5W$), normothermia (treat fevers), normocapnia ($pCO_2$ 35–40 mmHg).</li>
+                <li>Euvolemia (isotonic saline; avoid hypotonic D5W), normothermia (treat fevers), normocapnia (pCO₂ 35–40 mmHg).</li>
               </ul>
             </li>
             <li style="margin-bottom: 3px;"><strong>Tier 1: Initial Interventions</strong>
@@ -503,7 +503,7 @@ async function main() {
               <ul style="padding-left: 15px;">
                 <li><strong>Mannitol 20%:</strong> 1 g/kg IV bolus over 20-30 min. Must use in-line filter. <span style="color: #dc2626; font-weight: 600;">Hold if Serum Osmolarity &gt; 320 mOsm/kg or Gap &ge; 20 mOsm/kg.</span></li>
                 <li><strong>Hypertonic Saline (HTS):</strong> 3% (150-250 mL bolus) or 23.4% (30 mL rescue bolus; central line access only). <span style="color: #dc2626; font-weight: 600;">Hold if Serum Na &gt; 155 mEq/L or Cl &gt; 115 mEq/L.</span></li>
-                <li><strong>Controlled Hyperventilation:</strong> Target $pCO_2$ 30-35 mmHg. Temporary bridge only; avoid prolonged use or $pCO_2 < 30$ (ischemia risk).</li>
+                <li><strong>Controlled Hyperventilation:</strong> Target pCO₂ 30–35 mmHg. Temporary bridge only; avoid prolonged use or pCO₂ &lt; 30 (ischemia risk).</li>
               </ul>
             </li>
             <li style="margin-bottom: 3px;"><strong>Tier 3: Refractory &amp; Salvage Measures</strong>
