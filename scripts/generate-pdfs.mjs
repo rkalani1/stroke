@@ -299,7 +299,7 @@ async function main() {
     <html lang="en">
     <head>
       <meta charset="UTF-8">
-      <title>Intracranial hypertension and herniation</title>
+      <title>Intracranial Hypertension & Herniation</title>
       <style>
         @page {
           size: letter;
@@ -470,7 +470,7 @@ async function main() {
     </head>
     <body>
       <div class="container">
-        <div class="header">Intracranial hypertension and herniation</div>
+        <div class="header">Intracranial Hypertension & Herniation</div>
         
         <div class="section-title">CLINICAL SIGNS OF HERNIATION</div>
         <div class="list-section peach">
@@ -620,12 +620,12 @@ async function main() {
 
   await page.setContent(icpHtml);
   await page.pdf({
-    path: 'documents/references/Intracranial hypertension and herniation.pdf',
+    path: 'documents/references/Intracranial Hypertension & Herniation.pdf',
     format: 'letter',
     printBackground: true,
     margin: { top: '0.16in', bottom: '0.16in', left: '0.16in', right: '0.16in' }
   });
-  console.log('Generated documents/references/Intracranial hypertension and herniation.pdf');
+  console.log('Generated documents/references/Intracranial Hypertension & Herniation.pdf');
 
   await browser.close();
 }

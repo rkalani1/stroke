@@ -33622,7 +33622,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="ref-icp" className="bg-white border border-red-200 rounded-lg dark:bg-card dark:border-red-900">
                       <summary className="cursor-pointer p-4 font-semibold text-red-800 hover:bg-red-50 rounded-lg flex items-center gap-2 dark:text-red-300 dark:hover:bg-slate-850">
                         <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-red-600 dark:text-red-400"></i>
-                        Intracranial hypertension and herniation Infographic
+                        Intracranial Hypertension &amp; Herniation Infographic
                       </summary>
                       <div className="px-4 pb-4">
                         <ICPInfographic />
