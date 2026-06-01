@@ -35,7 +35,7 @@ import {
 } from './components.jsx';
 import { PocketCards } from './pocket-cards.jsx';
 import { LandmarkTrialsCard } from './teaching.jsx';
-import Education from './education.jsx';
+import Education, { EVDInfographic, ICPInfographic } from './education.jsx';
 /* v7 design primitives — single accent (cobalt), one alarm (crit), one alert (warn).
    Adopted progressively as Encounter (Phase 5), Trials (Phase 6), and Management
    (Phase 7) regions are touched. Existing v6 inline elements continue to work
@@ -7943,7 +7943,8 @@ Clinician Name`;
             { id: 'sub-references', group: 'Protocols', label: 'Guideline & Reference Library', hint: 'Landmark trials, guidelines, HINTS & CVT', icon: 'clipboard-list', keywords: ['reference library', 'references', 'docs', 'toast', 'classification', 'guidelines', 'trials'], run: () => gotoProtocolsSub('references') },
             // ---- Simulators (each card lives in the Simulators sub-tab of Education) ----
             { id: 'sim-all', group: 'Bedside Simulators', label: 'Bedside Simulators', hint: 'All teaching simulators', icon: 'test-tubes', keywords: ['simulators', 'simulation', 'teaching', 'bedside'], run: () => { navigateTo('education'); setEducationSubTab('simulators'); } },
-            { id: 'sim-evd', group: 'Bedside Simulators', label: 'EVD & ICP Simulator', hint: 'Drain & pressure trace', icon: 'activity', keywords: ['evd', 'icp', 'drain', 'intracranial pressure', 'ventriculostomy'], run: () => { navigateTo('education'); setEducationSubTab('evd-icp'); } },
+            { id: 'sim-evd', group: 'Bedside Simulators', label: 'EVD Maintenance & Leveling', hint: 'Interactive system simulator', icon: 'activity', keywords: ['evd', 'drain', 'ventriculostomy', 'leveling', 'zeroing', 'overdrainage'], run: () => { navigateTo('education'); setEducationSubTab('evd-maintenance'); } },
+            { id: 'sim-icp', group: 'Bedside Simulators', label: 'ICP & Herniation Management', hint: 'Waveform analyzer & osmotherapy calculator', icon: 'alert-triangle', keywords: ['icp', 'intracranial pressure', 'herniation', 'compliance', 'osmotherapy', 'mannitol'], run: () => { navigateTo('education'); setEducationSubTab('herniation-icp'); } },
             { id: 'sim-hints', group: 'Bedside Simulators', label: 'HINTS+ Eye-Movement Simulator', hint: 'Vestibular exam', icon: 'eye', keywords: ['hints', 'eye movement', 'vestibular', 'nystagmus', 'vertigo', 'dizziness'], run: () => { navigateTo('education'); setEducationSubTab('hints-simulator'); } },
             { id: 'sim-pupil', group: 'Bedside Simulators', label: 'Pupillometry / NPi Simulator', hint: 'Pupil reactivity', icon: 'circle', keywords: ['pupillometry', 'npi', 'pupil', 'reactivity'], run: () => { navigateTo('education'); setEducationSubTab('pupillometry'); } },
             { id: 'sim-neuroexam', group: 'Bedside Simulators', label: 'Neuro-Exams (Aphasia / Delirium / Coma)', hint: 'Bedside exam tools', icon: 'brain', keywords: ['neuro exam', 'aphasia', 'delirium', 'coma', 'exam', 'classifier'], run: () => { navigateTo('education'); setEducationSubTab('neuro-exams-simulator'); } },
@@ -33418,6 +33419,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       {[
                         ['ref-trials', 'Major Stroke Trials'],
                         ['ref-evidence-recs', 'Guideline Recommendations'],
+                        ['ref-evd', 'EVD Maintenance'],
+                        ['ref-icp', 'ICP & Herniation'],
                         ['ref-hints', 'HINTS Exam'],
                         ['ref-cvt', 'CVT'],
                         ['ref-prognosis', 'Prognosis'],
@@ -33601,6 +33604,28 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </details>
                           );
                         })}
+                      </div>
+                    </details>
+
+                    {/* EVD Maintenance & Leveling */}
+                    <details id="ref-evd" className="bg-white border border-blue-200 rounded-lg dark:bg-card dark:border-blue-900">
+                      <summary className="cursor-pointer p-4 font-semibold text-blue-800 hover:bg-blue-50 rounded-lg flex items-center gap-2 dark:text-blue-300 dark:hover:bg-slate-850">
+                        <i aria-hidden="true" data-lucide="activity" className="w-4 h-4 text-blue-600 dark:text-blue-400"></i>
+                        EVD Maintenance &amp; Leveling Infographic
+                      </summary>
+                      <div className="px-4 pb-4">
+                        <EVDInfographic />
+                      </div>
+                    </details>
+
+                    {/* ICP Crisis & Intracranial Hypertension */}
+                    <details id="ref-icp" className="bg-white border border-red-200 rounded-lg dark:bg-card dark:border-red-900">
+                      <summary className="cursor-pointer p-4 font-semibold text-red-800 hover:bg-red-50 rounded-lg flex items-center gap-2 dark:text-red-300 dark:hover:bg-slate-850">
+                        <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-red-600 dark:text-red-400"></i>
+                        ICP Crisis &amp; Intracranial Hypertension Infographic
+                      </summary>
+                      <div className="px-4 pb-4">
+                        <ICPInfographic />
                       </div>
                     </details>
 
