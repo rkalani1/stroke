@@ -473,16 +473,71 @@ function ScaledCardWrapper({ children, isLandscape }) {
   );
 }
 
-const IcpManagementView = () => {
+const EvdMaintenanceView = () => {
   const [viewMode, setViewMode] = useState('pocket-card'); // 'pocket-card' or 'interactive'
   return (
     <div className="space-y-4">
       {/* Toggle buttons */}
-      <div className="flex gap-2 border-b border-line pb-2 mb-4">
+      <div className="flex gap-2 border-b border-line pb-2 mb-4 no-print">
         <button
           onClick={() => setViewMode('pocket-card')}
           className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
             viewMode === 'pocket-card'
+              ? 'bg-cobalt-600 text-white shadow-sm'
+              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
+          }`}
+        >
+          Quick Reference Card
+        </button>
+        <button
+          onClick={() => setViewMode('interactive')}
+          className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
+            viewMode === 'interactive'
+              ? 'bg-cobalt-600 text-white shadow-sm'
+              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
+          }`}
+        >
+          Interactive EVD Simulator
+        </button>
+      </div>
+
+      {viewMode === 'pocket-card' ? (
+        <EVDInfographic />
+      ) : (
+        <ErrorBoundary>
+          <div className="bg-white border border-line rounded-lg p-6 dark:bg-card">
+            <div className="v7-callout v7-callout-critical p-3 mb-4 bg-red-50 text-red-900 border border-red-200 rounded-lg dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60">
+              <h3 className="font-bold text-xs uppercase mb-1">🛑 Safety Notice — EVD Orders</h3>
+              <p className="text-xs">Never change EVD drain height, clamp orders, or flush an EVD independently. All EVD manipulations must be explicitly authorized by Neurosurgery or Neurocritical Care.</p>
+            </div>
+            <EvdIcpSimulator />
+          </div>
+        </ErrorBoundary>
+      )}
+    </div>
+  );
+};
+
+const IcpManagementView = () => {
+  const [viewMode, setViewMode] = useState('pocket-card'); // 'pocket-card', 'escalation', or 'interactive'
+  return (
+    <div className="space-y-4">
+      {/* Toggle buttons */}
+      <div className="flex gap-2 border-b border-line pb-2 mb-4 no-print">
+        <button
+          onClick={() => setViewMode('pocket-card')}
+          className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
+            viewMode === 'pocket-card'
+              ? 'bg-cobalt-600 text-white shadow-sm'
+              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
+          }`}
+        >
+          Quick Reference Card
+        </button>
+        <button
+          onClick={() => setViewMode('escalation')}
+          className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
+            viewMode === 'escalation'
               ? 'bg-cobalt-600 text-white shadow-sm'
               : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
           }`}
@@ -497,17 +552,23 @@ const IcpManagementView = () => {
               : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
           }`}
         >
-          Interactive Tools (Waveform & Dosing)
+          Interactive ICP Simulator
         </button>
       </div>
 
       {viewMode === 'pocket-card' ? (
+        <ICPInfographic />
+      ) : viewMode === 'escalation' ? (
         <ScaledCardWrapper isLandscape={false}>
           <BedsidePocketCardsStyles />
           <HerniationIcpCard />
         </ScaledCardWrapper>
       ) : (
-        <ICPInfographic />
+        <ErrorBoundary>
+          <div className="bg-white border border-line rounded-lg p-6 dark:bg-card">
+            <EvdIcpSimulator />
+          </div>
+        </ErrorBoundary>
       )}
     </div>
   );
@@ -568,7 +629,7 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
     case 'herniation-icp':
       return <IcpManagementView />;
     case 'evd-maintenance':
-      return <EVDInfographic />;
+      return <EvdMaintenanceView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -1925,6 +1986,8 @@ export function HerniationIcpCard() {
 // EVD QUICK REFERENCE CARD (STATIC / PRINT-PREPARED)
 // =====================================================================
 export const EVDInfographic = () => {
+  const [showPdf, setShowPdf] = useState(false);
+
   const emailDoc = () => {
     const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/documents/references/EVD Quick Reference.pdf';
     const subject = encodeURIComponent('EVD Quick Reference');
@@ -1935,7 +1998,7 @@ export const EVDInfographic = () => {
   return (
     <div className="flex flex-col gap-4">
       {/* PDF Action Bar */}
-      <div className="flex flex-wrap items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-lg dark:bg-slate-800/40 dark:border-slate-700/60 gap-3">
+      <div className="flex flex-wrap items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-lg dark:bg-slate-800/40 dark:border-slate-700/60 gap-3 no-print">
         <div className="flex items-center gap-2">
           <i aria-hidden="true" data-lucide="file-output" className="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
           <div>
@@ -1944,15 +2007,13 @@ export const EVDInfographic = () => {
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
-          <a
-            href="documents/references/EVD Quick Reference.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => setShowPdf(!showPdf)}
             className="px-3.5 py-1.5 bg-cobalt-600 text-white rounded-lg text-xs font-semibold hover:bg-cobalt-700 transition-colors flex items-center gap-1.5"
           >
             <i aria-hidden="true" data-lucide="eye" className="w-3.5 h-3.5"></i>
-            View PDF
-          </a>
+            {showPdf ? "Hide PDF Preview" : "Preview PDF"}
+          </button>
           <a
             href="documents/references/EVD Quick Reference.pdf"
             download="EVD Quick Reference.pdf"
@@ -1971,6 +2032,16 @@ export const EVDInfographic = () => {
         </div>
       </div>
 
+      {showPdf && (
+        <div className="border border-slate-250 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
+          <iframe
+            src="documents/references/EVD Quick Reference.pdf"
+            className="w-full h-full border-none"
+            title="EVD Quick Reference PDF"
+          />
+        </div>
+      )}
+
       {/* Static Quick Reference Card */}
       <div className="border border-slate-250 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
         {/* Header */}
@@ -1980,16 +2051,57 @@ export const EVDInfographic = () => {
 
         {/* Top Split Area */}
         <div className="grid grid-cols-1 md:grid-cols-2 border-b border-slate-200 dark:border-slate-800">
-          {/* Left Col: Photo */}
+          {/* Left Col: SVG Graphic (Vector Replacement) */}
           <div className="flex justify-center items-center p-4 bg-slate-50 dark:bg-slate-950/20 border-r border-slate-200 dark:border-slate-800">
-            <img 
-              src="assets/evd_photo_cropped.png" 
-              alt="EVD Cylinder Setup" 
-              className="max-h-[260px] object-contain rounded-md shadow-sm"
-            />
+            <svg viewBox="0 0 220 280" className="w-full max-h-[260px] object-contain select-none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="220" height="280" rx="8" fill="#f8fafc" className="dark:fill-slate-900/30" />
+              <rect x="25" y="10" width="10" height="260" fill="#94a3b8" rx="2" />
+              <rect x="23" y="40" width="14" height="6" fill="#64748b" />
+              <rect x="23" y="220" width="14" height="6" fill="#64748b" />
+              <rect x="70" y="20" width="45" height="240" fill="#e2e8f0" stroke="#cbd5e1" strokeWidth="1" rx="4" className="dark:fill-slate-800 dark:stroke-slate-700" />
+              <line x1="70" y1="140" x2="115" y2="140" stroke="#ef4444" strokeWidth="2" />
+              <text x="50" y="144" fill="#ef4444" fontSize="10" fontFamily="monospace" fontWeight="bold">0 —</text>
+              <line x1="80" y1="110" x2="110" y2="110" stroke="#475569" strokeWidth="1" className="dark:stroke-slate-400" />
+              <text x="58" y="113" fill="#475569" fontSize="9" fontFamily="monospace" className="dark:fill-slate-400">5 —</text>
+              <line x1="80" y1="80" x2="110" y2="80" stroke="#475569" strokeWidth="1" className="dark:stroke-slate-400" />
+              <text x="52" y="83" fill="#475569" fontSize="9" fontFamily="monospace" className="dark:fill-slate-400">10 —</text>
+              <line x1="80" y1="50" x2="110" y2="50" stroke="#475569" strokeWidth="1" className="dark:stroke-slate-400" />
+              <text x="52" y="53" fill="#475569" fontSize="9" fontFamily="monospace" className="dark:fill-slate-400">15 —</text>
+              <line x1="80" y1="170" x2="110" y2="170" stroke="#475569" strokeWidth="1" className="dark:stroke-slate-400" />
+              <text x="53" y="173" fill="#475569" fontSize="9" fontFamily="monospace" className="dark:fill-slate-400">-5 —</text>
+              <line x1="80" y1="200" x2="110" y2="200" stroke="#475569" strokeWidth="1" className="dark:stroke-slate-400" />
+              <text x="47" y="203" fill="#475569" fontSize="9" fontFamily="monospace" className="dark:fill-slate-400">-10 —</text>
+              <rect x="135" y="30" width="30" height="150" rx="15" fill="none" stroke="#334155" strokeWidth="2" className="dark:stroke-slate-400" />
+              <line x1="135" y1="60" x2="145" y2="60" stroke="#94a3b8" strokeWidth="1" />
+              <line x1="135" y1="90" x2="150" y2="90" stroke="#94a3b8" strokeWidth="1" />
+              <line x1="135" y1="120" x2="145" y2="120" stroke="#94a3b8" strokeWidth="1" />
+              <line x1="135" y1="150" x2="150" y2="150" stroke="#94a3b8" strokeWidth="1" />
+              <path d="M 136,120 L 164,120 A 14,14 0 0,1 164,150 L 136,150 Z" fill="#fbbf24" fillOpacity="0.4" />
+              <line x1="136" y1="120" x2="164" y2="120" stroke="#d97706" strokeWidth="1" strokeDasharray="2,2" />
+              <rect x="67" y="74" width="51" height="12" rx="2" fill="#ef4444" fillOpacity="0.85" stroke="#dc2626" strokeWidth="1" />
+              <polygon points="118,80 128,76 128,84" fill="#ef4444" />
+              <circle cx="150" cy="205" r="8" fill="#0d9488" />
+              <line x1="150" y1="205" x2="162" y2="205" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
+              <line x1="150" y1="205" x2="150" y2="195" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
+              <path d="M 195,245 L 150,245 L 150,213" fill="none" stroke="#dc2626" strokeWidth="2" />
+              <path d="M 172,245 L 164,245" stroke="#ef4444" strokeWidth="2" fill="none" />
+              <polygon points="164,242 158,245 164,248" fill="#ef4444" />
+              <path d="M 150,245 L 105,245" fill="none" stroke="#2563eb" strokeWidth="2" />
+              <rect x="92" y="238" width="14" height="14" rx="2" fill="#2563eb" stroke="#1d4ed8" strokeWidth="1" />
+              <circle cx="99" cy="245" r="3" fill="#ffffff" />
+              <circle cx="92" cy="80" r="7" fill="#b91c1c" />
+              <text x="92" y="83" fill="#ffffff" fontSize="8.5" fontFamily="sans-serif" textAnchor="middle" fontWeight="bold">1</text>
+              <circle cx="138" cy="214" r="7" fill="#b91c1c" />
+              <text x="138" y="217" fill="#ffffff" fontSize="8.5" fontFamily="sans-serif" textAnchor="middle" fontWeight="bold">2</text>
+              <circle cx="82" cy="235" r="7" fill="#b91c1c" />
+              <text x="82" y="238" fill="#ffffff" fontSize="8.5" fontFamily="sans-serif" textAnchor="middle" fontWeight="bold">3</text>
+              <circle cx="176" cy="105" r="7" fill="#b91c1c" />
+              <text x="176" y="108" fill="#ffffff" fontSize="8.5" fontFamily="sans-serif" textAnchor="middle" fontWeight="bold">4</text>
+              <line x1="5" y1="140" x2="65" y2="140" stroke="#94a3b8" strokeDasharray="3,3" strokeWidth="1.5" />
+            </svg>
           </div>
 
-          {/* Right Col: Components & SNACC Logo */}
+          {/* Right Col: Components & SNACC Vector Logo */}
           <div className="flex flex-col">
             <div className="bg-blue-600 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
               Components
@@ -2005,12 +2117,22 @@ export const EVDInfographic = () => {
                 *Red arrow indicates the direction of CSF flow.
               </div>
             </div>
-            <div className="flex justify-center items-center p-3 border-t border-slate-150 bg-white dark:bg-slate-850 h-[55px]">
-              <img 
-                src="assets/snacc_logo_cropped.png" 
-                alt="SNACC Logo" 
-                className="max-h-[40px] max-w-[85%] object-contain dark:invert dark:opacity-80"
-              />
+            <div className="flex justify-center items-center p-3 border-t border-slate-150 bg-white dark:bg-slate-800 h-[55px]">
+              <svg viewBox="0 0 280 50" className="w-full max-h-[40px] object-contain select-none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 10,25 C 10,15 18,8 28,8 C 38,8 46,15 46,25 C 46,35 38,42 28,42 C 18,42 10,35 10,25 Z" fill="none" stroke="#5B3B9C" strokeWidth="1.5" />
+                <circle cx="28" cy="25" r="4" fill="#18849E" />
+                <line x1="28" y1="25" x2="20" y2="18" stroke="#5B3B9C" strokeWidth="1.2" />
+                <line x1="28" y1="25" x2="36" y2="18" stroke="#5B3B9C" strokeWidth="1.2" />
+                <line x1="28" y1="25" x2="20" y2="32" stroke="#5B3B9C" strokeWidth="1.2" />
+                <line x1="28" y1="25" x2="36" y2="32" stroke="#5B3B9C" strokeWidth="1.2" />
+                <circle cx="20" cy="18" r="2" fill="#5B3B9C" />
+                <circle cx="36" cy="18" r="2" fill="#5B3B9C" />
+                <circle cx="20" cy="32" r="2" fill="#5B3B9C" />
+                <circle cx="36" cy="32" r="2" fill="#5B3B9C" />
+                <text x="56" y="24" fill="#3A2368" fontSize="16" fontFamily="'Outfit', sans-serif" fontWeight="900" letterSpacing="1px" className="dark:fill-purple-400">SNACC</text>
+                <text x="56" y="38" fill="#636472" fontSize="6.5" fontFamily="sans-serif" fontWeight="600" letterSpacing="0.2px" className="dark:fill-slate-400">SOCIETY FOR NEUROSCIENCE</text>
+                <text x="56" y="45" fill="#636472" fontSize="5.5" fontFamily="sans-serif" fontWeight="400" className="dark:fill-slate-400">IN ANESTHESIOLOGY AND CRITICAL CARE</text>
+              </svg>
             </div>
           </div>
         </div>
@@ -2089,6 +2211,8 @@ export const EVDInfographic = () => {
 // ICP CRISIS QUICK REFERENCE CARD (STATIC / PRINT-PREPARED)
 // =====================================================================
 export const ICPInfographic = () => {
+  const [showPdf, setShowPdf] = useState(false);
+
   const emailDoc = () => {
     const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/documents/references/ICP Crisis Quick Reference.pdf';
     const subject = encodeURIComponent('ICP Crisis Quick Reference');
@@ -2099,7 +2223,7 @@ export const ICPInfographic = () => {
   return (
     <div className="flex flex-col gap-4">
       {/* PDF Action Bar */}
-      <div className="flex flex-wrap items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-lg dark:bg-slate-800/40 dark:border-slate-700/60 gap-3">
+      <div className="flex flex-wrap items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-lg dark:bg-slate-800/40 dark:border-slate-700/60 gap-3 no-print">
         <div className="flex items-center gap-2">
           <i aria-hidden="true" data-lucide="file-output" className="w-5 h-5 text-red-600 dark:text-red-400"></i>
           <div>
@@ -2108,15 +2232,13 @@ export const ICPInfographic = () => {
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
-          <a
-            href="documents/references/ICP Crisis Quick Reference.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => setShowPdf(!showPdf)}
             className="px-3.5 py-1.5 bg-cobalt-600 text-white rounded-lg text-xs font-semibold hover:bg-cobalt-700 transition-colors flex items-center gap-1.5"
           >
             <i aria-hidden="true" data-lucide="eye" className="w-3.5 h-3.5"></i>
-            View PDF
-          </a>
+            {showPdf ? "Hide PDF Preview" : "Preview PDF"}
+          </button>
           <a
             href="documents/references/ICP Crisis Quick Reference.pdf"
             download="ICP Crisis Quick Reference.pdf"
@@ -2134,6 +2256,16 @@ export const ICPInfographic = () => {
           </button>
         </div>
       </div>
+
+      {showPdf && (
+        <div className="border border-slate-250 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
+          <iframe
+            src="documents/references/ICP Crisis Quick Reference.pdf"
+            className="w-full h-full border-none"
+            title="ICP Crisis Quick Reference PDF"
+          />
+        </div>
+      )}
 
       {/* Static Quick Reference Card */}
       <div className="border border-red-200 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
@@ -2174,6 +2306,12 @@ export const ICPInfographic = () => {
               </li>
               <li><strong>Hyperventilation:</strong> Use strictly as short-term bridge therapy (target PaCO₂ 30–35 mmHg). Avoid prolonged use due to ischemia risks.</li>
               <li><strong>Steroid Contraindication:</strong> Steroids are contraindicated for cytotoxic cerebral edema in stroke and raise infection risks.</li>
+              <li><strong>Decompressive Surgery Selection Criteria:</strong>
+                <ul className="list-circle pl-5 mt-1 space-y-1 text-[11px] text-slate-500 dark:text-slate-400">
+                  <li><strong>Malignant MCA (DHC):</strong> Age &le; 60 years, clinical decline (GCS decline &ge; 1, pupillary changes), CT/MRI infarction &ge; 50% MCA territory, within 48h of onset (DECIMAL/DESTINY trials).</li>
+                  <li><strong>Cerebellar Stroke (Suboccipital Decompression):</strong> Mass effect on brainstem, 4th ventricle effacement, cerebellar herniation, or hydrocephalus.</li>
+                </ul>
+              </li>
               <li><strong>Simplified Escalation Pathway:</strong>
                 <div className="mt-2 grid grid-cols-2 md:grid-cols-4 gap-1.5 text-[10px] uppercase font-bold text-center">
                   <div className="p-1 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200 rounded">Tier 1: Baseline<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">hob 30°, midline neck, sedation</span></div>
@@ -2192,12 +2330,39 @@ export const ICPInfographic = () => {
             ICP Waveform Analysis
           </div>
           <div className="p-4 bg-slate-50/50 dark:bg-slate-950/15 flex flex-col items-center gap-4">
-            <div className="bg-black p-2 rounded-lg border border-slate-250 dark:border-slate-800 w-full flex justify-center">
-              <img 
-                src="assets/icp_waveform_cropped.png" 
-                alt="ICP Waveform graph" 
-                className="max-h-[170px] object-contain"
-              />
+            <div className="bg-slate-950 p-2 rounded-lg border border-slate-250 dark:border-slate-800 w-full flex justify-center">
+              <svg viewBox="0 0 420 150" className="w-full max-h-[160px] select-none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="10" y1="25" x2="410" y2="25" stroke="#1e293b" strokeWidth="1" />
+                <line x1="10" y1="50" x2="410" y2="50" stroke="#1e293b" strokeWidth="1" />
+                <line x1="10" y1="75" x2="410" y2="75" stroke="#1e293b" strokeWidth="1" />
+                <line x1="10" y1="100" x2="410" y2="100" stroke="#1e293b" strokeWidth="1" />
+                <line x1="10" y1="125" x2="410" y2="125" stroke="#1e293b" strokeWidth="1" />
+                <line x1="50" y1="10" x2="50" y2="140" stroke="#1e293b" strokeWidth="1" />
+                <line x1="100" y1="10" x2="100" y2="140" stroke="#1e293b" strokeWidth="1" />
+                <line x1="150" y1="10" x2="150" y2="140" stroke="#1e293b" strokeWidth="1" />
+                <line x1="200" y1="10" x2="200" y2="140" stroke="#1e293b" strokeWidth="1" />
+                <line x1="250" y1="10" x2="250" y2="140" stroke="#1e293b" strokeWidth="1" />
+                <line x1="300" y1="10" x2="300" y2="140" stroke="#1e293b" strokeWidth="1" />
+                <line x1="350" y1="10" x2="350" y2="140" stroke="#1e293b" strokeWidth="1" />
+                <text x="15" y="20" fill="#10b981" fontSize="10" fontFamily="sans-serif" fontWeight="bold">Normal Compliance (P1 &gt; P2 &gt; P3)</text>
+                <path d="M 15,120 C 25,120 30,35 40,35 C 50,35 55,75 60,75 C 65,75 70,55 80,55 C 90,55 95,90 100,90 C 105,90 110,75 120,75 C 130,75 140,120 160,120" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" />
+                <circle cx="40" cy="35" r="7" fill="#2563eb" />
+                <text x="40" y="38" fill="#ffffff" fontSize="8" fontFamily="sans-serif" textAnchor="middle" fontWeight="bold">P1</text>
+                <circle cx="80" cy="55" r="7" fill="#2563eb" />
+                <text x="80" y="58" fill="#ffffff" fontSize="8" fontFamily="sans-serif" textAnchor="middle" fontWeight="bold">P2</text>
+                <circle cx="120" cy="75" r="7" fill="#2563eb" />
+                <text x="120" y="78" fill="#ffffff" fontSize="8" fontFamily="sans-serif" textAnchor="middle" fontWeight="bold">P3</text>
+                <line x1="200" y1="15" x2="200" y2="135" stroke="#334155" strokeWidth="1.5" strokeDasharray="3,3" />
+                <text x="215" y="20" fill="#f43f5e" fontSize="10" fontFamily="sans-serif" fontWeight="bold">Impaired Compliance (P2 &gt; P1)</text>
+                <path d="M 215,100 C 225,100 230,55 240,55 C 250,55 255,80 260,80 C 265,80 270,30 280,30 C 290,30 295,90 300,90 C 305,90 310,70 320,70 C 330,70 340,100 360,100" fill="none" stroke="#f43f5e" strokeWidth="3" strokeLinecap="round" />
+                <circle cx="240" cy="55" r="7" fill="#2563eb" />
+                <text x="240" y="58" fill="#ffffff" fontSize="8" fontFamily="sans-serif" textAnchor="middle" fontWeight="bold">P1</text>
+                <circle cx="280" cy="30" r="7" fill="#2563eb" />
+                <text x="280" y="33" fill="#ffffff" fontSize="8" fontFamily="sans-serif" textAnchor="middle" fontWeight="bold">P2</text>
+                <circle cx="320" cy="70" r="7" fill="#2563eb" />
+                <text x="320" y="73" fill="#ffffff" fontSize="8" fontFamily="sans-serif" textAnchor="middle" fontWeight="bold">P3</text>
+                <text x="215" y="130" fill="#94a3b8" fontSize="8.5" fontFamily="sans-serif" fontStyle="italic">Tissue compliance exhausted; elevated baseline pressure</text>
+              </svg>
             </div>
             <div className="w-full text-xs text-slate-600 dark:text-slate-350 space-y-1.5">
               <ul className="list-disc pl-5 space-y-1">
@@ -2212,9 +2377,9 @@ export const ICPInfographic = () => {
                 </li>
               </ul>
             </div>
-            </div>
           </div>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
