@@ -433,35 +433,7 @@ async function main() {
           margin-bottom: 1.5px;
           font-size: 8pt;
         }
-        .escalation-pathway {
-          display: flex;
-          justify-content: space-between;
-          gap: 4px;
-          margin-top: 5px;
-        }
-        .tier-card {
-          flex: 1;
-          padding: 3px;
-          border: 1px solid #cbd5e1;
-          border-radius: 4px;
-          text-align: center;
-          font-size: 7pt;
-          font-weight: bold;
-          text-transform: uppercase;
-          background-color: #f8fafc;
-        }
-        .tier-card.blue { border-color: #93c5fd; background-color: #eff6ff; color: #1e3a8a; }
-        .tier-card.green { border-color: #6ee7b7; background-color: #ecfdf5; color: #064e3b; }
-        .tier-card.amber { border-color: #fde047; background-color: #fef9c3; color: #713f12; }
-        .tier-card.rose { border-color: #fca5a5; background-color: #fff1f2; color: #7f1d1d; }
-        .tier-card span {
-          display: block;
-          font-weight: normal;
-          text-transform: none;
-          font-size: 6.5pt;
-          color: #64748b;
-          margin-top: 1px;
-        }
+
       </style>
     </head>
     <body>
@@ -546,12 +518,7 @@ async function main() {
             </li>
           </ul>
           
-          <div class="escalation-pathway">
-            <div class="tier-card blue">Tier 0: Base<span>hob 30°, midline, isotonic</span></div>
-            <div class="tier-card green">Tier 1: Initial<span>evd drainage, sedation</span></div>
-            <div class="tier-card amber">Tier 2: Medical<span>osmotherapy, bridge vent</span></div>
-            <div class="tier-card rose">Tier 3: Salvage<span>barb coma, craniectomy</span></div>
-          </div>
+
         </div>
         
         <div class="section-title blue">ICP WAVEFORM ANALYSIS</div>

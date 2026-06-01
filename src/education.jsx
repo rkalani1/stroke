@@ -2323,12 +2323,7 @@ export const ICPInfographic = () => {
                 </li>
               </ul>
             </div>
-            <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-1.5 text-[10px] uppercase font-bold text-center">
-              <div className="p-1 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200 rounded">Tier 0: Base<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">hob 30°, midline, isotonic</span></div>
-              <div className="p-1 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200 rounded">Tier 1: Initial<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">evd drainage, sedation</span></div>
-              <div className="p-1 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 rounded">Tier 2: Medical<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">osmotherapy, bridge vent</span></div>
-              <div className="p-1 bg-rose-50 dark:bg-rose-950 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200 rounded">Tier 3: Salvage<br/><span className="font-normal text-[9px] lowercase text-slate-500 dark:text-slate-400">barb coma, craniectomy</span></div>
-            </div>
+
           </div>
         </div>
 
