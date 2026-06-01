@@ -303,15 +303,15 @@ async function main() {
       <style>
         @page {
           size: letter;
-          margin: 0.22in 0.22in 0.22in 0.22in;
+          margin: 0.16in 0.16in 0.16in 0.16in;
         }
         body {
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
           margin: 0;
           padding: 0;
           color: #1e293b;
-          font-size: 8.5pt;
-          line-height: 1.25;
+          font-size: 8pt;
+          line-height: 1.2;
           background: white;
         }
         .container {
@@ -325,8 +325,8 @@ async function main() {
           background-color: #1e3a8a;
           color: white;
           text-align: center;
-          padding: 5px;
-          font-size: 16pt;
+          padding: 4px;
+          font-size: 15pt;
           font-weight: bold;
           letter-spacing: 0.5px;
           border-bottom: 2px solid #b91c1c;
@@ -335,8 +335,8 @@ async function main() {
           background-color: #b91c1c;
           color: white;
           text-align: center;
-          padding: 4px;
-          font-size: 10pt;
+          padding: 3px;
+          font-size: 9.5pt;
           font-weight: bold;
           letter-spacing: 0.5px;
           text-transform: uppercase;
@@ -345,7 +345,7 @@ async function main() {
         .section-title.blue { background-color: #1d4ed8; }
         
         .list-section {
-          padding: 8px 12px;
+          padding: 6px 10px;
           border-bottom: 2px solid #b91c1c;
         }
         .list-section.peach {
@@ -356,38 +356,74 @@ async function main() {
         }
         .list-section ul {
           margin: 0;
-          padding-left: 20px;
+          padding-left: 15px;
         }
         .list-section li {
-          margin-bottom: 2px;
-          font-size: 8.5pt;
+          margin-bottom: 1.5px;
+          font-size: 8pt;
         }
         .list-section ul ul {
-          margin-top: 2px;
-          padding-left: 20px;
+          margin-top: 1.5px;
+          padding-left: 15px;
         }
         .list-section ul ul li {
-          margin-bottom: 2px;
-          font-size: 8pt;
+          margin-bottom: 1.5px;
+          font-size: 7.8pt;
+        }
+        
+        .herniation-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 5px;
+          font-size: 7.2pt;
+          line-height: 1.15;
+        }
+        .herniation-table th, .herniation-table td {
+          border: 1px solid #fed7aa;
+          padding: 2px 4px;
+          text-align: left;
+        }
+        .herniation-table th {
+          background-color: #ffedd5;
+          font-weight: bold;
+          color: #9a3412;
+        }
+        .herniation-table td strong {
+          color: #b45309;
+        }
+        
+        .perfusion-trap-box {
+          border: 1px solid #dc2626;
+          background-color: #fef2f2;
+          color: #991b1b;
+          border-radius: 4px;
+          padding: 4px 6px;
+          margin-top: 5px;
+          font-size: 7.5pt;
+          line-height: 1.2;
+          width: 98%;
+        }
+        .perfusion-trap-box strong {
+          color: #dc2626;
         }
         
         .waveform-section {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 8px;
+          padding: 6px;
           background-color: #fafbfd;
         }
         .waveform-container {
           width: 100%;
-          max-height: 100px;
+          max-height: 85px;
           display: flex;
           justify-content: center;
           align-items: center;
           background-color: black;
           border-radius: 4px;
           overflow: hidden;
-          margin-bottom: 6px;
+          margin-bottom: 4px;
           border: 1px solid #e2e8f0;
         }
         .waveform-bullets {
@@ -395,25 +431,25 @@ async function main() {
         }
         .waveform-bullets ul {
           margin: 0;
-          padding-left: 20px;
+          padding-left: 15px;
         }
         .waveform-bullets li {
-          margin-bottom: 2px;
-          font-size: 8.5pt;
+          margin-bottom: 1.5px;
+          font-size: 8pt;
         }
         .escalation-pathway {
           display: flex;
           justify-content: space-between;
-          gap: 6px;
-          margin-top: 6px;
+          gap: 4px;
+          margin-top: 5px;
         }
         .tier-card {
           flex: 1;
-          padding: 4px;
+          padding: 3px;
           border: 1px solid #cbd5e1;
           border-radius: 4px;
           text-align: center;
-          font-size: 7.5pt;
+          font-size: 7pt;
           font-weight: bold;
           text-transform: uppercase;
           background-color: #f8fafc;
@@ -426,7 +462,7 @@ async function main() {
           display: block;
           font-weight: normal;
           text-transform: none;
-          font-size: 7pt;
+          font-size: 6.5pt;
           color: #64748b;
           margin-top: 1px;
         }
@@ -445,41 +481,88 @@ async function main() {
             <li><strong>Focal deficit:</strong> New focal motor deficit or abnormal posturing (decorticate / decerebrate).</li>
             <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <strong style="color: #dc2626;">*Cushing's Triad is a LATE, pre-terminal sign of brainstem compression. Do not wait for its onset to initiate therapy.*</strong></li>
           </ul>
+          
+          <table class="herniation-table">
+            <thead>
+              <tr>
+                <th style="width: 20%;">Syndrome</th>
+                <th style="width: 35%;">Anatomical Substrate</th>
+                <th style="width: 45%;">Clinical Exam &amp; Diagnostic Trap</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Uncal</strong> (Lateral)</td>
+                <td>Medial temporal lobe (uncus) pushed over tentorial edge</td>
+                <td>Ipsilateral sluggish/dilated pupil (CN III compressed), contralateral hemiparesis. <br/><em>Trap:</em> <strong>Kernohan's Notch</strong> causes false-localizing ipsilateral hemiparesis.</td>
+              </tr>
+              <tr>
+                <td><strong>Central</strong> (Axial)</td>
+                <td>Downward diencephalic and midbrain displacement</td>
+                <td>Progressive stupor, midpoint fixed pupils, decorticate to decerebrate posturing. <br/><em>Trap:</em> Symmetrical signs often confused with metabolic encephalopathy.</td>
+              </tr>
+              <tr>
+                <td><strong>Subfalcine</strong> (Cingulate)</td>
+                <td>Cingulate gyrus displaced under the falx cerebri</td>
+                <td>Often clinically silent, or presents with contralateral lower extremity weakness. <br/><em>Trap:</em> <strong>ACA compression</strong> causes frontal/leg territory infarction.</td>
+              </tr>
+              <tr>
+                <td><strong>Tonsillar</strong> (Downward)</td>
+                <td>Cerebellar tonsils forced through the foramen magnum</td>
+                <td>Cushing's triad, flaccid quadriplegia, respiratory arrest. <br/><em>Trap:</em> Cushing's triad is pre-terminal; do not wait for its appearance.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         
-        <div class="section-title green">MANAGEMENT</div>
+        <div class="section-title green">MANAGEMENT (TIERED PATHWAY)</div>
         <div class="list-section green-bg">
-          <ul>
-            <li><strong>Hyperosmolar Therapies &amp; Hold Parameters:</strong>
-              <ul>
-                <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span style="color: #dc2626; font-weight: 600;">Hold if Serum Osmolarity &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
-                <li><strong>Hypertonic Saline (23.4% NaCl):</strong> 30 mL IV bolus over 5–10 min. <strong style="color: #dc2626;">*CENTRAL LINE ACCESS ONLY*</strong> to prevent extravasation necrosis.</li>
-                <li><strong>Hypertonic Saline (3% NaCl):</strong> 150–250 mL IV bolus over 15–20 min. Large peripheral IV access is acceptable for emergent rescue. <span style="color: #dc2626; font-weight: 600;">Hold HTS if Serum Sodium &gt; 155–160 mEq/L or Chloride &gt; 115–120 mEq/L.</span></li>
+          <ul style="list-style-type: none; padding-left: 0;">
+            <li style="margin-bottom: 3px;"><strong>Tier 0: Fundamental Optimization (For all at-risk patients)</strong>
+              <ul style="padding-left: 15px;">
+                <li>Elevate HOB 30°; strict neutral midline neck alignment to preserve venous outflow.</li>
+                <li>Euvolemia (isotonic saline; absolute ban on hypotonic $D_5W$), normothermia (treat fevers), normocapnia ($pCO_2$ 35–40 mmHg).</li>
               </ul>
             </li>
-            <li><strong>Hyperventilation:</strong> Use strictly as short-term bridge therapy (target PaCO₂ 30–35 mmHg). Avoid prolonged use due to ischemia risks.</li>
-            <li><strong>Steroid Contraindication:</strong> Steroids are contraindicated for cytotoxic cerebral edema in stroke and raise infection risks.</li>
-            <li><strong>Decompressive Surgery Selection Criteria:</strong>
-              <ul>
-                <li><strong>Malignant MCA (DHC):</strong> Age &le; 60 years, clinical decline (GCS decline &ge; 1, pupillary changes), CT/MRI infarction &ge; 50% MCA territory, within 48h of onset (DECIMAL/DESTINY trials).</li>
-                <li><strong>Cerebellar Stroke (Suboccipital Decompression):</strong> Mass effect on brainstem, 4th ventricle effacement, cerebellar herniation, or hydrocephalus.</li>
+            <li style="margin-bottom: 3px;"><strong>Tier 1: Initial Interventions</strong>
+              <ul style="padding-left: 15px;">
+                <li>Continuous CSF drainage via EVD (typically set at 10–15 cmH₂O).</li>
+                <li>Analgesia/sedation (propofol/fentanyl) to prevent coughing, agitation, or ventilator dyssynchrony.</li>
               </ul>
             </li>
-            <li><strong>Simplified Escalation Pathway:</strong>
-              <div class="escalation-pathway">
-                <div class="tier-card blue">Tier 1: Baseline<span>hob 30°, midline neck, sedation</span></div>
-                <div class="tier-card green">Tier 2: Medical<span>mannitol 1g/kg, hts 3% bolus</span></div>
-                <div class="tier-card amber">Tier 3: Bridging<span>hts 23.4%, hyperventilation</span></div>
-                <div class="tier-card rose">Tier 4: Surgical<span>dhc / suboccipital decomp</span></div>
-              </div>
+            <li style="margin-bottom: 3px;"><strong>Tier 2: Hyperosmolar &amp; Ventilatory Escalation</strong>
+              <ul style="padding-left: 15px;">
+                <li><strong>Mannitol 20%:</strong> 1 g/kg IV bolus over 20-30 min. Must use in-line filter. <span style="color: #dc2626; font-weight: 600;">Hold if Serum Osmolarity &gt; 320 mOsm/kg or Gap &ge; 20 mOsm/kg.</span></li>
+                <li><strong>Hypertonic Saline (HTS):</strong> 3% (150-250 mL bolus) or 23.4% (30 mL rescue bolus; central line access only). <span style="color: #dc2626; font-weight: 600;">Hold if Serum Na &gt; 155 mEq/L or Cl &gt; 115 mEq/L.</span></li>
+                <li><strong>Controlled Hyperventilation:</strong> Target $pCO_2$ 30-35 mmHg. Temporary bridge only; avoid prolonged use or $pCO_2 < 30$ (ischemia risk).</li>
+                <li><strong>Steroids:</strong> Contraindicated for cytotoxic edema in stroke.</li>
+              </ul>
+            </li>
+            <li style="margin-bottom: 3px;"><strong>Tier 3: Refractory &amp; Salvage Measures</strong>
+              <ul style="padding-left: 15px;">
+                <li>High-dose barbiturate therapy (pentobarbital) titrated to burst suppression on EEG.</li>
+                <li><strong>Decompressive Surgery:</strong>
+                  <ul>
+                    <li><strong>Malignant MCA (DHC):</strong> Age &le; 60 years, GCS decline &ge; 1 / pupil changes, infarct &ge; 50% MCA, within 48h (DECIMAL/DESTINY).</li>
+                    <li><strong>Cerebellar Stroke:</strong> Suboccipital craniectomy for brainstem compression, 4th ventricle effacement, or hydrocephalus.</li>
+                  </ul>
+                </li>
+              </ul>
             </li>
           </ul>
+          
+          <div class="escalation-pathway">
+            <div class="tier-card blue">Tier 0: Base<span>hob 30°, midline, isotonic</span></div>
+            <div class="tier-card green">Tier 1: Initial<span>evd drainage, sedation</span></div>
+            <div class="tier-card amber">Tier 2: Medical<span>osmotherapy, bridge vent</span></div>
+            <div class="tier-card rose">Tier 3: Salvage<span>barb coma, craniectomy</span></div>
+          </div>
         </div>
         
         <div class="section-title blue">ICP WAVEFORM ANALYSIS</div>
         <div class="waveform-section">
           <div class="waveform-container">
-            <svg viewBox="0 0 420 150" style="width: 100%; max-height: 100px;" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 420 150" style="width: 100%; max-height: 85px;" xmlns="http://www.w3.org/2000/svg">
               <line x1="10" y1="25" x2="410" y2="25" stroke="#1e293b" stroke-width="1" />
               <line x1="10" y1="50" x2="410" y2="50" stroke="#1e293b" stroke-width="1" />
               <line x1="10" y1="75" x2="410" y2="75" stroke="#1e293b" stroke-width="1" />
@@ -525,6 +608,11 @@ async function main() {
               </li>
             </ul>
           </div>
+          
+          <div class="perfusion-trap-box">
+            <strong>CRITICAL WARNING: The Perfusion Trap ($CPP = MAP - ICP$)</strong><br/>
+            In patients with mass effect, cerebral perfusion is highly pressure-dependent. Trainees must avoid the reflex to aggressively lower blood pressure. Lowering MAP will drop Cerebral Perfusion Pressure (CPP), causing immediate penumbral ischemia and expanding infarct volume. Maintain stroke blood pressure targets.
+          </div>
         </div>
       </div>
     </body>
@@ -536,7 +624,7 @@ async function main() {
     path: 'documents/references/Intracranial hypertension and herniation.pdf',
     format: 'letter',
     printBackground: true,
-    margin: { top: '0.22in', bottom: '0.22in', left: '0.22in', right: '0.22in' }
+    margin: { top: '0.16in', bottom: '0.16in', left: '0.16in', right: '0.16in' }
   });
   console.log('Generated documents/references/Intracranial hypertension and herniation.pdf');
 
