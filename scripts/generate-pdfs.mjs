@@ -292,26 +292,26 @@ async function main() {
   console.log('Generated documents/references/EVD Quick Reference.pdf');
 
   // ==========================================
-  // 2. GENERATE ICP CRISIS QUICK REFERENCE PDF
+  // 2. GENERATE INTRACRANIAL HYPERTENSION AND HERNIATION PDF
   // ==========================================
   const icpHtml = `
     <!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8">
-      <title>ICP Crisis/Herniation Quick Reference</title>
+      <title>Intracranial hypertension and herniation</title>
       <style>
         @page {
           size: letter;
-          margin: 0.3in 0.3in 0.3in 0.3in;
+          margin: 0.22in 0.22in 0.22in 0.22in;
         }
         body {
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
           margin: 0;
           padding: 0;
           color: #1e293b;
-          font-size: 10pt;
-          line-height: 1.35;
+          font-size: 8.5pt;
+          line-height: 1.25;
           background: white;
         }
         .container {
@@ -325,8 +325,8 @@ async function main() {
           background-color: #1e3a8a;
           color: white;
           text-align: center;
-          padding: 10px;
-          font-size: 20pt;
+          padding: 5px;
+          font-size: 16pt;
           font-weight: bold;
           letter-spacing: 0.5px;
           border-bottom: 2px solid #b91c1c;
@@ -335,8 +335,8 @@ async function main() {
           background-color: #b91c1c;
           color: white;
           text-align: center;
-          padding: 6px;
-          font-size: 12pt;
+          padding: 4px;
+          font-size: 10pt;
           font-weight: bold;
           letter-spacing: 0.5px;
           text-transform: uppercase;
@@ -345,7 +345,7 @@ async function main() {
         .section-title.blue { background-color: #1d4ed8; }
         
         .list-section {
-          padding: 12px 18px;
+          padding: 8px 12px;
           border-bottom: 2px solid #b91c1c;
         }
         .list-section.peach {
@@ -359,35 +359,35 @@ async function main() {
           padding-left: 20px;
         }
         .list-section li {
-          margin-bottom: 6px;
-          font-size: 9.5pt;
+          margin-bottom: 2px;
+          font-size: 8.5pt;
         }
         .list-section ul ul {
-          margin-top: 4px;
+          margin-top: 2px;
           padding-left: 20px;
         }
         .list-section ul ul li {
-          margin-bottom: 4px;
-          font-size: 9pt;
+          margin-bottom: 2px;
+          font-size: 8pt;
         }
         
         .waveform-section {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 12px;
+          padding: 8px;
           background-color: #fafbfd;
         }
         .waveform-container {
           width: 100%;
-          max-height: 180px;
+          max-height: 100px;
           display: flex;
           justify-content: center;
           align-items: center;
           background-color: black;
           border-radius: 4px;
           overflow: hidden;
-          margin-bottom: 10px;
+          margin-bottom: 6px;
           border: 1px solid #e2e8f0;
         }
         .waveform-bullets {
@@ -398,22 +398,22 @@ async function main() {
           padding-left: 20px;
         }
         .waveform-bullets li {
-          margin-bottom: 4px;
-          font-size: 9.5pt;
+          margin-bottom: 2px;
+          font-size: 8.5pt;
         }
         .escalation-pathway {
           display: flex;
           justify-content: space-between;
-          gap: 8px;
-          margin-top: 10px;
+          gap: 6px;
+          margin-top: 6px;
         }
         .tier-card {
           flex: 1;
-          padding: 6px;
+          padding: 4px;
           border: 1px solid #cbd5e1;
           border-radius: 4px;
           text-align: center;
-          font-size: 8pt;
+          font-size: 7.5pt;
           font-weight: bold;
           text-transform: uppercase;
           background-color: #f8fafc;
@@ -426,15 +426,15 @@ async function main() {
           display: block;
           font-weight: normal;
           text-transform: none;
-          font-size: 7.5pt;
+          font-size: 7pt;
           color: #64748b;
-          margin-top: 2px;
+          margin-top: 1px;
         }
       </style>
     </head>
     <body>
       <div class="container">
-        <div class="header">ICP Crisis/Herniation Quick Reference</div>
+        <div class="header">Intracranial hypertension and herniation</div>
         
         <div class="section-title">CLINICAL SIGNS OF HERNIATION</div>
         <div class="list-section peach">
@@ -479,7 +479,7 @@ async function main() {
         <div class="section-title blue">ICP WAVEFORM ANALYSIS</div>
         <div class="waveform-section">
           <div class="waveform-container">
-            <svg viewBox="0 0 420 150" style="width: 100%; max-height: 180px;" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 420 150" style="width: 100%; max-height: 100px;" xmlns="http://www.w3.org/2000/svg">
               <line x1="10" y1="25" x2="410" y2="25" stroke="#1e293b" stroke-width="1" />
               <line x1="10" y1="50" x2="410" y2="50" stroke="#1e293b" stroke-width="1" />
               <line x1="10" y1="75" x2="410" y2="75" stroke="#1e293b" stroke-width="1" />
@@ -533,12 +533,12 @@ async function main() {
 
   await page.setContent(icpHtml);
   await page.pdf({
-    path: 'documents/references/ICP Crisis Quick Reference.pdf',
+    path: 'documents/references/Intracranial hypertension and herniation.pdf',
     format: 'letter',
     printBackground: true,
-    margin: { top: '0.3in', bottom: '0.3in', left: '0.3in', right: '0.3in' }
+    margin: { top: '0.22in', bottom: '0.22in', left: '0.22in', right: '0.22in' }
   });
-  console.log('Generated documents/references/ICP Crisis Quick Reference.pdf');
+  console.log('Generated documents/references/Intracranial hypertension and herniation.pdf');
 
   await browser.close();
 }

@@ -300,6 +300,41 @@
   .v7-skin { background-image: none !important; }
   .v7-skin::before { display: none !important; }
 
+  /* ICP Infographic card single-page print optimization */
+  .icp-infographic-card {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    max-height: 100% !important;
+    font-size: 8.5pt !important;
+  }
+  .icp-infographic-card h3 {
+    font-size: 14pt !important;
+    padding: 4px !important;
+  }
+  .icp-infographic-card .bg-rose-700,
+  .icp-infographic-card .bg-emerald-700,
+  .icp-infographic-card .bg-blue-700 {
+    font-size: 9pt !important;
+    padding: 3px !important;
+  }
+  .icp-infographic-card .p-4 {
+    padding: 8px !important;
+  }
+  .icp-infographic-card svg {
+    max-height: 110px !important;
+  }
+  .icp-infographic-card ul, 
+  .icp-infographic-card ol {
+    margin-bottom: 0 !important;
+  }
+  .icp-infographic-card li {
+    margin-bottom: 2px !important;
+  }
+  .icp-infographic-card ul.space-y-1.5 > * + *,
+  .icp-infographic-card ul.space-y-2 > * + * {
+    margin-top: 2px !important;
+  }
+
   @page {
     margin: 1.5cm;
   }
