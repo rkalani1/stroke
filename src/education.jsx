@@ -2339,7 +2339,7 @@ export const ICPInfographic = () => {
           </div>
           <div className="p-4 bg-slate-50/50 dark:bg-slate-950/15 flex flex-col items-center gap-4">
             <div className="bg-slate-950 p-2 rounded-lg border border-slate-250 dark:border-slate-800 w-full flex justify-center">
-              <svg viewBox="0 0 420 150" className="w-full max-h-[160px] select-none" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 420 150" className="w-full max-h-[220px] select-none" xmlns="http://www.w3.org/2000/svg">
                 <line x1="10" y1="25" x2="410" y2="25" stroke="#1e293b" strokeWidth="1" />
                 <line x1="10" y1="50" x2="410" y2="50" stroke="#1e293b" strokeWidth="1" />
                 <line x1="10" y1="75" x2="410" y2="75" stroke="#1e293b" strokeWidth="1" />
