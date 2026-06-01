@@ -494,22 +494,22 @@ async function main() {
               <tr>
                 <td><strong>Uncal</strong> (Lateral)</td>
                 <td>Medial temporal lobe (uncus) pushed over tentorial edge</td>
-                <td>Ipsilateral sluggish/dilated pupil (CN III compressed), contralateral hemiparesis. <br/><em>Trap:</em> <strong>Kernohan's Notch</strong> causes false-localizing ipsilateral hemiparesis.</td>
+                <td>Ipsilateral sluggish/dilated pupil (CN III compressed), contralateral hemiparesis. <br/><strong>Kernohan's Notch</strong> causes false-localizing ipsilateral hemiparesis.</td>
               </tr>
               <tr>
                 <td><strong>Central</strong> (Axial)</td>
                 <td>Downward diencephalic and midbrain displacement</td>
-                <td>Progressive stupor, midpoint fixed pupils, decorticate to decerebrate posturing. <br/><em>Trap:</em> Symmetrical signs often confused with metabolic encephalopathy.</td>
+                <td>Progressive stupor, midpoint fixed pupils, decorticate to decerebrate posturing. <br/>Symmetrical signs often confused with metabolic encephalopathy.</td>
               </tr>
               <tr>
                 <td><strong>Subfalcine</strong> (Cingulate)</td>
                 <td>Cingulate gyrus displaced under the falx cerebri</td>
-                <td>Often clinically silent, or presents with contralateral lower extremity weakness. <br/><em>Trap:</em> <strong>ACA compression</strong> causes frontal/leg territory infarction.</td>
+                <td>Often clinically silent, or presents with contralateral lower extremity weakness. <br/><strong>ACA compression</strong> causes frontal/leg territory infarction.</td>
               </tr>
               <tr>
                 <td><strong>Tonsillar</strong> (Downward)</td>
                 <td>Cerebellar tonsils forced through the foramen magnum</td>
-                <td>Cushing's triad, flaccid quadriplegia, respiratory arrest. <br/><em>Trap:</em> Cushing triad is a LATE sign of brainstem compression.</td>
+                <td>Cushing's triad, flaccid quadriplegia, respiratory arrest.</td>
               </tr>
             </tbody>
           </table>
