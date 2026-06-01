@@ -2286,7 +2286,7 @@ export const ICPInfographic = () => {
         {/* Management Section */}
         <div>
           <div className="bg-emerald-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
-            Management (Tiered Pathway)
+            Management
           </div>
           <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-emerald-50/15 dark:bg-emerald-950/5 border-b border-slate-200 dark:border-slate-800 space-y-3">
             <div className="space-y-1">

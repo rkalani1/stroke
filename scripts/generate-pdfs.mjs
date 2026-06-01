@@ -484,7 +484,7 @@ async function main() {
           </table>
         </div>
         
-        <div class="section-title green">MANAGEMENT (TIERED PATHWAY)</div>
+        <div class="section-title green">MANAGEMENT</div>
         <div class="list-section green-bg">
           <ul style="list-style-type: none; padding-left: 0;">
             <li style="margin-bottom: 3px;"><strong>Tier 0: Fundamental Optimization (For all at-risk patients)</strong>
