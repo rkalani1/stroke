@@ -2,7 +2,14 @@ import { chromium } from 'playwright';
 import fs from 'fs';
 import path from 'path';
 
+// Helper to encode files to base64 data URLs
+function getBase64DataUrl(filePath) {
+  const buffer = fs.readFileSync(filePath);
+  return `data:image/png;base64,${buffer.toString('base64')}`;
+}
+
 async function main() {
+  const evdPhotoBase64 = getBase64DataUrl('assets/evd_photo_cropped.png');
   const browser = await chromium.launch();
   const page = await browser.newPage();
 
@@ -72,6 +79,12 @@ async function main() {
           align-items: center;
           padding: 8px;
           background-color: #f8fafc;
+        }
+        .left-col img {
+          max-width: 95%;
+          max-height: 250px;
+          object-fit: contain;
+          border-radius: 4px;
         }
         .right-col {
           width: 52%;
@@ -184,52 +197,7 @@ async function main() {
         
         <div class="row-split">
           <div class="left-col">
-            <svg viewBox="0 0 220 280" style="width: 100%; max-height: 250px;" xmlns="http://www.w3.org/2000/svg">
-              <rect width="220" height="280" rx="8" fill="#f8fafc" />
-              <rect x="25" y="10" width="10" height="260" fill="#94a3b8" rx="2" />
-              <rect x="23" y="40" width="14" height="6" fill="#64748b" />
-              <rect x="23" y="220" width="14" height="6" fill="#64748b" />
-              <rect x="70" y="20" width="45" height="240" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1" rx="4" />
-              <line x1="70" y1="140" x2="115" y2="140" stroke="#ef4444" stroke-width="2" />
-              <text x="50" y="144" fill="#ef4444" font-size="10" font-family="monospace" font-weight="bold">0 —</text>
-              <line x1="80" y1="110" x2="110" y2="110" stroke="#475569" stroke-width="1" />
-              <text x="58" y="113" fill="#475569" font-size="9" font-family="monospace">5 —</text>
-              <line x1="80" y1="80" x2="110" y2="80" stroke="#475569" stroke-width="1" />
-              <text x="52" y="83" fill="#475569" font-size="9" font-family="monospace">10 —</text>
-              <line x1="80" y1="50" x2="110" y2="50" stroke="#475569" stroke-width="1" />
-              <text x="52" y="53" fill="#475569" font-size="9" font-family="monospace">15 —</text>
-              <line x1="80" y1="170" x2="110" y2="170" stroke="#475569" stroke-width="1" />
-              <text x="53" y="173" fill="#475569" font-size="9" font-family="monospace">-5 —</text>
-              <line x1="80" y1="200" x2="110" y2="200" stroke="#475569" stroke-width="1" />
-              <text x="47" y="203" fill="#475569" font-size="9" font-family="monospace">-10 —</text>
-              <rect x="135" y="30" width="30" height="150" rx="15" fill="none" stroke="#334155" stroke-width="2" />
-              <line x1="135" y1="60" x2="145" y2="60" stroke="#94a3b8" stroke-width="1" />
-              <line x1="135" y1="90" x2="150" y2="90" stroke="#94a3b8" stroke-width="1" />
-              <line x1="135" y1="120" x2="145" y2="120" stroke="#94a3b8" stroke-width="1" />
-              <line x1="135" y1="150" x2="150" y2="150" stroke="#94a3b8" stroke-width="1" />
-              <path d="M 136,120 L 164,120 A 14,14 0 0,1 164,150 L 136,150 Z" fill="#fbbf24" fill-opacity="0.4" />
-              <line x1="136" y1="120" x2="164" y2="120" stroke="#d97706" stroke-width="1" stroke-dasharray="2,2" />
-              <rect x="67" y="74" width="51" height="12" rx="2" fill="#ef4444" fill-opacity="0.85" stroke="#dc2626" stroke-width="1" />
-              <polygon points="118,80 128,76 128,84" fill="#ef4444" />
-              <circle cx="150" cy="205" r="8" fill="#0d9488" />
-              <line x1="150" y1="205" x2="162" y2="205" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
-              <line x1="150" y1="205" x2="150" y2="195" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
-              <path d="M 195,245 L 150,245 L 150,213" fill="none" stroke="#dc2626" stroke-width="2" />
-              <path d="M 172,245 L 164,245" stroke="#ef4444" stroke-width="2" fill="none" />
-              <polygon points="164,242 158,245 164,248" fill="#ef4444" />
-              <path d="M 150,245 L 105,245" fill="none" stroke="#2563eb" stroke-width="2" />
-              <rect x="92" y="238" width="14" height="14" rx="2" fill="#2563eb" stroke="#1d4ed8" stroke-width="1" />
-              <circle cx="99" cy="245" r="3" fill="#ffffff" />
-              <circle cx="92" cy="80" r="7" fill="#b91c1c" />
-              <text x="92" y="83" fill="#ffffff" font-size="8.5" font-family="sans-serif" text-anchor="middle" font-weight="bold">1</text>
-              <circle cx="138" cy="214" r="7" fill="#b91c1c" />
-              <text x="138" y="217" fill="#ffffff" font-size="8.5" font-family="sans-serif" text-anchor="middle" font-weight="bold">2</text>
-              <circle cx="82" cy="235" r="7" fill="#b91c1c" />
-              <text x="82" y="238" fill="#ffffff" font-size="8.5" font-family="sans-serif" text-anchor="middle" font-weight="bold">3</text>
-              <circle cx="176" cy="105" r="7" fill="#b91c1c" />
-              <text x="176" y="108" fill="#ffffff" font-size="8.5" font-family="sans-serif" text-anchor="middle" font-weight="bold">4</text>
-              <line x1="5" y1="140" x2="65" y2="140" stroke="#94a3b8" stroke-dasharray="3,3" stroke-width="1.5" />
-            </svg>
+            <img src="${evdPhotoBase64}" alt="EVD Cylinder Setup" />
           </div>
           <div class="right-col">
             <div class="components-header">COMPONENTS</div>
