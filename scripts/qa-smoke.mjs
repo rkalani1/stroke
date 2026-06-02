@@ -304,21 +304,22 @@ async function navigateToTab(page, tabName) {
   try {
     const tab = page.locator(`button.tab-pill:has-text("${tabName}")`).first();
     if ((await tab.count()) === 0) return false;
-    try { await tab.scrollIntoViewIfNeeded({ timeout: 2000 }); } catch { /* on-screen */ }
     try {
-      await tab.click({ timeout: 5000 });
+      await tab.click({ timeout: 1000 });
     } catch {
-      try {
-        await tab.click({ timeout: 5000, force: true });
-      } catch {
-        // Last resort for off-screen mobile tabs: bypass actionability
-        // by dispatching the click event directly to the React handler.
-        await tab.dispatchEvent('click');
-      }
+      await tab.dispatchEvent('click');
     }
     await page.waitForTimeout(200);
     return true;
   } catch { return false; }
+}
+
+async function clickElementRobust(locator) {
+  try {
+    await locator.click({ timeout: 1000 });
+  } catch {
+    await locator.dispatchEvent('click');
+  }
 }
 
 async function auditView(browser, target, viewport) {
@@ -674,7 +675,7 @@ async function auditView(browser, target, viewport) {
   } else {
     const protocolsButton = page.getByRole('tab', { name: /Protocols & Tools/i }).first();
     if ((await protocolsButton.count()) > 0) {
-      await protocolsButton.click();
+      await clickElementRobust(protocolsButton);
       await page.waitForTimeout(200);
     }
 
@@ -682,7 +683,7 @@ async function auditView(browser, target, viewport) {
     if ((await ischemicButton.count()) === 0) {
       addIssue(issues, 'missing-library-subtab', { subtab: 'Ischemic' });
     } else {
-      await ischemicButton.click();
+      await clickElementRobust(ischemicButton);
       await page.waitForTimeout(200);
       if ((await page.getByText(/Post-EVT BP Guardrail/i).count()) === 0) {
         addIssue(issues, 'missing-post-evt-bp-guardrail');
@@ -715,7 +716,7 @@ async function auditView(browser, target, viewport) {
     if ((await tiaButton.count()) === 0) {
       addIssue(issues, 'missing-library-subtab', { subtab: 'TIA' });
     } else {
-      await tiaButton.click();
+      await clickElementRobust(tiaButton);
       await page.waitForTimeout(200);
       if ((await page.getByText(/TIA Disposition Engine/i).count()) === 0) {
         addIssue(issues, 'missing-tia-disposition-engine');
@@ -751,7 +752,7 @@ async function auditView(browser, target, viewport) {
     if ((await cvtButton.count()) === 0) {
       addIssue(issues, 'missing-library-subtab', { subtab: 'CVT' });
     } else {
-      await cvtButton.click();
+      await clickElementRobust(cvtButton);
       await page.waitForTimeout(200);
 
       const cvtSpecialSummary = page.locator('summary:has-text("CVT in Special Populations")').first();

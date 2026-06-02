@@ -1,6 +1,6 @@
-# Compliance and Data Boundary (UW Medicine COMP.308)
+# Compliance and Data Boundary (AI Policy COMP.308)
 
-This repository is aligned with UW Medicine compliance standards, specifically policy **COMP.308 (Use of Artificial Intelligence (AI) in the Healthcare Setting)**.
+This repository is aligned with institutional compliance standards, specifically policy **COMP.308 (Use of Artificial Intelligence (AI) in the Healthcare Setting)**.
 
 ## AI Development Disclosure
 This codebase and its clinical tools were developed and are maintained with the assistance of generative Artificial Intelligence (AI) technologies.
@@ -9,7 +9,7 @@ This codebase and its clinical tools were developed and are maintained with the 
 The materials, calculators, and protocols contained herein are intended solely for educational, teaching, and reference purposes. They do NOT constitute professional medical advice, clinical guidelines, or official institutional policy, and must NOT replace the independent clinical judgment of a licensed healthcare professional. 
 
 ## No Institutional Endorsement
-This application is not officially reviewed, approved, or endorsed by the University of Washington (UW) or UW Medicine, and does not represent official institutional guidelines.
+This application is not officially reviewed, approved, or endorsed by any university or health system, and does not represent official institutional guidelines.
 
 ## Public-Use Data Boundary
 Public GitHub Pages deployment is educational and synthetic only. Under no circumstances should users enter real patient identifiers, Protected Health Information (PHI), or confidential organizational data.
