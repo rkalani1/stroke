@@ -533,43 +533,41 @@ async function main() {
           <div class="management-col left">
             <div class="col-header">General approach</div>
             <ul style="list-style-type: none; padding-left: 0; margin: 0;">
-              <li style="margin-bottom: 3px;"><strong>Tier 0: Fundamental Optimization</strong>
+              <li style="margin-bottom: 5px;"><strong>Fundamental Measures</strong>
                 <ul style="padding-left: 12px; margin-top: 1px;">
-                  <li>Elevate HOB 30°; strict neutral midline neck alignment.</li>
-                  <li>Euvolemia (isotonic saline; avoid hypotonic D5W), normothermia (treat fevers), normocapnia (pCO₂ 35–40 mmHg).</li>
+                  <li>Elevate HOB 30°; strict neutral midline neck alignment to preserve venous outflow.</li>
+                  <li>Euvolemia (isotonic saline; avoid hypotonic D5W).</li>
+                  <li>Temperature &lt; 38.0°C.</li>
+                  <li>Normocapnia (pCO₂ 35–45 mmHg).</li>
+                  <li>Maintain CPP &gt; 60 mmHg.</li>
                 </ul>
               </li>
-              <li style="margin-bottom: 3px;"><strong>Tier 1: Initial Interventions</strong>
+              <li><strong>Medical Interventions</strong>
                 <ul style="padding-left: 12px; margin-top: 1px;">
-                  <li>Continuous CSF drainage via EVD (typically set at 10–15 cmH₂O).</li>
-                  <li>Analgesia/sedation (propofol/fentanyl) to prevent coughing/agitation.</li>
-                </ul>
-              </li>
-              <li style="margin-bottom: 3px;"><strong>Tier 2: Hyperosmolar &amp; Ventilatory Escalation</strong>
-                <ul style="padding-left: 12px; margin-top: 1px;">
-                  <li><strong>Mannitol 20%:</strong> 1 g/kg IV bolus. <span style="color: #dc2626; font-weight: 600;">Hold if Osm &gt; 320 or Gap &ge; 20.</span></li>
-                  <li><strong>HTS:</strong> 3% (150-250 mL bolus) or 23.4% (30 mL rescue bolus; central access only). <span style="color: #dc2626; font-weight: 600;">Hold if Na &gt; 155 or Cl &gt; 115.</span></li>
-                  <li><strong>Controlled Hyperventilation:</strong> Target pCO₂ 30–35 mmHg (temporary bridge).</li>
-                </ul>
-              </li>
-              <li style="margin-bottom: 3px;"><strong>Tier 3: Refractory &amp; Salvage Measures</strong>
-                <ul style="padding-left: 12px; margin-top: 1px;">
-                  <li>High-dose barbiturate therapy (pentobarbital) titrated to burst suppression on EEG.</li>
+                  <li style="margin-bottom: 2px;"><strong>Analgesia/sedation (fentanyl/propofol):</strong> Target RASS -1 to +1 to prevent coughing, agitation, or ventilator dyssynchrony.</li>
+                  <li style="margin-bottom: 2px;"><strong>Mannitol 20%:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line filter. <span style="color: #dc2626; font-weight: 600;">Hold if Osm &gt; 320 or Gap &ge; 20.</span></li>
+                  <li style="margin-bottom: 2px;"><strong>Hypertonic Saline (HTS):</strong> 3% (150–250 mL bolus) or 23.4% (30 mL rescue bolus; central access only). <span style="color: #dc2626; font-weight: 600;">Hold if Na &gt; 155 or Cl &gt; 115.</span></li>
+                  <li style="margin-bottom: 2px;"><strong>Controlled Hyperventilation:</strong> Target pCO₂ 35–40 mmHg (temporary bridge only).</li>
+                  <li><strong>Refractory ICP Elevation:</strong> High-dose barbiturate therapy (pentobarbital) titrated to burst suppression on EEG.</li>
                 </ul>
               </li>
             </ul>
           </div>
           <div class="management-col right">
-            <div class="col-header">Surgical Management</div>
+            <div class="col-header">CSF Diversion</div>
+            <ul style="list-style-type: none; padding-left: 0; margin: 0 0 6px 0;">
+              <li>EVD placement for acute hydrocephalus, intraventricular hemorrhage (IVH), or mass effect with ventriculomegaly.</li>
+            </ul>
+            <div class="col-header" style="margin-top: 6px;">Decompressive Surgery</div>
             <ul style="list-style-type: none; padding-left: 0; margin: 0;">
-              <li style="margin-bottom: 4px;"><strong>Decompressive Surgery:</strong>
-                <ul style="padding-left: 12px; margin-top: 2px;">
-                  <li style="margin-bottom: 4px;"><strong>Malignant MCA (DHC):</strong> Age &le; 60 years, clinical decline (GCS decline &ge; 1 / pupil changes), infarct &ge; 50% MCA territory, within 48h of onset (DECIMAL/DESTINY trials).</li>
-                  <li style="margin-bottom: 2px;"><strong>Cerebellar Stroke:</strong> Suboccipital craniectomy for brainstem compression, 4th ventricle effacement, or obstructive hydrocephalus.</li>
-                </ul>
-              </li>
+              <li style="margin-bottom: 4px;"><strong>Malignant MCA (DHC):</strong> Age &le; 60 years, clinical decline, infarct &ge; 50% MCA territory, within 48h (DECIMAL/DESTINY).</li>
+              <li style="margin-bottom: 4px;"><strong>Cerebellar Stroke:</strong> Suboccipital craniectomy for brainstem compression, 4th ventricle effacement, or hydrocephalus.</li>
+              <li><strong>Intracranial Hemorrhage (ICH):</strong> Decompression/hemicraniectomy for lobar or cerebellar hemorrhage with mass effect, midline shift, or active herniation.</li>
             </ul>
           </div>
+        </div>
+        <div style="font-size: 7.6pt; font-style: italic; padding: 4px 10px; background-color: #faf5ff; border-bottom: 2px solid #b91c1c; color: #5b21b6; line-height: 1.2;">
+          * Management is not necessarily sequential; for active herniation or rapid clinical/radiographic deterioration, immediately initiate medical interventions &amp; call Neurosurgery.
         </div>
         
         <div class="section-title blue">ICP WAVEFORM ANALYSIS</div>
