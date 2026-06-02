@@ -283,6 +283,62 @@ const EDUCATION_MODULES = [
     references: [
       { label: 'EVD Consensus Statement', citation: 'Bales JW, et al. External Ventricular Drains: A Consensus Statement. Neurocrit Care. 2021.', pmid: '32227294' }
     ]
+  },
+  {
+    id: 'hints-simulator',
+    title: 'HINTS+ Vestibular Simulator',
+    purpose: 'Bedside vestibular exam simulator for differentiating central (stroke) vs. peripheral vertigo (HINTS+ algorithm).',
+    actions: 'hints vestibular nystagmus skew eye movement vertigo hearing loss avs nystagmus simulator interactive',
+    categories: ['simulators'],
+    lastReviewed: '2026-05-30',
+    references: [
+      { label: 'Kattah Study', citation: 'Kattah JC et al. Stroke. 2009;40:3504-10.', pmid: '19762654' },
+      { label: 'AHA/ASA Guideline', citation: 'Prabhakaran S et al. Stroke. 2026.', pmid: '41582814' }
+    ]
+  },
+  {
+    id: 'evd-icp',
+    title: 'EVD & ICP Waveform Simulator',
+    purpose: 'Bedside external ventricular drain (EVD) height adjustment, pressure trace, and ICP waveform troubleshooting simulator.',
+    actions: 'evd icp ventriculostomy drain pressure trace waveform compliance compliance curve troubleshooting csf drain height interactive',
+    categories: ['simulators', 'icu'],
+    lastReviewed: '2026-05-30',
+    references: [
+      { label: 'NCS Guidelines', citation: 'Cook AM et al. Neurocrit Care. 2020;32:647-66.', pmid: '32227294' }
+    ]
+  },
+  {
+    id: 'pupillometry',
+    title: 'Pupillometry & NPi Simulator',
+    purpose: 'Bedside automated pupillometry simulator for adjusting pupil size, latency, and constriction velocity to calculate Neurological Pupil Index (NPi).',
+    actions: 'pupillometry npi pupil size constriction velocity latency early herniation icp shift anisocoria pupillometer interactive',
+    categories: ['simulators', 'icu'],
+    lastReviewed: '2026-05-30',
+    references: [
+      { label: 'NCS Consensus', citation: 'Olson DM et al. Neurocrit Care. 2024.', pmid: '38290918' }
+    ]
+  },
+  {
+    id: 'neuro-exams-simulator',
+    title: 'Bedside Neuro-Exams Tool',
+    purpose: 'Interactive bedside clinical exam assistant for classifying aphasia types, delirium (CAM-ICU), and structured coma examinations.',
+    actions: 'neuroexam aphasia delirium coma cam-icu exam classifier fluent non-fluent global wernicke broca interactive',
+    categories: ['simulators'],
+    lastReviewed: '2026-05-30',
+    references: [
+      { label: 'CAM-ICU Study', citation: 'Ely EW et al. JAMA. 2001;286:2703-10.', pmid: '11730446' }
+    ]
+  },
+  {
+    id: 'stk-core-measures',
+    title: 'Stroke Core Measures',
+    purpose: 'Reference guide for Joint Commission / GWTG stroke core measures and Comprehensive Stroke Center (CSC) quality metrics.',
+    actions: 'quality core measures joint commission gwtg stk-1 stk-2 stk-3 stk-4 stk-5 stk-6 stk-8 stk-10 cstk csc metrics compliance program',
+    categories: ['quality', 'pocket-card', 'printable'],
+    lastReviewed: '2026-05-30',
+    references: [
+      { label: 'Joint Commission', citation: 'Specifications Manual for Joint Commission National Quality Measures.', pmid: null }
+    ]
   }
 ];
 
@@ -725,6 +781,40 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <IcpManagementView />;
     case 'evd-maintenance':
       return <EvdMaintenanceView />;
+    case 'hints-simulator':
+      return (
+        <ErrorBoundary>
+          <div className="bg-card border border-line rounded-lg p-6">
+            <h2 className="font-serif text-xl font-bold text-ink mb-4">HINTS+ Vestibular Exam Simulator</h2>
+            <HintsSimulator />
+          </div>
+        </ErrorBoundary>
+      );
+    case 'pupillometry':
+      return (
+        <ErrorBoundary>
+          <div className="bg-card border border-line rounded-lg p-6">
+            <h2 className="font-serif text-xl font-bold text-ink mb-4">Pupillometry &amp; NPi Simulator</h2>
+            <PupillometrySimulator />
+          </div>
+        </ErrorBoundary>
+      );
+    case 'neuro-exams-simulator':
+      return (
+        <ErrorBoundary>
+          <div className="bg-card border border-line rounded-lg p-6">
+            <h2 className="font-serif text-xl font-bold text-ink mb-4">Bedside Neuro-Exams Assistant</h2>
+            <NeuroExamsTool />
+          </div>
+        </ErrorBoundary>
+      );
+    case 'stk-core-measures':
+      return (
+        <ScaledCardWrapper isLandscape={false}>
+          <BedsidePocketCardsStyles />
+          <StkCoreMeasuresCard />
+        </ScaledCardWrapper>
+      );
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -2333,3 +2423,84 @@ export const ICPInfographic = () => {
     </div>
   );
 };
+
+export function StkCoreMeasuresCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-container" style={{boxSizing: 'border-box'}}>
+        <div className="card-content">
+          <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Stroke Core Measures Reference</h1>
+          <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
+            Joint Commission / GWTG Quality Measures &amp; Comprehensive Stroke Center (CSC) Metrics.
+          </p>
+
+          <table className="card-table">
+            <thead>
+              <tr style={{background: 'var(--purple)'}}>
+                <th style={{width: '90px'}}>Measure</th>
+                <th>Core Quality Metric Description</th>
+                <th style={{width: '180px'}}>Clinical Target &amp; Timing</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>STK-1</strong></td>
+                <td>Venous Thromboembolism (VTE) Prophylaxis</td>
+                <td>LMWH or UFH started by <strong>end of Day 2</strong> unless contraindicated.</td>
+              </tr>
+              <tr>
+                <td><strong>STK-2</strong></td>
+                <td>Discharged on Antithrombotic Therapy</td>
+                <td>Aspirin, clopidogrel, or DOAC prescribed at discharge.</td>
+              </tr>
+              <tr>
+                <td><strong>STK-3</strong></td>
+                <td>Anticoagulation for Atrial Fibrillation</td>
+                <td>DOAC or warfarin prescribed at discharge for patients with AFib/A-flutter.</td>
+              </tr>
+              <tr>
+                <td><strong>STK-4</strong></td>
+                <td>Thrombolytic Therapy (IVT)</td>
+                <td>IV alteplase/tenecteplase administered within 3-4.5 hours of LKW.</td>
+              </tr>
+              <tr>
+                <td><strong>STK-5</strong></td>
+                <td>Antithrombotic by Hospital Day 2</td>
+                <td>Antithrombotic therapy started or continued by hospital day 2.</td>
+              </tr>
+              <tr>
+                <td><strong>STK-6</strong></td>
+                <td>Discharged on Statin Therapy</td>
+                <td>High-intensity statin (e.g. atorvastatin 80mg) at discharge if LDL &gt;70.</td>
+              </tr>
+              <tr>
+                <td><strong>STK-8</strong></td>
+                <td>Stroke Education Provided</td>
+                <td>Documented education on stroke warning signs, risk factors, medications, and when to call 911.</td>
+              </tr>
+              <tr>
+                <td><strong>STK-10</strong></td>
+                <td>Assessed for Rehabilitation</td>
+                <td>PT/OT or PM&amp;R evaluation documented during admission.</td>
+              </tr>
+              <tr>
+                <td><strong>CSTK-01</strong></td>
+                <td>NIHSS Score Performed</td>
+                <td>NIHSS completed at baseline (prior to any lytic or EVT intervention).</td>
+              </tr>
+              <tr>
+                <td><strong>CSTK-03</strong></td>
+                <td>Post-EVT Blood Pressure Control</td>
+                <td>Documented SBP target (e.g. &lt;180 mmHg) for 24h post successful recanalization.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className="ref-citation" style={{marginTop: 'auto', padding: '6px 10px', fontSize: '7.5pt', lineHeight: '1.25'}}>
+            <strong>Quality Reference:</strong> Joint Commission National Quality Measures Specifications Manual &amp; GWTG Stroke Dashboard guidelines.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
