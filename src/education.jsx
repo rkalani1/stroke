@@ -160,7 +160,38 @@ const emailDocument = (title, url) => {
 // =====================================================================
 // DATA & SCHEMAS
 // =====================================================================
-const EDUCATION_BANNER_TEXT = "Generic educational reference only — synthetic demonstration content, not official institutional policy and not endorsed by any named institution. Example call chains, role labels, and policy targets are illustrative; verify and replace them with your own current local protocols at the bedside.";
+const EDUCATION_BANNER_TEXT = "AI Compliance & Clinical Disclaimer (UW Medicine COMP.308): This educational resource was developed with AI assistance. It is for reference and synthetic simulation only. It does not replace independent clinical judgment, professional medical advice, or official institutional guidelines. No patient data or PHI is stored or permitted. Not officially endorsed by UW Medicine or the University of Washington.";
+
+export const EducationComplianceBanner = () => {
+  return (
+    <div role="alert" className="p-4 bg-slate-50 border border-slate-200 rounded-lg dark:bg-slate-900/40 dark:border-slate-800 space-y-2.5 shadow-sm text-slate-800 dark:text-slate-300">
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-1.5">
+        <span className="text-base text-cobalt-600 dark:text-cobalt-400" aria-hidden="true">⚖️</span>
+        <h2 className="font-serif font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-ink">
+          AI Compliance &amp; Clinical Disclaimer (UW Medicine COMP.308)
+        </h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs leading-relaxed">
+        <div>
+          <strong className="text-slate-900 dark:text-ink block mb-0.5">🤖 AI-Assisted Development</strong>
+          This educational resource was developed and is maintained with the assistance of generative artificial intelligence (AI) technologies.
+        </div>
+        <div>
+          <strong className="text-slate-900 dark:text-ink block mb-0.5">🩺 Clinical Accountability</strong>
+          It is for educational reference and synthetic simulation only. It does not constitute medical advice or official policy and must not replace independent clinical judgment.
+        </div>
+        <div>
+          <strong className="text-slate-900 dark:text-ink block mb-0.5">🚫 Institutional Endorsement</strong>
+          This application is not officially reviewed, approved, or endorsed by the University of Washington (UW) or UW Medicine.
+        </div>
+        <div>
+          <strong className="text-slate-900 dark:text-ink block mb-0.5">🔒 Data Boundary &amp; PHI</strong>
+          Do not enter real patient identifiers, Protected Health Information (PHI), or confidential organizational data.
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const PLACEHOLDERS = {
   CONFIRM_CSC_METRIC_OWNER: "Stroke Program Manager / CSC Operations Lead (your program)",
@@ -365,6 +396,8 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
             Back to Educational Resources
           </button>
 
+          <EducationComplianceBanner />
+
           <div className="bg-card border border-line rounded-lg shadow-sm overflow-hidden p-6 space-y-6">
             <header className="border-b border-line pb-4 flex flex-wrap items-start justify-between gap-4">
               <div>
@@ -388,6 +421,8 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
       <header className="bg-card border border-line rounded-lg p-6 space-y-2">
         <h1 className="font-serif text-2xl text-ink font-bold">Educational Resources</h1>
       </header>
+
+      <EducationComplianceBanner />
 
       {/* Modules Dashboard Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
