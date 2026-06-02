@@ -300,7 +300,7 @@ async function main() {
     <html lang="en">
     <head>
       <meta charset="UTF-8">
-      <title>Intracranial Hypertension &amp; Herniation</title>
+      <title>Intracranial Hypertension &amp; Herniation - Stroke</title>
       <style>
         @page {
           size: letter;
@@ -483,7 +483,7 @@ async function main() {
     </head>
     <body>
       <div class="container">
-        <div class="header">Intracranial Hypertension &amp; Herniation</div>
+        <div class="header">Intracranial Hypertension &amp; Herniation - Stroke</div>
         
         <div class="section-title">CLINICAL SIGNS OF HERNIATION</div>
         <div class="list-section peach">
@@ -568,8 +568,13 @@ async function main() {
         </div>
         <div style="padding: 6px 10px; background-color: #f0fdf4; border-bottom: 2px solid #b91c1c;">
           <div style="border: 1px solid #dc2626; background-color: #fef2f2; color: #1e293b; border-radius: 4px; padding: 6px 8px; font-size: 8.4pt; line-height: 1.25;">
-            <strong style="color: #dc2626; display: block; margin-bottom: 2px;">* Management is not necessarily sequential</strong>
-            For active herniation or rapid clinical/radiographic deterioration, immediately initiate medical interventions &amp; call Neurosurgery.
+            <div style="margin-bottom: 4px;">
+              <strong style="color: #dc2626; display: block; margin-bottom: 2px;">* Management is not necessarily sequential</strong>
+              For active herniation or rapid clinical/radiographic deterioration, immediately initiate medical interventions &amp; call Neurosurgery.
+            </div>
+            <div style="border-top: 1px solid rgba(220, 38, 38, 0.3); padding-top: 4px; margin-top: 4px; font-weight: 600; color: #b91c1c;">
+              Corticosteroids are not indicated for cytotoxic edema in stroke and increase infection risk.
+            </div>
           </div>
         </div>
         
@@ -641,6 +646,1273 @@ async function main() {
     margin: { top: '0.18in', bottom: '0.18in', left: '0.18in', right: '0.18in' }
   });
   console.log('Generated documents/references/Intracranial Hypertension & Herniation.pdf');
+
+  // ==========================================
+  // 3. GENERATE TOAST STROKE CLASSIFICATION PDF
+  // ==========================================
+  const toastHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Stroke Classification</title>
+      <style>
+        @page {
+          size: letter;
+          margin: 0.16in 0.16in 0.16in 0.16in;
+        }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          color: #1a1b20;
+          font-size: 8.6pt;
+          line-height: 1.25;
+          background: white;
+          --ink:         #1a1b20;
+          --ink-soft:    #3c3d47;
+          --ink-mute:    #636472;
+          --rule:        #e0dde4;
+          --rule-soft:   #f0eef3;
+          --fill:        #f3f1f6;
+          --fill-soft:   #f8f7fa;
+          --paper:       #ffffff;
+          --purple:      #5B3B9C;
+          --purple-deep: #3A2368;
+          --purple-soft: #f1edfa;
+          --purple-glow: rgba(91, 59, 156, 0.15);
+          --teal:        #18849E;
+          --teal-soft:   #e6f4f7;
+          --teal-deep:   #0F586B;
+          --teal-glow:   rgba(24, 132, 158, 0.15);
+          --red:         #C62E2E;
+          --red-soft:    #fcebeb;
+          --red-deep:    #8E1E1E;
+          --red-glow:    rgba(198, 46, 46, 0.15);
+          --amber:       #D9860B;
+          --amber-soft:  #fdf3e4;
+          --amber-deep:  #945B06;
+          --amber-glow:  rgba(217, 134, 11, 0.15);
+          --slate:       #4A5A6D;
+          --slate-soft:  #f0f2f5;
+        }
+        .container {
+          border: 2px solid var(--purple);
+          border-radius: 6px;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          padding: 12px 18px;
+          box-sizing: border-box;
+        }
+        h1 {
+          font-size: 19pt;
+          font-weight: 800;
+          margin: 0 0 3px 0;
+          text-align: center;
+          background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple) 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        p.subtitle {
+          font-size: 8.8pt;
+          color: var(--ink-soft);
+          margin: 0 0 10px 0;
+          text-align: center;
+          font-weight: 500;
+        }
+        .toast-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+          margin-bottom: 12px;
+        }
+        .toast-card {
+          border: 1px solid var(--rule-soft);
+          border-radius: 8px;
+          padding: 10px 12px;
+          background: var(--fill-soft);
+        }
+        .toast-card.primary {
+          border-left: 4px solid var(--purple);
+          background: linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%);
+        }
+        .toast-card.secondary {
+          border-left: 4px solid var(--teal);
+          background: linear-gradient(135deg, var(--teal-soft) 0%, #ffffff 100%);
+        }
+        .toast-card.alert-orange {
+          border-left: 4px solid var(--amber);
+          background: linear-gradient(135deg, var(--amber-soft) 0%, #ffffff 100%);
+        }
+        .toast-card.alert-red {
+          border-left: 4px solid var(--red);
+          background: linear-gradient(135deg, var(--red-soft) 0%, #ffffff 100%);
+        }
+        .toast-card.neutral {
+          border-left: 4px solid var(--slate);
+          background: linear-gradient(135deg, var(--slate-soft) 0%, #ffffff 100%);
+        }
+        .toast-card h3 {
+          font-size: 9.8pt;
+          font-weight: 700;
+          margin: 0 0 4px 0;
+        }
+        .toast-card.primary h3 { color: var(--purple-deep); }
+        .toast-card.secondary h3 { color: var(--teal-deep); }
+        .toast-card.alert-orange h3 { color: var(--amber-deep); }
+        .toast-card.alert-red h3 { color: var(--red-deep); }
+        .toast-card.neutral h3 { color: var(--slate); }
+        .toast-card-list {
+          margin: 4px 0 0 0;
+          padding-left: 14px;
+          font-size: 8.4pt;
+          line-height: 1.4;
+          color: var(--ink-soft);
+        }
+        .toast-card-list li {
+          margin-bottom: 3px;
+        }
+        .workup-section {
+          border-left: 4px solid var(--purple);
+          background: var(--purple-soft);
+          padding: 8px 12px;
+          border-radius: 6px;
+          font-size: 8.8pt;
+          margin-bottom: 12px;
+        }
+        .workup-title {
+          color: var(--purple-deep);
+          text-transform: uppercase;
+          font-size: 8.5pt;
+          font-weight: 700;
+          letter-spacing: 0.05em;
+          margin-bottom: 4px;
+          display: block;
+        }
+        .checklist-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 3px 12px;
+          color: var(--ink-soft);
+          line-height: 1.35;
+          font-size: 7.8pt;
+        }
+        .checklist-item {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .checklist-dot {
+          width: 14px;
+          height: 14px;
+          border-radius: 3px;
+          border: 1.5px solid var(--purple);
+          background: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--purple);
+          font-size: 8px;
+          font-weight: bold;
+          flex-shrink: 0;
+        }
+        .ref-citation {
+          margin-top: 5px;
+          padding: 6px 10px;
+          background: linear-gradient(135deg, var(--fill-soft) 0%, #ffffff 100%);
+          border-left: 4px solid var(--purple);
+          border-radius: 6px;
+          font-size: 8.0pt;
+          line-height: 1.3;
+          color: var(--ink-mute);
+        }
+        .ref-citation a {
+          color: var(--teal-deep);
+          text-decoration: underline;
+          font-weight: 600;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>TOAST Stroke Classification</h1>
+        <p class="subtitle">Trial of Org 10172 in Acute Stroke Treatment (TOAST) diagnostic criteria for ischemic stroke etiology.</p>
+        
+        <svg viewBox="0 0 735 120" style="width: 100%; height: 120px; margin-bottom: 8px">
+          <rect x="0" y="0" width="735" height="120" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
+          <rect x="267" y="10" width="200" height="30" rx="15" fill="var(--purple-deep)" />
+          <text x="367" y="25" fill="white" font-size="8.5pt" font-family="Outfit" font-weight="700" text-anchor="middle" dominant-baseline="central">ACUTE ISCHEMIC STROKE</text>
+          <path d="M 367 40 L 367 55 M 92 55 L 642 55 M 92 55 L 92 80 M 230 55 L 230 80 M 367 55 L 367 80 M 505 55 L 505 80 M 642 55 L 642 80" stroke="var(--purple)" stroke-width="2" fill="none" />
+          <polygon points="92,85 88,77 96,77" fill="var(--purple)" />
+          <polygon points="230,85 226,77 234,77" fill="var(--purple)" />
+          <polygon points="367,85 363,77 371,77" fill="var(--purple)" />
+          <polygon points="505,85 501,77 509,77" fill="var(--purple)" />
+          <polygon points="642,85 638,77 646,77" fill="var(--purple)" />
+          <rect x="32" y="85" width="120" height="25" rx="5" fill="var(--purple-soft)" stroke="var(--purple)" stroke-width="1"/>
+          <text x="92" y="101" fill="var(--purple-deep)" font-size="8pt" font-family="Outfit" font-weight="700" text-anchor="middle">Large Artery (LAA)</text>
+          <rect x="170" y="85" width="120" height="25" rx="5" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1"/>
+          <text x="230" y="101" fill="var(--teal-deep)" font-size="8pt" font-family="Outfit" font-weight="700" text-anchor="middle">Small Vessel (SVO)</text>
+          <rect x="307" y="85" width="120" height="25" rx="5" fill="var(--red-soft)" stroke="var(--red)" stroke-width="1"/>
+          <text x="367" y="101" fill="var(--red-deep)" font-size="8pt" font-family="Outfit" font-weight="700" text-anchor="middle">Cardioembolic (CE)</text>
+          <rect x="445" y="85" width="120" height="25" rx="5" fill="var(--slate-soft)" stroke="var(--slate)" stroke-width="1"/>
+          <text x="505" y="101" fill="var(--slate)" font-size="8pt" font-family="Outfit" font-weight="700" text-anchor="middle">Other Det. (ODE)</text>
+          <rect x="582" y="85" width="120" height="25" rx="5" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="1"/>
+          <text x="642" y="101" fill="var(--amber-deep)" font-size="7.5pt" font-family="Outfit" font-weight="700" text-anchor="middle">Undetermined Etiology</text>
+        </svg>
+
+        <div class="toast-grid">
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div class="toast-card primary">
+              <h3>1. Large-Artery Atherosclerosis (LAA)</h3>
+              <ul class="toast-card-list">
+                <li><strong>Clinical:</strong> Cortical signs (aphasia, neglect, gaze deviation) or brainstem/cerebellar syndrome.</li>
+                <li><strong>Imaging:</strong> Cortical/subcortical infarct <strong>&gt; 1.5 cm</strong> on MRI or CT.</li>
+                <li><strong>Vascular:</strong> <strong>&gt; 50% stenosis</strong> or occlusion of the relevant major extracranial (carotid, vertebral) or intracranial artery.</li>
+                <li><strong>Exclusion:</strong> Must exclude a high-risk cardioembolic source.</li>
+              </ul>
+            </div>
+            
+            <div class="toast-card secondary">
+              <h3>2. Small-Vessel Occlusion (SVO / Lacune)</h3>
+              <ul class="toast-card-list">
+                <li><strong>Clinical:</strong> Classic lacunar syndrome (pure motor, pure sensory, sensorimotor, ataxic hemiparesis, clumsy hand) <strong>WITHOUT</strong> cortical signs.</li>
+                <li><strong>Imaging:</strong> Normal scan or deep subcortical lesion <strong>&le; 1.5 cm</strong>.</li>
+                <li><strong>Vascular/Cardiac:</strong> Relevant artery must lack &gt;50% stenosis, and patient must lack high-risk cardioembolic sources.</li>
+              </ul>
+            </div>
+            
+            <div class="toast-card neutral">
+              <h3>4. Other Determined Etiology (ODE)</h3>
+              <ul class="toast-card-list">
+                <li><strong>Clinical/Imaging:</strong> Infarction of any size with diagnostic proof of a rare/specific underlying mechanism:</li>
+                <li>Arterial dissection (e.g. carotid or vertebral dissection)</li>
+                <li>CNS vasculitis or systemic vasculopathy</li>
+                <li>RCVS (Reversible Cerebral Vasoconstriction Syndrome)</li>
+                <li>Moya-Moya disease, CADASIL, or Fibromuscular Displasia</li>
+                <li>Prothrombotic/hypercoagulable state (APLS, cancer, DIC)</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div class="toast-card alert-red" style="padding-bottom: 6px;">
+              <h3>3. Cardioembolism (CE)</h3>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 8.0pt; line-height: 1.3; color: var(--ink-soft); margin-top: 2px;">
+                <div>
+                  <strong style="color: var(--red-deep); font-size: 8.0pt; text-transform: uppercase; display: block; margin-bottom: 4px;">High-Risk Sources (AC)</strong>
+                  • Atrial Fibrillation / Flutter<br/>
+                  • Mechanical prosthetic valve<br/>
+                  • Left atrial / LAA thrombus<br/>
+                  • Recent anterior MI (&lt;3 mo)<br/>
+                  • Dilated cardiomyopathy (EF&lt;30%)<br/>
+                  • Infective endocarditis<br/>
+                  • Sick sinus syndrome / LA myxoma
+                </div>
+                <div>
+                  <strong style="color: var(--amber-deep); font-size: 8.0pt; text-transform: uppercase; display: block; margin-bottom: 4px;">Medium-Risk Sources</strong>
+                  • PFO + Atrial Septal Aneurysm<br/>
+                  • Mitral valve prolapse<br/>
+                  • Mitral annulus calcification<br/>
+                  • Bioprosthetic heart valve<br/>
+                  • Calcific aortic stenosis<br/>
+                  • LV dysfunction (EF 30–40%)<br/>
+                  • LA spontaneous echo contrast
+                </div>
+              </div>
+            </div>
+            
+            <div class="toast-card alert-orange">
+              <h3>5. Undetermined Etiology</h3>
+              <ul class="toast-card-list">
+                <li><strong>Due to competing risks:</strong> &ge; 2 potential etiologies found (e.g., active AFib AND &ge;50% ipsilateral carotid stenosis).</li>
+                <li><strong>Negative evaluation:</strong> Complete diagnostic workup identifies no clear source (Cryptogenic stroke).</li>
+                <li><strong>Incomplete evaluation:</strong> Workup is unfinished (e.g., patient discharged/AMA before Echo or vascular imaging).</li>
+              </ul>
+              <div style="margin-top: 4px; border-top: 1px dashed rgba(217,134,11,0.3); padding-top: 3px; font-size: 8.2pt; line-height: 1.4; color: var(--ink-soft);">
+                <strong style="color: var(--amber-deep);">ESUS Criteria:</strong> non-lacunar stroke, no relevant &gt;50% stenosis, no high-risk cardioembolic source, negative ECG/telemetry &ge;24 hours.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="workup-section">
+          <strong class="workup-title">Required Diagnostic Workup to Complete TOAST Classification</strong>
+          <div class="checklist-grid">
+            <div class="checklist-item">
+              <div class="checklist-dot">✓</div>
+              <div><strong>Parenchymal:</strong> MRI Brain (DWI/ADC) preferred, or CT Head.</div>
+            </div>
+            <div class="checklist-item">
+              <div class="checklist-dot">✓</div>
+              <div><strong>Vascular:</strong> CTA or MRA Head & Neck (or Carotid Duplex + TCD).</div>
+            </div>
+            <div class="checklist-item">
+              <div class="checklist-dot">✓</div>
+              <div><strong>Rhythm:</strong> EKG + Continuous Telemetry &ge; 24h (or loop recorder).</div>
+            </div>
+            <div class="checklist-item">
+              <div class="checklist-dot">✓</div>
+              <div><strong>Cardiac:</strong> TTE required; consider TEE if cryptogenic / ESUS suspected.</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="ref-citation">
+          <strong>Original Study:</strong> Adams HP Jr, et al. TOAST. <em>Stroke</em>. 1993;24:35-41. | 
+          <strong>AHA/ASA Guideline:</strong> Kleindorfer DO, et al. 2021 Stroke Prevention. <em>Stroke</em>. 2021;52:e364-e467.
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  await page.setContent(toastHtml);
+  await page.pdf({
+    path: 'documents/references/TOAST Stroke Classification.pdf',
+    format: 'letter',
+    printBackground: true,
+    margin: { top: '0.16in', bottom: '0.16in', left: '0.16in', right: '0.16in' }
+  });
+  console.log('Generated documents/references/TOAST Stroke Classification.pdf');
+
+  // ==========================================
+  // 4. GENERATE DAPT GUIDELINES PDF (LANDSCAPE)
+  // ==========================================
+  const daptHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>DAPT Guidelines</title>
+      <style>
+        @page {
+          size: letter landscape;
+          margin: 0.15in 0.15in 0.15in 0.15in;
+        }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          color: #1a1b20;
+          font-size: 7.8pt;
+          line-height: 1.2;
+          background: white;
+          --ink:         #1a1b20;
+          --ink-soft:    #3c3d47;
+          --ink-mute:    #636472;
+          --rule:        #e0dde4;
+          --rule-soft:   #f0eef3;
+          --fill:        #f3f1f6;
+          --fill-soft:   #f8f7fa;
+          --paper:       #ffffff;
+          --purple:      #5B3B9C;
+          --purple-deep: #3A2368;
+          --purple-soft: #f1edfa;
+          --purple-glow: rgba(91, 59, 156, 0.15);
+          --teal:        #18849E;
+          --teal-soft:   #e6f4f7;
+          --teal-deep:   #0F586B;
+          --teal-glow:   rgba(24, 132, 158, 0.15);
+          --red:         #C62E2E;
+          --red-soft:    #fcebeb;
+          --red-deep:    #8E1E1E;
+          --red-glow:    rgba(198, 46, 46, 0.15);
+          --amber:       #D9860B;
+          --amber-soft:  #fdf3e4;
+          --amber-deep:  #945B06;
+          --amber-glow:  rgba(217, 134, 11, 0.15);
+          --slate:       #4A5A6D;
+          --slate-soft:  #f0f2f5;
+        }
+        .container {
+          border: 2px solid var(--purple);
+          border-radius: 6px;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          padding: 12px 18px;
+          box-sizing: border-box;
+        }
+        h1 {
+          font-size: 17pt;
+          font-weight: 800;
+          margin: 0 0 2px 0;
+          text-align: center;
+          background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple) 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        p.subtitle {
+          font-size: 8.5pt;
+          color: var(--ink-soft);
+          margin: 0 0 4px 0;
+          text-align: center;
+          font-weight: 500;
+        }
+        table.card-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 0 0 6px 0;
+          font-size: 7.8pt;
+          background: var(--paper);
+          border: 1px solid var(--rule-soft);
+        }
+        table.card-table thead th {
+          background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple) 100%);
+          color: white;
+          font-weight: 600;
+          text-transform: uppercase;
+          font-size: 7.2pt;
+          padding: 4px 6px;
+          text-align: left;
+        }
+        table.card-table tbody td {
+          padding: 4px 6px;
+          border-bottom: 1px solid var(--rule-soft);
+          vertical-align: top;
+          line-height: 1.25;
+        }
+        table.card-table tbody tr:nth-child(even) td {
+          background: var(--fill-soft);
+        }
+        .dapt-pearls-grid {
+          display: grid;
+          grid-template-columns: 1.15fr 0.85fr;
+          gap: 12px;
+          margin-bottom: 6px;
+        }
+        .dapt-pearl-card {
+          border-radius: 6px;
+          padding: 6px 8px;
+        }
+        .dapt-pearl-card.purple {
+          border: 1px solid var(--purple-soft);
+          border-left: 4px solid var(--purple);
+          background: linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%);
+        }
+        .dapt-pearl-card.red {
+          border: 1px solid var(--red-soft);
+          border-left: 4px solid var(--red);
+          background: linear-gradient(135deg, var(--red-soft) 0%, #ffffff 100%);
+        }
+        .ref-citation {
+          margin-top: 0;
+          padding: 4px 8px;
+          background: linear-gradient(135deg, var(--fill-soft) 0%, #ffffff 100%);
+          border-left: 4px solid var(--purple);
+          border-radius: 4px;
+          font-size: 7.0pt;
+          line-height: 1.2;
+          color: var(--ink-mute);
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>DAPT for Non-Cardioembolic Ischemic Stroke</h1>
+        <p class="subtitle">Guideline-directed Dual Antiplatelet Therapy (DAPT) for secondary non-cardioembolic stroke prevention.</p>
+        
+        <svg viewBox="0 0 735 240" style="width: 100%; height: 210px; margin-bottom: 6px">
+          <rect x="0" y="0" width="735" height="240" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
+          <rect x="292" y="10" width="150" height="35" rx="6" fill="var(--purple-deep)" />
+          <text x="367" y="23" fill="white" font-size="8.5pt" font-family="Outfit" font-weight="700" text-anchor="middle">ACUTE STROKE / TIA</text>
+          <text x="367" y="36" fill="rgba(255,255,255,0.8)" font-size="7pt" font-family="IBM Plex Sans" text-anchor="middle">Non-Cardioembolic Onset</text>
+          <path d="M 367 45 L 367 60 M 120 60 L 615 60 M 120 60 L 120 75 M 367 60 L 367 75 M 615 60 L 615 75" stroke="var(--purple)" stroke-width="1.5" fill="none"/>
+          <rect x="35" y="75" width="170" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5"/>
+          <text x="120" y="90" fill="var(--teal-deep)" font-size="8pt" font-family="Outfit" font-weight="700" text-anchor="middle">Symptomatic IC Stenosis</text>
+          <text x="120" y="102" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Sans" text-anchor="middle">70-99% Stenosis (SAMMPRIS)</text>
+          <path d="M 120 115 L 120 140" stroke="var(--teal)" stroke-width="1.5" fill="none"/>
+          <polygon points="120,145 117,137 123,137" fill="var(--teal)" />
+          <rect x="35" y="145" width="170" height="40" rx="6" fill="white" stroke="var(--teal)" stroke-width="2" style="filter: drop-shadow(0 2px 4px var(--teal-glow))"/>
+          <text x="120" y="159" fill="var(--teal-deep)" font-size="9pt" font-family="Outfit" font-weight="800" text-anchor="middle">ASA + CLOPIDOGREL</text>
+          <text x="120" y="172" fill="var(--red-deep)" font-size="8pt" font-family="IBM Plex Mono" font-weight="700" text-anchor="middle">Duration: 90 Days</text>
+          <rect x="252" y="75" width="230" height="42" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" stroke-width="1.5"/>
+          <text x="367" y="88" fill="var(--purple-deep)" font-size="8pt" font-family="Outfit" font-weight="700" text-anchor="middle">Minor Stroke (NIHSS&le;3) / TIA</text>
+          <text x="367" y="99" fill="var(--purple-deep)" font-size="7pt" font-family="IBM Plex Sans" font-weight="700" text-anchor="middle">Start Clopidogrel + ASA (Day 1)</text>
+          <text x="367" y="110" fill="var(--purple-deep)" font-size="6.5pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Send CYP2C19 Genotype on Admission</text>
+          <path d="M 367 117 L 367 127 M 290 127 L 444 127 M 290 127 L 290 145 M 444 127 L 444 145" stroke="var(--purple)" stroke-width="1.5" fill="none"/>
+          <rect x="215" y="145" width="140" height="42" rx="6" fill="white" stroke="var(--red)" stroke-width="1.5"/>
+          <text x="285" y="157" fill="var(--red-deep)" font-size="7.5pt" font-family="Outfit" font-weight="700" text-anchor="middle">LOF Carrier (*2, *3)</text>
+          <text x="285" y="169" fill="var(--ink-soft)" font-size="6.5pt" font-family="IBM Plex Sans" text-anchor="middle">Results Return (Days 1–3)</text>
+          <text x="285" y="180" fill="var(--red-deep)" font-size="6.5pt" font-family="IBM Plex Sans" font-weight="700" text-anchor="middle">Switch to Ticagrelor</text>
+          <path d="M 285 187 L 285 203" stroke="var(--red)" stroke-width="1.5" fill="none"/>
+          <polygon points="285,203 282,195 288,195" fill="var(--red)" />
+          <rect x="215" y="203" width="140" height="32" rx="4" fill="var(--red-soft)" stroke="var(--red)" stroke-width="2"/>
+          <text x="285" y="213" fill="var(--red-deep)" font-size="7.5pt" font-family="Outfit" font-weight="800" text-anchor="middle">ASA + TICAGRELOR</text>
+          <text x="285" y="222" fill="var(--red-deep)" font-size="6pt" font-family="IBM Plex Sans" text-anchor="middle">Load 180mg STAT, then BID</text>
+          <text x="285" y="231" fill="var(--red-deep)" font-size="6pt" font-family="IBM Plex Mono" font-weight="700" text-anchor="middle">Complete 21d DAPT</text>
+          <rect x="375" y="145" width="140" height="42" rx="6" fill="white" stroke="var(--purple)" stroke-width="1.5"/>
+          <text x="445" y="157" fill="var(--purple-deep)" font-size="7.5pt" font-family="Outfit" font-weight="700" text-anchor="middle">Normal Metabolizer</text>
+          <text x="445" y="169" fill="var(--ink-soft)" font-size="6.5pt" font-family="IBM Plex Sans" text-anchor="middle">Results Return (Days 1–3)</text>
+          <text x="445" y="180" fill="var(--purple-deep)" font-size="6.5pt" font-family="IBM Plex Sans" font-weight="700" text-anchor="middle">Continue Clopidogrel</text>
+          <path d="M 445 187 L 445 203" stroke="var(--purple)" stroke-width="1.5" fill="none"/>
+          <polygon points="445,203 442,195 448,195" fill="var(--purple)" />
+          <rect x="375" y="203" width="140" height="32" rx="4" fill="var(--purple-soft)" stroke="var(--purple)" stroke-width="2"/>
+          <text x="445" y="213" fill="var(--purple-deep)" font-size="7.5pt" font-family="Outfit" font-weight="800" text-anchor="middle">ASA + CLOPIDOGREL</text>
+          <text x="445" y="222" fill="var(--purple-deep)" font-size="6pt" font-family="IBM Plex Sans" text-anchor="middle">Continue Clopidogrel 75mg qD</text>
+          <text x="445" y="231" fill="var(--purple-deep)" font-size="6pt" font-family="IBM Plex Mono" font-weight="700" text-anchor="middle">Complete 21d DAPT</text>
+          <rect x="530" y="75" width="170" height="40" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="1.5"/>
+          <text x="615" y="90" fill="var(--amber-deep)" font-size="8pt" font-family="Outfit" font-weight="700" text-anchor="middle">Mild-Mod Stroke (NIHSS&le;5)</text>
+          <text x="615" y="102" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Sans" text-anchor="middle">Or High-Risk TIA (THALES)</text>
+          <path d="M 615 115 L 615 140" stroke="var(--amber)" stroke-width="1.5" fill="none"/>
+          <polygon points="615,145 612,137 618,137" fill="var(--amber)" />
+          <rect x="530" y="145" width="170" height="40" rx="6" fill="white" stroke="var(--amber)" stroke-width="2" style="filter: drop-shadow(0 2px 4px var(--amber-glow))"/>
+          <text x="615" y="159" fill="var(--amber-deep)" font-size="9pt" font-family="Outfit" font-weight="800" text-anchor="middle">ASA + TICAGRELOR</text>
+          <text x="615" y="172" fill="var(--red-deep)" font-size="8pt" font-family="IBM Plex Mono" font-weight="700" text-anchor="middle">Duration: 30 Days</text>
+        </svg>
+
+        <table class="card-table">
+          <thead>
+            <tr>
+              <th style="width: 22%;">Scenario / Trial</th>
+              <th style="width: 22%;">Target Population</th>
+              <th style="width: 22%;">Loading Dose (Day 1)</th>
+              <th style="width: 20%;">DAPT Duration</th>
+              <th style="width: 14%;">Post-DAPT</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight: 700;">POINT Trial</td>
+              <td>NIHSS &le;3 or ABCD² &ge;4. **Within 12 hours** of onset.</td>
+              <td><strong>Clopidogrel 600 mg</strong> +<br/>Aspirin 162–325 mg</td>
+              <td><strong>Clopidogrel 75mg qD</strong> +<br/>Aspirin 81mg qD for <strong>21 days</strong></td>
+              <td>Aspirin 81mg</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700;">CHANCE / INSPIRES</td>
+              <td><strong>CHANCE:</strong> NIHSS&le;3, ABCD²&ge;4 within 24h.<br/><strong>INSPIRES:</strong> NIHSS&le;5, ABCD²&ge;4, &ge;50% stenosis within 72h.</td>
+              <td><strong>Clopidogrel 300 mg</strong> +<br/>Aspirin 75–300 mg</td>
+              <td><strong>Clopidogrel 75mg qD</strong> +<br/>Aspirin 75-100mg for <strong>21 days</strong></td>
+              <td>Clopidogrel 75mg (to Day 90)</td>
+            </tr>
+            <tr style="background: var(--purple-soft);">
+              <td style="font-weight: 700; color: var(--purple-deep);">CHANCE-2 Trial</td>
+              <td>CYP2C19 LOF carrier (*2/*3) + Minor stroke/TIA. **Within 24h**.</td>
+              <td><strong>Ticagrelor 180 mg</strong> +<br/>Aspirin 75–300 mg</td>
+              <td><strong>Ticagrelor 90mg BID</strong> +<br/>Aspirin 75-100mg for <strong>21 days</strong></td>
+              <td>Ticagrelor 90mg BID (to Day 90)</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700;">THALES Trial</td>
+              <td>NIHSS &le;5 or high-risk TIA (ABCD² &ge;6 or symptomatic stenosis) within 24h.</td>
+              <td><strong>Ticagrelor 180 mg</strong> +<br/>Aspirin 300–325 mg</td>
+              <td><strong>Ticagrelor 90mg BID</strong> +<br/>Aspirin 75-100mg for <strong>30 days</strong></td>
+              <td>Aspirin 81mg</td>
+            </tr>
+            <tr style="background: var(--teal-soft);">
+              <td style="font-weight: 700; color: var(--teal-deep);">SAMMPRIS Trial</td>
+              <td>Severe symptomatic stenosis (70-99%) of major intracranial artery.</td>
+              <td><strong>Aspirin 325 mg</strong> +<br/><strong>Clopidogrel 75 mg</strong> (no load)</td>
+              <td><strong>Clopidogrel 75mg qD</strong> +<br/>Aspirin for <strong>90 days</strong></td>
+              <td>Aspirin</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="dapt-pearls-grid">
+          <div class="dapt-pearl-card purple">
+            <strong style="color: var(--purple-deep); font-size: 8.2pt; display: block; margin-bottom: 3px;">CYP2C19 Genotyping & Clopidogrel Resistance</strong>
+            <p style="font-size: 7.6pt; color: var(--ink-soft); margin: 0; line-height: 1.35;">
+              • <strong>~30% of US stroke patients</strong> carry a loss-of-function (LOF) allele (<strong>*2, *3</strong>), resulting in poor active metabolite generation and a 2x stroke recurrence rate.
+            </p>
+          </div>
+
+          <div class="dapt-pearl-card red">
+            <strong style="color: var(--red-deep); font-size: 8.2pt; display: block; margin-bottom: 3px;">Just Safety</strong>
+            <p style="font-size: 7.4pt; color: var(--ink-soft); margin: 0; line-height: 1.35;">
+              • **Bleeding vs. Benefit**: DAPT beyond 21 days for minor stroke/TIA increases bleeding (including ICH) without reducing recurrence (POINT/CHANCE).<br/>
+              • **Post-Lytic Policy**: Avoid DAPT in patients who received TNK or EVT (unless specifically requested by neurointerventions for stent).
+            </p>
+          </div>
+        </div>
+        
+        <div class="ref-citation">
+          <strong>POINT:</strong> Johnston SC et al. <em>N Engl J Med</em>. 2018;379:215-225. | <strong>CHANCE:</strong> Wang Y et al. <em>N Engl J Med</em>. 2013;369:11-19. | 
+          <strong>CHANCE-2:</strong> Wang Y et al. <em>N Engl J Med</em>. 2021;385:2520-2530. | <strong>INSPIRES:</strong> Gao Y et al. <em>N Engl J Med</em>. 2023;389:2413-2424. | 
+          <strong>THALES:</strong> Johnston SC et al. <em>N Engl J Med</em>. 2020;383:207-217. | <strong>SAMMPRIS:</strong> Chimowitz MI et al. <em>N Engl J Med</em>. 2011;365:993-1003.
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  await page.setContent(daptHtml);
+  await page.pdf({
+    path: 'documents/references/DAPT Guidelines.pdf',
+    format: 'letter',
+    landscape: true,
+    printBackground: true,
+    margin: { top: '0.15in', bottom: '0.15in', left: '0.15in', right: '0.15in' }
+  });
+  console.log('Generated documents/references/DAPT Guidelines.pdf');
+
+  // ==========================================
+  // 5. GENERATE MALIGNANT INFARCTION PDF
+  // ==========================================
+  const malignantHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Malignant Infarction</title>
+      <style>
+        @page {
+          size: letter;
+          margin: 0.15in 0.15in 0.15in 0.15in;
+        }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          color: #1a1b20;
+          font-size: 8.2pt;
+          line-height: 1.22;
+          background: white;
+          --ink:         #1a1b20;
+          --ink-soft:    #3c3d47;
+          --ink-mute:    #636472;
+          --rule:        #e0dde4;
+          --rule-soft:   #f0eef3;
+          --fill:        #f3f1f6;
+          --fill-soft:   #f8f7fa;
+          --paper:       #ffffff;
+          --purple:      #5B3B9C;
+          --purple-deep: #3A2368;
+          --purple-soft: #f1edfa;
+          --purple-glow: rgba(91, 59, 156, 0.15);
+          --teal:        #18849E;
+          --teal-soft:   #e6f4f7;
+          --teal-deep:   #0F586B;
+          --teal-glow:   rgba(24, 132, 158, 0.15);
+          --red:         #C62E2E;
+          --red-soft:    #fcebeb;
+          --red-deep:    #8E1E1E;
+          --red-glow:    rgba(198, 46, 46, 0.15);
+          --amber:       #D9860B;
+          --amber-soft:  #fdf3e4;
+          --amber-deep:  #945B06;
+          --amber-glow:  rgba(217, 134, 11, 0.15);
+          --slate:       #4A5A6D;
+          --slate-soft:  #f0f2f5;
+        }
+        .container {
+          border: 2px solid var(--red);
+          border-radius: 6px;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          padding: 12px 18px;
+          box-sizing: border-box;
+        }
+        h1 {
+          font-size: 19pt;
+          font-weight: 800;
+          margin: 0 0 3px 0;
+          text-align: center;
+          background: linear-gradient(135deg, var(--red-deep) 0%, var(--red) 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        p.subtitle {
+          font-size: 8.8pt;
+          color: var(--ink-soft);
+          margin: 0 0 8px 0;
+          text-align: center;
+          font-weight: 500;
+        }
+        .selection-criteria-box {
+          border: 1.5px solid var(--red);
+          border-radius: 8px;
+          padding: 8px 12px;
+          background: linear-gradient(135deg, var(--red-soft) 0%, #ffffff 100%);
+          margin-bottom: 8px;
+        }
+        .selection-criteria-box strong.title {
+          color: var(--red-deep);
+          font-size: 11pt;
+          display: block;
+          margin-bottom: 4px;
+        }
+        .selection-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+          font-size: 7.8pt;
+          line-height: 1.35;
+          color: var(--ink-soft);
+        }
+        .outcome-chart-container {
+          background: white;
+          border: 1px solid var(--rule-soft);
+          border-radius: 8px;
+          padding: 10px 12px;
+          margin-bottom: 8px;
+          text-align: left;
+        }
+        .outcome-row {
+          display: flex;
+          align-items: center;
+          margin-bottom: 6px;
+        }
+        .outcome-label {
+          width: 155px;
+          font-size: 8.2pt;
+          font-weight: 700;
+          color: var(--ink-soft);
+          line-height: 1.1;
+        }
+        .stacked-bar-container {
+          flex: 1;
+          height: 18px;
+          display: flex;
+          border-radius: 4px;
+          overflow: hidden;
+          background: #f1f2f6;
+        }
+        .bar-segment {
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-family: monospace;
+          font-size: 7.8pt;
+          font-weight: 700;
+        }
+        .bar-mrs-03 { background: #2E7D32; }
+        .bar-mrs-4  { background: #F57C00; }
+        .bar-mrs-5  { background: #E64A19; }
+        .bar-mrs-6  { background: #212121; }
+        .chart-legend {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 6px 14px;
+          margin-top: 6px;
+          font-size: 7.2pt;
+          color: var(--ink-soft);
+        }
+        .legend-item {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        }
+        .legend-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 1.5px;
+          flex-shrink: 0;
+        }
+        .icu-care-box {
+          border: 1px solid var(--rule-soft);
+          border-radius: 8px;
+          padding: 8px 12px;
+          background: white;
+          margin-bottom: 8px;
+        }
+        .icu-care-box strong.title {
+          color: var(--purple-deep);
+          font-size: 11pt;
+          display: block;
+          margin-bottom: 4px;
+        }
+        .icu-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 7.8pt;
+          line-height: 1.35;
+          color: var(--ink);
+        }
+        .icu-table tr {
+          border-bottom: 1px solid var(--rule-soft);
+        }
+        .icu-table tr:last-child {
+          border-bottom: none;
+        }
+        .icu-table td {
+          padding: 4px 0;
+        }
+        .ref-citation {
+          margin-top: 0;
+          padding: 4px 8px;
+          background: linear-gradient(135deg, var(--fill-soft) 0%, #ffffff 100%);
+          border-left: 4px solid var(--red);
+          border-radius: 4px;
+          font-size: 7.0pt;
+          line-height: 1.25;
+          color: var(--ink-mute);
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>Malignant Infarction</h1>
+        <p class="subtitle">Decompressive hemicraniectomy selection criteria, evidence, and supportive ICU care.</p>
+        
+        <svg viewBox="0 0 735 65" style="width: 100%; height: 65px; margin-bottom: 8px">
+          <polygon points="0,0 230,0 242,32 230,65 0,65" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5" />
+          <text x="110" y="28" fill="var(--teal-deep)" font-size="8.5pt" font-family="Outfit" font-weight="800" text-anchor="middle">STAGE 1: 0 - 24 HOURS</text>
+          <text x="110" y="44" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Sans" text-anchor="middle">Baseline Core & Serial NIHSS Checks</text>
+          <polygon points="233,0 470,0 482,32 470,65 233,65 245,32" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="1.5" />
+          <text x="352" y="28" fill="var(--amber-deep)" font-size="8.5pt" font-family="Outfit" font-weight="800" text-anchor="middle">STAGE 2: 24 - 48 HOURS</text>
+          <text x="352" y="44" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Sans" text-anchor="middle">Peak Edema Phase & Serial CT Scan</text>
+          <polygon points="473,0 735,0 735,65 473,65 485,32" fill="var(--red-soft)" stroke="var(--red)" stroke-width="1.5" />
+          <text x="609" y="28" fill="var(--red-deep)" font-size="8.5pt" font-family="Outfit" font-weight="800" text-anchor="middle">STAGE 3: &lt; 48H SURGERY</text>
+          <text x="609" y="44" fill="var(--red-deep)" font-size="7pt" font-family="IBM Plex Sans" font-weight="600" text-anchor="middle">Decompressive Hemicraniectomy</text>
+        </svg>
+
+        <div class="selection-criteria-box">
+          <strong class="title">1. Decompressive Hemicraniectomy Selection Criteria</strong>
+          <div class="selection-grid">
+            <div>
+              <strong>Clinical Deficit Severity:</strong><br/>
+              • NIHSS <strong>&gt; 15</strong> (non-dominant hemisphere)<br/>
+              • NIHSS <strong>&gt; 20</strong> (dominant hemisphere)<br/>
+              • AND decrease in level of consciousness (NIHSS Item 1a score <strong>&ge; 1</strong> / obtunded or stuporous)<br/>
+              • **Timing**: Surgery performed <strong>within 48 hours</strong> of onset.
+            </div>
+            <div>
+              <strong>Radiographic Markers:</strong><br/>
+              • Infarction of <strong>&ge; 50%</strong> of the MCA territory (CT/MRI)<br/>
+              • DWI core volume <strong>&gt; 82 mL</strong> within 6 hours<br/>
+              • DWI core volume <strong>&gt; 145 mL</strong> within 14 hours<br/>
+              • Midline shift or mass effect on repeat imaging<br/>
+              • **Surgical Spec**: Bone flap diameter <strong>&ge; 12–15 cm</strong> with duraplasty.
+            </div>
+          </div>
+        </div>
+
+        <div class="outcome-chart-container">
+          <strong style="color: var(--purple-deep); font-size: 11pt; display: block; margin-bottom: 4px">2. Surgical Outcomes & Evidence (By Age Group)</strong>
+          
+          <div class="outcome-row">
+            <div class="outcome-label">
+              <strong>Age &lt; 60 Years</strong> (DECIMAL/DESTINY)<br/>
+              <span style="font-size: 6.5pt; font-weight: normal; color: var(--ink-mute)">Surgery (22% Mort) vs Med (71% Mort)</span>
+            </div>
+            <div class="stacked-bar-container">
+              <div class="bar-segment bar-mrs-03" style="width: 43%">43%</div>
+              <div class="bar-segment bar-mrs-4" style="width: 32%">32%</div>
+              <div class="bar-segment bar-mrs-5" style="width: 3%">3%</div>
+              <div class="bar-segment bar-mrs-6" style="width: 22%">22%</div>
+            </div>
+          </div>
+
+          <div class="outcome-row">
+            <div class="outcome-label" style="opacity: 0.7; font-weight: normal; font-size: 7.2pt">
+              Age &lt; 60 Medical Control
+            </div>
+            <div class="stacked-bar-container" style="opacity: 0.7">
+              <div class="bar-segment bar-mrs-03" style="width: 21%">21%</div>
+              <div class="bar-segment bar-mrs-4" style="width: 3%">3%</div>
+              <div class="bar-segment bar-mrs-5" style="width: 5%">5%</div>
+              <div class="bar-segment bar-mrs-6" style="width: 71%">71%</div>
+            </div>
+          </div>
+
+          <div class="outcome-row" style="margin-top: 6px">
+            <div class="outcome-label">
+              <strong>Age &ge; 60 Years</strong> (DESTINY II)<br/>
+              <span style="font-size: 6.5pt; font-weight: normal; color: var(--ink-mute)">Surgery (33% Mort) vs Med (70% Mort)</span>
+            </div>
+            <div class="stacked-bar-container">
+              <div class="bar-segment bar-mrs-03" style="width: 7%">7%</div>
+              <div class="bar-segment bar-mrs-4" style="width: 31%">31%</div>
+              <div class="bar-segment bar-mrs-5" style="width: 29%">29%</div>
+              <div class="bar-segment bar-mrs-6" style="width: 33%">33%</div>
+            </div>
+          </div>
+
+          <div class="outcome-row">
+            <div class="outcome-label" style="opacity: 0.7; font-weight: normal; font-size: 7.2pt">
+              Age &ge; 60 Medical Control
+            </div>
+            <div class="stacked-bar-container" style="opacity: 0.7">
+              <div class="bar-segment bar-mrs-03" style="width: 3%">3%</div>
+              <div class="bar-segment bar-mrs-4" style="width: 15%">15%</div>
+              <div class="bar-segment bar-mrs-5" style="width: 12%">12%</div>
+              <div class="bar-segment bar-mrs-6" style="width: 70%">70%</div>
+            </div>
+          </div>
+
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-dot bar-mrs-03"></div>
+              <div>mRS 0–3: Functional Independence / Mild-Mod Disability</div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot bar-mrs-4"></div>
+              <div>mRS 4: Moderately Severe (Walk with assistance)</div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot bar-mrs-5"></div>
+              <div>mRS 5: Severe Disability (Bedbound)</div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot bar-mrs-6"></div>
+              <div>mRS 6: Death</div>
+            </div>
+          </div>
+          
+          <div style="font-size: 7pt; line-height: 1.25; margin-top: 4px; color: var(--ink-soft); text-align: center; border-top: 1px dashed var(--rule); padding-top: 3px">
+            • **Age &lt; 60**: NNT = 2 for survival, NNT = 4 for mRS &le;3. | • **Age &ge; 60**: NNT = 3 for survival, NNT = 25 for mRS &le;3. *Goals-of-care discussion critical.
+          </div>
+        </div>
+
+        <div class="icu-care-box">
+          <strong class="title">3. Supportive ICU Care & Medical Management</strong>
+          <table class="icu-table">
+            <tbody>
+              <tr>
+                <td style="font-weight: 700; width: 22%; color: var(--purple-deep); vertical-align: top">Positioning</td>
+                <td style="color: var(--ink-soft)">Elevate HOB 30 degrees; maintain straight head/neck alignment to maximize venous outflow.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700; color: var(--purple-deep); vertical-align: top">Fluids</td>
+                <td style="color: var(--ink-soft)">Use Isotonic Saline (0.9% NS). <strong>Avoid hypotonic fluids</strong> (e.g. D5W, 0.45% NS, LR) which worsen edema. Maintain euvolemia.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700; color: var(--purple-deep); vertical-align: top">Osmotherapy</td>
+                <td style="color: var(--ink-soft)">Consider <strong>targeted PRN</strong> hyperosmolar agents (HTS 3% or Mannitol) for acute decline or severe mass effect. <em>Prophylactic osmotherapy is not recommended.</em></td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700; color: var(--purple-deep); vertical-align: top">Metabolic</td>
+                <td style="color: var(--ink-soft)">Target normothermia (&lt;37.8&deg;C). Target normocapnia (PaCO2 35-45 mmHg); avoid hypoventilation/hypercapnia.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700; color: var(--purple-deep); vertical-align: top">Steroids</td>
+                <td style="color: var(--ink-soft)"><strong style="color: var(--red)">Class III (Harmful)</strong>: Corticosteroids are NOT recommended for reducing cerebral edema in acute ischemic stroke.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="ref-citation">
+          <strong>DECIMAL:</strong> Vahedi K et al. <em>Stroke</em>. 2007;38:2506-2517. | <strong>DESTINY:</strong> J&uuml;ttler E et al. <em>Stroke</em>. 2007;38:2518-2525.<br/>
+          <strong>HAMLET:</strong> Hofmeijer J et al. <em>Lancet Neurol</em>. 2009;8:326-333. | <strong>DESTINY II:</strong> J&uuml;ttler E et al. <em>N Engl J Med</em>. 2014;370:1091-1100.<br/>
+          <strong>AHA Guidelines:</strong> Wijdicks EF et al. <em>Stroke</em>. 2014;45:1222-1238.
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  await page.setContent(malignantHtml);
+  await page.pdf({
+    path: 'documents/references/Malignant Infarction.pdf',
+    format: 'letter',
+    printBackground: true,
+    margin: { top: '0.15in', bottom: '0.15in', left: '0.15in', right: '0.15in' }
+  });
+  console.log('Generated documents/references/Malignant Infarction.pdf');
+
+  // ==========================================
+  // 6. GENERATE AFIB DOAC START TIMING PDF (LANDSCAPE)
+  // ==========================================
+  const afibHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>AFib DOAC Start Timing</title>
+      <style>
+        @page {
+          size: letter landscape;
+          margin: 0.15in 0.15in 0.15in 0.15in;
+        }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          color: #1a1b20;
+          font-size: 7.8pt;
+          line-height: 1.25;
+          background: white;
+          --ink:         #1a1b20;
+          --ink-soft:    #3c3d47;
+          --ink-mute:    #636472;
+          --rule:        #e0dde4;
+          --rule-soft:   #f0eef3;
+          --fill:        #f3f1f6;
+          --fill-soft:   #f8f7fa;
+          --paper:       #ffffff;
+          --purple:      #5B3B9C;
+          --purple-deep: #3A2368;
+          --purple-soft: #f1edfa;
+          --purple-glow: rgba(91, 59, 156, 0.15);
+          --teal:        #18849E;
+          --teal-soft:   #e6f4f7;
+          --teal-deep:   #0F586B;
+          --teal-glow:   rgba(24, 132, 158, 0.15);
+          --red:         #C62E2E;
+          --red-soft:    #fcebeb;
+          --red-deep:    #8E1E1E;
+          --red-glow:    rgba(198, 46, 46, 0.15);
+          --amber:       #D9860B;
+          --amber-soft:  #fdf3e4;
+          --amber-deep:  #945B06;
+          --amber-glow:  rgba(217, 134, 11, 0.15);
+          --slate:       #4A5A6D;
+          --slate-soft:  #f0f2f5;
+        }
+        .container {
+          border: 2px solid var(--teal);
+          border-radius: 6px;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          padding: 10px 15px;
+          box-sizing: border-box;
+        }
+        h1 {
+          font-size: 16pt;
+          font-weight: 800;
+          margin: 0 0 2px 0;
+          text-align: center;
+          background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple) 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        p.subtitle {
+          font-size: 8.2pt;
+          color: var(--ink-soft);
+          margin: 0 0 4px 0;
+          text-align: center;
+          font-weight: 500;
+        }
+        .clinical-efficacy-box {
+          border-left: 4px solid var(--teal);
+          background: var(--teal-soft);
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 7.4pt;
+          margin-bottom: 4px;
+          line-height: 1.35;
+        }
+        .severity-classification-box {
+          border: 1px solid var(--rule-soft);
+          border-radius: 6px;
+          padding: 4px 6px;
+          background: var(--fill-soft);
+          margin-bottom: 4px;
+        }
+        .severity-classification-box strong.title {
+          color: var(--purple-deep);
+          font-size: 8.2pt;
+          display: block;
+          margin-bottom: 2px;
+        }
+        .severity-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 6px;
+          font-size: 7.2pt;
+          line-height: 1.3;
+        }
+        .severity-col {
+          border-radius: 4px;
+          padding: 4px 6px;
+          background: white;
+        }
+        .severity-col.mild { border: 1px solid rgba(24,132,158,0.2); }
+        .severity-col.mod { border: 1px solid rgba(217,134,11,0.2); }
+        .severity-col.sev { border: 1px solid rgba(198,46,46,0.2); }
+        
+        .dosing-guide-box {
+          border: 1px solid var(--rule-soft);
+          border-radius: 6px;
+          padding: 6px 10px;
+          background: white;
+          margin-bottom: 4px;
+        }
+        .dosing-guide-box strong.title {
+          color: var(--purple-deep);
+          font-size: 8.5pt;
+          display: block;
+          margin-bottom: 2px;
+        }
+        .dosing-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 7.2pt;
+          line-height: 1.3;
+          color: var(--ink);
+        }
+        .dosing-table th {
+          border-bottom: 1.5px solid var(--rule-soft);
+          background: var(--fill-soft);
+          color: var(--purple-deep);
+          font-weight: 700;
+          padding: 3px 5px;
+          text-align: left;
+        }
+        .dosing-table td {
+          padding: 4px 5px;
+          border-bottom: 1px solid var(--rule-soft);
+          vertical-align: top;
+        }
+        .dosing-table tr:last-child td {
+          border-bottom: none;
+        }
+        .ref-citation {
+          margin-top: 0;
+          padding: 4px 8px;
+          background: linear-gradient(135deg, var(--fill-soft) 0%, #ffffff 100%);
+          border-left: 4px solid var(--teal);
+          border-radius: 4px;
+          font-size: 6.8pt;
+          line-height: 1.25;
+          color: var(--ink-mute);
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>AFib Anticoagulation Restart Timing After Acute Ischemic Stroke</h1>
+        <p class="subtitle">Evidence-based schedule for starting or restarting DOACs after acute ischemic stroke or TIA.</p>
+        
+        <div class="clinical-efficacy-box">
+          <strong style="color: var(--teal-deep); text-transform: uppercase; font-size: 7.2pt; letter-spacing: 0.05em; display: block; margin-bottom: 1px;">Clinical Efficacy & Safety</strong>
+          Early DOAC initiation in patients with AFib and recent stroke is safe and reasonable (Class I, LOE A). It does not increase the risk of symptomatic intracranial hemorrhage (sICH) compared to delayed initiation, and reduces recurrent ischemic stroke. DOACs are preferred over warfarin.
+        </div>
+
+        <div class="severity-classification-box">
+          <strong class="title">1. Stroke Severity Classification (ELAN Criteria)</strong>
+          <div class="severity-grid">
+            <div class="severity-col mild">
+              <strong style="color: var(--teal-deep); display: block;">Mild Stroke (NIHSS &lt; 8)</strong>
+              • TIA or infarct <strong>&lt; 1.5 cm</strong> on brain imaging (cortical or deep subcortical).
+            </div>
+            <div class="severity-col mod">
+              <strong style="color: var(--amber-deep); display: block;">Moderate (NIHSS 8–15)</strong>
+              • Occlusion of a <strong>single superficial branch</strong> of the MCA, PCA, or ACA, or isolated brainstem/cerebellar lesion.
+            </div>
+            <div class="severity-col sev">
+              <strong style="color: var(--red-deep); display: block;">Severe (NIHSS &ge; 16)</strong>
+              • <strong>Multilobar</strong> infarct, major main stem occlusion (e.g. M1 MCA, P1 PCA, A1 ACA), or large brainstem/cerebellar lesion.
+            </div>
+          </div>
+        </div>
+
+        <svg viewBox="0 0 735 150" style="width: 100%; height: 130px; margin-bottom: 6px">
+          <rect x="0" y="0" width="735" height="150" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
+          <line x1="20" y1="95" x2="715" y2="95" stroke="var(--ink-mute)" stroke-width="2"/>
+          <line x1="20" y1="90" x2="20" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="20" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 1</text>
+          <line x1="73.5" y1="90" x2="73.5" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="73.5" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 2</text>
+          <line x1="127" y1="90" x2="127" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="127" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 3</text>
+          <line x1="180.5" y1="90" x2="180.5" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="180.5" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 4</text>
+          <line x1="234" y1="90" x2="234" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="234" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 5</text>
+          <line x1="287.5" y1="90" x2="287.5" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="287.5" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 6</text>
+          <line x1="341" y1="90" x2="341" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="341" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 7</text>
+          <line x1="394.5" y1="90" x2="394.5" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="394.5" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 8</text>
+          <line x1="448" y1="90" x2="448" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="448" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 9</text>
+          <line x1="501.5" y1="90" x2="501.5" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="501.5" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 10</text>
+          <line x1="555" y1="90" x2="555" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="555" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 11</text>
+          <line x1="608.5" y1="90" x2="608.5" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="608.5" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 12</text>
+          <line x1="662" y1="90" x2="662" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="662" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 13</text>
+          <line x1="715" y1="90" x2="715" y2="100" stroke="var(--ink-mute)" stroke-width="2"/>
+          <text x="715" y="112" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Mono" font-weight="600" text-anchor="middle">Day 14</text>
+          <rect x="20" y="65" width="53.5" height="15" rx="3" fill="var(--teal)" opacity="0.15"/>
+          <rect x="20" y="65" width="53.5" height="15" rx="3" fill="none" stroke="var(--teal)" stroke-width="1.5"/>
+          <text x="46.7" y="76" fill="var(--teal-deep)" font-size="6.5pt" font-family="Outfit" font-weight="800" text-anchor="middle">MILD / TIA</text>
+          <path d="M 46.7 80 L 46.7 93" stroke="var(--teal)" stroke-width="1" stroke-dasharray="2,2"/>
+          <rect x="127" y="65" width="53.5" height="15" rx="3" fill="var(--amber)" opacity="0.15"/>
+          <rect x="127" y="65" width="53.5" height="15" rx="3" fill="none" stroke="var(--amber)" stroke-width="1.5"/>
+          <text x="153.7" y="76" fill="var(--amber-deep)" font-size="6.5pt" font-family="Outfit" font-weight="800" text-anchor="middle">MODERATE</text>
+          <path d="M 153.7 80 L 153.7 93" stroke="var(--amber)" stroke-width="1" stroke-dasharray="2,2"/>
+          <rect x="73.5" y="15" width="107" height="30" rx="4" fill="white" stroke="var(--amber)" stroke-width="1" style="filter: drop-shadow(0 2px 4px var(--amber-glow))"/>
+          <text x="127" y="26" fill="var(--amber-deep)" font-size="6.5pt" font-family="Outfit" font-weight="800" text-anchor="middle">REPEAT CT/MRI</text>
+          <text x="127" y="37" fill="var(--ink-soft)" font-size="6pt" font-family="IBM Plex Sans" text-anchor="middle">Day 2-3 (Pre-DOAC)</text>
+          <path d="M 127 45 L 127 60" stroke="var(--amber)" stroke-width="1"/>
+          <rect x="287.5" y="65" width="53.5" height="15" rx="3" fill="var(--red)" opacity="0.15"/>
+          <rect x="287.5" y="65" width="53.5" height="15" rx="3" fill="none" stroke="var(--red)" stroke-width="1.5"/>
+          <text x="314.2" y="76" fill="var(--red-deep)" font-size="6.5pt" font-family="Outfit" font-weight="800" text-anchor="middle">SEVERE</text>
+          <path d="M 314.2 80 L 314.2 93" stroke="var(--red)" stroke-width="1" stroke-dasharray="2,2"/>
+          <rect x="234" y="15" width="107" height="30" rx="4" fill="white" stroke="var(--red)" stroke-width="1" style="filter: drop-shadow(0 2px 4px var(--red-glow))"/>
+          <text x="287.5" y="26" fill="var(--red-deep)" font-size="6.5pt" font-family="Outfit" font-weight="800" text-anchor="middle">REPEAT CT/MRI</text>
+          <text x="287.5" y="37" fill="var(--ink-soft)" font-size="6pt" font-family="IBM Plex Sans" text-anchor="middle">Day 5-6 (Pre-DOAC)</text>
+          <path d="M 287.5 45 L 287.5 60" stroke="var(--red)" stroke-width="1"/>
+          <rect x="608.5" y="61" width="106.5" height="22" rx="3" fill="var(--red)" opacity="0.25"/>
+          <rect x="608.5" y="61" width="106.5" height="22" rx="3" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="661.7" y="70" fill="var(--red-deep)" font-size="6.0pt" font-family="Outfit" font-weight="800" text-anchor="middle">SEVERE +</text>
+          <text x="661.7" y="79" fill="var(--red-deep)" font-size="6.0pt" font-family="Outfit" font-weight="800" text-anchor="middle">PH-2 HEMORRHAGE</text>
+          <path d="M 661.7 83 L 661.7 93" stroke="var(--red)" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="661.7" y="137" fill="var(--red-deep)" font-size="5.8pt" font-family="IBM Plex Sans" font-weight="600" text-anchor="middle">Delay initiation to Day 12-14</text>
+          <text x="367" y="141" fill="var(--ink-mute)" font-size="7pt" font-family="Outfit" font-weight="700" text-anchor="middle">DOAC INITIATION TIMELINE AXIS (DAYS POST-AIS)</text>
+        </svg>
+
+        <div class="dosing-guide-box">
+          <strong class="title">2. Bedside DOAC Dosing & Adjustment Guide</strong>
+          <table class="dosing-table">
+            <thead>
+              <tr>
+                <th style="width: 22%;">Drug</th>
+                <th style="width: 28%;">Standard Dose</th>
+                <th style="width: 50%;">Dose Reduction Criteria</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: 700; color: var(--purple-deep)">Apixaban (Eliquis)</td>
+                <td>5 mg BID</td>
+                <td><strong>Reduce to 2.5 mg BID</strong> if &ge; 2 criteria are met:<br/>• Age &ge; 80 years | • Weight &le; 60 kg | • Serum creatinine &ge; 1.5 mg/dL</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700; color: var(--purple-deep)">Rivaroxaban (Xarelto)</td>
+                <td>20 mg daily (with food)</td>
+                <td><strong>Reduce to 15 mg daily</strong> if CrCl is 15–50 mL/min.<br/><span style="color: var(--red)">Hold if CrCl &lt; 15 mL/min</span>.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700; color: var(--purple-deep)">Dabigatran (Pradaxa)</td>
+                <td>150 mg BID</td>
+                <td><strong>Reduce to 75 mg BID</strong> if CrCl is 15–30 mL/min.<br/><span style="color: var(--red)">Avoid if CrCl &lt; 15 mL/min</span>.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700; color: var(--purple-deep)">Edoxaban (Savaysa)</td>
+                <td>60 mg daily</td>
+                <td><strong>Reduce to 30 mg daily</strong> if CrCl is 15–50 mL/min or weight &le; 60 kg.<br/><span style="color: var(--red)">Avoid if CrCl &gt; 95 mL/min</span> (high renal clearance reduces DOAC level).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="ref-citation">
+          <strong>ELAN Trial:</strong> Fischer U et al. <em>N Engl J Med</em>. 2023;388:2411-2421. | <strong>CATALYST Meta-Analysis:</strong> Fischer U et al. <em>Lancet</em> 2025. Early DOAC (median Day 2) is non-inferior to delayed (median Day 7-8).<br/>
+          <strong>AFib Guidelines:</strong> Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. <em>Circulation</em>. 2024;149:e1-e156.
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  await page.setContent(afibHtml);
+  await page.pdf({
+    path: 'documents/references/AFib DOAC Start Timing.pdf',
+    format: 'letter',
+    landscape: true,
+    printBackground: true,
+    margin: { top: '0.15in', bottom: '0.15in', left: '0.15in', right: '0.15in' }
+  });
+  console.log('Generated documents/references/AFib DOAC Start Timing.pdf');
 
   await browser.close();
 }
