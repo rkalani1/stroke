@@ -262,7 +262,7 @@ const EDUCATION_MODULES = [
   },
   {
     id: 'herniation-icp',
-    title: 'Intracranial Hypertension & Herniation',
+    title: 'Intracranial Hypertension & Herniation - Stroke',
     purpose: 'Stepwise management protocol, emergent weight-based osmotherapy calculator, and interactive compliance waveform analyzer.',
     actions: 'icp herniation cerebral edema brain swelling osmotherapy mannitol hypertonic saline hts evd midline shift herniation stepwise protocol compliance waveform',
     categories: ['pocket-card', 'printable', 'icu', 'simulators'],
@@ -294,6 +294,17 @@ const EDUCATION_MODULES = [
     references: [
       { label: 'Kattah Study', citation: 'Kattah JC et al. Stroke. 2009;40:3504-10.', pmid: '19762654' },
       { label: 'AHA/ASA Guideline', citation: 'Prabhakaran S et al. Stroke. 2026.', pmid: '41582814' }
+    ]
+  },
+  {
+    id: 'evd-icp',
+    title: 'EVD & ICP Waveform Simulator',
+    purpose: 'Bedside external ventricular drain (EVD) height adjustment, pressure trace, and ICP waveform troubleshooting simulator.',
+    actions: 'evd icp ventriculostomy drain pressure trace waveform compliance compliance curve troubleshooting csf drain height interactive',
+    categories: ['simulators', 'icu'],
+    lastReviewed: '2026-05-30',
+    references: [
+      { label: 'NCS Guidelines', citation: 'Cook AM et al. Neurocrit Care. 2020;32:647-66.', pmid: '32227294' }
     ]
   },
   {
@@ -518,6 +529,136 @@ function ScaledCardWrapper({ children, isLandscape }) {
   );
 }
 
+const PdfActionBar = ({ title, subtitle, pdfPath, pdfName, iconColorClass = "text-cobalt-600 dark:text-cobalt-400", children }) => {
+  const [showPdf, setShowPdf] = useState(false);
+
+  const emailDoc = () => {
+    const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/' + pdfPath;
+    const subject = encodeURIComponent(title);
+    const body = encodeURIComponent(fullUrl);
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+  };
+
+  return (
+    <div className="flex flex-col gap-4">
+      {/* PDF Action Bar */}
+      <div className="flex flex-wrap items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-lg dark:bg-slate-800/40 dark:border-slate-700/60 gap-3 no-print">
+        <div className="flex items-center gap-2">
+          <i aria-hidden="true" data-lucide="file-output" className={`w-5 h-5 ${iconColorClass}`}></i>
+          <div>
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">{title}</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">{subtitle}</p>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setShowPdf(!showPdf)}
+            className="px-3.5 py-1.5 bg-cobalt-600 text-white rounded-lg text-xs font-semibold hover:bg-cobalt-700 transition-colors flex items-center gap-1.5"
+          >
+            <i aria-hidden="true" data-lucide="eye" className="w-3.5 h-3.5"></i>
+            {showPdf ? "Hide PDF Preview" : "Preview PDF"}
+          </button>
+          <a
+            href={pdfPath}
+            download={pdfName}
+            className="px-3.5 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors flex items-center gap-1.5"
+          >
+            <i aria-hidden="true" data-lucide="download" className="w-3.5 h-3.5"></i>
+            Download
+          </a>
+          <button
+            onClick={emailDoc}
+            className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-855 transition-colors flex items-center gap-1.5"
+          >
+            <i aria-hidden="true" data-lucide="mail" className="w-3.5 h-3.5"></i>
+            Email
+          </button>
+        </div>
+      </div>
+
+      {showPdf && (
+        <div className="border border-slate-250 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
+          <iframe
+            src={pdfPath}
+            className="w-full h-full border-none"
+            title={`${title} PDF`}
+          />
+        </div>
+      )}
+
+      {children}
+    </div>
+  );
+};
+
+const ToastClassificationView = () => {
+  return (
+    <PdfActionBar
+      title="Stroke Classification"
+      subtitle="TOAST Subtype Reference Guide"
+      pdfPath="documents/references/TOAST Stroke Classification.pdf"
+      pdfName="TOAST Stroke Classification.pdf"
+      iconColorClass="text-purple-600 dark:text-purple-400"
+    >
+      <ScaledCardWrapper isLandscape={false}>
+        <BedsidePocketCardsStyles />
+        <ToastClassificationCard />
+      </ScaledCardWrapper>
+    </PdfActionBar>
+  );
+};
+
+const DaptRegimensView = () => {
+  return (
+    <PdfActionBar
+      title="DAPT for Non-Cardioembolic Ischemic Stroke"
+      subtitle="DAPT Guidelines Reference Card"
+      pdfPath="documents/references/DAPT Guidelines.pdf"
+      pdfName="DAPT Guidelines.pdf"
+      iconColorClass="text-teal-600 dark:text-teal-400"
+    >
+      <ScaledCardWrapper isLandscape={true}>
+        <BedsidePocketCardsStyles />
+        <DaptRegimensCard />
+      </ScaledCardWrapper>
+    </PdfActionBar>
+  );
+};
+
+const MalignantInfarctionView = () => {
+  return (
+    <PdfActionBar
+      title="Malignant Infarction"
+      subtitle="Decompressive Hemicraniectomy Pocket Card"
+      pdfPath="documents/references/Malignant Infarction.pdf"
+      pdfName="Malignant Infarction.pdf"
+      iconColorClass="text-red-600 dark:text-red-400"
+    >
+      <ScaledCardWrapper isLandscape={false}>
+        <BedsidePocketCardsStyles />
+        <MalignantInfarctionCard />
+      </ScaledCardWrapper>
+    </PdfActionBar>
+  );
+};
+
+const AfibAnticoagTimingView = () => {
+  return (
+    <PdfActionBar
+      title="AFib Anticoagulation Restart Timing"
+      subtitle="DOAC Restart Protocol Reference Guide"
+      pdfPath="documents/references/AFib DOAC Start Timing.pdf"
+      pdfName="AFib DOAC Start Timing.pdf"
+      iconColorClass="text-purple-600 dark:text-purple-400"
+    >
+      <ScaledCardWrapper isLandscape={true}>
+        <BedsidePocketCardsStyles />
+        <AfibAnticoagTimingCard />
+      </ScaledCardWrapper>
+    </PdfActionBar>
+  );
+};
+
 const EvdMaintenanceView = () => {
   const [viewMode, setViewMode] = useState('pocket-card'); // 'pocket-card' or 'interactive'
   return (
@@ -564,7 +705,7 @@ const EvdMaintenanceView = () => {
 };
 
 const IcpManagementView = () => {
-  const [viewMode, setViewMode] = useState('pocket-card'); // 'pocket-card', 'escalation', or 'interactive'
+  const [viewMode, setViewMode] = useState('pocket-card'); // 'pocket-card' or 'interactive'
   return (
     <div className="space-y-4">
       {/* Toggle buttons */}
@@ -580,16 +721,6 @@ const IcpManagementView = () => {
           Quick Reference Card
         </button>
         <button
-          onClick={() => setViewMode('escalation')}
-          className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
-            viewMode === 'escalation'
-              ? 'bg-cobalt-600 text-white shadow-sm'
-              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
-          }`}
-        >
-          Escalation Pathway Card
-        </button>
-        <button
           onClick={() => setViewMode('interactive')}
           className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
             viewMode === 'interactive'
@@ -603,11 +734,6 @@ const IcpManagementView = () => {
 
       {viewMode === 'pocket-card' ? (
         <ICPInfographic />
-      ) : viewMode === 'escalation' ? (
-        <ScaledCardWrapper isLandscape={false}>
-          <BedsidePocketCardsStyles />
-          <HerniationIcpCard />
-        </ScaledCardWrapper>
       ) : (
         <ErrorBoundary>
           <div className="bg-white border border-line rounded-lg p-6 dark:bg-card">
@@ -644,33 +770,13 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
         </div>
       );
     case 'toast-classification':
-      return (
-        <ScaledCardWrapper isLandscape={false}>
-          <BedsidePocketCardsStyles />
-          <ToastClassificationCard />
-        </ScaledCardWrapper>
-      );
+      return <ToastClassificationView />;
     case 'dapt-regimens':
-      return (
-        <ScaledCardWrapper isLandscape={true}>
-          <BedsidePocketCardsStyles />
-          <DaptRegimensCard />
-        </ScaledCardWrapper>
-      );
+      return <DaptRegimensView />;
     case 'malignant-infarction':
-      return (
-        <ScaledCardWrapper isLandscape={false}>
-          <BedsidePocketCardsStyles />
-          <MalignantInfarctionCard />
-        </ScaledCardWrapper>
-      );
+      return <MalignantInfarctionView />;
     case 'afib-anticoag-timing':
-      return (
-        <ScaledCardWrapper isLandscape={true}>
-          <BedsidePocketCardsStyles />
-          <AfibAnticoagTimingCard />
-        </ScaledCardWrapper>
-      );
+      return <AfibAnticoagTimingView />;
     case 'herniation-icp':
       return <IcpManagementView />;
     case 'evd-maintenance':
@@ -1879,187 +1985,7 @@ export function AfibAnticoagTimingCard() {
 }
 
 
-export function HerniationIcpCard() {
-  return (
-    <div className="bedside-card-view screen-layout">
-      <div className="card-wrapper card-add_figure_07_herniation_icp">
-<div className="card-container" style={{boxSizing: 'border-box'}}>
-  <div className="card-content">
-    <h1 style={{textAlign: 'center', marginBottom: '4px', color: 'var(--red-deep)'}}>Intracranial Hypertension & Herniation due to Stroke</h1>
 
-    
-    <div style={{border: '1.5px solid var(--red)', borderRadius: '8px', padding: '6px 10px', background: 'linear-gradient(135deg, var(--red-soft) 0%, #ffffff 100%)', marginBottom: '8px', boxShadow: '0 4px 12px var(--red-glow)'}}>
-      <strong style={{color: 'var(--red-deep)', fontSize: '11.0pt', display: 'block', marginBottom: '4px'}}>1. Bedside & Radiographic Signs of Impending Herniation</strong>
-      <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 15px', fontSize: '8.0pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
-        <div>
-          • <strong>LOC Decline:</strong> GCS decrease of ≥2 points, stupor, progressive coma.
-          <br/>• <strong>Pupils:</strong> New pupillary asymmetry or loss of reactivity.
-          <br/>• <strong>Motor Deficits:</strong> New hemiparesis/plegia, extensor/flexor posturing.
-        </div>
-        <div>
-          • <strong>Imaging Markers:</strong> Midline shift, cistern effacement, hydrocephalus.
-          <br/>• <strong>Cushing's Triad (Late):</strong> Systolic HTN, bradycardia, irregular breathing.
-          <br/>• <strong>Symptoms:</strong> Worsening headache, projectile vomiting.
-        </div>
-      </div>
-    </div>
-
-    
-    <div style={{border: '1px solid var(--rule-soft)', borderRadius: '8px', padding: '8px 12px', background: 'var(--fill-soft)', marginBottom: '8px'}}>
-      <strong style={{color: 'var(--purple-deep)', fontSize: '11.0pt', display: 'block', marginBottom: '6px'}}>2. Stepwise ICP & Herniation Protocol (Escalation Pathway)</strong>
-      
-      <div className="step-pathway">
-        
-        <div className="step-node" style={{boxShadow: '0 4px 6px rgba(0,0,0,0.05)', border: '1px solid var(--purple-soft)', borderRadius: '8px', overflow: 'hidden', background: 'white'}}>
-          <div className="step-header step-0">
-            <span className="step-num">STEP 0</span>
-            <span className="step-title">BASELINE NEUROPROTECTION (Prophylaxis)</span>
-          </div>
-          <div className="step-body" style={{padding: '6px 10px', fontSize: '8.0pt', lineHeight: '1.3'}}>
-            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 12px'}}>
-              <div>
-                • <strong>Position:</strong> HOB 30° + midline head/neck position.
-                <br/>• <strong>Fever:</strong> Treat T ≥38°C (scheduled acetaminophen).
-                <br/>• <strong>Airway/O2:</strong> SpO2 ≥94%; propofol ± fentanyl if intubated.
-              </div>
-              <div>
-                • <strong>Perfusion:</strong> Avoid hypotension; maintain stroke BP goals.
-                <br/>• <strong>Metabolic:</strong> Glucose 140–180; euvolemia (Isotonic saline).
-                <br/>• <strong>Ventilation:</strong> PaCO2 35–45. <em>(Edema peaks days 3–5).</em>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="step-arrow" style={{textAlign: 'center', color: 'var(--purple-deep)', margin: '4px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px'}}>
-          <span style={{fontSize: '10pt', fontWeight: 'bold', opacity: '0.5'}}>↓</span>
-          <span style={{fontSize: '7.8pt', fontWeight: '700', color: 'var(--purple-deep)', background: '#f3ebff', padding: '2px 10px', borderRadius: '12px', border: '1px solid var(--purple-soft)', boxShadow: '0 2px 4px rgba(106, 27, 154, 0.05)', display: 'inline-block'}}>
-            TRIGGER: GCS decline ≥2, pupillary asymmetry/reactivity loss, OR sustained monitored ICP &gt;22 mmHg
-          </span>
-          <span style={{fontSize: '10pt', fontWeight: 'bold', opacity: '0.5'}}>↓</span>
-        </div>
-        
-        
-        <div className="step-node" style={{boxShadow: '0 4px 6px rgba(0,0,0,0.05)', border: '1px solid var(--purple-soft)', borderRadius: '8px', overflow: 'hidden', background: 'white'}}>
-          <div className="step-header step-1">
-            <span className="step-num">STEP 1</span>
-            <span className="step-title">TARGETED OSMOTHERAPY (First-Line Medical)</span>
-          </div>
-          <div className="step-body" style={{padding: '6px 10px', fontSize: '8.0pt', lineHeight: '1.3'}}>
-            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 12px'}}>
-              <div>
-                • <strong>Consults:</strong> STAT Neuro ICU and Neurosurgery.
-                <br/>• <strong>Imaging:</strong> Urgent non-contrast head CT.
-              </div>
-              <div>
-                • <strong>3% HTS:</strong> 250–500 mL IV bolus over 20 min (large-bore PIV OK).
-                <br/>• <strong>20% Mannitol:</strong> 0.5–1.0 g/kg IV bolus (In-line filter).
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="step-arrow" style={{textAlign: 'center', color: 'var(--purple-deep)', margin: '4px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px'}}>
-          <span style={{fontSize: '10pt', fontWeight: 'bold', opacity: '0.5'}}>↓</span>
-          <span style={{fontSize: '7.8pt', fontWeight: '700', color: 'var(--red-deep)', background: 'var(--red-soft)', padding: '2px 10px', borderRadius: '12px', border: '1px solid var(--red-glow)', display: 'inline-block'}}>
-            If refractory to first-line therapy or acute herniation suspected
-          </span>
-          <span style={{fontSize: '10pt', fontWeight: 'bold', opacity: '0.5'}}>↓</span>
-        </div>
-        
-        
-        <div className="step-node" style={{boxShadow: '0 4px 6px rgba(0,0,0,0.05)', border: '1px solid var(--purple-soft)', borderRadius: '8px', overflow: 'hidden', background: 'white'}}>
-          <div className="step-header step-2">
-            <span className="step-num">STEP 2</span>
-            <span className="step-title">REFRACTORY RESCUE & BRIDGING (Invasive)</span>
-          </div>
-          <div className="step-body" style={{padding: '6px 10px', fontSize: '8.0pt', lineHeight: '1.3'}}>
-            <div style={{display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: '4px 12px'}}>
-              <div>
-                • <strong>23.4% HTS:</strong> 30 mL IV over 10 min (<strong>Central line only</strong>).
-                <br/>• <strong>Hyperventilation:</strong> PaCO2 30–35 (caution: vasoconstriction).
-              </div>
-              <div>
-                • <strong>EVD:</strong> For obstructive hydrocephalus/IVH.
-                <br/>• <strong>Cerebellar Warning:</strong> Drain conservatively; risk of upward herniation.
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="step-arrow" style={{textAlign: 'center', color: 'var(--purple-deep)', margin: '4px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px'}}>
-          <span style={{fontSize: '10pt', fontWeight: 'bold', opacity: '0.5'}}>↓</span>
-          <span style={{fontSize: '7.8pt', fontWeight: '700', color: 'var(--ink-soft)', background: 'var(--fill-soft)', padding: '2px 10px', borderRadius: '12px', border: '1px solid var(--rule-soft)', display: 'inline-block'}}>
-            If candidate for definitive surgical decompression
-          </span>
-          <span style={{fontSize: '10pt', fontWeight: 'bold', opacity: '0.5'}}>↓</span>
-        </div>
-        
-        
-        <div className="step-node" style={{boxShadow: '0 4px 6px rgba(0,0,0,0.05)', border: '1px solid var(--purple-soft)', borderRadius: '8px', overflow: 'hidden', background: 'white'}}>
-          <div className="step-header step-3">
-            <span className="step-num">STEP 3</span>
-            <span className="step-title">EMERGENCY SURGICAL DECOMPRESSION</span>
-          </div>
-          <div className="step-body" style={{padding: '6px 10px', fontSize: '8.0pt', lineHeight: '1.3'}}>
-            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 12px'}}>
-              <div>
-                • <strong>Supratentorial Infarction/ICH:</strong>
-                <br/>Proceed to Decompressive Hemicraniectomy (DHC).
-              </div>
-              <div>
-                • <strong>Infratentorial (Cerebellar):</strong>
-                <br/>Suboccipital Decompression + dural expansion.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    
-    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px'}}>
-      
-      <div style={{border: '1px solid rgba(24,132,158,0.2)', borderLeft: '4px solid var(--teal)', borderRadius: '8px', padding: '6px 10px', background: 'linear-gradient(180deg, #ffffff 0%, rgba(24,132,158,0.02) 100%)', boxShadow: '0 4px 10px rgba(0,0,0,0.02)'}}>
-        <strong style={{color: 'var(--teal-deep)', fontSize: '8.5pt', display: 'block', marginBottom: '4px'}}>Hypertonic Saline (HTS 3% / 23.4%)</strong>
-        <ul style={{margin: '0', paddingLeft: '12px', fontSize: '8.0pt', lineHeight: '1.3', color: 'var(--ink-soft)', listStyleType: 'square'}}>
-          <li><strong>3% HTS:</strong> 250–500 mL IV over 20 min (Peripheral large-bore OK).</li>
-          <li><strong>23.4% HTS:</strong> 30 mL IV over 10 min (<strong>Central line only!</strong>).</li>
-          <li><strong>Monitoring:</strong> Na, Cl, renal panel q4-6h. Avoid Na &gt;155–160.</li>
-          <li><strong>Advantage:</strong> Supports euvolemia, avoids hypotension/diuresis.</li>
-        </ul>
-      </div>
-      
-      
-      <div style={{border: '1px solid rgba(217,134,11,0.2)', borderLeft: '4px solid var(--amber)', borderRadius: '8px', padding: '6px 10px', background: 'linear-gradient(180deg, #ffffff 0%, rgba(217,134,11,0.02) 100%)', boxShadow: '0 4px 10px rgba(0,0,0,0.02)'}}>
-        <strong style={{color: 'var(--amber-deep)', fontSize: '8.5pt', display: 'block', marginBottom: '4px'}}>Mannitol (20% Solution)</strong>
-        <ul style={{margin: '0', paddingLeft: '12px', fontSize: '8.0pt', lineHeight: '1.3', color: 'var(--ink-soft)', listStyleType: 'square'}}>
-          <li><strong>Dosing:</strong> 0.5–1.0 g/kg IV bolus (In-line 0.22-micron filter required).</li>
-          <li><strong>Monitoring:</strong> Serum Osm, Osmolar Gap (Measured - Calc Osm) q6h.</li>
-          <li><strong>Hold Criteria:</strong> Caution if gap ≥20, high risk if gap &gt;55 or AKI/anuria.</li>
-          <li><strong>Disadvantage:</strong> Osmotic diuresis (hypovolemia/hypotension), rebound ICP.</li>
-        </ul>
-      </div>
-    </div>
-
-    
-    <div style={{borderLeft: '4px solid var(--red)', background: 'linear-gradient(90deg, var(--red-soft) 0%, #ffffff 100%)', padding: '10px 14px', borderRadius: '6px', fontSize: '8.5pt', marginBottom: '12px', lineHeight: '1.4', boxShadow: '0 4px 12px var(--red-glow)', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--red-deep)', fontWeight: '600'}}>
-      <span style={{fontSize: '11pt', lineHeight: '1'}}>⚠️</span>
-      <span>Corticosteroids are not indicated for cytotoxic edema in stroke and increase infection risk.</span>
-    </div>
-
-    
-    <div className="ref-citation" style={{marginTop: '0', padding: '4px 10px', fontSize: '7.5pt', lineHeight: '1.25'}}>
-      <strong>AHA/ASA Guidelines:</strong> Prabhakaran S, et al. 2026 Guidelines for the Early Management of Acute Ischemic Stroke. <em>Stroke</em>. 2026. DOI: 10.1161/STR.0000000000000513. <a href="https://pubmed.ncbi.nlm.nih.gov/41582814/" target="_blank">PMID: 41582814</a>.<br/>
-      <strong>Cerebral Edema:</strong> Wijdicks EF, et al. Recommendations for the Management of Cerebral and Cerebellar Infarction With Swelling. <em>Stroke</em>. 2014;45:1222–1238. <a href="https://pubmed.ncbi.nlm.nih.gov/24481970/" target="_blank">PMID: 24481970</a>.<br/>
-      <strong>NCS Guidelines:</strong> Cook AM, et al. Guidelines for the Acute Treatment of Cerebral Edema in Neurocritical Care Patients. <em>Neurocrit Care</em>. 2020;32:647–666. <a href="https://pubmed.ncbi.nlm.nih.gov/32227294/" target="_blank">PMID: 32227294</a>.
-    </div>
-    </div>
-  </div>
-</div>
-    </div>
-  );
-}
 
 // =====================================================================
 // EVD QUICK REFERENCE CARD (STATIC / PRINT-PREPARED)
@@ -2266,7 +2192,7 @@ export const ICPInfographic = () => {
         <div className="flex items-center gap-2">
           <i aria-hidden="true" data-lucide="file-output" className="w-5 h-5 text-red-600 dark:text-red-400"></i>
           <div>
-            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">Intracranial Hypertension &amp; Herniation</h4>
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">Intracranial Hypertension &amp; Herniation - Stroke</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400">PDF Reference Guide</p>
           </div>
         </div>
@@ -2310,7 +2236,7 @@ export const ICPInfographic = () => {
       <div className="icp-infographic-card border border-red-200 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
         {/* Header */}
         <div className="bg-slate-800 text-white text-center py-3.5 px-4 border-b border-red-200 dark:border-red-900/50">
-          <h3 className="font-serif text-lg font-bold tracking-wide">Intracranial Hypertension &amp; Herniation</h3>
+          <h3 className="font-serif text-lg font-bold tracking-wide">Intracranial Hypertension &amp; Herniation - Stroke</h3>
         </div>
 
         {/* Clinical Signs Section */}
@@ -2420,9 +2346,14 @@ export const ICPInfographic = () => {
             </div>
           </div>
           <div className="p-4 bg-emerald-50/15 dark:bg-emerald-950/5 border-b border-slate-200 dark:border-slate-800">
-            <div className="border border-red-200 dark:border-red-900 bg-red-50/50 dark:bg-red-950/10 p-3 rounded-lg text-slate-700 dark:text-slate-350 text-[11px] leading-relaxed">
-              <strong className="text-red-700 dark:text-red-400 block font-bold mb-1">* Management is not necessarily sequential</strong>
-              For active herniation or rapid clinical/radiographic deterioration, immediately initiate medical interventions & call Neurosurgery.
+            <div className="border border-red-200 dark:border-red-900 bg-red-50/50 dark:bg-red-950/10 p-3 rounded-lg text-slate-700 dark:text-slate-350 text-[11px] leading-relaxed space-y-2">
+              <div>
+                <strong className="text-red-700 dark:text-red-400 block font-bold mb-1">* Management is not necessarily sequential</strong>
+                For active herniation or rapid clinical/radiographic deterioration, immediately initiate medical interventions & call Neurosurgery.
+              </div>
+              <div className="border-t border-red-200/50 dark:border-red-900/50 pt-2 font-semibold text-red-700 dark:text-red-400">
+                Corticosteroids are not indicated for cytotoxic edema in stroke and increase infection risk.
+              </div>
             </div>
           </div>
         </div>
