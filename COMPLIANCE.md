@@ -1,11 +1,20 @@
-# Compliance and Data Boundary
+# Compliance and Data Boundary (UW Medicine COMP.308)
 
-Public-use boundary: Public GitHub Pages deployment is educational and synthetic only. Real patient-care use requires an approved controlled environment, governance, storage, and security review.
+This repository is aligned with UW Medicine compliance standards, specifically policy **COMP.308 (Use of Artificial Intelligence (AI) in the Healthcare Setting)**.
 
-This repository is not an official clinical, educational, institutional, staffing, finance, recruitment, or operational system. Public deployments are for synthetic, educational, or public-reference use only.
+## AI Development Disclosure
+This codebase and its clinical tools were developed and are maintained with the assistance of generative Artificial Intelligence (AI) technologies.
+
+## Human Oversight & Professional Responsibility
+The materials, calculators, and protocols contained herein are intended solely for educational, teaching, and reference purposes. They do NOT constitute professional medical advice, clinical guidelines, or official institutional policy, and must NOT replace the independent clinical judgment of a licensed healthcare professional. 
+
+## No Institutional Endorsement
+This application is not officially reviewed, approved, or endorsed by the University of Washington (UW) or UW Medicine, and does not represent official institutional guidelines.
+
+## Public-Use Data Boundary
+Public GitHub Pages deployment is educational and synthetic only. Under no circumstances should users enter real patient identifiers, Protected Health Information (PHI), or confidential organizational data.
 
 Do not commit, upload, paste, or test with:
-
 - PHI, patient identifiers, or real clinical details;
 - research participant identifiers or restricted research data;
 - learner, trainee, assessor, personnel, staffing, finance, contract, or credentialing records;
@@ -13,7 +22,6 @@ Do not commit, upload, paste, or test with:
 - credentials, tokens, keys, secrets, screenshots of private systems, or exported source documents.
 
 Allowed public content:
-
 - synthetic examples clearly labeled as synthetic;
 - public-domain or properly cited public reference material;
 - aggregate methods examples that cannot identify people, sites, partners, contracts, or internal operations.
