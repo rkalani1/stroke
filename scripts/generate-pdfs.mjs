@@ -566,8 +566,11 @@ async function main() {
             </ul>
           </div>
         </div>
-        <div style="font-size: 7.6pt; font-style: italic; padding: 4px 10px; background-color: #faf5ff; border-bottom: 2px solid #b91c1c; color: #5b21b6; line-height: 1.2;">
-          * Management is not necessarily sequential; for active herniation or rapid clinical/radiographic deterioration, immediately initiate medical interventions &amp; call Neurosurgery.
+        <div style="padding: 6px 10px; background-color: #f0fdf4; border-bottom: 2px solid #b91c1c;">
+          <div style="border: 1px solid #dc2626; background-color: #fef2f2; color: #1e293b; border-radius: 4px; padding: 6px 8px; font-size: 8.4pt; line-height: 1.25;">
+            <strong style="color: #dc2626; display: block; margin-bottom: 2px;">* Management is not necessarily sequential</strong>
+            For active herniation or rapid clinical/radiographic deterioration, immediately initiate medical interventions &amp; call Neurosurgery.
+          </div>
         </div>
         
         <div class="section-title blue">ICP WAVEFORM ANALYSIS</div>

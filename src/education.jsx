@@ -2340,8 +2340,11 @@ export const ICPInfographic = () => {
               </div>
             </div>
           </div>
-          <div className="text-[10.5px] italic p-2 px-4 bg-purple-50/15 dark:bg-purple-950/5 border-b border-slate-200 dark:border-slate-800 text-purple-900 dark:text-purple-300 leading-normal">
-            * Management is not necessarily sequential; for active herniation or rapid clinical/radiographic deterioration, immediately initiate medical interventions & call Neurosurgery.
+          <div className="p-4 bg-emerald-50/15 dark:bg-emerald-950/5 border-b border-slate-200 dark:border-slate-800">
+            <div className="border border-red-200 dark:border-red-900 bg-red-50/50 dark:bg-red-950/10 p-3 rounded-lg text-slate-700 dark:text-slate-350 text-[11px] leading-relaxed">
+              <strong className="text-red-700 dark:text-red-400 block font-bold mb-1">* Management is not necessarily sequential</strong>
+              For active herniation or rapid clinical/radiographic deterioration, immediately initiate medical interventions & call Neurosurgery.
+            </div>
           </div>
         </div>
 
