@@ -160,7 +160,7 @@ const emailDocument = (title, url) => {
 // =====================================================================
 // DATA & SCHEMAS
 // =====================================================================
-const EDUCATION_BANNER_TEXT = "AI Compliance & Clinical Disclaimer (UW Medicine COMP.308): This educational resource was developed with AI assistance. It is for reference and synthetic simulation only. It does not replace independent clinical judgment, professional medical advice, or official institutional guidelines. No patient data or PHI is stored or permitted. Not officially endorsed by UW Medicine or the University of Washington.";
+const EDUCATION_BANNER_TEXT = "AI Compliance & Clinical Disclaimer (AI Policy COMP.308): This educational resource was developed with AI assistance. It is for reference and synthetic simulation only. It does not replace independent clinical judgment, professional medical advice, or official institutional guidelines. No patient data or PHI is stored or permitted. Not officially endorsed by any university or health system.";
 
 export const EducationComplianceBanner = () => {
   return (
@@ -168,7 +168,7 @@ export const EducationComplianceBanner = () => {
       <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-1.5">
         <span className="text-base text-cobalt-600 dark:text-cobalt-400" aria-hidden="true">⚖️</span>
         <h2 className="font-serif font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-ink">
-          AI Compliance &amp; Clinical Disclaimer (UW Medicine COMP.308)
+          AI Compliance &amp; Clinical Disclaimer (AI Policy COMP.308)
         </h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs leading-relaxed">
@@ -182,7 +182,7 @@ export const EducationComplianceBanner = () => {
         </div>
         <div>
           <strong className="text-slate-900 dark:text-ink block mb-0.5">🚫 Institutional Endorsement</strong>
-          This application is not officially reviewed, approved, or endorsed by the University of Washington (UW) or UW Medicine.
+          This application is not officially reviewed, approved, or endorsed by any university or health system.
         </div>
         <div>
           <strong className="text-slate-900 dark:text-ink block mb-0.5">🔒 Data Boundary &amp; PHI</strong>
