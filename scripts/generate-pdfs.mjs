@@ -304,15 +304,15 @@ async function main() {
       <style>
         @page {
           size: letter;
-          margin: 0.18in 0.18in 0.18in 0.18in;
+          margin: 0.11in 0.11in 0.11in 0.11in;
         }
         body {
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
           margin: 0;
           padding: 0;
           color: #1e293b;
-          font-size: 8.6pt;
-          line-height: 1.22;
+          font-size: 7.8pt;
+          line-height: 1.18;
           background: white;
         }
         .container {
@@ -326,8 +326,8 @@ async function main() {
           background-color: #1e3a8a;
           color: white;
           text-align: center;
-          padding: 4px;
-          font-size: 15pt;
+          padding: 3px;
+          font-size: 13.5pt;
           font-weight: bold;
           letter-spacing: 0.5px;
           border-bottom: 2px solid #b91c1c;
@@ -336,8 +336,8 @@ async function main() {
           background-color: #b91c1c;
           color: white;
           text-align: center;
-          padding: 3px;
-          font-size: 9.8pt;
+          padding: 2px;
+          font-size: 8.8pt;
           font-weight: bold;
           letter-spacing: 0.5px;
           text-transform: uppercase;
@@ -346,7 +346,7 @@ async function main() {
         .section-title.blue { background-color: #1d4ed8; }
         
         .list-section {
-          padding: 6px 10px;
+          padding: 4px 8px;
           border-bottom: 2px solid #b91c1c;
         }
         .list-section.peach {
@@ -360,28 +360,28 @@ async function main() {
           padding-left: 15px;
         }
         .list-section li {
-          margin-bottom: 1.5px;
-          font-size: 8.6pt;
+          margin-bottom: 1px;
+          font-size: 7.8pt;
         }
         .list-section ul ul {
-          margin-top: 1.5px;
+          margin-top: 1px;
           padding-left: 15px;
         }
         .list-section ul ul li {
-          margin-bottom: 1.5px;
-          font-size: 8.2pt;
+          margin-bottom: 1px;
+          font-size: 7.4pt;
         }
         
         .herniation-table {
           width: 100%;
           border-collapse: collapse;
-          margin-top: 5px;
-          font-size: 7.6pt;
-          line-height: 1.18;
+          margin-top: 4px;
+          font-size: 7.2pt;
+          line-height: 1.15;
         }
         .herniation-table th, .herniation-table td {
           border: 1px solid #fed7aa;
-          padding: 2px 4px;
+          padding: 1.5px 3px;
           text-align: left;
         }
         .herniation-table th {
@@ -398,10 +398,10 @@ async function main() {
           background-color: #fef2f2;
           color: #991b1b;
           border-radius: 4px;
-          padding: 3px 5px;
-          margin-top: 5px;
-          font-size: 8.0pt;
-          line-height: 1.25;
+          padding: 2px 4px;
+          margin-top: 4px;
+          font-size: 7.4pt;
+          line-height: 1.2;
           width: 98%;
         }
         .perfusion-trap-box strong {
@@ -412,28 +412,34 @@ async function main() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 6px;
+          padding: 4px;
           background-color: #fafbfd;
         }
-        .waveform-container {
+        .waveform-row {
+          display: flex;
+          flex-direction: row;
           width: 100%;
+          gap: 10px;
+          align-items: center;
+        }
+        .waveform-container {
+          width: 46%;
           background-color: black;
           border-radius: 4px;
           overflow: hidden;
-          margin-bottom: 4px;
           border: 1px solid #e2e8f0;
-          padding: 4px 0;
+          padding: 2px 0;
         }
         .waveform-bullets {
-          width: 100%;
+          width: 54%;
         }
         .waveform-bullets ul {
           margin: 0;
           padding-left: 15px;
         }
         .waveform-bullets li {
-          margin-bottom: 1.5px;
-          font-size: 8.6pt;
+          margin-bottom: 1px;
+          font-size: 7.8pt;
         }
 
         .management-columns {
@@ -442,7 +448,7 @@ async function main() {
           background-color: #f0fdf4; /* light green background */
         }
         .management-col {
-          padding: 6px 10px;
+          padding: 4px 8px;
           box-sizing: border-box;
         }
         .management-col.left {
@@ -454,11 +460,11 @@ async function main() {
         }
         .management-col .col-header {
           font-weight: bold;
-          font-size: 8.8pt;
+          font-size: 8.2pt;
           color: #047857; /* green-700 */
           border-bottom: 1px solid #a7f3d0;
-          margin-bottom: 5px;
-          padding-bottom: 2px;
+          margin-bottom: 4px;
+          padding-bottom: 1.5px;
           text-transform: uppercase;
           letter-spacing: 0.3px;
         }
@@ -467,16 +473,16 @@ async function main() {
           padding-left: 15px;
         }
         .management-col li {
-          margin-bottom: 1.5px;
-          font-size: 8.2pt;
+          margin-bottom: 1px;
+          font-size: 7.6pt;
         }
         .management-col ul ul {
-          margin-top: 1.5px;
+          margin-top: 1px;
           padding-left: 12px;
         }
         .management-col ul ul li {
-          margin-bottom: 1.5px;
-          font-size: 7.8pt;
+          margin-bottom: 1px;
+          font-size: 7.2pt;
         }
 
       </style>
@@ -566,10 +572,10 @@ async function main() {
             </ul>
           </div>
         </div>
-        <div style="padding: 6px 10px; background-color: #f0fdf4; border-bottom: 2px solid #b91c1c;">
-          <div style="border: 1px solid #dc2626; background-color: #fef2f2; color: #1e293b; border-radius: 4px; padding: 6px 8px; font-size: 8.4pt; line-height: 1.25;">
+        <div style="padding: 4px 8px; background-color: #f0fdf4; border-bottom: 2px solid #b91c1c;">
+          <div style="border: 1px solid #dc2626; background-color: #fef2f2; color: #1e293b; border-radius: 4px; padding: 4px 6px; font-size: 7.6pt; line-height: 1.25;">
             <div style="margin-bottom: 4px;">
-              <strong style="color: #dc2626; display: block; margin-bottom: 2px;">* Management is not necessarily sequential</strong>
+              <strong style="color: #dc2626; display: block; margin-bottom: 2px;">Management is not necessarily sequential</strong>
               For active herniation or rapid clinical/radiographic deterioration, immediately initiate medical interventions &amp; call Neurosurgery.
             </div>
             <div style="border-top: 1px solid rgba(220, 38, 38, 0.3); padding-top: 4px; margin-top: 4px; font-weight: 600; color: #b91c1c;">
@@ -580,52 +586,54 @@ async function main() {
         
         <div class="section-title blue">ICP WAVEFORM ANALYSIS</div>
         <div class="waveform-section">
-          <div class="waveform-container">
-            <svg viewBox="0 0 420 150" style="display: block; width: 100%; max-width: 440px; height: auto; margin: 0 auto;" xmlns="http://www.w3.org/2000/svg">
-              <line x1="10" y1="25" x2="410" y2="25" stroke="#1e293b" stroke-width="1" />
-              <line x1="10" y1="50" x2="410" y2="50" stroke="#1e293b" stroke-width="1" />
-              <line x1="10" y1="75" x2="410" y2="75" stroke="#1e293b" stroke-width="1" />
-              <line x1="10" y1="100" x2="410" y2="100" stroke="#1e293b" stroke-width="1" />
-              <line x1="10" y1="125" x2="410" y2="125" stroke="#1e293b" stroke-width="1" />
-              <line x1="50" y1="10" x2="50" y2="140" stroke="#1e293b" stroke-width="1" />
-              <line x1="100" y1="10" x2="100" y2="140" stroke="#1e293b" stroke-width="1" />
-              <line x1="150" y1="10" x2="150" y2="140" stroke="#1e293b" stroke-width="1" />
-              <line x1="200" y1="10" x2="200" y2="140" stroke="#1e293b" stroke-width="1" />
-              <line x1="250" y1="10" x2="250" y2="140" stroke="#1e293b" stroke-width="1" />
-              <line x1="300" y1="10" x2="300" y2="140" stroke="#1e293b" stroke-width="1" />
-              <line x1="350" y1="10" x2="350" y2="140" stroke="#1e293b" stroke-width="1" />
-              <text x="15" y="20" fill="#10b981" font-size="10" font-family="sans-serif" font-weight="bold">Normal Compliance (P1 &gt; P2 &gt; P3)</text>
-              <path d="M 15,120 C 25,120 30,35 40,35 C 50,35 55,75 60,75 C 65,75 70,55 80,55 C 90,55 95,90 100,90 C 105,90 110,75 120,75 C 130,75 140,120 160,120" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" />
-              <circle cx="40" cy="35" r="7" fill="#2563eb" />
-              <text x="40" y="38" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">P1</text>
-              <circle cx="80" cy="55" r="7" fill="#2563eb" />
-              <text x="80" y="58" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">P2</text>
-              <circle cx="120" cy="75" r="7" fill="#2563eb" />
-              <text x="120" y="78" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">P3</text>
-              <line x1="200" y1="15" x2="200" y2="135" stroke="#334155" stroke-width="1.5" stroke-dasharray="3,3" />
-              <text x="215" y="20" fill="#f43f5e" font-size="10" font-family="sans-serif" font-weight="bold">Impaired Compliance (P2 &gt; P1)</text>
-              <path d="M 215,100 C 225,100 230,55 240,55 C 250,55 255,80 260,80 C 265,80 270,30 280,30 C 290,30 295,90 300,90 C 305,90 310,70 320,70 C 330,70 340,100 360,100" fill="none" stroke="#f43f5e" stroke-width="3" stroke-linecap="round" />
-              <circle cx="240" cy="55" r="7" fill="#2563eb" />
-              <text x="240" y="58" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">P1</text>
-              <circle cx="280" cy="30" r="7" fill="#2563eb" />
-              <text x="280" y="33" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">P2</text>
-              <circle cx="320" cy="70" r="7" fill="#2563eb" />
-              <text x="320" y="73" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">P3</text>
-              <text x="215" y="130" fill="#94a3b8" font-size="8.5" font-family="sans-serif" font-style="italic">Tissue compliance exhausted; elevated baseline pressure</text>
-            </svg>
-          </div>
-          <div class="waveform-bullets">
-            <ul>
-              <li><strong>P1 (Percussion wave):</strong> Arterial pulsation.</li>
-              <li><strong>P2 (Tidal wave):</strong> State of intracranial compliance (elastic reserve).</li>
-              <li><strong>P3 (Dicrotic wave):</strong> Venous pulsations.</li>
-              <li><strong>Compliance States:</strong>
-                <ul>
-                  <li><strong>Normal Compliance:</strong> P1 &gt; P2 &gt; P3 (elastic brain tissue easily cushions pulsations).</li>
-                  <li><strong>Impaired Compliance / High ICP:</strong> P2 &gt; P1 (brain tissue reserve exhausted; high risk of herniation).</li>
-                </ul>
-              </li>
-            </ul>
+          <div class="waveform-row">
+            <div class="waveform-container">
+              <svg viewBox="0 0 420 150" style="display: block; width: 100%; max-width: 440px; height: auto; margin: 0 auto;" xmlns="http://www.w3.org/2000/svg">
+                <line x1="10" y1="25" x2="410" y2="25" stroke="#1e293b" stroke-width="1" />
+                <line x1="10" y1="50" x2="410" y2="50" stroke="#1e293b" stroke-width="1" />
+                <line x1="10" y1="75" x2="410" y2="75" stroke="#1e293b" stroke-width="1" />
+                <line x1="10" y1="100" x2="410" y2="100" stroke="#1e293b" stroke-width="1" />
+                <line x1="10" y1="125" x2="410" y2="125" stroke="#1e293b" stroke-width="1" />
+                <line x1="50" y1="10" x2="50" y2="140" stroke="#1e293b" stroke-width="1" />
+                <line x1="100" y1="10" x2="100" y2="140" stroke="#1e293b" stroke-width="1" />
+                <line x1="150" y1="10" x2="150" y2="140" stroke="#1e293b" stroke-width="1" />
+                <line x1="200" y1="10" x2="200" y2="140" stroke="#1e293b" stroke-width="1" />
+                <line x1="250" y1="10" x2="250" y2="140" stroke="#1e293b" stroke-width="1" />
+                <line x1="300" y1="10" x2="300" y2="140" stroke="#1e293b" stroke-width="1" />
+                <line x1="350" y1="10" x2="350" y2="140" stroke="#1e293b" stroke-width="1" />
+                <text x="15" y="20" fill="#10b981" font-size="10" font-family="sans-serif" font-weight="bold">Normal Compliance (P1 &gt; P2 &gt; P3)</text>
+                <path d="M 15,120 C 25,120 30,35 40,35 C 50,35 55,75 60,75 C 65,75 70,55 80,55 C 90,55 95,90 100,90 C 105,90 110,75 120,75 C 130,75 140,120 160,120" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" />
+                <circle cx="40" cy="35" r="7" fill="#2563eb" />
+                <text x="40" y="38" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">P1</text>
+                <circle cx="80" cy="55" r="7" fill="#2563eb" />
+                <text x="80" y="58" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">P2</text>
+                <circle cx="120" cy="75" r="7" fill="#2563eb" />
+                <text x="120" y="78" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">P3</text>
+                <line x1="200" y1="15" x2="200" y2="135" stroke="#334155" stroke-width="1.5" stroke-dasharray="3,3" />
+                <text x="215" y="20" fill="#f43f5e" font-size="10" font-family="sans-serif" font-weight="bold">Impaired Compliance (P2 &gt; P1)</text>
+                <path d="M 215,100 C 225,100 230,55 240,55 C 250,55 255,80 260,80 C 265,80 270,30 280,30 C 290,30 295,90 300,90 C 305,90 310,70 320,70 C 330,70 340,100 360,100" fill="none" stroke="#f43f5e" stroke-width="3" stroke-linecap="round" />
+                <circle cx="240" cy="55" r="7" fill="#2563eb" />
+                <text x="240" y="58" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">P1</text>
+                <circle cx="280" cy="30" r="7" fill="#2563eb" />
+                <text x="280" y="33" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">P2</text>
+                <circle cx="320" cy="70" r="7" fill="#2563eb" />
+                <text x="320" y="73" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">P3</text>
+                <text x="215" y="130" fill="#94a3b8" font-size="8.5" font-family="sans-serif" font-style="italic">Tissue compliance exhausted; elevated baseline pressure</text>
+              </svg>
+            </div>
+            <div class="waveform-bullets">
+              <ul>
+                <li><strong>P1 (Percussion wave):</strong> Arterial pulsation.</li>
+                <li><strong>P2 (Tidal wave):</strong> State of intracranial compliance (elastic reserve).</li>
+                <li><strong>P3 (Dicrotic wave):</strong> Venous pulsations.</li>
+                <li><strong>Compliance States:</strong>
+                  <ul>
+                    <li><strong>Normal Compliance:</strong> P1 &gt; P2 &gt; P3 (elastic brain tissue easily cushions pulsations).</li>
+                    <li><strong>Impaired Compliance / High ICP:</strong> P2 &gt; P1 (brain tissue reserve exhausted; high risk of herniation).</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
           </div>
           
           <div class="perfusion-trap-box">
