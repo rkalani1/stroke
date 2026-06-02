@@ -2289,42 +2289,55 @@ export const ICPInfographic = () => {
           <div className="bg-emerald-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
             Management
           </div>
-          <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-emerald-50/15 dark:bg-emerald-950/5 border-b border-slate-200 dark:border-slate-800 space-y-3">
-            <div className="space-y-1">
-              <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Tier 0: Fundamental Optimization (For all at-risk patients)</strong>
-              <ul className="list-disc pl-5 space-y-0.5 text-[11px]">
-                <li>Elevate HOB 30°; strict neutral midline neck alignment to preserve venous outflow.</li>
-                <li>Euvolemia (isotonic saline; avoid hypotonic <code className="text-rose-600 dark:text-rose-450 font-mono">D5W</code>), normothermia (treat fever), normocapnia (target <code className="font-mono">pCO₂</code> 35–40 mmHg).</li>
-              </ul>
-            </div>
-            <div className="space-y-1">
-              <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Tier 1: Initial Interventions</strong>
-              <ul className="list-disc pl-5 space-y-0.5 text-[11px]">
-                <li>Continuous CSF drainage via EVD (typically set at 10–15 cmH₂O).</li>
-                <li>Analgesia/sedation (propofol/fentanyl) titrated to prevent coughing, agitation, or ventilator dyssynchrony.</li>
-              </ul>
-            </div>
-            <div className="space-y-1">
-              <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Tier 2: Hyperosmolar &amp; Ventilatory Escalation</strong>
-              <ul className="list-disc pl-5 space-y-1 text-[11px]">
-                <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Osmolarity &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
-                <li><strong>Hypertonic Saline (HTS):</strong> 3% (150–250 mL bolus) or 23.4% (30 mL rescue bolus; central line access only). <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Sodium &gt; 155–160 mEq/L or Chloride &gt; 115–120 mEq/L.</span></li>
-                <li><strong>Controlled Hyperventilation:</strong> Target <code className="font-mono">pCO₂</code> 30–35 mmHg. Temporary bridge only; avoid prolonged use or <code className="font-mono">pCO₂ &lt; 30</code> (ischemia risk).</li>
-              </ul>
-            </div>
-            <div className="space-y-1">
-              <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Tier 3: Refractory &amp; Salvage Measures</strong>
-              <ul className="list-disc pl-5 space-y-1 text-[11px]">
-                <li>High-dose barbiturate therapy (pentobarbital) titrated to burst suppression on EEG.</li>
-                <li><strong>Decompressive Surgery:</strong>
-                  <ul className="list-circle pl-5 mt-0.5 space-y-0.5 text-[11px] text-slate-500 dark:text-slate-400">
-                    <li><strong>Malignant MCA (DHC):</strong> Age &le; 60 years, clinical decline (GCS decline &ge; 1, pupillary changes), CT/MRI infarction &ge; 50% MCA territory, within 48h of onset (DECIMAL/DESTINY trials).</li>
-                    <li><strong>Cerebellar Stroke (Suboccipital Decompression):</strong> Mass effect on brainstem, 4th ventricle effacement, cerebellar herniation, or hydrocephalus.</li>
-                  </ul>
-                </li>
-              </ul>
+          <div className="grid grid-cols-1 md:grid-cols-2 bg-emerald-50/15 dark:bg-emerald-950/5 border-b border-slate-200 dark:border-slate-800">
+            {/* Left Column: General approach */}
+            <div className="p-4 space-y-3">
+              <h5 className="font-bold text-xs text-emerald-800 dark:text-emerald-300 border-b border-emerald-100 dark:border-emerald-900/40 pb-1 uppercase tracking-wider">General approach</h5>
+              <div className="space-y-1">
+                <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Tier 0: Fundamental Optimization (For all at-risk patients)</strong>
+                <ul className="list-disc pl-5 space-y-0.5 text-[11px] text-slate-600 dark:text-slate-350">
+                  <li>Elevate HOB 30°; strict neutral midline neck alignment to preserve venous outflow.</li>
+                  <li>Euvolemia (isotonic saline; avoid hypotonic <code className="text-rose-600 dark:text-rose-450 font-mono text-[10px]">D5W</code>), normothermia (treat fever), normocapnia (target <code className="font-mono">pCO₂</code> 35–40 mmHg).</li>
+                </ul>
+              </div>
+              <div className="space-y-1">
+                <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Tier 1: Initial Interventions</strong>
+                <ul className="list-disc pl-5 space-y-0.5 text-[11px] text-slate-600 dark:text-slate-350">
+                  <li>Continuous CSF drainage via EVD (typically set at 10–15 cmH₂O).</li>
+                  <li>Analgesia/sedation (propofol/fentanyl) titrated to prevent coughing, agitation, or ventilator dyssynchrony.</li>
+                </ul>
+              </div>
+              <div className="space-y-1">
+                <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Tier 2: Hyperosmolar &amp; Ventilatory Escalation</strong>
+                <ul className="list-disc pl-5 space-y-1 text-[11px] text-slate-600 dark:text-slate-350">
+                  <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Osmolarity &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
+                  <li><strong>Hypertonic Saline (HTS):</strong> 3% (150–250 mL bolus) or 23.4% (30 mL rescue bolus; central line access only). <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Sodium &gt; 155–160 mEq/L or Chloride &gt; 115–120 mEq/L.</span></li>
+                  <li><strong>Controlled Hyperventilation:</strong> Target <code className="font-mono">pCO₂</code> 30–35 mmHg. Temporary bridge only; avoid prolonged use or <code className="font-mono">pCO₂ &lt; 30</code> (ischemia risk).</li>
+                </ul>
+              </div>
+              <div className="space-y-1">
+                <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Tier 3: Refractory &amp; Salvage Measures</strong>
+                <ul className="list-disc pl-5 space-y-1 text-[11px] text-slate-600 dark:text-slate-350">
+                  <li>High-dose barbiturate therapy (pentobarbital) titrated to burst suppression on EEG.</li>
+                </ul>
+              </div>
             </div>
 
+            {/* Right Column: Surgical Management */}
+            <div className="p-4 space-y-3 border-t md:border-t-0 md:border-l border-slate-200 dark:border-slate-800">
+              <h5 className="font-bold text-xs text-emerald-800 dark:text-emerald-300 border-b border-emerald-100 dark:border-emerald-900/40 pb-1 uppercase tracking-wider">Surgical Management</h5>
+              <div className="space-y-2">
+                <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Decompressive Surgery:</strong>
+                <ul className="list-disc pl-5 space-y-2 text-[11px] text-slate-600 dark:text-slate-350">
+                  <li>
+                    <strong>Malignant MCA (DHC):</strong> Age &le; 60 years, clinical decline (GCS decline &ge; 1, pupillary changes), CT/MRI infarction &ge; 50% MCA territory, within 48h of onset (DECIMAL/DESTINY trials).
+                  </li>
+                  <li>
+                    <strong>Cerebellar Stroke (Suboccipital Decompression):</strong> Mass effect on brainstem, 4th ventricle effacement, cerebellar herniation, or hydrocephalus.
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
 
