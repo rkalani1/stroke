@@ -303,17 +303,6 @@ const EDUCATION_MODULES = [
       { label: 'Cerebral Edema Recommendations', citation: 'Wijdicks EF, et al. Recommendations for the Management of Cerebral and Cerebellar Infarction With Swelling. Stroke. 2014;45:1222–1238.', pmid: '24481970' },
       { label: 'NCS Guidelines', citation: 'Cook AM, et al. Guidelines for the Acute Treatment of Cerebral Edema in Neurocritical Care Patients. Neurocrit Care. 2020;32:647–666.', pmid: '32227294' }
     ]
-  },
-  {
-    id: 'evd-maintenance',
-    title: 'External Ventricular Drain',
-    purpose: 'Interactive EVD system simulator, transducer zeroing guide, and clinical complications checklist.',
-    actions: 'evd external ventricular drain leveling zeroing tragus overdrainage underdrainage csf',
-    categories: ['simulators', 'printable', 'icu'],
-    lastReviewed: '2026-05-31',
-    references: [
-      { label: 'EVD Consensus Statement', citation: 'Bales JW, et al. External Ventricular Drains: A Consensus Statement. Neurocrit Care. 2021.', pmid: '32227294' }
-    ]
   }
 ];
 
@@ -508,51 +497,6 @@ function ScaledCardWrapper({ children, isLandscape }) {
   );
 }
 
-const EvdMaintenanceView = () => {
-  const [viewMode, setViewMode] = useState('pocket-card'); // 'pocket-card' or 'interactive'
-  return (
-    <div className="space-y-4">
-      {/* Toggle buttons */}
-      <div className="flex gap-2 border-b border-line pb-2 mb-4 no-print">
-        <button
-          onClick={() => setViewMode('pocket-card')}
-          className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
-            viewMode === 'pocket-card'
-              ? 'bg-cobalt-600 text-white shadow-sm'
-              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
-          }`}
-        >
-          Quick Reference Card
-        </button>
-        <button
-          onClick={() => setViewMode('interactive')}
-          className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
-            viewMode === 'interactive'
-              ? 'bg-cobalt-600 text-white shadow-sm'
-              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
-          }`}
-        >
-          Interactive EVD Simulator
-        </button>
-      </div>
-
-      {viewMode === 'pocket-card' ? (
-        <EVDInfographic />
-      ) : (
-        <ErrorBoundary>
-          <div className="bg-white border border-line rounded-lg p-6 dark:bg-card">
-            <div className="v7-callout v7-callout-critical p-3 mb-4 bg-red-50 text-red-900 border border-red-200 rounded-lg dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60">
-              <h3 className="font-bold text-xs uppercase mb-1">🛑 Safety Notice — EVD Orders</h3>
-              <p className="text-xs">Never change EVD drain height, clamp orders, or flush an EVD independently. All EVD manipulations must be explicitly authorized by Neurosurgery or Neurocritical Care.</p>
-            </div>
-            <EvdIcpSimulator />
-          </div>
-        </ErrorBoundary>
-      )}
-    </div>
-  );
-};
-
 const IcpManagementView = () => {
   const [viewMode, setViewMode] = useState('pocket-card'); // 'pocket-card', 'escalation', or 'interactive'
   return (
@@ -663,8 +607,6 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       );
     case 'herniation-icp':
       return <IcpManagementView />;
-    case 'evd-maintenance':
-      return <EvdMaintenanceView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
