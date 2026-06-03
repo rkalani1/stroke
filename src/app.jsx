@@ -79,7 +79,6 @@ import {
   interpretPHQ9,
   calculateNASCET,
   calculateCHADS2VA,
-  calculateHEADS2,
   recommendDriving,
   interpretBarnesJewishDysphagia,
   recommendVTEProphylaxis,

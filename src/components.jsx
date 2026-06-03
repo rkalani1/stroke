@@ -16,7 +16,6 @@ import {
   interpretPHQ9,
   calculateNASCET,
   calculateCHADS2VA,
-  calculateHEADS2,
   recommendDriving,
   interpretBarnesJewishDysphagia,
   recommendVTEProphylaxis,
@@ -493,7 +492,7 @@ const ETIOLOGY_CHECKLISTS = {
   'cryptogenic': {
     label: 'Cryptogenic (TOAST 5)',
     items: [
-      '30-day event monitor or implantable loop recorder (HEADS² score guides escalation)',
+      '30-day event monitor; consider implantable loop recorder for elevated HAVOC, atrial cardiopathy, or recurrent embolic pattern',
       'Transesophageal echo with bubble study for PFO / aortic atheroma / LAA thrombus',
       'Hypercoagulable panel: homocysteine, ANA, anticardiolipin IgG/IgM, β2-glycoprotein, lupus anticoagulant, protein C/S/AT-III, F-V Leiden (off AC)',
       'PFO evaluation: RoPE score ≥7 + high-risk features → device closure (CLOSE, REDUCE, RESPECT 10-yr)',
