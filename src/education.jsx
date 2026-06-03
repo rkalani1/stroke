@@ -1296,7 +1296,7 @@ export function ToastClassificationCard() {
           <h3>3. Cardioembolism (CE)</h3>
           <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '8.2pt', lineHeight: '1.3', color: 'var(--ink-soft)', marginTop: '2px'}}>
             <div>
-              <strong style={{color: 'var(--red-deep)', fontSize: '8.2pt', textTransform: 'uppercase', display: 'block', marginBottom: '4px'}}>High-Risk Sources (AC)</strong>
+              <strong style={{color: 'var(--red-deep)', fontSize: '8.2pt', textTransform: 'uppercase', display: 'block', marginBottom: '4px'}}>High-Risk Sources</strong>
               • Atrial Fibrillation / Flutter<br/>
               • Mechanical prosthetic valve<br/>
               • Left atrial / LAA thrombus<br/>
