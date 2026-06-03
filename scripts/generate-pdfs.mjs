@@ -1230,7 +1230,7 @@ async function main() {
           </div>
 
           <div class="dapt-pearl-card red">
-            <strong style="color: var(--red-deep); font-size: 8.2pt; display: block; margin-bottom: 3px;">Just Safety</strong>
+            <strong style="color: var(--red-deep); font-size: 8.2pt; display: block; margin-bottom: 3px;">Safety</strong>
             <p style="font-size: 7.4pt; color: var(--ink-soft); margin: 0; line-height: 1.35;">
               • **Bleeding vs. Benefit**: For minor stroke/high-risk TIA, most DAPT benefit occurs in the first 21 days; extend longer only for selected trial-matched indications such as severe symptomatic intracranial stenosis.<br/>
               • **Post-Lytic / EVT Policy**: After IV alteplase or TNK, avoid antithrombotics for the first 24h until follow-up imaging excludes hemorrhage. EVT alone is not a blanket DAPT contraindication; stenting/angioplasty plans and hemorrhage risk drive the decision.
