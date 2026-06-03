@@ -19,8 +19,8 @@
  * Classifier (ported EXACTLY from the source — counterintuitive, by design):
  *   • A NORMAL/intact head-impulse is the CENTRAL sign in AVS.
  *   • isCentral = HIT-normal || direction-changing-nystagmus || skew
- *                 || new unilateral hearing loss.  ANY single central
- *     finding → CENTRAL STROKE PROFILE (INFARCT ALARM).
+ *                 || new unilateral hearing loss. Any central or equivocal
+ *     finding prompts urgent central-cause / stroke evaluation.
  *
  * Styling: v7 tokens / Tailwind utilities only (teal accent, crit/warn/ok
  * semantics, slate neutrals). The eye-stage geometry + @keyframes live in a
@@ -122,7 +122,7 @@ const SCENARIOS = {
     label: 'New Hearing Loss (Central / AICA)',
     tone: 'crit',
     anim: '',
-    text: 'Bedside Hearing Test (New Unilateral Loss / Central): finger-rub reveals new asymmetric hearing loss on one side → labyrinthine-artery ischemia, a branch of the AICA. New unilateral hearing loss is the "+" central sign that turns HINTS into HINTS+.'
+    text: 'Bedside Hearing Test (New Unilateral Loss): finger-rub reveals new asymmetric hearing loss on one side. This raises concern for AICA / labyrinthine ischemia but can also occur with peripheral inner-ear disorders; interpret it in the full HINTS+ and clinical context.'
   }
 };
 
@@ -159,7 +159,7 @@ export function classifyHints({ hit, nystagmus, skew, hearing }) {
     isCentralSkew,
     isCentralHearing,
     reasons,
-    profile: isCentral ? 'CENTRAL STROKE PROFILE (INFARCT ALARM)' : 'PERIPHERAL VESTIBULAR PROFILE',
+    profile: isCentral ? 'CENTRAL WARNING PATTERN - URGENT STROKE EVALUATION' : 'PERIPHERAL VESTIBULAR PROFILE',
     tone: isCentral ? 'crit' : 'ok'
   };
 }
@@ -180,7 +180,7 @@ const HINTS_TABLE = [
   { phase: 'Head Impulse (HIT)', peripheral: 'Abnormal — corrective catch-up saccade', central: 'Normal — eyes stay locked on target' },
   { phase: 'Nystagmus (N)', peripheral: 'Unidirectional — beats away from lesion', central: 'Direction-changing or vertical' },
   { phase: 'Test of Skew (TS)', peripheral: 'Stable — no vertical movement', central: 'Skew deviation — vertical re-fixation' },
-  { phase: 'Hearing (+)', peripheral: 'Intact bilaterally', central: 'New unilateral loss (AICA)' }
+  { phase: 'Hearing (+)', peripheral: 'Intact bilaterally', central: 'New unilateral loss raises AICA / labyrinthine ischemia concern' }
 ];
 
 /* Tone → Tailwind class fragments (v7 semantic tokens). */
@@ -423,8 +423,8 @@ export function HintsSimulator() {
         The 3-step HINTS exam (plus bedside hearing → HINTS+) differentiates a CENTRAL
         posterior-circulation stroke from a PERIPHERAL vestibular neuritis in patients with the
         Acute Vestibular Syndrome (continuous vertigo, nystagmus, head-motion intolerance). In this
-        setting HINTS+ is more sensitive than early MRI-DWI. Use it only when active nystagmus is
-        present — never for episodic positional vertigo (e.g. BPPV).
+        setting HINTS+ can outperform early MRI-DWI when performed by trained clinicians. Use it only
+        when spontaneous/active nystagmus is present — never for episodic positional vertigo (e.g. BPPV).
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -487,8 +487,8 @@ export function HintsSimulator() {
             <span className="font-mono text-2xs text-slate-500 dark:text-mute">HINTS+ classifier</span>
           </div>
           <p className="text-xs text-slate-600 dark:text-ink-2">
-            Enter your four exam findings. ANY single central finding flips the result to a stroke
-            (INFARCT) profile.
+            Enter your four exam findings. Any central or equivocal finding should prompt urgent
+            evaluation for a central cause; HINTS+ is not a stand-alone diagnosis.
           </p>
 
           <FindingToggle label="Head Impulse Test (HIT)" value={findings.hit} onChange={(v) => setFinding('hit', v)}
@@ -520,8 +520,8 @@ export function HintsSimulator() {
             </div>
             {result.isCentral ? (
               <p className="mt-1.5 text-xs leading-relaxed">
-                <strong>Alert — stroke suspect.</strong> Central finding(s): <strong>{result.reasons.join('; ')}</strong>.
-                Treat as an acute stroke: activate the stroke team and obtain urgent brain MRI with DWI.
+                <strong>Alert — central warning pattern.</strong> Central finding(s): <strong>{result.reasons.join('; ')}</strong>.
+                Treat as urgent stroke evaluation in the right clinical setting; activate local stroke pathways and obtain appropriate neuroimaging.
               </p>
             ) : (
               <p className="mt-1.5 text-xs leading-relaxed">
@@ -541,7 +541,7 @@ export function HintsSimulator() {
 
       {/* ── INFARCT mnemonic ── */}
       <section className="rounded-lg border border-crit-200 bg-crit-50 p-3 dark:border-crit-800 dark:bg-crit-950">
-        <h4 className="text-sm font-bold text-crit-800 dark:text-crit-300">INFARCT — any single central finding = treat as stroke</h4>
+        <h4 className="text-sm font-bold text-crit-800 dark:text-crit-300">INFARCT — central warning signs that trigger urgent evaluation</h4>
         <p className="text-2xs uppercase tracking-wide font-semibold text-crit-700 mt-0.5 dark:text-crit-300">HINTS+ central-sign mnemonic</p>
         <ul className="mt-2 space-y-1.5">
           {INFARCT.map((row) => (
@@ -578,7 +578,7 @@ export function HintsSimulator() {
         </div>
         <p className="text-2xs text-slate-500 dark:text-mute">
           Apply HINTS+ only in the Acute Vestibular Syndrome with active nystagmus. In this setting it
-          is more sensitive than early MRI-DWI for posterior-circulation stroke.
+          can be more sensitive than early MRI-DWI for posterior-circulation stroke when performed by trained clinicians.
         </p>
       </section>
     </div>

@@ -3394,7 +3394,7 @@ Clinician Name`;
             'Perioperative Neurological Evaluation and Management': 'https://www.ahajournals.org/doi/10.1161/CIR.0000000000000968',
             'Early Recognition and Intervention for Poststroke Spasticity': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000515',
             'Intracranial Atherosclerosis': 'https://www.aan.com/Guidelines/home/GuidelineDetail/1103',
-            'CATALYST': 'https://doi.org/10.1016/S1474-4422(25)00057-5',
+            'CATALYST': 'https://doi.org/10.1016/S0140-6736(25)00439-8',
             'TIMELESS': 'https://doi.org/10.1056/NEJMoa2412179',
             'OPTION': 'https://doi.org/10.1001/jama.2025.22824',
             'TRACE-III': 'https://doi.org/10.1056/NEJMoa2408389',
@@ -4997,7 +4997,7 @@ Clinician Name`;
               category: 'Antithrombotic',
               title: 'Early DOAC initiation in AF-related stroke (CATALYST)',
               recommendation: 'For AF-related ischemic stroke without large hemorrhagic transformation, DOAC initiation within 4 days reduces recurrent ischemic stroke vs. later initiation (\u22655 days).',
-              detail: 'CATALYST IPDMA (Lancet 2025, n=5,441): Early DOAC (≤4 days) reduced primary composite (recurrent ischemic stroke, sICH, or unclassified stroke) by 30% (OR 0.70, P=0.039). No increase in sICH. Timing guidance for MEDICALLY MANAGED strokes: Mild (NIHSS ≤8): start ≤4 days. Moderate (NIHSS 8-15): 3-5 days. Severe/large HT: 6-14 days. POST-THROMBOLYSIS CAVEAT: CATALYST enrolled predominantly medically managed strokes. If IV TNK/tPA was given, defer DOAC by 3-5 additional days (peak hemorrhagic transformation risk day 1-3 post-thrombolysis). Repeat imaging at day 2-3 to rule out symptomatic HT before starting DOAC. Post-TNK timing: Mild post-TNK → day 3-5; Moderate post-TNK → day 5-7; Severe post-TNK → day 7-14.',
+              detail: 'CATALYST IPDMA (Lancet 2025, n=5,441): Early DOAC (≤4 days) reduced the primary composite (recurrent ischemic stroke, sICH, or unclassified stroke) by 30% (OR 0.70, P=0.039) without increasing sICH. Use imaging-defined infarct size, hemorrhagic transformation, thrombolysis/EVT course, and clinical stability to individualize timing. Practical heuristic for medically managed strokes: mild/small infarct ≤4 days, moderate infarct day 3-5, severe/large infarct or high-risk hemorrhagic transformation day 6-14. After IV TNK/tPA, avoid antithrombotics for the first 24h and obtain follow-up imaging before starting anticoagulation; extend delay when hemorrhage, large infarct, or clinical instability is present.',
               classOfRec: 'IIa',
               levelOfEvidence: 'A',
               guideline: 'CATALYST IPDMA 2025',
@@ -23348,7 +23348,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="mt-2 bg-white border border-cobalt-200 rounded p-2 text-xs text-slate-700 dark:bg-card dark:border-cobalt-700 dark:text-ink-2">
                                     <p><strong>Caution flags:</strong> Repeat imaging before starting if any hemorrhagic transformation, large territorial infarct, or uncontrolled hypertension. DOAC preferred over warfarin (Class I, LOE A). See CATALYST calculator in Ischemic Protocols &gt; AF/DOAC Timing for onset-based date computation.</p>
                                   </div>
-                                  <p className="text-xs text-slate-500 mt-1 italic dark:text-mute">Fischer U et al. Lancet Neurol 2025 (CATALYST). ELAN: Fischer U et al. NEJM 2023;388:2411-2421. PMID: 37222476.</p>
+                                  <p className="text-xs text-slate-500 mt-1 italic dark:text-mute">Dehbi HM et al. Lancet 2025 (CATALYST; PMID 40570866). ELAN: Fischer U et al. NEJM 2023;388:2411-2421. PMID: 37222476.</p>
                                 </div>
                               )}
 

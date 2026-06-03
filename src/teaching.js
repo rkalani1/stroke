@@ -445,10 +445,10 @@ export const LANDMARK_TRIALS = {
       year: 2023,
       citation: 'Fischer NEJM 2023;388:2411-21',
       question: 'When to start DOAC after AF-related ischemic stroke — early vs late?',
-      design: 'RCT, n=2013, early DOAC (NIHSS-stratified) vs later (day 3/6/12-14) initiation',
+      design: 'RCT, n=2013, early DOAC using ELAN imaging-defined infarct size vs later (day 3/6/12-14) initiation',
       outcomes: '30-day recurrence/ICH/death composite: 2.9% early vs 4.1% late (95% CI favoring early). No excess ICH.',
-      bottomLine: 'Early DOAC initiation (within 48h for minor/moderate, day 6-7 for severe) is at least non-inferior and likely superior to the traditional 1-3-6-12 rule.',
-      teachingPoint: 'The NIHSS-stratified timing buckets (minor day 1, moderate day 3, severe day 6) are an institutional expert-consensus heuristic that PREDATES the formal CATALYST IPDMA. The CATALYST IPDMA (Werring Lancet Neurol 2025, n=5441 pooling ELAN/OPTIMAS/TIMING/START) is the actual high-level evidence and broadly supports early initiation. Avoid conflating the two.'
+      bottomLine: 'Early DOAC initiation by ELAN imaging severity showed no excess ICH versus later start and supports earlier treatment in selected AF-stroke patients.',
+      teachingPoint: 'ELAN classified stroke severity by imaging-defined infarct size/territory, not NIHSS cutoffs. NIHSS-based buckets can be a bedside heuristic, but should not be presented as ELAN criteria. CATALYST IPDMA (Dehbi et al., Lancet 2025, n=5441 pooling ELAN/OPTIMAS/TIMING/START) broadly supports early initiation without excess sICH.'
     },
     {
       name: 'OPTIMAS',

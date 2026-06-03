@@ -255,7 +255,7 @@ const EDUCATION_MODULES = [
     lastReviewed: '2026-05-30',
     references: [
       { label: 'ELAN Trial', citation: 'Fischer U et al. N Engl J Med. 2023;388:2411-2421.', pmid: '37222476' },
-      { label: 'CATALYST Meta-Analysis', citation: 'Fischer U et al. Lancet 2025.', pmid: '40570866' },
+      { label: 'CATALYST Meta-Analysis', citation: 'Dehbi HM et al. Lancet 2025.', pmid: '40570866' },
       { label: 'AFib Guidelines', citation: 'Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. Circulation. 2024;149:e1-e156.', pmid: '38043043' }
     ]
   },
@@ -545,7 +545,7 @@ const PdfActionBar = ({ title, subtitle, pdfPath, pdfName, iconColorClass = "tex
           </a>
           <button
             onClick={emailDoc}
-            className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-855 transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-800 transition-colors flex items-center gap-1.5"
           >
             <i aria-hidden="true" data-lucide="mail" className="w-3.5 h-3.5"></i>
             Email
@@ -1524,7 +1524,7 @@ export function DaptRegimensCard() {
       <div className="dapt-pearl-card purple">
         <strong style={{color: 'var(--purple-deep)', fontSize: '8.5pt', display: 'block', marginBottom: '4px'}}>CYP2C19 Genotyping & Clopidogrel Resistance</strong>
         <p style={{fontSize: '7.8pt', color: 'var(--ink-soft)', margin: '0', lineHeight: '1.45'}}>
-          • <strong>~30% of US stroke patients</strong> carry a loss-of-function (LOF) allele (<strong>*2, *3</strong>), resulting in poor active metabolite generation and a 2x stroke recurrence rate.
+          • CYP2C19 LOF alleles reduce clopidogrel activation. When rapid genotype results are available, LOF status can guide ticagrelor-vs-clopidogrel selection; CHANCE-2 evidence applies to LOF carriers rather than mandating universal testing.
         </p>
       </div>
 
@@ -1532,8 +1532,8 @@ export function DaptRegimensCard() {
       <div className="dapt-pearl-card red">
         <strong style={{color: 'var(--red-deep)', fontSize: '8.5pt', display: 'block', marginBottom: '4px'}}>Just Safety</strong>
         <p style={{fontSize: '7.6pt', color: 'var(--ink-soft)', margin: '0', lineHeight: '1.45'}}>
-          • **Bleeding vs. Benefit**: DAPT beyond 21 days for minor stroke/TIA increases bleeding (including ICH) without reducing recurrence (POINT/CHANCE).
-          <br/>• **Post-Lytic Policy**: Avoid DAPT in patients who received TNK or EVT (unless specifically requested by neurointerventions for stent).
+          • **Bleeding vs. Benefit**: For minor stroke/high-risk TIA, most DAPT benefit occurs in the first 21 days; extend longer only for selected trial-matched indications such as severe symptomatic intracranial stenosis.
+          <br/>• **Post-Lytic / EVT Policy**: After IV alteplase or TNK, avoid antithrombotics for the first 24h until follow-up imaging excludes hemorrhage. EVT alone is not a blanket DAPT contraindication; stenting/angioplasty plans and hemorrhage risk drive the decision.
         </p>
       </div>
     </div>
@@ -1663,15 +1663,15 @@ export function MalignantInfarctionCard() {
       <div className="chart-legend">
         <div className="legend-item">
           <div className="legend-dot bar-mrs-03"></div>
-          <div>mRS 0–3: Functional Independence / Mild-Mod Disability</div>
+          <div>mRS 0–2: Functional independence; mRS 3: walks unassisted but needs some help</div>
         </div>
         <div className="legend-item">
           <div className="legend-dot bar-mrs-4"></div>
-          <div>mRS 4: Moderately Severe (Walk with assistance)</div>
+          <div>mRS 4: Moderately severe; unable to walk or attend bodily needs unassisted</div>
         </div>
         <div className="legend-item">
           <div className="legend-dot bar-mrs-5"></div>
-          <div>mRS 5: Severe Disability (Bedbound)</div>
+          <div>mRS 5: Severe disability; bedridden / constant care</div>
         </div>
         <div className="legend-item">
           <div className="legend-dot bar-mrs-6"></div>
@@ -1680,7 +1680,7 @@ export function MalignantInfarctionCard() {
       </div>
       
       <div style={{fontSize: '7pt', lineHeight: '1.25', marginTop: '4px', color: 'var(--ink-soft)', textAlign: 'center', borderTop: '1px dashed var(--rule)', paddingTop: '3px'}}>
-        • **Age &lt; 60**: NNT = 2 for survival, NNT = 4 for mRS ≤3. | • **Age ≥ 60**: NNT = 3 for survival, NNT = 25 for mRS ≤3. *Goals-of-care discussion critical.
+        • **Age &lt; 60**: NNT = 2 for survival, NNT = 4 for survival with mRS ≤3 (able to walk unassisted). | • **Age ≥ 60**: NNT = 3 for survival, NNT = 25 for mRS ≤3. *Goals-of-care discussion critical.
       </div>
     </div>
 
@@ -1695,7 +1695,7 @@ export function MalignantInfarctionCard() {
           </tr>
           <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
             <td style={{fontWeight: '700', padding: '4px 0', color: 'var(--purple-deep)', verticalAlign: 'top'}}>Fluids</td>
-            <td style={{padding: '4px 0', color: 'var(--ink-soft)'}}>Use Isotonic Saline (0.9% NS). <strong>Avoid hypotonic fluids</strong> (e.g. D5W, 0.45% NS, LR) which worsen edema. Maintain euvolemia.</td>
+            <td style={{padding: '4px 0', color: 'var(--ink-soft)'}}>Maintain euvolemia with isotonic fluids. <strong>Avoid hypotonic fluids</strong> (e.g. D5W, 0.45% NS) that can worsen edema; balanced crystalloids such as LR should follow local neuro-ICU protocol.</td>
           </tr>
           <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
             <td style={{fontWeight: '700', padding: '4px 0', color: 'var(--purple-deep)', verticalAlign: 'top'}}>Osmotherapy</td>
@@ -1741,24 +1741,24 @@ export function AfibAnticoagTimingCard() {
     
     <div style={{borderLeft: '4px solid var(--teal)', background: 'var(--teal-soft)', padding: '6px 10px', borderRadius: '6px', fontSize: '7.8pt', marginBottom: '4px', lineHeight: '1.45', boxShadow: '0 2px 8px var(--teal-glow)'}}>
       <strong style={{color: 'var(--teal-deep)', textTransform: 'uppercase', fontSize: '7.2pt', letterSpacing: '0.05em', display: 'block', marginBottom: '1px'}}>Clinical Efficacy & Safety</strong>
-      Early DOAC initiation in patients with AFib and recent stroke is safe and reasonable (Class I, LOE A). It does not increase the risk of symptomatic intracranial hemorrhage (sICH) compared to delayed initiation, and reduces recurrent ischemic stroke. DOACs are preferred over warfarin.
+      RCT and individual-patient meta-analysis data support early DOAC initiation in carefully selected AFib-related ischemic stroke patients, especially mild-to-moderate infarcts without high-risk hemorrhagic transformation. Early treatment has not shown excess symptomatic intracranial hemorrhage (sICH) versus delayed treatment and may reduce recurrent ischemic stroke; DOACs are preferred over warfarin for most nonvalvular AF patients when anticoagulation is indicated.
     </div>
 
     
     <div style={{border: '1px solid var(--rule-soft)', borderRadius: '8px', padding: '6px 8px', background: 'var(--fill-soft)', marginBottom: '4px'}}>
-      <strong style={{color: 'var(--purple-deep)', fontSize: '9.0pt', display: 'block', marginBottom: '4px'}}>1. Stroke Severity Classification (ELAN Criteria)</strong>
+      <strong style={{color: 'var(--purple-deep)', fontSize: '9.0pt', display: 'block', marginBottom: '4px'}}>1. Stroke Severity Classification (ELAN Imaging Criteria)</strong>
       <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px', fontSize: '8.8pt', lineHeight: '1.45'}}>
         <div style={{border: '1px solid rgba(24,132,158,0.2)', borderRadius: '6px', padding: '4px 6px', background: 'white'}}>
-          <strong style={{color: 'var(--teal-deep)', display: 'block'}}>Mild Stroke (NIHSS &lt; 8)</strong>
-          • TIA or infarct <strong>&lt; 1.5 cm</strong> on brain imaging (cortical or deep subcortical).
+          <strong style={{color: 'var(--teal-deep)', display: 'block'}}>Minor / Small Infarct</strong>
+          • TIA or infarct <strong>≤ 1.5 cm</strong> on brain imaging. NIHSS can guide bedside risk but is not the ELAN definition.
         </div>
         <div style={{border: '1px solid rgba(217,134,11,0.2)', borderRadius: '6px', padding: '4px 6px', background: 'white'}}>
-          <strong style={{color: 'var(--amber-deep)', display: 'block'}}>Moderate (NIHSS 8–15)</strong>
-          • Occlusion of a <strong>single superficial branch</strong> of the MCA, PCA, or ACA, or isolated brainstem/cerebellar lesion.
+          <strong style={{color: 'var(--amber-deep)', display: 'block'}}>Moderate Infarct</strong>
+          • Cortical superficial-branch lesion, internal border-zone lesion, or deep-branch lesion <strong>&gt; 1.5 cm</strong>.
         </div>
         <div style={{border: '1px solid rgba(198,46,46,0.2)', borderRadius: '6px', padding: '4px 6px', background: 'white'}}>
-          <strong style={{color: 'var(--red-deep)', display: 'block'}}>Severe (NIHSS ≥ 16)</strong>
-          • <strong>Multilobar</strong> infarct, major main stem occlusion (e.g. M1 MCA, P1 PCA, A1 ACA), or large brainstem/cerebellar lesion.
+          <strong style={{color: 'var(--red-deep)', display: 'block'}}>Major / Large Infarct</strong>
+          • Complete vascular territory, ≥2 moderate lesions, large multilobar infarct, or brainstem/cerebellar lesion <strong>≥ 1.5 cm</strong>.
         </div>
       </div>
     </div>
@@ -1903,7 +1903,7 @@ export function AfibAnticoagTimingCard() {
     
     <div className="ref-citation" style={{marginTop: '0', padding: '6px 10px', fontSize: '7.5pt', lineHeight: '1.45'}}>
       <strong>ELAN Trial:</strong> Fischer U et al. <em>N Engl J Med</em>. 2023;388:2411-2421. <a href="https://pubmed.ncbi.nlm.nih.gov/37222476/" target="_blank">PMID: 37222476</a><br/>
-      <strong>CATALYST Meta-Analysis:</strong> Fischer U et al. <a href="https://pubmed.ncbi.nlm.nih.gov/40570866/" target="_blank"><em>Lancet</em> 2025; PMID: 40570866</a>. Pooled data (n=5,441) from <a href="https://pubmed.ncbi.nlm.nih.gov/37222476/" target="_blank">ELAN (PMID: 37222476)</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/39491870/" target="_blank">OPTIMAS (<em>Lancet</em> 2024; PMID: 39491870)</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/36065821/" target="_blank">TIMING (<em>Circulation</em> 2022; PMID: 36065821)</a>, and <a href="https://pubmed.ncbi.nlm.nih.gov/40163159/" target="_blank">START (<em>JAMA Neurol</em> 2025; PMID: 40163159)</a>. Early DOAC (median Day 2) is non-inferior to delayed (median Day 7–8) with equivalent low sICH (0.6% vs 0.7%).<br/>
+      <strong>CATALYST Meta-Analysis:</strong> Dehbi HM et al. <a href="https://pubmed.ncbi.nlm.nih.gov/40570866/" target="_blank"><em>Lancet</em> 2025; PMID: 40570866</a>. Pooled data (n=5,441) from <a href="https://pubmed.ncbi.nlm.nih.gov/37222476/" target="_blank">ELAN (PMID: 37222476)</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/39491870/" target="_blank">OPTIMAS (<em>Lancet</em> 2024; PMID: 39491870)</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/36065821/" target="_blank">TIMING (<em>Circulation</em> 2022; PMID: 36065821)</a>, and <a href="https://pubmed.ncbi.nlm.nih.gov/40163159/" target="_blank">START (<em>JAMA Neurol</em> 2025; PMID: 40163159)</a>. Early DOAC (median Day 2) vs delayed (median Day 7-8) showed no excess sICH (0.4% vs 0.4%) and fewer recurrent ischemic events in pooled data.<br/>
       <strong>AFib Guidelines:</strong> Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. <em>Circulation</em>. 2024;149:e1-e156. <a href="https://pubmed.ncbi.nlm.nih.gov/38043043/" target="_blank">PMID: 38043043</a>
     </div>
   </div>
@@ -1958,7 +1958,7 @@ export const EVDInfographic = () => {
           </a>
           <button
             onClick={emailDoc}
-            className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-855 transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-800 transition-colors flex items-center gap-1.5"
           >
             <i aria-hidden="true" data-lucide="mail" className="w-3.5 h-3.5"></i>
             Email
@@ -2143,7 +2143,7 @@ export const ICPInfographic = () => {
           </a>
           <button
             onClick={emailDoc}
-            className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-855 transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-800 transition-colors flex items-center gap-1.5"
           >
             <i aria-hidden="true" data-lucide="mail" className="w-3.5 h-3.5"></i>
             Email
@@ -2234,7 +2234,7 @@ export const ICPInfographic = () => {
                   <li>Euvolemia (isotonic saline; avoid hypotonic <code className="text-rose-600 dark:text-rose-450 font-mono text-[10px]">D5W</code>).</li>
                   <li>Temperature &lt; 38.0°C.</li>
                   <li>Normocapnia (target <code className="font-mono">pCO₂</code> 35–45 mmHg).</li>
-                  <li>Maintain CPP &gt; 60 mmHg.</li>
+                  <li>When ICP is monitored, CPP = MAP - ICP; many protocols target CPP around &gt;60 mmHg, individualized to disease context.</li>
                 </ul>
               </div>
               <div className="space-y-1">
@@ -2243,7 +2243,7 @@ export const ICPInfographic = () => {
                   <li><strong>Analgesia/sedation (fentanyl/propofol):</strong> Target RASS -1 to +1 to prevent coughing, agitation, or ventilator dyssynchrony.</li>
                   <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Osmolarity &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
                   <li><strong>Hypertonic Saline (HTS):</strong> 3% (150–250 mL bolus) or 23.4% (30 mL rescue bolus; central line access only). <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Sodium &gt; 155–160 mEq/L or Chloride &gt; 115–120 mEq/L.</span></li>
-                  <li><strong>Controlled Hyperventilation:</strong> Target <code className="font-mono">pCO₂</code> 35–40 mmHg (temporary bridge only).</li>
+                  <li><strong>Ventilation:</strong> Maintain normocapnia (<code className="font-mono">PaCO2</code> 35–45 mmHg). For impending herniation only, use brief controlled hyperventilation targeting about 30–35 mmHg while definitive therapy is initiated; avoid prophylactic or prolonged hypocapnia.</li>
                   <li><strong>Refractory ICP Elevation:</strong> High-dose barbiturate therapy (pentobarbital) titrated to burst suppression on EEG.</li>
                 </ul>
               </div>
@@ -2268,7 +2268,7 @@ export const ICPInfographic = () => {
                     <strong>Cerebellar Stroke (Suboccipital Decompression):</strong> Mass effect on brainstem, 4th ventricle effacement, cerebellar herniation, or hydrocephalus.
                   </li>
                   <li>
-                    <strong>Intracranial Hemorrhage (ICH):</strong> Decompression/hemicraniectomy for lobar or cerebellar hemorrhage with mass effect, midline shift, or active herniation.
+                    <strong>Intracranial Hemorrhage (ICH):</strong> Cerebellar ICH with deterioration, brainstem compression, hydrocephalus, or large size requires urgent surgical evaluation. Supratentorial/lobar ICH evacuation or decompression is case-dependent rather than routine.
                   </li>
                 </ul>
               </div>
@@ -2375,7 +2375,7 @@ export function StkCoreMeasuresCard() {
               <tr>
                 <td><strong>STK-1</strong></td>
                 <td>Venous Thromboembolism (VTE) Prophylaxis</td>
-                <td>LMWH or UFH started by <strong>end of Day 2</strong> unless contraindicated.</td>
+                <td>VTE prophylaxis by day of or day after admission, or a documented reason not given.</td>
               </tr>
               <tr>
                 <td><strong>STK-2</strong></td>
@@ -2390,7 +2390,7 @@ export function StkCoreMeasuresCard() {
               <tr>
                 <td><strong>STK-4</strong></td>
                 <td>Thrombolytic Therapy (IVT)</td>
-                <td>IV alteplase/tenecteplase administered within 3-4.5 hours of LKW.</td>
+                <td>IV alteplase initiated at this hospital within 3h for eligible AIS patients arriving within 2h of LKW.</td>
               </tr>
               <tr>
                 <td><strong>STK-5</strong></td>
@@ -2400,7 +2400,7 @@ export function StkCoreMeasuresCard() {
               <tr>
                 <td><strong>STK-6</strong></td>
                 <td>Discharged on Statin Therapy</td>
-                <td>High-intensity statin (e.g. atorvastatin 80mg) at discharge if LDL &gt;70.</td>
+                <td>Statin medication prescribed at discharge for eligible ischemic stroke patients.</td>
               </tr>
               <tr>
                 <td><strong>STK-8</strong></td>
