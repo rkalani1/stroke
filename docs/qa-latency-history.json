@@ -1,35 +1,5 @@
 [
   {
-    "finishedAt": "2026-05-31T04:24:06.673Z",
-    "localOnly": true,
-    "latencyProfile": "flat",
-    "averageRunDurationMs": 18016,
-    "slowestRun": {
-      "target": "local",
-      "viewport": "mobile",
-      "durationMs": 39045
-    },
-    "slowRunCount": 0,
-    "slowSectionCount": 1,
-    "runDurations": [
-      {
-        "target": "local",
-        "viewport": "desktop",
-        "durationMs": 7786
-      },
-      {
-        "target": "local",
-        "viewport": "tablet",
-        "durationMs": 7218
-      },
-      {
-        "target": "local",
-        "viewport": "mobile",
-        "durationMs": 39045
-      }
-    ]
-  },
-  {
     "finishedAt": "2026-05-31T04:27:20.141Z",
     "localOnly": true,
     "latencyProfile": "flat",
@@ -1786,6 +1756,36 @@
         "target": "local",
         "viewport": "mobile",
         "durationMs": 12378
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-06-03T04:57:10.786Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9995,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 12317
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 8753
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 8914
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 12317
       }
     ]
   }
