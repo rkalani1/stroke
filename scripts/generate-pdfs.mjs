@@ -545,7 +545,7 @@ async function main() {
                   <li>Euvolemia (isotonic saline; avoid hypotonic D5W).</li>
                   <li>Temperature &lt; 38.0°C.</li>
                   <li>Normocapnia (pCO₂ 35–45 mmHg).</li>
-                  <li>Maintain CPP &gt; 60 mmHg.</li>
+                  <li>When ICP is monitored, CPP = MAP - ICP; many protocols target CPP around &gt;60 mmHg, individualized to disease context.</li>
                 </ul>
               </li>
               <li><strong>Medical Interventions</strong>
@@ -553,7 +553,7 @@ async function main() {
                   <li style="margin-bottom: 2px;"><strong>Analgesia/sedation (fentanyl/propofol):</strong> Target RASS -1 to +1 to prevent coughing, agitation, or ventilator dyssynchrony.</li>
                   <li style="margin-bottom: 2px;"><strong>Mannitol 20%:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line filter. <span style="color: #dc2626; font-weight: 600;">Hold if Osm &gt; 320 or Gap &ge; 20.</span></li>
                   <li style="margin-bottom: 2px;"><strong>Hypertonic Saline (HTS):</strong> 3% (150–250 mL bolus) or 23.4% (30 mL rescue bolus; central access only). <span style="color: #dc2626; font-weight: 600;">Hold if Na &gt; 155 or Cl &gt; 115.</span></li>
-                  <li style="margin-bottom: 2px;"><strong>Controlled Hyperventilation:</strong> Target pCO₂ 35–40 mmHg (temporary bridge only).</li>
+                  <li style="margin-bottom: 2px;"><strong>Ventilation:</strong> Maintain normocapnia (PaCO2 35–45 mmHg). For impending herniation only, use brief controlled hyperventilation targeting about 30–35 mmHg while definitive therapy is initiated; avoid prophylactic or prolonged hypocapnia.</li>
                   <li><strong>Refractory ICP Elevation:</strong> High-dose barbiturate therapy (pentobarbital) titrated to burst suppression on EEG.</li>
                 </ul>
               </li>
@@ -568,7 +568,7 @@ async function main() {
             <ul style="list-style-type: none; padding-left: 0; margin: 0;">
               <li style="margin-bottom: 4px;"><strong>Malignant MCA (DHC):</strong> Age &le; 60 years, clinical decline, infarct &ge; 50% MCA territory, within 48h (DECIMAL/DESTINY).</li>
               <li style="margin-bottom: 4px;"><strong>Cerebellar Stroke:</strong> Suboccipital craniectomy for brainstem compression, 4th ventricle effacement, or hydrocephalus.</li>
-              <li><strong>Intracranial Hemorrhage (ICH):</strong> Decompression/hemicraniectomy for lobar or cerebellar hemorrhage with mass effect, midline shift, or active herniation.</li>
+              <li><strong>Intracranial Hemorrhage (ICH):</strong> Cerebellar ICH with deterioration, brainstem compression, hydrocephalus, or large size requires urgent surgical evaluation. Supratentorial/lobar ICH evacuation or decompression is case-dependent rather than routine.</li>
             </ul>
           </div>
         </div>
@@ -1225,15 +1225,15 @@ async function main() {
           <div class="dapt-pearl-card purple">
             <strong style="color: var(--purple-deep); font-size: 8.2pt; display: block; margin-bottom: 3px;">CYP2C19 Genotyping & Clopidogrel Resistance</strong>
             <p style="font-size: 7.6pt; color: var(--ink-soft); margin: 0; line-height: 1.35;">
-              • <strong>~30% of US stroke patients</strong> carry a loss-of-function (LOF) allele (<strong>*2, *3</strong>), resulting in poor active metabolite generation and a 2x stroke recurrence rate.
+              • CYP2C19 LOF alleles reduce clopidogrel activation. When rapid genotype results are available, LOF status can guide ticagrelor-vs-clopidogrel selection; CHANCE-2 evidence applies to LOF carriers rather than mandating universal testing.
             </p>
           </div>
 
           <div class="dapt-pearl-card red">
             <strong style="color: var(--red-deep); font-size: 8.2pt; display: block; margin-bottom: 3px;">Just Safety</strong>
             <p style="font-size: 7.4pt; color: var(--ink-soft); margin: 0; line-height: 1.35;">
-              • **Bleeding vs. Benefit**: DAPT beyond 21 days for minor stroke/TIA increases bleeding (including ICH) without reducing recurrence (POINT/CHANCE).<br/>
-              • **Post-Lytic Policy**: Avoid DAPT in patients who received TNK or EVT (unless specifically requested by neurointerventions for stent).
+              • **Bleeding vs. Benefit**: For minor stroke/high-risk TIA, most DAPT benefit occurs in the first 21 days; extend longer only for selected trial-matched indications such as severe symptomatic intracranial stenosis.<br/>
+              • **Post-Lytic / EVT Policy**: After IV alteplase or TNK, avoid antithrombotics for the first 24h until follow-up imaging excludes hemorrhage. EVT alone is not a blanket DAPT contraindication; stenting/angioplasty plans and hemorrhage risk drive the decision.
             </p>
           </div>
         </div>
@@ -1551,15 +1551,15 @@ async function main() {
           <div class="chart-legend">
             <div class="legend-item">
               <div class="legend-dot bar-mrs-03"></div>
-              <div>mRS 0–3: Functional Independence / Mild-Mod Disability</div>
+              <div>mRS 0–2: Functional independence; mRS 3: walks unassisted but needs some help</div>
             </div>
             <div class="legend-item">
               <div class="legend-dot bar-mrs-4"></div>
-              <div>mRS 4: Moderately Severe (Walk with assistance)</div>
+              <div>mRS 4: Moderately severe; unable to walk or attend bodily needs unassisted</div>
             </div>
             <div class="legend-item">
               <div class="legend-dot bar-mrs-5"></div>
-              <div>mRS 5: Severe Disability (Bedbound)</div>
+              <div>mRS 5: Severe disability; bedridden / constant care</div>
             </div>
             <div class="legend-item">
               <div class="legend-dot bar-mrs-6"></div>
@@ -1568,7 +1568,7 @@ async function main() {
           </div>
           
           <div style="font-size: 7pt; line-height: 1.25; margin-top: 4px; color: var(--ink-soft); text-align: center; border-top: 1px dashed var(--rule); padding-top: 3px">
-            • **Age &lt; 60**: NNT = 2 for survival, NNT = 4 for mRS &le;3. | • **Age &ge; 60**: NNT = 3 for survival, NNT = 25 for mRS &le;3. *Goals-of-care discussion critical.
+            • **Age &lt; 60**: NNT = 2 for survival, NNT = 4 for survival with mRS &le;3 (able to walk unassisted). | • **Age &ge; 60**: NNT = 3 for survival, NNT = 25 for mRS &le;3. *Goals-of-care discussion critical.
           </div>
         </div>
 
@@ -1582,7 +1582,7 @@ async function main() {
               </tr>
               <tr>
                 <td style="font-weight: 700; color: var(--purple-deep); vertical-align: top">Fluids</td>
-                <td style="color: var(--ink-soft)">Use Isotonic Saline (0.9% NS). <strong>Avoid hypotonic fluids</strong> (e.g. D5W, 0.45% NS, LR) which worsen edema. Maintain euvolemia.</td>
+                <td style="color: var(--ink-soft)">Maintain euvolemia with isotonic fluids. <strong>Avoid hypotonic fluids</strong> (e.g. D5W, 0.45% NS) that can worsen edema; balanced crystalloids such as LR should follow local neuro-ICU protocol.</td>
               </tr>
               <tr>
                 <td style="font-weight: 700; color: var(--purple-deep); vertical-align: top">Osmotherapy</td>
@@ -1787,23 +1787,23 @@ async function main() {
         
         <div class="clinical-efficacy-box">
           <strong style="color: var(--teal-deep); text-transform: uppercase; font-size: 7.2pt; letter-spacing: 0.05em; display: block; margin-bottom: 1px;">Clinical Efficacy & Safety</strong>
-          Early DOAC initiation in patients with AFib and recent stroke is safe and reasonable (Class I, LOE A). It does not increase the risk of symptomatic intracranial hemorrhage (sICH) compared to delayed initiation, and reduces recurrent ischemic stroke. DOACs are preferred over warfarin.
+          RCT and individual-patient meta-analysis data support early DOAC initiation in carefully selected AFib-related ischemic stroke patients, especially mild-to-moderate infarcts without high-risk hemorrhagic transformation. Early treatment has not shown excess symptomatic intracranial hemorrhage (sICH) versus delayed treatment and may reduce recurrent ischemic stroke; DOACs are preferred over warfarin for most nonvalvular AF patients when anticoagulation is indicated.
         </div>
 
         <div class="severity-classification-box">
-          <strong class="title">1. Stroke Severity Classification (ELAN Criteria)</strong>
+          <strong class="title">1. Stroke Severity Classification (ELAN Imaging Criteria)</strong>
           <div class="severity-grid">
             <div class="severity-col mild">
-              <strong style="color: var(--teal-deep); display: block;">Mild Stroke (NIHSS &lt; 8)</strong>
-              • TIA or infarct <strong>&lt; 1.5 cm</strong> on brain imaging (cortical or deep subcortical).
+              <strong style="color: var(--teal-deep); display: block;">Minor / Small Infarct</strong>
+              • TIA or infarct <strong>&le; 1.5 cm</strong> on brain imaging. NIHSS can guide bedside risk but is not the ELAN definition.
             </div>
             <div class="severity-col mod">
-              <strong style="color: var(--amber-deep); display: block;">Moderate (NIHSS 8–15)</strong>
-              • Occlusion of a <strong>single superficial branch</strong> of the MCA, PCA, or ACA, or isolated brainstem/cerebellar lesion.
+              <strong style="color: var(--amber-deep); display: block;">Moderate Infarct</strong>
+              • Cortical superficial-branch lesion, internal border-zone lesion, or deep-branch lesion <strong>&gt; 1.5 cm</strong>.
             </div>
             <div class="severity-col sev">
-              <strong style="color: var(--red-deep); display: block;">Severe (NIHSS &ge; 16)</strong>
-              • <strong>Multilobar</strong> infarct, major main stem occlusion (e.g. M1 MCA, P1 PCA, A1 ACA), or large brainstem/cerebellar lesion.
+              <strong style="color: var(--red-deep); display: block;">Major / Large Infarct</strong>
+              • Complete vascular territory, &ge;2 moderate lesions, large multilobar infarct, or brainstem/cerebellar lesion <strong>&ge; 1.5 cm</strong>.
             </div>
           </div>
         </div>
@@ -1904,7 +1904,7 @@ async function main() {
         </div>
 
         <div class="ref-citation">
-          <strong>ELAN Trial:</strong> Fischer U et al. <em>N Engl J Med</em>. 2023;388:2411-2421. | <strong>CATALYST Meta-Analysis:</strong> Fischer U et al. <em>Lancet</em> 2025. Early DOAC (median Day 2) is non-inferior to delayed (median Day 7-8).<br/>
+          <strong>ELAN Trial:</strong> Fischer U et al. <em>N Engl J Med</em>. 2023;388:2411-2421. | <strong>CATALYST Meta-Analysis:</strong> Dehbi HM et al. <em>Lancet</em> 2025. Early DOAC (median Day 2) vs delayed (median Day 7-8) showed no excess sICH (0.4% vs 0.4%) and fewer recurrent ischemic events in pooled data.<br/>
           <strong>AFib Guidelines:</strong> Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. <em>Circulation</em>. 2024;149:e1-e156.
         </div>
       </div>

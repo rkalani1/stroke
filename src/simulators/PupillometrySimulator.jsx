@@ -172,8 +172,8 @@ const TONE = {
 /* ── Escalation reference cards (NPi action thresholds) ────────────────── */
 const ESCALATION = [
   {
-    badge: '≤ 1.0', tone: 'crit', title: 'NPi ≤ 1.0 — Herniation Crisis',
-    detail: 'Areflexic / near-areflexic pupil. Hyperosmolar bolus (mannitol or 23.4% saline), transient hyperventilation, STAT emergent decompression / EVD.'
+    badge: '≤ 1.0', tone: 'crit', title: 'NPi ≤ 1.0 — Possible Herniation / Brainstem Compression',
+    detail: 'Areflexic or near-areflexic pupil. Perform emergent neurologic exam, correlate with imaging/ICP, treat clinically suspected herniation per protocol, and call neurosurgery.'
   },
   {
     badge: '< 2.8', tone: 'gold', title: 'NPi < 2.8 — Malignant MCA-Edema Alarm',
@@ -184,8 +184,8 @@ const ESCALATION = [
     detail: 'Triggers a stat neurological exam, assessment for clinical expansion, and a non-contrast head CT.'
   },
   {
-    badge: '≥ 0.7', tone: 'warn', title: 'NPi-diff ≥ 0.7 — Unilateral Mass Effect',
-    detail: 'Early CN III compression. Correlates with horizontal midline shift (septum pellucidum in ICH; pineal gland in ischemic stroke).'
+    badge: '≥ 0.7', tone: 'warn', title: 'NPi-diff ≥ 0.7 — Possible Unilateral Mass Effect',
+    detail: 'May reflect asymmetric CN III/brainstem compression physiology. Correlate with the bedside exam and imaging rather than treating NPi asymmetry as diagnostic by itself.'
   },
   {
     badge: 'CV / %', tone: 'warn', title: 'CV < 0.8 mm/s or % constriction < 10% — ICP ≥ 20 mmHg concern',
@@ -219,7 +219,7 @@ const EVIDENCE = [
   {
     study: 'Anatomic shift correlates',
     cohort: 'ICH vs ischemic-stroke midline-shift markers.',
-    finding: 'ICH: midline shift of the septum pellucidum predicts NPi asymmetry (β = 0.11, p = 0.01). Ischemic: pineal-gland shift drives asymmetry (β = 0.16, p = 0.07).'
+    finding: 'ICH: midline shift of the septum pellucidum predicted NPi asymmetry (β = 0.11, p = 0.01). Ischemic: pineal-gland shift showed a trend toward association (β = 0.16, p = 0.07), so treat it as hypothesis-generating rather than definitive.'
   }
 ];
 
