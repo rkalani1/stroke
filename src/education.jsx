@@ -273,6 +273,17 @@ const EDUCATION_MODULES = [
     ]
   },
   {
+    id: 'evd-maintenance',
+    title: 'External Ventricular Drain',
+    purpose: 'EVD leveling, drainage mechanics, safety checks, complications, PDF reference card, and interactive bedside simulator.',
+    actions: 'evd external ventricular drain ventriculostomy leveling zeroing tragus eam clamp drainage csf overdrainage underdrainage waveform simulator',
+    categories: ['simulators', 'printable', 'icu'],
+    lastReviewed: '2026-06-03',
+    references: [
+      { label: 'NCS Consensus Statement', citation: 'Fried HI, et al. The Insertion and Management of External Ventricular Drains. Neurocrit Care. 2016;24:61-81.', pmid: '26738503' }
+    ]
+  },
+  {
     id: 'hints-simulator',
     title: 'HINTS+ Vestibular Simulator',
     purpose: 'Bedside vestibular exam simulator for differentiating central (stroke) vs. peripheral vertigo (HINTS+ algorithm).',
@@ -635,6 +646,54 @@ const AfibAnticoagTimingView = () => {
     </PdfActionBar>
   );
 };
+
+const EvdMaintenanceView = () => {
+  const [viewMode, setViewMode] = useState('pocket-card');
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2 border-b border-line pb-2 mb-4 no-print">
+        <button
+          type="button"
+          onClick={() => setViewMode('pocket-card')}
+          className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
+            viewMode === 'pocket-card'
+              ? 'bg-cobalt-600 text-white shadow-sm'
+              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
+          }`}
+        >
+          Quick Reference Card
+        </button>
+        <button
+          type="button"
+          onClick={() => setViewMode('interactive')}
+          className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
+            viewMode === 'interactive'
+              ? 'bg-cobalt-600 text-white shadow-sm'
+              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
+          }`}
+        >
+          Interactive EVD Simulator
+        </button>
+      </div>
+
+      {viewMode === 'pocket-card' ? (
+        <EVDInfographic />
+      ) : (
+        <ErrorBoundary>
+          <div className="bg-white border border-line rounded-lg p-6 dark:bg-card">
+            <div className="p-3 mb-4 bg-red-50 text-red-900 border border-red-200 rounded-lg dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60">
+              <h3 className="font-bold text-xs uppercase mb-1">Safety Notice - EVD Orders</h3>
+              <p className="text-xs">Do not independently change drain height, clamping, flushing, or collection-system setup. Follow local policy and explicit Neurosurgery or Neurocritical Care orders.</p>
+            </div>
+            <EvdIcpSimulator />
+          </div>
+        </ErrorBoundary>
+      )}
+    </div>
+  );
+};
+
 const IcpManagementView = () => {
   const [viewMode, setViewMode] = useState('pocket-card'); // 'pocket-card' or 'interactive'
   return (
@@ -710,6 +769,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <AfibAnticoagTimingView />;
     case 'herniation-icp':
       return <IcpManagementView />;
+    case 'evd-maintenance':
+      return <EvdMaintenanceView />;
     case 'hints-simulator':
       return (
         <ErrorBoundary>
