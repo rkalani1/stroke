@@ -133,10 +133,10 @@ export const LANDMARK_TRIALS = {
       year: 2015,
       citation: 'NEJM 2015;372:1009-18',
       question: 'Does EVT benefit perfusion-selected LVO patients?',
-      design: 'RCT, n=70, CTP selection with core <70 mL and penumbra:core ≥1.2',
+      design: 'RCT, n=70, CTP selection with core <70 mL, mismatch ratio >1.2, absolute mismatch >10 mL',
       outcomes: 'Early neurologic improvement: 80% vs 37%. mRS 0-2 at 90d: 71% vs 40%.',
       bottomLine: 'Perfusion imaging identifies patients with the greatest benefit from EVT.',
-      teachingPoint: 'Core 70 mL / penumbra 1.2 ratio became the foundation for later DAWN and DEFUSE-3 criteria.'
+      teachingPoint: 'EXTEND-IA validated perfusion-selected EVT. Its >1.2 / >10 mL mismatch profile later aligned with EXTEND IVT; DAWN used clinical-core mismatch, while DEFUSE-3 used stricter perfusion mismatch (ratio ≥1.8, mismatch ≥15 mL).'
     },
     {
       name: 'SWIFT PRIME',
@@ -332,7 +332,7 @@ export const LANDMARK_TRIALS = {
       year: 2018,
       citation: 'NEJM 2018;379:215-25',
       question: 'Does DAPT reduce stroke in minor stroke/TIA (US/international)?',
-      design: 'RCT, n=4881, clopi+ASA x 90d (study drug; DAPT truncated at 21d post-hoc)',
+      design: 'RCT, n=4881, clopi+ASA planned x90d; halted early for lower ischemic events but higher major hemorrhage',
       outcomes: '90-day major ischemic events: 5.0% vs 6.5%, HR 0.75. Major bleeding: 0.9% vs 0.4%.',
       bottomLine: 'DAPT reduces ischemic events but increases bleeding. Optimal duration appears to be 21 days (Kim et al. 2019 meta-analysis).',
       teachingPoint: 'Take-home: DAPT for 21 days after minor stroke (NIHSS ≤3) or high-risk TIA (ABCD² ≥4), then single antiplatelet.'
@@ -478,7 +478,7 @@ export const LANDMARK_TRIALS = {
       design: 'RCT, n=7599, high-risk patients, 18 months',
       outcomes: 'Primary composite vascular events: no significant difference. Life-threatening bleeding: 2.6% vs 1.3%, NNH=78.',
       bottomLine: 'Long-term DAPT after stroke is NOT effective and increases bleeding.',
-      teachingPoint: 'Along with CHARISMA, established that DAPT beyond ~21-30 days is harmful. Why CHANCE/POINT truncate to 21 days.'
+      teachingPoint: 'Along with CHARISMA and CHANCE/POINT time-course analyses, supports short-course DAPT (~21 days) rather than prolonged dual therapy in most minor stroke/TIA patients.'
     },
     {
       name: 'SPS3',
@@ -823,7 +823,7 @@ export const TEACHING_PEARLS = [
   {
     category: 'Etiology',
     q: 'How do you work up cryptogenic stroke?',
-    a: '30-day event monitor (or implantable loop recorder if HEADS² ≥3), TEE with bubble study (PFO, aortic plaque, LAA thrombus), hypercoag panel (antiphospholipid, factor V Leiden, protein C/S/AT-III, homocysteine), vessel wall imaging if suspicion for vasculitis/ICAD/dissection. Do NOT empirically anticoagulate (NAVIGATE/RE-SPECT/ARCADIA all neutral).'
+    a: '30-day event monitor; consider implantable loop recorder when suspicion remains high (e.g., medium/high HAVOC score, atrial cardiopathy, recurrent embolic pattern), TEE with bubble study (PFO, aortic plaque, LAA thrombus), hypercoag panel (antiphospholipid, factor V Leiden, protein C/S/AT-III, homocysteine), vessel wall imaging if suspicion for vasculitis/ICAD/dissection. Do NOT empirically anticoagulate (NAVIGATE/RE-SPECT/ARCADIA all neutral).'
   },
   {
     category: 'Etiology',
