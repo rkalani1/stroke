@@ -426,23 +426,31 @@ export const calculateCHADS2VA = ({ chf, hypertension, age, diabetes, strokeTia,
 };
 
 // =====================================================================
-// HEADS² — AF detection post-cryptogenic stroke
+// HAVOC — AF detection risk after cryptogenic stroke/TIA
 // =====================================================================
-// Ntaios et al., J Am Heart Assoc 2022 — predicts AF detection probability on monitoring.
-// Heart failure = 1, Age ≥75 = 1, Enlarged LA (>45 mm) = 1, Demographics (female + age ≥65) = 1, Stroke severity (NIHSS ≥8) = 1.
-export const calculateHEADS2 = ({ heartFailure, age, enlargedLA, sex, nihss }) => {
+// Kwong et al., Cardiology 2017 (PMID 28654919).
+// HTN 2, age ≥75 2, valvular disease 2, peripheral vascular disease 1,
+// obesity 1, CHF 4, CAD 2. Risk bands: low 0-4, medium 5-9, high 10-14.
+export const calculateHAVOC = ({ hypertension, age, valvularDisease, peripheralVascularDisease, obesity, heartFailure, coronaryArteryDisease }) => {
   let score = 0;
   const a = parseFloat(age);
-  const n = parseFloat(nihss);
-  if (heartFailure) score += 1;
-  if (Number.isFinite(a) && a >= 75) score += 1;
-  if (enlargedLA) score += 1;
-  if (sex === 'F' && Number.isFinite(a) && a >= 65) score += 1;
-  if (Number.isFinite(n) && n >= 8) score += 1;
+  if (hypertension) score += 2;
+  if (Number.isFinite(a) && a >= 75) score += 2;
+  if (valvularDisease) score += 2;
+  if (peripheralVascularDisease) score += 1;
+  if (obesity) score += 1;
+  if (heartFailure) score += 4;
+  if (coronaryArteryDisease) score += 2;
+  const riskBand = score >= 10 ? 'high' : score >= 5 ? 'medium' : 'low';
   return {
     score,
-    monitoringStrategy: score >= 3 ? 'Implantable loop recorder recommended (high AF detection yield)' : score >= 1 ? '30-day external monitor, escalate to ILR if negative' : 'Standard telemetry + Holter',
-    source: 'Ntaios JAHA 2022'
+    riskBand,
+    monitoringStrategy: riskBand === 'high'
+      ? 'High HAVOC risk: prolonged rhythm monitoring; consider implantable cardiac monitor when external monitoring is negative or rapid ICM access is available.'
+      : riskBand === 'medium'
+        ? 'Medium HAVOC risk: at least 30-day external monitoring; escalate to ICM when suspicion remains high or monitoring is unrevealing.'
+        : 'Low HAVOC risk: standard telemetry plus outpatient monitoring guided by cryptogenic/ESUS mechanism and clinical suspicion.',
+    source: 'HAVOC score, Kwong et al. Cardiology 2017 (PMID 28654919)'
   };
 };
 
@@ -1220,7 +1228,7 @@ export const arcadiaAdvisory = ({ ptfv1, ntProBNP, laVolumeIndex, laDiameterCmM2
       : 'No atrial cardiopathy markers documented.',
     nextSteps: cardiopathyMarker
       ? '1) Implant ICM (Reveal LINQ or equivalent) — STROKE-AF showed AF in 12.1% even of non-cardioembolic strokes. 2) Continue antiplatelet (aspirin 81 mg). 3) Switch to OAC ONLY if AF detected with burden >24h or daily episodes.'
-      : 'Standard secondary prevention (antiplatelet + statin + BP). Consider ICM if other clinical features suggest paroxysmal AF (HEADS² high score, frequent palpitations).',
+      : 'Standard secondary prevention (antiplatelet + statin + BP). Consider ICM if other clinical features suggest paroxysmal AF (elevated HAVOC score, atrial cardiopathy, recurrent embolic pattern, frequent palpitations).',
     afBurdenThreshold: 'ARTESIA showed apixaban benefit in subclinical AF ≥6 min (mostly hours), but with bleeding cost. NOAH-AFNET-6 was neutral. Practical: trigger OAC at sustained AF >24h or daily episodes; shorter-burst subclinical AF = uncertain benefit.',
     source: 'ARCADIA JAMA 2024;331:573-81 (Kamel et al.); ATTICUS NEJM Evid 2023 (PMID 38320511); STROKE-AF JAMA 2021 (PMID 34061145)',
     class: 'Class 3 (no benefit) for empiric OAC based on cardiopathy markers alone'
@@ -1228,18 +1236,17 @@ export const arcadiaAdvisory = ({ ptfv1, ntProBNP, laVolumeIndex, laDiameterCmM2
 };
 
 // =====================================================================
-// AF detection strategy — ICM vs Holter (HEADS² + clinical)
+// AF detection strategy — ICM vs Holter (HAVOC + clinical)
 // =====================================================================
-// Builds on existing calculateHEADS2; gives the actual recommendation in workflow terms.
-export const afDetectionStrategy = ({ heads2Score, strokeSubtype, age, hasICMAccess }) => {
-  const score = parseFloat(heads2Score);
-  const a = parseFloat(age);
+// Builds on HAVOC score when available; gives the actual recommendation in workflow terms.
+export const afDetectionStrategy = ({ havocScore, strokeSubtype, hasICMAccess }) => {
+  const score = parseFloat(havocScore);
   const isCryptogenic = (strokeSubtype || '').toLowerCase().includes('cryptogenic') || (strokeSubtype || '').toLowerCase().includes('esus');
 
   let strategy, evidence;
-  if (Number.isFinite(score) && score >= 3) {
-    strategy = 'Implantable cardiac monitor (ICM) — high pretest probability of AF. Reveal LINQ or equivalent.';
-    evidence = 'HEADS² ≥3 predicts AF detection; CRYSTAL-AF, STROKE-AF, PER DIEM all showed ICM superior.';
+  if (Number.isFinite(score) && score >= 5) {
+    strategy = 'Prolonged rhythm monitoring; consider ICM if external monitoring is negative or direct ICM access is available.';
+    evidence = 'Medium/high HAVOC risk (5-14) predicts higher AF detection; CRYSTAL-AF, STROKE-AF, PER DIEM all showed ICM superior for AF detection.';
   } else if (isCryptogenic) {
     strategy = hasICMAccess === false
       ? '30-day external loop monitor or 14-day ECG patch (Zio); escalate to ICM if negative.'
@@ -1250,7 +1257,7 @@ export const afDetectionStrategy = ({ heads2Score, strokeSubtype, age, hasICMAcc
     evidence = 'STROKE-AF (JAMA 2021, PMID 34061145) — even non-cardioembolic strokes show 12.1% AF.';
   } else {
     strategy = 'Standard inpatient telemetry + 24-48h Holter; ICM not routinely indicated.';
-    evidence = 'Low HEADS² + non-cryptogenic mechanism — yield is low.';
+    evidence = 'Low HAVOC + non-cryptogenic mechanism — yield is lower; escalate only if clinical suspicion remains high.';
   }
 
   return {
