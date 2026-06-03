@@ -7943,6 +7943,7 @@ Clinician Name`;
             { id: 'sub-references', group: 'Protocols', label: 'Guideline & Reference Library', hint: 'Landmark trials, guidelines, HINTS & CVT', icon: 'clipboard-list', keywords: ['reference library', 'references', 'docs', 'toast', 'classification', 'guidelines', 'trials'], run: () => gotoProtocolsSub('references') },
             // ---- Simulators (each card lives in the Simulators sub-tab of Education) ----
             { id: 'sim-all', group: 'Bedside Simulators', label: 'Bedside Simulators', hint: 'All teaching simulators', icon: 'test-tubes', keywords: ['simulators', 'simulation', 'teaching', 'bedside'], run: () => { navigateTo('education'); setEducationSubTab('simulators'); } },
+            { id: 'sim-evd', group: 'Bedside Simulators', label: 'External Ventricular Drain', hint: 'Interactive system simulator', icon: 'activity', keywords: ['evd', 'external ventricular drain', 'ventriculostomy', 'leveling', 'zeroing', 'overdrainage'], run: () => { navigateTo('education'); setEducationSubTab('evd-maintenance'); } },
             { id: 'sim-icp', group: 'Bedside Simulators', label: 'ICP & Herniation Management', hint: 'Waveform analyzer & osmotherapy calculator', icon: 'alert-triangle', keywords: ['icp', 'intracranial pressure', 'herniation', 'compliance', 'osmotherapy', 'mannitol'], run: () => { navigateTo('education'); setEducationSubTab('herniation-icp'); } },
             { id: 'sim-hints', group: 'Bedside Simulators', label: 'HINTS+ Eye-Movement Simulator', hint: 'Vestibular exam', icon: 'eye', keywords: ['hints', 'eye movement', 'vestibular', 'nystagmus', 'vertigo', 'dizziness'], run: () => { navigateTo('education'); setEducationSubTab('hints-simulator'); } },
             { id: 'sim-pupil', group: 'Bedside Simulators', label: 'Pupillometry / NPi Simulator', hint: 'Pupil reactivity', icon: 'circle', keywords: ['pupillometry', 'npi', 'pupil', 'reactivity'], run: () => { navigateTo('education'); setEducationSubTab('pupillometry'); } },
@@ -14573,6 +14574,7 @@ Clinician Name`;
               { name: 'Onboarding', keywords: ['education', 'onboarding', 'curriculum', 'trainee', 'resident', 'rotation', 'survival guide'], tab: 'education', subTab: 'onboarding' },
               { name: 'ICU Curriculum', keywords: ['education', 'icu', 'curriculum', 'nihss', 'hemodynamics', 'ventilation', 'critical care'], tab: 'education', subTab: 'icu' },
               { name: 'Nurse Education', keywords: ['education', 'nurse', 'nursing', 'competency', 'nihss', 'swallow screen', 'call parameters'], tab: 'education', subTab: 'nursing' },
+              { name: 'External Ventricular Drain', keywords: ['education', 'evd', 'external ventricular drain', 'ventriculostomy', 'leveling', 'zeroing', 'drainage', 'simulator'], tab: 'education', subTab: 'evd-maintenance' },
               { name: 'Pocket Cards', keywords: ['education', 'pocket cards', 'cheat sheets', 'references', 'dosing', 'anatomy', 'visual aids'], tab: 'education', subTab: 'pocket-cards' }
             ];
 
