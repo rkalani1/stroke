@@ -909,7 +909,7 @@ async function main() {
               <h3>3. Cardioembolism (CE)</h3>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 8.0pt; line-height: 1.3; color: var(--ink-soft); margin-top: 2px;">
                 <div>
-                  <strong style="color: var(--red-deep); font-size: 8.0pt; text-transform: uppercase; display: block; margin-bottom: 4px;">High-Risk Sources (AC)</strong>
+                  <strong style="color: var(--red-deep); font-size: 8.0pt; text-transform: uppercase; display: block; margin-bottom: 4px;">High-Risk Sources</strong>
                   • Atrial Fibrillation / Flutter<br/>
                   • Mechanical prosthetic valve<br/>
                   • Left atrial / LAA thrombus<br/>
