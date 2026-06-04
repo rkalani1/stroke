@@ -25,15 +25,15 @@ async function main() {
       <style>
         @page {
           size: letter;
-          margin: 0.3in 0.3in 0.3in 0.3in;
+          margin: 0.18in 0.18in 0.18in 0.18in;
         }
         body {
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
           margin: 0;
           padding: 0;
           color: #1e293b;
-          font-size: 10pt;
-          line-height: 1.35;
+          font-size: 8.2pt;
+          line-height: 1.25;
           background: white;
         }
         .container {
@@ -47,8 +47,8 @@ async function main() {
           background-color: #1e3a8a;
           color: white;
           text-align: center;
-          padding: 10px;
-          font-size: 20pt;
+          padding: 6px;
+          font-size: 14pt;
           font-weight: bold;
           letter-spacing: 0.5px;
           border-bottom: 2px solid #1a365d;
@@ -57,8 +57,8 @@ async function main() {
           background-color: #1d4ed8;
           color: white;
           text-align: center;
-          padding: 6px;
-          font-size: 12pt;
+          padding: 3px;
+          font-size: 9pt;
           font-weight: bold;
           letter-spacing: 0.5px;
           text-transform: uppercase;
@@ -77,12 +77,12 @@ async function main() {
           display: flex;
           justify-content: center;
           align-items: center;
-          padding: 8px;
+          padding: 6px;
           background-color: #f8fafc;
         }
         .left-col img {
           max-width: 95%;
-          max-height: 250px;
+          max-height: 170px;
           object-fit: contain;
           border-radius: 4px;
         }
@@ -95,14 +95,14 @@ async function main() {
           background-color: #2563eb;
           color: white;
           text-align: center;
-          padding: 5px;
+          padding: 3px;
           font-weight: bold;
-          font-size: 11pt;
+          font-size: 9pt;
           letter-spacing: 0.5px;
         }
         .components-body {
-          padding: 10px 12px;
-          font-size: 9pt;
+          padding: 6px 10px;
+          font-size: 8pt;
           flex-grow: 1;
           border-bottom: 1.5px solid #1a365d;
           background-color: #f8fafc;
@@ -112,19 +112,19 @@ async function main() {
           padding-left: 15px;
         }
         .components-body li {
-          margin-bottom: 6px;
+          margin-bottom: 3px;
         }
         .logo-container {
           display: flex;
           justify-content: center;
           align-items: center;
-          padding: 6px;
+          padding: 4px;
           background: white;
-          height: 55px;
+          height: 42px;
         }
         
         .list-section {
-          padding: 10px 15px;
+          padding: 6px 10px;
           border-bottom: 2px solid #1a365d;
           background-color: #f0f7ff;
         }
@@ -133,7 +133,7 @@ async function main() {
           padding-left: 20px;
         }
         .list-section li {
-          margin-bottom: 4px;
+          margin-bottom: 2px;
         }
         
         .two-col-bullets {
@@ -142,7 +142,7 @@ async function main() {
         }
         .sub-col {
           width: 50%;
-          padding: 10px 15px;
+          padding: 6px 10px;
           background-color: #faf5ff; /* light purple background */
         }
         .sub-col:first-child {
@@ -150,8 +150,8 @@ async function main() {
         }
         .sub-col-title {
           font-weight: bold;
-          margin-bottom: 6px;
-          font-size: 10pt;
+          margin-bottom: 3px;
+          font-size: 8.5pt;
           color: #5b21b6;
         }
         .sub-col ul {
@@ -159,13 +159,13 @@ async function main() {
           padding-left: 15px;
         }
         .sub-col li {
-          margin-bottom: 4px;
-          font-size: 9pt;
+          margin-bottom: 2px;
+          font-size: 8pt;
         }
         
         .basics-section {
           background-color: #f0fdf4; /* light green */
-          padding: 10px 15px;
+          padding: 6px 10px;
           border-bottom: 2px solid #1a365d;
         }
         .basics-section ul {
@@ -173,12 +173,12 @@ async function main() {
           padding-left: 20px;
         }
         .basics-section li {
-          margin-bottom: 4px;
-          font-size: 9.5pt;
+          margin-bottom: 2px;
+          font-size: 8.2pt;
         }
         
         .complications-section {
-          padding: 10px 15px;
+          padding: 6px 10px;
           background-color: #fef2f2; /* light red */
         }
         .complications-section ul {
@@ -186,8 +186,8 @@ async function main() {
           padding-left: 20px;
         }
         .complications-section li {
-          margin-bottom: 4px;
-          font-size: 9.5pt;
+          margin-bottom: 2px;
+          font-size: 8.2pt;
         }
       </style>
     </head>
@@ -208,12 +208,12 @@ async function main() {
                 <li><strong>Transducer and zeroing stopcock:</strong> Controls baseline calibration.</li>
                 <li><strong>Collection/drip chamber:</strong> Graduated cylinder measuring CSF volume.</li>
               </ol>
-              <div style="font-size: 8.5pt; font-style: italic; margin-top: 6px; color: #475569;">
+              <div style="font-size: 7.5pt; font-style: italic; margin-top: 4px; color: #475569;">
                 *Red arrow indicates the direction of CSF flow.
               </div>
             </div>
             <div class="logo-container">
-              <svg viewBox="0 0 280 50" style="width: 100%; max-height: 45px;" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 280 50" style="width: 100%; max-height: 32px;" xmlns="http://www.w3.org/2000/svg">
                 <path d="M 10,25 C 10,15 18,8 28,8 C 38,8 46,15 46,25 C 46,35 38,42 28,42 C 18,42 10,35 10,25 Z" fill="none" stroke="#5B3B9C" stroke-width="1.5" />
                 <circle cx="28" cy="25" r="4" fill="#18849E" />
                 <line x1="28" y1="25" x2="20" y2="18" stroke="#5B3B9C" stroke-width="1.2" />
@@ -288,7 +288,7 @@ async function main() {
     path: 'documents/references/External Ventricular Drain.pdf',
     format: 'letter',
     printBackground: true,
-    margin: { top: '0.3in', bottom: '0.3in', left: '0.3in', right: '0.3in' }
+    margin: { top: '0.18in', bottom: '0.18in', left: '0.18in', right: '0.18in' }
   });
   console.log('Generated documents/references/External Ventricular Drain.pdf');
 

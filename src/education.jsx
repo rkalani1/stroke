@@ -2038,7 +2038,7 @@ export const EVDInfographic = () => {
       )}
 
       {/* Static Quick Reference Card */}
-      <div className="border border-slate-250 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
+      <div className="evd-infographic-card border border-slate-250 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
         {/* Header */}
         <div className="bg-slate-800 text-white text-center py-3.5 px-4">
           <h3 className="font-serif text-lg font-bold tracking-wide">External Ventricular Drain</h3>

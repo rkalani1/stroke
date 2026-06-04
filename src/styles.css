@@ -335,8 +335,90 @@
     margin-top: 2px !important;
   }
 
+  #tabpanel-education {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+  #tabpanel-education > div {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+  #tabpanel-education > div > header {
+    display: none !important;
+  }
+  #tabpanel-education > div > main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* EVD Infographic card single-page print optimization */
+  .evd-infographic-card {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    max-height: 100% !important;
+  }
+  .evd-infographic-card * {
+    font-size: 7.0pt !important;
+    line-height: 1.05 !important;
+  }
+  .evd-infographic-card h3 {
+    font-size: 10pt !important;
+    padding: 2px !important;
+  }
+  .evd-infographic-card .bg-blue-600,
+  .evd-infographic-card .bg-blue-700,
+  .evd-infographic-card .bg-purple-700,
+  .evd-infographic-card .bg-emerald-700,
+  .evd-infographic-card .bg-rose-700 {
+    font-size: 7.6pt !important;
+    padding: 1px 2px !important;
+  }
+  .evd-infographic-card .p-4 {
+    padding: 2px 4px !important;
+  }
+  .evd-infographic-card .py-3.5 {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+  }
+  .evd-infographic-card .px-4 {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  .evd-infographic-card .p-3 {
+    padding: 1px !important;
+  }
+  .evd-infographic-card .h-\[55px\] {
+    height: 28px !important;
+  }
+  .evd-infographic-card img {
+    max-height: 110px !important;
+  }
+  .evd-infographic-card svg {
+    max-height: 20px !important;
+  }
+  .evd-infographic-card ul, 
+  .evd-infographic-card ol {
+    margin-top: 1px !important;
+    margin-bottom: 1px !important;
+    padding-left: 10px !important;
+  }
+  .evd-infographic-card li {
+    margin-bottom: 1px !important;
+  }
+  .evd-infographic-card ul.space-y-1.5 > * + *,
+  .evd-infographic-card ul.space-y-2 > * + *,
+  .evd-infographic-card ol.space-y-1.5 > * + *,
+  .evd-infographic-card ol.space-y-2 > * + *,
+  .evd-infographic-card .space-y-2 > * + * {
+    margin-top: 1px !important;
+  }
+
   @page {
-    margin: 1.5cm;
+    margin: 0.22in !important;
   }
 }
 

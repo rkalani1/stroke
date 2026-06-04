@@ -10,8 +10,9 @@ import { createGzip, createBrotliCompress, constants as zlibConstants } from 'no
 import { pipeline } from 'node:stream/promises';
 import { createReadStream, createWriteStream } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const TARGETS = [
   'app.js',
