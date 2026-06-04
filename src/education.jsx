@@ -684,7 +684,7 @@ const EvdMaintenanceView = () => {
           <div className="bg-white border border-line rounded-lg p-6 dark:bg-card">
             <div className="p-3 mb-4 bg-red-50 text-red-900 border border-red-200 rounded-lg dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60">
               <h3 className="font-bold text-xs uppercase mb-1">Safety Notice - EVD Orders</h3>
-              <p className="text-xs">Do not independently change drain height, clamping, flushing, or collection-system setup. Follow local policy and explicit Neurosurgery or Neurocritical Care orders.</p>
+              <p className="text-xs">Do not independently change drain height, clamping, flushing, or collection-system setup. When open and correctly leveled, a lower EVD height drains at a lower ICP threshold; a higher height drains less readily. Follow local policy and explicit Neurosurgery or Neurocritical Care orders.</p>
             </div>
             <EvdIcpSimulator />
           </div>
@@ -2062,13 +2062,16 @@ export const EVDInfographic = () => {
             </div>
             <div className="p-4 flex-grow text-xs text-slate-600 dark:text-slate-350 space-y-2">
               <ol className="list-decimal pl-4 space-y-1.5">
-                <li><strong>Drainage setting:</strong> Increments of 5 cmH₂O, higher = less drainage (higher resistance).</li>
+                <li><strong>Drainage setting:</strong> Increments of 5 cmH₂O, higher = less drainage (higher resistance/back-pressure).</li>
                 <li><strong>Drainage stopcock:</strong> 12 o'clock = clamp/closed, 3 o'clock = open to drain.</li>
                 <li><strong>Transducer and zeroing stopcock:</strong> Controls baseline calibration.</li>
                 <li><strong>Collection/drip chamber:</strong> Graduated cylinder measuring CSF volume.</li>
               </ol>
               <div className="text-[10px] text-slate-400 italic mt-2">
                 *Red arrow indicates the direction of CSF flow.
+              </div>
+              <div className="mt-3 rounded-md border border-amber-200 bg-amber-50 p-2 text-[10px] leading-snug text-amber-950 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+                <strong>How to read the number:</strong> the cmH₂O setting is the drainage threshold above the tragus/EAM. Lower or less-positive settings drain more easily; higher or more-positive settings drain less unless ICP exceeds that higher threshold.
               </div>
             </div>
             <div className="flex justify-center items-center p-3 border-t border-slate-150 bg-white dark:bg-slate-800 h-[55px]">
@@ -2138,7 +2141,7 @@ export const EVDInfographic = () => {
               <li><strong>Leveling:</strong> Always align the zero level of the EVD scale/transducer to the external auditory meatus (EAM) / tragus.</li>
               <li><strong>Mobilization Clamping Rules:</strong> Always CLAMP the EVD before: turning the patient, adjusting HOB, or mobilizing the patient out of bed to prevent severe overdrainage or underdrainage.</li>
               <li><strong>Waveform:</strong> ICP value and waveform morphology are valid only when the EVD is clamped.</li>
-              <li><strong>CSF Drainage:</strong> CSF drainage is passive: occurs only when patient ICP exceeds EVD chamber height.</li>
+              <li><strong>CSF Drainage:</strong> CSF drainage is passive: occurs only when patient ICP exceeds EVD chamber height. Example: an EVD at 5 cmH₂O drains more readily than one at 20 cmH₂O.</li>
               <li><strong>Normal CSF Flow:</strong> Normal CSF production is ~20 mL/hr (~500 mL/day). Drainage &gt;20 mL/hr should trigger immediate assessment for overdrainage or chamber level escalation.</li>
               <li><strong>Weaning:</strong> Gradual escalation of drainage setting by 5 cmH₂O per day. After +20 cmH₂O, EVD should be clamped & head CT obtained to evaluate ventricular caliber. Neurologic examination, CSF output, and ICP waveform should be assessed daily.</li>
             </ul>
