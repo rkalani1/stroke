@@ -14,8 +14,8 @@
    Cache-name bumped to stroke-cache-v6-9-15. Old caches are cleared on activate.
 */
 
-const APP_VERSION = '6.9.20';
-const CACHE_NAME  = 'stroke-cache-v6-9-20';
+const APP_VERSION = '6.9.21';
+const CACHE_NAME  = 'stroke-cache-v6-9-21';
 
 const CORE_ASSETS = [
   './',
@@ -97,7 +97,8 @@ const isHtmlRequest = (request) => {
 const isShellAsset = (url) =>
   url.pathname.endsWith('/app.js') ||
   url.pathname.endsWith('/tailwind.css') ||
-  url.pathname.endsWith('/manifest.json');
+  url.pathname.endsWith('/manifest.json') ||
+  url.pathname.endsWith('.pdf');
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
