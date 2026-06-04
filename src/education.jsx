@@ -2062,7 +2062,7 @@ export const EVDInfographic = () => {
             </div>
             <div className="p-4 flex-grow text-xs text-slate-600 dark:text-slate-350 space-y-2">
               <ol className="list-decimal pl-4 space-y-1.5">
-                <li><strong>Drainage setting:</strong> The ordered number (+5, +10, +20 cmH₂O) is the drip chamber height above the zero reference at the tragus/EAM (foramen of Monro). It functions as the drainage threshold/back-pressure: higher numbers drain less readily.</li>
+                <li><strong>Drainage setting:</strong> The ordered height (+5, +10, +20 cmH₂O) refers to how high the drip chamber is positioned above the external auditory meatus/tragus, the bedside reference for the foramen of Monro. CSF drains only when ventricular pressure exceeds that water-column height, so a lower setting drains more readily than a higher setting.</li>
                 <li><strong>Drainage stopcock:</strong> 12 o'clock = clamp/closed, 3 o'clock = open to drain.</li>
                 <li><strong>Transducer and zeroing stopcock:</strong> Controls baseline calibration.</li>
                 <li><strong>Collection/drip chamber:</strong> Graduated cylinder measuring CSF volume.</li>
