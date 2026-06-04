@@ -799,7 +799,7 @@ export function EvdIcpSimulator() {
           <div className="bg-slate-50/50 dark:bg-card-border/20 border border-slate-100 dark:border-slate-800 rounded p-3 space-y-1.5">
             <h5 className="text-xs font-bold text-slate-800 dark:text-ink">🧠 EVD Mechanics &amp; Use Cases</h5>
             <p className="text-2xs text-slate-600 dark:text-ink-2 leading-relaxed">
-              An EVD drainage system utilizes gravity to drain CSF. The drip chamber height sets the pressure threshold (in cmH₂O). Flow only occurs when ventricles exceed this pressure.
+              An EVD drainage system utilizes gravity to drain CSF. The drip chamber height sets the pressure threshold (in cmH₂O). Flow only occurs when ventricular pressure exceeds this threshold. Lower settings drain more readily; higher settings drain less unless ICP exceeds the higher threshold.
             </p>
             <p className="text-2xs text-slate-600 dark:text-ink-2 leading-relaxed font-semibold mt-1">
               Primary Stroke Use Cases:
@@ -827,7 +827,7 @@ export function EvdIcpSimulator() {
               Weaning checks if the patient can re-absorb CSF naturally without EVD drainage:
             </p>
             <ul className="list-disc pl-4 text-2xs text-slate-600 dark:text-ink-2 space-y-1">
-              <li><strong>Step-up protocol:</strong> Gradually raise the EVD threshold (e.g. from 10 to 15, then 20 cmH₂O) q24h.</li>
+              <li><strong>Step-up protocol:</strong> Gradually raise the EVD threshold (e.g. from 10 to 15, then 20 cmH₂O) q24h, making drainage less permissive.</li>
               <li><strong>Clamping trial:</strong> Clamp the EVD for 24 hours. Monitor q1h for symptoms (headache, somnolence, lethargy) or ICP spikes.</li>
               <li><strong>CT Confirmation:</strong> Obtain head CT at 24h to verify no ventriculomegaly or midline shift before EVD pull.</li>
             </ul>
