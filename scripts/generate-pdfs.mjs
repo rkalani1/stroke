@@ -203,16 +203,13 @@ async function main() {
             <div class="components-header">COMPONENTS</div>
             <div class="components-body">
               <ol>
-                <li><strong>Drainage setting:</strong> Increments of 5 cmH₂O, higher = less drainage (higher resistance/back-pressure).</li>
+                <li><strong>Drainage setting:</strong> The ordered number (+5, +10, +20 cmH₂O) is the drip chamber height above the zero reference at the tragus/EAM (foramen of Monro). It functions as the drainage threshold/back-pressure: higher numbers drain less readily.</li>
                 <li><strong>Drainage stopcock:</strong> 12 o'clock = clamp/closed, 3 o'clock = open to drain.</li>
                 <li><strong>Transducer and zeroing stopcock:</strong> Controls baseline calibration.</li>
                 <li><strong>Collection/drip chamber:</strong> Graduated cylinder measuring CSF volume.</li>
               </ol>
               <div style="font-size: 8.5pt; font-style: italic; margin-top: 6px; color: #475569;">
                 *Red arrow indicates the direction of CSF flow.
-              </div>
-              <div style="font-size: 8.5pt; margin-top: 8px; padding: 6px; border: 1px solid #F59E0B; background: #FFFBEB; color: #78350F; border-radius: 5px;">
-                <strong>How to read the number:</strong> the cmH₂O setting is the drainage threshold above the tragus/EAM. Lower or less-positive settings drain more easily; higher or more-positive settings drain less unless ICP exceeds that higher threshold.
               </div>
             </div>
             <div class="logo-container">
