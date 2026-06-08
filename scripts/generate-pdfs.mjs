@@ -886,7 +886,7 @@ async function main() {
               <h3>1. Large-Artery Atherosclerosis (LAA)</h3>
               <ul class="toast-card-list">
                 <li><strong>Clinical:</strong> Cortical signs (aphasia, neglect, gaze deviation) or brainstem/cerebellar syndrome.</li>
-                <li><strong>Imaging:</strong> Cortical/subcortical infarct <strong>&gt; 1.5 cm</strong> on MRI or CT.</li>
+                <li><strong>Imaging:</strong> Cortical or subcortical/cerebellar/brainstem infarct matching the vascular territory (no strict size threshold, though typically &gt; 1.5 cm for subcortical lesions).</li>
                 <li><strong>Vascular:</strong> <strong>&gt; 50% stenosis</strong> or occlusion of the relevant major extracranial (carotid, vertebral) or intracranial artery.</li>
                 <li><strong>Exclusion:</strong> Must exclude a high-risk cardioembolic source.</li>
               </ul>
@@ -896,7 +896,7 @@ async function main() {
               <h3>2. Small-Vessel Occlusion (SVO / Lacune)</h3>
               <ul class="toast-card-list">
                 <li><strong>Clinical:</strong> Classic lacunar syndrome (pure motor, pure sensory, sensorimotor, ataxic hemiparesis, clumsy hand) <strong>WITHOUT</strong> cortical signs.</li>
-                <li><strong>Imaging:</strong> Normal scan or deep subcortical lesion <strong>&le; 1.5 cm</strong>.</li>
+                <li><strong>Imaging:</strong> Normal scan or deep subcortical/brainstem lesion <strong>&le; 2.0 cm</strong>.</li>
                 <li><strong>Vascular/Cardiac:</strong> Relevant artery must lack &gt;50% stenosis, and patient must lack high-risk cardioembolic sources.</li>
               </ul>
             </div>
@@ -1131,7 +1131,6 @@ async function main() {
     <body>
       <div class="container">
         <h1>DAPT for Non-Cardioembolic Ischemic Stroke</h1>
-        <p class="subtitle">Guideline-directed Dual Antiplatelet Therapy (DAPT) for secondary non-cardioembolic stroke prevention.</p>
         
         <svg viewBox="0 0 735 240" style="width: 100%; height: 210px; margin-bottom: 6px">
           <rect x="0" y="0" width="735" height="240" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
@@ -1186,7 +1185,7 @@ async function main() {
         <table class="card-table">
           <thead>
             <tr>
-              <th style="width: 22%;">Scenario / Trial</th>
+              <th style="width: 22%;">Trial</th>
               <th style="width: 22%;">Target Population</th>
               <th style="width: 22%;">Loading Dose (Day 1)</th>
               <th style="width: 20%;">DAPT Duration</th>

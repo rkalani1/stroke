@@ -1287,7 +1287,7 @@ export function ToastClassificationCard() {
           <h3>1. Large-Artery Atherosclerosis (LAA)</h3>
           <ul className="toast-card-list">
             <li><strong>Clinical:</strong> Cortical signs (aphasia, neglect, gaze deviation) or brainstem/cerebellar syndrome.</li>
-            <li><strong>Imaging:</strong> Cortical/subcortical infarct <strong>&gt; 1.5 cm</strong> on MRI or CT.</li>
+            <li><strong>Imaging:</strong> Cortical or subcortical/cerebellar/brainstem infarct matching the vascular territory (no strict size threshold, though typically &gt; 1.5 cm for subcortical lesions).</li>
             <li><strong>Vascular:</strong> <strong>&gt; 50% stenosis</strong> or occlusion of the relevant major extracranial (carotid, vertebral) or intracranial artery.</li>
             <li><strong>Exclusion:</strong> Must exclude a high-risk cardioembolic source.</li>
           </ul>
@@ -1297,7 +1297,7 @@ export function ToastClassificationCard() {
           <h3>2. Small-Vessel Occlusion (SVO / Lacune)</h3>
           <ul className="toast-card-list">
             <li><strong>Clinical:</strong> Classic lacunar syndrome (pure motor, pure sensory, sensorimotor, ataxic hemiparesis, clumsy hand) <strong>WITHOUT</strong> cortical signs.</li>
-            <li><strong>Imaging:</strong> Normal scan or deep subcortical lesion <strong>≤ 1.5 cm</strong>.</li>
+            <li><strong>Imaging:</strong> Normal scan or deep subcortical/brainstem lesion <strong>≤ 2.0 cm</strong>.</li>
             <li><strong>Vascular/Cardiac:</strong> Relevant artery must lack &gt;50% stenosis, and patient must lack high-risk cardioembolic sources.</li>
           </ul>
         </div>
@@ -1399,10 +1399,7 @@ export function DaptRegimensCard() {
       <div className="card-wrapper card-add_figure_03_dapt_regimens landscape-card">
 <div className="card-container" style={{boxSizing: 'border-box'}}>
   <div className="card-content">
-    <h1 style={{textAlign: 'center', marginBottom: '4px'}}>DAPT for Non-Cardioembolic Ischemic Stroke</h1>
-    <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '6px', textAlign: 'center', fontWeight: '500'}}>
-      Guideline-directed Dual Antiplatelet Therapy (DAPT) for secondary non-cardioembolic stroke prevention.
-    </p>
+    <h1 style={{textAlign: 'center', marginBottom: '8px'}}>DAPT for Non-Cardioembolic Ischemic Stroke</h1>
 
     
     <svg viewBox="0 0 735 240" style={{width: '100%', height: '210px', marginBottom: '6px'}}>
@@ -1484,7 +1481,7 @@ export function DaptRegimensCard() {
     <table className="card-table" style={{fontSize: '9.0pt', margin: '0 0 10px 0', width: '100%', borderCollapse: 'collapse'}}>
       <thead>
         <tr style={{background: 'linear-gradient(135deg, var(--purple-deep) 0%, var(--purple) 100%)', color: 'white'}}>
-          <th style={{padding: '4px 6px', fontWeight: '600', textTransform: 'uppercase', textAlign: 'left', width: '22%'}}>Scenario / Trial</th>
+          <th style={{padding: '4px 6px', fontWeight: '600', textTransform: 'uppercase', textAlign: 'left', width: '22%'}}>Trial</th>
           <th style={{padding: '4px 6px', fontWeight: '600', textTransform: 'uppercase', textAlign: 'left', width: '22%'}}>Target Population</th>
           <th style={{padding: '4px 6px', fontWeight: '600', textTransform: 'uppercase', textAlign: 'left', width: '22%'}}>Loading Dose (Day 1)</th>
           <th style={{padding: '4px 6px', fontWeight: '600', textTransform: 'uppercase', textAlign: 'left', width: '20%'}}>DAPT Duration</th>
