@@ -1419,8 +1419,9 @@ export function DaptRegimensCard() {
       
       
       <rect x="35" y="75" width="170" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5"/>
-      <text x="120" y="90" fill="var(--teal-deep)" fontSize="8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Symptomatic IC Stenosis</text>
-      <text x="120" y="102" fill="var(--ink-soft)" fontSize="7pt" fontFamily="IBM Plex Sans" textAnchor="middle">70-99% Stenosis (SAMMPRIS)</text>
+      <text x="120" y="87" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Symptomatic Intracranial</text>
+      <text x="120" y="97" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Atherosclerotic Stenosis</text>
+      <text x="120" y="108" fill="var(--ink-soft)" fontSize="7pt" fontFamily="IBM Plex Sans" textAnchor="middle">70-99% Stenosis (SAMMPRIS)</text>
       
       <path d="M 120 115 L 120 140" stroke="var(--teal)" strokeWidth="1.5" fill="none"/>
       <polygon points="120,145 117,137 123,137" fill="var(--teal)" />
@@ -1565,7 +1566,7 @@ export function DaptRegimensCard() {
             SAMMPRIS Trial
           </td>
           <td style={{padding: '4px 6px'}}>
-            Severe symptomatic stenosis (70-99%) of major intracranial artery.
+            Severe symptomatic atherosclerotic stenosis (70-99%) of a major intracranial artery.
           </td>
           <td style={{padding: '4px 6px'}}>
             <strong>Aspirin 325 mg</strong> +<br/><strong>Clopidogrel 75 mg</strong> (no load)
