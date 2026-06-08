@@ -10,6 +10,7 @@ function getBase64DataUrl(filePath) {
 
 async function main() {
   const evdPhotoBase64 = getBase64DataUrl('assets/evd_photo_cropped.png');
+  const herniationDiagramBase64 = getBase64DataUrl('assets/herniation_diagram.png');
   const browser = await chromium.launch();
   const page = await browser.newPage();
 
@@ -503,13 +504,20 @@ async function main() {
         
         <div class="section-title">CLINICAL SIGNS OF HERNIATION</div>
         <div class="list-section peach">
-          <ul>
-            <li><strong>Motor decline:</strong> Spontaneous GCS motor score decrease of &ge; 1 point.</li>
-            <li><strong>Pupillary reactivity:</strong> Decrease in pupillary reactivity (Neurological Pupil Index, NPi &lt; 3).</li>
-            <li><strong>Asymmetry:</strong> New pupillary asymmetry or unilateral dilation (ipsilateral mydriasis).</li>
-            <li><strong>Focal deficit:</strong> New focal motor deficit or abnormal posturing (decorticate / decerebrate).</li>
-            <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <strong style="color: #dc2626;">*Cushing triad is a LATE sign of brainstem compression.*</strong></li>
-          </ul>
+          <div style="display: flex; flex-direction: row; gap: 8px; align-items: center; justify-content: space-between;">
+            <div style="width: 58%;">
+              <ul>
+                <li><strong>Motor decline:</strong> Spontaneous GCS motor score decrease of &ge; 1 point.</li>
+                <li><strong>Pupillary reactivity:</strong> Decrease in pupillary reactivity (Neurological Pupil Index, NPi &lt; 3).</li>
+                <li><strong>Asymmetry:</strong> New pupillary asymmetry or unilateral dilation (ipsilateral mydriasis).</li>
+                <li><strong>Focal deficit:</strong> New focal motor deficit or abnormal posturing (decorticate / decerebrate).</li>
+                <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <strong style="color: #dc2626;">*Cushing triad is a LATE sign of brainstem compression.*</strong></li>
+              </ul>
+            </div>
+            <div style="width: 42%; display: flex; justify-content: center; align-items: center; box-sizing: border-box; padding-right: 4px;">
+              <img src="${herniationDiagramBase64}" style="max-width: 100%; max-height: 100px; object-fit: contain; border-radius: 4px; border: 1px solid #fed7aa; padding: 2px; background-color: white;" alt="Brain Herniation Diagram" />
+            </div>
+          </div>
           
           <table class="herniation-table">
             <thead>
