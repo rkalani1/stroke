@@ -1792,10 +1792,7 @@ export function AfibAnticoagTimingCard() {
       <div className="card-wrapper card-add_figure_05_afib_anticoag_timing landscape-card">
 <div className="card-container" style={{boxSizing: 'border-box'}}>
   <div className="card-content">
-    <h1 style={{textAlign: 'center', marginBottom: '4px'}}>AFib Anticoagulation Restart Timing After Acute Ischemic Stroke</h1>
-    <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
-      Evidence-based schedule for starting or restarting DOACs after acute ischemic stroke or TIA.
-    </p>
+    <h1 style={{textAlign: 'center', marginBottom: '12px'}}>AFib Anticoagulation Restart Timing After Acute Ischemic Stroke</h1>
 
     
     <div style={{borderLeft: '4px solid var(--teal)', background: 'var(--teal-soft)', padding: '6px 10px', borderRadius: '6px', fontSize: '7.8pt', marginBottom: '4px', lineHeight: '1.45', boxShadow: '0 2px 8px var(--teal-glow)'}}>

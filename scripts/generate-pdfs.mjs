@@ -1793,7 +1793,6 @@ async function main() {
     <body>
       <div class="container">
         <h1>AFib Anticoagulation Restart Timing After Acute Ischemic Stroke</h1>
-        <p class="subtitle">Evidence-based schedule for starting or restarting DOACs after acute ischemic stroke or TIA.</p>
         
         <div class="clinical-efficacy-box">
           <strong style="color: var(--teal-deep); text-transform: uppercase; font-size: 7.2pt; letter-spacing: 0.05em; display: block; margin-bottom: 1px;">Clinical Efficacy & Safety</strong>
