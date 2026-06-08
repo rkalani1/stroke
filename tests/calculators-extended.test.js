@@ -13,7 +13,7 @@ import {
   interpretPHQ9,
   calculateNASCET,
   calculateCHADS2VA,
-  calculateHEADS2,
+  calculateHAVOC,
   recommendDriving,
   interpretBarnesJewishDysphagia,
   recommendVTEProphylaxis,
@@ -173,12 +173,12 @@ describe('calculateCHADS2VA (2024 ESC, drops sex)', () => {
   });
 });
 
-describe('calculateHEADS2', () => {
-  it('age 80 + HF + enlarged LA → 3', () => {
-    expect(calculateHEADS2({ heartFailure: true, age: 80, enlargedLA: true }).score).toBe(3);
-  });
-  it('recommends ILR at score ≥3', () => {
-    expect(calculateHEADS2({ heartFailure: true, age: 80, enlargedLA: true }).monitoringStrategy).toMatch(/loop/);
+describe('calculateHAVOC', () => {
+  it('hypertension + age 80 + heart failure → score 8 (medium)', () => {
+    const r = calculateHAVOC({ hypertension: true, age: 80, heartFailure: true });
+    expect(r.score).toBe(8);
+    expect(r.riskBand).toBe('medium');
+    expect(r.monitoringStrategy).toMatch(/external/);
   });
 });
 

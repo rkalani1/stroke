@@ -1332,3 +1332,24 @@ export const evaluateBostonCAA20 = ({ age, lobarICH, corticalSiderosis, lobarMic
   };
 };
 
+// =====================================================================
+// client-side BYOK configuration helper
+// =====================================================================
+export const getAIConfiguration = () => {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return { provider: 'mock', apiKey: '' };
+  }
+  try {
+    const prefix = 'strokeApp:';
+    const providerRaw = window.localStorage.getItem(prefix + 'apiProvider');
+    const keyRaw = window.localStorage.getItem(prefix + 'apiKey');
+    
+    // localStorage stores JSON-stringified values if saved by setKey
+    const provider = providerRaw ? JSON.parse(providerRaw) : 'mock';
+    const apiKey = keyRaw ? JSON.parse(keyRaw) : '';
+    return { provider, apiKey };
+  } catch (e) {
+    return { provider: 'mock', apiKey: '' };
+  }
+};
+

@@ -35,7 +35,7 @@ import {
   interpretPHQ9,
   calculateNASCET,
   calculateCHADS2VA,
-  calculateHEADS2,
+  calculateHAVOC,
   recommendVTEProphylaxis,
   evaluateLargeCoreEVT,
   recommendLateWindowLytic,
@@ -390,8 +390,8 @@ describe('Boston 2.0 CAA criteria', () => {
 });
 
 describe('AF detection strategy & ARCADIA neutrality', () => {
-  it('HEADS² 4 → recommends ICM', () => {
-    const r = afDetectionStrategy({ heads2Score: 4 });
+  it('HAVOC 4 → recommends ICM', () => {
+    const r = afDetectionStrategy({ havocScore: 4 });
     expect(r.strategy).toContain('ICM');
   });
   it('ARCADIA: cardiopathy markers do NOT trigger empiric DOAC', () => {
