@@ -1032,7 +1032,8 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           'trials',
           'management',
           'library',
-          'education'
+          'education',
+          'settings'
         ];
 
         const parseHashRoute = (hash) => {
@@ -1069,7 +1070,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               }
               return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
             case 'settings':
-              return { tab: 'encounter' };
+              return { tab: 'settings' };
             case 'ich':
             case 'calculators':
               return { tab: 'protocols', sub: LEGACY_MANAGEMENT_TABS[root] };
@@ -1094,6 +1095,8 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               return '#/encounter';
             case 'encounter':
               return '#/encounter';
+            case 'settings':
+              return '#/settings';
             case 'protocols':
             case 'library':
             case 'management': {
@@ -2497,6 +2500,19 @@ Clinician Name`;
           const [doacProtocol, setDoacProtocol] = useState(loadFromStorage('doacProtocol', 'catalyst'));
           const [nursingFlowsheetChecks, setNursingFlowsheetChecks] = useState({});
           const [protocolModal, setProtocolModal] = useState(null);
+
+          const [apiProvider, setApiProvider] = useState(() => loadFromStorage('apiProvider', 'mock'));
+          const [apiKey, setApiKey] = useState(() => loadFromStorage('apiKey', ''));
+          const [tempProvider, setTempProvider] = useState(() => loadFromStorage('apiProvider', 'mock'));
+          const [tempKey, setTempKey] = useState(() => loadFromStorage('apiKey', ''));
+          const [showKey, setShowKey] = useState(false);
+
+          useEffect(() => {
+            if (activeTab === 'settings') {
+              setTempProvider(apiProvider);
+              setTempKey(apiKey);
+            }
+          }, [activeTab, apiProvider, apiKey]);
 
           const lkwDateForWindow = lkwTime
             ? `${lkwTime.getFullYear()}-${String(lkwTime.getMonth() + 1).padStart(2, '0')}-${String(lkwTime.getDate()).padStart(2, '0')}`
@@ -16273,12 +16289,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             <div className="relative v7-skin">
               {/* v7: skip-link → semantic <main id="main">; cobalt accent, no link-* override */}
               <a href="#main" data-skip-tap className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-cobalt-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">Skip to main content</a>
-              {PUBLIC_DEMO_MODE && (
-                <div className="bg-warn-50 border-b border-warn-300 text-warn-950 px-4 py-3 text-sm dark:bg-warn-950 dark:border-warn-800" role="note">
-                  <strong>Educational synthetic demo only - not medical advice and not an official system.</strong>
-                  {' '}Do not enter PHI, patient identifiers, MRN fragments, real encounter details, any confidential organizational data, ward census, or handoff content. Ward census, imports, exports, persistence, and patient-context URL handoff are disabled on public GitHub Pages.
-                </div>
-              )}
+
               {protocolModal && (
                 <div className="clinician-only fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="protocol-modal-title" onClick={() => setProtocolModal(null)}>
                   <div className="w-full max-w-lg bg-white rounded-md shadow-xl border border-line dark:bg-card" onClick={(e) => e.stopPropagation()}>
@@ -16725,6 +16736,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   })}
                                 </div>
                               </div>
+                              <div className="border-t border-line my-1" role="separator"></div>
+                              <button
+                                role="menuitem"
+                                onClick={() => { navigateTo('settings'); setSettingsMenuOpen(false); }}
+                                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-paper-2 text-sm text-ink transition-colors"
+                              >
+                                <i aria-hidden="true" data-lucide="settings" className="w-4 h-4 text-mute"></i>
+                                <span>API Settings</span>
+                              </button>
                               <div className="border-t border-line my-1" role="separator"></div>
                               <button
                                 role="menuitem"
@@ -35481,9 +35501,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Sub-view: Bedside Screener (iframe embed) */}
                     {trialsView === 'screener' && (
                       <div id="trials-screener-panel" className="space-y-3">
-                        <p className="font-mono uppercase text-2xs tracking-[0.06em] text-slate-500 dark:text-slate-400">
-                          Public demo opens without patient context. Enter synthetic screener parameters only.
-                        </p>
                         <V7DeviceFrame
                           src="https://rkalani1.github.io/stroke-trials-screener/"
                           title="Stroke Bedside Trial Screener"
@@ -35527,6 +35544,99 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       navigateTo={navigateTo}
                       isTraineeMode={isTraineeMode}
                     />
+                  </ErrorBoundary>
+                )}
+
+                {/* ============================================ */}
+                {/* SETTINGS TAB                                 */}
+                {/* ============================================ */}
+                {activeTab === 'settings' && (
+                  <ErrorBoundary>
+                    <div id="tabpanel-settings" role="tabpanel" aria-labelledby="tab-settings" className="space-y-6">
+                      <header className="bg-card border border-line rounded-md p-6">
+                        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                          <div>
+                            <p className="font-mono uppercase text-eyebrow text-mute mb-1">Configuration</p>
+                            <h2 className="font-serif text-section text-ink flex items-center gap-3">
+                              API Configuration
+                            </h2>
+                            <p className="font-sans text-body text-ink-2 mt-1 text-pretty">
+                              Configure API provider and keys for LLM integration.
+                            </p>
+                          </div>
+                        </div>
+                      </header>
+
+                      <div className="bg-card border border-line rounded-md p-6 max-w-2xl">
+                        <div className="space-y-6">
+                          <div>
+                            <label className="block text-sm font-semibold text-ink mb-1.5">
+                              API Provider
+                            </label>
+                            <select
+                              value={tempProvider}
+                              onChange={(e) => setTempProvider(e.target.value)}
+                              className="w-full max-w-md px-3 py-2 bg-card border border-line rounded-md text-ink text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+                            >
+                              <option value="mock">Mock LLM (Local Demo)</option>
+                              <option value="openai">OpenAI API</option>
+                              <option value="anthropic">Anthropic API</option>
+                            </select>
+                          </div>
+
+                          {tempProvider !== 'mock' && (
+                            <div>
+                              <label className="block text-sm font-semibold text-ink mb-1.5">
+                                API Key
+                              </label>
+                              <div className="relative max-w-md">
+                                <input
+                                  type={showKey ? 'text' : 'password'}
+                                  value={tempKey}
+                                  onChange={(e) => setTempKey(e.target.value)}
+                                  placeholder={tempProvider === 'openai' ? 'sk-...' : 'sk-ant-...'}
+                                  className="w-full pl-3 pr-10 py-2 bg-card border border-line rounded-md text-ink text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => setShowKey(!showKey)}
+                                  className="absolute right-3 top-1/2 -translate-y-1/2 text-mute hover:text-ink transition-colors"
+                                  aria-label={showKey ? 'Hide key' : 'Show key'}
+                                >
+                                  <i aria-hidden="true" data-lucide={showKey ? 'eye-off' : 'eye'} className="w-4 h-4"></i>
+                                </button>
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="flex items-center gap-3 pt-4 border-t border-line">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setApiProvider(tempProvider);
+                                setApiKey(tempKey);
+                                saveToStorage('apiProvider', tempProvider);
+                                saveToStorage('apiKey', tempKey);
+                                addToast('API Settings saved successfully.', 'success');
+                                navigateTo('encounter');
+                              }}
+                              className="px-4 py-2 text-sm font-semibold text-white bg-cobalt-600 hover:bg-cobalt-500 active:bg-cobalt-700 rounded-md transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+                            >
+                              Save Settings
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                navigateTo('encounter');
+                              }}
+                              className="px-4 py-2 text-sm font-semibold text-ink hover:bg-paper-2 active:bg-paper-3 border border-line rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </ErrorBoundary>
                 )}
 

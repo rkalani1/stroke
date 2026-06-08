@@ -105,7 +105,6 @@ function buildHtml(table) {
     `<th style="padding: 12px 16px; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; border-bottom: 3px solid ${HTML_GOLD}; width: ${width};">${label}</th>`;
 
   return `<div style="overflow-x: auto; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;">
-  <p style="font-size: 12px; color: #B91C1C; margin: 0 0 8px;"><strong>Synthetic public demo — not for clinical decision-making.</strong> First-pass ClinicalTrials.gov check; not a complete eligibility protocol.</p>
   <h3 style="font-size: 16px; color: #0F172A; margin: 0 0 8px;">${escHtml(table.title)}</h3>
   <table style="width: 100%; border-collapse: collapse; border: 1px solid #E2E8F0; font-size: 14px; text-align: left; background-color: #FFFFFF;">
     <thead>
@@ -126,8 +125,6 @@ ${rows}
 function buildMarkdown(table) {
   const lines = [];
   lines.push(`### ${table.title}`);
-  lines.push('');
-  lines.push('> Synthetic public demo — not for clinical decision-making. First-pass ClinicalTrials.gov check; not a complete eligibility protocol.');
   lines.push('');
   lines.push('| Study | Hypothesis / Summary | Eligibility | Key Exclusions |');
   lines.push('| --- | --- | --- | --- |');
@@ -308,16 +305,7 @@ export function EligibilityTables({ copyToClipboard, addToast }) {
 
   return (
     <div className="space-y-4">
-      {/* Compliance banner */}
-      <div className="rounded-md border-l-4 border-crit-600 bg-crit-50 px-4 py-3">
-        <p className="text-xs text-crit-800">
-          <span className="font-bold">Synthetic public demo — not for clinical decision-making.</span>{' '}
-          {ELIGIBILITY_COMPLIANCE_NOTE.replace(
-            'Synthetic public demo — not for clinical decision-making. ',
-            ''
-          )}
-        </p>
-      </div>
+
 
       {/* Category filter */}
       <div

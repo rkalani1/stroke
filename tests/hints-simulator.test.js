@@ -14,7 +14,7 @@ describe('HINTS+ simulator — classifier', () => {
     const r = classifyHints({ ...DEFAULT_FINDINGS, hit: 'normal' });
     expect(r.isCentralHIT).toBe(true);
     expect(r.isCentral).toBe(true);
-    expect(r.profile).toBe('CENTRAL STROKE PROFILE (INFARCT ALARM)');
+    expect(r.profile).toBe('CENTRAL WARNING PATTERN - URGENT STROKE EVALUATION');
   });
 
   it('does NOT flag central when the head-impulse is abnormal (peripheral)', () => {

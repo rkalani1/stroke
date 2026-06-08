@@ -490,13 +490,7 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
 
   return (
     <div className="space-y-4">
-      {/* Compliance banner */}
-      <div className="rounded-md border-l-4 border-crit-600 bg-crit-50 px-4 py-3 dark:border-crit-500 dark:bg-crit-950">
-        <p className="text-xs text-crit-800 dark:text-crit-200">
-          <span className="font-bold">Synthetic public demo — not for clinical decision-making.</span>{' '}
-          {COMPLIANCE_BANNER.replace('Synthetic public demo — not for clinical decision-making. ', '')}
-        </p>
-      </div>
+
 
       {/* Sub-view toggle */}
       <div className="inline-flex p-1 rounded-md bg-slate-100" role="tablist" aria-label="Trial screener view">
