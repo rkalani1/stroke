@@ -1140,8 +1140,9 @@ async function main() {
           <text x="367" y="36" fill="rgba(255,255,255,0.8)" font-size="7pt" font-family="IBM Plex Sans" text-anchor="middle">Non-Cardioembolic Onset</text>
           <path d="M 367 45 L 367 60 M 120 60 L 615 60 M 120 60 L 120 75 M 367 60 L 367 75 M 615 60 L 615 75" stroke="var(--purple)" stroke-width="1.5" fill="none"/>
           <rect x="35" y="75" width="170" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5"/>
-          <text x="120" y="90" fill="var(--teal-deep)" font-size="8pt" font-family="Outfit" font-weight="700" text-anchor="middle">Symptomatic IC Stenosis</text>
-          <text x="120" y="102" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Sans" text-anchor="middle">70-99% Stenosis (SAMMPRIS)</text>
+          <text x="120" y="87" fill="var(--teal-deep)" font-size="7.5pt" font-family="Outfit" font-weight="700" text-anchor="middle">Symptomatic Intracranial</text>
+          <text x="120" y="97" fill="var(--teal-deep)" font-size="7.5pt" font-family="Outfit" font-weight="700" text-anchor="middle">Atherosclerotic Stenosis</text>
+          <text x="120" y="108" fill="var(--ink-soft)" font-size="7pt" font-family="IBM Plex Sans" text-anchor="middle">70-99% Stenosis (SAMMPRIS)</text>
           <path d="M 120 115 L 120 140" stroke="var(--teal)" stroke-width="1.5" fill="none"/>
           <polygon points="120,145 117,137 123,137" fill="var(--teal)" />
           <rect x="35" y="145" width="170" height="40" rx="6" fill="white" stroke="var(--teal)" stroke-width="2" style="filter: drop-shadow(0 2px 4px var(--teal-glow))"/>
@@ -1223,7 +1224,7 @@ async function main() {
             </tr>
             <tr style="background: var(--teal-soft);">
               <td style="font-weight: 700; color: var(--teal-deep);">SAMMPRIS Trial</td>
-              <td>Severe symptomatic stenosis (70-99%) of major intracranial artery.</td>
+              <td>Severe symptomatic atherosclerotic stenosis (70-99%) of a major intracranial artery.</td>
               <td><strong>Aspirin 325 mg</strong> +<br/><strong>Clopidogrel 75 mg</strong> (no load)</td>
               <td><strong>Clopidogrel 75mg qD</strong> +<br/>Aspirin for <strong>90 days</strong></td>
               <td>Aspirin</td>
