@@ -894,7 +894,7 @@ async function main() {
               <h3>1. Large-Artery Atherosclerosis (LAA)</h3>
               <ul class="toast-card-list">
                 <li><strong>Clinical:</strong> Cortical signs (aphasia, neglect, gaze deviation) or brainstem/cerebellar syndrome.</li>
-                <li><strong>Imaging:</strong> Cortical or subcortical/cerebellar/brainstem infarct matching the vascular territory (no strict size threshold, though typically &gt; 1.5 cm for subcortical lesions).</li>
+                <li><strong>Imaging:</strong> Cortical or subcortical/cerebellar/brainstem infarct matching the vascular territory.</li>
                 <li><strong>Vascular:</strong> <strong>&gt; 50% stenosis</strong> or occlusion of the relevant major extracranial (carotid, vertebral) or intracranial artery.</li>
                 <li><strong>Exclusion:</strong> Must exclude a high-risk cardioembolic source.</li>
               </ul>
