@@ -2140,7 +2140,6 @@ async function main() {
     <body>
       <div class="container">
         <h1>Cervical Artery Dissection</h1>
-        <p class="subtitle">Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence.</p>
 
         <svg viewBox="0 0 735 110" style="width: 100%; height: 110px; margin-bottom: 8px;">
           <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
@@ -2222,9 +2221,9 @@ async function main() {
           <div class="box box-teal">
             <span class="box-title">2. Diagnostic Workup</span>
             <ul style="margin: 0; padding-left: 12px; font-size: 7.8pt; line-height: 1.4; color: var(--ink-soft)">
-              <li><strong>CTA Head/Neck</strong>: First-line. Shows string sign, dissection flap, pseudoaneurysm, or occlusion.</li>
+              <li><strong>CTA Head/Neck</strong>: Shows string sign, dissection flap, pseudoaneurysm, or occlusion.</li>
               <li><strong>MRI Neck (T1 Fat-Sat)</strong>: Pathognomonic crescent sign (intramural hematoma).</li>
-              <li><strong>DSA</strong>: Gold standard; reserve for diagnostic doubt or stenting.</li>
+              <li><strong>DSA</strong>: Reserve for diagnostic doubt or stenting.</li>
               <li><strong>Screening</strong>: Assess for FMD/connective tissue disease if spontaneous/recurrent.</li>
             </ul>
           </div>

@@ -2519,7 +2519,6 @@ const CervicalDissectionView = () => {
   return (
     <PdfActionBar
       title="Cervical Artery Dissection"
-      subtitle="CeAD Clinical & Trial Reference Guide"
       pdfPath="documents/references/Cervical Artery Dissection.pdf"
       pdfName="Cervical Artery Dissection.pdf"
       iconColorClass="text-blue-600 dark:text-blue-400"
@@ -2538,10 +2537,7 @@ export function CervicalDissectionCard() {
       <div className="card-wrapper card-cervical-dissection">
         <div className="card-container" style={{boxSizing: 'border-box'}}>
           <div className="card-content">
-            <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Cervical Artery Dissection</h1>
-            <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '8px', textAlign: 'center', fontWeight: '500'}}>
-              Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence.
-            </p>
+            <h1 style={{textAlign: 'center', marginBottom: '8px'}}>Cervical Artery Dissection</h1>
 
             {/* Anatomical Dissection Diagram (Inline SVG - Longitudinal + Cross-Sectional Dual View) */}
             <svg viewBox="0 0 735 110" style={{width: '100%', height: '110px', marginBottom: '8px'}}>
@@ -2643,9 +2639,9 @@ export function CervicalDissectionCard() {
               <div style={{border: '1.5px solid var(--teal)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--teal-soft) 0%, #ffffff 100%)'}}>
                 <strong style={{color: 'var(--teal-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>2. Diagnostic Workup</strong>
                 <ul style={{margin: '0', paddingLeft: '12px', fontSize: '7.8pt', lineHeight: '1.4', color: 'var(--ink-soft)'}}>
-                  <li><strong>CTA Head/Neck</strong>: First-line. Shows string sign, dissection flap, pseudoaneurysm, or occlusion.</li>
+                  <li><strong>CTA Head/Neck</strong>: Shows string sign, dissection flap, pseudoaneurysm, or occlusion.</li>
                   <li><strong>MRI Neck (T1 Fat-Sat)</strong>: Pathognomonic crescent sign (intramural hematoma).</li>
-                  <li><strong>DSA</strong>: Gold standard; reserve for diagnostic doubt or stenting.</li>
+                  <li><strong>DSA</strong>: Reserve for diagnostic doubt or stenting.</li>
                   <li><strong>Screening</strong>: Assess for FMD/connective tissue disease if spontaneous/recurrent.</li>
                 </ul>
               </div>
