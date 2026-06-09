@@ -2135,7 +2135,14 @@ async function main() {
           color: var(--teal-deep);
           text-decoration: underline;
           font-weight: 600;
-            <!-- Anatomy & Dissection SVG -->
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>Cervical Artery Dissection</h1>
+
+        <!-- Anatomy & Dissection SVG -->
         <div style="width: 100%; height: 120px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 8px;">
           <svg viewBox="0 0 735 110" style="width: 100%; height: 100%;">
             <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
