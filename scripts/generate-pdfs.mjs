@@ -1955,7 +1955,7 @@ async function main() {
       <style>
         @page {
           size: letter;
-          margin: 0.16in 0.16in 0.16in 0.16in;
+          margin: 0.14in 0.16in 0.14in 0.16in;
         }
         :root {
           --fill-soft: #f8f7fa;
@@ -2101,8 +2101,8 @@ async function main() {
         .trial-table {
           width: 100%;
           border-collapse: collapse;
-          font-size: 7.1pt;
-          line-height: 1.2;
+          font-size: 6.8pt;
+          line-height: 1.15;
           color: var(--ink);
         }
         .trial-table th {
@@ -2114,7 +2114,7 @@ async function main() {
           text-align: left;
         }
         .trial-table td {
-          padding: 2.2px 0;
+          padding: 1.5px 0;
           vertical-align: top;
           border-bottom: 1px solid var(--rule-soft);
         }
@@ -2143,7 +2143,7 @@ async function main() {
         <h1>Cervical Artery Dissection</h1>
 
         <!-- Anatomy & Dissection SVG -->
-        <div style="width: 100%; height: 120px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 8px;">
+        <div style="width: 100%; height: 100px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 6px;">
           <svg viewBox="0 0 735 110" style="width: 100%; height: 100%;">
             <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
             <path d="M 20 25 L 430 25 M 20 85 L 430 85" stroke="#4A5A6D" stroke-width="3" stroke-linecap="round" />
@@ -2199,7 +2199,7 @@ async function main() {
           </svg>
         </div>
         <!-- Stroke Mechanisms (PNG) -->
-        <div style="width: 100%; height: 130px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 8px;">
+        <div style="width: 100%; height: 105px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 6px;">
           <img src="${dissectionStrokeMechanismsBase64}" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
         </div>
 
