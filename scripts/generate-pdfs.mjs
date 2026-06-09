@@ -1955,7 +1955,7 @@ async function main() {
       <style>
         @page {
           size: letter;
-          margin: 0.12in 0.14in 0.12in 0.14in;
+          margin: 0.08in 0.12in 0.08in 0.12in;
         }
         :root {
           --fill-soft: #f8f7fa;
@@ -2034,10 +2034,10 @@ async function main() {
           font-weight: 500;
         }
         .box {
-          border-radius: 8px;
-          padding: 4px 8px;
+          border-radius: 6px;
+          padding: 3px 6px;
           box-sizing: border-box;
-          margin-bottom: 4px;
+          margin-bottom: 3px;
         }
         .box-purple {
           border: 1.5px solid var(--purple);
@@ -2054,7 +2054,7 @@ async function main() {
         .box-amber {
           border: 1.5px solid var(--amber);
           background: linear-gradient(135deg, var(--amber-soft) 0%, #ffffff 100%);
-          margin-bottom: 3px;
+          margin-bottom: 2px;
         }
         .box-title {
           font-family: 'Outfit', sans-serif;
@@ -2072,8 +2072,8 @@ async function main() {
           display: grid;
           grid-template-columns: 1.25fr 0.85fr 0.9fr;
           gap: 6px;
-          font-size: 7.4pt;
-          line-height: 1.3;
+          font-size: 6.8pt;
+          line-height: 1.2;
           color: var(--ink-soft);
         }
         .col-divider {
@@ -2084,14 +2084,14 @@ async function main() {
           display: grid;
           grid-template-columns: 0.8fr 1.2fr;
           gap: 5px;
-          margin-bottom: 4px;
+          margin-bottom: 3px;
         }
         .management-split {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 8px;
-          font-size: 7.3pt;
-          line-height: 1.3;
+          font-size: 6.8pt;
+          line-height: 1.2;
           color: var(--ink-soft);
         }
         .management-divider {
@@ -2101,8 +2101,8 @@ async function main() {
         .trial-table {
           width: 100%;
           border-collapse: collapse;
-          font-size: 6.8pt;
-          line-height: 1.15;
+          font-size: 6.2pt;
+          line-height: 1.1;
           color: var(--ink);
         }
         .trial-table th {
@@ -2114,7 +2114,7 @@ async function main() {
           text-align: left;
         }
         .trial-table td {
-          padding: 1.2px 0;
+          padding: 0.8px 0;
           vertical-align: top;
           border-bottom: 1px solid var(--rule-soft);
         }
@@ -2127,8 +2127,8 @@ async function main() {
           background: linear-gradient(135deg, var(--fill-soft) 0%, #ffffff 100%);
           border-left: 4px solid var(--purple);
           border-radius: 4px;
-          font-size: 7pt;
-          line-height: 1.2;
+          font-size: 6.2pt;
+          line-height: 1.1;
           color: var(--ink-soft);
         }
         .ref-citation a {
@@ -2143,7 +2143,7 @@ async function main() {
         <h1>Cervicocranial Artery Dissection</h1>
 
         <!-- Anatomy & Dissection SVG -->
-        <div style="width: 100%; height: 120px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 4px;">
+        <div style="width: 100%; height: 105px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 4px;">
           <svg viewBox="0 0 735 110" style="width: 100%; height: 100%;">
             <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
             <path d="M 20 25 L 430 25 M 20 85 L 430 85" stroke="#4A5A6D" stroke-width="3" stroke-linecap="round" />
@@ -2199,7 +2199,7 @@ async function main() {
           </svg>
         </div>
         <!-- Stroke Mechanisms (PNG) -->
-        <div style="width: 100%; height: 190px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 4px;">
+        <div style="width: 100%; height: 290px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 4px;">
           <img src="${dissectionStrokeMechanismsBase64}" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
         </div>
 
