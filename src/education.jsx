@@ -2699,7 +2699,7 @@ export function CervicocranialDissectionCard() {
       <div className="card-wrapper card-cervical-dissection">
         <div className="card-container" style={{boxSizing: 'border-box'}}>
           <div className="card-content">
-            <h1 style={{textAlign: 'center', marginBottom: '8px'}}>Cervicocranial Artery Dissection</h1>
+            <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Cervicocranial Artery Dissection</h1>
 
             {/* Diagrams Banner - Stacked Vertically (No Toggling, Optimally Seen on Page) */}
             {/* Anatomy & Dissection SVG */}
@@ -2715,8 +2715,8 @@ export function CervicocranialDissectionCard() {
                 border: '1.5px solid var(--rule-soft)', 
                 overflow: 'hidden', 
                 boxSizing: 'border-box', 
-                marginBottom: '8px',
-                padding: '6px'
+                marginBottom: '4px',
+                padding: '4px'
               }}
               title="Anatomy Diagram"
             >
@@ -2727,7 +2727,7 @@ export function CervicocranialDissectionCard() {
             <div 
               style={{
                 width: '100%', 
-                height: '360px', 
+                height: '320px', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
@@ -2736,7 +2736,7 @@ export function CervicocranialDissectionCard() {
                 border: '1.5px solid var(--rule-soft)', 
                 overflow: 'hidden', 
                 boxSizing: 'border-box', 
-                marginBottom: '8px'
+                marginBottom: '4px'
               }}
               title="Stroke Mechanisms"
             >
@@ -2758,8 +2758,8 @@ export function CervicocranialDissectionCard() {
               </div>
             </div>
 
-            <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%)', marginBottom: '8px'}}>
-              <strong style={{color: 'var(--purple-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>1. Clinical Presentation &amp; Pathophysiology</strong>
+            <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '6px 8px', background: 'linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%)', marginBottom: '4px'}}>
+              <strong style={{color: 'var(--purple-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '2px'}}>1. Clinical Presentation &amp; Pathophysiology</strong>
               <div style={{display: 'grid', gridTemplateColumns: '1.2fr 0.8fr 1fr', gap: '12px', fontSize: '7.8pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
                 <div>
                   <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Ipsilateral Pain &amp; Onset</strong>
@@ -2781,9 +2781,9 @@ export function CervicocranialDissectionCard() {
             </div>
 
             {/* Section 2 & 3 Grid */}
-            <div style={{display: 'grid', gridTemplateColumns: '0.8fr 1.2fr', gap: '8px', marginBottom: '8px'}}>
+            <div style={{display: 'grid', gridTemplateColumns: '0.8fr 1.2fr', gap: '8px', marginBottom: '4px'}}>
               {/* Section 2: Diagnostic Workup */}
-              <div style={{border: '1.5px solid var(--teal)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--teal-soft) 0%, #ffffff 100%)'}}>
+              <div style={{border: '1.5px solid var(--teal)', borderRadius: '8px', padding: '6px 8px', background: 'linear-gradient(135deg, var(--teal-soft) 0%, #ffffff 100%)'}}>
                 <strong style={{color: 'var(--teal-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>2. Diagnostic Workup</strong>
                 <ul style={{margin: '0', paddingLeft: '12px', fontSize: '7.8pt', lineHeight: '1.4', color: 'var(--ink-soft)'}}>
                   <li><strong>CTA Head/Neck</strong>: Shows string sign, dissection flap, pseudoaneurysm, or occlusion.</li>
@@ -2794,7 +2794,7 @@ export function CervicocranialDissectionCard() {
               </div>
 
               {/* Section 3: Medical Management */}
-              <div style={{border: '1.5px solid var(--red)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--red-soft) 0%, #ffffff 100%)'}}>
+              <div style={{border: '1.5px solid var(--red)', borderRadius: '8px', padding: '6px 8px', background: 'linear-gradient(135deg, var(--red-soft) 0%, #ffffff 100%)'}}>
                 <strong style={{color: 'var(--red-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>3. Medical Management: Extracranial vs. Intracranial Dissection</strong>
                 <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '7.6pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
                   <div>
@@ -2819,8 +2819,8 @@ export function CervicocranialDissectionCard() {
             </div>
 
             {/* Section 4: Landmark Trials */}
-            <div style={{border: '1.5px solid var(--amber)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--amber-soft) 0%, #ffffff 100%)', marginBottom: '6px'}}>
-              <strong style={{color: 'var(--amber-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>4. Landmark Trial &amp; Cohort Evidence</strong>
+            <div style={{border: '1.5px solid var(--amber)', borderRadius: '8px', padding: '6px 8px', background: 'linear-gradient(135deg, var(--amber-soft) 0%, #ffffff 100%)', marginBottom: '4px'}}>
+              <strong style={{color: 'var(--amber-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '2px'}}>4. Landmark Trial &amp; Cohort Evidence</strong>
               <table style={{width: '100%', borderCollapse: 'collapse', fontSize: '7.0pt', lineHeight: '1.2', color: 'var(--ink)'}}>
                 <thead>
                   <tr style={{borderBottom: '1.5px solid var(--amber)', color: 'var(--amber-deep)', fontWeight: '700'}}>
@@ -2871,7 +2871,7 @@ export function CervicocranialDissectionCard() {
             </div>
 
             {/* Citations footer */}
-            <div className="ref-citation" style={{marginTop: 'auto', padding: '4px 8px', fontSize: '7.3pt', lineHeight: '1.2'}}>
+            <div className="ref-citation" style={{marginTop: 'auto', padding: '2px 6px', fontSize: '7.3pt', lineHeight: '1.2'}}>
               <strong>CADISS:</strong> *Lancet Neurol*. 2015;14(4):361-7. <a href="https://pubmed.ncbi.nlm.nih.gov/25684164/" target="_blank">PMID: 25684164</a> | <strong>TREAT-CAD:</strong> *Lancet Neurol*. 2021;20(5):341-350. <a href="https://pubmed.ncbi.nlm.nih.gov/33765420/" target="_blank">PMID: 33765420</a><br/>
               <strong>Kaufmann IPD:</strong> *JAMA Neurol*. 2024;81(6):630-637. <a href="https://pubmed.ncbi.nlm.nih.gov/38739383/" target="_blank">PMID: 38739383</a> | <strong>STOP-CAD:</strong> *Stroke*. 2024;55(4):908-918. <a href="https://pubmed.ncbi.nlm.nih.gov/38334460/" target="_blank">PMID: 38334460</a> | <strong>AHA/ASA:</strong> *Stroke*. 2021;52:e364-e467. <a href="https://pubmed.ncbi.nlm.nih.gov/34024117/" target="_blank">PMID: 34024117</a> | <strong>AHA Statement 2024:</strong> *Stroke*. 2024;55:e84-e107. <a href="https://pubmed.ncbi.nlm.nih.gov/38301552/" target="_blank">PMID: 38301552</a> | <strong>ESO Guideline 2021:</strong> *Eur Stroke J*. 2021;6(3):XXXIX-LXXXVIII. <a href="https://pubmed.ncbi.nlm.nih.gov/34528453/" target="_blank">PMID: 34528453</a>
             </div>
