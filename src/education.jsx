@@ -2626,7 +2626,8 @@ export function CervicalDissectionCard() {
             <div 
               style={{
                 width: '100%', 
-                height: 'auto', 
+                aspectRatio: '1 / 1',
+                maxHeight: '380px', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
@@ -2642,7 +2643,7 @@ export function CervicalDissectionCard() {
               <img 
                 src="assets/dissection_stroke_mechanisms.png" 
                 alt="Cervical Artery Dissection Stroke Mechanisms" 
-                style={{width: '100%', height: 'auto', display: 'block', objectFit: 'contain'}}
+                style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
               />
             </div>
 
