@@ -330,9 +330,9 @@ const EDUCATION_MODULES = [
     ]
   },
   {
-    id: 'cervicocranial-dissection',
-    title: 'Cervicocranial Artery Dissection',
-    purpose: 'Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence (CADISS, TREAT-CAD, STOP-CAD, and 2024 IPD meta-analysis) for cervicocranial artery dissection.',
+    id: 'cervical-dissection',
+    title: 'Cervical Artery Dissection',
+    purpose: 'Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence (CADISS, TREAT-CAD, STOP-CAD, and 2024 IPD meta-analysis) for cervical artery dissection.',
     actions: 'carotid vertebral dissection horner syndrome treat-cad cadiss stop-cad antiplatelet anticoagulation pseudoaneurysm pain ipsilateral headache neck yaghi kaufmann',
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-06-09',
@@ -344,6 +344,20 @@ const EDUCATION_MODULES = [
       { label: 'AHA/ASA 2021 Guideline', citation: 'Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.', pmid: '34024117' },
       { label: 'AHA Statement 2024', citation: 'Treatment and Outcomes of Cervical Artery Dissection in Adults. Stroke. 2024;55(3):e84-e107.', pmid: '38301552' },
       { label: 'ESO Guideline 2021', citation: 'European Stroke Organisation guideline for the management of extracranial and intracranial artery dissection. Eur Stroke J. 2021;6(3):XXXIX-LXXXVIII.', pmid: '34528453' }
+    ]
+  },
+  {
+    id: 'fibromuscular-dysplasia',
+    title: 'Fibromuscular Dysplasia & Stroke',
+    purpose: 'Pathophysiology, angiographic classification (multifocal vs. focal), clinical presentation, brain-to-pelvis screening guidelines, and medical/endovascular management of fibromuscular dysplasia (FMD) in stroke patients.',
+    actions: 'fmd fibromuscular dysplasia beading string of beads stenosis renal aneurysm carotid vertebral dissection screening vascular consensus',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-06-09',
+    references: [
+      { label: 'AHA Scientific Statement', citation: 'Olin JW, et al. Fibromuscular dysplasia: state of the science and critical unanswered questions: a scientific statement from the American Heart Association. Circulation. 2014;129(9):1048-1078.', pmid: '24554781' },
+      { label: 'First International Consensus', citation: 'Gornik HL, et al. First International Consensus on the Diagnosis and Management of Fibromuscular Dysplasia. Vasc Med. 2019;24(2):164-189.', pmid: '30642231' },
+      { label: 'US Registry for FMD', citation: 'Olin JW, et al. The United States Registry for Fibromuscular Dysplasia: results in the first 447 patients. Circulation. 2012;125(25):3186-3195.', pmid: '22615343' },
+      { label: 'European FMD Registry', citation: 'Persu A, et al. International consensus on fibromuscular dysplasia: European/International Fibromuscular Dysplasia Registry. J Hypertens. 2021;39(10):2036-2045.', pmid: '33935216' }
     ]
   }
 ];
@@ -830,8 +844,10 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
           <StkCoreMeasuresCard />
         </ScaledCardWrapper>
       );
-    case 'cervicocranial-dissection':
-      return <CervicocranialDissectionView />;
+    case 'cervical-dissection':
+      return <CervicalDissectionView />;
+    case 'fibromuscular-dysplasia':
+      return <FibromuscularDysplasiaView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -2336,7 +2352,7 @@ export const ICPInfographic = () => {
                   <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <span className="font-bold text-red-600 dark:text-red-400">*Cushing triad is a LATE sign of brainstem compression.*</span></li>
                 </ul>
               </div>
-              <div className="w-full md:w-[48%] flex justify-center items-center p-1.5 bg-white dark:bg-slate-950 rounded-lg border border-orange-200 dark:border-orange-900 shrink-0">
+              <div className="w-full md:w-[42%] flex justify-center items-center p-1.5 bg-white dark:bg-slate-950 rounded-lg border border-orange-200 dark:border-orange-900 shrink-0">
                 <div 
                   className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full"
                   onClick={() => setLightboxImage({ src: 'assets/herniation_diagram.png', alt: 'Brain Herniation Diagram', title: 'Brain Herniation Syndromes' })}
@@ -2344,7 +2360,7 @@ export const ICPInfographic = () => {
                   <img 
                     src="assets/herniation_diagram.png" 
                     alt="Brain Herniation Diagram" 
-                    className="max-h-[220px] object-contain rounded-md transition-transform duration-200 group-hover:scale-105"
+                    className="max-h-[160px] object-contain rounded-md transition-transform duration-200 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
                     <span className="text-[10px] text-white font-semibold bg-black/60 px-2 py-1 rounded-md flex items-center gap-1">
@@ -2616,23 +2632,23 @@ export function StkCoreMeasuresCard() {
   );
 }
 
-const CervicocranialDissectionView = () => {
+const CervicalDissectionView = () => {
   return (
     <PdfActionBar
-      title="Cervicocranial Artery Dissection"
-      pdfPath="documents/references/Cervicocranial Artery Dissection.pdf"
-      pdfName="Cervicocranial Artery Dissection.pdf"
+      title="Cervical Artery Dissection"
+      pdfPath="documents/references/Cervical Artery Dissection.pdf"
+      pdfName="Cervical Artery Dissection.pdf"
       iconColorClass="text-blue-600 dark:text-blue-400"
     >
       <ScaledCardWrapper isLandscape={false}>
         <BedsidePocketCardsStyles />
-        <CervicocranialDissectionCard />
+        <CervicalDissectionCard />
       </ScaledCardWrapper>
     </PdfActionBar>
   );
 };
 
-export function CervicocranialDissectionCard() {
+export function CervicalDissectionCard() {
   const [lightboxImage, setLightboxImage] = useState(null);
   const [svgHover, setSvgHover] = useState(false);
   const [pngHover, setPngHover] = useState(false);
@@ -2682,7 +2698,7 @@ export function CervicocranialDissectionCard() {
       <circle cx="675" cy="40" r="1.5" fill="var(--amber)" opacity="0.3" />
       <text x="650" y="44" fill="var(--red-deep)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Hematoma</text>
       <text x="650" y="73" fill="var(--teal-deep)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">True Lumen</text>
-      <text x="650" y="96" fill="var(--ink-soft)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Cervicocranial ICA Dissection</text>
+      <text x="650" y="96" fill="var(--ink-soft)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Cervical ICA Dissection</text>
       <defs>
         <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
           <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--red)" />
@@ -2699,7 +2715,7 @@ export function CervicocranialDissectionCard() {
       <div className="card-wrapper card-cervical-dissection">
         <div className="card-container" style={{boxSizing: 'border-box'}}>
           <div className="card-content">
-            <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Cervicocranial Artery Dissection</h1>
+            <h1 style={{textAlign: 'center', marginBottom: '8px'}}>Cervical Artery Dissection</h1>
 
             {/* Diagrams Banner - Stacked Vertically (No Toggling, Optimally Seen on Page) */}
             {/* Anatomy & Dissection SVG */}
@@ -2715,8 +2731,8 @@ export function CervicocranialDissectionCard() {
                 border: '1.5px solid var(--rule-soft)', 
                 overflow: 'hidden', 
                 boxSizing: 'border-box', 
-                marginBottom: '4px',
-                padding: '4px'
+                marginBottom: '8px',
+                padding: '6px'
               }}
               title="Anatomy Diagram"
             >
@@ -2727,7 +2743,7 @@ export function CervicocranialDissectionCard() {
             <div 
               style={{
                 width: '100%', 
-                height: '320px', 
+                height: '150px', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
@@ -2736,17 +2752,17 @@ export function CervicocranialDissectionCard() {
                 border: '1.5px solid var(--rule-soft)', 
                 overflow: 'hidden', 
                 boxSizing: 'border-box', 
-                marginBottom: '4px'
+                marginBottom: '8px'
               }}
               title="Stroke Mechanisms"
             >
               <div 
                 className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full h-full"
-                onClick={() => setLightboxImage({ src: 'assets/dissection_stroke_mechanisms.png', alt: 'Cervicocranial Artery Dissection Stroke Mechanisms', title: 'Stroke Mechanisms in Cervicocranial Artery Dissection' })}
+                onClick={() => setLightboxImage({ src: 'assets/dissection_stroke_mechanisms.png', alt: 'Cervical Artery Dissection Stroke Mechanisms', title: 'Stroke Mechanisms in Cervical Artery Dissection' })}
               >
                 <img 
                   src="assets/dissection_stroke_mechanisms.png" 
-                  alt="Cervicocranial Artery Dissection Stroke Mechanisms" 
+                  alt="Cervical Artery Dissection Stroke Mechanisms" 
                   style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
                   className="transition-transform duration-200 group-hover:scale-[1.02]"
                 />
@@ -2758,8 +2774,8 @@ export function CervicocranialDissectionCard() {
               </div>
             </div>
 
-            <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '6px 8px', background: 'linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%)', marginBottom: '4px'}}>
-              <strong style={{color: 'var(--purple-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '2px'}}>1. Clinical Presentation &amp; Pathophysiology</strong>
+            <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%)', marginBottom: '8px'}}>
+              <strong style={{color: 'var(--purple-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>1. Clinical Presentation &amp; Pathophysiology</strong>
               <div style={{display: 'grid', gridTemplateColumns: '1.2fr 0.8fr 1fr', gap: '12px', fontSize: '7.8pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
                 <div>
                   <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Ipsilateral Pain &amp; Onset</strong>
@@ -2781,9 +2797,9 @@ export function CervicocranialDissectionCard() {
             </div>
 
             {/* Section 2 & 3 Grid */}
-            <div style={{display: 'grid', gridTemplateColumns: '0.8fr 1.2fr', gap: '8px', marginBottom: '4px'}}>
+            <div style={{display: 'grid', gridTemplateColumns: '0.8fr 1.2fr', gap: '8px', marginBottom: '8px'}}>
               {/* Section 2: Diagnostic Workup */}
-              <div style={{border: '1.5px solid var(--teal)', borderRadius: '8px', padding: '6px 8px', background: 'linear-gradient(135deg, var(--teal-soft) 0%, #ffffff 100%)'}}>
+              <div style={{border: '1.5px solid var(--teal)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--teal-soft) 0%, #ffffff 100%)'}}>
                 <strong style={{color: 'var(--teal-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>2. Diagnostic Workup</strong>
                 <ul style={{margin: '0', paddingLeft: '12px', fontSize: '7.8pt', lineHeight: '1.4', color: 'var(--ink-soft)'}}>
                   <li><strong>CTA Head/Neck</strong>: Shows string sign, dissection flap, pseudoaneurysm, or occlusion.</li>
@@ -2794,7 +2810,7 @@ export function CervicocranialDissectionCard() {
               </div>
 
               {/* Section 3: Medical Management */}
-              <div style={{border: '1.5px solid var(--red)', borderRadius: '8px', padding: '6px 8px', background: 'linear-gradient(135deg, var(--red-soft) 0%, #ffffff 100%)'}}>
+              <div style={{border: '1.5px solid var(--red)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--red-soft) 0%, #ffffff 100%)'}}>
                 <strong style={{color: 'var(--red-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>3. Medical Management: Extracranial vs. Intracranial Dissection</strong>
                 <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '7.6pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
                   <div>
@@ -2808,19 +2824,19 @@ export function CervicocranialDissectionCard() {
                     <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Intracranial &amp; Pseudoaneurysms</strong>
                     <br/>• <strong>SAH</strong>: Lack external elastic lamina &amp; thin adventitia; rupture risk.
                     <br/>• <strong>Anticoagulation</strong>: Avoided if SAH present. Prefer single antiplatelet.
-                    <br/>• <strong>IVT Caution</strong>: IVT is safe in extracranial CCAD (Class I) but safety/efficacy in cases with intracranial extension is not well established (AHA 2024).
+                    <br/>• <strong>IVT Caution</strong>: IVT is safe in extracranial CeAD (Class I) but safety/efficacy in cases with intracranial extension is not well established (AHA 2024).
                     <br/>• <strong>Stenting</strong>: Reserve for recurrent ischemia despite optimal medical therapy or severe flow-limiting stenosis.
                   </div>
                   <div style={{gridColumn: '1 / -1', borderTop: '1px dashed var(--red)', paddingTop: '6.5px', marginTop: '4px', fontSize: '7.4pt'}}>
-                    • <strong>Recurrence &amp; Activity</strong>: Long-term CCAD recurrence is low (~1%/yr). Avoid high-risk neck activities (chiropractic neck manipulation, rollercoasters, extreme hyperextension/rotation) for secondary prevention.
+                    • <strong>Recurrence &amp; Activity</strong>: Long-term CeAD recurrence is low (~1%/yr). Avoid high-risk neck activities (chiropractic neck manipulation, rollercoasters, extreme hyperextension/rotation) for secondary prevention.
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Section 4: Landmark Trials */}
-            <div style={{border: '1.5px solid var(--amber)', borderRadius: '8px', padding: '6px 8px', background: 'linear-gradient(135deg, var(--amber-soft) 0%, #ffffff 100%)', marginBottom: '4px'}}>
-              <strong style={{color: 'var(--amber-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '2px'}}>4. Landmark Trial &amp; Cohort Evidence</strong>
+            <div style={{border: '1.5px solid var(--amber)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--amber-soft) 0%, #ffffff 100%)', marginBottom: '6px'}}>
+              <strong style={{color: 'var(--amber-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>4. Landmark Trial &amp; Cohort Evidence</strong>
               <table style={{width: '100%', borderCollapse: 'collapse', fontSize: '7.0pt', lineHeight: '1.2', color: 'var(--ink)'}}>
                 <thead>
                   <tr style={{borderBottom: '1.5px solid var(--amber)', color: 'var(--amber-deep)', fontWeight: '700'}}>
@@ -2833,7 +2849,7 @@ export function CervicocranialDissectionCard() {
                 <tbody>
                   <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
                     <td style={{fontWeight: '700', padding: '1.5px 0', verticalAlign: 'top'}}><strong>CADISS</strong><br/>2015</td>
-                    <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>N = 250. Extracranial CCAD. RCT.</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>N = 250. Extracranial CeAD. RCT.</td>
                     <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulant for 3 months.</td>
                     <td style={{padding: '1.5px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
                       • <strong>Primary Composite (Ipsilateral stroke or death at 3m)</strong>: 2.0% vs. 1.0% (p = 0.63). Established clinical equipoise.
@@ -2871,9 +2887,247 @@ export function CervicocranialDissectionCard() {
             </div>
 
             {/* Citations footer */}
-            <div className="ref-citation" style={{marginTop: 'auto', padding: '2px 6px', fontSize: '7.3pt', lineHeight: '1.2'}}>
+            <div className="ref-citation" style={{marginTop: 'auto', padding: '4px 8px', fontSize: '7.3pt', lineHeight: '1.2'}}>
               <strong>CADISS:</strong> *Lancet Neurol*. 2015;14(4):361-7. <a href="https://pubmed.ncbi.nlm.nih.gov/25684164/" target="_blank">PMID: 25684164</a> | <strong>TREAT-CAD:</strong> *Lancet Neurol*. 2021;20(5):341-350. <a href="https://pubmed.ncbi.nlm.nih.gov/33765420/" target="_blank">PMID: 33765420</a><br/>
               <strong>Kaufmann IPD:</strong> *JAMA Neurol*. 2024;81(6):630-637. <a href="https://pubmed.ncbi.nlm.nih.gov/38739383/" target="_blank">PMID: 38739383</a> | <strong>STOP-CAD:</strong> *Stroke*. 2024;55(4):908-918. <a href="https://pubmed.ncbi.nlm.nih.gov/38334460/" target="_blank">PMID: 38334460</a> | <strong>AHA/ASA:</strong> *Stroke*. 2021;52:e364-e467. <a href="https://pubmed.ncbi.nlm.nih.gov/34024117/" target="_blank">PMID: 34024117</a> | <strong>AHA Statement 2024:</strong> *Stroke*. 2024;55:e84-e107. <a href="https://pubmed.ncbi.nlm.nih.gov/38301552/" target="_blank">PMID: 38301552</a> | <strong>ESO Guideline 2021:</strong> *Eur Stroke J*. 2021;6(3):XXXIX-LXXXVIII. <a href="https://pubmed.ncbi.nlm.nih.gov/34528453/" target="_blank">PMID: 34528453</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {lightboxImage && (
+        <ImageLightbox 
+          src={lightboxImage.src} 
+          alt={lightboxImage.alt} 
+          title={lightboxImage.title} 
+          onClose={() => setLightboxImage(null)} 
+        />
+      )}
+    </div>
+  );
+}
+
+const FibromuscularDysplasiaView = () => {
+  return (
+    <PdfActionBar
+      title="Fibromuscular Dysplasia & Stroke"
+      pdfPath="documents/references/Fibromuscular Dysplasia.pdf"
+      pdfName="Fibromuscular Dysplasia.pdf"
+      iconColorClass="text-indigo-600 dark:text-indigo-400"
+    >
+      <ScaledCardWrapper isLandscape={false}>
+        <BedsidePocketCardsStyles />
+        <FibromuscularDysplasiaCard />
+      </ScaledCardWrapper>
+    </PdfActionBar>
+  );
+};
+
+export function FibromuscularDysplasiaCard() {
+  const [lightboxImage, setLightboxImage] = useState(null);
+
+  const renderSVG = () => (
+    <svg viewBox="0 0 735 120" style={{width: '100%', height: '100%'}}>
+      <rect x="0" y="0" width="735" height="120" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
+      
+      {/* --- NORMAL ARTERY --- */}
+      <text x="110" y="20" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">NORMAL ARTERY</text>
+      <path d="M 20 45 L 200 45 M 20 75 L 200 75" stroke="#4A5A6D" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M 20 48 L 200 48" stroke="#94a3b8" strokeWidth="1" fill="none" opacity="0.5" />
+      <path d="M 20 72 L 200 72" stroke="#94a3b8" strokeWidth="1" fill="none" opacity="0.5" />
+      <path d="M 20 48 L 200 48 L 200 72 L 20 72 Z" fill="var(--teal-soft)" opacity="0.15" />
+      <text x="110" y="63" fill="var(--teal-deep)" fontSize="6.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Smooth Laminar Flow</text>
+
+      <line x1="225" y1="10" x2="225" y2="110" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+      {/* --- MULTIFOCAL FMD --- */}
+      <text x="367" y="20" fill="var(--purple-deep)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MULTIFOCAL FMD (STRING-OF-BEADS)</text>
+      {/* Beaded top wall */}
+      <path d="M 250 45 C 265 35, 275 50, 290 35 C 305 50, 315 35, 330 50 C 345 35, 355 50, 370 35 C 385 50, 395 35, 410 50 C 425 35, 435 50, 450 35 C 465 50, 475 35, 490 45" stroke="var(--purple)" strokeWidth="3" fill="none" strokeLinecap="round" />
+      {/* Beaded bottom wall */}
+      <path d="M 250 75 C 265 85, 275 70, 290 85 C 305 70, 315 85, 330 70 C 345 85, 355 70, 370 85 C 385 70, 395 85, 410 70 C 425 85, 435 70, 450 85 C 465 70, 475 85, 490 75" stroke="var(--purple)" strokeWidth="3" fill="none" strokeLinecap="round" />
+      {/* Inner flow shading */}
+      <path d="M 250 45 C 265 35, 275 50, 290 35 C 305 50, 315 35, 330 50 C 345 35, 355 50, 370 35 C 385 50, 395 35, 410 50 C 425 35, 435 50, 450 35 C 465 50, 475 35, 490 45 L 490 75 C 475 85, 465 70, 450 85 C 435 70, 425 85, 410 70 C 395 85, 385 70, 370 85 C 355 70, 345 85, 330 70 C 315 85, 305 70, 290 85 C 275 70, 265 85, 250 75 Z" fill="var(--purple-soft)" opacity="0.3" />
+      
+      <text x="370" y="63" fill="var(--purple-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Alternating Stenosis &amp; Aneurysm</text>
+      <text x="370" y="103" fill="var(--ink-mute)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Medial Fibroplasia (&gt;90% of cases)</text>
+
+      <line x1="515" y1="10" x2="515" y2="110" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+      {/* --- FOCAL FMD --- */}
+      <text x="625" y="20" fill="var(--red-deep)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">FOCAL FMD</text>
+      {/* Concentric / Tubular Stenosis */}
+      <path d="M 540 45 L 590 45 L 610 57 L 640 57 L 660 45 L 710 45" stroke="var(--red)" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M 540 75 L 590 75 L 610 63 L 640 63 L 660 75 L 710 75" stroke="var(--red)" strokeWidth="3" fill="none" strokeLinecap="round" />
+      {/* Shading */}
+      <path d="M 540 45 L 590 45 L 610 57 L 640 57 L 660 45 L 710 45 L 710 75 L 660 75 L 640 63 L 610 63 L 590 75 L 540 75 Z" fill="var(--red-soft)" opacity="0.2" />
+
+      <text x="625" y="63" fill="var(--red-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Tubular Narrowing</text>
+      <text x="625" y="103" fill="var(--ink-mute)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Intimal Fibroplasia (&lt;10% of cases)</text>
+    </svg>
+  );
+
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-fibromuscular-dysplasia">
+        <div className="card-container" style={{boxSizing: 'border-box'}}>
+          <div className="card-content">
+            <h1 style={{textAlign: 'center', marginBottom: '8px'}}>Fibromuscular Dysplasia (FMD)</h1>
+
+            {/* SVG Diagram Banner */}
+            <div 
+              style={{
+                width: '100%', 
+                height: 'auto', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                background: 'var(--fill-soft)', 
+                borderRadius: '8px', 
+                border: '1.5px solid var(--rule-soft)', 
+                overflow: 'hidden', 
+                boxSizing: 'border-box', 
+                marginBottom: '8px',
+                padding: '6px'
+              }}
+              title="Vascular Classification of FMD"
+            >
+              {renderSVG()}
+            </div>
+
+            {/* Generated Image Banner */}
+            <div 
+              style={{
+                width: '100%', 
+                height: '150px', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                background: 'var(--fill-soft)', 
+                borderRadius: '8px', 
+                border: '1.5px solid var(--rule-soft)', 
+                overflow: 'hidden', 
+                boxSizing: 'border-box', 
+                marginBottom: '8px'
+              }}
+              title="Stroke Mechanisms &amp; Systemic Vascular Beds"
+            >
+              <div 
+                className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full h-full"
+                onClick={() => setLightboxImage({ src: 'assets/fmd_stroke_mechanisms.png', alt: 'Fibromuscular Dysplasia Stroke Mechanisms', title: 'Stroke Mechanisms &amp; Systemic Beds in FMD' })}
+              >
+                <img 
+                  src="assets/fmd_stroke_mechanisms.png" 
+                  alt="Fibromuscular Dysplasia Stroke Mechanisms" 
+                  style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
+                  className="transition-transform duration-200 group-hover:scale-[1.02]"
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
+                  <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
+                    <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Section 1: Pathophysiology, Presentation &amp; Screening */}
+            <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%)', marginBottom: '8px'}}>
+              <strong style={{color: 'var(--purple-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>1. Pathophysiology, Presentation &amp; Screening</strong>
+              <div style={{display: 'grid', gridTemplateColumns: '1.1fr 1.1fr 0.8fr', gap: '12px', fontSize: '7.8pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
+                <div>
+                  <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Pathology &amp; Demographics</strong>
+                  <br/>• <strong>Non-atherosclerotic, non-inflammatory</strong> vascular disease causing stenosis, dissection, aneurysm, or occlusion.
+                  <br/>• **Females** account for **80–90%** of cases; typical onset age ranges between **30–60 years**.
+                  <br/>• Renal arteries most common (~70%), followed by **internal carotid (ICA)** (~75%) and vertebral arteries.
+                </div>
+                <div style={{borderLeft: '1.5px dashed var(--purple)', paddingLeft: '10px'}}>
+                  <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Clinical Presentation</strong>
+                  <br/>• **Pulsatile Tinnitus**: "Whooshing" or beating sound in sync with heartbeat (extremely common in cranial FMD).
+                  <br/>• Neck pain, headache, carotid bruits, or lightheadedness.
+                  <br/>• Neurological deficits due to **cervical dissection (CeAD)**, distal embolization, or hemodynamic insufficiency.
+                </div>
+                <div style={{borderLeft: '1.5px dashed var(--purple)', paddingLeft: '10px'}}>
+                  <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Systemic Screening</strong>
+                  <br/>• **Brain-to-Pelvis Screen**: Mandatory **one-time** cross-sectional vascular imaging (CTA or MRA) of all arterial beds from head to pelvis.
+                  <br/>• **Aneurysms**: High risk (~13-22% prevalence). One-time screen for intracranial aneurysms.
+                </div>
+              </div>
+            </div>
+
+            {/* Section 2: Diagnosis &amp; Management Grid */}
+            <div style={{display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '8px', marginBottom: '8px'}}>
+              {/* Section 2A: Diagnosis */}
+              <div style={{border: '1.5px solid var(--teal)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--teal-soft) 0%, #ffffff 100%)'}}>
+                <strong style={{color: 'var(--teal-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>2. Diagnostic Evaluation</strong>
+                <ul style={{margin: '0', paddingLeft: '12px', fontSize: '7.8pt', lineHeight: '1.4', color: 'var(--ink-soft)'}}>
+                  <li><strong>First Line (Cranial)</strong>: High-resolution **CTA** or **MRA Head &amp; Neck** to assess for beading, web-like stenoses, aneurysms, or dissections.</li>
+                  <li><strong>Dissection Screening</strong>: Neck MRI with **T1 fat-saturation** to identify intramural hematoma.</li>
+                  <li><strong>Duplex Ultrasound</strong>: Useful for proximal carotid surveillance; however, it cannot image distal cervical/intracranial FMD.</li>
+                  <li><strong>Catheter Angiography</strong>: Gold standard, but reserved for therapeutic intervention.</li>
+                </ul>
+              </div>
+
+              {/* Section 2B: Management */}
+              <div style={{border: '1.5px solid var(--red)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--red-soft) 0%, #ffffff 100%)'}}>
+                <strong style={{color: 'var(--red-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>3. Medical &amp; Endovascular Management</strong>
+                <div style={{display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '12px', fontSize: '7.6pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
+                  <div>
+                    <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Pharmacotherapy &amp; Counseling</strong>
+                    <br/>• **Antiplatelet Therapy**: Aspirin **81–325 mg daily** is recommended (Class I, 2019 Consensus) for both asymptomatic and symptomatic patients to prevent thromboembolic stroke.
+                    <br/>• **BP Control**: Aggressive BP control (ACEi or ARBs first-line for renal protection) with close creatinine monitoring.
+                    <br/>• **Trauma Warning**: Patients must strictly **avoid neck manipulation** (e.g., chiropractic therapy, contact sports, rollercoasters).
+                  </div>
+                  <div style={{borderLeft: '1.5px dashed var(--red)', paddingLeft: '10px'}}>
+                    <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Procedural Interventions</strong>
+                    <br/>• **Revascularization**: Reserved for patients with recurrent TIA/stroke despite antiplatelets, or severe flow-limiting stenosis.
+                    <br/>• **Angioplasty (PTA)**: Percutaneous angioplasty **WITHOUT stenting** is the primary intervention. Stents are generally held unless required for dissection salvage or aneurysm treatment.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Section 3: Registry &amp; Cohort Data Table */}
+            <div style={{border: '1.5px solid var(--amber)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--amber-soft) 0%, #ffffff 100%)', marginBottom: '6px'}}>
+              <strong style={{color: 'var(--amber-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>4. Landmark Registry &amp; Cohort Insights</strong>
+              <table style={{width: '100%', borderCollapse: 'collapse', fontSize: '7.0pt', lineHeight: '1.25', color: 'var(--ink)'}}>
+                <thead>
+                  <tr style={{borderBottom: '1.5px solid var(--amber)', color: 'var(--amber-deep)', fontWeight: '700'}}>
+                    <th style={{padding: '2px 0', textAlign: 'left', width: '20%'}}>Registry / Cohort</th>
+                    <th style={{padding: '2px 0', textAlign: 'left', width: '25%'}}>Design &amp; Population</th>
+                    <th style={{padding: '2px 0', textAlign: 'left', width: '25%'}}>Vascular Distribution</th>
+                    <th style={{padding: '2px 0', textAlign: 'left', width: '30%'}}>Key Clinical Findings &amp; Outcomes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
+                    <td style={{fontWeight: '700', padding: '2px 0', verticalAlign: 'top'}}><strong>US Registry for FMD</strong><br/>(Olin et al., 2012)</td>
+                    <td style={{padding: '2px 0', verticalAlign: 'top'}}>N = 447 patients across 9 US centers. Prospective observational registry.</td>
+                    <td style={{padding: '2px 0', verticalAlign: 'top'}}>• Carotid: 74.3%<br/>• Renal: 69.7%<br/>• Vertebral: 36.5%<br/>• Multivessel: 57.2%</td>
+                    <td style={{padding: '2px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
+                      • **Demographics**: 91% female, mean age of 55.7 years.
+                      <br/>• **Events at Diagnosis**: Stroke (7.6%), TIA (18.8%), Cervical Dissection (19.7%), Aneurysm (17.0%).
+                      <br/>• **Delay**: Average of **4.8 years** from first symptom to diagnosis.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{fontWeight: '700', padding: '2px 0', verticalAlign: 'top'}}><strong>Euro-FMD Registry</strong><br/>(Persu et al., 2021)</td>
+                    <td style={{padding: '2px 0', verticalAlign: 'top'}}>N = 1,023 patients across European clinical centers.</td>
+                    <td style={{padding: '2px 0', verticalAlign: 'top'}}>• Multifocal FMD: 82.6%<br/>• Focal FMD: 17.4%<br/>• Renal: 79.5%<br/>• Carotid: 54.3%</td>
+                    <td style={{padding: '2px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
+                      • **Subtype Differences**: Focal FMD patients were significantly younger at diagnosis (mean 39.6 vs. 51.5 years) and had higher rates of severe or refractory hypertension.
+                      <br/>• **Aneurysms/Dissections**: Prevalent in both groups; confirmed the need for one-time head-to-pelvis vascular screening.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Citations footer */}
+            <div className="ref-citation" style={{marginTop: 'auto', padding: '4px 8px', fontSize: '7.3pt', lineHeight: '1.2'}}>
+              <strong>AHA Scientific Statement (2014):</strong> *Circulation*. 2014;129(9):1048-1078. <a href="https://pubmed.ncbi.nlm.nih.gov/24554781/" target="_blank">PMID: 24554781</a><br/>
+              <strong>First International Consensus (2019):</strong> *Vasc Med*. 2019;24(2):164-189. <a href="https://pubmed.ncbi.nlm.nih.gov/30642231/" target="_blank">PMID: 30642231</a><br/>
+              <strong>US Registry for FMD (2012):</strong> *Circulation*. 2012;125(25):3186-3195. <a href="https://pubmed.ncbi.nlm.nih.gov/22615343/" target="_blank">PMID: 22615343</a><br/>
+              <strong>European FMD Registry (2021):</strong> *J Hypertens*. 2021;39(10):2036-2045. <a href="https://pubmed.ncbi.nlm.nih.gov/33935216/" target="_blank">PMID: 33935216</a>
             </div>
           </div>
         </div>

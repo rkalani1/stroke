@@ -1941,21 +1941,21 @@ async function main() {
   console.log('Generated documents/references/AFib DOAC Start Timing.pdf');
 
   // ==========================================
-  // GENERATE CERVICOCRANIAL ARTERY DISSECTION PDF
+  // GENERATE CERVICAL ARTERY DISSECTION PDF
   // ==========================================
-  const cervicocranialHtml = `
+  const cervicalHtml = `
     <!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8">
-      <title>Cervicocranial Artery Dissection</title>
+      <title>Cervical Artery Dissection</title>
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
       <style>
         @page {
           size: letter;
-          margin: 0.08in 0.12in 0.08in 0.12in;
+          margin: 0.14in 0.16in 0.14in 0.16in;
         }
         :root {
           --fill-soft: #f8f7fa;
@@ -1996,7 +1996,7 @@ async function main() {
         .container {
           border: 2px solid var(--purple-deep);
           border-radius: 8px;
-          padding: 4px 10px;
+          padding: 6px 12px;
           display: flex;
           flex-direction: column;
           box-sizing: border-box;
@@ -2034,10 +2034,10 @@ async function main() {
           font-weight: 500;
         }
         .box {
-          border-radius: 6px;
-          padding: 3px 6px;
+          border-radius: 8px;
+          padding: 4px 8px;
           box-sizing: border-box;
-          margin-bottom: 3px;
+          margin-bottom: 4px;
         }
         .box-purple {
           border: 1.5px solid var(--purple);
@@ -2054,7 +2054,7 @@ async function main() {
         .box-amber {
           border: 1.5px solid var(--amber);
           background: linear-gradient(135deg, var(--amber-soft) 0%, #ffffff 100%);
-          margin-bottom: 2px;
+          margin-bottom: 3px;
         }
         .box-title {
           font-family: 'Outfit', sans-serif;
@@ -2072,8 +2072,8 @@ async function main() {
           display: grid;
           grid-template-columns: 1.25fr 0.85fr 0.9fr;
           gap: 6px;
-          font-size: 6.8pt;
-          line-height: 1.2;
+          font-size: 7.4pt;
+          line-height: 1.3;
           color: var(--ink-soft);
         }
         .col-divider {
@@ -2084,14 +2084,14 @@ async function main() {
           display: grid;
           grid-template-columns: 0.8fr 1.2fr;
           gap: 5px;
-          margin-bottom: 3px;
+          margin-bottom: 4px;
         }
         .management-split {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 8px;
-          font-size: 6.8pt;
-          line-height: 1.2;
+          font-size: 7.3pt;
+          line-height: 1.3;
           color: var(--ink-soft);
         }
         .management-divider {
@@ -2101,8 +2101,8 @@ async function main() {
         .trial-table {
           width: 100%;
           border-collapse: collapse;
-          font-size: 6.2pt;
-          line-height: 1.1;
+          font-size: 6.8pt;
+          line-height: 1.15;
           color: var(--ink);
         }
         .trial-table th {
@@ -2114,7 +2114,7 @@ async function main() {
           text-align: left;
         }
         .trial-table td {
-          padding: 0.8px 0;
+          padding: 1.5px 0;
           vertical-align: top;
           border-bottom: 1px solid var(--rule-soft);
         }
@@ -2127,8 +2127,8 @@ async function main() {
           background: linear-gradient(135deg, var(--fill-soft) 0%, #ffffff 100%);
           border-left: 4px solid var(--purple);
           border-radius: 4px;
-          font-size: 6.2pt;
-          line-height: 1.1;
+          font-size: 7pt;
+          line-height: 1.2;
           color: var(--ink-soft);
         }
         .ref-citation a {
@@ -2140,10 +2140,10 @@ async function main() {
     </head>
     <body>
       <div class="container">
-        <h1>Cervicocranial Artery Dissection</h1>
+        <h1>Cervical Artery Dissection</h1>
 
         <!-- Anatomy & Dissection SVG -->
-        <div style="width: 100%; height: 105px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 4px;">
+        <div style="width: 100%; height: 100px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 6px;">
           <svg viewBox="0 0 735 110" style="width: 100%; height: 100%;">
             <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
             <path d="M 20 25 L 430 25 M 20 85 L 430 85" stroke="#4A5A6D" stroke-width="3" stroke-linecap="round" />
@@ -2187,7 +2187,7 @@ async function main() {
             <circle cx="675" cy="40" r="1.5" fill="var(--amber)" opacity="0.3" />
             <text x="650" y="44" fill="var(--red-deep)" font-size="5.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">Hematoma</text>
             <text x="650" y="73" fill="var(--teal-deep)" font-size="5.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">True Lumen</text>
-            <text x="650" y="96" fill="var(--ink-soft)" font-size="5pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Cervicocranial ICA Dissection</text>
+            <text x="650" y="96" fill="var(--ink-soft)" font-size="5pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Cervical ICA Dissection</text>
             <defs>
               <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
                 <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--red)" />
@@ -2199,7 +2199,7 @@ async function main() {
           </svg>
         </div>
         <!-- Stroke Mechanisms (PNG) -->
-        <div style="width: 100%; height: 290px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 4px;">
+        <div style="width: 100%; height: 105px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 6px;">
           <img src="${dissectionStrokeMechanismsBase64}" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
         </div>
 
@@ -2250,11 +2250,11 @@ async function main() {
                 <strong style="color: var(--red-deep); font-size: 8pt">Intracranial &amp; Pseudoaneurysms</strong>
                 <br/>• <strong>SAH</strong>: Lack external elastic lamina &amp; thin adventitia; rupture risk.
                 <br/>• <strong>Anticoagulation</strong>: Avoided if SAH present. Prefer single antiplatelet.
-                <br/>• <strong>IVT Caution</strong>: IVT is safe in extracranial CCAD but safety/efficacy in intracranial extension is not well established (AHA 2024).
+                <br/>• <strong>IVT Caution</strong>: IVT is safe in extracranial CeAD but safety/efficacy in intracranial extension is not well established (AHA 2024).
                 <br/>• <strong>Stenting</strong>: Reserve for recurrent ischemia despite optimal medical therapy or severe flow-limiting stenosis.
               </div>
               <div style="grid-column: 1 / -1; border-top: 1px dashed var(--red); padding-top: 4px; margin-top: 4px; font-size: 7.1pt">
-                • <strong>Recurrence &amp; Activity</strong>: Long-term CCAD recurrence is low (~1%/yr). Avoid high-risk neck activities (chiropractic neck manipulation, rollercoasters, extreme hyperextension/rotation) for secondary prevention.
+                • <strong>Recurrence &amp; Activity</strong>: Long-term CeAD recurrence is low (~1%/yr). Avoid high-risk neck activities (chiropractic neck manipulation, rollercoasters, extreme hyperextension/rotation) for secondary prevention.
               </div>
             </div>
           </div>
@@ -2274,7 +2274,7 @@ async function main() {
             <tbody>
               <tr>
                 <td style="font-weight: 700; padding: 3px 0;"><strong>CADISS</strong><br/>2015</td>
-                <td style="padding: 3px 0;">N = 250. Extracranial CCAD. RCT.</td>
+                <td style="padding: 3px 0;">N = 250. Extracranial CeAD. RCT.</td>
                 <td style="padding: 3px 0;">Antiplatelet vs. Anticoagulant for 3 months.</td>
                 <td style="padding: 3px 0; color: var(--ink-soft)">
                   • <strong>Primary Composite (Ipsilateral stroke or death at 3m)</strong>: 2.0% vs. 1.0% (p = 0.63). Established clinical equipoise.
@@ -2293,7 +2293,7 @@ async function main() {
                 <td style="padding: 3px 0;">N = 444. IPD meta-analysis of CADISS + TREAT-CAD.</td>
                 <td style="padding: 3px 0;">Antiplatelet vs. Anticoagulant x 90d.</td>
                 <td style="padding: 3px 0; color: var(--ink-soft)">
-                  • <strong>Primary Composite</strong>: No diff (1.4% anticoagulation vs. 4.4% antiplatelet, p = 0.11).
+                  • <strong>Primary Composite (Ischemic stroke, major bleeding, or death at 90d)</strong>: No significant difference (1.4% anticoagulation vs. 4.4% antiplatelet, p = 0.11).
                   <br/>• <strong>Ischemic Stroke alone</strong>: Significant reduction with anticoagulation (0.5% vs. 4.0%; OR 0.14, p = 0.01), with a non-significant increase in major bleeding (0.9% vs. 0%).
                 </td>
               </tr>
@@ -2320,15 +2320,15 @@ async function main() {
     </html>
   `;
 
-  await page.setContent(cervicocranialHtml);
+  await page.setContent(cervicalHtml);
   await page.pdf({
-    path: 'documents/references/Cervicocranial Artery Dissection.pdf',
+    path: 'documents/references/Cervical Artery Dissection.pdf',
     format: 'letter',
     landscape: false,
     printBackground: true,
-    margin: { top: '0.12in', bottom: '0.12in', left: '0.14in', right: '0.14in' }
+    margin: { top: '0.15in', bottom: '0.15in', left: '0.15in', right: '0.15in' }
   });
-  console.log('Generated documents/references/Cervicocranial Artery Dissection.pdf');
+  console.log('Generated documents/references/Cervical Artery Dissection.pdf');
 
   await browser.close();
 }

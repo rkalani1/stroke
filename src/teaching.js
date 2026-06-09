@@ -411,10 +411,10 @@ export const LANDMARK_TRIALS = {
       name: 'CADISS / TREAT-CAD',
       year: '2015 / 2021',
       citation: 'Lancet Neurol 2015;14:361 / Lancet Neurol 2021;20:341',
-      question: 'Is aspirin non-inferior to VKA for cervicocranial artery dissection?',
+      question: 'Is aspirin non-inferior to VKA for cervical artery dissection?',
       design: 'Two RCTs, ASA vs VKA, 3-6 months',
       outcomes: 'CADISS: non-inferior but underpowered. TREAT-CAD: ASA non-inferior for primary endpoint.',
-      bottomLine: 'Aspirin non-inferior to warfarin for cervicocranial dissection.',
+      bottomLine: 'Aspirin non-inferior to warfarin for cervical dissection.',
       teachingPoint: 'Aspirin is first-line; VKA/DOAC reserved for recurrent events on ASA or free-floating thrombus.'
     },
     {

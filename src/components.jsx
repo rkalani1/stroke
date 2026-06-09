@@ -504,7 +504,7 @@ const ETIOLOGY_CHECKLISTS = {
   'other': {
     label: 'Other determined (TOAST 4)',
     items: [
-      'Cervicocranial artery dissection: ASA (TREAT-CAD 2021) non-inferior to VKA for 3 months',
+      'Cervical artery dissection: ASA (TREAT-CAD 2021) non-inferior to VKA for 3 months',
       'Vasculitis: CSF analysis, ESR/CRP, ANCA, vessel wall MRI, temporal artery biopsy if GCA suspected',
       'CADASIL/CARASIL: family history, MRI pattern (anterior temporal pole, external capsule), NOTCH3 gene testing',
       'Fabry disease: α-galactosidase A activity (young male with cortical/white matter strokes)',
