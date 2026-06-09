@@ -1485,7 +1485,7 @@ Clinician Name`;
               pfoEvaluation: '',
               pascalClassification: ''
             },
-            // Phase 5: Cervicocranial Artery Dissection
+            // Phase 5: Cervical Artery Dissection
             dissectionPathway: {
               antithromboticStarted: false,
               antithromboticType: '',
@@ -3010,7 +3010,7 @@ Clinician Name`;
                                     "Carotid artery stenosis >70% on the index-stroke side",
                                     "Carotid artery stent on the index-stroke side",
                                     "Existing indication for carotid intervention after randomization",
-                                    "Ischemic stroke due to cervicocranial artery dissection",
+                                    "Ischemic stroke due to cervical artery dissection",
                                     "Inability to participate in follow-up program",
                                     "Current participation in another interventional trial"
                                 ]
@@ -4785,13 +4785,13 @@ Clinician Name`;
             },
 
             // ---------------------------------------------------------------
-            // CERVICOCRANIAL ARTERY DISSECTION
+            // CERVICAL ARTERY DISSECTION
             // ---------------------------------------------------------------
             dissection_antithrombotic: {
               id: 'dissection_antithrombotic',
               category: 'Dissection',
-              title: 'Cervicocranial artery dissection: Antithrombotic therapy',
-              recommendation: 'Antiplatelet or anticoagulation for cervicocranial artery dissection. Either approach is reasonable (no proven superiority of one over the other).',
+              title: 'Cervical artery dissection: Antithrombotic therapy',
+              recommendation: 'Antiplatelet or anticoagulation for cervical artery dissection. Either approach is reasonable (no proven superiority of one over the other).',
               detail: 'CADISS trial showed no significant difference between antiplatelet and anticoagulation. Choice depends on clinical factors: anticoagulation may be preferred for pseudoaneurysm, free-floating thrombus, or recurrent events on antiplatelet. Duration: typically 3-6 months.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
@@ -4807,7 +4807,7 @@ Clinician Name`;
             dissection_imaging_followup: {
               id: 'dissection_imaging_followup',
               category: 'Dissection',
-              title: 'Cervicocranial artery dissection: Imaging follow-up',
+              title: 'Cervical artery dissection: Imaging follow-up',
               recommendation: 'Repeat vascular imaging (CTA or MRA) at 3-6 months to assess for recanalization or pseudoaneurysm evolution.',
               detail: 'Most dissections heal within 3-6 months. Persistent stenosis/occlusion or pseudoaneurysm may warrant continued antithrombotic therapy. If fully recanalized, may consider stopping anticoagulation and switching to antiplatelet.',
               classOfRec: 'IIa',
@@ -4823,7 +4823,7 @@ Clinician Name`;
             dissection_avoid_manipulation: {
               id: 'dissection_avoid_manipulation',
               category: 'Dissection',
-              title: 'Cervicocranial artery dissection: Avoid cervical manipulation',
+              title: 'Cervical artery dissection: Avoid cervical manipulation',
               recommendation: 'Advise patients to avoid cervical manipulation (chiropractic, aggressive physical therapy) during healing phase.',
               detail: 'While causation is debated, cervical manipulation is associated with vertebral and carotid dissection. Patients should avoid high-velocity neck movements during the healing period (minimum 3 months).',
               classOfRec: 'IIb',
@@ -4840,7 +4840,7 @@ Clinician Name`;
               id: 'dissection_no_thrombolysis_contraindication',
               category: 'Dissection',
               title: 'Dissection: TNK is NOT contraindicated',
-              recommendation: 'Cervicocranial artery dissection is NOT an absolute contraindication to IV thrombolysis if within the treatment window.',
+              recommendation: 'Cervical artery dissection is NOT an absolute contraindication to IV thrombolysis if within the treatment window.',
               detail: 'Observational data suggests IV thrombolysis in dissection-related stroke is safe and may be beneficial. Treat according to standard TNK eligibility criteria.',
               classOfRec: 'IIa',
               levelOfEvidence: 'C-LD',
