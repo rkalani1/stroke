@@ -2026,13 +2026,15 @@ export function AfibAnticoagTimingCard() {
       </button>
       
       <div 
-        className="relative max-w-4xl max-h-[85vh] w-full flex justify-center items-center p-2 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 cursor-default"
+        className="relative w-full flex justify-center items-center p-2 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 cursor-default"
+        style={{ maxHeight: '88vh', maxWidth: '92vw', display: 'flex', flexDirection: 'column', width: 'auto', height: 'auto' }}
         onClick={(e) => e.stopPropagation()}
       >
         <img 
           src={src} 
           alt={alt} 
-          className="max-w-full max-h-[80vh] object-contain rounded-lg"
+          style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', display: 'block' }}
+          className="rounded-lg shadow-inner"
         />
         {title && (
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-slate-900/80 text-white text-[11px] px-3.5 py-1.5 rounded-full font-medium shadow-md flex items-center gap-1.5 backdrop-blur-sm border border-white/10 select-none">
@@ -2342,7 +2344,7 @@ export const ICPInfographic = () => {
                   <img 
                     src="assets/herniation_diagram.png" 
                     alt="Brain Herniation Diagram" 
-                    className="max-h-[120px] object-contain rounded-md transition-transform duration-200 group-hover:scale-105"
+                    className="max-h-[160px] object-contain rounded-md transition-transform duration-200 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
                     <span className="text-[10px] text-white font-semibold bg-black/60 px-2 py-1 rounded-md flex items-center gap-1">
