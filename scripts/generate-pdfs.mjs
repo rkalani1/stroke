@@ -2290,18 +2290,21 @@ async function main() {
               </tr>
               <tr>
                 <td style="font-weight: 700; padding: 3px 0;"><strong>Kaufmann IPD</strong><br/>2024</td>
-                <td style="padding: 3px 0;">N = 444. Meta-analysis of CADISS + TREAT-CAD.</td>
-                <td style="padding: 3px 0;">Antiplatelet vs. Anticoagulant.</td>
+                <td style="padding: 3px 0;">N = 444. IPD meta-analysis of CADISS + TREAT-CAD.</td>
+                <td style="padding: 3px 0;">Antiplatelet vs. Anticoagulant x 90d.</td>
                 <td style="padding: 3px 0; color: var(--ink-soft)">
-                  • <strong>Ischemic Stroke alone</strong>: Significant reduction with anticoagulation (0.5% vs. 4.0%; OR 0.14, p = 0.01). No difference in composite.
+                  • <strong>Composite (Stroke/Bleed/Death)</strong>: No significant difference (1.4% anticoagulation vs. 4.4% antiplatelet, p = 0.11).
+                  <br/>• <strong>Ischemic Stroke alone</strong>: Significant reduction with anticoagulation (0.5% vs. 4.0%; OR 0.14, p = 0.01), with a non-significant increase in major bleeding (0.9% vs. 0%).
                 </td>
               </tr>
               <tr>
                 <td style="font-weight: 700; padding: 3px 0;"><strong>STOP-CAD</strong><br/>2024</td>
-                <td style="padding: 3px 0;">N = 3,636. Multicenter cohort registry.</td>
+                <td style="padding: 3px 0;">N = 3,636. Multicenter observational cohort registry.</td>
                 <td style="padding: 3px 0;">Antiplatelet vs. Anticoagulation.</td>
                 <td style="padding: 3px 0; color: var(--ink-soft)">
-                  • <strong>Stroke vs Bleed</strong>: Anticoagulation associated with lower stroke rate but higher bleed. Occlusions benefited most; day 30 transition.
+                  • <strong>Temporal Risk</strong>: 87% of recurrent strokes occurred in the first 30 days.
+                  <br/>• <strong>Clinical Nuance</strong>: Anticoagulation showed a trend toward lower stroke rates in patients with complete arterial occlusion.
+                  <br/>• <strong>Transition Strategy</strong>: To balance early stroke risk against late bleeding risk (which rises by day 180), a reasonable strategy is to initiate anticoagulation during the acute phase (days 1-30) and transition to antiplatelet monotherapy at day 30.
                 </td>
               </tr>
             </tbody>
