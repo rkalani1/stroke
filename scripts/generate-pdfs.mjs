@@ -2199,7 +2199,7 @@ async function main() {
           </svg>
         </div>
         <!-- Stroke Mechanisms (PNG) -->
-        <div style="width: 100%; height: 270px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 8px;">
+        <div style="width: 100%; height: 130px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 8px;">
           <img src="${dissectionStrokeMechanismsBase64}" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
         </div>
 
@@ -2277,7 +2277,7 @@ async function main() {
                 <td style="padding: 3px 0;">N = 250. Extracranial CeAD. RCT.</td>
                 <td style="padding: 3px 0;">Antiplatelet vs. Anticoagulant for 3 months.</td>
                 <td style="padding: 3px 0; color: var(--ink-soft)">
-                  • <strong>Composite (Stroke/Death at 3m)</strong>: 2.0% vs. 1.0% (p = 0.63). Established clinical equipoise.
+                  • <strong>Primary Composite (Ipsilateral stroke or death at 3m)</strong>: 2.0% vs. 1.0% (p = 0.63). Established clinical equipoise.
                 </td>
               </tr>
               <tr>
@@ -2285,7 +2285,7 @@ async function main() {
                 <td style="padding: 3px 0;">N = 194 (PP = 173). Extracranial. RCT.</td>
                 <td style="padding: 3px 0;">Aspirin 300mg daily vs. VKA for 3 months.</td>
                 <td style="padding: 3px 0; color: var(--ink-soft)">
-                  • <strong>Composite (Stroke, bleed, death, or MRI at 14d)</strong>: 23% vs. 15% (Non-inferiority NOT met). Ischemic stroke: 8.0% vs. 0%.
+                  • <strong>Primary Composite (Stroke, major hemorrhage, death, or new MRI lesion at 14d)</strong>: 23% vs. 15% (Non-inferiority NOT met). Ischemic stroke: 8.0% vs. 0%.
                 </td>
               </tr>
               <tr>
@@ -2293,7 +2293,7 @@ async function main() {
                 <td style="padding: 3px 0;">N = 444. IPD meta-analysis of CADISS + TREAT-CAD.</td>
                 <td style="padding: 3px 0;">Antiplatelet vs. Anticoagulant x 90d.</td>
                 <td style="padding: 3px 0; color: var(--ink-soft)">
-                  • <strong>Composite (Stroke/Bleed/Death)</strong>: No significant difference (1.4% anticoagulation vs. 4.4% antiplatelet, p = 0.11).
+                  • <strong>Primary Composite (Ischemic stroke, major bleeding, or death at 90d)</strong>: No significant difference (1.4% anticoagulation vs. 4.4% antiplatelet, p = 0.11).
                   <br/>• <strong>Ischemic Stroke alone</strong>: Significant reduction with anticoagulation (0.5% vs. 4.0%; OR 0.14, p = 0.01), with a non-significant increase in major bleeding (0.9% vs. 0%).
                 </td>
               </tr>
@@ -2303,8 +2303,8 @@ async function main() {
                 <td style="padding: 3px 0;">Antiplatelet vs. Anticoagulation.</td>
                 <td style="padding: 3px 0; color: var(--ink-soft)">
                   • <strong>Temporal Risk</strong>: 87% of recurrent strokes occurred in the first 30 days.
-                  <br/>• <strong>Clinical Nuance</strong>: Anticoagulation showed a trend toward lower stroke rates in patients with complete arterial occlusion.
-                  <br/>• <strong>Transition Strategy</strong>: To balance early stroke risk against late bleeding risk (which rises by day 180), a reasonable strategy is to initiate anticoagulation during the acute phase (days 1-30) and transition to antiplatelet monotherapy at day 30.
+                  <br/>• <strong>Occlusion Benefit</strong>: Patients with complete arterial occlusion at baseline had the highest stroke risk and benefited most from early anticoagulation.
+                  <br/>• <strong>Transition Strategy</strong>: Initiate anticoagulation for days 1–30 (highest stroke risk window) and then transition to antiplatelet monotherapy at day 30 to mitigate long-term bleeding risks (which rise significantly by day 180).
                 </td>
               </tr>
             </tbody>
