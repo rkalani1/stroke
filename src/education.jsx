@@ -2635,8 +2635,7 @@ export function CervicalDissectionCard() {
             <div 
               style={{
                 width: '100%', 
-                aspectRatio: '1 / 1',
-                maxHeight: '380px', 
+                height: '180px', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
