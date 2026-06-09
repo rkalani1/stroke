@@ -2619,21 +2619,20 @@ export function CervicalDissectionCard() {
               <strong style={{color: 'var(--purple-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>1. Clinical Presentation &amp; Pathophysiology</strong>
               <div style={{display: 'grid', gridTemplateColumns: '1.2fr 0.8fr 1fr', gap: '12px', fontSize: '7.8pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
                 <div>
-                  <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Local Pain Profiles (Ipsilateral)</strong>
-                  <br/>• **Carotid (ICA) Dissection**: Characteristically frontotemporal, retro-orbital, or facial pain (angle of jaw).
-                  <br/>• **Vertebral (VA) Dissection**: Severe occipital headache or posterior upper neck pain.
-                  <br/>• **Clinical Pearl**: Sudden local headache/neck pain precedes TIA or ischemic stroke by hours to days (median 4 days).
+                  <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Ipsilateral Headache &amp; Pain</strong>
+                  <br/>• <strong>Carotid (ICA)</strong>: Frontotemporal, retro-orbital, or facial pain (jaw angle).
+                  <br/>• <strong>Vertebral (VA)</strong>: Severe occipital headache or posterior neck pain.
+                  <br/>• <strong>Onset</strong>: Pain precedes TIA/stroke by hours to days (median 4 days).
                 </div>
                 <div style={{borderLeft: '1.5px dashed var(--purple)', paddingLeft: '10px'}}>
-                  <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Sympathetic Horner Syndrome</strong>
-                  <br/>• **Presentation Rate**: ~28–58% in ICA dissection.
-                  <br/>• **Sympathetic Sparing**: Presents as ptosis &amp; miosis **WITHOUT** facial anhidrosis.
-                  <br/>• **Mechanism**: Sudomotor (sweat) fibers branch at bifurcation and ascend with **external carotid artery (ECA)**, leaving them spared in ICA dissection.
+                  <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Anhidrosis-Sparing Horner's</strong>
+                  <br/>• <strong>Signs</strong>: Ptosis &amp; miosis (~28–58% of ICA) <strong>without</strong> anhidrosis.
+                  <br/>• <strong>Mechanism</strong>: Sudomotor (sweat) fibers ascend via the ECA plexus; pupillary/eyelid fibers ascend via the ICA.
                 </div>
                 <div style={{borderLeft: '1.5px dashed var(--purple)', paddingLeft: '10px'}}>
                   <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Neurological Deficits</strong>
-                  <br/>• **Lower Cranial Nerves**: CN IX, X, XI, XII palsies (~8–16%) due to local compression or ischemic *vasa nervorum* injury.
-                  <br/>• **Posterior Circulation (VA)**: Wallenberg syndrome (lateral medullary), PICA/AICA territory strokes, or cerebellar ataxia.
+                  <br/>• <strong>CN Palsies</strong>: CN IX, X, XI, XII palsies (~8–16%) from local ICA compression.
+                  <br/>• <strong>VA Territory</strong>: Wallenberg syndrome, cerebellar ataxia, PICA/AICA territory strokes.
                 </div>
               </div>
             </div>
@@ -2644,10 +2643,10 @@ export function CervicalDissectionCard() {
               <div style={{border: '1.5px solid var(--teal)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--teal-soft) 0%, #ffffff 100%)'}}>
                 <strong style={{color: 'var(--teal-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>2. Diagnostic Workup</strong>
                 <ul style={{margin: '0', paddingLeft: '12px', fontSize: '7.8pt', lineHeight: '1.4', color: 'var(--ink-soft)'}}>
-                  <li><strong>CTA Head &amp; Neck</strong>: Rapid first-line tool. Key signs: tapered stenosis ("string sign"), dissecting pseudoaneurysm, intimal flap, or occlusion.</li>
-                  <li><strong>MRI Neck (T1 Fat-Sat)</strong>: Pathognomonic hyperintense crescentic wall hematoma (crescent sign; highly sensitive subacutely).</li>
-                  <li><strong>DSA</strong>: Gold standard for equivocal cases, stenting assessment, or dynamic flow evaluation.</li>
-                  <li><strong>Screening</strong>: Screen for FMD or collagen vascular disorders (Marfan, vascular Ehlers-Danlos) if recurrent or spontaneous without trauma.</li>
+                  <li><strong>CTA Head/Neck</strong>: First-line. Shows tapered stenosis ("string sign"), flap, pseudoaneurysm, or occlusion.</li>
+                  <li><strong>MRI Neck (T1 Fat-Sat)</strong>: Pathognomonic hyperintense crescentic intramural hematoma (crescent sign).</li>
+                  <li><strong>DSA</strong>: Gold standard; reserve for diagnostic doubt or stenting evaluation.</li>
+                  <li><strong>Screening</strong>: Screen for FMD or connective tissue disorders if spontaneous/recurrent.</li>
                 </ul>
               </div>
 
@@ -2657,17 +2656,17 @@ export function CervicalDissectionCard() {
                 <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '7.6pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
                   <div>
                     <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Extracranial Dissection</strong>
-                    <br/>• **Antithrombotics**: Indicated for $\ge$ 3 months (Class I, LOE C-LD).
-                    <br/>• **Antiplatelet vs. Anticoagulation**: Clear clinical equipoise. Monotherapy (Aspirin 81–325mg) or DAPT (Aspirin+Clopidogrel) vs. VKA (INR 2.0-3.0) or DOAC.
-                    <br/>• **STOP-CAD Transition**: In occlusive dissection, consider early anticoagulation for the high-stroke-risk **first 30 days**, then switch to antiplatelet therapy to limit cumulative bleeding.
-                    <br/>• **IV Thrombolysis (IVT)**: Safe and indicated for acute stroke within 4.5 hours (Class I).
+                    <br/>• <strong>Antithrombotics</strong>: $\ge$ 3 months (Class I).
+                    <br/>• <strong>Aspirin vs. Anticoagulation</strong>: Equipoise. Choice between monotherapy/DAPT vs. VKA/DOAC is individualized.
+                    <br/>• <strong>STOP-CAD Strategy</strong>: In occlusions, consider anticoagulation for Day 1–30, then switch to antiplatelet.
+                    <br/>• <strong>IV Thrombolysis</strong>: Safe &amp; indicated within 4.5 hours (Class I).
                   </div>
                   <div style={{borderLeft: '1.5px dashed var(--red)', paddingLeft: '10px'}}>
-                    <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Intracranial Dissection &amp; Pseudoaneurysms</strong>
-                    <br/>• **Intracranial SAH Risk**: Intracranial vessels lack an external elastic lamina and have thin adventitia. Dissection carries a high rupture risk.
-                    <br/>• **Anticoagulation Caution**: Anticoagulation is contraindicated if SAH is present. Perform CT Head/LP first. Prefer single antiplatelet if no SAH.
-                    <br/>• **Pseudoaneurysm**: Asymptomatic extracranial pseudoaneurysms are managed conservatively with repeat imaging.
-                    <br/>• **Stenting**: Reserve for refractory TIA/stroke or symptomatic enlarging pseudoaneurysms.
+                    <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Intracranial &amp; Pseudoaneurysms</strong>
+                    <br/>• <strong>SAH Risk</strong>: Intracranial vessels lack external elastic lamina &amp; have thin adventitia; high rupture/SAH risk.
+                    <br/>• <strong>Anticoagulation</strong>: Contraindicated if SAH present. Screen with CT/LP first. Prefer single antiplatelet if no SAH.
+                    <br/>• <strong>Pseudoaneurysm</strong>: Managed conservatively with serial imaging.
+                    <br/>• <strong>Stenting</strong>: Reserve for refractory ischemia or enlarging/symptomatic pseudoaneurysms.
                   </div>
                 </div>
               </div>
@@ -2688,34 +2687,34 @@ export function CervicalDissectionCard() {
                 <tbody>
                   <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
                     <td style={{fontWeight: '700', padding: '3px 0', verticalAlign: 'top'}}><strong>CADISS</strong><br/>2015</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 250 patients with acute extracranial dissection (96% carotid, 4% vertebral). RCT.</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Antiplatelet (n=126) vs.<br/>Anticoagulant (n=124)<br/>for 3 months.</td>
+                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 250. Extracranial CeAD. RCT.</td>
+                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulant for 3 months.</td>
                     <td style={{padding: '3px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
-                      **Primary Composite (Stroke/Death at 3 Months)**: Antiplatelet 2.0% (2/126) vs. Anticoagulant 1.0% (1/124) ($p=0.63$). No significant difference; established clinical equipoise.
+                      • <strong>Composite (Stroke/Death at 3m)</strong>: 2.0% vs. 1.0% ($p=0.63$). No significant difference; established clinical equipoise.
                     </td>
                   </tr>
                   <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
                     <td style={{fontWeight: '700', padding: '3px 0', verticalAlign: 'top'}}><strong>TREAT-CAD</strong><br/>2021</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 194 randomized (PP analyzed: 173). Acute extracranial dissection. RCT.</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Aspirin 300mg daily (n=91) vs.<br/>VKA (INR 2.0–3.0, n=82)<br/>for 3 months.</td>
+                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 194 (PP = 173). Extracranial. RCT.</td>
+                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Aspirin 300mg daily vs. VKA for 3 months.</td>
                     <td style={{padding: '3px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
-                      **Composite Endpoint (Stroke, bleed, death, or MRI lesion at 14d)**: Aspirin 23% vs. VKA 15% (Diff 8%, upper 95% CI 21% exceeded 12% margin, **non-inferiority NOT met**). Ischemic stroke alone: Aspirin 8.0% (7/91) vs. VKA 0% (0/82).
+                      • <strong>Composite (Stroke, bleed, death, or MRI at 14d)</strong>: 23% vs. 15% (Non-inferiority NOT met). Ischemic stroke alone: 8.0% vs. 0%.
                     </td>
                   </tr>
                   <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
                     <td style={{fontWeight: '700', padding: '3px 0', verticalAlign: 'top'}}><strong>Kaufmann IPD</strong><br/>2024</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 444. Individual patient data meta-analysis combining CADISS &amp; TREAT-CAD.</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Antiplatelet vs.<br/>Anticoagulant therapy<br/>for 3 months.</td>
+                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 444. Meta-analysis of CADISS + TREAT-CAD.</td>
+                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulant.</td>
                     <td style={{padding: '3px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
-                      **Composite 90-day Stroke/Death/Major Bleed**: No difference (4% vs. 1%). **Ischemic Stroke alone**: Anticoagulation showed significant reduction (0.5% vs. 4.0%; OR 0.14, 95% CI 0.02-0.61, **p=0.01**).
+                      • <strong>Ischemic Stroke alone</strong>: Significant reduction with anticoagulation (0.5% vs. 4.0%; OR 0.14, $p=0.01$). No difference in composite endpoints.
                     </td>
                   </tr>
                   <tr>
                     <td style={{fontWeight: '700', padding: '3px 0', verticalAlign: 'top'}}><strong>STOP-CAD</strong><br/>2024</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 3,636. Large multicenter retrospective cohort study of cervical dissection.</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Antiplatelets vs.<br/>Anticoagulation in real-world clinical practice.</td>
+                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 3,636. Multicenter cohort registry.</td>
+                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Antiplatelets vs. Anticoagulation.</td>
                     <td style={{padding: '3px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
-                      **Ischemic Stroke &amp; Bleed Risks**: Anticoagulation associated with non-significant lower stroke rate but higher bleeding rate. **Occlusive subgroup** derived significant ischemic benefit. **Transition strategy**: Use anticoagulation for high-stroke 30-day window, then switch to antiplatelets.
+                      • <strong>Stroke vs Bleed</strong>: Anticoagulation associated with lower stroke rate but higher bleed. Occlusive cases benefited most. Proposes Day 30 transition.
                     </td>
                   </tr>
                 </tbody>
