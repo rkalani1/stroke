@@ -2580,8 +2580,8 @@ export function CervicalDissectionCard() {
               <circle cx="530" cy="55" r="28" fill="none" stroke="#4A5A6D" strokeWidth="2.5" />
               <circle cx="530" cy="55" r="24" fill="none" stroke="#94a3b8" strokeWidth="1.5" />
               <circle cx="530" cy="55" r="23" fill="var(--teal-soft)" opacity="0.6" />
-              <text x="530" y="58" fill="var(--teal-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">NORMAL</text>
-              <text x="530" y="96" fill="var(--ink-soft)" fontSize="6pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Sympathetic Plexus</text>
+              <text x="530" y="58" fill="var(--teal-deep)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">NORMAL ICA</text>
+              <text x="530" y="96" fill="var(--ink-soft)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Sympathetic Plexus (Cervical)</text>
               
               <circle cx="530" cy="23" r="1.5" fill="var(--amber)" />
               <circle cx="545" cy="27" r="1.5" fill="var(--amber)" />
@@ -2602,7 +2602,7 @@ export function CervicalDissectionCard() {
               <circle cx="675" cy="40" r="1.5" fill="var(--amber)" opacity="0.3" />
               <text x="650" y="44" fill="var(--red-deep)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Hematoma</text>
               <text x="650" y="73" fill="var(--teal-deep)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">True Lumen</text>
-              <text x="650" y="96" fill="var(--ink-soft)" fontSize="6pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">ICA Dissection</text>
+              <text x="650" y="96" fill="var(--ink-soft)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Cervical ICA Dissection</text>
               
               <defs>
                 <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
@@ -2619,20 +2619,20 @@ export function CervicalDissectionCard() {
               <strong style={{color: 'var(--purple-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>1. Clinical Presentation &amp; Pathophysiology</strong>
               <div style={{display: 'grid', gridTemplateColumns: '1.2fr 0.8fr 1fr', gap: '12px', fontSize: '7.8pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
                 <div>
-                  <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Ipsilateral Headache &amp; Pain</strong>
-                  <br/>• <strong>Carotid (ICA)</strong>: Frontotemporal, retro-orbital, or facial pain (jaw angle).
-                  <br/>• <strong>Vertebral (VA)</strong>: Severe occipital headache or posterior neck pain.
-                  <br/>• <strong>Onset</strong>: Pain precedes TIA/stroke by hours to days (median 4 days).
+                  <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Ipsilateral Pain &amp; Onset</strong>
+                  <br/>• <strong>Carotid (ICA)</strong>: Frontotemporal/retro-orbital/facial pain (jaw angle).
+                  <br/>• <strong>Vertebral (VA)</strong>: Severe occipital or posterior neck pain.
+                  <br/>• <strong>Onset</strong>: Precedes stroke/TIA by hours to days (median 4 days).
                 </div>
                 <div style={{borderLeft: '1.5px dashed var(--purple)', paddingLeft: '10px'}}>
                   <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Anhidrosis-Sparing Horner's</strong>
-                  <br/>• <strong>Signs</strong>: Ptosis &amp; miosis (~28–58% of ICA) <strong>without</strong> anhidrosis.
-                  <br/>• <strong>Mechanism</strong>: Sudomotor (sweat) fibers ascend via the ECA plexus; pupillary/eyelid fibers ascend via the ICA.
+                  <br/>• <strong>Signs</strong>: Ptosis/miosis (28–58% of ICA) <strong>without</strong> anhidrosis.
+                  <br/>• <strong>Mechanism</strong>: Sweat fibers follow ECA plexus; pupil/eyelid fibers follow ICA.
                 </div>
                 <div style={{borderLeft: '1.5px dashed var(--purple)', paddingLeft: '10px'}}>
                   <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Neurological Deficits</strong>
-                  <br/>• <strong>CN Palsies</strong>: CN IX, X, XI, XII palsies (~8–16%) from local ICA compression.
-                  <br/>• <strong>VA Territory</strong>: Wallenberg syndrome, cerebellar ataxia, PICA/AICA territory strokes.
+                  <br/>• <strong>CN Palsies</strong>: CN IX–XII palsies (8–16%) from local ICA compression.
+                  <br/>• <strong>VA Territory</strong>: Wallenberg syndrome, cerebellar ataxia, PICA/AICA strokes.
                 </div>
               </div>
             </div>
@@ -2643,10 +2643,10 @@ export function CervicalDissectionCard() {
               <div style={{border: '1.5px solid var(--teal)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--teal-soft) 0%, #ffffff 100%)'}}>
                 <strong style={{color: 'var(--teal-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>2. Diagnostic Workup</strong>
                 <ul style={{margin: '0', paddingLeft: '12px', fontSize: '7.8pt', lineHeight: '1.4', color: 'var(--ink-soft)'}}>
-                  <li><strong>CTA Head/Neck</strong>: First-line. Shows tapered stenosis ("string sign"), flap, pseudoaneurysm, or occlusion.</li>
-                  <li><strong>MRI Neck (T1 Fat-Sat)</strong>: Pathognomonic hyperintense crescentic intramural hematoma (crescent sign).</li>
-                  <li><strong>DSA</strong>: Gold standard; reserve for diagnostic doubt or stenting evaluation.</li>
-                  <li><strong>Screening</strong>: Screen for FMD or connective tissue disorders if spontaneous/recurrent.</li>
+                  <li><strong>CTA Head/Neck</strong>: First-line. Shows string sign, dissection flap, pseudoaneurysm, or occlusion.</li>
+                  <li><strong>MRI Neck (T1 Fat-Sat)</strong>: Pathognomonic crescent sign (intramural hematoma).</li>
+                  <li><strong>DSA</strong>: Gold standard; reserve for diagnostic doubt or stenting.</li>
+                  <li><strong>Screening</strong>: Assess for FMD/connective tissue disease if spontaneous/recurrent.</li>
                 </ul>
               </div>
 
@@ -2656,16 +2656,16 @@ export function CervicalDissectionCard() {
                 <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '7.6pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
                   <div>
                     <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Extracranial Dissection</strong>
-                    <br/>• <strong>Antithrombotics</strong>: $\ge$ 3 months (Class I).
-                    <br/>• <strong>Aspirin vs. Anticoagulation</strong>: Equipoise. Choice between monotherapy/DAPT vs. VKA/DOAC is individualized.
-                    <br/>• <strong>STOP-CAD Strategy</strong>: In occlusions, consider anticoagulation for Day 1–30, then switch to antiplatelet.
+                    <br/>• <strong>Antithrombotics</strong>: ≥ 3 months (Class I).
+                    <br/>• <strong>Choice</strong>: Equipoise. Monotherapy/DAPT vs. VKA/DOAC is individualized.
+                    <br/>• <strong>STOP-CAD</strong>: In occlusions, consider anticoagulation Day 1–30, then switch to antiplatelet.
                     <br/>• <strong>IV Thrombolysis</strong>: Safe &amp; indicated within 4.5 hours (Class I).
                   </div>
                   <div style={{borderLeft: '1.5px dashed var(--red)', paddingLeft: '10px'}}>
                     <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Intracranial &amp; Pseudoaneurysms</strong>
-                    <br/>• <strong>SAH Risk</strong>: Intracranial vessels lack external elastic lamina &amp; have thin adventitia; high rupture/SAH risk.
-                    <br/>• <strong>Anticoagulation</strong>: Contraindicated if SAH present. Screen with CT/LP first. Prefer single antiplatelet if no SAH.
-                    <br/>• <strong>Pseudoaneurysm</strong>: Managed conservatively with serial imaging.
+                    <br/>• <strong>SAH Risk</strong>: Lack external elastic lamina &amp; thin adventitia; high rupture risk.
+                    <br/>• <strong>Anticoagulation</strong>: Contraindicated if SAH present. Screen with CT/LP first. Prefer single antiplatelet.
+                    <br/>• <strong>Pseudoaneurysm</strong>: Conservative management with serial imaging.
                     <br/>• <strong>Stenting</strong>: Reserve for refractory ischemia or enlarging/symptomatic pseudoaneurysms.
                   </div>
                 </div>
@@ -2690,7 +2690,7 @@ export function CervicalDissectionCard() {
                     <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 250. Extracranial CeAD. RCT.</td>
                     <td style={{padding: '3px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulant for 3 months.</td>
                     <td style={{padding: '3px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
-                      • <strong>Composite (Stroke/Death at 3m)</strong>: 2.0% vs. 1.0% ($p=0.63$). No significant difference; established clinical equipoise.
+                      • <strong>Composite (Stroke/Death at 3m)</strong>: 2.0% vs. 1.0% (p = 0.63). Established clinical equipoise.
                     </td>
                   </tr>
                   <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
@@ -2698,7 +2698,7 @@ export function CervicalDissectionCard() {
                     <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 194 (PP = 173). Extracranial. RCT.</td>
                     <td style={{padding: '3px 0', verticalAlign: 'top'}}>Aspirin 300mg daily vs. VKA for 3 months.</td>
                     <td style={{padding: '3px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
-                      • <strong>Composite (Stroke, bleed, death, or MRI at 14d)</strong>: 23% vs. 15% (Non-inferiority NOT met). Ischemic stroke alone: 8.0% vs. 0%.
+                      • <strong>Composite (Stroke, bleed, death, or MRI at 14d)</strong>: 23% vs. 15% (Non-inferiority NOT met). Ischemic stroke: 8.0% vs. 0%.
                     </td>
                   </tr>
                   <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
@@ -2706,15 +2706,15 @@ export function CervicalDissectionCard() {
                     <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 444. Meta-analysis of CADISS + TREAT-CAD.</td>
                     <td style={{padding: '3px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulant.</td>
                     <td style={{padding: '3px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
-                      • <strong>Ischemic Stroke alone</strong>: Significant reduction with anticoagulation (0.5% vs. 4.0%; OR 0.14, $p=0.01$). No difference in composite endpoints.
+                      • <strong>Ischemic Stroke alone</strong>: Significant reduction with anticoagulation (0.5% vs. 4.0%; OR 0.14, p = 0.01). No difference in composite.
                     </td>
                   </tr>
                   <tr>
                     <td style={{fontWeight: '700', padding: '3px 0', verticalAlign: 'top'}}><strong>STOP-CAD</strong><br/>2024</td>
                     <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 3,636. Multicenter cohort registry.</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Antiplatelets vs. Anticoagulation.</td>
+                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulation.</td>
                     <td style={{padding: '3px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
-                      • <strong>Stroke vs Bleed</strong>: Anticoagulation associated with lower stroke rate but higher bleed. Occlusive cases benefited most. Proposes Day 30 transition.
+                      • <strong>Stroke vs Bleed</strong>: Anticoagulation associated with lower stroke rate but higher bleed. Occlusions benefited most; day 30 transition.
                     </td>
                   </tr>
                 </tbody>

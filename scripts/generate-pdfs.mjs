@@ -2164,12 +2164,11 @@ async function main() {
           <text x="270" y="38" fill="var(--red-deep)" font-size="7pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">FALSE LUMEN (Intramural Hematoma)</text>
           <text x="270" y="60" fill="var(--amber-deep)" font-size="6.5pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Stenosis / Compression</text>
           <text x="402" y="48" fill="var(--purple-deep)" font-size="6.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">Thrombus</text>
-          <line x1="470" y1="10" x2="470" y2="100" stroke="var(--rule-soft)" stroke-width="1.5" stroke-dasharray="3 3" />
           <circle cx="530" cy="55" r="28" fill="none" stroke="#4A5A6D" stroke-width="2.5" />
           <circle cx="530" cy="55" r="24" fill="none" stroke="#94a3b8" stroke-width="1.5" />
           <circle cx="530" cy="55" r="23" fill="var(--teal-soft)" opacity="0.6" />
-          <text x="530" y="58" fill="var(--teal-deep)" font-size="6pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">NORMAL</text>
-          <text x="530" y="96" fill="var(--ink-soft)" font-size="6pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Sympathetic Plexus</text>
+          <text x="530" y="58" fill="var(--teal-deep)" font-size="5.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">NORMAL ICA</text>
+          <text x="530" y="96" fill="var(--ink-soft)" font-size="5pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Sympathetic Plexus (Cervical)</text>
           <circle cx="530" cy="23" r="1.5" fill="var(--amber)" />
           <circle cx="545" cy="27" r="1.5" fill="var(--amber)" />
           <circle cx="555" cy="40" r="1.5" fill="var(--amber)" />
@@ -2186,7 +2185,7 @@ async function main() {
           <circle cx="675" cy="40" r="1.5" fill="var(--amber)" opacity="0.3" />
           <text x="650" y="44" fill="var(--red-deep)" font-size="5.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">Hematoma</text>
           <text x="650" y="73" fill="var(--teal-deep)" font-size="5.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">True Lumen</text>
-          <text x="650" y="96" fill="var(--ink-soft)" font-size="6pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">ICA Dissection</text>
+          <text x="650" y="96" fill="var(--ink-soft)" font-size="5pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Cervical ICA Dissection</text>
           <defs>
             <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
               <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--red)" />
@@ -2201,20 +2200,20 @@ async function main() {
           <span class="box-title">1. Clinical Presentation &amp; Pathophysiology</span>
           <div class="presentation-grid">
             <div>
-              <strong style="color: var(--purple-deep); font-size: 8pt">Ipsilateral Headache &amp; Pain</strong>
-              <br/>• <strong>Carotid (ICA)</strong>: Frontotemporal, retro-orbital, or facial pain (jaw angle).
-              <br/>• <strong>Vertebral (VA)</strong>: Severe occipital headache or posterior neck pain.
-              <br/>• <strong>Onset</strong>: Pain precedes TIA/stroke by hours to days (median 4 days).
+              <strong style="color: var(--purple-deep); font-size: 8pt">Ipsilateral Pain &amp; Onset</strong>
+              <br/>• <strong>Carotid (ICA)</strong>: Frontotemporal/retro-orbital/facial pain (jaw angle).
+              <br/>• <strong>Vertebral (VA)</strong>: Severe occipital or posterior neck pain.
+              <br/>• <strong>Onset</strong>: Precedes stroke/TIA by hours to days (median 4 days).
             </div>
             <div class="col-divider">
               <strong style="color: var(--purple-deep); font-size: 8pt">Anhidrosis-Sparing Horner's</strong>
-              <br/>• <strong>Signs</strong>: Ptosis &amp; miosis (~28–58% of ICA) <strong>without</strong> anhidrosis.
-              <br/>• <strong>Mechanism</strong>: Sudomotor (sweat) fibers ascend via the ECA plexus; pupillary/eyelid fibers ascend via the ICA.
+              <br/>• <strong>Signs</strong>: Ptosis/miosis (28–58% of ICA) <strong>without</strong> anhidrosis.
+              <br/>• <strong>Mechanism</strong>: Sweat fibers follow ECA plexus; pupil/eyelid fibers follow ICA.
             </div>
             <div class="col-divider">
               <strong style="color: var(--purple-deep); font-size: 8pt">Neurological Deficits</strong>
-              <br/>• <strong>CN Palsies</strong>: CN IX, X, XI, XII palsies (~8–16%) from local ICA compression.
-              <br/>• <strong>VA Territory</strong>: Wallenberg syndrome, cerebellar ataxia, PICA/AICA territory strokes.
+              <br/>• <strong>CN Palsies</strong>: CN IX–XII palsies (8–16%) from local ICA compression.
+              <br/>• <strong>VA Territory</strong>: Wallenberg syndrome, cerebellar ataxia, PICA/AICA strokes.
             </div>
           </div>
         </div>
@@ -2223,10 +2222,10 @@ async function main() {
           <div class="box box-teal">
             <span class="box-title">2. Diagnostic Workup</span>
             <ul style="margin: 0; padding-left: 12px; font-size: 7.8pt; line-height: 1.4; color: var(--ink-soft)">
-              <li><strong>CTA Head/Neck</strong>: First-line. Shows tapered stenosis ("string sign"), flap, pseudoaneurysm, or occlusion.</li>
-              <li><strong>MRI Neck (T1 Fat-Sat)</strong>: Pathognomonic hyperintense crescentic intramural hematoma (crescent sign).</li>
-              <li><strong>DSA</strong>: Gold standard; reserve for diagnostic doubt or stenting evaluation.</li>
-              <li><strong>Screening</strong>: Screen for FMD or connective tissue disorders if spontaneous/recurrent.</li>
+              <li><strong>CTA Head/Neck</strong>: First-line. Shows string sign, dissection flap, pseudoaneurysm, or occlusion.</li>
+              <li><strong>MRI Neck (T1 Fat-Sat)</strong>: Pathognomonic crescent sign (intramural hematoma).</li>
+              <li><strong>DSA</strong>: Gold standard; reserve for diagnostic doubt or stenting.</li>
+              <li><strong>Screening</strong>: Assess for FMD/connective tissue disease if spontaneous/recurrent.</li>
             </ul>
           </div>
 
@@ -2235,16 +2234,16 @@ async function main() {
             <div class="management-split">
               <div>
                 <strong style="color: var(--red-deep); font-size: 8pt">Extracranial Dissection</strong>
-                <br/>• <strong>Antithrombotics</strong>: &ge; 3 months (Class I).
-                <br/>• <strong>Aspirin vs. Anticoagulation</strong>: Equipoise. Choice between monotherapy/DAPT vs. VKA/DOAC is individualized.
-                <br/>• <strong>STOP-CAD Strategy</strong>: In occlusions, consider anticoagulation for Day 1–30, then switch to antiplatelet.
+                <br/>• <strong>Antithrombotics</strong>: ≥ 3 months (Class I).
+                <br/>• <strong>Choice</strong>: Equipoise. Monotherapy/DAPT vs. VKA/DOAC is individualized.
+                <br/>• <strong>STOP-CAD</strong>: In occlusions, consider anticoagulation Day 1–30, then switch to antiplatelet.
                 <br/>• <strong>IV Thrombolysis</strong>: Safe &amp; indicated within 4.5 hours (Class I).
               </div>
               <div class="management-divider">
                 <strong style="color: var(--red-deep); font-size: 8pt">Intracranial &amp; Pseudoaneurysms</strong>
-                <br/>• <strong>SAH Risk</strong>: Intracranial vessels lack external elastic lamina &amp; have thin adventitia; high rupture/SAH risk.
-                <br/>• <strong>Anticoagulation</strong>: Contraindicated if SAH present. Screen with CT/LP first. Prefer single antiplatelet if no SAH.
-                <br/>• <strong>Pseudoaneurysm</strong>: Managed conservatively with serial imaging.
+                <br/>• <strong>SAH Risk</strong>: Lack external elastic lamina &amp; thin adventitia; high rupture risk.
+                <br/>• <strong>Anticoagulation</strong>: Contraindicated if SAH present. Screen with CT/LP first. Prefer single antiplatelet.
+                <br/>• <strong>Pseudoaneurysm</strong>: Conservative management with serial imaging.
                 <br/>• <strong>Stenting</strong>: Reserve for refractory ischemia or enlarging/symptomatic pseudoaneurysms.
               </div>
             </div>
@@ -2268,7 +2267,7 @@ async function main() {
                 <td style="padding: 3px 0;">N = 250. Extracranial CeAD. RCT.</td>
                 <td style="padding: 3px 0;">Antiplatelet vs. Anticoagulant for 3 months.</td>
                 <td style="padding: 3px 0; color: var(--ink-soft)">
-                  • <strong>Composite (Stroke/Death at 3m)</strong>: 2.0% vs. 1.0% ($p=0.63$). No significant difference; established clinical equipoise.
+                  • <strong>Composite (Stroke/Death at 3m)</strong>: 2.0% vs. 1.0% (p = 0.63). Established clinical equipoise.
                 </td>
               </tr>
               <tr>
@@ -2276,7 +2275,7 @@ async function main() {
                 <td style="padding: 3px 0;">N = 194 (PP = 173). Extracranial. RCT.</td>
                 <td style="padding: 3px 0;">Aspirin 300mg daily vs. VKA for 3 months.</td>
                 <td style="padding: 3px 0; color: var(--ink-soft)">
-                  • <strong>Composite (Stroke, bleed, death, or MRI at 14d)</strong>: 23% vs. 15% (Non-inferiority NOT met). Ischemic stroke alone: 8.0% vs. 0%.
+                  • <strong>Composite (Stroke, bleed, death, or MRI at 14d)</strong>: 23% vs. 15% (Non-inferiority NOT met). Ischemic stroke: 8.0% vs. 0%.
                 </td>
               </tr>
               <tr>
@@ -2284,15 +2283,15 @@ async function main() {
                 <td style="padding: 3px 0;">N = 444. Meta-analysis of CADISS + TREAT-CAD.</td>
                 <td style="padding: 3px 0;">Antiplatelet vs. Anticoagulant.</td>
                 <td style="padding: 3px 0; color: var(--ink-soft)">
-                  • <strong>Ischemic Stroke alone</strong>: Significant reduction with anticoagulation (0.5% vs. 4.0%; OR 0.14, $p=0.01$). No difference in composite endpoints.
+                  • <strong>Ischemic Stroke alone</strong>: Significant reduction with anticoagulation (0.5% vs. 4.0%; OR 0.14, p = 0.01). No difference in composite.
                 </td>
               </tr>
               <tr>
                 <td style="font-weight: 700; padding: 3px 0;"><strong>STOP-CAD</strong><br/>2024</td>
                 <td style="padding: 3px 0;">N = 3,636. Multicenter cohort registry.</td>
-                <td style="padding: 3px 0;">Antiplatelets vs. Anticoagulation.</td>
+                <td style="padding: 3px 0;">Antiplatelet vs. Anticoagulation.</td>
                 <td style="padding: 3px 0; color: var(--ink-soft)">
-                  • <strong>Stroke vs Bleed</strong>: Anticoagulation associated with lower stroke rate but higher bleed. Occlusive cases benefited most. Proposes Day 30 transition.
+                  • <strong>Stroke vs Bleed</strong>: Anticoagulation associated with lower stroke rate but higher bleed. Occlusions benefited most; day 30 transition.
                 </td>
               </tr>
             </tbody>
