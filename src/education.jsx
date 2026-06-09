@@ -2532,8 +2532,6 @@ const CervicalDissectionView = () => {
 };
 
 export function CervicalDissectionCard() {
-  const [diagramTab, setDiagramTab] = useState('anatomy');
-
   return (
     <div className="bedside-card-view screen-layout">
       <div className="card-wrapper card-cervical-dissection">
@@ -2541,125 +2539,89 @@ export function CervicalDissectionCard() {
           <div className="card-content">
             <h1 style={{textAlign: 'center', marginBottom: '8px'}}>Cervical Artery Dissection</h1>
 
-            {/* Interactive Diagrams Toggle Header */}
-            <div style={{display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '8px'}}>
-              <button 
-                onClick={() => setDiagramTab('anatomy')}
-                style={{
-                  padding: '3px 10px',
-                  fontSize: '7.8pt',
-                  fontFamily: 'Outfit, sans-serif',
-                  fontWeight: '700',
-                  borderRadius: '6px',
-                  border: '1.5px solid var(--teal)',
-                  background: diagramTab === 'anatomy' ? 'var(--teal-soft)' : '#ffffff',
-                  color: 'var(--teal-deep)',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  outline: 'none'
-                }}
-              >
-                Anatomy &amp; Dissection
-              </button>
-              <button 
-                onClick={() => setDiagramTab('mechanisms')}
-                style={{
-                  padding: '3px 10px',
-                  fontSize: '7.8pt',
-                  fontFamily: 'Outfit, sans-serif',
-                  fontWeight: '700',
-                  borderRadius: '6px',
-                  border: '1.5px solid var(--purple)',
-                  background: diagramTab === 'mechanisms' ? 'var(--purple-soft)' : '#ffffff',
-                  color: 'var(--purple-deep)',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  outline: 'none'
-                }}
-              >
-                Stroke Mechanisms
-              </button>
-            </div>
-
-            {diagramTab === 'anatomy' ? (
-              <svg viewBox="0 0 735 110" style={{width: '100%', height: '110px', marginBottom: '8px'}}>
-                {/* Background */}
-                <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
-                
-                {/* Longitudinal View (Left) */}
-                <path d="M 20 25 L 430 25 M 20 85 L 430 85" stroke="#4A5A6D" strokeWidth="3" strokeLinecap="round" />
-                <path d="M 20 33 L 150 33" stroke="#94a3b8" strokeWidth="2" fill="none" />
-                <path d="M 20 77 L 430 77" stroke="#94a3b8" strokeWidth="2" fill="none" />
-                <path d="M 150 33 L 160 48" stroke="var(--red)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-                <path d="M 160 48 C 220 72, 320 72, 380 33" stroke="#94a3b8" strokeWidth="2" fill="none" />
-                <path d="M 160 48 C 220 72, 320 72, 380 33 L 380 25 L 160 25 Z" fill="var(--red-soft)" opacity="0.8" />
-                <path d="M 180 25 C 220 45, 320 45, 360 25" fill="var(--red)" opacity="0.25" />
-                <path d="M 380 33 L 430 33" stroke="#94a3b8" strokeWidth="2" fill="none" />
-                
-                <path d="M 100 55 Q 140 55, 160 40" fill="none" stroke="var(--red)" strokeWidth="2.2" markerEnd="url(#arrow-red)" />
-                <path d="M 165 32 Q 190 28, 220 28" fill="none" stroke="var(--red)" strokeWidth="2.2" markerEnd="url(#arrow-red)" />
-                <path d="M 240 68 L 300 68" stroke="var(--amber)" strokeWidth="1.8" fill="none" markerEnd="url(#arrow-amber)" />
-                
-                <rect x="380" y="55" width="45" height="22" rx="3" fill="var(--purple)" opacity="0.85" stroke="var(--purple-deep)" strokeWidth="1" />
-                <line x1="384" y1="77" x2="392" y2="55" stroke="#ffffff" strokeWidth="1" opacity="0.4" />
-                <line x1="392" y1="77" x2="400" y2="55" stroke="#ffffff" strokeWidth="1" opacity="0.4" />
-                <line x1="400" y1="77" x2="408" y2="55" stroke="#ffffff" strokeWidth="1" opacity="0.4" />
-                
-                <text x="75" y="58" fill="var(--teal-deep)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">TRUE LUMEN</text>
-                <text x="145" y="16" fill="var(--red-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Intimal Tear</text>
-                <text x="270" y="38" fill="var(--red-deep)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">FALSE LUMEN (Intramural Hematoma)</text>
-                <text x="270" y="60" fill="var(--amber-deep)" fontSize="6.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Stenosis / Compression</text>
-                <text x="402" y="48" fill="var(--purple-deep)" fontSize="6.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Thrombus</text>
-                
-                {/* Divider */}
-                <line x1="470" y1="10" x2="470" y2="100" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
-                
-                {/* Cross-Section 1: Normal (ICA with Sympathetic Plexus) */}
-                <circle cx="530" cy="55" r="28" fill="none" stroke="#4A5A6D" strokeWidth="2.5" />
-                <circle cx="530" cy="55" r="24" fill="none" stroke="#94a3b8" strokeWidth="1.5" />
-                <circle cx="530" cy="55" r="23" fill="var(--teal-soft)" opacity="0.6" />
-                <text x="530" y="58" fill="var(--teal-deep)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">NORMAL ICA</text>
-                <text x="530" y="96" fill="var(--ink-soft)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Sympathetic Plexus (Cervical)</text>
-                
-                <circle cx="530" cy="23" r="1.5" fill="var(--amber)" />
-                <circle cx="545" cy="27" r="1.5" fill="var(--amber)" />
-                <circle cx="555" cy="40" r="1.5" fill="var(--amber)" />
-                <circle cx="557" cy="55" r="1.5" fill="var(--amber)" />
-                <circle cx="555" cy="70" r="1.5" fill="var(--amber)" />
-                <circle cx="545" cy="83" r="1.5" fill="var(--amber)" />
-                <circle cx="530" cy="87" r="1.5" fill="var(--amber)" />
-                
-                {/* Cross-Section 2: Dissected (Hematoma compresses True Lumen, stretches plexus) */}
-                <circle cx="650" cy="55" r="28" fill="none" stroke="#4A5A6D" strokeWidth="2.5" />
-                <path d="M 622 55 A 28 28 0 0 1 678 55 C 670 65, 630 65, 622 55 Z" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1" />
-                <path d="M 622 55 C 630 65, 670 65, 678 55 A 28 28 0 0 1 622 55 Z" fill="none" stroke="#94a3b8" strokeWidth="1.5" />
-                <ellipse cx="650" cy="70" rx="18" ry="8" fill="var(--teal-soft)" stroke="#94a3b8" strokeWidth="1" />
-                
-                <circle cx="650" cy="23" r="1.5" fill="var(--amber)" opacity="0.3" />
-                <circle cx="665" cy="27" r="1.5" fill="var(--amber)" opacity="0.3" />
-                <circle cx="675" cy="40" r="1.5" fill="var(--amber)" opacity="0.3" />
-                <text x="650" y="44" fill="var(--red-deep)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Hematoma</text>
-                <text x="650" y="73" fill="var(--teal-deep)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">True Lumen</text>
-                <text x="650" y="96" fill="var(--ink-soft)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Cervical ICA Dissection</text>
-                
-                <defs>
-                  <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                    <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--red)" />
-                  </marker>
-                  <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                    <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--amber)" />
-                  </marker>
-                </defs>
-              </svg>
-            ) : (
-              <div style={{width: '100%', height: '110px', marginBottom: '8px', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden'}}>
+            {/* Dual Diagrams Banner - Side-by-Side (No Toggling) */}
+            <div style={{display: 'flex', gap: '8px', marginBottom: '8px'}}>
+              {/* Anatomy & Dissection SVG */}
+              <div style={{flex: '1.45', height: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box'}}>
+                <svg viewBox="0 0 735 110" style={{width: '100%', height: '100%'}}>
+                  {/* Background */}
+                  <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
+                  
+                  {/* Longitudinal View (Left) */}
+                  <path d="M 20 25 L 430 25 M 20 85 L 430 85" stroke="#4A5A6D" strokeWidth="3" strokeLinecap="round" />
+                  <path d="M 20 33 L 150 33" stroke="#94a3b8" strokeWidth="2" fill="none" />
+                  <path d="M 20 77 L 430 77" stroke="#94a3b8" strokeWidth="2" fill="none" />
+                  <path d="M 150 33 L 160 48" stroke="var(--red)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+                  <path d="M 160 48 C 220 72, 320 72, 380 33" stroke="#94a3b8" strokeWidth="2" fill="none" />
+                  <path d="M 160 48 C 220 72, 320 72, 380 33 L 380 25 L 160 25 Z" fill="var(--red-soft)" opacity="0.8" />
+                  <path d="M 180 25 C 220 45, 320 45, 360 25" fill="var(--red)" opacity="0.25" />
+                  <path d="M 380 33 L 430 33" stroke="#94a3b8" strokeWidth="2" fill="none" />
+                  
+                  <path d="M 100 55 Q 140 55, 160 40" fill="none" stroke="var(--red)" strokeWidth="2.2" markerEnd="url(#arrow-red)" />
+                  <path d="M 165 32 Q 190 28, 220 28" fill="none" stroke="var(--red)" strokeWidth="2.2" markerEnd="url(#arrow-red)" />
+                  <path d="M 240 68 L 300 68" stroke="var(--amber)" strokeWidth="1.8" fill="none" markerEnd="url(#arrow-amber)" />
+                  
+                  <rect x="380" y="55" width="45" height="22" rx="3" fill="var(--purple)" opacity="0.85" stroke="var(--purple-deep)" strokeWidth="1" />
+                  <line x1="384" y1="77" x2="392" y2="55" stroke="#ffffff" strokeWidth="1" opacity="0.4" />
+                  <line x1="392" y1="77" x2="400" y2="55" stroke="#ffffff" stroke-width="1" opacity="0.4" />
+                  <line x1="400" y1="77" x2="408" y2="55" stroke="#ffffff" stroke-width="1" opacity="0.4" />
+                  
+                  <text x="75" y="58" fill="var(--teal-deep)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">TRUE LUMEN</text>
+                  <text x="145" y="16" fill="var(--red-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Intimal Tear</text>
+                  <text x="270" y="38" fill="var(--red-deep)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">FALSE LUMEN (Intramural Hematoma)</text>
+                  <text x="270" y="60" fill="var(--amber-deep)" fontSize="6.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Stenosis / Compression</text>
+                  <text x="402" y="48" fill="var(--purple-deep)" fontSize="6.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Thrombus</text>
+                  
+                  {/* Divider */}
+                  <line x1="470" y1="10" x2="470" y2="100" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+                  
+                  {/* Cross-Section 1: Normal (ICA with Sympathetic Plexus) */}
+                  <circle cx="530" cy="55" r="28" fill="none" stroke="#4A5A6D" strokeWidth="2.5" />
+                  <circle cx="530" cy="55" r="24" fill="none" stroke="#94a3b8" strokeWidth="1.5" />
+                  <circle cx="530" cy="55" r="23" fill="var(--teal-soft)" opacity="0.6" />
+                  <text x="530" y="58" fill="var(--teal-deep)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">NORMAL ICA</text>
+                  <text x="530" y="96" fill="var(--ink-soft)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Sympathetic Plexus (Cervical)</text>
+                  
+                  <circle cx="530" cy="23" r="1.5" fill="var(--amber)" />
+                  <circle cx="545" cy="27" r="1.5" fill="var(--amber)" />
+                  <circle cx="555" cy="40" r="1.5" fill="var(--amber)" />
+                  <circle cx="557" cy="55" r="1.5" fill="var(--amber)" />
+                  <circle cx="555" cy="70" r="1.5" fill="var(--amber)" />
+                  <circle cx="545" cy="83" r="1.5" fill="var(--amber)" />
+                  <circle cx="530" cy="87" r="1.5" fill="var(--amber)" />
+                  
+                  {/* Cross-Section 2: Dissected (Hematoma compresses True Lumen, stretches plexus) */}
+                  <circle cx="650" cy="55" r="28" fill="none" stroke="#4A5A6D" strokeWidth="2.5" />
+                  <path d="M 622 55 A 28 28 0 0 1 678 55 C 670 65, 630 65, 622 55 Z" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1" />
+                  <path d="M 622 55 C 630 65, 670 65, 678 55 A 28 28 0 0 1 622 55 Z" fill="none" stroke="#94a3b8" strokeWidth="1.5" />
+                  <ellipse cx="650" cy="70" rx="18" ry="8" fill="var(--teal-soft)" stroke="#94a3b8" strokeWidth="1" />
+                  
+                  <circle cx="650" cy="23" r="1.5" fill="var(--amber)" opacity="0.3" />
+                  <circle cx="665" cy="27" r="1.5" fill="var(--amber)" opacity="0.3" />
+                  <circle cx="675" cy="40" r="1.5" fill="var(--amber)" opacity="0.3" />
+                  <text x="650" y="44" fill="var(--red-deep)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Hematoma</text>
+                  <text x="650" y="73" fill="var(--teal-deep)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">True Lumen</text>
+                  <text x="650" y="96" fill="var(--ink-soft)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Cervical ICA Dissection</text>
+                  
+                  <defs>
+                    <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                      <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--red)" />
+                    </marker>
+                    <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                      <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--amber)" />
+                    </marker>
+                  </defs>
+                </svg>
+              </div>
+              {/* Stroke Mechanisms PNG */}
+              <div style={{flex: '1', height: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box'}}>
                 <img 
                   src="assets/dissection_stroke_mechanisms.png" 
                   alt="Cervical Artery Dissection Stroke Mechanisms" 
                   style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
                 />
               </div>
-            )}
+            </div>
 
             {/* Section 1: Clinical Presentation & Pathophysiology */}
             <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%)', marginBottom: '8px'}}>

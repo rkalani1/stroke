@@ -2144,7 +2144,7 @@ async function main() {
 
         <div style="display: flex; gap: 8px; margin-bottom: 8px;">
           <!-- Anatomy & Dissection (SVG) -->
-          <div style="flex: 1.45; height: 110px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box;">
+          <div style="flex: 1.45; height: 180px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box;">
             <svg viewBox="0 0 735 110" style="width: 100%; height: 100%;">
               <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
               <path d="M 20 25 L 430 25 M 20 85 L 430 85" stroke="#4A5A6D" stroke-width="3" stroke-linecap="round" />
@@ -2200,7 +2200,7 @@ async function main() {
             </svg>
           </div>
           <!-- Stroke Mechanisms (PNG) -->
-          <div style="flex: 1; height: 110px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box;">
+          <div style="flex: 1; height: 180px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box;">
             <img src="${dissectionStrokeMechanismsBase64}" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
           </div>
         </div>
