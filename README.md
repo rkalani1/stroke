@@ -47,6 +47,7 @@ Updates roll out via a non-intrusive **"A new version of Stroke is ready"** bann
 
 ### Validation
 - `npm run validate:citations` — verifies the 24-row citation table in `docs/evidence-review-2021-2026.md` (PMID, DOI, NCT structure; year range; URL format).
+- `npm run validate:automedbench-lite` — verifies that `docs/ai-agent-evals/automedbench-lite.md` keeps the S1-S5 gate for AI-assisted evidence and protocol updates.
 - `npm run evidence:validate` — structural validation of `src/evidence/` (schema conformance, FK integrity, identifier patterns, Class-I-without-supporting-claim auditability, stale-evidence warnings). Reports matcher-engine coverage. Standalone runnable for fast iteration.
 - `npm run evidence:export` — emits Markdown + CSV + JSON to `output/` (atlas summary, completed trials, active trials, claim-source map, PICO table).
 - `npm run validate:evidence-churn-profiles`, `npm run validate:qa-latency-profiles`, `npm run validate:evidence-promotion` — operational validators for the QA-governance pipeline.
