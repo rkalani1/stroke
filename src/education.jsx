@@ -2685,7 +2685,7 @@ export function CervicalDissectionCard() {
                   <li><strong>CTA Head/Neck</strong>: Shows string sign, dissection flap, pseudoaneurysm, or occlusion.</li>
                   <li><strong>MRI Neck (T1 Fat-Sat)</strong>: Pathognomonic crescent sign (intramural hematoma).</li>
                   <li><strong>DSA</strong>: Reserve for diagnostic doubt or stenting.</li>
-                  <li><strong>Screening</strong>: Assess for FMD/connective tissue disease if spontaneous/recurrent.</li>
+                  <li><strong>Screening</strong>: Assess for FMD/connective tissue disease, especially if spontaneous/recurrent.</li>
                 </ul>
               </div>
 
