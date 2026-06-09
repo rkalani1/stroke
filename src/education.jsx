@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { EvdIcpSimulator } from './simulators/EvdIcpSimulator.jsx';
 import { HintsSimulator } from './simulators/HintsSimulator.jsx';
 import { PupillometrySimulator } from './simulators/PupillometrySimulator.jsx';
@@ -2006,7 +2007,7 @@ export function AfibAnticoagTimingCard() {
     };
   }, [onClose]);
 
-  return (
+  return createPortal(
     <div 
       className="fixed inset-0 z-[250] flex flex-col items-center justify-center bg-slate-950/95 p-4 no-print backdrop-blur-sm cursor-zoom-out"
       role="dialog"
@@ -2015,7 +2016,7 @@ export function AfibAnticoagTimingCard() {
     >
       <button 
         type="button"
-        className="absolute top-4 right-4 p-2.5 bg-slate-850 hover:bg-slate-800 text-white rounded-full transition-colors focus:outline-none shadow-md z-[260]"
+        className="absolute top-4 right-4 p-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-full transition-colors focus:outline-none shadow-md z-[260]"
         onClick={(e) => { e.stopPropagation(); onClose(); }}
         aria-label="Close image preview"
       >
@@ -2039,7 +2040,8 @@ export function AfibAnticoagTimingCard() {
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
