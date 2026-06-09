@@ -2727,7 +2727,7 @@ export function CervicocranialDissectionCard() {
             <div 
               style={{
                 width: '100%', 
-                height: '240px', 
+                height: '360px', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
