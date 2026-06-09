@@ -2519,7 +2519,7 @@ const CervicalDissectionView = () => {
   return (
     <PdfActionBar
       title="Cervical Artery Dissection"
-      pdfPath="documents/references/Cervical Artery Dissection.pdf"
+      pdfPath="documents/references/Cervical Artery Dissection.pdf?v=6.9.24"
       pdfName="Cervical Artery Dissection.pdf"
       iconColorClass="text-blue-600 dark:text-blue-400"
     >
