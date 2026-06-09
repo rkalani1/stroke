@@ -2254,7 +2254,7 @@ async function main() {
                 <br/>• <strong>Stenting</strong>: Reserve for recurrent ischemia despite optimal medical therapy or severe flow-limiting stenosis.
               </div>
               <div style="grid-column: 1 / -1; border-top: 1px dashed var(--red); padding-top: 4px; margin-top: 4px; font-size: 7.1pt">
-                • <strong>Recurrence &amp; Activity</strong>: Long-term CeAD recurrence is low (~1%/yr). Avoid high-risk neck activities (chiropractic neck manipulation, rollercoasters, extreme hyperextension/rotation) for secondary prevention (AHA 2024 / ESO 2021).
+                • <strong>Recurrence &amp; Activity</strong>: Long-term CeAD recurrence is low (~1%/yr). Avoid high-risk neck activities (chiropractic neck manipulation, rollercoasters, extreme hyperextension/rotation) for secondary prevention.
               </div>
             </div>
           </div>
