@@ -330,9 +330,9 @@ const EDUCATION_MODULES = [
     ]
   },
   {
-    id: 'cervical-dissection',
-    title: 'Cervical Artery Dissection',
-    purpose: 'Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence (CADISS, TREAT-CAD, STOP-CAD, and 2024 IPD meta-analysis) for cervical artery dissection.',
+    id: 'cervicocranial-dissection',
+    title: 'Cervicocranial Artery Dissection',
+    purpose: 'Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence (CADISS, TREAT-CAD, STOP-CAD, and 2024 IPD meta-analysis) for cervicocranial artery dissection.',
     actions: 'carotid vertebral dissection horner syndrome treat-cad cadiss stop-cad antiplatelet anticoagulation pseudoaneurysm pain ipsilateral headache neck yaghi kaufmann',
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-06-09',
@@ -830,8 +830,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
           <StkCoreMeasuresCard />
         </ScaledCardWrapper>
       );
-    case 'cervical-dissection':
-      return <CervicalDissectionView />;
+    case 'cervicocranial-dissection':
+      return <CervicocranialDissectionView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -2336,7 +2336,7 @@ export const ICPInfographic = () => {
                   <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <span className="font-bold text-red-600 dark:text-red-400">*Cushing triad is a LATE sign of brainstem compression.*</span></li>
                 </ul>
               </div>
-              <div className="w-full md:w-[42%] flex justify-center items-center p-1.5 bg-white dark:bg-slate-950 rounded-lg border border-orange-200 dark:border-orange-900 shrink-0">
+              <div className="w-full md:w-[48%] flex justify-center items-center p-1.5 bg-white dark:bg-slate-950 rounded-lg border border-orange-200 dark:border-orange-900 shrink-0">
                 <div 
                   className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full"
                   onClick={() => setLightboxImage({ src: 'assets/herniation_diagram.png', alt: 'Brain Herniation Diagram', title: 'Brain Herniation Syndromes' })}
@@ -2344,7 +2344,7 @@ export const ICPInfographic = () => {
                   <img 
                     src="assets/herniation_diagram.png" 
                     alt="Brain Herniation Diagram" 
-                    className="max-h-[160px] object-contain rounded-md transition-transform duration-200 group-hover:scale-105"
+                    className="max-h-[220px] object-contain rounded-md transition-transform duration-200 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
                     <span className="text-[10px] text-white font-semibold bg-black/60 px-2 py-1 rounded-md flex items-center gap-1">
@@ -2616,23 +2616,23 @@ export function StkCoreMeasuresCard() {
   );
 }
 
-const CervicalDissectionView = () => {
+const CervicocranialDissectionView = () => {
   return (
     <PdfActionBar
-      title="Cervical Artery Dissection"
-      pdfPath="documents/references/Cervical Artery Dissection.pdf"
-      pdfName="Cervical Artery Dissection.pdf"
+      title="Cervicocranial Artery Dissection"
+      pdfPath="documents/references/Cervicocranial Artery Dissection.pdf"
+      pdfName="Cervicocranial Artery Dissection.pdf"
       iconColorClass="text-blue-600 dark:text-blue-400"
     >
       <ScaledCardWrapper isLandscape={false}>
         <BedsidePocketCardsStyles />
-        <CervicalDissectionCard />
+        <CervicocranialDissectionCard />
       </ScaledCardWrapper>
     </PdfActionBar>
   );
 };
 
-export function CervicalDissectionCard() {
+export function CervicocranialDissectionCard() {
   const [lightboxImage, setLightboxImage] = useState(null);
   const [svgHover, setSvgHover] = useState(false);
   const [pngHover, setPngHover] = useState(false);
@@ -2682,7 +2682,7 @@ export function CervicalDissectionCard() {
       <circle cx="675" cy="40" r="1.5" fill="var(--amber)" opacity="0.3" />
       <text x="650" y="44" fill="var(--red-deep)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Hematoma</text>
       <text x="650" y="73" fill="var(--teal-deep)" fontSize="5.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">True Lumen</text>
-      <text x="650" y="96" fill="var(--ink-soft)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Cervical ICA Dissection</text>
+      <text x="650" y="96" fill="var(--ink-soft)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Cervicocranial ICA Dissection</text>
       <defs>
         <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
           <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--red)" />
@@ -2699,7 +2699,7 @@ export function CervicalDissectionCard() {
       <div className="card-wrapper card-cervical-dissection">
         <div className="card-container" style={{boxSizing: 'border-box'}}>
           <div className="card-content">
-            <h1 style={{textAlign: 'center', marginBottom: '8px'}}>Cervical Artery Dissection</h1>
+            <h1 style={{textAlign: 'center', marginBottom: '8px'}}>Cervicocranial Artery Dissection</h1>
 
             {/* Diagrams Banner - Stacked Vertically (No Toggling, Optimally Seen on Page) */}
             {/* Anatomy & Dissection SVG */}
@@ -2727,7 +2727,7 @@ export function CervicalDissectionCard() {
             <div 
               style={{
                 width: '100%', 
-                height: '150px', 
+                height: '240px', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
@@ -2742,11 +2742,11 @@ export function CervicalDissectionCard() {
             >
               <div 
                 className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full h-full"
-                onClick={() => setLightboxImage({ src: 'assets/dissection_stroke_mechanisms.png', alt: 'Cervical Artery Dissection Stroke Mechanisms', title: 'Stroke Mechanisms in Cervical Artery Dissection' })}
+                onClick={() => setLightboxImage({ src: 'assets/dissection_stroke_mechanisms.png', alt: 'Cervicocranial Artery Dissection Stroke Mechanisms', title: 'Stroke Mechanisms in Cervicocranial Artery Dissection' })}
               >
                 <img 
                   src="assets/dissection_stroke_mechanisms.png" 
-                  alt="Cervical Artery Dissection Stroke Mechanisms" 
+                  alt="Cervicocranial Artery Dissection Stroke Mechanisms" 
                   style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
                   className="transition-transform duration-200 group-hover:scale-[1.02]"
                 />
@@ -2808,11 +2808,11 @@ export function CervicalDissectionCard() {
                     <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Intracranial &amp; Pseudoaneurysms</strong>
                     <br/>• <strong>SAH</strong>: Lack external elastic lamina &amp; thin adventitia; rupture risk.
                     <br/>• <strong>Anticoagulation</strong>: Avoided if SAH present. Prefer single antiplatelet.
-                    <br/>• <strong>IVT Caution</strong>: IVT is safe in extracranial CeAD (Class I) but safety/efficacy in cases with intracranial extension is not well established (AHA 2024).
+                    <br/>• <strong>IVT Caution</strong>: IVT is safe in extracranial CCAD (Class I) but safety/efficacy in cases with intracranial extension is not well established (AHA 2024).
                     <br/>• <strong>Stenting</strong>: Reserve for recurrent ischemia despite optimal medical therapy or severe flow-limiting stenosis.
                   </div>
                   <div style={{gridColumn: '1 / -1', borderTop: '1px dashed var(--red)', paddingTop: '6.5px', marginTop: '4px', fontSize: '7.4pt'}}>
-                    • <strong>Recurrence &amp; Activity</strong>: Long-term CeAD recurrence is low (~1%/yr). Avoid high-risk neck activities (chiropractic neck manipulation, rollercoasters, extreme hyperextension/rotation) for secondary prevention.
+                    • <strong>Recurrence &amp; Activity</strong>: Long-term CCAD recurrence is low (~1%/yr). Avoid high-risk neck activities (chiropractic neck manipulation, rollercoasters, extreme hyperextension/rotation) for secondary prevention.
                   </div>
                 </div>
               </div>
@@ -2833,7 +2833,7 @@ export function CervicalDissectionCard() {
                 <tbody>
                   <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
                     <td style={{fontWeight: '700', padding: '1.5px 0', verticalAlign: 'top'}}><strong>CADISS</strong><br/>2015</td>
-                    <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>N = 250. Extracranial CeAD. RCT.</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>N = 250. Extracranial CCAD. RCT.</td>
                     <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulant for 3 months.</td>
                     <td style={{padding: '1.5px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
                       • <strong>Primary Composite (Ipsilateral stroke or death at 3m)</strong>: 2.0% vs. 1.0% (p = 0.63). Established clinical equipoise.
