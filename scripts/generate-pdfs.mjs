@@ -2241,8 +2241,8 @@ async function main() {
             <div class="management-split">
               <div>
                 <strong style="color: var(--red-deep); font-size: 8pt">Extracranial Dissection</strong>
-                <br/>• <strong>Antithrombotics</strong>: ≥ 3 months (Class I).
-                <br/>• <strong>Choice</strong>: Equipoise. Monotherapy/DAPT vs. VKA/DOAC is individualized.
+                <br/>• <strong>Antithrombotics</strong>: Continue for at least 3–6 months (Class I, ESO/AHA).
+                <br/>• <strong>Choice</strong>: SAPT vs VKA/DOAC; short-term DAPT (21–90d) is reasonable (ESO consensus).
                 <br/>• <strong>STOP-CAD</strong>: In occlusions, consider anticoagulation Day 1–30, then switch to antiplatelet.
                 <br/>• <strong>IV Thrombolysis</strong>: Safe &amp; indicated within 4.5 hours (Class I).
               </div>
@@ -2250,8 +2250,11 @@ async function main() {
                 <strong style="color: var(--red-deep); font-size: 8pt">Intracranial &amp; Pseudoaneurysms</strong>
                 <br/>• <strong>SAH</strong>: Lack external elastic lamina &amp; thin adventitia; rupture risk.
                 <br/>• <strong>Anticoagulation</strong>: Avoided if SAH present. Prefer single antiplatelet.
-                <br/>• <strong>Pseudoaneurysm</strong>: Conservative management with serial imaging.
-                <br/>• <strong>Stenting</strong>: Reserve for refractory ischemia or enlarging/symptomatic pseudoaneurysms.
+                <br/>• <strong>IVT Caution</strong>: IVT is safe in extracranial CeAD but safety/efficacy in intracranial extension is not well established (AHA 2024).
+                <br/>• <strong>Stenting</strong>: Reserve for recurrent ischemia despite optimal medical therapy or severe flow-limiting stenosis.
+              </div>
+              <div style="grid-column: 1 / -1; border-top: 1px dashed var(--red); padding-top: 4px; margin-top: 4px; font-size: 7.1pt">
+                • <strong>Recurrence &amp; Activity</strong>: Long-term CeAD recurrence is low (~1%/yr). Avoid high-risk neck activities (chiropractic neck manipulation, rollercoasters, extreme hyperextension/rotation) for secondary prevention (AHA 2024 / ESO 2021).
               </div>
             </div>
           </div>
@@ -2307,7 +2310,7 @@ async function main() {
 
         <div class="ref-citation">
           <strong>CADISS:</strong> <em>Lancet Neurol</em>. 2015;14(4):361-7. PMID: 25684164 | <strong>TREAT-CAD:</strong> <em>Lancet Neurol</em>. 2021;20(5):341-350. PMID: 33765420<br/>
-          <strong>Kaufmann IPD:</strong> <em>JAMA Neurol</em>. 2024;81(6):630-637. PMID: 38739383 | <strong>STOP-CAD:</strong> <em>Stroke</em>. 2024;55(4):908-918. PMID: 38334460 | <strong>AHA/ASA:</strong> <em>Stroke</em>. 2021;52:e364-e467. PMID: 34024117
+          <strong>Kaufmann IPD:</strong> <em>JAMA Neurol</em>. 2024;81(6):630-637. PMID: 38739383 | <strong>STOP-CAD:</strong> <em>Stroke</em>. 2024;55(4):908-918. PMID: 38334460 | <strong>AHA/ASA:</strong> <em>Stroke</em>. 2021;52:e364-e467. PMID: 34024117 | <strong>AHA Statement 2024:</strong> <em>Stroke</em>. 2024;55:e84-e107. PMID: 38301552 | <strong>ESO Guideline 2021:</strong> <em>Eur Stroke J</em>. 2021;6(3):XXXIX-LXXXVIII. PMID: 34528453
         </div>
       </div>
     </body>
