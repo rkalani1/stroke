@@ -1948,32 +1948,43 @@ async function main() {
     <head>
       <meta charset="UTF-8">
       <title>Cervical Artery Dissection</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
       <style>
         @page {
           size: letter;
-          margin: 0.15in 0.15in 0.15in 0.15in;
+          margin: 0.16in 0.16in 0.16in 0.16in;
         }
         :root {
-          --fill-soft: #f8fafc;
-          --rule-soft: #e2e8f0;
-          --ink: #0f172a;
-          --ink-soft: #475569;
-          --ink-mute: #64748b;
-          --purple: #8b5cf6;
-          --purple-soft: #f5f3ff;
-          --purple-deep: #5b21b6;
-          --teal: #0d9488;
-          --teal-soft: #f0fdfa;
-          --teal-deep: #115e59;
-          --red: #ef4444;
-          --red-soft: #fef2f2;
-          --red-deep: #991b1b;
-          --amber: #d97706;
-          --amber-soft: #fffbeb;
-          --amber-deep: #92400e;
+          --fill-soft: #f8f7fa;
+          --rule-soft: #f0eef3;
+          --rule: #e0dde4;
+          --ink: #1a1b20;
+          --ink-soft: #3c3d47;
+          --ink-mute: #636472;
+          
+          --purple: #5B3B9C;
+          --purple-deep: #3A2368;
+          --purple-soft: #f1edfa;
+          
+          --teal: #18849E;
+          --teal-soft: #e6f4f7;
+          --teal-deep: #0F586B;
+          
+          --red: #C62E2E;
+          --red-soft: #fcebeb;
+          --red-deep: #8E1E1E;
+          
+          --amber: #D9860B;
+          --amber-soft: #fdf3e4;
+          --amber-deep: #945B06;
+          
+          --slate: #4A5A6D;
+          --slate-soft: #f0f2f5;
         }
         body {
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
           margin: 0;
           padding: 0;
           color: var(--ink);
@@ -1982,38 +1993,50 @@ async function main() {
           background: white;
         }
         .container {
-          border: 1.5px solid var(--rule-soft);
+          border: 2px solid var(--purple-deep);
           border-radius: 8px;
-          padding: 10px;
+          padding: 12px 16px;
           display: flex;
           flex-direction: column;
           box-sizing: border-box;
           height: 100%;
         }
         h1 {
-          font-size: 15pt;
+          font-family: 'Outfit', sans-serif;
+          font-size: 19pt;
           font-weight: 800;
-          margin: 0 0 3px 0;
+          margin: 0 auto 3px auto;
           text-align: center;
-          color: var(--ink);
+          background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple) 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          position: relative;
+          padding-bottom: 6px;
+        }
+        h1::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 50px;
+          height: 3px;
+          background: linear-gradient(90deg, var(--teal), var(--purple));
+          border-radius: 3px;
         }
         p.subtitle {
           font-size: 8.5pt;
           color: var(--ink-soft);
-          margin: 0 0 8px 0;
+          margin: 6px 0 8px 0;
           text-align: center;
           font-weight: 500;
         }
-        .section-grid {
-          display: grid;
-          grid-template-columns: 1.25fr 0.75fr;
-          gap: 8px;
-          margin-bottom: 8px;
-        }
         .box {
           border-radius: 8px;
-          padding: 6px 10px;
+          padding: 8px 10px;
           box-sizing: border-box;
+          margin-bottom: 8px;
         }
         .box-purple {
           border: 1.5px solid var(--purple);
@@ -2030,9 +2053,11 @@ async function main() {
         .box-amber {
           border: 1.5px solid var(--amber);
           background: linear-gradient(135deg, var(--amber-soft) 0%, #ffffff 100%);
+          margin-bottom: 6px;
         }
         .box-title {
-          font-size: 9pt;
+          font-family: 'Outfit', sans-serif;
+          font-size: 9.5pt;
           font-weight: 700;
           margin-bottom: 4px;
           display: block;
@@ -2042,6 +2067,36 @@ async function main() {
         .box-red .box-title { color: var(--red-deep); }
         .box-amber .box-title { color: var(--amber-deep); }
         
+        .presentation-grid {
+          display: grid;
+          grid-template-columns: 1.2fr 0.8fr 1fr;
+          gap: 12px;
+          font-size: 7.8pt;
+          line-height: 1.35;
+          color: var(--ink-soft);
+        }
+        .col-divider {
+          border-left: 1.5px dashed var(--purple);
+          padding-left: 10px;
+        }
+        .two-column-grid {
+          display: grid;
+          grid-template-columns: 0.8fr 1.2fr;
+          gap: 8px;
+          margin-bottom: 8px;
+        }
+        .management-split {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+          font-size: 7.6pt;
+          line-height: 1.35;
+          color: var(--ink-soft);
+        }
+        .management-divider {
+          border-left: 1.5px dashed var(--red);
+          padding-left: 10px;
+        }
         .trial-table {
           width: 100%;
           border-collapse: collapse;
@@ -2052,55 +2107,86 @@ async function main() {
         .trial-table th {
           border-bottom: 1.5px solid var(--amber);
           color: var(--amber-deep);
+          font-family: 'Outfit', sans-serif;
           font-weight: 700;
-          padding: 2px 0;
+          padding: 3px 0;
           text-align: left;
         }
         .trial-table td {
-          padding: 3px 0;
+          padding: 4px 0;
           vertical-align: top;
-        }
-        .trial-table tr:first-child td {
           border-bottom: 1px solid var(--rule-soft);
         }
-        
+        .trial-table tr:last-child td {
+          border-bottom: none;
+        }
         .ref-citation {
+          margin-top: auto;
           padding: 4px 8px;
           background: linear-gradient(135deg, var(--fill-soft) 0%, #ffffff 100%);
-          border-left: 4px solid var(--ink-soft);
+          border-left: 4px solid var(--purple);
           border-radius: 4px;
           font-size: 7.2pt;
           line-height: 1.25;
           color: var(--ink-soft);
+        }
+        .ref-citation a {
+          color: var(--teal-deep);
+          text-decoration: underline;
+          font-weight: 600;
         }
       </style>
     </head>
     <body>
       <div class="container">
         <h1>Cervical Artery Dissection</h1>
-        <p class="subtitle">Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and trial evidence.</p>
+        <p class="subtitle">Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence.</p>
 
-        <!-- Vessel Dissection Diagram (Inline SVG) -->
         <svg viewBox="0 0 735 110" style="width: 100%; height: 110px; margin-bottom: 8px;">
           <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
-          <path d="M 20 20 L 715 20 M 20 90 L 715 90" stroke="#4A5A6D" stroke-width="3" stroke-linecap="round" />
-          <path d="M 20 30 L 220 30" stroke="#94a3b8" stroke-width="2" fill="none" />
-          <path d="M 20 80 L 715 80" stroke="#94a3b8" stroke-width="2" fill="none" />
-          <path d="M 220 30 L 230 45" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" fill="none" />
-          <path d="M 230 45 C 300 72, 450 72, 530 30" stroke="#94a3b8" stroke-width="2" fill="none" />
-          <path d="M 230 45 C 300 72, 450 72, 530 30 L 530 20 L 230 20 Z" fill="var(--red-soft)" opacity="0.8" />
-          <path d="M 250 20 C 300 45, 450 45, 510 20" fill="var(--red)" opacity="0.25" />
-          <path d="M 530 30 L 715 30" stroke="#94a3b8" stroke-width="2" fill="none" />
-          <path d="M 170 50 Q 210 50, 230 36" fill="none" stroke="var(--red)" stroke-width="2.2" marker-end="url(#arrow-red)" />
-          <path d="M 235 28 Q 260 25, 290 25" fill="none" stroke="var(--red)" stroke-width="2.2" marker-end="url(#arrow-red)" />
-          <path d="M 330 73 L 420 73" stroke="var(--amber)" stroke-width="1.8" fill="none" marker-end="url(#arrow-amber)" />
-          <rect x="530" y="58" width="70" height="22" rx="3" fill="var(--purple)" opacity="0.85" stroke="var(--purple-deep)" stroke-width="1" />
-          <line x1="535" y1="80" x2="545" y2="60" stroke="#ffffff" stroke-width="1" opacity="0.4" />
-          <line x1="545" y1="80" x2="555" y2="60" stroke="#ffffff" stroke-width="1" opacity="0.4" />
-          <line x1="555" y1="80" x2="565" y2="60" stroke="#ffffff" stroke-width="1" opacity="0.4" />
-          <line x1="565" y1="80" x2="575" y2="60" stroke="#ffffff" stroke-width="1" opacity="0.4" />
-          <line x1="575" y1="80" x2="585" y2="60" stroke="#ffffff" stroke-width="1" opacity="0.4" />
-          <line x1="585" y1="80" x2="595" y2="60" stroke="#ffffff" stroke-width="1" opacity="0.4" />
+          <path d="M 20 25 L 430 25 M 20 85 L 430 85" stroke="#4A5A6D" stroke-width="3" stroke-linecap="round" />
+          <path d="M 20 33 L 150 33" stroke="#94a3b8" stroke-width="2" fill="none" />
+          <path d="M 20 77 L 430 77" stroke="#94a3b8" stroke-width="2" fill="none" />
+          <path d="M 150 33 L 160 48" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+          <path d="M 160 48 C 220 72, 320 72, 380 33" stroke="#94a3b8" stroke-width="2" fill="none" />
+          <path d="M 160 48 C 220 72, 320 72, 380 33 L 380 25 L 160 25 Z" fill="var(--red-soft)" opacity="0.8" />
+          <path d="M 180 25 C 220 45, 320 45, 360 25" fill="var(--red)" opacity="0.25" />
+          <path d="M 380 33 L 430 33" stroke="#94a3b8" stroke-width="2" fill="none" />
+          <path d="M 100 55 Q 140 55, 160 40" fill="none" stroke="var(--red)" stroke-width="2.2" marker-end="url(#arrow-red)" />
+          <path d="M 165 32 Q 190 28, 220 28" fill="none" stroke="var(--red)" stroke-width="2.2" marker-end="url(#arrow-red)" />
+          <path d="M 240 68 L 300 68" stroke="var(--amber)" stroke-width="1.8" fill="none" marker-end="url(#arrow-amber)" />
+          <rect x="380" y="55" width="45" height="22" rx="3" fill="var(--purple)" opacity="0.85" stroke="var(--purple-deep)" stroke-width="1" />
+          <line x1="384" y1="77" x2="392" y2="55" stroke="#ffffff" stroke-width="1" opacity="0.4" />
+          <line x1="392" y1="77" x2="400" y2="55" stroke="#ffffff" stroke-width="1" opacity="0.4" />
+          <line x1="400" y1="77" x2="408" y2="55" stroke="#ffffff" stroke-width="1" opacity="0.4" />
+          <text x="75" y="58" fill="var(--teal-deep)" font-size="7pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">TRUE LUMEN</text>
+          <text x="145" y="16" fill="var(--red-deep)" font-size="6pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">Intimal Tear</text>
+          <text x="270" y="38" fill="var(--red-deep)" font-size="7pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">FALSE LUMEN (Intramural Hematoma)</text>
+          <text x="270" y="60" fill="var(--amber-deep)" font-size="6.5pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Stenosis / Compression</text>
+          <text x="402" y="48" fill="var(--purple-deep)" font-size="6.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">Thrombus</text>
+          <line x1="470" y1="10" x2="470" y2="100" stroke="var(--rule-soft)" stroke-width="1.5" stroke-dasharray="3 3" />
+          <circle cx="530" cy="55" r="28" fill="none" stroke="#4A5A6D" stroke-width="2.5" />
+          <circle cx="530" cy="55" r="24" fill="none" stroke="#94a3b8" stroke-width="1.5" />
+          <circle cx="530" cy="55" r="23" fill="var(--teal-soft)" opacity="0.6" />
+          <text x="530" y="58" fill="var(--teal-deep)" font-size="6pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">NORMAL</text>
+          <text x="530" y="96" fill="var(--ink-soft)" font-size="6pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Sympathetic Plexus</text>
+          <circle cx="530" cy="23" r="1.5" fill="var(--amber)" />
+          <circle cx="545" cy="27" r="1.5" fill="var(--amber)" />
+          <circle cx="555" cy="40" r="1.5" fill="var(--amber)" />
+          <circle cx="557" cy="55" r="1.5" fill="var(--amber)" />
+          <circle cx="555" cy="70" r="1.5" fill="var(--amber)" />
+          <circle cx="545" cy="83" r="1.5" fill="var(--amber)" />
+          <circle cx="530" cy="87" r="1.5" fill="var(--amber)" />
+          <circle cx="650" cy="55" r="28" fill="none" stroke="#4A5A6D" stroke-width="2.5" />
+          <path d="M 622 55 A 28 28 0 0 1 678 55 C 670 65, 630 65, 622 55 Z" fill="var(--red-soft)" stroke="var(--red)" stroke-width="1" />
+          <path d="M 622 55 C 630 65, 670 65, 678 55 A 28 28 0 0 1 622 55 Z" fill="none" stroke="#94a3b8" stroke-width="1.5" />
+          <ellipse cx="650" cy="70" rx="18" ry="8" fill="var(--teal-soft)" stroke="#94a3b8" stroke-width="1" />
+          <circle cx="650" cy="23" r="1.5" fill="var(--amber)" opacity="0.3" />
+          <circle cx="665" cy="27" r="1.5" fill="var(--amber)" opacity="0.3" />
+          <circle cx="675" cy="40" r="1.5" fill="var(--amber)" opacity="0.3" />
+          <text x="650" y="44" fill="var(--red-deep)" font-size="5.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">Hematoma</text>
+          <text x="650" y="73" fill="var(--teal-deep)" font-size="5.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">True Lumen</text>
+          <text x="650" y="96" fill="var(--ink-soft)" font-size="6pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">ICA Dissection</text>
           <defs>
             <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
               <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--red)" />
@@ -2109,107 +2195,114 @@ async function main() {
               <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--amber)" />
             </marker>
           </defs>
-          <text x="110" y="55" fill="var(--teal-deep)" font-size="7.5pt" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="800" text-anchor="middle">TRUE LUMEN (Normal)</text>
-          <text x="210" y="16" fill="var(--red-deep)" font-size="6.5pt" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="800" text-anchor="middle">Intimal Tear</text>
-          <text x="380" y="41" fill="var(--red-deep)" font-size="7.5pt" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="800" text-anchor="middle">FALSE LUMEN (Intramural Hematoma)</text>
-          <text x="375" y="65" fill="var(--amber-deep)" font-size="7pt" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" text-anchor="middle">Stenosis / True Lumen Compression</text>
-          <text x="565" y="52" fill="var(--purple-deep)" font-size="7.5pt" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="800" text-anchor="middle">Thrombus</text>
-          <text x="660" y="55" fill="var(--ink-mute)" font-size="7.5pt" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" text-anchor="middle">Distal Emboli</text>
         </svg>
 
-        <!-- Section 1 & 2 Grid -->
-        <div class="section-grid">
-          <!-- Presentation -->
-          <div class="box box-purple">
-            <span class="box-title">1. Clinical Presentation &amp; Symptoms</span>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 7.8pt; line-height: 1.3; color: var(--ink-soft)">
-              <div>
-                <strong style="color: var(--purple-deep)">Ipsilateral Pain (Local)</strong>
-                <br/>• <strong>Carotid (ICA)</strong>: Frontotemporal, orbital, or facial headache/pain.
-                <br/>• <strong>Vertebral (VA)</strong>: Occipital or posterior neck pain.
-                <br/>• <em>Onset</em>: Usually precedes ischemic stroke by hours to days (median 4d).
-              </div>
-              <div>
-                <strong style="color: var(--purple-deep)">Focal Neurological Signs</strong>
-                <br/>• <strong>Horner Syndrome (~28–58%)</strong>: Ptosis &amp; miosis. Anhidrosis is <strong>absent (spared)</strong> because sweat fibers travel on external carotid artery plexus.
-                <br/>• <strong>Lower Cranial Nerve Palsies (~8–16%)</strong>: Local mass effect or ischemia of vasa nervorum (CN IX, X, XI, XII; tongue deviates to dissection side).
-              </div>
+        <div class="box box-purple">
+          <span class="box-title">1. Clinical Presentation &amp; Pathophysiology</span>
+          <div class="presentation-grid">
+            <div>
+              <strong style="color: var(--purple-deep); font-size: 8pt">Local Pain Profiles (Ipsilateral)</strong>
+              <br/>• <strong>Carotid (ICA) Dissection</strong>: Characteristically frontotemporal, retro-orbital, or facial pain (angle of jaw).
+              <br/>• <strong>Vertebral (VA) Dissection</strong>: Severe occipital headache or posterior upper neck pain.
+              <br/>• <strong>Clinical Pearl</strong>: Sudden local headache/neck pain precedes TIA or ischemic stroke by hours to days (median 4 days).
+            </div>
+            <div class="col-divider">
+              <strong style="color: var(--purple-deep); font-size: 8pt">Sympathetic Horner Syndrome</strong>
+              <br/>• <strong>Presentation Rate</strong>: ~28–58% in ICA dissection.
+              <br/>• <strong>Sympathetic Sparing</strong>: Presents as ptosis &amp; miosis <strong>WITHOUT</strong> facial anhidrosis.
+              <br/>• <strong>Mechanism</strong>: Sudomotor (sweat) fibers branch at bifurcation and ascend with <strong>external carotid artery (ECA)</strong>, leaving them spared in ICA dissection.
+            </div>
+            <div class="col-divider">
+              <strong style="color: var(--purple-deep); font-size: 8pt">Neurological Deficits</strong>
+              <br/>• <strong>Lower Cranial Nerves</strong>: CN IX, X, XI, XII palsies (~8–16%) due to local compression or ischemic <em>vasa nervorum</em> injury.
+              <br/>• <strong>Posterior Circulation (VA)</strong>: Wallenberg syndrome (lateral medullary), PICA/AICA territory strokes, or cerebellar ataxia.
             </div>
           </div>
+        </div>
 
-          <!-- Workup -->
+        <div class="two-column-grid">
           <div class="box box-teal">
             <span class="box-title">2. Diagnostic Workup</span>
-            <ul style="margin: 0; padding-left: 12px; font-size: 7.8pt; line-height: 1.35; color: var(--ink-soft)">
-              <li><strong>CTA/MRA Head &amp; Neck</strong>: Primary screen. Shows tapered stenosis ("string sign"), occlusion, flap, or pseudoaneurysm.</li>
-              <li><strong>MRI Neck (T1 Fat-Sat)</strong>: Visualizes crescent-shaped hyperintense intramural hematoma (pathognomonic).</li>
-              <li><strong>DSA</strong>: Gold standard but invasive. Reserved for diagnostic doubt or endovascular stenting.</li>
+            <ul style="margin: 0; padding-left: 12px; font-size: 7.8pt; line-height: 1.4; color: var(--ink-soft)">
+              <li><strong>CTA Head &amp; Neck</strong>: Rapid first-line tool. Key signs: tapered stenosis ("string sign"), dissecting pseudoaneurysm, intimal flap, or occlusion.</li>
+              <li><strong>MRI Neck (T1 Fat-Sat)</strong>: Pathognomonic hyperintense crescentic wall hematoma (crescent sign; highly sensitive subacutely).</li>
+              <li><strong>DSA</strong>: Gold standard for equivocal cases, stenting assessment, or dynamic flow evaluation.</li>
+              <li><strong>Screening</strong>: Screen for FMD or collagen vascular disorders (Marfan, vascular Ehlers-Danlos) if recurrent or spontaneous without trauma.</li>
             </ul>
           </div>
-        </div>
 
-        <!-- Section 3: Management -->
-        <div class="box box-red" style="margin-bottom: 8px;">
-          <span class="box-title">3. Medical Management: Extracranial vs. Intracranial Dissection</span>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 7.8pt; line-height: 1.35; color: var(--ink-soft)">
-            <div>
-              <strong style="color: var(--red-deep); font-size: 8.2pt">Extracranial Dissection</strong>
-              <br/>• <strong>Antithrombotics for &ge; 3 Months</strong>: Strongly indicated (Class I, LOE C-LD) to prevent ischemic stroke/embolism.
-              <br/>• <strong>Antiplatelet vs. Anticoagulation</strong>: RCTs confirm clinical equipoise (no difference in stroke or death). Option between antiplatelet monotherapy/DAPT vs. anticoagulation (VKA or DOAC) is individualized.
-              <br/>• <strong>Stenting</strong>: Reserved for recurrent ischemia despite maximal medical therapy or expanding pseudoaneurysm.
-            </div>
-            <div style="border-left: 1.5px dashed var(--red); padding-left: 12px">
-              <strong style="color: var(--red-deep); font-size: 8.2pt">Intracranial Dissection (Special Caution)</strong>
-              <br/>• <strong>High Subarachnoid Hemorrhage (SAH) Risk</strong>: Intracranial arteries lack an external elastic lamina and have a thin adventitia; dissection can cause aneurysmal rupture &amp; fatal SAH.
-              <br/>• <strong>Anticoagulation Caution/Contraindication</strong>: Anticoagulation is contraindicated if SAH is present.
-              <br/>• <strong>Mandatory Screening</strong>: Must rule out SAH with baseline CT Head or LP before starting antithrombotics.
-              <br/>• <strong>Preferred Agent</strong>: Antiplatelet monotherapy is generally preferred for intracranial dissection if no SAH is present.
+          <div class="box box-red">
+            <span class="box-title">3. Medical Management: Extracranial vs. Intracranial Dissection</span>
+            <div class="management-split">
+              <div>
+                <strong style="color: var(--red-deep); font-size: 8pt">Extracranial Dissection</strong>
+                <br/>• <strong>Antithrombotics</strong>: Indicated for &ge; 3 months (Class I, LOE C-LD).
+                <br/>• <strong>Antiplatelet vs. Anticoagulation</strong>: Clear clinical equipoise. Monotherapy (Aspirin 81–325mg) or DAPT (Aspirin+Clopidogrel) vs. VKA (INR 2.0-3.0) or DOAC.
+                <br/>• <strong>STOP-CAD Transition</strong>: In occlusive dissection, consider early anticoagulation for the high-stroke-risk <strong>first 30 days</strong>, then switch to antiplatelet therapy to limit cumulative bleeding.
+                <br/>• <strong>IV Thrombolysis (IVT)</strong>: Safe and indicated for acute stroke within 4.5 hours (Class I).
+              </div>
+              <div class="management-divider">
+                <strong style="color: var(--red-deep); font-size: 8pt">Intracranial &amp; Pseudoaneurysms</strong>
+                <br/>• <strong>Intracranial SAH Risk</strong>: Intracranial vessels lack an external elastic lamina and have thin adventitia. Dissection carries a high rupture risk.
+                <br/>• <strong>Anticoagulation Caution</strong>: Anticoagulation is contraindicated if SAH is present. Perform CT Head/LP first. Prefer single antiplatelet if no SAH.
+                <br/>• <strong>Pseudoaneurysm</strong>: Asymptomatic extracranial pseudoaneurysms are managed conservatively with repeat imaging.
+                <br/>• <strong>Stenting</strong>: Reserve for refractory TIA/stroke or symptomatic enlarging pseudoaneurysms.
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Section 4: Landmark Trials -->
-        <div class="box box-amber" style="margin-bottom: 8px;">
-          <span class="box-title">4. Landmark Trial Evidence</span>
+        <div class="box box-amber">
+          <span class="box-title">4. Landmark Trial &amp; Cohort Evidence</span>
           <table class="trial-table">
             <thead>
               <tr style="border-bottom: 1.5px solid var(--amber); color: var(--amber-deep); font-weight: 700">
-                <th style="width: 15%;">Trial</th>
-                <th style="width: 22%;">Population (N)</th>
-                <th style="width: 25%;">Interventions</th>
-                <th style="width: 38%;">Primary Outcome &amp; Stroke Rate at 14d/3mo</th>
+                <th style="padding: 2px 0; text-align: left; width: 12%">Study / Year</th>
+                <th style="padding: 2px 0; text-align: left; width: 20%">Population &amp; Design</th>
+                <th style="padding: 2px 0; text-align: left; width: 25%">Interventions Compared</th>
+                <th style="padding: 2px 0; text-align: left; width: 43%">Key Outcomes &amp; Clinical Nuance</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style="font-weight: 700; vertical-align: top;"><strong>CADISS</strong><br/>2015</td>
-                <td style="vertical-align: top;">N = 250 patients with extracranial dissection (96% carotid, 4% vertebral).</td>
-                <td style="vertical-align: top;">Antiplatelets (n=126) vs.<br/>Anticoagulants (n=124)<br/>within 7 days of onset.</td>
-                <td style="vertical-align: top; color: var(--ink-soft)">
-                  <strong>Primary Endpoint (Stroke/Death at 3 Months)</strong>:
-                  <br/>• <strong>Antiplatelet</strong>: 2.0% (2/126) | <strong>Anticoagulant</strong>: 1.0% (1/124)
-                  <br/>• <strong>No difference</strong> (p=0.63). Supported clinical equipoise.
+                <td style="font-weight: 700; padding: 3px 0;"><strong>CADISS</strong><br/>2015</td>
+                <td style="padding: 3px 0;">N = 250 patients with acute extracranial dissection (96% carotid, 4% vertebral). RCT.</td>
+                <td style="padding: 3px 0;">Antiplatelet (n=126) vs.<br/>Anticoagulant (n=124)<br/>for 3 months.</td>
+                <td style="padding: 3px 0; color: var(--ink-soft)">
+                  <strong>Primary Composite (Stroke/Death at 3 Months)</strong>: Antiplatelet 2.0% (2/126) vs. Anticoagulant 1.0% (1/124) ($p=0.63$). No significant difference; established clinical equipoise.
                 </td>
               </tr>
               <tr>
-                <td style="font-weight: 700; vertical-align: top;"><strong>TREAT-CAD</strong><br/>2021</td>
-                <td style="vertical-align: top;">N = 194 patients with extracranial dissection (per-protocol analyzed: 173).</td>
-                <td style="vertical-align: top;">Aspirin 300 mg daily (n=91) vs.<br/>VKA (INR 2.0–3.0, n=82)<br/>within 14 days of onset.</td>
-                <td style="vertical-align: top; color: var(--ink-soft)">
-                  <strong>Composite Endpoint (Stroke, Major Bleed, Death, or MRI Lesion at 14d)</strong>:
-                  <br/>• <strong>Aspirin</strong>: 23% (21/91) | <strong>VKA</strong>: 15% (12/82) [Diff 8%, 95% CI -4% to 21%]
-                  <br/>• <strong>Non-inferiority NOT met</strong> (upper CI limit 21% &gt; 12% margin).
-                  <br/>• <strong>Clinical Stroke</strong>: Aspirin 8.0% (7/91) vs. VKA 0% (0/82).
+                <td style="font-weight: 700; padding: 3px 0;"><strong>TREAT-CAD</strong><br/>2021</td>
+                <td style="padding: 3px 0;">N = 194 randomized (PP analyzed: 173). Acute extracranial dissection. RCT.</td>
+                <td style="padding: 3px 0;">Aspirin 300mg daily (n=91) vs.<br/>VKA (INR 2.0–3.0, n=82)<br/>for 3 months.</td>
+                <td style="padding: 3px 0; color: var(--ink-soft)">
+                  <strong>Composite Endpoint (Stroke, bleed, death, or MRI at 14d)</strong>: Aspirin 23% vs. VKA 15% (Diff 8%, upper 95% CI 21% exceeded 12% margin, <strong>non-inferiority NOT met</strong>). Ischemic stroke alone: Aspirin 8.0% (7/91) vs. VKA 0% (0/82).
+                </td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700; padding: 3px 0;"><strong>Kaufmann IPD</strong><br/>2024</td>
+                <td style="padding: 3px 0;">N = 444. Individual patient data meta-analysis combining CADISS &amp; TREAT-CAD.</td>
+                <td style="padding: 3px 0;">Antiplatelet vs.<br/>Anticoagulant therapy<br/>for 3 months.</td>
+                <td style="padding: 3px 0; color: var(--ink-soft)">
+                  <strong>Composite 90-day Stroke/Death/Major Bleed</strong>: No difference (4% vs. 1%). <strong>Ischemic Stroke alone</strong>: Anticoagulation showed significant reduction (0.5% vs. 4.0%; OR 0.14, 95% CI 0.02-0.61, <strong>p=0.01</strong>).
+                </td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700; padding: 3px 0;"><strong>STOP-CAD</strong><br/>2024</td>
+                <td style="padding: 3px 0;">N = 3,636. Large multicenter retrospective cohort study of cervical dissection.</td>
+                <td style="padding: 3px 0;">Antiplatelets vs.<br/>Anticoagulation in real-world clinical practice.</td>
+                <td style="padding: 3px 0; color: var(--ink-soft)">
+                  <strong>Ischemic Stroke &amp; Bleed Risks</strong>: Anticoagulation associated with non-significant lower stroke rate but higher bleeding rate. <strong>Occlusive subgroup</strong> derived significant ischemic benefit. <strong>Transition strategy</strong>: Use anticoagulation for high-stroke 30-day window, then switch to antiplatelets.
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- Citations footer -->
         <div class="ref-citation">
-          <strong>CADISS Trial:</strong> CADISS Investigators. <em>Lancet Neurol</em>. 2015;14(4):361-7. PMID: 25684164 | <strong>TREAT-CAD Trial:</strong> Engelter ST, et al. <em>Lancet Neurol</em>. 2021;20(5):341-350. PMID: 33765420<br/>
-          <strong>AHA/ASA 2021 Guideline:</strong> Kleindorfer DO, et al. Stroke Prevention. <em>Stroke</em>. 2021;52:e364-e467. PMID: 34024117
+          <strong>CADISS:</strong> <em>Lancet Neurol</em>. 2015;14(4):361-7. PMID: 25684164 | <strong>TREAT-CAD:</strong> <em>Lancet Neurol</em>. 2021;20(5):341-350. PMID: 33765420<br/>
+          <strong>Kaufmann IPD:</strong> <em>JAMA Neurol</em>. 2024;81(6):630-637. PMID: 38739383 | <strong>STOP-CAD:</strong> <em>Stroke</em>. 2024;55(4):908-918. PMID: 38334460 | <strong>AHA/ASA:</strong> <em>Stroke</em>. 2021;52:e364-e467. PMID: 34024117
         </div>
       </div>
     </body>
