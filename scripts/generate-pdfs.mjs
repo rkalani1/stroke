@@ -1996,7 +1996,7 @@ async function main() {
         .container {
           border: 2px solid var(--purple-deep);
           border-radius: 8px;
-          padding: 12px 16px;
+          padding: 6px 12px;
           display: flex;
           flex-direction: column;
           box-sizing: border-box;
@@ -2004,16 +2004,16 @@ async function main() {
         }
         h1 {
           font-family: 'Outfit', sans-serif;
-          font-size: 19pt;
+          font-size: 18pt;
           font-weight: 800;
-          margin: 0 auto 3px auto;
+          margin: 0 auto 2px auto;
           text-align: center;
           background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple) 100%);
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
           position: relative;
-          padding-bottom: 6px;
+          padding-bottom: 3px;
         }
         h1::after {
           content: '';
@@ -2022,22 +2022,22 @@ async function main() {
           left: 50%;
           transform: translateX(-50%);
           width: 50px;
-          height: 3px;
+          height: 2.5px;
           background: linear-gradient(90deg, var(--teal), var(--purple));
           border-radius: 3px;
         }
         p.subtitle {
-          font-size: 8.5pt;
+          font-size: 8pt;
           color: var(--ink-soft);
-          margin: 6px 0 8px 0;
+          margin: 4px 0 6px 0;
           text-align: center;
           font-weight: 500;
         }
         .box {
           border-radius: 8px;
-          padding: 8px 10px;
+          padding: 4px 8px;
           box-sizing: border-box;
-          margin-bottom: 8px;
+          margin-bottom: 4px;
         }
         .box-purple {
           border: 1.5px solid var(--purple);
@@ -2054,13 +2054,13 @@ async function main() {
         .box-amber {
           border: 1.5px solid var(--amber);
           background: linear-gradient(135deg, var(--amber-soft) 0%, #ffffff 100%);
-          margin-bottom: 6px;
+          margin-bottom: 3px;
         }
         .box-title {
           font-family: 'Outfit', sans-serif;
-          font-size: 9.5pt;
+          font-size: 9pt;
           font-weight: 700;
-          margin-bottom: 4px;
+          margin-bottom: 3px;
           display: block;
         }
         .box-purple .box-title { color: var(--purple-deep); }
@@ -2070,39 +2070,39 @@ async function main() {
         
         .presentation-grid {
           display: grid;
-          grid-template-columns: 1.2fr 0.8fr 1fr;
-          gap: 12px;
-          font-size: 7.8pt;
-          line-height: 1.35;
+          grid-template-columns: 1.25fr 0.85fr 0.9fr;
+          gap: 6px;
+          font-size: 7.4pt;
+          line-height: 1.3;
           color: var(--ink-soft);
         }
         .col-divider {
           border-left: 1.5px dashed var(--purple);
-          padding-left: 10px;
+          padding-left: 8px;
         }
         .two-column-grid {
           display: grid;
           grid-template-columns: 0.8fr 1.2fr;
-          gap: 8px;
-          margin-bottom: 8px;
+          gap: 5px;
+          margin-bottom: 4px;
         }
         .management-split {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 12px;
-          font-size: 7.6pt;
-          line-height: 1.35;
+          gap: 8px;
+          font-size: 7.3pt;
+          line-height: 1.3;
           color: var(--ink-soft);
         }
         .management-divider {
           border-left: 1.5px dashed var(--red);
-          padding-left: 10px;
+          padding-left: 8px;
         }
         .trial-table {
           width: 100%;
           border-collapse: collapse;
-          font-size: 7.4pt;
-          line-height: 1.25;
+          font-size: 7.1pt;
+          line-height: 1.2;
           color: var(--ink);
         }
         .trial-table th {
@@ -2110,11 +2110,11 @@ async function main() {
           color: var(--amber-deep);
           font-family: 'Outfit', sans-serif;
           font-weight: 700;
-          padding: 3px 0;
+          padding: 2px 0;
           text-align: left;
         }
         .trial-table td {
-          padding: 4px 0;
+          padding: 2.2px 0;
           vertical-align: top;
           border-bottom: 1px solid var(--rule-soft);
         }
@@ -2123,12 +2123,12 @@ async function main() {
         }
         .ref-citation {
           margin-top: auto;
-          padding: 4px 8px;
+          padding: 2px 6px;
           background: linear-gradient(135deg, var(--fill-soft) 0%, #ffffff 100%);
           border-left: 4px solid var(--purple);
           border-radius: 4px;
-          font-size: 7.2pt;
-          line-height: 1.25;
+          font-size: 7pt;
+          line-height: 1.2;
           color: var(--ink-soft);
         }
         .ref-citation a {
@@ -2142,67 +2142,65 @@ async function main() {
       <div class="container">
         <h1>Cervical Artery Dissection</h1>
 
-        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-          <!-- Anatomy & Dissection (SVG) -->
-          <div style="flex: 1.45; height: 180px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box;">
-            <svg viewBox="0 0 735 110" style="width: 100%; height: 100%;">
-              <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
-              <path d="M 20 25 L 430 25 M 20 85 L 430 85" stroke="#4A5A6D" stroke-width="3" stroke-linecap="round" />
-              <path d="M 20 33 L 150 33" stroke="#94a3b8" stroke-width="2" fill="none" />
-              <path d="M 20 77 L 430 77" stroke="#94a3b8" stroke-width="2" fill="none" />
-              <path d="M 150 33 L 160 48" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" fill="none" />
-              <path d="M 160 48 C 220 72, 320 72, 380 33" stroke="#94a3b8" stroke-width="2" fill="none" />
-              <path d="M 160 48 C 220 72, 320 72, 380 33 L 380 25 L 160 25 Z" fill="var(--red-soft)" opacity="0.8" />
-              <path d="M 180 25 C 220 45, 320 45, 360 25" fill="var(--red)" opacity="0.25" />
-              <path d="M 380 33 L 430 33" stroke="#94a3b8" stroke-width="2" fill="none" />
-              <path d="M 100 55 Q 140 55, 160 40" fill="none" stroke="var(--red)" stroke-width="2.2" marker-end="url(#arrow-red)" />
-              <path d="M 165 32 Q 190 28, 220 28" fill="none" stroke="var(--red)" stroke-width="2.2" marker-end="url(#arrow-red)" />
-              <path d="M 240 68 L 300 68" stroke="var(--amber)" stroke-width="1.8" fill="none" marker-end="url(#arrow-amber)" />
-              <rect x="380" y="55" width="45" height="22" rx="3" fill="var(--purple)" opacity="0.85" stroke="var(--purple-deep)" stroke-width="1" />
-              <line x1="384" y1="77" x2="392" y2="55" stroke="#ffffff" stroke-width="1" opacity="0.4" />
-              <line x1="392" y1="77" x2="400" y2="55" stroke="#ffffff" stroke-width="1" opacity="0.4" />
-              <line x1="400" y1="77" x2="408" y2="55" stroke="#ffffff" stroke-width="1" opacity="0.4" />
-              <text x="75" y="58" fill="var(--teal-deep)" font-size="7pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">TRUE LUMEN</text>
-              <text x="145" y="16" fill="var(--red-deep)" font-size="6pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">Intimal Tear</text>
-              <text x="270" y="38" fill="var(--red-deep)" font-size="7pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">FALSE LUMEN (Intramural Hematoma)</text>
-              <text x="270" y="60" fill="var(--amber-deep)" font-size="6.5pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Stenosis / Compression</text>
-              <text x="402" y="48" fill="var(--purple-deep)" font-size="6.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">Thrombus</text>
-              <circle cx="530" cy="55" r="28" fill="none" stroke="#4A5A6D" stroke-width="2.5" />
-              <circle cx="530" cy="55" r="24" fill="none" stroke="#94a3b8" stroke-width="1.5" />
-              <circle cx="530" cy="55" r="23" fill="var(--teal-soft)" opacity="0.6" />
-              <text x="530" y="58" fill="var(--teal-deep)" font-size="5.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">NORMAL ICA</text>
-              <text x="530" y="96" fill="var(--ink-soft)" font-size="5pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Sympathetic Plexus (Cervical)</text>
-              <circle cx="530" cy="23" r="1.5" fill="var(--amber)" />
-              <circle cx="545" cy="27" r="1.5" fill="var(--amber)" />
-              <circle cx="555" cy="40" r="1.5" fill="var(--amber)" />
-              <circle cx="557" cy="55" r="1.5" fill="var(--amber)" />
-              <circle cx="555" cy="70" r="1.5" fill="var(--amber)" />
-              <circle cx="545" cy="83" r="1.5" fill="var(--amber)" />
-              <circle cx="530" cy="87" r="1.5" fill="var(--amber)" />
-              <circle cx="650" cy="55" r="28" fill="none" stroke="#4A5A6D" stroke-width="2.5" />
-              <path d="M 622 55 A 28 28 0 0 1 678 55 C 670 65, 630 65, 622 55 Z" fill="var(--red-soft)" stroke="var(--red)" stroke-width="1" />
-              <path d="M 622 55 C 630 65, 670 65, 678 55 A 28 28 0 0 1 622 55 Z" fill="none" stroke="#94a3b8" stroke-width="1.5" />
-              <ellipse cx="650" cy="70" rx="18" ry="8" fill="var(--teal-soft)" stroke="#94a3b8" stroke-width="1" />
-              <circle cx="650" cy="23" r="1.5" fill="var(--amber)" opacity="0.3" />
-              <circle cx="665" cy="27" r="1.5" fill="var(--amber)" opacity="0.3" />
-              <circle cx="675" cy="40" r="1.5" fill="var(--amber)" opacity="0.3" />
-              <text x="650" y="44" fill="var(--red-deep)" font-size="5.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">Hematoma</text>
-              <text x="650" y="73" fill="var(--teal-deep)" font-size="5.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">True Lumen</text>
-              <text x="650" y="96" fill="var(--ink-soft)" font-size="5pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Cervical ICA Dissection</text>
-              <defs>
-                <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                  <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--red)" />
-                </marker>
-                <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                  <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--amber)" />
-                </marker>
-              </defs>
-            </svg>
-          </div>
-          <!-- Stroke Mechanisms (PNG) -->
-          <div style="flex: 1; height: 180px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box;">
-            <img src="${dissectionStrokeMechanismsBase64}" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
-          </div>
+        {/* Anatomy & Dissection SVG */}
+        <div style="width: 100%; height: 130px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 8px;">
+          <svg viewBox="0 0 735 110" style="width: 100%; height: 100%;">
+            <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
+            <path d="M 20 25 L 430 25 M 20 85 L 430 85" stroke="#4A5A6D" stroke-width="3" stroke-linecap="round" />
+            <path d="M 20 33 L 150 33" stroke="#94a3b8" stroke-width="2" fill="none" />
+            <path d="M 20 77 L 430 77" stroke="#94a3b8" stroke-width="2" fill="none" />
+            <path d="M 150 33 L 160 48" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            <path d="M 160 48 C 220 72, 320 72, 380 33" stroke="#94a3b8" stroke-width="2" fill="none" />
+            <path d="M 160 48 C 220 72, 320 72, 380 33 L 380 25 L 160 25 Z" fill="var(--red-soft)" opacity="0.8" />
+            <path d="M 180 25 C 220 45, 320 45, 360 25" fill="var(--red)" opacity="0.25" />
+            <path d="M 380 33 L 430 33" stroke="#94a3b8" stroke-width="2" fill="none" />
+            <path d="M 100 55 Q 140 55, 160 40" fill="none" stroke="var(--red)" stroke-width="2.2" marker-end="url(#arrow-red)" />
+            <path d="M 165 32 Q 190 28, 220 28" fill="none" stroke="var(--red)" stroke-width="2.2" marker-end="url(#arrow-red)" />
+            <path d="M 240 68 L 300 68" stroke="var(--amber)" stroke-width="1.8" fill="none" marker-end="url(#arrow-amber)" />
+            <rect x="380" y="55" width="45" height="22" rx="3" fill="var(--purple)" opacity="0.85" stroke="var(--purple-deep)" stroke-width="1" />
+            <line x1="384" y1="77" x2="392" y2="55" stroke="#ffffff" stroke-width="1" opacity="0.4" />
+            <line x1="392" y1="77" x2="400" y2="55" stroke="#ffffff" stroke-width="1" opacity="0.4" />
+            <line x1="400" y1="77" x2="408" y2="55" stroke="#ffffff" stroke-width="1" opacity="0.4" />
+            <text x="75" y="58" fill="var(--teal-deep)" font-size="7pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">TRUE LUMEN</text>
+            <text x="145" y="16" fill="var(--red-deep)" font-size="6pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">Intimal Tear</text>
+            <text x="270" y="38" fill="var(--red-deep)" font-size="7pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">FALSE LUMEN (Intramural Hematoma)</text>
+            <text x="270" y="60" fill="var(--amber-deep)" font-size="6.5pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Stenosis / Compression</text>
+            <text x="402" y="48" fill="var(--purple-deep)" font-size="6.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">Thrombus</text>
+            <circle cx="530" cy="55" r="28" fill="none" stroke="#4A5A6D" stroke-width="2.5" />
+            <circle cx="530" cy="55" r="24" fill="none" stroke="#94a3b8" stroke-width="1.5" />
+            <circle cx="530" cy="55" r="23" fill="var(--teal-soft)" opacity="0.6" />
+            <text x="530" y="58" fill="var(--teal-deep)" font-size="5.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">NORMAL ICA</text>
+            <text x="530" y="96" fill="var(--ink-soft)" font-size="5pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Sympathetic Plexus (Cervical)</text>
+            <circle cx="530" cy="23" r="1.5" fill="var(--amber)" />
+            <circle cx="545" cy="27" r="1.5" fill="var(--amber)" />
+            <circle cx="555" cy="40" r="1.5" fill="var(--amber)" />
+            <circle cx="557" cy="55" r="1.5" fill="var(--amber)" />
+            <circle cx="555" cy="70" r="1.5" fill="var(--amber)" />
+            <circle cx="545" cy="83" r="1.5" fill="var(--amber)" />
+            <circle cx="530" cy="87" r="1.5" fill="var(--amber)" />
+            <circle cx="650" cy="55" r="28" fill="none" stroke="#4A5A6D" stroke-width="2.5" />
+            <path d="M 622 55 A 28 28 0 0 1 678 55 C 670 65, 630 65, 622 55 Z" fill="var(--red-soft)" stroke="var(--red)" stroke-width="1" />
+            <path d="M 622 55 C 630 65, 670 65, 678 55 A 28 28 0 0 1 622 55 Z" fill="none" stroke="#94a3b8" stroke-width="1.5" />
+            <ellipse cx="650" cy="70" rx="18" ry="8" fill="var(--teal-soft)" stroke="#94a3b8" stroke-width="1" />
+            <circle cx="650" cy="23" r="1.5" fill="var(--amber)" opacity="0.3" />
+            <circle cx="665" cy="27" r="1.5" fill="var(--amber)" opacity="0.3" />
+            <circle cx="675" cy="40" r="1.5" fill="var(--amber)" opacity="0.3" />
+            <text x="650" y="44" fill="var(--red-deep)" font-size="5.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">Hematoma</text>
+            <text x="650" y="73" fill="var(--teal-deep)" font-size="5.5pt" font-family="'Outfit', sans-serif" font-weight="800" text-anchor="middle">True Lumen</text>
+            <text x="650" y="96" fill="var(--ink-soft)" font-size="5pt" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="middle">Cervical ICA Dissection</text>
+            <defs>
+              <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--red)" />
+              </marker>
+              <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--amber)" />
+              </marker>
+            </defs>
+          </svg>
+        </div>
+        <!-- Stroke Mechanisms (PNG) -->
+        <div style="width: 100%; height: 340px; display: flex; align-items: center; justify-content: center; background: var(--fill-soft); border-radius: 6px; border: 1.5px solid var(--rule-soft); overflow: hidden; box-sizing: border-box; margin-bottom: 8px;">
+          <img src="${dissectionStrokeMechanismsBase64}" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
         </div>
 
         <div class="box box-purple">
