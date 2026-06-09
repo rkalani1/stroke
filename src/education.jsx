@@ -1993,7 +1993,55 @@ export function AfibAnticoagTimingCard() {
 </div>
     </div>
   );
-}
+}const ImageLightbox = ({ src, alt, title, onClose }) => {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
+  return (
+    <div 
+      className="fixed inset-0 z-[250] flex flex-col items-center justify-center bg-slate-950/95 p-4 no-print backdrop-blur-sm cursor-zoom-out"
+      role="dialog"
+      aria-modal="true"
+      onClick={onClose}
+    >
+      <button 
+        type="button"
+        className="absolute top-4 right-4 p-2.5 bg-slate-850 hover:bg-slate-800 text-white rounded-full transition-colors focus:outline-none shadow-md z-[260]"
+        onClick={(e) => { e.stopPropagation(); onClose(); }}
+        aria-label="Close image preview"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      
+      <div 
+        className="relative max-w-4xl max-h-[85vh] w-full flex justify-center items-center p-2 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 cursor-default"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <img 
+          src={src} 
+          alt={alt} 
+          className="max-w-full max-h-[80vh] object-contain rounded-lg"
+        />
+        {title && (
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-slate-900/80 text-white text-[11px] px-3.5 py-1.5 rounded-full font-medium shadow-md flex items-center gap-1.5 backdrop-blur-sm border border-white/10 select-none">
+            <span>{title}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 
 
@@ -2003,6 +2051,7 @@ export function AfibAnticoagTimingCard() {
 // =====================================================================
 export const EVDInfographic = () => {
   const [showPdf, setShowPdf] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState(null);
 
   const emailDoc = () => {
     const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/documents/references/External Ventricular Drain.pdf';
@@ -2069,11 +2118,21 @@ export const EVDInfographic = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 border-b border-slate-200 dark:border-slate-800">
           {/* Left Col: SVG Graphic (Vector Replacement) */}
           <div className="flex justify-center items-center p-4 bg-slate-50 dark:bg-slate-950/20 border-r border-slate-200 dark:border-slate-800">
-            <img 
-              src="assets/evd_photo_cropped.png" 
-              alt="EVD Cylinder Setup" 
-              className="max-h-[260px] object-contain rounded-md shadow-sm"
-            />
+            <div 
+              className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center"
+              onClick={() => setLightboxImage({ src: 'assets/evd_photo_cropped.png', alt: 'EVD Cylinder Setup', title: 'External Ventricular Drain Setup' })}
+            >
+              <img 
+                src="assets/evd_photo_cropped.png" 
+                alt="EVD Cylinder Setup" 
+                className="max-h-[260px] object-contain rounded-md shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
+                <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
+                  <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Right Col: Basics & SNACC Vector Logo */}
@@ -2176,6 +2235,15 @@ export const EVDInfographic = () => {
           </div>
         </div>
       </div>
+
+      {lightboxImage && (
+        <ImageLightbox 
+          src={lightboxImage.src} 
+          alt={lightboxImage.alt} 
+          title={lightboxImage.title} 
+          onClose={() => setLightboxImage(null)} 
+        />
+      )}
     </div>
   );
 };
@@ -2185,6 +2253,7 @@ export const EVDInfographic = () => {
 // =====================================================================
 export const ICPInfographic = () => {
   const [showPdf, setShowPdf] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState(null);
 
   const emailDoc = () => {
     const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/documents/references/Intracranial Hypertension & Herniation.pdf';
@@ -2264,11 +2333,21 @@ export const ICPInfographic = () => {
                 </ul>
               </div>
               <div className="w-full md:w-[42%] flex justify-center items-center p-1.5 bg-white dark:bg-slate-950 rounded-lg border border-orange-200 dark:border-orange-900 shrink-0">
-                <img 
-                  src="assets/herniation_diagram.png" 
-                  alt="Brain Herniation Diagram" 
-                  className="max-h-[120px] object-contain rounded-md"
-                />
+                <div 
+                  className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full"
+                  onClick={() => setLightboxImage({ src: 'assets/herniation_diagram.png', alt: 'Brain Herniation Diagram', title: 'Brain Herniation Syndromes' })}
+                >
+                  <img 
+                    src="assets/herniation_diagram.png" 
+                    alt="Brain Herniation Diagram" 
+                    className="max-h-[120px] object-contain rounded-md transition-transform duration-200 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
+                    <span className="text-[10px] text-white font-semibold bg-black/60 px-2 py-1 rounded-md flex items-center gap-1">
+                      <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
             
@@ -2439,6 +2518,15 @@ export const ICPInfographic = () => {
           </div>
         </div>
       </div>
+
+      {lightboxImage && (
+        <ImageLightbox 
+          src={lightboxImage.src} 
+          alt={lightboxImage.alt} 
+          title={lightboxImage.title} 
+          onClose={() => setLightboxImage(null)} 
+        />
+      )}
     </div>
   );
 };
@@ -2648,11 +2736,22 @@ export function CervicalDissectionCard() {
               }}
               title="Stroke Mechanisms"
             >
-              <img 
-                src="assets/dissection_stroke_mechanisms.png" 
-                alt="Cervical Artery Dissection Stroke Mechanisms" 
-                style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
-              />
+              <div 
+                className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full h-full"
+                onClick={() => setLightboxImage({ src: 'assets/dissection_stroke_mechanisms.png', alt: 'Cervical Artery Dissection Stroke Mechanisms', title: 'Stroke Mechanisms in Cervical Artery Dissection' })}
+              >
+                <img 
+                  src="assets/dissection_stroke_mechanisms.png" 
+                  alt="Cervical Artery Dissection Stroke Mechanisms" 
+                  style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
+                  className="transition-transform duration-200 group-hover:scale-[1.02]"
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
+                  <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
+                    <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
+                  </span>
+                </div>
+              </div>
             </div>
 
             <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%)', marginBottom: '8px'}}>
@@ -2775,6 +2874,15 @@ export function CervicalDissectionCard() {
           </div>
         </div>
       </div>
+
+      {lightboxImage && (
+        <ImageLightbox 
+          src={lightboxImage.src} 
+          alt={lightboxImage.alt} 
+          title={lightboxImage.title} 
+          onClose={() => setLightboxImage(null)} 
+        />
+      )}
     </div>
   );
 }
