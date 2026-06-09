@@ -516,7 +516,7 @@ async function main() {
               </ul>
             </div>
             <div style="width: 42%; display: flex; justify-content: center; align-items: center; box-sizing: border-box; padding-right: 4px;">
-              <img src="${herniationDiagramBase64}" style="max-width: 100%; max-height: 100px; object-fit: contain; border-radius: 4px; border: 1px solid #fed7aa; padding: 2px; background-color: white;" alt="Brain Herniation Diagram" />
+              <img src="${herniationDiagramBase64}" style="max-width: 100%; max-height: 130px; object-fit: contain; border-radius: 4px; border: 1px solid #fed7aa; padding: 2px; background-color: white;" alt="Brain Herniation Diagram" />
             </div>
           </div>
           
