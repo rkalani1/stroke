@@ -535,8 +535,15 @@ function ScaledCardWrapper({ children, isLandscape }) {
 const PdfActionBar = ({ title, subtitle, pdfPath, pdfName, iconColorClass = "text-cobalt-600 dark:text-cobalt-400", children }) => {
   const [showPdf, setShowPdf] = useState(false);
 
+  const isHttp = window.location.protocol.startsWith('http');
+  const buildVersion = '6.9.24';
+  
+  // Extract clean path and cache-busted path
+  const cleanPath = pdfPath ? pdfPath.split('?')[0] : '';
+  const resolvedPath = isHttp ? `${cleanPath}?v=${buildVersion}` : cleanPath;
+
   const emailDoc = () => {
-    const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/' + pdfPath;
+    const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/' + cleanPath;
     const subject = encodeURIComponent(title);
     const body = encodeURIComponent(fullUrl);
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
@@ -562,7 +569,7 @@ const PdfActionBar = ({ title, subtitle, pdfPath, pdfName, iconColorClass = "tex
             {showPdf ? "Hide PDF Preview" : "Preview PDF"}
           </button>
           <a
-            href={pdfPath}
+            href={resolvedPath}
             download={pdfName}
             className="px-3.5 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors flex items-center gap-1.5"
           >
@@ -582,7 +589,7 @@ const PdfActionBar = ({ title, subtitle, pdfPath, pdfName, iconColorClass = "tex
       {showPdf && (
         <div className="border border-slate-250 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
           <iframe
-            src={pdfPath}
+            src={resolvedPath}
             className="w-full h-full border-none"
             title={`${title} PDF`}
           />
@@ -2519,7 +2526,7 @@ const CervicalDissectionView = () => {
   return (
     <PdfActionBar
       title="Cervical Artery Dissection"
-      pdfPath="documents/references/Cervical Artery Dissection.pdf?v=6.9.24"
+      pdfPath="documents/references/Cervical Artery Dissection.pdf"
       pdfName="Cervical Artery Dissection.pdf"
       iconColorClass="text-blue-600 dark:text-blue-400"
     >
