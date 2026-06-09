@@ -327,6 +327,19 @@ const EDUCATION_MODULES = [
     references: [
       { label: 'Joint Commission', citation: 'Specifications Manual for Joint Commission National Quality Measures.', pmid: null }
     ]
+  },
+  {
+    id: 'cervical-dissection',
+    title: 'Cervical Artery Dissection',
+    purpose: 'Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence (CADISS and TREAT-CAD) for cervical artery dissection.',
+    actions: 'carotid vertebral dissection horner syndrome treat-cad cadiss antiplatelet anticoagulation pseudoaneurysm pain ipsilateral headache neck',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-06-09',
+    references: [
+      { label: 'CADISS Trial', citation: 'CADISS Trial Investigators. Lancet Neurol. 2015;14(4):361-367.', pmid: '25684164' },
+      { label: 'TREAT-CAD Trial', citation: 'Engelter ST, et al. Lancet Neurol. 2021;20(5):341-350.', pmid: '33765420' },
+      { label: 'AHA/ASA 2021 Guideline', citation: 'Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.', pmid: '34024117' }
+    ]
   }
 ];
 
@@ -805,6 +818,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
           <StkCoreMeasuresCard />
         </ScaledCardWrapper>
       );
+    case 'cervical-dissection':
+      return <CervicalDissectionView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -2491,6 +2506,192 @@ export function StkCoreMeasuresCard() {
 
           <div className="ref-citation" style={{marginTop: 'auto', padding: '6px 10px', fontSize: '7.5pt', lineHeight: '1.25'}}>
             <strong>Quality Reference:</strong> Joint Commission National Quality Measures Specifications Manual &amp; GWTG Stroke Dashboard guidelines.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const CervicalDissectionView = () => {
+  return (
+    <PdfActionBar
+      title="Cervical Artery Dissection"
+      subtitle="CeAD Clinical & Trial Reference Guide"
+      pdfPath="documents/references/Cervical Artery Dissection.pdf"
+      pdfName="Cervical Artery Dissection.pdf"
+      iconColorClass="text-blue-600 dark:text-blue-400"
+    >
+      <ScaledCardWrapper isLandscape={false}>
+        <BedsidePocketCardsStyles />
+        <CervicalDissectionCard />
+      </ScaledCardWrapper>
+    </PdfActionBar>
+  );
+};
+
+export function CervicalDissectionCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-cervical-dissection">
+        <div className="card-container" style={{boxSizing: 'border-box'}}>
+          <div className="card-content">
+            <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Cervical Artery Dissection</h1>
+            <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500'}}>
+              Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and trial evidence.
+            </p>
+
+            {/* Vessel Dissection Diagram (Inline SVG) */}
+            <svg viewBox="0 0 735 110" style={{width: '100%', height: '110px', marginBottom: '8px'}}>
+              <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
+              
+              {/* Outer wall boundary */}
+              <path d="M 20 20 L 715 20 M 20 90 L 715 90" stroke="#4A5A6D" strokeWidth="3" strokeLinecap="round" />
+              
+              {/* Intima lines */}
+              <path d="M 20 30 L 220 30" stroke="#94a3b8" strokeWidth="2" fill="none" />
+              <path d="M 20 80 L 715 80" stroke="#94a3b8" strokeWidth="2" fill="none" />
+              
+              {/* Intimal Tear */}
+              <path d="M 220 30 L 230 45" stroke="var(--red)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+              
+              {/* False Lumen (Hematoma) boundary */}
+              <path d="M 230 45 C 300 72, 450 72, 530 30" stroke="#94a3b8" strokeWidth="2" fill="none" />
+              <path d="M 230 45 C 300 72, 450 72, 530 30 L 530 20 L 230 20 Z" fill="var(--red-soft)" opacity="0.8" />
+              <path d="M 250 20 C 300 45, 450 45, 510 20" fill="var(--red)" opacity="0.25" />
+              
+              {/* Rest of Intima */}
+              <path d="M 530 30 L 715 30" stroke="#94a3b8" strokeWidth="2" fill="none" />
+              
+              {/* Blood Flow Arrows entering tear */}
+              <path d="M 170 50 Q 210 50, 230 36" fill="none" stroke="var(--red)" strokeWidth="2.2" markerEnd="url(#arrow-red)" />
+              <path d="M 235 28 Q 260 25, 290 25" fill="none" stroke="var(--red)" strokeWidth="2.2" markerEnd="url(#arrow-red)" />
+              
+              {/* Flow in Narrowed True Lumen */}
+              <path d="M 330 73 L 420 73" stroke="var(--amber)" strokeWidth="1.8" fill="none" markerEnd="url(#arrow-amber)" />
+              
+              {/* Thrombus in post-stenotic segment */}
+              <rect x="530" y="58" width="70" height="22" rx="3" fill="var(--purple)" opacity="0.85" stroke="var(--purple-deep)" strokeWidth="1" />
+              <line x1="535" y1="80" x2="545" y2="60" stroke="#ffffff" strokeWidth="1" opacity="0.4" />
+              <line x1="545" y1="80" x2="555" y2="60" stroke="#ffffff" strokeWidth="1" opacity="0.4" />
+              <line x1="555" y1="80" x2="565" y2="60" stroke="#ffffff" strokeWidth="1" opacity="0.4" />
+              <line x1="565" y1="80" x2="575" y2="60" stroke="#ffffff" strokeWidth="1" opacity="0.4" />
+              <line x1="575" y1="80" x2="585" y2="60" stroke="#ffffff" strokeWidth="1" opacity="0.4" />
+              <line x1="585" y1="80" x2="595" y2="60" stroke="#ffffff" strokeWidth="1" opacity="0.4" />
+              
+              {/* Markers */}
+              <defs>
+                <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                  <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--red)" />
+                </marker>
+                <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                  <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--amber)" />
+                </marker>
+              </defs>
+              
+              {/* Labels */}
+              <text x="110" y="55" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">TRUE LUMEN (Normal)</text>
+              <text x="210" y="16" fill="var(--red-deep)" fontSize="6.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Intimal Tear</text>
+              <text x="380" y="41" fill="var(--red-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">FALSE LUMEN (Intramural Hematoma)</text>
+              <text x="375" y="65" fill="var(--amber-deep)" fontSize="7pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Stenosis / True Lumen Compression</text>
+              <text x="565" y="52" fill="var(--purple-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Thrombus</text>
+              <text x="660" y="55" fill="var(--ink-mute)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Distal Emboli</text>
+            </svg>
+
+            {/* Section 1 & 2 Grid */}
+            <div style={{display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '10px', marginBottom: '8px'}}>
+              {/* Presentation */}
+              <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%)'}}>
+                <strong style={{color: 'var(--purple-deep)', fontSize: '9.2pt', display: 'block', marginBottom: '4px'}}>1. Clinical Presentation &amp; Symptoms</strong>
+                <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '7.8pt', lineHeight: '1.3', color: 'var(--ink-soft)'}}>
+                  <div>
+                    <strong style={{color: 'var(--purple-deep)'}}>Ipsilateral Pain (Local)</strong>
+                    <br/>• **Carotid (ICA)**: Frontotemporal, orbital, or facial headache/pain.
+                    <br/>• **Vertebral (VA)**: Occipital or posterior neck pain.
+                    <br/>• *Onset*: Usually precedes ischemic stroke by hours to days (median 4d).
+                  </div>
+                  <div>
+                    <strong style={{color: 'var(--purple-deep)'}}>Focal Neurological Signs</strong>
+                    <br/>• **Horner Syndrome (~28–58%)**: Ptosis &amp; miosis. Anhidrosis is **absent (spared)** because sweat fibers travel on external carotid artery plexus.
+                    <br/>• **Lower Cranial Nerve Palsies (~8–16%)**: Local mass effect or ischemia of vasa nervorum (CN IX, X, XI, XII; tongue deviates to dissection side).
+                  </div>
+                </div>
+              </div>
+
+              {/* Workup */}
+              <div style={{border: '1.5px solid var(--teal)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--teal-soft) 0%, #ffffff 100%)'}}>
+                <strong style={{color: 'var(--teal-deep)', fontSize: '9.2pt', display: 'block', marginBottom: '4px'}}>2. Diagnostic Workup</strong>
+                <ul style={{margin: '0', paddingLeft: '12px', fontSize: '7.8pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
+                  <li><strong>CTA/MRA Head &amp; Neck</strong>: Primary screen. Shows tapered stenosis ("string sign"), occlusion, flap, or pseudoaneurysm.</li>
+                  <li><strong>MRI Neck (T1 Fat-Sat)</strong>: Visualizes crescent-shaped hyperintense intramural hematoma (pathognomonic).</li>
+                  <li><strong>DSA</strong>: Gold standard but invasive. Reserved for diagnostic doubt or endovascular stenting.</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Section 3: Management */}
+            <div style={{border: '1.5px solid var(--red)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--red-soft) 0%, #ffffff 100%)', marginBottom: '8px'}}>
+              <strong style={{color: 'var(--red-deep)', fontSize: '9.2pt', display: 'block', marginBottom: '4px'}}>3. Medical Management: Extracranial vs. Intracranial Dissection</strong>
+              <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '7.8pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
+                <div>
+                  <strong style={{color: 'var(--red-deep)', fontSize: '8.2pt'}}>Extracranial Dissection</strong>
+                  <br/>• **Antithrombotics for ≥ 3 Months**: Strongly indicated (Class I, LOE C-LD) to prevent ischemic stroke/embolism.
+                  <br/>• **Antiplatelet vs. Anticoagulation**: RCTs confirm clinical equipoise (no difference in stroke or death). Option between antiplatelet monotherapy/DAPT vs. anticoagulation (VKA or DOAC) is individualized.
+                  <br/>• **Stenting**: Reserved for recurrent ischemia despite maximal medical therapy or expanding pseudoaneurysm.
+                </div>
+                <div style={{borderLeft: '1.5px dashed var(--red)', paddingLeft: '12px'}}>
+                  <strong style={{color: 'var(--red-deep)', fontSize: '8.2pt'}}>Intracranial Dissection (Special Caution)</strong>
+                  <br/>• **High Subarachnoid Hemorrhage (SAH) Risk**: Intracranial arteries lack an external elastic lamina and have a thin adventitia; dissection can cause aneurysmal rupture &amp; fatal SAH.
+                  <br/>• **Anticoagulation Caution/Contraindication**: Anticoagulation is contraindicated if SAH is present.
+                  <br/>• **Mandatory Screening**: Must rule out SAH with baseline CT Head or LP before starting antithrombotics.
+                  <br/>• **Preferred Agent**: Antiplatelet monotherapy is generally preferred for intracranial dissection if no SAH is present.
+                </div>
+              </div>
+            </div>
+
+            {/* Section 4: Landmark Trials */}
+            <div style={{border: '1.5px solid var(--amber)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--amber-soft) 0%, #ffffff 100%)', marginBottom: '8px'}}>
+              <strong style={{color: 'var(--amber-deep)', fontSize: '9.2pt', display: 'block', marginBottom: '4px'}}>4. Landmark Trial Evidence</strong>
+              <table style={{width: '100%', borderCollapse: 'collapse', fontSize: '7.6pt', lineHeight: '1.3', color: 'var(--ink)'}}>
+                <thead>
+                  <tr style={{borderBottom: '1.5px solid var(--amber)', color: 'var(--amber-deep)', fontWeight: '700'}}>
+                    <th style={{padding: '3px 0', textAlign: 'left', width: '15%'}}>Trial</th>
+                    <th style={{padding: '3px 0', textAlign: 'left', width: '22%'}}>Population (N)</th>
+                    <th style={{padding: '3px 0', textAlign: 'left', width: '25%'}}>Interventions</th>
+                    <th style={{padding: '3px 0', textAlign: 'left', width: '38%'}}>Primary Outcome &amp; Stroke Rate at 14d/3mo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
+                    <td style={{fontWeight: '700', padding: '4px 0', verticalAlign: 'top'}}><strong>CADISS</strong><br/>2015</td>
+                    <td style={{padding: '4px 0', verticalAlign: 'top'}}>N = 250 patients with extracranial dissection (96% carotid, 4% vertebral).</td>
+                    <td style={{padding: '4px 0', verticalAlign: 'top'}}>Antiplatelets (n=126) vs.<br/>Anticoagulants (n=124)<br/>within 7 days of onset.</td>
+                    <td style={{padding: '4px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
+                      **Primary Endpoint (Stroke/Death at 3 Months)**:
+                      <br/>• **Antiplatelet**: 2.0% (2/126) | **Anticoagulant**: 1.0% (1/124)
+                      <br/>• **No difference** (p=0.63). Supported clinical equipoise.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{fontWeight: '700', padding: '4px 0', verticalAlign: 'top'}}><strong>TREAT-CAD</strong><br/>2021</td>
+                    <td style={{padding: '4px 0', verticalAlign: 'top'}}>N = 194 patients with extracranial dissection (per-protocol analyzed: 173).</td>
+                    <td style={{padding: '4px 0', verticalAlign: 'top'}}>Aspirin 300 mg daily (n=91) vs.<br/>VKA (INR 2.0–3.0, n=82)<br/>within 14 days of onset.</td>
+                    <td style={{padding: '4px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
+                      **Composite Endpoint (Stroke, Major Bleed, Death, or MRI Lesion at 14d)**:
+                      <br/>• **Aspirin**: 23% (21/91) | **VKA**: 15% (12/82) [Diff 8%, 95% CI -4% to 21%]
+                      <br/>• **Non-inferiority NOT met** (upper CI limit 21% &gt; 12% margin).
+                      <br/>• **Clinical Stroke**: Aspirin 8.0% (7/91) vs. VKA 0% (0/82).
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Citations footer */}
+            <div className="ref-citation" style={{marginTop: 'auto', padding: '5px 8px', fontSize: '7.4pt', lineHeight: '1.2'}}>
+              <strong>CADISS Trial:</strong> CADISS Investigators. <em>Lancet Neurol</em>. 2015;14(4):361-7. <a href="https://pubmed.ncbi.nlm.nih.gov/25684164/" target="_blank">PMID: 25684164</a> | <strong>TREAT-CAD Trial:</strong> Engelter ST, et al. <em>Lancet Neurol</em>. 2021;20(5):341-350. <a href="https://pubmed.ncbi.nlm.nih.gov/33765420/" target="_blank">PMID: 33765420</a><br/>
+              <strong>AHA/ASA 2021 Guideline:</strong> Kleindorfer DO, et al. Stroke Prevention. <em>Stroke</em>. 2021;52:e364-e467. <a href="https://pubmed.ncbi.nlm.nih.gov/34024117/" target="_blank">PMID: 34024117</a>
+            </div>
           </div>
         </div>
       </div>
