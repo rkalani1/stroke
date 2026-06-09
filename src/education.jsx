@@ -2600,176 +2600,51 @@ export function CervicalDissectionCard() {
           <div className="card-content">
             <h1 style={{textAlign: 'center', marginBottom: '8px'}}>Cervical Artery Dissection</h1>
 
+            {/* Diagrams Banner - Stacked Vertically (No Toggling, Optimally Seen on Page) */}
+            {/* Anatomy & Dissection SVG */}
             <div 
-              onClick={() => setLightboxImage('svg')}
-              onMouseEnter={() => setSvgHover(true)}
-              onMouseLeave={() => setSvgHover(false)}
               style={{
                 width: '100%', 
-                height: '130px', 
+                height: 'auto', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
                 background: 'var(--fill-soft)', 
                 borderRadius: '8px', 
-                border: svgHover ? '1.5px solid var(--purple)' : '1.5px solid var(--rule-soft)', 
-                boxShadow: svgHover ? '0 4px 12px rgba(91, 59, 156, 0.15)' : 'none',
+                border: '1.5px solid var(--rule-soft)', 
                 overflow: 'hidden', 
                 boxSizing: 'border-box', 
                 marginBottom: '8px',
-                cursor: 'zoom-in',
-                position: 'relative',
-                transition: 'border-color 0.2s, box-shadow 0.2s'
+                padding: '6px'
               }}
-              title="Click to enlarge Anatomy Diagram"
+              title="Anatomy Diagram"
             >
               {renderSVG()}
-              <div style={{
-                position: 'absolute',
-                bottom: '8px',
-                right: '8px',
-                background: 'rgba(15, 11, 25, 0.65)',
-                color: '#ffffff',
-                fontSize: '7pt',
-                padding: '3px 8px',
-                borderRadius: '4px',
-                fontFamily: 'Outfit',
-                fontWeight: '500',
-                pointerEvents: 'none',
-                backdropFilter: 'blur(4px)'
-              }}>
-                🔍 Click to zoom
-              </div>
             </div>
 
+            {/* Stroke Mechanisms Illustration */}
             <div 
-              onClick={() => setLightboxImage('png')}
-              onMouseEnter={() => setPngHover(true)}
-              onMouseLeave={() => setPngHover(false)}
               style={{
                 width: '100%', 
-                aspectRatio: '1 / 1',
-                maxHeight: '450px', 
+                height: 'auto', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
                 background: 'var(--fill-soft)', 
                 borderRadius: '8px', 
-                border: pngHover ? '1.5px solid var(--purple)' : '1.5px solid var(--rule-soft)', 
-                boxShadow: pngHover ? '0 4px 12px rgba(91, 59, 156, 0.15)' : 'none',
+                border: '1.5px solid var(--rule-soft)', 
                 overflow: 'hidden', 
                 boxSizing: 'border-box', 
-                marginBottom: '8px',
-                cursor: 'zoom-in',
-                position: 'relative',
-                transition: 'border-color 0.2s, box-shadow 0.2s'
+                marginBottom: '8px'
               }}
-              title="Click to enlarge Stroke Mechanisms"
+              title="Stroke Mechanisms"
             >
               <img 
                 src="assets/dissection_stroke_mechanisms.png" 
                 alt="Cervical Artery Dissection Stroke Mechanisms" 
-                style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
+                style={{width: '100%', height: 'auto', display: 'block', objectFit: 'contain'}}
               />
-              <div style={{
-                position: 'absolute',
-                bottom: '8px',
-                right: '8px',
-                background: 'rgba(15, 11, 25, 0.65)',
-                color: '#ffffff',
-                fontSize: '7pt',
-                padding: '3px 8px',
-                borderRadius: '4px',
-                fontFamily: 'Outfit',
-                fontWeight: '500',
-                pointerEvents: 'none',
-                backdropFilter: 'blur(4px)'
-              }}>
-                🔍 Click to zoom
-              </div>
             </div>
-
-            {lightboxImage && (
-              <div 
-                onClick={() => setLightboxImage(null)}
-                style={{
-                  position: 'fixed',
-                  top: 0,
-                  left: 0,
-                  width: '100vw',
-                  height: '100vh',
-                  backgroundColor: 'rgba(15, 11, 25, 0.95)',
-                  zIndex: 99999,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '20px',
-                  boxSizing: 'border-box',
-                  backdropFilter: 'blur(8px)',
-                  cursor: 'zoom-out'
-                }}
-              >
-                <button 
-                  onClick={() => setLightboxImage(null)}
-                  style={{
-                    position: 'absolute',
-                    top: '20px',
-                    right: '20px',
-                    background: 'rgba(255, 255, 255, 0.15)',
-                    border: 'none',
-                    borderRadius: '50%',
-                    width: '44px',
-                    height: '44px',
-                    color: '#ffffff',
-                    fontSize: '28px',
-                    lineHeight: '44px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'background 0.2s',
-                  }}
-                >
-                  &times;
-                </button>
-                <div 
-                  onClick={(e) => e.stopPropagation()}
-                  style={{
-                    maxWidth: '95%',
-                    maxHeight: '85%',
-                    background: lightboxImage === 'svg' ? 'var(--fill-soft)' : '#ffffff',
-                    borderRadius: '12px',
-                    padding: '16px',
-                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxSizing: 'border-box'
-                  }}
-                >
-                  {lightboxImage === 'svg' ? (
-                    <div style={{width: '90vw', maxWidth: '1000px', height: 'auto', background: 'var(--fill-soft)', padding: '10px', borderRadius: '8px'}}>
-                      {renderSVG()}
-                    </div>
-                  ) : (
-                    <img 
-                      src="assets/dissection_stroke_mechanisms.png" 
-                      alt="Cervical Artery Dissection Stroke Mechanisms" 
-                      style={{
-                        maxWidth: '90vw',
-                        maxHeight: '80vh',
-                        objectFit: 'contain',
-                        borderRadius: '6px'
-                      }}
-                    />
-                  )}
-                </div>
-                <div style={{color: '#a78bfa', marginTop: '16px', fontSize: '11pt', fontFamily: 'Outfit', fontWeight: '600', letterSpacing: '0.5px'}}>
-                  {lightboxImage === 'svg' ? 'Anatomy & Dissection (Click anywhere to close)' : 'Stroke Mechanisms (Click anywhere to close)'}
-                </div>
-              </div>
-            )}
 
             <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%)', marginBottom: '8px'}}>
               <strong style={{color: 'var(--purple-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>1. Clinical Presentation &amp; Pathophysiology</strong>
