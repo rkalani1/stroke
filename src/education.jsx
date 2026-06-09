@@ -892,7 +892,7 @@ const BedsidePocketCardsStyles = () => (
       flex-direction: column;
       justify-content: space-between;
       position: relative;
-      overflow: hidden;
+      overflow-y: auto;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
       border: 1px solid var(--rule-soft);
       border-radius: 8px;
@@ -2635,7 +2635,7 @@ export function CervicalDissectionCard() {
             <div 
               style={{
                 width: '100%', 
-                height: '180px', 
+                height: '150px', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
@@ -2718,7 +2718,7 @@ export function CervicalDissectionCard() {
             {/* Section 4: Landmark Trials */}
             <div style={{border: '1.5px solid var(--amber)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--amber-soft) 0%, #ffffff 100%)', marginBottom: '6px'}}>
               <strong style={{color: 'var(--amber-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>4. Landmark Trial &amp; Cohort Evidence</strong>
-              <table style={{width: '100%', borderCollapse: 'collapse', fontSize: '7.5pt', lineHeight: '1.25', color: 'var(--ink)'}}>
+              <table style={{width: '100%', borderCollapse: 'collapse', fontSize: '7.0pt', lineHeight: '1.2', color: 'var(--ink)'}}>
                 <thead>
                   <tr style={{borderBottom: '1.5px solid var(--amber)', color: 'var(--amber-deep)', fontWeight: '700'}}>
                     <th style={{padding: '2px 0', textAlign: 'left', width: '12%'}}>Study / Year</th>
@@ -2729,35 +2729,35 @@ export function CervicalDissectionCard() {
                 </thead>
                 <tbody>
                   <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
-                    <td style={{fontWeight: '700', padding: '3px 0', verticalAlign: 'top'}}><strong>CADISS</strong><br/>2015</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 250. Extracranial CeAD. RCT.</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulant for 3 months.</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
+                    <td style={{fontWeight: '700', padding: '1.5px 0', verticalAlign: 'top'}}><strong>CADISS</strong><br/>2015</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>N = 250. Extracranial CeAD. RCT.</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulant for 3 months.</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
                       • <strong>Primary Composite (Ipsilateral stroke or death at 3m)</strong>: 2.0% vs. 1.0% (p = 0.63). Established clinical equipoise.
                     </td>
                   </tr>
                   <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
-                    <td style={{fontWeight: '700', padding: '3px 0', verticalAlign: 'top'}}><strong>TREAT-CAD</strong><br/>2021</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 194 (PP = 173). Extracranial. RCT.</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Aspirin 300mg daily vs. VKA for 3 months.</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
+                    <td style={{fontWeight: '700', padding: '1.5px 0', verticalAlign: 'top'}}><strong>TREAT-CAD</strong><br/>2021</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>N = 194 (PP = 173). Extracranial. RCT.</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>Aspirin 300mg daily vs. VKA for 3 months.</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
                       • <strong>Primary Composite (Stroke, major hemorrhage, death, or new MRI lesion at 14d)</strong>: 23% vs. 15% (Non-inferiority NOT met). Ischemic stroke: 8.0% vs. 0%.
                     </td>
                   </tr>
                   <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
-                    <td style={{fontWeight: '700', padding: '3px 0', verticalAlign: 'top'}}><strong>Kaufmann IPD</strong><br/>2024</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 444. IPD meta-analysis of CADISS + TREAT-CAD.</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulant x 90d.</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
+                    <td style={{fontWeight: '700', padding: '1.5px 0', verticalAlign: 'top'}}><strong>Kaufmann IPD</strong><br/>2024</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>N = 444. IPD meta-analysis of CADISS + TREAT-CAD.</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulant x 90d.</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
                       • <strong>Primary Composite (Ischemic stroke, major bleeding, or death at 90d)</strong>: No significant difference (1.4% anticoagulation vs. 4.4% antiplatelet, p = 0.11).
                       <br/>• <strong>Ischemic Stroke alone</strong>: Significant reduction with anticoagulation (0.5% vs. 4.0%; OR 0.14, p = 0.01), with a non-significant increase in major bleeding (0.9% vs. 0%).
                     </td>
                   </tr>
                   <tr>
-                    <td style={{fontWeight: '700', padding: '3px 0', verticalAlign: 'top'}}><strong>STOP-CAD</strong><br/>2024</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>N = 3,636. Multicenter observational cohort registry.</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulation.</td>
-                    <td style={{padding: '3px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
+                    <td style={{fontWeight: '700', padding: '1.5px 0', verticalAlign: 'top'}}><strong>STOP-CAD</strong><br/>2024</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>N = 3,636. Multicenter observational cohort registry.</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulation.</td>
+                    <td style={{padding: '1.5px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
                       • <strong>Temporal Risk</strong>: 87% of recurrent strokes occurred in the first 30 days.
                       <br/>• <strong>Occlusion Benefit</strong>: Patients with complete arterial occlusion at baseline had the highest stroke risk and benefited most from early anticoagulation.
                       <br/>• <strong>Transition Strategy</strong>: Initiate anticoagulation for days 1–30 (highest stroke risk window) and then transition to antiplatelet monotherapy at day 30 to mitigate long-term bleeding risks (which rise significantly by day 180).
