@@ -217,19 +217,6 @@ const EDUCATION_MODULES = [
     ]
   },
   {
-    id: 'spontaneous-ich',
-    title: 'Spontaneous Intracranial Hemorrhage',
-    purpose: 'Guidelines (AHA/ASA 2022) for the management of acute spontaneous ICH, including BP control, anticoagulation reversal, and surgical intervention.',
-    actions: 'ich hemorrhage stich mistie bp control reversal coagulopathy fastest surgical evacuation',
-    categories: ['pocket-card', 'printable', 'icu'],
-    lastReviewed: '2026-06-09',
-    references: [
-      { label: 'AHA/ASA Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53:e282-e361.', pmid: '35579034' },
-      { label: 'STICH II', citation: 'Mendelow AD, et al. Early surgery versus initial conservative treatment in patients with spontaneous supratentorial intracerebral haematomas (STICH II). Lancet. 2013;382:397-408.', pmid: '23726393' },
-      { label: 'MISTIE III', citation: 'Hanley DF, et al. Efficacy and safety of minimally invasive surgery with thrombolysis in intracerebral haemorrhage evacuation (MISTIE III). Lancet. 2019;393:1021-1032.', pmid: '30739747' }
-    ]
-  },
-  {
     id: 'dapt-regimens',
     title: 'DAPT for Non-Cardioembolic Ischemic Stroke',
     purpose: 'Guideline-directed Dual Antiplatelet Therapy (DAPT) for secondary non-cardioembolic stroke prevention.',
@@ -617,85 +604,6 @@ const PdfActionBar = ({ title, subtitle, pdfPath, pdfName, iconColorClass = "tex
   );
 };
 
-const SpontaneousIchView = () => {
-  return (
-    <PdfActionBar
-      title="Spontaneous Intracranial Hemorrhage"
-      subtitle="ICH Management Reference Guide"
-      pdfPath="documents/references/Spontaneous ICH.pdf"
-      pdfName="Spontaneous ICH.pdf"
-      iconColorClass="text-red-600 dark:text-red-400"
-    >
-      <ScaledCardWrapper isLandscape={false}>
-        <BedsidePocketCardsStyles />
-        <SpontaneousIchCard />
-      </ScaledCardWrapper>
-    </PdfActionBar>
-  );
-};
-
-export function SpontaneousIchCard() {
-  return (
-    <div className="bedside-card-view screen-layout">
-      <div className="card-wrapper card-add_figure_01_toast">
-        <div className="card-container" style={{boxSizing: 'border-box'}}>
-          <div className="card-content">
-            <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Spontaneous Intracerebral Hemorrhage</h1>
-            <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
-              AHA/ASA 2022 Guidelines for acute management of spontaneous ICH.
-            </p>
-            
-            <div className="toast-grid">
-              <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
-                <div className="toast-card alert-red">
-                  <h3>1. Blood Pressure Management</h3>
-                  <ul className="toast-card-list">
-                    <li><strong>Target:</strong> For presenting SBP 150-220 mmHg, target <strong>140 mmHg</strong> (range 130-150 mmHg).</li>
-                    <li><strong>Timing:</strong> Initiate early (within 2 hours) and maintain <strong>sustained control</strong>.</li>
-                    <li><strong>Variability:</strong> Avoid large swings in BP; smooth titration is associated with better outcomes.</li>
-                    <li><strong>Agents:</strong> Nicardipine, Clevidipine, or Labetalol infusions preferred.</li>
-                  </ul>
-                </div>
-                
-                <div className="toast-card alert-orange">
-                  <h3>2. Anticoagulation Reversal</h3>
-                  <ul className="toast-card-list">
-                    <li><strong>VKA (Warfarin):</strong> 4-Factor Prothrombin Complex Concentrate (PCC) + Vitamin K (10mg IV).</li>
-                    <li><strong>Dabigatran:</strong> Idarucizumab (5g IV) or PCC/aPCC if unavailable.</li>
-                    <li><strong>Factor Xa Inhibitors (Apixaban, Rivaroxaban):</strong> Andexanet alfa or 4-Factor PCC.</li>
-                    <li><strong>Heparin (UFH/LMWH):</strong> Protamine sulfate.</li>
-                  </ul>
-                </div>
-              </div>
-              
-              <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
-                <div className="toast-card primary">
-                  <h3>3. Surgical Management</h3>
-                  <ul className="toast-card-list">
-                    <li><strong>Cerebellar ICH:</strong> Urgent evacuation indicated for diameter &gt; 3 cm, brainstem compression, or hydrocephalus.</li>
-                    <li><strong>Supratentorial:</strong> Life-saving decompression (craniectomy) for deteriorating patients with large lobar ICH.</li>
-                    <li><strong>Routine Evacuation:</strong> STICH II showed no overall benefit for early routine evacuation of supratentorial ICH.</li>
-                    <li><strong>Minimally Invasive Surgery:</strong> MISTIE III showed no functional benefit but improved hematoma clearance; may be considered in select cases.</li>
-                  </ul>
-                </div>
-                
-                <div className="toast-card secondary">
-                  <h3>4. Medical &amp; Supportive Care</h3>
-                  <ul className="toast-card-list">
-                    <li><strong>EVD Placement:</strong> For GCS &le; 8, significant IVH, or hydrocephalus causing clinical decline.</li>
-                    <li><strong>Seizures:</strong> Treat clinical seizures; prophylactic antiseizure medications are <strong>not</strong> recommended.</li>
-                    <li><strong>DVT Prophylaxis:</strong> Pneumatic compression initially. Pharmacologic prophylaxis (LMWH/UFH) typically starting 24-48h post-onset after stability is confirmed on repeat imaging.</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 const ToastClassificationView = () => {
   return (
     <PdfActionBar
@@ -857,8 +765,6 @@ const IcpManagementView = () => {
 // =====================================================================
 function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard, addToast) {
   switch (moduleId) {
-    case 'spontaneous-ich':
-      return <SpontaneousIchView />;
     case 'telestroke-map':
       return (
         <div className="flex flex-col items-center justify-center p-8 text-center space-y-4 border border-line rounded-lg bg-paper-2">
