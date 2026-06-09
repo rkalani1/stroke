@@ -2694,8 +2694,8 @@ export function CervicalDissectionCard() {
                   </div>
                   <div style={{borderLeft: '1.5px dashed var(--red)', paddingLeft: '10px'}}>
                     <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Intracranial &amp; Pseudoaneurysms</strong>
-                    <br/>• <strong>SAH Risk</strong>: Lack external elastic lamina &amp; thin adventitia; high rupture risk.
-                    <br/>• <strong>Anticoagulation</strong>: Contraindicated if SAH present. Screen with CT/LP first. Prefer single antiplatelet.
+                    <br/>• <strong>SAH</strong>: Lack external elastic lamina &amp; thin adventitia; rupture risk.
+                    <br/>• <strong>Anticoagulation</strong>: Avoided if SAH present. Prefer single antiplatelet.
                     <br/>• <strong>Pseudoaneurysm</strong>: Conservative management with serial imaging.
                     <br/>• <strong>Stenting</strong>: Reserve for refractory ischemia or enlarging/symptomatic pseudoaneurysms.
                   </div>
