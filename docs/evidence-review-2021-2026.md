@@ -541,3 +541,18 @@
 - Verified citation: PMID: 42099212 (https://pubmed.ncbi.nlm.nih.gov/42099212/); DOI: 10.1001/jama.2026.4292 (https://doi.org/10.1001/jama.2026.4292); NCT: NCT06221371 (https://clinicaltrials.gov/study/NCT06221371).
 
 <!-- AUTO-UPDATE 2026-06-10: TNK-PLUS VERIFIED ADDITIVE BLOCK END -->
+
+### AUTO-UPDATE 2026-06-10 - Trials: verification-gated additive block (HOPE)
+<!-- machine-drafted 2026-06-10; auto-published, verification-gated -->
+<!-- AUTO-UPDATE 2026-06-10: HOPE BP-TARGETING VERIFIED ADDITIVE BLOCK START -->
+
+#### HOPE - reperfusion-guided blood-pressure targeting after successful endovascular therapy
+- Inclusion class: Multicenter (11 comprehensive stroke centers, Spain), prospective, randomized, open-label clinical trial with blinded end-point assessment (PROBE design); verified by PMID, DOI, and ClinicalTrials.gov registry. Registry note: ClinicalTrials.gov lists this strategy trial of already-approved blood-pressure agents as Phase 4 (post-marketing), not Phase 3 - flagged for physician review. This additive summary does not change local protocol text or recommendation strength.
+- Population: Adults with acute ischemic stroke due to anterior circulation large-vessel occlusion who achieved successful reperfusion (modified Thrombolysis in Cerebral Infarction [mTICI] score >=2b) after endovascular therapy; 440 patients in the intention-to-treat analysis (mean age 75 years; 53% women).
+- Intervention: Reperfusion-guided systolic blood-pressure strategy (140-160 mm Hg for mTICI score of 2b; 100-140 mm Hg for mTICI score of 2c/3) for 72 hours, using antihypertensive agents or vasopressors as needed.
+- Comparator: Guideline-recommended management (systolic blood pressure <180 mm Hg) for 72 hours.
+- Outcomes: Primary endpoint verbatim excerpt: "a favorable functional outcome, defined as a modified Rankin Scale score of 0 to 2 at 90 days." Key effect estimate verbatim excerpts: "129 patients (60.0%) in the intervention group and 106 (47.1%) in the control group achieved a favorable functional outcome (absolute risk difference, 13.3%; 95% CI, 4.1%-22.6%; P = .005)"; "Hemorrhagic transformation occurred in 48 patients (22.3%) in the intervention group and 71 (31.6%) in the control group (odds ratio, 0.62; 95% CI, 0.41-0.95)." Safety excerpt: "The rates of symptomatic intracranial hemorrhage (3.5% vs 3.9%) and 90-day mortality (15.4% vs 15.6%) did not differ between groups."
+- Interpretation for physician review: In this verified trial population, a reperfusion-guided (mTICI-stratified) systolic blood-pressure strategy improved 90-day functional outcome and reduced hemorrhagic transformation versus guideline-recommended management, without increasing symptomatic intracranial hemorrhage or mortality. Do not generalize beyond the studied anterior-circulation, successfully-reperfused post-thrombectomy population, and do not alter existing local blood-pressure protocols without physician review.
+- Verified citation: PMID: 42258192 (https://pubmed.ncbi.nlm.nih.gov/42258192/); DOI: 10.1001/jamaneurol.2026.1706 (https://doi.org/10.1001/jamaneurol.2026.1706); NCT: NCT04892511 (https://clinicaltrials.gov/study/NCT04892511).
+
+<!-- AUTO-UPDATE 2026-06-10: HOPE BP-TARGETING VERIFIED ADDITIVE BLOCK END -->
