@@ -359,6 +359,18 @@ const EDUCATION_MODULES = [
       { label: 'US Registry for FMD', citation: 'Olin JW, et al. The United States Registry for Fibromuscular Dysplasia: results in the first 447 patients. Circulation. 2012;125(25):3186-3195.', pmid: '22615343' },
       { label: 'European FMD Registry', citation: 'Persu A, et al. International consensus on fibromuscular dysplasia: European/International Fibromuscular Dysplasia Registry. J Hypertens. 2021;39(10):2036-2045.', pmid: '33935216' }
     ]
+  },
+  {
+    id: 'brain-death',
+    title: 'Brain Death / BD-DNC',
+    purpose: 'Consensus guidelines for the determination of Brain Death / Death by Neurologic Criteria (BD/DNC) in adult and pediatric patients.',
+    actions: 'brain death neurologic death aan sccm guidelines apnea test checklist reflexes pupillary corneal calorics ancillary dsa tcd eeg cta',
+    categories: ['pocket-card', 'printable', 'icu'],
+    lastReviewed: '2026-06-09',
+    references: [
+      { label: 'Consensus Guideline', citation: 'Greer DM, et al. Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Practice Guideline. Neurology. 2023;101(24):1112-1132.', pmid: '37827878' },
+      { label: 'Ancillary Update', citation: 'Wijdicks EF, et al. Practice parameter update: determining brain death in adults. Neurology. 2010;74(23):1911-1918.', pmid: '20530327' }
+    ]
   }
 ];
 
@@ -848,6 +860,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <CervicalDissectionView />;
     case 'fibromuscular-dysplasia':
       return <FibromuscularDysplasiaView />;
+    case 'brain-death':
+      return <BrainDeathView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -3141,6 +3155,186 @@ export function FibromuscularDysplasiaCard() {
           onClose={() => setLightboxImage(null)} 
         />
       )}
+    </div>
+  );
+}
+
+const BrainDeathView = () => {
+  return (
+    <PdfActionBar
+      title="Brain Death Determination"
+      subtitle="BD/DNC Consensus Guidelines Reference Card"
+      pdfPath="documents/references/Brain Death Guidelines.pdf"
+      pdfName="Brain Death Guidelines.pdf"
+      iconColorClass="text-red-600 dark:text-red-400"
+    >
+      <ScaledCardWrapper isLandscape={false}>
+        <BedsidePocketCardsStyles />
+        <BrainDeathCard />
+      </ScaledCardWrapper>
+    </PdfActionBar>
+  );
+};
+
+export function BrainDeathCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-brain-death">
+        <div className="card-container" style={{boxSizing: 'border-box'}}>
+          <div className="card-content">
+            <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Brain Death Determination (BD/DNC)</h1>
+            <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
+              AAN/AAP/CNS/SCCM 2023 Pediatric &amp; Adult Consensus Guideline Reference.
+            </p>
+
+            {/* Visual Pathway (SVG) */}
+            <svg viewBox="0 0 735 110" style={{width: '100%', height: '110px', marginBottom: '8px'}}>
+              <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
+              
+              {/* Step 1 */}
+              <rect x="15" y="25" width="145" height="60" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
+              <text x="87.5" y="42" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">1. PREREQUISITES</text>
+              <text x="87.5" y="58" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Irreversible Coma</text>
+              <text x="87.5" y="70" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Temp ≥36°C | Hemodyn OK</text>
+              
+              {/* Arrow 1 */}
+              <path d="M 160 55 L 190 55" stroke="var(--purple)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-bd)" />
+              
+              {/* Step 2 */}
+              <rect x="190" y="25" width="145" height="60" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.5" />
+              <text x="262.5" y="42" fill="var(--purple-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">2. CLINICAL EXAM</text>
+              <text x="262.5" y="58" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">No Motor Response</text>
+              <text x="262.5" y="70" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Absent Brainstem Reflexes</text>
+
+              {/* Arrow 2 */}
+              <path d="M 335 55 L 365 55" stroke="var(--purple)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-bd)" />
+
+              {/* Step 3 */}
+              <rect x="365" y="25" width="145" height="60" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.5" />
+              <text x="437.5" y="42" fill="var(--amber-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">3. APNEA TESTING</text>
+              <text x="437.5" y="58" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Absence of Resp Drive</text>
+              <text x="437.5" y="70" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">PaCO2 ≥60 &amp; pH &lt;7.30</text>
+
+              {/* Arrow 3 */}
+              <path d="M 510 55 L 540 55" stroke="var(--purple)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-bd)" />
+
+              {/* Step 4 */}
+              <rect x="540" y="25" width="180" height="60" rx="6" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.5" />
+              <text x="630" y="42" fill="var(--red-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">4. ANCILLARY TESTING</text>
+              <text x="630" y="58" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Only if exam or apnea test</text>
+              <text x="630" y="70" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">cannot be completed/concluded</text>
+
+              <defs>
+                <marker id="arrow-bd" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                  <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--purple)" />
+                </marker>
+              </defs>
+            </svg>
+
+            {/* Grid for Prerequisites & Exam */}
+            <div className="toast-grid" style={{marginBottom: '10px'}}>
+              {/* Column 1: Prerequisites & Stability */}
+              <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+                <div className="toast-card primary">
+                  <h3>1. Clinical Prerequisites &amp; Stability</h3>
+                  <ul className="toast-card-list" style={{fontSize: '8.2pt'}}>
+                    <li><strong>Etiology:</strong> Known, irreversible, catastrophic brain injury.</li>
+                    <li><strong>Core Temp:</strong> <strong>&ge; 36.0°C (96.8°F)</strong>. Warm if needed per protocol.</li>
+                    <li><strong>Hemodynamics:</strong>
+                      <br/>• Adults: SBP <strong>&ge; 100 mmHg</strong> (or MAP &ge; 60 mmHg)
+                      <br/>• Pediatrics: Age-specific SBP thresholds (term newborn &ge;60, infants &ge;70, children &ge;80 mmHg)
+                    </li>
+                    <li><strong>Drug Clearance:</strong> Exclude CNS depressants (&ge; 5 half-lives clearance) and neuromuscular blockade (TOF 4/4 twitch present).</li>
+                    <li><strong>Metabolic:</strong> Correct severe endocrine, acid-base, or electrolyte disturbances.</li>
+                  </ul>
+                </div>
+
+                <div className="toast-card secondary">
+                  <h3>2. Neurological Examination</h3>
+                  <ul className="toast-card-list" style={{fontSize: '8.2pt'}}>
+                    <li><strong>Coma:</strong> Complete absence of awareness/arousal. No spontaneous or induced motor responses (spinal reflexes allowed).</li>
+                    <li><strong>Pupils:</strong> Mid-sized/dilated (4–9 mm), completely unresponsive to intense light bilaterally.</li>
+                    <li><strong>Corneal Reflex:</strong> No blink to cotton swab contact.</li>
+                    <li><strong>Oculocephalic (Doll's Eyes):</strong> No eye deviation with head turn (ensure C-spine cleared).</li>
+                    <li><strong>Oculovestibular (Cold Calorics):</strong> No eye movement for &ge;1 min after 50 mL ice-water irrigation (confirm intact tympanic membrane).</li>
+                    <li><strong>Gag &amp; Cough:</strong> Absent gag (pharyngeal stim) and cough (tracheal suction catheter stim).</li>
+                    <li><strong>Facial Motor:</strong> No grimace to TMJ or supraorbital pain.</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Column 2: Apnea Testing & Ancillary Testing */}
+              <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+                <div className="toast-card alert-orange">
+                  <h3>3. Apnea Testing Protocol</h3>
+                  <ul className="toast-card-list" style={{fontSize: '8.2pt'}}>
+                    <li><strong>Preparation:</strong> Pre-oxygenate with 100% O2 for &ge;10 mins. Baseline arterial pCO2 must be 35–45 mmHg, pH 7.35–7.45.</li>
+                    <li><strong>Procedure:</strong> Deliver passive O2 via CPAP (preferred, 100% O2 at 4-6 L/min) to maintain oxygenation while ventilator is paused.</li>
+                    <li><strong>Observation:</strong> Monitor for spontaneous respiratory effort for 8–10 mins.</li>
+                    <li><strong>Target:</strong> Final pCO2 <strong>&ge; 60 mmHg</strong> AND <strong>&ge; 20 mmHg above baseline</strong>, with pH <strong>&lt; 7.30</strong>.</li>
+                  </ul>
+                  <div style={{marginTop: '6px', borderTop: '1px dashed rgba(217,134,11,0.3)', paddingTop: '4px', fontSize: '8.0pt', color: 'var(--red-deep)'}}>
+                    <strong>Abort/Stop Criteria:</strong> Abruptly stop and draw ABG if:
+                    <br/>• SBP &lt; 100 mmHg or MAP &lt; 60 mmHg.
+                    <br/>• SpO2 &lt; 85% for &gt; 30 seconds.
+                    <br/>• New significant cardiac arrhythmias occur.
+                  </div>
+                </div>
+
+                <div className="toast-card alert-red">
+                  <h3>4. Ancillary Testing Guidelines</h3>
+                  <p style={{fontSize: '8.0pt', color: 'var(--ink-soft)', marginBottom: '4px', lineHeight: '1.3'}}>
+                    Used <strong>only</strong> when clinical exam or apnea test cannot be completed safely (e.g. severe hypoxemia, facial trauma).
+                  </p>
+                  <div style={{display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '8px', fontSize: '8.0pt', lineHeight: '1.3'}}>
+                    <div>
+                      <strong style={{color: 'var(--teal-deep)', fontSize: '8.0pt', textTransform: 'uppercase', display: 'block', marginBottom: '2px'}}>Accepted Tests</strong>
+                      • <strong>Conventional 4-Vessel DSA:</strong> Confirms absence of intracerebral blood flow.<br/>
+                      • <strong>SPECT / Planar Perfusion:</strong> Shows absence of cerebral uptake.<br/>
+                      • <strong>TCD:</strong> (Transcranial Doppler) <strong>Adults only</strong>; must show oscillating flow or spikes.
+                    </div>
+                    <div>
+                      <strong style={{color: 'var(--red-deep)', fontSize: '8.0pt', textTransform: 'uppercase', display: 'block', marginBottom: '2px'}}>Unacceptable Tests</strong>
+                      <span style={{color: 'var(--red-deep)', fontWeight: '600'}}>• EEG: NO LONGER ACCEPTED</span> (cannot evaluate brainstem).<br/>
+                      <span style={{color: 'var(--red-deep)', fontWeight: '600'}}>• CTA: NOT ACCEPTABLE</span> (insufficient validation).<br/>
+                      • MRI/MRA: Not accepted.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Checklist Alert Box */}
+            <div style={{borderLeft: '4px solid var(--purple)', background: 'var(--purple-soft)', padding: '10px 12px', borderRadius: '6px', fontSize: '9.2pt', marginBottom: '12px'}}>
+              <strong style={{color: 'var(--purple-deep)', textTransform: 'uppercase', fontSize: '8.8pt', letterSpacing: '0.05em', display: 'block', marginBottom: '3px'}}>BD/DNC Documentation &amp; Repeat Exam Requirements</strong>
+              <div className="checklist-grid" style={{fontSize: '7.8pt', gap: '4px 10px'}}>
+                <div className="checklist-item">
+                  <div className="checklist-dot">✓</div>
+                  <div><strong>Adults:</strong> One clinical exam and apnea test is sufficient (per 2023 AAN).</div>
+                </div>
+                <div className="checklist-item">
+                  <div className="checklist-dot">✓</div>
+                  <div><strong>Pediatrics:</strong> Two separate exams &amp; apnea tests required (intervals: 24h for newborns; 12h for infants/children).</div>
+                </div>
+                <div className="checklist-item">
+                  <div className="checklist-dot">✓</div>
+                  <div><strong>Rewarming Period:</strong> Wait &ge;24 hours after rewarming from therapeutic hypothermia before testing.</div>
+                </div>
+                <div className="checklist-item">
+                  <div className="checklist-dot">✓</div>
+                  <div><strong>Time of Death:</strong> Recorded when pCO2 meets target or when the ancillary test result is officially read.</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Citations Footer */}
+            <div className="ref-citation" style={{marginTop: 'auto', padding: '8px 10px', fontSize: '8.2pt', lineHeight: '1.3'}}>
+              <strong>Consensus Guideline:</strong> Greer DM, et al. Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Practice Guideline. <em>Neurology</em>. 2023;101(24):1112-1132. <a href="https://pubmed.ncbi.nlm.nih.gov/37827878/" target="_blank">PMID: 37827878</a>.<br/>
+              <strong>Ancillary Update:</strong> Wijdicks EF, et al. Practice parameter update: determining brain death in adults. <em>Neurology</em>. 2010;74(23):1911-1918. <a href="https://pubmed.ncbi.nlm.nih.gov/20530327/" target="_blank">PMID: 20530327</a>.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
