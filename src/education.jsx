@@ -2663,6 +2663,8 @@ export function StkCoreMeasuresCard() {
 }
 
 const StrokePrognosisView = () => {
+  const [mobileView, setMobileView] = useState('calculator'); // 'calculator' or 'pocket-card'
+
   return (
     <PdfActionBar
       title="Stroke Prognosis & Clinical Scores"
@@ -2671,13 +2673,714 @@ const StrokePrognosisView = () => {
       pdfName="Stroke Prognosis.pdf"
       iconColorClass="text-emerald-600 dark:text-emerald-400"
     >
-      <ScaledCardWrapper isLandscape={false}>
-        <BedsidePocketCardsStyles />
-        <StrokePrognosisCard />
-      </ScaledCardWrapper>
+      {/* Mobile Selector Tab */}
+      <div className="flex justify-center mb-4 lg:hidden no-print">
+        <div className="inline-flex rounded-lg p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60">
+          <button
+            onClick={() => setMobileView('calculator')}
+            className={`px-4 py-2 text-xs font-bold rounded-md transition-colors ${
+              mobileView === 'calculator'
+                ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-white'
+                : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+            }`}
+          >
+            Bedside Calculator
+          </button>
+          <button
+            onClick={() => setMobileView('pocket-card')}
+            className={`px-4 py-2 text-xs font-bold rounded-md transition-colors ${
+              mobileView === 'pocket-card'
+                ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-white'
+                : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+            }`}
+          >
+            Pocket Card Reference
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Calculator Column */}
+        <div className={`col-span-1 lg:col-span-7 no-print ${mobileView === 'calculator' ? 'block' : 'hidden lg:block'}`}>
+          <StrokePrognosisCalculator />
+        </div>
+
+        {/* Pocket Card Column */}
+        <div className={`col-span-1 lg:col-span-5 ${mobileView === 'pocket-card' ? 'block' : 'hidden lg:block'}`}>
+          <ScaledCardWrapper isLandscape={false}>
+            <BedsidePocketCardsStyles />
+            <StrokePrognosisCard />
+          </ScaledCardWrapper>
+        </div>
+      </div>
     </PdfActionBar>
   );
 };
+
+function BinaryToggle({ label, desc, value, onChange, colorClass = "bg-purple" }) {
+  return (
+    <div className="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800/40 last:border-b-0">
+      <div className="space-y-0.5 max-w-[70%]">
+        <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{label}</span>
+        {desc && <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">{desc}</p>}
+      </div>
+      <button
+        type="button"
+        onClick={() => onChange(!value)}
+        className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+          value ? colorClass : 'bg-slate-200 dark:bg-slate-700'
+        }`}
+      >
+        <span
+          className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+            value ? 'translate-x-5' : 'translate-x-0'
+          }`}
+        />
+      </button>
+    </div>
+  );
+}
+
+export function calculateAstralScore({ age, nihss, timeDelay, visualDefect, glucose, glucoseUnit, locImpaired }) {
+  const agePoints = Math.floor(age / 5);
+  const nihssPoints = Number(nihss) || 0;
+  const timePoints = timeDelay ? 2 : 0;
+  const visualPoints = visualDefect ? 2 : 0;
+  const glucoseVal = Number(glucose) || 0;
+  const glucoseMmol = glucoseUnit === 'mgdl' ? (glucoseVal / 18.0) : glucoseVal;
+  const glucosePoints = (glucoseMmol < 3.7 || glucoseMmol > 7.3) ? 1 : 0;
+  const locPoints = locImpaired ? 3 : 0;
+  return agePoints + nihssPoints + timePoints + visualPoints + glucosePoints + locPoints;
+}
+
+export function getAstralRisk(score) {
+  if (score < 20) return "< 5%";
+  if (score >= 20 && score < 23) {
+    const pct = 5 + (score - 20) * (15 - 5) / 3;
+    return `~${Math.round(pct)}%`;
+  }
+  if (score >= 23 && score < 31) {
+    const pct = 15 + (score - 23) * (50 - 15) / 8;
+    return `~${Math.round(pct)}%`;
+  }
+  if (score >= 31 && score < 35) {
+    const pct = 50 + (score - 31) * (70 - 50) / 4;
+    return `~${Math.round(pct)}%`;
+  }
+  if (score >= 35 && score < 40) {
+    const pct = 70 + (score - 35) * (90 - 70) / 5;
+    return `~${Math.round(pct)}%`;
+  }
+  return "> 90%";
+}
+
+export function calculatePlanScore({ dependence, cancer, chf, afib, locReduced, age, legWeakness, armWeakness, aphasiaNeglect }) {
+  const preDepPoints = dependence ? 1.5 : 0;
+  const cancerPoints = cancer ? 1.5 : 0;
+  const chfPoints = chf ? 1.0 : 0;
+  const afibPoints = afib ? 1.0 : 0;
+  const locPoints = locReduced ? 5.0 : 0;
+  const agePoints = Math.min(10, Math.floor(age / 10));
+  const legPoints = legWeakness ? 2.0 : 0;
+  const armPoints = armWeakness ? 2.0 : 0;
+  const aphasiaPoints = aphasiaNeglect ? 1.0 : 0;
+  return preDepPoints + cancerPoints + chfPoints + afibPoints + locPoints + agePoints + legPoints + armPoints + aphasiaPoints;
+}
+
+export function getPlanRisk(score) {
+  let mortality = "";
+  let depMortality = "";
+  if (score < 6) {
+    mortality = "0.7%";
+    depMortality = "12%";
+  } else if (score >= 6 && score < 10) {
+    const m = 0.7 + (score - 5) * (4.4 - 0.7) / 5;
+    const dm = 12 + (score - 5) * (33 - 12) / 5;
+    mortality = `~${m.toFixed(1)}%`;
+    depMortality = `~${Math.round(dm)}%`;
+  } else if (score >= 10 && score < 13) {
+    const m = 4.4 + (score - 10) * (15 - 4.4) / 3;
+    const dm = 33 + (score - 10) * (61 - 33) / 3;
+    mortality = `~${m.toFixed(1)}%`;
+    depMortality = `~${Math.round(dm)}%`;
+  } else if (score >= 13 && score < 16) {
+    const m = 15 + (score - 13) * (35 - 15) / 3;
+    const dm = 61 + (score - 13) * (83 - 61) / 3;
+    mortality = `~${m.toFixed(1)}%`;
+    depMortality = `~${Math.round(dm)}%`;
+  } else if (score >= 16 && score <= 19) {
+    const m = 35 + (score - 16) * (65 - 35) / 3;
+    const dm = 83 + (score - 16) * (95 - 83) / 3;
+    mortality = `~${m.toFixed(1)}%`;
+    depMortality = `~${Math.round(dm)}%`;
+  } else {
+    mortality = "> 65%";
+    depMortality = "> 95%";
+  }
+  return { mortality, depMortality };
+}
+
+export function calculateIchScore({ gcsCategory, age80, volume30, ivh, infratentorial }) {
+  const gcsPoints = Number(gcsCategory) || 0;
+  const agePoints = age80 ? 1 : 0;
+  const volumePoints = volume30 ? 1 : 0;
+  const ivhPoints = ivh ? 1 : 0;
+  const infraPoints = infratentorial ? 1 : 0;
+  return gcsPoints + agePoints + volumePoints + ivhPoints + infraPoints;
+}
+
+export function getIchRisk(score) {
+  switch (score) {
+    case 0: return "0%";
+    case 1: return "13%";
+    case 2: return "26%";
+    case 3: return "72%";
+    case 4: return "94%";
+    default: return "100%";
+  }
+}
+
+export function StrokePrognosisCalculator() {
+  const [activeTab, setActiveTab] = useState('astral'); // 'astral', 'plan', 'ich'
+
+  // ASTRAL state
+  const [astralAge, setAstralAge] = useState(65);
+  const [astralNihss, setAstralNihss] = useState(10);
+  const [astralTimeDelay, setAstralTimeDelay] = useState(false);
+  const [astralVisualDefect, setAstralVisualDefect] = useState(false);
+  const [astralGlucose, setAstralGlucose] = useState(6.0);
+  const [astralGlucoseUnit, setAstralGlucoseUnit] = useState('mmol');
+  const [astralLocImpaired, setAstralLocImpaired] = useState(false);
+
+  // PLAN state
+  const [planDependence, setPlanDependence] = useState(false);
+  const [planCancer, setPlanCancer] = useState(false);
+  const [planChf, setPlanChf] = useState(false);
+  const [planAfib, setPlanAfib] = useState(false);
+  const [planLocReduced, setPlanLocReduced] = useState(false);
+  const [planAge, setPlanAge] = useState(65);
+  const [planLegWeakness, setPlanLegWeakness] = useState(false);
+  const [planArmWeakness, setPlanArmWeakness] = useState(false);
+  const [planAphasiaNeglect, setPlanAphasiaNeglect] = useState(false);
+
+  // ICH state
+  const [ichGcsCategory, setIchGcsCategory] = useState(0); // 0 = GCS 13-15, 1 = 5-12, 2 = 3-4
+  const [ichAge80, setIchAge80] = useState(false);
+  const [ichVolume30, setIchVolume30] = useState(false);
+  const [ichIvh, setIchIvh] = useState(false);
+  const [ichInfratentorial, setIchInfratentorial] = useState(false);
+
+  // 1. ASTRAL Calculation
+  const astralAgePoints = Math.floor(astralAge / 5);
+  const astralNihssPoints = Number(astralNihss) || 0;
+  const glucoseVal = Number(astralGlucose) || 0;
+  const glucoseMmol = astralGlucoseUnit === 'mgdl' ? (glucoseVal / 18.0) : glucoseVal;
+  const astralGlucosePoints = (glucoseMmol < 3.7 || glucoseMmol > 7.3) ? 1 : 0;
+
+  const astralTotal = calculateAstralScore({
+    age: astralAge,
+    nihss: astralNihss,
+    timeDelay: astralTimeDelay,
+    visualDefect: astralVisualDefect,
+    glucose: astralGlucose,
+    glucoseUnit: astralGlucoseUnit,
+    locImpaired: astralLocImpaired
+  });
+  const astralRisk = getAstralRisk(astralTotal);
+
+  // 2. PLAN Calculation
+  const planAgePoints = Math.min(10, Math.floor(planAge / 10));
+  const planTotal = calculatePlanScore({
+    dependence: planDependence,
+    cancer: planCancer,
+    chf: planChf,
+    afib: planAfib,
+    locReduced: planLocReduced,
+    age: planAge,
+    legWeakness: planLegWeakness,
+    armWeakness: planArmWeakness,
+    aphasiaNeglect: planAphasiaNeglect
+  });
+  const planRisk = getPlanRisk(planTotal);
+
+  // 3. ICH Calculation
+  const ichTotal = calculateIchScore({
+    gcsCategory: ichGcsCategory,
+    age80: ichAge80,
+    volume30: ichVolume30,
+    ivh: ichIvh,
+    infratentorial: ichInfratentorial
+  });
+  const ichRisk = getIchRisk(ichTotal);
+
+  const resetAstral = () => {
+    setAstralAge(65);
+    setAstralNihss(10);
+    setAstralTimeDelay(false);
+    setAstralVisualDefect(false);
+    setAstralGlucose(6.0);
+    setAstralGlucoseUnit('mmol');
+    setAstralLocImpaired(false);
+  };
+
+  const resetPlan = () => {
+    setPlanDependence(false);
+    setPlanCancer(false);
+    setPlanChf(false);
+    setPlanAfib(false);
+    setPlanLocReduced(false);
+    setPlanAge(65);
+    setPlanLegWeakness(false);
+    setPlanArmWeakness(false);
+    setPlanAphasiaNeglect(false);
+  };
+
+  const resetIch = () => {
+    setIchGcsCategory(0);
+    setIchAge80(false);
+    setIchVolume30(false);
+    setIchIvh(false);
+    setIchInfratentorial(false);
+  };
+
+  return (
+    <div className="bg-white border border-slate-200 dark:border-slate-700/60 rounded-xl shadow-sm overflow-hidden dark:bg-card">
+      {/* Header */}
+      <div className="p-4 bg-slate-50 border-b border-slate-200 dark:bg-slate-800/40 dark:border-slate-700/60 flex items-center justify-between">
+        <div>
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">Interactive Bedside Calculator</h3>
+          <p className="text-[10px] text-slate-500 dark:text-slate-400">Calculate stroke prognosis metrics in real-time</p>
+        </div>
+        <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold">clinical tool</span>
+      </div>
+
+      {/* Tabs Selector */}
+      <div className="p-3">
+        <div className="flex rounded-lg p-1 bg-slate-100 dark:bg-slate-800/60 border border-slate-200/40 dark:border-slate-700/40">
+          <button
+            onClick={() => setActiveTab('astral')}
+            className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
+              activeTab === 'astral'
+                ? 'bg-purple-600 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+            }`}
+          >
+            ASTRAL
+          </button>
+          <button
+            onClick={() => setActiveTab('plan')}
+            className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
+              activeTab === 'plan'
+                ? 'bg-teal-700 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+            }`}
+          >
+            PLAN
+          </button>
+          <button
+            onClick={() => setActiveTab('ich')}
+            className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
+              activeTab === 'ich'
+                ? 'bg-red-700 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+            }`}
+          >
+            ICH Score
+          </button>
+        </div>
+      </div>
+
+      {/* Calculator Inputs Panel */}
+      <div className="px-4 pb-4 space-y-4">
+        {/* ASTRAL TAB */}
+        {activeTab === 'astral' && (
+          <div className="space-y-3">
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-purple-700 dark:text-purple-400">ASTRAL Variables</h4>
+            
+            {/* Age Slider */}
+            <div className="space-y-1 py-2 border-b border-slate-100 dark:border-slate-800/40">
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Patient Age</span>
+                <span className="text-xs font-bold text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-950/40 px-2 py-0.5 rounded">
+                  {astralAge} yrs ({astralAgePoints} pt{astralAgePoints !== 1 ? 's' : ''})
+                </span>
+              </div>
+              <input
+                type="range" min="18" max="100" value={astralAge}
+                onChange={(e) => setAstralAge(Number(e.target.value))}
+                className="w-full accent-purple-600 h-2 rounded-lg cursor-pointer bg-slate-200 dark:bg-slate-700"
+              />
+            </div>
+
+            {/* NIHSS Slider */}
+            <div className="space-y-1 py-2 border-b border-slate-100 dark:border-slate-800/40">
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">NIHSS score on admission</span>
+                <span className="text-xs font-bold text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-950/40 px-2 py-0.5 rounded">
+                  {astralNihss} ({astralNihssPoints} pt{astralNihssPoints !== 1 ? 's' : ''})
+                </span>
+              </div>
+              <input
+                type="range" min="0" max="42" value={astralNihss}
+                onChange={(e) => setAstralNihss(Number(e.target.value))}
+                className="w-full accent-purple-600 h-2 rounded-lg cursor-pointer bg-slate-200 dark:bg-slate-700"
+              />
+            </div>
+
+            {/* Glucose input */}
+            <div className="space-y-1 py-2 border-b border-slate-100 dark:border-slate-800/40">
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Acute Glucose level</span>
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="number" step="0.1" value={astralGlucose}
+                    onChange={(e) => setAstralGlucose(e.target.value)}
+                    className="w-16 px-1.5 py-0.5 text-xs text-right font-semibold rounded border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-purple-600"
+                  />
+                  <div className="inline-flex rounded bg-slate-100 dark:bg-slate-800 p-0.5 text-[9px] font-bold">
+                    <button
+                      onClick={() => {
+                        if (astralGlucoseUnit === 'mgdl') {
+                          setAstralGlucose(parseFloat((parseFloat(astralGlucose) / 18.0).toFixed(1)) || 0);
+                          setAstralGlucoseUnit('mmol');
+                        }
+                      }}
+                      className={`px-1 rounded ${astralGlucoseUnit === 'mmol' ? 'bg-purple-600 text-white' : 'text-slate-600 dark:text-slate-400'}`}
+                    >
+                      mmol
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (astralGlucoseUnit === 'mmol') {
+                          setAstralGlucose(Math.round(parseFloat(astralGlucose) * 18.0) || 0);
+                          setAstralGlucoseUnit('mgdl');
+                        }
+                      }}
+                      className={`px-1 rounded ${astralGlucoseUnit === 'mgdl' ? 'bg-purple-600 text-white' : 'text-slate-600 dark:text-slate-400'}`}
+                    >
+                      mg/dL
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-between items-center text-[10px]">
+                <span className="text-slate-500 dark:text-slate-400">Abnormal if &lt;3.7 or &gt;7.3 mmol/L</span>
+                <span className={`font-semibold ${astralGlucosePoints > 0 ? 'text-rose-600 dark:text-rose-450' : 'text-slate-500 dark:text-slate-450'}`}>
+                  {astralGlucosePoints > 0 ? 'Abnormal (+1 pt)' : 'Normal (+0 pts)'}
+                </span>
+              </div>
+            </div>
+
+            {/* Visual field toggle */}
+            <BinaryToggle
+              label="Visual Field Defect"
+              desc="New visual field defect present on admission examination"
+              value={astralVisualDefect}
+              onChange={setAstralVisualDefect}
+              colorClass="bg-purple-600"
+            />
+
+            {/* Time delay toggle */}
+            <BinaryToggle
+              label="Time to Admission > 3 Hours"
+              desc="Time from symptom onset (or last-known-well) to admission is > 3 hours"
+              value={astralTimeDelay}
+              onChange={setAstralTimeDelay}
+              colorClass="bg-purple-600"
+            />
+
+            {/* LOC toggle */}
+            <BinaryToggle
+              label="Impaired Level of Consciousness"
+              desc="Reduced LOC on admission (NIHSS item 1a > 0)"
+              value={astralLocImpaired}
+              onChange={setAstralLocImpaired}
+              colorClass="bg-purple-600"
+            />
+
+            {/* Results */}
+            <div className="rounded-xl border border-purple-200 bg-purple-50/50 p-4 dark:border-purple-900/60 dark:bg-purple-950/20">
+              <div className="flex justify-between items-start">
+                <div>
+                  <span className="text-[10px] uppercase tracking-wide font-bold text-purple-700 dark:text-purple-400">ASTRAL Score Result</span>
+                  <h4 className="text-2xl font-black text-purple-900 dark:text-white">{astralTotal} <span className="text-sm font-normal text-slate-500">points</span></h4>
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] uppercase tracking-wide font-bold text-purple-700 dark:text-purple-400">90d Poor Outcome (mRS &gt; 2)</span>
+                  <h4 className="text-2xl font-black text-purple-900 dark:text-white">{astralRisk}</h4>
+                </div>
+              </div>
+              <div className="mt-3">
+                <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                  <div 
+                    className="h-full rounded-full bg-purple-600 transition-all duration-300" 
+                    style={{ width: `${Math.min(100, (astralTotal / 45) * 100)}%` }}
+                  />
+                </div>
+              </div>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                • <strong>Risk Classification</strong>: {astralTotal < 20 ? 'Low risk (<5%)' : astralTotal < 23 ? 'Mildly elevated (~5-10%)' : astralTotal < 31 ? 'Moderate risk (~15-45%)' : astralTotal < 35 ? 'High risk (~50-65%)' : 'Very high risk (≥70%)'}.
+                <br/>• <strong>Clinical Context</strong>: ASTRAL predicts functional independence at 90 days. Always contextualize using clinical progression; score alone should not guide limitations of care.
+              </p>
+            </div>
+
+            <button
+              onClick={resetAstral}
+              className="px-3 py-1.5 text-xs font-semibold rounded-md border border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors"
+            >
+              Reset Inputs
+            </button>
+          </div>
+        )}
+
+        {/* PLAN TAB */}
+        {activeTab === 'plan' && (
+          <div className="space-y-3">
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-teal-700 dark:text-teal-400">PLAN Variables</h4>
+
+            {/* Age Slider */}
+            <div className="space-y-1 py-2 border-b border-slate-100 dark:border-slate-800/40">
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Patient Age</span>
+                <span className="text-xs font-bold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/40 px-2 py-0.5 rounded">
+                  {planAge} yrs ({planAgePoints} pt{planAgePoints !== 1 ? 's' : ''})
+                </span>
+              </div>
+              <input
+                type="range" min="18" max="100" value={planAge}
+                onChange={(e) => setPlanAge(Number(e.target.value))}
+                className="w-full accent-teal-700 h-2 rounded-lg cursor-pointer bg-slate-200 dark:bg-slate-700"
+              />
+            </div>
+
+            {/* dependence toggle */}
+            <BinaryToggle
+              label="Preadmission Dependence"
+              desc="Requires assistance with basic Activities of Daily Living (ADLs) baseline"
+              value={planDependence}
+              onChange={setPlanDependence}
+              colorClass="bg-teal-700"
+            />
+
+            {/* cancer toggle */}
+            <BinaryToggle
+              label="Active Cancer"
+              desc="Active cancer or currently receiving oncological treatment"
+              value={planCancer}
+              onChange={setPlanCancer}
+              colorClass="bg-teal-700"
+            />
+
+            {/* chf toggle */}
+            <BinaryToggle
+              label="Congestive Heart Failure"
+              desc="Preadmission history of CHF"
+              value={planChf}
+              onChange={setPlanChf}
+              colorClass="bg-teal-700"
+            />
+
+            {/* afib toggle */}
+            <BinaryToggle
+              label="Atrial Fibrillation"
+              desc="Preadmission history of Afib"
+              value={planAfib}
+              onChange={setPlanAfib}
+              colorClass="bg-teal-700"
+            />
+
+            {/* loc reduced toggle */}
+            <BinaryToggle
+              label="Reduced Level of Consciousness"
+              desc="Drowsy, stuporous, or comatose at onset/admission"
+              value={planLocReduced}
+              onChange={setPlanLocReduced}
+              colorClass="bg-teal-700"
+            />
+
+            {/* leg weakness toggle */}
+            <BinaryToggle
+              label="Significant/Total Leg Weakness"
+              desc="Severe or complete unilateral lower extremity paresis"
+              value={planLegWeakness}
+              onChange={setPlanLegWeakness}
+              colorClass="bg-teal-700"
+            />
+
+            {/* arm weakness toggle */}
+            <BinaryToggle
+              label="Significant/Total Arm Weakness"
+              desc="Severe or complete unilateral upper extremity paresis"
+              value={planArmWeakness}
+              onChange={setPlanArmWeakness}
+              colorClass="bg-teal-700"
+            />
+
+            {/* aphasia/neglect toggle */}
+            <BinaryToggle
+              label="Aphasia or Neglect"
+              desc="Language comprehension/production deficit or hemispatial neglect"
+              value={planAphasiaNeglect}
+              onChange={setPlanAphasiaNeglect}
+              colorClass="bg-teal-700"
+            />
+
+            {/* Results */}
+            <div className="rounded-xl border border-teal-200 bg-teal-50/50 p-4 dark:border-teal-900/60 dark:bg-teal-950/20">
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <span className="text-[9px] uppercase tracking-wide font-bold text-teal-700 dark:text-teal-400 block">PLAN Score</span>
+                  <h4 className="text-2xl font-black text-teal-900 dark:text-white">{planTotal} <span className="text-sm font-normal text-slate-500">pts</span></h4>
+                </div>
+                <div>
+                  <span className="text-[9px] uppercase tracking-wide font-bold text-teal-700 dark:text-teal-400 block">30d Mortality</span>
+                  <h4 className="text-2xl font-black text-teal-900 dark:text-white">{planRisk.mortality}</h4>
+                </div>
+                <div className="text-right">
+                  <span className="text-[9px] uppercase tracking-wide font-bold text-teal-700 dark:text-teal-400 block">Death/Dependency</span>
+                  <h4 className="text-2xl font-black text-teal-900 dark:text-white">{planRisk.depMortality}</h4>
+                </div>
+              </div>
+              <div className="mt-3">
+                <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                  <div 
+                    className="h-full rounded-full bg-teal-700 transition-all duration-300" 
+                    style={{ width: `${Math.min(100, (planTotal / 25) * 100)}%` }}
+                  />
+                </div>
+              </div>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                • <strong>Risk Classification</strong>: {planTotal < 6 ? 'Low risk (<1%)' : planTotal < 10 ? 'Mildly elevated (~2-4%)' : planTotal < 13 ? 'Moderate risk (~5-15%)' : planTotal < 16 ? 'High risk (~15-35%)' : 'Very high risk (≥50%)'}.
+                <br/>• <strong>Clinical Context</strong>: PLAN score predicts 30-day mortality and functional dependency at discharge. Do not use as a stand-alone criterion to withhold reperfusion therapies.
+              </p>
+            </div>
+
+            <button
+              onClick={resetPlan}
+              className="px-3 py-1.5 text-xs font-semibold rounded-md border border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors"
+            >
+              Reset Inputs
+            </button>
+          </div>
+        )}
+
+        {/* ICH TAB */}
+        {activeTab === 'ich' && (
+          <div className="space-y-3">
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-red-700 dark:text-red-400">ICH Variables</h4>
+
+            {/* GCS Category */}
+            <div className="space-y-2 py-1.5 border-b border-slate-100 dark:border-slate-800/40">
+              <span className="text-xs font-bold text-slate-800 dark:text-slate-200 block">Glasgow Coma Scale (GCS)</span>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setIchGcsCategory(0)}
+                  className={`flex-1 py-1.5 text-xs font-semibold rounded border transition-colors ${
+                    ichGcsCategory === 0
+                      ? 'bg-red-50 text-red-700 border-red-500 dark:bg-red-950/40 dark:border-red-800'
+                      : 'bg-slate-50 text-slate-600 border-slate-200 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400'
+                  }`}
+                >
+                  13–15 (0 pts)
+                </button>
+                <button
+                  onClick={() => setIchGcsCategory(1)}
+                  className={`flex-1 py-1.5 text-xs font-semibold rounded border transition-colors ${
+                    ichGcsCategory === 1
+                      ? 'bg-red-50 text-red-700 border-red-500 dark:bg-red-950/40 dark:border-red-800'
+                      : 'bg-slate-50 text-slate-600 border-slate-200 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400'
+                  }`}
+                >
+                  5–12 (1 pt)
+                </button>
+                <button
+                  onClick={() => setIchGcsCategory(2)}
+                  className={`flex-1 py-1.5 text-xs font-semibold rounded border transition-colors ${
+                    ichGcsCategory === 2
+                      ? 'bg-red-50 text-red-700 border-red-500 dark:bg-red-950/40 dark:border-red-800'
+                      : 'bg-slate-50 text-slate-600 border-slate-200 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400'
+                  }`}
+                >
+                  3–4 (2 pts)
+                </button>
+              </div>
+            </div>
+
+            {/* Age >= 80 toggle */}
+            <BinaryToggle
+              label="Age ≥ 80 Years"
+              desc="Patient age is 80 years or older"
+              value={ichAge80}
+              onChange={setIchAge80}
+              colorClass="bg-red-700"
+            />
+
+            {/* ICH Volume >= 30 toggle */}
+            <BinaryToggle
+              label="ICH Volume ≥ 30 mL"
+              desc="Intracerebral hemorrhage volume estimated at 30 mL or larger"
+              value={ichVolume30}
+              onChange={setIchVolume30}
+              colorClass="bg-red-700"
+            />
+
+            {/* IVH toggle */}
+            <BinaryToggle
+              label="Intraventricular Hemorrhage (IVH)"
+              desc="Hemorrhage extension into the ventricles present"
+              value={ichIvh}
+              onChange={setIchIvh}
+              colorClass="bg-red-700"
+            />
+
+            {/* Infratentorial toggle */}
+            <BinaryToggle
+              label="Infratentorial Origin"
+              desc="Brainstem or cerebellar origin of hemorrhage (vs. supratentorial)"
+              value={ichInfratentorial}
+              onChange={setIchInfratentorial}
+              colorClass="bg-red-700"
+            />
+
+            {/* Results */}
+            <div className="rounded-xl border border-red-200 bg-red-50/50 p-4 dark:border-red-900/60 dark:bg-red-950/20">
+              <div className="flex justify-between items-start">
+                <div>
+                  <span className="text-[10px] uppercase tracking-wide font-bold text-red-700 dark:text-red-400">ICH Score Result</span>
+                  <h4 className="text-2xl font-black text-red-900 dark:text-white">{ichTotal} <span className="text-sm font-normal text-slate-500">points</span></h4>
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] uppercase tracking-wide font-bold text-red-700 dark:text-red-400">30d Mortality Risk</span>
+                  <h4 className="text-2xl font-black text-red-900 dark:text-white">{ichRisk}</h4>
+                </div>
+              </div>
+              <div className="mt-3">
+                <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                  <div 
+                    className="h-full rounded-full bg-red-700 transition-all duration-300" 
+                    style={{ width: `${(ichTotal / 6) * 100}%` }}
+                  />
+                </div>
+              </div>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                • <strong>Risk Classification</strong>: {ichTotal === 0 ? 'Very low risk (0%)' : ichTotal === 1 ? 'Mild risk (13%)' : ichTotal === 2 ? 'Moderate risk (26%)' : ichTotal === 3 ? 'Severe risk (72%)' : 'Extremely high risk (94-100%)'}.
+                <br/>• <strong>Clinical Context</strong>: AHA/ASA guidelines emphasize that the ICH Score is a communication aid and must **never** be used as the sole basis for withholding care or making early DNR decisions. Provide full aggressive care for at least the first 24–48 hours.
+              </p>
+            </div>
+
+            <button
+              onClick={resetIch}
+              className="px-3 py-1.5 text-xs font-semibold rounded-md border border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors"
+            >
+              Reset Inputs
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 
 export function StrokePrognosisCard() {
   return (
