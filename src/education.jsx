@@ -3380,52 +3380,54 @@ const BrainDeathView = () => {
 };
 
 export function BrainDeathCard() {
+  const [lightboxImage, setLightboxImage] = useState(null);
+
   return (
     <div className="bedside-card-view screen-layout">
       <div className="card-wrapper card-brain-death">
-        <div className="card-container" style={{boxSizing: 'border-box'}}>
-          <div className="card-content">
+        <div className="card-container" style={{boxSizing: 'border-box', height: '1275px'}}>
+          <div className="card-content" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
             <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Brain Death Determination (BD/DNC)</h1>
             <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
               AAN/AAP/CNS/SCCM 2023 Pediatric &amp; Adult Consensus Guideline Reference.
             </p>
 
-            {/* Visual Pathway (SVG) */}
-            <svg viewBox="0 0 735 110" style={{width: '100%', height: '110px', marginBottom: '8px'}}>
-              <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
+            {/* SVG Visual Pathway */}
+            <svg viewBox="0 0 735 90" style={{width: '100%', height: '90px', marginBottom: '8px'}}>
+              <rect x="0" y="0" width="735" height="90" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
               
               {/* Step 1 */}
-              <rect x="15" y="25" width="145" height="60" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
-              <text x="87.5" y="42" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">1. PREREQUISITES</text>
-              <text x="87.5" y="58" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Irreversible Coma</text>
-              <text x="87.5" y="70" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Temp ≥36°C | Hemodyn OK</text>
+              <rect x="15" y="15" width="145" height="60" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
+              <text x="87.5" y="32" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">1. PREREQUISITES</text>
+              <text x="87.5" y="48" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Irreversible Coma</text>
+              <text x="87.5" y="60" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Temp ≥36°C | Hemodyn OK</text>
               
               {/* Arrow 1 */}
-              <path d="M 160 55 L 190 55" stroke="var(--purple)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-bd)" />
+              <path d="M 160 45 L 190 45" stroke="var(--purple)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-bd)" />
               
               {/* Step 2 */}
-              <rect x="190" y="25" width="145" height="60" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.5" />
-              <text x="262.5" y="42" fill="var(--purple-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">2. CLINICAL EXAM</text>
-              <text x="262.5" y="58" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">No Motor Response</text>
-              <text x="262.5" y="70" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Absent Brainstem Reflexes</text>
+              <rect x="190" y="15" width="145" height="60" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.5" />
+              <text x="262.5" y="32" fill="var(--purple-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">2. CLINICAL EXAM</text>
+              <text x="262.5" y="48" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">No Motor Response</text>
+              <text x="262.5" y="60" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Absent Brainstem Reflexes</text>
 
               {/* Arrow 2 */}
-              <path d="M 335 55 L 365 55" stroke="var(--purple)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-bd)" />
+              <path d="M 335 45 L 365 45" stroke="var(--purple)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-bd)" />
 
               {/* Step 3 */}
-              <rect x="365" y="25" width="145" height="60" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.5" />
-              <text x="437.5" y="42" fill="var(--amber-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">3. APNEA TESTING</text>
-              <text x="437.5" y="58" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Absence of Resp Drive</text>
-              <text x="437.5" y="70" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">PaCO2 ≥60 &amp; pH &lt;7.30</text>
+              <rect x="365" y="15" width="145" height="60" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.5" />
+              <text x="437.5" y="32" fill="var(--amber-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">3. APNEA TESTING</text>
+              <text x="437.5" y="48" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Absence of Resp Drive</text>
+              <text x="437.5" y="60" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">PaCO2 ≥60 &amp; pH &lt;7.30</text>
 
               {/* Arrow 3 */}
-              <path d="M 510 55 L 540 55" stroke="var(--purple)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-bd)" />
+              <path d="M 510 45 L 540 45" stroke="var(--purple)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-bd)" />
 
               {/* Step 4 */}
-              <rect x="540" y="25" width="180" height="60" rx="6" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.5" />
-              <text x="630" y="42" fill="var(--red-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">4. ANCILLARY TESTING</text>
-              <text x="630" y="58" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Only if exam or apnea test</text>
-              <text x="630" y="70" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">cannot be completed/concluded</text>
+              <rect x="540" y="15" width="180" height="60" rx="6" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.5" />
+              <text x="630" y="32" fill="var(--red-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">4. ANCILLARY TESTING</text>
+              <text x="630" y="48" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Only if exam or apnea test</text>
+              <text x="630" y="60" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">cannot be completed/concluded</text>
 
               <defs>
                 <marker id="arrow-bd" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
@@ -3434,49 +3436,89 @@ export function BrainDeathCard() {
               </defs>
             </svg>
 
+            {/* Generated Image Banner */}
+            <div 
+              style={{
+                width: '100%', 
+                height: '150px', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                background: 'var(--fill-soft)', 
+                borderRadius: '8px', 
+                border: '1.5px solid var(--rule-soft)', 
+                overflow: 'hidden', 
+                boxSizing: 'border-box', 
+                marginBottom: '8px'
+              }}
+              title="Cranial Nerve Reflexes &amp; Apnea Test Setup"
+            >
+              <div 
+                className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full h-full"
+                onClick={() => setLightboxImage({ src: 'assets/brain_death_evaluation.png', alt: 'Brain Death Evaluation Pathway', title: 'Brainstem Reflexes &amp; Apnea Test Setup' })}
+              >
+                <img 
+                  src="assets/brain_death_evaluation.png" 
+                  alt="Brain Death Evaluation Pathway" 
+                  style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
+                  className="transition-transform duration-200 group-hover:scale-[1.02]"
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
+                  <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
+                    <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
+                  </span>
+                </div>
+              </div>
+            </div>
+
             {/* Grid for Prerequisites & Exam */}
             <div className="toast-grid" style={{marginBottom: '10px'}}>
               {/* Column 1: Prerequisites & Stability */}
               <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
-                <div className="toast-card primary">
-                  <h3>1. Clinical Prerequisites &amp; Stability</h3>
-                  <ul className="toast-card-list" style={{fontSize: '8.2pt'}}>
+                <div className="toast-card primary" style={{padding: '10px 12px'}}>
+                  <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--purple-deep)', marginBottom: '3px'}}>1. Prerequisites &amp; Stability</h3>
+                  <ul className="toast-card-list" style={{fontSize: '7.8pt', lineHeight: '1.4'}}>
                     <li><strong>Etiology:</strong> Known, irreversible, catastrophic brain injury.</li>
-                    <li><strong>Core Temp:</strong> <strong>&ge; 36.0°C (96.8°F)</strong>. Warm if needed per protocol.</li>
+                    <li><strong>Core Temp:</strong> <strong>&ge; 36.0°C (96.8°F)</strong>. Warm if hypothermic.</li>
                     <li><strong>Hemodynamics:</strong>
                       <br/>• Adults: SBP <strong>&ge; 100 mmHg</strong> (or MAP &ge; 60 mmHg)
-                      <br/>• Pediatrics: Age-specific SBP thresholds (term newborn &ge;60, infants &ge;70, children &ge;80 mmHg)
+                      <br/>• Pediatrics (Age-specific SBP):
+                        <br/>&nbsp;&nbsp;– Term newborn to 30 days: <strong>&ge; 60 mmHg</strong>
+                        <br/>&nbsp;&nbsp;– Infants 31 days to 1 year: <strong>&ge; 70 mmHg</strong>
+                        <br/>&nbsp;&nbsp;– Children 1 to 10 years: <strong>&ge; 70 + (2 &times; age) mmHg</strong>
+                        <br/>&nbsp;&nbsp;– Adolescents &gt; 10 years: <strong>&ge; 90 mmHg</strong>
                     </li>
-                    <li><strong>Drug Clearance:</strong> Exclude CNS depressants (&ge; 5 half-lives clearance) and neuromuscular blockade (TOF 4/4 twitch present).</li>
-                    <li><strong>Metabolic:</strong> Correct severe endocrine, acid-base, or electrolyte disturbances.</li>
+                    <li><strong>Exclusions:</strong> Exclude CNS depressants (&ge;5 half-lives) and neuromuscular blockade (TOF 4/4 twitch present).</li>
+                    <li><strong>Metabolic:</strong> Correct severe endocrine or electrolyte derangements.</li>
                   </ul>
                 </div>
 
-                <div className="toast-card secondary">
-                  <h3>2. Neurological Examination</h3>
-                  <ul className="toast-card-list" style={{fontSize: '8.2pt'}}>
-                    <li><strong>Coma:</strong> Complete absence of awareness/arousal. No spontaneous or induced motor responses (spinal reflexes allowed).</li>
+                <div className="toast-card secondary" style={{padding: '10px 12px'}}>
+                  <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--teal-deep)', marginBottom: '3px'}}>2. Neurological Examination</h3>
+                  <ul className="toast-card-list" style={{fontSize: '7.8pt', lineHeight: '1.4'}}>
+                    <li><strong>Coma:</strong> Complete absence of arousal. No motor responses to pain (spinal reflexes like triple flexion allowed).</li>
                     <li><strong>Pupils:</strong> Mid-sized/dilated (4–9 mm), completely unresponsive to intense light bilaterally.</li>
                     <li><strong>Corneal Reflex:</strong> No blink to cotton swab contact.</li>
                     <li><strong>Oculocephalic (Doll's Eyes):</strong> No eye deviation with head turn (ensure C-spine cleared).</li>
                     <li><strong>Oculovestibular (Cold Calorics):</strong> No eye movement for &ge;1 min after 50 mL ice-water irrigation (confirm intact tympanic membrane).</li>
                     <li><strong>Gag &amp; Cough:</strong> Absent gag (pharyngeal stim) and cough (tracheal suction catheter stim).</li>
-                    <li><strong>Facial Motor:</strong> No grimace to TMJ or supraorbital pain.</li>
+                    <li><strong>Facial Motor:</strong> No grimace to TMJ or supraorbital pressure.</li>
                   </ul>
                 </div>
               </div>
 
               {/* Column 2: Apnea Testing & Ancillary Testing */}
               <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
-                <div className="toast-card alert-orange">
-                  <h3>3. Apnea Testing Protocol</h3>
-                  <ul className="toast-card-list" style={{fontSize: '8.2pt'}}>
+                <div className="toast-card alert-orange" style={{padding: '10px 12px'}}>
+                  <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--amber-deep)', marginBottom: '3px'}}>3. Apnea Testing Protocol</h3>
+                  <ul className="toast-card-list" style={{fontSize: '7.8pt', lineHeight: '1.4'}}>
                     <li><strong>Preparation:</strong> Pre-oxygenate with 100% O2 for &ge;10 mins. Baseline arterial pCO2 must be 35–45 mmHg, pH 7.35–7.45.</li>
                     <li><strong>Procedure:</strong> Deliver passive O2 via CPAP (preferred, 100% O2 at 4-6 L/min) to maintain oxygenation while ventilator is paused.</li>
+                    <li><strong>ECMO Tip:</strong> Decrease sweep gas flow to 0.5–1.0 L/min with 100% O2; monitor closely for any chest rise.</li>
                     <li><strong>Observation:</strong> Monitor for spontaneous respiratory effort for 8–10 mins.</li>
                     <li><strong>Target:</strong> Final pCO2 <strong>&ge; 60 mmHg</strong> AND <strong>&ge; 20 mmHg above baseline</strong>, with pH <strong>&lt; 7.30</strong>.</li>
                   </ul>
-                  <div style={{marginTop: '6px', borderTop: '1px dashed rgba(217,134,11,0.3)', paddingTop: '4px', fontSize: '8.0pt', color: 'var(--red-deep)'}}>
+                  <div style={{marginTop: '4px', borderTop: '1px dashed rgba(217,134,11,0.3)', paddingTop: '4px', fontSize: '7.6pt', color: 'var(--red-deep)', lineHeight: '1.3'}}>
                     <strong>Abort/Stop Criteria:</strong> Abruptly stop and draw ABG if:
                     <br/>• SBP &lt; 100 mmHg or MAP &lt; 60 mmHg.
                     <br/>• SpO2 &lt; 85% for &gt; 30 seconds.
@@ -3484,20 +3526,20 @@ export function BrainDeathCard() {
                   </div>
                 </div>
 
-                <div className="toast-card alert-red">
-                  <h3>4. Ancillary Testing Guidelines</h3>
-                  <p style={{fontSize: '8.0pt', color: 'var(--ink-soft)', marginBottom: '4px', lineHeight: '1.3'}}>
+                <div className="toast-card alert-red" style={{padding: '10px 12px'}}>
+                  <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--red-deep)', marginBottom: '3px'}}>4. Ancillary Testing Guidelines</h3>
+                  <p style={{fontSize: '7.6pt', color: 'var(--ink-soft)', marginBottom: '4px', lineHeight: '1.3'}}>
                     Used <strong>only</strong> when clinical exam or apnea test cannot be completed safely (e.g. severe hypoxemia, facial trauma).
                   </p>
-                  <div style={{display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '8px', fontSize: '8.0pt', lineHeight: '1.3'}}>
+                  <div style={{display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '8px', fontSize: '7.6pt', lineHeight: '1.3'}}>
                     <div>
-                      <strong style={{color: 'var(--teal-deep)', fontSize: '8.0pt', textTransform: 'uppercase', display: 'block', marginBottom: '2px'}}>Accepted Tests</strong>
+                      <strong style={{color: 'var(--teal-deep)', fontSize: '7.6pt', textTransform: 'uppercase', display: 'block', marginBottom: '2px'}}>Accepted Tests</strong>
                       • <strong>Conventional 4-Vessel DSA:</strong> Confirms absence of intracerebral blood flow.<br/>
-                      • <strong>SPECT / Planar Perfusion:</strong> Shows absence of cerebral uptake.<br/>
+                      • <strong>SPECT Perfusion:</strong> Shows absence of cerebral uptake.<br/>
                       • <strong>TCD:</strong> (Transcranial Doppler) <strong>Adults only</strong>; must show oscillating flow or spikes.
                     </div>
                     <div>
-                      <strong style={{color: 'var(--red-deep)', fontSize: '8.0pt', textTransform: 'uppercase', display: 'block', marginBottom: '2px'}}>Unacceptable Tests</strong>
+                      <strong style={{color: 'var(--red-deep)', fontSize: '7.6pt', textTransform: 'uppercase', display: 'block', marginBottom: '2px'}}>Unacceptable Tests</strong>
                       <span style={{color: 'var(--red-deep)', fontWeight: '600'}}>• EEG: NO LONGER ACCEPTED</span> (cannot evaluate brainstem).<br/>
                       <span style={{color: 'var(--red-deep)', fontWeight: '600'}}>• CTA: NOT ACCEPTABLE</span> (insufficient validation).<br/>
                       • MRI/MRA: Not accepted.
@@ -3538,6 +3580,14 @@ export function BrainDeathCard() {
           </div>
         </div>
       </div>
+      {lightboxImage && (
+        <ImageLightbox 
+          src={lightboxImage.src} 
+          alt={lightboxImage.alt} 
+          title={lightboxImage.title} 
+          onClose={() => setLightboxImage(null)} 
+        />
+      )}
     </div>
   );
 }
