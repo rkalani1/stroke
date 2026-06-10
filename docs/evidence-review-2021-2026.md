@@ -527,3 +527,17 @@
 - Added schema validation for churn profile configuration and wired it into core QA/evidence-refresh gates.
 - This ensures malformed governance profile data cannot silently propagate into watchlist triage output.
 - Inference disclosure: churn-profile schema validation is operational safety tooling only and does not alter evidence ranking or clinical recommendations.
+
+### AUTO-UPDATE 2026-06-10 - Trials: verification-gated additive block
+<!-- AUTO-UPDATE 2026-06-10: TNK-PLUS VERIFIED ADDITIVE BLOCK START -->
+
+#### TNK-PLUS - late-window tenecteplase before EVT
+- Inclusion class: Phase 3 randomized clinical trial; verified by PMID, DOI, and ClinicalTrials.gov registry. This additive summary does not change local protocol text or recommendation strength.
+- Population: Adults with acute ischemic stroke 4.5 to 24 hours after last known well due to MCA-M1 or proximal M2 occlusion with salvageable tissue on perfusion or diffusion-perfusion imaging.
+- Intervention: Trial-assigned intravenous tenecteplase 0.25 mg/kg, maximum 25 mg, before EVT.
+- Comparator: EVT alone.
+- Outcomes: Primary endpoint verbatim excerpt: "functional independence, defined as a score of 0 to 2 on the modified Rankin Scale" at 90 days. Key effect estimate verbatim excerpts: "adjusted relative rate, 1.01 [95% CI, 0.83-1.24]; P = .89"; "risk difference, 0.99% [95% CI, -8.84% to 10.83%]". Safety excerpt: "Symptomatic intracranial hemorrhage within 36 hours was 5.1% (10/197) and 2.6% (5/190), respectively."
+- Interpretation for physician review: In this verified trial population, tenecteplase before EVT did not improve 90-day functional independence versus EVT alone. Do not generalize beyond the studied late-window, proximal MCA, EVT-capable-center population without physician review.
+- Verified citation: PMID: 42099212 (https://pubmed.ncbi.nlm.nih.gov/42099212/); DOI: 10.1001/jama.2026.4292 (https://doi.org/10.1001/jama.2026.4292); NCT: NCT06221371 (https://clinicaltrials.gov/study/NCT06221371).
+
+<!-- AUTO-UPDATE 2026-06-10: TNK-PLUS VERIFIED ADDITIVE BLOCK END -->
