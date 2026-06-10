@@ -2330,6 +2330,325 @@ async function main() {
   });
   console.log('Generated documents/references/Cervical Artery Dissection.pdf');
 
+  // ==========================================
+  // 8. GENERATE STROKE PROGNOSIS PDF
+  // ==========================================
+  const prognosisHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Stroke Prognosis &amp; Clinical Scores</title>
+      <style>
+        @page {
+          size: letter;
+          margin: 0.12in 0.12in 0.12in 0.12in;
+        }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          color: #1a1b20;
+          font-size: 8.0pt;
+          line-height: 1.25;
+          background: white;
+          --ink:         #1a1b20;
+          --ink-soft:    #3c3d47;
+          --ink-mute:    #636472;
+          --rule:        #e0dde4;
+          --rule-soft:   #f0eef3;
+          --fill:        #f3f1f6;
+          --fill-soft:   #f8f7fa;
+          --paper:       #ffffff;
+          --purple:      #5B3B9C;
+          --purple-deep: #3A2368;
+          --purple-soft: #f1edfa;
+          --teal:        #18849E;
+          --teal-soft:   #e6f4f7;
+          --teal-deep:   #0F586B;
+          --red:         #C62E2E;
+          --red-soft:    #fcebeb;
+          --red-deep:    #8E1E1E;
+          --slate:       #4A5A6D;
+          --slate-soft:  #f0f2f5;
+        }
+        .container {
+          border: 2px solid var(--purple-deep);
+          border-radius: 8px;
+          padding: 10px 14px;
+          display: flex;
+          flex-direction: column;
+          box-sizing: border-box;
+          height: 100%;
+        }
+        h1 {
+          font-size: 17pt;
+          font-weight: 800;
+          margin: 0 auto 2px auto;
+          text-align: center;
+          color: var(--purple-deep);
+        }
+        p.subtitle {
+          font-size: 8.5pt;
+          color: var(--ink-soft);
+          margin: 0 0 8px 0;
+          text-align: center;
+          font-weight: 500;
+        }
+        .toast-card {
+          border: 1px solid var(--rule-soft);
+          border-radius: 6px;
+          padding: 6px 10px;
+          margin-bottom: 6px;
+        }
+        .toast-card.primary {
+          border-left: 4px solid var(--purple);
+          background: linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%);
+        }
+        .toast-card.secondary {
+          border-left: 4px solid var(--teal);
+          background: linear-gradient(135deg, var(--teal-soft) 0%, #ffffff 100%);
+        }
+        .toast-card.alert-red {
+          border-left: 4px solid var(--red);
+          background: linear-gradient(135deg, var(--red-soft) 0%, #ffffff 100%);
+        }
+        .toast-card.neutral {
+          border-left: 4px solid var(--slate);
+          background: linear-gradient(135deg, var(--slate-soft) 0%, #ffffff 100%);
+        }
+        .toast-card h3 {
+          font-size: 9.5pt;
+          font-weight: 700;
+          margin: 0 0 3px 0;
+        }
+        .toast-card.primary h3 { color: var(--purple-deep); }
+        .toast-card.secondary h3 { color: var(--teal-deep); }
+        .toast-card.alert-red h3 { color: var(--red-deep); }
+        .toast-card.neutral h3 { color: var(--slate); }
+        
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 7.6pt;
+          margin-bottom: 4px;
+        }
+        table tr {
+          border-bottom: 1px solid var(--rule-soft);
+        }
+        table td {
+          padding: 3px 0;
+        }
+        .grid-2 {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+          margin-bottom: 6px;
+        }
+        .risk-grid {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 4px;
+          text-align: center;
+          font-size: 7.0pt;
+          margin-top: 4px;
+        }
+        .risk-grid-6 {
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          gap: 3px;
+          text-align: center;
+          font-size: 7.0pt;
+          margin-top: 4px;
+        }
+        .risk-item {
+          background: white;
+          border-radius: 3px;
+          padding: 2px;
+          border: 1px solid var(--rule-soft);
+        }
+        .disclaimer-box {
+          border: 1.5px solid var(--purple);
+          border-radius: 6px;
+          padding: 6px 10px;
+          background: var(--purple-soft);
+          margin-top: auto;
+          margin-bottom: 6px;
+          font-size: 7.4pt;
+        }
+        .ref-citation {
+          padding: 4px 8px;
+          background: var(--fill-soft);
+          border-left: 4px solid var(--purple);
+          border-radius: 4px;
+          font-size: 6.8pt;
+          line-height: 1.25;
+          color: var(--ink-soft);
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>Stroke Prognosis &amp; Clinical Scores</h1>
+        <p class="subtitle">Clinical prediction scales for ischemic and hemorrhagic stroke outcomes.</p>
+        
+        <svg viewBox="0 0 735 80" style="width: 100%; height: 60px; margin-bottom: 6px">
+          <rect x="0" y="0" width="735" height="80" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" stroke-width="1"/>
+          <rect x="267" y="10" width="200" height="25" rx="12.5" fill="var(--purple-deep)" />
+          <text x="367" y="22.5" fill="white" font-size="8.5pt" font-family="sans-serif" font-weight="700" text-anchor="middle" dominant-baseline="central">STROKE PROGNOSIS SCALES</text>
+          <path d="M 367 35 L 367 48 M 180 48 L 555 48 M 180 48 L 180 60 M 555 48 L 555 60" stroke="var(--purple)" stroke-width="1.5" fill="none" />
+          <polygon points="180,63 177,57 183,57" fill="var(--purple)" />
+          <rect x="80" y="63" width="200" height="20" rx="4" fill="var(--purple-soft)" stroke="var(--purple)" stroke-width="1"/>
+          <text x="180" y="73" fill="var(--purple-deep)" font-size="8pt" font-family="sans-serif" font-weight="700" text-anchor="middle">Ischemic Stroke: ASTRAL &amp; PLAN</text>
+          <polygon points="555,63 552,57 558,57" fill="var(--purple)" />
+          <rect x="455" y="63" width="200" height="20" rx="4" fill="var(--red-soft)" stroke="var(--red)" stroke-width="1"/>
+          <text x="555" y="73" fill="var(--red-deep)" font-size="8pt" font-family="sans-serif" font-weight="700" text-anchor="middle">Hemorrhagic Stroke: ICH Score</text>
+        </svg>
+
+        <div class="grid-2">
+          <!-- ASTRAL Score -->
+          <div class="toast-card primary">
+            <h3>ASTRAL Score (Acute Ischemic Stroke)</h3>
+            <p style="margin: 0 0 4px 0; font-size: 7.2pt; color: var(--ink-soft); font-style: italic">Predicts 90-day poor functional outcome (mRS > 2)</p>
+            <table>
+              <thead>
+                <tr style="font-weight: bold; border-bottom: 1px solid var(--rule-soft)">
+                  <th style="text-align: left; padding: 2px 0;">Predictor Variable</th>
+                  <th style="text-align: right; padding: 2px 0;">Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>A</strong>ge</td><td style="text-align: right;">1 pt per 5 years</td></tr>
+                <tr><td><strong>S</strong>everity (NIHSS)</td><td style="text-align: right;">1 pt per NIHSS pt</td></tr>
+                <tr><td><strong>T</strong>ime to admission >3h</td><td style="text-align: right;">2 pts</td></tr>
+                <tr><td><strong>R</strong>ange of visual fields (defect)</td><td style="text-align: right;">2 pts</td></tr>
+                <tr><td><strong>A</strong>cute glucose (&lt;3.7 or &gt;7.3 mmol/L)</td><td style="text-align: right;">1 pt</td></tr>
+                <tr><td><strong>L</strong>evel of consciousness (impaired)</td><td style="text-align: right;">3 pts</td></tr>
+              </tbody>
+            </table>
+            <strong style="color: var(--purple-deep); font-size: 7.4pt; display: block; margin-top: 4px;">Score vs. 90-Day Unfavorable Outcome (mRS > 2) Risk:</strong>
+            <div class="risk-grid">
+              <div class="risk-item"><strong>&lt;20</strong><br/><span style="color: #2e7d32">&lt;5%</span></div>
+              <div class="risk-item"><strong>23</strong><br/><span style="color: #2e7d32">15%</span></div>
+              <div class="risk-item"><strong>31</strong><br/><span style="color: #f57c00">50%</span></div>
+              <div class="risk-item"><strong>35</strong><br/><span style="color: #e64a19">70%</span></div>
+              <div class="risk-item"><strong>40+</strong><br/><span style="color: #c62828">&gt;90%</span></div>
+            </div>
+          </div>
+
+          <!-- PLAN Score -->
+          <div class="toast-card secondary">
+            <h3>PLAN Score (Acute Ischemic Stroke)</h3>
+            <p style="margin: 0 0 4px 0; font-size: 7.2pt; color: var(--ink-soft); font-style: italic">Bedside prediction of 30-day mortality/dependence</p>
+            <table>
+              <thead>
+                <tr style="font-weight: bold; border-bottom: 1px solid var(--rule-soft)">
+                  <th style="text-align: left; padding: 2px 0;">Predictor Domain &amp; Variables</th>
+                  <th style="text-align: right; padding: 2px 0;">Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>P</strong>readmission dependence / Cancer</td><td style="text-align: right;">1.5 pts each</td></tr>
+                <tr><td><strong>P</strong>readmission CHF / Atrial Fibrillation</td><td style="text-align: right;">1.0 pt each</td></tr>
+                <tr><td><strong>L</strong>evel of consciousness (reduced)</td><td style="text-align: right;">5.0 pts</td></tr>
+                <tr><td><strong>A</strong>ge (decades)</td><td style="text-align: right;">1 pt per decade (max 10)</td></tr>
+                <tr><td><strong>N</strong>eurologic: Leg / Arm weakness</td><td style="text-align: right;">2 pts each</td></tr>
+                <tr><td><strong>N</strong>eurologic: Aphasia or Neglect</td><td style="text-align: right;">1.0 pt</td></tr>
+              </tbody>
+            </table>
+            <strong style="color: var(--teal-deep); font-size: 7.4pt; display: block; margin-top: 4px;">Score vs. 30-Day Mortality Risk:</strong>
+            <div class="risk-grid">
+              <div class="risk-item"><strong>&lt;6</strong><br/><span style="color: #2e7d32">0.7%</span></div>
+              <div class="risk-item"><strong>9-10</strong><br/><span style="color: #2e7d32">4.4%</span></div>
+              <div class="risk-item"><strong>13</strong><br/><span style="color: #f57c00">15%</span></div>
+              <div class="risk-item"><strong>16</strong><br/><span style="color: #e64a19">35%</span></div>
+              <div class="risk-item"><strong>&gt;19</strong><br/><span style="color: #c62828">&gt;65%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom: 4px;">
+          <!-- ICH Score -->
+          <div class="toast-card alert-red">
+            <h3>ICH Score (Intracerebral Hemorrhage)</h3>
+            <p style="margin: 0 0 4px 0; font-size: 7.2pt; color: var(--ink-soft); font-style: italic">Predicts 30-day mortality in spontaneous ICH</p>
+            <table>
+              <thead>
+                <tr style="font-weight: bold; border-bottom: 1px solid var(--rule-soft)">
+                  <th style="text-align: left; padding: 2px 0;">Predictor Component</th>
+                  <th style="text-align: right; padding: 2px 0;">Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>GCS:</strong> 3–4 (2) | 5–12 (1) | 13–15 (0)</td><td style="text-align: right;">0–2 pts</td></tr>
+                <tr><td><strong>Age:</strong> &ge; 80 years</td><td style="text-align: right;">1 pt</td></tr>
+                <tr><td><strong>ICH Volume:</strong> &ge; 30 mL</td><td style="text-align: right;">1 pt</td></tr>
+                <tr><td><strong>Intraventricular Hemorrhage (IVH):</strong> Present</td><td style="text-align: right;">1 pt</td></tr>
+                <tr><td><strong>Infratentorial Origin of Hemorrhage</strong></td><td style="text-align: right;">1 pt</td></tr>
+              </tbody>
+            </table>
+            <strong style="color: var(--red-deep); font-size: 7.4pt; display: block; margin-top: 4px;">Score vs. 30-Day Mortality Risk:</strong>
+            <div class="risk-grid-6">
+              <div class="risk-item"><strong>0</strong><br/><span style="color: #2e7d32">0%</span></div>
+              <div class="risk-item"><strong>1</strong><br/><span style="color: #2e7d32">13%</span></div>
+              <div class="risk-item"><strong>2</strong><br/><span style="color: #f57c00">26%</span></div>
+              <div class="risk-item"><strong>3</strong><br/><span style="color: #e64a19">72%</span></div>
+              <div class="risk-item"><strong>4</strong><br/><span style="color: #c62828">94%</span></div>
+              <div class="risk-item"><strong>5-6</strong><br/><span style="color: #c62828">100%</span></div>
+            </div>
+          </div>
+
+          <!-- Modified Rankin Scale -->
+          <div class="toast-card neutral">
+            <h3>Modified Rankin Scale (mRS)</h3>
+            <p style="margin: 0 0 4px 0; font-size: 7.2pt; color: var(--ink-soft); font-style: italic">Standardized scale for post-stroke global disability</p>
+            <table style="font-size: 7.0pt; line-height: 1.15;">
+              <thead>
+                <tr style="font-weight: bold; border-bottom: 1px solid var(--rule-soft)">
+                  <th style="width: 30px; text-align: center; padding: 2px 0;">Grade</th>
+                  <th style="text-align: left; padding: 2px 0;">Clinical Recovery State</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="text-align: center; font-weight: bold; color: #2e7d32">0</td><td>No symptoms at all.</td></tr>
+                <tr><td style="text-align: center; font-weight: bold; color: #2e7d32">1</td><td>No significant disability despite symptoms.</td></tr>
+                <tr><td style="text-align: center; font-weight: bold; color: #2e7d32">2</td><td>Slight disability; independent in daily affairs.</td></tr>
+                <tr><td style="text-align: center; font-weight: bold; color: #f57c00">3</td><td>Moderate disability; walks unassisted.</td></tr>
+                <tr><td style="text-align: center; font-weight: bold; color: #e64a19">4</td><td>Moderately severe; unable to walk/body-care unassisted.</td></tr>
+                <tr><td style="text-align: center; font-weight: bold; color: #c62828">5</td><td>Severe disability; bedridden, constant nursing care.</td></tr>
+                <tr><td style="text-align: center; font-weight: bold; color: #212121">6</td><td>Dead.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="disclaimer-box">
+          <strong style="color: var(--purple-deep); display: block; margin-bottom: 2px">Prognostication Principles &amp; Limitations</strong>
+          • **Not for Care Limitations**: These clinical scores serve to quantify severity, improve inter-provider communication, and assist in counseling. They **MUST NOT** be used in isolation as the sole basis for withholding reperfusion therapies, surgical decompression, or withdrawing life-sustaining treatment (avoiding the self-fulfilling prophecy of poor outcome).<br/>
+          • **Dynamic Evaluation**: Clinical trajectory over the first 24–72 hours is often more predictive of final recovery than any single point-in-time calculation upon hospital admission.
+        </div>
+
+        <div class="ref-citation">
+          <strong>ASTRAL Score:</strong> Ntaios G, et al. *Stroke*. 2012;43:2170-6. PMID: 22738924<br/>
+          <strong>PLAN Score:</strong> O'Donnell MJ, et al. *Arch Intern Med*. 2012;172:1548-56. PMID: 23090225<br/>
+          <strong>ICH Score:</strong> Hemphill JC 3rd, et al. *Stroke*. 2001;32:891-7. PMID: 11283388<br/>
+          <strong>mRS Scale:</strong> van Swieten JC, et al. *Stroke*. 1988;19:604-7. PMID: 3363593
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  await page.setContent(prognosisHtml);
+  await page.pdf({
+    path: 'documents/references/Stroke Prognosis.pdf',
+    format: 'letter',
+    landscape: false,
+    printBackground: true,
+    margin: { top: '0.12in', bottom: '0.12in', left: '0.12in', right: '0.12in' }
+  });
+  console.log('Generated documents/references/Stroke Prognosis.pdf');
+
   await browser.close();
 }
 

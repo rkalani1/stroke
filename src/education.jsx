@@ -371,6 +371,20 @@ const EDUCATION_MODULES = [
       { label: 'Consensus Guideline', citation: 'Greer DM, et al. Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Practice Guideline. Neurology. 2023;101(24):1112-1132.', pmid: '37827878' },
       { label: 'Ancillary Update', citation: 'Wijdicks EF, et al. Practice parameter update: determining brain death in adults. Neurology. 2010;74(23):1911-1918.', pmid: '20530327' }
     ]
+  },
+  {
+    id: 'stroke-prognosis',
+    title: 'Stroke Prognosis & Clinical Scores',
+    purpose: 'Clinical prognostic models for acute stroke: ASTRAL and PLAN scores for ischemic stroke, and the ICH Score for spontaneous intracerebral hemorrhage.',
+    actions: 'prognosis outcomes astral plan ich score rankin mrs mortality dependency stratification prediction scale bedside',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-06-09',
+    references: [
+      { label: 'ASTRAL Score', citation: 'Ntaios G, et al. Stroke. 2012;43(8):2170-2176.', pmid: '22738924' },
+      { label: 'PLAN Score', citation: 'O\'Donnell MJ, et al. Arch Intern Med. 2012;172(20):1548-1556.', pmid: '23090225' },
+      { label: 'ICH Score', citation: 'Hemphill JC 3rd, et al. Stroke. 2001;32(4):891-897.', pmid: '11283388' },
+      { label: 'mRS Scale', citation: 'van Swieten JC, et al. Stroke. 1988;19(5):604-607.', pmid: '3363593' }
+    ]
   }
 ];
 
@@ -862,6 +876,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <FibromuscularDysplasiaView />;
     case 'brain-death':
       return <BrainDeathView />;
+    case 'stroke-prognosis':
+      return <StrokePrognosisView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -2639,6 +2655,193 @@ export function StkCoreMeasuresCard() {
 
           <div className="ref-citation" style={{marginTop: 'auto', padding: '6px 10px', fontSize: '7.5pt', lineHeight: '1.25'}}>
             <strong>Quality Reference:</strong> Joint Commission National Quality Measures Specifications Manual &amp; GWTG Stroke Dashboard guidelines.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const StrokePrognosisView = () => {
+  return (
+    <PdfActionBar
+      title="Stroke Prognosis & Clinical Scores"
+      subtitle="Stroke Prognosis Reference Guide"
+      pdfPath="documents/references/Stroke Prognosis.pdf"
+      pdfName="Stroke Prognosis.pdf"
+      iconColorClass="text-emerald-600 dark:text-emerald-400"
+    >
+      <ScaledCardWrapper isLandscape={false}>
+        <BedsidePocketCardsStyles />
+        <StrokePrognosisCard />
+      </ScaledCardWrapper>
+    </PdfActionBar>
+  );
+};
+
+export function StrokePrognosisCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-stroke-prognosis">
+        <div className="card-container" style={{boxSizing: 'border-box', height: '1275px'}}>
+          <div className="card-content" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
+            <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Stroke Prognosis &amp; Clinical Scores</h1>
+            <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
+              Clinical prediction scales for ischemic and hemorrhagic stroke outcomes.
+            </p>
+
+            <svg viewBox="0 0 735 80" style={{width: '100%', height: '80px', marginBottom: '8px'}}>
+              <rect x="0" y="0" width="735" height="80" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
+              
+              <rect x="267" y="10" width="200" height="25" rx="12.5" fill="var(--purple-deep)" />
+              <text x="367" y="22.5" fill="white" fontSize="8.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle" dominantBaseline="central">STROKE PROGNOSIS SCALES</text>
+              
+              <path d="M 367 35 L 367 48 M 180 48 L 555 48 M 180 48 L 180 60 M 555 48 L 555 60" stroke="var(--purple)" strokeWidth="1.5" fill="none" />
+              
+              <polygon points="180,63 177,57 183,57" fill="var(--purple)" />
+              <rect x="80" y="63" width="200" height="20" rx="4" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1"/>
+              <text x="180" y="73" fill="var(--purple-deep)" fontSize="8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Ischemic Stroke: ASTRAL &amp; PLAN</text>
+              
+              <polygon points="555,63 552,57 558,57" fill="var(--purple)" />
+              <rect x="455" y="63" width="200" height="20" rx="4" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1"/>
+              <text x="555" y="73" fill="var(--red-deep)" fontSize="8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Hemorrhagic Stroke: ICH Score</text>
+            </svg>
+
+            {/* Grid for ASTRAL and PLAN scores */}
+            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '8px'}}>
+              {/* ASTRAL Score Card */}
+              <div className="toast-card primary" style={{fontSize: '7.8pt', padding: '10px 12px'}}>
+                <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--purple-deep)', marginBottom: '3px'}}>ASTRAL Score (Acute Ischemic Stroke)</h3>
+                <p style={{color: 'var(--ink-soft)', fontSize: '7.5pt', marginBottom: '4px', fontStyle: 'italic'}}>Predicts 90-day poor functional outcome (mRS &gt; 2)</p>
+                <table style={{width: '100%', borderCollapse: 'collapse', marginBottom: '4px'}}>
+                  <thead>
+                    <tr style={{borderBottom: '1px solid var(--rule-soft)', fontSize: '7.2pt', fontWeight: 'bold'}}>
+                      <th style={{textAlign: 'left', padding: '2px 0'}}>Predictor Variable</th>
+                      <th style={{textAlign: 'right', padding: '2px 0'}}>Points</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><strong>A</strong>ge</td><td style={{textAlign: 'right'}}>1 pt per 5 years</td></tr>
+                    <tr><td><strong>S</strong>everity (NIHSS)</td><td style={{textAlign: 'right'}}>1 pt per NIHSS pt</td></tr>
+                    <tr><td><strong>T</strong>ime to admission &gt;3h</td><td style={{textAlign: 'right'}}>2 pts</td></tr>
+                    <tr><td><strong>R</strong>ange of visual fields (defect)</td><td style={{textAlign: 'right'}}>2 pts</td></tr>
+                    <tr><td><strong>A</strong>cute glucose (&lt;3.7 or &gt;7.3 mmol/L)</td><td style={{textAlign: 'right'}}>1 pt</td></tr>
+                    <tr><td><strong>L</strong>evel of consciousness (impaired)</td><td style={{textAlign: 'right'}}>3 pts</td></tr>
+                  </tbody>
+                </table>
+                <strong style={{color: 'var(--purple-deep)', display: 'block', marginTop: '6px', fontSize: '7.8pt'}}>Score vs. 90-Day Unfavorable Outcome (mRS &gt; 2) Risk:</strong>
+                <div style={{display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '4px', textAlign: 'center', fontSize: '7.2pt', marginTop: '3px'}}>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>&lt;20</strong><br/><span style={{color: '#2e7d32'}}>&lt;5%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>23</strong><br/><span style={{color: '#2e7d32'}}>15%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>31</strong><br/><span style={{color: '#f57c00'}}>50%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>35</strong><br/><span style={{color: '#e64a19'}}>70%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>40+</strong><br/><span style={{color: '#c62828'}}>&gt;90%</span></div>
+                </div>
+              </div>
+
+              {/* PLAN Score Card */}
+              <div className="toast-card secondary" style={{fontSize: '7.8pt', padding: '10px 12px'}}>
+                <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--teal-deep)', marginBottom: '3px'}}>PLAN Score (Acute Ischemic Stroke)</h3>
+                <p style={{color: 'var(--ink-soft)', fontSize: '7.5pt', marginBottom: '4px', fontStyle: 'italic'}}>Bedside prediction of 30-day mortality/dependence</p>
+                <table style={{width: '100%', borderCollapse: 'collapse', marginBottom: '4px'}}>
+                  <thead>
+                    <tr style={{borderBottom: '1px solid var(--rule-soft)', fontSize: '7.2pt', fontWeight: 'bold'}}>
+                      <th style={{textAlign: 'left', padding: '2px 0'}}>Predictor Domain &amp; Variables</th>
+                      <th style={{textAlign: 'right', padding: '2px 0'}}>Points</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><strong>P</strong>readmission dependence / Cancer</td><td style={{textAlign: 'right'}}>1.5 pts each</td></tr>
+                    <tr><td><strong>P</strong>readmission CHF / Atrial Fibrillation</td><td style={{textAlign: 'right'}}>1.0 pt each</td></tr>
+                    <tr><td><strong>L</strong>evel of consciousness (reduced)</td><td style={{textAlign: 'right'}}>5.0 pts</td></tr>
+                    <tr><td><strong>A</strong>ge (decades)</td><td style={{textAlign: 'right'}}>1 pt per decade (max 10)</td></tr>
+                    <tr><td><strong>N</strong>eurologic: Leg / Arm weakness</td><td style={{textAlign: 'right'}}>2 pts each</td></tr>
+                    <tr><td><strong>N</strong>eurologic: Aphasia or Neglect</td><td style={{textAlign: 'right'}}>1.0 pt</td></tr>
+                  </tbody>
+                </table>
+                <strong style={{color: 'var(--teal-deep)', display: 'block', marginTop: '6px', fontSize: '7.8pt'}}>Score vs. 30-Day Mortality Risk:</strong>
+                <div style={{display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '4px', textAlign: 'center', fontSize: '7.2pt', marginTop: '3px'}}>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>&lt;6</strong><br/><span style={{color: '#2e7d32'}}>0.7%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>9-10</strong><br/><span style={{color: '#2e7d32'}}>4.4%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>13</strong><br/><span style={{color: '#f57c00'}}>15%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>16</strong><br/><span style={{color: '#e64a19'}}>35%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>&gt;19</strong><br/><span style={{color: '#c62828'}}>&gt;65%</span></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom section: ICH Score and mRS Scale */}
+            <div style={{display: 'grid', gridTemplateColumns: '0.95fr 1.05fr', gap: '12px', marginBottom: '12px'}}>
+              {/* ICH Score Card */}
+              <div className="toast-card alert-red" style={{fontSize: '7.8pt', padding: '10px 12px'}}>
+                <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--red-deep)', marginBottom: '3px'}}>ICH Score (Intracerebral Hemorrhage)</h3>
+                <p style={{color: 'var(--ink-soft)', fontSize: '7.5pt', marginBottom: '4px', fontStyle: 'italic'}}>Predicts 30-day mortality in spontaneous ICH</p>
+                <table style={{width: '100%', borderCollapse: 'collapse', marginBottom: '4px'}}>
+                  <thead>
+                    <tr style={{borderBottom: '1px solid var(--rule-soft)', fontSize: '7.2pt', fontWeight: 'bold'}}>
+                      <th style={{textAlign: 'left', padding: '2px 0'}}>Predictor Component</th>
+                      <th style={{textAlign: 'right', padding: '2px 0'}}>Points</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><strong>GCS Score:</strong> 3–4 (2 pts) | 5–12 (1 pt) | 13–15 (0 pts)</td><td style={{textAlign: 'right'}}>0–2 pts</td></tr>
+                    <tr><td><strong>Age:</strong> &ge; 80 years</td><td style={{textAlign: 'right'}}>1 pt</td></tr>
+                    <tr><td><strong>ICH Volume:</strong> &ge; 30 mL</td><td style={{textAlign: 'right'}}>1 pt</td></tr>
+                    <tr><td><strong>Intraventricular Hemorrhage (IVH):</strong> Present</td><td style={{textAlign: 'right'}}>1 pt</td></tr>
+                    <tr><td><strong>Infratentorial Origin of Hemorrhage</strong></td><td style={{textAlign: 'right'}}>1 pt</td></tr>
+                  </tbody>
+                </table>
+                <strong style={{color: 'var(--red-deep)', display: 'block', marginTop: '6px', fontSize: '7.8pt'}}>Score vs. 30-Day Mortality Risk:</strong>
+                <div style={{display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '3px', textAlign: 'center', fontSize: '7.2pt', marginTop: '3px'}}>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>0</strong><br/><span style={{color: '#2e7d32'}}>0%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>1</strong><br/><span style={{color: '#2e7d32'}}>13%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>2</strong><br/><span style={{color: '#f57c00'}}>26%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>3</strong><br/><span style={{color: '#e64a19'}}>72%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>4</strong><br/><span style={{color: '#c62828'}}>94%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>5-6</strong><br/><span style={{color: '#c62828'}}>100%</span></div>
+                </div>
+              </div>
+
+              {/* Modified Rankin Scale (mRS) Card */}
+              <div className="toast-card neutral" style={{fontSize: '7.8pt', padding: '10px 12px'}}>
+                <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--slate)', marginBottom: '3px'}}>Modified Rankin Scale (mRS)</h3>
+                <p style={{color: 'var(--ink-soft)', fontSize: '7.5pt', marginBottom: '4px', fontStyle: 'italic'}}>The gold standard for assessing global functional recovery</p>
+                <table style={{width: '100%', borderCollapse: 'collapse', fontSize: '7.4pt'}}>
+                  <thead>
+                    <tr style={{borderBottom: '1px solid var(--rule-soft)', fontWeight: 'bold'}}>
+                      <th style={{width: '35px', textAlign: 'center', padding: '2px 0'}}>Grade</th>
+                      <th style={{textAlign: 'left', padding: '2px 0'}}>Clinical Description of Recovery State</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td style={{textAlign: 'center', fontWeight: 'bold', color: '#2e7d32'}}>0</td><td>No symptoms at all.</td></tr>
+                    <tr><td style={{textAlign: 'center', fontWeight: 'bold', color: '#2e7d32'}}>1</td><td>No significant disability despite symptoms; able to carry out all usual duties.</td></tr>
+                    <tr><td style={{textAlign: 'center', fontWeight: 'bold', color: '#2e7d32'}}>2</td><td>Slight disability; unable to carry out all previous activities but <strong>independent</strong>.</td></tr>
+                    <tr><td style={{textAlign: 'center', fontWeight: 'bold', color: '#f57c00'}}>3</td><td>Moderate disability; requires some help but <strong>able to walk unassisted</strong>.</td></tr>
+                    <tr><td style={{textAlign: 'center', fontWeight: 'bold', color: '#e64a19'}}>4</td><td>Moderately severe; <strong>unable to walk or attend to bodily needs</strong> without assistance.</td></tr>
+                    <tr><td style={{textAlign: 'center', fontWeight: 'bold', color: '#c62828'}}>5</td><td>Severe disability; bedridden, incontinent, requiring constant nursing care.</td></tr>
+                    <tr><td style={{textAlign: 'center', fontWeight: 'bold', color: '#212121'}}>6</td><td>Dead.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Warning / Disclaimers Box */}
+            <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '8px 12px', background: 'var(--purple-soft)', marginTop: 'auto', marginBottom: '8px'}}>
+              <strong style={{color: 'var(--purple-deep)', fontSize: '9.0pt', display: 'block', marginBottom: '2px'}}>Prognostication Principles &amp; Limitations</strong>
+              <div style={{fontSize: '7.6pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
+                • **Not for Care Limitations**: These clinical scores serve to quantify severity, improve inter-provider communication, and assist in counseling. They **MUST NOT** be used in isolation as the sole basis for withholding reperfusion therapies, surgical decompression, or withdrawing life-sustaining treatment (avoiding the self-fulfilling prophecy of poor outcome).
+                <br/>• **Dynamic Evaluation**: Clinical trajectory over the first 24–72 hours is often more predictive of final recovery than any single point-in-time calculation upon hospital admission.
+              </div>
+            </div>
+
+            {/* Citations Footer */}
+            <div className="ref-citation" style={{marginTop: '0', padding: '6px 10px', fontSize: '7.2pt', lineHeight: '1.25'}}>
+              <strong>ASTRAL Score:</strong> Ntaios G, et al. *Stroke*. 2012;43:2170-6. [PMID: 22738924](https://pubmed.ncbi.nlm.nih.gov/22738924/)<br/>
+              <strong>PLAN Score:</strong> O'Donnell MJ, et al. *Arch Intern Med*. 2012;172:1548-56. [PMID: 23090225](https://pubmed.ncbi.nlm.nih.gov/23090225/)<br/>
+              <strong>ICH Score:</strong> Hemphill JC 3rd, et al. *Stroke*. 2001;32:891-7. [PMID: 11283388](https://pubmed.ncbi.nlm.nih.gov/11283388/)<br/>
+              <strong>mRS Scale:</strong> van Swieten JC, et al. *Stroke*. 1988;19:604-7. [PMID: 3363593](https://pubmed.ncbi.nlm.nih.gov/3363593/)
+            </div>
           </div>
         </div>
       </div>
