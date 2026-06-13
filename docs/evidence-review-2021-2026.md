@@ -556,3 +556,18 @@
 - Verified citation: PMID: 42258192 (https://pubmed.ncbi.nlm.nih.gov/42258192/); DOI: 10.1001/jamaneurol.2026.1706 (https://doi.org/10.1001/jamaneurol.2026.1706); NCT: NCT04892511 (https://clinicaltrials.gov/study/NCT04892511).
 
 <!-- AUTO-UPDATE 2026-06-10: HOPE BP-TARGETING VERIFIED ADDITIVE BLOCK END -->
+
+### AUTO-UPDATE 2026-06-13 - Trials: verification-gated additive block (EnTRIPS)
+<!-- machine-drafted 2026-06-13; auto-published, verification-gated -->
+<!-- AUTO-UPDATE 2026-06-13: EnTRIPS RIPC-AFTER-EVT VERIFIED ADDITIVE BLOCK START -->
+
+#### EnTRIPS - ultra-early remote ischemic postconditioning after endovascular thrombectomy
+- Inclusion class: Multicenter (8 hospitals, China; conducted April 12, 2021 to March 26, 2025), prospective, randomized, controlled, outcome-assessor-blinded definitive efficacy trial; verified by PMID, DOI, and ClinicalTrials.gov registry via the connected PubMed and ClinicalTrials.gov tools. Registry note: ClinicalTrials.gov lists this device-delivered (pneumatic-cuff) neuroprotection trial with phase "Not Applicable" (NA) rather than a numbered drug phase - flagged for physician review. This additive summary does not change local protocol text or recommendation strength.
+- Population: Adults with acute ischemic stroke due to large-vessel occlusion who presented within 24 hours of symptom onset, underwent endovascular treatment (EVT), and achieved successful recanalization; 270 patients randomized (133 RIPC and 135 control completed; mean [SD] age 65.5 [16.8] years; 171 [63.8%] men).
+- Intervention: Ultra-early remote ischemic postconditioning (RIPC) initiated within 6 hours after EVT and continued for 7 days using pneumatic devices delivering 5 cycles of bilateral upper-arm cuff inflation (5 minutes at 180 mm Hg) followed by deflation (3 minutes), plus guideline-based therapy.
+- Comparator: Guideline-based therapy alone.
+- Outcomes: Primary endpoint verbatim excerpt: "The primary outcome was functional independence at 90 days, defined as a modified Rankin Scale score of 0 to 2 (range, 0 [no symptoms] to 6 [death])." Key effect estimate verbatim excerpts: "At 90 days, functional independence was achieved in 81 (60.9%) patients in the RIPC group and 78 (57.8%) patients in the control group (adjusted risk ratio, 1.07 [95% CI, 0.89-1.30]; P=0.46)." Safety excerpt: "RIPC-related adverse events occurred in 10 of 133 (7.5%) patients, and no intervention-related adverse events occurred in the control group."
+- Interpretation for physician review: In this verified trial population, ultra-early RIPC after successful EVT was safe but did not significantly improve 90-day functional independence versus guideline-based therapy alone (authors' conclusion verbatim: "Ultra-early RIPC is safe for patients with acute ischemic stroke treated with EVT, but it does not significantly improve the 90-day functional outcomes."). Do not generalize beyond the studied large-vessel-occlusion, successfully-recanalized post-EVT population without physician review.
+- Verified citation: PMID: 42267436 (https://pubmed.ncbi.nlm.nih.gov/42267436/); DOI: 10.1161/STROKEAHA.126.054857 (https://doi.org/10.1161/STROKEAHA.126.054857); NCT: NCT04581759 (https://clinicaltrials.gov/study/NCT04581759). (Direct Crossref DOI resolution was unavailable from the automated environment due to a network egress restriction; the DOI is confirmed within the authoritative NLM/PubMed record.)
+
+<!-- AUTO-UPDATE 2026-06-13: EnTRIPS RIPC-AFTER-EVT VERIFIED ADDITIVE BLOCK END -->
