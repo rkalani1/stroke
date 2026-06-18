@@ -412,6 +412,11 @@ const EDUCATION_MODULES = [
       { label: 'AHA/ASA 2021 Guideline', citation: 'Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.', pmid: '34024117' },
       { label: 'WASID Post-Hoc', citation: 'Failure of Antithrombotic Therapy and Risk of Stroke in Patients With Symptomatic Intracranial Stenosis. Stroke. 2009;40:359-364.', pmid: '19064771' },
       { label: 'CAPRIE Trial', citation: 'CAPRIE Steering Committee. Lancet. 1996;348:1329-1339.', pmid: '8932661' },
+      { label: 'CHANCE Trial', citation: 'Wang Y, et al. Clopidogrel with Aspirin in Acute Minor Stroke or Transient Ischemic Attack. N Engl J Med. 2013;369:11-19.', pmid: '23803136' },
+      { label: 'POINT Trial', citation: 'Johnston SC, et al. Clopidogrel and Aspirin in Acute Ischemic Stroke and High-Risk TIA. N Engl J Med. 2018;379:215-225.', pmid: '29766750' },
+      { label: 'INSPIRES Trial', citation: 'Gao Y, et al. Dual Antiplatelet Therapy for Acute Ischemic Stroke or TIA. N Engl J Med. 2024;390:59-69.', pmid: '38157499' },
+      { label: 'SAMMPRIS Trial', citation: 'Chimowitz MI, et al. Stenting versus Aggressive Medical Therapy for Intracranial Arterial Stenosis. N Engl J Med. 2011;365:993-1003.', pmid: '21899409' },
+      { label: 'COMPASS Trial', citation: 'Connolly SJ, et al. Rivaroxaban with or without Aspirin in Stable Cardiovascular Disease. Lancet. 2018;391:319-328.', pmid: '29141975' },
       { label: 'Narrative Review', citation: 'Sanderson S, et al. Aspirin Resistance and Its Clinical Implications. Ann Intern Med. 2005;142:370-380.', pmid: '15738456' }
     ]
   }
@@ -4715,8 +4720,9 @@ export function AspirinFailureCard() {
             </div>
 
             <div className="ref-citation" style={{marginTop: 'auto', padding: '6px 10px 0 10px', fontSize: '8.2pt', lineHeight: '1.25', borderTop: '1px solid var(--rule-soft)'}}>
-              <strong>Guidelines:</strong> Kleindorfer DO et al. Stroke 2021. <a href="https://pubmed.ncbi.nlm.nih.gov/34024117/" target="_blank">PMID: 34024117</a>. | <strong>WASID:</strong> Stroke 2009. <a href="https://pubmed.ncbi.nlm.nih.gov/19064771/" target="_blank">PMID: 19064771</a>.<br/>
-              <strong>CAPRIE:</strong> Lancet 1996. <a href="https://pubmed.ncbi.nlm.nih.gov/8932661/" target="_blank">PMID: 8932661</a>. | <strong>Narrative Review:</strong> Ann Intern Med 2005. <a href="https://pubmed.ncbi.nlm.nih.gov/15738456/" target="_blank">PMID: 15738456</a>.
+              <strong>Guidelines:</strong> Kleindorfer DO et al. Stroke 2021. <a href="https://pubmed.ncbi.nlm.nih.gov/34024117/" target="_blank">PMID: 34024117</a>. | <strong>WASID (Resistance):</strong> Stroke 2009. <a href="https://pubmed.ncbi.nlm.nih.gov/19064771/" target="_blank">PMID: 19064771</a>. | <strong>CAPRIE:</strong> Lancet 1996. <a href="https://pubmed.ncbi.nlm.nih.gov/8932661/" target="_blank">PMID: 8932661</a>.<br/>
+              <strong>CHANCE:</strong> N Engl J Med 2013. <a href="https://pubmed.ncbi.nlm.nih.gov/23803136/" target="_blank">PMID: 23803136</a>. | <strong>POINT:</strong> N Engl J Med 2018. <a href="https://pubmed.ncbi.nlm.nih.gov/29766750/" target="_blank">PMID: 29766750</a>. | <strong>INSPIRES:</strong> N Engl J Med 2024. <a href="https://pubmed.ncbi.nlm.nih.gov/38157499/" target="_blank">PMID: 38157499</a>.<br/>
+              <strong>SAMMPRIS:</strong> N Engl J Med 2011. <a href="https://pubmed.ncbi.nlm.nih.gov/21899409/" target="_blank">PMID: 21899409</a>. | <strong>COMPASS:</strong> Lancet 2018. <a href="https://pubmed.ncbi.nlm.nih.gov/29141975/" target="_blank">PMID: 29141975</a>. | <strong>Review:</strong> Ann Intern Med 2005. <a href="https://pubmed.ncbi.nlm.nih.gov/15738456/" target="_blank">PMID: 15738456</a>.
             </div>
           </div>
         </div>
