@@ -385,6 +385,35 @@ const EDUCATION_MODULES = [
       { label: 'ICH Score', citation: 'Hemphill JC 3rd, et al. Stroke. 2001;32(4):891-897.', pmid: '11283388' },
       { label: 'mRS Scale', citation: 'van Swieten JC, et al. Stroke. 1988;19(5):604-607.', pmid: '3363593' }
     ]
+  },
+  {
+    id: 'antiepileptic-drugs',
+    title: 'Antiepileptic Drugs & Post-Stroke Seizures',
+    purpose: 'Clinical classification of post-stroke seizures, guideline-directed management, comparison of first-line and second-line antiepileptic drugs (ASMs), and post-stroke epilepsy risk scores (SeLECT and IsCHEMiA).',
+    actions: 'antiepileptic drugs antiseizure medications asm aed keppra levetiracetam lamotrigine lamictal lacosamide vimpat valproic acid depakote phenytoin dilantin select score ischemia score post-stroke epilepsy seizure prophylaxis',
+    categories: ['pocket-card', 'printable', 'icu'],
+    lastReviewed: '2026-06-13',
+    references: [
+      { label: 'AHA/ASA 2026 Stroke Guideline', citation: 'Prabhakaran S, et al. 2026 Guidelines for the Early Management of Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' },
+      { label: 'AHA/ASA 2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579047' },
+      { label: 'AHA/ASA 2023 aSAH Guideline', citation: 'Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.', pmid: '37219934' },
+      { label: 'IsCHEMiA Score Validation', citation: 'IsCHEMiA in Vascular Epilepsy: Identifying Risks for Post Stroke Epilepsy. Epilepsy Currents. 2026;26.', pmid: null },
+      { label: 'SeLECT Score Study', citation: 'Galovic M, et al. SeLECT: a prediction model for late seizures after ischemic stroke. Lancet Neurol. 2018;17(2):143-152.', pmid: '29329707' }
+    ]
+  },
+  {
+    id: 'aspirin-failure',
+    title: 'Aspirin Failure & Resistance',
+    purpose: 'Clinical definition, mechanisms of resistance, diagnostic evaluation, and evidence-based secondary prevention strategies for patients who stroke on aspirin.',
+    actions: 'aspirin resistance failure breakthrough stroke antiplatelet clopidogrel dapt wasid caprie sammpris pharmacology compliance nsaid interaction',
+    categories: ['pocket-card', 'printable', 'icu'],
+    lastReviewed: '2026-06-18',
+    references: [
+      { label: 'AHA/ASA 2021 Guideline', citation: 'Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.', pmid: '34024117' },
+      { label: 'WASID Post-Hoc', citation: 'Failure of Antithrombotic Therapy and Risk of Stroke in Patients With Symptomatic Intracranial Stenosis. Stroke. 2009;40:359-364.', pmid: '19064771' },
+      { label: 'CAPRIE Trial', citation: 'CAPRIE Steering Committee. Lancet. 1996;348:1329-1339.', pmid: '8932661' },
+      { label: 'Narrative Review', citation: 'Sanderson S, et al. Aspirin Resistance and Its Clinical Implications. Ann Intern Med. 2005;142:370-380.', pmid: '15738456' }
+    ]
   }
 ];
 
@@ -878,6 +907,10 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <BrainDeathView />;
     case 'stroke-prognosis':
       return <StrokePrognosisView />;
+    case 'antiepileptic-drugs':
+      return <AntiepilepticDrugsView />;
+    case 'aspirin-failure':
+      return <AspirinFailureView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -4283,6 +4316,292 @@ export function BrainDeathCard() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+const AntiepilepticDrugsView = () => {
+  return (
+    <PdfActionBar
+      title="Antiepileptic Drugs &amp; Post-Stroke Seizures"
+      subtitle="Antiseizure Medication (ASM) Selection &amp; Reference Card"
+      pdfPath="documents/references/Antiepileptic Drugs.pdf"
+      pdfName="Antiepileptic Drugs.pdf"
+      iconColorClass="text-violet-600 dark:text-violet-400"
+    >
+      <ScaledCardWrapper isLandscape={false}>
+        <BedsidePocketCardsStyles />
+        <AntiepilepticDrugsCard />
+      </ScaledCardWrapper>
+    </PdfActionBar>
+  );
+};
+
+export function AntiepilepticDrugsCard() {
+  const [lightboxImage, setLightboxImage] = useState(null);
+
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-antiepileptic-drugs">
+        <div className="card-container" style={{boxSizing: 'border-box', height: '1275px'}}>
+          <div className="card-content" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
+            <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Antiseizure Medications (ASMs) &amp; Stroke</h1>
+            <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
+              AHA/ASA 2026 Acute Stroke &amp; 2022 ICH Guidelines Reference Card.
+            </p>
+
+            {/* SVG Visual Pathway */}
+            <svg viewBox="0 0 735 90" style={{width: '100%', height: '90px', marginBottom: '8px'}}>
+              <rect x="0" y="0" width="735" height="90" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
+              
+              {/* Step 1 */}
+              <rect x="15" y="15" width="145" height="60" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.5" />
+              <text x="87.5" y="32" fill="var(--purple-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">1. CLASSIFY SEIZURE</text>
+              <text x="87.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Early (≤7d): Symptomatic</text>
+              <text x="87.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Late (&gt;7d): Unprovoked</text>
+              
+              {/* Arrow 1 */}
+              <path d="M 160 45 L 190 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-asm)" />
+              
+              {/* Step 2 */}
+              <rect x="190" y="15" width="145" height="60" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
+              <text x="262.5" y="32" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">2. ASSESS RISK</text>
+              <text x="262.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">IsCHEMiA Score (2026)</text>
+              <text x="262.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">SeLECT Score (Max 9)</text>
+
+              {/* Arrow 2 */}
+              <path d="M 335 45 L 365 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-asm)" />
+
+              {/* Step 3 */}
+              <rect x="365" y="15" width="145" height="60" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.5" />
+              <text x="437.5" y="32" fill="var(--amber-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">3. ASM SELECTION</text>
+              <text x="437.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">1st Line: Levetiracetam</text>
+              <text x="437.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">2nd Line: Lamotrigine</text>
+
+              {/* Arrow 3 */}
+              <path d="M 510 45 L 540 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-asm)" />
+
+              {/* Step 4 */}
+              <rect x="540" y="15" width="180" height="60" rx="6" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.5" />
+              <text x="630" y="32" fill="var(--red-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">4. MONITOR &amp; SAFETY</text>
+              <text x="630" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">ECG for Lacosamide</text>
+              <text x="630" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Avoid Phenytoin (DOAC DDI)</text>
+
+              <defs>
+                <marker id="arrow-asm" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                  <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--teal)" />
+                </marker>
+              </defs>
+            </svg>
+
+            {/* Click-to-Zoom Image Banner */}
+            <div 
+              style={{
+                width: '100%', 
+                height: '140px', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                background: 'var(--fill-soft)', 
+                borderRadius: '8px', 
+                border: '1.5px solid var(--rule-soft)', 
+                overflow: 'hidden', 
+                boxSizing: 'border-box', 
+                marginBottom: '8px'
+              }}
+              title="Antiseizure Medication Selection Pathway &amp; Profiles"
+            >
+              <div 
+                className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full h-full"
+                onClick={() => setLightboxImage({ src: 'assets/aed_stroke_selection.png', alt: 'Antiseizure Medication Selection Pathway', title: 'Antiseizure Medication Selection Pathway &amp; Profiles' })}
+              >
+                <img 
+                  src="assets/aed_stroke_selection.png" 
+                  alt="Antiseizure Medication Selection Pathway" 
+                  style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
+                  className="transition-transform duration-200 group-hover:scale-[1.02]"
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
+                  <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
+                    <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Grid for Seizure Classification & Risk Scores */}
+            <div className="toast-grid" style={{marginBottom: '10px'}}>
+              {/* Column 1: Classification & Prophylaxis */}
+              <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+                <div className="toast-card primary" style={{padding: '8px 10px'}}>
+                  <h3 style={{fontSize: '9pt', fontWeight: '800', color: 'var(--purple-deep)', marginBottom: '3px'}}>1. Seizure Classification &amp; Prophylaxis</h3>
+                  <ul className="toast-card-list" style={{fontSize: '7.6pt', lineHeight: '1.35'}}>
+                    <li><strong>Early Seizure (Acute Symptomatic):</strong> Occurs <strong>&le; 7 days</strong> of stroke. Caused by local tissue injury, excitotoxicity. Low long-term epilepsy risk. Routine prophylaxis is <strong>NOT recommended</strong>.</li>
+                    <li><strong>Late Seizure (Unprovoked):</strong> Occurs <strong>&gt; 7 days</strong> of stroke. Caused by structural scar tissue/remodeling. High recurrence risk (&gt;70%). A single late seizure defines <strong>Post-Stroke Epilepsy (PSE)</strong>; initiates long-term ASM.</li>
+                    <li><strong>AHA/ASA Prophylaxis Guidelines:</strong>
+                      <br/>• <strong>AIS &amp; ICH:</strong> Routine ASM prophylaxis is **not recommended** (Class III).
+                      <br/>• <strong>aSAH:</strong> Routine prophylaxis is **not beneficial** (Class III); however, a short course (3-7 days) *may* be considered in high-risk features (MCA aneurysm, high-grade SAH, hydrocephalus, or cortical infarction) (Class IIb).
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="toast-card secondary" style={{padding: '8px 10px'}}>
+                  <h3 style={{fontSize: '9pt', fontWeight: '800', color: 'var(--teal-deep)', marginBottom: '3px'}}>2. Continuous EEG (cEEG) Indications</h3>
+                  <ul className="toast-card-list" style={{fontSize: '7.6pt', lineHeight: '1.35'}}>
+                    <li><strong>ICH &amp; aSAH:</strong> cEEG (&ge;24h) is reasonable for unexplained or fluctuating mental status, or clinical suspicion of seizures (Class IIa).</li>
+                    <li><strong>AIS:</strong> Indicated for fluctuating neuro deficits not explained by perfusion, or suspicion of non-convulsive status epilepticus.</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Column 2: Risk Stratification Scores */}
+              <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+                <div className="toast-card alert-orange" style={{padding: '8px 10px'}}>
+                  <h3 style={{fontSize: '9pt', fontWeight: '800', color: 'var(--amber-deep)', marginBottom: '3px'}}>3. IsCHEMiA Score (2026 Validation)</h3>
+                  <p style={{fontSize: '7.4pt', color: 'var(--ink-soft)', marginBottom: '4px', lineHeight: '1.2'}}>
+                    Predicts 1-year and 5-year post-stroke epilepsy risk after ischemic stroke.
+                  </p>
+                  <table style={{width: '100%', fontSize: '7.2pt', borderCollapse: 'collapse', marginBottom: '4px', lineHeight: '1.2'}}>
+                    <thead>
+                      <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
+                        <th style={{textAlign: 'left', padding: '2px 0'}}>Predictor Variable</th>
+                        <th style={{textAlign: 'right', padding: '2px 0'}}>Points</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style={{padding: '2px 0'}}><strong>Is</strong> - Infarct size &ge; 5 cm</td>
+                        <td style={{textAlign: 'right', padding: '2px 0'}}><strong>2</strong></td>
+                      </tr>
+                      <tr>
+                        <td style={{padding: '2px 0'}}><strong>C</strong> - Cortical involvement</td>
+                        <td style={{textAlign: 'right', padding: '2px 0'}}><strong>1</strong></td>
+                      </tr>
+                      <tr>
+                        <td style={{padding: '2px 0'}}><strong>H</strong> - Hemorrhagic transformation</td>
+                        <td style={{textAlign: 'right', padding: '2px 0'}}><strong>2</strong></td>
+                      </tr>
+                      <tr>
+                        <td style={{padding: '2px 0'}}><strong>E</strong> - Early seizures (&le; 7 days)</td>
+                        <td style={{textAlign: 'right', padding: '2px 0'}}><strong>2</strong></td>
+                      </tr>
+                      <tr>
+                        <td style={{padding: '2px 0'}}><strong>Mi</strong> - MCA involvement</td>
+                        <td style={{textAlign: 'right', padding: '2px 0'}}><strong>1</strong></td>
+                      </tr>
+                      <tr>
+                        <td style={{padding: '2px 0'}}><strong>A</strong> - Age younger than 65</td>
+                        <td style={{textAlign: 'right', padding: '2px 0'}}><strong>1</strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div style={{fontSize: '7.2pt', borderTop: '1px dashed rgba(217,134,11,0.3)', paddingTop: '4px', lineHeight: '1.2'}}>
+                    <strong>Interpretation:</strong>
+                    <br/>• Score 3: Low risk (2% at 1yr, 6% at 5yr)
+                    <br/>• Score &ge;8: High risk (67% at 1yr, 78% at 5yr)
+                  </div>
+                </div>
+
+                <div className="toast-card neutral" style={{padding: '8px 10px'}}>
+                  <h3 style={{fontSize: '9pt', fontWeight: '800', color: 'var(--slate)', marginBottom: '3px'}}>4. SeLECT Prognostic Score</h3>
+                  <table style={{width: '100%', fontSize: '7.2pt', borderCollapse: 'collapse', marginBottom: '4px', lineHeight: '1.2'}}>
+                    <thead>
+                      <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
+                        <th style={{textAlign: 'left', padding: '2px 0'}}>Clinical Variable</th>
+                        <th style={{textAlign: 'right', padding: '2px 0'}}>Points</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style={{padding: '2px 0'}}><strong>Se</strong> - Severity (NIHSS: &ge;16 = 2, 9-15 = 1, 0-8 = 0)</td>
+                        <td style={{textAlign: 'right', padding: '2px 0'}}><strong>0–2</strong></td>
+                      </tr>
+                      <tr>
+                        <td style={{padding: '2px 0'}}><strong>L</strong> - Large-artery atherosclerosis</td>
+                        <td style={{textAlign: 'right', padding: '2px 0'}}><strong>1</strong></td>
+                      </tr>
+                      <tr>
+                        <td style={{padding: '2px 0'}}><strong>E</strong> - Early seizures (&le; 7 days)</td>
+                        <td style={{textAlign: 'right', padding: '2px 0'}}><strong>3</strong></td>
+                      </tr>
+                      <tr>
+                        <td style={{padding: '2px 0'}}><strong>C</strong> - Cortical lesion involvement</td>
+                        <td style={{textAlign: 'right', padding: '2px 0'}}><strong>2</strong></td>
+                      </tr>
+                      <tr>
+                        <td style={{padding: '2px 0'}}><strong>T</strong> - Territory of MCA involvement</td>
+                        <td style={{textAlign: 'right', padding: '2px 0'}}><strong>1</strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div style={{fontSize: '7.2pt', borderTop: '1px dashed rgba(74,90,109,0.3)', paddingTop: '4px', lineHeight: '1.2'}}>
+                    <strong>Interpretation:</strong> Score 0 (3% risk at 5yr), Score 3 (9% risk at 5yr), Score 6 (34% risk at 5yr), Score 9 (83% risk at 5yr).
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Antiseizure Medications (ASMs) Selection Table */}
+            <div className="toast-card alert-red" style={{padding: '8px 10px', display: 'flex', flexDirection: 'column', flexGrow: 1}}>
+              <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--red-deep)', marginBottom: '4px', textAlign: 'center'}}>5. Clinical ASM Comparison Matrix</h3>
+              <table style={{width: '100%', fontSize: '7.4pt', borderCollapse: 'collapse', textAlign: 'left', lineHeight: '1.3'}}>
+                <thead>
+                  <tr style={{borderBottom: '1.5px solid var(--rule)', color: 'var(--ink)'}}>
+                    <th style={{padding: '4px', width: '15%'}}>ASM (Brand)</th>
+                    <th style={{padding: '4px', width: '22%'}}>Dosing (Load / Maint)</th>
+                    <th style={{padding: '4px', width: '15%'}}>Clearance</th>
+                    <th style={{padding: '4px', width: '25%'}}>Drug Interactions</th>
+                    <th style={{padding: '4px', width: '23%'}}>Key Adverse Effects</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
+                    <td style={{padding: '4px'}}><strong>Levetiracetam</strong><br/>(Keppra)</td>
+                    <td style={{padding: '4px'}}>Load: 20-30 mg/kg IV<br/>Maint: 500-1500 mg q12h</td>
+                    <td style={{padding: '4px'}}>Renal excretion<br/><span style={{color: 'var(--red)'}}>(Adjust for GFR)</span></td>
+                    <td style={{padding: '4px', color: 'var(--teal-deep)'}}><strong>None (CYP independent)</strong><br/>Safe with DOACs/antiplatelets</td>
+                    <td style={{padding: '4px'}}>Irritability, agitation ("Kepprage"), somnolence.</td>
+                  </tr>
+                  <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
+                    <td style={{padding: '4px'}}><strong>Lamotrigine</strong><br/>(Lamictal)</td>
+                    <td style={{padding: '4px'}}><span style={{color: 'var(--red)', fontWeight: '600'}}>No acute load (PO only)</span><br/>Slow 2-week titration</td>
+                    <td style={{padding: '4px'}}>Hepatic glucuronidation</td>
+                    <td style={{padding: '4px', color: 'var(--teal-deep)'}}><strong>Minimal</strong><br/>Safe with DOACs</td>
+                    <td style={{padding: '4px'}}><span style={{color: 'var(--red)', fontWeight: '600'}}>SJS/TEN severe rash</span> (linked to rapid titration).</td>
+                  </tr>
+                  <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
+                    <td style={{padding: '4px'}}><strong>Lacosamide</strong><br/>(Vimpat)</td>
+                    <td style={{padding: '4px'}}>Load: 200-400 mg IV<br/>Maint: 100-200 mg q12h</td>
+                    <td style={{padding: '4px'}}>Renal &amp; Hepatic</td>
+                    <td style={{padding: '4px', color: 'var(--teal-deep)'}}><strong>Minimal</strong><br/>Safe with DOACs</td>
+                    <td style={{padding: '4px'}}><span style={{color: 'var(--red)', fontWeight: '600'}}>PR prolongation</span>, AV block (ECG baseline!), dizziness.</td>
+                  </tr>
+                  <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
+                    <td style={{padding: '4px'}}><strong>Valproic Acid</strong><br/>(Depakote)</td>
+                    <td style={{padding: '4px'}}>Load: 20-40 mg/kg IV<br/>Maint: 250-1000 mg q12h</td>
+                    <td style={{padding: '4px'}}>Hepatic metabolism</td>
+                    <td style={{padding: '4px'}}><span style={{color: 'var(--red)', fontWeight: '600'}}>Enzyme Inhibitor:</span> Increases levels of other drugs.</td>
+                    <td style={{padding: '4px'}}>Thrombocytopenia, hyperammonemia, hepatotoxicity.</td>
+                  </tr>
+                  <tr>
+                    <td style={{padding: '4px'}}><strong>Phenytoin</strong><br/>(Dilantin)</td>
+                    <td style={{padding: '4px'}}>Load: 15-20 mg/kg IV<br/>Maint: 300-400 mg daily</td>
+                    <td style={{padding: '4px'}}>Hepatic metabolism<br/>(Saturable kinetics)</td>
+                    <td style={{padding: '4px'}}><span style={{color: 'var(--red)', fontWeight: '600'}}>Strong CYP Inducer:</span> **Lowers DOAC &amp; statin levels** (highly discouraged!).</td>
+                    <td style={{padding: '4px'}}>Ataxia, nystagmus, gingival hypertrophy, osteoporosis.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Citations Footer */}
+            <div className="ref-citation" style={{marginTop: 'auto', padding: '6px 10px 0 10px', fontSize: '8.2pt', lineHeight: '1.25', borderTop: '1px solid var(--rule-soft)'}}>
+              <strong>AIS Guidelines:</strong> Prabhakaran S et al. Stroke. 2026. <a href="https://pubmed.ncbi.nlm.nih.gov/41582814/" target="_blank">PMID: 41582814</a>. | <strong>ICH Guidelines:</strong> Greenberg SM et al. Stroke. 2022. <a href="https://pubmed.ncbi.nlm.nih.gov/35579047/" target="_blank">PMID: 35579047</a>.<br/>
+              <strong>IsCHEMiA Score:</strong> Epilepsy Currents. 2026. | <strong>SeLECT Score:</strong> Galovic M et al. Lancet Neurol. 2018. <a href="https://pubmed.ncbi.nlm.nih.gov/29329707/" target="_blank">PMID: 29329707</a>.
+            </div>
+          </div>
+        </div>
+      </div>
       {lightboxImage && (
         <ImageLightbox 
           src={lightboxImage.src} 
@@ -4294,3 +4613,115 @@ export function BrainDeathCard() {
     </div>
   );
 }
+
+const AspirinFailureView = () => {
+  return (
+    <PdfActionBar
+      title="Aspirin Failure &amp; Resistance"
+      subtitle="Antiplatelet Failure Guidelines &amp; Clinical Management"
+      pdfPath="documents/references/Aspirin Failure.pdf"
+      pdfName="Aspirin Failure.pdf"
+      iconColorClass="text-amber-600 dark:text-amber-400"
+    >
+      <ScaledCardWrapper isLandscape={false}>
+        <BedsidePocketCardsStyles />
+        <AspirinFailureCard />
+      </ScaledCardWrapper>
+    </PdfActionBar>
+  );
+};
+
+export function AspirinFailureCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-aspirin-failure">
+        <div className="card-container" style={{boxSizing: 'border-box', height: '1275px'}}>
+          <div className="card-content" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
+            <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Aspirin Failure &amp; Resistance</h1>
+            <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
+              AHA/ASA 2021 Secondary Prevention Guidelines &amp; Landmark Trial Reference.
+            </p>
+
+            <svg viewBox="0 0 735 125" style={{width: '100%', height: '125px', marginBottom: '10px'}}>
+              <rect x="0" y="0" width="735" height="125" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
+              
+              <rect x="20" y="20" width="150" height="40" rx="20" fill="var(--purple-deep)" />
+              <text x="95" y="40" fill="white" fontSize="8.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle" dominantBaseline="central">ASPIRIN (Irreversible)</text>
+              
+              <path d="M 170 40 L 255 40" stroke="var(--purple)" strokeWidth="2" fill="none" />
+              <polygon points="260,40 252,36 252,44" fill="var(--purple)" />
+              
+              <rect x="260" y="20" width="200" height="40" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.5" />
+              <text x="360" y="35" fill="var(--purple-deep)" fontSize="8.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PLATELET COX-1 ENZYME</text>
+              <text x="360" y="48" fill="var(--ink-soft)" fontSize="6.8pt" fontFamily="IBM Plex Sans" textAnchor="middle">Acetylation Site (Ser-529)</text>
+              
+              <path d="M 460 40 L 545 40" stroke="var(--teal)" strokeWidth="2" fill="none" />
+              <polygon points="550,40 542,36 542,44" fill="var(--teal)" />
+              
+              <rect x="550" y="20" width="160" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
+              <text x="630" y="35" fill="var(--teal-deep)" fontSize="8.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">THROMBOXANE A₂</text>
+              <text x="630" y="48" fill="var(--red-deep)" fontSize="6.8pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">Platelet Activation &amp; Clotting</text>
+              
+              <rect x="260" y="82" width="200" height="30" rx="15" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.5" />
+              <text x="360" y="97" fill="var(--red-deep)" fontSize="8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle" dominantBaseline="central">REVERSIBLE NSAID (Ibuprofen)</text>
+              
+              <path d="M 360 82 L 360 68" stroke="var(--red)" strokeWidth="1.5" strokeDasharray="2 2" fill="none" />
+              <polygon points="360,63 357,70 363,70" fill="var(--red)" />
+              <text x="365" y="74" fill="var(--red-deep)" fontSize="6.5pt" fontFamily="IBM Plex Sans" fontWeight="700">COMPETITIVE BLOCK</text>
+            </svg>
+
+            <div className="toast-grid" style={{marginBottom: '10px'}}>
+              <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+                <div className="toast-card primary">
+                  <h3>1. Clinical Triage Pathway</h3>
+                  <ul className="toast-card-list" style={{fontSize: '8.5pt'}}>
+                    <li><strong>Verify Adherence:</strong> Confirm patient daily intake, review pharmacy logs, and confirm adherence. Non-compliance represents up to 40% of suspected resistance cases.</li>
+                    <li><strong>Identify Stroke Etiology (TOAST):</strong> Perform diagnostic workup (ECG/ telemetry/ Echocardiogram, head/neck vascular imaging). Rule out cardioembolic sources (e.g. AFib requires oral anticoagulants).</li>
+                    <li><strong>Screen Drug Interactions:</strong> Review concomitant medications, especially daily reversible NSAIDs like ibuprofen or naproxen.</li>
+                  </ul>
+                </div>
+
+                <div className="toast-card neutral">
+                  <h3>2. Mechanisms of True Resistance</h3>
+                  <ul className="toast-card-list" style={{fontSize: '8.5pt'}}>
+                    <li><strong>Competitive Binding:</strong> Reversible NSAIDs occupy the COX-1 binding pocket, preventing aspirin from permanently binding and acetylating serine-529.</li>
+                    <li><strong>Accelerated Platelet Turnover:</strong> High inflammation, severe diabetes, infection, or major surgery releases new, uninhibited platelets into circulation within 24 hours.</li>
+                    <li><strong>Genetics:</strong> Specific gene polymorphisms in <em>PTGS1</em> (COX-1) or <em>ITGB3</em> (Glycoprotein IIIa) receptor may reduce aspirin sensitivity.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+                <div className="toast-card secondary">
+                  <h3>3. Evidence-Based Management</h3>
+                  <ul className="toast-card-list" style={{fontSize: '8.5pt'}}>
+                    <li><strong>Monotherapy Switch:</strong> Switch to Clopidogrel 75mg daily. CAPRIE trial (PMID: 8932661) showed significant relative risk reduction of 8.7% with clopidogrel vs. aspirin in stroke/vascular patients.</li>
+                    <li><strong>Short-Term DAPT Escalation:</strong> For minor stroke (NIHSS &le; 3) or high-risk TIA (ABCD&sup2; &ge; 4), escalate to DAPT (Aspirin + Clopidogrel) for 21 days (CHANCE/POINT) or up to 90 days (INSPIRES).</li>
+                    <li><strong>Severe Symptomatic Stenosis:</strong> Initiate Aspirin + Clopidogrel for 90 days + intensive risk control per SAMMPRIS protocol (PMID: 21899409).</li>
+                    <li><strong>Polyvascular Disease:</strong> Consider dual pathway inhibition (low-dose Rivaroxaban 2.5mg BID + Aspirin 100mg daily) per COMPASS trial (PMID: 29141975).</li>
+                  </ul>
+                </div>
+
+                <div className="toast-card alert-red">
+                  <h3>4. Critical Drug Interaction Alert</h3>
+                  <p style={{fontSize: '8.3pt', lineHeight: '1.4', color: 'var(--ink-soft)', marginTop: '4px'}}>
+                    Reversible NSAIDs block the irreversible acetylation of COX-1 by aspirin, neutralizing its antiplatelet effect and elevating thrombosis risk.
+                  </p>
+                  <div style={{marginTop: '6px', fontSize: '8.3pt', color: 'var(--red-deep)', fontWeight: 'bold', borderTop: '1px dashed var(--rule)', paddingTop: '6px'}}>
+                    Counseling: Take aspirin at least 30 minutes before or 8 hours after reversible NSAIDs, or switch to acetaminophen.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="ref-citation" style={{marginTop: 'auto', padding: '6px 10px 0 10px', fontSize: '8.2pt', lineHeight: '1.25', borderTop: '1px solid var(--rule-soft)'}}>
+              <strong>Guidelines:</strong> Kleindorfer DO et al. Stroke 2021. <a href="https://pubmed.ncbi.nlm.nih.gov/34024117/" target="_blank">PMID: 34024117</a>. | <strong>WASID:</strong> Stroke 2009. <a href="https://pubmed.ncbi.nlm.nih.gov/19064771/" target="_blank">PMID: 19064771</a>.<br/>
+              <strong>CAPRIE:</strong> Lancet 1996. <a href="https://pubmed.ncbi.nlm.nih.gov/8932661/" target="_blank">PMID: 8932661</a>. | <strong>Narrative Review:</strong> Ann Intern Med 2005. <a href="https://pubmed.ncbi.nlm.nih.gov/15738456/" target="_blank">PMID: 15738456</a>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
