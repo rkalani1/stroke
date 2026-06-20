@@ -39,8 +39,8 @@
     "evidence:template:top5": "node ./scripts/evidence-promotion-template.mjs --limit 5",
     "evidence:index": "node ./scripts/evidence-ops-index.mjs",
     "evidence:refresh": "npm run validate:evidence-churn-profiles && npm run evidence:watch && npm run evidence:promote && npm run evidence:template && npm run evidence:template:p0 && npm run evidence:index && npm run validate:evidence-promotion",
-    "test": "npm run validate:citations && npm run validate:inline-citations && npm run evidence:validate && npm run validate:whats-new && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && npm run validate:automedbench-lite && node ./scripts/qa-smoke.mjs --local-only",
-    "qa": "npm run validate:citations && npm run validate:inline-citations && npm run evidence:validate && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && npm run validate:automedbench-lite && node ./scripts/qa-smoke.mjs",
+    "test": "npm run check:leak-guard && npm run validate:citations && npm run validate:inline-citations && npm run evidence:validate && npm run validate:whats-new && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && npm run validate:automedbench-lite && node ./scripts/qa-smoke.mjs --local-only",
+    "qa": "npm run check:leak-guard && npm run validate:citations && npm run validate:inline-citations && npm run evidence:validate && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && npm run validate:automedbench-lite && node ./scripts/qa-smoke.mjs",
     "qa:latency-adaptive-local": "node ./scripts/qa-smoke.mjs --local-only --latency-profile adaptive --latency-profiles-file docs/qa-latency-profiles.json --enforce-latency-thresholds",
     "qa:latency:recalibrate": "node ./scripts/qa-latency-recalibration.mjs",
     "qa:latency:suggest": "node ./scripts/qa-latency-threshold-suggest.mjs",
@@ -55,7 +55,10 @@
     "test:unit:watch": "vitest",
     "lint:tokens": "node ./scripts/lint-tokens.mjs",
     "lint:touch-targets": "node ./scripts/lint-touch-targets.mjs",
-    "lint:contrast": "node ./scripts/lint-contrast.mjs"
+    "lint:contrast": "node ./scripts/lint-contrast.mjs",
+    "check:leak-guard": "git ls-files | node ./scripts/check-no-institutional-leak.mjs",
+    "check:leak-guard:staged": "git diff --cached --name-only --diff-filter=ACMR | node ./scripts/check-no-institutional-leak.mjs",
+    "hooks:install": "git config core.hooksPath .githooks"
   },
   "keywords": [],
   "author": "",
