@@ -1,0 +1,86 @@
+# Stroke Clinical Decision Support
+
+> Client-side, offline-capable stroke CDS toolkit (v6.9.24): acute ischemic & hemorrhagic stroke pathways, 24 calculators, an evidence atlas (58 landmark trials, 9 active trials), guideline summaries, and a trial screener. Institution-neutral and evidence-based.
+
+Decision support only — NOT medical advice and NOT a substitute for clinical judgment. Institution-neutral and evidence-based; verify against primary sources and local policy before any patient care decision.
+
+## Machine-readable data (static JSON API)
+- [API manifest](https://rkalani1.github.io/stroke/data/index.json): all endpoints + addressable routes
+- [Completed trials](https://rkalani1.github.io/stroke/data/atlas/completed-trials.json)
+- [Active trials](https://rkalani1.github.io/stroke/data/atlas/active-trials.json)
+- [Recommendations](https://rkalani1.github.io/stroke/data/atlas/recommendations.json)
+- [Citations](https://rkalani1.github.io/stroke/data/atlas/citations.json)
+- [Guidelines index](https://rkalani1.github.io/stroke/data/guidelines/index.json)
+- [Management cards](https://rkalani1.github.io/stroke/data/management-cards.json)
+- [Generic BP protocols](https://rkalani1.github.io/stroke/data/generic-protocols.json)
+- [What's new feed](https://rkalani1.github.io/stroke/whats-new.json)
+- [Calculators index](https://rkalani1.github.io/stroke/data/calculators-index.json)
+
+## Addressable views (hash routes)
+- `#/encounter` — Encounter workflow
+- `#/protocols` — Protocols & algorithms (institution-neutral)
+- `#/protocols/ischemic` — Acute ischemic stroke pathways
+- `#/protocols/ich` — Intracerebral hemorrhage
+- `#/protocols/calculators` — Calculators
+- `#/research` — Evidence atlas / guidelines
+- `#/trials` — Trial screener / matrix
+- `#/education` — Education hub
+
+## For AI agents
+- A stroke-CDS MCP server (in the repo under `/mcp`) exposes the calculators and atlas as callable tools.
+- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, source, disclaimer).
+- No hospital-specific institutional content is published here; the site is institution-neutral by design.
+
+## Policy
+- Not medical advice. Verify against primary sources (PMIDs/DOIs included in the atlas) and local policy.
+- License: Content for clinical reference by qualified clinicians. No warranty.
+
+## Endpoint detail
+All endpoints share the envelope: `{ "_meta": {...}, "data": ... }`. `_meta.checksum` is a
+sha256 prefix of the payload — poll it to detect data changes (it is stable across rebuilds
+unless the underlying clinical data changed).
+
+### Calculators
+- `nihss` — NIH Stroke Scale (severity)
+- `ich-score` — ICH Score (prognosis)
+- `ich-volume` — ICH Volume (ABC/2) (imaging)
+- `gcs` — Glasgow Coma Scale (severity)
+- `abcd2` — ABCD² (TIA risk) (risk)
+- `aspects-pc` — pc-ASPECTS (imaging)
+- `chadsvasc` — CHA₂DS₂-VASc (risk)
+- `hasbled` — HAS-BLED (risk)
+- `rope` — RoPE (PFO) (risk)
+- `rcvs2` — RCVS² (risk)
+- `phases` — PHASES (aneurysm) (risk)
+- `tnk-dose` — Tenecteplase dose (0.25 mg/kg) (dosing)
+- `alteplase-dose` — Alteplase dose (0.9 mg/kg) (dosing)
+- `doac-start` — DOAC start timing (post-stroke AF) (dosing)
+- `pcc-dose` — 4F-PCC dose (dosing)
+- `andexanet` — Andexanet alfa dose (dosing)
+- `enoxaparin` — Enoxaparin dose (dosing)
+- `crcl` — Creatinine clearance (Cockcroft-Gault) (dosing)
+- `dawn` — DAWN EVT eligibility (reperfusion)
+- `defuse3` — DEFUSE-3 EVT eligibility (reperfusion)
+- `acute-dapt` — Acute DAPT recommendation (secondary-prevention)
+- `essen` — Essen Stroke Risk Score (risk)
+- `spi2` — Stroke Prognosis Instrument II (prognosis)
+- `vasograde` — VASOGRADE (DCI risk) (risk)
+
+### Guidelines
+- AIS 2026 — 195 recommendations (doi:10.1161/STR.0000000000000513)
+- Cancer-Associated Stroke 2026 — 18 recommendations (doi:10.1161/STR.0000000000000517)
+- Heart-Brain Health 2024 — 9 recommendations (doi:10.1161/STR.0000000000000476)
+- CVT Statement 2024 — 5 recommendations (doi:10.1161/STR.0000000000000456)
+- ICH 2022 — 124 recommendations (doi:10.1161/STR.0000000000000407)
+- Maternal Stroke 2026 — 3 recommendations (doi:10.1161/STR.0000000000000514)
+- Perioperative Stroke 2021 — 10 recommendations (doi:10.1161/CIR.0000000000000968)
+- Poststroke Cognition 2023 — 10 recommendations (doi:10.1161/STR.0000000000000430)
+- Poststroke Primary Care 2021 — 20 recommendations (doi:10.1161/STR.0000000000000382)
+- Poststroke Spasticity 2026 — 30 recommendations (doi:10.1161/STR.0000000000000515)
+- Premorbid Disability 2022 — 5 recommendations (doi:10.1161/STR.0000000000000406)
+- Primary Prevention 2024 — 80 recommendations (doi:10.1161/STR.0000000000000475)
+- aSAH 2023 — 81 recommendations (doi:10.1161/STR.0000000000000436)
+- Secondary Prevention 2021 — 162 recommendations (doi:10.1161/STR.0000000000000375)
+- SVIN Large-Core EVT 2025 — 4 recommendations (doi:10.1161/SVIN.124.001581)
+- Systemic Complications 2024 — 3 recommendations (doi:10.1161/STR.0000000000000477)
+- TIA ED 2023 — 12 recommendations (doi:10.1161/STR.0000000000000418)
