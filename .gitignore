@@ -7,6 +7,12 @@ node_modules/
 # and fill in your real institutional content.
 private/
 src/institutional-protocols.local.js
+
+# Agent discovery / OneDrive-extract scratch. Contains extracted institutional
+# source material (protocols, pocket-card images, code-stroke checklists) used
+# only to author the gitignored private/ layer. MUST NOT be public — untracked
+# 2026-06-19 after the leak guard found it tracked. Keep local; never commit.
+.discovery/
 .pw-audit.mjs
 .pw-audit-report.json
 .DS_Store
