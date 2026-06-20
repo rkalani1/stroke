@@ -52,14 +52,18 @@ Branch new work from `origin/main` (the working tree was found on a stale branch
   92-file dump of HMC institutional source material that was tracked in the public repo.
   Full-tree guard: 244 files, 0 violations.
 
-## Next steps (in order)
-1. **OPEN DECISION:** git-history scrub for the `.discovery/` content still in `main`'s
-   history (force-push, owner-approved). See PR #39 follow-up note.
-2. Build Workstream **B** locally (private layer) — see the OneDrive source-of-truth list
-   in the session notes; author `private/institutional.js`. *Local-machine task only.*
-3. Workstream **A** (agent-readiness data layer) — new branch off `main`.
-4. Workstream **C** (MCP server).
-5. Workstream **D** (clinical-currency + hygiene).
+## Status (2026-06-19, end of autopilot session)
+- ✅ **Safety** — leak guard (PR #39) + full git-history scrub of `.discovery` across all 14 branches (filter-repo, force-pushed). `main` clean; 0 commits touch `.discovery`.
+- ✅ **A · Agent-readiness** (PR #40, merged) — `data/*.json` API + `llms.txt`/`robots.txt`/`sitemap.xml` + JSON-LD. `npm run agent:assets`.
+- ✅ **C · MCP server** (PR #40, merged) — `mcp/` stdio server, 16 tools (smoke passes).
+- ✅ **B · Private layer** (local-only) — `private/institutional.js`: 33 sections, 812 items, 20 contacts, 6 provisional/draft flagged. Verified end-to-end in a browser on localhost (injects + renders the "local — not public" section); host-gate keeps it off `github.io`.
+- 🔶 **D · Clinical-currency + hygiene** — vitest honest-count fix shipped (this PR). ESCAPE-MeVO/DISTAL + HOPE-BP already on main. See "Documented, not done" below.
+
+## Documented, not done (need owner judgment / deliberate work)
+- **4 dangling `recommendationId`s** in `src/management-guidance.js`: only `rec-ais-ivt-within-45h`→`rec-tnk-first-line` has a real atlas target; the other 3 (AIS-BP, MeVO, post-IVT-complications) have NO atlas rec — fixing means *authoring new cited recommendations*, not a mechanical repoint. Cosmetic (UI resolves via `COMMAND_CENTER_REC_TO_ATLAS_REC` fallback). Deferred.
+- **ASPECTS 0-2 EVT row** already nuanced (IIa/B-R for *selected* patients w/ criteria); changing COR→IIb needs AHA/ASA-2026 verification, not a mechanical edit.
+- **3 stale stashes** on `fix/qa-smoke-current-ui` are NON-trivial (app.jsx + a 168-line qa-smoke.mjs refactor) — NOT dropped. Owner: decide if any is worth recovering, else `git stash clear`.
+- **Optional larger optimizations** (owner to direct): code-split the 36k-line `src/app.jsx` monolith (biggest perf/maintainability lever, higher risk on the committed-bundle model); bedside-productivity UI (deep-link share button, door-to-needle timer ring); more MCP calculator tools (NIHSS/ICH-score/ABCD2 score builders).
 
 ## Guardrails (do not violate)
 - **Never** commit real HMC/UW/Harborview content, pager/phone numbers, room codes, or
