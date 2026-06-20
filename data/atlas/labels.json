@@ -1,0 +1,106 @@
+{
+  "_meta": {
+    "endpoint": "labels",
+    "schemaVersion": "1.0.0",
+    "appVersion": "6.9.24",
+    "checksum": "sha256:7add003e86927f0fb0f62b75b0945ab4",
+    "count": 4,
+    "source": "src/evidence/index.js",
+    "license": "Content for clinical reference by qualified clinicians. No warranty.",
+    "disclaimer": "Decision support only — NOT medical advice and NOT a substitute for clinical judgment. Institution-neutral and evidence-based; verify against primary sources and local policy before any patient care decision."
+  },
+  "data": {
+    "verificationStatus": {
+      "verified-pubmed": {
+        "label": "Verified · PubMed",
+        "tone": "emerald"
+      },
+      "verified-doi": {
+        "label": "Verified · DOI",
+        "tone": "emerald"
+      },
+      "verified-clinicaltrials-gov": {
+        "label": "Verified · CT.gov",
+        "tone": "emerald"
+      },
+      "verified-guideline": {
+        "label": "Verified · Guideline",
+        "tone": "emerald"
+      },
+      "verified-rct": {
+        "label": "Verified · RCT",
+        "tone": "emerald"
+      },
+      "unverified-source-limited": {
+        "label": "Source-limited",
+        "tone": "amber"
+      },
+      "todo-verify": {
+        "label": "Verify",
+        "tone": "amber"
+      },
+      "disputed": {
+        "label": "Disputed",
+        "tone": "rose"
+      }
+    },
+    "certainty": {
+      "high": {
+        "label": "High certainty",
+        "tone": "emerald"
+      },
+      "moderate": {
+        "label": "Moderate certainty",
+        "tone": "sky"
+      },
+      "low": {
+        "label": "Low certainty",
+        "tone": "amber"
+      },
+      "very-low": {
+        "label": "Very low certainty",
+        "tone": "rose"
+      }
+    },
+    "evidenceType": {
+      "rct": {
+        "label": "RCT",
+        "tone": "sky"
+      },
+      "meta-analysis": {
+        "label": "Meta-analysis",
+        "tone": "sky"
+      },
+      "observational": {
+        "label": "Observational",
+        "tone": "slate"
+      },
+      "guideline": {
+        "label": "Guideline",
+        "tone": "indigo"
+      },
+      "consensus": {
+        "label": "Consensus",
+        "tone": "slate"
+      }
+    },
+    "activeStatus": {
+      "recruiting": {
+        "label": "Recruiting",
+        "tone": "emerald"
+      },
+      "active-not-recruiting": {
+        "label": "Active · not recruiting",
+        "tone": "sky"
+      },
+      "enrolling-by-invitation": {
+        "label": "Enrolling by invitation",
+        "tone": "sky"
+      },
+      "completed-pending-results": {
+        "label": "Completed · pending results",
+        "tone": "slate"
+      }
+    }
+  }
+}

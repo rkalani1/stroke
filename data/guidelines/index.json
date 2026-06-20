@@ -1,0 +1,184 @@
+{
+  "_meta": {
+    "endpoint": "guidelines-index",
+    "schemaVersion": "1.0.0",
+    "appVersion": "6.9.24",
+    "checksum": "sha256:0dcbb5b06d5f5bebbbac2d79637acef2",
+    "count": 17,
+    "source": "src/guidelines/",
+    "license": "Content for clinical reference by qualified clinicians. No warranty.",
+    "disclaimer": "Decision support only — NOT medical advice and NOT a substitute for clinical judgment. Institution-neutral and evidence-based; verify against primary sources and local policy before any patient care decision."
+  },
+  "data": [
+    {
+      "id": "ais-2026",
+      "title": "AHA/ASA Early Management of Acute Ischemic Stroke 2026",
+      "shortTitle": "AIS 2026",
+      "doi": "10.1161/STR.0000000000000513",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000513",
+      "recommendationCount": 195,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/ais-2026.json"
+    },
+    {
+      "id": "cancer-stroke-2026",
+      "title": "AHA Scientific Statement 2026: Classification and Management of Ischemic Stroke in Patients With Active Cancer",
+      "shortTitle": "Cancer-Associated Stroke 2026",
+      "doi": "10.1161/STR.0000000000000517",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000517",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000517",
+      "recommendationCount": 18,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/cancer-stroke-2026.json"
+    },
+    {
+      "id": "cardiac-brain-health-2024",
+      "title": "AHA Scientific Statement 2024: Cardiac Contributions to Brain Health",
+      "shortTitle": "Heart-Brain Health 2024",
+      "doi": "10.1161/STR.0000000000000476",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000476",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000476",
+      "recommendationCount": 9,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/cardiac-brain-health-2024.json"
+    },
+    {
+      "id": "cvt-2024",
+      "title": "AHA Cerebral Venous Thrombosis Scientific Statement 2024",
+      "shortTitle": "CVT Statement 2024",
+      "doi": "10.1161/STR.0000000000000456",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000456",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456",
+      "recommendationCount": 5,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/cvt-2024.json"
+    },
+    {
+      "id": "ich-2022",
+      "title": "AHA/ASA Spontaneous ICH Guideline 2022",
+      "shortTitle": "ICH 2022",
+      "doi": "10.1161/STR.0000000000000407",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407",
+      "recommendationCount": 124,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/ich-2022.json"
+    },
+    {
+      "id": "maternal-stroke-2026",
+      "title": "AHA Maternal Stroke in Pregnancy and Postpartum Scientific Statement 2026",
+      "shortTitle": "Maternal Stroke 2026",
+      "doi": "10.1161/STR.0000000000000514",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000514",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000514",
+      "recommendationCount": 3,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/maternal-stroke-2026.json"
+    },
+    {
+      "id": "perioperative-stroke-2021",
+      "title": "AHA Scientific Statement 2021: Perioperative Neurological Evaluation and Stroke Risk Reduction",
+      "shortTitle": "Perioperative Stroke 2021",
+      "doi": "10.1161/CIR.0000000000000968",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000968",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/CIR.0000000000000968",
+      "recommendationCount": 10,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/perioperative-stroke-2021.json"
+    },
+    {
+      "id": "poststroke-cognitive-2023",
+      "title": "AHA Scientific Statement 2023: Cognitive Impairment After Ischemic and Hemorrhagic Stroke",
+      "shortTitle": "Poststroke Cognition 2023",
+      "doi": "10.1161/STR.0000000000000430",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000430",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000430",
+      "recommendationCount": 10,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/poststroke-cognitive-2023.json"
+    },
+    {
+      "id": "poststroke-primary-care-2021",
+      "title": "AHA/ASA Scientific Statement 2021: Primary Care of Adult Patients After Stroke",
+      "shortTitle": "Poststroke Primary Care 2021",
+      "doi": "10.1161/STR.0000000000000382",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000382",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000382",
+      "recommendationCount": 20,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/poststroke-primary-care-2021.json"
+    },
+    {
+      "id": "poststroke-spasticity-2026",
+      "title": "AHA Scientific Statement 2026: Early Recognition and Intervention for Poststroke Spasticity",
+      "shortTitle": "Poststroke Spasticity 2026",
+      "doi": "10.1161/STR.0000000000000515",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000515",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000515",
+      "recommendationCount": 30,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/poststroke-spasticity-2026.json"
+    },
+    {
+      "id": "premorbid-disability-2022",
+      "title": "AHA Scientific Statement 2022: EVT and Thrombolysis in AIS With Premorbid Disability or Dementia",
+      "shortTitle": "Premorbid Disability 2022",
+      "doi": "10.1161/STR.0000000000000406",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000406",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000406",
+      "recommendationCount": 5,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/premorbid-disability-2022.json"
+    },
+    {
+      "id": "primary-prevention-2024",
+      "title": "AHA/ASA Primary Prevention of Stroke 2024",
+      "shortTitle": "Primary Prevention 2024",
+      "doi": "10.1161/STR.0000000000000475",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000475",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000475",
+      "recommendationCount": 80,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/primary-prevention-2024.json"
+    },
+    {
+      "id": "sah-2023",
+      "title": "AHA/ASA Aneurysmal Subarachnoid Hemorrhage 2023",
+      "shortTitle": "aSAH 2023",
+      "doi": "10.1161/STR.0000000000000436",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000436",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436",
+      "recommendationCount": 81,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/sah-2023.json"
+    },
+    {
+      "id": "secondary-prevention-2021",
+      "title": "AHA/ASA Secondary Stroke Prevention 2021",
+      "shortTitle": "Secondary Prevention 2021",
+      "doi": "10.1161/STR.0000000000000375",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000375",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375",
+      "recommendationCount": 162,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/secondary-prevention-2021.json"
+    },
+    {
+      "id": "svin-large-core-2025",
+      "title": "SVIN 2025 Guideline: EVT for Large Infarct",
+      "shortTitle": "SVIN Large-Core EVT 2025",
+      "doi": "10.1161/SVIN.124.001581",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/SVIN.124.001581",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/SVIN.124.001581",
+      "recommendationCount": 4,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/svin-large-core-2025.json"
+    },
+    {
+      "id": "systemic-complications-2024",
+      "title": "AHA Systemic Complications of Acute Stroke Scientific Statement 2024",
+      "shortTitle": "Systemic Complications 2024",
+      "doi": "10.1161/STR.0000000000000477",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000477",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000477",
+      "recommendationCount": 3,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/systemic-complications-2024.json"
+    },
+    {
+      "id": "tia-ed-2023",
+      "title": "AHA Scientific Statement 2023: Diagnosis, Workup, and Risk Reduction of TIA in the Emergency Department",
+      "shortTitle": "TIA ED 2023",
+      "doi": "10.1161/STR.0000000000000418",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000418",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000418",
+      "recommendationCount": 12,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/tia-ed-2023.json"
+    }
+  ]
+}

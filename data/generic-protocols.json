@@ -1,0 +1,60 @@
+{
+  "_meta": {
+    "endpoint": "generic-protocols",
+    "schemaVersion": "1.0.0",
+    "appVersion": "6.9.24",
+    "checksum": "sha256:d8afcae29b04d7a3bb0daddb7f4f790c",
+    "count": 2,
+    "source": "src/institutional-protocols.js",
+    "license": "Content for clinical reference by qualified clinicians. No warranty.",
+    "disclaimer": "Decision support only — NOT medical advice and NOT a substitute for clinical judgment. Institution-neutral and evidence-based; verify against primary sources and local policy before any patient care decision."
+  },
+  "data": {
+    "bpProtocols": {
+      "beforeIVT": {
+        "scenario": "Before IVT",
+        "target": "BP <185/110",
+        "cor": "1",
+        "loe": "B-NR",
+        "protocol": "Labetalol 10 mg IV, repeat q15 min; escalate to 20 mg, then 40 mg, then 60 mg (max single bolus). Max 300 mg in 2h.",
+        "alternatives": "Nicardipine 5 mg/hr IV, titrate by 2.5 mg/hr q5 min (max 15 mg/hr). Clevidipine 1-2 mg/hr, double q90 sec (max 32 mg/hr)."
+      },
+      "afterIVT24h": {
+        "scenario": "After IVT (24h)",
+        "target": "BP <180/105",
+        "cor": "1",
+        "loe": "B-R",
+        "protocol": "Monitor q15 min × 2h → q30 min × 6h → q1h until 24h. Treat if SBP >180 or DBP >105."
+      },
+      "afterEVT24h": {
+        "scenario": "After EVT (24h)",
+        "target": "BP <180/105",
+        "cor": "2a",
+        "loe": "B-NR",
+        "protocol": "For successful recanalization (mTICI ≥2b) maintain SBP in range 140-180 (preserve SBP floor of 140)."
+      },
+      "sbpLT140IVT": {
+        "scenario": "SBP <140 after IVT",
+        "status": "Not recommended",
+        "cor": "3 (No Benefit)",
+        "loe": "B-R",
+        "rationale": "No functional improvement vs <180 target (ENCHANTED2-MT context)."
+      },
+      "sbpLT140EVT": {
+        "scenario": "SBP <140 after EVT (×72h)",
+        "status": "Likely harmful / Class III (Harm)",
+        "cor": "3 (Harm)",
+        "loe": "A (4 RCTs negative/harm)",
+        "rationale": "Formal Class III (Potential Harm) COR in AHA/ASA 2026 Guidelines. Lowering SBP below 140 mm Hg after successful endovascular therapy is associated with increased risk of death or disability. ENCHANTED2-MT (Lancet 2022, n=821) worse mRS shift with <120 × 72h; OPTIMAL-BP (JAMA 2023, n=306) worse mRS 0-2 with <140; BP-TARGET (Lancet Neurol 2021, n=324) neutral/trend harm with 100-129; BEST-II (JAMA 2023) futility for lower targets. Practical implication: maintain SBP floor of 140 (typically 140-180 target) for ≥72h post-successful EVT."
+      },
+      "noReperfusion": {
+        "scenario": "Ischemic stroke (no reperfusion therapy)",
+        "target": "Permissive until SBP ≥220/120",
+        "cor": "3 (No Benefit)",
+        "loe": "A",
+        "rationale": "No benefit to initiating antihypertensive treatment if BP <220/120 without comorbid indication."
+      }
+    },
+    "safePauseAttestation": "#STROKESAFEPAUSE"
+  }
+}
