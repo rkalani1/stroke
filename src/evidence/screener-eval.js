@@ -3,17 +3,6 @@
 // Pure, DOM-free port of the standalone stroke-trials-screener eligibility
 // engine. No React, no browser globals — fully unit-testable.
 //
-//   • evaluateTrialEligibility(trial, p): dual optimistic/pessimistic evaluation
-//     with per-field "pending input" probing → status
-//     eligible | pending | soon | excluded | closed | placeholder.
-//   • buildScreenerParams(state): turns the UI `screenerState` object into the
-//     resolved `p` params object (~80 keys incl. ~60 ex* exclusion flags).
-//   • evaluateAll(state): buckets every trial, computes the patient
-//     timeCategory, sorts buckets by onset-window proximity, and returns a
-//     structured result (+ a copy-paste briefing note).
-//   • buildBriefingNote(...): the EPIC-style referral note used by the
-//     "copy briefing" button.
-//
 // COMPLIANCE: unverified studies (sourceCompletenessStatus !== 'complete', and
 // status 'placeholder') are surfaced separately and never returned as
 // 'eligible' — the engine forces a full registry/protocol confirmation step.
@@ -22,7 +11,6 @@ import { screenerTrials } from './screenerTrials.js';
 
 /* ── Constants the UI also needs ───────────────────────────────────── */
 
-// Onset preset pills (label / value / unit / phase descriptor).
 export const ONSET_PRESETS = [
   { name: '< 4.5h', val: 2, unit: 'hours', desc: 'Hyperacute' },
   { name: '4.5 – 24h', val: 12, unit: 'hours', desc: 'Acute' },
@@ -32,8 +20,6 @@ export const ONSET_PRESETS = [
   { name: '> 6mo', val: 8, unit: 'months', desc: 'Chronic' }
 ];
 
-// Dynamic exclusion checklist. `classifications` gate visibility by stroke
-// type; `trials` gate visibility by which trials are still potentially active.
 export const EXCLUSION_ITEMS = [
   { id: 'exThrombolysis', label: 'Prior Thrombolysis (tPA/TNK) for index stroke', classifications: ['ischemic'], trials: ['SISTER'] },
   { id: 'exEvt', label: 'Prior EVT with clot engagement', classifications: ['ischemic'], trials: ['SISTER'] },
@@ -77,8 +63,6 @@ export const EXCLUSION_ITEMS = [
   { id: 'exEgfr30', label: 'eGFR < 30 ml/min/1.73m²', classifications: ['ich'], trials: ['CAPPRICORN-1'] }
 ];
 
-// The full list of exclusion ids, used to seed `p` with `false` defaults so
-// trial `check` functions never see undefined exclusion flags.
 const ALL_EXCLUSION_IDS = [
   'exThrombolysis', 'exEvt', 'exStroke90d', 'exMultipleTerritories', 'exTandem',
   'exTerminalIllness', 'exSecondaryIch', 'exMidbrain', 'exMassiveIvh',
@@ -99,13 +83,46 @@ const ALL_EXCLUSION_IDS = [
   'exCongestiveHeartFailure', 'exEgfr30'
 ];
 
+/* ── Evaluation Engine ─────────────────────────────────────────────── */
+
+const OPERATORS = {
+  '==': (p, v) => p === v,
+  '!=': (p, v) => p !== v,
+  '>=': (p, v) => typeof p === 'number' && p >= v,
+  '<=': (p, v) => typeof p === 'number' && p <= v,
+  '>': (p, v) => typeof p === 'number' && p > v,
+  '<': (p, v) => typeof p === 'number' && p < v,
+  'between': (p, v) => typeof p === 'number' && p >= v[0] && p <= v[1],
+  'in': (p, v) => Array.isArray(v) && v.includes(p)
+};
+
+function evaluateCriterion(c, p) {
+  if (c.operator === 'or') {
+    return c.branches.some(b => b.criteria.every(cc => evaluateCriterion(cc, p)));
+  }
+  const val = p[c.field];
+  const op = OPERATORS[c.operator];
+  if (!op) return false;
+  return op(val, c.value);
+}
+
+function getActiveBranch(c, p) {
+  if (c.operator !== 'or') return null;
+  return c.branches.find(b => b.criteria.every(cc => evaluateCriterion(cc, p)));
+}
+
+function formatLabel(label, p, field) {
+  if (!label) return '';
+  return label.replace('{value}', p[field]);
+}
+
 /* ── Default screenerState ─────────────────────────────────────────── */
 
 export function createInitialScreenerState() {
   return {
-    classification: 'unselected', // 'ischemic' | 'ich' | 'tia' | 'unselected'
+    classification: 'unselected',
     onsetVal: 2,
-    onsetUnit: 'hours', // 'hours' | 'days' | 'months'
+    onsetUnit: 'hours',
     age: 'unselected',
     nihss: 'unselected',
     aspects: 'unselected',
@@ -116,8 +133,8 @@ export function createInitialScreenerState() {
     ichLocation: 'unselected',
     volume: 'unselected',
     statin: 'unselected',
-    language: 'unselected', // true(en/es) | false(other) | 'unselected'
-    rehab: 'unselected', // true | false | 'unselected'
+    language: 'unselected',
+    rehab: 'unselected',
     self_consent: 'unselected',
     availability_54w: 'unselected',
     ueWeakness: 'unselected',
@@ -127,22 +144,16 @@ export function createInitialScreenerState() {
     singleAntiplateletSoc: 'unselected',
     afibHistory: 'unselected',
     takingOac: 'unselected',
-    exclusions: {} // { [id]: boolean }
+    exclusions: {}
   };
 }
-
-/* ── Onset conversion ──────────────────────────────────────────────── */
 
 export function onsetToHours(onsetVal, onsetUnit) {
   if (onsetUnit === 'hours') return onsetVal;
   if (onsetUnit === 'days') return onsetVal * 24;
-  return onsetVal * 30 * 24; // months
+  return onsetVal * 30 * 24;
 }
 
-/* ── Param builder ─────────────────────────────────────────────────── */
-
-// Translate one `screenerState` into the resolved `p` object the trial
-// `check`/text functions consume.
 export function buildScreenerParams(state) {
   const onsetHours = onsetToHours(state.onsetVal, state.onsetUnit);
   const onsetDays = onsetHours / 24.0;
@@ -163,8 +174,7 @@ export function buildScreenerParams(state) {
     ichLocation: state.ichLocation,
     volume: state.volume,
     statin: state.statin,
-    language:
-      state.language === true ? 'english' : state.language === false ? 'other' : 'unselected',
+    language: state.language === true ? 'english' : state.language === false ? 'other' : 'unselected',
     rehab: state.rehab === true ? 'yes' : state.rehab === false ? 'none' : 'unselected',
     self_consent: state.self_consent,
     availability_54w: state.availability_54w,
@@ -181,207 +191,97 @@ export function buildScreenerParams(state) {
   ALL_EXCLUSION_IDS.forEach((id) => {
     p[id] = !!ex[id];
   });
-  // Location-derived midbrain exclusion (matches source behavior).
   p.exMidbrain = !!ex.exMidbrain || state.ichLocation === 'thalamic' || state.ichLocation === 'infratentorial';
 
   return p;
 }
 
-/* ── Core evaluator: optimistic/pessimistic dual-eval ──────────────── */
-
 export function evaluateTrialEligibility(trial, p) {
   if (trial.status === 'closed') {
-    return {
-      status: 'closed',
-      matchedCriteria: [],
-      pendingCriteria: [],
-      pendingFields: [],
-      exclusionReasons: ['Study is closed to enrollment'],
-      sourceGaps: trial.sourceGaps || []
-    };
+    return { status: 'closed', matchedCriteria: [], pendingCriteria: [], pendingFields: [], exclusionReasons: ['Study is closed to enrollment'], sourceGaps: trial.sourceGaps || [] };
   }
   if (trial.status === 'placeholder') {
-    return {
-      status: 'placeholder',
-      matchedCriteria: [],
-      pendingCriteria: [],
-      pendingFields: [],
-      exclusionReasons: ['Incomplete study profile in source; screening not possible'],
-      sourceGaps: trial.sourceGaps || []
-    };
+    return { status: 'placeholder', matchedCriteria: [], pendingCriteria: [], pendingFields: [], exclusionReasons: ['Incomplete study profile in source; screening not possible'], sourceGaps: trial.sourceGaps || [] };
   }
 
-  // Pessimistic: resolve 'unselected' to the most restrictive values.
   const pessP = { ...p };
-  if (pessP.age === 'unselected') pessP.age = 17;
-  if (pessP.nihss === 'unselected') pessP.nihss = -1;
-  if (pessP.aspects === 'unselected') pessP.aspects = -1;
-  if (pessP.gcs === 'unselected') pessP.gcs = -1;
-  if (pessP.preMrs === 'unselected') pessP.preMrs = 6;
-  if (pessP.vessel === 'unselected') pessP.vessel = 'none';
-  if (pessP.etiology === 'unselected') pessP.etiology = 'none';
-  if (pessP.ichLocation === 'unselected') pessP.ichLocation = 'none';
-  if (pessP.volume === 'unselected') pessP.volume = 'none';
-  if (pessP.statin === 'unselected') pessP.statin = false;
-  if (pessP.afibHistory === 'unselected') pessP.afibHistory = false;
-  if (pessP.takingOac === 'unselected') pessP.takingOac = false;
-  if (pessP.language === 'unselected') pessP.language = 'other';
-  if (pessP.rehab === 'unselected') pessP.rehab = 'none';
-  if (pessP.self_consent === 'unselected') pessP.self_consent = false;
-  if (pessP.availability_54w === 'unselected') pessP.availability_54w = false;
-  if (pessP.exUeWeakness === 'unselected') pessP.exUeWeakness = false;
-  if (pessP.unilateralSymptomatic === 'unselected') pessP.unilateralSymptomatic = false;
-  if (pessP.anteriorCirculation === 'unselected') pessP.anteriorCirculation = false;
-  if (pessP.presentedWithin24h === 'unselected') pessP.presentedWithin24h = false;
-  if (pessP.singleAntiplateletSoc === 'unselected') pessP.singleAntiplateletSoc = false;
+  const UNSELECTED_MAP = { age: 17, nihss: -1, aspects: -1, gcs: -1, preMrs: 6, vessel: 'none', etiology: 'none', ichLocation: 'none', volume: 'none', statin: false, afibHistory: false, takingOac: false, language: 'other', rehab: 'none', self_consent: false, availability_54w: false, exUeWeakness: false, unilateralSymptomatic: false, anteriorCirculation: false, presentedWithin24h: false, singleAntiplateletSoc: false };
+  Object.keys(UNSELECTED_MAP).forEach(k => { if (pessP[k] === 'unselected') pessP[k] = UNSELECTED_MAP[k]; });
 
-  // Optimistic: resolve 'unselected' to the most permissive values.
   const optP = { ...p };
-  if (optP.age === 'unselected') {
-    if (trial.acronym === 'MR-PICS') optP.age = 45;
-    else if (trial.acronym === 'TELE-REHAB-2') optP.age = 45;
-    else optP.age = 65;
-  }
-  if (optP.nihss === 'unselected') {
-    if (trial.acronym === 'STEP') optP.nihss = 3;
-    else optP.nihss = 8;
-  }
-  if (optP.aspects === 'unselected') optP.aspects = 8;
-  if (optP.gcs === 'unselected') optP.gcs = 15;
-  if (optP.preMrs === 'unselected') {
-    if (trial.acronym === 'TESTED' || trial.acronym === 'MR-PICS') optP.preMrs = 3;
-    else optP.preMrs = 0;
-  }
-  if (optP.vessel === 'unselected') {
-    if (trial.acronym === 'STEP') optP.vessel = 'ica_m1';
-    else if (trial.acronym === 'TESTED') optP.vessel = 'ica_m1';
-    else optP.vessel = 'none';
-  }
-  if (optP.etiology === 'unselected') {
-    if (trial.acronym === 'ESUS' || trial.acronym === 'MOCHA') optP.etiology = 'esus';
-    else optP.etiology = 'other';
-  }
-  if (optP.ichLocation === 'unselected') optP.ichLocation = 'bg';
-  if (optP.volume === 'unselected') {
-    if (trial.acronym === 'MINUTE') optP.volume = 'bg_large';
-    else optP.volume = 'small';
-  }
-  if (optP.statin === 'unselected') optP.statin = false;
-  if (optP.afibHistory === 'unselected') {
-    if (trial.acronym === 'INTERCEPT' || trial.acronym === 'ASPIRE') optP.afibHistory = true;
-    else optP.afibHistory = false;
-  }
-  if (optP.takingOac === 'unselected') {
-    if (trial.acronym === 'INTERCEPT') optP.takingOac = true;
-    else optP.takingOac = false;
-  }
-  if (optP.language === 'unselected') optP.language = 'english';
-  if (optP.rehab === 'unselected') optP.rehab = 'yes';
-  if (optP.self_consent === 'unselected') optP.self_consent = true;
-  if (optP.availability_54w === 'unselected') optP.availability_54w = true;
-  if (optP.exUeWeakness === 'unselected') optP.exUeWeakness = true;
-  if (optP.unilateralSymptomatic === 'unselected') optP.unilateralSymptomatic = true;
-  if (optP.anteriorCirculation === 'unselected') optP.anteriorCirculation = true;
-  if (optP.presentedWithin24h === 'unselected') optP.presentedWithin24h = true;
-  if (optP.singleAntiplateletSoc === 'unselected') optP.singleAntiplateletSoc = true;
+  const OPT_DEFAULTS = { age: 65, nihss: 8, aspects: 8, gcs: 15, preMrs: 0, vessel: 'none', etiology: 'other', ichLocation: 'bg', volume: 'small', statin: false, afibHistory: false, takingOac: false, language: 'english', rehab: 'yes', self_consent: true, availability_54w: true, exUeWeakness: true, unilateralSymptomatic: true, anteriorCirculation: true, presentedWithin24h: true, singleAntiplateletSoc: true };
+  const trialDefaults = trial.optimisticDefaults || {};
+  Object.keys(OPT_DEFAULTS).forEach(k => { if (optP[k] === 'unselected') optP[k] = trialDefaults[k] !== undefined ? trialDefaults[k] : OPT_DEFAULTS[k]; });
 
-  const optErrors = trial.check(optP);
+  const optErrors = [];
+  trial.eligibility.criteria.forEach(c => { if (!evaluateCriterion(c, optP)) optErrors.push(c.error); });
+  trial.eligibility.exclusions.forEach(c => { if (evaluateCriterion(c, optP)) optErrors.push(c.error); });
+
   if (optErrors.length > 0) {
-    return {
-      status: 'excluded',
-      matchedCriteria: [],
-      pendingCriteria: [],
-      pendingFields: [],
-      exclusionReasons: optErrors,
-      sourceGaps: trial.sourceGaps || []
-    };
+    return { status: 'excluded', matchedCriteria: [], pendingCriteria: [], pendingFields: [], exclusionReasons: optErrors, sourceGaps: trial.sourceGaps || [] };
   }
 
-  const pessErrors = trial.check(pessP);
-  const isSoon =
-    trial.status === 'soon' ||
-    (trial.acronym === 'ASPIRE' && p.onsetDays < 14) ||
-    (trial.acronym === 'VERIFY' && p.onsetHours < 24) ||
-    (trial.acronym === 'TELE-REHAB-2' && p.onsetDays < 90);
-  const requiresSourceConfirmation =
-    !!trial.sourceCompletenessStatus && trial.sourceCompletenessStatus !== 'complete';
+  const isSoon = trial.status === 'soon' || (trial.acronym === 'ASPIRE' && p.onsetDays < 14) || (trial.acronym === 'VERIFY' && p.onsetHours < 24) || (trial.acronym === 'TELE-REHAB-2' && p.onsetDays < 90);
+  const requiresSourceConfirmation = !!trial.sourceCompletenessStatus && trial.sourceCompletenessStatus !== 'complete';
 
   const pendingFields = [];
   const fieldsToTest = [
-    { key: 'age', label: 'Age' },
-    { key: 'nihss', label: 'NIHSS Score' },
-    { key: 'aspects', label: 'ASPECTS Score' },
-    { key: 'gcs', label: 'GCS Score' },
-    { key: 'preMrs', label: 'mRS / functional status' },
-    { key: 'vessel', label: 'Vessel status' },
-    { key: 'etiology', label: 'Stroke Subtype' },
-    { key: 'ichLocation', label: 'Hemorrhage Location' },
-    { key: 'volume', label: 'Hematoma Volume' },
-    { key: 'statin', label: 'Statin at onset' },
-    { key: 'afibHistory', label: 'Atrial Fibrillation history' },
-    { key: 'takingOac', label: 'Anticoagulation status' },
-    { key: 'language', label: 'Language spoken' },
-    { key: 'rehab', label: 'Rehab unit placement' },
-    { key: 'self_consent', label: 'Patient able to self-consent' },
-    { key: 'availability_54w', label: '54-week visits availability' },
-    { key: 'exUeWeakness', label: 'Upper extremity weakness' },
-    { key: 'unilateralSymptomatic', label: 'Unilateral symptomatic AIS' },
-    { key: 'anteriorCirculation', label: 'Anterior circulation' },
-    { key: 'presentedWithin24h', label: 'Presented within 24h' },
-    { key: 'singleAntiplateletSoc', label: 'Single antiplatelet SOC' }
+    { key: 'age', label: 'Age' }, { key: 'nihss', label: 'NIHSS Score' }, { key: 'aspects', label: 'ASPECTS Score' }, { key: 'gcs', label: 'GCS Score' }, { key: 'preMrs', label: 'mRS / functional status' }, { key: 'vessel', label: 'Vessel status' }, { key: 'etiology', label: 'Stroke Subtype' }, { key: 'ichLocation', label: 'Hemorrhage Location' }, { key: 'volume', label: 'Hematoma Volume' }, { key: 'statin', label: 'Statin at onset' }, { key: 'afibHistory', label: 'Atrial Fibrillation history' }, { key: 'takingOac', label: 'Anticoagulation status' }, { key: 'language', label: 'Language spoken' }, { key: 'rehab', label: 'Rehab unit placement' }, { key: 'self_consent', label: 'Patient able to self-consent' }, { key: 'availability_54w', label: '54-week visits availability' }, { key: 'exUeWeakness', label: 'Upper extremity weakness' }, { key: 'unilateralSymptomatic', label: 'Unilateral symptomatic AIS' }, { key: 'anteriorCirculation', label: 'Anterior circulation' }, { key: 'presentedWithin24h', label: 'Presented within 24h' }, { key: 'singleAntiplateletSoc', label: 'Single antiplatelet SOC' }
   ];
 
   fieldsToTest.forEach((f) => {
     if (p[f.key] === 'unselected') {
       const testP = { ...optP };
       testP[f.key] = pessP[f.key];
-      const testErrors = trial.check(testP);
-      if (testErrors.length > optErrors.length) {
-        pendingFields.push(f.label);
-      }
+      const hasFailure = trial.eligibility.criteria.some(c => !evaluateCriterion(c, testP)) || trial.eligibility.exclusions.some(c => evaluateCriterion(c, testP));
+      if (hasFailure) pendingFields.push(f.label);
     }
   });
 
+  if (requiresSourceConfirmation) pendingFields.push('Full registry/protocol confirmation');
+
+  const matchedCriteria = [];
+  trial.eligibility.criteria.forEach(c => {
+    if (evaluateCriterion(c, p)) {
+      const label = c.operator === 'or' ? getActiveBranch(c, p)?.label : formatLabel(c.matchedLabel, p, c.field);
+      if (label) matchedCriteria.push(label);
+    }
+  });
+
+  const pendingCriteria = [];
+  trial.eligibility.criteria.forEach(c => {
+    if (p[c.field] === 'unselected' || (c.operator === 'or' && c.branches.some(b => b.criteria.some(cc => p[cc.field] === 'unselected')))) {
+      if (c.pendingLabel) pendingCriteria.push(c.pendingLabel);
+    }
+  });
+  trial.eligibility.exclusions.forEach(c => {
+    if (p[c.field] === 'unselected' && c.pendingLabel) pendingCriteria.push(c.pendingLabel);
+  });
+  (trial.eligibility.manualPending || []).forEach(m => pendingCriteria.push(m));
+
   if (requiresSourceConfirmation) {
-    pendingFields.push('Full registry/protocol confirmation');
+    pendingCriteria.push('Confirm the full ClinicalTrials.gov record, approved local protocol, activation status, consent path, and study-owner instructions before any clinical or recruitment action');
   }
 
-  if (pessErrors.length > 0 || pendingFields.length > 0) {
-    const pendingCriteria = trial.pendingCriteriaText(p).slice();
-    if (requiresSourceConfirmation) {
-      pendingCriteria.push(
-        'Confirm the full ClinicalTrials.gov record, approved local protocol, activation status, consent path, and study-owner instructions before any clinical or recruitment action'
-      );
-    }
-    return {
-      status: isSoon ? 'soon' : 'pending',
-      matchedCriteria: trial.matchedCriteriaText(p),
-      pendingCriteria,
-      pendingFields,
-      exclusionReasons: [],
-      sourceGaps: trial.sourceGaps || []
-    };
-  }
+  const finalStatus = (pendingFields.length > 0 || trial.eligibility.criteria.some(c => !evaluateCriterion(c, pessP)) || trial.eligibility.exclusions.some(c => evaluateCriterion(c, pessP)))
+    ? (isSoon ? 'soon' : 'pending')
+    : (isSoon ? 'soon' : 'eligible');
 
   return {
-    status: isSoon ? 'soon' : 'eligible',
-    matchedCriteria: trial.matchedCriteriaText(p),
-    pendingCriteria: trial.pendingCriteriaText(p),
-    pendingFields: [],
+    status: finalStatus,
+    matchedCriteria,
+    pendingCriteria,
+    pendingFields,
     exclusionReasons: [],
     sourceGaps: trial.sourceGaps || []
   };
 }
 
-// A trial is "potentially active" if it's not closed/placeholder and not
-// (optimistically) excluded — used to gate which exclusion rows are shown.
 export function isTrialPotentiallyActive(trial, p) {
   if (trial.status === 'closed' || trial.status === 'placeholder') return false;
   const res = evaluateTrialEligibility(trial, p);
   return res.status !== 'excluded';
 }
-
-/* ── Time category + onset-window sorting ──────────────────────────── */
 
 export function patientTimeCategory(onsetDays) {
   if (onsetDays <= 1) return 'hyperacute';
@@ -399,16 +299,13 @@ export function getTimeSortingScore(trialCategory, patientCategory) {
     if (trialCategory === 'subacute_chronic') return 2;
     return 1;
   }
-  // subacute_chronic
   if (trialCategory === 'subacute_chronic') return 3;
   if (trialCategory === 'acute_subacute') return 2;
   return 1;
 }
 
 function sortListByTime(list, patientCategory) {
-  list.forEach((item, idx) => {
-    item.originalIndex = idx;
-  });
+  list.forEach((item, idx) => { item.originalIndex = idx; });
   list.sort((a, b) => {
     const scoreA = getTimeSortingScore(a.trial.timeCategory, patientCategory);
     const scoreB = getTimeSortingScore(b.trial.timeCategory, patientCategory);
@@ -418,75 +315,25 @@ function sortListByTime(list, patientCategory) {
   return list;
 }
 
-/* ── Top-level: evaluate every trial and bucket the results ────────── */
-
-// state → {
-//   ready, params, timeCategory,
-//   eligible[], pending[], soon[], excluded[], closed[], incomplete[],
-//   briefingNote
-// }
-// Each bucket item: { trial, status, matchedCriteria, pendingCriteria,
-//                     pendingFields, exclusionReasons, sourceGaps }
 export function evaluateAll(state, trials = screenerTrials) {
   const ready = !!state.classification && state.classification !== 'unselected' && state.classification !== '';
-
   const params = buildScreenerParams(state);
-
-  const eligible = [];
-  const pending = [];
-  const soon = [];
-  const excluded = [];
-  const closed = [];
-  const incomplete = [];
+  const buckets = { eligible: [], pending: [], soon: [], excluded: [], closed: [], incomplete: [] };
 
   if (ready) {
     trials.forEach((trial) => {
       const r = evaluateTrialEligibility(trial, params);
-      const item = {
-        trial,
-        status: r.status,
-        matchedCriteria: r.matchedCriteria,
-        pendingCriteria: r.pendingCriteria,
-        pendingFields: r.pendingFields || [],
-        exclusionReasons: r.exclusionReasons || [],
-        sourceGaps: r.sourceGaps || []
-      };
-      if (r.status === 'placeholder') incomplete.push(item);
-      else if (r.status === 'closed') closed.push(item);
-      else if (r.status === 'excluded') excluded.push(item);
-      else if (r.status === 'pending') pending.push(item);
-      else if (r.status === 'soon') soon.push(item);
-      else if (r.status === 'eligible') eligible.push(item);
+      const item = { trial, status: r.status, matchedCriteria: r.matchedCriteria, pendingCriteria: r.pendingCriteria, pendingFields: r.pendingFields || [], exclusionReasons: r.exclusionReasons || [], sourceGaps: r.sourceGaps || [] };
+      if (r.status === 'placeholder') buckets.incomplete.push(item);
+      else buckets[r.status].push(item);
     });
   }
 
   const timeCategory = patientTimeCategory(params.onsetDays);
-  sortListByTime(eligible, timeCategory);
-  sortListByTime(pending, timeCategory);
-  sortListByTime(soon, timeCategory);
-  sortListByTime(excluded, timeCategory);
-  sortListByTime(closed, timeCategory);
-  sortListByTime(incomplete, timeCategory);
+  Object.keys(buckets).forEach(k => sortListByTime(buckets[k], timeCategory));
 
-  const briefingNote = ready
-    ? buildBriefingNote(state, { eligible, pending, soon })
-    : '';
-
-  return {
-    ready,
-    params,
-    timeCategory,
-    eligible,
-    pending,
-    soon,
-    excluded,
-    closed,
-    incomplete,
-    briefingNote
-  };
+  return { ready, params, timeCategory, ...buckets, briefingNote: ready ? buildBriefingNote(state, buckets) : '' };
 }
-
-/* ── Copy-paste briefing note ──────────────────────────────────────── */
 
 export function buildBriefingNote(state, buckets) {
   const { eligible, pending, soon } = buckets;
