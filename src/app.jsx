@@ -35658,10 +35658,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <button
                               type="button"
                               onClick={() => {
+                                const trimmedKey = tempKey.trim();
+                                if (tempProvider === 'openai' && !trimmedKey.startsWith('sk-')) {
+                                  addToast('OpenAI API key must start with "sk-".', 'error');
+                                  return;
+                                }
+                                if (tempProvider === 'anthropic' && !trimmedKey.startsWith('sk-ant-')) {
+                                  addToast('Anthropic API key must start with "sk-ant-".', 'error');
+                                  return;
+                                }
                                 setApiProvider(tempProvider);
-                                setApiKey(tempKey);
+                                setApiKey(trimmedKey);
                                 saveToStorage('apiProvider', tempProvider);
-                                saveToStorage('apiKey', tempKey);
+                                saveToStorage('apiKey', trimmedKey);
                                 addToast('API Settings saved successfully.', 'success');
                                 navigateTo('encounter');
                               }}
