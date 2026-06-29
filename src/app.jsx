@@ -1114,7 +1114,58 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           }
         };
 
-        const StrokeClinicalTool = () => {
+
+const TNKContraindicationBanner = ({ autoDetected, absoluteContraindications, relativeContraindications, cautionaryConditions }) => {
+  const autoAbsolute = absoluteContraindications.filter(c => autoDetected[c.id]);
+  const autoRelative = relativeContraindications.filter(c => autoDetected[c.id]);
+  const autoCautionary = cautionaryConditions.filter(c => autoDetected[c.id]);
+
+  if (autoAbsolute.length > 0) {
+    return (
+      <div className="bg-crit-100 border-2 border-crit-400 rounded-lg p-3 dark:bg-crit-950">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="bg-crit-600 text-white px-2 py-0.5 rounded text-xs font-bold">AUTO-DETECTED</span>
+          <span className="text-sm font-bold text-crit-900 dark:text-crit-300">TNK Contraindication{autoAbsolute.length > 1 ? 's' : ''} Found From Patient Data</span>
+        </div>
+        <ul className="text-xs text-crit-800 space-y-0.5 ml-2 dark:text-crit-300">
+          {autoAbsolute.map(c => <li key={c.id}>&#10007; <strong>{c.label}</strong>{c.note ? ` (${c.note})` : ''}</li>)}
+        </ul>
+      </div>
+    );
+  }
+
+  if (autoRelative.length > 0) {
+    return (
+      <div className="bg-warn-100 border-2 border-warn-400 rounded-lg p-3 dark:bg-warn-900">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="bg-warn-500 text-white px-2 py-0.5 rounded text-xs font-bold">AUTO-DETECTED</span>
+          <span className="text-sm font-bold text-warn-900 dark:text-warn-300">{autoRelative.length} Relative Contraindication{autoRelative.length > 1 ? 's' : ''} — Use Clinical Judgment</span>
+        </div>
+        <ul className="text-xs text-warn-800 space-y-0.5 ml-2 dark:text-warn-300">
+          {autoRelative.map(c => <li key={c.id}>&#9888; {c.label}{c.note ? ` (${c.note})` : ''}</li>)}
+        </ul>
+      </div>
+    );
+  }
+
+  if (autoCautionary.length > 0) {
+    return (
+      <div className="bg-cobalt-50 border-2 border-cobalt-300 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="bg-cobalt-500 text-white px-2 py-0.5 rounded text-xs font-bold dark:bg-cobalt-700">AUTO-DETECTED</span>
+          <span className="text-sm font-bold text-cobalt-900 dark:text-cobalt-300">{autoCautionary.length} Cautionary Condition{autoCautionary.length > 1 ? 's' : ''} — IVT Benefit Outweighs Risk</span>
+        </div>
+        <ul className="text-xs text-cobalt-800 space-y-0.5 ml-2 dark:text-cobalt-300">
+          {autoCautionary.map(c => <li key={c.id}>&#8505; {c.label}{c.note ? ` (${c.note})` : ''}</li>)}
+        </ul>
+      </div>
+    );
+  }
+
+  return null;
+};
+
+const StrokeClinicalTool = () => {
           const defaultTelestrokeTemplate = `Reason for Consultation: Acute stroke evaluation — {chiefComplaint}
 
 Chief complaint: {chiefComplaint}
@@ -21017,39 +21068,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               return (
                                 <>
-                                {autoAbsolute.length > 0 && (
-                                  <div className="bg-crit-100 border-2 border-crit-400 rounded-lg p-3 dark:bg-crit-950">
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span className="bg-crit-600 text-white px-2 py-0.5 rounded text-xs font-bold">AUTO-DETECTED</span>
-                                      <span className="text-sm font-bold text-crit-900 dark:text-crit-300">TNK Contraindication{autoAbsolute.length > 1 ? 's' : ''} Found From Patient Data</span>
-                                    </div>
-                                    <ul className="text-xs text-crit-800 space-y-0.5 ml-2 dark:text-crit-300">
-                                      {autoAbsolute.map(c => <li key={c.id}>&#10007; <strong>{c.label}</strong>{c.note ? ` (${c.note})` : ''}</li>)}
-                                    </ul>
-                                  </div>
-                                )}
-                                {autoAbsolute.length === 0 && autoRelative.length > 0 && (
-                                  <div className="bg-warn-100 border-2 border-warn-400 rounded-lg p-3 dark:bg-warn-900">
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span className="bg-warn-500 text-white px-2 py-0.5 rounded text-xs font-bold">AUTO-DETECTED</span>
-                                      <span className="text-sm font-bold text-warn-900 dark:text-warn-300">{autoRelative.length} Relative Contraindication{autoRelative.length > 1 ? 's' : ''} — Use Clinical Judgment</span>
-                                    </div>
-                                    <ul className="text-xs text-warn-800 space-y-0.5 ml-2 dark:text-warn-300">
-                                      {autoRelative.map(c => <li key={c.id}>&#9888; {c.label}{c.note ? ` (${c.note})` : ''}</li>)}
-                                    </ul>
-                                  </div>
-                                )}
-                                {autoAbsolute.length === 0 && autoRelative.length === 0 && autoCautionary.length > 0 && (
-                                  <div className="bg-cobalt-50 border-2 border-cobalt-300 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span className="bg-cobalt-500 text-white px-2 py-0.5 rounded text-xs font-bold dark:bg-cobalt-700">AUTO-DETECTED</span>
-                                      <span className="text-sm font-bold text-cobalt-900 dark:text-cobalt-300">{autoCautionary.length} Cautionary Condition{autoCautionary.length > 1 ? 's' : ''} — IVT Benefit Outweighs Risk</span>
-                                    </div>
-                                    <ul className="text-xs text-cobalt-800 space-y-0.5 ml-2 dark:text-cobalt-300">
-                                      {autoCautionary.map(c => <li key={c.id}>&#8505; {c.label}{c.note ? ` (${c.note})` : ''}</li>)}
-                                    </ul>
-                                  </div>
-                                )}
+                                <TNKContraindicationBanner
+                                  autoDetected={autoDetected}
+                                  absoluteContraindications={absoluteContraindications}
+                                  relativeContraindications={relativeContraindications}
+                                  cautionaryConditions={cautionaryConditions}
+                                />
                                 <details id="tnk-contraindications" className="bg-critical-soft border border-line border-l-[3px] border-l-critical rounded-md">
                                   <summary className="cursor-pointer p-3 font-semibold text-orange-900 hover:bg-orange-100 rounded-lg flex items-center justify-between dark:text-orange-300">
                                     <span>TNK Contraindications <span className="text-[10px] font-normal text-slate-500 ml-1 dark:text-mute">(AHA/ASA 2026 Table 8)</span></span>
