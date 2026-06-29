@@ -5,6 +5,7 @@ import {
   calculateGCS,
   calculateICHScore,
   calculateABCD2Score,
+  calculateABCD2WithDetail,
   calculateCHADS2VascScore,
   calculateROPEScore,
   calculateHASBLEDScore,
@@ -343,5 +344,50 @@ describe('calculateDOACStart', () => {
     const r = calculateDOACStart(5, onset, 'elan-optimas', null);
     expect(r.severity).toBe('minor');
     expect(r.imagingOverride).toBeFalsy();
+  });
+});
+
+describe('calculateABCD2WithDetail', () => {
+  it('handles null/undefined/non-object input', () => {
+    expect(calculateABCD2WithDetail(null)).toEqual({ score: 0, components: {}, mutuallyExclusiveNote: null });
+    expect(calculateABCD2WithDetail(undefined)).toEqual({ score: 0, components: {}, mutuallyExclusiveNote: null });
+    expect(calculateABCD2WithDetail('string')).toEqual({ score: 0, components: {}, mutuallyExclusiveNote: null });
+  });
+
+  it('calculates full score with components', () => {
+    const items = { age60: true, bp: true, unilateralWeakness: true, speechDisturbance: true, duration: 'duration60', diabetes: true };
+    const result = calculateABCD2WithDetail(items);
+    expect(result.score).toBe(7);
+    expect(result.components).toEqual({
+      age60: 1,
+      bp: 1,
+      weakness: 2,
+      speechWithoutWeakness: 0,
+      duration: 2,
+      diabetes: 1
+    });
+    expect(result.mutuallyExclusiveNote).toContain('Note: per Johnston 2007');
+    expect(result.source).toBe('Johnston Lancet 2007;369:283-92');
+  });
+
+  it('calculates score with speech only', () => {
+    const items = { speechDisturbance: true };
+    const result = calculateABCD2WithDetail(items);
+    expect(result.score).toBe(1);
+    expect(result.components).toEqual({
+      age60: 0,
+      bp: 0,
+      weakness: 0,
+      speechWithoutWeakness: 1,
+      duration: 0,
+      diabetes: 0
+    });
+    expect(result.mutuallyExclusiveNote).toBeNull();
+  });
+
+  it('handles 10-59 min duration', () => {
+    const items = { duration: 'duration10' };
+    const result = calculateABCD2WithDetail(items);
+    expect(result.components.duration).toBe(1);
   });
 });
