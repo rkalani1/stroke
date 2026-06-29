@@ -152,4 +152,115 @@ describe('theme controller', () => {
       expect(themeController.effectiveTheme()).toBe('dark');
     });
   });
+
+  describe('bindThemeListener', () => {
+    it('returns a no-op if window is undefined', () => {
+      const windowRef = globalThis.window;
+      delete globalThis.window;
+
+      const unbind = themeController.bindThemeListener();
+      expect(typeof unbind).toBe('function');
+      expect(() => unbind()).not.toThrow();
+
+      globalThis.window = windowRef;
+    });
+
+    it('binds and unbinds matchMedia listener', () => {
+      const addEventListener = vi.fn();
+      const removeEventListener = vi.fn();
+      vi.stubGlobal('window', {
+        location: { hostname: 'localhost' },
+        matchMedia: vi.fn(() => ({
+          matches: false,
+          addEventListener,
+          removeEventListener
+        }))
+      });
+
+      const unbind = themeController.bindThemeListener();
+
+      expect(window.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)');
+      expect(addEventListener).toHaveBeenCalledWith('change', expect.any(Function));
+
+      unbind();
+      expect(removeEventListener).toHaveBeenCalledWith('change', expect.any(Function));
+    });
+
+    it('handler applies theme when pref is auto', () => {
+      let changeHandler;
+      vi.stubGlobal('window', {
+        location: { hostname: 'localhost' },
+        matchMedia: vi.fn(() => ({
+          matches: true,
+          addEventListener: vi.fn((event, handler) => {
+            changeHandler = handler;
+          }),
+          removeEventListener: vi.fn()
+        }))
+      });
+
+      globalThis.localStorage.setItem('stroke.v7.theme', 'auto');
+      themeController.bindThemeListener();
+
+      // Simulate change event
+      changeHandler();
+
+      expect(documentMock.documentElement.setAttribute).toHaveBeenCalledWith('data-theme', 'dark');
+      expect(documentMock.documentElement.classList.toggle).toHaveBeenCalledWith('dark', true);
+    });
+
+    it('handler does not apply theme when pref is explicitly set', () => {
+      let changeHandler;
+      vi.stubGlobal('window', {
+        location: { hostname: 'localhost' },
+        matchMedia: vi.fn(() => ({
+          matches: true,
+          addEventListener: vi.fn((event, handler) => {
+            changeHandler = handler;
+          }),
+          removeEventListener: vi.fn()
+        }))
+      });
+
+      globalThis.localStorage.setItem('stroke.v7.theme', 'light');
+      themeController.bindThemeListener();
+
+      // Clear previous calls from applyTheme in setThemePref or explicitly
+      documentMock.documentElement.setAttribute.mockClear();
+
+      // Simulate change event
+      changeHandler();
+
+      expect(documentMock.documentElement.setAttribute).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('bootstrapTheme', () => {
+    it('runs migration, applies theme, and binds listener', () => {
+      const addEventListener = vi.fn();
+      vi.stubGlobal('window', {
+        location: { hostname: 'localhost' },
+        matchMedia: vi.fn(() => ({
+          matches: true,
+          addEventListener,
+          removeEventListener: vi.fn()
+        }))
+      });
+
+      globalThis.localStorage.setItem('strokeApp:darkMode', 'true');
+
+      const unbind = themeController.bootstrapTheme();
+
+      // Should have migrated
+      expect(globalThis.localStorage.getItem('stroke.v7.migrated')).toBe('1');
+      expect(globalThis.localStorage.getItem('stroke.v7.theme')).toBe('dark');
+
+      // Should have applied theme
+      expect(documentMock.documentElement.setAttribute).toHaveBeenCalledWith('data-theme', 'dark');
+
+      // Should have bound listener
+      expect(addEventListener).toHaveBeenCalledWith('change', expect.any(Function));
+      expect(typeof unbind).toBe('function');
+    });
+  });
 });
