@@ -52,6 +52,11 @@ const lsWriteAll = (patients) => {
 export const generatePatientId = () => {
   // UUID-like id; use crypto when available.
   if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    const array = new Uint32Array(2);
+    crypto.getRandomValues(array);
+    return `p_${Date.now().toString(36)}_${array[0].toString(36)}${array[1].toString(36)}`;
+  }
   return `p_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
 };
 
