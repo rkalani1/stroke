@@ -172,4 +172,25 @@ describe('Schema validators', () => {
     const { errors } = schema.validateCitation(c);
     expect(errors.some((e) => /pmid/i.test(e))).toBe(true);
   });
+
+  it('rejects guideline missing required fields', () => {
+    const bad = schema.makeGuideline({ id: 'Invalid ID' });
+    const { errors } = schema.validateGuideline(bad);
+    expect(errors.some((e) => /id must be kebab-case/i.test(e))).toBe(true);
+    expect(errors.some((e) => /name required/i.test(e))).toBe(true);
+    expect(errors.some((e) => /organization required/i.test(e))).toBe(true);
+  });
+
+  it('rejects guideline with unknown citation', () => {
+    const g = schema.makeGuideline({ id: 'valid-id', name: 'Name', organization: 'Org', citationId: 'cit-1' });
+    const { errors } = schema.validateGuideline(g, { knownCitationIds: new Set(['cit-2']) });
+    expect(errors.some((e) => /citationId references unknown citation/i.test(e))).toBe(true);
+  });
+
+  it('accepts valid guideline', () => {
+    const g = schema.makeGuideline({ id: 'valid-id', name: 'Name', organization: 'Org', citationId: 'cit-2' });
+    const { errors, warnings } = schema.validateGuideline(g, { knownCitationIds: new Set(['cit-2']) });
+    expect(errors.length).toBe(0);
+    expect(warnings.length).toBe(0);
+  });
 });
