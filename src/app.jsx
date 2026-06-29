@@ -192,6 +192,8 @@ import {
   diffEvaluations as engineDiffEvaluations
 } from './evidence/matcher-engine.js';
 
+const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]));
+
 // P0 evidence-locked calculators exposed for browser-console QA testing and future UI wiring.
 // These are pure functions with PMID/DOI citations in their source; running e.g.
 //   window.strokeP0.evaluateLargeCoreEVT({ age: 72, nihss: 18, aspects: 4, timeFromLKWh: 8, premorbidMRS: 1 })
@@ -6160,7 +6162,7 @@ Clinician Name`;
             const evTypeMeta = (EVIDENCE_TYPE_LABELS && EVIDENCE_TYPE_LABELS[trial.evidenceType]) || { label: trial.evidenceType, tone: 'slate' };
             const verifMeta = (VERIFICATION_STATUS_LABELS && VERIFICATION_STATUS_LABELS[trial.verificationStatus]) || { label: trial.verificationStatus, tone: 'slate' };
             const cits = resolveCitations(trial.citationIds || []);
-            const relatedActive = showRelatedActive ? (trial.relatedActiveTrialIds || []).map((id) => evidenceActiveTrials.find((a) => a.id === id)).filter(Boolean) : [];
+            const relatedActive = showRelatedActive ? (trial.relatedActiveTrialIds || []).map((id) => evidenceActiveTrialsById.get(id)).filter(Boolean) : [];
             const primaryCit = cits[0];
             const journalAndYear = primaryCit ? `${primaryCit.journal}${primaryCit.year ? ` ${primaryCit.year}` : ''}` : '';
             return (
