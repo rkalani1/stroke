@@ -15082,7 +15082,7 @@ Clinician Name`;
             } catch { /* ignore */ }
           };
 
-          // Click-outside handler for search dropdown (replaces fragile setTimeout blur hack)
+          // Click-outside handler for search dropdown
           useEffect(() => {
             const handleClickOutside = (e) => {
               if (searchContainerRef.current && !searchContainerRef.current.contains(e.target)) {
