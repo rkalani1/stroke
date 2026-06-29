@@ -46,3 +46,4 @@ android/app/src/main/assets/public/
 # Claude / Antigravity subagent worktrees
 .claude/
 
+coverage/

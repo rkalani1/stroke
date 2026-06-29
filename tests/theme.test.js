@@ -101,6 +101,63 @@ describe('theme controller', () => {
       expect(globalThis.localStorage.getItem('stroke.v7.theme')).toBeNull();
       expect(globalThis.localStorage.getItem('stroke.v7.migrated')).toBe('1');
     });
+
+    it('does not overwrite existing theme preference during migration', () => {
+      globalThis.localStorage.setItem('darkMode', 'true');
+      globalThis.localStorage.setItem('stroke.v7.theme', 'light');
+
+      themeController.runV7Migration();
+
+      expect(globalThis.localStorage.getItem('stroke.v7.theme')).toBe('light');
+      expect(globalThis.localStorage.getItem('stroke.v7.migrated')).toBe('1');
+    });
+
+    it('safely handles localStorage quota or access exceptions in safeSet', () => {
+      globalThis.localStorage.setItem('darkMode', 'true');
+
+      // Make localStorage.setItem throw for all calls during migration
+      globalThis.localStorage.setItem.mockImplementationOnce(() => {
+        throw new Error('QuotaExceededError');
+      });
+
+      expect(() => themeController.runV7Migration()).not.toThrow();
+    });
+
+    it('safely handles localStorage access exceptions in safeGet', () => {
+      globalThis.localStorage.getItem.mockImplementationOnce(() => {
+        throw new Error('AccessDeniedError');
+      });
+
+      expect(() => themeController.runV7Migration()).not.toThrow();
+    });
+
+    it('safely handles localStorage access exceptions in safeJSONGet', () => {
+      // Mock getItem to return an invalid JSON string to trigger JSON.parse error
+      globalThis.localStorage.getItem.mockImplementationOnce((key) => {
+        if (key === 'darkMode') return 'invalid-json';
+        return null;
+      });
+
+      expect(() => themeController.runV7Migration()).not.toThrow();
+
+      // Also test when getItem itself throws
+      globalThis.localStorage.getItem.mockImplementationOnce(() => {
+        throw new Error('AccessDeniedError');
+      });
+      expect(() => themeController.runV7Migration()).not.toThrow();
+    });
+
+    it('safely handles localStorage removeItem exceptions on public pages', () => {
+      vi.stubGlobal('window', {
+        location: { hostname: 'rkalani1.github.io' }
+      });
+
+      globalThis.localStorage.removeItem.mockImplementationOnce(() => {
+        throw new Error('AccessDeniedError');
+      });
+
+      expect(() => themeController.runV7Migration()).not.toThrow();
+    });
   });
 
   describe('getThemePref and setThemePref', () => {
@@ -150,6 +207,59 @@ describe('theme controller', () => {
       });
 
       expect(themeController.effectiveTheme()).toBe('dark');
+    });
+  });
+
+  describe('bindThemeListener and bootstrapTheme', () => {
+    it('bindThemeListener adds and returns removeEventListener for matchMedia', () => {
+      const addEventListener = vi.fn();
+      const removeEventListener = vi.fn();
+      vi.stubGlobal('window', {
+        location: { hostname: 'localhost' },
+        matchMedia: vi.fn(() => ({
+          matches: false,
+          addEventListener,
+          removeEventListener
+        }))
+      });
+
+      const unbind = themeController.bindThemeListener();
+      expect(window.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)');
+      expect(addEventListener).toHaveBeenCalledWith('change', expect.any(Function));
+
+      unbind();
+      expect(removeEventListener).toHaveBeenCalledWith('change', expect.any(Function));
+    });
+
+    it('bindThemeListener does nothing if window is undefined', () => {
+      vi.stubGlobal('window', undefined);
+      const unbind = themeController.bindThemeListener();
+      expect(typeof unbind).toBe('function');
+      unbind(); // Should not throw
+    });
+
+    it('bootstrapTheme calls runV7Migration, applyTheme, and bindThemeListener', () => {
+      const addEventListener = vi.fn();
+      const removeEventListener = vi.fn();
+      vi.stubGlobal('window', {
+        location: { hostname: 'localhost' },
+        matchMedia: vi.fn(() => ({
+          matches: false,
+          addEventListener,
+          removeEventListener
+        }))
+      });
+
+      globalThis.localStorage.setItem('darkMode', 'true'); // setup migration trigger
+
+      const unbind = themeController.bootstrapTheme();
+
+      // Checking migration ran
+      expect(globalThis.localStorage.getItem('stroke.v7.migrated')).toBe('1');
+      // Checking applyTheme ran
+      expect(documentMock.documentElement.setAttribute).toHaveBeenCalled();
+      // Checking bindThemeListener ran
+      expect(typeof unbind).toBe('function');
     });
   });
 });
