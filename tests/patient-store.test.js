@@ -98,18 +98,45 @@ describe('patient-store', () => {
       expect(retrieved.initials).toBe('TS');
     });
 
-    it('lists patients and filters them', async () => {
-      await patientStore.savePatient(patientStore.makePatientStub({ initials: 'P1', service: 'stroke' }));
-      await patientStore.savePatient(patientStore.makePatientStub({ initials: 'P2', service: 'neuro' }));
+    it('lists patients, filters them, and sorts by most recently updated first', async () => {
+      const p1 = patientStore.makePatientStub({ initials: 'P1', service: 'stroke' });
+      const p2 = patientStore.makePatientStub({ initials: 'P2', service: 'neuro' });
       const p3 = patientStore.makePatientStub({ initials: 'P3', service: 'stroke' });
       p3.status = 'archived';
+
+      await patientStore.savePatient(p1);
+      await patientStore.savePatient(p2);
       await patientStore.savePatient(p3);
+
+      // Modify the DB directly to test sort order
+      const db = await new Promise((resolve) => {
+          const req = indexedDB.open('strokeAppCensus', 1);
+          req.onsuccess = () => resolve(req.result);
+      });
+
+      await new Promise(resolve => {
+        const tx = db.transaction('patients', 'readwrite');
+        const store = tx.objectStore('patients');
+        p1.updatedAt = '2023-01-01T10:00:00.000Z';
+        p2.updatedAt = '2023-01-03T10:00:00.000Z';
+        p3.updatedAt = '2023-01-02T10:00:00.000Z';
+        store.put(p1);
+        store.put(p2);
+        store.put(p3);
+        tx.oncomplete = resolve;
+      });
 
       const all = await patientStore.listPatients();
       expect(all.length).toBe(3);
+      // Expected sort order: most recent first (P2, P3, P1)
+      expect(all[0].initials).toBe('P2');
+      expect(all[1].initials).toBe('P3');
+      expect(all[2].initials).toBe('P1');
 
       const strokeOnly = await patientStore.listPatients({ service: 'stroke' });
       expect(strokeOnly.length).toBe(2);
+      expect(strokeOnly[0].initials).toBe('P3');
+      expect(strokeOnly[1].initials).toBe('P1');
 
       const activeStroke = await patientStore.listPatients({ service: 'stroke', status: 'active' });
       expect(activeStroke.length).toBe(1);
@@ -166,6 +193,44 @@ describe('patient-store', () => {
       expect(retrieved1.initials).toBe('L1');
       const retrieved2 = await patientStore.getPatient(p2.id);
       expect(retrieved2.initials).toBe('L2');
+
+      vi.unstubAllGlobals();
+    });
+
+    it('falls back to localStorage for list and filter and sort', async () => {
+      vi.stubGlobal('indexedDB', undefined);
+
+      const p1 = patientStore.makePatientStub({ initials: 'L1', service: 'stroke' });
+      const p2 = patientStore.makePatientStub({ initials: 'L2', service: 'neuro' });
+      const p3 = patientStore.makePatientStub({ initials: 'L3', service: 'stroke' });
+      p3.status = 'archived';
+      // Use individual save to avoid batch save overwriting updatedAt
+      await patientStore.savePatient(p1);
+      await patientStore.savePatient(p2);
+      await patientStore.savePatient(p3);
+
+      // Manually edit local storage to set distinct update times
+      let allLS = JSON.parse(globalThis.localStorage.getItem('strokeApp:patientCensus:lsFallback'));
+      allLS.find(p => p.id === p1.id).updatedAt = '2023-01-01T10:00:00.000Z';
+      allLS.find(p => p.id === p2.id).updatedAt = '2023-01-03T10:00:00.000Z';
+      allLS.find(p => p.id === p3.id).updatedAt = '2023-01-02T10:00:00.000Z';
+      globalThis.localStorage.setItem('strokeApp:patientCensus:lsFallback', JSON.stringify(allLS));
+
+      const all = await patientStore.listPatients();
+      expect(all.length).toBe(3);
+      // Expected sort order: most recent first (p2, p3, p1)
+      expect(all[0].initials).toBe('L2');
+      expect(all[1].initials).toBe('L3');
+      expect(all[2].initials).toBe('L1');
+
+      const strokeOnly = await patientStore.listPatients({ service: 'stroke' });
+      expect(strokeOnly.length).toBe(2);
+      expect(strokeOnly[0].initials).toBe('L3');
+      expect(strokeOnly[1].initials).toBe('L1');
+
+      const activeStroke = await patientStore.listPatients({ service: 'stroke', status: 'active' });
+      expect(activeStroke.length).toBe(1);
+      expect(activeStroke[0].initials).toBe('L1');
 
       vi.unstubAllGlobals();
     });
