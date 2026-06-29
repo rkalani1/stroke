@@ -116,6 +116,20 @@ describe('patient-store', () => {
       expect(activeStroke[0].initials).toBe('P1');
     });
 
+    it('saves a batch of patients', async () => {
+      const p1 = patientStore.makePatientStub({ initials: 'B1' });
+      const p2 = patientStore.makePatientStub({ initials: 'B2' });
+      const saved = await patientStore.savePatientsBatch([p1, p2]);
+      expect(saved.length).toBe(2);
+      expect(saved[0].initials).toBe('B1');
+      expect(saved[1].initials).toBe('B2');
+
+      const retrieved1 = await patientStore.getPatient(p1.id);
+      expect(retrieved1.initials).toBe('B1');
+      const retrieved2 = await patientStore.getPatient(p2.id);
+      expect(retrieved2.initials).toBe('B2');
+    });
+
     it('deletes a patient', async () => {
       const patient = await patientStore.savePatient(patientStore.makePatientStub({ initials: 'DEL' }));
       expect(await patientStore.getPatient(patient.id)).not.toBeNull();
@@ -137,6 +151,21 @@ describe('patient-store', () => {
       expect(retrieved.initials).toBe('LS');
 
       expect(globalThis.localStorage.setItem).toHaveBeenCalled();
+
+      vi.unstubAllGlobals();
+    });
+
+    it('falls back to localStorage for batch save', async () => {
+      vi.stubGlobal('indexedDB', undefined);
+
+      const p1 = patientStore.makePatientStub({ initials: 'L1' });
+      const p2 = patientStore.makePatientStub({ initials: 'L2' });
+      await patientStore.savePatientsBatch([p1, p2]);
+
+      const retrieved1 = await patientStore.getPatient(p1.id);
+      expect(retrieved1.initials).toBe('L1');
+      const retrieved2 = await patientStore.getPatient(p2.id);
+      expect(retrieved2.initials).toBe('L2');
 
       vi.unstubAllGlobals();
     });

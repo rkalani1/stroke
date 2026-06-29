@@ -149,11 +149,39 @@ export const exportPatientsJSON = async () => {
   }, null, 2);
 };
 
+export const savePatientsBatch = async (patients) => {
+  const now = new Date().toISOString();
+  const processed = patients.map((p) => ({
+    ...p,
+    updatedAt: now,
+    lastSavedAt: now
+  }));
+  const db = await openDB();
+  if (!db) {
+    const all = lsReadAll();
+    for (const p of processed) {
+      const idx = all.findIndex((x) => x.id === p.id);
+      if (idx >= 0) all[idx] = p; else all.push(p);
+    }
+    lsWriteAll(all);
+    return processed;
+  }
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    tx.oncomplete = () => resolve(processed);
+    tx.onerror = () => reject(tx.error);
+    for (const p of processed) {
+      store.put(p);
+    }
+  });
+};
+
 export const importPatientsJSON = async (json) => {
   try {
     const data = JSON.parse(json);
     const patients = Array.isArray(data) ? data : (data.patients || []);
-    for (const p of patients) await savePatient(p);
+    await savePatientsBatch(patients);
     return { imported: patients.length };
   } catch (err) {
     return { error: err.message || 'Invalid JSON' };

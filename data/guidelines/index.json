@@ -3,8 +3,8 @@
     "endpoint": "guidelines-index",
     "schemaVersion": "1.0.0",
     "appVersion": "6.9.24",
-    "checksum": "sha256:0dcbb5b06d5f5bebbbac2d79637acef2",
-    "count": 17,
+    "checksum": "sha256:162e28ebbab63768eabb5e181497e977",
+    "count": 18,
     "source": "src/guidelines/",
     "license": "Content for clinical reference by qualified clinicians. No warranty.",
     "disclaimer": "Decision support only — NOT medical advice and NOT a substitute for clinical judgment. Institution-neutral and evidence-based; verify against primary sources and local policy before any patient care decision."
@@ -59,6 +59,10 @@
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407",
       "recommendationCount": 124,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/ich-2022.json"
+    },
+    {
+      "recommendationCount": 0,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/landmark-trials.json"
     },
     {
       "id": "maternal-stroke-2026",

@@ -485,6 +485,18 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
   const isChronicIschemic = cls === 'ischemic' && onsetMonths >= 6;
   const mrsLabel = isChronicIschemic ? 'Current mRS (Post-Stroke)' : 'Pre-Stroke mRS';
 
+  const showPreMrsField = cls === 'ischemic' || cls === 'ich' || cls === 'tia';
+  const showAspectsAndVesselField = cls === 'ischemic' && onsetHours <= 24;
+  const showAnteriorCirculationField = cls === 'ischemic' && onsetHours <= 24;
+  const showPresentedWithin24hField = cls === 'ischemic' && onsetHours <= 120;
+  const showIchSection = cls === 'ich';
+  const showHematomaVolumeField = onsetHours <= 16;
+  const showAfibField = (cls === 'ischemic' || cls === 'tia') && onsetDays <= 365;
+  const showEtiologyAndSaptField = (cls === 'ischemic' || cls === 'tia') && onsetDays <= 180;
+  const showRehabSection = (cls === 'ischemic' || cls === 'ich') && onsetHours >= 24;
+  const showAvailability54wField = cls === 'ischemic' && onsetMonths >= 6;
+  const showUnilateralSymptomaticField = cls === 'ischemic' && onsetHours >= 24 && onsetHours <= 96;
+
   const candidateCount = results.pending.length + results.soon.length;
   const excludedCount = results.excluded.length + results.closed.length + results.incomplete.length;
 
@@ -594,11 +606,11 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
 
                   <NumberField id="ts-age" label="Patient Age (years)" value={state.age} min={18} max={120} placeholder="e.g. 65" onChange={(v) => set({ age: v })} />
 
-                  {(cls === 'ischemic' || (cls === 'ich' && onsetHours <= 16)) && (
+                  {(cls === 'ischemic' || (showIchSection && showHematomaVolumeField)) && (
                     <NumberField id="ts-nihss" label="NIHSS Severity Score" value={state.nihss} min={0} max={42} placeholder="e.g. 8" onChange={(v) => set({ nihss: v })} />
                   )}
 
-                  {(cls === 'ischemic' || cls === 'ich' || cls === 'tia') && (
+                  {showPreMrsField && (
                     <SelectField
                       id="ts-mrs"
                       label={mrsLabel}
@@ -615,7 +627,7 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
                     />
                   )}
 
-                  {cls === 'ischemic' && onsetHours <= 24 && (
+                  {showAspectsAndVesselField && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <NumberField id="ts-aspects" label="CT ASPECTS Score" value={state.aspects} min={0} max={10} placeholder="e.g. 8" onChange={(v) => set({ aspects: v })} />
                       <SelectField
@@ -635,15 +647,15 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
                     </div>
                   )}
 
-                  {cls === 'ischemic' && onsetHours <= 24 && (
+                  {showAnteriorCirculationField && (
                     <YesNoField id="ts-ant" label="Anterior Circulation?" value={state.anteriorCirculation} onChange={(v) => set({ anteriorCirculation: v })} />
                   )}
 
-                  {cls === 'ischemic' && onsetHours <= 120 && (
+                  {showPresentedWithin24hField && (
                     <YesNoField id="ts-p24" label="Presented within 24h of onset?" value={state.presentedWithin24h} onChange={(v) => set({ presentedWithin24h: v })} />
                   )}
 
-                  {cls === 'ich' && (
+                  {showIchSection && (
                     <>
                       <SelectField
                         id="ts-loc"
@@ -658,7 +670,7 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
                           { value: 'infratentorial', label: 'Infratentorial' }
                         ]}
                       />
-                      {onsetHours <= 16 && (
+                      {showHematomaVolumeField && (
                         <SelectField
                           id="ts-vol"
                           label="Hematoma Volume"
@@ -678,7 +690,7 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
                     </>
                   )}
 
-                  {(cls === 'ischemic' || cls === 'tia') && onsetDays <= 365 && (
+                  {showAfibField && (
                     <SelectField
                       id="ts-afib-oac"
                       label="AFib & Anticoagulation"
@@ -706,7 +718,7 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
                     />
                   )}
 
-                  {(cls === 'ischemic' || cls === 'tia') && onsetDays <= 180 && (
+                  {showEtiologyAndSaptField && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <SelectField
                         id="ts-etio"
@@ -727,7 +739,7 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
                   )}
 
                   {/* Rehab & recovery factors */}
-                  {(cls === 'ischemic' || cls === 'ich') && onsetHours >= 24 && (
+                  {showRehabSection && (
                     <div className="space-y-3 border-t border-slate-200 pt-3">
                       <h4 className="text-xs font-semibold text-slate-700">Rehabilitation &amp; Recovery Factors</h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -738,10 +750,10 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
                         <YesNoField id="ts-ue" label="UE Deficit/Weakness?" value={state.ueWeakness} onChange={(v) => set({ ueWeakness: v })} />
                         <YesNoField id="ts-consent" label="Able to Self-Consent?" value={state.self_consent} onChange={(v) => set({ self_consent: v })} />
                       </div>
-                      {cls === 'ischemic' && onsetMonths >= 6 && (
+                      {showAvailability54wField && (
                         <YesNoField id="ts-54w" label="Available for 54-week visits?" value={state.availability_54w} onChange={(v) => set({ availability_54w: v })} />
                       )}
-                      {cls === 'ischemic' && onsetHours >= 24 && onsetHours <= 96 && (
+                      {showUnilateralSymptomaticField && (
                         <YesNoField id="ts-uni" label="Unilateral Symptomatic AIS?" value={state.unilateralSymptomatic} onChange={(v) => set({ unilateralSymptomatic: v })} />
                       )}
                     </div>

@@ -13,6 +13,7 @@ export default defineConfig({
       'mcp/**',
       'output/**',
       'dist/**',
+      'tests/sw-controller.test.mjs',
     ],
   },
 });
