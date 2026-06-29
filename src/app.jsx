@@ -166,6 +166,24 @@ import {
   EVIDENCE_TYPE_LABELS,
   ACTIVE_STATUS_LABELS
 } from './evidence/index.js';
+
+// Optimized lookup map for evidenceRecommendations
+// We use a lazy initialization getter to avoid TDZ issues and ensure it evaluates when needed
+let _evidenceRecommendationsMap = null;
+function getEvidenceRecommendationsMap() {
+  if (!_evidenceRecommendationsMap) {
+    _evidenceRecommendationsMap = new Map();
+    if (Array.isArray(evidenceRecommendations)) {
+      for (const r of evidenceRecommendations) {
+        if (r && r.id) {
+          _evidenceRecommendationsMap.set(r.id, r);
+        }
+      }
+    }
+  }
+  return _evidenceRecommendationsMap;
+}
+
 // Generic matcher engine — parallel-verification by default; can be
 // promoted to canonical source via localStorage flag.
 import {
@@ -21876,7 +21894,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                   };
                                                   const atlasRecId = MANAGEMENT_REC_TO_ATLAS_REC[rec.id];
                                                   if (!atlasRecId) return null;
-                                                  const atlasRec = evidenceRecommendations.find((r) => r.id === atlasRecId);
+                                                  const atlasRec = getEvidenceRecommendationsMap().get(atlasRecId);
                                                   if (!atlasRec) return null;
                                                   const claimsExpanded = resolveClaimsWithCitations(atlasRec.supportingClaimIds || []);
                                                   if (claimsExpanded.length === 0) return null;
@@ -28569,7 +28587,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {AIS_COMMAND_CENTER_CARDS.map((card) => {
                               const corClass = GUIDELINE_CLASS_COLORS[card.classOfRecommendation] || 'bg-slate-500 text-white';
                               const atlasRecId = COMMAND_CENTER_REC_TO_ATLAS_REC[card.recommendationId];
-                              const atlasRec = atlasRecId ? evidenceRecommendations.find((r) => r.id === atlasRecId) : null;
+                              const atlasRec = atlasRecId ? getEvidenceRecommendationsMap().get(atlasRecId) : null;
                               const claimsExpanded = atlasRec ? resolveClaimsWithCitations(atlasRec.supportingClaimIds || []) : [];
                               const hasEvidenceDrawer = claimsExpanded.length > 0;
                               const pubmedUrl = card.evidenceQuery
