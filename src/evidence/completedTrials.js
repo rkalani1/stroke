@@ -525,7 +525,7 @@ export const completedTrials = [
     certainty: 'high',
     evidenceType: 'rct',
     citationIds: ['cit-interact3-2023'],
-    relatedActiveTrialIds: [],
+    relatedActiveTrialIds: ['saturn'],
     practiceImpact: 'Establishes care-bundle approach for acute ICH.',
     lastReviewed: lr,
     verificationStatus: 'verified-pubmed'
@@ -571,7 +571,7 @@ export const completedTrials = [
     certainty: 'moderate',
     evidenceType: 'rct',
     citationIds: ['cit-enrich-2024'],
-    relatedActiveTrialIds: [],
+    relatedActiveTrialIds: ['saturn'],
     practiceImpact: 'Supports early minimally invasive evacuation for lobar ICH at capable centers.',
     lastReviewed: lr,
     verificationStatus: 'verified-pubmed'

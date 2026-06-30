@@ -244,6 +244,24 @@ const TRIALS = {
       'GCS < 7, active infection, pregnancy, pre-existing DNR/DNI, or severe dementia'
     ]
   },
+  SATURN: {
+    acronym: 'SATURN',
+    nct: 'NCT03936361',
+    status: 'enrolling',
+    href: CTGOV('NCT03936361'),
+    summary:
+      'Evaluating continuation vs discontinuation of statins on lobar ICH recurrence in patients taking a statin at onset.',
+    eligibility: [
+      'Spontaneous lobar ICH confirmed by CT or MRI',
+      'Can be randomized within 7 days of onset',
+      'Age ≥ 50 years, taking a statin at onset, with consent after statin-prescriber consultation'
+    ],
+    exclusions: [
+      'ICH score > 3 or pre-morbid mRS > 3',
+      'Suspected secondary cause, recent MI/unstable angina, severe dementia, or life expectancy < 24 months',
+      'Familial hypercholesterolemia or PCSK9-inhibitor use'
+    ]
+  },
 
   'SCOUTS-3-ICH': {
     acronym: 'SCOUTS-3',
@@ -358,14 +376,14 @@ export const eligibilityTables = [
     category: 'ich',
     phase: 'acute',
     title: 'Intracranial Hemorrhage (ICH) — Acute (Onset ≤ 24 Hours)',
-    trials: [TRIALS.MINUTE]
+    trials: [TRIALS.MINUTE, TRIALS.SATURN]
   },
   {
     id: 'ich-inpatient',
     category: 'ich',
     phase: 'inpatient',
     title: 'Intracranial Hemorrhage (ICH) — Inpatient (Admission to Day 30)',
-    trials: [TRIALS['SCOUTS-3-ICH'], TRIALS.ASPIRE]
+    trials: [TRIALS.SATURN, TRIALS['SCOUTS-3-ICH'], TRIALS.ASPIRE]
   },
   {
     id: 'ich-outpatient',

@@ -424,6 +424,59 @@ export const activeTrials = [
 
 
   makeActiveTrial({
+    id: 'saturn',
+    shortName: 'SATURN',
+    fullName: 'Statins Use in Intracerebral Hemorrhage Patients',
+    nctId: 'NCT03936361',
+    phase: 'Phase 3',
+    status: 'recruiting',
+    topic: 'ich-secondary-prevention',
+    briefDescription: 'Continuation vs discontinuation of statins after spontaneous lobar ICH in patients taking a statin at onset.',
+    rationale: 'Lobar ICH raises concern for cerebral amyloid angiopathy; the statin association with recurrent ICH risk versus cardiovascular benefit is unresolved. SATURN also tests whether APOE genotype should influence the continue/discontinue decision.',
+    inclusionCriteria: [
+      'Age ≥50 y',
+      'Spontaneous lobar ICH (CT or MRI)',
+      'Taking a statin at ICH onset',
+      'Randomizable within 7 days of onset',
+      'Pre-morbid mRS ≤3'
+    ],
+    exclusionCriteria: [
+      'Suspected secondary cause for ICH',
+      'Recent MI <3 months',
+      'ICH score >3',
+      'Familial hypercholesterolemia or PCSK9-inhibitor use'
+    ],
+    matcherCriteria: [
+      { field: 'age', operator: '>=', value: 50, label: 'Age ≥50' },
+      { field: 'ichLocation', operator: 'present', value: ['lobar', 'cortical'], label: 'Lobar ICH location' },
+      { field: 'onStatin', operator: '==', value: true, label: 'On statin at ICH onset' },
+      { field: 'premorbidMRS', operator: '<=', value: 3, label: 'Pre-morbid mRS ≤3' }
+    ],
+    matcherExclusions: [
+      // SATURN's "deep ICH" exclusion is enforced by the matcherCriteria
+      // ichLocation requirement above (lobar/cortical), so a separate
+      // matcherExclusion would be redundant. Recent-MI exclusion preserved.
+      { id: 'recentMI', field: 'recentMI', operator: '==', value: true, label: 'Recent MI <3 months' },
+    ],
+    relatedCompletedTrialIds: ['interact3', 'enrich'],
+    link: 'https://clinicaltrials.gov/study/NCT03936361',
+    lastReviewed: lr,
+    verificationStatus: 'verified-clinicaltrials-gov',
+    category: 'ich',
+    keyTakeaways: [
+      "Lobar ICH raises concern for CAA — statins may increase recurrent ICH risk in CAA patients",
+      "Many patients are on statins for cardiovascular prevention; stopping may increase MACE risk",
+      "First RCT to directly address the statin dilemma after lobar ICH; also tests whether APOE genotype should guide the decision"
+    ],
+    lookingFor: [
+      "Lobar ICH (NOT deep/basal ganglia)",
+      "Already on statin therapy",
+      "Age ≥50"
+    ],
+    legacyMatcherKey: 'SATURN'
+  }),
+
+  makeActiveTrial({
     id: 'aspire',
     shortName: 'ASPIRE',
     fullName: 'Apixaban vs Aspirin Post-ICH in AF',

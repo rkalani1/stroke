@@ -47,7 +47,7 @@ describe('Evidence Atlas — data layer', () => {
   });
 
   it('every legacy matcher key resolves to an active trial', () => {
-    for (const key of ['SISTER', 'STEP', 'PICASSO', 'TESTED', 'VERIFY', 'MOST', 'CAPTIVA', 'RHAPSODY', 'ASPIRE']) {
+    for (const key of ['SISTER', 'STEP', 'PICASSO', 'TESTED', 'VERIFY', 'MOST', 'CAPTIVA', 'RHAPSODY', 'SATURN', 'ASPIRE']) {
       expect(getActiveTrialByLegacyKey(key), `legacy key ${key}`).toBeTruthy();
     }
   });

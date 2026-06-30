@@ -36,8 +36,8 @@ describe('eligibilityTables — structure & integrity', () => {
       'ischemic-acute': 2,
       'ischemic-inpatient': 7,
       'ischemic-outpatient': 6,
-      'ich-acute': 1,
-      'ich-inpatient': 2,
+      'ich-acute': 2,
+      'ich-inpatient': 3,
       'ich-outpatient': 3
     });
   });

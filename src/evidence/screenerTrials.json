@@ -467,6 +467,61 @@
     }
   },
   {
+    "acronym": "SATURN",
+    "exactFullStudyName": "Statins Use in Intracerebral Hemorrhage Patients",
+    "sourceHypothesisText": "To determine the effects of continuation vs. discontinuation of statins on the risk of ICH recurrence during 24 months of follow-up in patients presenting with a spontaneous lobar ICH while taking a statin drug.",
+    "status": "enrolling",
+    "sourceCompletenessStatus": "first_pass",
+    "sourceGaps": [
+      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this public demo.",
+      "CT.gov includes statin-prescriber consultation/randomization agreement, PCSK9/familial hypercholesterolemia, severe dementia, statin safety, and withdrawal-of-care exclusions not fully encoded here."
+    ],
+    "timeCategory": "acute_subacute",
+    "enrollmentWindowText": "≤ 7 days",
+    "externalMetadata": {
+      "nct": "NCT03936361",
+      "registryUrl": "https://clinicaltrials.gov/study/NCT03936361",
+      "verificationDate": "2026-06-30"
+    },
+    "conciseBedsideSummary": "Statin continuation vs discontinuation after spontaneous lobar ICH (within 7 days) in patients taking a statin at onset.",
+    "pathway": "Consult Stroke Research Coordinator / Stroke Neurology Service",
+    "noContactInfo": true,
+    "exactInclusionCriteria": [
+      "Spontaneous lobar ICH confirmed by CT or MRI",
+      "Can be randomized within 7 days of stroke onset",
+      "Age ≥ 50",
+      "Taking a statin drug at onset",
+      "Patient or LAR agrees to randomization after consultation with the statin prescriber"
+    ],
+    "exactExclusionCriteria": [
+      "Suspected secondary cause for the ICH",
+      "ICH score > 3",
+      "MI within past 3 months",
+      "Pre-stroke mRS > 3",
+      "Life expectancy < 2 years"
+    ],
+    "optimisticDefaults": {
+      "ichLocation": "lobar",
+      "statin": true
+    },
+    "eligibility": {
+      "criteria": [
+        { "field": "classification", "operator": "==", "value": "ich", "error": "Requires ICH", "matchedLabel": "ICH classification selected" },
+        { "field": "ichLocation", "operator": "==", "value": "lobar", "error": "Requires Lobar ICH", "matchedLabel": "Lobar ICH location confirmed" },
+        { "field": "onsetDays", "operator": "<=", "value": 7, "error": "LKW-to-randomization > 7 days", "matchedLabel": "Onset within 7 days window" },
+        { "field": "age", "operator": ">=", "value": 50, "error": "Age < 50", "matchedLabel": "Age meets ≥ 50" },
+        { "field": "statin", "operator": "==", "value": true, "error": "Requires patient to be taking a statin at onset", "matchedLabel": "Taking statin drug at onset" },
+        { "field": "preMrs", "operator": "<=", "value": 3, "error": "Pre-stroke mRS > 3", "matchedLabel": "Pre-stroke mRS ≤ 3" }
+      ],
+      "exclusions": [
+        { "field": "exSecondaryIch", "operator": "==", "value": true, "error": "Excludes suspected secondary cause", "pendingLabel": "Confirm no secondary cause (AVM, aneurysm, tumor, SAH)" },
+        { "field": "exIchScore3", "operator": "==", "value": true, "error": "Excludes ICH score > 3", "pendingLabel": "Confirm clinical ICH score is ≤ 3" },
+        { "field": "exRecentMi3m", "operator": "==", "value": true, "error": "Excludes MI within past 3 months", "pendingLabel": "Confirm no Myocardial Infarction in the past 3 months" },
+        { "field": "exTerminalIllness", "operator": "==", "value": true, "error": "Excludes life expectancy < 2 years", "pendingLabel": "Confirm life expectancy is ≥ 2 years" }
+      ]
+    }
+  },
+  {
     "acronym": "CAPPRICORN-1",
     "exactFullStudyName": "A Study to Investigate the Efficacy, Safety, and Tolerability of ALN-APP in Patients with CAA",
     "sourceHypothesisText": "A randomized, double-blind, placebo-controlled, phase 2 trial to assess the safety and efficacy of intrathecally injected ALN-APP for treatment of patients with Cerebral Amyloid Angiopathy.",

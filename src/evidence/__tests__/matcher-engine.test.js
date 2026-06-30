@@ -250,6 +250,16 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
     expect(r.status).toBe('eligible');
   });
 
+  it('SATURN: lobar ICH on statin → eligible', () => {
+    const data = {
+      telestrokeNote: { age: '72', premorbidMRS: '2' },
+      ichLocation: 'lobar parietal',
+      onStatin: true
+    };
+    const r = evaluateActiveTrial(getActiveTrial('saturn'), data);
+    expect(r.status).toBe('eligible');
+  });
+
   it('ASPIRE: ICH + AF + mRS 3 → eligible', () => {
     const data = {
       telestrokeNote: {
@@ -326,14 +336,14 @@ describe('matcher engine — exclusions', () => {
     expect(r.exclusions.some((x) => x.id === 'pregnancy')).toBe(true);
   });
 
-  it('every active trial has matcherExclusions populated (13 across 9 active trials)', () => {
+  it('every active trial has matcherExclusions populated (14 across 10 active trials)', () => {
     let total = 0;
     for (const t of activeTrials) {
       total += (t.matcherExclusions || []).length;
     }
     expect(total).toBeGreaterThan(0);
     // Trial-level matcherExclusions total across the active atlas.
-    expect(total).toBe(13);
+    expect(total).toBe(14);
   });
 });
 
