@@ -88,6 +88,54 @@ describe('patient-store', () => {
   });
 
   describe('IndexedDB Operations', () => {
+    it('handles IndexedDB exception in openDB by returning null', async () => {
+      const mockOpen = vi.fn().mockImplementation(() => {
+        throw new Error('Simulated IndexedDB error');
+      });
+      vi.stubGlobal('indexedDB', { open: mockOpen });
+
+      const p1 = patientStore.makePatientStub({ initials: 'E1' });
+      const saved = await patientStore.savePatient(p1);
+
+      expect(saved.initials).toBe('E1');
+      expect(globalThis.localStorage.setItem).toHaveBeenCalled();
+
+      vi.unstubAllGlobals();
+    });
+
+    it('handles req.onerror during listPatients gracefully', async () => {
+      vi.resetModules();
+
+      const mockDB = {
+        transaction: () => ({
+          objectStore: () => ({
+            getAll: () => {
+              const req = {};
+              setTimeout(() => { if (req.onerror) req.onerror(); }, 10);
+              return req;
+            }
+          })
+        })
+      };
+
+      vi.stubGlobal('indexedDB', {
+        open: () => {
+          const req = {};
+          setTimeout(() => {
+            req.result = mockDB;
+            if (req.onsuccess) req.onsuccess({ target: { result: mockDB } });
+          }, 10);
+          return req;
+        }
+      });
+
+      const store = await import('../src/patient-store.js');
+      const all = await store.listPatients();
+      expect(all).toEqual([]);
+
+      vi.unstubAllGlobals();
+    });
+
     it('saves and gets a patient', async () => {
       const patient = patientStore.makePatientStub({ initials: 'TS' });
       const saved = await patientStore.savePatient(patient);
@@ -141,6 +189,34 @@ describe('patient-store', () => {
   });
 
   describe('LocalStorage Fallback', () => {
+    it('falls back to localStorage for listPatients and sorts/filters them', async () => {
+      vi.stubGlobal('indexedDB', undefined);
+
+      const p1 = patientStore.makePatientStub({ initials: 'L1', service: 'stroke' });
+      p1.updatedAt = '2023-01-01T10:00:00.000Z';
+      const p2 = patientStore.makePatientStub({ initials: 'L2', service: 'neuro' });
+      p2.updatedAt = '2023-01-02T10:00:00.000Z';
+      const p3 = patientStore.makePatientStub({ initials: 'L3', service: 'stroke' });
+      p3.updatedAt = '2023-01-03T10:00:00.000Z';
+
+      // Bypass savePatientsBatch and just write to mock localStorage directly
+      globalThis.localStorage.setItem('strokeApp:patientCensus:lsFallback', JSON.stringify([p1, p2, p3]));
+
+      const all = await patientStore.listPatients();
+      expect(all.length).toBe(3);
+      // Sort should be descending by updatedAt
+      expect(all[0].initials).toBe('L3');
+      expect(all[1].initials).toBe('L2');
+      expect(all[2].initials).toBe('L1');
+
+      const strokeOnly = await patientStore.listPatients({ service: 'stroke' });
+      expect(strokeOnly.length).toBe(2);
+      expect(strokeOnly[0].initials).toBe('L3');
+      expect(strokeOnly[1].initials).toBe('L1');
+
+      vi.unstubAllGlobals();
+    });
+
     it('falls back to localStorage for save and get', async () => {
       vi.stubGlobal('indexedDB', undefined);
 
