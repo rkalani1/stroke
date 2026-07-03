@@ -326,29 +326,32 @@ export const AIS_COMMAND_CENTER_CARDS = [
       'Pediatric AIS evidence is far more limited than adult AIS. Treat this as an educational framework, not a formal treatment recommendation: confirm true arterial ischemic stroke (mimics are common), engage pediatric stroke expertise, and verify any dose against local pediatric pharmacy/ICU protocol.',
     actions: [
       'Preferred imaging when feasible: MRI brain plus MRA head/neck (mimics are common in children); CT/CTA is acceptable for time-critical, high-suspicion presentations.',
-      'IVT may be considered for a disabling, imaging-supported AIS treatable within 4.5h of LKW; thrombolysis is NOT FDA-approved in children and requires expert input and shared decision-making with the family.',
-      'If a weight-based dose is used, verify it against local pediatric pharmacy/ICU protocol — adult-derived dosing is extrapolation: tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg).',
-      'EVT may be considered for LVO with a measurable deficit, generally within 24h in selected cases; adapt adult criteria cautiously with the neurointerventionalist.',
+      'IVT with alteplase may be considered for a disabling, imaging-supported AIS treatable within 4.5h of LKW (the 2026 AHA/ASA guideline names alteplase for ages 28 days-18 years, COR IIb); thrombolysis is NOT FDA-approved in children and requires pediatric stroke expertise and family shared decision-making.',
+      'If a weight-based dose is used, verify it against local pediatric pharmacy/ICU protocol: alteplase 0.9 mg/kg (max 90 mg) is the guideline-referenced agent; tenecteplase 0.25 mg/kg (max 25 mg) is adult-derived extrapolation only and is not specifically endorsed for children.',
+      'EVT may be considered for LVO with a measurable deficit and salvageable tissue, generally within 24h: age >=6y is reasonable (COR IIa) and age 28 days-<6y may be reasonable in selected cases (COR IIb) — pediatric EVT is not categorically excluded in young children. Adapt adult criteria cautiously with the neurointerventionalist.',
+      'Moyamoya and focal cerebral arteriopathy are generally not thrombolysis or thrombectomy targets (non-thromboembolic, vessel-fragility risk); in sickle cell disease, acute pediatric management centers on exchange transfusion (STOP-era protocols) rather than lysis.',
       'Screen for pediatric-specific risk factors: congenital/acquired heart disease, sickle cell disease, arteriopathy/moyamoya, inflammatory/autoimmune disease, thrombophilia/prior thrombosis, malignancy/chemotherapy, infection, trauma, and OCPs in adolescents.',
-      'Manage blood pressure using age-specific percentile thresholds and local pediatric protocol rather than adult numeric targets.'
+      'Manage blood pressure using age-specific percentile thresholds and local pediatric protocol rather than adult numeric targets. Data below ~age 2 are especially sparse — treat any lower age boundary as expert-consensus caution, not a formal guideline exclusion.'
     ],
     pathway: [
-      { label: 'Disabling AIS, imaging-supported, <=4.5h', decision: 'IVT may be considered — off-label, expert-guided, family shared decision', cor: 'IIb', loe: 'C-LD' },
-      { label: 'LVO, measurable deficit, <=24h, selected', decision: 'EVT may be considered (age >=6; caution 4-5y)', cor: 'IIa', loe: 'B-NR' },
-      { label: 'Age <2 (IVT) / <4 (EVT), SCD, moyamoya/FCA, mineralizing lenticulostriate vasculopathy', decision: 'Generally excluded / high caution', cor: 'III', loe: 'C-LD' }
+      { label: 'Disabling AIS, imaging-supported, <=4.5h (age 28d-18y)', decision: 'IVT (alteplase) may be considered — off-label, expert-guided, family shared decision', cor: 'IIb', loe: 'C-LD' },
+      { label: 'LVO + salvageable tissue, <=24h, age >=6y', decision: 'EVT is reasonable in selected cases', cor: 'IIa', loe: 'B-NR' },
+      { label: 'LVO + salvageable tissue, <=24h, age 28d-<6y', decision: 'EVT may be reasonable in selected cases', cor: 'IIb', loe: 'B-NR' },
+      { label: 'Moyamoya / focal cerebral arteriopathy / mineralizing lenticulostriate vasculopathy', decision: 'Generally not reperfusion targets (non-thromboembolic) — high caution', cor: 'III', loe: 'C-LD' }
     ],
     calculators: [
       { label: 'NIHSS / PedNIHSS', tab: 'management', subTab: 'calculators', anchor: 'calc-nihss' },
-      { label: 'TNK dose from weight', tab: 'encounter', anchor: 'treatment-decision' }
+      { label: 'Alteplase calculator', tab: 'management', subTab: 'calculators', anchor: 'calc-alteplase' }
     ],
     pitfalls: [
-      'Applying adult dosing without pediatric pharmacy/ICU verification.',
+      'Reaching for tenecteplase as a co-equal pediatric lytic: the guideline references alteplase for children; TNK use is adult-derived extrapolation. Verify any agent and dose with pediatric pharmacy/ICU.',
       'Treating pediatric thrombolysis as standard care — it is not FDA-approved and the evidence base is limited (e.g., the TIPS trial stopped early for low enrollment).',
+      'Assuming infants and toddlers are categorically excluded from EVT: the 2026 guideline offers a IIb pathway for LVO down to 28 days, distinct from the >=6y IIa pathway.',
       'Overlooking mineralizing lenticulostriate vasculopathy (basal-ganglia stroke after minor head trauma with basal-ganglia calcifications) — not thrombolysis-responsive and carries basal-ganglia hemorrhage risk.'
     ],
     teachingPearl:
-      'Pediatric acute reperfusion decisions mirror the adult framework, but the evidence and regulatory approvals do not: the priorities are confirming true arterial ischemic stroke, engaging pediatric stroke expertise, and verifying every dose locally.',
+      'Pediatric acute reperfusion mirrors the adult framework, but the evidence and approvals do not: confirm true arterial ischemic stroke, engage pediatric stroke expertise, and verify every agent and dose locally. Note the pediatric EVT evidence (B-NR) is stronger than the lytic evidence (C-LD).',
     changedSinceLastGuideline:
-      'The 2026 AHA/ASA guideline extended consideration of IV thrombolysis and EVT down to age 28 days, but evidence remains insufficient below age 2 (IVT) and age 4 (EVT); pediatric use stays expert-guided, off-label, and shared-decision-based.'
+      'The 2026 AHA/ASA guideline extended consideration of IV thrombolysis (alteplase; ages 28 days-18 years; COR IIb/C-LD) and EVT (age >=6y COR IIa/B-NR; age 28 days-<6y COR IIb/B-NR) — pediatric reperfusion is not categorically excluded in young children, but stays expert-guided, off-label for lytics, and shared-decision-based.'
   }
 ];
