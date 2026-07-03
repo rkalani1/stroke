@@ -1,6 +1,6 @@
 # Stroke Clinical Decision Support
 
-> Client-side, offline-capable stroke CDS toolkit (v6.9.24): acute ischemic & hemorrhagic stroke pathways, 24 calculators, an evidence atlas (58 landmark trials, 9 active trials), guideline summaries, and a trial screener. Institution-neutral and evidence-based.
+> Client-side, offline-capable stroke CDS toolkit (v6.9.24): acute ischemic & hemorrhagic stroke pathways, 24 calculators, an evidence atlas (58 landmark trials, 10 active trials), guideline summaries, and a trial screener. Institution-neutral and evidence-based.
 
 Decision support only — NOT medical advice and NOT a substitute for clinical judgment. Institution-neutral and evidence-based; verify against primary sources and local policy before any patient care decision.
 

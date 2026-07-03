@@ -3,7 +3,7 @@
     "endpoint": "completed-trials",
     "schemaVersion": "1.0.0",
     "appVersion": "6.9.24",
-    "checksum": "sha256:d61fcfec2e92346506957fcc6f0f052a",
+    "checksum": "sha256:6c9c4e4675cf2833fe609967095c95f9",
     "count": 58,
     "source": "src/evidence/completedTrials.js",
     "license": "Content for clinical reference by qualified clinicians. No warranty.",
@@ -1139,7 +1139,9 @@
       "citationIds": [
         "cit-interact3-2023"
       ],
-      "relatedActiveTrialIds": [],
+      "relatedActiveTrialIds": [
+        "saturn"
+      ],
       "practiceImpact": "Establishes care-bundle approach for acute ICH.",
       "lastReviewed": "2026-04-25",
       "promotedDate": "2026-04-25",
@@ -1249,7 +1251,9 @@
       "citationIds": [
         "cit-enrich-2024"
       ],
-      "relatedActiveTrialIds": [],
+      "relatedActiveTrialIds": [
+        "saturn"
+      ],
       "practiceImpact": "Supports early minimally invasive evacuation for lobar ICH at capable centers.",
       "lastReviewed": "2026-04-25",
       "promotedDate": "2026-04-25",

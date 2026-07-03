@@ -228,7 +228,7 @@ const TRIALS = {
   MINUTE: {
     acronym: 'MINUTE',
     nct: 'NCT07260916',
-    status: 'soon',
+    status: 'enrolling',
     href: CTGOV('NCT07260916'),
     summary:
       'Prospective, randomized trial evaluating the clinical utility of ultra-early SCUBA neuroendoscopic evacuation of basal-ganglia hemorrhages.',

@@ -28657,7 +28657,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div>
                               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-cobalt-600 dark:text-cobalt-300">Acute ischemic stroke</p>
                               <h2 id="acute-stroke-pathways-heading" className="text-lg font-semibold text-slate-900 dark:text-ink">Acute Stroke Pathways</h2>
-                              <p className="text-xs text-slate-600 mt-0.5 dark:text-ink-2">Six evidence-bound decisions for the fastest reperfusion workflow. Each card is COR/LOE-graded against the 2026 AHA/ASA AIS guideline.</p>
+                              <p className="text-xs text-slate-600 mt-0.5 dark:text-ink-2">Evidence-bound decisions for the acute ischemic stroke pathway — reperfusion, telestroke sequencing, and pediatric considerations. Each card is COR/LOE-graded against the 2026 AHA/ASA AIS guideline where applicable.</p>
                             </div>
                           </div>
 

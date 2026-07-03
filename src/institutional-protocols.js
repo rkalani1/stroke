@@ -4,7 +4,10 @@
 // must be adapted to local policy before clinical use. Do not rely on this
 // module as the sole source of truth for any patient encounter.
 //
-// EVIDENCE AUDIT: Last comprehensive review 2026-05-31 against:
+// EVIDENCE AUDIT: Last comprehensive review 2026-05-31; IVT/EVT eligibility and
+// BP-target content re-verified 2026-07-03 against the 2026 acute-stroke algorithm,
+// IVT/EVT eligibility, and telestroke source updates (no clinical changes required).
+// Reviewed against:
 // — AHA/ASA AIS 2026 Guidelines
 // — AHA/ASA ICH 2022 (Greenberg)
 // — AHA/ASA aSAH 2023

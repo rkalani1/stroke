@@ -5,11 +5,11 @@ export const MINUTE = {
     exactFullStudyName: 'Minimally Invasive Neuroendoscopic Ultra-Early Targeted ICH Evacuation',
     sourceHypothesisText:
       'A prospective, multi-center, randomized, controlled, blinded assessor, adaptive enrichment design, clinical trial to evaluate the utility of early/ultra-early SCUBA evacuation in patients with BGH and LKW-to-randomization time ≤ 16 hours.',
-    status: 'soon',
+    status: 'enrolling',
     sourceCompletenessStatus: 'first_pass',
     sourceGaps: [
       CTGOV_FIRST_PASS_NOTE,
-      'CT.gov overall status as of 2026-05-28: NOT_YET_RECRUITING; listed study start date 2026-05-15.',
+      'CT.gov overall status as of 2026-07-03: RECRUITING (updated from NOT_YET_RECRUITING); listed study start date 2026-07-15.',
       'CT.gov also requires CTA/MRA without vascular lesion, expected surgery start <120 minutes from randomization, coagulation/lab review, goals-of-care consent, and other exclusions not fully encoded here.'
     ],
     timeCategory: 'hyperacute',
@@ -17,7 +17,7 @@ export const MINUTE = {
     externalMetadata: {
       nct: 'NCT07260916',
       registryUrl: 'https://clinicaltrials.gov/study/NCT07260916',
-      verificationDate: '2026-05-28'
+      verificationDate: '2026-07-03'
     },
     conciseBedsideSummary:
       'Ultra-early SCUBA endoscopic evacuation of basal ganglia hemorrhages (volume ≥ 20mL) within 16h.',
