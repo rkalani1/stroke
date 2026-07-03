@@ -40,6 +40,15 @@
     "304038"
   ],
 
+  "_allowedInstitutionalDisclaimerPatterns": "Narrow exceptions for negative public-demo disclaimer lines. These do not allow institutional protocols, contacts, workflows, or local policy content.",
+  "allowedInstitutionalDisclaimerPatterns": [
+    {
+      "pattern": "\\bnot (?:an? )?(?:approved for |approved )?UW Medicine(?: clinical)? (?:tool|use|clinical use|approved)\\b|\\bnot approved for UW Medicine clinical use\\b|\\bnot UW Medicine approved\\b",
+      "flags": "i",
+      "label": "Negative UW Medicine approval disclaimer"
+    }
+  ],
+
   "_fullyExemptFiles": "The leak-guard's own machinery legitimately contains every banned token (it IS the ruleset). These files are skipped by BOTH the institutional and PHI scans. Keep this list minimal — only the guard's own files.",
   "fullyExemptFiles": [
     "scripts/leak-guard-denylist.json",

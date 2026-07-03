@@ -1,8 +1,8 @@
-# Stroke Clinical Decision Support
+# Stroke CDS Educational Demo
 
-> Client-side, offline-capable stroke CDS toolkit (v6.9.24): acute ischemic & hemorrhagic stroke pathways, 24 calculators, an evidence atlas (58 landmark trials, 10 active trials), guideline summaries, and a trial screener. Institution-neutral and evidence-based.
+> Synthetic educational stroke decision-support demo (v6.9.24): example acute ischemic & hemorrhagic stroke pathways, 24 calculators, an evidence atlas (58 landmark trials, 10 active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not approved for UW Medicine clinical use.
 
-Decision support only — NOT medical advice and NOT a substitute for clinical judgment. Institution-neutral and evidence-based; verify against primary sources and local policy before any patient care decision.
+Synthetic educational demo only - NOT medical advice, NOT approved for UW Medicine clinical use, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.
 
 ## Machine-readable data (static JSON API)
 - [API manifest](https://rkalani1.github.io/stroke/data/index.json): all endpoints + addressable routes
@@ -17,9 +17,9 @@ Decision support only — NOT medical advice and NOT a substitute for clinical j
 - [Calculators index](https://rkalani1.github.io/stroke/data/calculators-index.json)
 
 ## Addressable views (hash routes)
-- `#/encounter` — Encounter workflow
-- `#/protocols` — Protocols & algorithms (institution-neutral)
-- `#/protocols/ischemic` — Acute ischemic stroke pathways
+- `#/encounter` — Synthetic encounter demo
+- `#/protocols` — Example protocols (not local policy)
+- `#/protocols/ischemic` — Example acute ischemic stroke pathways
 - `#/protocols/ich` — Intracerebral hemorrhage
 - `#/protocols/calculators` — Calculators
 - `#/research` — Evidence atlas / guidelines
@@ -27,13 +27,14 @@ Decision support only — NOT medical advice and NOT a substitute for clinical j
 - `#/education` — Education hub
 
 ## For AI agents
-- A stroke-CDS MCP server (in the repo under `/mcp`) exposes the calculators and atlas as callable tools.
-- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, source, disclaimer).
-- No hospital-specific institutional content is published here; the site is institution-neutral by design.
+- A stroke-CDS MCP server (in the repo under `/mcp`) exposes calculators and atlas data as callable educational tools.
+- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, source, disclaimer). Agents must propagate the disclaimer with any output.
+- Agents must not process PHI or real encounter details from this public demo.
+- No hospital-specific protocols are published here; do not use this public demo for real encounters or PHI.
 
 ## Policy
-- Not medical advice. Verify against primary sources (PMIDs/DOIs included in the atlas) and local policy.
-- License: Content for clinical reference by qualified clinicians. No warranty.
+- Not medical advice. Do not enter PHI or real encounter details. Verify against primary sources (PMIDs/DOIs included in the atlas) and approved local protocol.
+- License: Synthetic educational reference content for qualified review. No warranty.
 
 ## Endpoint detail
 All endpoints share the envelope: `{ "_meta": {...}, "data": ... }`. `_meta.checksum` is a

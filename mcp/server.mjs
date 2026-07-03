@@ -6,8 +6,8 @@
 // agent-callable MCP tools (stdio transport). Wraps the SAME pure functions the
 // web app uses (../src/calculators*.js) and reads the served data API (../data).
 //
-// NOT medical advice. Decision support for qualified clinicians; verify against
-// primary sources and local policy. No hospital-specific content here.
+// Synthetic educational demo only. Not medical advice; do not use for real
+// encounters or PHI. Verify against primary sources and approved local protocol.
 //
 // Run:   node mcp/server.mjs       (after `cd mcp && npm install`)
 // Config: see mcp/README.md
@@ -29,8 +29,7 @@ import {
 } from '../src/calculators.js';
 import { evaluateDAWN, evaluateDEFUSE3 } from '../src/calculators-extended.js';
 
-const DISCLAIMER =
-  'Decision support only — not medical advice. Verify against primary sources and local policy.';
+const DISCLAIMER = 'Synthetic educational demo only - NOT medical advice, NOT approved for UW Medicine clinical use, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.';
 
 // ── load served data (atlas / guidelines / whats-new) ────────────────────────
 function loadJson(rel, fallback) {

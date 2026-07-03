@@ -1,7 +1,7 @@
 {
-  "name": "Stroke",
-  "short_name": "Stroke",
-  "description": "Clinical decision support toolkit for stroke management with calculators, protocols, and evidence-based resources",
+  "name": "Stroke CDS Educational Demo",
+  "short_name": "Stroke Demo",
+  "description": "Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not approved for UW Medicine clinical use.",
   "start_url": "/stroke/#/encounter",
   "display": "standalone",
   "background_color": "#FBFAF6",
@@ -34,7 +34,7 @@
       "name": "New encounter",
       "short_name": "Encounter",
       "url": "/stroke/#/encounter",
-      "description": "Start a new acute stroke encounter"
+      "description": "Open synthetic encounter demo"
     },
     {
       "name": "Calculators",
