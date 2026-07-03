@@ -703,7 +703,7 @@
 ## Iteration 042 (2026-02-20)
 
 ### What was changed
-- Restored institutional stroke on-call contact directory defaults in app settings and runtime state, including clickable numbers for Stroke Phone, STAT Pharmacy, neuroradiology lines, imaging lines, IT help desk, and paging operator.
+- Restored institutional stroke on-call contact directory defaults in app settings and runtime state, including clickable numbers for the stroke on-call line, STAT Pharmacy, neuroradiology lines, imaging lines, IT help desk, and paging operator.
 - Reintroduced bottom-right floating **Quick Contacts** phone button with expandable panel and `tel:` links for one-tap calling.
 - Added full **Settings > Contact Directory** editor (add/edit/remove contacts + reset defaults) so phone numbers are visible and easily maintainable.
 - Updated TIA disposition language across pathway cards, management content, and note templates from “admit all TIAs” to risk-stratified pathways aligned with the 2023 AHA TIA ED statement.
@@ -1569,11 +1569,11 @@
 ### What was changed
 - Hardened phone-directory non-removal safeguards in `scripts/qa-smoke.mjs` with explicit contact invariants.
 - Quick Contacts FAB smoke now requires these institutional defaults to be present:
-  - `Stroke Phone`
+  - `stroke on-call line`
   - `STAT Pharmacy`
   - `Stroke RAD Hotline`
 - Settings smoke now requires matching label + phone-value pairs for protected defaults:
-  - `Stroke Phone`
+  - `stroke on-call line`
   - `STAT Pharmacy`
   - `Stroke RAD Hotline`
 

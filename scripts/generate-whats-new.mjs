@@ -1,6 +1,6 @@
 // scripts/generate-whats-new.mjs
 //
-// Build-time generator for whats-new.json — sourced ENTIRELY from Dr. Kalani's
+// Build-time generator for whats-new.json — sourced ENTIRELY from the maintainer's
 // committed Clinical Intelligence briefing
 // (data/clinical-intelligence/briefing-latest.md), joined against the
 // PubMed verification cache (data/clinical-intelligence/verified-pmids.json).

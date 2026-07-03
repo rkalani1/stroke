@@ -18,9 +18,11 @@
 //   npm run check:leak-guard:staged   (git diff --cached --name-only | node …)
 // Add --json for machine-readable output.
 //
-// Two severity tiers (see leak-guard-denylist.json):
+// Three severity tiers (see leak-guard-denylist.json):
 //   • institutionalTokens — banned on the served/source surface; allowed only in
 //     meta/policy files listed under exemptFiles.
+//   • identityTokens — maintainer name / personal email / institutional domains;
+//     banned in EVERY tracked file, no exemption.
 //   • phiPatterns + literalDenylist — banned in EVERY tracked file, no exemption.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -57,6 +59,10 @@ const institutionalRules = (denylist.institutionalTokens || []).map((r) => ({
   label: r.label,
 }));
 const phiRules = (denylist.phiPatterns || []).map((r) => ({
+  re: new RegExp(r.pattern, r.flags || ''),
+  label: r.label,
+}));
+const identityRules = (denylist.identityTokens || []).map((r) => ({
   re: new RegExp(r.pattern, r.flags || ''),
   label: r.label,
 }));
@@ -116,6 +122,11 @@ for (const file of readFileList()) {
     for (const rule of phiRules) {
       if (rule.re.test(line)) {
         violations.push({ file, line: idx + 1, tier: 'phi', label: rule.label, text: line.trim().slice(0, 160) });
+      }
+    }
+    for (const rule of identityRules) {
+      if (rule.re.test(line)) {
+        violations.push({ file, line: idx + 1, tier: 'identity', label: rule.label, text: line.trim().slice(0, 160) });
       }
     }
     for (const lit of literals) {

@@ -2212,6 +2212,8 @@ export const EVDInfographic = () => {
             >
               <img 
                 src="assets/evd_photo_cropped.png" 
+                loading="lazy"
+                decoding="async"
                 alt="EVD Cylinder Setup" 
                 className="max-h-[260px] object-contain rounded-md shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
               />
@@ -2427,6 +2429,8 @@ export const ICPInfographic = () => {
                 >
                   <img 
                     src="assets/herniation_diagram.png" 
+                    loading="lazy"
+                    decoding="async"
                     alt="Brain Herniation Diagram" 
                     className="max-h-[160px] object-contain rounded-md transition-transform duration-200 group-hover:scale-105"
                   />
@@ -3044,7 +3048,7 @@ export function StrokePrognosisCalculator() {
                 </span>
               </div>
               <input
-                type="range" min="18" max="100" value={astralAge}
+                type="range" min="18" max="100" value={astralAge} aria-label="Patient age in years"
                 onChange={(e) => setAstralAge(Number(e.target.value))}
                 className="w-full accent-purple-600 h-2 rounded-lg cursor-pointer bg-slate-200 dark:bg-slate-700"
               />
@@ -3059,7 +3063,7 @@ export function StrokePrognosisCalculator() {
                 </span>
               </div>
               <input
-                type="range" min="0" max="42" value={astralNihss}
+                type="range" min="0" max="42" value={astralNihss} aria-label="NIHSS score"
                 onChange={(e) => setAstralNihss(Number(e.target.value))}
                 className="w-full accent-purple-600 h-2 rounded-lg cursor-pointer bg-slate-200 dark:bg-slate-700"
               />
@@ -3185,7 +3189,7 @@ export function StrokePrognosisCalculator() {
                 </span>
               </div>
               <input
-                type="range" min="18" max="100" value={planAge}
+                type="range" min="18" max="100" value={planAge} aria-label="Patient age in years"
                 onChange={(e) => setPlanAge(Number(e.target.value))}
                 className="w-full accent-teal-700 h-2 rounded-lg cursor-pointer bg-slate-200 dark:bg-slate-700"
               />
@@ -3720,6 +3724,8 @@ export function CervicalDissectionCard() {
               >
                 <img 
                   src="assets/dissection_stroke_mechanisms.png" 
+                  loading="lazy"
+                  decoding="async"
                   alt="Cervical Artery Dissection Stroke Mechanisms" 
                   style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
                   className="transition-transform duration-200 group-hover:scale-[1.02]"
@@ -3976,6 +3982,8 @@ export function FibromuscularDysplasiaCard() {
               >
                 <img 
                   src="assets/fmd_stroke_mechanisms.png" 
+                  loading="lazy"
+                  decoding="async"
                   alt="Fibromuscular Dysplasia Stroke Mechanisms" 
                   style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
                   className="transition-transform duration-200 group-hover:scale-[1.02]"
@@ -4200,6 +4208,8 @@ export function BrainDeathCard() {
               >
                 <img 
                   src="assets/brain_death_evaluation.png" 
+                  loading="lazy"
+                  decoding="async"
                   alt="Brain Death Evaluation Pathway" 
                   style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
                   className="transition-transform duration-200 group-hover:scale-[1.02]"
@@ -4398,41 +4408,6 @@ export function AntiepilepticDrugsCard() {
                 </marker>
               </defs>
             </svg>
-
-            {/* Click-to-Zoom Image Banner */}
-            <div 
-              style={{
-                width: '100%', 
-                height: '140px', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                background: 'var(--fill-soft)', 
-                borderRadius: '8px', 
-                border: '1.5px solid var(--rule-soft)', 
-                overflow: 'hidden', 
-                boxSizing: 'border-box', 
-                marginBottom: '8px'
-              }}
-              title="Antiseizure Medication Selection Pathway &amp; Profiles"
-            >
-              <div 
-                className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full h-full"
-                onClick={() => setLightboxImage({ src: 'assets/aed_stroke_selection.png', alt: 'Antiseizure Medication Selection Pathway', title: 'Antiseizure Medication Selection Pathway &amp; Profiles' })}
-              >
-                <img 
-                  src="assets/aed_stroke_selection.png" 
-                  alt="Antiseizure Medication Selection Pathway" 
-                  style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
-                  className="transition-transform duration-200 group-hover:scale-[1.02]"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
-                  <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
-                    <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
-                  </span>
-                </div>
-              </div>
-            </div>
 
             {/* Grid for Seizure Classification & Risk Scores */}
             <div className="toast-grid" style={{marginBottom: '10px'}}>

@@ -1,13 +1,13 @@
 export const PUBLIC_DEMO_BANNER_COPY =
-  'Synthetic educational demo - not medical advice, not UW Medicine approved, and not local clinical policy. Do not enter PHI or real patient details. Verify all outputs against primary sources and approved local protocol.';
+  'Synthetic educational demo - not medical advice, not an approved clinical tool, and not local clinical policy. Do not enter PHI or real patient details.';
 
 export const PUBLIC_DEMO_MODAL_COPY =
-  'This public GitHub Pages site is for synthetic education and reference only. It is not an approved UW Medicine clinical tool and does not store encounters on this public build. Do not enter PHI, MRNs, dates of birth, real encounter details, or operational handoff content.';
+  'This public site is for synthetic education and reference only. It is not an approved clinical tool and does not store encounters on this public build. Do not enter PHI, MRNs, dates of birth, real encounter details, or operational handoff content.';
 
 export const PUBLIC_DEMO_MODAL_BUTTON = 'Use synthetic demo';
 
 export const PUBLIC_DEMO_AGENT_DISCLAIMER =
-  'Synthetic educational demo only - NOT medical advice, NOT approved for UW Medicine clinical use, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.';
+  'Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.';
 
 export const PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX =
   'SYNTHETIC EDUCATIONAL DEMO - NOT A REAL CLINICAL NOTE. NO PHI.';

@@ -109,7 +109,7 @@ import {
   afDetectionStrategy,
   evaluateBostonCAA20
 } from './calculators-extended.js';
-import { getLocalInstitutionalContent } from './institutional-protocols.js';
+import { getLocalInstitutionalContent, ICH_INITIAL_EVALUATION_ALGORITHM } from './institutional-protocols.js';
 // v7 theme controller — the SINGLE source of truth for theme pref + DOM state.
 // Replaces the legacy in-component darkMode boolean. theme.js owns the
 // `data-theme` attribute, the `dark` class, and the stroke.v7.theme storage key.
@@ -567,10 +567,18 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             const stack = err && err.stack ? String(err.stack) : '';
             const componentStack = this.state.errorInfo && this.state.errorInfo.componentStack ? String(this.state.errorInfo.componentStack) : '';
             const appVersion = (window.strokeAppStorage && window.strokeAppStorage.appVersion) || 'unknown';
+            let storageStatus = 'ok';
+            try {
+              localStorage.setItem('__diag_probe__', '1');
+              localStorage.removeItem('__diag_probe__');
+            } catch (probeErr) {
+              storageStatus = `unavailable (${probeErr && probeErr.name ? probeErr.name : 'error'})`;
+            }
             // Intentionally no patient-identifying data — keep the 12-hour no-PII policy intact.
             return [
               `Stroke app diagnostics (${new Date().toISOString()})`,
               `Version: ${appVersion}`,
+              `Storage: ${storageStatus}`,
               `URL hash: ${typeof location !== 'undefined' ? location.hash : ''}`,
               `UA: ${typeof navigator !== 'undefined' ? navigator.userAgent : ''}`,
               `Message: ${err && err.message ? err.message : String(err)}`,
@@ -3224,18 +3232,15 @@ Clinician Name`;
                                 nct: "NCT07260916",
                                 phase: "Phase 2",
                                 status: "Not yet recruiting",
-                                description: "Multi-arm pilot trial of intravenous glibenclamide and blood-pressure treatment strategy in acute spontaneous intracerebral hemorrhage with CTA spot sign",
+                                description: "Initial-evaluation screen for selected acute spontaneous non-traumatic basal-ganglia IPH candidates; confirm current enrollment status and contact route locally",
                                 inclusion: [
-                                    "Age ≥18 years",
-                                    "Acute spontaneous supratentorial intracerebral hemorrhage",
-                                    "Presentation within 6 hours from symptom onset or last known well",
-                                    "Baseline Glasgow Coma Scale >4",
-                                    "Baseline NIHSS >6",
-                                    "Baseline ICH volume 5-80 mL",
-                                    "Pre-event modified Rankin Scale <3",
-                                    "Persistent systolic blood pressure >140 mmHg despite at least one antihypertensive treatment",
-                                    "Initial CTA demonstrates active contrast extravasation (spot sign)",
-                                    "Willing and able to comply with protocol and follow-up"
+                                    "Age 18-80 years",
+                                    "Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH",
+                                    "IPH volume >=15 mL by ABC/2, or close enough to prompt screening",
+                                    "NIHSS >=6",
+                                    "Arrival/evaluation <=15 hours from last known well",
+                                    "CTA/MRA without underlying vascular lesion or anomaly",
+                                    "No clear standard-of-care surgical indication"
                                 ],
                                 exclusion: [
                                     "Secondary cause of intracerebral hemorrhage, including:",
@@ -3245,16 +3250,10 @@ Clinician Name`;
                                     "• Dural arteriovenous fistula",
                                     "• Brain tumor",
                                     "• Hemorrhagic transformation of ischemic stroke",
-                                    "Brainstem hemorrhage",
-                                    "Large intraventricular hemorrhage as primary diagnosis",
-                                    "Need for immediate surgery at presentation",
-                                    "Baseline INR >1.4 or platelet count <100,000/mm3",
-                                    "Use of anticoagulant medication within 48 hours",
-                                    "Known allergy or hypersensitivity to glibenclamide or formulation excipients",
-                                    "Severe renal impairment (eGFR <30 mL/min/1.73m²)",
-                                    "Active severe hepatic disease",
-                                    "Pregnancy or breastfeeding",
-                                    "Participation in another interventional trial that may confound outcomes"
+                                    "Thalamic, brainstem, cerebellar, infratentorial, or primary intraventricular hemorrhage",
+                                    "Underlying vascular lesion or anomaly on CTA/MRA",
+                                    "Need for immediate standard-of-care surgery at presentation",
+                                    "Unable to confirm timing or current protocol eligibility"
                                 ]
                             }
                         ]
@@ -3271,13 +3270,15 @@ Clinician Name`;
                                 inclusion: [
                                     "Age ≥18 years",
                                     "Spontaneous supratentorial ICH confirmed by CT",
-                                    "ICH volume ≥20mL",
-                                    "Surgery planned within 24 hours of last known well",
-                                    "NIHSS >5",
-                                    "Baseline mRS ≤2",
-                                    "GCS ≥5",
+                                    "ICH volume >20mL, with the active registry range verified locally",
+                                    "MIS possible within 24 hours of last known well, or within the qualifying wake-up hemorrhage window",
+                                    "NIHSS threshold must be verified against the active registry protocol",
+                                    "Premorbid mRS threshold must be verified against the active registry protocol",
+                                    "GCS range must be verified against the active registry protocol",
+                                    "No vascular lesion or anomaly",
                                     "Ability to undergo general anesthesia",
-                                    "Informed consent from patient or LAR"
+                                    "Informed consent from patient or authorized representative",
+                                    "When both MINUTE and MIRROR appear possible, prioritize MINUTE screening first"
                                 ],
                                 exclusion: [
                                     "Secondary ICH due to:",
@@ -4249,7 +4250,7 @@ Clinician Name`;
               id: 'ich_mis_evac',
               category: 'ICH',
               title: 'Minimally invasive ICH evacuation (MIE)',
-              recommendation: 'For spontaneous lobar IPH 30-80cc, ≤24h onset, NIHSS >5, GCS 5-15, age 18-80, mRS 0-1: consider MIE (ENRICH criteria). Consult neurosurgery per local protocol.',
+              recommendation: 'For spontaneous lobar IPH 30-80cc, ≤24h onset, NIHSS >5, GCS 5-14, age 18-80: consider MIE (ENRICH criteria). Consult neurosurgery per local protocol.',
               detail: 'Select endoscopic or stereotactic aspiration approaches based on local expertise. Functional outcome benefit is uncertain.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
@@ -4259,7 +4260,7 @@ Clinician Name`;
               conditions: (data) => {
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const gcs = data.gcsScore || null;
-                return isICH && gcs !== null && gcs >= 5 && gcs <= 15;
+                return isICH && gcs !== null && gcs >= 5 && gcs <= 14;
               }
             },
 
@@ -4418,13 +4419,13 @@ Clinician Name`;
             neurosurgery_communication: {
               id: 'neurosurgery_communication',
               category: 'Acute',
-              title: 'Neurosurgery consultation protocol',
-              recommendation: 'Neurology/stroke attending should approve neurosurgery consultations for IPH or large ischemic stroke. Structured communication reduces unnecessary consultations.',
-              detail: 'Suggested protocol: (1) Neurology team evaluates patient and discusses with stroke attending before consulting neurosurgery. (2) If stroke attending recommends against surgery, communicate this clearly. (3) If disagreement, stroke attending and neurosurgery attending discuss directly. (4) Do not recommend surgical procedures to families without a finalized, mutually agreed plan with neurosurgery.',
+              title: 'Neurosurgery consultation communication',
+              recommendation: 'For non-traumatic IPH >=15 mL by ABC/2, IVH/hydrocephalus, mass effect, neurologic decline, vascular lesion concern, or clinician concern, ED clinicians or the stroke service may consult Neurosurgery directly. Prior approval before the consult call is not required; close the loop with the designated on-call stroke attending and other involved service.',
+              detail: 'Suggested protocol: (1) ED clinicians or the stroke service can make the direct Neurosurgery call when a trigger is present. (2) The caller immediately closes the loop with the designated on-call stroke attending and other involved service, then documents the shared plan. (3) Separate attending-of-record notification is not default unless explicitly requested, especially overnight. (4) If surgery is recommended, stop for a bedside safety pause and confirm agreement across Neurosurgery, the stroke service, and the ICU team before any surgical action. (5) Do not present operative procedures to families as finalized until the cross-team plan is explicit.',
               classOfRec: 'N/A',
               levelOfEvidence: 'N/A',
               guideline: 'Suggested Protocol',
-              reference: 'Communication with Neurosurgery protocol.',
+              reference: 'Initial non-traumatic IPH evaluation algorithm.',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isICH = cat === 'ich';
@@ -9795,7 +9796,7 @@ Clinician Name`;
               note += `\nPENDING AT TRANSFER:\n`;
               note += `- Follow-up CT: ${telestrokeNote.tnkRecommended ? '24h post-TNK' : 'Per clinical indication'}\n`;
               if (telestrokeNote.evtRecommended) note += `- EVT evaluation at receiving hub\n`;
-              note += `- Telestroke attending available for questions: [on-call stroke phone]\n`;
+              note += `- Telestroke attending available for questions: [on-call stroke clinician]\n`;
               return note;
             }
 
@@ -11340,9 +11341,9 @@ Clinician Name`;
               note += `  - [Review and reconcile all home medications]\n\n`;
               note += `FOLLOW-UP:\n`;
               if (telestrokeNote.diagnosisCategory === 'tia') {
-                note += `- URGENT Stroke/Neurology clinic: within 24-72 hours (TIA — high early recurrence risk)\n`;
+                note += `- URGENT stroke or neurology clinic: within 24-72 hours (TIA — high early recurrence risk)\n`;
               } else {
-                note += `- Stroke/Neurology clinic: 1-2 weeks (review imaging, labs, secondary prevention)\n`;
+                note += `- Stroke or neurology clinic: 1-2 weeks (review imaging, labs, secondary prevention)\n`;
               }
               note += `- PCP: 1 week (BP, statin titration, medication reconciliation)\n`;
               if (dcCw.extendedMonitoringType) note += `- Cardiology: cardiac monitoring review (${dcCw.extendedMonitoringType})\n`;
@@ -16016,6 +16017,10 @@ Clinician Name`;
                   setEducationSubTab(parsed.sub || null);
                 }
                 return;
+              }
+              const rawHash = typeof window !== 'undefined' ? window.location.hash : '';
+              if (rawHash && rawHash !== '#' && rawHash !== '#/') {
+                addToast('Link not recognized — opening your last view.', 'info');
               }
               const savedTab = appData.uiState.lastActiveTab || getKey('activeTab', null);
               if (savedTab) {
@@ -20911,10 +20916,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="mt-3 text-sm">
                                   <div className="font-medium text-slate-700 mb-1 dark:text-ink-2">Active ICH Trials:</div>
                                   <ul className="text-slate-600 space-y-0.5 ml-4 dark:text-ink-2">
-                                    <li>• <strong>MINUTE</strong> – Intracerebral hemorrhage trial (NCT07260916)</li>
+                                    <li>• <strong>MINUTE</strong> – Basal-ganglia IPH &ge;15 mL, NIHSS &ge;6, &le;15h screen</li>
                                     <li>• <strong>SATURN</strong> – Statin continuation vs discontinuation after lobar ICH (NCT03936361)</li>
                                     <li>• <strong>ASPIRE</strong> – Apixaban vs aspirin post-ICH with AF</li>
-                                    <li>• <strong>MIRROR Registry</strong> – Minimally invasive ICH evacuation</li>
+                                    <li>• <strong>MIRROR Registry</strong> – MIS registry screen; verify active criteria locally</li>
                                   </ul>
                                 </div>
                               )}
@@ -27936,8 +27941,68 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <ul className="list-disc pl-4 text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
                               <li>Rapid BP reduction to SBP ~140 within 1 hour (INTERACT3 bundle) <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></li>
                               <li>Immediate anticoagulant reversal — do not wait for labs if clinical suspicion <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></li>
-                              <li>Early neurosurgical consultation for cerebellar ICH, hydrocephalus, or mass effect <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></li>
+                              <li>Early Neurosurgery + stroke-service evaluation for non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, mass effect, vascular lesion concern, or clinician concern <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></li>
                             </ul>
+                          </div>
+                          <div className="bg-white border border-crit-300 border-l-4 border-l-crit-600 rounded-md p-4 dark:bg-card dark:border-crit-800">
+                            <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between mb-3">
+                              <div>
+                                <p className="text-xs font-semibold uppercase tracking-wide text-crit-700 dark:text-crit-300">Initial Non-Traumatic IPH Evaluation</p>
+                                <h3 className="text-lg font-semibold text-slate-900 dark:text-ink">{ICH_INITIAL_EVALUATION_ALGORITHM.title}</h3>
+                              </div>
+                              <span className="text-[11px] text-slate-500 font-medium dark:text-mute">Reviewed {ICH_INITIAL_EVALUATION_ALGORITHM.lastReviewed}</span>
+                            </div>
+                            <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">{ICH_INITIAL_EVALUATION_ALGORITHM.scope}</p>
+                            <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 mb-3 dark:bg-crit-950 dark:border-crit-800">
+                              <p className="text-sm font-semibold text-crit-800 dark:text-crit-300">{ICH_INITIAL_EVALUATION_ALGORITHM.consultTrigger}</p>
+                              <p className="text-xs text-crit-700 mt-1 dark:text-crit-300">ED clinicians or the stroke service may call Neurosurgery directly; prior approval is not required, but the plan must be closed-looped with the designated on-call stroke attending and other involved service.</p>
+                            </div>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                              {ICH_INITIAL_EVALUATION_ALGORITHM.decisionNodes.map((node) => (
+                                <div key={node.title} className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
+                                  <h4 className="font-semibold text-slate-800 text-sm mb-2 dark:text-ink">{node.title}</h4>
+                                  <ul className="text-xs text-slate-700 space-y-1 dark:text-ink-2">
+                                    {node.items.map((item) => <li key={item}>&#x2022; {item}</li>)}
+                                  </ul>
+                                </div>
+                              ))}
+                            </div>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-3">
+                              <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
+                                <h4 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Surgery Screens</h4>
+                                <div className="space-y-2">
+                                  {ICH_INITIAL_EVALUATION_ALGORITHM.surgicalScreens.map((screen) => (
+                                    <div key={screen.title}>
+                                      <p className="text-xs font-semibold text-cobalt-800 dark:text-cobalt-300">{screen.title}</p>
+                                      <p className="text-xs text-slate-700 dark:text-ink-2">{screen.criteria.join('; ')}. {screen.action}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
+                                <h4 className="font-semibold text-warn-800 text-sm mb-2 dark:text-warn-300">Trial and Registry Screens</h4>
+                                <div className="space-y-2">
+                                  {ICH_INITIAL_EVALUATION_ALGORITHM.researchScreens.map((screen) => (
+                                    <div key={screen.title}>
+                                      <p className="text-xs font-semibold text-warn-800 dark:text-warn-300">{screen.title}</p>
+                                      <p className="text-xs text-slate-700 dark:text-ink-2">{screen.criteria.join('; ')}. {screen.action}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="bg-slate-900 text-white rounded-lg p-3 mt-3 dark:bg-slate-950">
+                              <p className="text-sm font-semibold">{ICH_INITIAL_EVALUATION_ALGORITHM.safetyPause.title}</p>
+                              <ul className="text-xs text-slate-100 space-y-1 mt-1">
+                                {ICH_INITIAL_EVALUATION_ALGORITHM.safetyPause.items.map((item) => <li key={item}>&#x2022; {item}</li>)}
+                              </ul>
+                            </div>
+                            <div className="bg-slate-50 border border-line rounded-lg p-3 mt-3 dark:bg-paper-2">
+                              <p className="text-sm font-semibold text-slate-800 dark:text-ink">Documentation expectations</p>
+                              <ul className="text-xs text-slate-700 space-y-1 mt-1 dark:text-ink-2">
+                                {ICH_INITIAL_EVALUATION_ALGORITHM.documentation.map((item) => <li key={item}>&#x2022; {item}</li>)}
+                              </ul>
+                            </div>
                           </div>
                           {/* === ALL PATIENTS INITIAL STEPS === */}
                           <div className="bg-white border border-crit-300 border-l-4 border-l-red-600 rounded-md p-4 dark:bg-card dark:border-crit-800 ">
@@ -28329,7 +28394,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                                 <li>Confirm anticoagulant/antiplatelet use and initiate reversal.</li>
                                 <li>Target SBP &lt;140 (Class IIa, INTERACT2; avoid &lt;130 per ATACH-2). Use IV nicardipine or clevidipine for smooth control.</li>
-                                <li>Screen for transfer triggers: cerebellar ICH ≥15 mL with deterioration/brainstem compression/hydrocephalus, IVH with hydrocephalus requiring EVD, or worsening supratentorial ICH.</li>
+                                <li>Screen for early dual-consult triggers: non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, multicompartmental hemorrhage, or ED attending discretion.</li>
                                 <li>Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.</li>
                               </ul>
                               <p className="text-xs text-slate-500 mt-2 dark:text-mute">
@@ -28373,7 +28438,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <li>• ≤24 hours of symptom onset</li>
                               <li>• Age 18-80 years</li>
                               <li>• NIHSS &gt;5</li>
-                              <li>• GCS 5-15</li>
+                              <li>• GCS 5-14</li>
                               <li>• Pre-morbid mRS 0-1</li>
                             </ul>
                             <p className="text-xs text-ok-700 mt-2 italic dark:text-ok-300">* Reasonable to consider in cases 24-72h after onset and outside trial criteria — discuss with neurosurgery.</p>
@@ -30084,7 +30149,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <p className="text-sm font-semibold text-teal-700 mb-2 dark:text-teal-300">Requirements:</p>
                             <ul className="text-sm space-y-1">
                               <li>• Consent from patient or LNOK</li>
-                              <li>• Pre-administration approval from <strong>Stroke phone</strong>, <strong>Emergency MD</strong>, and <strong>Neuroradiology</strong></li>
+                              <li>• Pre-administration approval from the on-call stroke clinician, emergency clinician, and neuroradiology</li>
                             </ul>
                           </div>
                           <div className="bg-white p-3 rounded border dark:bg-card">
@@ -34613,7 +34678,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
 
                       {filteredGuidelineLibrary.length === 0 ? (
-                        <p className="text-sm text-slate-600 mt-3 dark:text-ink-2">No recommendations match the current filters.</p>
+                        <p className="text-sm text-slate-600 mt-3 dark:text-ink-2">No recommendations match the current filters. <button type="button" onClick={() => { setGuidelineLibraryQuery(''); setGuidelineLibraryGuideline(''); setGuidelineLibrarySection(''); setGuidelineLibraryClass(''); }} className="text-cobalt-700 underline dark:text-cobalt-300">Clear filters</button>.</p>
                       ) : (
                         <div className="mt-4 space-y-3">
                           {filteredGuidelineLibrary.map((guideline) => {
@@ -36073,7 +36138,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 explicit role="tablist" overrides its implicit navigation landmark, so
                 we mirror the desktop pattern (~app.jsx:16882): an outer
                 role="navigation" wrapper holds the tablist. */}
-            <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-[0_-1px_3px_rgba(0,0,0,0.08)] sm:hidden dark:bg-card dark:border-line" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }} role="navigation" aria-label="Mobile navigation">
+            <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-[0_-1px_3px_rgba(0,0,0,0.08)] sm:hidden dark:bg-card dark:border-line" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))', paddingLeft: 'env(safe-area-inset-left)', paddingRight: 'env(safe-area-inset-right)' }} role="navigation" aria-label="Mobile navigation">
               <div className="flex items-stretch justify-around" role="tablist" aria-label="Mobile sections">
                 {[
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },

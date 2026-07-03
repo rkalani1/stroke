@@ -29,7 +29,7 @@ import {
 } from '../src/calculators.js';
 import { evaluateDAWN, evaluateDEFUSE3 } from '../src/calculators-extended.js';
 
-const DISCLAIMER = 'Synthetic educational demo only - NOT medical advice, NOT approved for UW Medicine clinical use, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.';
+const DISCLAIMER = 'Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.';
 
 // ── load served data (atlas / guidelines / whats-new) ────────────────────────
 function loadJson(rel, fallback) {

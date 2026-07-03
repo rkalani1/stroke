@@ -6,6 +6,7 @@ import {
   evaluateEVT_M2,
   evaluateEVT_Basilar,
   getSafePauseText,
+  ICH_INITIAL_EVALUATION_ALGORITHM,
   INSTITUTIONAL_BP_PROTOCOLS,
   SAFE_PAUSE_ATTESTATION
 } from '../src/institutional-protocols.js';
@@ -171,5 +172,61 @@ describe('institutional BP protocols present', () => {
   it('post-EVT 72h harm rule captured (with evidence-based caveats)', () => {
     expect(INSTITUTIONAL_BP_PROTOCOLS.sbpLT140EVT.status).toMatch(/harm/i);
     expect(INSTITUTIONAL_BP_PROTOCOLS.sbpLT140EVT.rationale).toMatch(/ENCHANTED2-MT|OPTIMAL-BP|BP-TARGET|BEST-II/);
+  });
+});
+
+describe('ICH initial evaluation algorithm', () => {
+  const alg = ICH_INITIAL_EVALUATION_ALGORITHM;
+  const text = JSON.stringify(alg);
+
+  it('uses the >=15 mL ABC/2 early dual-consult threshold', () => {
+    expect(alg.consultTrigger).toMatch(/>=15 mL by ABC\/2/);
+    expect(text).toMatch(/Measure hematoma volume using ABC\/2/);
+    expect(text).not.toMatch(/>15\s*cc/i);
+  });
+
+  it('permits direct Neurosurgery consultation with closed-loop communication', () => {
+    expect(text).toMatch(/may consult Neurosurgery directly/);
+    expect(text).toMatch(/prior approval is not required/i);
+    expect(text).toMatch(/closes the loop/i);
+    expect(text).toMatch(/designated on-call stroke attending/);
+    expect(text).toMatch(/attending-of-record notification is not default/i);
+  });
+
+  it('captures the June 2026 MINUTE screen without publishing contact details', () => {
+    const minute = alg.researchScreens.find((screen) => screen.title === 'MINUTE screen');
+    expect(minute).toBeTruthy();
+    const criteria = minute.criteria.join(' ');
+    expect(criteria).toMatch(/Age 18-80/);
+    expect(criteria).toMatch(/non-thalamic basal-ganglia IPH/);
+    expect(criteria).toMatch(/Volume >=15 mL by ABC\/2/);
+    expect(criteria).toMatch(/NIHSS >=6/);
+    expect(criteria).toMatch(/<=15 hours since last known well/);
+    expect(criteria).toMatch(/without vascular lesion/);
+    expect(minute.action).toMatch(/MINUTE has operational priority over MIRROR/i);
+    expect(minute.action).toMatch(/do not publish or infer internal contact details/i);
+  });
+
+  it('keeps MIRROR as a verify-current-protocol registry screen', () => {
+    const mirror = alg.researchScreens.find((screen) => screen.title === 'MIRROR registry screen');
+    expect(mirror).toBeTruthy();
+    expect(mirror.criteria.join(' ')).toMatch(/thresholds must be checked against the active registry protocol/);
+    expect(mirror.action).toMatch(/Do not let registry screening delay/);
+  });
+
+  it('requires a cross-team surgical safety pause', () => {
+    const pause = alg.safetyPause.items.join(' ');
+    expect(pause).toMatch(/time-out\/safety pause/);
+    expect(pause).toMatch(/Neurosurgery, the stroke service, and the ICU team agree/);
+  });
+
+  it('stays public-safe and institution-neutral', () => {
+    const banned = [
+      /harborview/i, /\bHMC\b/, /UW Medicine/i, /UW Medical Center/i,
+      /Stroke Phone/i, /MINUTE team/i, /\b\d{3}[-.\s]\d{3}[-.\s]\d{4}\b/
+    ];
+    for (const re of banned) {
+      expect(re.test(text), `ICH algorithm contains banned token ${re}`).toBe(false);
+    }
   });
 });

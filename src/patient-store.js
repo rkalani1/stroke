@@ -3,7 +3,7 @@
 // Design goals:
 // 1. Multi-patient census for ward rounds (8-20 patients typical).
 // 2. Per-patient encounter state (fully isolated from acute-telestroke state).
-// 3. Use only synthetic placeholders unless the deployment has any organization-approved
+// 3. Use only synthetic placeholders unless the deployment has organization-approved
 //    storage, access control, security review, and local governance.
 // 4. Graceful fallback to localStorage if IndexedDB blocked (e.g., private-mode Safari before iOS 15).
 // 5. Zero external dependencies — avoids Dexie to keep the bundle lean.

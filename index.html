@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="description" content="Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not approved for UW Medicine clinical use.">
+    <meta name="description" content="Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.">
     <meta name="theme-color" content="#0A6571">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -28,7 +28,7 @@
           "@type": ["WebApplication", "MedicalWebPage"],
           "@id": "https://rkalani1.github.io/stroke/#app",
           "name": "Stroke CDS Educational Demo",
-          "description": "Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not approved for UW Medicine clinical use.",
+          "description": "Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.",
           "applicationCategory": "EducationalApplication",
           "operatingSystem": "Web (Progressive Web App, offline-capable)",
           "url": "https://rkalani1.github.io/stroke/",
@@ -36,7 +36,7 @@
           "browserRequirements": "Requires JavaScript. Works offline after first load.",
           "about": { "@type": "MedicalCondition", "name": "Stroke" },
           "audience": { "@type": "MedicalAudience", "audienceType": "Clinician" },
-          "disclaimer": "Synthetic educational demo only - not medical advice, not approved for UW Medicine clinical use, and not local clinical policy. Do not enter PHI or real encounter details; verify against primary sources and approved local protocol."
+          "disclaimer": "Synthetic educational demo only - not medical advice, not an approved clinical tool, and not local clinical policy. Do not enter PHI or real encounter details; verify against primary sources and approved local protocol."
         },
         {
           "@type": "Dataset",
@@ -78,8 +78,10 @@
           media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
     <title>Stroke CDS Educational Demo</title>
 
-    <link rel="preload" as="script" href="app.js?v=6.9.24">
-    <link rel="stylesheet" href="tailwind.css?v=6.9.24">
+    <link rel="preload" as="script" href="app.js?v=6.10.0">
+    <link rel="stylesheet" href="tailwind.css?v=6.10.0">
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/publicsans-normal-400.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/bricolage-700.woff2">
     <style>
         /* CSS variables consolidated in tokens.css */
         html.dark body {
@@ -712,7 +714,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = '6.9.24'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
+            const APP_VERSION = '6.10.0'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
             const STORAGE_PREFIX = 'strokeApp:';
             const APP_DATA_KEY = 'stroke.appData.v2';
             const IS_PUBLIC_PAGES = /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -931,6 +933,6 @@
         document.currentScript.parentNode.insertBefore(s, document.currentScript);
       })();
     </script>
-    <script src="app.js?v=6.9.24" defer></script>
+    <script src="app.js?v=6.10.0" defer></script>
 </body>
 </html>

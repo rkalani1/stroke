@@ -336,7 +336,7 @@ async function auditPublicDemoSurface(page, context, target, issues, notes) {
     addIssue(issues, 'public-demo-modal-missing');
   } else {
     const modalText = await modal.innerText();
-    if (!/not an approved UW Medicine clinical tool/i.test(modalText)) {
+    if (!/not an approved clinical tool/i.test(modalText)) {
       addIssue(issues, 'public-demo-modal-copy-mismatch');
     }
     if (!/Do not enter PHI, MRNs, dates of birth/i.test(modalText)) {
@@ -361,7 +361,7 @@ async function auditPublicDemoSurface(page, context, target, issues, notes) {
   if (!/Synthetic educational demo - not medical advice/i.test(bodyText)) {
     addIssue(issues, 'public-demo-banner-missing');
   }
-  if (!/not UW Medicine approved/i.test(bodyText)) {
+  if (!/not an approved clinical tool/i.test(bodyText)) {
     addIssue(issues, 'public-demo-banner-approval-copy-missing');
   }
   if (/Institutional Protocols & Algorithms/i.test(bodyText)) {

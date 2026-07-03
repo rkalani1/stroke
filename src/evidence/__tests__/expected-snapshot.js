@@ -1,6 +1,6 @@
 // AUTO-GENERATED inline snapshot of expected engine output for every
 // (scenario, trial) pair. Frozen at retirement-sprint commit time.
-// Regenerate via: node /tmp/gen-snapshot.mjs (see SPRINT_STATUS_R.md).
+// Regenerate via: node /tmp/gen-snapshot.mjs.
 export const EXPECTED_SNAPSHOT = {
   "empty form": {
     "sister": {

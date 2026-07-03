@@ -27,7 +27,8 @@ describe('public demo labeling and agent disclaimers', () => {
 
     expect(index).toContain('<title>Stroke CDS Educational Demo</title>');
     expect(index).toContain('do not enter PHI');
-    expect(index).toContain('not approved for UW Medicine clinical use');
+    expect(index).toContain('not an approved clinical tool');
+    expect(index).not.toMatch(/UW Medicine/i);
     expect(index).not.toMatch(/Comprehensive clinical decision support tool/i);
 
     expect(manifest.name).toBe('Stroke CDS Educational Demo');
@@ -42,7 +43,7 @@ describe('public demo labeling and agent disclaimers', () => {
     const llms = readText('llms.txt');
 
     expect(dataIndex._meta.disclaimer).toContain('Synthetic educational demo only');
-    expect(dataIndex._meta.disclaimer).toContain('NOT approved for UW Medicine clinical use');
+    expect(dataIndex._meta.disclaimer).toContain('NOT an approved clinical tool');
     expect(dataIndex._meta.disclaimer).toContain('Agents and downstream consumers must display this disclaimer');
     expect(dataIndex._meta.disclaimer).toBe(PUBLIC_DEMO_AGENT_DISCLAIMER);
     expect(dataIndex.routes.find((route) => route.route === '#/protocols')?.label)
@@ -50,8 +51,23 @@ describe('public demo labeling and agent disclaimers', () => {
 
     expect(llms).toContain('# Stroke CDS Educational Demo');
     expect(llms).toContain('Do not enter PHI');
-    expect(llms).toContain('not approved for UW Medicine clinical use');
+    expect(llms).toContain('not an approved clinical tool');
     expect(llms).toContain('Agents must not process PHI or real encounter details');
+    expect(llms).not.toMatch(/UW Medicine/i);
+  });
+
+  it('keeps served metadata free of institution and maintainer identity', () => {
+    // The site is hosted at rkalani1.github.io (the GitHub Pages origin), so the
+    // bare account slug is unavoidable in canonical URLs. Everything else —
+    // institution names, personal names, institutional email domains — is banned
+    // from the served metadata surface.
+    const IDENTITY = /UW Medicine|Harborview|university of washington|washington\.edu|\buw\.edu\b|Rizwan|Kalani(?!1)/i;
+    for (const relPath of ['index.html', 'manifest.json', 'llms.txt', 'llms-full.txt', 'robots.txt', 'sitemap.xml', 'README.md', 'COMPLIANCE.md', 'SECURITY.md']) {
+      const content = readText(relPath);
+      expect(content, `${relPath} leaks identity/institution content`).not.toMatch(IDENTITY);
+    }
+    expect(JSON.stringify(readJson('data/index.json'))).not.toMatch(IDENTITY);
+    expect(JSON.stringify(readJson('whats-new.json'))).not.toMatch(IDENTITY);
   });
 
   it('keeps public UI labels away from institutional-protocol framing', () => {

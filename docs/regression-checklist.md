@@ -42,7 +42,7 @@ Use this checklist before every merge to `main` and GitHub Pages deploy.
 - [ ] Settings tab shows Contact Directory editor and Reset Defaults control.
 - [ ] TIA pathway language remains risk-stratified (no universal-admit hard stop text).
 - [ ] Phone directory/FAB has NOT been removed unless there is an explicit owner-authored request to remove it.
-- [ ] Protected institutional defaults remain present with exact numbers: Stroke Phone, STAT Pharmacy, Stroke RAD Hotline.
+- [ ] Protected institutional defaults remain present with exact numbers for stroke on-call, STAT Pharmacy, and Stroke RAD Hotline entries.
 
 ## Accessibility and responsive behavior
 - [ ] Desktop (1440x900), tablet (768x1024), and mobile (390x844) layouts are usable.

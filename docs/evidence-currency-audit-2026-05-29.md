@@ -2,7 +2,7 @@
 
 **Branch:** `feat/currency-ux-perf-2026` (off `origin/main` v6.0.0)
 **Method:** Repo's own governance tooling — `npm run evidence:validate` + `evidence:export` (authoritative structured inventory) cross-referenced against the prose/teaching/protocol layers (`grep -r src`) and current best evidence.
-**Constraint:** Institution-neutral, public, synthetic-only. No HMC/UW content. Extend/refactor, never rewrite. Every added trial carries a verified PMID/DOI and passes the schema validator + `test:unit`.
+**Constraint:** Institution-neutral, public, synthetic-only. No named-institution content. Extend/refactor, never rewrite. Every added trial carries a verified PMID/DOI and passes the schema validator + `test:unit`.
 
 ## Headline
 
@@ -53,4 +53,4 @@ The app's **prose/teaching layer is current.** The gap is **consistency**: the *
 **Each change:** verified PMID/DOI → conform to `src/evidence/schema.js` → `npm run evidence:validate` clean → `npm run test:unit` green → small, reviewable commit per batch.
 
 ## Out of scope (per constraints)
-No HMC/UW content. No rewrite. No new heavy deps. No live network calls in-app for verification (verification happens here, at authoring time, against PubMed/DOI).
+No named-institution content. No rewrite. No new heavy deps. No live network calls in-app for verification (verification happens here, at authoring time, against PubMed/DOI).

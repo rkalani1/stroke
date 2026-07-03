@@ -22,7 +22,8 @@ const CONTENT_FILES = [
   'src/management-guidance.js',
   'src/institutional-protocols.js',
   'src/calculators-extended.js',
-  'src/app.jsx'
+  'src/app.jsx',
+  'data/generic-protocols.json'
 ];
 const texts = Object.fromEntries(CONTENT_FILES.map((f) => [f, read(f)]));
 const linesOf = Object.fromEntries(CONTENT_FILES.map((f) => [f, texts[f].split('\n')]));
@@ -86,6 +87,61 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     const allow = /withdrawn|ndma|no longer|removed|do not use|not (be )?(used|available|recommended)/i;
     const hits = offendingLines(/\branitidine\b/i, { allow });
     expect(hits, `Ranitidine used outside a withdrawn-drug caveat:\n${hits.join('\n')}`).toEqual([]);
+  });
+
+  it('locks in the 2026 non-traumatic IPH direct-consult workflow', () => {
+    expect(texts['src/institutional-protocols.js']).toMatch(/Non-traumatic IPH >=15 mL by ABC\/2/);
+    expect(texts['src/app.jsx']).toMatch(/non-traumatic IPH >=15 mL by ABC\/2/);
+    expect(texts['src/app.jsx']).toMatch(/ED clinicians or the stroke service may call Neurosurgery directly/);
+    expect(texts['src/institutional-protocols.js']).toMatch(/designated on-call stroke attending/);
+    expect(texts['src/app.jsx']).toMatch(/designated on-call stroke attending/);
+    expect(texts['src/institutional-protocols.js']).toMatch(/attending-of-record notification is not default/i);
+    expect(texts['src/app.jsx']).toMatch(/attending-of-record notification is not default/i);
+
+    const obsoleteHits = [
+      ...offendingLines(/Neurology\/stroke attending should approve neurosurgery consultations/i),
+      ...offendingLines(/discusses with stroke attending before consulting neurosurgery/i),
+      ...offendingLines(/prior approval is required/i)
+    ];
+    expect(obsoleteHits, `Obsolete neurosurgery approval-gate wording found:\n${obsoleteHits.join('\n')}`).toEqual([]);
+  });
+
+  it('keeps ENRICH/MIE criteria aligned to GCS 5-14', () => {
+    expect(texts['src/app.jsx']).toMatch(/ENRICH MIE Inclusion/);
+    expect(texts['src/app.jsx']).toMatch(/GCS 5-14/);
+
+    const hits = [
+      ...offendingLines(/ENRICH[^\n]{0,160}GCS 5-15/i),
+      ...offendingLines(/GCS 5-15[^\n]{0,160}ENRICH/i),
+      ...offendingLines(/MIE[^\n]{0,160}GCS 5-15/i),
+      ...offendingLines(/mRS 0-1[^\n]{0,160}ENRICH/i),
+      ...offendingLines(/ENRICH[^\n]{0,160}mRS 0-1/i)
+    ];
+    expect(hits, `Obsolete ENRICH/MIE criterion found:\n${hits.join('\n')}`).toEqual([]);
+  });
+
+  it('does not reintroduce the older MINUTE spot-sign/glibenclamide description', () => {
+    expect(texts['src/app.jsx']).toMatch(/Basal-ganglia IPH &(gt;|ge;)15 mL, NIHSS &(gt;|ge;)6, &(lt;|le;)15h screen/);
+    expect(texts['src/app.jsx']).toMatch(/Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH/);
+    expect(texts['src/app.jsx']).not.toMatch(/glibenclamide/i);
+    expect(texts['src/app.jsx']).not.toMatch(/Persistent systolic blood pressure >140 mmHg/);
+  });
+
+  it('does not publish stale MIRROR registry mRS/GCS thresholds as settled criteria', () => {
+    expect(texts['src/app.jsx']).toMatch(/Premorbid mRS threshold must be verified against the active registry protocol/);
+    expect(texts['src/app.jsx']).toMatch(/GCS range must be verified against the active registry protocol/);
+    expect(texts['src/app.jsx']).not.toMatch(/Baseline mRS ≤2/);
+    expect(texts['src/app.jsx']).not.toMatch(/GCS ≥5/);
+  });
+
+  it('does not publish local Stroke Phone labels on public surfaces', () => {
+    const hits = offendingLines(/\bstroke\s+phone\b/i, { files: CONTENT_FILES });
+    expect(hits, `Local Stroke Phone label found:\n${hits.join('\n')}`).toEqual([]);
+  });
+
+  it('keeps MINUTE priority over MIRROR in the reusable ICH algorithm export', () => {
+    expect(texts['src/institutional-protocols.js']).toMatch(/MINUTE has operational priority over MIRROR/);
+    expect(texts['data/generic-protocols.json']).toMatch(/MINUTE has operational priority over MIRROR/);
   });
 
   it('keeps the reviewed content files free of institutional / PHI identifiers', () => {

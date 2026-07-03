@@ -1,5 +1,40 @@
 # CHANGELOG
 
+## v6.10.0 — 2026-07-03 — privacy/identity hardening + polish
+
+### Privacy & identity
+- All public safety copy is now **institution-neutral**: "not an approved
+  clinical tool" replaces every named-institution approval disclaimer across
+  the app banner/modal, `index.html` metadata + JSON-LD, `manifest.json`,
+  the `data/*.json` `_meta.disclaimer`, `llms.txt` / `llms-full.txt`, the MCP
+  server, and `COMPLIANCE.md` (clinical-use gate genericized).
+- Leak guard gained a third tier — `identityTokens` (maintainer name,
+  personal email, institutional domains) scanned in **every** tracked file
+  with no exemptions; the docs/ exemption for institution names was removed
+  (Pages serves the repo root, so docs/ is public surface); the negative
+  institutional-disclaimer allowance was deleted so named-institution copy
+  cannot return. Bundle guard tests hardened to match.
+- Author metadata stripped from four served reference PDFs.
+- Dev debris removed from the public surface: `scratch/`, `docs/superpowers/`,
+  sprint/status/resume notes, debug HTML, one-off scripts, orphaned images,
+  and an internal consolidation inventory.
+
+### UX / accessibility
+- Unknown deep links now show a "Link not recognized" notice instead of
+  silently landing on Encounter.
+- Guideline Library empty state gained a "Clear filters" action (matches the
+  Evidence Atlas pattern).
+- ASTRAL/PLAN sliders have accessible labels; error diagnostics now report
+  storage availability; ward-census demo copy clarified; bottom nav respects
+  side safe-area insets on notched phones.
+
+### Performance
+- All 15 fonts converted TTF → WOFF2 (1,175 KB → 441 KB, −62%); font
+  preloads added for the two above-the-fold faces; service-worker precache
+  updated.
+- Broken antiseizure-pathway image reference removed (production 404);
+  education figures now lazy-load.
+
 ## v6.0.0 — 2026-05-23 — v7 visual overhaul
 
 **Major bump.** The visual surface is breaking even though APIs are not. The

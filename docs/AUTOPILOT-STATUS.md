@@ -13,12 +13,12 @@
 
 ## Mission (from the owner)
 Update / refine / optimize `rkalani1.github.io/stroke` for efficient bedside use and
-productivity, make it **agent-ready/usable**, and **maintain local HMC/UW stroke-center
-protocols** (from OneDrive + Outlook). Iterate until no further optimization remains.
+productivity, make it **agent-ready/usable**, and **maintain local stroke-center
+protocol translations** from approved private source material. Iterate until no further optimization remains.
 
 ## Decisions locked (2026-06-19)
 1. **Private institutional layer scope:** *Full operational kit* — ingest the complete
-   June-2026 HMC source-of-truth into the gitignored private layer, provisional items flagged.
+   June-2026 source-of-truth into the gitignored private layer, provisional items flagged.
 2. **Agent-readiness depth:** *Read-ready layer **+ a stroke-CDS MCP server***.
 3. **Ship cadence:** *Full autopilot to `main`* — PR per phase, merge when CI is green
    (unit tests + leak guard + qa-smoke = the gate).
@@ -49,7 +49,7 @@ Branch new work from `origin/main` (the working tree was found on a stale branch
 - **2026-06-19 — Phase 0 (safety) DONE → PR #39** (`chore/safety-leak-guard-and-hygiene`).
   Added institutional/PHI **leak guard** (`scripts/check-no-institutional-leak.mjs` +
   `leak-guard-denylist.json`), 4 defense layers, and **untracked `.discovery/`** — a
-  92-file dump of HMC institutional source material that was tracked in the public repo.
+  92-file dump of institutional source material that was tracked in the public repo.
   Full-tree guard: 244 files, 0 violations.
 
 ## Status (2026-06-19, end of autopilot session)
@@ -66,7 +66,7 @@ Branch new work from `origin/main` (the working tree was found on a stale branch
 - **Optional larger optimizations** (owner to direct): code-split the 36k-line `src/app.jsx` monolith (biggest perf/maintainability lever, higher risk on the committed-bundle model); bedside-productivity UI (deep-link share button, door-to-needle timer ring); more MCP calculator tools (NIHSS/ICH-score/ABCD2 score builders).
 
 ## Guardrails (do not violate)
-- **Never** commit real HMC/UW/Harborview content, pager/phone numbers, room codes, or
+- **Never** commit real institutional content, pager/phone numbers, room codes, or
   EPIC order-set IDs. They belong only in `private/institutional.js` (gitignored).
 - Run `npm run hooks:install` once per clone to enable the pre-commit leak guard.
 - The public generic `src/institutional-protocols.js` stays institution-neutral.

@@ -20,10 +20,14 @@ const repoRoot = join(__dirname, '..');
 
 // Banned real-institution identifiers. Case-insensitive. The \b...\b anchored
 // tokens (SCH, UWMC) avoid matching innocuous substrings such as "school",
-// "schema", or "framework".
+// "schema", or "framework". No disclaimer exemptions: as of 2026-07 even the
+// "not approved for <institution>" negative disclaimers are banned — public
+// safety copy must stay institution-neutral.
 const BANNED = /harborview|HMC|UW Medic|university of washington|UW Neurology|UW School of Medicine|montlake|VA Puget Sound|UWMC|Seattle Children|\bSCH\b/i;
 
 // Per-token regexes so a failure message can name exactly what leaked.
+// Identity tokens: kalani(?!1) skips the unavoidable rkalani1.github.io GitHub
+// Pages origin in canonical URLs while catching any personal name or email.
 const TOKENS = [
   /harborview/i,
   /HMC/i,
@@ -36,20 +40,11 @@ const TOKENS = [
   /UWMC/i,
   /Seattle Children/i,
   /\bSCH\b/i,
+  /rizwan/i,
+  /kalani(?!1)/i,
+  /washington\.edu/i,
+  /\buw\.edu/i,
 ];
-
-const ALLOWED_INSTITUTIONAL_DISCLAIMERS = [
-  /\bnot (?:an? )?(?:approved for |approved )?UW Medicine(?: clinical)? (?:tool|use|clinical use|approved)\b/gi,
-  /\bnot approved for UW Medicine clinical use\b/gi,
-  /\bnot UW Medicine approved\b/gi
-];
-
-function stripAllowedInstitutionalDisclaimers(content) {
-  return ALLOWED_INSTITUTIONAL_DISCLAIMERS.reduce(
-    (scrubbed, pattern) => scrubbed.replace(pattern, 'PUBLIC_DEMO_APPROVAL_DISCLAIMER'),
-    content
-  );
-}
 
 function readBuiltArtifact(relPath) {
   try {
@@ -68,14 +63,13 @@ function offendingLines(content) {
   return content
     .split('\n')
     .map((line, idx) => ({ line, n: idx + 1 }))
-    .map(({ line, n }) => ({ line, n, scannedLine: stripAllowedInstitutionalDisclaimers(line) }))
-    .filter(({ scannedLine }) => BANNED.test(scannedLine))
-    .filter(({ scannedLine }) => !/rkalani1\.github\.io/i.test(scannedLine) || BANNED.test(scannedLine.replace(/rkalani1\.github\.io/gi, '')));
+    .filter(({ line }) => BANNED.test(line))
+    .filter(({ line }) => !/rkalani1\.github\.io/i.test(line) || BANNED.test(line.replace(/rkalani1\.github\.io/gi, '')));
 }
 
 describe('public-safety: no institutional identifiers in the built bundle', () => {
   it('app.js (built esbuild bundle) contains no real-institution identifiers', () => {
-    const content = stripAllowedInstitutionalDisclaimers(readBuiltArtifact('app.js'));
+    const content = readBuiltArtifact('app.js');
     const leaked = TOKENS.filter((t) => t.test(content)).map((t) => t.source);
     expect(
       leaked,
@@ -94,7 +88,7 @@ describe('public-safety: no institutional identifiers in the built bundle', () =
   });
 
   it('index.html contains no real-institution identifiers', () => {
-    const content = stripAllowedInstitutionalDisclaimers(readBuiltArtifact('index.html'));
+    const content = readBuiltArtifact('index.html');
     const leaked = TOKENS.filter((t) => t.test(content)).map((t) => t.source);
     expect(
       leaked,

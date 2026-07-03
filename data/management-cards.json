@@ -2,12 +2,12 @@
   "_meta": {
     "endpoint": "management-cards",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.9.24",
+    "appVersion": "6.10.0",
     "checksum": "sha256:e8968893914944f96390eb313e96b1dd",
     "count": 3,
     "source": "src/management-guidance.js",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
-    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT approved for UW Medicine clinical use, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
   },
   "data": {
     "lastReviewed": "2026-07-03",

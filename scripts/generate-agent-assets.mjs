@@ -35,7 +35,10 @@ const checkOnly = args.has('--check');
 const SCHEMA_VERSION = '1.0.0';
 const BASE_URL = 'https://rkalani1.github.io/stroke';
 const LICENSE = 'Synthetic educational reference content for qualified review. No warranty.';
-const DISCLAIMER = 'Synthetic educational demo only - NOT medical advice, NOT approved for UW Medicine clinical use, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.';
+// NOTE: must stay byte-identical to PUBLIC_DEMO_AGENT_DISCLAIMER in
+// src/public-demo-guardrails.js (duplicated because that file is ESM-syntax in a
+// CJS-default package). tests/public-demo-labels.test.js asserts the two match.
+const DISCLAIMER = 'Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.';
 
 const pkg = JSON.parse(await fs.readFile(path.join(ROOT, 'package.json'), 'utf8'));
 const APP_VERSION = pkg.version;
@@ -143,6 +146,7 @@ async function main() {
     const ip = await import(pathToFileURL(path.join(ROOT, 'src/institutional-protocols.js')).href);
     write('data/generic-protocols.json', envelope('generic-protocols', 'src/institutional-protocols.js', {
       bpProtocols: ip.INSTITUTIONAL_BP_PROTOCOLS,
+      ichInitialEvaluation: ip.ICH_INITIAL_EVALUATION_ALGORITHM,
       safePauseAttestation: ip.SAFE_PAUSE_ATTESTATION,
     }));
   } catch (e) {
@@ -195,7 +199,7 @@ async function main() {
   const llms = [
     '# Stroke CDS Educational Demo',
     '',
-    `> Synthetic educational stroke decision-support demo (v${APP_VERSION}): example acute ischemic & hemorrhagic stroke pathways, ${CALCULATORS.length} calculators, an evidence atlas (${atlas.completedTrials.length} landmark trials, ${atlas.activeTrials.length} active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not approved for UW Medicine clinical use.`,
+    `> Synthetic educational stroke decision-support demo (v${APP_VERSION}): example acute ischemic & hemorrhagic stroke pathways, ${CALCULATORS.length} calculators, an evidence atlas (${atlas.completedTrials.length} landmark trials, ${atlas.activeTrials.length} active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.`,
     '',
     `${DISCLAIMER}`,
     '',

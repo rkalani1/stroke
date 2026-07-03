@@ -2,12 +2,12 @@
   "_meta": {
     "endpoint": "citations",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.9.24",
+    "appVersion": "6.10.0",
     "checksum": "sha256:8f1135d60f8aba379e6cf72b189f9764",
     "count": 70,
     "source": "src/evidence/citations.js",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
-    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT approved for UW Medicine clinical use, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
   },
   "data": [
     {

@@ -1,7 +1,7 @@
 {
   "name": "Stroke CDS Educational Demo",
   "short_name": "Stroke Demo",
-  "description": "Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not approved for UW Medicine clinical use.",
+  "description": "Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.",
   "start_url": "/stroke/#/encounter",
   "display": "standalone",
   "background_color": "#FBFAF6",

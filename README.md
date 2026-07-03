@@ -35,7 +35,7 @@ Updates roll out via a non-intrusive **"A new version of Stroke is ready"** bann
 ## Privacy & safety
 - Public GitHub Pages use is synthetic/demo-only.
 - Do not enter PHI, patient identifiers, MRN fragments, dates of birth, real ward census data, real encounter details, learner records, or confidential institutional information.
-- Real clinical use requires approved any organization hosting, storage, access control, governance, and incident-response paths outside this public deployment.
+- Real clinical use requires organization-approved hosting, storage, access control, governance, and incident-response paths outside this public deployment.
 
 ## GitHub Pages routing
 - Deployed under `/stroke/` using hash routes (`#/encounter`, `#/management`, etc.).

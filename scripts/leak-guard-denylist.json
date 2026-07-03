@@ -14,6 +14,7 @@
     { "pattern": "\\bUW Montlake\\b", "flags": "i", "label": "Institution name: UW Montlake" },
     { "pattern": "\\bOCCAM\\b", "flags": "", "label": "Local knowledge platform: OCCAM/Tactuum kit" },
     { "pattern": "\\bTactuum\\b", "flags": "i", "label": "Local knowledge-platform vendor: Tactuum" },
+    { "pattern": "\\bStroke\\s+Phone\\b", "flags": "i", "label": "Local service line: Stroke Phone" },
     { "pattern": "\\bMINUTE team\\b", "flags": "i", "label": "Local service line: MINUTE team" },
     { "pattern": "Emergency Stroke Panel", "flags": "i", "label": "Local EPIC panel: Emergency Stroke Panel" },
     { "pattern": "\\.UWM\\w*", "flags": "i", "label": "EPIC dotphrase: .UWM*" },
@@ -21,6 +22,15 @@
     { "pattern": "SmartSet", "flags": "i", "label": "EPIC build artifact: SmartSet" },
     { "pattern": "dotphrase", "flags": "i", "label": "EPIC build artifact: dotphrase" },
     { "pattern": "mission control", "flags": "i", "label": "Local ops: (Seattle Children's) Mission Control" }
+  ],
+
+  "_identityTokens": "Maintainer personal identity. Banned in EVERY tracked file (like phiPatterns) — the public site must not name its maintainer or affiliated institutions. Kalani(?!1) deliberately skips the unavoidable rkalani1 GitHub Pages origin in canonical URLs while catching the bare name and any personal email.",
+  "identityTokens": [
+    { "pattern": "\\bRizwan\\b", "flags": "i", "label": "Maintainer first name" },
+    { "pattern": "Kalani(?!1)", "flags": "i", "label": "Maintainer last name / personal email (rkalani1 Pages origin excluded)" },
+    { "pattern": "washington\\.edu", "flags": "i", "label": "Institutional email/web domain: washington.edu" },
+    { "pattern": "\\buw\\.edu\\b", "flags": "i", "label": "Institutional email domain: uw.edu" },
+    { "pattern": "\\bUniversity of Washington\\b", "flags": "i", "label": "Institution name: University of Washington" }
   ],
 
   "phiPatterns": [
@@ -40,20 +50,18 @@
     "304038"
   ],
 
-  "_allowedInstitutionalDisclaimerPatterns": "Narrow exceptions for negative public-demo disclaimer lines. These do not allow institutional protocols, contacts, workflows, or local policy content.",
-  "allowedInstitutionalDisclaimerPatterns": [
-    {
-      "pattern": "\\bnot (?:an? )?(?:approved for |approved )?UW Medicine(?: clinical)? (?:tool|use|clinical use|approved)\\b|\\bnot approved for UW Medicine clinical use\\b|\\bnot UW Medicine approved\\b",
-      "flags": "i",
-      "label": "Negative UW Medicine approval disclaimer"
-    }
-  ],
+  "_allowedInstitutionalDisclaimerPatterns": "Empty as of 2026-07: even negative 'not approved for <institution>' disclaimers are banned — public safety copy must stay institution-neutral. The mechanism is kept for narrowly-scoped future exceptions.",
+  "allowedInstitutionalDisclaimerPatterns": [],
 
   "_fullyExemptFiles": "The leak-guard's own machinery legitimately contains every banned token (it IS the ruleset). These files are skipped by BOTH the institutional and PHI scans. Keep this list minimal — only the guard's own files.",
   "fullyExemptFiles": [
     "scripts/leak-guard-denylist.json",
     "scripts/check-no-institutional-leak.mjs",
-    ".githooks/pre-commit"
+    ".githooks/pre-commit",
+    "tests/no-institutional-identifiers.test.js",
+    "tests/public-demo-labels.test.js",
+    "src/evidence/__tests__/screener-eval.test.js",
+    "src/evidence/__tests__/eligibility-tables.test.js"
   ],
 
   "exemptFiles": [
@@ -68,9 +76,8 @@
     "src/evidence/__tests__/screener-eval.test.js"
   ],
 
-  "_institutionalScanExcludeDirs": "Institution-NAME tokens are governance-discussable in these dirs (internal planning/test/CI docs, never served by the app). PHI patterns + literals are STILL scanned here with no exemption.",
+  "_institutionalScanExcludeDirs": "Institution-NAME tokens are governance-discussable in these dirs (guard tests + CI configs). docs/ is NOT excluded: GitHub Pages serves the repo root, so docs/ is public surface. PHI patterns, literals, and identityTokens are STILL scanned here with no exemption.",
   "institutionalScanExcludeDirs": [
-    "docs/",
     "tests/",
     ".github/"
   ],

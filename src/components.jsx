@@ -399,7 +399,7 @@ export const PatientCensus = ({ activePatientId, onSelect, onNew, onChange }) =>
       <h3 className="font-semibold text-sm">Ward Census Disabled in Public Demo</h3>
       <p className="text-xs mt-1">
         Patient lists, MRN fragments, encounter snapshots, imports, and exports are disabled on the public GitHub Pages build.
-        Use only synthetic examples here. Real ward census or handoff workflows require an approved any organization system.
+        Use only synthetic examples here. Real ward census or handoff workflows require an approved institutional deployment.
       </p>
     </div>
   );
