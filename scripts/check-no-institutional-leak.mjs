@@ -41,6 +41,10 @@ const fullyExemptFiles = new Set(denylist.fullyExemptFiles || []);
 const instExcludeDirs = denylist.institutionalScanExcludeDirs || [];
 const binaryExt = new Set((denylist.binaryExtensions || []).map((e) => e.toLowerCase()));
 const literals = denylist.literalDenylist || [];
+const allowedInstitutionalDisclaimerRules = (denylist.allowedInstitutionalDisclaimerPatterns || []).map((r) => ({
+  re: new RegExp(r.pattern, r.flags || ''),
+  label: r.label,
+}));
 
 // A file is exempt from the institution-NAME scan if it is explicitly listed or
 // lives under a governance/test/CI dir. PHI patterns + literals are always scanned.
@@ -74,6 +78,10 @@ function isBinary(file) {
   return binaryExt.has(path.extname(file).toLowerCase());
 }
 
+function isAllowedInstitutionalDisclaimer(line) {
+  return allowedInstitutionalDisclaimerRules.some((rule) => rule.re.test(line));
+}
+
 const violations = [];
 const binaryFiles = [];
 let scanned = 0;
@@ -100,7 +108,7 @@ for (const file of readFileList()) {
   lines.forEach((line, idx) => {
     if (!exempt) {
       for (const rule of institutionalRules) {
-        if (rule.re.test(line)) {
+        if (rule.re.test(line) && !isAllowedInstitutionalDisclaimer(line)) {
           violations.push({ file, line: idx + 1, tier: 'institutional', label: rule.label, text: line.trim().slice(0, 160) });
         }
       }

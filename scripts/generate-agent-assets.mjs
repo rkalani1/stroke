@@ -34,11 +34,8 @@ const checkOnly = args.has('--check');
 
 const SCHEMA_VERSION = '1.0.0';
 const BASE_URL = 'https://rkalani1.github.io/stroke';
-const LICENSE = 'Content for clinical reference by qualified clinicians. No warranty.';
-const DISCLAIMER =
-  'Decision support only — NOT medical advice and NOT a substitute for clinical judgment. ' +
-  'Institution-neutral and evidence-based; verify against primary sources and local policy ' +
-  'before any patient care decision.';
+const LICENSE = 'Synthetic educational reference content for qualified review. No warranty.';
+const DISCLAIMER = 'Synthetic educational demo only - NOT medical advice, NOT approved for UW Medicine clinical use, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.';
 
 const pkg = JSON.parse(await fs.readFile(path.join(ROOT, 'package.json'), 'utf8'));
 const APP_VERSION = pkg.version;
@@ -107,9 +104,9 @@ const CALCULATORS = [
 
 // ── Addressable hash routes (deep links for agents + humans) ──────────────────
 const ROUTES = [
-  { route: '#/encounter', label: 'Encounter workflow' },
-  { route: '#/protocols', label: 'Protocols & algorithms (institution-neutral)' },
-  { route: '#/protocols/ischemic', label: 'Acute ischemic stroke pathways' },
+  { route: '#/encounter', label: 'Synthetic encounter demo' },
+  { route: '#/protocols', label: 'Example protocols (not local policy)' },
+  { route: '#/protocols/ischemic', label: 'Example acute ischemic stroke pathways' },
   { route: '#/protocols/ich', label: 'Intracerebral hemorrhage' },
   { route: '#/protocols/calculators', label: 'Calculators' },
   { route: '#/research', label: 'Evidence atlas / guidelines' },
@@ -196,9 +193,9 @@ async function main() {
 
   // ---- llms.txt ----
   const llms = [
-    '# Stroke Clinical Decision Support',
+    '# Stroke CDS Educational Demo',
     '',
-    `> Client-side, offline-capable stroke CDS toolkit (v${APP_VERSION}): acute ischemic & hemorrhagic stroke pathways, ${CALCULATORS.length} calculators, an evidence atlas (${atlas.completedTrials.length} landmark trials, ${atlas.activeTrials.length} active trials), guideline summaries, and a trial screener. Institution-neutral and evidence-based.`,
+    `> Synthetic educational stroke decision-support demo (v${APP_VERSION}): example acute ischemic & hemorrhagic stroke pathways, ${CALCULATORS.length} calculators, an evidence atlas (${atlas.completedTrials.length} landmark trials, ${atlas.activeTrials.length} active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not approved for UW Medicine clinical use.`,
     '',
     `${DISCLAIMER}`,
     '',
@@ -218,12 +215,13 @@ async function main() {
     ...ROUTES.map((r) => `- \`${r.route}\` — ${r.label}`),
     '',
     '## For AI agents',
-    '- A stroke-CDS MCP server (in the repo under `/mcp`) exposes the calculators and atlas as callable tools.',
-    '- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, source, disclaimer).',
-    '- No hospital-specific institutional content is published here; the site is institution-neutral by design.',
+    '- A stroke-CDS MCP server (in the repo under `/mcp`) exposes calculators and atlas data as callable educational tools.',
+    '- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, source, disclaimer). Agents must propagate the disclaimer with any output.',
+    '- Agents must not process PHI or real encounter details from this public demo.',
+    '- No hospital-specific protocols are published here; do not use this public demo for real encounters or PHI.',
     '',
     '## Policy',
-    '- Not medical advice. Verify against primary sources (PMIDs/DOIs included in the atlas) and local policy.',
+    '- Not medical advice. Do not enter PHI or real encounter details. Verify against primary sources (PMIDs/DOIs included in the atlas) and approved local protocol.',
     `- License: ${LICENSE}`,
     '',
   ].join('\n');

@@ -4,8 +4,8 @@
     "appVersion": "6.9.24",
     "schemaVersion": "1.0.0",
     "baseUrl": "https://rkalani1.github.io/stroke",
-    "license": "Content for clinical reference by qualified clinicians. No warranty.",
-    "disclaimer": "Decision support only — NOT medical advice and NOT a substitute for clinical judgment. Institution-neutral and evidence-based; verify against primary sources and local policy before any patient care decision.",
+    "license": "Synthetic educational reference content for qualified review. No warranty.",
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT approved for UW Medicine clinical use, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.",
     "institutionNeutral": true,
     "note": "Static, deterministic JSON API. Endpoints stamped with appVersion + payload checksum (no wall-clock)."
   },
@@ -26,17 +26,17 @@
   "routes": [
     {
       "route": "#/encounter",
-      "label": "Encounter workflow",
+      "label": "Synthetic encounter demo",
       "url": "https://rkalani1.github.io/stroke/#/encounter"
     },
     {
       "route": "#/protocols",
-      "label": "Protocols & algorithms (institution-neutral)",
+      "label": "Example protocols (not local policy)",
       "url": "https://rkalani1.github.io/stroke/#/protocols"
     },
     {
       "route": "#/protocols/ischemic",
-      "label": "Acute ischemic stroke pathways",
+      "label": "Example acute ischemic stroke pathways",
       "url": "https://rkalani1.github.io/stroke/#/protocols/ischemic"
     },
     {

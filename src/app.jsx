@@ -31,8 +31,15 @@ import {
   PatientCensus,
   ClinicWorkflow,
   WardsWorkflow,
-  PHQ9Screen
+  PHQ9Screen,
+  PHIBanner,
+  PublicDemoConsentModal
 } from './components.jsx';
+import {
+  getPublicDemoPhiWarnings,
+  isSyntheticDemoText,
+  PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX
+} from './public-demo-guardrails.js';
 import { PocketCards } from './pocket-cards.jsx';
 import { LandmarkTrialsCard } from './teaching.jsx';
 import Education, { EVDInfographic, ICPInfographic } from './education.jsx';
@@ -293,7 +300,17 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         const LAST_UPDATED_KEY = 'lastUpdated';
         const LEGACY_MIGRATION_KEY = 'legacyMigrated';
         const APP_DATA_SCHEMA_VERSION = 1;
-        const PUBLIC_DEMO_MODE = typeof window !== 'undefined' && /(^|\.)github\.io$/i.test(window.location.hostname || '');
+        const getPublicDemoMode = () => {
+          if (typeof window === 'undefined') return false;
+          if (window.__STROKE_PUBLIC_DEMO_MODE__ === true) return true;
+          const hostIsPublicPages = /(^|\.)github\.io$/i.test(window.location.hostname || '');
+          try {
+            return hostIsPublicPages || new URLSearchParams(window.location.search || '').get('publicDemo') === '1';
+          } catch (_) {
+            return hostIsPublicPages;
+          }
+        };
+        const PUBLIC_DEMO_MODE = getPublicDemoMode();
         // Default contacts (editable in Settings > Contact Directory).
         const DEFAULT_CONTACTS = [];
 
@@ -822,23 +839,8 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           });
         };
 
-        const DEID_PATTERNS = [
-          { id: 'mrn', label: 'Possible MRN (long numeric ID)', regex: /\b\d{7,}\b/ },
-          { id: 'ssn', label: 'Possible SSN (XXX-XX-XXXX)', regex: /\b\d{3}-\d{2}-\d{4}\b/ },
-          { id: 'birth-date', label: 'Possible birth date/date (US format)', regex: /\b\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}\b/ },
-          { id: 'iso-date', label: 'Possible date (ISO YYYY-MM-DD)', regex: /\b(19|20)\d{2}[\/\-]\d{1,2}[\/\-]\d{1,2}\b/ },
-          { id: 'phone', label: 'Possible phone number', regex: /\b(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/ },
-          { id: 'email', label: 'Possible email address', regex: /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i },
-          { id: 'zip', label: 'Possible ZIP+4 (XXXXX-XXXX)', regex: /\b\d{5}-\d{4}\b/ },
-          // Street-address heuristic: digit + word + (St / Street / Ave / Avenue / Rd / Road /
-          // Blvd / Boulevard / Ln / Lane / Dr / Drive / Ct / Court / Way / Pl / Place).
-          // High-precision form — avoids false positives on numeric measurements.
-          { id: 'street', label: 'Possible street address', regex: /\b\d{1,5}\s+[A-Z][A-Za-z]{2,}(?:\s+[A-Z][A-Za-z]+)*\s+(St(reet)?|Ave(nue)?|R(oa)?d|Blvd|Boulevard|Ln|Lane|Dr(ive)?|Ct|Court|Way|Pl(ace)?)\b/i }
-        ];
-
         const getDeidWarnings = (text) => {
-          if (!text || typeof text !== 'string') return [];
-          return DEID_PATTERNS.filter(pattern => pattern.regex.test(text)).map(pattern => pattern.label);
+          return getPublicDemoPhiWarnings(text);
         };
 
         const getDefaultClipboardPacks = () => ([
@@ -8052,7 +8054,7 @@ Clinician Name`;
           const paletteCommands = React.useMemo(() => [
             // ---- Top-level sections ----
             { id: 'go-encounter', group: 'Go to', label: 'Acute Encounter', hint: 'Active stroke workup', icon: 'activity', keywords: ['encounter', 'acute', 'consult', 'telestroke', 'patient', 'workup'], run: () => navigateTo('encounter', { clearSearch: true }) },
-            { id: 'go-protocols', group: 'Go to', label: 'Institutional Protocols & Algorithms', hint: 'Pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library'], run: () => navigateTo('protocols', { clearSearch: true }) },
+            { id: 'go-protocols', group: 'Go to', label: 'Example Protocols (Not Local Policy)', hint: 'Example pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library', 'example'], run: () => navigateTo('protocols', { clearSearch: true }) },
             { id: 'go-research', group: 'Go to', label: 'Guidelines & References', hint: 'Guidelines & Reference Library', icon: 'book-open', keywords: ['research', 'references', 'guidelines', 'whats new', "what's new", 'evidence', 'updates'], run: () => navigateTo('research', { clearSearch: true }) },
             { id: 'go-trials', group: 'Go to', label: 'Trials & Evidence', hint: 'Screener, tables, atlas', icon: 'flask-conical', keywords: ['trials', 'evidence', 'atlas', 'eligibility', 'screener'], run: () => navigateTo('trials', { clearSearch: true }) },
             { id: 'go-education', group: 'Go to', label: 'Education', hint: 'Curricula & pocket cards', icon: 'brain', keywords: ['education', 'curricula', 'onboarding', 'icu', 'resident', 'nurse', 'pocket cards', 'teaching'], run: () => navigateTo('education', { clearSearch: true }) },
@@ -8583,6 +8585,15 @@ Clinician Name`;
 
           const copyTimeoutRef = React.useRef(null);
           const copyToClipboard = (text, label) => {
+            if (PUBLIC_DEMO_MODE) {
+              const identifierWarnings = getPublicDemoPhiWarnings(text);
+              const isGeneratedDemoNote = typeof text === 'string' && text.startsWith(PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX);
+              const allowSyntheticExample = isSyntheticDemoText(text) && !isGeneratedDemoNote;
+              if (identifierWarnings.length > 0 && !allowSyntheticExample) {
+                addToast(`Copy blocked in public demo: possible PHI or identifiers detected (${identifierWarnings.slice(0, 3).join(', ')}). Use only synthetic examples.`, 'warning');
+                return;
+              }
+            }
             const onSuccess = () => {
               setCopiedText(label);
               if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
@@ -8696,8 +8707,8 @@ Clinician Name`;
 
           const handleShare = async () => {
             const shareData = {
-              title: 'Stroke',
-              text: 'Clinical decision support toolkit for stroke management',
+              title: 'Stroke CDS Educational Demo',
+              text: 'Synthetic educational stroke decision-support demo. Not medical advice; do not enter PHI.',
               url: window.location.href
             };
 
@@ -10289,7 +10300,7 @@ Clinician Name`;
 
             if (noteTemplate === 'progress') {
               let note = `STROKE INPATIENT PROGRESS NOTE\n${'='.repeat(40)}\n\n`;
-              note += `Date: ${new Date().toLocaleDateString()}\n`;
+              note += `Date: ${PUBLIC_DEMO_MODE ? '[synthetic demo date]' : new Date().toLocaleDateString()}\n`;
               note += `Facility Day #: ___\n`;
               note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}`;
               if (telestrokeNote.weight) note += ` | ${telestrokeNote.weight} kg`;
@@ -12128,7 +12139,7 @@ Clinician Name`;
           // D3 — on the public github.io demo, the COPIED note must carry a
           // synthetic-demo disclaimer (matching TrialScreener/EligibilityTables).
           // Local/institutional builds emit the clinical note unchanged.
-          const DEMO_NOTE_DISCLAIMER = 'SYNTHETIC EDUCATIONAL DEMO — NOT A REAL CLINICAL NOTE. NO PHI.';
+          const DEMO_NOTE_DISCLAIMER = PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX;
           const generateTelestrokeNote = () => {
             const note = generateTelestrokeNoteBody();
             if (PUBLIC_DEMO_MODE && note && !note.startsWith(DEMO_NOTE_DISCLAIMER)) {
@@ -15781,7 +15792,7 @@ Clinician Name`;
 
           // De-ID warning scan for free-text inputs
           useEffect(() => {
-            if (!settings.deidMode) {
+            if (!settings.deidMode && !PUBLIC_DEMO_MODE) {
               setDeidWarnings({});
               return;
             }
@@ -16416,6 +16427,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             <div className="relative v7-skin">
               {/* v7: skip-link → semantic <main id="main">; cobalt accent, no link-* override */}
               <a href="#main" data-skip-tap className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-cobalt-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">Skip to main content</a>
+              {PUBLIC_DEMO_MODE && <PublicDemoConsentModal />}
 
               {protocolModal && (
                 <div className="clinician-only fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="protocol-modal-title" onClick={() => setProtocolModal(null)}>
@@ -16460,12 +16472,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   can pin to the viewport; html/body already clip horizontal
                   overflow at the page level. */}
               <div className="app-shell v7-content max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-hidden md:overflow-x-visible">
+              {PUBLIC_DEMO_MODE && <PHIBanner />}
 
               {/* Offline Indicator */}
               {!isOnline && (
                 <div className="bg-warn-500 text-white px-4 py-2 text-center text-sm font-medium flex items-center justify-center gap-2 no-print" role="alert">
                   <i aria-hidden="true" data-lucide="wifi-off" className="w-4 h-4"></i>
-                  <span>You are offline — changes are saved locally</span>
+                  <span>{PUBLIC_DEMO_MODE ? 'Offline - public demo mode: changes are not saved and may be cleared on reload.' : 'You are offline - changes are saved locally'}</span>
                 </div>
               )}
 
@@ -17069,7 +17082,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     // (Cycle2 U2). Full canonical name stays as title/aria-label and
                     // is shown at lg+; the section H1/title is unchanged elsewhere.
                     { id: 'encounter', name: 'Encounter', short: 'Encounter' },
-                    { id: 'protocols', name: 'Institutional Protocols & Algorithms', short: 'Protocols' },
+                    { id: 'protocols', name: 'Example Protocols (Not Local Policy)', short: 'Protocols' },
                     { id: 'research', name: 'Guidelines & References', short: 'Guidelines' },
                     { id: 'trials', name: 'Trials', short: 'Trials' },
                     { id: 'education', name: 'Educational Resources', short: 'Educational Resources' }
@@ -17103,9 +17116,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 lg:inline and renders BOTH spans. */}
                             <span className="whitespace-nowrap leading-none truncate lg:!hidden" aria-hidden="true">{tab.short}</span>
                             {/* V2 — at lg+ the nav is a 248px vertical sidebar. The long
-                                canonical name ("Institutional Protocols & Algorithms",
-                                ~265px) clipped under truncate; allow it to wrap to 2 lines
-                                instead of dropping "Institutional". The `!` display wins
+                                canonical name can clip under truncate; allow it to wrap to 2 lines
+                                instead of losing safety copy. The `!` display wins
                                 over index.html's `.app-shell > .app-nav .tab-pill span
                                 { display:inline-flex }` (0,1,3, non-important); whitespace-
                                 normal + 2-line clamp + snug leading keeps the row tidy. */}
@@ -19408,6 +19420,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                             Generate Auto-Note
                             </button>
                           </div>
+                          {PUBLIC_DEMO_MODE && (
+                            <p className="mb-3 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                              <strong>Public demo note output:</strong> Generated recommendations are not EHR-ready clinical documentation. Do not enter or copy PHI; verify against primary sources and approved local protocol.
+                            </p>
+                          )}
                           <textarea
                             id="input-recommendations"
                             value={telestrokeNote.recommendationsText}
@@ -20502,6 +20519,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="flex items-center gap-2 mb-3">
                                   <span className="text-section text-ink">Recommendation</span>
                                 </div>
+                                {PUBLIC_DEMO_MODE && (
+                                  <div className="mb-3 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                                    <strong>Demo-only output.</strong> Verify TNK/EVT decisions against approved local protocol, source guidelines, imaging, and bedside clinical judgment before any clinical action.
+                                  </div>
+                                )}
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                   {/* TNK Recommendation */}
@@ -21911,6 +21933,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <span className="text-xs text-cobalt-500 font-normal">Evidence-based, auto-matched to patient data</span>
                                 </summary>
                                 <div className="p-4 pt-0 space-y-4">
+                                  {PUBLIC_DEMO_MODE && (
+                                    <p className="rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                                      <strong>Public demo:</strong> These auto-matched recommendations are educational references only; verify the primary source and approved local protocol before acting.
+                                    </p>
+                                  )}
                                   {Object.entries(grouped).map(([category, catRecs]) => (
                                     <div key={category}>
                                       <h3 className="text-sm font-bold text-cobalt-800 uppercase tracking-wide mb-2 border-b border-cobalt-100 pb-1 dark:text-cobalt-300">{category}</h3>
@@ -22057,6 +22084,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </summary>
                               <div className="p-3 space-y-2">
                                 <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">Auto-compared against patient data (age, NIHSS, LKW, imaging, diagnosis). Criteria update in real-time as you enter data.</p>
+                                {PUBLIC_DEMO_MODE && (
+                                  <p className="rounded-md border border-warn-300 bg-warn-50 px-2.5 py-1.5 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                                    <strong>Trial-screening check:</strong> Confirm every apparent match against ClinicalTrials.gov, approved study materials, and local research workflow before contacting a team or patient.
+                                  </p>
+                                )}
                                 {sorted.map(trial => {
                                   // The engine result already exposes everything the UI consumes
                                   // (name, nct, quickDescription, lookingFor, keyTakeaways);
@@ -26276,6 +26308,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           {/* Auto-Note Generation Button */}
                           <div className="mb-3">
+                            {PUBLIC_DEMO_MODE && (
+                              <p className="mb-2 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                                <strong>Public demo note output:</strong> Generated text is synthetic education only. Do not copy PHI, encounter details, or operational handoff content from this public build.
+                              </p>
+                            )}
                             <button
                               type="button"
                               onClick={() => {
@@ -26293,7 +26330,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                 // Header
                                 note += `TELESTROKE CONSULTATION NOTE\n`;
-                                note += `Date: ${new Date().toLocaleDateString()}\n\n`;
+                                note += `Date: ${PUBLIC_DEMO_MODE ? '[synthetic demo date]' : new Date().toLocaleDateString()}\n\n`;
 
                                 // HPI
                                 note += `HPI: ${age} year old ${sex}`;
@@ -27352,6 +27389,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {copiedText === 'handoff-summary' ? 'Copied!' : 'Copy handoff'}
                         </V7Button>
                       </div>
+                      {PUBLIC_DEMO_MODE && (
+                        <p className="mb-3 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                          <strong>Public demo handoff:</strong> Copy is blocked when obvious identifiers are detected. Use synthetic examples only; do not move operational handoff content through this public build.
+                        </p>
+                      )}
                       {(() => {
                         const fields = getHandoffSummaryFields();
                         const cards = [
@@ -27428,29 +27470,36 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                          reach the top-right of the Encounter to copy their work.
                          Hidden ≥md (desktop has the inline buttons in scroll). */}
                     <div className="md:hidden fixed bottom-16 left-0 right-0 z-50 px-3 pb-2 pointer-events-none">
-                      <div className="pointer-events-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-2 flex gap-2">
-                        <V7Button
-                          variant="primary"
-                          size="md"
-                          className="flex-1"
-                          onClick={() => {
-                            const note = generateTelestrokeNote();
-                            copyToClipboard(note, 'encounter-note');
-                          }}
-                        >
-                          {copiedText === 'encounter-note' ? 'Copied note' : 'Copy Note'}
-                        </V7Button>
-                        <V7Button
-                          variant="secondary"
-                          size="md"
-                          className="flex-1"
-                          onClick={() => {
-                            const summary = buildHandoffSummary();
-                            copyToClipboard(summary, 'handoff-summary');
-                          }}
-                        >
-                          {copiedText === 'handoff-summary' ? 'Copied handoff' : 'Copy Handoff'}
-                        </V7Button>
+                      <div className="pointer-events-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-2 space-y-2">
+                        {PUBLIC_DEMO_MODE && (
+                          <p className="text-[11px] leading-snug text-warn-800 dark:text-warn-300">
+                            Public demo copy uses synthetic examples only; obvious identifiers are blocked.
+                          </p>
+                        )}
+                        <div className="flex gap-2">
+                          <V7Button
+                            variant="primary"
+                            size="md"
+                            className="flex-1"
+                            onClick={() => {
+                              const note = generateTelestrokeNote();
+                              copyToClipboard(note, 'encounter-note');
+                            }}
+                          >
+                            {copiedText === 'encounter-note' ? 'Copied note' : 'Copy Note'}
+                          </V7Button>
+                          <V7Button
+                            variant="secondary"
+                            size="md"
+                            className="flex-1"
+                            onClick={() => {
+                              const summary = buildHandoffSummary();
+                              copyToClipboard(summary, 'handoff-summary');
+                            }}
+                          >
+                            {copiedText === 'handoff-summary' ? 'Copied handoff' : 'Copy Handoff'}
+                          </V7Button>
+                        </div>
                       </div>
                     </div>
 
@@ -35594,6 +35643,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           : 'Live eligibility verdict from patient parameters'}
                       </span>
                     </div>
+                    {PUBLIC_DEMO_MODE && (
+                      <p className="rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                        <strong>Public demo trial workflow:</strong> Do not enter PHI or real encounter data. Trial matching is a first-pass educational screen; confirm against ClinicalTrials.gov and approved study materials.
+                      </p>
+                    )}
 
                     {/* Sub-view: Bedside Screener (iframe embed) */}
                     {trialsView === 'screener' && (

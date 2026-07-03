@@ -7,6 +7,7 @@ import { chromium } from 'playwright';
 
 const PORT = 4173;
 const LOCAL_URL = `http://127.0.0.1:${PORT}/`;
+const PUBLIC_DEMO_LOCAL_URL = `${LOCAL_URL}?publicDemo=1`;
 const LIVE_URL = process.env.STROKE_LIVE_URL || 'https://rkalani1.github.io/stroke/';
 const VIEWPORTS = [
   { name: 'desktop', width: 1440, height: 900 },
@@ -322,6 +323,63 @@ async function clickElementRobust(locator) {
   }
 }
 
+async function auditPublicDemoSurface(page, context, target, issues, notes) {
+  const shouldCheckPublicDemo =
+    target.isPublicDemo ||
+    (target.name === 'live' && target.enforceLiveParityChecks && /(^|\.)github\.io$/i.test(new URL(target.url).hostname));
+  if (!shouldCheckPublicDemo) return;
+
+  notes.publicDemoChecked = true;
+
+  const modal = page.getByRole('dialog', { name: /Synthetic education only/i }).first();
+  if ((await modal.count()) === 0) {
+    addIssue(issues, 'public-demo-modal-missing');
+  } else {
+    const modalText = await modal.innerText();
+    if (!/not an approved UW Medicine clinical tool/i.test(modalText)) {
+      addIssue(issues, 'public-demo-modal-copy-mismatch');
+    }
+    if (!/Do not enter PHI, MRNs, dates of birth/i.test(modalText)) {
+      addIssue(issues, 'public-demo-modal-phi-copy-missing');
+    }
+    const button = page.getByRole('button', { name: /Use synthetic demo/i }).first();
+    if ((await button.count()) === 0) {
+      addIssue(issues, 'public-demo-modal-button-missing');
+    } else {
+      await clickElementRobust(button);
+      await page.waitForTimeout(150);
+    }
+  }
+
+  await page.reload({ waitUntil: 'domcontentloaded', timeout: 60000 });
+  await page.waitForTimeout(500);
+  if ((await page.getByRole('dialog', { name: /Synthetic education only/i }).count()) > 0) {
+    addIssue(issues, 'public-demo-modal-reappeared-same-session');
+  }
+
+  let bodyText = await page.locator('body').innerText();
+  if (!/Synthetic educational demo - not medical advice/i.test(bodyText)) {
+    addIssue(issues, 'public-demo-banner-missing');
+  }
+  if (!/not UW Medicine approved/i.test(bodyText)) {
+    addIssue(issues, 'public-demo-banner-approval-copy-missing');
+  }
+  if (/Institutional Protocols & Algorithms/i.test(bodyText)) {
+    addIssue(issues, 'public-demo-institutional-label-visible');
+  }
+
+  await context.setOffline(true);
+  await page.evaluate(() => window.dispatchEvent(new Event('offline')));
+  await page.waitForTimeout(250);
+  bodyText = await page.locator('body').innerText();
+  if (!/Offline - public demo mode: changes are not saved and may be cleared on reload/i.test(bodyText)) {
+    addIssue(issues, 'public-demo-offline-copy-missing');
+  }
+  await context.setOffline(false);
+  await page.evaluate(() => window.dispatchEvent(new Event('online')));
+  await page.waitForTimeout(150);
+}
+
 async function auditView(browser, target, viewport) {
   const context = await browser.newContext({
     viewport: { width: viewport.width, height: viewport.height },
@@ -385,6 +443,8 @@ async function auditView(browser, target, viewport) {
   if (!rootInfo.rootExists || rootInfo.rootChildren < 1 || rootInfo.textLength < 300) {
     addIssue(issues, 'render-risk', { rootInfo });
   }
+
+  await auditPublicDemoSurface(page, context, target, issues, notes);
 
   const tabButtons = page.locator('button.tab-pill');
   const tabCount = await tabButtons.count();
@@ -668,7 +728,7 @@ async function auditView(browser, target, viewport) {
   // Library tab retired; content folded into Management/Protocols sub-tabs.
   let navigatedToManagement = await navigateToTab(page, 'Management');
   if (!navigatedToManagement) navigatedToManagement = await navigateToTab(page, 'Protocols');
-  if (!navigatedToManagement) navigatedToManagement = await navigateToTab(page, 'Institutional Protocols');
+  if (!navigatedToManagement) navigatedToManagement = await navigateToTab(page, 'Example Protocols');
 
   if (!navigatedToManagement) {
     addIssue(issues, 'tab-nav', { tab: 'Management' });
@@ -971,7 +1031,10 @@ async function auditView(browser, target, viewport) {
 async function main() {
   await fs.mkdir(outDir, { recursive: true });
 
-  const targets = [{ name: 'local', url: LOCAL_URL }];
+  const targets = [
+    { name: 'local', url: LOCAL_URL },
+    { name: 'local-public-demo', url: PUBLIC_DEMO_LOCAL_URL, isPublicDemo: true, viewports: [VIEWPORTS[0]] }
+  ];
   if (!localOnly) targets.push({ name: 'live', url: LIVE_URL });
 
   let server = null;
@@ -1006,7 +1069,7 @@ async function main() {
   const runs = [];
 
   for (const target of effectiveTargets) {
-    for (const viewport of VIEWPORTS) {
+    for (const viewport of target.viewports || VIEWPORTS) {
       try {
         runs.push(await auditView(browser, target, viewport));
       } catch (error) {

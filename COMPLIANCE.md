@@ -28,4 +28,9 @@ Allowed public content:
 
 Deployment rule: real clinical, patient-facing, trainee-record, research-participant, or internal-planning use must move to an approved controlled environment with access control, approved storage, security review, incident-response path, and owner governance.
 
+## UW Medicine Clinical-Use Gate
+This public GitHub Pages deployment is **not approved for UW Medicine clinical use**. It must not be linked from UW Medicine clinical workflows, used during real patient care, used to generate EHR documentation, promoted as local policy, or used with UW Medicine Data unless and until the proposed use completes the required UW Medicine IT New Project Request / COMP.308 Internal Review pathway and receives explicit approval for the intended scope.
+
+Before any clinical pilot or private deployment, the owner must document the intended users, hosting environment, data flows, PHI handling, storage behavior, note/EHR use, agent/MCP access, monitoring, incident-response path, and validation evidence for treatment and trial-matching outputs.
+
 Review cadence: review before every public Pages deployment and after any change that adds forms, uploads, local storage, exports, contact workflows, clinical recommendations, study recruitment language, or organizational branding.

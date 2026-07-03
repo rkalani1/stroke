@@ -6,8 +6,8 @@
     "checksum": "sha256:7add003e86927f0fb0f62b75b0945ab4",
     "count": 4,
     "source": "src/evidence/index.js",
-    "license": "Content for clinical reference by qualified clinicians. No warranty.",
-    "disclaimer": "Decision support only — NOT medical advice and NOT a substitute for clinical judgment. Institution-neutral and evidence-based; verify against primary sources and local policy before any patient care decision."
+    "license": "Synthetic educational reference content for qualified review. No warranty.",
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT approved for UW Medicine clinical use, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
   },
   "data": {
     "verificationStatus": {

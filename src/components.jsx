@@ -31,28 +31,64 @@ import {
   exportPatientsJSON,
   importPatientsJSON
 } from './patient-store.js';
+import {
+  PUBLIC_DEMO_BANNER_COPY,
+  PUBLIC_DEMO_MODAL_BUTTON,
+  PUBLIC_DEMO_MODAL_COPY
+} from './public-demo-guardrails.js';
 
 // =========================================================================
 // Public deployment banner: GitHub Pages is an educational/synthetic demo only.
 // =========================================================================
 export const PHIBanner = () => {
-  const [dismissed, setDismissed] = useState(() => {
-    try { return localStorage.getItem('strokeApp:phiBannerDismissed') === '1'; } catch (_) { return false; }
-  });
-  if (dismissed) return null;
-  const handleDismiss = () => {
-    setDismissed(true);
-    try { localStorage.setItem('strokeApp:phiBannerDismissed', '1'); } catch (_) {}
-  };
   return (
     <div role="alert" aria-live="polite" className="bg-warn-50 border-y border-warn-300 px-3 py-2 text-xs sm:text-sm text-warn-900 flex items-start gap-2 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
-      <span className="font-bold text-warn-700 flex-shrink-0 dark:text-warn-300" aria-hidden>⚠</span>
+      <span className="font-bold text-warn-700 flex-shrink-0 dark:text-warn-300" aria-hidden>!</span>
       <div className="flex-1">
-        <strong>Educational synthetic demo only - not medical advice and not an official system.</strong> Do not enter real patient identifiers, PHI, confidential any organization data, or operational handoff content. Public GitHub Pages use is for synthetic examples only; real clinical use requires an approved any organization deployment, approved storage, access control, and local governance.
+        <strong>Public demo guardrail.</strong> {PUBLIC_DEMO_BANNER_COPY}
       </div>
-      <button type="button" onClick={handleDismiss} className="px-2 py-0.5 rounded bg-warn-200 hover:bg-warn-300 text-warn-900 text-xs font-semibold flex-shrink-0 dark:bg-warn-950 dark:hover:bg-warn-900 dark:text-warn-300" aria-label="Dismiss disclaimer">
-        Dismiss
-      </button>
+    </div>
+  );
+};
+
+export const PublicDemoConsentModal = () => {
+  const [visible, setVisible] = useState(() => {
+    try {
+      return sessionStorage.getItem('strokePublicDemoAcknowledged') !== '1';
+    } catch (_) {
+      return true;
+    }
+  });
+
+  if (!visible) return null;
+
+  const handleAcknowledge = () => {
+    try { sessionStorage.setItem('strokePublicDemoAcknowledged', '1'); } catch (_) {}
+    setVisible(false);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/60 p-4 no-print" role="dialog" aria-modal="true" aria-labelledby="public-demo-modal-title">
+      <div className="w-full max-w-xl rounded-md border border-warn-300 bg-white shadow-xl dark:border-warn-800 dark:bg-card">
+        <div className="border-b border-warn-200 px-5 py-4 dark:border-warn-800">
+          <p className="font-mono uppercase text-eyebrow text-warn-700 dark:text-warn-300">Public GitHub Pages demo</p>
+          <h2 id="public-demo-modal-title" className="mt-1 font-serif text-section text-ink">
+            Synthetic education only
+          </h2>
+        </div>
+        <div className="px-5 py-4 text-sm leading-relaxed text-slate-700 dark:text-ink-2">
+          {PUBLIC_DEMO_MODAL_COPY}
+        </div>
+        <div className="flex justify-end border-t border-line px-5 py-4">
+          <button
+            type="button"
+            onClick={handleAcknowledge}
+            className="inline-flex min-h-[44px] items-center justify-center rounded-md bg-cobalt-600 px-4 py-2 text-sm font-semibold text-white hover:bg-cobalt-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+          >
+            {PUBLIC_DEMO_MODAL_BUTTON}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

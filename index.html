@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="description" content="Comprehensive clinical decision support tool for stroke management including NIHSS, ASPECTS, and treatment protocols">
+    <meta name="description" content="Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not approved for UW Medicine clinical use.">
     <meta name="theme-color" content="#0A6571">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,7 +15,7 @@
     <link rel="icon" href="icon-192.png" type="image/png">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png">
-    <meta name="apple-mobile-web-app-title" content="Stroke">
+    <meta name="apple-mobile-web-app-title" content="Stroke CDS Demo">
 
     <!-- Crawler/agent discovery -->
     <link rel="sitemap" type="application/xml" href="sitemap.xml">
@@ -27,16 +27,16 @@
         {
           "@type": ["WebApplication", "MedicalWebPage"],
           "@id": "https://rkalani1.github.io/stroke/#app",
-          "name": "Stroke Clinical Decision Support",
-          "description": "Client-side, offline-capable stroke CDS toolkit: acute ischemic and hemorrhagic stroke pathways, calculators, an evidence atlas of landmark and active trials, guideline summaries, and a trial screener. Institution-neutral and evidence-based.",
-          "applicationCategory": "HealthApplication",
+          "name": "Stroke CDS Educational Demo",
+          "description": "Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not approved for UW Medicine clinical use.",
+          "applicationCategory": "EducationalApplication",
           "operatingSystem": "Web (Progressive Web App, offline-capable)",
           "url": "https://rkalani1.github.io/stroke/",
           "isAccessibleForFree": true,
           "browserRequirements": "Requires JavaScript. Works offline after first load.",
           "about": { "@type": "MedicalCondition", "name": "Stroke" },
           "audience": { "@type": "MedicalAudience", "audienceType": "Clinician" },
-          "disclaimer": "Decision support only — not medical advice and not a substitute for clinical judgment. Verify against primary sources and local policy."
+          "disclaimer": "Synthetic educational demo only - not medical advice, not approved for UW Medicine clinical use, and not local clinical policy. Do not enter PHI or real encounter details; verify against primary sources and approved local protocol."
         },
         {
           "@type": "Dataset",
@@ -76,7 +76,7 @@
           media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
     <link rel="apple-touch-startup-image" href="assets/splash/splash-ipad-mini.png"
           media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <title>Stroke</title>
+    <title>Stroke CDS Educational Demo</title>
 
     <link rel="preload" as="script" href="app.js?v=6.9.24">
     <link rel="stylesheet" href="tailwind.css?v=6.9.24">
@@ -858,7 +858,7 @@
 <body>
     <noscript>
         <div style="padding: 40px; font-family: Arial; max-width: 600px; margin: 0 auto; text-align: center;">
-            <h1>Stroke Clinical Decision Support</h1>
+            <h1>Stroke CDS Educational Demo</h1>
             <p>This application requires JavaScript to run. Please enable JavaScript in your browser settings.</p>
         </div>
     </noscript>
