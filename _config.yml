@@ -8,6 +8,7 @@ exclude:
   - .github/
   - .remember/
   - android/
+  - data/clinical-intelligence/
   - docs/
   - ios/
   - mcp/
@@ -30,3 +31,4 @@ exclude:
   - package.json
   - tailwind.config.js
   - vitest.config.js
+  - whats-new-source-gaps.md

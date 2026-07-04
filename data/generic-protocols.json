@@ -3,7 +3,7 @@
     "endpoint": "generic-protocols",
     "schemaVersion": "1.0.0",
     "appVersion": "6.10.0",
-    "checksum": "sha256:0e89ac126d8a3d1de589fa7612b995af",
+    "checksum": "sha256:128b678879e585a96cfb849f8abba804",
     "count": 3,
     "source": "Public protocol reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -77,7 +77,7 @@
             "ED clinicians or the stroke service may consult Neurosurgery directly; prior approval is not required.",
             "Whichever service calls Neurosurgery closes the loop with the designated on-call stroke attending and other involved service so the plan is shared and documented.",
             "Separate attending-of-record notification is not default unless that expectation is explicitly requested, especially overnight.",
-            "Consult earlier at any size for IVH, hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, multicompartmental hemorrhage, vascular lesion concern, ED attending discretion, or clinician concern."
+            "Consult earlier at any size for IVH, hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, vascular lesion concern, ED attending discretion, or clinician concern."
           ]
         },
         {

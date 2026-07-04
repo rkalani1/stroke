@@ -99,6 +99,66 @@ jobs:
             npm run validate:automedbench-lite
           } 2>&1 | tee output/diagnostics/qa-structural-validation.log
 
+      - name: Verify live Pages artifact parity
+        run: |
+          node <<'NODE' > live-artifacts.txt
+          const fs = require('fs');
+          const base = 'https://rkalani1.github.io/stroke/';
+          const artifacts = new Set([
+            'index.html',
+            'tailwind.css',
+            'offline.html',
+            'app.js',
+            'data/index.json',
+            'whats-new.json',
+            'llms.txt',
+            'llms-full.txt',
+            'manifest.json',
+            'service-worker.js',
+            'robots.txt',
+            'sitemap.xml'
+          ]);
+          const toRel = (url) => typeof url === 'string' && url.startsWith(base) ? url.slice(base.length) : null;
+          const add = (rel) => {
+            if (!rel) return;
+            if (!fs.existsSync(rel)) {
+              console.error(`Advertised public artifact missing locally: ${rel}`);
+              process.exitCode = 1;
+              return;
+            }
+            artifacts.add(rel);
+          };
+          const apiIndex = JSON.parse(fs.readFileSync('data/index.json', 'utf8'));
+          for (const endpoint of apiIndex.endpoints || []) add(toRel(endpoint));
+          const guidelineIndex = JSON.parse(fs.readFileSync('data/guidelines/index.json', 'utf8'));
+          for (const guideline of guidelineIndex.data || []) add(toRel(guideline.url));
+          if (process.exitCode) process.exit(process.exitCode);
+          for (const artifact of [...artifacts].sort()) console.log(artifact);
+          NODE
+          mapfile -t artifacts < live-artifacts.txt
+          mkdir -p live-artifacts
+          for artifact in "${artifacts[@]}"; do
+            expected="$(sha256sum "$artifact" | awk '{print $1}')"
+            ok=0
+            for i in $(seq 1 12); do
+              mkdir -p "live-artifacts/$(dirname "$artifact")"
+              curl -fsS "https://rkalani1.github.io/stroke/${artifact}?sha=${GITHUB_SHA}&artifact_try=${i}" -o "live-artifacts/${artifact}" || true
+              if [ -f "live-artifacts/${artifact}" ]; then
+                actual="$(sha256sum "live-artifacts/${artifact}" | awk '{print $1}')"
+                if [ "$actual" = "$expected" ]; then
+                  ok=1
+                  break
+                fi
+              fi
+              sleep 5
+            done
+            if [ "$ok" != "1" ]; then
+              echo "Timed out waiting for live Pages artifact to match this commit: ${artifact}"
+              exit 1
+            fi
+          done
+          echo "Live Pages public artifacts match checked-out commit."
+
       - name: Run adaptive QA smoke (local + live)
         run: |
           mkdir -p output/diagnostics

@@ -881,18 +881,43 @@
                     }
                     window.location.reload();
                 } else {
-                    // If already reloaded once, show error message instead of infinite loop
-                    document.getElementById('root').innerHTML =
-                        '<div style="padding: 40px; font-family: Arial; max-width: 600px; margin: 0 auto;">' +
-                        '<h1 style="color: #dc2626;">Unable to Load Application</h1>' +
-                        '<p style="color: #374151; margin: 20px 0;">A critical error occurred. Please try:</p>' +
-                        '<ol style="color: #374151;">' +
-                        '<li>Use a different browser (Chrome, Firefox, Safari)</li>' +
-                        '<li>Try Incognito/Private mode</li>' +
-                        '<li>Contact support if issue persists</li>' +
-                        '</ol>' +
-                        '<p style="color: #6b7280; font-size: 14px; margin-top: 30px;">Error: ' + msg + '</p>' +
-                        '</div>';
+                    // If already reloaded once, show error message instead of infinite loop.
+                    const root = document.getElementById('root');
+                    if (root) {
+                        root.textContent = '';
+                        const container = document.createElement('div');
+                        container.style.cssText = 'padding: 40px; font-family: Arial; max-width: 600px; margin: 0 auto;';
+
+                        const title = document.createElement('h1');
+                        title.style.color = '#dc2626';
+                        title.textContent = 'Unable to Load Application';
+                        container.appendChild(title);
+
+                        const intro = document.createElement('p');
+                        intro.style.cssText = 'color: #374151; margin: 20px 0;';
+                        intro.textContent = 'A critical error occurred. Please try:';
+                        container.appendChild(intro);
+
+                        const list = document.createElement('ol');
+                        list.style.color = '#374151';
+                        for (const itemText of [
+                            'Use a different browser (Chrome, Firefox, Safari)',
+                            'Try Incognito/Private mode',
+                            'Contact support if issue persists'
+                        ]) {
+                            const item = document.createElement('li');
+                            item.textContent = itemText;
+                            list.appendChild(item);
+                        }
+                        container.appendChild(list);
+
+                        const details = document.createElement('p');
+                        details.style.cssText = 'color: #6b7280; font-size: 14px; margin-top: 30px;';
+                        details.textContent = 'Error: ' + String(msg || 'Unknown error');
+                        container.appendChild(details);
+
+                        root.appendChild(container);
+                    }
                 }
             }
             return false;

@@ -1116,6 +1116,15 @@ async function main() {
     const localVersion = await fetchAppVersion(LOCAL_URL);
     const liveVersion = localOnly ? null : await fetchAppVersion(LIVE_URL);
     const liveVersionMatchesLocal = !localOnly && Boolean(localVersion) && Boolean(liveVersion) && localVersion === liveVersion;
+    const liveParityIssues = [];
+    if (!localOnly && !liveVersionMatchesLocal) {
+      liveParityIssues.push({
+        type: 'live-deployment-parity',
+        message: 'Live app version does not match the checked-out local build.',
+        localAppVersion: localVersion || null,
+        liveAppVersion: liveVersion || null
+      });
+    }
 
     const effectiveTargets = targets.map((target) => {
       if (target.name === 'live') {
@@ -1154,6 +1163,22 @@ async function main() {
   }
 
     await browser.close();
+
+    if (liveParityIssues.length > 0) {
+      runs.push({
+        target: 'live',
+        url: LIVE_URL,
+        viewport: 'deployment-parity',
+        issues: liveParityIssues,
+        issueCount: liveParityIssues.length,
+        notes: {
+          localAppVersion: localVersion || null,
+          liveAppVersion: liveVersion || null,
+          liveParityChecksEnabled: false
+        },
+        screenshot: null
+      });
+    }
 
     const totalIssues = runs.reduce((sum, run) => sum + run.issueCount, 0);
     const timedRuns = runs.filter((run) => Number.isFinite(run?.notes?.runDurationMs));

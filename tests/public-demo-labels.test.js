@@ -102,9 +102,11 @@ describe('public demo labeling and agent disclaimers', () => {
       'mcp/',
       'output/',
       'private/',
+      'data/clinical-intelligence/',
       'node_modules/',
       '.github/',
-      '.githooks/'
+      '.githooks/',
+      'whats-new-source-gaps.md'
     ];
 
     for (const path of excluded) {

@@ -8,6 +8,7 @@ const repoRoot = join(__dirname, '..');
 const workflow = readFileSync(join(repoRoot, '.github/workflows/lighthouse.yml'), 'utf8');
 const ciWorkflow = readFileSync(join(repoRoot, '.github/workflows/ci.yml'), 'utf8');
 const liveSmokeWorkflow = readFileSync(join(repoRoot, '.github/workflows/live-smoke.yml'), 'utf8');
+const qaSmokeScript = readFileSync(join(repoRoot, 'scripts/qa-smoke.mjs'), 'utf8');
 const apiIndex = JSON.parse(readFileSync(join(repoRoot, 'data/index.json'), 'utf8'));
 const guidelineIndex = JSON.parse(readFileSync(join(repoRoot, 'data/guidelines/index.json'), 'utf8'));
 const quoted = (value) => new RegExp(`["']${value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["']`);
@@ -80,6 +81,12 @@ describe('Lighthouse workflow deployment guard', () => {
     expect(workflow).toContain('contents: read');
     expect(workflow).toContain('persist-credentials: false');
     expect(workflow).toContain('cat comment.md >> "$GITHUB_STEP_SUMMARY"');
+    expect(workflow).toContain('echo "| Performance | $PERF | advisory |"');
+    expect(workflow).not.toMatch(/Lighthouse Performance score \$PERF is below required threshold/);
+    expect(workflow).toMatch(/Lighthouse Accessibility score \$A11Y is below required threshold 90/);
+    expect(workflow).toMatch(/Lighthouse Best Practices score \$BP is below required threshold 90/);
+    expect(workflow).toMatch(/if \[ "\$FAILED" -ne 0 \]; then[\s\S]{0,80}exit 1/);
+    expect(workflow).not.toMatch(/never fails the (?:build|workflow) on score regressions/i);
     expect(workflow).not.toContain('pull-requests: write');
     expect(workflow).not.toContain('actions/github-script');
     expect(workflow).not.toContain('Comment on PR');
@@ -107,6 +114,9 @@ describe('CI leak-guard workflow enforcement', () => {
     expect(liveSmokeWorkflow).toContain('npm run validate:whats-new');
     expect(liveSmokeWorkflow).toContain('npm run validate:automedbench-lite');
     expect(liveSmokeWorkflow).toContain('Run adaptive QA smoke (local + live)');
+    expect(liveSmokeWorkflow).toContain('Verify live Pages artifact parity');
+    expect(liveSmokeWorkflow).toMatch(/Timed out waiting for live Pages artifact to match this commit:[\s\S]{0,160}exit 1/);
+    expect(liveSmokeWorkflow).toMatch(/Live Pages public artifacts match checked-out commit\./);
     expect(liveSmokeWorkflow).toContain('output/diagnostics/qa-smoke-adaptive.log');
     expect(liveSmokeWorkflow).toContain('Run adaptive latency threshold advisory (local + live)');
     expect(liveSmokeWorkflow).toMatch(/Run adaptive latency threshold advisory \(local \+ live\)[\s\S]{0,120}continue-on-error: true/);
@@ -115,5 +125,7 @@ describe('CI leak-guard workflow enforcement', () => {
     expect(liveSmokeWorkflow).not.toMatch(/continue-on-error: true[\s\S]{0,120}npm run qa:latency-adaptive-strict/);
     expect(liveSmokeWorkflow).toContain('output/diagnostics/qa-latency-threshold-advisory.log');
     expect(liveSmokeWorkflow).not.toContain('qa:latency-adaptive-strict');
+    expect(qaSmokeScript).toContain("type: 'live-deployment-parity'");
+    expect(qaSmokeScript).toContain('Live app version does not match the checked-out local build.');
   });
 });

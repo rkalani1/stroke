@@ -1,9 +1,8 @@
 name: Lighthouse
 
-# Non-blocking Lighthouse audit. Writes scores to the run summary but never
-# fails the workflow on score regressions -- clinical-app perf is sensitive
-# to network conditions on the GitHub Pages CDN, and a flaky 78 vs 82
-# Performance score is not worth blocking a clinical-content PR.
+# Lighthouse audit with hard Accessibility and Best Practices gates. Writes
+# Performance as advisory because this large static clinical app is CDN and
+# device sensitive.
 #
 # PR runs build and audit a local static preview of the candidate artifact.
 # Push/manual runs audit the live deployed site only after the live app.js
@@ -191,18 +190,28 @@ jobs:
           {
             echo "## Lighthouse - ${{ steps.target.outputs.label }}"
             echo ""
-            echo "| Category | Score | Target |"
+            echo "| Category | Score | Gate |"
             echo "|---|---|---|"
-            echo "| Performance | $PERF | >= 80 |"
+            echo "| Performance | $PERF | advisory |"
             echo "| Accessibility | $A11Y | >= 90 |"
             echo "| Best Practices | $BP | >= 90 |"
             echo ""
             echo "_PWA category was removed in Lighthouse 12; manifest + service-worker installability is verified manually per docs/pwa-and-app.md._"
-            echo ""
-            echo "_Non-blocking: this workflow never fails the build on score regressions; missing/invalid audits still fail._"
           } > comment.md
           cat comment.md >> "$GITHUB_STEP_SUMMARY"
           echo "comment_path=comment.md" >> "$GITHUB_OUTPUT"
+          FAILED=0
+          if [ "$A11Y" -lt 90 ]; then
+            echo "Lighthouse Accessibility score $A11Y is below required threshold 90." >&2
+            FAILED=1
+          fi
+          if [ "$BP" -lt 90 ]; then
+            echo "Lighthouse Best Practices score $BP is below required threshold 90." >&2
+            FAILED=1
+          fi
+          if [ "$FAILED" -ne 0 ]; then
+            exit 1
+          fi
 
       - name: Upload report
         if: always()

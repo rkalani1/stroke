@@ -526,8 +526,8 @@ function main() {
   const unverifiedCount = items.length - verifiedCount;
 
   const output = {
-    generatedFrom: 'clinical-intelligence-briefing',
-    sourceDoc: 'briefing-latest.md',
+    generatedFrom: 'curated-public-evidence-feed',
+    sourceDoc: 'curated-source',
     count: items.length,
     verifiedCount,
     unverifiedCount,

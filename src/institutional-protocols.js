@@ -96,7 +96,7 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
         'ED clinicians or the stroke service may consult Neurosurgery directly; prior approval is not required.',
         'Whichever service calls Neurosurgery closes the loop with the designated on-call stroke attending and other involved service so the plan is shared and documented.',
         'Separate attending-of-record notification is not default unless that expectation is explicitly requested, especially overnight.',
-        'Consult earlier at any size for IVH, hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, multicompartmental hemorrhage, vascular lesion concern, ED attending discretion, or clinician concern.'
+        'Consult earlier at any size for IVH, hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, vascular lesion concern, ED attending discretion, or clinician concern.'
       ]
     },
     {

@@ -203,6 +203,7 @@ describe('ICH initial evaluation algorithm', () => {
     const edText = edNode.items.join(' ');
     expect(edText).toMatch(/IVH/);
     expect(edText).toMatch(/hydrocephalus/);
+    expect(edText).toMatch(/pupillometry trend\/asymmetry/);
     expect(edText).toMatch(/multicompartmental hemorrhage/);
     expect(edText).toMatch(/ED attending discretion/);
     expect(monitoringNode.items.join(' ')).toMatch(/pupillometry/i);
