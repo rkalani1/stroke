@@ -8093,7 +8093,7 @@ Clinician Name`;
           const paletteCommands = React.useMemo(() => [
             // ---- Top-level sections ----
             { id: 'go-encounter', group: 'Go to', label: 'Acute Encounter', hint: 'Active stroke workup', icon: 'activity', keywords: ['encounter', 'acute', 'consult', 'telestroke', 'patient', 'workup'], run: () => navigateTo('encounter', { clearSearch: true }) },
-            { id: 'go-protocols', group: 'Go to', label: 'Example Protocols (Not Local Policy)', hint: 'Example pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library', 'example'], run: () => navigateTo('protocols', { clearSearch: true }) },
+            { id: 'go-protocols', group: 'Go to', label: 'Example Protocols', hint: 'Example pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library', 'example', 'not local policy'], run: () => navigateTo('protocols', { clearSearch: true }) },
             { id: 'go-research', group: 'Go to', label: 'Guidelines & References', hint: 'Guidelines & Reference Library', icon: 'book-open', keywords: ['research', 'references', 'guidelines', 'whats new', "what's new", 'evidence', 'updates'], run: () => navigateTo('research', { clearSearch: true }) },
             { id: 'go-trials', group: 'Go to', label: 'Trials & Evidence', hint: 'Screener, tables, atlas', icon: 'flask-conical', keywords: ['trials', 'evidence', 'atlas', 'eligibility', 'screener'], run: () => navigateTo('trials', { clearSearch: true }) },
             { id: 'go-education', group: 'Go to', label: 'Education', hint: 'Curricula & pocket cards', icon: 'brain', keywords: ['education', 'curricula', 'onboarding', 'icu', 'resident', 'nurse', 'pocket cards', 'teaching'], run: () => navigateTo('education', { clearSearch: true }) },
@@ -16588,11 +16588,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <h1 className="font-serif text-[1.5rem] sm:text-[2.25rem] leading-none text-ink">
                         Stroke
                       </h1>
-                      {/* v6.0-07: encounter auto-save indicator. Mono tabular,
-                          ticks every 5 s, reads localStorage lastUpdated. */}
-                      {activeTab === 'encounter' && (
-                        <SavedAgo storageKey={STORAGE_PREFIX + LAST_UPDATED_KEY} />
-                      )}
                     </div>
                   </div>
                   <div className="flex w-full flex-col items-center justify-center gap-2 lg:w-auto lg:items-end lg:justify-end">
@@ -16776,17 +16771,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
 
                     <div className="flex w-full flex-wrap items-center justify-center gap-2 lg:w-auto lg:justify-end">
-                      <button
-                        type="button"
-                        onClick={openCommandPalette}
-                        className="flex items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong dark:hover:bg-paper-2 dark:text-ink-2"
-                        aria-label="Search — open command palette"
-                        title="Open command palette (⌘K or /)"
-                      >
-                        <i aria-hidden="true" data-lucide="search" className="w-4 h-4"></i>
-                        <span className="hidden sm:inline">Search</span>
-                        <kbd aria-hidden="true" className="hidden sm:inline-flex items-center px-1 py-0.5 text-2xs font-mono text-slate-600 bg-slate-100 border border-slate-300 rounded dark:text-ink-2 dark:bg-paper-2 dark:border-strong">⌘K</kbd>
-                      </button>
                       <details ref={resourcesDetailsRef} className="relative">
                         <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700 dark:border-strong dark:hover:bg-paper-2 dark:text-ink-2">
                           <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
@@ -17124,7 +17108,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     // (Cycle2 U2). Full canonical name stays as title/aria-label and
                     // is shown at lg+; the section H1/title is unchanged elsewhere.
                     { id: 'encounter', name: 'Encounter', short: 'Encounter' },
-                    { id: 'protocols', name: 'Example Protocols (Not Local Policy)', short: 'Protocols' },
+                    { id: 'protocols', name: 'Example Protocols', short: 'Protocols' },
                     { id: 'research', name: 'Guidelines & References', short: 'Guidelines' },
                     { id: 'trials', name: 'Trials', short: 'Trials' },
                     { id: 'education', name: 'Educational Resources', short: 'Educational Resources' }
@@ -19476,47 +19460,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cobalt-500 text-sm dark:border-strong"
                           />
                         </div>
-
-                        {/* Missing Fields Warning */}
-                        {(() => {
-                          const missing = [
-                            !telestrokeNote.age && 'Age',
-                            !lkwTime && !telestrokeNote.lkwUnknown && 'LKW',
-                            !(telestrokeNote.nihss || nihssScore) && 'NIHSS',
-                            !telestrokeNote.diagnosisCategory && 'Diagnosis',
-                            !telestrokeNote.ctResults && 'CT Results',
-                            !telestrokeNote.ctaResults && 'CTA Results',
-                            !telestrokeNote.disposition && 'Disposition'
-                          ].filter(Boolean);
-                          const safetyGaps = [
-                            !telestrokeNote.presentingBP && 'BP',
-                            !telestrokeNote.glucose && 'Glucose',
-                            telestrokeNote.tnkRecommended && !telestrokeNote.weight && 'Weight (TNK dosing)',
-                            telestrokeNote.tnkRecommended && !telestrokeNote.tnkConsentDiscussed && 'TNK Consent',
-                            !telestrokeNote.plateletCount && 'Platelets',
-                          ].filter(Boolean);
-                          if (missing.length === 0 && safetyGaps.length === 0) return null;
-                          return (
-                            <div className="space-y-1.5">
-                              {missing.length > 0 && (
-                                <div className="bg-warn-50 border border-warn-300 rounded-lg px-3 py-2 flex items-start gap-2 dark:bg-warn-950 dark:border-warn-800">
-                                  <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-warn-600 mt-0.5 flex-shrink-0 dark:text-warn-300"></i>
-                                  <span className="text-xs text-warn-800 dark:text-warn-300">
-                                    <span className="font-semibold">Incomplete:</span> {missing.join(', ')}
-                                  </span>
-                                </div>
-                              )}
-                              {safetyGaps.length > 0 && (
-                                <div className="bg-crit-50 border border-crit-200 rounded-lg px-3 py-2 flex items-start gap-2 dark:bg-crit-950 dark:border-crit-800">
-                                  <i aria-hidden="true" data-lucide="shield-alert" className="w-4 h-4 text-crit-500 mt-0.5 flex-shrink-0"></i>
-                                  <span className="text-xs text-crit-700 dark:text-crit-300">
-                                    <span className="font-semibold">Safety-critical:</span> {safetyGaps.join(', ')}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })()}
 
                         {/* Section 7: Compact Note Output — clinician-only (Phase 4).
                             Note-template generator (consult/transfer/discharge/etc.);

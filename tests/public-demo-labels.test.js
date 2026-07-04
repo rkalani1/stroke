@@ -86,7 +86,10 @@ describe('public demo labeling and agent disclaimers', () => {
 
     expect(appSource).not.toContain('Institutional Protocols & Algorithms');
     expect(generatedData).not.toContain('Institutional Protocols & Algorithms');
-    expect(appSource).toContain('Example Protocols (Not Local Policy)');
+    // Visible tab/palette label decluttered to "Example Protocols" (owner
+    // decision); the machine-readable data route keeps the fuller
+    // "not local policy" descriptor for agents.
+    expect(appSource).toContain("name: 'Example Protocols'");
     expect(generatedData).toContain('Example protocols (not local policy)');
   });
 
