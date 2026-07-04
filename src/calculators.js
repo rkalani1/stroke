@@ -262,7 +262,9 @@ export const getPHASESRisk = (score) => {
 // ABC/2 (Kothari Stroke 1996). Inputs MUST be in centimeters; if any dimension
 // is suspiciously large (>15 cm) or computed volume exceeds 500 mL, surface a
 // likely-unit-confusion warning so a mm-vs-cm typo doesn't silently 1000× the
-// estimate. ICH ≥30 mL is the prognostic and surgical-decision threshold.
+// estimate. In the June 2026 algorithm, confirmed non-traumatic IPH >=15 mL
+// is the early Neurosurgery + stroke-service evaluation trigger; >=30 mL
+// remains the prognostic / MIE-screen volume tier when other criteria fit.
 export const calculateICHVolume = (items) => {
   if (!items || typeof items !== 'object') return null;
   const a = parseFloat(items.lengthCm) || 0;
@@ -277,10 +279,21 @@ export const calculateICHVolume = (items) => {
     : null;
   return {
     volume: Math.round(volume * 10) / 10,
+    isDualConsult: volume >= 15,
+    meetsNonTraumaticIphDualConsultVolume: volume >= 15,
     isLarge: volume >= 30,
     isExpanding: false,
     unitWarning
   };
+};
+
+const JUNE_2026_MIE_LOBAR_PATTERN = /\b(lobar|frontal|temporal|parietal|occipital|cortical)\b/;
+const JUNE_2026_MIE_DEEP_LOCATION_PATTERN = /\b(subcortical|deep|basal[-\s]?ganglia|thalamic|thalamus|brainstem|pons|midbrain|cerebellar|cerebellum|caudate|putamen|globus\s+pallidus|internal\s+capsule)\b/;
+
+export const isJune2026MieLobarLocationText = (text = '') => {
+  const normalized = String(text || '').toLowerCase();
+  return JUNE_2026_MIE_LOBAR_PATTERN.test(normalized)
+    && !JUNE_2026_MIE_DEEP_LOCATION_PATTERN.test(normalized);
 };
 
 export const calculateEnoxaparinDose = (weightKg, crCl) => {

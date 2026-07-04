@@ -96,13 +96,13 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
         'ED clinicians or the stroke service may consult Neurosurgery directly; prior approval is not required.',
         'Whichever service calls Neurosurgery closes the loop with the designated on-call stroke attending and other involved service so the plan is shared and documented.',
         'Separate attending-of-record notification is not default unless that expectation is explicitly requested, especially overnight.',
-        'Consult earlier at any size for IVH, hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, multicompartmental hemorrhage, vascular lesion concern, or ED attending discretion.'
+        'Consult earlier at any size for IVH, hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, multicompartmental hemorrhage, vascular lesion concern, ED attending discretion, or clinician concern.'
       ]
     },
     {
       title: 'CTA/MRA branch',
       items: [
-        'If CTA/MRA shows an underlying vascular lesion or anomaly, escalate to the neurosurgical/neurointerventional pathway and ICU admission.',
+        'If CTA/MRA shows an underlying vascular lesion or anomaly, the Neurosurgery/neurointerventional pathway leads admission or operative/interventional planning with neurocritical care or ICU support.',
         'If there is no vascular lesion and no surgical pathway, the stroke service leads admission with ICU support as needed.'
       ]
     },
@@ -133,7 +133,7 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
     {
       title: 'Minimally invasive evacuation',
       criteria: ['Lobar IPH 30-80 mL', 'Age 18-80', 'NIHSS >5', 'GCS 5-14', 'No underlying vascular lesion'],
-      action: 'Screen for the local ENRICH-based standard-of-care pathway.'
+      action: 'Screen for the approved ENRICH-based standard-of-care pathway.'
     }
   ],
   researchScreens: [
@@ -148,7 +148,7 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
         'Arrival/evaluation <=15 hours since last known well',
         'No clear standard-of-care surgical indication'
       ],
-      action: 'MINUTE has operational priority over MIRROR when both are possible. Notify the trial pathway through the approved local route; do not publish or infer internal contact details.'
+      action: 'MINUTE has operational priority over MIRROR when both are possible. Notify the approved trial pathway using current study materials; do not publish or infer internal contact details.'
     },
     {
       title: 'MIRROR registry screen',

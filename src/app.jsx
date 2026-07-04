@@ -16,6 +16,7 @@ import {
   calculatePHASESScore,
   getPHASESRisk,
   calculateICHVolume,
+  isJune2026MieLobarLocationText,
   calculateEnoxaparinDose,
   calculateAndexanetDose,
   calculateCrCl,
@@ -2089,6 +2090,7 @@ Clinician Name`;
           };
           const [updateAvailable, setUpdateAvailable] = useState(false);
           const [pendingWorker, setPendingWorker] = useState(null);
+          const [pendingUpdateAction, setPendingUpdateAction] = useState(null);
           // PWA install state. installPrompt holds the captured BeforeInstallPromptEvent
           // (Chrome / Edge / Android). isInstalled is true when the app is launched
           // from the home screen / app drawer (display-mode standalone OR iOS Safari's
@@ -2282,9 +2284,8 @@ Clinician Name`;
           /* v7 SW opt-in update — binding amendment #2.
              Listens for {type:'sw-update-ready'} broadcasts from the service worker
              service worker. Shows a non-blocking sticky toast inviting the
-             clinician to refresh on their own schedule (no auto-claim, no
-             mid-consult interruption). Tap the toast → acceptUpdate() →
-             clients.claim() → soft reload. */
+             clinician to use the explicit Reload to update banner on their own
+             schedule (no auto-claim, no mid-consult interruption). */
           useEffect(() => {
             let unsub = () => {};
             (async () => {
@@ -2292,8 +2293,13 @@ Clinician Name`;
                 const sw = await import('./design/sw-controller.js');
                 sw.bindSWController();
                 unsub = sw.onUpdateReady(({ version }) => {
+                  setPendingWorker(null);
+                  setPendingUpdateAction(() => () => {
+                    sw.acceptUpdate().catch(() => window.location.reload());
+                  });
+                  setUpdateAvailable(true);
                   addToast(
-                    `New version ${version || 'available'} ready — tap when you're between consults.`,
+                    `New version ${version || 'available'} ready. Use the Reload to update banner when you're between consults.`,
                     'info',
                     0
                   );
@@ -2445,6 +2451,7 @@ Clinician Name`;
             return {
               value: vol,
               display: vol.toFixed(1),
+              exceeds15: vol >= 15,
               exceeds30: vol >= 30
             };
           }, [ichVolumeParams]);
@@ -3581,6 +3588,7 @@ Clinician Name`;
             IIa: 'bg-cobalt-500 text-white dark:bg-cobalt-700',
             IIb: 'bg-warn-700 text-white',
             III: 'bg-crit-600 text-white',
+            'III-harm': 'bg-crit-600 text-white',
             Statement: 'bg-slate-500 text-white'
           };
 
@@ -3656,10 +3664,26 @@ Clinician Name`;
             bp_ich_acute: {
               id: 'bp_ich_acute',
               category: 'Blood Pressure',
-              title: 'ICH acute BP target',
-              recommendation: 'For spontaneous mild-to-moderate ICH with presenting SBP 150-220 mmHg, use smooth and sustained BP control; target SBP 140 mmHg, maintained within 130-150 mmHg, is safe and may be reasonable (Class 2b, LOE B-R per AHA/ASA 2022). Acute lowering to SBP <130 mmHg is potentially harmful (Class 3: Harm, LOE B-R; ATACH-2).',
-              detail: 'AHA/ASA Spontaneous ICH 2022 (Greenberg): (1) Medication titration for continuous, smooth, sustained BP control and early treatment can be beneficial — Class 2a, LOE B-NR/C-LD. (2) For mild-to-moderate ICH with presenting SBP 150-220 mmHg, target SBP 140 mmHg within range 130-150 mmHg is safe and may be reasonable — Class 2b, LOE B-R. (3) Acute lowering to SBP <130 mmHg is potentially harmful — Class 3: Harm, LOE B-R (ATACH-2). (4) For large/severe ICH or surgical decompression candidates, safety and efficacy of intensive lowering are not well established. INTERACT3 (Lancet 2023) tested a care bundle — early BP lowering plus glucose, anticoagulation reversal, and fever management — so do not treat its result as BP-only class evidence. Nicardipine or clevidipine infusion preferred; labetalol bolus as adjunct. Maintain target ≥24 hours, then transition to oral antihypertensives toward long-term BP control.',
+              title: 'ICH BP control process',
+              recommendation: 'For acute spontaneous ICH, use medication titration for continuous, smooth, sustained BP control and timely treatment when BP lowering is indicated (Class 2a).',
+              detail: 'AHA/ASA Spontaneous ICH 2022 (Greenberg): smooth, sustained BP control and timely treatment are Class 2a process recommendations. This is separate from the numeric SBP target/range recommendation below. Avoid abrupt large BP drops and avoid treating the number in isolation from neurologic status, hematoma severity, anticoagulation reversal, and neurosurgical planning. For large/severe ICH or surgical decompression candidates, safety and efficacy of intensive lowering are not well established. INTERACT3 (Lancet 2023) tested a care bundle - early BP lowering plus glucose, anticoagulation reversal, and fever management - so do not treat its result as BP-only class evidence. Nicardipine or clevidipine infusion preferred; labetalol bolus as adjunct.',
               classOfRec: 'IIa',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=17',
+              medications: ['Nicardipine 5 mg/hr IV (titrate to 15 mg/hr)', 'Labetalol 10-20 mg IV bolus PRN'],
+              conditions: (data) => {
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
+              }
+            },
+            bp_ich_target_range: {
+              id: 'bp_ich_target_range',
+              category: 'Blood Pressure',
+              title: 'ICH SBP 140/range 130-150 target',
+              recommendation: 'For mild-to-moderate spontaneous ICH with presenting SBP 150-220 mmHg, targeting SBP 140 mmHg and maintaining 130-150 mmHg when appropriate is safe and may be reasonable.',
+              detail: 'Class 2b, LOE B-R per AHA/ASA Spontaneous ICH 2022. This target/range applies to selected mild-to-moderate presentations and should not be generalized to large/severe ICH or surgical decompression candidates without individualized judgment and continuous monitoring. Use alongside the separate Class 2a process recommendation for smooth, sustained control and timely treatment.',
+              classOfRec: 'IIb',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
@@ -3673,9 +3697,9 @@ Clinician Name`;
               id: 'bp_ich_avoid_low',
               category: 'Blood Pressure',
               title: 'Avoid overly aggressive BP lowering in ICH',
-              recommendation: 'Avoid lowering SBP to <130 mmHg in mild to moderate ICH (potentially harmful).',
-              detail: 'Aggressive SBP <130 is associated with worse outcomes in mild to moderate ICH.',
-              classOfRec: 'III',
+              recommendation: 'Avoid acute lowering to SBP <130 mmHg in mild-to-moderate spontaneous ICH because it is potentially harmful.',
+              detail: 'Class 3: Harm, LOE B-R per AHA/ASA Spontaneous ICH 2022, supported by ATACH-2 safety signal. This harm guard is separate from the Class 2b SBP 140/range 130-150 target recommendation.',
+              classOfRec: 'III-harm',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
@@ -4249,9 +4273,9 @@ Clinician Name`;
             ich_mis_evac: {
               id: 'ich_mis_evac',
               category: 'ICH',
-              title: 'Minimally invasive ICH evacuation (MIE)',
-              recommendation: 'For spontaneous lobar IPH 30-80cc, NIHSS >5, GCS 5-14, age 18-80, and no underlying lesion: consider the June 2026 MIE pathway and confirm detailed operative timing with neurosurgery.',
-              detail: 'Select endoscopic or stereotactic aspiration approaches based on local expertise. Functional outcome benefit is uncertain.',
+              title: 'Minimally invasive ICH evacuation (MIE) screen',
+              recommendation: 'Screen for MIE only when spontaneous lobar IPH 30-80cc, NIHSS >5, GCS 5-14, age 18-80, and no underlying vascular lesion are confirmed; otherwise use this as a criteria checklist and discuss with Neurosurgery.',
+              detail: 'This card does not infer MIE eligibility from ICH alone. Confirm lobar location, ABC/2 volume 30-80 mL, age, NIHSS, GCS, CTA/MRA without vascular lesion, and operative timing before presenting MIE as an option. Functional outcome benefit remains selection-dependent.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4260,7 +4284,20 @@ Clinician Name`;
               conditions: (data) => {
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const gcs = data.gcsScore || null;
-                return isICH && gcs !== null && gcs >= 5 && gcs <= 14;
+                const age = parseFloat(data.telestrokeNote?.age);
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
+                const ichVol = calculateICHVolume(data.telestrokeNote?.ichVolumeCalc || {});
+                const dxText = `${data.telestrokeNote?.diagnosis || ''} ${data.telestrokeNote?.ctResults || ''}`.toLowerCase();
+                const vesselText = `${data.telestrokeNote?.ctaResults || ''} ${data.telestrokeNote?.ctResults || ''}`.toLowerCase();
+                const isLobar = isJune2026MieLobarLocationText(dxText);
+                const noVascularLesion = /\b(no|without|negative for)\b.{0,80}\b(vascular lesion|underlying lesion|avm|aneurysm|dural avf|fistula|malformation)\b/.test(vesselText);
+                return isICH
+                  && ichVol?.volume >= 30 && ichVol.volume <= 80
+                  && Number.isFinite(age) && age >= 18 && age <= 80
+                  && nihss > 5
+                  && gcs !== null && gcs >= 5 && gcs <= 14
+                  && isLobar
+                  && noVascularLesion;
               }
             },
 
@@ -4288,9 +4325,9 @@ Clinician Name`;
             cerebellar_ich_surgery: {
               id: 'cerebellar_ich_surgery',
               category: 'Disposition',
-              title: 'Cerebellar ICH: surgical evacuation',
-              recommendation: 'Urgent surgical evacuation for cerebellar ICH >15 mL with neurological deterioration, brainstem compression, or obstructive hydrocephalus.',
-              detail: 'EVD alone insufficient for large cerebellar hemorrhages. Suboccipital craniectomy recommended. Transfer to neurosurgical center emergently.',
+              title: 'Cerebellar ICH: urgent surgical screen',
+              recommendation: 'Cerebellar hemorrhage requires early Neurosurgery assessment. Surgical evacuation is indicated when cerebellar ICH >15 mL is accompanied by neurologic deterioration, brainstem compression, mass effect, or obstructive hydrocephalus.',
+              detail: 'Do not infer suboccipital decompression from cerebellar location alone. Confirm volume, neurologic trajectory, hydrocephalus, brainstem compression, and goals of care with Neurosurgery; EVD alone is insufficient for large cerebellar hemorrhage with posterior-fossa mass effect.',
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4301,7 +4338,8 @@ Clinician Name`;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const isCerebellar = ct.includes('cerebell') || dx.includes('cerebell') || ct.includes('posterior fossa');
-                return isICH && isCerebellar;
+                const surgicalFeature = /(hydrocephal|brainstem|compression|mass effect|deteriorat|herniat|effacement|obstruct)/i.test(`${ct} ${dx}`);
+                return isICH && isCerebellar && surgicalFeature;
               }
             },
             supratentorial_ich_surgery: {
@@ -4420,7 +4458,7 @@ Clinician Name`;
               id: 'neurosurgery_communication',
               category: 'Acute',
               title: 'Neurosurgery consultation communication',
-              recommendation: 'For non-traumatic IPH >=15 mL by ABC/2, IVH/hydrocephalus, mass effect, neurologic decline, vascular lesion concern, or clinician concern, ED clinicians or the stroke service may consult Neurosurgery directly. Prior approval before the consult call is not required; close the loop with the designated on-call stroke attending and other involved service.',
+              recommendation: 'For non-traumatic IPH >=15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, vascular lesion concern, multicompartmental hemorrhage, ED attending discretion, or clinician concern, ED clinicians or the stroke service may consult Neurosurgery directly. Prior approval before the consult call is not required; close the loop with the designated on-call stroke attending and other involved service.',
               detail: 'Suggested protocol: (1) ED clinicians or the stroke service can make the direct Neurosurgery call when a trigger is present. (2) The caller immediately closes the loop with the designated on-call stroke attending and other involved service, then documents the shared plan. (3) Separate attending-of-record notification is not default unless explicitly requested, especially overnight. (4) If surgery is recommended, stop for a bedside safety pause and confirm agreement across Neurosurgery, the stroke service, and the ICU team before any surgical action. (5) Do not present operative procedures to families as finalized until the cross-team plan is explicit.',
               classOfRec: 'N/A',
               levelOfEvidence: 'N/A',
@@ -15152,7 +15190,9 @@ Clinician Name`;
 
           const applyPendingUpdate = () => {
             if (pendingWorker) {
-              try { pendingWorker.postMessage({ type: 'SKIP_WAITING' }); } catch (e) { /* ignore */ }
+              try { pendingWorker.postMessage({ type: 'CLAIM_AND_RELOAD' }); } catch (e) { /* ignore */ }
+            } else if (pendingUpdateAction) {
+              pendingUpdateAction();
             } else {
               window.location.reload();
             }
@@ -21991,8 +22031,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                     no further code. See docs/evidence-atlas-extension-guide.md. */}
                                                 {(() => {
                                                   const MANAGEMENT_REC_TO_ATLAS_REC = {
-                                                    'bp_ich_acute': 'rec-ich-bp-target',
-                                                    'bp_ich_avoid_low': 'rec-ich-bp-target',
+                                                    'bp_ich_acute': 'rec-ich-bp-smooth-control',
+                                                    'bp_ich_target_range': 'rec-ich-bp-target',
+                                                    'bp_ich_avoid_low': 'rec-ich-bp-avoid-low',
                                                     'reversal_warfarin': 'rec-ich-anticoag-reversal-warfarin',
                                                     'reversal_doac_xa': 'rec-ich-anticoag-reversal-fxa',
                                                     'tnk_dose': 'rec-tnk-first-line',
@@ -27939,9 +27980,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="border-l-4 border-crit-400 bg-slate-50 px-3 py-2 text-sm space-y-1 dark:bg-paper-2">
                             <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide dark:text-ink">Key Principles</p>
                             <ul className="list-disc pl-4 text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
-                              <li>Rapid BP reduction to SBP ~140 within 1 hour (INTERACT3 bundle) <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></li>
+                              <li>Smooth, sustained BP control and timely treatment <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span>; target SBP 140/range 130-150 when appropriate <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['IIb']}`}>IIb</span>; avoid &lt;130 <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['III-harm']}`}>III harm</span></li>
                               <li>Immediate anticoagulant reversal — do not wait for labs if clinical suspicion <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></li>
-                              <li>Early Neurosurgery + stroke-service evaluation for non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, mass effect, vascular lesion concern, or clinician concern <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></li>
+                              <li>Early Neurosurgery + stroke-service evaluation for non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, vascular lesion concern, multicompartmental hemorrhage, ED attending discretion, or clinician concern <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></li>
                             </ul>
                           </div>
                           <div className="bg-white border border-crit-300 border-l-4 border-l-crit-600 rounded-md p-4 dark:bg-card dark:border-crit-800">
@@ -28036,7 +28077,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                               <div className="bg-white border border-crit-200 rounded-lg p-2 dark:bg-card dark:border-crit-800">
                                 <p className="font-semibold text-crit-800 dark:text-crit-300">2. Blood Pressure Strategy <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></p>
-                                <p className="text-slate-700 dark:text-ink-2">Use rapid but controlled BP reduction (often around SBP 140) while avoiding hypotension and neurologic decline.</p>
+                                <p className="text-slate-700 dark:text-ink-2">Use smooth, sustained BP control and timely treatment; target SBP 140 with range 130-150 when appropriate, and avoid acute SBP &lt;130.</p>
                                 <details className="mt-1">
                                   <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-700 dark:text-mute dark:hover:text-ink">Evidence</summary>
                                   <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">AHA/ASA 2022: smooth, sustained BP control and timely treatment are Class IIa; for mild-moderate ICH with SBP 150-220, target 140 (range 130-150) is Class IIb; acute SBP &lt;130 is Class III harm. INTERACT3 tested a care bundle, not BP alone.</p>
@@ -28338,7 +28379,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-sm font-semibold text-crit-700 dark:text-crit-300">ABC/2 ICH Volume Calculator</h3>
                               {ichVolumeEstimate && (
-                                <span className={`text-xs font-semibold px-2 py-1 rounded-full ${ichVolumeEstimate.exceeds30 ? 'bg-crit-100 text-crit-700 dark:bg-crit-950 dark:text-crit-300' : 'bg-ok-100 text-ok-700 dark:bg-ok-900 dark:text-ok-300'}`}>
+                                <span className={`text-xs font-semibold px-2 py-1 rounded-full ${ichVolumeEstimate.exceeds30 ? 'bg-crit-100 text-crit-700 dark:bg-crit-950 dark:text-crit-300' : ichVolumeEstimate.exceeds15 ? 'bg-warn-100 text-warn-800 dark:bg-warn-950 dark:text-warn-300' : 'bg-ok-100 text-ok-700 dark:bg-ok-900 dark:text-ok-300'}`}>
                                   {ichVolumeEstimate.display} mL
                                 </span>
                               )}
@@ -28386,15 +28427,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             </div>
                             <p className="text-xs text-slate-500 mt-3 dark:text-mute">
-                              Auto-flags volume ≥30 mL (predictive of worse outcomes and surgical consideration).
+                              For confirmed non-traumatic IPH, auto-flags volume ≥15 mL for early Neurosurgery + stroke-service evaluation; ≥30 mL remains the MIE/prognostic screen tier when other criteria fit.
                             </p>
+                            {ichVolumeEstimate?.exceeds15 && (
+                              <p className="text-xs font-semibold text-warn-800 bg-warn-50 border border-warn-200 rounded-md p-2 mt-2 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
+                                Confirmed non-traumatic IPH volume ≥15 mL by ABC/2 meets the June 2026 early dual-consult threshold.
+                              </p>
+                            )}
                           </div>
                           <div className="bg-white border border-crit-200 rounded-md p-4 dark:bg-card dark:border-crit-800">
                               <h3 className="text-sm font-semibold text-crit-700 mb-2 dark:text-crit-300">Telestroke rapid actions (phone or video)</h3>
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                                 <li>Confirm anticoagulant/antiplatelet use and initiate reversal.</li>
                                 <li>Use smooth BP control; target SBP 140, maintain 130-150 when appropriate, and avoid &lt;130 per ATACH-2. Use IV nicardipine or clevidipine for titration.</li>
-                                <li>Screen for early dual-consult triggers: non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, multicompartmental hemorrhage, or ED attending discretion.</li>
+                                <li>Screen for early dual-consult triggers: non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, multicompartmental hemorrhage, ED attending discretion, or clinician concern.</li>
                                 <li>Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.</li>
                               </ul>
                               <p className="text-xs text-slate-500 mt-2 dark:text-mute">
@@ -32938,12 +32984,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               : <p className="text-xs text-slate-600 italic dark:text-mute">Enter A, B, and C measurements from CT to calculate ICH volume.</p>;
                           }
                           return (
-                            <div className={`p-3 rounded-lg border ${result.isLarge ? 'bg-crit-100 border-crit-300 dark:bg-crit-950 dark:border-crit-800' : 'bg-ok-100 border-ok-300 dark:bg-ok-900 dark:border-ok-800'}`}>
+                            <div className={`p-3 rounded-lg border ${result.isLarge ? 'bg-crit-100 border-crit-300 dark:bg-crit-950 dark:border-crit-800' : result.isDualConsult ? 'bg-warn-100 border-warn-300 dark:bg-warn-950 dark:border-warn-800' : 'bg-ok-100 border-ok-300 dark:bg-ok-900 dark:border-ok-800'}`}>
                               <p className="text-lg font-bold">Volume: {result.volume} mL</p>
                               <p className="text-sm text-slate-700 dark:text-ink-2">
                                 {result.volume >= 60 ? 'Very large hematoma — poor prognosis, consider GOC discussion' :
                                  result.volume >= 30 ? 'Large hematoma (30-80 mL) — may qualify for ENRICH MIE' :
-                                 result.volume >= 20 ? 'Moderate hematoma — monitor for expansion' :
+                                 result.volume >= 15 ? 'If confirmed non-traumatic IPH: meets ≥15 mL early Neurosurgery + stroke-service evaluation threshold' :
                                  'Small hematoma'}
                               </p>
                               <button onClick={() => copyToClipboard(`ICH Volume (ABC/2): ${result.volume} mL`, 'ICH Volume')}

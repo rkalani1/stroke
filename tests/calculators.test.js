@@ -13,6 +13,7 @@ import {
   calculatePHASESScore,
   getPHASESRisk,
   calculateICHVolume,
+  isJune2026MieLobarLocationText,
   calculateEnoxaparinDose,
   calculateAndexanetDose,
   calculateCrCl,
@@ -168,10 +169,40 @@ describe('calculateICHVolume (ABC/2)', () => {
   it('computes A*B*C/2', () => {
     const r = calculateICHVolume({ lengthCm: 4, widthCm: 3, slicesCm: 5 });
     expect(r.volume).toBe(30);
+    expect(r.isDualConsult).toBe(true);
+    expect(r.meetsNonTraumaticIphDualConsultVolume).toBe(true);
     expect(r.isLarge).toBe(true);
+  });
+  it('separates the >=15 mL dual-consult trigger from >=30 mL large-hematoma tier', () => {
+    const r = calculateICHVolume({ lengthCm: 3, widthCm: 2, slicesCm: 5 });
+    expect(r.volume).toBe(15);
+    expect(r.isDualConsult).toBe(true);
+    expect(r.meetsNonTraumaticIphDualConsultVolume).toBe(true);
+    expect(r.isLarge).toBe(false);
   });
   it('returns null for zero dimension', () => {
     expect(calculateICHVolume({ lengthCm: 0, widthCm: 3, slicesCm: 5 })).toBeNull();
+  });
+});
+
+describe('isJune2026MieLobarLocationText', () => {
+  it('accepts lobar/cortical hemorrhage descriptions for the MIE screen', () => {
+    expect(isJune2026MieLobarLocationText('spontaneous left frontal lobar IPH')).toBe(true);
+    expect(isJune2026MieLobarLocationText('cortical parietal intraparenchymal hemorrhage')).toBe(true);
+  });
+
+  it('rejects deep, basal-ganglia, thalamic, brainstem, cerebellar, and subcortical descriptions', () => {
+    const rejected = [
+      'subcortical basal ganglia IPH',
+      'deep putaminal hemorrhage',
+      'left thalamic IPH',
+      'pontine brainstem hemorrhage',
+      'cerebellar IPH',
+      'frontal lobar IPH with basal ganglia extension'
+    ];
+    for (const text of rejected) {
+      expect(isJune2026MieLobarLocationText(text), text).toBe(false);
+    }
   });
 });
 

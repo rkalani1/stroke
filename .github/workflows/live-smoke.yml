@@ -27,6 +27,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install private leak-guard denylist
+        env:
+          PRIVATE_DENYLIST_JSON: ${{ secrets.STROKE_LEAK_GUARD_PRIVATE_DENYLIST_JSON }}
+        run: |
+          if [ -z "$PRIVATE_DENYLIST_JSON" ]; then
+            echo "STROKE_LEAK_GUARD_PRIVATE_DENYLIST_JSON secret is required for live-smoke leak scanning." >&2
+            exit 1
+          fi
+          printf '%s' "$PRIVATE_DENYLIST_JSON" > scripts/leak-guard-denylist.local.json
+          STROKE_LEAK_GUARD_REQUIRE_PRIVATE=1 npm run check:leak-guard
+
       # Keep the scheduled smoke runner aligned with CI: Playwright installs the
       # package through npm, but Chromium itself lives in the runner cache.
       - name: Cache Playwright browsers
@@ -58,18 +69,10 @@ jobs:
           set -o pipefail
           npm run validate:qa-latency-profiles 2>&1 | tee output/diagnostics/qa-latency-profile-validation.log
 
-      # Non-blocking: network citation-endpoint checks are flaky against external
-      # publisher URLs / DOI resolvers on GitHub-hosted runners (rate-limits,
-      # CDN variance). Artifacts still capture the output; structural validators
-      # (validate:citations, validate:inline-citations, evidence:validate,
-      # validate:whats-new) remain hard gates via the qa:latency-adaptive-strict
-      # composite command below.
       - name: Validate citation URL health
-        continue-on-error: true
         run: npm run validate:citations:links
 
       - name: Validate citation identifier endpoints
-        continue-on-error: true
         run: npm run validate:citations:ids
 
       - name: Generate evidence promotion checklist
@@ -81,17 +84,43 @@ jobs:
       - name: Generate evidence ops index
         run: npm run evidence:index
 
+      - name: Run hard structural QA validators
+        run: |
+          mkdir -p output/diagnostics
+          set -o pipefail
+          {
+            npm run validate:citations
+            npm run validate:inline-citations
+            npm run evidence:validate
+            npm run validate:whats-new
+            npm run validate:evidence-churn-profiles
+            npm run validate:qa-latency-profiles
+            npm run validate:evidence-promotion
+            npm run validate:automedbench-lite
+          } 2>&1 | tee output/diagnostics/qa-structural-validation.log
+
+      - name: Run adaptive QA smoke (local + live)
+        run: |
+          mkdir -p output/diagnostics
+          set -o pipefail
+          node ./scripts/qa-smoke.mjs \
+            --latency-profile adaptive \
+            --latency-profiles-file docs/qa-latency-profiles.json \
+            2>&1 | tee output/diagnostics/qa-smoke-adaptive.log
+
       # Non-blocking: strict latency enforcement against the live GitHub Pages CDN
-      # is environment-sensitive (runner-to-CDN RTT variance). The composite
-      # qa:latency-adaptive-strict command still runs its internal structural
-      # validators (validate:citations, evidence-churn-profiles, qa-latency-profiles,
-      # evidence-promotion) and Playwright; failures surface in uploaded artifacts.
-      # Real structural regressions (broken DOM, missing modules) will still be
-      # visible in artifact logs — only the threshold-enforcement exit code is
-      # suppressed here to stop false-alarm issue #1 re-opens.
-      - name: Run adaptive strict QA (local + live)
+      # is environment-sensitive. Structural validators and the smoke harness
+      # above are hard gates; only threshold-only latency noise is advisory here.
+      - name: Run adaptive latency threshold advisory (local + live)
         continue-on-error: true
-        run: npm run qa:latency-adaptive-strict
+        run: |
+          mkdir -p output/diagnostics
+          set -o pipefail
+          node ./scripts/qa-smoke.mjs \
+            --latency-profile adaptive \
+            --latency-profiles-file docs/qa-latency-profiles.json \
+            --enforce-latency-thresholds \
+            2>&1 | tee output/diagnostics/qa-latency-threshold-advisory.log
 
       - name: Open or update failure alert issue
         if: failure()
@@ -214,6 +243,9 @@ jobs:
             output/playwright
             output/diagnostics/churn-profile-validation.log
             output/diagnostics/qa-latency-profile-validation.log
+            output/diagnostics/qa-structural-validation.log
+            output/diagnostics/qa-smoke-adaptive.log
+            output/diagnostics/qa-latency-threshold-advisory.log
             docs/evidence-churn-profiles.json
             docs/qa-latency-profiles.json
             docs/evidence-watchlist.md

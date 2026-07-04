@@ -31,10 +31,83 @@ import crypto from 'node:crypto';
 const ROOT = process.cwd();
 const args = new Set(process.argv.slice(2));
 const JSON_OUT = args.has('--json');
+const REQUIRE_PRIVATE_DENYLIST =
+  args.has('--require-private') ||
+  process.env.STROKE_LEAK_GUARD_REQUIRE_PRIVATE === '1';
 
-const denylist = JSON.parse(
-  fs.readFileSync(new URL('./leak-guard-denylist.json', import.meta.url), 'utf8'),
-);
+function loadJsonFile(file) {
+  return JSON.parse(fs.readFileSync(file, 'utf8'));
+}
+
+function mergeRuleLists(base, extra) {
+  const merged = { ...base };
+  for (const key of [
+    'institutionalTokens',
+    'identityTokens',
+    'phiPatterns',
+    'literalDenylist',
+    'literalSha256Denylist',
+    'allowedInstitutionalDisclaimerPatterns',
+    'fullyExemptFiles',
+    'exemptFiles',
+    'institutionalScanExcludeDirs',
+    'binaryExtensions'
+  ]) {
+    merged[key] = [
+      ...(Array.isArray(base[key]) ? base[key] : []),
+      ...(Array.isArray(extra[key]) ? extra[key] : [])
+    ];
+  }
+  return merged;
+}
+
+function countScanRules(ruleset) {
+  return [
+    'institutionalTokens',
+    'identityTokens',
+    'phiPatterns',
+    'literalDenylist',
+    'literalSha256Denylist'
+  ].reduce((count, key) => count + (Array.isArray(ruleset[key]) ? ruleset[key].length : 0), 0);
+}
+
+const publicDenylist = loadJsonFile(new URL('./leak-guard-denylist.json', import.meta.url));
+const privateDenylistCandidates = [
+  process.env.STROKE_LEAK_GUARD_PRIVATE_DENYLIST,
+  path.join(ROOT, 'scripts/leak-guard-denylist.local.json')
+].filter(Boolean);
+
+let denylist = publicDenylist;
+let privateDenylistLoaded = false;
+let privateDenylistRuleCount = 0;
+for (const candidate of privateDenylistCandidates) {
+  if (!fs.existsSync(candidate)) continue;
+  const privateDenylist = loadJsonFile(candidate);
+  privateDenylistRuleCount += countScanRules(privateDenylist);
+  denylist = mergeRuleLists(denylist, privateDenylist);
+  privateDenylistLoaded = true;
+}
+
+if (REQUIRE_PRIVATE_DENYLIST && (!privateDenylistLoaded || privateDenylistRuleCount === 0)) {
+  const error = privateDenylistLoaded
+    ? 'Leak guard: private denylist required but no private scan rules were loaded.'
+    : 'Leak guard: private denylist required but no private denylist was loaded.';
+  if (JSON_OUT) {
+    console.log(JSON.stringify({
+      scanned: 0,
+      violations: [],
+      binaryFiles: [],
+      privateDenylistLoaded,
+      privateDenylistRuleCount,
+      requirePrivateDenylist: REQUIRE_PRIVATE_DENYLIST,
+      error
+    }, null, 2));
+  } else {
+    console.error(error);
+    console.error('Set STROKE_LEAK_GUARD_PRIVATE_DENYLIST or create scripts/leak-guard-denylist.local.json.');
+  }
+  process.exit(1);
+}
 
 const exemptFiles = new Set(denylist.exemptFiles || []);
 const fullyExemptFiles = new Set(denylist.fullyExemptFiles || []);
@@ -91,8 +164,8 @@ function normalizeDigitsCandidate(value) {
   return value.replace(/\D/g, '');
 }
 
-function shouldSkipHashRule(rule, file) {
-  return rule.tier === 'institutional' && institutionExempt(file);
+function shouldSkipHashRule(_rule, _file) {
+  return false;
 }
 
 function addCandidate(set, candidate) {
@@ -208,23 +281,47 @@ for (const file of readFileList()) {
     if (!exempt) {
       for (const rule of institutionalRules) {
         if (rule.re.test(line) && !isAllowedInstitutionalDisclaimer(line)) {
-          violations.push({ file, line: idx + 1, tier: 'institutional', label: rule.label, text: line.trim().slice(0, 160) });
+          violations.push({
+            file,
+            line: idx + 1,
+            tier: 'institutional',
+            label: rule.label,
+            text: '[redacted institutional-pattern match on this line]',
+          });
         }
       }
     }
     for (const rule of phiRules) {
       if (rule.re.test(line)) {
-        violations.push({ file, line: idx + 1, tier: 'phi', label: rule.label, text: line.trim().slice(0, 160) });
+        violations.push({
+          file,
+          line: idx + 1,
+          tier: 'phi',
+          label: rule.label,
+          text: '[redacted PHI-pattern match on this line]',
+        });
       }
     }
     for (const rule of identityRules) {
       if (rule.re.test(line)) {
-        violations.push({ file, line: idx + 1, tier: 'identity', label: rule.label, text: line.trim().slice(0, 160) });
+        violations.push({
+          file,
+          line: idx + 1,
+          tier: 'identity',
+          label: rule.label,
+          text: '[redacted identity-pattern match on this line]',
+        });
       }
     }
     for (const lit of literals) {
       if (line.includes(lit)) {
-        violations.push({ file, line: idx + 1, tier: 'phi', label: `Literal denylist: ${lit}`, text: line.trim().slice(0, 160) });
+        violations.push({
+          file,
+          line: idx + 1,
+          tier: 'phi',
+          label: 'Literal denylist match',
+          text: '[redacted literal-denylist match on this line]',
+        });
       }
     }
     for (const rule of literalHashViolationsForLine(line, file)) {
@@ -240,9 +337,19 @@ for (const file of readFileList()) {
 }
 
 if (JSON_OUT) {
-  console.log(JSON.stringify({ scanned, violations, binaryFiles }, null, 2));
+  console.log(JSON.stringify({
+    scanned,
+    violations,
+    binaryFiles,
+    privateDenylistLoaded,
+    privateDenylistRuleCount,
+    requirePrivateDenylist: REQUIRE_PRIVATE_DENYLIST
+  }, null, 2));
 } else {
   console.log(`Leak guard: scanned ${scanned} text file(s).`);
+  if (!privateDenylistLoaded) {
+    console.warn('\n⚠️  Public-only leak scan: no private exact-token denylist was loaded.');
+  }
   if (binaryFiles.length) {
     console.log(`\n⚠️  ${binaryFiles.length} tracked binary file(s) not text-scanned (review manually if any could carry institutional content):`);
     for (const f of binaryFiles.slice(0, 40)) console.log(`   • ${f}`);

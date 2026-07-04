@@ -1,17 +1,15 @@
 config.local.json
 node_modules/
 
-# ── Private institutional layer ─────────────────────────────────────────────
-# Real HMC/UW/Harborview protocols go here. NEVER committed or deployed.
-# Copy src/institutional-protocols.local.example.js → private/institutional.js
-# and fill in your real institutional content.
+# Local-only protocol extension layer. Never commit or deploy real local
+# institutional protocol text, contacts, paths, or source excerpts.
 private/
 src/institutional-protocols.local.js
+scripts/leak-guard-denylist.local.json
 
-# Agent discovery / OneDrive-extract scratch. Contains extracted institutional
-# source material (protocols, pocket-card images, code-stroke checklists) used
-# only to author the gitignored private/ layer. MUST NOT be public — untracked
-# 2026-06-19 after the leak guard found it tracked. Keep local; never commit.
+# Agent discovery / local-extract scratch. Contains protected source material
+# used only to author the gitignored local extension layer. Keep local; never
+# commit or publish.
 .discovery/
 .pw-audit.mjs
 .pw-audit-report.json

@@ -1,17 +1,16 @@
 name: Lighthouse
 
-# Non-blocking Lighthouse audit. Posts scores as a PR comment but never
-# fails the workflow on score regressions — clinical-app perf is sensitive
+# Non-blocking Lighthouse audit. Writes scores to the run summary but never
+# fails the workflow on score regressions -- clinical-app perf is sensitive
 # to network conditions on the GitHub Pages CDN, and a flaky 78 vs 82
 # Performance score is not worth blocking a clinical-content PR.
 #
-# Reads the LIVE deployed site at  /stroke/, so
-# this only meaningfully runs on push-to-main (after deploy) or on manual
-# dispatch. PR runs measure pre-merge state, not the proposed change —
-# treat them as a baseline reminder, not a gating signal.
+# PR runs build and audit a local static preview of the candidate artifact.
+# Push/manual runs audit the live deployed site only after the live app.js
+# hash matches the checked-out commit's app.js.
 #
 # Security: no untrusted inputs (PR title/body/etc.) are interpolated into
-# run: blocks. comment.md is read by the github-script step via fs only.
+# run: blocks, and PR-controlled code runs without write permissions.
 
 on:
   push:
@@ -24,6 +23,13 @@ on:
       - 'service-worker.js'
       - 'app.js'
       - 'tailwind.css'
+      - 'offline.html'
+      - 'data/**'
+      - 'llms.txt'
+      - 'llms-full.txt'
+      - 'whats-new.json'
+      - 'robots.txt'
+      - 'sitemap.xml'
       - 'src/**'
       - '.github/workflows/lighthouse.yml'
   workflow_dispatch:
@@ -32,24 +38,139 @@ jobs:
   lighthouse:
     name: Lighthouse audit (live site)
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     permissions:
       contents: read
-      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      - name: Install dependencies for candidate audit
+        if: github.event_name == 'pull_request'
+        run: npm ci
+
+      - name: Build candidate artifact for PR audit
+        if: github.event_name == 'pull_request'
+        run: npm run build
+
+      - name: Start local PR preview
+        if: github.event_name == 'pull_request'
+        id: preview
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/stroke-preview.log 2>&1 &
+          echo "pid=$!" >> "$GITHUB_OUTPUT"
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/stroke-preview.log
+          exit 1
+
+      - name: Wait for live Pages artifact
+        if: github.event_name != 'pull_request'
+        run: |
+          EXPECTED="$(sha256sum app.js | awk '{print $1}')"
+          for i in $(seq 1 60); do
+            curl -fsS "https://rkalani1.github.io/stroke/app.js?sha=${GITHUB_SHA}&try=${i}" -o live-app.js || true
+            if [ -f live-app.js ]; then
+              ACTUAL="$(sha256sum live-app.js | awk '{print $1}')"
+              if [ "$ACTUAL" = "$EXPECTED" ]; then
+                echo "Live Pages app.js matches checked-out commit."
+                exit 0
+              fi
+            fi
+            sleep 10
+          done
+          echo "Timed out waiting for live Pages app.js to match this commit."
+          exit 1
+
+      - name: Verify live public data artifacts
+        if: github.event_name != 'pull_request'
+        run: |
+          node <<'NODE' > live-artifacts.txt
+          const fs = require('fs');
+          const base = 'https://rkalani1.github.io/stroke/';
+          const artifacts = new Set([
+            'index.html',
+            'tailwind.css',
+            'offline.html',
+            'app.js',
+            'data/index.json',
+            'whats-new.json',
+            'llms.txt',
+            'llms-full.txt',
+            'manifest.json',
+            'service-worker.js',
+            'robots.txt',
+            'sitemap.xml'
+          ]);
+          const toRel = (url) => typeof url === 'string' && url.startsWith(base) ? url.slice(base.length) : null;
+          const add = (rel) => {
+            if (!rel) return;
+            if (!fs.existsSync(rel)) {
+              console.error(`Advertised public artifact missing locally: ${rel}`);
+              process.exitCode = 1;
+              return;
+            }
+            artifacts.add(rel);
+          };
+          const apiIndex = JSON.parse(fs.readFileSync('data/index.json', 'utf8'));
+          for (const endpoint of apiIndex.endpoints || []) add(toRel(endpoint));
+          const guidelineIndex = JSON.parse(fs.readFileSync('data/guidelines/index.json', 'utf8'));
+          for (const guideline of guidelineIndex.data || []) add(toRel(guideline.url));
+          if (process.exitCode) process.exit(process.exitCode);
+          for (const artifact of [...artifacts].sort()) console.log(artifact);
+          NODE
+          mapfile -t artifacts < live-artifacts.txt
+          mkdir -p live-artifacts
+          for artifact in "${artifacts[@]}"; do
+            expected="$(sha256sum "$artifact" | awk '{print $1}')"
+            ok=0
+            for i in $(seq 1 12); do
+              mkdir -p "live-artifacts/$(dirname "$artifact")"
+              curl -fsS "https://rkalani1.github.io/stroke/${artifact}?sha=${GITHUB_SHA}&artifact_try=${i}" -o "live-artifacts/${artifact}" || true
+              if [ -f "live-artifacts/${artifact}" ]; then
+                actual="$(sha256sum "live-artifacts/${artifact}" | awk '{print $1}')"
+                if [ "$actual" = "$expected" ]; then
+                  ok=1
+                  break
+                fi
+              fi
+              sleep 5
+            done
+            if [ "$ok" != "1" ]; then
+              echo "Timed out waiting for live Pages artifact to match this commit: ${artifact}"
+              exit 1
+            fi
+          done
+          echo "Live Pages app.js, shell, and public data artifacts match checked-out commit."
+
+      - name: Select Lighthouse target
+        id: target
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "url=http://127.0.0.1:4173/" >> "$GITHUB_OUTPUT"
+            echo "label=local candidate" >> "$GITHUB_OUTPUT"
+          else
+            echo "url=https://rkalani1.github.io/stroke/" >> "$GITHUB_OUTPUT"
+            echo "label=live site" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Run Lighthouse
         id: lh
-        continue-on-error: true
+        env:
+          LIGHTHOUSE_URL: ${{ steps.target.outputs.url }}
         run: |
-          npx --yes lighthouse@12  /stroke/ \
+          npx --yes lighthouse@12 "$LIGHTHOUSE_URL" \
             --only-categories=performance,accessibility,best-practices \
             --chrome-flags="--headless=new --no-sandbox --disable-gpu" \
             --output=json \
@@ -61,14 +182,14 @@ jobs:
         if: always()
         run: |
           if [ ! -f lighthouse.report.json ]; then
-            echo "summary=Lighthouse run failed — see logs." >> "$GITHUB_OUTPUT"
-            exit 0
+            echo "summary=Lighthouse run failed -- report artifact missing; see logs." >> "$GITHUB_OUTPUT"
+            exit 1
           fi
           PERF=$(node -e "console.log(Math.round(JSON.parse(require('fs').readFileSync('lighthouse.report.json','utf8')).categories.performance.score*100))")
           A11Y=$(node -e "console.log(Math.round(JSON.parse(require('fs').readFileSync('lighthouse.report.json','utf8')).categories.accessibility.score*100))")
           BP=$(node -e "console.log(Math.round(JSON.parse(require('fs').readFileSync('lighthouse.report.json','utf8')).categories['best-practices'].score*100))")
           {
-            echo "## Lighthouse — live site"
+            echo "## Lighthouse - ${{ steps.target.outputs.label }}"
             echo ""
             echo "| Category | Score | Target |"
             echo "|---|---|---|"
@@ -78,29 +199,10 @@ jobs:
             echo ""
             echo "_PWA category was removed in Lighthouse 12; manifest + service-worker installability is verified manually per docs/pwa-and-app.md._"
             echo ""
-            echo "_Non-blocking: this workflow never fails the build on score regressions._"
+            echo "_Non-blocking: this workflow never fails the build on score regressions; missing/invalid audits still fail._"
           } > comment.md
+          cat comment.md >> "$GITHUB_STEP_SUMMARY"
           echo "comment_path=comment.md" >> "$GITHUB_OUTPUT"
-
-      - name: Comment on PR
-        if: github.event_name == 'pull_request' && steps.scores.outputs.comment_path
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const body = fs.readFileSync('comment.md', 'utf8');
-            const { owner, repo } = context.repo;
-            const issue_number = context.issue.number;
-
-            const existing = await github.paginate(github.rest.issues.listComments, {
-              owner, repo, issue_number, per_page: 100
-            });
-            const previous = existing.find(c => c.user && c.user.type === 'Bot' && c.body && c.body.startsWith('## Lighthouse — live site'));
-            if (previous) {
-              await github.rest.issues.updateComment({ owner, repo, comment_id: previous.id, body });
-            } else {
-              await github.rest.issues.createComment({ owner, repo, issue_number, body });
-            }
 
       - name: Upload report
         if: always()
@@ -108,5 +210,9 @@ jobs:
         with:
           name: lighthouse-report
           path: lighthouse.report.json
-          if-no-files-found: ignore
+          if-no-files-found: error
           retention-days: 30
+
+      - name: Stop local PR preview
+        if: always() && github.event_name == 'pull_request' && steps.preview.outputs.pid
+        run: kill "${{ steps.preview.outputs.pid }}" || true

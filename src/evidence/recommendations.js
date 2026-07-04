@@ -9,18 +9,55 @@ const lr = '2026-04-25';
 
 export const recommendations = [
   makeRecommendation({
-    id: 'rec-ich-bp-target',
+    id: 'rec-ich-bp-smooth-control',
     topic: 'ich-bp-management',
     setting: 'inpatient',
-    text: 'In acute spontaneous ICH presenting within 6 h with SBP 150-220 mmHg, lowering systolic BP to a target of 140 mmHg using a smooth, sustained protocol within a care bundle is reasonable to improve functional outcome.',
+    text: 'In acute spontaneous ICH, continuous smooth, sustained BP control with timely treatment can be beneficial when BP lowering is indicated.',
     classOfRecommendation: 'IIa',
-    levelOfEvidence: 'B-R',
+    levelOfEvidence: 'B-NR',
     guidelineSource: 'AHA/ASA 2022 ICH Guideline; INTERACT3 (2023)',
     supportingClaimIds: ['cl-ich-bp-bundle'],
     caveats: [
+      'Smooth, sustained BP control and timely treatment are Class IIa process recommendations.',
+      'Do not present INTERACT3 as BP-only class evidence; it tested a bundle including BP, glucose, temperature, and anticoagulation reversal.',
       'Avoid abrupt large drops in BP (>60 mmHg) which may worsen outcomes.',
+      'Do not pursue a numeric BP target in isolation from neurologic status and the full care bundle.'
+    ],
+    lastReviewed: lr,
+    verificationStatus: 'verified-guideline'
+  }),
+
+  makeRecommendation({
+    id: 'rec-ich-bp-target',
+    topic: 'ich-bp-management',
+    setting: 'inpatient',
+    text: 'In mild-to-moderate acute spontaneous ICH with presenting SBP 150-220 mmHg, targeting SBP 140 mmHg and maintaining 130-150 mmHg when appropriate is safe and may be reasonable.',
+    classOfRecommendation: 'IIb',
+    levelOfEvidence: 'B-R',
+    guidelineSource: 'AHA/ASA 2022 ICH Guideline',
+    supportingClaimIds: [],
+    caveats: [
+      'The SBP 140/range 130-150 target is Class IIb.',
       'In patients with SBP >220 mmHg, the safety of aggressive lowering to 140 is less certain; use clinical judgment and continuous monitoring.',
-      'Target is BP control as part of a bundle (BP + glucose + temperature + reversal); do not pursue BP target in isolation.'
+      'Use with the separate Class IIa process recommendation for smooth, sustained control and timely treatment.',
+      'Do not pursue a numeric BP target in isolation from neurologic status, hematoma severity, and neurosurgical planning.'
+    ],
+    lastReviewed: lr,
+    verificationStatus: 'verified-guideline'
+  }),
+
+  makeRecommendation({
+    id: 'rec-ich-bp-avoid-low',
+    topic: 'ich-bp-management',
+    setting: 'inpatient',
+    text: 'Avoid acute SBP <130 mmHg in mild-to-moderate spontaneous ICH because it is potentially harmful.',
+    classOfRecommendation: 'III-harm',
+    levelOfEvidence: 'B-R',
+    guidelineSource: 'AHA/ASA 2022 ICH Guideline; ATACH-2',
+    supportingClaimIds: [],
+    caveats: [
+      'Acute SBP <130 mmHg is Class III-harm.',
+      'This lower-bound harm guard is separate from the Class IIb SBP 140/range 130-150 target.'
     ],
     lastReviewed: lr,
     verificationStatus: 'verified-guideline'

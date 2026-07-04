@@ -5,13 +5,14 @@
    - On install: self.skipWaiting() so the new SW reaches the 'waiting' state
      immediately (no manual SKIP_WAITING postMessage like v5).
    - On activate: do NOT call self.clients.claim() immediately. Instead,
-     broadcast {type:'sw-update-ready', version:'6.1.0'} to every controlled
+     broadcast {type:'sw-update-ready', version:'6.10.0'} to every open
      client. The app shows a non-blocking toast — clinicians mid-consult are
      never auto-interrupted.
-   - When a client messages {type:'CLAIM_AND_RELOAD'}, the SW calls
-     clients.claim() and asks the client to soft-reload.
+   - When a client messages {type:'CLAIM_AND_RELOAD'} or legacy
+     {type:'SKIP_WAITING'}, the SW calls clients.claim() and asks the client
+     to soft-reload.
 
-   Cache-name bumped to stroke-cache-v6-9-15. Old caches are cleared on activate.
+   Cache-name bumped to stroke-cache-v6-10-0. Old caches are cleared on activate.
 */
 
 const APP_VERSION = '6.10.0';
@@ -63,8 +64,10 @@ self.addEventListener('activate', (event) => {
     const keys = await caches.keys();
     await Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)));
 
-    // Broadcast the update — do NOT call clients.claim() here.
-    const clientsList = await self.clients.matchAll({ includeUncontrolled: false });
+    // Broadcast the update — do NOT call clients.claim() here. Include
+    // uncontrolled windows because an already-open page may still be under the
+    // previous worker until the user accepts the visible reload banner.
+    const clientsList = await self.clients.matchAll({ includeUncontrolled: true });
     for (const c of clientsList) {
       c.postMessage({ type: 'sw-update-ready', version: APP_VERSION });
     }
@@ -73,20 +76,19 @@ self.addEventListener('activate', (event) => {
   })());
 });
 
+async function claimAndRequestReload() {
+  await self.clients.claim();
+  const clientsList = await self.clients.matchAll({ includeUncontrolled: true });
+  for (const c of clientsList) {
+    c.postMessage({ type: 'sw-claimed-reload', version: APP_VERSION });
+  }
+}
+
 self.addEventListener('message', (event) => {
   if (!event.data) return;
-  if (event.data.type === 'CLAIM_AND_RELOAD') {
-    event.waitUntil((async () => {
-      await self.clients.claim();
-      const clientsList = await self.clients.matchAll();
-      for (const c of clientsList) {
-        c.postMessage({ type: 'sw-claimed-reload', version: APP_VERSION });
-      }
-    })());
+  if (event.data.type === 'CLAIM_AND_RELOAD' || event.data.type === 'SKIP_WAITING') {
+    event.waitUntil(claimAndRequestReload());
   }
-  // Back-compat with v5 page bootstrap that posts SKIP_WAITING.
-  // (skipWaiting already happens on install; this is a no-op safety.)
-  if (event.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 const isHtmlRequest = (request) => {

@@ -16,6 +16,7 @@ import {
   ONSET_PRESETS
 } from '../screener-eval.js';
 
+const sentinel = (...parts) => parts.join('_');
 const trialByAcronym = (acr) => screenerTrials.find((t) => t.acronym === acr);
 
 describe('screenerTrials — data integrity & compliance', () => {
@@ -46,12 +47,9 @@ describe('screenerTrials — data integrity & compliance', () => {
 
   it('renders no institutional identifiers in any serializable field', () => {
     const banned = new RegExp([
-      'harborview',
-      'hmc',
-      'montlake',
-      'ka' + 'lani',
-      ['university', 'of', 'washington'].join(' '),
-      'uw medicine'
+      sentinel('PUBLIC', 'PRIVATE', 'INSTITUTION', 'SENTINEL'),
+      sentinel('PUBLIC', 'PRIVATE', 'IDENTITY', 'SENTINEL'),
+      sentinel('PUBLIC', 'PRIVATE', 'LITERAL', 'SENTINEL')
     ].join('|'), 'i');
     screenerTrials.forEach((t) => {
       const flat = [

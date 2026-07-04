@@ -28,6 +28,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install private leak-guard denylist
+        env:
+          PRIVATE_DENYLIST_JSON: ${{ secrets.STROKE_LEAK_GUARD_PRIVATE_DENYLIST_JSON }}
+        run: |
+          if [ -z "$PRIVATE_DENYLIST_JSON" ]; then
+            echo "STROKE_LEAK_GUARD_PRIVATE_DENYLIST_JSON secret is required for CI leak scanning." >&2
+            exit 1
+          fi
+          printf '%s' "$PRIVATE_DENYLIST_JSON" > scripts/leak-guard-denylist.local.json
+          STROKE_LEAK_GUARD_REQUIRE_PRIVATE=1 npm run check:leak-guard
+
       - name: Run vitest
         run: npm run test:unit
 
@@ -57,6 +68,17 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Install private leak-guard denylist
+        env:
+          PRIVATE_DENYLIST_JSON: ${{ secrets.STROKE_LEAK_GUARD_PRIVATE_DENYLIST_JSON }}
+        run: |
+          if [ -z "$PRIVATE_DENYLIST_JSON" ]; then
+            echo "STROKE_LEAK_GUARD_PRIVATE_DENYLIST_JSON secret is required for CI leak scanning." >&2
+            exit 1
+          fi
+          printf '%s' "$PRIVATE_DENYLIST_JSON" > scripts/leak-guard-denylist.local.json
+          STROKE_LEAK_GUARD_REQUIRE_PRIVATE=1 npm run check:leak-guard
 
       # Cache Playwright browsers across runs to avoid the ~80MB download every
       # invocation. Cache key keyed on the package-lock so it auto-busts when
@@ -134,6 +156,17 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Install private leak-guard denylist
+        env:
+          PRIVATE_DENYLIST_JSON: ${{ secrets.STROKE_LEAK_GUARD_PRIVATE_DENYLIST_JSON }}
+        run: |
+          if [ -z "$PRIVATE_DENYLIST_JSON" ]; then
+            echo "STROKE_LEAK_GUARD_PRIVATE_DENYLIST_JSON secret is required for CI leak scanning." >&2
+            exit 1
+          fi
+          printf '%s' "$PRIVATE_DENYLIST_JSON" > scripts/leak-guard-denylist.local.json
+          STROKE_LEAK_GUARD_REQUIRE_PRIVATE=1 npm run check:leak-guard
 
       - name: Cache Playwright browsers
         id: playwright-cache

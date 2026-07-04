@@ -772,6 +772,73 @@ async function auditView(browser, target, viewport) {
       }
     }
 
+    const ichButton = page.locator('#mgmt-tab-ich').first();
+    if ((await ichButton.count()) === 0) {
+      addIssue(issues, 'missing-library-subtab', { subtab: 'ICH' });
+    } else {
+      await clickElementRobust(ichButton);
+      await page.waitForTimeout(200);
+      await page.evaluate(() => {
+        document.querySelectorAll('#mgmt-tabpanel-ich details').forEach((details) => {
+          details.open = true;
+        });
+      }).catch(() => {});
+
+      const ichPanel = page.locator('#mgmt-tabpanel-ich').first();
+      if ((await ichPanel.count()) === 0) {
+        addIssue(issues, 'missing-ich-tabpanel');
+      } else {
+        const ichText = await ichPanel.innerText().catch(() => '');
+        const requiredIchText = [
+          { label: 'initial-eval-heading', re: /Initial Non-Traumatic IPH Evaluation/i },
+          { label: 'abc2-trigger', re: /Non-traumatic IPH (?:>=|≥)15 mL by ABC\/2/i },
+          { label: 'direct-neurosurgery-call', re: /ED clinicians or the stroke service may call Neurosurgery directly/i },
+          { label: 'prior-approval-not-required', re: /prior approval is not required/i },
+          { label: 'closed-loop-stroke-attending', re: /designated on-call stroke attending/i },
+          { label: 'attending-record-not-default', re: /attending-of-record notification is not default/i },
+          { label: 'ivh-hydrocephalus', re: /IVH(?:\/|, )hydrocephalus/i },
+          { label: 'cerebellar-hemorrhage-trigger', re: /cerebellar hemorrhage/i },
+          { label: 'mass-effect-trigger', re: /mass effect/i },
+          { label: 'vascular-lesion-trigger', re: /vascular lesion concern/i },
+          { label: 'neurologic-decline-trigger', re: /neurologic decline/i },
+          { label: 'multicompartmental-trigger', re: /multicompartmental hemorrhage/i },
+          { label: 'ed-attending-discretion-trigger', re: /ED attending discretion/i },
+          { label: 'clinician-concern-trigger', re: /clinician concern/i },
+          { label: 'scoped-dual-consult-trigger-list', re: /Screen for early dual-consult triggers:[\s\S]{0,320}clinician concern/i },
+          { label: 'smooth-bp-class', re: /Smooth, sustained BP control and timely treatment/i },
+          { label: 'sbp-140-range', re: /target SBP 140\/range 130-150 when appropriate/i },
+          { label: 'avoid-lt-130', re: /avoid <130/i },
+          { label: 'minute-priority', re: /MINUTE has operational priority over MIRROR/i },
+          { label: 'minute-volume-15ml', re: /(?:Volume (?:>=|≥)15 mL by ABC\/2|Basal-ganglia IPH (?:>=|≥)15 mL)/i },
+          { label: 'minute-nihss-6', re: /NIHSS (?:>=|≥)6/i },
+          { label: 'minute-window-15h', re: /(?:<=|≤)15h|(?:<=|≤)15 hours|15 hours from last known well/i },
+          {
+            label: 'mirror-thresholds-version-sensitive',
+            re: /Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol/i
+          },
+          { label: 'enrich-mie-range', re: /ENRICH supports selected lobar 30-80 mL patients/i },
+          { label: 'mie-gcs-5-14', re: /GCS 5-14/i }
+        ];
+        for (const assertion of requiredIchText) {
+          if (!assertion.re.test(ichText)) {
+            addIssue(issues, 'missing-ich-algorithm-text', { label: assertion.label });
+          }
+        }
+        const forbiddenIchText = [
+          { label: 'rapid-bp-class-i', re: /Rapid BP reduction to SBP ~140 within 1 hour/i },
+          { label: 'sbp-class-i-loe-a', re: /Class I, LOE A for SBP reduction to 140/i },
+          { label: 'uncaveated-functional-outcome', re: /Functional outcome benefit remains uncertain\./i },
+          { label: 'settled-mirror-mrs', re: /Baseline mRS ≤2|Premorbid mRS 0-1/i },
+          { label: 'settled-mirror-gcs', re: /GCS ≥5|Baseline GCS:?\s*5-15/i }
+        ];
+        for (const assertion of forbiddenIchText) {
+          if (assertion.re.test(ichText)) {
+            addIssue(issues, 'forbidden-ich-algorithm-text', { label: assertion.label });
+          }
+        }
+      }
+    }
+
     const tiaButton = page.getByRole('tab', { name: /TIA (management|protocol) tab/i }).first();
     if ((await tiaButton.count()) === 0) {
       addIssue(issues, 'missing-library-subtab', { subtab: 'TIA' });
