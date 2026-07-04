@@ -28423,7 +28423,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-white p-3 rounded border mb-4 dark:bg-card">
                           <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Surgical Selection</h4>
                           <ul className="text-sm space-y-1">
-                            <li>Supratentorial ICH volume &gt;20-30 mL with GCS 5-12: MIS evacuation can reduce mortality.</li>
+                            <li>June 2026 operational MIE screen: lobar IPH 30-80 mL, NIHSS &gt;5, GCS 5-14, age 18-80, and no underlying lesion.</li>
+                            <li>General guideline evidence supports selected minimally invasive evacuation for supratentorial ICH; use the ENRICH-based screen below for this pathway.</li>
                             <li>MIS may be reasonable over conventional craniotomy in eligible patients.</li>
                             <li>Functional outcome benefit remains uncertain.</li>
                           </ul>

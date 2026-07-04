@@ -193,6 +193,20 @@ describe('ICH initial evaluation algorithm', () => {
     expect(text).toMatch(/attending-of-record notification is not default/i);
   });
 
+  it('captures requested trigger variants and pupillometry readiness', () => {
+    const edNode = alg.decisionNodes.find((node) => node.title === 'ED diagnosis or arrival');
+    const monitoringNode = alg.decisionNodes.find((node) => node.title === 'Monitoring adjuncts');
+    expect(edNode).toBeTruthy();
+    expect(monitoringNode).toBeTruthy();
+
+    const edText = edNode.items.join(' ');
+    expect(edText).toMatch(/IVH/);
+    expect(edText).toMatch(/hydrocephalus/);
+    expect(edText).toMatch(/multicompartmental hemorrhage/);
+    expect(edText).toMatch(/ED attending discretion/);
+    expect(monitoringNode.items.join(' ')).toMatch(/pupillometry/i);
+  });
+
   it('captures the June 2026 MINUTE screen without publishing contact details', () => {
     const minute = alg.researchScreens.find((screen) => screen.title === 'MINUTE screen');
     expect(minute).toBeTruthy();
@@ -212,6 +226,16 @@ describe('ICH initial evaluation algorithm', () => {
     expect(mirror).toBeTruthy();
     expect(mirror.criteria.join(' ')).toMatch(/thresholds must be checked against the active registry protocol/);
     expect(mirror.action).toMatch(/Do not let registry screening delay/);
+  });
+
+  it('keeps ENRICH-based MIE criteria aligned to the June 2026 pathway', () => {
+    const mie = alg.surgicalScreens.find((screen) => screen.title === 'Minimally invasive evacuation');
+    expect(mie).toBeTruthy();
+    expect(mie.criteria).toContain('Lobar IPH 30-80 mL');
+    expect(mie.criteria).toContain('Age 18-80');
+    expect(mie.criteria).toContain('NIHSS >5');
+    expect(mie.criteria).toContain('GCS 5-14');
+    expect(mie.criteria.join(' ')).not.toMatch(/GCS 5-1[25]/);
   });
 
   it('requires a cross-team surgical safety pause', () => {

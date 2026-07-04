@@ -97,6 +97,12 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(texts['src/app.jsx']).toMatch(/designated on-call stroke attending/);
     expect(texts['src/institutional-protocols.js']).toMatch(/attending-of-record notification is not default/i);
     expect(texts['src/app.jsx']).toMatch(/attending-of-record notification is not default/i);
+    expect(texts['src/institutional-protocols.js']).toMatch(/IVH, hydrocephalus/);
+    expect(texts['src/app.jsx']).toMatch(/IVH\/hydrocephalus/);
+    expect(texts['data/generic-protocols.json']).toMatch(/multicompartmental hemorrhage/);
+    expect(texts['data/generic-protocols.json']).toMatch(/ED attending discretion/);
+    expect(texts['src/institutional-protocols.js']).toMatch(/pupillometry/i);
+    expect(texts['data/generic-protocols.json']).toMatch(/pupillometry/i);
 
     const obsoleteHits = [
       ...offendingLines(/Neurology\/stroke attending should approve neurosurgery consultations/i),
@@ -109,11 +115,16 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
   it('keeps ENRICH/MIE criteria aligned to GCS 5-14', () => {
     expect(texts['src/app.jsx']).toMatch(/ENRICH MIE Inclusion/);
     expect(texts['src/app.jsx']).toMatch(/GCS 5-14/);
+    expect(texts['src/institutional-protocols.js']).toMatch(/GCS 5-14/);
+    expect(texts['data/generic-protocols.json']).toMatch(/GCS 5-14/);
 
     const hits = [
       ...offendingLines(/ENRICH[^\n]{0,160}GCS 5-15/i),
       ...offendingLines(/GCS 5-15[^\n]{0,160}ENRICH/i),
       ...offendingLines(/MIE[^\n]{0,160}GCS 5-15/i),
+      ...offendingLines(/MIE[^\n]{0,240}GCS 5-12/i),
+      ...offendingLines(/GCS 5-12[^\n]{0,240}MIE/i),
+      ...offendingLines(/Surgical Selection[^\n]{0,400}GCS 5-12/i),
       ...offendingLines(/mRS 0-1[^\n]{0,160}ENRICH/i),
       ...offendingLines(/ENRICH[^\n]{0,160}mRS 0-1/i)
     ];
@@ -132,6 +143,10 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(texts['src/app.jsx']).toMatch(/GCS range must be verified against the active registry protocol/);
     expect(texts['src/app.jsx']).not.toMatch(/Baseline mRS ≤2/);
     expect(texts['src/app.jsx']).not.toMatch(/GCS ≥5/);
+    expect(texts['src/institutional-protocols.js']).not.toMatch(/Premorbid mRS 0-1/);
+    expect(texts['data/generic-protocols.json']).not.toMatch(/Premorbid mRS 0-1/);
+    expect(texts['src/institutional-protocols.js']).not.toMatch(/Baseline GCS:?\s*5-15/);
+    expect(texts['data/generic-protocols.json']).not.toMatch(/Baseline GCS:?\s*5-15/);
   });
 
   it('does not publish local Stroke Phone labels on public surfaces', () => {
