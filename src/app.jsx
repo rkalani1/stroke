@@ -2067,7 +2067,7 @@ Clinician Name`;
           const [noteTemplate, setNoteTemplate] = useState(loadFromStorage('noteTemplate', 'consult'));
           const [calcDrawerOpen, setCalcDrawerOpen] = useState(false);
           const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
-          // Theme is owned entirely by src/design/theme.js (the v7 controller).
+          // Theme is owned entirely by the v7 controller.
           // We mirror its preference ('auto'|'light'|'dark') and derived effective
           // theme ('dark' boolean) into React state for rendering. theme.js owns the
           // DOM (data-theme + `dark` class) and the stroke.v7.theme storage key; we
@@ -27642,10 +27642,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {activeTab === 'protocols' && (
                   <ErrorBoundary>
                   <div id="tabpanel-protocols" role="tabpanel" aria-labelledby="tab-protocols" className="space-y-6">
-                    {/* ===== PRIVATE INSTITUTIONAL LAYER (local-only, never public) =====
-                        Rendered only when private/institutional.js is present on disk.
-                        window.__INSTITUTIONAL_LOCAL__ is set by that gitignored script
-                        before app.js loads. Zero output on the public/deployed build. */}
+                    {/* ===== NON-PUBLIC EXTENSION LAYER =====
+                        Rendered only when a local extension populates
+                        window.__INSTITUTIONAL_LOCAL__ before app.js loads.
+                        Zero output on the public/deployed build. */}
                     {(() => {
                       const localInst = getLocalInstitutionalContent();
                       if (!localInst) return null;
@@ -28059,7 +28059,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-slate-700 dark:text-ink-2">Promptly screen for neurosurgical escalation in cerebellar decline, hydrocephalus, mass effect, or selected lobar large ICH.</p>
                                 <details className="mt-1">
                                   <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-700 dark:text-mute dark:hover:text-ink">Evidence</summary>
-                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">ENRICH (2024): Early MIS for lobar ICH 20-50 mL improved outcomes vs medical management (mRS shift OR 0.74). STICH II: Open craniotomy for lobar ICH did not show clear benefit. Cerebellar ICH with neurologic deterioration: Class I for surgical evacuation.</p>
+                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">ENRICH (2024): Early MIS for selected lobar ICH in the 30-80 mL trial range improved outcomes vs medical management (mRS shift OR 0.74). STICH II: Open craniotomy for lobar ICH did not show clear benefit. Cerebellar ICH with neurologic deterioration: Class I for surgical evacuation.</p>
                                 </details>
                               </div>
                             </div>

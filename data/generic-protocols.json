@@ -3,9 +3,9 @@
     "endpoint": "generic-protocols",
     "schemaVersion": "1.0.0",
     "appVersion": "6.10.0",
-    "checksum": "sha256:b97cab12443c7fe786b02ca6f5ab328c",
+    "checksum": "sha256:cda6597e4e669bd36aad144bf68880e3",
     "count": 3,
-    "source": "src/institutional-protocols.js",
+    "source": "Public protocol reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
   },
@@ -58,7 +58,7 @@
     "ichInitialEvaluation": {
       "title": "Initial non-traumatic IPH evaluation",
       "lastReviewed": "2026-07-03",
-      "sourceWindow": "June 2026 IPH initial-evaluation figure and narrative algorithm",
+      "sourceWindow": "Reviewed June 2026 public-safe algorithm translation",
       "scope": "Institution-neutral educational translation. Use this as a workflow checklist only; verify against the current approved local protocol before clinical action.",
       "consultTrigger": "Non-traumatic IPH >=15 mL by ABC/2 prompts early Neurosurgery and stroke-service evaluation.",
       "decisionNodes": [

@@ -30,9 +30,12 @@ const CONTENT_FILES = [
   'data/generic-protocols.json'
 ];
 const MINUTE_FILES = [
+  'src/app.jsx',
+  'src/institutional-protocols.js',
   'src/evidence/screener/minute.js',
   'src/evidence/screenerTrials.json',
   'src/evidence/eligibilityTables.js',
+  'data/generic-protocols.json',
   'app.js'
 ];
 const texts = Object.fromEntries(CONTENT_FILES.map((f) => [f, read(f)]));
@@ -135,9 +138,16 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
       ...offendingLines(/MIE[^\n]{0,240}GCS 5-12/i),
       ...offendingLines(/GCS 5-12[^\n]{0,240}MIE/i),
       ...offendingLines(/Surgical Selection[^\n]{0,400}GCS 5-12/i),
+      ...offendingLines(/Pre-morbid mRS 0-1/i, { files: ['src/app.jsx', 'app.js'] }),
+      ...offendingLines(/Premorbid mRS 0-1[^\n]{0,240}(MIE|ENRICH)/i, { files: ['src/app.jsx', 'app.js'] }),
+      ...offendingLines(/(MIE|ENRICH)[^\n]{0,240}Premorbid mRS 0-1/i, { files: ['src/app.jsx', 'app.js'] }),
+      ...offendingLines(/(≤|<=)24 hours of symptom onset/i, { files: ['src/app.jsx', 'app.js'] }),
+      ...offendingLines(/24-72h after onset/i, { files: ['src/app.jsx', 'app.js'] }),
       ...offendingLines(/mRS 0-1[^\n]{0,160}ENRICH/i),
       ...offendingLines(/ENRICH[^\n]{0,160}mRS 0-1/i),
-      ...offendingLines(/ENRICH[^\n]{0,240}(≤|<=)\s*24\s*(h|hours?)/i, { files: ['src/app.jsx', 'app.js'] })
+      ...offendingLines(/ENRICH[^\n]{0,240}(≤|<=)\s*24\s*(h|hours?)/i, { files: ['src/app.jsx', 'app.js'] }),
+      ...offendingLines(/ENRICH[^\n]{0,240}20-50\s*mL/i, { files: ['src/app.jsx', 'app.js'] }),
+      ...offendingLines(/20-50\s*mL[^\n]{0,240}ENRICH/i, { files: ['src/app.jsx', 'app.js'] })
     ];
     expect(hits, `Obsolete ENRICH/MIE criterion found:\n${hits.join('\n')}`).toEqual([]);
   });
@@ -174,10 +184,16 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(texts['src/app.jsx']).not.toMatch(/GCS ≥5/);
     expect(texts['src/institutional-protocols.js']).not.toMatch(/Premorbid mRS 0-1/);
     expect(texts['data/generic-protocols.json']).not.toMatch(/Premorbid mRS 0-1/);
+    expect(texts['app.js']).not.toMatch(/Premorbid mRS 0-1/);
     expect(texts['src/institutional-protocols.js']).not.toMatch(/Baseline GCS:?\s*5-15/);
     expect(texts['data/generic-protocols.json']).not.toMatch(/Baseline GCS:?\s*5-15/);
+    expect(texts['app.js']).not.toMatch(/Baseline GCS:?\s*5-15/);
     expect(texts['src/app.jsx']).not.toMatch(/ICH volume >20mL/);
+    expect(texts['app.js']).not.toMatch(/ICH volume >20mL/);
+    expect(texts['app.js']).not.toMatch(/Baseline mRS ≤2/);
+    expect(texts['app.js']).not.toMatch(/GCS ≥5/);
     expect(texts['src/app.jsx']).toMatch(/Volume threshold is version-sensitive and must be checked against the active registry protocol/);
+    expect(texts['app.js']).toMatch(/Volume threshold is version-sensitive and must be checked against the active registry protocol/);
   });
 
   it('does not publish local Stroke Phone labels on public surfaces', () => {
@@ -188,6 +204,8 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
   it('keeps MINUTE priority over MIRROR in the reusable ICH algorithm export', () => {
     expect(texts['src/institutional-protocols.js']).toMatch(/MINUTE has operational priority over MIRROR/);
     expect(texts['data/generic-protocols.json']).toMatch(/MINUTE has operational priority over MIRROR/);
+    expect(texts['src/institutional-protocols.js']).toMatch(/thresholds are version-sensitive and must be checked against the active registry protocol/);
+    expect(texts['data/generic-protocols.json']).toMatch(/thresholds are version-sensitive and must be checked against the active registry protocol/);
   });
 
   it('keeps the reviewed content files free of institutional / PHI identifiers', () => {

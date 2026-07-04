@@ -113,6 +113,42 @@ describe('public demo labeling and agent disclaimers', () => {
       expect(configLines).toContain(`- ${path}`);
     }
   });
+
+  it('keeps shipped metadata and root HTML free of source/private path hints', () => {
+    const forbidden = [
+      'private/institutional.js',
+      'scripts/generate-splash.sh',
+      'src/design/theme.js',
+      'local/private',
+      'repo /mcp',
+      'src/institutional-protocols.js',
+      'June 2026 IPH initial-evaluation figure and narrative algorithm'
+    ];
+    const shipped = [
+      'index.html',
+      'llms.txt',
+      'llms-full.txt',
+      'data/index.json',
+      'data/generic-protocols.json',
+      'data/management-cards.json',
+      'data/calculators-index.json',
+      'data/atlas/active-trials.json'
+    ];
+
+    for (const relPath of shipped) {
+      const content = readText(relPath);
+      for (const value of forbidden) {
+        expect(content, `${relPath} exposes ${value}`).not.toContain(value);
+      }
+    }
+
+    const manifest = readJson('data/index.json');
+    const protocols = readJson('data/generic-protocols.json');
+    expect(manifest.mcpServer).toBeNull();
+    expect(protocols._meta.source).toBe('Public protocol reference bundle');
+    expect(protocols.data.ichInitialEvaluation.sourceWindow)
+      .toBe('Reviewed June 2026 public-safe algorithm translation');
+  });
 });
 
 describe('public demo PHI soft-blocking detector', () => {

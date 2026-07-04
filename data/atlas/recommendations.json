@@ -5,7 +5,7 @@
     "appVersion": "6.10.0",
     "checksum": "sha256:9e6c771c38bacc780350e51a909c02fc",
     "count": 9,
-    "source": "src/evidence/recommendations.js",
+    "source": "Evidence atlas recommendations bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
   },

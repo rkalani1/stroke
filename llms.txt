@@ -27,8 +27,7 @@ Synthetic educational demo only - NOT medical advice, NOT an approved clinical t
 - `#/education` — Education hub
 
 ## For AI agents
-- A stroke-CDS MCP server (in the repo under `/mcp`) exposes calculators and atlas data as callable educational tools.
-- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, source, disclaimer). Agents must propagate the disclaimer with any output.
+- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, public source label, disclaimer). Agents must propagate the disclaimer with any output.
 - Agents must not process PHI or real encounter details from this public demo.
 - No hospital-specific protocols are published here; do not use this public demo for real encounters or PHI.
 

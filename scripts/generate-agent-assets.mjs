@@ -13,7 +13,7 @@
 //   data/generic-protocols.json          — institution-neutral BP protocols
 //   data/guidelines/index.json + *.json  — guideline metadata + copies
 //   data/whats-new.json                  — copy of the served whats-new feed
-//   data/calculators-index.json          — calculator catalog (also feeds MCP server)
+//   data/calculators-index.json          — calculator catalog
 //   llms.txt / llms-full.txt             — AI-crawler manifests
 //   robots.txt / sitemap.xml             — crawler guidance
 //
@@ -64,6 +64,24 @@ function envelope(endpoint, source, data) {
   };
 }
 
+const PUBLIC_SOURCE_LABELS = {
+  'src/evidence/completedTrials.js': 'Evidence atlas completed-trials bundle',
+  'src/evidence/activeTrials.js': 'Evidence atlas active-trials bundle',
+  'src/evidence/recommendations.js': 'Evidence atlas recommendations bundle',
+  'src/evidence/citations.js': 'Evidence atlas citations bundle',
+  'src/evidence/claims.js': 'Evidence atlas claims bundle',
+  'src/evidence/topics.js': 'Evidence atlas topics bundle',
+  'src/evidence/index.js': 'Evidence atlas labels bundle',
+  'src/management-guidance.js': 'Management-card reference bundle',
+  'src/institutional-protocols.js': 'Public protocol reference bundle',
+  'src/guidelines/': 'Guideline metadata bundle',
+  'src/calculators.js, src/calculators-extended.js': 'Calculator catalog bundle',
+};
+
+function publicSourceLabel(source) {
+  return PUBLIC_SOURCE_LABELS[source] || source;
+}
+
 const writes = [];
 function write(rel, content) {
   const abs = path.join(ROOT, rel);
@@ -77,7 +95,7 @@ function write(rel, content) {
   );
 }
 
-// ── Calculator catalog (also the source-of-truth for the MCP server) ──────────
+// ── Calculator catalog ───────────────────────────────────────────────────────
 const CALCULATORS = [
   { id: 'nihss', name: 'NIH Stroke Scale', category: 'severity', fn: 'calculateNIHSS' },
   { id: 'ich-score', name: 'ICH Score', category: 'prognosis', fn: 'calculateICHScore' },
@@ -120,13 +138,13 @@ const ROUTES = [
 async function main() {
   // ---- Evidence atlas ----
   const atlas = await import(pathToFileURL(path.join(ROOT, 'src/evidence/index.js')).href);
-  write('data/atlas/completed-trials.json', envelope('completed-trials', 'src/evidence/completedTrials.js', atlas.completedTrials));
-  write('data/atlas/active-trials.json', envelope('active-trials', 'src/evidence/activeTrials.js', atlas.activeTrials));
-  write('data/atlas/recommendations.json', envelope('recommendations', 'src/evidence/recommendations.js', atlas.recommendations));
-  write('data/atlas/citations.json', envelope('citations', 'src/evidence/citations.js', atlas.citations));
-  write('data/atlas/claims.json', envelope('claims', 'src/evidence/claims.js', atlas.claims));
-  write('data/atlas/topics.json', envelope('topics', 'src/evidence/topics.js', atlas.topics));
-  write('data/atlas/labels.json', envelope('labels', 'src/evidence/index.js', {
+  write('data/atlas/completed-trials.json', envelope('completed-trials', publicSourceLabel('src/evidence/completedTrials.js'), atlas.completedTrials));
+  write('data/atlas/active-trials.json', envelope('active-trials', publicSourceLabel('src/evidence/activeTrials.js'), atlas.activeTrials));
+  write('data/atlas/recommendations.json', envelope('recommendations', publicSourceLabel('src/evidence/recommendations.js'), atlas.recommendations));
+  write('data/atlas/citations.json', envelope('citations', publicSourceLabel('src/evidence/citations.js'), atlas.citations));
+  write('data/atlas/claims.json', envelope('claims', publicSourceLabel('src/evidence/claims.js'), atlas.claims));
+  write('data/atlas/topics.json', envelope('topics', publicSourceLabel('src/evidence/topics.js'), atlas.topics));
+  write('data/atlas/labels.json', envelope('labels', publicSourceLabel('src/evidence/index.js'), {
     verificationStatus: atlas.VERIFICATION_STATUS_LABELS,
     certainty: atlas.CERTAINTY_LABELS,
     evidenceType: atlas.EVIDENCE_TYPE_LABELS,
@@ -135,7 +153,7 @@ async function main() {
 
   // ---- Management cards ----
   const mg = await import(pathToFileURL(path.join(ROOT, 'src/management-guidance.js')).href);
-  write('data/management-cards.json', envelope('management-cards', 'src/management-guidance.js', {
+  write('data/management-cards.json', envelope('management-cards', publicSourceLabel('src/management-guidance.js'), {
     lastReviewed: mg.AIS_COMMAND_CENTER_LAST_REVIEWED,
     sourceLinks: mg.AIS_SOURCE_LINKS,
     cards: mg.AIS_COMMAND_CENTER_CARDS,
@@ -144,7 +162,7 @@ async function main() {
   // ---- Generic (institution-neutral) protocols ----
   try {
     const ip = await import(pathToFileURL(path.join(ROOT, 'src/institutional-protocols.js')).href);
-    write('data/generic-protocols.json', envelope('generic-protocols', 'src/institutional-protocols.js', {
+    write('data/generic-protocols.json', envelope('generic-protocols', publicSourceLabel('src/institutional-protocols.js'), {
       bpProtocols: ip.INSTITUTIONAL_BP_PROTOCOLS,
       ichInitialEvaluation: ip.ICH_INITIAL_EVALUATION_ALGORITHM,
       safePauseAttestation: ip.SAFE_PAUSE_ATTESTATION,
@@ -168,12 +186,12 @@ async function main() {
     });
     write(`data/guidelines/${f}`, raw); // verbatim copy — no reformatting churn
   }
-  write('data/guidelines/index.json', envelope('guidelines-index', 'src/guidelines/', gindex));
+  write('data/guidelines/index.json', envelope('guidelines-index', publicSourceLabel('src/guidelines/'), gindex));
 
   // ---- whats-new: the root /whats-new.json is already served; do not duplicate ----
 
   // ---- calculators index ----
-  write('data/calculators-index.json', envelope('calculators', 'src/calculators.js, src/calculators-extended.js', CALCULATORS));
+  write('data/calculators-index.json', envelope('calculators', publicSourceLabel('src/calculators.js, src/calculators-extended.js'), CALCULATORS));
 
   // ---- master manifest ----
   const endpoints = [
@@ -192,7 +210,7 @@ async function main() {
     },
     endpoints: endpoints.map((e) => `${BASE_URL}/${e}`),
     routes: ROUTES.map((r) => ({ ...r, url: `${BASE_URL}/${r.route}` })),
-    mcpServer: `${BASE_URL}/mcp/ (see repo /mcp for the stroke-cds MCP server)`,
+    mcpServer: null,
   });
 
   // ---- llms.txt ----
@@ -219,8 +237,7 @@ async function main() {
     ...ROUTES.map((r) => `- \`${r.route}\` — ${r.label}`),
     '',
     '## For AI agents',
-    '- A stroke-CDS MCP server (in the repo under `/mcp`) exposes calculators and atlas data as callable educational tools.',
-    '- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, source, disclaimer). Agents must propagate the disclaimer with any output.',
+    '- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, public source label, disclaimer). Agents must propagate the disclaimer with any output.',
     '- Agents must not process PHI or real encounter details from this public demo.',
     '- No hospital-specific protocols are published here; do not use this public demo for real encounters or PHI.',
     '',

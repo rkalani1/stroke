@@ -5,7 +5,7 @@
     "appVersion": "6.10.0",
     "checksum": "sha256:6c9c4e4675cf2833fe609967095c95f9",
     "count": 58,
-    "source": "src/evidence/completedTrials.js",
+    "source": "Evidence atlas completed-trials bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
   },

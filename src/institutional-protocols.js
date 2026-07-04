@@ -77,7 +77,7 @@ export const INSTITUTIONAL_BP_PROTOCOLS = {
 export const ICH_INITIAL_EVALUATION_ALGORITHM = {
   title: 'Initial non-traumatic IPH evaluation',
   lastReviewed: '2026-07-03',
-  sourceWindow: 'June 2026 IPH initial-evaluation figure and narrative algorithm',
+  sourceWindow: 'Reviewed June 2026 public-safe algorithm translation',
   scope: 'Institution-neutral educational translation. Use this as a workflow checklist only; verify against the current approved local protocol before clinical action.',
   consultTrigger: 'Non-traumatic IPH >=15 mL by ABC/2 prompts early Neurosurgery and stroke-service evaluation.',
   decisionNodes: [
