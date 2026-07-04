@@ -209,6 +209,14 @@ describe('ICH initial evaluation algorithm', () => {
     expect(monitoringNode.items.join(' ')).toMatch(/pupillometry/i);
   });
 
+  it('keeps decompression criteria limited to life-threatening mass effect', () => {
+    const decompression = alg.surgicalScreens.find((screen) => screen.title === 'Decompression');
+    expect(decompression).toBeTruthy();
+    const criteria = decompression.criteria.join(' ');
+    expect(criteria).toMatch(/Life-threatening mass effect/);
+    expect(criteria).not.toMatch(/Life-threatening or significant mass effect/);
+  });
+
   it('captures the June 2026 MINUTE screen without publishing contact details', () => {
     const minute = alg.researchScreens.find((screen) => screen.title === 'MINUTE screen');
     expect(minute).toBeTruthy();

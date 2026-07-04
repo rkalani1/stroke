@@ -157,6 +157,10 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(texts['src/app.jsx']).toMatch(/Do not infer suboccipital decompression from cerebellar location alone/i);
     expect(texts['src/institutional-protocols.js']).toMatch(/pupillometry/i);
     expect(texts['data/generic-protocols.json']).toMatch(/pupillometry/i);
+    expect(texts['src/institutional-protocols.js']).toMatch(/Life-threatening mass effect/);
+    expect(texts['data/generic-protocols.json']).toMatch(/Life-threatening mass effect/);
+    expect(texts['src/institutional-protocols.js']).not.toMatch(/Life-threatening or significant mass effect/);
+    expect(texts['data/generic-protocols.json']).not.toMatch(/Life-threatening or significant mass effect/);
 
     const obsoleteHits = [
       ...offendingLines(/Neurology\/stroke attending should approve neurosurgery consultations/i),

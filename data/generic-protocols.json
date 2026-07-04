@@ -3,7 +3,7 @@
     "endpoint": "generic-protocols",
     "schemaVersion": "1.0.0",
     "appVersion": "6.10.0",
-    "checksum": "sha256:128b678879e585a96cfb849f8abba804",
+    "checksum": "sha256:21c0de1bab05e9b7ae80e1a5aa7c4ed3",
     "count": 3,
     "source": "Public protocol reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -107,7 +107,7 @@
         {
           "title": "Decompression",
           "criteria": [
-            "Life-threatening or significant mass effect",
+            "Life-threatening mass effect",
             "Full-care goals after outcome discussion"
           ],
           "action": "Neurosurgery determines operative approach."

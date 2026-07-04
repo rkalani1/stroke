@@ -122,7 +122,7 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
     },
     {
       title: 'Decompression',
-      criteria: ['Life-threatening or significant mass effect', 'Full-care goals after outcome discussion'],
+      criteria: ['Life-threatening mass effect', 'Full-care goals after outcome discussion'],
       action: 'Neurosurgery determines operative approach.'
     },
     {
