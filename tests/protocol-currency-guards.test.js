@@ -30,8 +30,10 @@ const CONTENT_FILES = [
   'src/evidence/screenerTrials.json',
   'src/evidence/eligibilityTables.js',
   'src/evidence/recommendations.js',
+  'src/guidelines/ich-2022.json',
   'data/atlas/recommendations.json',
-  'data/generic-protocols.json'
+  'data/generic-protocols.json',
+  'data/guidelines/ich-2022.json'
 ];
 const MINUTE_FILES = [
   'src/app.jsx',
@@ -140,11 +142,11 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
       expect(texts[f]).toMatch(/mass effect/);
       expect(texts[f]).toMatch(/vascular lesion concern/);
       expect(texts[f]).toMatch(/neurologic decline/);
-      expect(texts[f]).toMatch(/early (?:Neurosurgery \+ stroke-service evaluation|dual-consult triggers):[\s\S]{0,320}pupillometry trend\/asymmetry/i);
+      expect(texts[f]).toMatch(/early Neurosurgery \+ stroke-service evaluation(?: threshold| triggers)?:[\s\S]{0,360}pupillometry trend\/asymmetry/i);
       expect(texts[f]).toMatch(/multicompartmental hemorrhage/);
       expect(texts[f]).toMatch(/ED attending discretion/);
       expect(texts[f]).toMatch(/clinician concern/);
-      expect(texts[f]).toMatch(/Screen for early dual-consult triggers:[\s\S]{0,320}clinician concern/i);
+      expect(texts[f]).toMatch(/Screen for early Neurosurgery \+ stroke-service evaluation triggers:[\s\S]{0,360}clinician concern/i);
       expect(texts[f]).toMatch(/volume (?:≥|\\u2265|>=)\s*15 mL for early Neurosurgery \+ stroke-service evaluation/i);
       expect(texts[f]).toMatch(/confirmed non-traumatic IPH[\s\S]{0,120}(?:≥|\\u2265|>=)\s*15 mL[\s\S]{0,120}early Neurosurgery \+ stroke-service evaluation threshold/i);
       expect(texts[f]).not.toMatch(/ICH volume (?:≥|\\u2265|>=)\s*15 mL by ABC\/2 meets the June 2026 early dual-consult threshold/i);
@@ -165,17 +167,21 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(texts['src/app.jsx']).toMatch(/posterior-fossa mass effect/);
     expect(texts['app.js']).toMatch(/Cerebellar ICH with mass effect/);
     expect(texts['app.js']).toMatch(/posterior-fossa mass effect/);
+    expect(texts['src/guidelines/ich-2022.json']).toMatch(/does not use cerebellar volume alone as an operative trigger/i);
+    expect(texts['data/guidelines/ich-2022.json']).toMatch(/does not use cerebellar volume alone as an operative trigger/i);
 
     const obsoleteHits = [
       ...offendingLines(/Neurology\/stroke attending should approve neurosurgery consultations/i),
       ...offendingLines(/discusses with stroke attending before consulting neurosurgery/i),
       ...offendingLines(/prior approval is required/i),
+      ...offendingLines(/dual-consult/i, { files: ['src/app.jsx', 'app.js', 'src/institutional-protocols.js', 'data/generic-protocols.json'] }),
       ...offendingLines(/IVH\/hydrocephalus, mass effect, vascular lesion concern, or clinician concern/i, { files: ['src/app.jsx', 'app.js'] }),
       ...offendingLines(/(?:^|['"`>])Meets (?:≥|\\u2265|>=)\s*15 mL early Neurosurgery \+ stroke-service evaluation threshold/, { files: ['src/app.jsx', 'app.js'] }),
       ...offendingLines(/Cerebellar ICH (?:>|>=|&gt;=?|\\u003e=?)\s*15/i, { files: ['src/app.jsx', 'app.js'] }),
       ...offendingLines(/cerebellar\s*>15mL/i, { files: ['src/app.jsx', 'app.js'] }),
       ...offendingLines(/cerebellarGt15mL/i, { files: ['src/app.jsx', 'app.js'] }),
-      ...offendingLines(/immediate evacuation \+\/- EVD/i, { files: ['src/app.jsx', 'app.js'] })
+      ...offendingLines(/immediate evacuation \+\/- EVD/i, { files: ['src/app.jsx', 'app.js'] }),
+      ...offendingLines(/cerebellar ICH volume\s*>=\s*15 mL/i, { files: ['src/guidelines/ich-2022.json', 'data/guidelines/ich-2022.json', 'app.js'] })
     ];
     expect(obsoleteHits, `Obsolete neurosurgery approval-gate wording found:\n${obsoleteHits.join('\n')}`).toEqual([]);
   });

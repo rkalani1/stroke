@@ -92,7 +92,7 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
     {
       title: 'ED diagnosis or arrival',
       items: [
-        'Measure hematoma volume using ABC/2 and treat >=15 mL as the early dual-consult threshold.',
+        'Measure hematoma volume using ABC/2 and treat >=15 mL as the early Neurosurgery + stroke-service evaluation threshold.',
         'ED clinicians or the stroke service may consult Neurosurgery directly; prior approval is not required.',
         'Whichever service calls Neurosurgery closes the loop with the designated on-call stroke attending and other involved service so the plan is shared and documented.',
         'Separate attending-of-record notification is not default unless that expectation is explicitly requested, especially overnight.',

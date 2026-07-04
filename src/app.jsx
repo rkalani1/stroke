@@ -28431,7 +28431,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </p>
                             {ichVolumeEstimate?.exceeds15 && (
                               <p className="text-xs font-semibold text-warn-800 bg-warn-50 border border-warn-200 rounded-md p-2 mt-2 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
-                                Confirmed non-traumatic IPH volume ≥15 mL by ABC/2 meets the June 2026 early dual-consult threshold.
+                                Confirmed non-traumatic IPH volume ≥15 mL by ABC/2 meets the June 2026 early Neurosurgery + stroke-service evaluation threshold.
                               </p>
                             )}
                           </div>
@@ -28440,7 +28440,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                                 <li>Confirm anticoagulant/antiplatelet use and initiate reversal.</li>
                                 <li>Use smooth BP control; target SBP 140, maintain 130-150 when appropriate, and avoid &lt;130 per ATACH-2. Use IV nicardipine or clevidipine for titration.</li>
-                                <li>Screen for early dual-consult triggers: non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, ED attending discretion, or clinician concern.</li>
+                                <li>Screen for early Neurosurgery + stroke-service evaluation triggers: non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, ED attending discretion, or clinician concern.</li>
                                 <li>Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.</li>
                               </ul>
                               <p className="text-xs text-slate-500 mt-2 dark:text-mute">

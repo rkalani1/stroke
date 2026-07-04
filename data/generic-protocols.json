@@ -3,7 +3,7 @@
     "endpoint": "generic-protocols",
     "schemaVersion": "1.0.0",
     "appVersion": "6.10.0",
-    "checksum": "sha256:21c0de1bab05e9b7ae80e1a5aa7c4ed3",
+    "checksum": "sha256:1903de83cb9fdb5bb99bd066a5e23659",
     "count": 3,
     "source": "Public protocol reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -73,7 +73,7 @@
         {
           "title": "ED diagnosis or arrival",
           "items": [
-            "Measure hematoma volume using ABC/2 and treat >=15 mL as the early dual-consult threshold.",
+            "Measure hematoma volume using ABC/2 and treat >=15 mL as the early Neurosurgery + stroke-service evaluation threshold.",
             "ED clinicians or the stroke service may consult Neurosurgery directly; prior approval is not required.",
             "Whichever service calls Neurosurgery closes the loop with the designated on-call stroke attending and other involved service so the plan is shared and documented.",
             "Separate attending-of-record notification is not default unless that expectation is explicitly requested, especially overnight.",

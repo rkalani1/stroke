@@ -173,7 +173,7 @@ describe('calculateICHVolume (ABC/2)', () => {
     expect(r.meetsNonTraumaticIphDualConsultVolume).toBe(true);
     expect(r.isLarge).toBe(true);
   });
-  it('separates the >=15 mL dual-consult trigger from >=30 mL large-hematoma tier', () => {
+  it('separates the >=15 mL early-evaluation trigger from >=30 mL large-hematoma tier', () => {
     const r = calculateICHVolume({ lengthCm: 3, widthCm: 2, slicesCm: 5 });
     expect(r.volume).toBe(15);
     expect(r.isDualConsult).toBe(true);

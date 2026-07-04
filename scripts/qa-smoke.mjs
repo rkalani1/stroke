@@ -804,7 +804,10 @@ async function auditView(browser, target, viewport) {
           { label: 'multicompartmental-trigger', re: /multicompartmental hemorrhage/i },
           { label: 'ed-attending-discretion-trigger', re: /ED attending discretion/i },
           { label: 'clinician-concern-trigger', re: /clinician concern/i },
-          { label: 'scoped-dual-consult-trigger-list', re: /Screen for early dual-consult triggers:[\s\S]{0,320}clinician concern/i },
+          {
+            label: 'scoped-early-neurosurgery-stroke-service-trigger-list',
+            re: /Screen for early Neurosurgery \+ stroke-service evaluation triggers:[\s\S]{0,360}clinician concern/i
+          },
           { label: 'smooth-bp-class', re: /Smooth, sustained BP control and timely treatment/i },
           { label: 'sbp-140-range', re: /target SBP 140\/range 130-150 when appropriate/i },
           { label: 'avoid-lt-130', re: /avoid <130/i },
@@ -829,7 +832,8 @@ async function auditView(browser, target, viewport) {
           { label: 'sbp-class-i-loe-a', re: /Class I, LOE A for SBP reduction to 140/i },
           { label: 'uncaveated-functional-outcome', re: /Functional outcome benefit remains uncertain\./i },
           { label: 'settled-mirror-mrs', re: /Baseline mRS ≤2|Premorbid mRS 0-1/i },
-          { label: 'settled-mirror-gcs', re: /GCS ≥5|Baseline GCS:?\s*5-15/i }
+          { label: 'settled-mirror-gcs', re: /GCS ≥5|Baseline GCS:?\s*5-15/i },
+          { label: 'stale-dual-consult-label', re: /early dual-consult/i }
         ];
         for (const assertion of forbiddenIchText) {
           if (assertion.re.test(ichText)) {

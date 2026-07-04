@@ -180,7 +180,7 @@ describe('ICH initial evaluation algorithm', () => {
   const text = JSON.stringify(alg);
   const sentinel = (...parts) => parts.join('_');
 
-  it('uses the >=15 mL ABC/2 early dual-consult threshold', () => {
+  it('uses the >=15 mL ABC/2 early Neurosurgery plus stroke-service evaluation threshold', () => {
     expect(alg.consultTrigger).toMatch(/>=15 mL by ABC\/2/);
     expect(text).toMatch(/Measure hematoma volume using ABC\/2/);
     expect(text).not.toMatch(/>15\s*cc/i);
