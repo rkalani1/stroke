@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## v6.10.1 — 2026-07-04 — UI declutter
+
+Owner-directed removal of low-value surfaces (no clinical-content changes):
+- Public-demo consent modal + standing PHI banner (no-PHI posture kept in
+  metadata/policy: index.html meta, `data/*.json`, COMPLIANCE.md).
+- Encounter-summary "Readiness" rail block and its inline Missing-Fields twin
+  (Incomplete / Safety-critical chips).
+- "not saved yet" auto-save subtitle by the logo.
+- Redundant header "Search" button (search bar retained; ⌘K / "/" still open
+  the command palette).
+- Shortened the Protocols tab label to "Example Protocols" (dropped the
+  "(Not Local Policy)" parenthetical; retained as a palette keyword and in the
+  machine-readable data route).
+
+Version bumped 6.10.0 → 6.10.1 to bust HTTP/SW caches so the change propagates
+immediately. Gates: leak-guard 0 · 683 unit tests · qa-smoke 4/0 · browser QA.
+
 ## v6.10.0 — 2026-07-03 — privacy/identity hardening + polish
 
 ### Privacy & identity
