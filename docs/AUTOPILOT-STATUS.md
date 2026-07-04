@@ -37,7 +37,7 @@ Branch new work from `origin/main` (the working tree was found on a stale branch
   (`MedicalWebPage`/`MedicalGuideline`/`FAQPage`) in `index.html`, published `schema.json`.
   Wired into `npm run build` + a validator.
 - **B · Institutional currency (PRIVATE local extension, NEVER deployed).**
-  Ingest June-2026 OneDrive source-of-truth into the `window.__INSTITUTIONAL_LOCAL__` shape
+  Ingest June-2026 private source material into the `window.__INSTITUTIONAL_LOCAL__` shape
   (see `src/institutional-protocols.local.example.js`), per-protocol status `firm|provisional|draft`.
 - **C · Stroke-CDS MCP server (PUBLIC → main).** Wrap calculators + protocol/evidence/trial
   lookup so agents can *call* the tool, not just read JSON.
@@ -74,5 +74,5 @@ Branch new work from `origin/main` (the working tree was found on a stale branch
 ## Cross-device limits
 - **Public workstreams (A, C, D)** are fully resumable on web/mobile via this repo.
 - **Workstream B (private layer)** is tied to **this Mac**: the local extension is
-  gitignored and is authored from OneDrive files that live on this machine. A cloud/mobile
+  gitignored and is authored from private files that live on this machine. A cloud/mobile
   session cannot see them. Do the private layer here; do public work anywhere.

@@ -28651,7 +28651,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-cobalt-600 mb-2 dark:text-cobalt-300">Surgical Indications</h4>
                             <ul className="text-sm space-y-1">
-                              <li><strong>Cerebellar ICH with mass effect</strong> and obstructive hydrocephalus and/or brainstem compression: urgent Neurosurgery evaluation for suboccipital decompression +/- EVD.</li>
+                              <li><strong>Cerebellar ICH with mass effect</strong>: urgent Neurosurgery evaluation for suboccipital decompression; obstructive hydrocephalus and/or brainstem compression commonly increase urgency and may require EVD.</li>
                               <li><strong>Supratentorial ICH:</strong> routine craniotomy for outcome benefit is uncertain.</li>
                               <li><strong>Deteriorating supratentorial ICH:</strong> craniotomy may be considered as a lifesaving measure.</li>
                             </ul>

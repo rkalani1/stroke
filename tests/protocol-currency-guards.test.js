@@ -164,8 +164,10 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(texts['src/institutional-protocols.js']).not.toMatch(/Life-threatening or significant mass effect/);
     expect(texts['data/generic-protocols.json']).not.toMatch(/Life-threatening or significant mass effect/);
     expect(texts['src/app.jsx']).toMatch(/Cerebellar ICH with mass effect/);
+    expect(texts['src/app.jsx']).toMatch(/obstructive hydrocephalus and\/or brainstem compression commonly increase urgency/i);
     expect(texts['src/app.jsx']).toMatch(/posterior-fossa mass effect/);
     expect(texts['app.js']).toMatch(/Cerebellar ICH with mass effect/);
+    expect(texts['app.js']).toMatch(/obstructive hydrocephalus and\/or brainstem compression commonly increase urgency/i);
     expect(texts['app.js']).toMatch(/posterior-fossa mass effect/);
     expect(texts['src/guidelines/ich-2022.json']).toMatch(/does not use cerebellar volume alone as an operative trigger/i);
     expect(texts['data/guidelines/ich-2022.json']).toMatch(/does not use cerebellar volume alone as an operative trigger/i);
@@ -180,6 +182,7 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
       ...offendingLines(/Cerebellar ICH (?:>|>=|&gt;=?|\\u003e=?)\s*15/i, { files: ['src/app.jsx', 'app.js'] }),
       ...offendingLines(/cerebellar\s*>15mL/i, { files: ['src/app.jsx', 'app.js'] }),
       ...offendingLines(/cerebellarGt15mL/i, { files: ['src/app.jsx', 'app.js'] }),
+      ...offendingLines(/Cerebellar ICH with mass effect<\/strong>\s+and obstructive hydrocephalus/i, { files: ['src/app.jsx', 'app.js'] }),
       ...offendingLines(/immediate evacuation \+\/- EVD/i, { files: ['src/app.jsx', 'app.js'] }),
       ...offendingLines(/cerebellar ICH volume\s*>=\s*15 mL/i, { files: ['src/guidelines/ich-2022.json', 'data/guidelines/ich-2022.json', 'app.js'] })
     ];
