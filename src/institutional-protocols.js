@@ -154,7 +154,7 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
       title: 'MIRROR registry screen',
       criteria: [
         'Selected spontaneous supratentorial IPH being considered for minimally invasive evacuation',
-        'Volume and NIHSS thresholds must be checked against the active registry protocol before use',
+        'Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol before use',
         'No underlying vascular lesion',
         'Potential MIS timing within 24 hours of last known well or qualifying wake-up hemorrhage window'
       ],

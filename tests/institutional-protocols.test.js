@@ -224,7 +224,11 @@ describe('ICH initial evaluation algorithm', () => {
   it('keeps MIRROR as a verify-current-protocol registry screen', () => {
     const mirror = alg.researchScreens.find((screen) => screen.title === 'MIRROR registry screen');
     expect(mirror).toBeTruthy();
-    expect(mirror.criteria.join(' ')).toMatch(/thresholds must be checked against the active registry protocol/);
+    const criteriaText = mirror.criteria.join(' ');
+    expect(criteriaText).toMatch(/thresholds are version-sensitive/i);
+    expect(criteriaText).toMatch(/premorbid mRS/i);
+    expect(criteriaText).toMatch(/GCS/i);
+    expect(criteriaText).toMatch(/active registry protocol/);
     expect(mirror.action).toMatch(/Do not let registry screening delay/);
   });
 

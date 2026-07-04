@@ -3,7 +3,7 @@
     "endpoint": "generic-protocols",
     "schemaVersion": "1.0.0",
     "appVersion": "6.10.0",
-    "checksum": "sha256:4db82a903813e5f54d0ab1d8fba21530",
+    "checksum": "sha256:b97cab12443c7fe786b02ca6f5ab328c",
     "count": 3,
     "source": "src/institutional-protocols.js",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -150,7 +150,7 @@
           "title": "MIRROR registry screen",
           "criteria": [
             "Selected spontaneous supratentorial IPH being considered for minimally invasive evacuation",
-            "Volume and NIHSS thresholds must be checked against the active registry protocol before use",
+            "Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol before use",
             "No underlying vascular lesion",
             "Potential MIS timing within 24 hours of last known well or qualifying wake-up hemorrhage window"
           ],
