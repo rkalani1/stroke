@@ -331,39 +331,11 @@ async function auditPublicDemoSurface(page, context, target, issues, notes) {
 
   notes.publicDemoChecked = true;
 
-  const modal = page.getByRole('dialog', { name: /Synthetic education only/i }).first();
-  if ((await modal.count()) === 0) {
-    addIssue(issues, 'public-demo-modal-missing');
-  } else {
-    const modalText = await modal.innerText();
-    if (!/not an approved clinical tool/i.test(modalText)) {
-      addIssue(issues, 'public-demo-modal-copy-mismatch');
-    }
-    if (!/Do not enter PHI, MRNs, dates of birth/i.test(modalText)) {
-      addIssue(issues, 'public-demo-modal-phi-copy-missing');
-    }
-    const button = page.getByRole('button', { name: /Use synthetic demo/i }).first();
-    if ((await button.count()) === 0) {
-      addIssue(issues, 'public-demo-modal-button-missing');
-    } else {
-      await clickElementRobust(button);
-      await page.waitForTimeout(150);
-    }
-  }
-
-  await page.reload({ waitUntil: 'domcontentloaded', timeout: 60000 });
-  await page.waitForTimeout(500);
-  if ((await page.getByRole('dialog', { name: /Synthetic education only/i }).count()) > 0) {
-    addIssue(issues, 'public-demo-modal-reappeared-same-session');
-  }
-
+  // The public-demo consent modal and standing PHI banner were removed from the
+  // UI (owner decision). The no-PHI posture is preserved in metadata/policy
+  // (index.html meta, data/*.json disclaimers, COMPLIANCE.md) rather than a
+  // blocking surface. We still assert no named-institution label leaks visibly.
   let bodyText = await page.locator('body').innerText();
-  if (!/Synthetic educational demo - not medical advice/i.test(bodyText)) {
-    addIssue(issues, 'public-demo-banner-missing');
-  }
-  if (!/not an approved clinical tool/i.test(bodyText)) {
-    addIssue(issues, 'public-demo-banner-approval-copy-missing');
-  }
   if (/Institutional Protocols & Algorithms/i.test(bodyText)) {
     addIssue(issues, 'public-demo-institutional-label-visible');
   }

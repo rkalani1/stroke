@@ -16472,8 +16472,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             <div className="relative v7-skin">
               {/* v7: skip-link → semantic <main id="main">; cobalt accent, no link-* override */}
               <a href="#main" data-skip-tap className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-cobalt-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">Skip to main content</a>
-              {PUBLIC_DEMO_MODE && <PublicDemoConsentModal />}
-
               {protocolModal && (
                 <div className="clinician-only fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="protocol-modal-title" onClick={() => setProtocolModal(null)}>
                   <div className="w-full max-w-lg bg-white rounded-md shadow-xl border border-line dark:bg-card" onClick={(e) => e.stopPropagation()}>
@@ -16517,7 +16515,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   can pin to the viewport; html/body already clip horizontal
                   overflow at the page level. */}
               <div className="app-shell v7-content max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-hidden md:overflow-x-visible">
-              {PUBLIC_DEMO_MODE && <PHIBanner />}
 
               {/* Offline Indicator */}
               {!isOnline && (
@@ -27625,29 +27622,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               )}
                             </div>
                             {railLkwIso && <LKWCountdown lkwIso={railLkwIso} className="mt-2" />}
-                          </div>
-
-                          {/* Safety-critical + Incomplete (mirror of inline Missing-Fields banner) */}
-                          <div className="px-4 py-3 space-y-2">
-                            <p className="font-mono uppercase text-eyebrow text-mute">Readiness</p>
-                            {railSafetyGaps.length > 0 ? (
-                              <div className="bg-crit-50 border border-crit-200 rounded-lg px-3 py-2 flex items-start gap-2 dark:bg-crit-950 dark:border-crit-800">
-                                <i aria-hidden="true" data-lucide="shield-alert" className="w-4 h-4 text-crit-500 mt-0.5 flex-shrink-0"></i>
-                                <span className="text-xs text-crit-700 dark:text-crit-300"><span className="font-semibold">Safety-critical:</span> {railSafetyGaps.join(', ')}</span>
-                              </div>
-                            ) : null}
-                            {railMissing.length > 0 ? (
-                              <div className="bg-warn-50 border border-warn-300 rounded-lg px-3 py-2 flex items-start gap-2 dark:bg-warn-950 dark:border-warn-800">
-                                <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-warn-600 mt-0.5 flex-shrink-0 dark:text-warn-300"></i>
-                                <span className="text-xs text-warn-800 dark:text-warn-300"><span className="font-semibold">Incomplete:</span> {railMissing.join(', ')}</span>
-                              </div>
-                            ) : null}
-                            {railSafetyGaps.length === 0 && railMissing.length === 0 ? (
-                              <div className="bg-ok-50 border border-ok-200 rounded-lg px-3 py-2 flex items-start gap-2 dark:bg-ok-950 dark:border-ok-800">
-                                <i aria-hidden="true" data-lucide="check-circle" className="w-4 h-4 text-ok-600 mt-0.5 flex-shrink-0 dark:text-ok-300"></i>
-                                <span className="text-xs text-ok-800 font-medium dark:text-ok-300">All core fields captured.</span>
-                              </div>
-                            ) : null}
                           </div>
 
                           {/* Live Pulsara case summary preview (compact, scrollable) */}
