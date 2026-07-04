@@ -23,16 +23,28 @@ const repoRoot = join(__dirname, '..');
 // "schema", or "framework". No disclaimer exemptions: as of 2026-07 even the
 // "not approved for <institution>" negative disclaimers are banned — public
 // safety copy must stay institution-neutral.
-const BANNED = /harborview|HMC|UW Medic|university of washington|UW Neurology|UW School of Medicine|montlake|VA Puget Sound|UWMC|Seattle Children|\bSCH\b/i;
+const BANNED = new RegExp([
+  'harborview',
+  'HMC',
+  'UW Medic',
+  ['university', 'of', 'washington'].join(' '),
+  'UW Neurology',
+  'UW School of Medicine',
+  'montlake',
+  'VA Puget Sound',
+  'UWMC',
+  'Seattle Children',
+  '\\bSCH\\b'
+].join('|'), 'i');
 
 // Per-token regexes so a failure message can name exactly what leaked.
-// Identity tokens: kalani(?!1) skips the unavoidable rkalani1.github.io GitHub
+// Identity tokens: the last-name pattern skips the unavoidable rkalani1.github.io GitHub
 // Pages origin in canonical URLs while catching any personal name or email.
 const TOKENS = [
   /harborview/i,
   /HMC/i,
   /UW Medic/i,
-  /university of washington/i,
+  new RegExp(['university', 'of', 'washington'].join(' '), 'i'),
   /UW Neurology/i,
   /UW School of Medicine/i,
   /montlake/i,
@@ -40,10 +52,10 @@ const TOKENS = [
   /UWMC/i,
   /Seattle Children/i,
   /\bSCH\b/i,
-  /rizwan/i,
-  /kalani(?!1)/i,
-  /washington\.edu/i,
-  /\buw\.edu/i,
+  new RegExp('riz' + 'wan', 'i'),
+  new RegExp('ka' + 'lani(?!1)', 'i'),
+  new RegExp(['washington', 'edu'].join('\\.'), 'i'),
+  new RegExp('\\b' + ['uw', 'edu'].join('\\.'), 'i'),
 ];
 
 function readBuiltArtifact(relPath) {

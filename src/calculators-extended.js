@@ -863,46 +863,40 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
 // ENRICH eligibility — minimally invasive surgery for lobar ICH 30-80 mL
 // =====================================================================
 // ENRICH (Pradilla NEJM 2024;390:1277-89, PMID 38598795): Adaptive RCT, n=300.
-// Spontaneous lobar/anterior basal ganglia ICH, 30-80 mL, within 24h.
+// June 2026 operational screen exposed on the public ICH page:
+// spontaneous lobar ICH, 30-80 mL, age 18-80, NIHSS >5, GCS 5-14, no lesion.
 // Minimally invasive parafascicular surgery (BrainPath/Myriad-Artemis) + medical vs medical alone.
 // Primary: utility-weighted mRS at 180d. RESULT: 0.458 vs 0.374 (posterior prob superiority >0.999).
 // Benefit DRIVEN BY LOBAR subgroup (basal ganglia stratum dropped after futility analysis).
-// Implication: lobar ICH ≥30 mL → call neurosurgery early for MIS evaluation within 24h.
+// Implication: lobar ICH ≥30 mL → call neurosurgery early for MIS evaluation.
 export const evaluateENRICHEligibility = ({ icHLocation, volumeMl, timeFromOnsetH, gcs, premorbidMRS, age }) => {
   const v = parseFloat(volumeMl);
-  const t = parseFloat(timeFromOnsetH);
   const g = parseFloat(gcs);
-  const pm = parseFloat(premorbidMRS);
   const a = parseFloat(age);
   const loc = (icHLocation || '').toLowerCase();
 
-  if (!Number.isFinite(v) || !Number.isFinite(t)) return null;
+  if (!Number.isFinite(v)) return null;
 
   const isLobar = loc.includes('lobar') || loc.includes('cortical');
-  const isDeep = loc.includes('basal') || loc.includes('thalamus') || loc.includes('deep');
   const volumeOk = v >= 30 && v <= 80;
-  const timeOk = t <= 24;
   const ageOk = !Number.isFinite(a) || (a >= 18 && a <= 80);
-  const gcsOk = !Number.isFinite(g) || g >= 6;
-  const pmOk = !Number.isFinite(pm) || pm <= 1;
+  const gcsOk = !Number.isFinite(g) || (g >= 5 && g <= 14);
 
   const blockers = [];
   if (!volumeOk) blockers.push(`Volume ${v} mL outside 30-80`);
-  if (!timeOk) blockers.push(`${t}h from onset >24h`);
   if (!ageOk) blockers.push(`Age ${a} outside 18-80`);
-  if (!gcsOk) blockers.push(`GCS ${g} <6`);
-  if (!pmOk) blockers.push(`Premorbid mRS ${pm} >1`);
+  if (!gcsOk) blockers.push(`GCS ${g} outside 5-14`);
 
-  const eligible = volumeOk && timeOk && ageOk && gcsOk && pmOk && (isLobar || (isDeep && !loc.includes('thalamus')));
+  const eligible = volumeOk && ageOk && gcsOk && isLobar;
 
   return {
     eligible,
     bestCandidate: isLobar,
     rationale: eligible
-      ? `${isLobar ? 'Lobar' : 'Anterior basal ganglia'} ICH ${v} mL, ${t}h from onset — ENRICH-eligible. ${isLobar ? 'Lobar subgroup drove benefit (utility-weighted mRS 0.458 vs 0.374).' : 'Basal ganglia stratum dropped at futility analysis — benefit uncertain; lobar preferred.'} Call neurosurgery for MIS evaluation.`
+      ? `Lobar ICH ${v} mL — June 2026 MIE screen-positive. Lobar ENRICH subgroup drove benefit (utility-weighted mRS 0.458 vs 0.374). Call neurosurgery for MIS evaluation and confirm timing/detailed exclusions.`
       : isLobar && blockers.length === 0 ? 'Likely candidate — confirm with neurosurgery.'
-        : `Not currently meeting ENRICH criteria: ${blockers.join('; ')}.${!isLobar && !isDeep ? ' Location not specified or not in trial domain.' : ''}`,
-    nextSteps: 'If eligible: page neurosurgery; obtain CTA to rule out vascular lesion; coordinate transfer to MIS-capable center if local center lacks BrainPath/Myriad-Artemis. Time-to-OR target <24h.',
+        : `Not currently meeting the June 2026 MIE screen: ${blockers.join('; ')}.${!isLobar ? ' Location not lobar for this operational screen.' : ''}`,
+    nextSteps: 'If screen-positive: consult neurosurgery; obtain CTA/MRA to rule out vascular lesion; verify operative timing and detailed exclusions against the active protocol.',
     source: 'Pradilla NEJM 2024;390:1277-89 (ENRICH, PMID 38598795)',
     class: 'AHA/ASA 2022 was Class 2b for MIS pre-ENRICH; updated guidance expected to elevate to Class 2a for lobar ≥30 mL.'
   };
@@ -1352,4 +1346,3 @@ export const getAIConfiguration = () => {
     return { provider: 'mock', apiKey: '' };
   }
 };
-

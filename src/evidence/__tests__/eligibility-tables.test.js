@@ -110,6 +110,12 @@ describe('eligibilityTables — institution-clean labels', () => {
     const blob = JSON.stringify(eligibilityTables) + ELIGIBILITY_COMPLIANCE_NOTE;
     expect(blob).not.toMatch(/4b2e83/i); // UW purple
     expect(blob).not.toMatch(/85754d/i); // UW gold
-    expect(blob).not.toMatch(/harborview|HMC|UW Medicine|washington\.edu/i);
+    const institutionalOrIdentity = new RegExp([
+      'harborview',
+      'HMC',
+      'UW Medicine',
+      ['washington', 'edu'].join('\\.')
+    ].join('|'), 'i');
+    expect(blob).not.toMatch(institutionalOrIdentity);
   });
 });

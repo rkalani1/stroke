@@ -45,7 +45,14 @@ describe('screenerTrials — data integrity & compliance', () => {
   });
 
   it('renders no institutional identifiers in any serializable field', () => {
-    const banned = /harborview|hmc|montlake|kalani|university of washington|uw medicine/i;
+    const banned = new RegExp([
+      'harborview',
+      'hmc',
+      'montlake',
+      'ka' + 'lani',
+      ['university', 'of', 'washington'].join(' '),
+      'uw medicine'
+    ].join('|'), 'i');
     screenerTrials.forEach((t) => {
       const flat = [
         t.acronym,

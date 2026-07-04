@@ -1,0 +1,32 @@
+# GitHub Pages/Jekyll output allowlist by exclusion.
+# Runtime assets stay public; source, tests, scripts, docs, and local-only
+# support folders do not.
+exclude:
+  - .claude/
+  - .discovery/
+  - .githooks/
+  - .github/
+  - .remember/
+  - android/
+  - docs/
+  - ios/
+  - mcp/
+  - node_modules/
+  - output/
+  - private/
+  - scratch/
+  - scripts/
+  - src/
+  - tests/
+  - CHANGELOG.md
+  - COMPLIANCE.md
+  - CONTRIBUTING.md
+  - LICENSE
+  - OPTIN_NATIVE_WRAPPER
+  - README.md
+  - SECURITY.md
+  - capacitor.config.json
+  - package-lock.json
+  - package.json
+  - tailwind.config.js
+  - vitest.config.js

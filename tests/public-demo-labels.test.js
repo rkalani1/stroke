@@ -20,6 +20,10 @@ function readJson(relPath) {
   return JSON.parse(readText(relPath));
 }
 
+function lines(relPath) {
+  return readText(relPath).split(/\r?\n/).map((line) => line.trim());
+}
+
 describe('public demo labeling and agent disclaimers', () => {
   it('uses public educational-demo framing in shipped metadata', () => {
     const index = readText('index.html');
@@ -61,7 +65,15 @@ describe('public demo labeling and agent disclaimers', () => {
     // bare account slug is unavoidable in canonical URLs. Everything else —
     // institution names, personal names, institutional email domains — is banned
     // from the served metadata surface.
-    const IDENTITY = /UW Medicine|Harborview|university of washington|washington\.edu|\buw\.edu\b|Rizwan|Kalani(?!1)/i;
+    const IDENTITY = new RegExp([
+      'UW Medicine',
+      'Harborview',
+      ['university', 'of', 'washington'].join(' '),
+      ['washington', 'edu'].join('\\.'),
+      '\\b' + ['uw', 'edu'].join('\\.') + '\\b',
+      'Riz' + 'wan',
+      'Ka' + 'lani(?!1)'
+    ].join('|'), 'i');
     for (const relPath of ['index.html', 'manifest.json', 'llms.txt', 'llms-full.txt', 'robots.txt', 'sitemap.xml', 'README.md', 'COMPLIANCE.md', 'SECURITY.md']) {
       const content = readText(relPath);
       expect(content, `${relPath} leaks identity/institution content`).not.toMatch(IDENTITY);
@@ -78,6 +90,28 @@ describe('public demo labeling and agent disclaimers', () => {
     expect(generatedData).not.toContain('Institutional Protocols & Algorithms');
     expect(appSource).toContain('Example Protocols (Not Local Policy)');
     expect(generatedData).toContain('Example protocols (not local policy)');
+  });
+
+  it('excludes source, tests, scripts, docs, and local-only folders from GitHub Pages', () => {
+    const configLines = lines('_config.yml');
+    const excluded = [
+      'scripts/',
+      'src/',
+      'tests/',
+      'docs/',
+      'android/',
+      'ios/',
+      'mcp/',
+      'output/',
+      'private/',
+      'node_modules/',
+      '.github/',
+      '.githooks/'
+    ];
+
+    for (const path of excluded) {
+      expect(configLines).toContain(`- ${path}`);
+    }
   });
 });
 

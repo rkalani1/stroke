@@ -23,7 +23,17 @@ const CONTENT_FILES = [
   'src/institutional-protocols.js',
   'src/calculators-extended.js',
   'src/app.jsx',
+  'app.js',
+  'src/evidence/screener/minute.js',
+  'src/evidence/screenerTrials.json',
+  'src/evidence/eligibilityTables.js',
   'data/generic-protocols.json'
+];
+const MINUTE_FILES = [
+  'src/evidence/screener/minute.js',
+  'src/evidence/screenerTrials.json',
+  'src/evidence/eligibilityTables.js',
+  'app.js'
 ];
 const texts = Object.fromEntries(CONTENT_FILES.map((f) => [f, read(f)]));
 const linesOf = Object.fromEntries(CONTENT_FILES.map((f) => [f, texts[f].split('\n')]));
@@ -113,7 +123,7 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
   });
 
   it('keeps ENRICH/MIE criteria aligned to GCS 5-14', () => {
-    expect(texts['src/app.jsx']).toMatch(/ENRICH MIE Inclusion/);
+    expect(texts['src/app.jsx']).toMatch(/June 2026 MIE Screen \(ENRICH-Based\)/);
     expect(texts['src/app.jsx']).toMatch(/GCS 5-14/);
     expect(texts['src/institutional-protocols.js']).toMatch(/GCS 5-14/);
     expect(texts['data/generic-protocols.json']).toMatch(/GCS 5-14/);
@@ -126,7 +136,8 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
       ...offendingLines(/GCS 5-12[^\n]{0,240}MIE/i),
       ...offendingLines(/Surgical Selection[^\n]{0,400}GCS 5-12/i),
       ...offendingLines(/mRS 0-1[^\n]{0,160}ENRICH/i),
-      ...offendingLines(/ENRICH[^\n]{0,160}mRS 0-1/i)
+      ...offendingLines(/ENRICH[^\n]{0,160}mRS 0-1/i),
+      ...offendingLines(/ENRICH[^\n]{0,240}(≤|<=)\s*24\s*(h|hours?)/i, { files: ['src/app.jsx', 'app.js'] })
     ];
     expect(hits, `Obsolete ENRICH/MIE criterion found:\n${hits.join('\n')}`).toEqual([]);
   });
@@ -138,6 +149,24 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(texts['src/app.jsx']).not.toMatch(/Persistent systolic blood pressure >140 mmHg/);
   });
 
+  it('keeps MINUTE screener criteria aligned to the June 2026 algorithm screen', () => {
+    expect(texts['src/evidence/screener/minute.js']).toMatch(/>=15 mL \(or close by ABC\/2\)/);
+    expect(texts['src/evidence/screener/minute.js']).toMatch(/<=15 hours from last known well/);
+    expect(texts['src/evidence/screenerTrials.json']).toMatch(/Volume >=15 mL by ABC\/2/);
+    expect(texts['src/evidence/eligibilityTables.js']).toMatch(/Arrival\/evaluation <=15 hours since LKW/);
+
+    const staleHits = [
+      ...offendingLines(/MINUTE[^\n]{0,260}(≥|>=)\s*20\s*mL/i, { files: MINUTE_FILES }),
+      ...offendingLines(/(≥|>=)\s*20\s*mL[^\n]{0,260}MINUTE/i, { files: MINUTE_FILES }),
+      ...offendingLines(/\b20mL\b/i, { files: MINUTE_FILES }),
+      ...offendingLines(/MINUTE[^\n]{0,260}(≤|<=)\s*16\s*(h|hours?)/i, { files: MINUTE_FILES }),
+      ...offendingLines(/(≤|<=)\s*16\s*(h|hours?)[^\n]{0,260}MINUTE/i, { files: MINUTE_FILES }),
+      ...offendingLines(/Pre-ICH mRS/i, { files: MINUTE_FILES }),
+      ...offendingLines(/GCS\s*<\s*7/i, { files: MINUTE_FILES })
+    ];
+    expect(staleHits, `Stale MINUTE criterion found:\n${staleHits.join('\n')}`).toEqual([]);
+  });
+
   it('does not publish stale MIRROR registry mRS/GCS thresholds as settled criteria', () => {
     expect(texts['src/app.jsx']).toMatch(/Premorbid mRS threshold must be verified against the active registry protocol/);
     expect(texts['src/app.jsx']).toMatch(/GCS range must be verified against the active registry protocol/);
@@ -147,6 +176,8 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(texts['data/generic-protocols.json']).not.toMatch(/Premorbid mRS 0-1/);
     expect(texts['src/institutional-protocols.js']).not.toMatch(/Baseline GCS:?\s*5-15/);
     expect(texts['data/generic-protocols.json']).not.toMatch(/Baseline GCS:?\s*5-15/);
+    expect(texts['src/app.jsx']).not.toMatch(/ICH volume >20mL/);
+    expect(texts['src/app.jsx']).toMatch(/Volume threshold is version-sensitive and must be checked against the active registry protocol/);
   });
 
   it('does not publish local Stroke Phone labels on public surfaces', () => {

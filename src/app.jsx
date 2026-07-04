@@ -3231,7 +3231,7 @@ Clinician Name`;
                                 name: "MINUTE Trial",
                                 nct: "NCT07260916",
                                 phase: "Phase 2",
-                                status: "Not yet recruiting",
+                                status: "Enrolling",
                                 description: "Initial-evaluation screen for selected acute spontaneous non-traumatic basal-ganglia IPH candidates; confirm current enrollment status and contact route locally",
                                 inclusion: [
                                     "Age 18-80 years",
@@ -3270,7 +3270,7 @@ Clinician Name`;
                                 inclusion: [
                                     "Age ≥18 years",
                                     "Spontaneous supratentorial ICH confirmed by CT",
-                                    "ICH volume >20mL, with the active registry range verified locally",
+                                    "Volume threshold is version-sensitive and must be checked against the active registry protocol",
                                     "MIS possible within 24 hours of last known well, or within the qualifying wake-up hemorrhage window",
                                     "NIHSS threshold must be verified against the active registry protocol",
                                     "Premorbid mRS threshold must be verified against the active registry protocol",
@@ -4250,7 +4250,7 @@ Clinician Name`;
               id: 'ich_mis_evac',
               category: 'ICH',
               title: 'Minimally invasive ICH evacuation (MIE)',
-              recommendation: 'For spontaneous lobar IPH 30-80cc, ≤24h onset, NIHSS >5, GCS 5-14, age 18-80: consider MIE (ENRICH criteria). Consult neurosurgery per local protocol.',
+              recommendation: 'For spontaneous lobar IPH 30-80cc, NIHSS >5, GCS 5-14, age 18-80, and no underlying lesion: consider the June 2026 MIE pathway and confirm detailed operative timing with neurosurgery.',
               detail: 'Select endoscopic or stereotactic aspiration approaches based on local expertise. Functional outcome benefit is uncertain.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
@@ -28424,7 +28424,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Surgical Selection</h4>
                           <ul className="text-sm space-y-1">
                             <li>June 2026 operational MIE screen: lobar IPH 30-80 mL, NIHSS &gt;5, GCS 5-14, age 18-80, and no underlying lesion.</li>
-                            <li>General guideline evidence supports selected minimally invasive evacuation for supratentorial ICH; use the ENRICH-based screen below for this pathway.</li>
+                            <li>General guideline evidence supports selected minimally invasive evacuation for supratentorial ICH; use the June 2026 screen below for this pathway.</li>
                             <li>MIS may be reasonable over conventional craniotomy in eligible patients.</li>
                             <li>Functional outcome benefit remains uncertain.</li>
                           </ul>
@@ -28432,17 +28432,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div className="bg-white p-3 rounded border dark:bg-card">
-                            <h4 className="font-semibold text-ok-600 mb-2 dark:text-ok-300">ENRICH MIE Inclusion (NCT02880878)</h4>
+                            <h4 className="font-semibold text-ok-600 mb-2 dark:text-ok-300">June 2026 MIE Screen (ENRICH-Based)</h4>
                             <ul className="text-sm space-y-1">
                               <li>• Spontaneous <strong>lobar</strong> IPH — no underlying lesion (tumor/AVM)</li>
                               <li>• ICH volume 30-80 cc</li>
-                              <li>• ≤24 hours of symptom onset</li>
                               <li>• Age 18-80 years</li>
                               <li>• NIHSS &gt;5</li>
                               <li>• GCS 5-14</li>
-                              <li>• Pre-morbid mRS 0-1</li>
                             </ul>
-                            <p className="text-xs text-ok-700 mt-2 italic dark:text-ok-300">* Reasonable to consider in cases 24-72h after onset and outside trial criteria — discuss with neurosurgery.</p>
+                            <p className="text-xs text-ok-700 mt-2 italic dark:text-ok-300">Confirm operative timing, detailed exclusions, and pathway activation with neurosurgery and the active local protocol.</p>
                           </div>
 
                           <div className="bg-white p-3 rounded border dark:bg-card">

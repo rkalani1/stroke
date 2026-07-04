@@ -285,7 +285,7 @@
       "design": "RCT, n=300, MIPS+medical vs medical for lobar ICH 30-80 mL",
       "outcomes": "Primary (utility-weighted mRS at 180d): significantly favored MIPS.",
       "bottomLine": "First positive ICH surgery trial — MIPS improves outcomes in selected lobar ICH patients.",
-      "teachingPoint": "ICH algorithm screen: lobar ICH 30-80 mL, ≤24h onset, NIHSS >5, GCS 5-14, age 18-80. Deep ICH and cerebellar ICH were excluded; verify detailed operative-trial criteria against the active protocol before applying."
+      "teachingPoint": "June 2026 ICH algorithm screen: lobar ICH 30-80 mL, NIHSS >5, GCS 5-14, age 18-80, and no underlying lesion. Deep ICH and cerebellar ICH were excluded; verify operative timing and detailed trial criteria against the active protocol before applying."
     },
     {
       "name": "ANNEXA-4 / ANNEXA-I",

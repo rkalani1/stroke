@@ -64,11 +64,7 @@
   "fullyExemptFiles": [
     "scripts/leak-guard-denylist.json",
     "scripts/check-no-institutional-leak.mjs",
-    ".githooks/pre-commit",
-    "tests/no-institutional-identifiers.test.js",
-    "tests/public-demo-labels.test.js",
-    "src/evidence/__tests__/screener-eval.test.js",
-    "src/evidence/__tests__/eligibility-tables.test.js"
+    ".githooks/pre-commit"
   ],
 
   "exemptFiles": [
@@ -86,6 +82,7 @@
   "_institutionalScanExcludeDirs": "Institution-NAME tokens are governance-discussable in these dirs (guard tests + CI configs). docs/ is NOT excluded: GitHub Pages serves the repo root, so docs/ is public surface. PHI patterns, literals, and identityTokens are STILL scanned here with no exemption.",
   "institutionalScanExcludeDirs": [
     "tests/",
+    "src/evidence/__tests__/",
     ".github/"
   ],
 
