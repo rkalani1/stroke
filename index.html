@@ -158,9 +158,7 @@
             backdrop-filter: blur(10px);
             border-radius: calc(var(--radius-lg) - 6px) calc(var(--radius-lg) - 6px) 0 0;
         }
-        /* v5.31: brand mark — re-skin the existing icon-wrap (h-9 w-9 rounded-xl
-           border-cobalt-200 bg-cobalt-50 text-cobalt-700) inside .app-header to use
-           the accent gradient. CSS-only; no JSX edit. */
+        /* Brand mark accent treatment. */
         .app-header .border-cobalt-200.bg-cobalt-50.text-cobalt-700 {
             background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 110%) !important;
             border-color: transparent !important;
@@ -217,12 +215,7 @@
             color: var(--accent-ink);
         }
 
-        /* ─────────────────────────────────────────────────────────────
-           v5.31 visual refresh — sidebar layout on lg+ screens.
-           Pure CSS transformation: turns the existing horizontal
-           tab-pill nav into a 248-px vertical sidebar with a soft
-           accent active state. No JSX touched.
-           ───────────────────────────────────────────────────────────── */
+        /* Sidebar layout on lg+ screens. */
         @media (min-width: 1024px) {
             .app-shell {
                 display: grid;
@@ -285,8 +278,7 @@
             }
         }
 
-        /* v5.31: mobile bottom nav — same JSX, accent-themed surface +
-           soft accent active pill. */
+        /* Mobile bottom nav accent surface. */
         nav[aria-label="Mobile navigation"] {
             background: color-mix(in oklab, var(--surface) 94%, transparent) !important;
             border-top: 1px solid var(--panel-border) !important;
@@ -304,10 +296,6 @@
         nav[aria-label="Mobile navigation"] button.text-cobalt-600 i {
             color: var(--accent) !important;
         }
-
-        /* v5.31: top "Stroke" tab pill rendered inline by app-nav at lg+ in
-           the sidebar grid. Reset margin so the sidebar starts flush with
-           the topbar baseline. */
 
         .compact .p-4 { padding: 0.75rem !important; }
         .compact .p-3 { padding: 0.5rem !important; }
@@ -909,22 +897,6 @@
             }
             return false;
         };
-    </script>
-    <!-- Optional non-public extension hook.
-         Public Pages hosts skip this loader entirely. -->
-    <script>
-      (function () {
-        // Same github.io detection as IS_PUBLIC_PAGES (declared in the
-        // version-management IIFE above, out of scope here). Skip the
-        // fetch entirely on public Pages — nothing to load and no 404.
-        var isPublicPages = /(^|\.)github\.io$/i.test(window.location.hostname || '');
-        if (isPublicPages) return;
-        var s = document.createElement('script');
-        s.src = ['pri', 'vate'].join('') + '/' + ['institutional', 'js'].join('.');
-        s.onerror = function () { /* absent on non-public builds — no-op safety net */ };
-        // Insert synchronously before app.js so the global is set in time.
-        document.currentScript.parentNode.insertBefore(s, document.currentScript);
-      })();
     </script>
     <script src="app.js?v=6.10.0" defer></script>
 </body>

@@ -2700,7 +2700,7 @@ Clinician Name`;
             'post-tnk': { label: 'Post-TNK', systolic: 180, diastolic: 105 },
             'post-evt': { label: 'Post-EVT (SBP <180 per AHA/ASA 2019; avoid <140 through ≥72h — ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II showed harm/no benefit)', systolic: 180, diastolic: 105, systolicLow: 140, systolicHigh: 180 },
             'no-lytics': { label: 'No lytics/No EVT', systolic: 220, diastolic: 120 },
-            'ich': { label: 'ICH (target SBP 140, range 130-150; AHA/ASA 2022 Class 2a; avoid <130 Class 3:Harm)', systolic: 140, diastolic: 90, systolicLow: 130, systolicHigh: 150 },
+            'ich': { label: 'ICH (smooth control; target SBP 140, range 130-150 when appropriate; avoid <130 Class 3:Harm)', systolic: 140, diastolic: 90, systolicLow: 130, systolicHigh: 150 },
             'sah': { label: 'SAH (pre-securing, target <160)', systolic: 160, diastolic: 100 },
             'sah-secured': { label: 'SAH (post-securing)', systolic: 140, diastolic: 90 },
             'cvt': { label: 'CVT (permissive)', systolic: 220, diastolic: 110 },
@@ -3657,8 +3657,8 @@ Clinician Name`;
               id: 'bp_ich_acute',
               category: 'Blood Pressure',
               title: 'ICH acute BP target',
-              recommendation: 'For spontaneous ICH with presenting SBP 150-220 mmHg, smooth and sustained control to target SBP 140 mmHg (maintained within 130-150 mmHg) is safe and may be reasonable for improving functional outcomes (Class 2a, LOE B-R per AHA/ASA 2022). Acute lowering to SBP <130 mmHg is potentially harmful (Class 3: Harm, LOE B-R; ATACH-2).',
-              detail: 'AHA/ASA Spontaneous ICH 2022 (Greenberg): (1) For presenting SBP 150-220 mmHg, target SBP 140 mmHg within range 130-150 mmHg — Class 2a, LOE B-R (INTERACT2). (2) Acute lowering to SBP <130 mmHg is potentially harmful — Class 3: Harm, LOE B-R (ATACH-2). (3) For SBP >220 mmHg the safety of intensive lowering is uncertain; aggressive reduction with continuous IV infusion is reasonable. INTERACT3 (Lancet 2023) showed a care bundle — early intensive BP lowering (SBP target <140) plus glucose, anticoagulation reversal, and fever management — improves functional outcomes; BP lowering alone is one component of that bundle. Nicardipine or clevidipine infusion preferred; labetalol bolus as adjunct. Maintain target ≥24 hours, then transition to oral antihypertensives to SBP <130 for secondary prevention.',
+              recommendation: 'For spontaneous mild-to-moderate ICH with presenting SBP 150-220 mmHg, use smooth and sustained BP control; target SBP 140 mmHg, maintained within 130-150 mmHg, is safe and may be reasonable (Class 2b, LOE B-R per AHA/ASA 2022). Acute lowering to SBP <130 mmHg is potentially harmful (Class 3: Harm, LOE B-R; ATACH-2).',
+              detail: 'AHA/ASA Spontaneous ICH 2022 (Greenberg): (1) Medication titration for continuous, smooth, sustained BP control and early treatment can be beneficial — Class 2a, LOE B-NR/C-LD. (2) For mild-to-moderate ICH with presenting SBP 150-220 mmHg, target SBP 140 mmHg within range 130-150 mmHg is safe and may be reasonable — Class 2b, LOE B-R. (3) Acute lowering to SBP <130 mmHg is potentially harmful — Class 3: Harm, LOE B-R (ATACH-2). (4) For large/severe ICH or surgical decompression candidates, safety and efficacy of intensive lowering are not well established. INTERACT3 (Lancet 2023) tested a care bundle — early BP lowering plus glucose, anticoagulation reversal, and fever management — so do not treat its result as BP-only class evidence. Nicardipine or clevidipine infusion preferred; labetalol bolus as adjunct. Maintain target ≥24 hours, then transition to oral antihypertensives toward long-term BP control.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -5143,7 +5143,7 @@ Clinician Name`;
               category: 'Complications',
               title: 'Hemorrhagic transformation management',
               recommendation: 'Classify hemorrhagic transformation using ECASS criteria (HI-1, HI-2, PH-1, PH-2). Symptomatic ICH (PH-2 or neurological worsening) requires emergent management.',
-              detail: 'ECASS Classification: HI-1 (small petechiae along infarct margin), HI-2 (confluent petechiae within infarct, no mass effect), PH-1 (blood clots ≤30% of infarct, mild mass effect), PH-2 (blood clots >30% with significant mass effect). SYMPTOMATIC HT MANAGEMENT (PH-2 or NIHSS worsening ≥4): (1) STOP TNK infusion immediately if still running. (2) STAT CT head. (3) STAT labs: CBC, PT/INR, aPTT, fibrinogen, type & screen. (4) Cryoprecipitate 10 units IV (target fibrinogen >200 mg/dL); give empirically if fibrinogen result delayed. (5) TXA 1g IV over 10 min AFTER cryoprecipitate started. (6) Platelet transfusion 6-10 units if platelets <100K; recheck CBC 15-30 min post-transfusion. (7) Hold all antithrombotics and antiplatelet agents. (8) Target SBP <140 mmHg. (9) NEUROSURGERY CONSULTATION for: ICH volume >30 mL, >30% hematoma expansion, IVH with mass effect, midline shift >5 mm, herniation risk, or refractory coagulopathy. (10) ICU admission for PH-1/PH-2. (11) Repeat imaging at 24h.',
+              detail: 'ECASS Classification: HI-1 (small petechiae along infarct margin), HI-2 (confluent petechiae within infarct, no mass effect), PH-1 (blood clots ≤30% of infarct, mild mass effect), PH-2 (blood clots >30% with significant mass effect). SYMPTOMATIC HT MANAGEMENT (PH-2 or NIHSS worsening ≥4): (1) STOP TNK infusion immediately if still running. (2) STAT CT head. (3) STAT labs: CBC, PT/INR, aPTT, fibrinogen, type & screen. (4) Cryoprecipitate 10 units IV (target fibrinogen >200 mg/dL); give empirically if fibrinogen result delayed. (5) TXA 1g IV over 10 min AFTER cryoprecipitate started. (6) Platelet transfusion 6-10 units if platelets <100K; recheck CBC 15-30 min post-transfusion. (7) Hold all antithrombotics and antiplatelet agents. (8) Target SBP around 140 mmHg with smooth control; avoid <130. (9) NEUROSURGERY CONSULTATION for: ICH volume >30 mL, >30% hematoma expansion, IVH with mass effect, midline shift >5 mm, herniation risk, or refractory coagulopathy. (10) ICU admission for PH-1/PH-2. (11) Repeat imaging at 24h.',
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -11791,7 +11791,7 @@ Clinician Name`;
                 const ichVol = calculateICHVolume(ichCalc);
                 if (ichVol && ichVol.volume) ichNote += `- ICH volume (ABC/2): ${ichVol.volume} mL${ichVol.isLarge ? ' (LARGE)' : ''}\n`;
               }
-              if (telestrokeNote.ichBPManaged) ichNote += '- BP managed (target SBP 140, range 130-150; Class 2a; avoid <130 Class 3:Harm)\n';
+              if (telestrokeNote.ichBPManaged) ichNote += '- BP managed (smooth control; target SBP 140, range 130-150 when appropriate; avoid <130 Class 3:Harm)\n';
               if (telestrokeNote.ichReversalInitiated) ichNote += '- Anticoagulation reversal initiated\n';
               const ichConsultTiming = getIchEscalationSummary();
               if (ichConsultTiming) ichNote += `- ICH timing KPIs: ${ichConsultTiming}\n`;
@@ -12185,7 +12185,7 @@ Clinician Name`;
             if (dx === 'ich') {
               sentences.push('Diagnosis: Intracerebral hemorrhage.');
               const ichActions = [];
-              if (telestrokeNote.ichBPManaged) ichActions.push('BP management initiated (target SBP <140 (Class IIa; avoid <130))');
+              if (telestrokeNote.ichBPManaged) ichActions.push('BP management initiated (smooth control; target SBP 140/range 130-150 when appropriate; avoid <130)');
               if (telestrokeNote.ichReversalInitiated) ichActions.push('anticoagulation reversal initiated');
               const ichVoiceTiming = getIchEscalationSummary();
               if (ichVoiceTiming) ichActions.push(`timing KPIs: ${ichVoiceTiming}`);
@@ -13137,7 +13137,7 @@ Clinician Name`;
 
             // BP phase-diagnosis coherence
             if (n.diagnosisCategory === 'ich' && n.bpPhase && !['ich'].includes(n.bpPhase)) {
-              warnings.push({ id: 'bp-phase-ich-mismatch', severity: 'warn', msg: `ICH diagnosis but BP phase set to '${n.bpPhase}' — ICH guideline recommends SBP <140 (INTERACT3/AHA 2022). Set BP phase to ICH.` });
+              warnings.push({ id: 'bp-phase-ich-mismatch', severity: 'warn', msg: `ICH diagnosis but BP phase set to '${n.bpPhase}' — use the ICH BP phase for smooth/timely control, usually targeting SBP 140 with range 130-150 when appropriate and avoiding <130.` });
             }
             if (n.diagnosisCategory === 'sah' && n.bpPhase && !['sah', 'sah-secured'].includes(n.bpPhase)) {
               warnings.push({ id: 'bp-phase-sah-mismatch', severity: 'warn', msg: `SAH diagnosis but BP phase set to '${n.bpPhase}' — SAH target is SBP <160 (pre-securing) or <140 (post-securing). Verify BP phase.` });
@@ -13304,7 +13304,7 @@ Clinician Name`;
                 icon: 'heart-pulse',
                 color: 'red',
                 orders: [
-                  'Target SBP <140 mmHg within 2h of onset (Class IIa, INTERACT2). Avoid SBP <130 (ATACH-2).',
+                  'Use smooth BP control; target SBP 140 mmHg, maintain range 130-150 when appropriate, and avoid SBP <130 (ATACH-2).',
                   'Nicardipine 5 mg/hr IV, titrate by 2.5 mg/hr q5-15 min (max 15 mg/hr)',
                   'Avoid SBP <130 mmHg (renal AKI risk)',
                   `Current BP: ${n.presentingBP || '***'}`,
@@ -13642,7 +13642,7 @@ Clinician Name`;
             // Nursing Communication Parameter Sheet
             if (isIschemic || isICH || isSAH || cat === 'cvt') {
               const nursingOrders = [];
-              const bpTarget = isICH ? 'SBP <140 mmHg (INTERACT2)' : isSAH ? 'SBP <160 until aneurysm secured' :
+              const bpTarget = isICH ? 'SBP 140 mmHg, range 130-150 when appropriate; avoid <130' : isSAH ? 'SBP <160 until aneurysm secured' :
                 cat === 'cvt' ? 'SBP <220 (permissive; <140 if hemorrhagic infarction)' :
                 n.tnkAdminTime ? 'SBP <180/105 x 24h post-lytic' : n.evtRecommended ? 'SBP <180, avoid <140 post-EVT' : 'SBP <220 (permissive HTN)';
               nursingOrders.push(`BP target: ${bpTarget}`);
@@ -16208,7 +16208,7 @@ ${telestrokeNote.evtRecommended ? `EVT: Recommended` : 'EVT: Not Recommended'}`;
 
             const bpTarget = receivedTNK ? 'SBP <180, DBP <105 x 24h'
               : receivedEVT ? 'SBP <180, DBP <105 (avoid SBP <140)'
-              : diagCat === 'ich' ? 'SBP <140 (Class IIa, INTERACT2; avoid <130 per ATACH-2)'
+              : diagCat === 'ich' ? 'SBP 140, range 130-150 when appropriate; avoid <130 per ATACH-2'
               : diagCat === 'sah' ? 'SBP <160 until aneurysm secured'
               : 'SBP <220, DBP <120 (if no thrombolysis)';
 
@@ -19040,7 +19040,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <input type="checkbox" checked={!!telestrokeNote.ichBPManaged}
                                       onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, ichBPManaged: c})); }}
                                       className="w-4 h-4 text-crit-600 dark:text-crit-300" />
-                                    <span>BP managed (target SBP &lt;140)</span>
+                                    <span>BP managed (target SBP 140; range 130-150 when appropriate)</span>
                                   </label>
                                   <label className="flex items-center gap-2 cursor-pointer text-sm">
                                     <input type="checkbox" checked={!!telestrokeNote.ichReversalInitiated}
@@ -19097,7 +19097,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   );
                                 })()}
                                 <div className="text-xs text-crit-700 bg-crit-100 rounded p-1.5 dark:text-crit-300 dark:bg-crit-950">
-                                  TNK is contraindicated. Targets: SBP &lt;140 (Class IIa, INTERACT2; avoid &lt;130), reverse anticoagulation if applicable, repeat CT in 6h, ICU admission.
+                                  TNK is contraindicated. Targets: smooth BP control around SBP 140, maintain 130-150 when appropriate and avoid &lt;130; reverse anticoagulation if applicable, repeat CT in 6h, ICU admission.
                                 </div>
 
                                 {/* ICH Surgical Decision Triggers */}
@@ -20931,7 +20931,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <h3 className="text-sm font-bold text-crit-800 mb-2 uppercase tracking-wide dark:text-crit-300">ICH Pathway Checklist</h3>
                                 <div className="space-y-2">
                                   {[
-                                    { field: 'ichBPManaged', label: 'BP managed (SBP <140 target)', detail: 'Class IIa, INTERACT2; avoid <130' },
+                                    { field: 'ichBPManaged', label: 'BP managed (target SBP 140)', detail: 'Maintain 130-150 when appropriate; avoid <130' },
                                     { field: 'ichReversalInitiated', label: 'Anticoag reversal ordered (if applicable)', detail: 'Skip if no anticoagulants', skipIf: !telestrokeNote.lastDOACType },
                                     { field: 'ichNeurosurgeryConsulted', label: 'Neurosurgery consulted/evaluated', detail: 'Surgical candidacy assessed' }
                                   ].filter(item => !item.skipIf).map(item => (
@@ -26387,7 +26387,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   }
                                 } else if (pathwayType === 'ich') {
                                   note += `PLAN:\n`;
-                                  if (telestrokeNote.ichBPManaged) note += `- BP management initiated (target SBP <140 (Class IIa; avoid <130)).\n`;
+                                  if (telestrokeNote.ichBPManaged) note += `- BP management initiated (smooth control; target SBP 140/range 130-150 when appropriate; avoid <130).\n`;
                                   if (telestrokeNote.ichReversalInitiated) note += `- Anticoagulation reversal ordered.\n`;
                                   const ichPlanTiming = getIchEscalationSummary();
                                   if (ichPlanTiming) note += `- ICH timing KPIs: ${ichPlanTiming}.\n`;
@@ -28035,11 +28035,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-slate-700 dark:text-ink-2">Escalate airway and ICU-level monitoring early when exam worsens or airway protection is uncertain.</p>
                               </div>
                               <div className="bg-white border border-crit-200 rounded-lg p-2 dark:bg-card dark:border-crit-800">
-                                <p className="font-semibold text-crit-800 dark:text-crit-300">2. Blood Pressure Strategy <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></p>
+                                <p className="font-semibold text-crit-800 dark:text-crit-300">2. Blood Pressure Strategy <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></p>
                                 <p className="text-slate-700 dark:text-ink-2">Use rapid but controlled BP reduction (often around SBP 140) while avoiding hypotension and neurologic decline.</p>
                                 <details className="mt-1">
                                   <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-700 dark:text-mute dark:hover:text-ink">Evidence</summary>
-                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">INTERACT3 (2023): Intensive care bundle targeting SBP 130-140 within 1h improved functional outcomes (OR 0.86). AHA/ASA 2022: Class I, LOE A for SBP reduction to 140 if presenting SBP 150-220.</p>
+                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">AHA/ASA 2022: smooth, sustained BP control and timely treatment are Class IIa; for mild-moderate ICH with SBP 150-220, target 140 (range 130-150) is Class IIb; acute SBP &lt;130 is Class III harm. INTERACT3 tested a care bundle, not BP alone.</p>
                                 </details>
                               </div>
                               <div className="bg-white border border-crit-200 rounded-lg p-2 dark:bg-card dark:border-crit-800">
@@ -28278,7 +28278,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
                                 <p className="text-xs font-semibold text-slate-700 mb-1 dark:text-ink-2">Follow-up & Management:</p>
                                 <ul className="text-xs space-y-0.5 text-slate-600 dark:text-ink-2">
-                                  <li>• Target SBP &lt;140 mmHg for confirmed sICH</li>
+                                  <li>• Target SBP around 140 mmHg for confirmed sICH; avoid &lt;130</li>
                                   <li>• Target fibrinogen &gt;200 mg/dL (repeat cryo if low)</li>
                                   <li>• If labs abnormal or uncontrolled bleeding → consult Hematology</li>
                                   <li>• Repeat hemorrhage panel q4h until normal</li>
@@ -28393,7 +28393,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h3 className="text-sm font-semibold text-crit-700 mb-2 dark:text-crit-300">Telestroke rapid actions (phone or video)</h3>
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                                 <li>Confirm anticoagulant/antiplatelet use and initiate reversal.</li>
-                                <li>Target SBP &lt;140 (Class IIa, INTERACT2; avoid &lt;130 per ATACH-2). Use IV nicardipine or clevidipine for smooth control.</li>
+                                <li>Use smooth BP control; target SBP 140, maintain 130-150 when appropriate, and avoid &lt;130 per ATACH-2. Use IV nicardipine or clevidipine for titration.</li>
                                 <li>Screen for early dual-consult triggers: non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, multicompartmental hemorrhage, or ED attending discretion.</li>
                                 <li>Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.</li>
                               </ul>
@@ -28406,7 +28406,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="bg-white border border-crit-200 rounded-md p-4 dark:bg-card dark:border-crit-800">
                               <h3 className="text-sm font-semibold text-crit-700 mb-2 dark:text-crit-300">Inpatient priorities</h3>
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
-                                <li>Continue anticoagulant reversal, monitor for hematoma expansion, and maintain SBP &lt;140.</li>
+                                <li>Continue anticoagulant reversal, monitor for hematoma expansion, and maintain smooth BP control around SBP 140 when appropriate.</li>
                                 <li>Evaluate IVH/hydrocephalus for EVD and monitor for neurologic decline.</li>
                                 <li>Manage seizures, avoid prophylaxis without seizures, and use EEG when indicated.</li>
                                 <li>Implement supportive care bundle, early rehab, and structured goals-of-care discussions.</li>
@@ -28424,9 +28424,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Surgical Selection</h4>
                           <ul className="text-sm space-y-1">
                             <li>June 2026 operational MIE screen: lobar IPH 30-80 mL, NIHSS &gt;5, GCS 5-14, age 18-80, and no underlying lesion.</li>
-                            <li>General guideline evidence supports selected minimally invasive evacuation for supratentorial ICH; use the June 2026 screen below for this pathway.</li>
-                            <li>MIS may be reasonable over conventional craniotomy in eligible patients.</li>
-                            <li>Functional outcome benefit remains uncertain.</li>
+                            <li>General guideline evidence supports selected minimally invasive evacuation for supratentorial ICH, especially for mortality; older/general guideline framing kept broad functional-outcome benefit uncertain.</li>
+                            <li>ENRICH supports selected lobar 30-80 mL patients; use the June 2026 screen below and confirm neurosurgery/local-protocol activation.</li>
+                            <li>MIS may be reasonable over conventional craniotomy in eligible patients; do not generalize outside the June 2026 screen.</li>
                           </ul>
                         </div>
 
@@ -28558,7 +28558,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-crit-600 mb-2 dark:text-crit-300">Blood Pressure Target</h4>
                             <ul className="text-sm space-y-1">
-                              <li><strong>Target:</strong> SBP &lt;140 mmHg within 2h (Class IIa, INTERACT2). Avoid SBP &lt;130 (ATACH-2).</li>
+                              <li><strong>Target:</strong> SBP 140 mmHg, maintain 130-150 when appropriate, with timely smooth control. Avoid SBP &lt;130 (ATACH-2).</li>
                               <li><strong>Smooth control:</strong> avoid peaks and variability.</li>
                               <li><strong>SBP &gt;220:</strong> Safety of intensive lowering is uncertain (Class IIb, LOE C-EO, AHA 2022). Reasonable to target modest reduction (SBP 140-160) using continuous IV infusion with close monitoring. Avoid rapid drops &gt;60 mmHg in the first hour. Consider starting nicardipine at a lower rate (2.5-5 mg/hr) and titrating slowly.</li>
                               <li><strong>Agent:</strong> IV nicardipine or clevidipine for titration.</li>
@@ -29600,7 +29600,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
                                 <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105</li>
                                 <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105</li>
-                                <li><strong>IPH:</strong> SBP &lt;140 (INTERACT2; no specific DBP target)</li>
+                                <li><strong>IPH:</strong> target SBP 140, range 130-150 when appropriate; no specific DBP target</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
@@ -34018,7 +34018,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
                             <h4 className="font-bold text-warn-900 text-sm mb-2 dark:text-warn-300">ICH Pearls</h4>
                             <ul className="text-xs text-slate-700 space-y-1.5 dark:text-ink-2">
-                              <li><strong>BP control matters most in first 2h:</strong> Target SBP &lt;140 mmHg within 2h (INTERACT2, Class IIa). Avoid SBP &lt;130 (ATACH-2 showed no benefit of intensive SBP 110-139 vs 140-179, with trend toward renal harm). Nicardipine drip preferred for smooth control.</li>
+                              <li><strong>BP control matters most early:</strong> Initiate smooth, sustained BP lowering promptly. For mild-to-moderate ICH with SBP 150-220, target SBP 140 and maintain 130-150 when appropriate; avoid SBP &lt;130. Nicardipine drip preferred for smooth control.</li>
                               <li><strong>Anticoagulant reversal:</strong> This is the MOST time-sensitive intervention in ICH. Give PCC/idarucizumab BEFORE the CT in known anticoagulated patients.</li>
                               <li><strong>Spot sign on CTA:</strong> Contrast extravasation predicts hematoma expansion. If present → more aggressive BP control and close monitoring.</li>
                               <li><strong>IVH worsens prognosis:</strong> Consider EVD if hydrocephalus develops. Intraventricular alteplase (CLEAR III) reduces mortality but doesn't improve functional outcome.</li>
@@ -34509,7 +34509,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                               <div className="space-y-1">
                                 <p className="font-bold text-crit-700 mb-1 dark:text-crit-300">BP & Medications</p>
-                                <p>Target SBP &lt;140 mmHg (INTERACT2, Class IIa, LOE B-R). Avoid SBP &lt;130 (ATACH-2: no benefit, possible harm).</p>
+                                <p>Target SBP 140 mmHg, maintain 130-150 when appropriate, and avoid SBP &lt;130. Use smooth titration rather than abrupt large drops.</p>
                                 <p>Nicardipine drip preferred (see BP section)</p>
                                 <p>Reversal agents if on anticoagulation (see ICH tab)</p>
                                 <p>Hold all antithrombotics</p>

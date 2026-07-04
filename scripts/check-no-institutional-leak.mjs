@@ -1,16 +1,13 @@
 #!/usr/bin/env node
 // ─────────────────────────────────────────────────────────────────────────────
-// LEAK GUARD — institutional / PHI-adjacent content scanner.
+// LEAK GUARD -- institutional / PHI-adjacent content scanner.
 //
-// Defense-in-depth layer #3 protecting the PUBLIC GitHub Pages build and repo:
-//   1. .gitignore            → private/, src/institutional-protocols.local.js
-//   2. index.html host-gate  → private/institutional.js is only injected off
-//                              *.github.io hosts (never loaded on public Pages)
-//   3. THIS SCRIPT           → fails the build if a real HMC/UW/Harborview
-//                              identifier or PHI-adjacent token (phone, pager,
-//                              keypad, EPIC order-set id) lands in a tracked file.
-//                              Real institutional protocols belong ONLY in
-//                              private/institutional.js (gitignored).
+// Defense-in-depth protecting the PUBLIC GitHub Pages build and source tree:
+//   1. .gitignore  -> local-only extension files stay out of git.
+//   2. _config.yml -> source, scripts, tests, docs, and local-only dirs stay
+//                     out of the Pages artifact.
+//   3. THIS SCRIPT -> fails the build if protected institutional, identity, or
+//                     PHI-adjacent text lands in tracked source.
 //
 // The file list is fed on STDIN (newline-delimited) so this script never shells
 // out — no child_process, no injection surface. The npm wrappers pipe git:
@@ -19,16 +16,17 @@
 // Add --json for machine-readable output.
 //
 // Three severity tiers (see leak-guard-denylist.json):
-//   • institutionalTokens — banned on the served/source surface; allowed only in
+//   - institutionalTokens -- banned on the served/source surface; allowed only in
 //     meta/policy files listed under exemptFiles.
-//   • identityTokens — maintainer name / personal email / institutional domains;
+//   - identityTokens -- maintainer identity / institutional domains;
 //     banned in EVERY tracked file, no exemption.
-//   • phiPatterns + literalDenylist — banned in EVERY tracked file, no exemption.
+//   - phiPatterns + phi literal hashes -- banned in EVERY tracked file, no exemption.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+import crypto from 'node:crypto';
 
 const ROOT = process.cwd();
 const args = new Set(process.argv.slice(2));
@@ -43,6 +41,7 @@ const fullyExemptFiles = new Set(denylist.fullyExemptFiles || []);
 const instExcludeDirs = denylist.institutionalScanExcludeDirs || [];
 const binaryExt = new Set((denylist.binaryExtensions || []).map((e) => e.toLowerCase()));
 const literals = denylist.literalDenylist || [];
+const literalHashRules = denylist.literalSha256Denylist || [];
 const allowedInstitutionalDisclaimerRules = (denylist.allowedInstitutionalDisclaimerPatterns || []).map((r) => ({
   re: new RegExp(r.pattern, r.flags || ''),
   label: r.label,
@@ -66,6 +65,100 @@ const identityRules = (denylist.identityTokens || []).map((r) => ({
   re: new RegExp(r.pattern, r.flags || ''),
   label: r.label,
 }));
+
+const literalHashMaps = literalHashRules.reduce((acc, rule) => {
+  const normalization = rule.normalization || 'text';
+  if (!acc[normalization]) acc[normalization] = new Map();
+  const list = acc[normalization].get(rule.sha256) || [];
+  list.push({
+    tier: rule.tier || 'phi',
+    label: rule.label || 'protected literal hash',
+    normalization,
+  });
+  acc[normalization].set(rule.sha256, list);
+  return acc;
+}, {});
+
+function sha256(value) {
+  return crypto.createHash('sha256').update(value).digest('hex');
+}
+
+function normalizeTextCandidate(value) {
+  return value.toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+function normalizeDigitsCandidate(value) {
+  return value.replace(/\D/g, '');
+}
+
+function shouldSkipHashRule(rule, file) {
+  return rule.tier === 'institutional' && institutionExempt(file);
+}
+
+function addCandidate(set, candidate) {
+  const trimmed = candidate.trim();
+  if (trimmed.length >= 2) set.add(trimmed);
+}
+
+function candidateTextPhrases(line) {
+  const candidates = new Set();
+  const tokens = line.match(/[A-Za-z0-9_./'-]+/g) || [];
+  const maxPhraseTokens = 8;
+  for (let i = 0; i < tokens.length; i += 1) {
+    for (let n = 1; n <= maxPhraseTokens && i + n <= tokens.length; n += 1) {
+      addCandidate(candidates, tokens.slice(i, i + n).join(' '));
+    }
+  }
+  for (const quoted of line.matchAll(/["'`](.{2,120}?)["'`]/g)) {
+    addCandidate(candidates, quoted[1]);
+  }
+  return candidates;
+}
+
+function candidateDigitStrings(line) {
+  const candidates = new Set();
+  for (const match of line.matchAll(/\b\d[\d\s.-]{2,}\d\b/g)) {
+    const digits = normalizeDigitsCandidate(match[0]);
+    if (digits.length >= 4) candidates.add(digits);
+  }
+  return candidates;
+}
+
+function literalHashViolationsForLine(line, file) {
+  const hits = [];
+  const seen = new Set();
+
+  if (literalHashMaps.text) {
+    for (const candidate of candidateTextPhrases(line)) {
+      const normalized = normalizeTextCandidate(candidate);
+      const hashHits = literalHashMaps.text.get(sha256(normalized));
+      if (!hashHits) continue;
+      for (const rule of hashHits) {
+        if (shouldSkipHashRule(rule, file)) continue;
+        const key = `${rule.tier}:${rule.label}:${rule.normalization}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        hits.push(rule);
+      }
+    }
+  }
+
+  if (literalHashMaps.digits) {
+    for (const digits of candidateDigitStrings(line)) {
+      const hashHits = literalHashMaps.digits.get(sha256(digits));
+      if (!hashHits) continue;
+      for (const rule of hashHits) {
+        if (shouldSkipHashRule(rule, file)) continue;
+        const key = `${rule.tier}:${rule.label}:${rule.normalization}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        hits.push(rule);
+      }
+    }
+  }
+
+  return hits;
+}
 
 // File list on stdin (fd 0), newline-delimited; tolerate NUL just in case.
 function readFileList() {
@@ -134,6 +227,15 @@ for (const file of readFileList()) {
         violations.push({ file, line: idx + 1, tier: 'phi', label: `Literal denylist: ${lit}`, text: line.trim().slice(0, 160) });
       }
     }
+    for (const rule of literalHashViolationsForLine(line, file)) {
+      violations.push({
+        file,
+        line: idx + 1,
+        tier: rule.tier,
+        label: `Literal hash denylist: ${rule.label}`,
+        text: '[redacted hash-denylist match on this line]',
+      });
+    }
   });
 }
 
@@ -152,7 +254,7 @@ if (JSON_OUT) {
       console.error(`   [${v.tier}] ${v.file}:${v.line} — ${v.label}`);
       console.error(`        ${v.text}`);
     }
-    console.error(`\nReal HMC/UW/Harborview content must live ONLY in private/institutional.js (gitignored).`);
+    console.error(`\nProtected local or identity-bearing content must stay out of public source and build artifacts.`);
     console.error(`If a match is a legitimate citation/author or generic term, refine the pattern or add the file`);
     console.error(`to exemptFiles in scripts/leak-guard-denylist.json.`);
   } else {

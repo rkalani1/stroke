@@ -577,13 +577,11 @@ export const GENERALIZABILITY_LIMITATIONS = [
 
 // =====================================================================
 // =====================================================================
-// Private institutional layer — local-only override hook
+// Local-only institutional extension hook
 // =====================================================================
-// The public build exports null here. When the local gitignored file
-//   private/institutional.js
-// is present on disk and served (via the optional <script> tag in
-// index.html), it sets window.__INSTITUTIONAL_LOCAL__ to a structured
-// object before app.js loads. This function reads that global.
+// The public build exports null here. A separate gitignored local extension
+// may set window.__INSTITUTIONAL_LOCAL__ to a structured object before app.js
+// loads. This function reads that global.
 //
 // Consumers: src/app.jsx reads this once at render to surface a
 // clearly-labelled "Institutional (local — not public)" section in the

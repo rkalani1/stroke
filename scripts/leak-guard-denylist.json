@@ -1,70 +1,64 @@
 {
-  "_comment": "Denylist for scripts/check-no-institutional-leak.mjs. Defense-in-depth #3 (after .gitignore and the index.html host-gate) protecting the PUBLIC GitHub Pages build + repo from ever leaking real HMC/UW/Harborview institutional or PHI-adjacent content. Real institutional protocols live ONLY in private/institutional.js (gitignored). Extend the arrays below as new institutional tokens are discovered; the scanner needs no code changes.",
-  "_severityModel": "institutionalTokens are banned on the served/source surface but allowed in meta/policy files (see exemptFiles). phiPatterns are banned in EVERY tracked file with no exemption.",
+  "_comment": "Denylist for scripts/check-no-institutional-leak.mjs. Defense-in-depth for the public GitHub Pages build and public source tree. Exact sensitive names, contact tokens, and local source-path phrases are stored only as normalized SHA-256 hashes below.",
+  "_severityModel": "institutionalTokens are banned on served/source clinical surfaces but allowed in meta/policy/test files. identityTokens, phiPatterns, and phi literal hashes are banned in every tracked file.",
 
   "institutionalTokens": [
-    { "pattern": "\\bHarborview\\b", "flags": "i", "label": "Institution name: Harborview" },
-    { "pattern": "\\bHMC\\b", "flags": "", "label": "Institution acronym: HMC (Harborview Medical Center)" },
-    { "pattern": "\\bUWMC\\b", "flags": "", "label": "Institution acronym: UWMC" },
-    { "pattern": "\\bUWML\\b", "flags": "", "label": "Institution acronym: UWML (UW Montlake)" },
-    { "pattern": "\\bUWNW\\b", "flags": "", "label": "Institution acronym: UWNW (UW Northwest)" },
-    { "pattern": "\\bUW-?NW\\b", "flags": "", "label": "Institution acronym: UW-NW" },
-    { "pattern": "\\bUW Medicine\\b", "flags": "i", "label": "Institution name: UW Medicine" },
-    { "pattern": "\\bUW Medical Center\\b", "flags": "i", "label": "Institution name: UW Medical Center" },
-    { "pattern": "\\bUW Montlake\\b", "flags": "i", "label": "Institution name: UW Montlake" },
-    { "pattern": "\\bOCCAM\\b", "flags": "", "label": "Local knowledge platform: OCCAM/Tactuum kit" },
-    { "pattern": "\\bTactuum\\b", "flags": "i", "label": "Local knowledge-platform vendor: Tactuum" },
-    { "pattern": "\\bStroke\\s+Phone\\b", "flags": "i", "label": "Local service line: Stroke Phone" },
-    { "pattern": "\\bMINUTE team\\b", "flags": "i", "label": "Local service line: MINUTE team" },
-    { "pattern": "Emergency Stroke Panel", "flags": "i", "label": "Local EPIC panel: Emergency Stroke Panel" },
-    { "pattern": "\\.UWM\\w*", "flags": "i", "label": "EPIC dotphrase: .UWM*" },
-    { "pattern": "\\.Peds\\w*stroke", "flags": "i", "label": "EPIC dotphrase: .Pedsstroke" },
-    { "pattern": "SmartSet", "flags": "i", "label": "EPIC build artifact: SmartSet" },
-    { "pattern": "dotphrase", "flags": "i", "label": "EPIC build artifact: dotphrase" },
-    { "pattern": "mission control", "flags": "i", "label": "Local ops: (Seattle Children's) Mission Control" }
+    { "pattern": "\\bSmartSet\\b", "flags": "i", "label": "Possible local EHR build artifact" },
+    { "pattern": "\\bdotphrase\\b", "flags": "i", "label": "Possible local EHR build artifact" }
   ],
 
-  "_identityTokens": "Maintainer personal identity. Banned in EVERY tracked file (like phiPatterns) — the public site must not name its maintainer or affiliated institutions. Kalani(?!1) deliberately skips the unavoidable rkalani1 GitHub Pages origin in canonical URLs while catching the bare name and any personal email.",
-  "identityTokens": [
-    { "pattern": "\\bRizwan\\b", "flags": "i", "label": "Maintainer first name" },
-    { "pattern": "Kalani(?!1)", "flags": "i", "label": "Maintainer last name / personal email (rkalani1 Pages origin excluded)" },
-    { "pattern": "washington\\.edu", "flags": "i", "label": "Institutional email/web domain: washington.edu" },
-    { "pattern": "\\buw\\.edu\\b", "flags": "i", "label": "Institutional email domain: uw.edu" },
-    { "pattern": "\\bUniversity of Washington\\b", "flags": "i", "label": "Institution name: University of Washington" }
-  ],
+  "identityTokens": [],
 
   "phiPatterns": [
-    { "pattern": "\\b206-\\d{3}-\\d{4}\\b", "flags": "", "label": "Seattle-area phone number (206-XXX-XXXX)" },
-    { "pattern": "\\b425-\\d{3}-\\d{4}\\b", "flags": "", "label": "Seattle-area phone number (425-XXX-XXXX)" },
-    { "pattern": "\\bpager\\b\\s*[:#]?\\s*\\d", "flags": "i", "label": "Pager number" },
-    { "pattern": "keypad\\D{0,12}\\d", "flags": "i", "label": "Room keypad / access code (keypad + digits)" }
+    { "pattern": "\\b\\d{3}[-.\\s]\\d{3}[-.\\s]\\d{4}\\b", "flags": "", "label": "Phone-number-shaped token" },
+    { "pattern": "\\bpager\\b\\s*[:#]?\\s*\\d", "flags": "i", "label": "Pager-number-shaped token" },
+    { "pattern": "keypad\\D{0,12}\\d", "flags": "i", "label": "Access-code-shaped token" }
   ],
 
-  "literalDenylist": [
-    "Arielle",
-    "Tirschwell",
-    "Stroke Center/Stroke algorithm updates",
-    "Stroke Center/Stroke Pocket Card Updates 2026",
-    "Stroke Center/To be added to Telestroke website",
-    "ICH Initial Eval Algorithm 6_2026",
-    "ICH figure 6_2026",
-    "206-744-6789",
-    "206-459-4648",
-    "206-987-8899",
-    "4-2241",
-    "4-8484",
-    "304217",
-    "304038"
+  "literalDenylist": [],
+
+  "literalSha256Denylist": [
+    { "sha256": "4019d00edc6e60cb20c369ee726fa100e1239a0afc7525d40ad082b28ee8d16c", "normalization": "text", "tier": "institutional", "label": "protected institution name token A" },
+    { "sha256": "cce5b821596b76aa7137da40ae522195be76fd67a17470921077e0aa226d8045", "normalization": "text", "tier": "institutional", "label": "protected institution acronym token A" },
+    { "sha256": "01570834b5876d34a308a48a47b6c0f472e40272272315c475e96a27c57125d5", "normalization": "text", "tier": "institutional", "label": "protected institution acronym token B" },
+    { "sha256": "c09fbbac7c65f007529c846eb2a87cbd96f7fff1ea10adc5c2300e39e2ed8fcc", "normalization": "text", "tier": "institutional", "label": "protected institution acronym token C" },
+    { "sha256": "68e11f17a703972e6621c07bde8d657454aa5640b29be673a4135af6b86795a3", "normalization": "text", "tier": "institutional", "label": "protected institution acronym token D" },
+    { "sha256": "55705063410d82303b3b751bd9011e786a0179a4a7ccbab16d090b520eacc89a", "normalization": "text", "tier": "institutional", "label": "protected institution acronym token E" },
+    { "sha256": "8ff3210a9915cc74cabfcc3a0e67f4534947add537702a839d57ddd095b42458", "normalization": "text", "tier": "institutional", "label": "protected institution name token B" },
+    { "sha256": "9b8dbf0e3de00f15daa0e29174223ecb5cc9a5fac405a99c482090d1b8d0a664", "normalization": "text", "tier": "institutional", "label": "protected institution name token C" },
+    { "sha256": "4489db43ea704e1c70ecbaaf3cca96da1c5b86895f45673a545f8381690c0bd5", "normalization": "text", "tier": "institutional", "label": "protected institution name token D" },
+    { "sha256": "7fbdfa66dc31e88e09e0c551f8394e0b79da7e491f11547a3ea2937b283112e9", "normalization": "text", "tier": "institutional", "label": "protected local knowledge-platform token A" },
+    { "sha256": "d5e33c1145bfabebfb004876918ffa2d1d4cf4cf30fea2742d652a5571fd036c", "normalization": "text", "tier": "institutional", "label": "protected local knowledge-platform token B" },
+    { "sha256": "83255038c711bb3c04d303843a50d9ff1d32add9cb08ac4a670f65c1558fb5d6", "normalization": "text", "tier": "institutional", "label": "protected local service-line phrase A" },
+    { "sha256": "8bd703d8981bdfe453675893577be92af209824cc1e971d5cb291ecf17fa5a9d", "normalization": "text", "tier": "institutional", "label": "protected local service-line phrase B" },
+    { "sha256": "77d61002022993626cbcde3da7958586917c8bc107c167cb15eac493ddaa9df2", "normalization": "text", "tier": "institutional", "label": "protected local order-panel phrase A" },
+    { "sha256": "2cb9209d05b964e7291fb1ff5ddefd40f1ac9becffda4ba7d2cb29f158754dc9", "normalization": "text", "tier": "institutional", "label": "protected local operations phrase A" },
+    { "sha256": "41e0660aa2975f3f8338a316caba1b5f97ecc1afaee73790e6b3a1b7ae3f530c", "normalization": "text", "tier": "identity", "label": "protected maintainer first-name token" },
+    { "sha256": "3bb562e12aacc9e4d35771d820cd36d5d758cbe41b709e12933f09b710bb80fd", "normalization": "text", "tier": "identity", "label": "protected maintainer surname token" },
+    { "sha256": "44e4bbf7b5c7d9e7d9f75a6e3af2647cdc1342aedee129259bc184f466cb1199", "normalization": "text", "tier": "identity", "label": "protected institutional web-domain token A" },
+    { "sha256": "ead9b69723a9daeb216411a1ee49a3dc56b27efe30b1967afefec03fc4aaf307", "normalization": "text", "tier": "identity", "label": "protected institutional web-domain token B" },
+    { "sha256": "d5e3b6658d01daa4155669ff1f0f09c3a5006eb230b844b23828ecfac83ccb79", "normalization": "text", "tier": "identity", "label": "protected institution name token E" },
+    { "sha256": "a87507f9cc20b4a3d008aba6e8e98716bcb4bfc4a6c949c1f62df416709509af", "normalization": "text", "tier": "identity", "label": "protected sender first-name token" },
+    { "sha256": "48f60b8ff381cb8d3ebc2b00225ef8f92c4a4c73ea4874613b2f230b99776172", "normalization": "text", "tier": "identity", "label": "protected colleague surname token" },
+    { "sha256": "0a3ce48811ed8d260012a6922c77bd3f03a82c3cc17f428add509cf9277f1a75", "normalization": "text", "tier": "phi", "label": "protected local source-path phrase A" },
+    { "sha256": "57b3b098a6a78c9eeb6f920686d2cb373bfa5bf5808df72ed7e26b893b3db545", "normalization": "text", "tier": "phi", "label": "protected local source-path phrase B" },
+    { "sha256": "4e156bda349fda07b6c634cce9104f1af2d5e962ec686fed6d4eddeeb0581684", "normalization": "text", "tier": "phi", "label": "protected local source-path phrase C" },
+    { "sha256": "f7abbf5126eafd47f21b6d6ec67c1434fce7225946c457dae5186879dfc67f52", "normalization": "text", "tier": "phi", "label": "protected source attachment stem A" },
+    { "sha256": "3a58e013e15c6ef9637258e94c1ba029cf8e615ab6cfcc08b33a151321a12d51", "normalization": "text", "tier": "phi", "label": "protected source attachment stem B" },
+    { "sha256": "1690621a5f0a3b6ec2401ec3c8800fbb344c69c92a73c4db99ed1d3b5cb34301", "normalization": "digits", "tier": "phi", "label": "protected local contact token A" },
+    { "sha256": "a4f65fb791ba9911b73f9a3086450c9da45de17b46d8553c7e8122d4ebed0778", "normalization": "digits", "tier": "phi", "label": "protected local contact token B" },
+    { "sha256": "0910e2f790255f893f3f52711c6c422463ad91037b43b7ab488d66ade0f24a1b", "normalization": "digits", "tier": "phi", "label": "protected local contact token C" },
+    { "sha256": "2f5dbf5d007715e86f3585af5dfcdfac113f39fa27a3bd28cec962d28ed9caa0", "normalization": "digits", "tier": "phi", "label": "protected local access token A" },
+    { "sha256": "d07193e887c083e0ebd4f6b9899feaa812484b100837283ac750ae2a7de2f388", "normalization": "digits", "tier": "phi", "label": "protected local access token B" },
+    { "sha256": "2a93f5092538aa4080dc48948f56a9b3057f453823c3ec509c3fb7d8bcd10479", "normalization": "digits", "tier": "phi", "label": "protected local access token C" },
+    { "sha256": "20e741650ec022ee37db0abc81f28c18bb67a0fbad5254d8fbd33f62c2439a17", "normalization": "digits", "tier": "phi", "label": "protected local access token D" }
   ],
 
-  "_allowedInstitutionalDisclaimerPatterns": "Empty as of 2026-07: even negative 'not approved for <institution>' disclaimers are banned — public safety copy must stay institution-neutral. The mechanism is kept for narrowly-scoped future exceptions.",
+  "_allowedInstitutionalDisclaimerPatterns": "Empty as of 2026-07: even negative institution-specific disclaimers are banned. Public safety copy must stay institution-neutral.",
   "allowedInstitutionalDisclaimerPatterns": [],
 
-  "_fullyExemptFiles": "The leak-guard's own machinery legitimately contains every banned token (it IS the ruleset). These files are skipped by BOTH the institutional and PHI scans. Keep this list minimal — only the guard's own files.",
   "fullyExemptFiles": [
-    "scripts/leak-guard-denylist.json",
-    "scripts/check-no-institutional-leak.mjs",
-    ".githooks/pre-commit"
+    "scripts/leak-guard-denylist.json"
   ],
 
   "exemptFiles": [
@@ -79,7 +73,7 @@
     "src/evidence/__tests__/screener-eval.test.js"
   ],
 
-  "_institutionalScanExcludeDirs": "Institution-NAME tokens are governance-discussable in these dirs (guard tests + CI configs). docs/ is NOT excluded: GitHub Pages serves the repo root, so docs/ is public surface. PHI patterns, literals, and identityTokens are STILL scanned here with no exemption.",
+  "_institutionalScanExcludeDirs": "Institutional tokens are governance-discussable in these dirs. docs/ is not excluded because GitHub Pages can serve the repo root. PHI patterns, phi literal hashes, and identity literal hashes are still scanned.",
   "institutionalScanExcludeDirs": [
     "tests/",
     "src/evidence/__tests__/",

@@ -36,7 +36,7 @@ Branch new work from `origin/main` (the working tree was found on a stale branch
   index, management cards, generic protocols, calculators index — versioned), JSON-LD
   (`MedicalWebPage`/`MedicalGuideline`/`FAQPage`) in `index.html`, published `schema.json`.
   Wired into `npm run build` + a validator.
-- **B · Institutional currency (PRIVATE → `private/institutional.js`, local-only, NEVER deployed).**
+- **B · Institutional currency (PRIVATE local extension, NEVER deployed).**
   Ingest June-2026 OneDrive source-of-truth into the `window.__INSTITUTIONAL_LOCAL__` shape
   (see `src/institutional-protocols.local.example.js`), per-protocol status `firm|provisional|draft`.
 - **C · Stroke-CDS MCP server (PUBLIC → main).** Wrap calculators + protocol/evidence/trial
@@ -56,7 +56,7 @@ Branch new work from `origin/main` (the working tree was found on a stale branch
 - ✅ **Safety** — leak guard (PR #39) + full git-history scrub of `.discovery` across all 14 branches (filter-repo, force-pushed). `main` clean; 0 commits touch `.discovery`.
 - ✅ **A · Agent-readiness** (PR #40, merged) — `data/*.json` API + `llms.txt`/`robots.txt`/`sitemap.xml` + JSON-LD. `npm run agent:assets`.
 - ✅ **C · MCP server** (PR #40, merged) — `mcp/` stdio server, 16 tools (smoke passes).
-- ✅ **B · Private layer** (local-only) — `private/institutional.js`: 33 sections, 812 items, 20 contacts, 6 provisional/draft flagged. Verified end-to-end in a browser on localhost (injects + renders the "local — not public" section); host-gate keeps it off `github.io`.
+- ✅ **B · Private layer** (local-only) — gitignored local extension: 33 sections, 812 items, 20 contacts, 6 provisional/draft flagged. Verified end-to-end in a browser on localhost (injects + renders the "local -- not public" section); host-gate keeps it off `github.io`.
 - 🔶 **D · Clinical-currency + hygiene** — vitest honest-count fix shipped (this PR). ESCAPE-MeVO/DISTAL + HOPE-BP already on main. See "Documented, not done" below.
 
 ## Documented, not done (need owner judgment / deliberate work)
@@ -67,12 +67,12 @@ Branch new work from `origin/main` (the working tree was found on a stale branch
 
 ## Guardrails (do not violate)
 - **Never** commit real institutional content, pager/phone numbers, room codes, or
-  EPIC order-set IDs. They belong only in `private/institutional.js` (gitignored).
+  EPIC order-set IDs. They belong only in the gitignored local extension.
 - Run `npm run hooks:install` once per clone to enable the pre-commit leak guard.
 - The public generic `src/institutional-protocols.js` stays institution-neutral.
 
 ## Cross-device limits
 - **Public workstreams (A, C, D)** are fully resumable on web/mobile via this repo.
-- **Workstream B (private layer)** is tied to **this Mac**: `private/institutional.js` is
+- **Workstream B (private layer)** is tied to **this Mac**: the local extension is
   gitignored and is authored from OneDrive files that live on this machine. A cloud/mobile
   session cannot see them. Do the private layer here; do public work anywhere.

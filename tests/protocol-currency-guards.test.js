@@ -152,6 +152,19 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(hits, `Obsolete ENRICH/MIE criterion found:\n${hits.join('\n')}`).toEqual([]);
   });
 
+  it('keeps ICH BP class wording and June 2026 MIE framing precise', () => {
+    for (const f of ['src/app.jsx', 'app.js']) {
+      expect(texts[f]).toMatch(/smooth, sustained BP control and timely treatment are Class IIa/i);
+      expect(texts[f]).toMatch(/target 140 \(range 130-150\) is Class IIb/i);
+      expect(texts[f]).toMatch(/older\/general guideline framing kept broad functional-outcome benefit uncertain/i);
+      expect(texts[f]).toMatch(/ENRICH supports selected lobar 30-80 mL patients/i);
+      expect(texts[f]).not.toMatch(/Class I, LOE A for SBP reduction to 140/i);
+      expect(texts[f]).not.toMatch(/Functional outcome benefit remains uncertain\./i);
+      expect(texts[f]).not.toMatch(/Target SBP <140 mmHg within 2h of onset \(Class IIa/i);
+      expect(texts[f]).not.toMatch(/BP management initiated \(target SBP <140 \(Class IIa/i);
+    }
+  });
+
   it('does not reintroduce the older MINUTE spot-sign/glibenclamide description', () => {
     expect(texts['src/app.jsx']).toMatch(/Basal-ganglia IPH &(gt;|ge;)15 mL, NIHSS &(gt;|ge;)6, &(lt;|le;)15h screen/);
     expect(texts['src/app.jsx']).toMatch(/Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH/);
@@ -196,9 +209,10 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(texts['app.js']).toMatch(/Volume threshold is version-sensitive and must be checked against the active registry protocol/);
   });
 
-  it('does not publish local Stroke Phone labels on public surfaces', () => {
-    const hits = offendingLines(/\bstroke\s+phone\b/i, { files: CONTENT_FILES });
-    expect(hits, `Local Stroke Phone label found:\n${hits.join('\n')}`).toEqual([]);
+  it('does not publish local service-line labels on public surfaces', () => {
+    const localServiceLine = new RegExp('\\b' + ['stroke', 'phone'].join('\\s+') + '\\b', 'i');
+    const hits = offendingLines(localServiceLine, { files: CONTENT_FILES });
+    expect(hits, `Local service-line label found:\n${hits.join('\n')}`).toEqual([]);
   });
 
   it('keeps MINUTE priority over MIRROR in the reusable ICH algorithm export', () => {

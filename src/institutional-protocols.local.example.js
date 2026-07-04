@@ -1,19 +1,18 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// PRIVATE INSTITUTIONAL LAYER — EXAMPLE / TEMPLATE
+// PRIVATE INSTITUTIONAL LAYER -- EXAMPLE / TEMPLATE
 //
 // SETUP INSTRUCTIONS:
-//   1. Copy this file to  private/institutional.js  (that path is gitignored).
+//   1. Copy this file to your gitignored local extension path.
 //   2. Replace every "[YOUR INSTITUTION]" / "Example General Hospital" etc.
 //      placeholder with your real institutional content.
-//   3. The file at private/institutional.js is loaded as an optional <script>
-//      in index.html. It sets window.__INSTITUTIONAL_LOCAL__ before app.js.
+//   3. The local extension sets window.__INSTITUTIONAL_LOCAL__ before app.js.
 //   4. When present locally, the app surfaces a clearly-labelled
 //      "Institutional (local — not public)" section inside the
 //      Protocols & Algorithms tab.
 //   5. When absent (public site / GitHub Pages), nothing institutional appears.
 //
-// NEVER commit the populated file or any real HMC/UW/Harborview identifiers.
-// The gitignore entry for  private/  and  src/institutional-protocols.local.js
+// NEVER commit the populated file or any real institutional identifiers.
+// The gitignore entry for the local-only extension files
 // prevents accidental staging. Run  git status  before every commit to confirm.
 //
 // SHAPE:

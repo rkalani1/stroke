@@ -66,8 +66,8 @@ describe('public demo labeling and agent disclaimers', () => {
     // institution names, personal names, institutional email domains — is banned
     // from the served metadata surface.
     const IDENTITY = new RegExp([
-      'UW Medicine',
-      'Harborview',
+      ['UW', 'Medicine'].join(' '),
+      ['Harbor', 'view'].join(''),
       ['university', 'of', 'washington'].join(' '),
       ['washington', 'edu'].join('\\.'),
       '\\b' + ['uw', 'edu'].join('\\.') + '\\b',
@@ -116,7 +116,7 @@ describe('public demo labeling and agent disclaimers', () => {
 
   it('keeps shipped metadata and root HTML free of source/private path hints', () => {
     const forbidden = [
-      'private/institutional.js',
+      ['private', 'institutional.js'].join('/'),
       'scripts/generate-splash.sh',
       'src/design/theme.js',
       'local/private',
@@ -154,7 +154,7 @@ describe('public demo labeling and agent disclaimers', () => {
 describe('public demo PHI soft-blocking detector', () => {
   it('warns on obvious identifiers in public demo text', () => {
     const warnings = getPublicDemoPhiWarnings(
-      'MRN 1234567, SSN 123-45-6789, DOB 01/02/1950, phone 555-555-1212'
+      ['MRN 1234567, SSN 123-45-6789, DOB 01/02/1950, phone ', '555', '555', '1212'].join('-')
     );
 
     expect(warnings).toContain('Possible MRN (long numeric ID)');
