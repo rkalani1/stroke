@@ -687,7 +687,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           { version: '3.1', date: '2025-09', items: ['Added vital signs (HR, SpO2, Temp) to encounter and notes', 'Added EKG/Telemetry input fields', 'GCS score included in all note templates', 'Weight unit toggle (kg/lbs) with auto-conversion', 'Edoxaban added to anticoagulant system', 'aPTT auto-blocks TNK when >40s', 'Standardized platelet units (K/μL) throughout', 'Inline lab validation badges (glucose, INR, platelets, aPTT)', 'Andexanet alfa aligned to PCC-first protocol', 'Consent documentation in transfer notes', 'Fixed keyboard shortcut conflicts and section completion', 'Improved reset logic for new patients'] },
           { version: '3.2', date: '2025-10', items: ['Notes now show consultation type (Telephone vs Video Telestroke)', 'BP phase target included in consultation, transfer, and signout notes', 'TOAST classification in transfer and discharge notes', 'Anticoagulation details with DOAC timing in consultation note', 'Transfer note shows weight, premorbid mRS, contrast allergy flag', 'Dysphagia screening and VTE prophylaxis in discharge note', 'Transfer note alerts for NPO status and contrast allergy', 'SAH + anticoagulation reversal warning', 'GCS ≤8 airway protection alert', 'Edoxaban CrCl >95 reduced efficacy warning', 'Hypoglycemia + TNK escalated to error severity', 'BP phase auto-reverts when diagnosis changes', 'Fixed INR/aPTT orphaned comma in lab line', 'Trial eligibility reset on new case'] },
           { version: '3.3', date: '2025-11', items: ['CrCl calculator prioritized by diagnosis in calculator tab', 'Post-TNK neuro check schedule standardized (q15min×2h, q30min×6h, q1h×16h)', 'SAH seizure prophylaxis with specific indications in admission orders', 'Osmotic therapy data in discharge note (agent, Na+ target, osmolality)', 'Nutritional support and feeding route in discharge note', 'Falls risk screening in discharge note', 'Driving restrictions with commercial driver flag in discharge note', 'Clipboard fallback for insecure contexts (HTTP/dev builds)', 'Deep merge of stored data prevents crashes when new fields are added', 'All calculator copy buttons now have accessible labels', 'ICH Volume, Andexanet, and Enoxaparin calculators now sort by diagnosis priority'] },
-          { version: '3.4', date: '2026-02', items: ['SAH aneurysm characteristics (location, size, securing method) with posterior circulation and giant aneurysm alerts', 'SAH vasospasm/DCI monitoring protocol (TCD, neuro checks, sodium, induced HTN) with safety guard', 'ICH surgical decision support (cerebellar >15mL, hydrocephalus, midline shift, deterioration) with neurosurgery urgency alert', 'Stroke vascular territory selector (MCA/ACA/PCA/basilar/vertebral/cerebellar/lacunar/watershed) with posterior circulation guidance', 'Stroke phenotype classifier (cortical-LVO, embolic, lacunar, posterior, dissection, watershed, cardioembolic)', 'Symptom trajectory tracking (stable/improving/fluctuating/worsening/resolved) with clinical alerts', 'Post-thrombolytic monitoring protocol checklist with sICH risk calculator (5 factors)', 'Family/surrogate communication log with auto-timestamp', 'All new fields integrated into consult, transfer, signout, progress, discharge, and Pulsara templates', 'Fixed GCS reference in ICH guideline conditions (seizure prophylaxis, MIE eligibility)', 'Fixed FUNC score GCS 13-15 returning null instead of 2 points', 'State cleanup on diagnosis category change includes nested objects'] }
+          { version: '3.4', date: '2026-02', items: ['SAH aneurysm characteristics (location, size, securing method) with posterior circulation and giant aneurysm alerts', 'SAH vasospasm/DCI monitoring protocol (TCD, neuro checks, sodium, induced HTN) with safety guard', 'ICH surgical decision support (cerebellar posterior-fossa mass effect/hydrocephalus, midline shift, deterioration) with neurosurgery urgency alert', 'Stroke vascular territory selector (MCA/ACA/PCA/basilar/vertebral/cerebellar/lacunar/watershed) with posterior circulation guidance', 'Stroke phenotype classifier (cortical-LVO, embolic, lacunar, posterior, dissection, watershed, cardioembolic)', 'Symptom trajectory tracking (stable/improving/fluctuating/worsening/resolved) with clinical alerts', 'Post-thrombolytic monitoring protocol checklist with sICH risk calculator (5 factors)', 'Family/surrogate communication log with auto-timestamp', 'All new fields integrated into consult, transfer, signout, progress, discharge, and Pulsara templates', 'Fixed GCS reference in ICH guideline conditions (seizure prophylaxis, MIE eligibility)', 'Fixed FUNC score GCS 13-15 returning null instead of 2 points', 'State cleanup on diagnosis category change includes nested objects'] }
         ];
 
         const parseBloodPressure = (bpString) => {
@@ -1478,7 +1478,7 @@ Clinician Name`;
             },
             // ICH surgical assessment
             ichSurgicalCriteria: {
-              cerebellarGt15mL: false,
+              cerebellarMassEffect: false,
               hydrocephalus: false,
               midlineShift: false,
               clinicalDeterioration: false,
@@ -4326,8 +4326,8 @@ Clinician Name`;
               id: 'cerebellar_ich_surgery',
               category: 'Disposition',
               title: 'Cerebellar ICH: urgent surgical screen',
-              recommendation: 'Cerebellar hemorrhage requires early Neurosurgery assessment. Surgical evacuation is indicated when cerebellar ICH >15 mL is accompanied by neurologic deterioration, brainstem compression, mass effect, or obstructive hydrocephalus.',
-              detail: 'Do not infer suboccipital decompression from cerebellar location alone. Confirm volume, neurologic trajectory, hydrocephalus, brainstem compression, and goals of care with Neurosurgery; EVD alone is insufficient for large cerebellar hemorrhage with posterior-fossa mass effect.',
+              recommendation: 'Cerebellar hemorrhage requires early Neurosurgery assessment. Evaluate urgently for suboccipital decompression when posterior-fossa mass effect is present, usually with obstructive hydrocephalus and/or brainstem compression.',
+              detail: 'Do not infer suboccipital decompression from cerebellar location or volume alone. Confirm neurologic trajectory, posterior-fossa mass effect, hydrocephalus, brainstem compression, and goals of care with Neurosurgery; EVD alone may be insufficient when cerebellar mass effect is the primary problem.',
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -9543,7 +9543,7 @@ Clinician Name`;
                 if (telestrokeNote.ichNeurosurgeryConsulted) ichTransfer += '- Neurosurgery consulted\n';
                 if (telestrokeNote.ichSeizureProphylaxis) ichTransfer += '- Seizure prophylaxis ordered\n';
                 const ichSurgTx = telestrokeNote.ichSurgicalCriteria || {};
-                if (ichSurgTx.cerebellarGt15mL) ichTransfer += '- SURGICAL: Cerebellar ICH >15 mL\n';
+                if (ichSurgTx.cerebellarMassEffect) ichTransfer += '- SURGICAL: Cerebellar mass effect with hydrocephalus/brainstem compression concern\n';
                 if (ichSurgTx.hydrocephalus) ichTransfer += '- SURGICAL: Obstructive hydrocephalus\n';
                 if (ichSurgTx.midlineShift) ichTransfer += '- Midline shift / herniation risk\n';
                 if (ichSurgTx.clinicalDeterioration) ichTransfer += '- Clinical deterioration\n';
@@ -10058,7 +10058,7 @@ Clinician Name`;
                 if (telestrokeNote.ichNeurosurgeryConsulted) snIchParts.push('NSG consulted');
                 if (telestrokeNote.ichSeizureProphylaxis) snIchParts.push('seizure ppx');
                 const snIchSurg = telestrokeNote.ichSurgicalCriteria || {};
-                if (snIchSurg.cerebellarGt15mL) snIchParts.push('cerebellar >15mL');
+                if (snIchSurg.cerebellarMassEffect) snIchParts.push('cerebellar mass effect/hydrocephalus concern');
                 if (snIchSurg.hydrocephalus) snIchParts.push('hydrocephalus');
                 if (snIchSurg.surgeryDecision) snIchParts.push(`surgery: ${snIchSurg.surgeryDecision}`);
                 if (snIchParts.length > 0) note += `- ICH: ${snIchParts.join(', ')}\n`;
@@ -10535,7 +10535,7 @@ Clinician Name`;
                 if (telestrokeNote.ichNeurosurgeryConsulted) prIchParts.push('NSG consulted');
                 if (telestrokeNote.ichSeizureProphylaxis) prIchParts.push('seizure ppx');
                 const prIchSurg = telestrokeNote.ichSurgicalCriteria || {};
-                if (prIchSurg.cerebellarGt15mL) prIchParts.push('cerebellar >15mL');
+                if (prIchSurg.cerebellarMassEffect) prIchParts.push('cerebellar mass effect/hydrocephalus concern');
                 if (prIchSurg.hydrocephalus) prIchParts.push('hydrocephalus');
                 if (prIchSurg.midlineShift) prIchParts.push('midline shift');
                 if (prIchSurg.surgeryDecision) prIchParts.push(`surgery: ${prIchSurg.surgeryDecision}`);
@@ -13822,7 +13822,7 @@ Clinician Name`;
                   updated.ichBPManaged = false;
                   updated.ichNeurosurgeryConsulted = false;
                   updated.ichSeizureProphylaxis = false;
-                  updated.ichSurgicalCriteria = { cerebellarGt15mL: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
+                  updated.ichSurgicalCriteria = { cerebellarMassEffect: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
                   updated.osmoticTherapy = { agentUsed: '', indication: '', serumSodium: '', serumOsmolality: '', sodiumTarget: '', correctionRate: '', baselineNa: '', baselineNaTime: '', repeatNa: '', repeatNaTime: '', weight: '', mannitolOsmGap: '' };
                 }
                 if (category !== 'sah') {
@@ -14324,7 +14324,7 @@ Clinician Name`;
                           next.ichBPManaged = false;
                           next.ichNeurosurgeryConsulted = false;
                           next.ichSeizureProphylaxis = false;
-                          next.ichSurgicalCriteria = { cerebellarGt15mL: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
+                          next.ichSurgicalCriteria = { cerebellarMassEffect: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
                           next.osmoticTherapy = { agentUsed: '', indication: '', serumSodium: '', serumOsmolality: '', sodiumTarget: '', correctionRate: '', baselineNa: '', baselineNaTime: '', repeatNa: '', repeatNaTime: '', weight: '', mannitolOsmGap: '' };
                         }
                         if (category !== 'sah') {
@@ -19145,7 +19145,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="text-sm font-semibold text-crit-800 mb-2 dark:text-crit-300">Surgical Assessment</div>
                                   <div className="space-y-1.5">
                                     {[
-                                      { key: 'cerebellarGt15mL', label: 'Cerebellar ICH >15 mL or >3 cm', detail: 'Class I indication for surgical evacuation if deteriorating' },
+                                      { key: 'cerebellarMassEffect', label: 'Cerebellar mass effect with hydrocephalus/brainstem compression', detail: 'Evaluate urgently for suboccipital decompression with or without EVD' },
                                       { key: 'hydrocephalus', label: 'Obstructive hydrocephalus', detail: 'EVD placement indicated' },
                                       { key: 'midlineShift', label: 'Midline shift / herniation risk', detail: 'Consider decompressive craniectomy or evacuation' },
                                       { key: 'clinicalDeterioration', label: 'Clinical deterioration', detail: 'GCS drop >=2 points or pupil asymmetry — urgent neurosurgery' },
@@ -19175,7 +19175,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <option value="not-candidate">Not a surgical candidate</option>
                                     </select>
                                   </div>
-                                  {((telestrokeNote.ichSurgicalCriteria || {}).cerebellarGt15mL || (telestrokeNote.ichSurgicalCriteria || {}).clinicalDeterioration) && !(telestrokeNote.ichSurgicalCriteria || {}).surgeryDiscussed && (
+                                  {((telestrokeNote.ichSurgicalCriteria || {}).cerebellarMassEffect || (telestrokeNote.ichSurgicalCriteria || {}).clinicalDeterioration) && !(telestrokeNote.ichSurgicalCriteria || {}).surgeryDiscussed && (
                                     <div className="mt-2 bg-crit-200 border border-crit-500 rounded p-2 text-xs text-crit-900 font-bold dark:bg-crit-950 dark:text-crit-300">
                                       URGENT: Surgical criteria met — neurosurgery must be contacted immediately.
                                     </div>
@@ -20800,7 +20800,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               updated.ichBPManaged = false;
                                               updated.ichNeurosurgeryConsulted = false;
                                               updated.ichSeizureProphylaxis = false;
-                                              updated.ichSurgicalCriteria = { cerebellarGt15mL: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
+                                              updated.ichSurgicalCriteria = { cerebellarMassEffect: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
                                               updated.osmoticTherapy = { agentUsed: '', indication: '', serumSodium: '', serumOsmolality: '', sodiumTarget: '', correctionRate: '', baselineNa: '', baselineNaTime: '', repeatNa: '', repeatNaTime: '', weight: '', mannitolOsmGap: '' };
                                             }
                                             if (newCategory !== 'sah') {
@@ -26435,7 +26435,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (telestrokeNote.ichNeurosurgeryConsulted) note += `- Neurosurgery consulted.\n`;
                                   const ichSurg = telestrokeNote.ichSurgicalCriteria || {};
                                   if (ichSurg.surgeryDecision) note += `- Surgical decision: ${ichSurg.surgeryDecision}.\n`;
-                                  if (ichSurg.cerebellarGt15mL) note += `- Cerebellar ICH >15 mL identified.\n`;
+                                  if (ichSurg.cerebellarMassEffect) note += `- Cerebellar mass effect with hydrocephalus/brainstem compression concern identified.\n`;
                                   if (ichSurg.hydrocephalus) note += `- Obstructive hydrocephalus present.\n`;
                                 } else if (pathwayType === 'sah') {
                                   note += `PLAN:\n`;
@@ -28100,7 +28100,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-slate-700 dark:text-ink-2">Promptly screen for neurosurgical escalation in cerebellar decline, hydrocephalus, mass effect, or selected lobar large ICH.</p>
                                 <details className="mt-1">
                                   <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-700 dark:text-mute dark:hover:text-ink">Evidence</summary>
-                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">ENRICH (2024): Early MIS for selected lobar ICH in the 30-80 mL trial range improved outcomes vs medical management (mRS shift OR 0.74). STICH II: Open craniotomy for lobar ICH did not show clear benefit. Cerebellar ICH with neurologic deterioration: Class I for surgical evacuation.</p>
+                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">ENRICH (2024): Early MIS for selected lobar ICH in the 30-80 mL trial range improved outcomes vs medical management (mRS shift OR 0.74). STICH II: Open craniotomy for lobar ICH did not show clear benefit. Cerebellar hemorrhage with posterior-fossa mass effect, usually with obstructive hydrocephalus and/or brainstem compression: urgent suboccipital decompression screen.</p>
                                 </details>
                               </div>
                             </div>
@@ -28651,7 +28651,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-cobalt-600 mb-2 dark:text-cobalt-300">Surgical Indications</h4>
                             <ul className="text-sm space-y-1">
-                              <li><strong>Cerebellar ICH &gt;=15 mL</strong> with neurologic deterioration, brainstem compression, or hydrocephalus: immediate evacuation +/- EVD.</li>
+                              <li><strong>Cerebellar ICH with mass effect</strong> and obstructive hydrocephalus and/or brainstem compression: urgent Neurosurgery evaluation for suboccipital decompression +/- EVD.</li>
                               <li><strong>Supratentorial ICH:</strong> routine craniotomy for outcome benefit is uncertain.</li>
                               <li><strong>Deteriorating supratentorial ICH:</strong> craniotomy may be considered as a lifesaving measure.</li>
                             </ul>

@@ -154,20 +154,28 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(texts['data/generic-protocols.json']).toMatch(/Consult earlier at any size[\s\S]{0,260}pupillometry trend\/asymmetry[\s\S]{0,260}clinician concern/i);
     expect(texts['src/institutional-protocols.js']).toMatch(/Consult earlier at any size[\s\S]{0,260}pupillometry trend\/asymmetry[\s\S]{0,260}clinician concern/i);
     expect(texts['src/app.jsx']).toMatch(/Screen for MIE only when spontaneous lobar IPH 30-80cc, NIHSS >5, GCS 5-14, age 18-80, and no underlying vascular lesion are confirmed/i);
-    expect(texts['src/app.jsx']).toMatch(/Do not infer suboccipital decompression from cerebellar location alone/i);
+    expect(texts['src/app.jsx']).toMatch(/Do not infer suboccipital decompression from cerebellar location or volume alone/i);
     expect(texts['src/institutional-protocols.js']).toMatch(/pupillometry/i);
     expect(texts['data/generic-protocols.json']).toMatch(/pupillometry/i);
     expect(texts['src/institutional-protocols.js']).toMatch(/Life-threatening mass effect/);
     expect(texts['data/generic-protocols.json']).toMatch(/Life-threatening mass effect/);
     expect(texts['src/institutional-protocols.js']).not.toMatch(/Life-threatening or significant mass effect/);
     expect(texts['data/generic-protocols.json']).not.toMatch(/Life-threatening or significant mass effect/);
+    expect(texts['src/app.jsx']).toMatch(/Cerebellar ICH with mass effect/);
+    expect(texts['src/app.jsx']).toMatch(/posterior-fossa mass effect/);
+    expect(texts['app.js']).toMatch(/Cerebellar ICH with mass effect/);
+    expect(texts['app.js']).toMatch(/posterior-fossa mass effect/);
 
     const obsoleteHits = [
       ...offendingLines(/Neurology\/stroke attending should approve neurosurgery consultations/i),
       ...offendingLines(/discusses with stroke attending before consulting neurosurgery/i),
       ...offendingLines(/prior approval is required/i),
       ...offendingLines(/IVH\/hydrocephalus, mass effect, vascular lesion concern, or clinician concern/i, { files: ['src/app.jsx', 'app.js'] }),
-      ...offendingLines(/(?:^|['"`>])Meets (?:≥|\\u2265|>=)\s*15 mL early Neurosurgery \+ stroke-service evaluation threshold/, { files: ['src/app.jsx', 'app.js'] })
+      ...offendingLines(/(?:^|['"`>])Meets (?:≥|\\u2265|>=)\s*15 mL early Neurosurgery \+ stroke-service evaluation threshold/, { files: ['src/app.jsx', 'app.js'] }),
+      ...offendingLines(/Cerebellar ICH (?:>|>=|&gt;=?|\\u003e=?)\s*15/i, { files: ['src/app.jsx', 'app.js'] }),
+      ...offendingLines(/cerebellar\s*>15mL/i, { files: ['src/app.jsx', 'app.js'] }),
+      ...offendingLines(/cerebellarGt15mL/i, { files: ['src/app.jsx', 'app.js'] }),
+      ...offendingLines(/immediate evacuation \+\/- EVD/i, { files: ['src/app.jsx', 'app.js'] })
     ];
     expect(obsoleteHits, `Obsolete neurosurgery approval-gate wording found:\n${obsoleteHits.join('\n')}`).toEqual([]);
   });
