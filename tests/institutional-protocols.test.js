@@ -8,8 +8,24 @@ import {
   getSafePauseText,
   ICH_INITIAL_EVALUATION_ALGORITHM,
   INSTITUTIONAL_BP_PROTOCOLS,
-  SAFE_PAUSE_ATTESTATION
+  SAFE_PAUSE_ATTESTATION,
+  EXTENDED_WINDOW_IVT_DISCUSSION
 } from '../src/institutional-protocols.js';
+
+describe('EXTENDED_WINDOW_IVT_DISCUSSION', () => {
+  it('is a defined string containing key clinical information', () => {
+    expect(typeof EXTENDED_WINDOW_IVT_DISCUSSION).toBe('string');
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION.length).toBeGreaterThan(0);
+
+    // Check for key clinical details without asserting exact wording of the entire script
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/Tenecteplase/i);
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/4\.5-hour window/i);
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/9-11%/);
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/3%/);
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/serious bleeding/i);
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/benefit of treatment outweighs the risk/i);
+  });
+});
 
 describe('evaluateIVT', () => {
   it('blocks if ICH on CT', () => {
