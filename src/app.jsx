@@ -9107,9 +9107,15 @@ Clinician Name`;
             // mRS tracking
             {
               const mrs = telestrokeNote.mrsAssessment || {};
-              const mrsEntries = Object.entries(mrs).filter(([k, v]) => v);
-              if (mrsEntries.length > 0) {
-                brief += `\nmRS TRACKING: ${mrsEntries.map(([k, v]) => `${k}: ${v}`).join(', ')}\n`;
+              const mrsStr = Object.keys(mrs).reduce((acc, k) => {
+                const v = mrs[k];
+                if (v) {
+                  return acc ? `${acc}, ${k}: ${v}` : `${k}: ${v}`;
+                }
+                return acc;
+              }, '');
+              if (mrsStr) {
+                brief += `\nmRS TRACKING: ${mrsStr}\n`;
               }
             }
             // Driving restrictions
