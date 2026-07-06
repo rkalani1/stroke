@@ -2546,21 +2546,25 @@ Clinician Name`;
             const defaults = getDefaultTelestrokeNote();
             const merged = { ...defaults };
             for (const key of Object.keys(saved)) {
-              if (saved[key] !== undefined && saved[key] !== null) {
-                if (typeof defaults[key] === 'object' && defaults[key] !== null && !Array.isArray(defaults[key])
-                    && typeof saved[key] === 'object' && !Array.isArray(saved[key])) {
-                  merged[key] = { ...defaults[key], ...saved[key] };
+              const savedVal = saved[key];
+              if (savedVal !== undefined && savedVal !== null) {
+                const defVal = defaults[key];
+                if (typeof defVal === 'object' && defVal !== null && !Array.isArray(defVal)
+                    && typeof savedVal === 'object' && !Array.isArray(savedVal)) {
+                  const mergedKeyObj = { ...defVal, ...savedVal };
+                  merged[key] = mergedKeyObj;
                   // Two-level deep merge: restore default sub-objects (e.g. wakeUpStrokeWorkflow.dwi)
-                  for (const subKey of Object.keys(defaults[key])) {
-                    if (typeof defaults[key][subKey] === 'object' && defaults[key][subKey] !== null && !Array.isArray(defaults[key][subKey])
-                        && typeof merged[key][subKey] === 'object' && merged[key][subKey] !== null && !Array.isArray(merged[key][subKey])) {
-                      merged[key][subKey] = { ...defaults[key][subKey], ...merged[key][subKey] };
-                    } else if (merged[key][subKey] === undefined || merged[key][subKey] === null) {
-                      merged[key][subKey] = defaults[key][subKey];
+                  for (const [subKey, defSubVal] of Object.entries(defVal)) {
+                    const mergedSubVal = mergedKeyObj[subKey];
+                    if (typeof defSubVal === 'object' && defSubVal !== null && !Array.isArray(defSubVal)
+                        && typeof mergedSubVal === 'object' && mergedSubVal !== null && !Array.isArray(mergedSubVal)) {
+                      mergedKeyObj[subKey] = { ...defSubVal, ...mergedSubVal };
+                    } else if (mergedSubVal === undefined || mergedSubVal === null) {
+                      mergedKeyObj[subKey] = defSubVal;
                     }
                   }
                 } else {
-                  merged[key] = saved[key];
+                  merged[key] = savedVal;
                 }
               }
             }
