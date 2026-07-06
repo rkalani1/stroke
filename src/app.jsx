@@ -15968,26 +15968,32 @@ Clinician Name`;
 
             const loadConfig = async () => {
               try {
-                const baseResponse = await fetch('config.example.json', { cache: 'no-store' });
+                const baseFetch = fetch('config.example.json', { cache: 'no-store' });
+                const localFetch = useLocalOverride
+                  ? fetch('config.local.json', { cache: 'no-store' }).catch(localErr => {
+                      console.warn('Optional local config load failed:', localErr);
+                      return null;
+                    })
+                  : Promise.resolve(null);
+
+                const [baseResponse, localResponse] = await Promise.all([baseFetch, localFetch]);
+
                 if (!baseResponse.ok) {
                   throw new Error('Base config fetch failed');
                 }
                 let mergedConfig = await baseResponse.json();
 
-                if (useLocalOverride) {
+                if (localResponse && localResponse.ok) {
                   try {
-                    const localResponse = await fetch('config.local.json', { cache: 'no-store' });
-                    if (localResponse.ok) {
-                      const localConfig = await localResponse.json();
-                      if (localConfig && typeof localConfig === 'object' && !Array.isArray(localConfig)) {
-                        mergedConfig = {
-                          ...mergedConfig,
-                          ...localConfig,
-                          institutionLinks: Array.isArray(localConfig.institutionLinks)
-                            ? localConfig.institutionLinks
-                            : mergedConfig.institutionLinks
-                        };
-                      }
+                    const localConfig = await localResponse.json();
+                    if (localConfig && typeof localConfig === 'object' && !Array.isArray(localConfig)) {
+                      mergedConfig = {
+                        ...mergedConfig,
+                        ...localConfig,
+                        institutionLinks: Array.isArray(localConfig.institutionLinks)
+                          ? localConfig.institutionLinks
+                          : mergedConfig.institutionLinks
+                      };
                     }
                   } catch (localErr) {
                     console.warn('Optional local config load failed:', localErr);
