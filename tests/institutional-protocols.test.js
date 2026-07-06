@@ -8,7 +8,12 @@ import {
   getSafePauseText,
   ICH_INITIAL_EVALUATION_ALGORITHM,
   INSTITUTIONAL_BP_PROTOCOLS,
-  SAFE_PAUSE_ATTESTATION
+  SAFE_PAUSE_ATTESTATION,
+  LEGACY_BP_PROTOCOLS,
+  evaluateIVT_Legacy,
+  evaluateEVT_Legacy_Anterior,
+  evaluateEVT_Legacy_M2,
+  evaluateEVT_Legacy_Basilar
 } from '../src/institutional-protocols.js';
 
 describe('evaluateIVT', () => {
@@ -270,5 +275,27 @@ describe('ICH initial evaluation algorithm', () => {
     for (const re of banned) {
       expect(re.test(text), `ICH algorithm contains banned token ${re}`).toBe(false);
     }
+  });
+});
+
+describe('Legacy Aliases', () => {
+  it('LEGACY_BP_PROTOCOLS is identical to INSTITUTIONAL_BP_PROTOCOLS', () => {
+    expect(LEGACY_BP_PROTOCOLS).toBe(INSTITUTIONAL_BP_PROTOCOLS);
+  });
+
+  it('evaluateIVT_Legacy is identical to evaluateIVT', () => {
+    expect(evaluateIVT_Legacy).toBe(evaluateIVT);
+  });
+
+  it('evaluateEVT_Legacy_Anterior is identical to evaluateEVT_Anterior', () => {
+    expect(evaluateEVT_Legacy_Anterior).toBe(evaluateEVT_Anterior);
+  });
+
+  it('evaluateEVT_Legacy_M2 is identical to evaluateEVT_M2', () => {
+    expect(evaluateEVT_Legacy_M2).toBe(evaluateEVT_M2);
+  });
+
+  it('evaluateEVT_Legacy_Basilar is identical to evaluateEVT_Basilar', () => {
+    expect(evaluateEVT_Legacy_Basilar).toBe(evaluateEVT_Basilar);
   });
 });
