@@ -355,7 +355,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           try {
             localStorage.setItem(STORAGE_PREFIX + LAST_UPDATED_KEY, JSON.stringify(Date.now()));
           } catch (e) {
-            console.warn('Failed to update lastUpdated:', e);
             if (e.name === 'QuotaExceededError' || e.code === 22) {
               throw e;
             }
@@ -370,7 +369,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               touchLastUpdated();
             }
           } catch (e) {
-            console.warn('Failed to save key:', name, e);
             if (e.name === 'QuotaExceededError' || e.code === 22) {
               throw e; // Re-throw quota errors for caller to handle
             }
@@ -403,7 +401,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             });
             LEGACY_SESSION_KEYS.forEach((key) => sessionStorage.removeItem(key));
           } catch (e) {
-            console.warn('Storage clear failed:', e);
           }
         };
 
@@ -416,7 +413,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               indexedDB.deleteDatabase('strokeAppCensus');
             }
           } catch (e) {
-            console.warn('Public demo storage cleanup failed:', e);
           }
         }
 
@@ -436,7 +432,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             });
             localStorage.setItem(STORAGE_PREFIX + LEGACY_MIGRATION_KEY, JSON.stringify(true));
           } catch (e) {
-            console.warn('Legacy storage migration failed:', e);
           }
         };
 
@@ -975,7 +970,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             const merged = mergeAppData(base, parsed);
             return migrateLegacyToAppData(migrateAppData(merged));
           } catch (e) {
-            console.warn('Failed to parse app data:', e);
             return migrateLegacyToAppData(base);
           }
         };
@@ -987,10 +981,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             touchLastUpdated();
           } catch (e) {
             if (e.name === 'QuotaExceededError' || e.code === 22) {
-              console.error('Storage quota exceeded:', e);
               try { document.dispatchEvent(new CustomEvent('storage-quota-exceeded')); } catch (_) {}
-            } else {
-              console.warn('Failed to save app data:', e);
             }
           }
         };
@@ -1982,13 +1973,11 @@ Clinician Name`;
 
               // Validate that arrays are actually arrays (fix for completedSteps issue)
               if (Array.isArray(defaultValue) && !Array.isArray(saved)) {
-                console.warn(`Invalid data type for ${key}, expected array. Resetting to default.`);
                 return defaultValue;
               }
 
               return saved;
             } catch (e) {
-              console.warn(`Error loading ${key} from localStorage:`, e);
               return defaultValue;
             }
           };
@@ -2010,7 +1999,6 @@ Clinician Name`;
               }
               return item;
             } catch (e) {
-              console.warn(`Error loading ${key}:`, e);
               return defaultValue;
             }
           };
@@ -2019,7 +2007,6 @@ Clinician Name`;
             try {
               setKey(key, { data: value, expiresAt: Date.now() + SHIFT_DATA_TTL_MS });
             } catch (e) {
-              console.warn(`Error saving ${key}:`, e);
             }
           };
 
@@ -7263,7 +7250,6 @@ Clinician Name`;
               setLastSaved(new Date());
             } catch (e) {
               setSaveStatus('error');
-              console.error('Save failed:', e);
               if (e.name === 'QuotaExceededError' || e.code === 22) {
                 addToast('Storage full — data may not be saved. Export your note or clear old data.', 'error');
               }
@@ -7274,7 +7260,6 @@ Clinician Name`;
             try {
               return loadFromStorage(key, defaultValue);
             } catch (e) {
-              console.warn('Load failed:', e);
               return defaultValue;
             }
           };
@@ -7298,7 +7283,6 @@ Clinician Name`;
                   // Re-queue failed writes so they retry on next flush
                   pendingWritesRef.current[k] = v;
                   anyFailed = true;
-                  console.error('Partial save failed for key:', k, e);
                 }
               }
               if (anyFailed) {
@@ -7785,7 +7769,7 @@ Clinician Name`;
             setEncounterHistory(prev => {
               if (PUBLIC_DEMO_MODE) return prev;
               const next = [snapshot, ...prev].slice(0, 20);
-              try { localStorage.setItem('strokeApp:encounterHistory', JSON.stringify(next)); } catch (e) { console.warn('Encounter history save failed:', e.name); if (e.name === 'QuotaExceededError' || e.code === 22) { try { addToast('Storage full — encounter history may not be saved. Export your data or clear old encounters.', 'error'); } catch (_) {} } }
+              try { localStorage.setItem('strokeApp:encounterHistory', JSON.stringify(next)); } catch (e) { if (e.name === 'QuotaExceededError' || e.code === 22) { try { addToast('Storage full — encounter history may not be saved. Export your data or clear old encounters.', 'error'); } catch (_) {} } }
               return next;
             });
           }, [telestrokeNote, nihssScore, consultationType]);
@@ -12171,7 +12155,6 @@ Clinician Name`;
 
             return note;
             } catch (err) {
-              console.error('Error generating note:', err);
               return `[Error generating note: ${err.message}. Please try again or report this issue.]`;
             }
           };
@@ -13884,7 +13867,7 @@ Clinician Name`;
               ichScore: typeof calculateICHScore === 'function' ? calculateICHScore(ichScoreItems) : 0
             };
             return Object.values(GUIDELINE_RECOMMENDATIONS).filter(rec => {
-              try { return rec.conditions(data); } catch (err) { console.warn(`Guideline condition failed for "${rec.id || 'unknown'}":`, err.message); return false; }
+              try { return rec.conditions(data); } catch (err) { return false; }
             });
           };
 
@@ -15117,7 +15100,6 @@ Clinician Name`;
               try {
                 localStorage.removeItem(key);
               } catch (e) {
-                console.warn('Failed to remove legacy key:', key, e);
               }
             });
             showNotice('Legacy keys removed.', 'success');
@@ -15173,7 +15155,6 @@ Clinician Name`;
                 });
               });
             }).catch((err) => {
-              console.warn('Service worker registration failed:', err);
             });
             let refreshing = false;
             const onControllerChange = () => {
@@ -15246,7 +15227,6 @@ Clinician Name`;
                 setIsInstalled(true);
               }
             } catch (e) {
-              console.warn('install prompt failed:', e);
             } finally {
               setInstallPrompt(null);
             }
@@ -15656,7 +15636,6 @@ Clinician Name`;
                 currentTime += config.duration + 0.15; // Gap between beeps
               }
             } catch (e) {
-              console.warn('Audio alert not supported:', e);
             }
           };
 
@@ -15990,7 +15969,6 @@ Clinician Name`;
                       }
                     }
                   } catch (localErr) {
-                    console.warn('Optional local config load failed:', localErr);
                   }
                 }
 
@@ -15998,7 +15976,6 @@ Clinician Name`;
                 applyConfigData(mergedConfig);
               } catch (err) {
                 if (cancelled) return;
-                console.warn('Config load failed:', err);
                 removeKey('ttlHoursOverride');
                 setTtlHours(DEFAULT_TTL_HOURS);
                 setConfigLoaded(true);
