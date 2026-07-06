@@ -17963,21 +17963,21 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="bg-white border border-cobalt-200 rounded-lg p-2 space-y-1 text-sm dark:bg-card dark:border-cobalt-700">
                                   <div className="font-bold text-cobalt-800 dark:text-cobalt-300">WAKE-UP Trial Criteria</div>
                                   {[
-                                    { key: 'dwi', label: 'DWI positive lesion', path: 'dwi.positiveForLesion' },
-                                    { key: 'flair', label: 'No FLAIR hyperintensity', path: 'flair.noMarkedHyperintensity' },
-                                    { key: 'age', label: 'Age 18-80', path: 'ageEligible' },
-                                    { key: 'nihss', label: 'NIHSS ≤25', path: 'nihssEligible' }
+                                    { key: 'dwi', label: 'DWI positive lesion', parent: 'dwi', child: 'positiveForLesion' },
+                                    { key: 'flair', label: 'No FLAIR hyperintensity', parent: 'flair', child: 'noMarkedHyperintensity' },
+                                    { key: 'age', label: 'Age 18-80', field: 'ageEligible' },
+                                    { key: 'nihss', label: 'NIHSS ≤25', field: 'nihssEligible' }
                                   ].map(item => (
                                     <label key={item.key} className="flex items-center gap-2 cursor-pointer">
                                       <input type="checkbox"
-                                        checked={item.path.includes('.') ? (telestrokeNote.wakeUpStrokeWorkflow?.[item.path.split('.')[0]] || {})[item.path.split('.')[1]] : telestrokeNote.wakeUpStrokeWorkflow?.[item.path]}
+                                        checked={item.parent ? (telestrokeNote.wakeUpStrokeWorkflow?.[item.parent] || {})[item.child] : telestrokeNote.wakeUpStrokeWorkflow?.[item.field]}
                                         onChange={(e) => {
                                           const checked = e.target.checked;
-                                          if (item.path.includes('.')) {
-                                            const [parent, child] = item.path.split('.');
+                                          if (item.parent) {
+                                            const { parent, child } = item;
                                             setTelestrokeNote(prev => ({...prev, wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), [parent]: {...(prev.wakeUpStrokeWorkflow?.[parent] || {}), [child]: checked}}}));
                                           } else {
-                                            setTelestrokeNote(prev => ({...prev, wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), [item.path]: checked}}));
+                                            setTelestrokeNote(prev => ({...prev, wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), [item.field]: checked}}));
                                           }
                                         }}
                                         className="w-4 h-4 rounded border-cobalt-400 text-cobalt-600 dark:text-cobalt-300" />
