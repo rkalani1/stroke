@@ -7,6 +7,12 @@
 // EVIDENCE AUDIT: Last comprehensive review 2026-05-31; IVT/EVT eligibility and
 // BP-target content re-verified 2026-07-03 against the 2026 acute-stroke algorithm,
 // IVT/EVT eligibility, and telestroke source updates (no clinical changes required).
+// 2026-07-06: re-verified against the newest institution-neutral source translations
+// (June-30 telestroke workflow + pediatric framework) and the AHA/ASA 2026 AIS
+// guideline (Stroke; DOI 10.1161/STR.0000000000000513, PMID 41582814, PubMed-
+// verified). Extended-window IVT remains framed as emerging (not routine to 24h);
+// TNK 0.25 mg/kg max 25 mg; BP <185/110 pre-IVT and <180/105 post-IVT/EVT; no
+// routine SBP <140 after successful EVT. No clinical changes required.
 // Reviewed against:
 // — AHA/ASA AIS 2026 Guidelines
 // — AHA/ASA ICH 2022 (Greenberg)

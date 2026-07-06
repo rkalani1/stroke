@@ -2796,7 +2796,7 @@ Clinician Name`;
             FAMOTIDINE: {
               title: 'Famotidine',
               dosing: 'Famotidine 20 mg IV.',
-              note: 'H2 blocker for angioedema management protocol. (Ranitidine withdrawn by FDA April 2020 due to NDMA.)'
+              note: 'H2 antihistamine given with an H1 blocker (e.g., diphenhydramine) for thrombolysis-associated orolingual angioedema. Use the H2 agent on your local formulary.'
             },
             PROT1: {
               title: 'Protamine (UFH)',

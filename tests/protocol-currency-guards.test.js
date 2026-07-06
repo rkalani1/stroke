@@ -352,4 +352,48 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
       }
     }
   });
+
+  it('locks in the 2026-07-06 evidence refresh (new trials present + PubMed-verified)', () => {
+    const trials = readJson('data/atlas/completed-trials.json').data;
+    const byName = new Map(trials.map((t) => [t.shortName, t]));
+    const cites = readJson('data/atlas/citations.json').data;
+    const citeById = new Map(cites.map((c) => [c.id, c]));
+    const expected = {
+      'BRIDGE-TNK': { pmid: '40396577', doi: '10.1056/NEJMoa2503867', cid: 'cit-bridge-tnk-2025' },
+      HOPE: { pmid: '40773205', doi: '10.1001/jama.2025.12063', cid: 'cit-hope-2025' },
+      EXPECTS: { pmid: '40174223', doi: '10.1056/NEJMoa2413344', cid: 'cit-expects-2025' },
+      MIND: { pmid: '40892424', doi: '10.1001/jamaneurol.2025.3151', cid: 'cit-mind-2025' }
+    };
+    for (const [name, exp] of Object.entries(expected)) {
+      const t = byName.get(name);
+      expect(t, `completed trial ${name} missing from atlas`).toBeTruthy();
+      expect(t.verificationStatus, `${name} not PubMed-verified`).toBe('verified-pubmed');
+      expect(t.citationIds, `${name} missing citation ${exp.cid}`).toContain(exp.cid);
+      const c = citeById.get(exp.cid);
+      expect(c, `citation ${exp.cid} missing`).toBeTruthy();
+      expect(c.pmid, `${name} PMID drifted`).toBe(exp.pmid);
+      expect(c.doi, `${name} DOI drifted`).toBe(exp.doi);
+    }
+    // MIND must stay represented as a NEGATIVE trial — never imply MIS efficacy.
+    expect(byName.get('MIND').primaryEndpoint.result).toMatch(/no significant benefit|negative|did not|no benefit/i);
+    // Extended-window alteplase trials must keep the "emerging / not routine" framing.
+    expect(byName.get('HOPE').applicabilityNotes).toMatch(/emerging|not a standard/i);
+    expect(byName.get('EXPECTS').applicabilityNotes).toMatch(/emerging|not a standard/i);
+  });
+
+  it('keeps the corrected TEMPO-2 DOI (caught by independent PubMed verification)', () => {
+    const cites = readJson('data/atlas/citations.json').data;
+    const tempo2 = cites.find((c) => c.id === 'cit-tempo-2-2024');
+    expect(tempo2, 'TEMPO-2 citation missing').toBeTruthy();
+    expect(tempo2.doi).toBe('10.1016/S0140-6736(24)00921-8');
+    // The wrong DOI copied from the local source doc must never reappear.
+    expect(tempo2.doi).not.toBe('10.1016/S0140-6736(24)00827-2');
+  });
+
+  it('keeps adult AIS tenecteplase dose at 0.25 mg/kg (max 25 mg) and forbids the 0.4 mg/kg dose', () => {
+    // Positive: correct AIS dose ships in the institutional example algorithm.
+    expect(texts['src/institutional-protocols.js']).toMatch(/0\.25\s*mg\/kg[^\n]{0,40}max\s*25\s*mg/i);
+    // Positive: the 0.4 mg/kg stroke dose is explicitly prohibited, not recommended.
+    expect(texts['src/management-guidance.js']).toMatch(/do not use the 0\.4\s*mg\/kg/i);
+  });
 });

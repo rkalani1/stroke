@@ -869,6 +869,91 @@ export const citations = [
     doi: '10.1056/NEJMoa2408954',
     url: 'https://pubmed.ncbi.nlm.nih.gov/39908430/',
     verificationStatus: 'verified-pubmed'
+  }),
+  // ------------------- 2026-07-06 evidence refresh (PubMed-verified) -------------------
+  makeCitation({
+    id: 'cit-bridge-tnk-2025',
+    authors: 'Qiu Z et al.',
+    title: 'Intravenous Tenecteplase before Thrombectomy in Stroke (BRIDGE-TNK)',
+    journal: 'N Engl J Med',
+    year: 2025,
+    volume: '393',
+    pages: '139-150',
+    pmid: '40396577',
+    doi: '10.1056/NEJMoa2503867',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/40396577/',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified via PubMed 2026-07-06; NCT04733742.'
+  }),
+  makeCitation({
+    id: 'cit-hope-2025',
+    authors: 'Zhou Y et al.',
+    title: 'Alteplase for Acute Ischemic Stroke at 4.5 to 24 Hours: The HOPE Randomized Clinical Trial',
+    journal: 'JAMA',
+    year: 2025,
+    volume: '334',
+    pages: '788-797',
+    pmid: '40773205',
+    doi: '10.1001/jama.2025.12063',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/40773205/',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified via PubMed 2026-07-06; NCT04879615.'
+  }),
+  makeCitation({
+    id: 'cit-expects-2025',
+    authors: 'Yan S et al.',
+    title: 'Alteplase for Posterior Circulation Ischemic Stroke at 4.5 to 24 Hours (EXPECTS)',
+    journal: 'N Engl J Med',
+    year: 2025,
+    volume: '392',
+    pages: '1288-1296',
+    pmid: '40174223',
+    doi: '10.1056/NEJMoa2413344',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/40174223/',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified via PubMed 2026-07-06; NCT05429476.'
+  }),
+  makeCitation({
+    id: 'cit-mind-2025',
+    authors: 'Arthur AS et al.',
+    title: 'Minimally Invasive Surgery vs Medical Management Alone for Intracerebral Hemorrhage: The MIND Randomized Clinical Trial',
+    journal: 'JAMA Neurol',
+    year: 2025,
+    volume: '82',
+    pages: '1113-1121',
+    pmid: '40892424',
+    doi: '10.1001/jamaneurol.2025.3151',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/40892424/',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified via PubMed 2026-07-06; NCT03342664. Negative trial (no superiority of MIS).'
+  }),
+  makeCitation({
+    id: 'cit-chablis-t2-2025',
+    authors: 'Cheng X et al.',
+    title: 'Tenecteplase Thrombolysis for Stroke up to 24 Hours After Onset With Perfusion Imaging Selection (CHABLIS-T II)',
+    journal: 'Stroke',
+    year: 2025,
+    volume: '56',
+    pages: '344-354',
+    pmid: '39744861',
+    doi: '10.1161/STROKEAHA.124.048375',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/39744861/',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified via PubMed 2026-07-06.'
+  }),
+  makeCitation({
+    id: 'cit-tempo-2-2024',
+    authors: 'Coutts SB et al.',
+    title: 'Tenecteplase versus standard of care for minor ischaemic stroke with proven occlusion (TEMPO-2)',
+    journal: 'Lancet',
+    year: 2024,
+    volume: '403',
+    pages: '2597-2605',
+    pmid: '38768626',
+    doi: '10.1016/S0140-6736(24)00921-8',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/38768626/',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified via PubMed 2026-07-06; DOI corrected from local source doc (was S0140-6736(24)00827-2).'
   })
 ];
 
