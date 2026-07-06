@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## v6.11.0 — 2026-07-06 — evidence refresh (2026-07-06)
+
+Evidence Atlas / Guidelines refresh, every claim verified live against PubMed
+on 2026-07-06 (access date recorded per record):
+- Added 6 PubMed-verified completed trials (`src/evidence/completedTrials.js`
+  + `citations.js`, all `verified-pubmed`): BRIDGE-TNK (NEJM 2025, PMID
+  40396577), HOPE (JAMA 2025, PMID 40773205), EXPECTS (NEJM 2025, PMID
+  40174223), MIND (JAMA Neurol 2025, PMID 40892424 — a NEGATIVE trial),
+  CHABLIS-T II (Stroke 2025, PMID 39744861), TEMPO-2 (Lancet 2024, PMID
+  38768626). Two source-doc DOI errors corrected against PubMed (TEMPO-2,
+  ROSE-TNK). Atlas: 58→64 completed, 70→76 citations.
+- Extended-window alteplase framed as emerging (not routine to 24h); MIND kept
+  as a negative trial (no MIS superiority).
+- Thrombolysis-angioedema H2 note made formulary-neutral (removed ranitidine
+  token; famotidine retained).
+- `src/institutional-protocols.js` audit header refreshed to 2026-07-06
+  (re-verified vs June-2026 sources + AHA/ASA 2026 AIS guideline PMID 41582814;
+  no clinical change).
+- +3 protocol-currency regression guards (evidence-refresh presence + PMIDs/
+  DOIs, corrected TEMPO-2 DOI, TNK 0.25 mg/kg max 25 with 0.4 mg/kg prohibition).
+
+Version bumped 6.10.1 → 6.11.0 to bust HTTP/SW caches so the new bundle
+propagates immediately. Public-safe: no institutional identifiers added;
+leak-guard 0. Gates: all evidence/citation validators + unit/protocol tests +
+build pass; browser QA (desktop + mobile) clean.
+
 ## v6.10.1 — 2026-07-04 — UI declutter
 
 Owner-directed removal of low-value surfaces (no clinical-content changes):
