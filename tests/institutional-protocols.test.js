@@ -8,7 +8,8 @@ import {
   getSafePauseText,
   ICH_INITIAL_EVALUATION_ALGORITHM,
   INSTITUTIONAL_BP_PROTOCOLS,
-  SAFE_PAUSE_ATTESTATION
+  SAFE_PAUSE_ATTESTATION,
+  getLocalInstitutionalContent
 } from '../src/institutional-protocols.js';
 
 describe('evaluateIVT', () => {
@@ -270,5 +271,51 @@ describe('ICH initial evaluation algorithm', () => {
     for (const re of banned) {
       expect(re.test(text), `ICH algorithm contains banned token ${re}`).toBe(false);
     }
+  });
+});
+
+describe('getLocalInstitutionalContent', () => {
+  it('returns null when window is undefined', () => {
+    // Save original window just in case
+    const originalWindow = globalThis.window;
+    globalThis.window = undefined;
+    expect(getLocalInstitutionalContent()).toBe(null);
+    globalThis.window = originalWindow;
+  });
+
+  it('returns null when __INSTITUTIONAL_LOCAL__ is not set', () => {
+    const originalWindow = globalThis.window;
+    globalThis.window = {};
+    expect(getLocalInstitutionalContent()).toBe(null);
+    globalThis.window = originalWindow;
+  });
+
+  it('returns null when __INSTITUTIONAL_LOCAL__ is not an object', () => {
+    const originalWindow = globalThis.window;
+    globalThis.window = { __INSTITUTIONAL_LOCAL__: 'string' };
+    expect(getLocalInstitutionalContent()).toBe(null);
+    globalThis.window = originalWindow;
+  });
+
+  it('returns null when institutionName is missing', () => {
+    const originalWindow = globalThis.window;
+    globalThis.window = { __INSTITUTIONAL_LOCAL__: { sections: [] } };
+    expect(getLocalInstitutionalContent()).toBe(null);
+    globalThis.window = originalWindow;
+  });
+
+  it('returns null when sections is not an array', () => {
+    const originalWindow = globalThis.window;
+    globalThis.window = { __INSTITUTIONAL_LOCAL__: { institutionName: 'Hospital', sections: {} } };
+    expect(getLocalInstitutionalContent()).toBe(null);
+    globalThis.window = originalWindow;
+  });
+
+  it('returns the local object when valid', () => {
+    const originalWindow = globalThis.window;
+    const validLocal = { institutionName: 'Hospital', sections: [] };
+    globalThis.window = { __INSTITUTIONAL_LOCAL__: validLocal };
+    expect(getLocalInstitutionalContent()).toBe(validLocal);
+    globalThis.window = originalWindow;
   });
 });
