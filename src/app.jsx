@@ -8899,7 +8899,10 @@ Clinician Name`;
             if (cw.pfoEvaluation && cw.pfoEvaluation !== 'no-pfo') brief += `- PFO: ${cw.pfoEvaluation.replace(/-/g, ' ')}\n`;
             // Pending workup items
             if (ew.completedTests && Object.keys(ew.completedTests).length > 0) {
-              const pending = Object.entries(ew.completedTests).filter(([k, v]) => !v).map(([k]) => k);
+              const pending = [];
+              for (const [k, v] of Object.entries(ew.completedTests)) {
+                if (!v) pending.push(k);
+              }
               if (pending.length > 0) {
                 brief += `\nPENDING WORKUP:\n`;
                 pending.forEach(k => brief += `- ${k.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase()).trim()}\n`);
@@ -11789,8 +11792,13 @@ Clinician Name`;
             // Add etiology workup status
             const ew = telestrokeNote.etiologyWorkup || {};
             if (ew.completedTests && Object.keys(ew.completedTests).length > 0) {
-              const completed = Object.entries(ew.completedTests).filter(([k, v]) => v).map(([k]) => k.replace(/([A-Z])/g, ' $1').trim());
-              const pending = Object.entries(ew.completedTests).filter(([k, v]) => !v).map(([k]) => k.replace(/([A-Z])/g, ' $1').trim());
+              const completed = [];
+              const pending = [];
+              for (const [k, v] of Object.entries(ew.completedTests)) {
+                const formatted = k.replace(/([A-Z])/g, ' $1').trim();
+                if (v) completed.push(formatted);
+                else pending.push(formatted);
+              }
               if (completed.length > 0) note += `Workup completed: ${completed.join(', ')}\n`;
               if (pending.length > 0) note += `Workup pending: ${pending.join(', ')}\n`;
             }
