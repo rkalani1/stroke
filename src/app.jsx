@@ -14893,21 +14893,29 @@ Clinician Name`;
             } else {
               note = { ...defaults };
               for (const key of Object.keys(savedNote)) {
-                if (savedNote[key] !== undefined && savedNote[key] !== null) {
-                  if (typeof defaults[key] === 'object' && defaults[key] !== null && !Array.isArray(defaults[key])
-                      && typeof savedNote[key] === 'object' && !Array.isArray(savedNote[key])) {
-                    note[key] = { ...defaults[key], ...savedNote[key] };
+                const savedVal = savedNote[key];
+                if (savedVal !== undefined && savedVal !== null) {
+                  const defVal = defaults[key];
+                  if (typeof defVal === 'object' && defVal !== null && !Array.isArray(defVal)
+                      && typeof savedVal === 'object' && !Array.isArray(savedVal)) {
+
+                    const mergedObj = { ...defVal, ...savedVal };
+                    note[key] = mergedObj;
+
                     // Two-level deep merge: restore default sub-objects (e.g. wakeUpStrokeWorkflow.dwi)
-                    for (const subKey of Object.keys(defaults[key])) {
-                      if (typeof defaults[key][subKey] === 'object' && defaults[key][subKey] !== null && !Array.isArray(defaults[key][subKey])
-                          && typeof note[key][subKey] === 'object' && note[key][subKey] !== null && !Array.isArray(note[key][subKey])) {
-                        note[key][subKey] = { ...defaults[key][subKey], ...note[key][subKey] };
-                      } else if (note[key][subKey] === undefined || note[key][subKey] === null) {
-                        note[key][subKey] = defaults[key][subKey];
+                    for (const subKey of Object.keys(defVal)) {
+                      const defSub = defVal[subKey];
+                      const noteSub = mergedObj[subKey];
+
+                      if (typeof defSub === 'object' && defSub !== null && !Array.isArray(defSub)
+                          && typeof noteSub === 'object' && noteSub !== null && !Array.isArray(noteSub)) {
+                        mergedObj[subKey] = { ...defSub, ...noteSub };
+                      } else if (noteSub === undefined || noteSub === null) {
+                        mergedObj[subKey] = defSub;
                       }
                     }
                   } else {
-                    note[key] = savedNote[key];
+                    note[key] = savedVal;
                   }
                 }
               }
