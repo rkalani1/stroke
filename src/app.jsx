@@ -2591,9 +2591,9 @@ Clinician Name`;
           const [protocolModal, setProtocolModal] = useState(null);
 
           const [apiProvider, setApiProvider] = useState(() => loadFromStorage('apiProvider', 'mock'));
-          const [apiKey, setApiKey] = useState(() => loadFromStorage('apiKey', ''));
+          const [apiKey, setApiKey] = useState(() => { try { localStorage.removeItem((window.strokeAppStorage && window.strokeAppStorage.prefix || 'strokeApp:') + 'apiKey'); } catch (e) {} return sessionStorage.getItem('apiKey') || ''; });
           const [tempProvider, setTempProvider] = useState(() => loadFromStorage('apiProvider', 'mock'));
-          const [tempKey, setTempKey] = useState(() => loadFromStorage('apiKey', ''));
+          const [tempKey, setTempKey] = useState(() => sessionStorage.getItem('apiKey') || '');
           const [showKey, setShowKey] = useState(false);
 
           useEffect(() => {
@@ -35803,7 +35803,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 setApiProvider(tempProvider);
                                 setApiKey(trimmedKey);
                                 saveToStorage('apiProvider', tempProvider);
-                                saveToStorage('apiKey', trimmedKey);
+                                sessionStorage.setItem('apiKey', trimmedKey);
                                 addToast('API Settings saved successfully.', 'success');
                                 navigateTo('encounter');
                               }}
