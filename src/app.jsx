@@ -2147,11 +2147,9 @@ Clinician Name`;
               // Choose the last (deepest) section whose marker has scrolled above the
               // band trigger line; default to the first section near the top.
               let current = ENCOUNTER_TOC_SECTIONS[0].id;
-              for (const s of ENCOUNTER_TOC_SECTIONS) {
-                const el = document.getElementById(s.id);
-                if (!el) continue;
+              for (const el of els) {
                 const top = el.getBoundingClientRect().top;
-                if (top <= 200) current = s.id;
+                if (top <= 200) current = el.id;
               }
               setActiveEncSection(current);
             }, { rootMargin: '-160px 0px -55% 0px', threshold: [0, 1] });
