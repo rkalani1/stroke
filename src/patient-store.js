@@ -42,11 +42,22 @@ const openDB = () => {
 };
 
 // Fallback helpers
-const lsReadAll = () => {
-  try { return JSON.parse(localStorage.getItem(LS_FALLBACK_KEY) || '[]'); } catch (_) { return []; }
+const lsReadMap = () => {
+  try {
+    const raw = localStorage.getItem(LS_FALLBACK_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      return parsed.reduce((acc, p) => {
+        if (p && p.id) acc[p.id] = p;
+        return acc;
+      }, {});
+    }
+    return parsed || {};
+  } catch (_) { return {}; }
 };
-const lsWriteAll = (patients) => {
-  try { localStorage.setItem(LS_FALLBACK_KEY, JSON.stringify(patients)); return true; } catch (_) { return false; }
+const lsWriteMap = (map) => {
+  try { localStorage.setItem(LS_FALLBACK_KEY, JSON.stringify(map)); return true; } catch (_) { return false; }
 };
 
 export const generatePatientId = () => {
@@ -81,7 +92,7 @@ export const makePatientStub = ({ initials, mrnLast4, birthYear, service = 'stro
 
 export const listPatients = async (filter = {}) => {
   const db = await openDB();
-  if (!db) return lsReadAll().filter(filterPatient(filter)).sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
+  if (!db) return Object.values(lsReadMap()).filter(filterPatient(filter)).sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
   return new Promise((resolve) => {
     const tx = db.transaction(STORE_NAME, 'readonly');
     const store = tx.objectStore(STORE_NAME);
@@ -105,10 +116,9 @@ export const savePatient = async (patient) => {
   const toSave = { ...patient, updatedAt: new Date().toISOString(), lastSavedAt: new Date().toISOString() };
   const db = await openDB();
   if (!db) {
-    const all = lsReadAll();
-    const idx = all.findIndex((p) => p.id === toSave.id);
-    if (idx >= 0) all[idx] = toSave; else all.push(toSave);
-    lsWriteAll(all);
+    const map = lsReadMap();
+    map[toSave.id] = toSave;
+    lsWriteMap(map);
     return toSave;
   }
   return new Promise((resolve, reject) => {
@@ -122,7 +132,7 @@ export const savePatient = async (patient) => {
 
 export const getPatient = async (id) => {
   const db = await openDB();
-  if (!db) return lsReadAll().find((p) => p.id === id) || null;
+  if (!db) return lsReadMap()[id] || null;
   return new Promise((resolve) => {
     const tx = db.transaction(STORE_NAME, 'readonly');
     const store = tx.objectStore(STORE_NAME);
@@ -134,7 +144,14 @@ export const getPatient = async (id) => {
 
 export const deletePatient = async (id) => {
   const db = await openDB();
-  if (!db) { lsWriteAll(lsReadAll().filter((p) => p.id !== id)); return true; }
+  if (!db) {
+    const map = lsReadMap();
+    if (map[id]) {
+      delete map[id];
+      lsWriteMap(map);
+    }
+    return true;
+  }
   return new Promise((resolve) => {
     const tx = db.transaction(STORE_NAME, 'readwrite');
     const store = tx.objectStore(STORE_NAME);
@@ -163,12 +180,11 @@ export const savePatientsBatch = async (patients) => {
   }));
   const db = await openDB();
   if (!db) {
-    const all = lsReadAll();
+    const map = lsReadMap();
     for (const p of processed) {
-      const idx = all.findIndex((x) => x.id === p.id);
-      if (idx >= 0) all[idx] = p; else all.push(p);
+      map[p.id] = p;
     }
-    lsWriteAll(all);
+    lsWriteMap(map);
     return processed;
   }
   return new Promise((resolve, reject) => {

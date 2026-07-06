@@ -286,10 +286,16 @@ describe('patient-store', () => {
       await patientStore.savePatient(p3);
 
       // Manually edit local storage to set distinct update times
-      let allLS = JSON.parse(globalThis.localStorage.getItem('strokeApp:patientCensus:lsFallback'));
-      allLS.find(p => p.id === p1.id).updatedAt = '2023-01-01T10:00:00.000Z';
-      allLS.find(p => p.id === p2.id).updatedAt = '2023-01-03T10:00:00.000Z';
-      allLS.find(p => p.id === p3.id).updatedAt = '2023-01-02T10:00:00.000Z';
+      let allLS = JSON.parse(globalThis.localStorage.getItem('strokeApp:patientCensus:lsFallback') || '{}');
+      if (Array.isArray(allLS)) {
+        allLS.find(p => p.id === p1.id).updatedAt = '2023-01-01T10:00:00Z';
+        allLS.find(p => p.id === p2.id).updatedAt = '2023-01-03T10:00:00Z';
+        allLS.find(p => p.id === p3.id).updatedAt = '2023-01-02T10:00:00Z';
+      } else {
+        allLS[p1.id].updatedAt = '2023-01-01T10:00:00Z';
+        allLS[p2.id].updatedAt = '2023-01-03T10:00:00Z';
+        allLS[p3.id].updatedAt = '2023-01-02T10:00:00Z';
+      }
       globalThis.localStorage.setItem('strokeApp:patientCensus:lsFallback', JSON.stringify(allLS));
 
       const all = await patientStore.listPatients();
