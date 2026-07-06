@@ -762,13 +762,9 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
 
         const generateId = (prefix = 'id') => {
           const stamp = Date.now().toString(36);
-          if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
-            const array = new Uint32Array(1);
-            crypto.getRandomValues(array);
-            return `${prefix}_${stamp}_${array[0].toString(36).slice(0, 6)}`;
-          }
-          const rand = Math.random().toString(36).slice(2, 8);
-          return `${prefix}_${stamp}_${rand}`;
+          const array = new Uint32Array(1);
+          crypto.getRandomValues(array);
+          return `${prefix}_${stamp}_${array[0].toString(36).slice(0, 6)}`;
         };
 
         const copyPlainText = async (text) => {
@@ -7315,12 +7311,9 @@ Clinician Name`;
           // Generate unique patient ID
           const generatePatientId = () => {
             if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
-            if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
-              const array = new Uint32Array(2);
-              crypto.getRandomValues(array);
-              return `pt_${Date.now().toString(36)}_${array[0].toString(36)}${array[1].toString(36)}`;
-            }
-            return `pt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            const array = new Uint32Array(2);
+            crypto.getRandomValues(array);
+            return `pt_${Date.now().toString(36)}_${array[0].toString(36)}${array[1].toString(36)}`;
           };
 
           // Get current patient summary for display
@@ -8586,18 +8579,11 @@ Clinician Name`;
             const adjectives = ['Swift', 'Calm', 'Brisk', 'Bright', 'Sable', 'Quiet', 'Sturdy', 'Clear'];
             const nouns = ['Falcon', 'Harbor', 'Quartz', 'Willow', 'Comet', 'Cedar', 'Nimbus', 'Aspen'];
 
-            let randAdj, randNoun, randCode;
-            if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
-              const array = new Uint32Array(3);
-              crypto.getRandomValues(array);
-              randAdj = array[0] % adjectives.length;
-              randNoun = array[1] % nouns.length;
-              randCode = (array[2] % 90) + 10;
-            } else {
-              randAdj = Math.floor(Math.random() * adjectives.length);
-              randNoun = Math.floor(Math.random() * nouns.length);
-              randCode = Math.floor(Math.random() * 90 + 10);
-            }
+            const array = new Uint32Array(3);
+            crypto.getRandomValues(array);
+            const randAdj = array[0] % adjectives.length;
+            const randNoun = array[1] % nouns.length;
+            const randCode = (array[2] % 90) + 10;
 
             const adj = adjectives[randAdj];
             const noun = nouns[randNoun];
