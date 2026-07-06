@@ -164,9 +164,15 @@ export const savePatientsBatch = async (patients) => {
   const db = await openDB();
   if (!db) {
     const all = lsReadAll();
+    const map = new Map(all.map((x, idx) => [x.id, idx]));
     for (const p of processed) {
-      const idx = all.findIndex((x) => x.id === p.id);
-      if (idx >= 0) all[idx] = p; else all.push(p);
+      const idx = map.get(p.id);
+      if (idx !== undefined) {
+        all[idx] = p;
+      } else {
+        all.push(p);
+        map.set(p.id, all.length - 1);
+      }
     }
     lsWriteAll(all);
     return processed;
