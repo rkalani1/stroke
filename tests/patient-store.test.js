@@ -244,6 +244,36 @@ describe('patient-store', () => {
       vi.unstubAllGlobals();
     });
 
+    it('handles localStorage read exception by returning empty array', async () => {
+      vi.stubGlobal('indexedDB', undefined);
+      vi.spyOn(globalThis.localStorage, 'getItem').mockImplementation(() => {
+        throw new Error('Simulated localStorage exception');
+      });
+
+      const all = await patientStore.listPatients();
+      expect(all).toEqual([]);
+
+      vi.unstubAllGlobals();
+      vi.restoreAllMocks();
+    });
+
+    it('handles localStorage write exception gracefully without crashing', async () => {
+      vi.stubGlobal('indexedDB', undefined);
+      vi.spyOn(globalThis.localStorage, 'setItem').mockImplementation(() => {
+        throw new Error('Simulated localStorage exception');
+      });
+
+      const patient = patientStore.makePatientStub({ initials: 'ERR' });
+      // Should not throw an exception when saving fails, it will just return the patient object
+      // but without actually writing it to local storage.
+      const saved = await patientStore.savePatient(patient);
+
+      expect(saved.initials).toBe('ERR');
+
+      vi.unstubAllGlobals();
+      vi.restoreAllMocks();
+    });
+
     it('falls back to localStorage for save and get', async () => {
       vi.stubGlobal('indexedDB', undefined);
 
