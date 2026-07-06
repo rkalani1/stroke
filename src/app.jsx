@@ -12299,8 +12299,17 @@ Clinician Name`;
           // Time calculation functions
           const getDiscoveryDateTime = () => {
             if (!telestrokeNote.discoveryDate || !telestrokeNote.discoveryTime) return null;
-            const [year, month, day] = telestrokeNote.discoveryDate.split('-').map(Number);
-            const [hours, minutes] = telestrokeNote.discoveryTime.split(':').map(Number);
+
+            const dParts = telestrokeNote.discoveryDate.split('-');
+            const tParts = telestrokeNote.discoveryTime.split(':');
+
+            const year = +dParts[0];
+            const month = +dParts[1];
+            const day = +dParts[2];
+
+            const hours = +tParts[0];
+            const minutes = +tParts[1];
+
             if (!year || !month || !day || Number.isNaN(hours) || Number.isNaN(minutes)) return null;
             return new Date(year, month - 1, day, hours, minutes);
           };
