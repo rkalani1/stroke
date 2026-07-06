@@ -8,7 +8,8 @@ import {
   getSafePauseText,
   ICH_INITIAL_EVALUATION_ALGORITHM,
   INSTITUTIONAL_BP_PROTOCOLS,
-  SAFE_PAUSE_ATTESTATION
+  SAFE_PAUSE_ATTESTATION,
+  IVT_ABSOLUTE_CONTRAINDICATIONS
 } from '../src/institutional-protocols.js';
 
 describe('evaluateIVT', () => {
@@ -148,6 +149,29 @@ describe('evaluateEVT_Basilar', () => {
   it('rejects beyond 24h', () => {
     const r = evaluateEVT_Basilar({ nihss: 15, hoursFromLKWh: 30, preMRS: 0, pcAspects: 8 });
     expect(r.eligible).toBe(false);
+  });
+});
+
+describe('IVT_ABSOLUTE_CONTRAINDICATIONS', () => {
+  it('is an array of expected length', () => {
+    expect(Array.isArray(IVT_ABSOLUTE_CONTRAINDICATIONS)).toBe(true);
+    expect(IVT_ABSOLUTE_CONTRAINDICATIONS.length).toBeGreaterThan(0);
+  });
+
+  it('contains correctly formatted contraindication objects', () => {
+    for (const item of IVT_ABSOLUTE_CONTRAINDICATIONS) {
+      expect(item).toHaveProperty('label');
+      expect(item).toHaveProperty('detail');
+      expect(typeof item.label).toBe('string');
+      expect(typeof item.detail).toBe('string');
+    }
+  });
+
+  it('includes specific critical absolute contraindications', () => {
+    const labels = IVT_ABSOLUTE_CONTRAINDICATIONS.map(i => i.label);
+    expect(labels).toContain('CT with hemorrhage');
+    expect(labels).toContain('Neurosurgery <14 days');
+    expect(labels).toContain('Severe coagulopathy');
   });
 });
 
