@@ -599,10 +599,15 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             };
             try {
               if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(done).catch(done);
+                navigator.clipboard.writeText(text).then(done).catch((err) => {
+                  console.warn('Clipboard API failed:', err);
+                  done();
+                });
                 return;
               }
-            } catch (e) { /* fall through */ }
+            } catch (e) {
+              console.warn('Clipboard API error, falling back:', e);
+            }
             try {
               const ta = document.createElement('textarea');
               ta.value = text;
@@ -613,7 +618,9 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               ta.select();
               document.execCommand('copy');
               document.body.removeChild(ta);
-            } catch (e) { /* ignore */ }
+            } catch (e) {
+              console.error('Fallback execCommand failed:', e);
+            }
             done();
           };
           render() {
