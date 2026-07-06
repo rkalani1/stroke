@@ -53,7 +53,24 @@ describe('theme controller', () => {
     vi.unstubAllGlobals();
   });
 
-  describe('runV7Migration', () => {
+
+
+  describe('isPublicPages', () => {
+    it('handles empty hostname gracefully', () => {
+      vi.stubGlobal('window', {
+        location: { hostname: '' }
+      });
+      expect(themeController.getThemePref()).toBe('auto');
+    });
+
+    it('handles missing hostname gracefully', () => {
+      vi.stubGlobal('window', {
+        location: {}
+      });
+      expect(themeController.getThemePref()).toBe('auto');
+    });
+  });
+describe('runV7Migration', () => {
     it('short-circuits if already migrated', () => {
       globalThis.localStorage.setItem('stroke.v7.migrated', '1');
       globalThis.localStorage.setItem('stroke.v7.theme', 'light');
@@ -116,35 +133,48 @@ describe('theme controller', () => {
       globalThis.localStorage.setItem('darkMode', 'true');
 
       // Make localStorage.setItem throw for all calls during migration
-      globalThis.localStorage.setItem.mockImplementationOnce(() => {
+      const originalSetItem = globalThis.localStorage.setItem;
+      globalThis.localStorage.setItem = vi.fn(() => {
         throw new Error('QuotaExceededError');
       });
 
       expect(() => themeController.runV7Migration()).not.toThrow();
+
+      // Restore
+      globalThis.localStorage.setItem = originalSetItem;
     });
 
     it('safely handles localStorage access exceptions in safeGet', () => {
-      globalThis.localStorage.getItem.mockImplementationOnce(() => {
+      const originalGetItem = globalThis.localStorage.getItem;
+      globalThis.localStorage.getItem = vi.fn(() => {
         throw new Error('AccessDeniedError');
       });
 
       expect(() => themeController.runV7Migration()).not.toThrow();
+
+      // Restore
+      globalThis.localStorage.getItem = originalGetItem;
     });
 
     it('safely handles localStorage access exceptions in safeJSONGet', () => {
       // Mock getItem to return an invalid JSON string to trigger JSON.parse error
-      globalThis.localStorage.getItem.mockImplementationOnce((key) => {
+      const originalGetItem = globalThis.localStorage.getItem;
+      globalThis.localStorage.getItem = vi.fn((key) => {
+        if (key === 'strokeApp:darkMode') return 'invalid-json';
         if (key === 'darkMode') return 'invalid-json';
-        return null;
+        return originalGetItem(key);
       });
 
       expect(() => themeController.runV7Migration()).not.toThrow();
 
       // Also test when getItem itself throws
-      globalThis.localStorage.getItem.mockImplementationOnce(() => {
+      globalThis.localStorage.getItem = vi.fn(() => {
         throw new Error('AccessDeniedError');
       });
       expect(() => themeController.runV7Migration()).not.toThrow();
+
+      // Restore
+      globalThis.localStorage.getItem = originalGetItem;
     });
 
     it('safely handles localStorage removeItem exceptions on public pages', () => {
@@ -161,6 +191,25 @@ describe('theme controller', () => {
   });
 
   describe('getThemePref and setThemePref', () => {
+    it('returns explicit valid theme on public pages', () => {
+      vi.stubGlobal('window', {
+        location: { hostname: 'rkalani1.github.io' }
+      });
+      globalThis.localStorage.setItem('stroke.v7.theme', 'dark');
+      expect(themeController.getThemePref()).toBe('dark');
+
+      globalThis.localStorage.setItem('stroke.v7.theme', 'auto');
+      expect(themeController.getThemePref()).toBe('auto');
+    });
+
+    it('returns light if invalid theme on public pages', () => {
+      vi.stubGlobal('window', {
+        location: { hostname: 'rkalani1.github.io' }
+      });
+      globalThis.localStorage.setItem('stroke.v7.theme', 'invalid');
+      expect(themeController.getThemePref()).toBe('light');
+    });
+
     it('returns auto by default on non-public pages', () => {
       expect(themeController.getThemePref()).toBe('auto');
     });
@@ -183,6 +232,26 @@ describe('theme controller', () => {
       globalThis.localStorage.setItem('stroke.v7.theme', 'dark');
       themeController.setThemePref('auto');
       expect(globalThis.localStorage.getItem('stroke.v7.theme')).toBeNull();
+    });
+  });
+
+
+
+
+
+    it('safely handles localStorage removeItem exceptions when setting to auto', () => {
+      const originalRemoveItem = globalThis.localStorage.removeItem;
+      globalThis.localStorage.removeItem = vi.fn(() => {
+        throw new Error('AccessDeniedError');
+      });
+      expect(() => themeController.setThemePref('auto')).not.toThrow();
+      globalThis.localStorage.removeItem = originalRemoveItem;
+    });
+
+  describe('applyTheme', () => {
+    it('does nothing if document is undefined', () => {
+      vi.stubGlobal('document', undefined);
+      expect(() => themeController.applyTheme()).not.toThrow();
     });
   });
 
