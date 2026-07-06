@@ -8,7 +8,8 @@ import {
   getSafePauseText,
   ICH_INITIAL_EVALUATION_ALGORITHM,
   INSTITUTIONAL_BP_PROTOCOLS,
-  SAFE_PAUSE_ATTESTATION
+  SAFE_PAUSE_ATTESTATION,
+  COR_LOE_KEY
 } from '../src/institutional-protocols.js';
 
 describe('evaluateIVT', () => {
@@ -270,5 +271,28 @@ describe('ICH initial evaluation algorithm', () => {
     for (const re of banned) {
       expect(re.test(text), `ICH algorithm contains banned token ${re}`).toBe(false);
     }
+  });
+});
+
+describe('COR_LOE_KEY', () => {
+  it('contains both cor and loe sections', () => {
+    expect(COR_LOE_KEY).toHaveProperty('cor');
+    expect(COR_LOE_KEY).toHaveProperty('loe');
+  });
+
+  it('defines standard COR classes correctly', () => {
+    const cor = COR_LOE_KEY.cor;
+    expect(cor['1'].strength).toBe('Strong');
+    expect(cor['2a'].strength).toBe('Moderate');
+    expect(cor['2b'].verb).toBe('May be considered');
+    expect(cor['3-harm'].verb).toMatch(/harmful/i);
+    expect(Object.keys(cor)).toEqual(['1', '2a', '2b', '3-nb', '3-harm']);
+  });
+
+  it('defines standard LOE classes correctly', () => {
+    const loe = COR_LOE_KEY.loe;
+    expect(loe['A']).toMatch(/RCTs/);
+    expect(loe['B-R']).toMatch(/RCTs/);
+    expect(loe['C-EO']).toMatch(/Expert opinion/);
   });
 });
