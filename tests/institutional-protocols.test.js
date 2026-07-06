@@ -8,8 +8,25 @@ import {
   getSafePauseText,
   ICH_INITIAL_EVALUATION_ALGORITHM,
   INSTITUTIONAL_BP_PROTOCOLS,
-  SAFE_PAUSE_ATTESTATION
+  SAFE_PAUSE_ATTESTATION,
+  IVT_RELATIVE_CONTRAINDICATIONS
 } from '../src/institutional-protocols.js';
+
+describe('IVT_RELATIVE_CONTRAINDICATIONS', () => {
+  it('is exported and is a non-empty array', () => {
+    expect(Array.isArray(IVT_RELATIVE_CONTRAINDICATIONS)).toBe(true);
+    expect(IVT_RELATIVE_CONTRAINDICATIONS.length).toBeGreaterThan(0);
+  });
+
+  it('contains objects with label and detail properties', () => {
+    IVT_RELATIVE_CONTRAINDICATIONS.forEach(contraindication => {
+      expect(contraindication).toHaveProperty('label');
+      expect(typeof contraindication.label).toBe('string');
+      expect(contraindication).toHaveProperty('detail');
+      expect(typeof contraindication.detail).toBe('string');
+    });
+  });
+});
 
 describe('evaluateIVT', () => {
   it('blocks if ICH on CT', () => {
