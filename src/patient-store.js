@@ -57,7 +57,7 @@ export const generatePatientId = () => {
     crypto.getRandomValues(array);
     return `p_${Date.now().toString(36)}_${array[0].toString(36)}${array[1].toString(36)}`;
   }
-  return `p_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+  throw new Error('Secure random number generation is not supported by this environment');
 };
 
 export const makePatientStub = ({ initials, mrnLast4, birthYear, service = 'stroke', label = '' } = {}) => {
