@@ -8,8 +8,27 @@ import {
   getSafePauseText,
   ICH_INITIAL_EVALUATION_ALGORITHM,
   INSTITUTIONAL_BP_PROTOCOLS,
-  SAFE_PAUSE_ATTESTATION
+  SAFE_PAUSE_ATTESTATION,
+  IVT_BENEFIT_GREATER_CONSIDER
 } from '../src/institutional-protocols.js';
+
+describe('IVT_BENEFIT_GREATER_CONSIDER', () => {
+  it('is an array of objects with label and detail', () => {
+    expect(Array.isArray(IVT_BENEFIT_GREATER_CONSIDER)).toBe(true);
+    expect(IVT_BENEFIT_GREATER_CONSIDER.length).toBeGreaterThan(0);
+    IVT_BENEFIT_GREATER_CONSIDER.forEach(item => {
+      expect(item).toHaveProperty('label');
+      expect(item).toHaveProperty('detail');
+    });
+  });
+
+  it('includes specific known criteria', () => {
+    const labels = IVT_BENEFIT_GREATER_CONSIDER.map(item => item.label);
+    expect(labels).toContain('Extracranial cervical dissection');
+    expect(labels).toContain('History of MI (remote)');
+    expect(labels).toContain('Moya-moya disease');
+  });
+});
 
 describe('evaluateIVT', () => {
   it('blocks if ICH on CT', () => {
