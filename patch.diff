@@ -1,0 +1,16 @@
+--- tests/institutional-protocols.test.js
++++ tests/institutional-protocols.test.js
+@@ -9,7 +9,12 @@
+   getSafePauseText,
+   ICH_INITIAL_EVALUATION_ALGORITHM,
+   INSTITUTIONAL_BP_PROTOCOLS,
+-  SAFE_PAUSE_ATTESTATION
++  SAFE_PAUSE_ATTESTATION,
++  evaluateIVT_Legacy,
++  evaluateEVT_Legacy_Anterior,
++  evaluateEVT_Legacy_M2,
++  evaluateEVT_Legacy_Basilar,
++  LEGACY_BP_PROTOCOLS
+ } from '../src/institutional-protocols.js';
+
+ describe('evaluateIVT', () => {
