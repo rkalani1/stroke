@@ -8,7 +8,8 @@ import {
   getSafePauseText,
   ICH_INITIAL_EVALUATION_ALGORITHM,
   INSTITUTIONAL_BP_PROTOCOLS,
-  SAFE_PAUSE_ATTESTATION
+  SAFE_PAUSE_ATTESTATION,
+  GENERALIZABILITY_LIMITATIONS
 } from '../src/institutional-protocols.js';
 
 describe('evaluateIVT', () => {
@@ -270,5 +271,22 @@ describe('ICH initial evaluation algorithm', () => {
     for (const re of banned) {
       expect(re.test(text), `ICH algorithm contains banned token ${re}`).toBe(false);
     }
+  });
+});
+
+describe('GENERALIZABILITY_LIMITATIONS', () => {
+  it('is an array of string limitations', () => {
+    expect(Array.isArray(GENERALIZABILITY_LIMITATIONS)).toBe(true);
+    expect(GENERALIZABILITY_LIMITATIONS.length).toBeGreaterThan(0);
+    GENERALIZABILITY_LIMITATIONS.forEach(limitation => {
+      expect(typeof limitation).toBe('string');
+      expect(limitation.trim().length).toBeGreaterThan(0);
+    });
+  });
+
+  it('contains specific known limitations', () => {
+    expect(GENERALIZABILITY_LIMITATIONS).toContain('Age >80');
+    expect(GENERALIZABILITY_LIMITATIONS).toContain('Life expectancy <6 months');
+    expect(GENERALIZABILITY_LIMITATIONS).toContain('Seizures at stroke onset');
   });
 });
