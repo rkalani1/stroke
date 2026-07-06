@@ -8,7 +8,12 @@ import {
   getSafePauseText,
   ICH_INITIAL_EVALUATION_ALGORITHM,
   INSTITUTIONAL_BP_PROTOCOLS,
-  SAFE_PAUSE_ATTESTATION
+  SAFE_PAUSE_ATTESTATION,
+  evaluateEVT_Legacy_Basilar,
+  evaluateEVT_Legacy_Anterior,
+  evaluateEVT_Legacy_M2,
+  evaluateIVT_Legacy,
+  LEGACY_BP_PROTOCOLS
 } from '../src/institutional-protocols.js';
 
 describe('evaluateIVT', () => {
@@ -148,6 +153,16 @@ describe('evaluateEVT_Basilar', () => {
   it('rejects beyond 24h', () => {
     const r = evaluateEVT_Basilar({ nihss: 15, hoursFromLKWh: 30, preMRS: 0, pcAspects: 8 });
     expect(r.eligible).toBe(false);
+  });
+});
+
+describe('Backwards-compat aliases', () => {
+  it('exports aliases mapped to the correct functions and constants', () => {
+    expect(evaluateIVT_Legacy).toBe(evaluateIVT);
+    expect(evaluateEVT_Legacy_Anterior).toBe(evaluateEVT_Anterior);
+    expect(evaluateEVT_Legacy_M2).toBe(evaluateEVT_M2);
+    expect(evaluateEVT_Legacy_Basilar).toBe(evaluateEVT_Basilar);
+    expect(LEGACY_BP_PROTOCOLS).toBe(INSTITUTIONAL_BP_PROTOCOLS);
   });
 });
 
