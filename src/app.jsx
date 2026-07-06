@@ -767,8 +767,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             crypto.getRandomValues(array);
             return `${prefix}_${stamp}_${array[0].toString(36).slice(0, 6)}`;
           }
-          const rand = Math.random().toString(36).slice(2, 8);
-          return `${prefix}_${stamp}_${rand}`;
+          throw new Error('Secure random number generation is not supported by this environment');
         };
 
         const copyPlainText = async (text) => {
@@ -7320,7 +7319,7 @@ Clinician Name`;
               crypto.getRandomValues(array);
               return `pt_${Date.now().toString(36)}_${array[0].toString(36)}${array[1].toString(36)}`;
             }
-            return `pt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            throw new Error('Secure random number generation is not supported by this environment');
           };
 
           // Get current patient summary for display
@@ -8594,9 +8593,7 @@ Clinician Name`;
               randNoun = array[1] % nouns.length;
               randCode = (array[2] % 90) + 10;
             } else {
-              randAdj = Math.floor(Math.random() * adjectives.length);
-              randNoun = Math.floor(Math.random() * nouns.length);
-              randCode = Math.floor(Math.random() * 90 + 10);
+              throw new Error('Secure random number generation is not supported by this environment');
             }
 
             const adj = adjectives[randAdj];

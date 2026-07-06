@@ -59,11 +59,10 @@ describe('patient-store', () => {
       vi.unstubAllGlobals();
     });
 
-    it('falls back to Math.random when crypto is unavailable', () => {
+    it('throws an error when crypto is unavailable', () => {
       vi.stubGlobal('crypto', undefined);
 
-      const id = patientStore.generatePatientId();
-      expect(id).toMatch(/^p_/);
+      expect(() => patientStore.generatePatientId()).toThrow('Secure random number generation is not supported by this environment');
 
       vi.unstubAllGlobals();
     });
