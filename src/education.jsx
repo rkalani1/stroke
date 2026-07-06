@@ -2882,10 +2882,8 @@ export function getIchRisk(score) {
   }
 }
 
-export function StrokePrognosisCalculator() {
-  const [activeTab, setActiveTab] = useState('astral'); // 'astral', 'plan', 'ich'
 
-  // ASTRAL state
+function AstralCalculatorTab() {
   const [astralAge, setAstralAge] = useState(65);
   const [astralNihss, setAstralNihss] = useState(10);
   const [astralTimeDelay, setAstralTimeDelay] = useState(false);
@@ -2894,25 +2892,6 @@ export function StrokePrognosisCalculator() {
   const [astralGlucoseUnit, setAstralGlucoseUnit] = useState('mmol');
   const [astralLocImpaired, setAstralLocImpaired] = useState(false);
 
-  // PLAN state
-  const [planDependence, setPlanDependence] = useState(false);
-  const [planCancer, setPlanCancer] = useState(false);
-  const [planChf, setPlanChf] = useState(false);
-  const [planAfib, setPlanAfib] = useState(false);
-  const [planLocReduced, setPlanLocReduced] = useState(false);
-  const [planAge, setPlanAge] = useState(65);
-  const [planLegWeakness, setPlanLegWeakness] = useState(false);
-  const [planArmWeakness, setPlanArmWeakness] = useState(false);
-  const [planAphasiaNeglect, setPlanAphasiaNeglect] = useState(false);
-
-  // ICH state
-  const [ichGcsCategory, setIchGcsCategory] = useState(0); // 0 = GCS 13-15, 1 = 5-12, 2 = 3-4
-  const [ichAge80, setIchAge80] = useState(false);
-  const [ichVolume30, setIchVolume30] = useState(false);
-  const [ichIvh, setIchIvh] = useState(false);
-  const [ichInfratentorial, setIchInfratentorial] = useState(false);
-
-  // 1. ASTRAL Calculation
   const astralAgePoints = Math.floor(astralAge / 5);
   const astralNihssPoints = Number(astralNihss) || 0;
   const glucoseVal = Number(astralGlucose) || 0;
@@ -2930,31 +2909,6 @@ export function StrokePrognosisCalculator() {
   });
   const astralRisk = getAstralRisk(astralTotal);
 
-  // 2. PLAN Calculation
-  const planAgePoints = Math.min(10, Math.floor(planAge / 10));
-  const planTotal = calculatePlanScore({
-    dependence: planDependence,
-    cancer: planCancer,
-    chf: planChf,
-    afib: planAfib,
-    locReduced: planLocReduced,
-    age: planAge,
-    legWeakness: planLegWeakness,
-    armWeakness: planArmWeakness,
-    aphasiaNeglect: planAphasiaNeglect
-  });
-  const planRisk = getPlanRisk(planTotal);
-
-  // 3. ICH Calculation
-  const ichTotal = calculateIchScore({
-    gcsCategory: ichGcsCategory,
-    age80: ichAge80,
-    volume30: ichVolume30,
-    ivh: ichIvh,
-    infratentorial: ichInfratentorial
-  });
-  const ichRisk = getIchRisk(ichTotal);
-
   const resetAstral = () => {
     setAstralAge(65);
     setAstralNihss(10);
@@ -2965,78 +2919,8 @@ export function StrokePrognosisCalculator() {
     setAstralLocImpaired(false);
   };
 
-  const resetPlan = () => {
-    setPlanDependence(false);
-    setPlanCancer(false);
-    setPlanChf(false);
-    setPlanAfib(false);
-    setPlanLocReduced(false);
-    setPlanAge(65);
-    setPlanLegWeakness(false);
-    setPlanArmWeakness(false);
-    setPlanAphasiaNeglect(false);
-  };
-
-  const resetIch = () => {
-    setIchGcsCategory(0);
-    setIchAge80(false);
-    setIchVolume30(false);
-    setIchIvh(false);
-    setIchInfratentorial(false);
-  };
-
   return (
-    <div className="bg-white border border-slate-200 dark:border-slate-700/60 rounded-xl shadow-sm overflow-hidden dark:bg-card">
-      {/* Header */}
-      <div className="p-4 bg-slate-50 border-b border-slate-200 dark:bg-slate-800/40 dark:border-slate-700/60 flex items-center justify-between">
-        <div>
-          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">Interactive Bedside Calculator</h3>
-          <p className="text-[10px] text-slate-500 dark:text-slate-400">Calculate stroke prognosis metrics in real-time</p>
-        </div>
-        <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold">clinical tool</span>
-      </div>
-
-      {/* Tabs Selector */}
-      <div className="p-3">
-        <div className="flex rounded-lg p-1 bg-slate-100 dark:bg-slate-800/60 border border-slate-200/40 dark:border-slate-700/40">
-          <button
-            onClick={() => setActiveTab('astral')}
-            className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
-              activeTab === 'astral'
-                ? 'bg-purple-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
-            }`}
-          >
-            ASTRAL
-          </button>
-          <button
-            onClick={() => setActiveTab('plan')}
-            className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
-              activeTab === 'plan'
-                ? 'bg-teal-700 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
-            }`}
-          >
-            PLAN
-          </button>
-          <button
-            onClick={() => setActiveTab('ich')}
-            className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
-              activeTab === 'ich'
-                ? 'bg-red-700 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
-            }`}
-          >
-            ICH Score
-          </button>
-        </div>
-      </div>
-
-      {/* Calculator Inputs Panel */}
-      <div className="px-4 pb-4 space-y-4">
-        {/* ASTRAL TAB */}
-        {activeTab === 'astral' && (
-          <div className="space-y-3">
+<div className="space-y-3">
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-purple-700 dark:text-purple-400">ASTRAL Variables</h4>
             
             {/* Age Slider */}
@@ -3173,11 +3057,48 @@ export function StrokePrognosisCalculator() {
               Reset Inputs
             </button>
           </div>
-        )}
+  );
+}
 
-        {/* PLAN TAB */}
-        {activeTab === 'plan' && (
-          <div className="space-y-3">
+function PlanCalculatorTab() {
+  const [planDependence, setPlanDependence] = useState(false);
+  const [planCancer, setPlanCancer] = useState(false);
+  const [planChf, setPlanChf] = useState(false);
+  const [planAfib, setPlanAfib] = useState(false);
+  const [planLocReduced, setPlanLocReduced] = useState(false);
+  const [planAge, setPlanAge] = useState(65);
+  const [planLegWeakness, setPlanLegWeakness] = useState(false);
+  const [planArmWeakness, setPlanArmWeakness] = useState(false);
+  const [planAphasiaNeglect, setPlanAphasiaNeglect] = useState(false);
+
+  const planAgePoints = Math.min(10, Math.floor(planAge / 10));
+  const planTotal = calculatePlanScore({
+    dependence: planDependence,
+    cancer: planCancer,
+    chf: planChf,
+    afib: planAfib,
+    locReduced: planLocReduced,
+    age: planAge,
+    legWeakness: planLegWeakness,
+    armWeakness: planArmWeakness,
+    aphasiaNeglect: planAphasiaNeglect
+  });
+  const planRisk = getPlanRisk(planTotal);
+
+  const resetPlan = () => {
+    setPlanDependence(false);
+    setPlanCancer(false);
+    setPlanChf(false);
+    setPlanAfib(false);
+    setPlanLocReduced(false);
+    setPlanAge(65);
+    setPlanLegWeakness(false);
+    setPlanArmWeakness(false);
+    setPlanAphasiaNeglect(false);
+  };
+
+  return (
+<div className="space-y-3">
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-teal-700 dark:text-teal-400">PLAN Variables</h4>
 
             {/* Age Slider */}
@@ -3304,11 +3225,35 @@ export function StrokePrognosisCalculator() {
               Reset Inputs
             </button>
           </div>
-        )}
+  );
+}
 
-        {/* ICH TAB */}
-        {activeTab === 'ich' && (
-          <div className="space-y-3">
+function IchCalculatorTab() {
+  const [ichGcsCategory, setIchGcsCategory] = useState(0); // 0 = GCS 13-15, 1 = 5-12, 2 = 3-4
+  const [ichAge80, setIchAge80] = useState(false);
+  const [ichVolume30, setIchVolume30] = useState(false);
+  const [ichIvh, setIchIvh] = useState(false);
+  const [ichInfratentorial, setIchInfratentorial] = useState(false);
+
+  const ichTotal = calculateIchScore({
+    gcsCategory: ichGcsCategory,
+    age80: ichAge80,
+    volume30: ichVolume30,
+    ivh: ichIvh,
+    infratentorial: ichInfratentorial
+  });
+  const ichRisk = getIchRisk(ichTotal);
+
+  const resetIch = () => {
+    setIchGcsCategory(0);
+    setIchAge80(false);
+    setIchVolume30(false);
+    setIchIvh(false);
+    setIchInfratentorial(false);
+  };
+
+  return (
+<div className="space-y-3">
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-red-700 dark:text-red-400">ICH Variables</h4>
 
             {/* GCS Category */}
@@ -3417,7 +3362,64 @@ export function StrokePrognosisCalculator() {
               Reset Inputs
             </button>
           </div>
-        )}
+  );
+}
+
+export function StrokePrognosisCalculator() {
+  const [activeTab, setActiveTab] = useState('astral'); // 'astral', 'plan', 'ich'
+
+  return (
+    <div className="bg-white border border-slate-200 dark:border-slate-700/60 rounded-xl shadow-sm overflow-hidden dark:bg-card">
+      {/* Header */}
+      <div className="p-4 bg-slate-50 border-b border-slate-200 dark:bg-slate-800/40 dark:border-slate-700/60 flex items-center justify-between">
+        <div>
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">Interactive Bedside Calculator</h3>
+          <p className="text-[10px] text-slate-500 dark:text-slate-400">Calculate stroke prognosis metrics in real-time</p>
+        </div>
+        <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold">clinical tool</span>
+      </div>
+
+      {/* Tabs Selector */}
+      <div className="p-3">
+        <div className="flex rounded-lg p-1 bg-slate-100 dark:bg-slate-800/60 border border-slate-200/40 dark:border-slate-700/40">
+          <button
+            onClick={() => setActiveTab('astral')}
+            className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
+              activeTab === 'astral'
+                ? 'bg-purple-600 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+            }`}
+          >
+            ASTRAL
+          </button>
+          <button
+            onClick={() => setActiveTab('plan')}
+            className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
+              activeTab === 'plan'
+                ? 'bg-teal-700 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+            }`}
+          >
+            PLAN
+          </button>
+          <button
+            onClick={() => setActiveTab('ich')}
+            className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
+              activeTab === 'ich'
+                ? 'bg-red-700 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+            }`}
+          >
+            ICH Score
+          </button>
+        </div>
+      </div>
+
+      {/* Calculator Inputs Panel */}
+      <div className="px-4 pb-4 space-y-4">
+        <div className={activeTab === 'astral' ? 'block' : 'hidden'}><AstralCalculatorTab /></div>
+        <div className={activeTab === 'plan' ? 'block' : 'hidden'}><PlanCalculatorTab /></div>
+        <div className={activeTab === 'ich' ? 'block' : 'hidden'}><IchCalculatorTab /></div>
       </div>
     </div>
   );
