@@ -63,15 +63,19 @@ describe('theme controller', () => {
       expect(globalThis.localStorage.getItem('stroke.v7.theme')).toBe('light');
     });
 
-    it('clears theme and sets migrated on public GitHub Pages', () => {
+    it('clears legacy darkMode and sets migrated on public GitHub Pages without wiping v7 pref', () => {
       vi.stubGlobal('window', {
         location: { hostname: 'rkalani1.github.io' }
       });
+      globalThis.localStorage.setItem('darkMode', 'true');
+      globalThis.localStorage.setItem('strokeApp:darkMode', 'true');
       globalThis.localStorage.setItem('stroke.v7.theme', 'dark');
 
       themeController.runV7Migration();
 
-      expect(globalThis.localStorage.getItem('stroke.v7.theme')).toBeNull();
+      expect(globalThis.localStorage.getItem('darkMode')).toBeNull();
+      expect(globalThis.localStorage.getItem('strokeApp:darkMode')).toBeNull();
+      expect(globalThis.localStorage.getItem('stroke.v7.theme')).toBe('dark');
       expect(globalThis.localStorage.getItem('stroke.v7.migrated')).toBe('1');
     });
 

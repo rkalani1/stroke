@@ -871,8 +871,13 @@
                     if (window.strokeAppStorage && typeof window.strokeAppStorage.clearAppStorage === 'function') {
                         window.strokeAppStorage.clearAppStorage();
                     } else {
+                        let v7pref = null;
+                        try { v7pref = localStorage.getItem('stroke.v7.theme'); } catch (e) { /* ignore */ }
                         localStorage.clear();
                         sessionStorage.clear();
+                        if (v7pref) {
+                            try { localStorage.setItem('stroke.v7.theme', v7pref); } catch (e) { /* ignore */ }
+                        }
                     }
                     try {
                         sessionStorage.setItem('error_reload_attempted', 'true');
