@@ -12160,12 +12160,12 @@ Clinician Name`;
 
             // Screening assessments
             {
-              const scItems = [];
-              if (telestrokeNote.phq2Score) scItems.push(`PHQ-2: ${telestrokeNote.phq2Score}${telestrokeNote.phq2Positive ? ' (positive — PHQ-9 follow-up needed)' : ''}`);
-              if (telestrokeNote.mocaScore) scItems.push(`MoCA: ${telestrokeNote.mocaScore}/30${telestrokeNote.mocaReferral ? ' — neuropsych referral placed' : ''}`);
-              if (telestrokeNote.stopBangScore) scItems.push(`STOP-BANG: ${telestrokeNote.stopBangScore}${parseInt(telestrokeNote.stopBangScore, 10) >= 5 ? ' (high risk — sleep study recommended)' : ''}`);
-              if (scItems.length > 0) {
-                note += `\nScreening Assessments:\n${scItems.map(i => `- ${i}`).join('\n')}\n`;
+              let scNote = '';
+              if (telestrokeNote.phq2Score) scNote += `- PHQ-2: ${telestrokeNote.phq2Score}${telestrokeNote.phq2Positive ? ' (positive — PHQ-9 follow-up needed)' : ''}\n`;
+              if (telestrokeNote.mocaScore) scNote += `- MoCA: ${telestrokeNote.mocaScore}/30${telestrokeNote.mocaReferral ? ' — neuropsych referral placed' : ''}\n`;
+              if (telestrokeNote.stopBangScore) scNote += `- STOP-BANG: ${telestrokeNote.stopBangScore}${parseInt(telestrokeNote.stopBangScore, 10) >= 5 ? ' (high risk — sleep study recommended)' : ''}\n`;
+              if (scNote !== '') {
+                note += `\nScreening Assessments:\n${scNote}`;
               }
             }
 
