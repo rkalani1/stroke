@@ -3544,11 +3544,19 @@ Clinician Name`;
             'ACC Expert Consensus': 'https://doi.org/10.1016/j.jacc.2024.03.389'
           };
 
+          const GUIDELINE_KEYS_REGEX = new RegExp(
+            Object.keys(GUIDELINE_URLS)
+              .map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+              .join('|')
+          );
+
           const getGuidelineUrl = (guidelineStr) => {
             if (!guidelineStr) return null;
-            for (const [key, url] of Object.entries(GUIDELINE_URLS)) {
-              if (guidelineStr.includes(key)) return url;
-            }
+            const exactMatch = GUIDELINE_URLS[guidelineStr];
+            if (exactMatch) return exactMatch;
+
+            const match = guidelineStr.match(GUIDELINE_KEYS_REGEX);
+            if (match) return GUIDELINE_URLS[match[0]];
             return null;
           };
 
