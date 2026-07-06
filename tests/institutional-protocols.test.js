@@ -8,7 +8,12 @@ import {
   getSafePauseText,
   ICH_INITIAL_EVALUATION_ALGORITHM,
   INSTITUTIONAL_BP_PROTOCOLS,
-  SAFE_PAUSE_ATTESTATION
+  SAFE_PAUSE_ATTESTATION,
+  LEGACY_BP_PROTOCOLS,
+  evaluateIVT_Legacy,
+  evaluateEVT_Legacy_Anterior,
+  evaluateEVT_Legacy_M2,
+  evaluateEVT_Legacy_Basilar
 } from '../src/institutional-protocols.js';
 
 describe('evaluateIVT', () => {
@@ -270,5 +275,15 @@ describe('ICH initial evaluation algorithm', () => {
     for (const re of banned) {
       expect(re.test(text), `ICH algorithm contains banned token ${re}`).toBe(false);
     }
+  });
+});
+
+describe('Legacy Exports Backwards Compatibility', () => {
+  it('exports aliases pointing to current functions and objects', () => {
+    expect(LEGACY_BP_PROTOCOLS).toBe(INSTITUTIONAL_BP_PROTOCOLS);
+    expect(evaluateIVT_Legacy).toBe(evaluateIVT);
+    expect(evaluateEVT_Legacy_Anterior).toBe(evaluateEVT_Anterior);
+    expect(evaluateEVT_Legacy_M2).toBe(evaluateEVT_M2);
+    expect(evaluateEVT_Legacy_Basilar).toBe(evaluateEVT_Basilar);
   });
 });
