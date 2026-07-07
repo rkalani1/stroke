@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## v6.11.1 — 2026-07-06 — restore encounter documentation templates
+
+Restored the risk-benefit discussion and post-reperfusion management note
+templates to the encounter tab as an always-visible, copy-pasteable
+"Documentation templates" section (they had become reachable only deep in the
+gated telestroke flow). Four copy-into-EMR templates, each with a Copy button:
+- Thrombolysis (IV TNK/tPA) risk-benefit discussion documentation
+- Endovascular therapy (mechanical thrombectomy) risk-benefit discussion documentation
+- Post-TNK/tPA management note (ICU, neuro-check cadence, BP <180/105 ×24h, imaging, workup)
+- Post-EVT (thrombectomy) management note — restored counterpart (Neuro ICU, post-EVT
+  BP 140-180 ×72h with avoid-SBP<140 harm caveat, access-site monitoring, 24h CT/DECT)
+
+All templates are institution-neutral, public-safe educational examples labeled
+"not local policy — verify against approved local protocol." No institutional
+identifiers, contacts, or PHI. Version bumped 6.11.0 → 6.11.1 for cache-bust.
+Gates: leak-guard 0 · protocol + unit tests pass · build · browser-verified render
++ working Copy buttons.
+
 ## v6.11.0 — 2026-07-06 — evidence refresh (2026-07-06)
 
 Evidence Atlas / Guidelines refresh, every claim verified live against PubMed

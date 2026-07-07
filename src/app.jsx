@@ -8621,6 +8621,18 @@ Clinician Name`;
           };
 
           const copyTimeoutRef = React.useRef(null);
+          // Public-safe, institution-neutral EMR documentation templates surfaced
+          // in the encounter tab. Restored 2026-07-06 (the risk/benefit-discussion
+          // and post-reperfusion management templates had become reachable only
+          // deep in the gated telestroke flow). Educational examples only — verify
+          // against the approved local protocol before clinical use.
+          const DOC_TEMPLATES = {
+            tnkRiskBenefit: `Thrombolysis (IV tenecteplase/alteplase) risk-benefit discussion — documentation:\nAfter confirming no evident contraindications, IV thrombolysis was recommended for acute ischemic stroke. The potential benefits (improved chance of recovery without disability, greatest when treated early), the potential risks (including a risk of symptomatic intracranial hemorrhage of up to ~4%, and rarely orolingual angioedema), and the alternatives to treatment (standard supportive stroke care without thrombolysis) were discussed with the referring provider and the patient/family prior to initiating treatment. The patient/family expressed understanding and treatment proceeded per shared decision-making.`,
+            evtRiskBenefit: `Endovascular therapy (mechanical thrombectomy) risk-benefit discussion — documentation:\nGiven a large-vessel occlusion with disabling neurological deficits and no evident contraindications, mechanical thrombectomy was recommended and the patient will be transferred to a thrombectomy-capable comprehensive stroke center for evaluation. The potential benefits, the potential risks (including groin/access-site complications, vessel injury, and intracranial hemorrhage), and the alternatives to treatment were discussed with the referring provider and the patient/family; the neurointerventional team will obtain informed consent from the patient/family prior to the procedure.`,
+            postTnk: `Post-IV thrombolysis (TNK/tPA) management:\n- Admit to ICU / monitored stroke unit\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h\n- No antiplatelet or anticoagulant agents for 24h after thrombolysis\n- Maintain BP <180/105 for 24h after thrombolysis\n- Non-contrast head CT at ~24h post-thrombolysis (sooner if any deterioration)\n- MRI brain with diffusion-weighted imaging when feasible\n- EKG and continuous telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention\n- Monitor for post-thrombolysis complications: symptomatic ICH and orolingual angioedema`,
+            postEvt: `Post-endovascular thrombectomy (EVT) management:\n- Admit to Neuro ICU for ≥24h\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h; monitor arterial access site and distal pulses\n- Blood pressure after successful reperfusion: maintain SBP 140-180 mmHg for ≥72h; avoid SBP <140 (associated with harm — ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II); keep BP <180/105\n- Antithrombotic timing per the neurointerventional team, after 24h imaging excludes hemorrhage\n- Non-contrast head CT (or dual-energy CT if available) at ~24h; immediate CT if clinical deterioration or failed recanalization (mTICI 0-2a)\n- MRI brain with diffusion-weighted imaging when feasible; EKG and telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention`
+          };
+
           const copyToClipboard = (text, label) => {
             if (PUBLIC_DEMO_MODE) {
               const identifierWarnings = getPublicDemoPhiWarnings(text);
@@ -17247,6 +17259,44 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         })}
                       </ul>
                     </nav>
+
+                    {/* Documentation templates — always-visible copy-paste EMR templates.
+                         Restored 2026-07-06: the thrombolysis/EVT risk-benefit discussion and
+                         post-TNK/post-EVT management note templates had become reachable only
+                         deep in the gated telestroke flow. Institution-neutral educational
+                         examples — verify against the approved local protocol before use. */}
+                    <details id="doc-templates-section" className="bg-card border border-line rounded-md">
+                      <summary className="cursor-pointer select-none px-4 py-3 font-serif text-section text-ink flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                        Documentation templates
+                        <span className="text-xs font-sans text-mute font-normal">— risk-benefit discussion + post-reperfusion management (copy into EMR note)</span>
+                      </summary>
+                      <div className="px-4 pb-4">
+                        <p className="text-xs text-mute mb-3">Educational examples only — not local policy. Verify against your approved local protocol before clinical use.</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {[
+                            { key: 'doc-tnk-rb', title: 'Thrombolysis risk-benefit discussion', text: DOC_TEMPLATES.tnkRiskBenefit },
+                            { key: 'doc-evt-rb', title: 'Thrombectomy (EVT) risk-benefit discussion', text: DOC_TEMPLATES.evtRiskBenefit },
+                            { key: 'doc-post-tnk', title: 'Post-TNK / tPA management note', text: DOC_TEMPLATES.postTnk },
+                            { key: 'doc-post-evt', title: 'Post-EVT (thrombectomy) management note', text: DOC_TEMPLATES.postEvt }
+                          ].map((tpl) => (
+                            <div key={tpl.key} className="bg-paper-2 border border-line rounded-md p-3">
+                              <div className="flex items-center justify-between gap-2 mb-2">
+                                <h3 className="font-semibold text-sm text-ink">{tpl.title}</h3>
+                                <button
+                                  type="button"
+                                  onClick={() => copyToClipboard(tpl.text, tpl.key)}
+                                  className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors min-h-[32px] shrink-0 ${copiedText === tpl.key ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}
+                                >
+                                  <i aria-hidden="true" data-lucide={copiedText === tpl.key ? 'check' : 'copy'} className="w-3 h-3"></i>
+                                  {copiedText === tpl.key ? 'Copied' : 'Copy'}
+                                </button>
+                              </div>
+                              <pre tabIndex={0} className="whitespace-pre-wrap break-words text-xs text-ink-2 font-sans max-h-56 overflow-y-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded">{tpl.text}</pre>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </details>
 
                     {/* ===== v7 PATIENT STRIP (mobile) — sticky chip row above v6 strip during transition.
                          Phase 5 IA overhaul will remove the v6 strip below and promote Incomplete /
