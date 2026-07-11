@@ -8,6 +8,7 @@ exclude:
   - .github/
   - .remember/
   - android/
+  - content/
   - data/clinical-intelligence/
   - docs/
   - ios/
@@ -22,6 +23,9 @@ exclude:
   - CHANGELOG.md
   - COMPLIANCE.md
   - CONTRIBUTING.md
+  - CONTRIBUTING-content.md
+  - REFACTOR_MAP.md
+  - REMAINING-WORK.md
   - LICENSE
   - OPTIN_NATIVE_WRAPPER
   - README.md
