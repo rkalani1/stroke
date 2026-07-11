@@ -1,5 +1,34 @@
 # CHANGELOG
 
+## v6.11.3 — 2026-07-11 — clinical corrections + context switch + unified search
+
+Completes the refactor: applies the audit-flagged clinical corrections, ships
+the Telestroke/Inpatient/Clinic context switch, and expands the calculator
+registry. Version bumped 6.11.2 → 6.11.3 for cache-bust. Example Protocols
+wording unchanged (snapshot lock green).
+
+- **Clinical corrections** (6 factual errors, each verified against the
+  authoritative source already in the repo; none in the frozen protocols zone;
+  locked by `tests/clinical-corrections.test.js`):
+  - THALES DAPT duration no longer mislabelled as 90 days (it is 30).
+  - ICH Score 4 mortality 94% → 97% (Hemphill) in the education card.
+  - HINTS peripheral/central pattern corrected in the cranial-nerve card.
+  - TREAT-CAD: removed the overstated "aspirin non-inferior" claim (it was not).
+  - Mannitol osmolar-gap hold threshold 55 → 20.
+  - AF-timing pearl aligned to the canonical ELAN/OPTIMAS/CATALYST model.
+  - (CVT seizure prophylaxis reviewed — guideline-consistent, no change.)
+- **Context switch:** header control (All / Telestroke / Inpatient / Clinic)
+  that filters/reorders content surfaces; the education gallery filters by
+  context (hides nothing by default). Never scopes global search.
+- **Unified search:** the command palette now indexes all five `/content` data
+  sources (guidelines, trials, education, calculators, references).
+- **Calculator registry** expanded to 34 catalogued calculators (each with a
+  verified compute export); palette + agent index derive from it.
+- **Bugfix:** repaired a latent ReferenceError (undefined `saveToStorage`) that
+  blocked the AI-provider settings save.
+- Gates: leak-guard 0 · 849 unit tests · protocol snapshot lock · content
+  schema/link/currency validators · browser-verified (context switch + search).
+
 ## v6.11.2 — 2026-07-11 — content data layer + Example Protocols content lock
 
 Maintainability refactor. **No user-facing behavior change** — the rendered app
