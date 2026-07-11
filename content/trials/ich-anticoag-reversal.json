@@ -1,0 +1,19 @@
+[
+  {
+    "id": "annexa-i",
+    "name": "ANNEXA-I",
+    "fullName": "Andexanet for Factor Xa Inhibitor-Associated Acute ICH",
+    "category": "ich-anticoag-reversal",
+    "population": "n=530, ≥18, NIHSS n/a, ≤15 h from last FXa dose, ≤6 h from ICH onset",
+    "finding": "Favored andexanet: 67.0% vs 53.1%",
+    "teachingPoint": "AHA/ASA 2022 lists andexanet as Class IIa for FXa-associated ICH; ANNEXA-I refines hemostatic-vs-thrombotic trade-off.",
+    "PMID": "38749032",
+    "year": 2024,
+    "citationIds": [
+      "cit-annexa-i-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

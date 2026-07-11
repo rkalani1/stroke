@@ -1,0 +1,19 @@
+[
+  {
+    "id": "enchanted2-mt",
+    "name": "ENCHANTED2/MT",
+    "fullName": "Intensive BP Control after Endovascular Thrombectomy",
+    "category": "bp-post-evt",
+    "population": "n=821, ≥18, NIHSS all, post-successful EVT",
+    "finding": "Favored less-intensive (worse with intensive)",
+    "teachingPoint": "Avoid intensive BP lowering after successful EVT; target 140-180 mmHg.",
+    "PMID": "36341753",
+    "year": 2022,
+    "citationIds": [
+      "cit-enchanted2-mt-2022"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

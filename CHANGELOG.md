@@ -1,5 +1,34 @@
 # CHANGELOG
 
+## v6.11.2 — 2026-07-11 — content data layer + Example Protocols content lock
+
+Maintainability refactor. **No user-facing behavior change** — the rendered app
+is identical (Example Protocols wording is byte-locked; all tabs verified
+rendering with zero console errors). Version bumped 6.11.1 → 6.11.2 for
+cache-bust of the rebuilt bundle.
+
+- **Example Protocols content lock:** `scripts/snapshot-example-protocols.mjs`
+  renders the built app and diffs every `#/protocols/*` subtab's visible text +
+  drug-modal content against committed baselines. Wired into CI + `npm test`;
+  frozen clinical wording can no longer drift silently.
+- **`/content` data layer:** typed, schema-validated clinical data
+  (guidelines, trials, education, calculators, references) with build-time
+  validation that fails on malformed entries, unresolved citations, or stale
+  review dates. Single calculator registry (the agent-asset generator now
+  derives from it — `data/calculators-index.json` byte-identical). Single
+  citations module enforced. Excluded from the Pages serve (`_config.yml`).
+- **Update pipeline:** `check-currency.mjs`, PDF/PMID `scaffold-content.mjs`
+  (drafts only, never auto-publishes), `CONTRIBUTING-content.md`, per-entry
+  provenance + content CHANGELOG.
+- **De-dup:** removed dead inline `calculate4FPCC` (duplicated
+  `calculators.js` `calculatePCCDose`, zero call sites) — the only `app.js`
+  change, hence the cache-bust.
+- **Docs:** `REFACTOR_MAP.md` (full audit), `REMAINING-WORK.md` (sequenced,
+  snapshot-gated plan for the remaining render integration + a clinical-review
+  queue held for clinician sign-off).
+- Gates: leak-guard 0 · 828 unit tests · protocol snapshot lock · content
+  schema/link/currency validators · browser-verified render.
+
 ## v6.11.1 — 2026-07-06 — restore encounter documentation templates
 
 Restored the risk-benefit discussion and post-reperfusion management note

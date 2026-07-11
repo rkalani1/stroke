@@ -1,0 +1,26 @@
+[
+  {
+    "id": "afib-ac-timing-after-af-related-stroke",
+    "title": "AC timing after AF-related Stroke",
+    "category": "afib",
+    "type": "pdf",
+    "path": "documents/afib/AC timing after AF-related Stroke.pdf",
+    "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "afib-af-secondary-stroke-prevention-july-2024",
+    "title": "AF & secondary stroke prevention July 2024",
+    "category": "afib",
+    "type": "pdf",
+    "path": "documents/afib/AF & secondary stroke prevention July 2024.pdf",
+    "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "afib-afib-stroke-epi519",
+    "title": "AFib Stroke EPI519",
+    "category": "afib",
+    "type": "pdf",
+    "path": "documents/afib/AFib Stroke EPI519.pdf",
+    "provenance": "src/app.jsx reference library"
+  }
+]

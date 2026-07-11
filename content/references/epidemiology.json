@@ -1,0 +1,18 @@
+[
+  {
+    "id": "epidemiology-diabetes-and-stroke",
+    "title": "Diabetes and stroke",
+    "category": "epidemiology",
+    "type": "pdf",
+    "path": "documents/epidemiology/Diabetes and stroke.pdf",
+    "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "epidemiology-lipids-and-cerebrovascular-disease",
+    "title": "Lipids and Cerebrovascular Disease",
+    "category": "epidemiology",
+    "type": "pdf",
+    "path": "documents/epidemiology/Lipids and Cerebrovascular Disease.pdf",
+    "provenance": "src/app.jsx reference library"
+  }
+]

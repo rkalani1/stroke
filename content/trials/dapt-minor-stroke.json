@@ -1,0 +1,104 @@
+[
+  {
+    "id": "chance",
+    "name": "CHANCE",
+    "fullName": "Clopidogrel with Aspirin in Acute Minor Stroke or TIA",
+    "category": "dapt-minor-stroke",
+    "population": "n=5170, ≥40, NIHSS NIHSS ≤3 (or high-risk TIA), ≤24 h",
+    "finding": "Favored DAPT: 8.2% vs 11.7%",
+    "teachingPoint": "Founding evidence for short-course DAPT in minor stroke / high-risk TIA.",
+    "PMID": "23803136",
+    "year": 2013,
+    "citationIds": [
+      "cit-chance-2013"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "point",
+    "name": "POINT",
+    "fullName": "Clopidogrel and Aspirin in Acute Ischemic Stroke and High-Risk TIA",
+    "category": "dapt-minor-stroke",
+    "population": "n=4881, ≥18, NIHSS NIHSS ≤3, ≤12 h",
+    "finding": "Favored DAPT: 5.0% vs 6.5%",
+    "teachingPoint": "Reinforces 21-day cap on DAPT for minor stroke.",
+    "PMID": "29766750",
+    "year": 2018,
+    "citationIds": [
+      "cit-point-2018"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "thales",
+    "name": "THALES",
+    "fullName": "Ticagrelor and Aspirin or Aspirin Alone in AIS or TIA",
+    "category": "dapt-minor-stroke",
+    "population": "n=11016, ≥40, NIHSS NIHSS ≤5, ≤24 h",
+    "finding": "Favored DAPT: 5.5% vs 6.6%",
+    "teachingPoint": "Supports ticagrelor-based DAPT, especially when CYP2C19 LOF suspected.",
+    "PMID": "32668111",
+    "year": 2020,
+    "citationIds": [
+      "cit-thales-2020"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "inspires",
+    "name": "INSPIRES",
+    "fullName": "Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke",
+    "category": "dapt-minor-stroke",
+    "population": "n=6100, ≥35, NIHSS mild stroke or high-risk TIA, ≤72 h",
+    "finding": "Favored DAPT",
+    "teachingPoint": "Allows DAPT initiation up to 72 h in eligible mild stroke.",
+    "PMID": "38157499",
+    "year": 2024,
+    "citationIds": [
+      "cit-inspires-2024"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "chance-2",
+    "name": "CHANCE-2",
+    "fullName": "Ticagrelor or Clopidogrel with Aspirin in High-Risk TIA or Minor Stroke",
+    "category": "dapt-minor-stroke",
+    "population": "n=6412, ≥40, NIHSS NIHSS ≤3, ≤24 h",
+    "finding": "Favored ticagrelor: 6.0% vs 7.6%",
+    "teachingPoint": "Supports ticagrelor over clopidogrel in CYP2C19 LOF carriers.",
+    "PMID": "34708996",
+    "year": 2021,
+    "citationIds": [
+      "cit-chance2-2021"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "tapis",
+    "name": "TAPIS",
+    "fullName": "Ticagrelor with Aspirin Dual Antiplatelet Therapy combined with Intravenous Thrombolysis in Patients with Ischaemic Stroke in China",
+    "category": "dapt-minor-stroke",
+    "population": "n=1382, Median 65.6, NIHSS 4-10, ≤6 h of onset",
+    "finding": "Higher with early DAPT: 68.7% vs 62.0%",
+    "teachingPoint": "Early oral DAPT within 6 h as an adjunct to thrombolysis improved excellent outcomes in moderate stroke — a strategy long considered contraindicated; small sICH risk not excluded.",
+    "PMID": "42114550",
+    "year": 2026,
+    "citationIds": [
+      "cit-tapis-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-05-30",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

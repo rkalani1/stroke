@@ -1,0 +1,19 @@
+[
+  {
+    "id": "direct-angio",
+    "name": "DIRECT ANGIO",
+    "fullName": "Direct versus Conventional Transfer to Angiography Suite in Patients with Severe Acute Stroke Treated with Thrombectomy (France)",
+    "category": "acute-ischemic-stroke",
+    "population": "n=115, ≤85, ≤5 h of onset",
+    "finding": "No benefit: 36% vs 42%",
+    "teachingPoint": "Bypassing pre-EVT imaging increased sICH without benefit and was halted early — cautions against direct-to-angio in suspected LVO.",
+    "PMID": "41864232",
+    "year": 2026,
+    "citationIds": [
+      "cit-direct-angio-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-05-30",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

@@ -1,0 +1,36 @@
+[
+  {
+    "id": "rec-tnk-first-line",
+    "guideline": "ESO 2023; AHA/ASA 2026",
+    "year": 2023,
+    "section": "tnk-vs-alteplase",
+    "COR": "IIa",
+    "LOE": "B-R",
+    "statement": "Tenecteplase 0.25 mg/kg (max 25 mg) is a reasonable alternative to alteplase 0.9 mg/kg for IV thrombolysis in eligible AIS within 4.5 h, particularly for patients with anticipated EVT.",
+    "PMIDs": [
+      "35779553",
+      "36774935",
+      "39264623"
+    ],
+    "DOIs": [
+      "10.1016/S0140-6736(22)01054-6",
+      "10.1016/S0140-6736(22)02600-9",
+      "10.1001/jama.2024.14721",
+      "10.1177/23969873231177508"
+    ],
+    "citationIds": [
+      "cit-act-2022",
+      "cit-trace2-2023",
+      "cit-original-2024",
+      "cit-eso-tnk-2023"
+    ],
+    "caveats": [
+      "Use TNK 0.25 mg/kg only; the 0.4 mg/kg dose was not non-inferior in EXTEND-IA TNK part 2.",
+      "Local protocols may continue to favor alteplase; both are acceptable."
+    ],
+    "setting": "inpatient",
+    "lastReviewed": "2026-04-25",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
+    "provenance": "src/evidence/recommendations.js"
+  }
+]

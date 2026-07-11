@@ -1,0 +1,19 @@
+[
+  {
+    "id": "crest",
+    "name": "CREST",
+    "fullName": "Stenting versus Endarterectomy for Carotid-Artery Stenosis",
+    "category": "carotid-revasc",
+    "population": "n=2502",
+    "finding": "Equivalent: 7.2% vs 6.8%",
+    "teachingPoint": "CAS and CEA equivalent on the composite; stroke risk favors CEA, MI risk favors CAS.",
+    "PMID": "20505173",
+    "year": 2010,
+    "citationIds": [
+      "cit-crest-2010"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

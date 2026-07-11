@@ -37,6 +37,48 @@ Updates roll out via a non-intrusive **"A new version of Stroke is ready"** bann
 - Do not enter PHI, patient identifiers, MRN fragments, dates of birth, real ward census data, real encounter details, learner records, or confidential institutional information.
 - Real clinical use requires organization-approved hosting, storage, access control, governance, and incident-response paths outside this public deployment.
 
+## Clinical content data layer (`/content`)
+
+Clinical reference data is authored as typed, schema-validated files under
+`/content`, so updating a guideline, trial, educational resource, calculator, or
+reference is a **data edit, not a code change**. Full guide:
+[CONTRIBUTING-content.md](CONTRIBUTING-content.md).
+
+| Domain | Files | Schema |
+|---|---|---|
+| Guidelines | `content/guidelines/*.json` | id, guideline, year, section, COR, LOE, statement, PMIDs[], DOIs[], lastReviewed, sourceUrl |
+| Trials | `content/trials/*.json` | name, category, population, finding, teachingPoint, PMID, year |
+| Education | `content/education/*.md` | frontmatter: id, title, summary, tags, contexts[], calculators[], references[], lastReviewed |
+| Calculators | `content/calculators/registry.json` | single registry (id, name, category, fn, module) |
+| References | `content/references/*.json` | reference cards + PDF metadata |
+
+- **Validation** (`content/schema.mjs`, run by `npm run content:validate` and in
+  CI) fails the build on malformed fields, bad COR/LOE, a citation that doesn't
+  resolve in the single registry (`src/evidence/citations.js`), or a
+  `lastReviewed` older than 18 months.
+- **Single citations module:** every PMID/DOI is defined once in
+  `src/evidence/citations.js` and referenced by id.
+- **Update a guideline/trial/resource in under 5 minutes:** edit the `/content`
+  file (or scaffold one — `npm run content:scaffold -- --type guideline --pmids
+  … --now YYYY-MM-DD`), run `npm run content:validate`, commit. See
+  CONTRIBUTING-content.md.
+- **Currency worklist:** `npm run content:currency` lists entries due for
+  re-verification with their source URLs/PMIDs.
+- `content/bundle.json` is the generated single-import projection consumed via
+  `src/content-context.js` (pure access + Telestroke/Inpatient/Clinic filtering).
+
+The full architecture audit and the sequenced refactor plan live in
+[REFACTOR_MAP.md](REFACTOR_MAP.md); remaining render-integration work is scoped
+in [REMAINING-WORK.md](REMAINING-WORK.md).
+
+### Example Protocols content lock
+
+The Example Protocols tab (`#/protocols/*`) clinical wording is frozen. A
+rendered-DOM snapshot lock (`npm run test:protocol-snapshot`, in CI) captures
+every subtab's visible text + drug-modal content and fails on any drift, so
+refactors can't silently alter clinical text/values. Intentional changes are a
+separate reviewed `npm run test:protocol-snapshot:update` commit.
+
 ## GitHub Pages routing
 - Deployed under `/stroke/` using hash routes (`#/encounter`, `#/management`, etc.).
 

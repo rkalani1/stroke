@@ -52,3 +52,6 @@ scratch/
 # Local dev conveniences — never publish
 .claude/
 .playwright-mcp/
+
+# Scaffolded content drafts pending human review (promote by moving out of _drafts/)
+content/_drafts/

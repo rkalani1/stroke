@@ -1,0 +1,37 @@
+[
+  {
+    "id": "distal",
+    "name": "DISTAL",
+    "fullName": "Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke — 12-Month Outcomes",
+    "category": "evt-mevo",
+    "population": "n=543, Median 77, NIHSS Median 6, ≤6 h, or 6-24 h with salvageable tissue",
+    "finding": "No difference (median mRS 2 vs 2)",
+    "teachingPoint": "No long-term benefit of EVT in mild-to-moderate medium/distal vessel occlusion — routine thrombectomy not supported in this population.",
+    "PMID": "39908430",
+    "year": 2025,
+    "citationIds": [
+      "cit-distal-2025",
+      "cit-distal-2026"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-30",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "escape-mevo",
+    "name": "ESCAPE-MeVO",
+    "fullName": "Endovascular Treatment for Medium Vessel Occlusion Stroke",
+    "category": "evt-mevo",
+    "population": "n=530, Mean 69.8, NIHSS Median 8, ≤24 h (median 4.6 h)",
+    "finding": "No difference (adjusted common OR 0.90)",
+    "teachingPoint": "Does not support routine endovascular thrombectomy for isolated medium vessel occlusion stroke outside of clinical trials.",
+    "PMID": "39908448",
+    "year": 2025,
+    "citationIds": [
+      "cit-escape-mevo-2025"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-30",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

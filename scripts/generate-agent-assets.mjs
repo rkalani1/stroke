@@ -96,32 +96,14 @@ function write(rel, content) {
 }
 
 // ── Calculator catalog ───────────────────────────────────────────────────────
-const CALCULATORS = [
-  { id: 'nihss', name: 'NIH Stroke Scale', category: 'severity', fn: 'calculateNIHSS' },
-  { id: 'ich-score', name: 'ICH Score', category: 'prognosis', fn: 'calculateICHScore' },
-  { id: 'ich-volume', name: 'ICH Volume (ABC/2)', category: 'imaging', fn: 'calculateICHVolume' },
-  { id: 'gcs', name: 'Glasgow Coma Scale', category: 'severity', fn: 'calculateGCS' },
-  { id: 'abcd2', name: 'ABCD² (TIA risk)', category: 'risk', fn: 'calculateABCD2WithDetail' },
-  { id: 'aspects-pc', name: 'pc-ASPECTS', category: 'imaging', fn: 'calculatePCAspects' },
-  { id: 'chadsvasc', name: 'CHA₂DS₂-VASc', category: 'risk', fn: 'calculateCHADS2VascScore' },
-  { id: 'hasbled', name: 'HAS-BLED', category: 'risk', fn: 'calculateHASBLEDScore' },
-  { id: 'rope', name: 'RoPE (PFO)', category: 'risk', fn: 'calculateROPEScore' },
-  { id: 'rcvs2', name: 'RCVS²', category: 'risk', fn: 'calculateRCVS2Score' },
-  { id: 'phases', name: 'PHASES (aneurysm)', category: 'risk', fn: 'calculatePHASESScore' },
-  { id: 'tnk-dose', name: 'Tenecteplase dose (0.25 mg/kg)', category: 'dosing', fn: 'calculateTNKDose' },
-  { id: 'alteplase-dose', name: 'Alteplase dose (0.9 mg/kg)', category: 'dosing', fn: 'calculateAlteplaseDose' },
-  { id: 'doac-start', name: 'DOAC start timing (post-stroke AF)', category: 'dosing', fn: 'calculateDOACStart' },
-  { id: 'pcc-dose', name: '4F-PCC dose', category: 'dosing', fn: 'calculatePCCDose' },
-  { id: 'andexanet', name: 'Andexanet alfa dose', category: 'dosing', fn: 'calculateAndexanetDose' },
-  { id: 'enoxaparin', name: 'Enoxaparin dose', category: 'dosing', fn: 'calculateEnoxaparinDose' },
-  { id: 'crcl', name: 'Creatinine clearance (Cockcroft-Gault)', category: 'dosing', fn: 'calculateCrCl' },
-  { id: 'dawn', name: 'DAWN EVT eligibility', category: 'reperfusion', fn: 'evaluateDAWN' },
-  { id: 'defuse3', name: 'DEFUSE-3 EVT eligibility', category: 'reperfusion', fn: 'evaluateDEFUSE3' },
-  { id: 'acute-dapt', name: 'Acute DAPT recommendation', category: 'secondary-prevention', fn: 'recommendAcuteDAPT' },
-  { id: 'essen', name: 'Essen Stroke Risk Score', category: 'risk', fn: 'calculateESSEN' },
-  { id: 'spi2', name: 'Stroke Prognosis Instrument II', category: 'prognosis', fn: 'calculateSPI2' },
-  { id: 'vasograde', name: 'VASOGRADE (DCI risk)', category: 'risk', fn: 'calculateVASOGRADE' },
-];
+// Single source of truth: content/calculators/registry.json (seeded from and
+// verified against the compute-module exports by scripts/seed-content.mjs).
+// Projected to the served {id,name,category,fn} shape so this asset stays
+// decoupled from the registry's internal fields (e.g. `module`).
+const CALCULATOR_REGISTRY = JSON.parse(
+  await fs.readFile(path.join(ROOT, 'content', 'calculators', 'registry.json'), 'utf8')
+);
+const CALCULATORS = CALCULATOR_REGISTRY.map(({ id, name, category, fn }) => ({ id, name, category, fn }));
 
 // ── Addressable hash routes (deep links for agents + humans) ──────────────────
 const ROUTES = [

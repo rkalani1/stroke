@@ -1,0 +1,53 @@
+[
+  {
+    "id": "navigate-esus",
+    "name": "NAVIGATE ESUS",
+    "fullName": "Rivaroxaban for Stroke Prevention after Embolic Stroke of Undetermined Source",
+    "category": "esus",
+    "population": "n=7213, ≥50",
+    "finding": "No benefit: 5.1%/yr vs 4.8%/yr",
+    "teachingPoint": "Rivaroxaban not superior to aspirin in ESUS and more bleeding — empiric anticoagulation not indicated.",
+    "PMID": "29766772",
+    "year": 2018,
+    "citationIds": [
+      "cit-navigate-esus-2018"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "respect-esus",
+    "name": "RE-SPECT ESUS",
+    "fullName": "Dabigatran for Prevention of Stroke after Embolic Stroke of Undetermined Source",
+    "category": "esus",
+    "population": "n=5390, ≥60 (or ≥45 with risk factor)",
+    "finding": "No benefit: 4.1%/yr vs 4.8%/yr",
+    "teachingPoint": "Dabigatran not superior to aspirin in ESUS — confirms NAVIGATE; no empiric DOAC.",
+    "PMID": "31091372",
+    "year": 2019,
+    "citationIds": [
+      "cit-respect-esus-2019"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "arcadia",
+    "name": "ARCADIA",
+    "fullName": "Apixaban to Prevent Recurrence after Cryptogenic Stroke in Patients with Atrial Cardiopathy",
+    "category": "esus",
+    "population": "n=1015, ≥45",
+    "finding": "No benefit: 4.4%/yr vs 4.4%/yr",
+    "teachingPoint": "Apixaban no better than aspirin in atrial-cardiopathy ESUS — atrial cardiopathy alone does not justify anticoagulation.",
+    "PMID": "38324415",
+    "year": 2024,
+    "citationIds": [
+      "cit-arcadia-2024"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

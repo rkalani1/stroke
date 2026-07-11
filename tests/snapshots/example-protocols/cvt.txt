@@ -1,0 +1,121 @@
+No diagnosis set.
+Set a working diagnosis on the Encounter tab to activate pathway-specific management recommendations and auto-populate relevant protocols.
+Set diagnosis
+Protocols & Algorithms
+›
+CVT
+ICH
+Ischemic
+SAH
+TIA
+CVT
+References
+Calculators
+Cerebral Venous Thrombosis (CVT) Management
+AHA/ASA 2024 Guidelines — CSBP 2024
+Acute Management Checklist
+Anticoagulation initiated
+LMWH or UFH, even with hemorrhagic infarction (Class I, LOE B-NR)
+ICP assessment/management
+HOB 30°, acetazolamide if needed, LP drainage for visual impairment
+Seizure management addressed
+Treat acute seizures with levetiracetam; routine prophylaxis NOT recommended (AHA/ASA). EEG if supratentorial lesion with altered consciousness.
+Hematology consult / thrombophilia workup
+Factor V Leiden, prothrombin mutation, protein C/S, APLA
+Treatment Timeline & Escalation
+Acute (Day 0-14)
+• Therapeutic LMWH or UFH
+• Even with hemorrhagic infarction (Class I)
+• ICP management if needed
+• Seizure treatment (not prophylaxis)
+Subacute (Week 2-4)
+• Transition to warfarin (INR 2-3) or DOAC
+• DOAC reasonable if no APS (Class IIb, ACTION-CVT)
+• Repeat imaging (MRV) at 3-6 months
+Duration (3-12 mo)
+• Provoked + resolved: 3-6 months
+• Unprovoked: 6-12 months
+• Recurrent VTE or severe thrombophilia: indefinite
+• APS confirmed: warfarin (not DOAC)
+Escalation Triggers
+• Worsening despite anticoag → EVT consultation
+• Severe ICP with visual loss → LP / shunt
+• Herniation risk → decompressive craniectomy
+• Refractory seizures → continuous EEG
+Saposnik G et al. Stroke 2024. AHA/ASA CVT Scientific Statement. ACTION-CVT: Yaghi S et al. Stroke 2022;53:728-738. PMID: 35143325.
+Risk Factor Assessment
+Prothrombotic
+• Factor V Leiden mutation
+• Prothrombin G20210A
+• Protein C/S deficiency
+• Antithrombin III deficiency
+• Antiphospholipid syndrome
+• Hyperhomocysteinemia
+Acquired
+• OCP / hormonal therapy
+• Pregnancy / puerperium
+• Malignancy
+• Infection (mastoiditis, sinusitis)
+• IBD / nephrotic syndrome
+• Dehydration / recent surgery
+Diagnostic Imaging
+First-line
+•
+MRI + MRV
+(preferred)
+• CT venography if MRI unavailable
+• Non-contrast CT: cord sign, dense triangle sign, hemorrhagic venous infarct
+Follow-up
+• Repeat MRV at 3-6 months
+• Assess for recanalization
+• Guide duration of anticoagulation
+Endovascular Therapy Consideration
+Consider EVT if clinical deterioration despite adequate anticoagulation:
+• Mechanical thrombectomy ± local thrombolysis
+• Class IIb recommendation (LOE C-LD)
+• Contact interventional neuroradiology early
+• Decompressive craniectomy if impending herniation (Class IIa)
+Long-term Anticoagulation
+Scenario
+Duration
+Agent
+Provoked (OCP, pregnancy, infection)
+3-6 months
+VKA (INR 2-3) preferred
+Unprovoked / mild thrombophilia
+6-12 months
+VKA; DOAC may be considered (ACTION-CVT)
+Recurrent VTE or severe thrombophilia
+Indefinite
+VKA (INR 2-3)
+APS confirmed
+Indefinite
+VKA only (DOACs contraindicated)
+Reassess imaging (MRV) at 3-6 months to guide anticoag duration. Fischer U et al. Lancet Neurol. 2025.
+CVT in Special Populations
+Special-Population Flags
+Pregnancy / postpartum
+Prefer LMWH/UFH. Avoid DOACs during pregnancy and breastfeeding.
+APS confirmed
+Use warfarin (INR 2-3) for long-term therapy; avoid DOACs.
+Active cancer
+Coordinate with hematology/oncology for agent interactions and procedures.
+Severe thrombophilia
+High recurrence profile; extended/indefinite anticoagulation often needed.
+Standard CVT profile
+Acute agent:
+LMWH or UFH (weight-based).
+Long-term plan:
+Transition agent based on provoked vs unprovoked profile and bleeding risk.
+Duration target:
+3-6 months (provoked), 6-12 months (unprovoked), longer if recurrent risk.
+Pregnancy / Postpartum
+• LMWH throughout pregnancy (UFH also acceptable)
+• Warfarin contraindicated in 1st trimester, acceptable postpartum
+• DOACs contraindicated in pregnancy/breastfeeding
+• Future pregnancy not contraindicated, but prophylactic LMWH recommended
+Pediatric CVT
+• Anticoagulation recommended (LMWH or UFH)
+• Treat underlying infection aggressively
+• 3-6 months anticoagulation typical
+• Thrombophilia workup recommended
