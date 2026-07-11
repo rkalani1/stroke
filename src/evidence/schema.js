@@ -33,8 +33,6 @@ export const ACTIVE_TRIAL_STATUS_VALUES = ['recruiting', 'active-not-recruiting'
 export const CLASS_VALUES = ['I', 'IIa', 'IIb', 'III-no-benefit', 'III-harm'];
 export const LOE_VALUES = ['A', 'B-R', 'B-NR', 'C-LD', 'C-EO'];
 export const SETTING_VALUES = ['inpatient', 'outpatient', 'pre-facility', 'all'];
-export const TODO_VERIFY_STATUS = 'todo-verify';
-
 export const VERIFICATION_VALUES = [
   'verified-pubmed',
   'verified-doi',
@@ -42,7 +40,7 @@ export const VERIFICATION_VALUES = [
   'verified-guideline',
   'verified-rct',
   'unverified-source-limited',
-  TODO_VERIFY_STATUS,
+  'todo-verify',
   'disputed'
 ];
 
@@ -117,7 +115,7 @@ export function makeCompletedTrial(input = {}) {
     promotedDate: strOr(input.promotedDate, strOr(input.lastReviewed)),
     verificationStatus: VERIFICATION_VALUES.includes(input.verificationStatus)
       ? input.verificationStatus
-      : TODO_VERIFY_STATUS,
+      : 'todo-verify',
     verificationNotes: strOr(input.verificationNotes)
   };
 }
@@ -166,7 +164,7 @@ export function makeActiveTrial(input = {}) {
     lastReviewed: strOr(input.lastReviewed),
     verificationStatus: VERIFICATION_VALUES.includes(input.verificationStatus)
       ? input.verificationStatus
-      : TODO_VERIFY_STATUS,
+      : 'todo-verify',
     verificationNotes: strOr(input.verificationNotes),
     legacyMatcherKey: strOr(input.legacyMatcherKey)
   };
@@ -187,7 +185,7 @@ export function makeCitation(input = {}) {
     url: strOr(input.url),
     verificationStatus: VERIFICATION_VALUES.includes(input.verificationStatus)
       ? input.verificationStatus
-      : TODO_VERIFY_STATUS,
+      : 'todo-verify',
     verificationNotes: strOr(input.verificationNotes)
   };
 }
@@ -208,7 +206,7 @@ export function makeRecommendation(input = {}) {
     lastReviewed: strOr(input.lastReviewed),
     verificationStatus: VERIFICATION_VALUES.includes(input.verificationStatus)
       ? input.verificationStatus
-      : TODO_VERIFY_STATUS,
+      : 'todo-verify',
     verificationNotes: strOr(input.verificationNotes)
   };
 }
@@ -286,8 +284,8 @@ export function validateCompletedTrial(t, ctx = {}) {
   pushIf(errors, !VERIFICATION_VALUES.includes(t.verificationStatus), `${where}: verificationStatus invalid`);
   pushIf(errors, !t.primaryEndpoint?.result, `${where}: primaryEndpoint.result required`);
 
-  if (t.verificationStatus === TODO_VERIFY_STATUS && !t.verificationNotes) {
-    errors.push(`${where}: verificationStatus=${TODO_VERIFY_STATUS} requires verificationNotes`);
+  if (t.verificationStatus === 'todo-verify' && !t.verificationNotes) {
+    errors.push(`${where}: verificationStatus=todo-verify requires verificationNotes`);
   }
 
   if (!ISO_DATE.test(t.lastReviewed || '')) {
@@ -339,8 +337,8 @@ export function validateActiveTrial(t, ctx = {}) {
     errors.push(`${where}: at least one matcherCriteria entry required`);
   }
 
-  if (t.verificationStatus === TODO_VERIFY_STATUS && !t.verificationNotes) {
-    errors.push(`${where}: verificationStatus=${TODO_VERIFY_STATUS} requires verificationNotes`);
+  if (t.verificationStatus === 'todo-verify' && !t.verificationNotes) {
+    errors.push(`${where}: verificationStatus=todo-verify requires verificationNotes`);
   }
 
   if (!ISO_DATE.test(t.lastReviewed || '')) {
@@ -376,8 +374,8 @@ export function validateCitation(c) {
     errors.push(`${where}: doi '${c.doi}' fails DOI pattern`);
   }
 
-  if (c.verificationStatus === TODO_VERIFY_STATUS && !c.verificationNotes) {
-    errors.push(`${where}: verificationStatus=${TODO_VERIFY_STATUS} requires verificationNotes`);
+  if (c.verificationStatus === 'todo-verify' && !c.verificationNotes) {
+    errors.push(`${where}: verificationStatus=todo-verify requires verificationNotes`);
   }
 
   return { errors, warnings };
@@ -400,8 +398,8 @@ export function validateRecommendation(r, ctx = {}) {
     }
   }
 
-  if (r.verificationStatus === TODO_VERIFY_STATUS && !r.verificationNotes) {
-    errors.push(`${where}: verificationStatus=${TODO_VERIFY_STATUS} requires verificationNotes`);
+  if (r.verificationStatus === 'todo-verify' && !r.verificationNotes) {
+    errors.push(`${where}: verificationStatus=todo-verify requires verificationNotes`);
   }
 
   if (!ISO_DATE.test(r.lastReviewed || '')) {

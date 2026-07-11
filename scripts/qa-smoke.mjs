@@ -7,7 +7,7 @@ import { chromium } from 'playwright';
 
 const PORT = 4173;
 const LOCAL_URL = `http://127.0.0.1:${PORT}/`;
-const LIVE_URL = process.env.STROKE_LIVE_URL || 'https://rkalani1.github.io/stroke/';
+const LIVE_URL = process.env.STROKE_LIVE_URL || ' /stroke/';
 const VIEWPORTS = [
   { name: 'desktop', width: 1440, height: 900 },
   { name: 'tablet', width: 768, height: 1024 },
