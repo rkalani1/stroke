@@ -444,6 +444,376 @@ function StudyDatabase({ onOpenDetails }) {
 
 /* ───────────────────────── main component ──────────────────────────────── */
 
+
+function QuestionnairePanel({ state, set, setExclusion, ready, activeAcronyms, visibleExclusions, onsetHours, onsetDays, onsetMonths, cls, isChronicIschemic, mrsLabel, showPreMrsField, showAspectsAndVesselField, showAnteriorCirculationField, showPresentedWithin24hField, showIchSection, showHematomaVolumeField, showAfibField, showEtiologyAndSaptField, showRehabSection, showAvailability54wField, showUnilateralSymptomaticField }) {
+  return (
+    <div className="space-y-5">
+      {/* 1. Classification */}
+      <section className="space-y-2">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">1 · Stroke Classification</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          {[
+            { id: 'ischemic', label: 'Ischemic Stroke' },
+            { id: 'tia', label: 'TIA' },
+            { id: 'ich', label: 'ICH' }
+          ].map((opt) => {
+            const active = cls === opt.id;
+            return (
+              <button
+                key={opt.id}
+                type="button"
+                aria-pressed={active}
+                onClick={() =>
+                  set({
+                    classification: opt.id,
+                    onsetVal: opt.id === 'ich' ? 3 : opt.id === 'tia' ? 12 : 2,
+                    onsetUnit: 'hours'
+                  })
+                }
+                className={cx(
+                  'h-12 rounded-md border px-3 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500',
+                  active
+                    ? 'border-cobalt-600 bg-cobalt-600 text-white'
+                    : 'border-slate-200 bg-white text-slate-700 hover:border-cobalt-300 hover:bg-cobalt-50'
+                )}
+              >
+                {opt.label}
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      {ready && (
+        <>
+          {/* 2. Time since LKW */}
+          <section className="space-y-2">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">2 · Time Since LKW</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {ONSET_PRESETS.map((preset) => {
+                const active = preset.unit === state.onsetUnit && preset.val === state.onsetVal;
+                return (
+                  <button
+                    key={preset.name}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => set({ onsetVal: preset.val, onsetUnit: preset.unit })}
+                    className={cx(
+                      'flex flex-col items-center justify-center rounded-md border px-2 py-2 text-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500',
+                      active
+                        ? 'border-cobalt-600 bg-cobalt-600 text-white'
+                        : 'border-slate-200 bg-white text-slate-700 hover:border-cobalt-300 hover:bg-cobalt-50'
+                    )}
+                  >
+                    <span className="text-sm font-bold">{preset.name}</span>
+                    <span className={cx('text-2xs', active ? 'text-cobalt-50' : 'text-slate-500')}>{preset.desc}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <p className="text-2xs font-mono text-slate-500">
+              Onset ≈ {onsetHours < 48 ? `${onsetHours.toFixed(1)}h` : onsetDays < 60 ? `${onsetDays.toFixed(1)}d` : `${onsetMonths.toFixed(1)}mo`} since LKW
+            </p>
+          </section>
+
+          {/* 3. Core bedside facts (dynamic) */}
+          <section className="space-y-3">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">3 · Core Bedside Facts</h3>
+
+            <NumberField id="ts-age" label="Patient Age (years)" value={state.age} min={18} max={120} placeholder="e.g. 65" onChange={(v) => set({ age: v })} />
+
+            {(cls === 'ischemic' || (showIchSection && showHematomaVolumeField)) && (
+              <NumberField id="ts-nihss" label="NIHSS Severity Score" value={state.nihss} min={0} max={42} placeholder="e.g. 8" onChange={(v) => set({ nihss: v })} />
+            )}
+
+            {showPreMrsField && (
+              <SelectField
+                id="ts-mrs"
+                label={mrsLabel}
+                value={state.preMrs}
+                onChange={(v) => set({ preMrs: v === 'unselected' ? 'unselected' : parseInt(v, 10) })}
+                options={[
+                  { value: 'unselected', label: 'Select…' },
+                  { value: '0', label: '0 — No symptoms' },
+                  { value: '1', label: '1 — No significant disability' },
+                  { value: '2', label: '2 — Slight disability (independent)' },
+                  { value: '3', label: '3 — Moderate disability (needs help, walks)' },
+                  { value: '4', label: '4 — Moderately severe (cannot walk)' }
+                ]}
+              />
+            )}
+
+            {showAspectsAndVesselField && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <NumberField id="ts-aspects" label="CT ASPECTS Score" value={state.aspects} min={0} max={10} placeholder="e.g. 8" onChange={(v) => set({ aspects: v })} />
+                <SelectField
+                  id="ts-vessel"
+                  label="Vessel Occlusion (CTA)"
+                  value={state.vessel}
+                  onChange={(v) => set({ vessel: v })}
+                  options={[
+                    { value: 'unselected', label: 'Select…' },
+                    { value: 'none', label: 'None / No LVO' },
+                    { value: 'ica_m1', label: 'Intracranial ICA / MCA M1' },
+                    { value: 'm2_m3_nd', label: 'Non-dominant/Co-dominant M2/M3' },
+                    { value: 'dominant_m2', label: 'Dominant M2 branch' },
+                    { value: 'dominant_m3', label: 'Dominant M3 branch' }
+                  ]}
+                />
+              </div>
+            )}
+
+            {showAnteriorCirculationField && (
+              <YesNoField id="ts-ant" label="Anterior Circulation?" value={state.anteriorCirculation} onChange={(v) => set({ anteriorCirculation: v })} />
+            )}
+
+            {showPresentedWithin24hField && (
+              <YesNoField id="ts-p24" label="Presented within 24h of onset?" value={state.presentedWithin24h} onChange={(v) => set({ presentedWithin24h: v })} />
+            )}
+
+            {showIchSection && (
+              <>
+                <SelectField
+                  id="ts-loc"
+                  label="Hemorrhage Location"
+                  value={state.ichLocation}
+                  onChange={(v) => set({ ichLocation: v })}
+                  options={[
+                    { value: 'unselected', label: 'Select…' },
+                    { value: 'bg', label: 'Deep / Basal Ganglia' },
+                    { value: 'lobar', label: 'Lobar' },
+                    { value: 'thalamic', label: 'Thalamic' },
+                    { value: 'infratentorial', label: 'Infratentorial' }
+                  ]}
+                />
+                {showHematomaVolumeField && (
+                  <SelectField
+                    id="ts-vol"
+                    label="Hematoma Volume"
+                    value={state.volume}
+                    onChange={(v) => set({ volume: v })}
+                    options={[
+                      { value: 'unselected', label: 'Select…' },
+                      { value: 'bg_small', label: 'Below screening threshold' },
+                      { value: 'bg_large', label: 'Screen-positive (>=15 mL or close)' }
+                    ]}
+                  />
+                )}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <YesNoField id="ts-statin" label="Statin at Onset" value={state.statin} yesLabel="On statin drug" noLabel="No statin" onChange={(v) => set({ statin: v })} />
+                  <YesNoField id="ts-afib-ich" label="AFib History" value={state.afibHistory} yesLabel="Clinical AFib" noLabel="No AFib history" onChange={(v) => set({ afibHistory: v })} />
+                </div>
+              </>
+            )}
+
+            {showAfibField && (
+              <SelectField
+                id="ts-afib-oac"
+                label="AFib & Anticoagulation"
+                value={
+                  state.afibHistory === true && state.takingOac === true
+                    ? 'afib_oac'
+                    : state.afibHistory === true && state.takingOac === false
+                    ? 'afib_no_oac'
+                    : state.afibHistory === false && state.takingOac === false
+                    ? 'none'
+                    : 'unselected'
+                }
+                onChange={(v) => {
+                  if (v === 'unselected') set({ afibHistory: 'unselected', takingOac: 'unselected' });
+                  else if (v === 'none') set({ afibHistory: false, takingOac: false });
+                  else if (v === 'afib_no_oac') set({ afibHistory: true, takingOac: false });
+                  else if (v === 'afib_oac') set({ afibHistory: true, takingOac: true });
+                }}
+                options={[
+                  { value: 'unselected', label: 'Select…' },
+                  { value: 'none', label: 'No AFib, not on OAC' },
+                  { value: 'afib_no_oac', label: 'AFib, not on OAC' },
+                  { value: 'afib_oac', label: 'AFib, on OAC' }
+                ]}
+              />
+            )}
+
+            {showEtiologyAndSaptField && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <SelectField
+                  id="ts-etio"
+                  label="Subtype / Etiology"
+                  value={state.etiology}
+                  onChange={(v) => set({ etiology: v })}
+                  options={[
+                    { value: 'unselected', label: 'Select…' },
+                    { value: 'laa', label: 'Large Artery Atherosclerosis' },
+                    { value: 'lacunar', label: 'Lacunar / Small Vessel' },
+                    { value: 'esus', label: 'ESUS / Cryptogenic' },
+                    { value: 'other_noncardiac', label: 'Other noncardiac subtype' },
+                    { value: 'cardioembolic', label: 'Cardioembolic' }
+                  ]}
+                />
+                <YesNoField id="ts-sapt" label="Single Antiplatelet SOC?" value={state.singleAntiplateletSoc} onChange={(v) => set({ singleAntiplateletSoc: v })} />
+              </div>
+            )}
+
+            {/* Rehab & recovery factors */}
+            {showRehabSection && (
+              <div className="space-y-3 border-t border-slate-200 pt-3">
+                <h4 className="text-xs font-semibold text-slate-700">Rehabilitation &amp; Recovery Factors</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <YesNoField id="ts-rehab" label="Planned Inpatient Rehab?" value={state.rehab} onChange={(v) => set({ rehab: v })} />
+                  <YesNoField id="ts-lang" label="Language Spoken" value={state.language} yesLabel="English or Spanish" noLabel="Other" onChange={(v) => set({ language: v })} />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <YesNoField id="ts-ue" label="UE Deficit/Weakness?" value={state.ueWeakness} onChange={(v) => set({ ueWeakness: v })} />
+                  <YesNoField id="ts-consent" label="Able to Self-Consent?" value={state.self_consent} onChange={(v) => set({ self_consent: v })} />
+                </div>
+                {showAvailability54wField && (
+                  <YesNoField id="ts-54w" label="Available for 54-week visits?" value={state.availability_54w} onChange={(v) => set({ availability_54w: v })} />
+                )}
+                {showUnilateralSymptomaticField && (
+                  <YesNoField id="ts-uni" label="Unilateral Symptomatic AIS?" value={state.unilateralSymptomatic} onChange={(v) => set({ unilateralSymptomatic: v })} />
+                )}
+              </div>
+            )}
+          </section>
+
+          {/* 4. Exclusions checklist (dynamic) */}
+          {visibleExclusions.length > 0 && (
+            <section className="space-y-2">
+              <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                4 · Scan for Key Clinical Exclusions (check any that apply)
+              </h3>
+              <div className="grid grid-cols-1 gap-1.5">
+                {visibleExclusions.map((item) => {
+                  const checked = !!state.exclusions[item.id];
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      role="checkbox"
+                      aria-checked={checked}
+                      onClick={() => setExclusion(item.id, !checked)}
+                      className={cx(
+                        'flex items-center justify-between gap-3 rounded-md border px-3 py-2 text-left text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500',
+                        checked
+                          ? 'border-crit-300 bg-crit-50 text-crit-800'
+                          : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+                      )}
+                    >
+                      <span>{item.label}</span>
+                      <span
+                        aria-hidden="true"
+                        className={cx(
+                          'shrink-0 inline-flex h-5 w-5 items-center justify-center rounded border text-xs font-bold',
+                          checked ? 'border-crit-600 bg-crit-600 text-white' : 'border-slate-300 bg-white text-transparent'
+                        )}
+                      >
+                        ✓
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+
+function ResultsPanel({ results, ready, candidateCount, excludedCount, copyBriefing, setModalTrial }) {
+  return (
+    <div className="space-y-4">
+      {!ready ? (
+        <div className="rounded-md border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+          <p className="text-sm text-slate-600">Select a stroke classification to begin screening.</p>
+        </div>
+      ) : (
+        <>
+          {/* Time-priority banner */}
+          <div className="rounded-md border border-slate-200 bg-slate-50 px-4 py-2 flex items-center justify-between gap-2">
+            <p className="text-sm text-slate-700">
+              Prioritizing:{' '}
+              <span className="font-bold text-cobalt-700">
+                {results.timeCategory === 'hyperacute'
+                  ? '⚡ Hyperacute Phase (0–24h)'
+                  : results.timeCategory === 'acute_subacute'
+                  ? '📅 Acute–Subacute Phase (24h–30d)'
+                  : '🔄 Subacute–Chronic Phase (30d+)'}
+              </span>
+            </p>
+            <span className="hidden sm:inline text-2xs text-slate-500">Sorted by onset-window proximity</span>
+          </div>
+
+          {/* Possible / Pending candidates */}
+          {results.pending.length > 0 && (
+            <section className="space-y-3">
+              <h3 className="text-sm font-bold text-warn-800">🟡 Possible Candidates (Pending Inputs) — {results.pending.length}</h3>
+              {results.pending.map((item) => (
+                <ResultCard key={item.trial.acronym} item={item} onOpenDetails={setModalTrial} />
+              ))}
+            </section>
+          )}
+
+          {/* Enrolling soon */}
+          {results.soon.length > 0 && (
+            <section className="space-y-3">
+              <h3 className="text-sm font-bold text-warn-800">⏳ Enrolling Soon / Future Match — {results.soon.length}</h3>
+              {results.soon.map((item) => (
+                <ResultCard key={item.trial.acronym} item={item} onOpenDetails={setModalTrial} />
+              ))}
+            </section>
+          )}
+
+          {candidateCount === 0 && (
+            <div className="rounded-md border border-slate-200 bg-white p-6 text-center">
+              <p className="text-sm text-slate-600">No active study matches for the current parameters.</p>
+            </div>
+          )}
+
+          {/* Briefing note */}
+          <section className="rounded-md border border-slate-200 bg-white p-4">
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <h3 className="text-sm font-bold text-slate-900">Copy-paste briefing note</h3>
+              <button
+                type="button"
+                onClick={copyBriefing}
+                className="inline-flex items-center gap-1.5 rounded-md border border-cobalt-300 bg-cobalt-50 px-3 py-1.5 text-xs font-semibold text-cobalt-700 hover:bg-cobalt-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+              >
+                Copy briefing
+              </button>
+            </div>
+            <pre className="whitespace-pre-wrap break-words rounded bg-slate-50 border border-slate-200 p-3 text-2xs font-mono text-slate-700 max-h-64 overflow-y-auto">
+              {results.briefingNote}
+            </pre>
+          </section>
+
+          {/* Excluded / closed / incomplete (collapsed) */}
+          {excludedCount > 0 && (
+            <details className="rounded-md border border-slate-200 bg-white">
+              <summary className="cursor-pointer select-none px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900">
+                🔴 Excluded / Closed / Unverified ({excludedCount})
+              </summary>
+              <div className="space-y-3 px-4 pb-4">
+                {results.excluded.map((item) => (
+                  <ResultCard key={item.trial.acronym} item={item} onOpenDetails={setModalTrial} />
+                ))}
+                {results.closed.map((item) => (
+                  <ResultCard key={item.trial.acronym} item={item} onOpenDetails={setModalTrial} />
+                ))}
+                {results.incomplete.map((item) => (
+                  <ResultCard key={item.trial.acronym} item={item} onOpenDetails={setModalTrial} />
+                ))}
+              </div>
+            </details>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
 export function TrialScreener({ copyToClipboard, addToast, initialState }) {
   const [view, setView] = useState('screener'); // 'screener' | 'database'
   const [state, setState] = useState(() => initialState || createInitialScreenerState());
@@ -531,366 +901,41 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* ───────── LEFT: progressive questionnaire ───────── */}
-          <div className="space-y-5">
-            {/* 1. Classification */}
-            <section className="space-y-2">
-              <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">1 · Stroke Classification</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {[
-                  { id: 'ischemic', label: 'Ischemic Stroke' },
-                  { id: 'tia', label: 'TIA' },
-                  { id: 'ich', label: 'ICH' }
-                ].map((opt) => {
-                  const active = cls === opt.id;
-                  return (
-                    <button
-                      key={opt.id}
-                      type="button"
-                      aria-pressed={active}
-                      onClick={() =>
-                        set({
-                          classification: opt.id,
-                          onsetVal: opt.id === 'ich' ? 3 : opt.id === 'tia' ? 12 : 2,
-                          onsetUnit: 'hours'
-                        })
-                      }
-                      className={cx(
-                        'h-12 rounded-md border px-3 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500',
-                        active
-                          ? 'border-cobalt-600 bg-cobalt-600 text-white'
-                          : 'border-slate-200 bg-white text-slate-700 hover:border-cobalt-300 hover:bg-cobalt-50'
-                      )}
-                    >
-                      {opt.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
-
-            {ready && (
-              <>
-                {/* 2. Time since LKW */}
-                <section className="space-y-2">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">2 · Time Since LKW</h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    {ONSET_PRESETS.map((preset) => {
-                      const active = preset.unit === state.onsetUnit && preset.val === state.onsetVal;
-                      return (
-                        <button
-                          key={preset.name}
-                          type="button"
-                          aria-pressed={active}
-                          onClick={() => set({ onsetVal: preset.val, onsetUnit: preset.unit })}
-                          className={cx(
-                            'flex flex-col items-center justify-center rounded-md border px-2 py-2 text-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500',
-                            active
-                              ? 'border-cobalt-600 bg-cobalt-600 text-white'
-                              : 'border-slate-200 bg-white text-slate-700 hover:border-cobalt-300 hover:bg-cobalt-50'
-                          )}
-                        >
-                          <span className="text-sm font-bold">{preset.name}</span>
-                          <span className={cx('text-2xs', active ? 'text-cobalt-50' : 'text-slate-500')}>{preset.desc}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <p className="text-2xs font-mono text-slate-500">
-                    Onset ≈ {onsetHours < 48 ? `${onsetHours.toFixed(1)}h` : onsetDays < 60 ? `${onsetDays.toFixed(1)}d` : `${onsetMonths.toFixed(1)}mo`} since LKW
-                  </p>
-                </section>
-
-                {/* 3. Core bedside facts (dynamic) */}
-                <section className="space-y-3">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">3 · Core Bedside Facts</h3>
-
-                  <NumberField id="ts-age" label="Patient Age (years)" value={state.age} min={18} max={120} placeholder="e.g. 65" onChange={(v) => set({ age: v })} />
-
-                  {(cls === 'ischemic' || (showIchSection && showHematomaVolumeField)) && (
-                    <NumberField id="ts-nihss" label="NIHSS Severity Score" value={state.nihss} min={0} max={42} placeholder="e.g. 8" onChange={(v) => set({ nihss: v })} />
-                  )}
-
-                  {showPreMrsField && (
-                    <SelectField
-                      id="ts-mrs"
-                      label={mrsLabel}
-                      value={state.preMrs}
-                      onChange={(v) => set({ preMrs: v === 'unselected' ? 'unselected' : parseInt(v, 10) })}
-                      options={[
-                        { value: 'unselected', label: 'Select…' },
-                        { value: '0', label: '0 — No symptoms' },
-                        { value: '1', label: '1 — No significant disability' },
-                        { value: '2', label: '2 — Slight disability (independent)' },
-                        { value: '3', label: '3 — Moderate disability (needs help, walks)' },
-                        { value: '4', label: '4 — Moderately severe (cannot walk)' }
-                      ]}
-                    />
-                  )}
-
-                  {showAspectsAndVesselField && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <NumberField id="ts-aspects" label="CT ASPECTS Score" value={state.aspects} min={0} max={10} placeholder="e.g. 8" onChange={(v) => set({ aspects: v })} />
-                      <SelectField
-                        id="ts-vessel"
-                        label="Vessel Occlusion (CTA)"
-                        value={state.vessel}
-                        onChange={(v) => set({ vessel: v })}
-                        options={[
-                          { value: 'unselected', label: 'Select…' },
-                          { value: 'none', label: 'None / No LVO' },
-                          { value: 'ica_m1', label: 'Intracranial ICA / MCA M1' },
-                          { value: 'm2_m3_nd', label: 'Non-dominant/Co-dominant M2/M3' },
-                          { value: 'dominant_m2', label: 'Dominant M2 branch' },
-                          { value: 'dominant_m3', label: 'Dominant M3 branch' }
-                        ]}
-                      />
-                    </div>
-                  )}
-
-                  {showAnteriorCirculationField && (
-                    <YesNoField id="ts-ant" label="Anterior Circulation?" value={state.anteriorCirculation} onChange={(v) => set({ anteriorCirculation: v })} />
-                  )}
-
-                  {showPresentedWithin24hField && (
-                    <YesNoField id="ts-p24" label="Presented within 24h of onset?" value={state.presentedWithin24h} onChange={(v) => set({ presentedWithin24h: v })} />
-                  )}
-
-                  {showIchSection && (
-                    <>
-                      <SelectField
-                        id="ts-loc"
-                        label="Hemorrhage Location"
-                        value={state.ichLocation}
-                        onChange={(v) => set({ ichLocation: v })}
-                        options={[
-                          { value: 'unselected', label: 'Select…' },
-                          { value: 'bg', label: 'Deep / Basal Ganglia' },
-                          { value: 'lobar', label: 'Lobar' },
-                          { value: 'thalamic', label: 'Thalamic' },
-                          { value: 'infratentorial', label: 'Infratentorial' }
-                        ]}
-                      />
-                      {showHematomaVolumeField && (
-                        <SelectField
-                          id="ts-vol"
-                          label="Hematoma Volume"
-                          value={state.volume}
-                          onChange={(v) => set({ volume: v })}
-                          options={[
-                            { value: 'unselected', label: 'Select…' },
-                            { value: 'bg_small', label: 'Below screening threshold' },
-                            { value: 'bg_large', label: 'Screen-positive (>=15 mL or close)' }
-                          ]}
-                        />
-                      )}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <YesNoField id="ts-statin" label="Statin at Onset" value={state.statin} yesLabel="On statin drug" noLabel="No statin" onChange={(v) => set({ statin: v })} />
-                        <YesNoField id="ts-afib-ich" label="AFib History" value={state.afibHistory} yesLabel="Clinical AFib" noLabel="No AFib history" onChange={(v) => set({ afibHistory: v })} />
-                      </div>
-                    </>
-                  )}
-
-                  {showAfibField && (
-                    <SelectField
-                      id="ts-afib-oac"
-                      label="AFib & Anticoagulation"
-                      value={
-                        state.afibHistory === true && state.takingOac === true
-                          ? 'afib_oac'
-                          : state.afibHistory === true && state.takingOac === false
-                          ? 'afib_no_oac'
-                          : state.afibHistory === false && state.takingOac === false
-                          ? 'none'
-                          : 'unselected'
-                      }
-                      onChange={(v) => {
-                        if (v === 'unselected') set({ afibHistory: 'unselected', takingOac: 'unselected' });
-                        else if (v === 'none') set({ afibHistory: false, takingOac: false });
-                        else if (v === 'afib_no_oac') set({ afibHistory: true, takingOac: false });
-                        else if (v === 'afib_oac') set({ afibHistory: true, takingOac: true });
-                      }}
-                      options={[
-                        { value: 'unselected', label: 'Select…' },
-                        { value: 'none', label: 'No AFib, not on OAC' },
-                        { value: 'afib_no_oac', label: 'AFib, not on OAC' },
-                        { value: 'afib_oac', label: 'AFib, on OAC' }
-                      ]}
-                    />
-                  )}
-
-                  {showEtiologyAndSaptField && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <SelectField
-                        id="ts-etio"
-                        label="Subtype / Etiology"
-                        value={state.etiology}
-                        onChange={(v) => set({ etiology: v })}
-                        options={[
-                          { value: 'unselected', label: 'Select…' },
-                          { value: 'laa', label: 'Large Artery Atherosclerosis' },
-                          { value: 'lacunar', label: 'Lacunar / Small Vessel' },
-                          { value: 'esus', label: 'ESUS / Cryptogenic' },
-                          { value: 'other_noncardiac', label: 'Other noncardiac subtype' },
-                          { value: 'cardioembolic', label: 'Cardioembolic' }
-                        ]}
-                      />
-                      <YesNoField id="ts-sapt" label="Single Antiplatelet SOC?" value={state.singleAntiplateletSoc} onChange={(v) => set({ singleAntiplateletSoc: v })} />
-                    </div>
-                  )}
-
-                  {/* Rehab & recovery factors */}
-                  {showRehabSection && (
-                    <div className="space-y-3 border-t border-slate-200 pt-3">
-                      <h4 className="text-xs font-semibold text-slate-700">Rehabilitation &amp; Recovery Factors</h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <YesNoField id="ts-rehab" label="Planned Inpatient Rehab?" value={state.rehab} onChange={(v) => set({ rehab: v })} />
-                        <YesNoField id="ts-lang" label="Language Spoken" value={state.language} yesLabel="English or Spanish" noLabel="Other" onChange={(v) => set({ language: v })} />
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <YesNoField id="ts-ue" label="UE Deficit/Weakness?" value={state.ueWeakness} onChange={(v) => set({ ueWeakness: v })} />
-                        <YesNoField id="ts-consent" label="Able to Self-Consent?" value={state.self_consent} onChange={(v) => set({ self_consent: v })} />
-                      </div>
-                      {showAvailability54wField && (
-                        <YesNoField id="ts-54w" label="Available for 54-week visits?" value={state.availability_54w} onChange={(v) => set({ availability_54w: v })} />
-                      )}
-                      {showUnilateralSymptomaticField && (
-                        <YesNoField id="ts-uni" label="Unilateral Symptomatic AIS?" value={state.unilateralSymptomatic} onChange={(v) => set({ unilateralSymptomatic: v })} />
-                      )}
-                    </div>
-                  )}
-                </section>
-
-                {/* 4. Exclusions checklist (dynamic) */}
-                {visibleExclusions.length > 0 && (
-                  <section className="space-y-2">
-                    <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                      4 · Scan for Key Clinical Exclusions (check any that apply)
-                    </h3>
-                    <div className="grid grid-cols-1 gap-1.5">
-                      {visibleExclusions.map((item) => {
-                        const checked = !!state.exclusions[item.id];
-                        return (
-                          <button
-                            key={item.id}
-                            type="button"
-                            role="checkbox"
-                            aria-checked={checked}
-                            onClick={() => setExclusion(item.id, !checked)}
-                            className={cx(
-                              'flex items-center justify-between gap-3 rounded-md border px-3 py-2 text-left text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500',
-                              checked
-                                ? 'border-crit-300 bg-crit-50 text-crit-800'
-                                : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
-                            )}
-                          >
-                            <span>{item.label}</span>
-                            <span
-                              aria-hidden="true"
-                              className={cx(
-                                'shrink-0 inline-flex h-5 w-5 items-center justify-center rounded border text-xs font-bold',
-                                checked ? 'border-crit-600 bg-crit-600 text-white' : 'border-slate-300 bg-white text-transparent'
-                              )}
-                            >
-                              ✓
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </section>
-                )}
-              </>
-            )}
-          </div>
+          <QuestionnairePanel
+            state={state}
+            set={set}
+            setExclusion={setExclusion}
+            ready={ready}
+            activeAcronyms={activeAcronyms}
+            visibleExclusions={visibleExclusions}
+            onsetHours={onsetHours}
+            onsetDays={onsetDays}
+            onsetMonths={onsetMonths}
+            cls={cls}
+            isChronicIschemic={isChronicIschemic}
+            mrsLabel={mrsLabel}
+            showPreMrsField={showPreMrsField}
+            showAspectsAndVesselField={showAspectsAndVesselField}
+            showAnteriorCirculationField={showAnteriorCirculationField}
+            showPresentedWithin24hField={showPresentedWithin24hField}
+            showIchSection={showIchSection}
+            showHematomaVolumeField={showHematomaVolumeField}
+            showAfibField={showAfibField}
+            showEtiologyAndSaptField={showEtiologyAndSaptField}
+            showRehabSection={showRehabSection}
+            showAvailability54wField={showAvailability54wField}
+            showUnilateralSymptomaticField={showUnilateralSymptomaticField}
+          />
 
           {/* ───────── RIGHT: live results ───────── */}
-          <div className="space-y-4">
-            {!ready ? (
-              <div className="rounded-md border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
-                <p className="text-sm text-slate-600">Select a stroke classification to begin screening.</p>
-              </div>
-            ) : (
-              <>
-                {/* Time-priority banner */}
-                <div className="rounded-md border border-slate-200 bg-slate-50 px-4 py-2 flex items-center justify-between gap-2">
-                  <p className="text-sm text-slate-700">
-                    Prioritizing:{' '}
-                    <span className="font-bold text-cobalt-700">
-                      {results.timeCategory === 'hyperacute'
-                        ? '⚡ Hyperacute Phase (0–24h)'
-                        : results.timeCategory === 'acute_subacute'
-                        ? '📅 Acute–Subacute Phase (24h–30d)'
-                        : '🔄 Subacute–Chronic Phase (30d+)'}
-                    </span>
-                  </p>
-                  <span className="hidden sm:inline text-2xs text-slate-500">Sorted by onset-window proximity</span>
-                </div>
-
-                {/* Possible / Pending candidates */}
-                {results.pending.length > 0 && (
-                  <section className="space-y-3">
-                    <h3 className="text-sm font-bold text-warn-800">🟡 Possible Candidates (Pending Inputs) — {results.pending.length}</h3>
-                    {results.pending.map((item) => (
-                      <ResultCard key={item.trial.acronym} item={item} onOpenDetails={setModalTrial} />
-                    ))}
-                  </section>
-                )}
-
-                {/* Enrolling soon */}
-                {results.soon.length > 0 && (
-                  <section className="space-y-3">
-                    <h3 className="text-sm font-bold text-warn-800">⏳ Enrolling Soon / Future Match — {results.soon.length}</h3>
-                    {results.soon.map((item) => (
-                      <ResultCard key={item.trial.acronym} item={item} onOpenDetails={setModalTrial} />
-                    ))}
-                  </section>
-                )}
-
-                {candidateCount === 0 && (
-                  <div className="rounded-md border border-slate-200 bg-white p-6 text-center">
-                    <p className="text-sm text-slate-600">No active study matches for the current parameters.</p>
-                  </div>
-                )}
-
-                {/* Briefing note */}
-                <section className="rounded-md border border-slate-200 bg-white p-4">
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <h3 className="text-sm font-bold text-slate-900">Copy-paste briefing note</h3>
-                    <button
-                      type="button"
-                      onClick={copyBriefing}
-                      className="inline-flex items-center gap-1.5 rounded-md border border-cobalt-300 bg-cobalt-50 px-3 py-1.5 text-xs font-semibold text-cobalt-700 hover:bg-cobalt-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
-                    >
-                      Copy briefing
-                    </button>
-                  </div>
-                  <pre className="whitespace-pre-wrap break-words rounded bg-slate-50 border border-slate-200 p-3 text-2xs font-mono text-slate-700 max-h-64 overflow-y-auto">
-                    {results.briefingNote}
-                  </pre>
-                </section>
-
-                {/* Excluded / closed / incomplete (collapsed) */}
-                {excludedCount > 0 && (
-                  <details className="rounded-md border border-slate-200 bg-white">
-                    <summary className="cursor-pointer select-none px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900">
-                      🔴 Excluded / Closed / Unverified ({excludedCount})
-                    </summary>
-                    <div className="space-y-3 px-4 pb-4">
-                      {results.excluded.map((item) => (
-                        <ResultCard key={item.trial.acronym} item={item} onOpenDetails={setModalTrial} />
-                      ))}
-                      {results.closed.map((item) => (
-                        <ResultCard key={item.trial.acronym} item={item} onOpenDetails={setModalTrial} />
-                      ))}
-                      {results.incomplete.map((item) => (
-                        <ResultCard key={item.trial.acronym} item={item} onOpenDetails={setModalTrial} />
-                      ))}
-                    </div>
-                  </details>
-                )}
-              </>
-            )}
-          </div>
+          <ResultsPanel
+            results={results}
+            ready={ready}
+            candidateCount={candidateCount}
+            excludedCount={excludedCount}
+            copyBriefing={copyBriefing}
+            setModalTrial={setModalTrial}
+          />
         </div>
       )}
 
