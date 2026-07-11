@@ -204,6 +204,18 @@ const CALCULATOR_CATALOG = [
   { id: 'essen', name: 'Essen Stroke Risk Score', category: 'risk', fn: 'calculateESSEN' },
   { id: 'spi2', name: 'Stroke Prognosis Instrument II', category: 'prognosis', fn: 'calculateSPI2' },
   { id: 'vasograde', name: 'VASOGRADE (DCI risk)', category: 'risk', fn: 'calculateVASOGRADE' },
+  // Additional user-facing calculators with verified compute (README-listed),
+  // catalogued so they are searchable via the palette/agent index.
+  { id: 'chadsva', name: 'CHA₂DS₂-VA (2024 ESC)', category: 'risk', fn: 'calculateCHADS2VA' },
+  { id: 'nascet', name: 'NASCET carotid stenosis', category: 'imaging', fn: 'calculateNASCET' },
+  { id: 'havoc', name: 'HAVOC (occult AF risk)', category: 'risk', fn: 'calculateHAVOC' },
+  { id: 'boston-caa', name: 'Boston Criteria v2.0 (CAA)', category: 'imaging', fn: 'evaluateBostonCAA20' },
+  { id: 'bat', name: 'BAT Score (ICH expansion)', category: 'prognosis', fn: 'calculateBAT' },
+  { id: 'brain', name: 'BRAIN Score (ICH expansion)', category: 'prognosis', fn: 'calculateBRAIN' },
+  { id: 'nine-point', name: '9-Point ICH Expansion Score', category: 'prognosis', fn: 'calculateNinePoint' },
+  { id: 'ogilvy-carter', name: 'Ogilvy-Carter (SAH surgical risk)', category: 'prognosis', fn: 'calculateOgilvyCarter' },
+  { id: 'phq9', name: 'PHQ-9 (post-stroke depression)', category: 'screening', fn: 'interpretPHQ9' },
+  { id: 'mrs-9q', name: 'mRS-9Q (simplified mRS)', category: 'severity', fn: 'interpretMRS9Q' },
 ];
 
 async function seedCalculators() {

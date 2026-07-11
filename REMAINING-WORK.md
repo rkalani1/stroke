@@ -1,12 +1,37 @@
-# Remaining refactor work (Phases 3–4 render integration)
+# Remaining refactor work
 
-Phases 1, 1.5, 2, and 5 are complete and committed. This file scopes the parts
-of Phases 3 (de-duplicate) and 4 (context switch) that require surgery inside
-the 36k-line `src/app.jsx` render closure. Those were **deliberately not done
-blind** in an autonomous session on a live clinical tool: each step below
-changes rendered clinical output and must be executed incrementally, verified in
-the browser, and gated by the Example Protocols snapshot lock
+## Done (shipped)
+
+- Phases 1, 1.5, 2, 5, 6 — audit, snapshot lock, `/content` data layer +
+  validation, update pipeline, tests/docs.
+- **Clinical corrections** (6 audit-flagged factual errors) — THALES duration,
+  ICH-score mortality, HINTS peripheral/central, TREAT-CAD non-inferiority,
+  osmolar-gap threshold, AF-timing pearl. Locked by
+  `tests/clinical-corrections.test.js`. (CVT seizure reviewed — guideline-
+  consistent, no change.)
+- **Context switch (Phase 4)** — Telestroke/Inpatient/Clinic header control,
+  education gallery context filter, and the global command palette now indexes
+  all five `/content` data sources. Verified live in the browser.
+- **Calculator registry (Phase 3)** — single registry expanded to 34 catalogued
+  calculators (all with verified compute exports); the agent-asset generator,
+  palette, and data index all derive from it. Dead `calculate4FPCC` removed.
+- **AI-provider abstraction bugfix** — repaired a latent ReferenceError
+  (undefined `saveToStorage`) that blocked the settings save.
+
+## Still remaining (intentionally deferred — high-risk render surgery)
+
+The items below require surgery inside the 36k-line `src/app.jsx` render closure
+and were **deliberately not done blind** on a live clinical tool: each changes
+rendered clinical output and must be done incrementally, verified in the browser,
+and gated by the Example Protocols snapshot lock
 (`npm run test:protocol-snapshot`) plus `npm run test:unit`.
+
+**Why the frozen-zone calculators are still inline:** FUNC / SPAN-100 / SEDAN /
+DRAGON / mTICI compute *interactively* inside the frozen `#/protocols/calculators`
+subtab. The static snapshot captures default render + modals but does not
+exercise every input combination, so extracting their compute could change
+interactive output in a way the snapshot wouldn't catch. They are correct today;
+extraction needs interactive test coverage first, then per-calculator migration.
 
 Everything here builds on infrastructure that already landed:
 - `/content` data layer + `content/bundle.json` (schema-validated, CI-checked).
@@ -28,44 +53,31 @@ Everything here builds on infrastructure that already landed:
    context switch (they still redirect to `ischemic` — REFACTOR_MAP §1).
 4. Verify in the browser (preview + read_page/console) before committing.
 
-## Phase 4 — context switch (recommended next, lowest risk)
+## Context switch — follow-on polish (feature shipped)
 
-The primitive is done and tested; wiring is additive.
-
-1. **State + control.** Add `workflowContext` state (`null` = All, else one of
-   `WORKFLOW_CONTEXTS`) near the other UI state in `StrokeClinicalTool`
-   (~app.jsx 2246). Persist via the existing `uiState`/`navigateTo` seam
-   (extend, don't fork — see `clinicalContext` at ~17404). Render a segmented
-   control (All / Telestroke / Inpatient / Clinic) in the header shell
-   (~app.jsx 16511). Default `null` so nothing is hidden until chosen.
-2. **First consumers (no content hidden by default — education/guidelines seed
-   to all contexts / `all` setting):**
-   - Education gallery (`src/education.jsx` filter at ~471): intersect with
-     `filterByContext(getEducation(), workflowContext)`.
-   - Guidelines & References tab: reorder/scope guideline recs by
-     `getGuidelines(workflowContext)`.
-   - Calculator surfacing: reorder the registry by context relevance (do not
-     remove any — clinicians need全 access).
-3. **Keep global search unfiltered:** the palette/search must pass `context =
-   null` (that is exactly what `filterByContext(x, null)` returns). Wire the
-   palette to `getSearchIndex()`/`searchContent()` so it indexes all five
-   domains at once (Phase 4 "index all data sources").
-4. **Clinic rebalance:** author `contexts`/`setting` on the prevention-oriented
-   content (secondary prevention, risk-factor optimization, follow-up) so the
-   Clinic context surfaces it first. This is a `/content` edit, not code.
-5. Verify: switch contexts in the browser, confirm education/guidelines reorder,
-   confirm global search still returns everything, snapshot + units green.
+The switch, education filter, and unified palette are shipped. Remaining polish:
+1. **Guidelines & References reorder** by `getGuidelines(workflowContext)` (the
+   accessor exists; the tab render isn't yet context-ordered).
+2. **Calculator surfacing** reorder by context relevance (never remove — the
+   registry stays fully accessible).
+3. **Clinic rebalance:** narrow `contexts`/`setting` on prevention-oriented
+   content (secondary prevention, risk-factor optimization, follow-up) so Clinic
+   surfaces it first — a `/content` edit, not code. Until narrowed, education
+   defaults to all three contexts (hides nothing).
 
 ## Phase 3 — de-duplicate to canonical sources (incremental, higher risk)
 
 Per REFACTOR_MAP.md §4. Do one concept per commit; re-point only NON-frozen
 consumers; leave frozen protocols literal (snapshot-guarded). Priority order:
 
-1. **Calculators still computed inline** (FUNC, ASPECTS, PC-ASPECTS, SPAN-100,
-   SEDAN, DRAGON, mTICI, embedded ABC/2) → move into `src/calculators*.js`, add
-   to the registry, unit-test each, re-point callers. (Compute already
-   centralized; these are the stragglers.) Delete the education `calculateIchScore`
-   dup after re-pointing (fix its 94%→97% value only with clinician sign-off).
+1. **Calculators still computed inline** (FUNC, SPAN-100, SEDAN, DRAGON, mTICI,
+   embedded ABC/2) → move into `src/calculators*.js`, register, re-point callers.
+   These render *interactively* inside the frozen protocols calculators subtab,
+   so add interactive test coverage before extracting (the static snapshot won't
+   catch an input-dependent output change). The education `calculateIchScore`
+   dup has an incompatible `gcsCategory` signature; reconcile to the canonical
+   `calculators.js:calculateICHScore` and re-point the education render (its
+   mortality value is already corrected to 97%).
 2. **Stray citations** → route every inline PMID/DOI through
    `src/evidence/citations.js` by id, education.jsx first (87 hits, INSPIRES
    drifted 3 ways). Extend `validate-inline-citations`.
