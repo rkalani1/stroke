@@ -1,0 +1,87 @@
+[
+  {
+    "id": "elan",
+    "name": "ELAN",
+    "fullName": "Early versus Later Anticoagulation for Stroke with Atrial Fibrillation",
+    "category": "af-anticoag-timing",
+    "population": "n=2013, ≥18, NIHSS all, post-AIS, ≤28 d",
+    "finding": "Favored early",
+    "teachingPoint": "Supports early DOAC initiation per stroke severity.",
+    "PMID": "37222476",
+    "year": 2023,
+    "citationIds": [
+      "cit-elan-2023"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "timing",
+    "name": "TIMING",
+    "fullName": "Timing of Oral Anticoagulant Therapy in AIS with AF",
+    "category": "af-anticoag-timing",
+    "population": "n=888, ≥18, NIHSS all, ≤72 h post-AIS",
+    "finding": "Non-inferior favoring early",
+    "teachingPoint": "Supports earlier DOAC initiation.",
+    "PMID": "36065821",
+    "year": 2022,
+    "citationIds": [
+      "cit-timing-2022"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "optimas",
+    "name": "OPTIMAS",
+    "fullName": "Optimal Timing of Anticoagulation after Acute Ischaemic Stroke with Atrial Fibrillation",
+    "category": "af-anticoag-timing",
+    "population": "n=3621, ≥18, Early ≤4 d vs delayed 7-14 d",
+    "finding": "Non-inferior: 3.3% vs 3.3%",
+    "teachingPoint": "Early DOAC (≤4 d) non-inferior to delayed — do not routinely delay anticoagulation.",
+    "PMID": "39491870",
+    "year": 2024,
+    "citationIds": [
+      "cit-optimas-2024"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "catalyst",
+    "name": "CATALYST",
+    "fullName": "IPD Meta-analysis of Anticoagulation Timing after Ischaemic Stroke with AF",
+    "category": "af-anticoag-timing",
+    "population": "n=5441, Early ≤4 d vs later ≥5 d",
+    "finding": "Favored early: 2.1% vs 3.0%",
+    "teachingPoint": "Pooled IPD shows early DOAC (≤4 d) reduces 30-d composite — supports early initiation.",
+    "PMID": "40570866",
+    "year": 2025,
+    "citationIds": [
+      "cit-catalyst-2025"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "stabled",
+    "name": "STABLED",
+    "fullName": "Catheter Ablation and Oral Anticoagulation for Secondary Stroke Prevention in Atrial Fibrillation",
+    "category": "af-anticoag-timing",
+    "population": "n=249, 20-85 (mean 71.7), Ablation 1-6 mo after index stroke",
+    "finding": "No reduction: 5.6% vs 4.9% per person-year",
+    "teachingPoint": "Adding ablation to anticoagulation did not reduce recurrent events in post-stroke AF (underpowered) — does not support routine ablation for secondary prevention.",
+    "PMID": "41770549",
+    "year": 2026,
+    "citationIds": [
+      "cit-stabled-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-05-30",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

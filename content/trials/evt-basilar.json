@@ -1,0 +1,36 @@
+[
+  {
+    "id": "attention",
+    "name": "ATTENTION",
+    "fullName": "Endovascular Treatment of Acute Basilar-Artery Occlusion",
+    "category": "evt-basilar",
+    "population": "n=340, ≥18, NIHSS ≥10, ≤12 h",
+    "finding": "Favored EVT: 46% vs 23%",
+    "teachingPoint": "Established EVT benefit for basilar-artery occlusion within 12 h.",
+    "PMID": "36239644",
+    "year": 2022,
+    "citationIds": [
+      "cit-attention-2022"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "baoche",
+    "name": "BAOCHE",
+    "fullName": "Thrombectomy 6 to 24 Hours after Stroke Due to Basilar-Artery Occlusion",
+    "category": "evt-basilar",
+    "population": "n=217, ≥18, NIHSS ≥6, 6-24 h",
+    "finding": "Favored EVT: 46% vs 24%",
+    "teachingPoint": "Extends EVT benefit for basilar-artery occlusion to 6-24 h.",
+    "PMID": "36239645",
+    "year": 2022,
+    "citationIds": [
+      "cit-baoche-2022"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

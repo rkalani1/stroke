@@ -1,0 +1,53 @@
+[
+  {
+    "id": "interact3",
+    "name": "INTERACT3",
+    "fullName": "Care Bundle Approach for Acute Intracerebral Haemorrhage",
+    "category": "ich-bp-management",
+    "population": "n=7036, ≥18, NIHSS n/a, <6 h from onset",
+    "finding": "Favored bundle",
+    "teachingPoint": "Establishes care-bundle approach for acute ICH.",
+    "PMID": "37245517",
+    "year": 2023,
+    "citationIds": [
+      "cit-interact3-2023"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "interact2",
+    "name": "INTERACT2",
+    "fullName": "Rapid Blood-Pressure Lowering in Acute Intracerebral Hemorrhage",
+    "category": "ich-bp-management",
+    "population": "n=2839, ≥18, ≤6 h",
+    "finding": "Negative primary: 52.0% vs 55.6%",
+    "teachingPoint": "Supports early BP reduction in ICH; ordinal benefit despite a negative dichotomous primary.",
+    "PMID": "23713578",
+    "year": 2013,
+    "citationIds": [
+      "cit-interact2-2013"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "atach-2",
+    "name": "ATACH-2",
+    "fullName": "Intensive Blood-Pressure Lowering in Acute Cerebral Hemorrhage",
+    "category": "ich-bp-management",
+    "population": "n=1000, ≥18, ≤4.5 h",
+    "finding": "No benefit: 38.7% vs 37.7%",
+    "teachingPoint": "More intensive target (<140) gave no benefit and more renal AEs — avoid overshoot below ~140.",
+    "PMID": "27276234",
+    "year": 2016,
+    "citationIds": [
+      "cit-atach2-2016"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

@@ -1,0 +1,53 @@
+[
+  {
+    "id": "respect-pfo",
+    "name": "RESPECT",
+    "fullName": "Long-Term Outcomes of Patent Foramen Ovale Closure or Medical Therapy after Stroke",
+    "category": "pfo-closure",
+    "population": "n=980, 18-60",
+    "finding": "Favored closure: 0.58 vs 1.07 per 100 pt-yr",
+    "teachingPoint": "Long-term PFO closure reduces recurrent stroke vs medical therapy in selected patients <60 y.",
+    "PMID": "28902590",
+    "year": 2017,
+    "citationIds": [
+      "cit-respect-pfo-2017"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "close",
+    "name": "CLOSE",
+    "fullName": "Patent Foramen Ovale Closure or Anticoagulation vs Antiplatelets after Stroke",
+    "category": "pfo-closure",
+    "population": "n=663, 16-60",
+    "finding": "Favored closure: 0/238 vs 14/235",
+    "teachingPoint": "Closure markedly cuts recurrent stroke in high-risk PFO anatomy (ASA / large shunt).",
+    "PMID": "28902593",
+    "year": 2017,
+    "citationIds": [
+      "cit-close-2017"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "reduce",
+    "name": "REDUCE",
+    "fullName": "Patent Foramen Ovale Closure or Antiplatelet Therapy for Cryptogenic Stroke",
+    "category": "pfo-closure",
+    "population": "n=664, 18-59",
+    "finding": "Favored closure: 1.4% vs 5.4%",
+    "teachingPoint": "Closure reduces recurrent stroke and new infarcts; watch for AF and device events.",
+    "PMID": "28902580",
+    "year": 2017,
+    "citationIds": [
+      "cit-reduce-2017"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

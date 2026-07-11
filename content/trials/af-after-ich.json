@@ -1,0 +1,36 @@
+[
+  {
+    "id": "averroes",
+    "name": "AVERROES",
+    "fullName": "Apixaban in Patients with Atrial Fibrillation Unsuitable for VKA",
+    "category": "af-after-ich",
+    "population": "n=5599, ≥50, NIHSS n/a, chronic AF",
+    "finding": "Favored apixaban: 1.6%/y vs 3.7%/y",
+    "teachingPoint": "Supports anticoagulation over aspirin for AF stroke prevention; informs ASPIRE rationale.",
+    "PMID": "21309657",
+    "year": 2011,
+    "citationIds": [
+      "cit-averroes-2011"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "artesia",
+    "name": "ARTESiA",
+    "fullName": "Apixaban for Stroke Prevention in Subclinical Atrial Fibrillation",
+    "category": "af-after-ich",
+    "population": "n=4012, ≥55, NIHSS n/a, subclinical AF detected on device",
+    "finding": "Favored apixaban: 0.78%/y vs 1.24%/y",
+    "teachingPoint": "Establishes apixaban benefit even in subclinical AF; informs ICH-survivor decisions.",
+    "PMID": "37952132",
+    "year": 2024,
+    "citationIds": [
+      "cit-artesia-2023"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

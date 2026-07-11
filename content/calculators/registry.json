@@ -1,0 +1,170 @@
+[
+  {
+    "id": "nihss",
+    "name": "NIH Stroke Scale",
+    "category": "severity",
+    "fn": "calculateNIHSS",
+    "module": "calculators"
+  },
+  {
+    "id": "ich-score",
+    "name": "ICH Score",
+    "category": "prognosis",
+    "fn": "calculateICHScore",
+    "module": "calculators"
+  },
+  {
+    "id": "ich-volume",
+    "name": "ICH Volume (ABC/2)",
+    "category": "imaging",
+    "fn": "calculateICHVolume",
+    "module": "calculators"
+  },
+  {
+    "id": "gcs",
+    "name": "Glasgow Coma Scale",
+    "category": "severity",
+    "fn": "calculateGCS",
+    "module": "calculators"
+  },
+  {
+    "id": "abcd2",
+    "name": "ABCD² (TIA risk)",
+    "category": "risk",
+    "fn": "calculateABCD2WithDetail",
+    "module": "calculators"
+  },
+  {
+    "id": "aspects-pc",
+    "name": "pc-ASPECTS",
+    "category": "imaging",
+    "fn": "calculatePCAspects",
+    "module": "calculators"
+  },
+  {
+    "id": "chadsvasc",
+    "name": "CHA₂DS₂-VASc",
+    "category": "risk",
+    "fn": "calculateCHADS2VascScore",
+    "module": "calculators"
+  },
+  {
+    "id": "hasbled",
+    "name": "HAS-BLED",
+    "category": "risk",
+    "fn": "calculateHASBLEDScore",
+    "module": "calculators"
+  },
+  {
+    "id": "rope",
+    "name": "RoPE (PFO)",
+    "category": "risk",
+    "fn": "calculateROPEScore",
+    "module": "calculators"
+  },
+  {
+    "id": "rcvs2",
+    "name": "RCVS²",
+    "category": "risk",
+    "fn": "calculateRCVS2Score",
+    "module": "calculators"
+  },
+  {
+    "id": "phases",
+    "name": "PHASES (aneurysm)",
+    "category": "risk",
+    "fn": "calculatePHASESScore",
+    "module": "calculators"
+  },
+  {
+    "id": "tnk-dose",
+    "name": "Tenecteplase dose (0.25 mg/kg)",
+    "category": "dosing",
+    "fn": "calculateTNKDose",
+    "module": "calculators"
+  },
+  {
+    "id": "alteplase-dose",
+    "name": "Alteplase dose (0.9 mg/kg)",
+    "category": "dosing",
+    "fn": "calculateAlteplaseDose",
+    "module": "calculators"
+  },
+  {
+    "id": "doac-start",
+    "name": "DOAC start timing (post-stroke AF)",
+    "category": "dosing",
+    "fn": "calculateDOACStart",
+    "module": "calculators"
+  },
+  {
+    "id": "pcc-dose",
+    "name": "4F-PCC dose",
+    "category": "dosing",
+    "fn": "calculatePCCDose",
+    "module": "calculators"
+  },
+  {
+    "id": "andexanet",
+    "name": "Andexanet alfa dose",
+    "category": "dosing",
+    "fn": "calculateAndexanetDose",
+    "module": "calculators"
+  },
+  {
+    "id": "enoxaparin",
+    "name": "Enoxaparin dose",
+    "category": "dosing",
+    "fn": "calculateEnoxaparinDose",
+    "module": "calculators"
+  },
+  {
+    "id": "crcl",
+    "name": "Creatinine clearance (Cockcroft-Gault)",
+    "category": "dosing",
+    "fn": "calculateCrCl",
+    "module": "calculators"
+  },
+  {
+    "id": "dawn",
+    "name": "DAWN EVT eligibility",
+    "category": "reperfusion",
+    "fn": "evaluateDAWN",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "defuse3",
+    "name": "DEFUSE-3 EVT eligibility",
+    "category": "reperfusion",
+    "fn": "evaluateDEFUSE3",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "acute-dapt",
+    "name": "Acute DAPT recommendation",
+    "category": "secondary-prevention",
+    "fn": "recommendAcuteDAPT",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "essen",
+    "name": "Essen Stroke Risk Score",
+    "category": "risk",
+    "fn": "calculateESSEN",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "spi2",
+    "name": "Stroke Prognosis Instrument II",
+    "category": "prognosis",
+    "fn": "calculateSPI2",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "vasograde",
+    "name": "VASOGRADE (DCI risk)",
+    "category": "risk",
+    "fn": "calculateVASOGRADE",
+    "module": "calculators-extended"
+  }
+]

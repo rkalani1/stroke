@@ -1,0 +1,19 @@
+[
+  {
+    "id": "trident",
+    "name": "TRIDENT",
+    "fullName": "Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage",
+    "category": "ich-secondary-prevention",
+    "population": "n=1670, Mean 58",
+    "finding": "Lower with triple pill: 4.6% vs 7.4%",
+    "teachingPoint": "A simplified low-dose triple pill after ICH lowers recurrent stroke and CV events — supports intensive, simplified BP-lowering.",
+    "PMID": "42019018",
+    "year": 2026,
+    "citationIds": [
+      "cit-trident-2026"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-30",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

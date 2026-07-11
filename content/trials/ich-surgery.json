@@ -1,0 +1,53 @@
+[
+  {
+    "id": "enrich",
+    "name": "ENRICH",
+    "fullName": "Early Minimally Invasive Removal of Intracerebral Hemorrhage",
+    "category": "ich-surgery",
+    "population": "n=300, 18-80, NIHSS n/a, ≤24 h from onset",
+    "finding": "Favored surgery (Bayesian posterior probability >0.95)",
+    "teachingPoint": "Supports early minimally invasive evacuation for lobar ICH at capable centers.",
+    "PMID": "38598795",
+    "year": 2024,
+    "citationIds": [
+      "cit-enrich-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "mistie-iii",
+    "name": "MISTIE III",
+    "fullName": "Minimally Invasive Surgery with Thrombolysis in ICH Evacuation",
+    "category": "ich-surgery",
+    "population": "n=506, ≥18",
+    "finding": "Negative: 45% vs 41%",
+    "teachingPoint": "No overall functional benefit; safe; outcome depends on achieving adequate evacuation.",
+    "PMID": "30739747",
+    "year": 2019,
+    "citationIds": [
+      "cit-mistie3-2019"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-29",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "mind-2025",
+    "name": "MIND",
+    "fullName": "Minimally Invasive Surgery vs Medical Management Alone for Intracerebral Hemorrhage: The MIND Randomized Clinical Trial",
+    "category": "ich-surgery",
+    "population": "n=236, 18-80, NIHSS ≥6, ≤72 h (surgery)",
+    "finding": "No significant benefit of surgery",
+    "teachingPoint": "Tempers enthusiasm for minimally invasive ICH evacuation; MIS benefit appears pathway- and technique-specific (cf. ENRICH), not universal.",
+    "PMID": "40892424",
+    "year": 2025,
+    "citationIds": [
+      "cit-mind-2025"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-07-06",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

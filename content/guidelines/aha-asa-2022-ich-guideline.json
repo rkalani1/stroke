@@ -1,0 +1,131 @@
+[
+  {
+    "id": "rec-ich-bp-smooth-control",
+    "guideline": "AHA/ASA 2022 ICH Guideline; INTERACT3 (2023)",
+    "year": 2022,
+    "section": "ich-bp-management",
+    "COR": "IIa",
+    "LOE": "B-NR",
+    "statement": "In acute spontaneous ICH, continuous smooth, sustained BP control with timely treatment can be beneficial when BP lowering is indicated.",
+    "PMIDs": [
+      "37245517",
+      "35579034"
+    ],
+    "DOIs": [
+      "10.1016/S0140-6736(23)00806-1",
+      "10.1161/STR.0000000000000407"
+    ],
+    "citationIds": [
+      "cit-interact3-2023",
+      "cit-aha-ich-2022"
+    ],
+    "caveats": [
+      "Smooth, sustained BP control and timely treatment are Class IIa process recommendations.",
+      "Do not present INTERACT3 as BP-only class evidence; it tested a bundle including BP, glucose, temperature, and anticoagulation reversal.",
+      "Avoid abrupt large drops in BP (>60 mmHg) which may worsen outcomes.",
+      "Do not pursue a numeric BP target in isolation from neurologic status and the full care bundle."
+    ],
+    "setting": "inpatient",
+    "lastReviewed": "2026-04-25",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+    "provenance": "src/evidence/recommendations.js"
+  },
+  {
+    "id": "rec-ich-bp-target",
+    "guideline": "AHA/ASA 2022 ICH Guideline",
+    "year": 2022,
+    "section": "ich-bp-management",
+    "COR": "IIb",
+    "LOE": "B-R",
+    "statement": "In mild-to-moderate acute spontaneous ICH with presenting SBP 150-220 mmHg, targeting SBP 140 mmHg and maintaining 130-150 mmHg when appropriate is safe and may be reasonable.",
+    "PMIDs": [],
+    "DOIs": [],
+    "citationIds": [],
+    "caveats": [
+      "The SBP 140/range 130-150 target is Class IIb.",
+      "In patients with SBP >220 mmHg, the safety of aggressive lowering to 140 is less certain; use clinical judgment and continuous monitoring.",
+      "Use with the separate Class IIa process recommendation for smooth, sustained control and timely treatment.",
+      "Do not pursue a numeric BP target in isolation from neurologic status, hematoma severity, and neurosurgical planning."
+    ],
+    "setting": "inpatient",
+    "lastReviewed": "2026-04-25",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+    "provenance": "src/evidence/recommendations.js"
+  },
+  {
+    "id": "rec-ich-bp-avoid-low",
+    "guideline": "AHA/ASA 2022 ICH Guideline; ATACH-2",
+    "year": 2022,
+    "section": "ich-bp-management",
+    "COR": "III-harm",
+    "LOE": "B-R",
+    "statement": "Avoid acute SBP <130 mmHg in mild-to-moderate spontaneous ICH because it is potentially harmful.",
+    "PMIDs": [],
+    "DOIs": [],
+    "citationIds": [],
+    "caveats": [
+      "Acute SBP <130 mmHg is Class III-harm.",
+      "This lower-bound harm guard is separate from the Class IIb SBP 140/range 130-150 target."
+    ],
+    "setting": "inpatient",
+    "lastReviewed": "2026-04-25",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+    "provenance": "src/evidence/recommendations.js"
+  },
+  {
+    "id": "rec-ich-anticoag-reversal-fxa",
+    "guideline": "AHA/ASA 2022 ICH Guideline; ANNEXA-I (2024)",
+    "year": 2022,
+    "section": "ich-anticoag-reversal",
+    "COR": "IIa",
+    "LOE": "B-R",
+    "statement": "In factor Xa inhibitor-associated ICH within 15 hours of last dose, andexanet alfa is reasonable to achieve hemostatic efficacy when available; 4F-PCC is an alternative when andexanet is unavailable or contraindicated. Monitor for thrombotic complications.",
+    "PMIDs": [
+      "38749032",
+      "35579034"
+    ],
+    "DOIs": [
+      "10.1056/NEJMoa2313040",
+      "10.1161/STR.0000000000000407"
+    ],
+    "citationIds": [
+      "cit-annexa-i-2024",
+      "cit-aha-ich-2022"
+    ],
+    "caveats": [
+      "ANNEXA-I demonstrated higher hemostatic efficacy with andexanet but more thrombotic complications vs usual care.",
+      "Andexanet alfa is not indicated for edoxaban; for edoxaban, 4F-PCC remains primary.",
+      "Reversal should not delay neurosurgical evaluation."
+    ],
+    "setting": "inpatient",
+    "lastReviewed": "2026-04-25",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+    "provenance": "src/evidence/recommendations.js"
+  },
+  {
+    "id": "rec-ich-anticoag-reversal-warfarin",
+    "guideline": "AHA/ASA 2022 ICH Guideline",
+    "year": 2022,
+    "section": "ich-anticoag-reversal",
+    "COR": "I",
+    "LOE": "B-NR",
+    "statement": "In warfarin-associated ICH, give vitamin K 10 mg IV plus 4F-PCC dosed by INR/weight to rapidly reverse anticoagulation; FFP is an inferior alternative.",
+    "PMIDs": [
+      "35579034"
+    ],
+    "DOIs": [
+      "10.1161/STR.0000000000000407"
+    ],
+    "citationIds": [
+      "cit-aha-ich-2022"
+    ],
+    "caveats": [
+      "Vitamin K is required for sustained reversal; PCC alone is short-acting.",
+      "FFP carries volume-overload risk and slower correction."
+    ],
+    "setting": "inpatient",
+    "lastReviewed": "2026-04-25",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+    "provenance": "src/evidence/recommendations.js"
+  }
+]

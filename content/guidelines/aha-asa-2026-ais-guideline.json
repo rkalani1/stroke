@@ -1,0 +1,103 @@
+[
+  {
+    "id": "rec-late-window-ivt",
+    "guideline": "AHA/ASA 2026 AIS Guideline; ESO 2023",
+    "year": 2026,
+    "section": "extended-window-ivt",
+    "COR": "IIa",
+    "LOE": "B-R",
+    "statement": "In patients presenting 4.5-9 h from LKW or with wake-up stroke, IV thrombolysis (alteplase or tenecteplase 0.25 mg/kg) selected by perfusion or DWI-FLAIR mismatch is reasonable when EVT is not indicated or available.",
+    "PMIDs": [
+      "29766770",
+      "31067369",
+      "38329148",
+      "36549308",
+      "38884324"
+    ],
+    "DOIs": [
+      "10.1056/NEJMoa1804355",
+      "10.1056/NEJMoa1813046",
+      "10.1056/NEJMoa2310392",
+      "10.1016/S1474-4422(22)00484-7",
+      "10.1056/NEJMoa2402980"
+    ],
+    "citationIds": [
+      "cit-wake-up-2018",
+      "cit-extend-2019",
+      "cit-timeless-2024",
+      "cit-twist-2023",
+      "cit-trace-iii-2024"
+    ],
+    "caveats": [
+      "Imaging-based selection is required; unselected late-window thrombolysis is not supported (TWIST).",
+      "Time from LKW remains a key safety determinant; TIMELESS extended TNK to 24 h with mismatch selection but the overall primary endpoint did not reach significance."
+    ],
+    "setting": "inpatient",
+    "lastReviewed": "2026-04-25",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
+    "provenance": "src/evidence/recommendations.js"
+  },
+  {
+    "id": "rec-evt-large-core",
+    "guideline": "AHA/ASA 2026 AIS Guideline",
+    "year": 2026,
+    "section": "evt-large-core",
+    "COR": "I",
+    "LOE": "A",
+    "statement": "In patients with anterior-circulation LVO and ASPECTS 3-5 (or core 50-100 mL) within 24 h of LKW, EVT is recommended to improve functional outcome.",
+    "PMIDs": [
+      "36762865",
+      "35138767",
+      "36762852",
+      "37837989"
+    ],
+    "DOIs": [
+      "10.1056/NEJMoa2214403",
+      "10.1056/NEJMoa2118191",
+      "10.1056/NEJMoa2213379",
+      "10.1016/S0140-6736(23)02032-9"
+    ],
+    "citationIds": [
+      "cit-select2-2023",
+      "cit-rescue-japan-2022",
+      "cit-angel-aspect-2023",
+      "cit-tension-2023"
+    ],
+    "caveats": [
+      "Pre-stroke mRS, life expectancy, and goals of care still inform shared decision-making.",
+      "ASPECTS <3 was not adequately enrolled in the seminal RCTs and is a Class IIb area."
+    ],
+    "setting": "inpatient",
+    "lastReviewed": "2026-04-25",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
+    "provenance": "src/evidence/recommendations.js"
+  },
+  {
+    "id": "rec-evt-late-window",
+    "guideline": "AHA/ASA 2026 AIS Guideline; DAWN; DEFUSE-3",
+    "year": 2026,
+    "section": "evt-late-window",
+    "COR": "I",
+    "LOE": "A",
+    "statement": "In patients with anterior-circulation LVO presenting 6-24 h from LKW, EVT is recommended for those meeting DAWN or DEFUSE-3 imaging-selection criteria.",
+    "PMIDs": [
+      "29129157",
+      "29364767"
+    ],
+    "DOIs": [
+      "10.1056/NEJMoa1706442",
+      "10.1056/NEJMoa1713973"
+    ],
+    "citationIds": [
+      "cit-dawn-2018",
+      "cit-defuse3-2018"
+    ],
+    "caveats": [
+      "Outside trial-selection criteria, EVT is reasonable on a case-by-case basis with shared decision-making."
+    ],
+    "setting": "inpatient",
+    "lastReviewed": "2026-04-25",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
+    "provenance": "src/evidence/recommendations.js"
+  }
+]

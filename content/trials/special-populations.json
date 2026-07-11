@@ -1,0 +1,19 @@
+[
+  {
+    "id": "suicide-after-stroke",
+    "name": "Suicide after stroke",
+    "fullName": "Increased Risk of Suicide after Stroke: A Population-Based Matched Cohort Study",
+    "category": "special-populations",
+    "population": "n=129438, Mean 71.4, 2008-2017",
+    "finding": "Higher in stroke survivors: 11.1 vs 3.2 per 10,000 person-years",
+    "teachingPoint": "Supports long-term (beyond 1 year) suicidality screening in survivors — especially younger and lower-income patients.",
+    "PMID": "40913243",
+    "year": 2025,
+    "citationIds": [
+      "cit-suicide-after-stroke-2025"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-05-30",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

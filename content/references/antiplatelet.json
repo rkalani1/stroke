@@ -1,0 +1,26 @@
+[
+  {
+    "id": "antiplatelet-dapt-after-ischemic-stroke-tia",
+    "title": "DAPT After Ischemic Stroke-TIA",
+    "category": "antiplatelet",
+    "type": "image",
+    "path": "documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg",
+    "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "antiplatelet-dapt-minor-stroke-tia-trials",
+    "title": "DAPT Minor Stroke-TIA Trials",
+    "category": "antiplatelet",
+    "type": "pdf",
+    "path": "documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf",
+    "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "antiplatelet-other-antithrombotics-for-secondary-stroke-prev",
+    "title": "Other Antithrombotics for Secondary Stroke Prevention",
+    "category": "antiplatelet",
+    "type": "pdf",
+    "path": "documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf",
+    "provenance": "src/app.jsx reference library"
+  }
+]

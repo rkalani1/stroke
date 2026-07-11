@@ -1,0 +1,76 @@
+[
+  {
+    "id": "rec-dapt-minor-stroke",
+    "guideline": "AHA/ASA 2021 Secondary Prevention; CHANCE / POINT / THALES / INSPIRES",
+    "year": 2021,
+    "section": "dapt-minor-stroke",
+    "COR": "I",
+    "LOE": "A",
+    "statement": "In patients with minor non-cardioembolic ischemic stroke (NIHSS ≤3 or ≤5 with disabling deficit) or high-risk TIA (ABCD² ≥4 or DWI+), dual antiplatelet therapy (aspirin plus clopidogrel for 21 days, or aspirin plus ticagrelor for 30 days) started within 24 h is recommended to reduce recurrent ischemic stroke at 90 days.",
+    "PMIDs": [
+      "23803136",
+      "29766750",
+      "32668111",
+      "38157499",
+      "34708996"
+    ],
+    "DOIs": [
+      "10.1056/NEJMoa1215340",
+      "10.1056/NEJMoa1800410",
+      "10.1056/NEJMoa1916870",
+      "10.1056/NEJMoa2309137",
+      "10.1056/NEJMoa2111749"
+    ],
+    "citationIds": [
+      "cit-chance-2013",
+      "cit-point-2018",
+      "cit-thales-2020",
+      "cit-inspires-2024",
+      "cit-chance2-2021"
+    ],
+    "caveats": [
+      "Bleeding risk increases with duration; do not extend DAPT beyond 21-30 days for this indication.",
+      "INSPIRES extended the window to 72 h in eligible mild stroke / high-risk TIA.",
+      "For CYP2C19 loss-of-function carriers, ticagrelor (CHANCE-2) is preferred over clopidogrel."
+    ],
+    "setting": "inpatient",
+    "lastReviewed": "2026-04-25",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000375",
+    "provenance": "src/evidence/recommendations.js"
+  },
+  {
+    "id": "rec-af-early-anticoag",
+    "guideline": "AHA/ASA 2021 Secondary Prevention; OPTIMAS (2024); CATALYST IPDMA (2025); ELAN (2023); TIMING (2022)",
+    "year": 2021,
+    "section": "af-anticoag-timing",
+    "COR": "IIa",
+    "LOE": "B-R",
+    "statement": "In patients with AIS and atrial fibrillation, early DOAC initiation within ~4 days is reasonable across stroke severities (OPTIMAS: non-inferior across infarct sizes) and was superior to delayed start at 30 days in pooled individual-patient data (CATALYST IPDMA: OR 0.70, 95% CI 0.50-0.98, no sICH excess), excepting very severe stroke or extensive hemorrhagic transformation.",
+    "PMIDs": [
+      "39491870",
+      "40570866",
+      "37222476",
+      "36065821"
+    ],
+    "DOIs": [
+      "10.1016/S0140-6736(24)02197-4",
+      "10.1016/S0140-6736(25)00439-8",
+      "10.1056/NEJMoa2303048",
+      "10.1161/CIRCULATIONAHA.122.060666"
+    ],
+    "citationIds": [
+      "cit-optimas-2024",
+      "cit-catalyst-2025",
+      "cit-elan-2023",
+      "cit-timing-2022"
+    ],
+    "caveats": [
+      "Reserve longer delay for very severe stroke or extensive hemorrhagic transformation; confirm absence of significant hemorrhagic transformation on follow-up imaging before starting in moderate-large stroke.",
+      "Early initiation (≤4 d) is non-inferior across severities (OPTIMAS) and superior at 30 d in pooled IPD (CATALYST); individualize for the highest-risk presentations."
+    ],
+    "setting": "inpatient",
+    "lastReviewed": "2026-04-25",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+    "provenance": "src/evidence/recommendations.js"
+  }
+]
