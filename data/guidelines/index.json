@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "guidelines-index",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.11.2",
+    "appVersion": "6.11.3",
     "checksum": "sha256:162e28ebbab63768eabb5e181497e977",
     "count": 18,
     "source": "Guideline metadata bundle",

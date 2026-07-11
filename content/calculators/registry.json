@@ -166,5 +166,75 @@
     "category": "risk",
     "fn": "calculateVASOGRADE",
     "module": "calculators-extended"
+  },
+  {
+    "id": "chadsva",
+    "name": "CHA₂DS₂-VA (2024 ESC)",
+    "category": "risk",
+    "fn": "calculateCHADS2VA",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "nascet",
+    "name": "NASCET carotid stenosis",
+    "category": "imaging",
+    "fn": "calculateNASCET",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "havoc",
+    "name": "HAVOC (occult AF risk)",
+    "category": "risk",
+    "fn": "calculateHAVOC",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "boston-caa",
+    "name": "Boston Criteria v2.0 (CAA)",
+    "category": "imaging",
+    "fn": "evaluateBostonCAA20",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "bat",
+    "name": "BAT Score (ICH expansion)",
+    "category": "prognosis",
+    "fn": "calculateBAT",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "brain",
+    "name": "BRAIN Score (ICH expansion)",
+    "category": "prognosis",
+    "fn": "calculateBRAIN",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "nine-point",
+    "name": "9-Point ICH Expansion Score",
+    "category": "prognosis",
+    "fn": "calculateNinePoint",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "ogilvy-carter",
+    "name": "Ogilvy-Carter (SAH surgical risk)",
+    "category": "prognosis",
+    "fn": "calculateOgilvyCarter",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "phq9",
+    "name": "PHQ-9 (post-stroke depression)",
+    "category": "screening",
+    "fn": "interpretPHQ9",
+    "module": "calculators-extended"
+  },
+  {
+    "id": "mrs-9q",
+    "name": "mRS-9Q (simplified mRS)",
+    "category": "severity",
+    "fn": "interpretMRS9Q",
+    "module": "calculators-extended"
   }
 ]

@@ -2,9 +2,9 @@
   "_meta": {
     "endpoint": "calculators",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.11.2",
-    "checksum": "sha256:fe3c671564f55447e5c21fa1d31f21ac",
-    "count": 24,
+    "appVersion": "6.11.3",
+    "checksum": "sha256:4dbdb06ed75f4f0512b4ad0350758c81",
+    "count": 34,
     "source": "Calculator catalog bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
@@ -153,6 +153,66 @@
       "name": "VASOGRADE (DCI risk)",
       "category": "risk",
       "fn": "calculateVASOGRADE"
+    },
+    {
+      "id": "chadsva",
+      "name": "CHA₂DS₂-VA (2024 ESC)",
+      "category": "risk",
+      "fn": "calculateCHADS2VA"
+    },
+    {
+      "id": "nascet",
+      "name": "NASCET carotid stenosis",
+      "category": "imaging",
+      "fn": "calculateNASCET"
+    },
+    {
+      "id": "havoc",
+      "name": "HAVOC (occult AF risk)",
+      "category": "risk",
+      "fn": "calculateHAVOC"
+    },
+    {
+      "id": "boston-caa",
+      "name": "Boston Criteria v2.0 (CAA)",
+      "category": "imaging",
+      "fn": "evaluateBostonCAA20"
+    },
+    {
+      "id": "bat",
+      "name": "BAT Score (ICH expansion)",
+      "category": "prognosis",
+      "fn": "calculateBAT"
+    },
+    {
+      "id": "brain",
+      "name": "BRAIN Score (ICH expansion)",
+      "category": "prognosis",
+      "fn": "calculateBRAIN"
+    },
+    {
+      "id": "nine-point",
+      "name": "9-Point ICH Expansion Score",
+      "category": "prognosis",
+      "fn": "calculateNinePoint"
+    },
+    {
+      "id": "ogilvy-carter",
+      "name": "Ogilvy-Carter (SAH surgical risk)",
+      "category": "prognosis",
+      "fn": "calculateOgilvyCarter"
+    },
+    {
+      "id": "phq9",
+      "name": "PHQ-9 (post-stroke depression)",
+      "category": "screening",
+      "fn": "interpretPHQ9"
+    },
+    {
+      "id": "mrs-9q",
+      "name": "mRS-9Q (simplified mRS)",
+      "category": "severity",
+      "fn": "interpretMRS9Q"
     }
   ]
 }

@@ -425,7 +425,7 @@ const EDUCATION_MODULES = [
 // =====================================================================
 // MAIN EDUCATION MODULE EXPORT
 // =====================================================================
-export default function Education({ activeSubTab, onSubTabChange, onBack, copyToClipboard, addToast, navigateTo, isTraineeMode = true }) {
+export default function Education({ activeSubTab, onSubTabChange, onBack, copyToClipboard, addToast, navigateTo, isTraineeMode = true, workflowContext = null, contextHiddenIds = null }) {
   const subTab = activeSubTab;
   const onNavigate = onSubTabChange || (() => {});
   const [search, setSearch] = useState("");
@@ -469,6 +469,9 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
 
   const filteredModules = useMemo(() => {
     return EDUCATION_MODULES.filter(m => {
+      // Workflow-context filter: hide only modules the active context (from the
+      // /content data layer) explicitly excludes. Empty/absent set hides nothing.
+      if (contextHiddenIds && contextHiddenIds.has(m.id)) return false;
       if (selectedCategory !== "all") {
         if (selectedCategory === "needs-review") {
           if (!m.placeholders || m.placeholders.length === 0) return false;
@@ -484,7 +487,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
       }
       return true;
     });
-  }, [selectedCategory, search]);
+  }, [selectedCategory, search, contextHiddenIds]);
 
   // Render individual full detail view
   if (subTab) {
@@ -2877,7 +2880,7 @@ export function getIchRisk(score) {
     case 1: return "13%";
     case 2: return "26%";
     case 3: return "72%";
-    case 4: return "94%";
+    case 4: return "97%";
     default: return "100%";
   }
 }
@@ -3544,7 +3547,7 @@ export function StrokePrognosisCard() {
                   <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>1</strong><br/><span style={{color: '#2e7d32'}}>13%</span></div>
                   <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>2</strong><br/><span style={{color: '#f57c00'}}>26%</span></div>
                   <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>3</strong><br/><span style={{color: '#e64a19'}}>72%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>4</strong><br/><span style={{color: '#c62828'}}>94%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>4</strong><br/><span style={{color: '#c62828'}}>97%</span></div>
                   <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>5-6</strong><br/><span style={{color: '#c62828'}}>100%</span></div>
                 </div>
               </div>

@@ -780,7 +780,7 @@ export function EvdIcpSimulator() {
                 <td className="p-2 font-bold text-slate-800 dark:text-ink">20% Mannitol</td>
                 <td className="p-2">0.5–1.0 g/kg bolus over 20–30 min</td>
                 <td className="p-2">Peripheral line acceptable. <strong>Must use inline filter</strong> (crystallization hazard).</td>
-                <td className="p-2">Hold if serum Osm &gt; 320 mOsm/kg or Osm Gap &gt; 55. Avoid if hypovolemic.</td>
+                <td className="p-2">Hold if serum Osm &gt; 320 mOsm/kg or Osm Gap &gt; 20. Avoid if hypovolemic.</td>
               </tr>
             </tbody>
           </table>

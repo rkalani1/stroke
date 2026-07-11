@@ -393,11 +393,11 @@
       "name": "CADISS / TREAT-CAD",
       "year": "2015 / 2021",
       "citation": "Lancet Neurol 2015;14:361 / Lancet Neurol 2021;20:341",
-      "question": "Is aspirin non-inferior to VKA for cervical artery dissection?",
+      "question": "Antiplatelet vs anticoagulation for cervical artery dissection?",
       "design": "Two RCTs, ASA vs VKA, 3-6 months",
-      "outcomes": "CADISS: non-inferior but underpowered. TREAT-CAD: ASA non-inferior for primary endpoint.",
-      "bottomLine": "Aspirin non-inferior to warfarin for cervical dissection.",
-      "teachingPoint": "Aspirin is first-line; VKA/DOAC reserved for recurrent events on ASA or free-floating thrombus."
+      "outcomes": "CADISS: no significant difference in stroke/death but underpowered (event rates lower than expected). TREAT-CAD: aspirin did NOT meet non-inferiority vs VKA — more composite endpoint events with ASA (23% vs 15%), driven by imaging outcomes.",
+      "bottomLine": "Antiplatelet and anticoagulation are both reasonable for cervical artery dissection; TREAT-CAD did not confirm aspirin non-inferiority, so the choice is individualized (AHA/ASA CADISS Class IIa).",
+      "teachingPoint": "Both antiplatelet and anticoagulation are accepted first-line; individualize by bleeding risk, occlusion/pseudoaneurysm, and free-floating thrombus. TREAT-CAD tempered the earlier assumption of aspirin equivalence."
     },
     {
       "name": "CREST / CREST-2",

@@ -146,6 +146,15 @@ import {
   AIS_SOURCE_LINKS,
   AIS_COMMAND_CENTER_LAST_REVIEWED
 } from './management-guidance.js';
+// Content data layer access + workflow-context (Telestroke/Inpatient/Clinic)
+// filtering. Pure module over the build-time /content bundle; powers the
+// context switch and the unified command-palette index.
+import {
+  WORKFLOW_CONTEXTS,
+  getSearchIndex as getContentSearchIndex,
+  getEducation as getContentEducation,
+  isRelevantTo as isContentRelevantTo
+} from './content-context.js';
 // What's New feed — generated at build time (npm run evidence:whats-new) from the
 // verified-PubMed Evidence Atlas. esbuild inlines this JSON, so the Research &
 // Guidelines tab works fully offline.
@@ -673,7 +682,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           tnk: 'TNK 0.25 mg/kg is non-inferior to alteplase with similar sICH rates (3.4% vs 3.2%) and simpler single-bolus administration (AcT trial, Lancet 2022).',
           evt: 'EVT benefit is time-dependent: NNT ~2.6 overall at 0-6h (HERMES). Late-window with perfusion selection: NNT ~2.8 (DAWN), ~3.6 (DEFUSE-3). Every 15-min delay reduces benefit.',
           ich_bp: 'INTERACT3: Intensive BP lowering + bundle of care improves functional outcomes in ICH (Lancet 2023).',
-          doac_timing: 'ELAN/CATALYST: Early DOAC restart after ischemic stroke — mild (NIHSS <8): 48h; moderate (NIHSS 8-15): day 3-5; severe (NIHSS ≥16): day 6-14 with repeat imaging.',
+          doac_timing: 'ELAN/OPTIMAS/CATALYST: early DOAC after AF-related stroke, ≤4 days reasonable across severities (OPTIMAS non-inferior across infarct sizes; CATALYST superior vs delay). Tiered default: minor (NIHSS <8) ~day 1; moderate (8-15) ~day 3; severe (16-20) ~day 6; very severe (≥21) or extensive hemorrhagic transformation ~day 7+ with repeat imaging.',
           aspects: 'ASPECTS 6-10: Standard EVT eligibility. ASPECTS 3-5: Consider EVT for mRS 0-1 patients with anterior LVO (SELECT2, ANGEL-ASPECT).',
           pcc: 'Weight-based 4F-PCC (25-50 IU/kg by INR) for warfarin reversal in ICH (AHA/ASA 2022 COR I/B-R).',
           wakeup: 'DWI-FLAIR mismatch suggests onset <4.5h; CTP mismatch allows treatment up to 9h from midpoint of sleep (WAKE-UP, EXTEND).'
@@ -2196,6 +2205,20 @@ Clinician Name`;
           const [searchOpen, setSearchOpen] = useState(false);
           const [searchContext, setSearchContext] = useState('header');
           const [searchActiveIndex, setSearchActiveIndex] = useState(-1);
+
+          // Workflow context switch (Telestroke / Inpatient / Clinic). null = "All"
+          // — the default, which hides nothing. Filters/reorders content surfaces
+          // to the active setting WITHOUT ever scoping global search (that always
+          // passes null). Persisted via the storage helper (no-op in demo mode).
+          const [workflowContext, setWorkflowContextState] = useState(() => {
+            const v = loadFromStorage('workflowContext', null);
+            return WORKFLOW_CONTEXTS.includes(v) ? v : null;
+          });
+          const setWorkflowContext = (ctx) => {
+            const next = WORKFLOW_CONTEXTS.includes(ctx) ? ctx : null;
+            setWorkflowContextState(next);
+            setKey('workflowContext', next); // no-op in public demo mode
+          };
 
           // Command palette (first-class, app-wide navigation jump-list).
           // Distinct from the free-text header search above: this is a focus-
@@ -7995,6 +8018,8 @@ Clinician Name`;
               setManagementSubTab(resolvedSubTab);
             } else if (nextTab === 'education') {
               setEducationSubTab(subTab || 'onboarding');
+            } else if (nextTab === 'research') {
+              setResearchSubTab(normalizeResearchSubTab(subTab) || researchSubTab || 'guidelines');
             }
 
             setActiveTab(nextTab);
@@ -14813,6 +14838,30 @@ Clinician Name`;
               }
             });
 
+            // Unified /content index — guidelines, trials, education,
+            // calculators, references — so global search spans every data source
+            // at once. Indexed UNCONDITIONALLY (the workflow context never scopes
+            // global search); the context switch only filters browsing surfaces.
+            const CONTENT_TYPE_LABELS = { guideline: 'Guideline', trial: 'Trial', education: 'Education', calculator: 'Calculator', reference: 'Reference' };
+            const contentNav = (entry) => ({
+              guideline: () => navigateTo('research', { clearSearch: true, subTab: 'guidelines' }),
+              trial: () => navigateTo('trials', { clearSearch: true }),
+              education: () => navigateTo('education', { clearSearch: true, subTab: entry.id }),
+              calculator: () => navigateTo('protocols', { clearSearch: true, subTab: 'calculators' }),
+              reference: () => navigateTo('research', { clearSearch: true, subTab: 'references' })
+            }[entry.domain] || (() => navigateTo('research', { clearSearch: true })));
+            getContentSearchIndex().forEach((entry) => {
+              const score = scoreFor([entry.title, entry.subtitle, entry.keywords, entry.id]);
+              if (score <= 0) return;
+              results.push({
+                type: CONTENT_TYPE_LABELS[entry.domain] || 'Content',
+                title: String(entry.title || '').slice(0, 90),
+                description: String(entry.subtitle || CONTENT_TYPE_LABELS[entry.domain] || '').slice(0, 120),
+                score,
+                action: contentNav(entry)
+              });
+            });
+
             const dedupedResults = [];
             const seenResultKeys = new Set();
             results
@@ -17083,6 +17132,33 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   ))}
                 </div>
               )}
+
+              {/* Workflow context switch — filters/reorders content surfaces to
+                  the active setting (Telestroke / Inpatient / Clinic). "All" is
+                  the default and hides nothing; the switch never scopes global
+                  search. */}
+              <div className="mb-3 flex items-center gap-1.5 flex-wrap" role="group" aria-label="Workflow context">
+                <span className="text-xs font-medium text-slate-500 mr-1 dark:text-mute">Context</span>
+                {[
+                  { id: null, label: 'All' },
+                  { id: 'telestroke', label: 'Telestroke' },
+                  { id: 'inpatient', label: 'Inpatient' },
+                  { id: 'clinic', label: 'Clinic' }
+                ].map((c) => {
+                  const active = workflowContext === c.id;
+                  return (
+                    <button
+                      key={c.label}
+                      type="button"
+                      onClick={() => setWorkflowContext(c.id)}
+                      aria-pressed={active}
+                      className={`px-3 py-1.5 rounded-full text-xs font-semibold min-h-[36px] transition-colors ${active ? 'bg-cobalt-600 text-white' : 'bg-white text-slate-600 border border-line hover:bg-slate-50 dark:bg-card dark:text-mute dark:hover:bg-slate-800'}`}
+                    >
+                      {c.label}
+                    </button>
+                  );
+                })}
+              </div>
 
               {/* Primary Navigation — sticks just below the sticky header on
                   ≥768px via --app-header-h (U4). z-30 keeps it under the header
@@ -19401,8 +19477,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         className="w-full mt-1 px-2 py-1 border border-slate-300 rounded text-xs dark:border-strong">
                                         <option value="">-- DAPT duration --</option>
                                         <option value="21 days">21 days (POINT/CHANCE)</option>
-                                        <option value="30 days">30 days</option>
-                                        <option value="90 days">90 days (CHANCE-2/THALES)</option>
+                                        <option value="30 days">30 days (THALES)</option>
+                                        <option value="90 days">90 days (CHANCE-2)</option>
                                       </select></>
                                     )}
                                     {(() => {
@@ -35756,6 +35832,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       addToast={addToast}
                       navigateTo={navigateTo}
                       isTraineeMode={isTraineeMode}
+                      workflowContext={workflowContext}
+                      contextHiddenIds={
+                        workflowContext
+                          ? new Set(
+                              getContentEducation()
+                                .filter((e) => !isContentRelevantTo(e, workflowContext))
+                                .map((e) => e.id)
+                            )
+                          : null
+                      }
                     />
                   </ErrorBoundary>
                 )}
@@ -35837,7 +35923,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 }
                                 setApiProvider(tempProvider);
                                 setApiKey(trimmedKey);
-                                saveToStorage('apiProvider', tempProvider);
+                                setKey('apiProvider', tempProvider); // was an undefined saveToStorage() — ReferenceError blocked the save
                                 sessionStorage.setItem('apiKey', trimmedKey);
                                 addToast('API Settings saved successfully.', 'success');
                                 navigateTo('encounter');

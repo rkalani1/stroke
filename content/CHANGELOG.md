@@ -7,6 +7,40 @@ re-verifications, and schema evolution. Dates are absolute (ISO).
 Format: newest first. Each entry: what changed, why, and the source it was
 verified against.
 
+## 2026-07-11 — Clinical corrections (audit-flagged, clinician-directed)
+
+Factual corrections to non-frozen clinical content, each verified against the
+authoritative source already in the repo. None touched the frozen Example
+Protocols zone (snapshot lock green). Locked by `tests/clinical-corrections.test.js`.
+
+- **THALES DAPT duration** (`src/app.jsx` DAPT-duration selector): the 90-day
+  option no longer attributes THALES (a 30-day trial) to it; 90 days → CHANCE-2,
+  30 days → THALES. Consistent with every other THALES reference in the app.
+- **ICH Score 4 mortality** (`src/education.jsx` card): 94% → **97%** (Hemphill
+  2001), matching the canonical table in `src/app.jsx` (0/13/26/72/97/100%).
+- **HINTS peripheral/central** (`src/teaching.js` cranial-nerve card): corrected
+  to peripheral = abnormal head impulse (corrective saccade) + unidirectional
+  nystagmus + normal skew; central if normal HIT, direction-changing nystagmus,
+  or abnormal skew. Now consistent with the module's own HINTS flashcard.
+- **TREAT-CAD** (`src/guidelines/landmark-trials.json`, `src/components.jsx`):
+  corrected the overstated "aspirin non-inferior" claim — TREAT-CAD did NOT meet
+  non-inferiority (more events with ASA, 23% vs 15%); antiplatelet and
+  anticoagulation are both reasonable, individualized (CADISS Class IIa).
+- **Mannitol osmolar-gap hold** (`src/simulators/EvdIcpSimulator.jsx`): Osm Gap
+  hold threshold 55 → **20** (mannitol accumulation), consistent with the
+  osmotherapy guidance elsewhere in the repo.
+- **AF-timing pearl** (`src/app.jsx` CLINICAL_PEARLS): aligned to the canonical
+  ELAN/OPTIMAS/CATALYST model (`calculators.js` `elan-optimas` + `recommendations.js`)
+  — early DOAC ≤4 days across severities; tiered day 1/3/6/7+ by severity.
+
+Reviewed, no change (guideline-consistent, not errors):
+- **CVT seizure prophylaxis**: the order-set conditions levetiracetam on
+  "supratentorial parenchymal lesion" and the clinical-decision entry says
+  prophylaxis is "reasonable with supratentorial parenchymal lesions" — both
+  match AHA/ASA 2024. The frozen protocol's "seizure treatment (not
+  prophylaxis)" is the routine-case summary; not contradictory. Frozen text
+  untouched.
+
 ## 2026-07-11 — Initial `/content` data layer
 
 - Established the schema-validated `/content` data layer (guidelines, trials,
