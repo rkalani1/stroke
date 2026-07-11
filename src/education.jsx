@@ -2877,7 +2877,7 @@ export function getIchRisk(score) {
     case 1: return "13%";
     case 2: return "26%";
     case 3: return "72%";
-    case 4: return "94%";
+    case 4: return "97%";
     default: return "100%";
   }
 }
@@ -3544,7 +3544,7 @@ export function StrokePrognosisCard() {
                   <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>1</strong><br/><span style={{color: '#2e7d32'}}>13%</span></div>
                   <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>2</strong><br/><span style={{color: '#f57c00'}}>26%</span></div>
                   <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>3</strong><br/><span style={{color: '#e64a19'}}>72%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>4</strong><br/><span style={{color: '#c62828'}}>94%</span></div>
+                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>4</strong><br/><span style={{color: '#c62828'}}>97%</span></div>
                   <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>5-6</strong><br/><span style={{color: '#c62828'}}>100%</span></div>
                 </div>
               </div>
