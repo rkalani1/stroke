@@ -116,6 +116,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Example Protocols content lock
+        run: |
+          mkdir -p output/diagnostics
+          set -o pipefail
+          npm run test:protocol-snapshot 2>&1 | tee output/diagnostics/protocol-snapshot.log
+
       - name: Validate citations and run local smoke
         run: npm test
 

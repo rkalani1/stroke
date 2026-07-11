@@ -1,0 +1,579 @@
+No diagnosis set.
+Set a working diagnosis on the Encounter tab to activate pathway-specific management recommendations and auto-populate relevant protocols.
+Set diagnosis
+Protocols & Algorithms
+›
+ICH
+ICH
+Ischemic
+SAH
+TIA
+CVT
+References
+Calculators
+ICH Management
+Algorithmic workflow
+Key Principles
+Smooth, sustained BP control and timely treatment
+IIa
+; target SBP 140/range 130-150 when appropriate
+IIb
+; avoid <130
+III harm
+Immediate anticoagulant reversal — do not wait for labs if clinical suspicion
+I
+Early Neurosurgery + stroke-service evaluation for non-traumatic IPH ≥15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, vascular lesion concern, multicompartmental hemorrhage, ED attending discretion, or clinician concern
+IIa
+Initial Non-Traumatic IPH Evaluation
+Initial non-traumatic IPH evaluation
+Reviewed
+2026-07-03
+Institution-neutral educational translation. Use this as a workflow checklist only; verify against the current approved local protocol before clinical action.
+Non-traumatic IPH >=15 mL by ABC/2 prompts early Neurosurgery and stroke-service evaluation.
+ED clinicians or the stroke service may call Neurosurgery directly; prior approval is not required, but the plan must be closed-looped with the designated on-call stroke attending and other involved service.
+Transfers and first contact
+•
+Start standard stabilization: agent-specific reversal, controlled BP lowering, head-of-bed elevation, and osmotic therapy when indicated.
+•
+Confirm last-known-well time, estimated arrival time, antithrombotic exposure, and legal next-of-kin/contact information.
+•
+Notify the receiving ED, stroke service, and ICU admitting service for ICU-level admissions.
+ED diagnosis or arrival
+•
+Measure hematoma volume using ABC/2 and treat >=15 mL as the early Neurosurgery + stroke-service evaluation threshold.
+•
+ED clinicians or the stroke service may consult Neurosurgery directly; prior approval is not required.
+•
+Whichever service calls Neurosurgery closes the loop with the designated on-call stroke attending and other involved service so the plan is shared and documented.
+•
+Separate attending-of-record notification is not default unless that expectation is explicitly requested, especially overnight.
+•
+Consult earlier at any size for IVH, hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, vascular lesion concern, ED attending discretion, or clinician concern.
+CTA/MRA branch
+•
+If CTA/MRA shows an underlying vascular lesion or anomaly, the Neurosurgery/neurointerventional pathway leads admission or operative/interventional planning with neurocritical care or ICU support.
+•
+If there is no vascular lesion and no surgical pathway, the stroke service leads admission with ICU support as needed.
+Monitoring adjuncts
+•
+Use close serial neurologic exams and repeat imaging when the exam changes.
+•
+Use pupillometry where available as an adjunct for patients at risk of hydrocephalus, herniation, or neurologic deterioration.
+Surgery Screens
+CSF diversion
+IVH or IPH with developing/symptomatic hydrocephalus; Decreased consciousness or obstructive physiology
+.
+Evaluate urgently for EVD.
+Decompression
+Life-threatening mass effect; Full-care goals after outcome discussion
+.
+Neurosurgery determines operative approach.
+Cerebellar decompression
+Cerebellar mass effect; Usually obstructive hydrocephalus and/or brainstem compression
+.
+Evaluate urgently for suboccipital decompression with or without EVD.
+Minimally invasive evacuation
+Lobar IPH 30-80 mL; Age 18-80; NIHSS >5; GCS 5-14; No underlying vascular lesion
+.
+Screen for the approved ENRICH-based standard-of-care pathway.
+Trial and Registry Screens
+MINUTE screen
+Age 18-80; Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH; Volume >=15 mL by ABC/2, or close enough to prompt screening; NIHSS >=6; CTA/MRA without vascular lesion; Arrival/evaluation <=15 hours since last known well; No clear standard-of-care surgical indication
+.
+MINUTE has operational priority over MIRROR when both are possible. Notify the approved trial pathway using current study materials; do not publish or infer internal contact details.
+MIRROR registry screen
+Selected spontaneous supratentorial IPH being considered for minimally invasive evacuation; Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol before use; No underlying vascular lesion; Potential MIS timing within 24 hours of last known well or qualifying wake-up hemorrhage window
+.
+Do not let registry screening delay urgent surgical, trial, or stabilization decisions.
+Before any surgical action
+•
+Stop at bedside for a time-out/safety pause.
+•
+Confirm that Neurosurgery, the stroke service, and the ICU team agree on the plan.
+•
+Do not present an operative plan as final until the cross-team agreement is explicit.
+Documentation expectations
+•
+If Neurosurgery recommends no procedure, document no current surgical indication within 24 hours.
+•
+Document the caller, receiving consultant, closed-loop recipient, and agreed next step.
+All Patients — Initial Steps
+1
+Order
+STAT coagulation panel
+(PT/INR, platelets, fibrinogen, PTT, TT)
+2
+Obtain
+antithrombotic history
+— agent, dose, last dose timing
+3
+Order
+Type & Screen
+ICH First-Hour Critical Bundle
+AHA/ASA 2022 + INTERACT3 + ENRICH (rapid workflow card)
+1. Airway and Neuro ICU Escalation
+Escalate airway and ICU-level monitoring early when exam worsens or airway protection is uncertain.
+2. Blood Pressure Strategy
+IIa
+Use smooth, sustained BP control and timely treatment; target SBP 140 with range 130-150 when appropriate, and avoid acute SBP <130.
+Evidence
+AHA/ASA 2022: smooth, sustained BP control and timely treatment are Class IIa; for mild-moderate ICH with SBP 150-220, target 140 (range 130-150) is Class IIb; acute SBP <130 is Class III harm. INTERACT3 tested a care bundle, not BP alone.
+3. Immediate Anticoag Reversal
+I
+If anticoagulant exposure is possible, initiate agent-specific reversal without delay using the pathways below.
+Evidence
+AHA/ASA 2022: Class I for VKA reversal with IV vitamin K + 4-factor PCC. Class IIa for idarucizumab (dabigatran). Andexanet alfa (Xa inhibitors) considered but institutional protocols may prefer PCC.
+4. Core Support Bundle
+Treat fever and hyperglycemia, monitor sodium/osmolality when indicated, and prevent secondary injury.
+5. Early Surgery Screen
+IIa
+Promptly screen for neurosurgical escalation in cerebellar decline, hydrocephalus, mass effect, or selected lobar large ICH.
+Evidence
+ENRICH (2024): Early MIS for selected lobar ICH in the 30-80 mL trial range improved outcomes vs medical management (mRS shift OR 0.74). STICH II: Open craniotomy for lobar ICH did not show clear benefit. Cerebellar hemorrhage with posterior-fossa mass effect, usually with obstructive hydrocephalus and/or brainstem compression: urgent suboccipital decompression screen.
+Conservative default: stabilize, control BP, reverse anticoagulation, and escalate ICU/surgical pathways before lower-priority tasks.
+Warfarin Reversal Guide
+Immediate — All Warfarin Patients:
+Give
+Vitamin K 10 mg IV
+immediately
+INR ≥ 2.0 (COR I/B-R):
+Give
+4F-PCC (Kcentra) 25-50 IU/kg based on INR
+• Check PT/INR at
+15-30 min
+,
+6h
+, and
+24h
+after PCC
+• If INR >1.5 at 15-30 min →
+consult hematology
+for additional PCC
+• If INR >1.5 at 24h → repeat vitamin K 10 mg IV over 30 min
+INR 1.3-1.5:
+Low evidence — consider PCC on a case-by-case basis
+FFP Pathway (if PCC unavailable):
+Give
+4 units emergency-release FFP
+Check INR → if >1.5 give 4 more type-specific units
+If still >1.5 → consult hematology
+Relative Contraindications to PCC/FFP:
+• Thrombotic event in past 6 weeks
+• Prothrombotic condition
+• Major surgery in past 6 weeks
+• IPH not considered survivable
+DOAC Reversal Guide
+Dabigatran (Direct Thrombin Inhibitor)
+Reverse if TT prolonged or unavailable
+1.
+If ingestion <2h →
+activated charcoal
+2.
+Give
+idarucizumab (Praxbind) 5 g IV
+— two 2.5 g doses, ≤15 min apart, each over 5-10 min
+3.
+If idarucizumab unavailable →
+4F-PCC 50 IU/kg IV
+Emergent dialysis option — dabigatran ~65% removed by dialysis (t½ = 14h, longer in renal impairment)
+Rivaroxaban / Apixaban (Factor Xa Inhibitors)
+Reverse if Direct Xa Inhibitor screen elevated
+1.
+If ingestion <2h →
+activated charcoal
+2.
+Andexanet alfa is reasonable (AHA/ASA Class IIa); if unavailable, consider
+4F-PCC 50 IU/kg IV
+NOT dialyzable (rivaroxaban t½ = 9h, apixaban t½ = 12h)
+Edoxaban
+Direct Xa Inhibitor screen excludes presence; no calibrated specific assays available. t½ = 10-14h, NOT dialyzable.
+Relative Contraindications to PCC:
+• Thrombotic event in past 6 weeks
+• Prothrombotic condition
+• Major surgery in past 6 weeks
+• IPH not considered survivable
+Post-Thrombolytic ICH Suspicion Algorithm
+Triggered by:
+Sudden neurological deterioration, new headache, acute hypertension, nausea/vomiting
+1
+STOP thrombolytic
+if still running
+2
+STAT non-contrast CT Head
++
+STAT blood draw:
+• STAT hemorrhage panel: PT/INR, platelets, fibrinogen
+• Coag screen: PTT, TT, D-dimers
+• CBC, Type & Cross
+3
+Contact
+blood bank/transfusion services
+; order
+cryoprecipitate
+(fibrinogen <200 mg/dL)
+4
+Notify family
+CT scan delayed >30 min?
+YES — CT delayed:
+Empirically administer 2 pools Cryo if fibrinogen <200
+NO — CT available:
+Wait for CT results
+Intracranial blood on CT?
+YES — Blood confirmed:
+Give
+2 pools Cryo
+over 10-30 min (or continue if already started)
+Give
+Tranexamic acid 1000 mg IV over 10 min STAT
+(or aminocaproic acid 4-5 g IV if TXA unavailable)
+Repeat hemorrhage panel
+Call Stroke/Neuro attending
+Consult neurosurgery
+If Cryo already started + infusing and CT shows NO ICH → STOP infusion
+NO — No intracranial blood:
+• Do
+NOT
+restart lytic
+• Consider other causes: extending infarct, seizure, hypoxia, hypercarbia, hypoglycemia, electrolyte abnormalities
+ECASS Hemorrhagic Transformation Classification:
+HI-1 (Asymptomatic)
+Small petechiae along infarct margin
+HI-2 (Asymptomatic)
+Confluent petechiae within infarct, no mass effect
+PH-1 (Usually asymptomatic)
+Blood clot ≤30% of infarct, mild mass effect
+PH-2 (Often symptomatic)
+Blood clot >30% of infarct with significant mass effect → neurosurgery consult
+sICH definition:
+any hemorrhagic transformation + NIHSS increase ≥4 points from baseline (ECASS-II/SITS-MOST). PH-2 accounts for most sICH.
+Follow-up & Management:
+• Target SBP around 140 mmHg for confirmed sICH; avoid <130
+• Target fibrinogen >200 mg/dL (repeat cryo if low)
+• If labs abnormal or uncontrolled bleeding → consult Hematology
+• Repeat hemorrhage panel q4h until normal
+• Repeat NCCT at 6h and 24h to assess stability
+• PH-2 with mass effect → urgent neurosurgery evaluation
+• Hold all antithrombotics until hemorrhage stable ≥24h
+• Update family — document goals of care discussion
+Angioedema Management
+Post-thrombolytic orolingual angioedema
+1
+Maintain airway
+— may not need intubation if limited to anterior tongue/lips; fiberoptic intubation preferred if needed
+2
+Discontinue IV alteplase
+and
+hold ACE inhibitors
+3
+Methylprednisolone 125 mg IV
+4
+Diphenhydramine 50 mg IV
+5
+Famotidine 20 mg IV
+If worsening:
+•
+Epinephrine 0.3 mg IM
+(1 mg/mL, anterolateral thigh) or nebulized 3-5 mL of 1:1000
+•
+Icatibant
+(bradykinin B2 antagonist)
+•
+C1 esterase inhibitor (Berinert) 20 IU/kg
+ABC/2 ICH Volume Calculator
+A (cm)
+B (cm)
+Slice thickness (mm)
+Slices w/ ICH
+For confirmed non-traumatic IPH, auto-flags volume ≥15 mL for early Neurosurgery + stroke-service evaluation; ≥30 mL remains the MIE/prognostic screen tier when other criteria fit.
+Telestroke rapid actions (phone or video)
+Confirm anticoagulant/antiplatelet use and initiate reversal.
+Use smooth BP control; target SBP 140, maintain 130-150 when appropriate, and avoid <130 per ATACH-2. Use IV nicardipine or clevidipine for titration.
+Screen for early Neurosurgery + stroke-service evaluation triggers: non-traumatic IPH ≥15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, ED attending discretion, or clinician concern.
+Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.
+Telephone: confirm NIHSS and exam details with the bedside team.
+Inpatient priorities
+Continue anticoagulant reversal, monitor for hematoma expansion, and maintain smooth BP control around SBP 140 when appropriate.
+Evaluate IVH/hydrocephalus for EVD and monitor for neurologic decline.
+Manage seizures, avoid prophylaxis without seizures, and use EEG when indicated.
+Implement supportive care bundle, early rehab, and structured goals-of-care discussions.
+ICH protocol details
+Minimally Invasive Evacuation (MIE)
+Surgical Selection
+June 2026 operational MIE screen: lobar IPH 30-80 mL, NIHSS >5, GCS 5-14, age 18-80, and no underlying lesion.
+General guideline evidence supports selected minimally invasive evacuation for supratentorial ICH, especially for mortality; older/general guideline framing kept broad functional-outcome benefit uncertain.
+ENRICH supports selected lobar 30-80 mL patients; use the June 2026 screen below and confirm neurosurgery/local-protocol activation.
+MIS may be reasonable over conventional craniotomy in eligible patients; do not generalize outside the June 2026 screen.
+June 2026 MIE Screen (ENRICH-Based)
+• Spontaneous
+lobar
+IPH — no underlying lesion (tumor/AVM)
+• ICH volume 30-80 cc
+• Age 18-80 years
+• NIHSS >5
+• GCS 5-14
+Confirm operative timing, detailed exclusions, and pathway activation with neurosurgery and the active local protocol.
+ENRICH MIE Exclusion
+• Coagulopathy
+• IVH >50% either lateral ventricle
+• Thalamic or infratentorial ICH
+• Underlying structural lesion (tumor, AVM)
+For MIE candidates:
+Consult neurosurgery per local protocol for trial enrollment or institutional MIE pathway.
+Keep patient NPO until final decision made.
+ICH Volume Calculation:
+ABC/2 Method:
+A = largest ICH diameter (cm)
+B = largest diameter 90 degrees to A on same slice (cm)
+C = (# CT slices with ICH) x (slice thickness)
+Volume = A x B x C / 2
+Anticoagulation Reversal
+Warfarin
+Immediate:
+Vitamin K 10 mg IV for all warfarin patients.
+INR ≥2.0 (COR I/B-R):
+4F-PCC (Kcentra) 25-50 IU/kg based on INR (max 5000 IU).
+INR 1.6-1.9 (COR IIb/C):
+PCC may be considered on case-by-case basis.
+Check INR:
+at 15-30 min and 6h after PCC.
+INR >1.5 after PCC:
+consult hematology for additional PCC.
+INR >1.5 at 24h:
+repeat vitamin K 10 mg IV over 30 min.
+FFP pathway (if PCC unavailable):
+FFP 10-15 mL/kg IV → recheck INR → if >1.5 administer additional FFP → if still >1.5 consult hematology.
+Direct Oral Anticoagulants (DOACs)
+Dabigatran (Direct Thrombin Inhibitor):
+Idarucizumab (Praxbind):
+5 g IV — two 2.5 g doses, ≤15 min apart, each over 5-10 min.
+If unavailable:
+4F-PCC 50 IU/kg IV.
+Activated charcoal:
+if ingestion <2 hours.
+Dialysis:
+~65% removed (t½ = 14h, longer in renal impairment).
+Rivaroxaban / Apixaban (Factor Xa Inhibitors):
+Andexanet alfa:
+AHA/ASA 2022 Class IIa — dose by agent/last-dose timing when available.
+4F-PCC:
+50 IU/kg IV if andexanet unavailable — consider if Direct Xa Inhibitor screen elevated and no contraindications.
+Activated charcoal:
+if ingestion <2 hours.
+NOT dialyzable
+(rivaroxaban t½ = 9h, apixaban t½ = 12h).
+Edoxaban:
+Direct Xa Inhibitor screen excludes presence; no calibrated specific assays. t½ = 10-14h, NOT dialyzable.
+Heparins
+UFH:
+IV protamine is reasonable.
+LMWH:
+IV protamine may be considered.
+Relative contraindications to PCC/FFP:
+• History of major thrombosis/thromboembolism ≤6 weeks
+• Major surgery ≤6 weeks
+• Known prothrombotic disorder
+• IPH not considered survivable
+Antiplatelet-Associated ICH
+Aspirin with emergent neurosurgery: platelet transfusion might be considered.
+Aspirin without planned surgery: platelet transfusions are potentially harmful and should not be given.
+Desmopressin 0.3 mcg/kg IV once may be considered; benefit uncertain.
+Hematoma Expansion Prevention
+Blood Pressure Target
+Target:
+SBP 140 mmHg, maintain 130-150 when appropriate, with timely smooth control. Avoid SBP <130 (ATACH-2).
+Smooth control:
+avoid peaks and variability.
+SBP >220:
+Safety of intensive lowering is uncertain (Class IIb, LOE C-EO, AHA 2022). Reasonable to target modest reduction (SBP 140-160) using continuous IV infusion with close monitoring. Avoid rapid drops >60 mmHg in the first hour. Consider starting nicardipine at a lower rate (2.5-5 mg/hr) and titrating slowly.
+Agent:
+IV nicardipine or clevidipine for titration.
+Expansion Risk Factors
+• Spot sign on CTA
+• Anticoagulant use
+• Time from onset <3 hours
+• Large initial volume (>30 mL)
+• Irregular hematoma shape
+• Blend sign on NCCT
+IVH & Hydrocephalus Management
+EVD Indications
+ICH or IVH with hydrocephalus causing decreased consciousness: EVD recommended to reduce mortality.
+Large IVH with impaired consciousness: EVD preferred over medical management alone.
+IVH-Specific Management
+GCS >3 with primary IVH or IVH extension from supratentorial ICH <30 mL requiring EVD: EVD + thrombolytic is reasonable to reduce mortality.
+Functional outcome benefit from EVD + thrombolytic is uncertain.
+Neuroendoscopic evacuation + EVD benefit is uncertain.
+ICH Disposition & Goals of Care
+Surgical Indications
+Cerebellar ICH with mass effect
+: urgent Neurosurgery evaluation for suboccipital decompression; obstructive hydrocephalus and/or brainstem compression commonly increase urgency and may require EVD.
+Supratentorial ICH:
+routine craniotomy for outcome benefit is uncertain.
+Deteriorating supratentorial ICH:
+craniotomy may be considered as a lifesaving measure.
+Goals-of-Care Guidance
+No preexisting limits:
+aggressive care and postpone new DNAR/withdrawal until at least the second full facility day.
+Do not limit other medical/surgical interventions solely due to DNAR unless explicitly specified.
+Early palliative care for symptom management and shared decision making.
+Seizure Management in ICH
+Treat clinical seizures with antiseizure medication.
+Treat electrographic seizures in impaired consciousness.
+Continuous EEG (24 hours) is reasonable for unexplained abnormal or fluctuating mental status.
+No prophylactic antiseizure medication in patients without seizures.
+Anticoagulation Restart After ICH
+When and how to restart anticoagulation in patients with AF who had an ICH. Individualize based on ICH location, etiology, and stroke risk.
+Deep ICH (Favorable for Restart)
+• Lower rebleed risk (~2%/yr) vs lobar
+• Restart DOAC at
+4-8 weeks
+(AHA 2022)
+• Consider earlier (2-4 wks) if high CHA₂DS₂-VASc (≥6) and stable imaging
+• Prefer apixaban or edoxaban (lower ICH rates)
+Lobar ICH (Higher Rebleed Risk)
+• Often CAA-associated — rebleed ~7-10%/yr
+• Delay restart to
+≥8 weeks
+or consider alternatives
+•
+LAA closure (Watchman)
+: reasonable if CHA₂DS₂-VASc ≥3 + high rebleed risk (STROKE-CLOSE)
+• If restarting, use lowest effective DOAC dose
+Key Evidence
+•
+SoSTART (2021):
+OAC restart associated with lower recurrent stroke without excess ICH (observational)
+•
+APACHE-AF (2021):
+Apixaban vs no anticoagulation — underpowered, trend favoring restart
+•
+PRESTIGE-AF (2024):
+DOAC restart reduced ischemic events without significant increase in ICH
+•
+STROKE-CLOSE (2024):
+LAA closure (Watchman) showed lower composite endpoint vs DOAC in ICH patients with AF (HR 0.61). Particularly beneficial for lobar ICH with high rebleed risk.
+•
+DOAC preferred over warfarin
+for restart (lower ICH risk: 0.3-0.5%/yr vs 1%/yr)
+Do NOT Restart If
+• Multiple lobar ICH or severe CAA burden on MRI
+• Ongoing hematoma expansion
+• Uncontrolled hypertension
+• Patient/family preference against restart
+ICH Supportive Care Bundle
+Standard Orders
+NPO until dysphagia screen passed.
+IPC starting day of diagnosis for VTE prophylaxis.
+Low-dose UFH/LMWH can be useful to reduce PE risk.
+Initiate UFH/LMWH at 24-48h if hematoma stable.
+Graduated compression stockings alone are not beneficial.
+Glucose target 140-180 (no intensive insulin).
+Acetaminophen for temp >38 C.
+HOB 30 degrees.
+Monitoring
+• Neuro checks q1h x 24h, then q2h
+• Continuous telemetry
+• Repeat CT at 6h or with any neurological change
+• Daily CBC, BMP, coags if on reversal
+• Early PT/OT/SLP once medically stable
+--- modal via "Vitamin K 10 mg IV" ---
+Vitamin K
+Dosing
+10 mg IV — give immediately for all warfarin patients.
+Repeat 10 mg IV over 30 min if INR >1.5 at 24h post-PCC.
+Press Esc or click outside to close
+--- modal via "4F-PCC (Kcentra) 25-50 IU/kg based on INR" ---
+4F-PCC (Kcentra)
+Dosing
+PCC (Kcentra) weight-based: INR 1.3-3.9 → 25 IU/kg; INR 4-6 → 35 IU/kg; INR >6 → 50 IU/kg (max 5000 IU). INR <1.3: PCC likely not needed. Use PCC calculator for exact dose.
+Give simultaneously with vitamin K 10 mg IV. Check PT/INR at 15-30 min, 6h, and 24h after PCC. If INR >1.5 at 15-30 min → consult hematology for additional PCC. If INR >1.5 at 24h → repeat vitamin K 10 mg IV over 30 min.
+Press Esc or click outside to close
+--- modal via "4 units emergency-release FFP" ---
+Fresh Frozen Plasma (FFP)
+Dosing
+FFP 10-15 mL/kg IV. Check INR after infusion; if still >1.5, administer additional FFP and consult hematology.
+Use ONLY if PCC unavailable. FFP is slower, less effective, and requires more volume than PCC (AHA/ASA 2022).
+Press Esc or click outside to close
+--- modal via "activated charcoal" ---
+Activated Charcoal
+Dosing
+Administer if DOAC ingestion <2 hours ago.
+Most effective when given early. Use for dabigatran, rivaroxaban, or apixaban.
+Press Esc or click outside to close
+--- modal via "idarucizumab (Praxbind) 5 g IV" ---
+Idarucizumab (Praxbind)
+Dosing
+5 g IV total: two 2.5 g doses, ≤15 min apart, each infused over 5-10 min.
+Specific reversal for dabigatran. If unavailable → consider 4F-PCC 50 IU/kg IV.
+Press Esc or click outside to close
+--- modal via "4F-PCC 50 IU/kg IV" ---
+4F-PCC for DOAC Reversal
+Dosing
+PCC (Kcentra) 50 IU/kg IV (AHA/ASA 2022). Consider ONLY if no contraindications.
+For dabigatran: use only if idarucizumab unavailable. For rivaroxaban/apixaban: consider if Direct Xa Inhibitor screen elevated. AHA/ASA 2022 lists andexanet alfa as Class IIa for Xa inhibitor reversal when available.
+Press Esc or click outside to close
+--- modal via "activated charcoal" ---
+Activated Charcoal
+Dosing
+Administer if DOAC ingestion <2 hours ago.
+Most effective when given early. Use for dabigatran, rivaroxaban, or apixaban.
+Press Esc or click outside to close
+--- modal via "4F-PCC 50 IU/kg IV" ---
+4F-PCC for DOAC Reversal
+Dosing
+PCC (Kcentra) 50 IU/kg IV (AHA/ASA 2022). Consider ONLY if no contraindications.
+For dabigatran: use only if idarucizumab unavailable. For rivaroxaban/apixaban: consider if Direct Xa Inhibitor screen elevated. AHA/ASA 2022 lists andexanet alfa as Class IIa for Xa inhibitor reversal when available.
+Press Esc or click outside to close
+--- modal via "cryoprecipitate" ---
+Cryoprecipitate
+Dosing
+2 pools cryoprecipitate IV over 10-30 min (takes ~15-20 min to prepare).
+For post-thrombolytic ICH when fibrinogen <200 mg/dL. Repeat fibrinogen and coagulation panel after administration.
+Press Esc or click outside to close
+--- modal via "2 pools Cryo" ---
+Cryoprecipitate
+Dosing
+2 pools cryoprecipitate IV over 10-30 min (takes ~15-20 min to prepare).
+For post-thrombolytic ICH when fibrinogen <200 mg/dL. Repeat fibrinogen and coagulation panel after administration.
+Press Esc or click outside to close
+--- modal via "Tranexamic acid 1000 mg IV over 10 min STAT" ---
+Tranexamic Acid (TXA)
+Dosing
+Tranexamic acid 1000 mg IV over 10 min STAT
+For post-thrombolytic ICH after cryoprecipitate. Give when intracranial blood confirmed on CT.
+Press Esc or click outside to close
+--- modal via "Methylprednisolone 125 mg IV" ---
+Methylprednisolone
+Dosing
+125 mg IV (for angioedema).
+Part of angioedema management protocol. For contrast allergy premedication: 40 mg IV.
+Press Esc or click outside to close
+--- modal via "Diphenhydramine 50 mg IV" ---
+Diphenhydramine
+Dosing
+50 mg IV.
+For angioedema management and contrast allergy premedication.
+Press Esc or click outside to close
+--- modal via "Famotidine 20 mg IV" ---
+Famotidine
+Dosing
+Famotidine 20 mg IV.
+H2 antihistamine given with an H1 blocker (e.g., diphenhydramine) for thrombolysis-associated orolingual angioedema. Use the H2 agent on your local formulary.
+Press Esc or click outside to close
+--- modal via "Epinephrine 0.3 mg IM" ---
+Epinephrine
+Dosing
+Epinephrine 0.3 mg IM (1 mg/mL solution) into anterolateral thigh. Nebulized for upper airway edema: 3-5 mL of 1:1000 (1 mg/mL) solution, or racemic epinephrine 0.5 mL of 2.25%.
+For worsening angioedema. IM preferred over SC (faster absorption per AHA/WAO guidelines). Use if symptoms progress despite methylprednisolone and diphenhydramine.
+Press Esc or click outside to close
+--- modal via "Icatibant" ---
+Icatibant
+Dosing
+30 mg SC.
+Bradykinin B2 receptor antagonist. Consider for ACE inhibitor-related angioedema refractory to initial treatment.
+Press Esc or click outside to close
+--- modal via "C1 esterase inhibitor (Berinert) 20 IU/kg" ---
+C1 Esterase Inhibitor (Berinert)
+Dosing
+20 IU/kg IV.
+Plasma-derived C1 esterase inhibitor. For refractory orolingual angioedema associated with IV thrombolytic (AHA/ASA COR IIb, LOE C-EO).
+Press Esc or click outside to close

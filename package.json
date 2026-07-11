@@ -55,6 +55,8 @@
     "build:prod": "npm run build && npm run build:compress",
     "test:unit": "vitest run",
     "test:protocol": "vitest run tests/protocol-currency-guards.test.js tests/public-demo-labels.test.js tests/no-institutional-identifiers.test.js tests/leak-guard.test.js tests/lighthouse-workflow.test.js tests/service-worker.test.js",
+    "test:protocol-snapshot": "node ./scripts/snapshot-example-protocols.mjs",
+    "test:protocol-snapshot:update": "node ./scripts/snapshot-example-protocols.mjs --update",
     "test:unit:watch": "vitest",
     "lint:tokens": "node ./scripts/lint-tokens.mjs",
     "lint:touch-targets": "node ./scripts/lint-touch-targets.mjs",
