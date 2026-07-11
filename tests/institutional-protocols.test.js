@@ -9,8 +9,39 @@ import {
   ICH_INITIAL_EVALUATION_ALGORITHM,
   INSTITUTIONAL_BP_PROTOCOLS,
   SAFE_PAUSE_ATTESTATION,
-  IVT_RELATIVE_CONTRAINDICATIONS
+  IVT_ABSOLUTE_CONTRAINDICATIONS,
+  IVT_RELATIVE_CONTRAINDICATIONS,
+  IVT_BENEFIT_GREATER_CONSIDER,
+  EXTENDED_WINDOW_IVT_DISCUSSION,
+  COR_LOE_KEY,
+  GENERALIZABILITY_LIMITATIONS,
+  getLocalInstitutionalContent,
+  LEGACY_BP_PROTOCOLS,
+  evaluateIVT_Legacy,
+  evaluateEVT_Legacy_Anterior,
+  evaluateEVT_Legacy_M2,
+  evaluateEVT_Legacy_Basilar
 } from '../src/institutional-protocols.js';
+
+describe('IVT_ABSOLUTE_CONTRAINDICATIONS', () => {
+  it('is exported as formatted contraindication objects', () => {
+    expect(Array.isArray(IVT_ABSOLUTE_CONTRAINDICATIONS)).toBe(true);
+    expect(IVT_ABSOLUTE_CONTRAINDICATIONS.length).toBeGreaterThan(0);
+    IVT_ABSOLUTE_CONTRAINDICATIONS.forEach((contraindication) => {
+      expect(contraindication).toHaveProperty('label');
+      expect(typeof contraindication.label).toBe('string');
+      expect(contraindication).toHaveProperty('detail');
+      expect(typeof contraindication.detail).toBe('string');
+    });
+  });
+
+  it('includes critical absolute contraindications', () => {
+    const labels = IVT_ABSOLUTE_CONTRAINDICATIONS.map((item) => item.label);
+    expect(labels).toContain('CT with hemorrhage');
+    expect(labels).toContain('Neurosurgery <14 days');
+    expect(labels).toContain('Severe coagulopathy');
+  });
+});
 
 describe('IVT_RELATIVE_CONTRAINDICATIONS', () => {
   it('is exported and is a non-empty array', () => {
@@ -25,6 +56,77 @@ describe('IVT_RELATIVE_CONTRAINDICATIONS', () => {
       expect(contraindication).toHaveProperty('detail');
       expect(typeof contraindication.detail).toBe('string');
     });
+  });
+});
+
+describe('IVT_BENEFIT_GREATER_CONSIDER', () => {
+  it('is exported as formatted benefit-greater consideration objects', () => {
+    expect(Array.isArray(IVT_BENEFIT_GREATER_CONSIDER)).toBe(true);
+    expect(IVT_BENEFIT_GREATER_CONSIDER.length).toBeGreaterThan(0);
+    IVT_BENEFIT_GREATER_CONSIDER.forEach((item) => {
+      expect(item).toHaveProperty('label');
+      expect(item).toHaveProperty('detail');
+      expect(typeof item.label).toBe('string');
+      expect(typeof item.detail).toBe('string');
+    });
+  });
+
+  it('includes specific known criteria', () => {
+    const labels = IVT_BENEFIT_GREATER_CONSIDER.map((item) => item.label);
+    expect(labels).toContain('Extracranial cervical dissection');
+    expect(labels).toContain('History of MI (remote)');
+    expect(labels).toContain('Moya-moya disease');
+  });
+});
+
+describe('EXTENDED_WINDOW_IVT_DISCUSSION', () => {
+  it('contains key extended-window IVT counseling points', () => {
+    expect(typeof EXTENDED_WINDOW_IVT_DISCUSSION).toBe('string');
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION.length).toBeGreaterThan(0);
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/Tenecteplase/i);
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/4\.5-hour window/i);
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/9-11%/);
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/3%/);
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/serious bleeding/i);
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/benefit of treatment outweighs the risk/i);
+  });
+});
+
+describe('COR_LOE_KEY', () => {
+  it('contains both COR and LOE sections', () => {
+    expect(COR_LOE_KEY).toHaveProperty('cor');
+    expect(COR_LOE_KEY).toHaveProperty('loe');
+  });
+
+  it('defines standard COR classes', () => {
+    expect(COR_LOE_KEY.cor['1'].strength).toBe('Strong');
+    expect(COR_LOE_KEY.cor['2a'].strength).toBe('Moderate');
+    expect(COR_LOE_KEY.cor['2b'].verb).toBe('May be considered');
+    expect(COR_LOE_KEY.cor['3-harm'].verb).toMatch(/harmful/i);
+    expect(Object.keys(COR_LOE_KEY.cor)).toEqual(['1', '2a', '2b', '3-nb', '3-harm']);
+  });
+
+  it('defines standard LOE classes', () => {
+    expect(COR_LOE_KEY.loe.A).toMatch(/RCTs/);
+    expect(COR_LOE_KEY.loe['B-R']).toMatch(/RCTs/);
+    expect(COR_LOE_KEY.loe['C-EO']).toMatch(/Expert opinion/);
+  });
+});
+
+describe('GENERALIZABILITY_LIMITATIONS', () => {
+  it('is exported as non-empty strings', () => {
+    expect(Array.isArray(GENERALIZABILITY_LIMITATIONS)).toBe(true);
+    expect(GENERALIZABILITY_LIMITATIONS.length).toBeGreaterThan(0);
+    GENERALIZABILITY_LIMITATIONS.forEach((limitation) => {
+      expect(typeof limitation).toBe('string');
+      expect(limitation.trim().length).toBeGreaterThan(0);
+    });
+  });
+
+  it('contains specific known limitations', () => {
+    expect(GENERALIZABILITY_LIMITATIONS).toContain('Age >80');
+    expect(GENERALIZABILITY_LIMITATIONS).toContain('Life expectancy <6 months');
+    expect(GENERALIZABILITY_LIMITATIONS).toContain('Seizures at stroke onset');
   });
 });
 
@@ -287,5 +389,67 @@ describe('ICH initial evaluation algorithm', () => {
     for (const re of banned) {
       expect(re.test(text), `ICH algorithm contains banned token ${re}`).toBe(false);
     }
+  });
+});
+
+describe('getLocalInstitutionalContent', () => {
+  const withWindow = (value, assertion) => {
+    const hadWindow = Object.prototype.hasOwnProperty.call(globalThis, 'window');
+    const originalWindow = globalThis.window;
+    if (value === undefined) {
+      delete globalThis.window;
+    } else {
+      globalThis.window = value;
+    }
+    try {
+      assertion();
+    } finally {
+      if (hadWindow) {
+        globalThis.window = originalWindow;
+      } else {
+        delete globalThis.window;
+      }
+    }
+  };
+
+  it('returns null when window is undefined', () => {
+    withWindow(undefined, () => {
+      expect(getLocalInstitutionalContent()).toBe(null);
+    });
+  });
+
+  it('returns null when local institutional data is not set', () => {
+    withWindow({}, () => {
+      expect(getLocalInstitutionalContent()).toBe(null);
+    });
+  });
+
+  it('returns null when local institutional data is malformed', () => {
+    withWindow({ __INSTITUTIONAL_LOCAL__: 'string' }, () => {
+      expect(getLocalInstitutionalContent()).toBe(null);
+    });
+    withWindow({ __INSTITUTIONAL_LOCAL__: { sections: [] } }, () => {
+      expect(getLocalInstitutionalContent()).toBe(null);
+    });
+    withWindow({ __INSTITUTIONAL_LOCAL__: { institutionName: 'Hospital', sections: {} } }, () => {
+      expect(getLocalInstitutionalContent()).toBe(null);
+    });
+  });
+
+  it('returns the local object when valid', () => {
+    const validLocal = { institutionName: 'Hospital', sections: [] };
+    withWindow({ __INSTITUTIONAL_LOCAL__: validLocal }, () => {
+      expect(getLocalInstitutionalContent()).toBe(validLocal);
+    });
+  });
+});
+
+describe('Backwards-compat aliases', () => {
+  it('exports aliases that exactly match their current implementations', () => {
+    expect(LEGACY_BP_PROTOCOLS).toBe(INSTITUTIONAL_BP_PROTOCOLS);
+    expect(evaluateIVT_Legacy).toBe(evaluateIVT);
+    expect(evaluateEVT_Legacy_Anterior).toBe(evaluateEVT_Anterior);
+    expect(evaluateEVT_Legacy_M2).toBe(evaluateEVT_M2);
+    expect(evaluateEVT_Legacy_Basilar).toBe(evaluateEVT_Basilar);
   });
 });
