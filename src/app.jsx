@@ -6879,49 +6879,6 @@ Clinician Name`;
           };
 
           // =================================================================
-          // 4-FACTOR PCC (KCENTRA) DOSING CALCULATOR
-          // =================================================================
-          const calculate4FPCC = (weightKg, inr) => {
-            const weight = parseFloat(weightKg);
-            const inrValue = parseFloat(inr);
-            if (isNaN(weight) || weight <= 0 || weight > 350) return null;
-
-            let unitsPerKg;
-            let description;
-
-            if (isNaN(inrValue)) {
-              unitsPerKg = 25;
-              description = 'INR unknown — using default 25 IU/kg';
-            } else if (inrValue < 1.3) {
-              unitsPerKg = null;
-              description = 'INR <1.3 — PCC likely not needed; give Vitamin K 10 mg IV';
-            } else if (inrValue < 2) {
-              unitsPerKg = 25;
-              description = 'INR 1.3-1.9 — consider PCC 25 IU/kg (COR 2b/C)';
-            } else if (inrValue < 4) {
-              unitsPerKg = 25;
-              description = 'INR 2.0-3.9 — PCC 25 IU/kg (COR 1/B)';
-            } else if (inrValue <= 6) {
-              unitsPerKg = 35;
-              description = 'INR 4.0-6.0 — PCC 35 IU/kg (COR 1/B)';
-            } else {
-              unitsPerKg = 50;
-              description = 'INR >6 — PCC 50 IU/kg (COR 1/B)';
-            }
-
-            const totalDose = unitsPerKg ? Math.min(weight * unitsPerKg, 5000) : null;
-
-            return {
-              weightKg: weight,
-              inr: inrValue || 'unknown',
-              unitsPerKg,
-              totalDose: totalDose ? Math.round(totalDose) : null,
-              isMaxDose: unitsPerKg ? weight * unitsPerKg >= 5000 : false,
-              description
-            };
-          };
-
-          // =================================================================
           // DTN (DOOR-TO-NEEDLE) TIME CALCULATIONS
           // =================================================================
           const calculateDTNMetrics = () => {
