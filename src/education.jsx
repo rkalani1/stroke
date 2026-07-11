@@ -425,7 +425,7 @@ const EDUCATION_MODULES = [
 // =====================================================================
 // MAIN EDUCATION MODULE EXPORT
 // =====================================================================
-export default function Education({ activeSubTab, onSubTabChange, onBack, copyToClipboard, addToast, navigateTo, isTraineeMode = true }) {
+export default function Education({ activeSubTab, onSubTabChange, onBack, copyToClipboard, addToast, navigateTo, isTraineeMode = true, workflowContext = null, contextHiddenIds = null }) {
   const subTab = activeSubTab;
   const onNavigate = onSubTabChange || (() => {});
   const [search, setSearch] = useState("");
@@ -469,6 +469,9 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
 
   const filteredModules = useMemo(() => {
     return EDUCATION_MODULES.filter(m => {
+      // Workflow-context filter: hide only modules the active context (from the
+      // /content data layer) explicitly excludes. Empty/absent set hides nothing.
+      if (contextHiddenIds && contextHiddenIds.has(m.id)) return false;
       if (selectedCategory !== "all") {
         if (selectedCategory === "needs-review") {
           if (!m.placeholders || m.placeholders.length === 0) return false;
@@ -484,7 +487,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
       }
       return true;
     });
-  }, [selectedCategory, search]);
+  }, [selectedCategory, search, contextHiddenIds]);
 
   // Render individual full detail view
   if (subTab) {

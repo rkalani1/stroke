@@ -146,6 +146,15 @@ import {
   AIS_SOURCE_LINKS,
   AIS_COMMAND_CENTER_LAST_REVIEWED
 } from './management-guidance.js';
+// Content data layer access + workflow-context (Telestroke/Inpatient/Clinic)
+// filtering. Pure module over the build-time /content bundle; powers the
+// context switch and the unified command-palette index.
+import {
+  WORKFLOW_CONTEXTS,
+  getSearchIndex as getContentSearchIndex,
+  getEducation as getContentEducation,
+  isRelevantTo as isContentRelevantTo
+} from './content-context.js';
 // What's New feed — generated at build time (npm run evidence:whats-new) from the
 // verified-PubMed Evidence Atlas. esbuild inlines this JSON, so the Research &
 // Guidelines tab works fully offline.
@@ -2196,6 +2205,20 @@ Clinician Name`;
           const [searchOpen, setSearchOpen] = useState(false);
           const [searchContext, setSearchContext] = useState('header');
           const [searchActiveIndex, setSearchActiveIndex] = useState(-1);
+
+          // Workflow context switch (Telestroke / Inpatient / Clinic). null = "All"
+          // — the default, which hides nothing. Filters/reorders content surfaces
+          // to the active setting WITHOUT ever scoping global search (that always
+          // passes null). Persisted via the storage helper (no-op in demo mode).
+          const [workflowContext, setWorkflowContextState] = useState(() => {
+            const v = loadFromStorage('workflowContext', null);
+            return WORKFLOW_CONTEXTS.includes(v) ? v : null;
+          });
+          const setWorkflowContext = (ctx) => {
+            const next = WORKFLOW_CONTEXTS.includes(ctx) ? ctx : null;
+            setWorkflowContextState(next);
+            setKey('workflowContext', next); // no-op in public demo mode
+          };
 
           // Command palette (first-class, app-wide navigation jump-list).
           // Distinct from the free-text header search above: this is a focus-
@@ -7995,6 +8018,8 @@ Clinician Name`;
               setManagementSubTab(resolvedSubTab);
             } else if (nextTab === 'education') {
               setEducationSubTab(subTab || 'onboarding');
+            } else if (nextTab === 'research') {
+              setResearchSubTab(normalizeResearchSubTab(subTab) || researchSubTab || 'guidelines');
             }
 
             setActiveTab(nextTab);
@@ -14813,6 +14838,30 @@ Clinician Name`;
               }
             });
 
+            // Unified /content index — guidelines, trials, education,
+            // calculators, references — so global search spans every data source
+            // at once. Indexed UNCONDITIONALLY (the workflow context never scopes
+            // global search); the context switch only filters browsing surfaces.
+            const CONTENT_TYPE_LABELS = { guideline: 'Guideline', trial: 'Trial', education: 'Education', calculator: 'Calculator', reference: 'Reference' };
+            const contentNav = (entry) => ({
+              guideline: () => navigateTo('research', { clearSearch: true, subTab: 'guidelines' }),
+              trial: () => navigateTo('trials', { clearSearch: true }),
+              education: () => navigateTo('education', { clearSearch: true, subTab: entry.id }),
+              calculator: () => navigateTo('protocols', { clearSearch: true, subTab: 'calculators' }),
+              reference: () => navigateTo('research', { clearSearch: true, subTab: 'references' })
+            }[entry.domain] || (() => navigateTo('research', { clearSearch: true })));
+            getContentSearchIndex().forEach((entry) => {
+              const score = scoreFor([entry.title, entry.subtitle, entry.keywords, entry.id]);
+              if (score <= 0) return;
+              results.push({
+                type: CONTENT_TYPE_LABELS[entry.domain] || 'Content',
+                title: String(entry.title || '').slice(0, 90),
+                description: String(entry.subtitle || CONTENT_TYPE_LABELS[entry.domain] || '').slice(0, 120),
+                score,
+                action: contentNav(entry)
+              });
+            });
+
             const dedupedResults = [];
             const seenResultKeys = new Set();
             results
@@ -17083,6 +17132,33 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   ))}
                 </div>
               )}
+
+              {/* Workflow context switch — filters/reorders content surfaces to
+                  the active setting (Telestroke / Inpatient / Clinic). "All" is
+                  the default and hides nothing; the switch never scopes global
+                  search. */}
+              <div className="mb-3 flex items-center gap-1.5 flex-wrap" role="group" aria-label="Workflow context">
+                <span className="text-xs font-medium text-slate-500 mr-1 dark:text-mute">Context</span>
+                {[
+                  { id: null, label: 'All' },
+                  { id: 'telestroke', label: 'Telestroke' },
+                  { id: 'inpatient', label: 'Inpatient' },
+                  { id: 'clinic', label: 'Clinic' }
+                ].map((c) => {
+                  const active = workflowContext === c.id;
+                  return (
+                    <button
+                      key={c.label}
+                      type="button"
+                      onClick={() => setWorkflowContext(c.id)}
+                      aria-pressed={active}
+                      className={`px-3 py-1.5 rounded-full text-xs font-semibold min-h-[36px] transition-colors ${active ? 'bg-cobalt-600 text-white' : 'bg-white text-slate-600 border border-line hover:bg-slate-50 dark:bg-card dark:text-mute dark:hover:bg-slate-800'}`}
+                    >
+                      {c.label}
+                    </button>
+                  );
+                })}
+              </div>
 
               {/* Primary Navigation — sticks just below the sticky header on
                   ≥768px via --app-header-h (U4). z-30 keeps it under the header
@@ -35756,6 +35832,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       addToast={addToast}
                       navigateTo={navigateTo}
                       isTraineeMode={isTraineeMode}
+                      workflowContext={workflowContext}
+                      contextHiddenIds={
+                        workflowContext
+                          ? new Set(
+                              getContentEducation()
+                                .filter((e) => !isContentRelevantTo(e, workflowContext))
+                                .map((e) => e.id)
+                            )
+                          : null
+                      }
                     />
                   </ErrorBoundary>
                 )}
@@ -35837,7 +35923,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 }
                                 setApiProvider(tempProvider);
                                 setApiKey(trimmedKey);
-                                saveToStorage('apiProvider', tempProvider);
+                                setKey('apiProvider', tempProvider); // was an undefined saveToStorage() — ReferenceError blocked the save
                                 sessionStorage.setItem('apiKey', trimmedKey);
                                 addToast('API Settings saved successfully.', 'success');
                                 navigateTo('encounter');
