@@ -96,16 +96,12 @@ async function main() {
 
   const files = walk(CONTENT).filter((f) => f.endsWith('.json') || f.endsWith('.md'));
   for (const file of files) {
-    if (path.basename(file) === 'schema.mjs') continue;
     const domain = domainOf(file);
-    // Directories prefixed with "_" (e.g. _drafts) are scaffolds pending human
-    // review — never validated or published as live content.
-    if (domain.startsWith('_')) continue;
     const validate = VALIDATORS[domain];
-    if (!validate) {
-      report.warnings.push(`${path.relative(REPO, file)}: no validator for domain "${domain}" (skipped)`);
-      continue;
-    }
+    // Only files inside a known domain directory are records. Top-level files
+    // (bundle.json, CHANGELOG.md, schema.mjs) and _-prefixed draft dirs are not
+    // validated — silently skipped, not warnings.
+    if (!validate || path.relative(CONTENT, file).split(path.sep).length < 2) continue;
     report.counts[domain] = report.counts[domain] || 0;
     let records;
     try {

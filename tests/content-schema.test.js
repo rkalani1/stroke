@@ -37,6 +37,13 @@ function walk(dir) {
   return out;
 }
 
+// Only files inside a known domain directory are records; top-level content
+// files (bundle.json, CHANGELOG.md, schema.mjs) and _-drafts are not.
+function isRecordFile(file) {
+  const rel = path.relative(CONTENT, file).split(path.sep);
+  return rel.length >= 2 && VALIDATORS[rel[0]] && !rel[0].startsWith('_');
+}
+
 function recordsOf(file) {
   if (file.endsWith('.json')) {
     const data = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -45,7 +52,7 @@ function recordsOf(file) {
   return [[parseFrontmatter(fs.readFileSync(file, 'utf8')).data, '']];
 }
 
-const files = walk(CONTENT);
+const files = walk(CONTENT).filter(isRecordFile);
 
 describe('/content data layer', () => {
   it('has all five content domains populated', () => {
