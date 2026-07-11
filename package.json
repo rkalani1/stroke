@@ -22,6 +22,8 @@
     "content:validate": "node ./scripts/validate-content.mjs",
     "content:validate:json": "node ./scripts/validate-content.mjs --json",
     "content:currency": "node ./scripts/check-currency.mjs",
+    "content:currency:strict": "node ./scripts/check-currency.mjs --strict",
+    "content:scaffold": "node ./scripts/scaffold-content.mjs",
     "evidence:export": "node ./scripts/evidence-export.mjs",
     "evidence:export:check": "node ./scripts/evidence-export.mjs --check",
     "analyze:sweep": "node ./scripts/parameter-sweep.mjs --domain all",

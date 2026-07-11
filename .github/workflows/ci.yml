@@ -122,6 +122,12 @@ jobs:
           set -o pipefail
           npm run test:protocol-snapshot 2>&1 | tee output/diagnostics/protocol-snapshot.log
 
+      - name: Content currency report (advisory)
+        run: |
+          mkdir -p output/diagnostics
+          set -o pipefail
+          npm run content:currency 2>&1 | tee output/diagnostics/content-currency.log
+
       - name: Validate citations and run local smoke
         run: npm test
 

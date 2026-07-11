@@ -98,6 +98,9 @@ async function main() {
   for (const file of files) {
     if (path.basename(file) === 'schema.mjs') continue;
     const domain = domainOf(file);
+    // Directories prefixed with "_" (e.g. _drafts) are scaffolds pending human
+    // review — never validated or published as live content.
+    if (domain.startsWith('_')) continue;
     const validate = VALIDATORS[domain];
     if (!validate) {
       report.warnings.push(`${path.relative(REPO, file)}: no validator for domain "${domain}" (skipped)`);
