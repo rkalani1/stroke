@@ -8075,7 +8075,7 @@ Clinician Name`;
           const paletteCommands = React.useMemo(() => [
             // ---- Top-level sections ----
             { id: 'go-encounter', group: 'Go to', label: 'Acute Encounter', hint: 'Active stroke workup', icon: 'activity', keywords: ['encounter', 'acute', 'consult', 'telestroke', 'patient', 'workup'], run: () => navigateTo('encounter', { clearSearch: true }) },
-            { id: 'go-protocols', group: 'Go to', label: 'Example Protocols', hint: 'Example pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library', 'example', 'not local policy'], run: () => navigateTo('protocols', { clearSearch: true }) },
+            { id: 'go-protocols', group: 'Go to', label: 'Protocols', hint: 'Example pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library', 'example', 'not local policy'], run: () => navigateTo('protocols', { clearSearch: true }) },
             { id: 'go-research', group: 'Go to', label: 'Guidelines & References', hint: 'Guidelines & Reference Library', icon: 'book-open', keywords: ['research', 'references', 'guidelines', 'whats new', "what's new", 'evidence', 'updates'], run: () => navigateTo('research', { clearSearch: true }) },
             { id: 'go-trials', group: 'Go to', label: 'Trials & Evidence', hint: 'Screener, tables, atlas', icon: 'flask-conical', keywords: ['trials', 'evidence', 'atlas', 'eligibility', 'screener'], run: () => navigateTo('trials', { clearSearch: true }) },
             { id: 'go-education', group: 'Go to', label: 'Education', hint: 'Curricula & pocket cards', icon: 'brain', keywords: ['education', 'curricula', 'onboarding', 'icu', 'resident', 'nurse', 'pocket cards', 'teaching'], run: () => navigateTo('education', { clearSearch: true }) },
@@ -17181,7 +17181,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     // (Cycle2 U2). Full canonical name stays as title/aria-label and
                     // is shown at lg+; the section H1/title is unchanged elsewhere.
                     { id: 'encounter', name: 'Encounter', short: 'Encounter' },
-                    { id: 'protocols', name: 'Example Protocols', short: 'Protocols' },
+                    { id: 'protocols', name: 'Protocols', short: 'Protocols' },
                     { id: 'research', name: 'Guidelines & References', short: 'Guidelines' },
                     { id: 'trials', name: 'Trials', short: 'Trials' },
                     { id: 'education', name: 'Educational Resources', short: 'Educational Resources' }
