@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "labels",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.11.3",
+    "appVersion": "6.11.4",
     "checksum": "sha256:7add003e86927f0fb0f62b75b0945ab4",
     "count": 4,
     "source": "Evidence atlas labels bundle",

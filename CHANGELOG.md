@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## v6.11.4 — 2026-07-12 — rename "Example Protocols" tab to "Protocols"
+
+Renamed the top-level **"Example Protocols"** tab (and its command-palette
+"Go to" entry) to **"Protocols"** at owner request. The "example / not local
+policy" framing is preserved elsewhere — the palette keywords (`example`,
+`not local policy`), the in-panel disclaimer ("Educational examples only — not
+local policy…"), and the machine-readable data-route descriptor
+(`Example protocols (not local policy)`) are unchanged, so the tab is not
+reframed as vetted institutional policy. Label-only change: the frozen
+protocols content is untouched, so the Example Protocols snapshot lock stays
+green (the tab label lives in the tablist, outside `#tabpanel-protocols`).
+Rebuilt `app.js`; updated the public-demo label guard test. Version bumped
+6.11.3 → 6.11.4 to bust HTTP/SW caches so the relabel reaches returning
+clients. Gates: leak-guard 0 · unit tests · protocol snapshot lock · build.
+
 ## v6.11.3 — 2026-07-11 — clinical corrections + context switch + unified search
 
 Completes the refactor: applies the audit-flagged clinical corrections, ships
