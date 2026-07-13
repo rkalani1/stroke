@@ -5,8 +5,8 @@ summary: "Reference guide for Joint Commission / GWTG stroke core measures and C
 tags: ["quality", "pocket-card", "printable"]
 contexts: ["telestroke", "inpatient", "clinic"]
 calculators: []
-references: [{"label":"Joint Commission","citation":"Specifications Manual for Joint Commission National Quality Measures.","pmid":null}]
-lastReviewed: 2026-05-30
+references: [{"label":"Joint Commission","citation":"Specifications Manual for Joint Commission National Quality Measures.","pmid":null},{"label":"AHA/ASA 2026 AIS Guideline","citation":"Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.","pmid":"41582814"}]
+lastReviewed: 2026-07-13
 provenance: src/education.jsx
 ---
 
