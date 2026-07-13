@@ -210,10 +210,11 @@ const EDUCATION_MODULES = [
     purpose: 'Trial of Org 10172 in Acute Stroke Treatment (TOAST) diagnostic criteria for ischemic stroke etiology.',
     actions: 'toast criteria etiology large artery lacune small vessel cardioembolic undetermined cryptogenic esus workup',
     categories: ['pocket-card', 'printable'],
-    lastReviewed: '2026-05-30',
+    lastReviewed: '2026-07-13',
     references: [
       { label: 'Original Study', citation: 'Adams HP Jr, et al. TOAST. Stroke. 1993;24:35-41.', pmid: '7678184' },
-      { label: 'AHA/ASA Guideline', citation: 'Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.', pmid: '34024117' }
+      { label: 'AHA/ASA Guideline', citation: 'Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.', pmid: '34024117' },
+      { label: 'OCEANIC-STROKE Trial', citation: 'Sharma M, et al. Asundexian for Secondary Stroke Prevention. N Engl J Med. 2026;394(15):1467-1479.', pmid: '41985132' }
     ]
   },
   {
@@ -222,7 +223,7 @@ const EDUCATION_MODULES = [
     purpose: 'Guideline-directed Dual Antiplatelet Therapy (DAPT) for secondary non-cardioembolic stroke prevention.',
     actions: 'dapt antiplatelet aspirin clopidogrel plavix ticagrelor brilinta point chance chance-2 thales sammpris cyp2c19 genotype resistance',
     categories: ['pocket-card', 'printable'],
-    lastReviewed: '2026-05-30',
+    lastReviewed: '2026-07-13',
     references: [
       { label: 'POINT Trial', citation: 'Johnston SC et al. N Engl J Med. 2018;379:215-225.', pmid: '29766750' },
       { label: 'CHANCE Trial', citation: 'Wang Y et al. N Engl J Med. 2013;369:11-19.', pmid: '23803136' },
@@ -319,14 +320,30 @@ const EDUCATION_MODULES = [
     ]
   },
   {
+    id: 'iv-thrombolysis',
+    title: 'IV Thrombolysis: TNK & Time Windows',
+    purpose: 'Tenecteplase (TNK) as the standard IV thrombolytic for acute ischemic stroke — the standard 4.5-hour window, extended perfusion-based windows, and the defining trial evidence (ATTEST-2, TIMELESS, TRACE-III).',
+    actions: 'thrombolysis tenecteplase tnk alteplase tpa lytic 4.5 hour window extended perfusion mismatch attest-2 timeless trace-3 tempo-2 stk-4 door to needle wake-up last known well dosing bolus',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-13',
+    references: [
+      { label: 'ATTEST-2 Trial', citation: 'Muir KW, et al. Tenecteplase versus alteplase for acute stroke within 4.5 h (ATTEST-2). Lancet Neurol. 2024;23(11):1087-1096.', pmid: '39424558' },
+      { label: 'TIMELESS Trial', citation: 'Albers GW, et al. Tenecteplase for Stroke at 4.5 to 24 Hours with Perfusion-Imaging Selection. N Engl J Med. 2024;390(8):701-711.', pmid: '38329148' },
+      { label: 'TRACE-III Trial', citation: 'Xiong Y, et al. Tenecteplase for Ischemic Stroke at 4.5 to 24 Hours without Thrombectomy. N Engl J Med. 2024;391(3):203-212.', pmid: '38884324' },
+      { label: 'TEMPO-2 Trial', citation: 'Coutts SB, et al. Tenecteplase versus standard of care for minor ischaemic stroke with proven occlusion (TEMPO-2). Lancet. 2024;403(10444):2597-2605.', pmid: '38768626' },
+      { label: 'AHA/ASA 2026 AIS Guideline', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' }
+    ]
+  },
+  {
     id: 'stk-core-measures',
     title: 'Stroke Core Measures',
     purpose: 'Reference guide for Joint Commission / GWTG stroke core measures and Comprehensive Stroke Center (CSC) quality metrics.',
     actions: 'quality core measures joint commission gwtg stk-1 stk-2 stk-3 stk-4 stk-5 stk-6 stk-8 stk-10 cstk csc metrics compliance program',
     categories: ['quality', 'pocket-card', 'printable'],
-    lastReviewed: '2026-05-30',
+    lastReviewed: '2026-07-13',
     references: [
-      { label: 'Joint Commission', citation: 'Specifications Manual for Joint Commission National Quality Measures.', pmid: null }
+      { label: 'Joint Commission', citation: 'Specifications Manual for Joint Commission National Quality Measures.', pmid: null },
+      { label: 'AHA/ASA 2026 AIS Guideline', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' }
     ]
   },
   {
@@ -378,12 +395,14 @@ const EDUCATION_MODULES = [
     purpose: 'Clinical prognostic models for acute stroke: ASTRAL and PLAN scores for ischemic stroke, and the ICH Score for spontaneous intracerebral hemorrhage.',
     actions: 'prognosis outcomes astral plan ich score rankin mrs mortality dependency stratification prediction scale bedside',
     categories: ['pocket-card', 'printable'],
-    lastReviewed: '2026-06-09',
+    lastReviewed: '2026-07-13',
     references: [
       { label: 'ASTRAL Score', citation: 'Ntaios G, et al. Stroke. 2012;43(8):2170-2176.', pmid: '22738924' },
       { label: 'PLAN Score', citation: 'O\'Donnell MJ, et al. Arch Intern Med. 2012;172(20):1548-1556.', pmid: '23090225' },
       { label: 'ICH Score', citation: 'Hemphill JC 3rd, et al. Stroke. 2001;32(4):891-897.', pmid: '11283388' },
-      { label: 'mRS Scale', citation: 'van Swieten JC, et al. Stroke. 1988;19(5):604-607.', pmid: '3363593' }
+      { label: 'mRS Scale', citation: 'van Swieten JC, et al. Stroke. 1988;19(5):604-607.', pmid: '3363593' },
+      { label: 'AHA/ASA 2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
+      { label: 'FASTEST Trial', citation: 'Broderick JP, et al. Recombinant factor VIIa versus placebo for spontaneous intracerebral haemorrhage within 2 h (FASTEST). Lancet. 2026;407(10530):773-783.', pmid: '41653933' }
     ]
   },
   {
@@ -392,10 +411,10 @@ const EDUCATION_MODULES = [
     purpose: 'Clinical classification of post-stroke seizures, guideline-directed management, comparison of first-line and second-line antiepileptic drugs (ASMs), and post-stroke epilepsy risk scores (SeLECT and IsCHEMiA).',
     actions: 'antiepileptic drugs antiseizure medications asm aed keppra levetiracetam lamotrigine lamictal lacosamide vimpat valproic acid depakote phenytoin dilantin select score ischemia score post-stroke epilepsy seizure prophylaxis',
     categories: ['pocket-card', 'printable', 'icu'],
-    lastReviewed: '2026-06-13',
+    lastReviewed: '2026-07-13',
     references: [
-      { label: 'AHA/ASA 2026 Stroke Guideline', citation: 'Prabhakaran S, et al. 2026 Guidelines for the Early Management of Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' },
-      { label: 'AHA/ASA 2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579047' },
+      { label: 'AHA/ASA 2026 Stroke Guideline', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' },
+      { label: 'AHA/ASA 2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
       { label: 'AHA/ASA 2023 aSAH Guideline', citation: 'Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.', pmid: '37219934' },
       { label: 'IsCHEMiA Score Validation', citation: 'IsCHEMiA in Vascular Epilepsy: Identifying Risks for Post Stroke Epilepsy. Epilepsy Currents. 2026;26.', pmid: null },
       { label: 'SeLECT Score Study', citation: 'Galovic M, et al. SeLECT: a prediction model for late seizures after ischemic stroke. Lancet Neurol. 2018;17(2):143-152.', pmid: '29329707' }
@@ -407,7 +426,7 @@ const EDUCATION_MODULES = [
     purpose: 'Clinical definition, mechanisms of resistance, diagnostic evaluation, and evidence-based secondary prevention strategies for patients who stroke on aspirin.',
     actions: 'aspirin resistance failure breakthrough stroke antiplatelet clopidogrel dapt wasid caprie sammpris pharmacology compliance nsaid interaction',
     categories: ['pocket-card', 'printable', 'icu'],
-    lastReviewed: '2026-06-18',
+    lastReviewed: '2026-07-13',
     references: [
       { label: 'AHA/ASA 2021 Guideline', citation: 'Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.', pmid: '34024117' },
       { label: 'WASID Post-Hoc', citation: 'Failure of Antithrombotic Therapy and Risk of Stroke in Patients With Symptomatic Intracranial Stenosis. Stroke. 2009;40:359-364.', pmid: '19064771' },
@@ -417,7 +436,8 @@ const EDUCATION_MODULES = [
       { label: 'INSPIRES Trial', citation: 'Gao Y, et al. Dual Antiplatelet Therapy for Acute Ischemic Stroke or TIA. N Engl J Med. 2024;390:59-69.', pmid: '38157499' },
       { label: 'SAMMPRIS Trial', citation: 'Chimowitz MI, et al. Stenting versus Aggressive Medical Therapy for Intracranial Arterial Stenosis. N Engl J Med. 2011;365:993-1003.', pmid: '21899409' },
       { label: 'COMPASS Trial', citation: 'Connolly SJ, et al. Rivaroxaban with or without Aspirin in Stable Cardiovascular Disease. Lancet. 2018;391:319-328.', pmid: '29141975' },
-      { label: 'Narrative Review', citation: 'Sanderson S, et al. Aspirin Resistance and Its Clinical Implications. Ann Intern Med. 2005;142:370-380.', pmid: '15738456' }
+      { label: 'Narrative Review', citation: 'Sanderson S, et al. Aspirin Resistance and Its Clinical Implications. Ann Intern Med. 2005;142:370-380.', pmid: '15738456' },
+      { label: 'OCEANIC-STROKE Trial', citation: 'Sharma M, et al. Asundexian for Secondary Stroke Prevention. N Engl J Med. 2026;394(15):1467-1479.', pmid: '41985132' }
     ]
   }
 ];
@@ -899,6 +919,13 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
             <NeuroExamsTool />
           </div>
         </ErrorBoundary>
+      );
+    case 'iv-thrombolysis':
+      return (
+        <ScaledCardWrapper isLandscape={false}>
+          <BedsidePocketCardsStyles />
+          <IvThrombolysisCard />
+        </ScaledCardWrapper>
       );
     case 'stk-core-measures':
       return (
@@ -1494,7 +1521,12 @@ export function ToastClassificationCard() {
       </div>
     </div>
     
-    
+
+    <div style={{borderLeft: '4px solid var(--teal)', background: 'var(--teal-soft)', padding: '10px 14px', borderRadius: '6px', fontSize: '8.6pt', lineHeight: '1.45', color: 'var(--ink-soft)', marginBottom: '14px'}}>
+      <strong style={{color: 'var(--teal-deep)', textTransform: 'uppercase', fontSize: '8.6pt', letterSpacing: '0.04em', display: 'block', marginBottom: '3px'}}>Why Subtype Matters — 2026 Secondary Prevention</strong>
+      Etiology drives prevention: <strong>cardioembolic</strong> &rarr; oral anticoagulation; <strong>non-cardioembolic</strong> (large-artery, small-vessel, or undetermined/ESUS) &rarr; antiplatelet therapy &plusmn; short-course DAPT. New for 2026: in non-cardioembolic stroke/high-risk TIA already on antiplatelets, adding the oral factor XIa inhibitor <strong>asundexian</strong> further reduced recurrent ischemic stroke without a significant excess of major bleeding (OCEANIC-STROKE, HR 0.74). ESUS trials (NAVIGATE-ESUS, RE-SPECT ESUS) found empiric DOAC anticoagulation no better than aspirin — so ESUS is treated with antiplatelets pending a defined source. See the DAPT and Aspirin Failure cards.
+    </div>
+
     <div className="ref-citation" style={{marginTop: '15px', padding: '10px 12px', fontSize: '8.8pt'}}>
       <strong>Original Study:</strong> Adams HP Jr, et al. TOAST. <em>Stroke</em>. 1993;24:35-41. <a href="https://pubmed.ncbi.nlm.nih.gov/7678184/" target="_blank">PMID: 7678184</a>.<br/>
       <strong>AHA/ASA Guideline:</strong> Kleindorfer DO, et al. 2021 Stroke Prevention. <em>Stroke</em>. 2021;52:e364-e467. <a href="https://pubmed.ncbi.nlm.nih.gov/34024117/" target="_blank">PMID: 34024117</a>.
@@ -1705,8 +1737,8 @@ export function DaptRegimensCard() {
       <div className="dapt-pearl-card red">
         <strong style={{color: 'var(--red-deep)', fontSize: '8.5pt', display: 'block', marginBottom: '4px'}}>Safety</strong>
         <p style={{fontSize: '7.6pt', color: 'var(--ink-soft)', margin: '0', lineHeight: '1.45'}}>
-          • **Bleeding vs. Benefit**: For minor stroke/high-risk TIA, most DAPT benefit occurs in the first 21 days; extend longer only for selected trial-matched indications such as severe symptomatic intracranial stenosis.
-          <br/>• **Post-Lytic / EVT Policy**: After IV alteplase or TNK, avoid antithrombotics for the first 24h until follow-up imaging excludes hemorrhage. EVT alone is not a blanket DAPT contraindication; stenting/angioplasty plans and hemorrhage risk drive the decision.
+          • **Duration — 21 vs 90 days**: Minor stroke (NIHSS &le;3) / high-risk TIA (ABCD&sup2; &ge;4) &rarr; **21 days** ASA + clopidogrel (POINT/CHANCE), then single antiplatelet — benefit is concentrated in the first 21 days while bleeding risk rises beyond it. Severe symptomatic intracranial atherosclerotic stenosis (70–99%) &rarr; **90 days** ASA + clopidogrel (SAMMPRIS) plus intensive risk-factor control. THALES ASA + ticagrelor is a **30-day** regimen for NIHSS &le;5 / high-risk TIA. Short-course DAPT is endorsed by the 2021 secondary-prevention guideline and the 2026 AHA/ASA AIS guideline.
+          <br/>• **Post-Lytic / EVT Policy**: After IV thrombolysis (tenecteplase or alteplase), avoid antithrombotics for the first 24h until follow-up imaging excludes hemorrhage. EVT alone is not a blanket DAPT contraindication; stenting/angioplasty plans and hemorrhage risk drive the decision.
         </p>
       </div>
     </div>
@@ -2626,6 +2658,122 @@ export const ICPInfographic = () => {
   );
 };
 
+export function IvThrombolysisCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-container" style={{boxSizing: 'border-box'}}>
+        <div className="card-content">
+          <h1 style={{textAlign: 'center', marginBottom: '4px'}}>IV Thrombolysis: Tenecteplase &amp; Time Windows</h1>
+          <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
+            2026 AHA/ASA Acute Ischemic Stroke Guideline &amp; landmark tenecteplase trials.
+          </p>
+
+          {/* Time-window pathway */}
+          <svg viewBox="0 0 735 96" style={{width: '100%', height: '96px', marginBottom: '10px'}}>
+            <rect x="0" y="0" width="735" height="96" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
+            <rect x="18" y="14" width="214" height="30" rx="6" fill="var(--purple-deep)" />
+            <text x="125" y="29" fill="white" fontSize="8.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle" dominantBaseline="central">STANDARD WINDOW &le; 4.5 h</text>
+            <text x="125" y="60" fill="var(--ink-soft)" fontSize="6.8pt" fontFamily="IBM Plex Sans" textAnchor="middle">TNK 0.25 mg/kg bolus for all eligible AIS</text>
+            <text x="125" y="72" fill="var(--ink-soft)" fontSize="6.8pt" fontFamily="IBM Plex Sans" textAnchor="middle">(ATTEST-2: TNK non-inferior to alteplase)</text>
+            <path d="M 236 29 L 262 29" stroke="var(--purple)" strokeWidth="2" fill="none" markerEnd="url(#arrow-tnk)" />
+            <rect x="266" y="14" width="238" height="30" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
+            <text x="385" y="29" fill="var(--teal-deep)" fontSize="8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle" dominantBaseline="central">EXTENDED 4.5–24 h + PERFUSION</text>
+            <text x="385" y="60" fill="var(--ink-soft)" fontSize="6.8pt" fontFamily="IBM Plex Sans" textAnchor="middle">LVO + salvageable tissue (mismatch) on CTP / MR-perfusion.</text>
+            <text x="385" y="72" fill="var(--ink-soft)" fontSize="6.8pt" fontFamily="IBM Plex Sans" textAnchor="middle">Benefit when thrombectomy is NOT available (TRACE-III).</text>
+            <path d="M 508 29 L 534 29" stroke="var(--teal)" strokeWidth="2" fill="none" markerEnd="url(#arrow-tnk)" />
+            <rect x="538" y="14" width="180" height="30" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.5" />
+            <text x="628" y="25" fill="var(--amber-deep)" fontSize="7.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">IF EVT AVAILABLE</text>
+            <text x="628" y="36" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Thrombectomy first (TIMELESS neutral)</text>
+            <defs>
+              <marker id="arrow-tnk" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--teal)" />
+              </marker>
+            </defs>
+          </svg>
+
+          <div className="toast-grid" style={{marginBottom: '10px'}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+              <div className="toast-card primary">
+                <h3>1. Tenecteplase (TNK) — Standard of Care</h3>
+                <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
+                  <li><strong>Dose:</strong> 0.25 mg/kg single IV bolus (max 25 mg) over ~5 seconds — no infusion, no pump.</li>
+                  <li><strong>Why preferred:</strong> Single-bolus dosing shortens door-to-needle and door-to-puncture times and simplifies inter-hospital transfer; efficacy and safety are comparable to alteplase.</li>
+                  <li><strong>Use a stroke-specific 25 mg vial</strong> to avoid dosing errors from cardiac-dose formulations.</li>
+                  <li><strong>Eligibility and contraindications</strong> mirror alteplase; the 2026 AHA/ASA AIS guideline updated the approach to thrombolysis contraindications and thrombolytic choice.</li>
+                </ul>
+              </div>
+              <div className="toast-card neutral">
+                <h3>2. Time Windows</h3>
+                <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
+                  <li><strong>&le; 4.5 h from LKW:</strong> Standard-of-care thrombolysis for all eligible patients (non-contrast CT to exclude hemorrhage).</li>
+                  <li><strong>4.5–24 h (extended):</strong> Perfusion-imaging selection (CTP / MR-perfusion) for LVO with a salvageable-tissue mismatch — includes wake-up and unwitnessed onset.</li>
+                  <li><strong>Thrombectomy remains first-line</strong> for LVO within its windows; extended-window TNK is most useful where EVT is unavailable or delayed.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+              <div className="toast-card alert-orange">
+                <h3>3. Where TNK Does NOT Help</h3>
+                <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
+                  <li><strong>Extended window WITH thrombectomy:</strong> Adding TNK 4.5–24 h did not improve outcomes when most patients underwent EVT (TIMELESS, neutral).</li>
+                  <li><strong>Minor stroke (NIHSS 0–5) with occlusion:</strong> IV TNK showed no benefit and possible harm — do not routinely thrombolyse (TEMPO-2, stopped for futility).</li>
+                </ul>
+              </div>
+              <div className="toast-card alert-red">
+                <h3>4. Post-Lytic Safety</h3>
+                <p style={{fontSize: '8.2pt', lineHeight: '1.4', color: 'var(--ink-soft)', marginTop: '4px'}}>
+                  Hold antithrombotics (antiplatelets and anticoagulants) for the first <strong>24 h</strong> until follow-up imaging excludes hemorrhage. Keep BP &lt; 180/105 mmHg after lysis. Watch for orolingual angioedema (higher risk with ACE inhibitors).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="toast-card secondary" style={{padding: '8px 10px', marginBottom: '8px'}}>
+            <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--teal-deep)', marginBottom: '4px', textAlign: 'center'}}>5. Defining Tenecteplase Trials</h3>
+            <table style={{width: '100%', fontSize: '7.4pt', borderCollapse: 'collapse', textAlign: 'left', lineHeight: '1.3'}}>
+              <thead>
+                <tr style={{borderBottom: '1.5px solid var(--rule)', color: 'var(--ink)'}}>
+                  <th style={{padding: '3px', width: '15%'}}>Trial / Year</th>
+                  <th style={{padding: '3px', width: '30%'}}>Population &amp; Comparison</th>
+                  <th style={{padding: '3px', width: '55%'}}>Primary Result &amp; Implication</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
+                  <td style={{padding: '3px', fontWeight: '700'}}>ATTEST-2<br/>2024</td>
+                  <td style={{padding: '3px'}}>&le; 4.5 h; TNK 0.25 mg/kg vs alteplase 0.9 mg/kg. N = 1858 (UK).</td>
+                  <td style={{padding: '3px', color: 'var(--ink-soft)'}}><strong>Non-inferior</strong> (90-day mRS OR 1.07; non-inferiority P&lt;0.0001; not superior). Similar safety. Supports TNK as the preferred standard-window agent.</td>
+                </tr>
+                <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
+                  <td style={{padding: '3px', fontWeight: '700'}}>TRACE-III<br/>2024</td>
+                  <td style={{padding: '3px'}}>4.5–24 h; LVO + mismatch, no thrombectomy access; TNK vs standard care. N = 516 (China).</td>
+                  <td style={{padding: '3px', color: 'var(--ink-soft)'}}><strong>Positive</strong>: mRS 0–1 at 90 d 33.0% vs 24.2% (RR 1.37; P = 0.03); sICH 3.0% vs 0.8%. Extended-window TNK helps when EVT is unavailable.</td>
+                </tr>
+                <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
+                  <td style={{padding: '3px', fontWeight: '700'}}>TIMELESS<br/>2024</td>
+                  <td style={{padding: '3px'}}>4.5–24 h; MCA/ICA occlusion + mismatch; TNK vs placebo. N = 458 (77% had EVT).</td>
+                  <td style={{padding: '3px', color: 'var(--ink-soft)'}}><strong>Neutral</strong>: 90-day mRS OR 1.13 (0.82–1.57), P = 0.45. No added benefit when thrombectomy is the primary treatment.</td>
+                </tr>
+                <tr>
+                  <td style={{padding: '3px', fontWeight: '700'}}>TEMPO-2<br/>2024</td>
+                  <td style={{padding: '3px'}}>Minor stroke (NIHSS 0–5) + occlusion; TNK vs standard care. N = 886.</td>
+                  <td style={{padding: '3px', color: 'var(--ink-soft)'}}><strong>Stopped for futility</strong>: no benefit, more deaths and sICH. Do not routinely lyse minor stroke with occlusion.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="ref-citation" style={{marginTop: 'auto', padding: '6px 10px 0 10px', fontSize: '7.6pt', lineHeight: '1.25', borderTop: '1px solid var(--rule-soft)'}}>
+            <strong>ATTEST-2:</strong> Muir KW et al. Lancet Neurol 2024;23:1087-1096. <a href="https://pubmed.ncbi.nlm.nih.gov/39424558/" target="_blank">PMID: 39424558</a>. | <strong>TIMELESS:</strong> Albers GW et al. N Engl J Med 2024;390:701-711. <a href="https://pubmed.ncbi.nlm.nih.gov/38329148/" target="_blank">PMID: 38329148</a>.<br/>
+            <strong>TRACE-III:</strong> Xiong Y et al. N Engl J Med 2024;391:203-212. <a href="https://pubmed.ncbi.nlm.nih.gov/38884324/" target="_blank">PMID: 38884324</a>. | <strong>TEMPO-2:</strong> Coutts SB et al. Lancet 2024;403:2597-2605. <a href="https://pubmed.ncbi.nlm.nih.gov/38768626/" target="_blank">PMID: 38768626</a>. | <strong>2026 AIS Guideline:</strong> Prabhakaran S et al. Stroke 2026. <a href="https://pubmed.ncbi.nlm.nih.gov/41582814/" target="_blank">PMID: 41582814</a>.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function StkCoreMeasuresCard() {
   return (
     <div className="bedside-card-view screen-layout">
@@ -2663,7 +2811,7 @@ export function StkCoreMeasuresCard() {
               <tr>
                 <td><strong>STK-4</strong></td>
                 <td>Thrombolytic Therapy (IVT)</td>
-                <td>IV alteplase initiated at this hospital within 3h for eligible AIS patients arriving within 2h of LKW.</td>
+                <td>IV thrombolytic (tenecteplase or alteplase) initiated at this hospital within 3h for eligible AIS patients arriving within 2h of LKW. Tenecteplase 0.25 mg/kg single bolus is now the preferred agent (2026 AHA/ASA AIS guideline).</td>
               </tr>
               <tr>
                 <td><strong>STK-5</strong></td>
@@ -3582,6 +3730,7 @@ export function StrokePrognosisCard() {
               <div style={{fontSize: '7.6pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
                 • **Not for Care Limitations**: These clinical scores serve to quantify severity, improve inter-provider communication, and assist in counseling. They **MUST NOT** be used in isolation as the sole basis for withholding reperfusion therapies, surgical decompression, or withdrawing life-sustaining treatment (avoiding the self-fulfilling prophecy of poor outcome).
                 <br/>• **Dynamic Evaluation**: Clinical trajectory over the first 24–72 hours is often more predictive of final recovery than any single point-in-time calculation upon hospital admission.
+                <br/>• **Acute ICH — Hemostatic Therapy**: The ICH Score is prognostic, not a treatment target. Early intensive blood-pressure lowering and hematoma-directed care remain the evidence-based acute levers (2022 AHA/ASA ICH guideline). Recombinant factor VIIa (rFVIIa) given within 2h slowed hematoma growth but did **not** improve 180-day function and increased thromboembolic events (FASTEST, 2026; PMID 41653933) — **not** recommended for routine use.
               </div>
             </div>
 
@@ -4427,6 +4576,7 @@ export function AntiepilepticDrugsCard() {
                       <br/>• <strong>AIS &amp; ICH:</strong> Routine ASM prophylaxis is **not recommended** (Class III).
                       <br/>• <strong>aSAH:</strong> Routine prophylaxis is **not beneficial** (Class III); however, a short course (3-7 days) *may* be considered in high-risk features (MCA aneurysm, high-grade SAH, hydrocephalus, or cortical infarction) (Class IIb).
                     </li>
+                    <li><strong>Early Seizures &amp; Cortical Presentations (2026 nuance):</strong> An early acute-symptomatic seizure warrants treating the seizure (a short ASM course) but does <strong>not</strong> by itself mandate long-term therapy — reassess at follow-up and taper if no recurrence. A single <strong>late</strong> (unprovoked, &gt;7d) seizure defines post-stroke epilepsy and warrants ongoing ASM. Late-seizure risk is higher with <strong>cortical involvement, hemorrhagic transformation, and larger/severe strokes</strong>; <strong>lobar/cortical ICH</strong> is more epileptogenic than deep ICH. Favor surveillance and a low threshold to treat over routine prophylaxis.</li>
                   </ul>
                 </div>
 
@@ -4581,7 +4731,7 @@ export function AntiepilepticDrugsCard() {
 
             {/* Citations Footer */}
             <div className="ref-citation" style={{marginTop: 'auto', padding: '6px 10px 0 10px', fontSize: '8.2pt', lineHeight: '1.25', borderTop: '1px solid var(--rule-soft)'}}>
-              <strong>AIS Guidelines:</strong> Prabhakaran S et al. Stroke. 2026. <a href="https://pubmed.ncbi.nlm.nih.gov/41582814/" target="_blank">PMID: 41582814</a>. | <strong>ICH Guidelines:</strong> Greenberg SM et al. Stroke. 2022. <a href="https://pubmed.ncbi.nlm.nih.gov/35579047/" target="_blank">PMID: 35579047</a>.<br/>
+              <strong>AIS Guidelines:</strong> Prabhakaran S et al. Stroke. 2026. <a href="https://pubmed.ncbi.nlm.nih.gov/41582814/" target="_blank">PMID: 41582814</a>. | <strong>ICH Guidelines:</strong> Greenberg SM et al. Stroke. 2022. <a href="https://pubmed.ncbi.nlm.nih.gov/35579034/" target="_blank">PMID: 35579034</a>.<br/>
               <strong>IsCHEMiA Score:</strong> Epilepsy Currents. 2026. | <strong>SeLECT Score:</strong> Galovic M et al. Lancet Neurol. 2018. <a href="https://pubmed.ncbi.nlm.nih.gov/29329707/" target="_blank">PMID: 29329707</a>.
             </div>
           </div>
@@ -4624,7 +4774,7 @@ export function AspirinFailureCard() {
           <div className="card-content" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
             <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Aspirin Failure &amp; Resistance</h1>
             <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
-              AHA/ASA 2021 Secondary Prevention Guidelines &amp; Landmark Trial Reference.
+              AHA/ASA 2021 Secondary Prevention Guideline &amp; Landmark Trials, updated with evidence through 2026.
             </p>
 
             <svg viewBox="0 0 735 125" style={{width: '100%', height: '125px', marginBottom: '10px'}}>
@@ -4684,6 +4834,7 @@ export function AspirinFailureCard() {
                     <li><strong>Short-Term DAPT Escalation:</strong> For minor stroke (NIHSS &le; 3) or high-risk TIA (ABCD&sup2; &ge; 4), escalate to DAPT (Aspirin + Clopidogrel) for 21 days (CHANCE/POINT) or up to 90 days (INSPIRES).</li>
                     <li><strong>Severe Symptomatic Stenosis:</strong> Initiate Aspirin + Clopidogrel for 90 days + intensive risk control per SAMMPRIS protocol (PMID: 21899409).</li>
                     <li><strong>Polyvascular Disease:</strong> Consider dual pathway inhibition (low-dose Rivaroxaban 2.5mg BID + Aspirin 100mg daily) per COMPASS trial (PMID: 29141975).</li>
+                    <li><strong>Factor XIa Inhibition (New, 2026):</strong> For non-cardioembolic stroke / high-risk TIA already on antiplatelet therapy, adding oral <strong>asundexian</strong> 50mg daily reduced recurrent ischemic stroke vs placebo (6.2% vs 8.4%; HR 0.74) <em>without</em> a significant increase in major bleeding (OCEANIC-STROKE, PMID: 41985132). It is an <strong>add-on to</strong> — not a replacement for — antiplatelet therapy, and is not yet FDA/EMA-approved. Distinct from OCEANIC-AF, where asundexian was <em>inferior</em> to apixaban in atrial fibrillation, so it does not substitute for guideline anticoagulation.</li>
                   </ul>
                 </div>
 
@@ -4702,7 +4853,8 @@ export function AspirinFailureCard() {
             <div className="ref-citation" style={{marginTop: 'auto', padding: '6px 10px 0 10px', fontSize: '8.2pt', lineHeight: '1.25', borderTop: '1px solid var(--rule-soft)'}}>
               <strong>Guidelines:</strong> Kleindorfer DO et al. Stroke 2021. <a href="https://pubmed.ncbi.nlm.nih.gov/34024117/" target="_blank">PMID: 34024117</a>. | <strong>WASID (Resistance):</strong> Stroke 2009. <a href="https://pubmed.ncbi.nlm.nih.gov/19064771/" target="_blank">PMID: 19064771</a>. | <strong>CAPRIE:</strong> Lancet 1996. <a href="https://pubmed.ncbi.nlm.nih.gov/8932661/" target="_blank">PMID: 8932661</a>.<br/>
               <strong>CHANCE:</strong> N Engl J Med 2013. <a href="https://pubmed.ncbi.nlm.nih.gov/23803136/" target="_blank">PMID: 23803136</a>. | <strong>POINT:</strong> N Engl J Med 2018. <a href="https://pubmed.ncbi.nlm.nih.gov/29766750/" target="_blank">PMID: 29766750</a>. | <strong>INSPIRES:</strong> N Engl J Med 2024. <a href="https://pubmed.ncbi.nlm.nih.gov/38157499/" target="_blank">PMID: 38157499</a>.<br/>
-              <strong>SAMMPRIS:</strong> N Engl J Med 2011. <a href="https://pubmed.ncbi.nlm.nih.gov/21899409/" target="_blank">PMID: 21899409</a>. | <strong>COMPASS:</strong> Lancet 2018. <a href="https://pubmed.ncbi.nlm.nih.gov/29141975/" target="_blank">PMID: 29141975</a>. | <strong>Review:</strong> Ann Intern Med 2005. <a href="https://pubmed.ncbi.nlm.nih.gov/15738456/" target="_blank">PMID: 15738456</a>.
+              <strong>SAMMPRIS:</strong> N Engl J Med 2011. <a href="https://pubmed.ncbi.nlm.nih.gov/21899409/" target="_blank">PMID: 21899409</a>. | <strong>COMPASS:</strong> Lancet 2018. <a href="https://pubmed.ncbi.nlm.nih.gov/29141975/" target="_blank">PMID: 29141975</a>. | <strong>Review:</strong> Ann Intern Med 2005. <a href="https://pubmed.ncbi.nlm.nih.gov/15738456/" target="_blank">PMID: 15738456</a>.<br/>
+              <strong>OCEANIC-STROKE (asundexian):</strong> Sharma M et al. N Engl J Med 2026;394:1467-1479. <a href="https://pubmed.ncbi.nlm.nih.gov/41985132/" target="_blank">PMID: 41985132</a>.
             </div>
           </div>
         </div>

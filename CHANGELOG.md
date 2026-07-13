@@ -1,5 +1,37 @@
 # CHANGELOG
 
+## v6.11.5 — 2026-07-13 — 2026 guideline refresh for education cards
+
+Updated the clinical education cards in `src/education.jsx` to current (through
+2026) standards, with every trial result and guideline verified against primary
+PubMed sources before it was written. No changes to the institutional
+`PLACEHOLDERS`/protocol zone (leak-guard green).
+
+- **New card — "IV Thrombolysis: TNK & Time Windows":** tenecteplase 0.25 mg/kg
+  single bolus as the preferred agent, the standard 4.5 h window, and extended
+  4.5–24 h perfusion-based windows. Integrates ATTEST-2 (TNK non-inferior to
+  alteplase → preferred; PMID 39424558), TRACE-III (positive 4.5–24 h when EVT
+  unavailable; 38884324), TIMELESS (neutral when EVT available; 38329148), and
+  TEMPO-2 (futile in minor stroke with occlusion; 38768626).
+- **STK-4 core measure** made thrombolytic-agnostic (tenecteplase or alteplase;
+  TNK preferred per the 2026 AHA/ASA AIS guideline, PMID 41582814 — verified real).
+- **Secondary prevention:** added Factor XIa inhibition (asundexian, OCEANIC-STROKE
+  — ischemic stroke HR 0.74, bleeding not increased; PMID 41985132) to the Aspirin
+  Failure card and a 2026 prevention note to TOAST. OCEANIC-STROKE is a *completed,
+  positive* trial — the "early termination" belongs to OCEANIC-AF (asundexian
+  inferior to apixaban in AF); the card states this distinction and that asundexian
+  is an add-on, not a replacement for antiplatelets/anticoagulation, and unapproved.
+- **ICH:** added a FASTEST note (rFVIIa within 2 h *stopped for futility* — slowed
+  hematoma growth but no functional benefit and more thromboembolism; PMID 41653933;
+  not recommended). Fixed a wrong ICH-guideline citation (PMID 35579047, a dental-
+  education paper → correct Greenberg 2022, 35579034). ICH Score math unchanged.
+- **DAPT:** made the 21-day (minor stroke/high-risk TIA) vs 90-day (SAMMPRIS
+  intracranial stenosis) vs 30-day (THALES) durations explicit.
+- **ASMs:** added an early-seizure / cortical-ICH nuance; fixed the same ICH PMID.
+- Regenerated the `/content` data layer (education 16 → 17) and rebuilt `app.js`.
+  Version bumped 6.11.4 → 6.11.5 to bust HTTP/SW caches. Gates: leak-guard 0 ·
+  850 unit tests · content + citation validators · protocol snapshot lock · build.
+
 ## v6.11.4 — 2026-07-12 — rename "Example Protocols" tab to "Protocols"
 
 Renamed the top-level **"Example Protocols"** tab (and its command-palette
