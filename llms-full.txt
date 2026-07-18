@@ -1,6 +1,6 @@
 # Stroke CDS Educational Demo
 
-> Synthetic educational stroke decision-support demo (v6.11.5): example acute ischemic & hemorrhagic stroke pathways, 34 calculators, an evidence atlas (71 landmark trials, 10 active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.
+> Synthetic educational stroke decision-support demo (v6.11.6): example acute ischemic & hemorrhagic stroke pathways, 34 calculators, an evidence atlas (71 landmark trials, 10 active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.
 
 Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.
 
