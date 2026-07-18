@@ -15,5 +15,22 @@
     "certainty": "high",
     "lastReviewed": "2026-04-25",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "optimal-bp",
+    "name": "OPTIMAL-BP",
+    "fullName": "Intensive vs Conventional Blood Pressure Lowering after Successful Endovascular Thrombectomy",
+    "category": "bp-post-evt",
+    "population": "n=306, ≥18, NIHSS all, After successful EVT (mTICI ≥2b)",
+    "finding": "Intensive worse: 39.4% vs 54.4%",
+    "teachingPoint": "Objective: intensive SBP <140 after successful EVT reduced functional independence; reinforces ENCHANTED2/MT.",
+    "PMID": "37668619",
+    "year": 2023,
+    "citationIds": [
+      "cit-optimal-bp-2023"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-07-18",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

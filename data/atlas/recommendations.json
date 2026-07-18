@@ -3,7 +3,7 @@
     "endpoint": "recommendations",
     "schemaVersion": "1.0.0",
     "appVersion": "6.11.5",
-    "checksum": "sha256:84e470318b518d1475efba15cf0415e3",
+    "checksum": "sha256:a136fba348ce3218e822e73a3c82c768",
     "count": 11,
     "source": "Evidence atlas recommendations bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -138,7 +138,7 @@
         "cl-tnk-noninferior-alteplase"
       ],
       "caveats": [
-        "Use TNK 0.25 mg/kg only; in EXTEND-IA TNK part 2 the higher 0.4 mg/kg dose showed no reperfusion advantage over 0.25 mg/kg (19.3% vs 19.3%) with numerically more symptomatic ICH.",
+        "Use TNK 0.25 mg/kg only; the 0.4 mg/kg dose was not non-inferior in EXTEND-IA TNK part 2.",
         "Local protocols may continue to favor alteplase; both are acceptable."
       ],
       "lastReviewed": "2026-04-25",

@@ -3,7 +3,7 @@
     "endpoint": "active-trials",
     "schemaVersion": "1.0.0",
     "appVersion": "6.11.5",
-    "checksum": "sha256:85b7ba29a9281fabb0ae1743bde85144",
+    "checksum": "sha256:5458b6ea6836c8657520b2b8b9a113b8",
     "count": 10,
     "source": "Evidence atlas active-trials bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -157,9 +157,17 @@
         "MeVO domain: non-dominant/co-dominant M2 or M3 occlusion with NIHSS ≥8"
       ],
       "exclusionCriteria": [
-        "Pregnancy",
-        "Hemorrhage on imaging",
-        "ASPECTS <6 (CT) / <7 (MRI); tandem or multi-territory occlusion; ICAD; seizure at onset"
+        "Presumed septic embolus / suspected bacterial endocarditis",
+        "Seizure at stroke onset",
+        "Known contrast anaphylaxis precluding endovascular reperfusion",
+        "Suspected chronic occlusion, intracranial dissection, or cerebral vasculitis",
+        "Known or high suspicion of intracranial atherosclerotic disease (ICAD)",
+        "Known pregnancy",
+        "Pre-existing disease confounding neuro/functional evaluation; life expectancy <6 mo",
+        "Platelets <100,000/µL",
+        "CT ASPECTS <6 (MRI ASPECTS <7)",
+        "Tandem or multi-territory occlusion; unfavorable access anatomy",
+        "Significant mass effect with midline shift >5 mm; intracranial tumor; acute intracranial hemorrhage"
       ],
       "keyTakeaways": [
         "NIH StrokeNet adaptive platform with two EVT-expansion domains: mild stroke with LVO (NIHSS 0-5 + ICA/M1) and medium vessel occlusion (non-dominant M2 or M3, NIHSS ≥8)",
@@ -218,14 +226,28 @@
           "field": "pregnancy",
           "operator": "==",
           "value": true,
-          "label": "Pregnancy"
+          "label": "Known pregnancy"
         },
         {
           "id": "hemorrhage",
           "field": "hemorrhage",
           "operator": "==",
           "value": true,
-          "label": "Evidence of hemorrhage on imaging"
+          "label": "Acute intracranial hemorrhage on imaging"
+        },
+        {
+          "id": "seizureAtOnset",
+          "field": "seizures",
+          "operator": "==",
+          "value": true,
+          "label": "Seizure at stroke onset"
+        },
+        {
+          "id": "lowAspects",
+          "field": "aspectsScore",
+          "operator": "<",
+          "value": 6,
+          "label": "CT ASPECTS <6 (MRI <7)"
         }
       ],
       "relatedCompletedTrialIds": [

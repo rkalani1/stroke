@@ -1,10 +1,10 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:89890817417473c6f4f555ffd6c13cc0",
+    "checksum": "sha256:07d502a03c240e74815d11bbe86b09da",
     "counts": {
       "guidelines": 11,
-      "trials": 64,
+      "trials": 71,
       "education": 17,
       "calculators": 34,
       "references": 18
@@ -342,7 +342,7 @@
         "cit-eso-tnk-2023"
       ],
       "caveats": [
-        "Use TNK 0.25 mg/kg only; in EXTEND-IA TNK part 2 the higher 0.4 mg/kg dose showed no reperfusion advantage over 0.25 mg/kg (19.3% vs 19.3%) with numerically more symptomatic ICH.",
+        "Use TNK 0.25 mg/kg only; the 0.4 mg/kg dose was not non-inferior in EXTEND-IA TNK part 2.",
         "Local protocols may continue to favor alteplase; both are acceptable."
       ],
       "setting": "inpatient",
@@ -376,7 +376,7 @@
       "category": "af-after-ich",
       "population": "n=5599, ≥50, NIHSS n/a, chronic AF",
       "finding": "Favored apixaban: 1.6%/y vs 3.7%/y",
-      "teachingPoint": "Supports anticoagulation over aspirin for AF stroke prevention; informs ASPIRE rationale.",
+      "teachingPoint": "Supports anticoagulation over aspirin for AF stroke prevention generally; the ICH-survivor question is answered by the dedicated trials below.",
       "PMID": "21309657",
       "year": 2011,
       "citationIds": [
@@ -393,7 +393,7 @@
       "category": "af-after-ich",
       "population": "n=4012, ≥55, NIHSS n/a, subclinical AF detected on device",
       "finding": "Favored apixaban: 0.78%/y vs 1.24%/y",
-      "teachingPoint": "Establishes apixaban benefit even in subclinical AF; informs ICH-survivor decisions.",
+      "teachingPoint": "Establishes apixaban benefit in subclinical AF; the ICH-survivor question is addressed by PRESTIGE-AF, SoSTART, APACHE-AF and the COCROACH meta-analysis, which enrolled that population.",
       "PMID": "37952132",
       "year": 2024,
       "citationIds": [
@@ -401,6 +401,91 @@
       ],
       "certainty": "high",
       "lastReviewed": "2026-04-25",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "prestige-af",
+      "name": "PRESTIGE-AF",
+      "fullName": "Prevention of Stroke in Intracerebral Haemorrhage Survivors with Atrial Fibrillation",
+      "category": "af-after-ich",
+      "population": "n=319, median 79, NIHSS n/a, Spontaneous ICH survivors with AF, mRS ≤4",
+      "finding": "Ischaemic stroke markedly reduced (0.83 vs 8.60 per 100 patient-years); recurrent ICH did NOT meet non-inferiority (5.00 vs 0.82 per 100 patient-years)",
+      "teachingPoint": "Objective: anticoagulation after ICH in AF trades a large ischaemic-stroke reduction against a substantial recurrent-ICH increase; individualize.",
+      "PMID": "40023176",
+      "year": 2025,
+      "citationIds": [
+        "cit-prestige-af-2025"
+      ],
+      "certainty": "moderate",
+      "lastReviewed": "2026-07-18",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "enrich-af",
+      "name": "ENRICH-AF",
+      "fullName": "Edoxaban for Intracranial Hemorrhage Survivors with Atrial Fibrillation",
+      "category": "af-after-ich",
+      "population": "n=948, ≥45, NIHSS n/a, Intracranial-haemorrhage survivors with high-risk AF (CHA₂DS₂-VASc ≥2)",
+      "finding": "Full efficacy not yet reported; the lobar-ICH subgroup was stopped by the DSMB for excess recurrent haemorrhagic stroke",
+      "teachingPoint": "Objective: interim DSMB stopped edoxaban in lobar ICH for excess rebleeding; the main efficacy comparison is awaited.",
+      "PMID": "37839419",
+      "year": 2023,
+      "citationIds": [
+        "cit-enrich-af-2023"
+      ],
+      "certainty": "low",
+      "lastReviewed": "2026-07-18",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "sostart",
+      "name": "SoSTART",
+      "fullName": "Start or Stop Anticoagulants Randomised Trial",
+      "category": "af-after-ich",
+      "population": "n=203, adults, NIHSS n/a, Survivors of spontaneous intracranial haemorrhage with AF (CHA₂DS₂-VASc ≥2)",
+      "finding": "Inconclusive: 8/101 (8%) start vs 4/102 (4%) avoid; starting NOT shown non-inferior",
+      "teachingPoint": "Objective: did not establish non-inferiority of starting anticoagulation after ICH; hypothesis-generating.",
+      "PMID": "34487722",
+      "year": 2021,
+      "citationIds": [
+        "cit-sostart-2021"
+      ],
+      "certainty": "low",
+      "lastReviewed": "2026-07-18",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "apache-af",
+      "name": "APACHE-AF",
+      "fullName": "Apixaban After Anticoagulation-Associated Intracerebral Haemorrhage in Atrial Fibrillation",
+      "category": "af-after-ich",
+      "population": "n=101, median 78, NIHSS n/a, 7-90 d after anticoagulation-associated ICH; AF, CHA₂DS₂-VASc ≥2, mRS ≤4",
+      "finding": "No difference: 26% (12.6%/y) apixaban vs 24% (11.9%/y) avoid; high absolute risk in both arms",
+      "teachingPoint": "Objective: no clear difference; both strategies carry high residual vascular risk.",
+      "PMID": "34687635",
+      "year": 2021,
+      "citationIds": [
+        "cit-apache-af-2021"
+      ],
+      "certainty": "low",
+      "lastReviewed": "2026-07-18",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "cocroach",
+      "name": "COCROACH",
+      "fullName": "Oral Anticoagulation after Intracranial Haemorrhage in AF: Individual-Patient-Data Meta-analysis",
+      "category": "af-after-ich",
+      "population": "n=412, 75% ≥75, NIHSS n/a, AF with prior spontaneous intracranial haemorrhage (pooled RCTs: SoSTART, APACHE-AF, NASPAF-ICH)",
+      "finding": "Favoured anticoagulation but non-significant: 14% vs 22%",
+      "teachingPoint": "Objective synthesis: net benefit of anticoagulation after ICH in AF remains statistically uncertain; ischaemic reduction is offset by a non-significant bleeding increase.",
+      "PMID": "37839434",
+      "year": 2023,
+      "citationIds": [
+        "cit-cocroach-2023"
+      ],
+      "certainty": "moderate",
+      "lastReviewed": "2026-07-18",
       "provenance": "src/evidence/completedTrials.js"
     },
     {
@@ -503,6 +588,23 @@
       ],
       "certainty": "high",
       "lastReviewed": "2026-04-25",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "optimal-bp",
+      "name": "OPTIMAL-BP",
+      "fullName": "Intensive vs Conventional Blood Pressure Lowering after Successful Endovascular Thrombectomy",
+      "category": "bp-post-evt",
+      "population": "n=306, ≥18, NIHSS all, After successful EVT (mTICI ≥2b)",
+      "finding": "Intensive worse: 39.4% vs 54.4%",
+      "teachingPoint": "Objective: intensive SBP <140 after successful EVT reduced functional independence; reinforces ENCHANTED2/MT.",
+      "PMID": "37668619",
+      "year": 2023,
+      "citationIds": [
+        "cit-optimal-bp-2023"
+      ],
+      "certainty": "high",
+      "lastReviewed": "2026-07-18",
       "provenance": "src/evidence/completedTrials.js"
     },
     {
@@ -1201,6 +1303,23 @@
       ],
       "certainty": "moderate",
       "lastReviewed": "2026-07-06",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "switch",
+      "name": "SWITCH",
+      "fullName": "Decompressive Craniectomy plus Best Medical Treatment vs Best Medical Treatment Alone for Severe Deep ICH",
+      "category": "ich-surgery",
+      "population": "n=201, 18-75, NIHSS n/a, Severe deep (basal ganglia/thalamic) spontaneous ICH",
+      "finding": "Favoured surgery numerically but not significant: 44% vs 58%",
+      "teachingPoint": "Objective: numerically fewer very-poor outcomes with craniectomy, but not statistically significant; no safety excess.",
+      "PMID": "38761811",
+      "year": 2024,
+      "citationIds": [
+        "cit-switch-2024"
+      ],
+      "certainty": "moderate",
+      "lastReviewed": "2026-07-18",
       "provenance": "src/evidence/completedTrials.js"
     },
     {
