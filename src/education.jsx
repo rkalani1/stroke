@@ -500,6 +500,20 @@ const EDUCATION_MODULES = [
       { label: 'IMPROVE-IT', citation: 'Cannon CP, et al. Ezetimibe Added to Statin Therapy after Acute Coronary Syndromes. N Engl J Med. 2015;372(25):2387-2397.', pmid: '26039521' },
       { label: 'AHA/ASA 2021 Secondary Prevention', citation: 'Kleindorfer DO, et al. 2021 Guideline for the Prevention of Stroke in Patients With Stroke and TIA. Stroke. 2021;52(7):e364-e467.', pmid: '34024117' }
     ]
+  },
+  {
+    id: 'carotid-stenosis-management',
+    title: 'Carotid Stenosis: Revascularization vs Medical Therapy',
+    purpose: 'Symptomatic vs asymptomatic carotid stenosis, NASCET measurement, CEA vs CAS (CREST), the CREST-2 asymptomatic results, and intensive medical therapy as the common foundation.',
+    actions: 'carotid stenosis nascet cea carotid endarterectomy cas stenting revascularization symptomatic asymptomatic crest crest-2 acst-2 intensive medical therapy imm plaque bifurcation ldl antiplatelet',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'CREST-2', citation: 'Brott TG, et al. Medical Management and Revascularization for Asymptomatic Carotid Stenosis (CREST-2). N Engl J Med. 2025;394(3):219-231.', pmid: '41269206' },
+      { label: 'CREST', citation: 'Brott TG, et al. Stenting versus Endarterectomy for Treatment of Carotid-Artery Stenosis (CREST). N Engl J Med. 2010;363(1):11-23.', pmid: '20505173' },
+      { label: 'ACST-2', citation: 'Halliday A, et al. Second asymptomatic carotid surgery trial (ACST-2): stenting vs endarterectomy. Lancet. 2021;398(10305):1065-1073.', pmid: '34469763' },
+      { label: 'NASCET', citation: 'North American Symptomatic Carotid Endarterectomy Trial Collaborators. Beneficial effect of carotid endarterectomy in symptomatic patients with high-grade stenosis. N Engl J Med. 1991;325(7):445-453.', pmid: '1852179' }
+    ]
   }
 ];
 
@@ -1015,6 +1029,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <BasilarArteryOcclusionView />;
     case 'lipid-management-after-stroke':
       return <LipidManagementView />;
+    case 'carotid-stenosis-management':
+      return <CarotidStenosisView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -5478,6 +5494,138 @@ export function LipidManagementCard() {
               { label: 'FOURIER', cite: 'Sabatine MS et al. N Engl J Med. 2017;376(18):1713-1722.', pmid: '28304224' },
               { label: 'IMPROVE-IT', cite: 'Cannon CP et al. N Engl J Med. 2015;372(25):2387-2397.', pmid: '26039521' },
               { label: 'AHA/ASA 2021 Secondary Prevention', cite: 'Kleindorfer DO et al. Stroke. 2021;52(7):e364-e467.', pmid: '34024117' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Carotid Stenosis: Revascularization vs Medical Therapy
+// =====================================================================
+const CarotidStenosisView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <CarotidStenosisCard />
+  </ScaledCardWrapper>
+);
+
+export function CarotidStenosisCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-carotid-stenosis-management">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px', fontSize: '18pt' }}>Carotid Stenosis</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Revascularization vs medical therapy &mdash; NASCET, CREST, and CREST-2.
+            </p>
+
+            {/* Hero SVG: carotid bifurcation + NASCET | decision fork */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 180" style={{ width: '100%', height: 'auto' }}>
+                {/* Panel 1 — carotid bifurcation with plaque + NASCET */}
+                <text x="120" y="13" fill="var(--ink-soft)" fontSize="6.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">CAROTID PLAQUE &amp; NASCET</text>
+                {/* CCA + ICA vessel */}
+                <path d="M 78 168 L 78 112 C 70 104 64 96 66 84 L 68 28 L 90 28 L 88 84 C 90 96 98 104 102 112 L 102 168 Z" fill="var(--red-soft)" stroke="var(--slate)" strokeWidth="1.3" />
+                {/* ECA branch */}
+                <path d="M 96 110 L 120 34 L 132 36 L 106 112 Z" fill="var(--red-soft)" stroke="var(--slate)" strokeWidth="1.2" />
+                {/* plaque narrowing ICA */}
+                <path d="M 66 52 C 78 60 78 74 68 80 L 66 80 Z" fill="var(--amber)" stroke="var(--amber-deep)" strokeWidth="0.8" />
+                <path d="M 90 52 C 78 60 78 74 88 80 L 90 80 Z" fill="var(--amber)" stroke="var(--amber-deep)" strokeWidth="0.8" />
+                {/* measurement leaders */}
+                <line x1="78" y1="66" x2="150" y2="66" stroke="var(--red-deep)" strokeWidth="0.8" strokeDasharray="2 2" />
+                <text x="153" y="68" fill="var(--red-deep)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="start">① residual lumen</text>
+                <line x1="78" y1="36" x2="150" y2="36" stroke="var(--teal-deep)" strokeWidth="0.8" strokeDasharray="2 2" />
+                <text x="153" y="38" fill="var(--teal-deep)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="start">② distal ICA</text>
+                <text x="54" y="150" fill="var(--slate)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">CCA</text>
+                <text x="120" y="52" fill="var(--slate)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">ECA</text>
+                <rect x="120" y="92" width="150" height="24" rx="4" fill="#ffffff" stroke="var(--rule)" strokeWidth="1" />
+                <text x="195" y="102" fill="var(--ink-soft)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">NASCET % =</text>
+                <text x="195" y="112" fill="var(--ink-soft)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">(1 − ① ÷ ②) × 100</text>
+
+                <line x1="300" y1="12" x2="300" y2="168" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 2 — decision fork */}
+                <text x="520" y="13" fill="var(--ink-soft)" fontSize="6.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MANAGEMENT DECISION</text>
+                <rect x="455" y="22" width="130" height="24" rx="6" fill="var(--slate-soft)" stroke="var(--slate)" strokeWidth="1.3" />
+                <text x="520" y="37" fill="var(--slate)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Carotid stenosis</text>
+                <path d="M 490 46 L 420 62" stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" />
+                <path d="M 550 46 L 632 62" stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" />
+                {/* symptomatic */}
+                <rect x="330" y="62" width="185" height="28" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.3" />
+                <text x="422" y="73" fill="var(--purple-deep)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">SYMPTOMATIC</text>
+                <text x="422" y="84" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">recent TIA / stroke, ipsilateral</text>
+                <rect x="330" y="96" width="185" height="26" rx="5" fill="#ffffff" stroke="var(--purple)" strokeWidth="1" />
+                <text x="422" y="106" fill="var(--purple-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">≥70%: revascularize early</text>
+                <text x="422" y="116" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">(CEA or CAS, ≤2 wk) + IMM</text>
+                <rect x="330" y="128" width="185" height="24" rx="5" fill="#ffffff" stroke="var(--rule)" strokeWidth="1" />
+                <text x="422" y="143" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">50–69%: individualized · &lt;50%: none</text>
+                {/* asymptomatic */}
+                <rect x="540" y="62" width="185" height="28" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.3" />
+                <text x="632" y="73" fill="var(--teal-deep)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ASYMPTOMATIC</text>
+                <text x="632" y="84" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">≥70%, no recent event</text>
+                <rect x="540" y="96" width="185" height="56" rx="5" fill="#ffffff" stroke="var(--teal)" strokeWidth="1" />
+                <text x="632" y="108" fill="var(--teal-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Intensive medical mgmt (IMM)</text>
+                <text x="632" y="119" fill="var(--teal-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">is the foundation</text>
+                <text x="632" y="132" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">Add CEA / CAS selectively</text>
+                <text x="632" y="143" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">(CREST-2, shared decision)</text>
+              </svg>
+            </div>
+
+            {/* §1 Symptomatic disease (purple) */}
+            <CardSection color="purple" title="1. Symptomatic Disease">
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <li><strong>NASCET 70–99%:</strong> CEA gave a large benefit — <strong>~17% absolute reduction</strong> in ipsilateral stroke at 2 years (<strong>NNT ~6</strong>).</li>
+                <li><strong>50–69%:</strong> moderate benefit (~4.6% absolute over 5 y; greater in men and with hemispheric symptoms). <strong>&lt;50%:</strong> no benefit.</li>
+                <li><strong>Revascularize early</strong> (ideally within 2 weeks) on top of intensive medical therapy.</li>
+              </ul>
+            </CardSection>
+
+            {/* §2 CEA vs CAS (teal) */}
+            <CardSection color="teal" title="2. CEA vs CAS">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '7.5pt', lineHeight: '1.38', color: 'var(--ink-soft)' }}>
+                <div>
+                  <strong style={{ color: 'var(--teal-deep)', fontSize: '8pt' }}>CREST</strong>
+                  <br />Primary composite similar for CEA vs CAS; <strong>periprocedural stroke higher with CAS</strong>, <strong>periprocedural MI higher with CEA</strong>. Age interaction (~70 crossover: younger did relatively better with CAS, older with CEA).
+                </div>
+                <div style={{ borderLeft: '1.5px dashed var(--teal)', paddingLeft: '10px' }}>
+                  <strong style={{ color: 'var(--teal-deep)', fontSize: '8pt' }}>ACST-2 (asymptomatic)</strong>
+                  <br />CAS and CEA yielded <strong>similar</strong> rates of serious procedural complications and non-procedural stroke.
+                </div>
+              </div>
+            </CardSection>
+
+            {/* §3 Asymptomatic — CREST-2 (red) */}
+            <CardSection color="red" title="3. Asymptomatic — CREST-2 (2025)">
+              <div style={{ fontSize: '7.5pt', lineHeight: '1.38', color: 'var(--ink-soft)' }}>
+                Two parallel RCTs, ≥70% asymptomatic stenosis, on modern intensive medical management (IMM). <strong>4-yr primary composite (periprocedural stroke/death + ipsilateral stroke):</strong>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', margin: '4px 0 3px 0' }}>
+                  <div style={{ border: '1px solid var(--red)', borderRadius: '5px', padding: '4px 7px', background: '#ffffff' }}>
+                    <strong style={{ color: 'var(--red-deep)' }}>Stenting</strong> (n=1245): <strong>2.8%</strong> stenting+IMM vs <strong>6.0%</strong> IMM alone (P=0.02)
+                  </div>
+                  <div style={{ border: '1px solid var(--slate)', borderRadius: '5px', padding: '4px 7px', background: '#ffffff' }}>
+                    <strong style={{ color: 'var(--slate)' }}>Endarterectomy</strong> (n=1240): <strong>3.7%</strong> CEA+IMM vs <strong>5.3%</strong> IMM alone (P=0.24, NS)
+                  </div>
+                </div>
+                Event rates on contemporary IMM are low; adding stenting reduced events, CEA did not reach significance. <strong>IMM is the foundation for all</strong>; asymptomatic revascularization is selective and shared-decision-based.
+              </div>
+            </CardSection>
+
+            {/* §4 Intensive medical therapy (amber) */}
+            <CardSection color="amber" title="4. Intensive Medical Therapy" style={{ marginBottom: '6px' }}>
+              <div style={{ fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <strong>High-intensity statin (LDL &lt;70), antiplatelet, BP control, diabetes / lifestyle, smoking cessation</strong> — the common denominator across every arm.
+              </div>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'CREST-2', cite: 'Brott TG et al. N Engl J Med. 2025;394(3):219-231.', pmid: '41269206' },
+              { label: 'CREST', cite: 'Brott TG et al. N Engl J Med. 2010;363(1):11-23.', pmid: '20505173' },
+              { label: 'ACST-2', cite: 'Halliday A et al. Lancet. 2021;398(10305):1065-1073.', pmid: '34469763' },
+              { label: 'NASCET', cite: 'NASCET Collaborators. N Engl J Med. 1991;325(7):445-453.', pmid: '1852179' },
             ]} />
           </div>
         </div>

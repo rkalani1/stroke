@@ -32,6 +32,11 @@ PubMed). No change to the frozen Example Protocols zone.
   ezetimibe → PCSK9i ladder, with the hemorrhagic-stroke caveat. Sources:
   SPARCL (16899775), Treat Stroke to Target (31738483), FOURIER (28304224),
   IMPROVE-IT (26039521), AHA/ASA 2021 secondary prevention (34024117).
+- **`carotid-stenosis-management`** — symptomatic vs asymptomatic carotid
+  stenosis, NASCET measurement, CEA vs CAS (CREST/ACST-2), the CREST-2
+  asymptomatic results, and intensive medical therapy as the foundation.
+  Sources: CREST-2 (41269206), CREST (20505173), ACST-2 (34469763),
+  NASCET (1852179).
 
 ## 2026-07-11 — Clinical corrections (audit-flagged, clinician-directed)
 
