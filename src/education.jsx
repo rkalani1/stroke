@@ -454,6 +454,23 @@ const EDUCATION_MODULES = [
       { label: 'TO-ACT', citation: 'Coutinho JM, et al. Effect of Endovascular Treatment With Medical Management vs Standard Care on Severe Cerebral Venous Thrombosis (TO-ACT). JAMA Neurol. 2020;77(8):966-973.', pmid: '32421159' },
       { label: 'AHA/ASA Statement', citation: 'Saposnik G, et al. Diagnosis and management of cerebral venous thrombosis: a statement for healthcare professionals from the AHA/ASA. Stroke. 2011;42(4):1158-1192.', pmid: '21293023' }
     ]
+  },
+  {
+    id: 'large-core-thrombectomy',
+    title: 'Large-Core Thrombectomy',
+    purpose: 'Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the symptomatic-hemorrhage trade-off.',
+    actions: 'large core thrombectomy evt endovascular aspects 3-5 low aspects core volume salvageable penumbra select2 angel-aspect tension laste tesla rescue-japan limit symptomatic hemorrhage mrs shift 2026 aha asa guideline reperfusion',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'SELECT2', citation: 'Sarraj A, et al. Trial of Endovascular Thrombectomy for Large Ischemic Strokes (SELECT2). N Engl J Med. 2023;388(14):1259-1271.', pmid: '36762865' },
+      { label: 'ANGEL-ASPECT', citation: 'Huo X, et al. Trial of Endovascular Therapy for Acute Ischemic Stroke with Large Infarct (ANGEL-ASPECT). N Engl J Med. 2023;388(14):1272-1283.', pmid: '36762852' },
+      { label: 'TENSION', citation: 'Bendszus M, et al. Endovascular thrombectomy for acute ischaemic stroke with established large infarct (TENSION). Lancet. 2023;402(10414):1753-1763.', pmid: '37837989' },
+      { label: 'LASTE', citation: 'Costalat V, et al. Trial of Thrombectomy for Stroke with a Large Infarct of Unrestricted Size (LASTE). N Engl J Med. 2024;390(18):1677-1689.', pmid: '38718358' },
+      { label: 'TESLA', citation: 'Yoo AJ, et al. Thrombectomy for Stroke With Large Infarct on Noncontrast CT: The TESLA Randomized Clinical Trial. JAMA. 2024;332(16):1355-1366.', pmid: '39374319' },
+      { label: 'RESCUE-Japan LIMIT', citation: 'Yoshimura S, et al. Endovascular Therapy for Acute Stroke with a Large Ischemic Region. N Engl J Med. 2022;386(14):1303-1313.', pmid: '35138767' },
+      { label: '2026 AIS Guideline', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' }
+    ]
   }
 ];
 
@@ -963,6 +980,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <AspirinFailureView />;
     case 'cerebral-venous-sinus-thrombosis':
       return <CvstView />;
+    case 'large-core-thrombectomy':
+      return <LargeCoreThrombectomyView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -5055,4 +5074,137 @@ export function CvstCard() {
     </div>
   );
 }
+
+// =====================================================================
+// MODULE — Large-Core Thrombectomy
+// =====================================================================
+const LargeCoreThrombectomyView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <LargeCoreThrombectomyCard />
+  </ScaledCardWrapper>
+);
+
+export function LargeCoreThrombectomyCard() {
+  const trials = [
+    { t: 'RESCUE-Japan LIMIT', pop: 'ASPECTS 3–5', res: 'mRS 0–3: 31% vs 13% with EVT' },
+    { t: 'SELECT2', pop: 'ASPECTS 3–5 or core ≥50 mL', res: 'mRS 0–2: 20% vs 7%; positive mRS shift' },
+    { t: 'ANGEL-ASPECT', pop: 'ASPECTS 3–5 or core 70–100 mL', res: 'mRS 0–2: 30% vs 12%; positive mRS shift' },
+    { t: 'TENSION', pop: 'ASPECTS 3–5', res: 'mRS 0–3 higher with EVT; positive shift' },
+    { t: 'LASTE', pop: 'ASPECTS 0–5 (incl. <3)', res: 'EVT benefit on the mRS distribution' },
+    { t: 'TESLA', pop: 'ASPECTS 2–5', res: 'Utility-weighted mRS did NOT reach the pre-set Bayesian threshold; several secondary functional endpoints favored EVT' },
+  ];
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-large-core-thrombectomy">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Large-Core Thrombectomy</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              EVT for large ischemic core (low ASPECTS / large core volume) &mdash; the 2022&ndash;2024 evidence.
+            </p>
+
+            {/* Hero SVG: ASPECTS core | core-vs-penumbra | forest-plot motif */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 180" style={{ width: '100%', height: 'auto' }}>
+                {/* Panel 1 — low ASPECTS core */}
+                <text x="120" y="14" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LOW ASPECTS = LARGE CORE</text>
+                <ellipse cx="118" cy="72" rx="96" ry="46" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                <line x1="118" y1="28" x2="118" y2="116" stroke="var(--rule-soft)" strokeWidth="1" />
+                <ellipse cx="150" cy="72" rx="46" ry="33" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.4" />
+                <ellipse cx="146" cy="72" rx="26" ry="20" fill="var(--amber)" opacity="0.85" />
+                <text x="146" y="74" fill="#ffffff" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Core</text>
+                <text x="120" y="140" fill="var(--amber-deep)" fontSize="9pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ASPECTS 3&ndash;5</text>
+                <text x="120" y="153" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">≈ 5&ndash;7 of 10 MCA regions involved</text>
+
+                <line x1="240" y1="12" x2="240" y2="164" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 2 — core vs salvageable */}
+                <text x="360" y="14" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">CORE vs SALVAGEABLE</text>
+                <ellipse cx="358" cy="74" rx="80" ry="44" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.4" />
+                <ellipse cx="342" cy="74" rx="40" ry="28" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.3" />
+                <ellipse cx="338" cy="74" rx="18" ry="13" fill="var(--amber)" opacity="0.85" />
+                <text x="338" y="76" fill="#ffffff" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Core</text>
+                <text x="405" y="48" fill="var(--teal-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Salvageable</text>
+                <text x="405" y="57" fill="var(--teal-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">penumbra</text>
+                <text x="360" y="140" fill="var(--ink-mute)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">EVT rescues salvageable tissue beyond the core</text>
+
+                <line x1="478" y1="12" x2="478" y2="164" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 3 — forest-plot motif */}
+                <text x="605" y="14" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">2022&ndash;2024 RCTs &mdash; mRS SHIFT</text>
+                <line x1="600" y1="26" x2="600" y2="142" stroke="var(--ink-mute)" strokeWidth="1.2" strokeDasharray="3 2" />
+                {[
+                  { n: 'RESCUE-Japan LIMIT', y: 34, dot: 662, lo: 636, hi: 686, c: 'var(--teal-deep)' },
+                  { n: 'SELECT2', y: 52, dot: 650, lo: 626, hi: 672, c: 'var(--teal-deep)' },
+                  { n: 'ANGEL-ASPECT', y: 70, dot: 644, lo: 622, hi: 664, c: 'var(--teal-deep)' },
+                  { n: 'TENSION', y: 88, dot: 654, lo: 630, hi: 676, c: 'var(--teal-deep)' },
+                  { n: 'LASTE', y: 106, dot: 658, lo: 632, hi: 682, c: 'var(--teal-deep)' },
+                  { n: 'TESLA', y: 124, dot: 612, lo: 588, hi: 636, c: 'var(--amber)' },
+                ].map((r) => (
+                  <g key={r.n}>
+                    <text x="486" y={r.y + 2.5} fill="var(--ink-soft)" fontSize="4.8pt" fontFamily="Outfit" fontWeight="700" textAnchor="start">{r.n}</text>
+                    <line x1={r.lo} y1={r.y} x2={r.hi} y2={r.y} stroke={r.c} strokeWidth="1.4" />
+                    <circle cx={r.dot} cy={r.y} r="3.4" fill={r.c} />
+                  </g>
+                ))}
+                <text x="605" y="156" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">← medical  |  EVT favored →</text>
+              </svg>
+            </div>
+
+            {/* §1 The question (purple) */}
+            <CardSection color="purple" title="1. The Question">
+              <div style={{ fontSize: '7.9pt', lineHeight: '1.42', color: 'var(--ink-soft)' }}>
+                Historically EVT required a <strong>small core (ASPECTS ≥6)</strong>. Six 2022&ndash;2024 RCTs tested EVT for a <strong>large ischemic core</strong> (low ASPECTS or large core volume). All were <strong>positive or supportive</strong> for a functional-outcome benefit <strong>despite higher symptomatic hemorrhage</strong>.
+              </div>
+            </CardSection>
+
+            {/* §2 The trials (teal) */}
+            <CardSection color="teal" title="2. The Trials (2022–2024)">
+              <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '7.4pt' }}>
+                <thead>
+                  <tr style={{ background: 'var(--teal)' }}>
+                    <th style={{ width: '120px' }}>Trial</th>
+                    <th style={{ width: '160px' }}>Population</th>
+                    <th>Key result</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {trials.map((r) => (
+                    <tr key={r.t}>
+                      <td><strong>{r.t}</strong></td>
+                      <td>{r.pop}</td>
+                      <td>{r.res}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardSection>
+
+            {/* §3 Bottom line & caveats (red) */}
+            <CardSection color="red" title="3. Bottom Line & Caveats" style={{ marginBottom: '6px' }}>
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <li>EVT is now recommended for <strong>selected large-core patients</strong> (low ASPECTS or large core with salvageable tissue) — reflected in the 2026 AHA/ASA AIS guideline. Benefit is usually a <strong>shift toward less disability</strong>, not independence.</li>
+                <li>Symptomatic ICH is <strong>higher than in small-core EVT</strong>, but net functional benefit persists.</li>
+                <li>Very large cores (<strong>ASPECTS 0–2</strong>) benefit less and carry the highest hemorrhage risk — <strong>individualize</strong>.</li>
+              </ul>
+            </CardSection>
+
+            <CardRefFooter style={{ fontSize: '7pt' }} refs={[
+              { label: 'SELECT2', cite: 'Sarraj A et al. N Engl J Med. 2023;388(14):1259-1271.', pmid: '36762865' },
+              { label: 'ANGEL-ASPECT', cite: 'Huo X et al. N Engl J Med. 2023;388(14):1272-1283.', pmid: '36762852' },
+              { label: 'TENSION', cite: 'Bendszus M et al. Lancet. 2023;402(10414):1753-1763.', pmid: '37837989' },
+              { label: 'LASTE', cite: 'Costalat V et al. N Engl J Med. 2024;390(18):1677-1689.', pmid: '38718358' },
+              { label: 'TESLA', cite: 'Yoo AJ et al. JAMA. 2024;332(16):1355-1366.', pmid: '39374319' },
+              { label: 'RESCUE-Japan LIMIT', cite: 'Yoshimura S et al. N Engl J Med. 2022;386(14):1303-1313.', pmid: '35138767' },
+              { label: '2026 AIS Guideline', cite: 'Prabhakaran S et al. Stroke. 2026.', pmid: '41582814' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// __NV_MODULES_END__  (new neurovascular module components are inserted above this line)
 

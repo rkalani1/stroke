@@ -1,11 +1,11 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:f7bc3036ff058de1a152ef6f14943e09",
+    "checksum": "sha256:a7735c09e8a16c749da7913397b4e324",
     "counts": {
       "guidelines": 11,
       "trials": 71,
-      "education": 18,
+      "education": 19,
       "calculators": 34,
       "references": 18
     },
@@ -2071,6 +2071,61 @@
       "lastReviewed": "2026-07-13",
       "provenance": "src/education.jsx",
       "body": "Tenecteplase (TNK) as the standard IV thrombolytic for acute ischemic stroke — the standard 4.5-hour window, extended perfusion-based windows, and the defining trial evidence (ATTEST-2, TIMELESS, TRACE-III).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "large-core-thrombectomy",
+      "title": "Large-Core Thrombectomy",
+      "summary": "Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the symptomatic-hemorrhage trade-off.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "\"label\"": "SELECT2",
+          "\"citation\"": "Sarraj A, et al. Trial of Endovascular Thrombectomy for Large Ischemic Strokes (SELECT2). N Engl J Med. 2023;388(14):1259-1271.",
+          "\"pmid\"": "36762865"
+        },
+        {
+          "\"label\"": "ANGEL-ASPECT",
+          "\"citation\"": "Huo X, et al. Trial of Endovascular Therapy for Acute Ischemic Stroke with Large Infarct (ANGEL-ASPECT). N Engl J Med. 2023;388(14):1272-1283.",
+          "\"pmid\"": "36762852"
+        },
+        {
+          "\"label\"": "TENSION",
+          "\"citation\"": "Bendszus M, et al. Endovascular thrombectomy for acute ischaemic stroke with established large infarct (TENSION). Lancet. 2023;402(10414):1753-1763.",
+          "\"pmid\"": "37837989"
+        },
+        {
+          "\"label\"": "LASTE",
+          "\"citation\"": "Costalat V, et al. Trial of Thrombectomy for Stroke with a Large Infarct of Unrestricted Size (LASTE). N Engl J Med. 2024;390(18):1677-1689.",
+          "\"pmid\"": "38718358"
+        },
+        {
+          "\"label\"": "TESLA",
+          "\"citation\"": "Yoo AJ, et al. Thrombectomy for Stroke With Large Infarct on Noncontrast CT: The TESLA Randomized Clinical Trial. JAMA. 2024;332(16):1355-1366.",
+          "\"pmid\"": "39374319"
+        },
+        {
+          "\"label\"": "RESCUE-Japan LIMIT",
+          "\"citation\"": "Yoshimura S, et al. Endovascular Therapy for Acute Stroke with a Large Ischemic Region. N Engl J Med. 2022;386(14):1303-1313.",
+          "\"pmid\"": "35138767"
+        },
+        {
+          "\"label\"": "2026 AIS Guideline",
+          "\"citation\"": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
+          "\"pmid\"": "41582814"
+        }
+      ],
+      "lastReviewed": "2026-07-18",
+      "provenance": "src/education.jsx",
+      "body": "Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the symptomatic-hemorrhage trade-off.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "malignant-infarction",

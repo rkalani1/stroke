@@ -19,6 +19,11 @@ PubMed). No change to the frozen Example Protocols zone.
   CTV/MRV diagnosis, anticoagulation despite venous hemorrhage, DOAC transition,
   ISCVT prognosis. Sources: ISCVT (14976332), RE-SPECT CVT (31479105),
   ACTION-CVT (35143325), TO-ACT (32421159), AHA/ASA statement (21293023).
+- **`large-core-thrombectomy`** — EVT for large ischemic core (low ASPECTS /
+  large core volume): the six 2022–2024 RCTs and the mRS-shift benefit vs
+  higher symptomatic hemorrhage. Sources: SELECT2 (36762865), ANGEL-ASPECT
+  (36762852), TENSION (37837989), LASTE (38718358), TESLA (39374319),
+  RESCUE-Japan LIMIT (35138767), 2026 AIS guideline (41582814).
 
 ## 2026-07-11 — Clinical corrections (audit-flagged, clinician-directed)
 
