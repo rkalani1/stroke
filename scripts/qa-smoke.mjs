@@ -1117,7 +1117,13 @@ async function main() {
       };
     });
 
-  const browser = await chromium.launch({ headless: true });
+  // STROKE_CHROMIUM_PATH override (mirrors scripts/snapshot-example-protocols.mjs)
+  // lets CI/local envs point at an already-installed Chromium instead of the
+  // Playwright-pinned build. No override → default resolution, unchanged.
+  const browser = await chromium.launch({
+    headless: true,
+    ...(process.env.STROKE_CHROMIUM_PATH ? { executablePath: process.env.STROKE_CHROMIUM_PATH } : {})
+  });
   const runs = [];
 
   for (const target of effectiveTargets) {

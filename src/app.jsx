@@ -17299,7 +17299,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                          deep in the gated telestroke flow. Institution-neutral educational
                          examples — verify against the approved local protocol before use. */}
                     <details id="doc-templates-section" className="bg-card border border-line rounded-md">
-                      <summary className="cursor-pointer select-none px-4 py-3 font-serif text-section text-ink flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                      <summary className="cursor-pointer select-none px-4 py-3 text-section text-ink flex flex-wrap items-center gap-x-2 gap-y-0.5">
                         Documentation templates
                         <span className="text-xs font-sans text-mute font-normal">— risk-benefit discussion + post-reperfusion management (copy into EMR note)</span>
                       </summary>
@@ -33921,9 +33921,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Intracranial Hypertension & Herniation */}
-                    <details id="ref-icp" className="bg-white border border-red-200 rounded-lg dark:bg-card dark:border-red-900">
-                      <summary className="cursor-pointer p-4 font-semibold text-red-800 hover:bg-red-50 rounded-lg flex items-center gap-2 dark:text-red-300 dark:hover:bg-slate-850">
-                        <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-red-600 dark:text-red-400"></i>
+                    <details id="ref-icp" className="bg-white border border-crit-200 rounded-lg dark:bg-card dark:border-crit-900">
+                      <summary className="cursor-pointer p-4 font-semibold text-crit-800 hover:bg-crit-50 rounded-lg flex items-center gap-2 dark:text-crit-300 dark:hover:bg-slate-850">
+                        <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-crit-600 dark:text-crit-400"></i>
                         Intracranial Hypertension &amp; Herniation Infographic
                       </summary>
                       <div className="px-4 pb-4">

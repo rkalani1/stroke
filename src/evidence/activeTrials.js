@@ -85,26 +85,26 @@ export const activeTrials = [
     phase: 'Adaptive Platform',
     status: 'recruiting',
     topic: 'evt-mevo',
-    briefDescription: 'NIH StrokeNet adaptive platform optimizing EVT for mild stroke with LVO (NIHSS 0-5 + ICA/M1) and for medium / distal vessel occlusions (M2-M4, A1-A3, P1-P3).',
-    rationale: 'ESCAPE-MeVO and DISTAL did not show routine benefit for isolated medium-vessel occlusion; STEP-EVT looks for selection rules that recover benefit in specific subgroups.',
+    briefDescription: 'NIH StrokeNet adaptive platform optimizing EVT for mild stroke with LVO (NIHSS 0-5 + ICA/M1) and for medium vessel occlusions (non-dominant/co-dominant M2 or M3, NIHSS ≥8).',
+    rationale: 'ESCAPE-MeVO and DISTAL did not show routine benefit for isolated medium-vessel occlusion; STEP looks for selection rules that recover benefit in specific subgroups.',
     inclusionCriteria: [
       'Age ≥18 y',
       'AIS ≤24 h from LKW',
       'Pre-stroke mRS ≤2',
       'Low-NIHSS domain: NIHSS 0-5 with ICA or M1 occlusion and disabling symptoms; OR',
-      'MeVO domain: M2/M3/M4, A1-A3, or P1-P3 occlusion with appropriate perfusion imaging'
+      'MeVO domain: non-dominant/co-dominant M2 or M3 occlusion with NIHSS ≥8'
     ],
     exclusionCriteria: [
       'Pregnancy',
       'Hemorrhage on imaging',
-      'Large core (ASPECTS <3 or core >100 mL window-dependent)'
+      'ASPECTS <6 (CT) / <7 (MRI); tandem or multi-territory occlusion; ICAD; seizure at onset'
     ],
     matcherCriteria: [
       { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
       { field: 'hoursFromLKW', operator: '<=', value: 24, label: 'Within 24 h from LKW' },
       { field: 'premorbidMRS', operator: '<=', value: 2, label: 'Pre-stroke mRS ≤2' },
-      { field: 'vesselOcclusion', operator: 'present', value: ['ICA', 'M1', 'M2', 'M3', 'M4', 'A1', 'A2', 'A3', 'P1', 'P2', 'P3'], label: 'LVO or MeVO present' },
-      { field: 'domainMatch', operator: 'in', value: ['low-nihss-lvo', 'mevo'], label: 'Matches Low-NIHSS or MeVO domain' }
+      { field: 'vesselOcclusion', operator: 'present', value: ['ICA', 'M1', 'M2', 'M3'], label: 'LVO (ICA/M1) or M2/M3 MeVO present' },
+      { field: 'domainMatch', operator: 'in', value: ['low-nihss-lvo', 'mevo'], label: 'Matches Low-NIHSS-LVO or M2/M3 NIHSS≥8 MeVO domain' }
     ],
     matcherExclusions: [
       { id: 'pregnancy', field: 'pregnancy', operator: '==', value: true, label: 'Pregnancy' },
@@ -116,14 +116,14 @@ export const activeTrials = [
     verificationStatus: 'verified-clinicaltrials-gov',
     category: 'ischemic',
     keyTakeaways: [
-      "NIH StrokeNet adaptive platform with two domains: mild stroke with LVO (NIHSS 0-5) and medium/distal vessel occlusions (M2-M4, A1-A3, P1-P3)",
+      "NIH StrokeNet adaptive platform with two EVT-expansion domains: mild stroke with LVO (NIHSS 0-5 + ICA/M1) and medium vessel occlusion (non-dominant M2 or M3, NIHSS ≥8)",
       "ESCAPE-MeVO (2025) showed no routine functional benefit of EVT for isolated MeVO; STEP aims to identify specific subgroups that may still benefit",
       "Adaptive design allows rapid testing of multiple EVT devices and techniques"
     ],
     lookingFor: [
-      "Two domains: Low NIHSS with LVO, OR Medium/Distal Vessel Occlusion",
+      "Two EVT-expansion domains: Low-NIHSS LVO, OR M2/M3 medium vessel occlusion",
       "Low NIHSS (0-5) + ICA/M1 occlusion, or",
-      "M2/M3/M4, A1-A3, P1-P3 occlusion regardless of NIHSS"
+      "Non-dominant/co-dominant M2 or M3 occlusion with NIHSS ≥8"
     ],
     legacyMatcherKey: 'STEP'
   }),
@@ -273,26 +273,32 @@ export const activeTrials = [
   }),
 
 
+  // NOTE: MOST is COMPLETED (NCT03735979; NINDS/Washington University; results
+  // reported 2024, neutral). Retained here for atlas/context continuity — the
+  // app screener hides non-recruiting trials via isTrialActivelyRecruiting
+  // (app.jsx), so a completed status removes it from active matching. The
+  // matcherCriteria below are kept only as a frozen scenario-snapshot baseline.
   makeActiveTrial({
     id: 'most',
     shortName: 'MOST',
     fullName: 'Multi-arm Optimization of Stroke Thrombolysis',
-    nctId: 'NCT05326139',
-    phase: 'Adaptive Platform',
-    status: 'recruiting',
+    nctId: 'NCT03735979',
+    phase: 'Phase 3 (adaptive, multi-arm)',
+    status: 'completed',
     topic: 'tnk-vs-alteplase',
-    briefDescription: 'Adaptive platform testing TNK 0.40 mg/kg vs standard 0.25 mg/kg, plus nerinetide as neuroprotective adjunct to EVT.',
-    rationale: 'EXTEND-IA TNK part 2 did not show non-inferiority of 0.40 vs 0.25 in EVT pathway, but adaptive platform allows multiple device/agent comparisons.',
+    briefDescription: 'Completed NINDS adaptive, multi-arm trial of argatroban or eptifibatide as adjuncts to standard IV thrombolysis in acute ischemic stroke; reported 2024 — neither adjunct improved 90-day outcome (neutral).',
+    rationale: 'Tested whether adding an antithrombotic adjunct (argatroban or eptifibatide) to IV thrombolysis improves 90-day disability; the completed trial was neutral for both.',
     inclusionCriteria: [
       'Age ≥18 y',
-      'AIS with LVO (ICA/M1)',
-      'IVT-eligible',
-      'Within 4.5 h of LKW',
-      'Pre-stroke mRS 0-1'
+      'AIS treated with IV thrombolysis (0.9 mg/kg alteplase or 0.25 mg/kg TNK) within 3 h of onset',
+      'NIHSS ≥6 prior to thrombolysis',
+      'Study drug startable within 60 min (≤75 min) of thrombolysis initiation'
     ],
     exclusionCriteria: [
-      'Anticoagulation with active drug effect',
-      'Hemorrhage on CT'
+      'INR >1.5 or active anticoagulant effect',
+      'Prior stroke within 90 days',
+      'Prior intracranial hemorrhage',
+      'Platelets <100,000/mm³'
     ],
     matcherCriteria: [
       { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
@@ -306,20 +312,17 @@ export const activeTrials = [
       { id: 'hemorrhage', field: 'hemorrhage', operator: '==', value: true, label: 'Evidence of hemorrhage on CT' },
     ],
     relatedCompletedTrialIds: ['act', 'trace-2', 'original'],
-    link: 'https://clinicaltrials.gov/study/NCT05326139',
+    link: 'https://clinicaltrials.gov/study/NCT03735979',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
     category: 'ischemic',
     keyTakeaways: [
-      "Adaptive platform testing TNK 0.40 mg/kg (higher dose) vs standard 0.25 mg/kg for AIS with LVO",
-      "Also testing nerinetide (NA-1) as neuroprotective adjunct to EVT",
-      "Could establish optimized TNK dosing for LVO patients proceeding to EVT"
+      "Completed adaptive, multi-arm trial of adjunctive argatroban or eptifibatide with IV thrombolysis",
+      "Neither adjunct improved 90-day functional outcome (neutral, reported 2024)",
+      "Does not support routine argatroban or eptifibatide as an adjunct to thrombolysis"
     ],
     lookingFor: [
-      "Acute ischemic stroke with LVO",
-      "Eligible for IV thrombolysis",
-      "Within 4.5 hours from LKW",
-      "Age 18+"
+      "Completed — no longer enrolling (results reported 2024, neutral)"
     ],
     legacyMatcherKey: 'MOST'
   }),

@@ -160,8 +160,13 @@ async function main() {
   for (const f of gfiles) {
     const raw = await fs.readFile(path.join(gdir, f), 'utf8');
     const g = JSON.parse(raw);
+    // Fallback id/title derived from the filename so non-guideline catalogs
+    // (e.g. landmark-trials.json, which has no id/title/doi metadata) still
+    // produce an identifiable, machine-parseable index entry.
+    const derivedId = f.replace(/\.json$/, '');
+    const humanTitle = derivedId.replace(/(^|-)([a-z])/g, (_, sep, c) => (sep ? ' ' : '') + c.toUpperCase());
     gindex.push({
-      id: g.id, title: g.title, shortTitle: g.shortTitle, doi: g.doi,
+      id: g.id || derivedId, title: g.title || humanTitle, shortTitle: g.shortTitle, doi: g.doi,
       publisherUrl: g.publisherUrl, pdfUrl: g.pdfUrl,
       recommendationCount: Array.isArray(g.recommendations) ? g.recommendations.length : 0,
       url: `${BASE_URL}/data/guidelines/${f}`,

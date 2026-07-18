@@ -117,7 +117,12 @@ describe('matcher engine — operators', () => {
       expect(resolveField('reperfusion', { telestrokeNote: {} })).toBeNull();
       // Definitive false-false → false (no reperfusion plan recorded).
       expect(resolveField('reperfusion', { telestrokeNote: { tnkRecommended: false, evtRecommended: false } })).toBe(false);
-      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'] } })).toBe('mevo');
+      // STEP MVO domain (NCT06289985) requires non-dominant M2/M3 AND NIHSS ≥8;
+      // M2/M3 alone (low or unknown NIHSS) must NOT match — that false positive
+      // was the pre-fix bug.
+      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'], nihss: '8' }, nihssScore: 8 })).toBe('mevo');
+      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'] } })).toBe('none');
+      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M4'], nihss: '12' }, nihssScore: 12 })).toBe('none');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M1'], nihss: '4' }, nihssScore: 4 })).toBe('low-nihss-lvo');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M1'], nihss: '8' }, nihssScore: 8 })).toBe('none');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: [] } })).toBeNull();

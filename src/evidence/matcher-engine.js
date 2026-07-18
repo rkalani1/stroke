@@ -100,9 +100,12 @@ const fieldResolvers = {
   domainMatch: (d) => {
     const nihss = tryInt(nihssOf(d));
     const occlusion = d?.telestrokeNote?.vesselOcclusion || [];
-    const mevoMatch = occlusion.some((v) =>
-      ['M2', 'M3', 'M4', 'A1', 'A2', 'A3', 'P1', 'P2', 'P3'].includes(v)
-    );
+    // STEP MVO domain (NCT06289985): non-dominant/co-dominant M2 or M3 AND
+    // NIHSS ≥8. M4/A/P occlusions and low-NIHSS MeVO are NOT in the trial's
+    // MVO domain — matching them would produce false-positive eligibility.
+    const mevoMatch =
+      nihss !== null && nihss >= 8 &&
+      occlusion.some((v) => ['M2', 'M3'].includes(v));
     if (mevoMatch) return 'mevo';
     if (nihss !== null && nihss <= 5 && (occlusion.includes('ICA') || occlusion.includes('M1'))) {
       return 'low-nihss-lvo';

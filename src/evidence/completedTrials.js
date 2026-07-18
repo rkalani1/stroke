@@ -487,7 +487,7 @@ export const completedTrials = [
     fullName: 'Thrombolysis for Central Retinal Artery Occlusion',
     topic: 'crao-thrombolysis',
     diseaseArea: ['crao-thrombolysis'],
-    population: { n: 71, ageRange: '≥18', nihssRange: 'n/a', timeWindow: '≤4.5 h from vision loss', keyInclusion: ['CRAO with visual acuity ≤20/200'], keyExclusion: [] },
+    population: { n: 70, ageRange: '≥18', nihssRange: 'n/a', timeWindow: '≤4.5 h from severe vision loss', keyInclusion: ['CRAO with visual acuity ≤20/200'], keyExclusion: [] },
     intervention: 'IV alteplase 0.9 mg/kg',
     comparator: 'Standard care',
     primaryEndpoint: { definition: 'Visual acuity improvement', timepoint: '7 d / 30 d', result: 'No significant benefit overall (qualitative summary)', effectSize: '', confidenceInterval: '', pValue: '' },
@@ -501,7 +501,7 @@ export const completedTrials = [
     citationIds: ['cit-theia-2023'],
     relatedActiveTrialIds: [],
     practiceImpact: 'CRAO IVT is reasonable in selected centers; no strong RCT support yet.',
-    lastReviewed: lr,
+    lastReviewed: '2026-07-18',
     verificationStatus: 'unverified-source-limited',
     verificationNotes: 'Numeric primary-endpoint precision left qualitative pending manual verification.'
   }),
