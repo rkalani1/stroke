@@ -538,6 +538,21 @@ const EDUCATION_MODULES = [
       { label: 'Arterial territories — cerebral hemispheres', citation: 'Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' },
       { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' }
     ]
+  },
+  {
+    id: 'anticoagulation-reversal',
+    title: 'Anticoagulation Reversal in Acute Hemorrhage',
+    purpose: 'Agent-specific reversal for intracranial hemorrhage — 4F-PCC + vitamin K for warfarin, idarucizumab for dabigatran, andexanet alfa (or 4F-PCC) for factor Xa inhibitors — with the ANNEXA-I thrombotic caveat and parallel BP/neurosurgery steps.',
+    actions: 'anticoagulation reversal ich hemorrhage warfarin vka 4f-pcc pcc vitamin k dabigatran idarucizumab factor xa apixaban rivaroxaban edoxaban andexanet annexa-4 annexa-i reverse-ad patch platelet desmopressin bp control neurosurgery',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'ANNEXA-4', citation: 'Connolly SJ, et al. Full Study Report of Andexanet Alfa for Bleeding Associated with Factor Xa Inhibitors. N Engl J Med. 2019;380(14):1326-1335.', pmid: '30730782' },
+      { label: 'ANNEXA-I', citation: 'Connolly SJ, et al. Andexanet for Factor Xa Inhibitor–Associated Acute Intracerebral Hemorrhage. N Engl J Med. 2024;390(19):1745-1755.', pmid: '38749032' },
+      { label: 'REVERSE-AD', citation: 'Pollack CV, et al. Idarucizumab for Dabigatran Reversal — Full Cohort Analysis. N Engl J Med. 2017;377(5):431-441.', pmid: '28693366' },
+      { label: 'AHA/ASA 2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
+      { label: 'NCS/SCCM Reversal Guideline', citation: 'Frontera JA, et al. Guideline for Reversal of Antithrombotics in Intracranial Hemorrhage. Neurocrit Care. 2016;24(1):6-46.', pmid: '26714677' }
+    ]
   }
 ];
 
@@ -1059,6 +1074,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <BrainstemSyndromesView />;
     case 'vascular-territory-atlas':
       return <VascularTerritoryAtlasView />;
+    case 'anticoagulation-reversal':
+      return <AnticoagulationReversalView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -5969,6 +5986,142 @@ export function VascularTerritoryAtlasCard() {
             <CardRefFooter refs={[
               { label: 'Tatu — cerebral hemispheres', cite: 'Tatu L et al. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' },
               { label: 'Tatu — brainstem / cerebellum', cite: 'Tatu L et al. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Anticoagulation Reversal in Acute Hemorrhage
+// =====================================================================
+const AnticoagulationReversalView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <AnticoagulationReversalCard />
+  </ScaledCardWrapper>
+);
+
+export function AnticoagulationReversalCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-anticoagulation-reversal">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px', fontSize: '18pt' }}>Anticoagulation Reversal in Acute Hemorrhage</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Identify the agent → give the specific reversal → BP control, neurosurgery, hold the drug.
+            </p>
+
+            {/* Hero SVG: agent → reversal decision tree + parallel steps */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 176" style={{ width: '100%', height: 'auto' }}>
+                {/* root */}
+                <rect x="283" y="14" width="170" height="24" rx="6" fill="var(--slate-soft)" stroke="var(--slate)" strokeWidth="1.3" />
+                <text x="368" y="29" fill="var(--slate)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ICH on anticoagulant</text>
+                {/* connectors root → agents */}
+                <path d="M 320 38 L 130 52" stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" />
+                <path d="M 368 38 L 368 52" stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" />
+                <path d="M 416 38 L 606 52" stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" />
+                {/* agent boxes */}
+                {[
+                  { x: 35, cx: 130, col: 'purple', t: 'Warfarin (VKA)', sub: '↑ INR' },
+                  { x: 273, cx: 368, col: 'teal', t: 'Dabigatran (DTI)', sub: 'direct thrombin' },
+                  { x: 511, cx: 606, col: 'amber', t: 'Factor Xa inhibitor', sub: 'apixaban / riva / edox' },
+                ].map((a) => (
+                  <g key={a.t}>
+                    <rect x={a.x} y="52" width="190" height="28" rx="6" fill={`var(--${a.col}-soft)`} stroke={`var(--${a.col})`} strokeWidth="1.3" />
+                    <text x={a.cx} y="64" fill={`var(--${a.col}-deep)`} fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">{a.t}</text>
+                    <text x={a.cx} y="75" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">{a.sub}</text>
+                    <path d={`M ${a.cx} 80 L ${a.cx} 92`} stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" markerEnd="url(#acr-arrow)" />
+                  </g>
+                ))}
+                <defs>
+                  <marker id="acr-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                    <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--ink-mute)" />
+                  </marker>
+                </defs>
+                {/* reversal boxes */}
+                {[
+                  { x: 35, cx: 130, col: 'purple', t: '4F-PCC', sub: '+ IV vitamin K 10 mg' },
+                  { x: 273, cx: 368, col: 'teal', t: 'Idarucizumab', sub: '5 g IV (REVERSE-AD)' },
+                  { x: 511, cx: 606, col: 'amber', t: 'Andexanet alfa', sub: 'or 4F-PCC ~50 U/kg' },
+                ].map((a) => (
+                  <g key={a.t}>
+                    <rect x={a.x} y="94" width="190" height="30" rx="6" fill="#ffffff" stroke={`var(--${a.col})`} strokeWidth="1.4" />
+                    <text x={a.cx} y="107" fill={`var(--${a.col}-deep)`} fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">{a.t}</text>
+                    <text x={a.cx} y="118" fill="var(--ink-soft)" fontSize="5.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">{a.sub}</text>
+                    <path d={`M ${a.cx} 124 L ${a.cx} 138`} stroke="var(--red)" strokeWidth="1.1" fill="none" />
+                  </g>
+                ))}
+                {/* parallel steps bar */}
+                <rect x="35" y="140" width="666" height="28" rx="6" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.4" />
+                <text x="52" y="150" fill="var(--red-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">IN PARALLEL</text>
+                <text x="200" y="158" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">BP control</text>
+                <line x1="300" y1="144" x2="300" y2="164" stroke="var(--red)" strokeWidth="0.8" strokeDasharray="2 2" />
+                <text x="400" y="158" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Neurosurgery consult</text>
+                <line x1="510" y1="144" x2="510" y2="164" stroke="var(--red)" strokeWidth="0.8" strokeDasharray="2 2" />
+                <text x="610" y="158" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Hold the agent</text>
+              </svg>
+            </div>
+
+            {/* §1 Identify agent & last dose (purple) */}
+            <CardSection color="purple" title="1. Identify the Agent & Last Dose">
+              <div style={{ fontSize: '7.8pt', lineHeight: '1.42', color: 'var(--ink-soft)' }}>
+                Establish <strong>drug, dose, time of last intake, indication, and renal function</strong>. Send baseline coags (INR/PTT; anti-Xa where available), but <strong>do not delay reversal</strong> for a hemorrhagic ICH while awaiting levels.
+              </div>
+            </CardSection>
+
+            {/* §2 Agent-specific reversal (teal, table) */}
+            <CardSection color="teal" title="2. Agent-Specific Reversal">
+              <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '7pt' }}>
+                <thead>
+                  <tr style={{ background: 'var(--teal)' }}>
+                    <th style={{ width: '112px' }}>Agent</th>
+                    <th style={{ width: '132px' }}>Reversal</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Warfarin (VKA)</strong></td>
+                    <td><strong>4F-PCC</strong> (25–50 U/kg by INR/wt) <strong>+ IV vitamin K 10 mg</strong></td>
+                    <td>Target INR &lt;1.4. PCC preferred over FFP (faster, lower volume).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Dabigatran</strong> (DTI)</td>
+                    <td><strong>Idarucizumab 5 g IV</strong></td>
+                    <td>REVERSE-AD: rapid, near-complete reversal. Hemodialysis is an adjunct.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Factor Xa inhibitors</strong> (apixaban, rivaroxaban, edoxaban)</td>
+                    <td><strong>Andexanet alfa</strong> (low/high dose by agent, dose, timing); <strong>4F-PCC ~50 U/kg</strong> if unavailable</td>
+                    <td>ANNEXA-4: good hemostatic efficacy. <strong>ANNEXA-I</strong> (RCT in acute ICH): better hemostasis / less hematoma expansion vs usual care <strong>but more thrombotic events, incl. ischemic stroke (~10% vs ~6%)</strong> — weigh carefully.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Antiplatelets</strong></td>
+                    <td>Platelet transfusion <strong>not</strong> recommended (PATCH)</td>
+                    <td>Exception: peri-neurosurgery. Consider desmopressin.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </CardSection>
+
+            {/* §3 In parallel (red) */}
+            <CardSection color="red" title="3. In Parallel" style={{ marginBottom: '6px' }}>
+              <div style={{ fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                Guideline-based <strong>BP control</strong>, <strong>neurosurgical evaluation</strong>, reverse only with a <strong>real bleed or urgent procedure</strong>, and plan <strong>restart timing</strong>. Anchor to the AHA/ASA 2022 ICH guideline and the NCS/SCCM reversal guideline; confirm exact andexanet dosing tier and current ANNEXA-I thrombotic figures against the primary papers.
+              </div>
+            </CardSection>
+
+            <CardRefFooter style={{ fontSize: '7.2pt' }} refs={[
+              { label: 'ANNEXA-4', cite: 'Connolly SJ et al. N Engl J Med. 2019;380(14):1326-1335.', pmid: '30730782' },
+              { label: 'ANNEXA-I', cite: 'Connolly SJ et al. N Engl J Med. 2024;390(19):1745-1755.', pmid: '38749032' },
+              { label: 'REVERSE-AD', cite: 'Pollack CV et al. N Engl J Med. 2017;377(5):431-441.', pmid: '28693366' },
+              { label: 'AHA/ASA 2022 ICH Guideline', cite: 'Greenberg SM et al. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
+              { label: 'NCS/SCCM Reversal Guideline', cite: 'Frontera JA et al. Neurocrit Care. 2016;24(1):6-46.', pmid: '26714677' },
             ]} />
           </div>
         </div>

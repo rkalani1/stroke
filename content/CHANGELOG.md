@@ -46,6 +46,11 @@ PubMed). No change to the frozen Example Protocols zone.
   territories with clinical signatures, plus cortical and internal watershed
   patterns. Sources: Tatu cerebral hemispheres (9633714), Tatu
   brainstem/cerebellum (8909417).
+- **`anticoagulation-reversal`** — agent-specific ICH reversal (4F-PCC +
+  vitamin K, idarucizumab, andexanet/4F-PCC) with the ANNEXA-I thrombotic
+  caveat and parallel BP/neurosurgery steps. Sources: ANNEXA-4 (30730782),
+  ANNEXA-I (38749032), REVERSE-AD (28693366), AHA/ASA 2022 ICH (35579034),
+  NCS/SCCM reversal (26714677).
 
 ## 2026-07-11 — Clinical corrections (audit-flagged, clinician-directed)
 
