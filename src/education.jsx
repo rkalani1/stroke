@@ -471,6 +471,20 @@ const EDUCATION_MODULES = [
       { label: 'RESCUE-Japan LIMIT', citation: 'Yoshimura S, et al. Endovascular Therapy for Acute Stroke with a Large Ischemic Region. N Engl J Med. 2022;386(14):1303-1313.', pmid: '35138767' },
       { label: '2026 AIS Guideline', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' }
     ]
+  },
+  {
+    id: 'basilar-artery-occlusion',
+    title: 'Basilar Artery Occlusion',
+    purpose: 'Protean brainstem presentation, the ATTENTION/BAOCHE evidence arc for endovascular therapy, imaging selection (pc-ASPECTS, perfusion/collaterals), and pitfalls for basilar artery occlusion.',
+    actions: 'basilar artery occlusion bao vertebrobasilar posterior circulation brainstem pons locked-in coma crossed deficit herald tia attention baoche basics best pc-aspects perforator evt thrombectomy time window',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'ATTENTION', citation: 'Tao C, et al. Trial of Endovascular Treatment of Acute Basilar-Artery Occlusion (ATTENTION). N Engl J Med. 2022;387(15):1361-1372.', pmid: '36239644' },
+      { label: 'BAOCHE', citation: 'Jovin TG, et al. Trial of Thrombectomy 6 to 24 Hours after Stroke Due to Basilar-Artery Occlusion (BAOCHE). N Engl J Med. 2022;387(15):1373-1384.', pmid: '36239645' },
+      { label: 'BASICS', citation: 'Langezaal LCM, et al. Endovascular Therapy for Stroke Due to Basilar-Artery Occlusion (BASICS). N Engl J Med. 2021;384(20):1910-1920.', pmid: '34010530' },
+      { label: 'BEST', citation: 'Liu X, et al. Endovascular treatment versus standard medical treatment for vertebrobasilar artery occlusion (BEST). Lancet Neurol. 2020;19(2):115-122.', pmid: '31831388' }
+    ]
   }
 ];
 
@@ -982,6 +996,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <CvstView />;
     case 'large-core-thrombectomy':
       return <LargeCoreThrombectomyView />;
+    case 'basilar-artery-occlusion':
+      return <BasilarArteryOcclusionView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -5198,6 +5214,140 @@ export function LargeCoreThrombectomyCard() {
               { label: 'TESLA', cite: 'Yoo AJ et al. JAMA. 2024;332(16):1355-1366.', pmid: '39374319' },
               { label: 'RESCUE-Japan LIMIT', cite: 'Yoshimura S et al. N Engl J Med. 2022;386(14):1303-1313.', pmid: '35138767' },
               { label: '2026 AIS Guideline', cite: 'Prabhakaran S et al. Stroke. 2026.', pmid: '41582814' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Basilar Artery Occlusion
+// =====================================================================
+const BasilarArteryOcclusionView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <BasilarArteryOcclusionCard />
+  </ScaledCardWrapper>
+);
+
+export function BasilarArteryOcclusionCard() {
+  const hx = (h) => 500 + h * 8.75; // timeline hour → x
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-basilar-artery-occlusion">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Basilar Artery Occlusion</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              A time-critical posterior-circulation emergency &mdash; recognition, evidence, and selection.
+            </p>
+
+            {/* Hero SVG: vertebrobasilar occlusion | pontine territory | windows */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 180" style={{ width: '100%', height: 'auto' }}>
+                {/* Panel 1 — vertebrobasilar tree + occlusion */}
+                <text x="120" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">VERTEBROBASILAR OCCLUSION</text>
+                {/* faint brainstem */}
+                <path d="M 104 40 C 96 40, 92 60, 96 90 C 100 130, 108 150, 120 158 C 132 150, 140 130, 144 90 C 148 60, 144 40, 136 40 Z" fill="#ffffff" stroke="var(--rule-soft)" strokeWidth="1" />
+                {/* vertebral arteries → basilar */}
+                <path d="M 96 160 L 118 116" stroke="var(--teal)" strokeWidth="3.4" fill="none" strokeLinecap="round" />
+                <path d="M 146 160 L 120 116" stroke="var(--teal)" strokeWidth="3.4" fill="none" strokeLinecap="round" />
+                <line x1="119" y1="116" x2="119" y2="48" stroke="var(--teal)" strokeWidth="4" strokeLinecap="round" />
+                {/* PCA / SCA bifurcation at the tip */}
+                <path d="M 119 48 L 98 32" stroke="var(--teal)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M 119 48 L 140 32" stroke="var(--teal)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                {/* paramedian perforators */}
+                <line x1="119" y1="66" x2="104" y2="62" stroke="var(--teal)" strokeWidth="1.4" />
+                <line x1="119" y1="66" x2="134" y2="62" stroke="var(--teal)" strokeWidth="1.4" />
+                <line x1="119" y1="96" x2="104" y2="94" stroke="var(--teal)" strokeWidth="1.4" />
+                <line x1="119" y1="96" x2="134" y2="94" stroke="var(--teal)" strokeWidth="1.4" />
+                {/* occlusion clot (mid-basilar), flow above faded */}
+                <line x1="119" y1="86" x2="119" y2="48" stroke="var(--rule)" strokeWidth="4" strokeLinecap="round" strokeDasharray="2 3" />
+                <ellipse cx="119" cy="84" rx="7.5" ry="6" fill="var(--red)" />
+                <text x="150" y="86" fill="var(--red-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">Occlusion</text>
+                <text x="119" y="174" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Vertebral aa. → basilar → PCA</text>
+
+                <line x1="205" y1="12" x2="205" y2="166" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 2 — pontine cross section */}
+                <text x="335" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PONTINE PERFORATOR TERRITORY</text>
+                <path d="M 260 74 C 260 44, 410 44, 410 74 C 410 108, 372 124, 335 124 C 298 124, 260 108, 260 74 Z" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                {/* paramedian perforator territory shading (ventral/medial) */}
+                <path d="M 335 118 C 312 116, 300 96, 306 74 L 364 74 C 370 96, 358 116, 335 118 Z" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.2" />
+                {/* basilar artery ventral */}
+                <circle cx="335" cy="122" r="5.5" fill="var(--red)" />
+                <line x1="335" y1="118" x2="335" y2="86" stroke="var(--red)" strokeWidth="1.2" strokeDasharray="2 2" />
+                <text x="335" y="92" fill="var(--amber-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Paramedian pons</text>
+                <text x="335" y="145" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Extensive established pontine infarct</text>
+                <text x="335" y="156" fill="var(--red-deep)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">predicts futile recanalization</text>
+
+                <line x1="462" y1="12" x2="462" y2="166" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 3 — treatment windows timeline */}
+                <text x="605" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">TREATMENT WINDOWS (0–24 h)</text>
+                <line x1={hx(0)} y1="118" x2={hx(24)} y2="118" stroke="var(--ink-mute)" strokeWidth="1.2" />
+                {[0, 6, 12, 18, 24].map((h) => (
+                  <g key={h}>
+                    <line x1={hx(h)} y1="115" x2={hx(h)} y2="121" stroke="var(--ink-mute)" strokeWidth="1" />
+                    <text x={hx(h)} y="131" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">{h}h</text>
+                  </g>
+                ))}
+                {/* ATTENTION ≤12h */}
+                <rect x={hx(0)} y="46" width={hx(12) - hx(0)} height="16" rx="4" fill="var(--teal)" />
+                <text x={(hx(0) + hx(12)) / 2} y="57" fill="#ffffff" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ATTENTION ≤12h</text>
+                {/* BAOCHE 6–24h */}
+                <rect x={hx(6)} y="74" width={hx(24) - hx(6)} height="16" rx="4" fill="var(--purple)" />
+                <text x={(hx(6) + hx(24)) / 2} y="85" fill="#ffffff" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">BAOCHE 6–24h</text>
+                <text x="605" y="150" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Posterior circulation tolerates longer windows</text>
+                <text x="605" y="160" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">with imaging selection</text>
+              </svg>
+            </div>
+
+            {/* §1 Why it's different (purple) */}
+            <CardSection color="purple" title="1. Why It's Different">
+              <div style={{ fontSize: '7.9pt', lineHeight: '1.42', color: 'var(--ink-soft)' }}>
+                BAO is ~<strong>1&ndash;4% of strokes</strong> but historically carried <strong>80&ndash;90% mortality / severe disability untreated</strong>. Presentation is <strong>protean</strong>: fluctuating or progressive brainstem signs, crossed deficits, coma, "locked-in," and gaze/oculomotor abnormalities. <strong>Herald TIAs are common.</strong> Keep a <strong>low threshold for CTA</strong> in unexplained coma or posterior-circulation signs.
+              </div>
+            </CardSection>
+
+            {/* §2 The evidence arc (teal) */}
+            <CardSection color="teal" title="2. The Evidence Arc">
+              <table className="card-table" style={{ margin: '2px 0 6px 0', fontSize: '7.4pt' }}>
+                <thead>
+                  <tr style={{ background: 'var(--teal)' }}>
+                    <th style={{ width: '92px' }}>Trial</th>
+                    <th style={{ width: '150px' }}>Population / window</th>
+                    <th>Result</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>BEST</strong></td><td>Terminated, heavy crossover</td><td>Neutral overall &mdash; confounded by crossover</td></tr>
+                  <tr><td><strong>BASICS</strong></td><td>≤6 h</td><td>No significant overall benefit &mdash; enrollment/crossover confounded</td></tr>
+                  <tr><td><strong>ATTENTION</strong></td><td>NIHSS ≥10, ≤12 h</td><td><strong>mRS 0–3: 46% EVT vs 23%</strong> medical</td></tr>
+                  <tr><td><strong>BAOCHE</strong></td><td>6–24 h</td><td><strong>mRS 0–3: 39% EVT vs 24%</strong> &mdash; extends the window</td></tr>
+                </tbody>
+              </table>
+              <div style={{ fontSize: '7.5pt', color: 'var(--ink-soft)', lineHeight: '1.35' }}>
+                EVT (± IV thrombolysis) is now <strong>standard for BAO with salvageable tissue</strong>.
+              </div>
+            </CardSection>
+
+            {/* §3 Selection & pitfalls (red) */}
+            <CardSection color="red" title="3. Selection & Pitfalls" style={{ marginBottom: '6px' }}>
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <li>Use <strong>pc-ASPECTS</strong> and perfusion / collateral assessment; <strong>extensive established pontine infarction predicts futile recanalization</strong>.</li>
+                <li><strong>Time-to-treatment still matters</strong>; posterior circulation tolerates somewhat longer windows than anterior.</li>
+                <li><strong>Combine with IVT</strong> when eligible.</li>
+              </ul>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'ATTENTION', cite: 'Tao C et al. N Engl J Med. 2022;387(15):1361-1372.', pmid: '36239644' },
+              { label: 'BAOCHE', cite: 'Jovin TG et al. N Engl J Med. 2022;387(15):1373-1384.', pmid: '36239645' },
+              { label: 'BASICS', cite: 'Langezaal LCM et al. N Engl J Med. 2021;384(20):1910-1920.', pmid: '34010530' },
+              { label: 'BEST', cite: 'Liu X et al. Lancet Neurol. 2020;19(2):115-122.', pmid: '31831388' },
             ]} />
           </div>
         </div>

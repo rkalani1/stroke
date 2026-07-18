@@ -24,6 +24,10 @@ PubMed). No change to the frozen Example Protocols zone.
   higher symptomatic hemorrhage. Sources: SELECT2 (36762865), ANGEL-ASPECT
   (36762852), TENSION (37837989), LASTE (38718358), TESLA (39374319),
   RESCUE-Japan LIMIT (35138767), 2026 AIS guideline (41582814).
+- **`basilar-artery-occlusion`** — protean brainstem presentation, the
+  ATTENTION/BAOCHE evidence arc (vs the confounded BEST/BASICS trials),
+  imaging selection, and pitfalls. Sources: ATTENTION (36239644), BAOCHE
+  (36239645), BASICS (34010530), BEST (31831388).
 
 ## 2026-07-11 — Clinical corrections (audit-flagged, clinician-directed)
 
