@@ -439,6 +439,21 @@ const EDUCATION_MODULES = [
       { label: 'Narrative Review', citation: 'Sanderson S, et al. Aspirin Resistance and Its Clinical Implications. Ann Intern Med. 2005;142:370-380.', pmid: '15738456' },
       { label: 'OCEANIC-STROKE Trial', citation: 'Sharma M, et al. Asundexian for Secondary Stroke Prevention. N Engl J Med. 2026;394(15):1467-1479.', pmid: '41985132' }
     ]
+  },
+  {
+    id: 'cerebral-venous-sinus-thrombosis',
+    title: 'Cerebral Venous Sinus Thrombosis (CVST)',
+    purpose: 'Presentation, risk factors, venography-based diagnosis, anticoagulation despite venous hemorrhage, DOAC transition, and prognosis for cerebral venous and dural sinus thrombosis.',
+    actions: 'cvst cvt cerebral venous sinus thrombosis dural sagittal transverse sigmoid straight sinus vein of galen venous infarct hemorrhagic transformation d-dimer ctv mrv anticoagulation lmwh dabigatran doac iscvt re-spect action-cvt to-act thrombectomy papilledema intracranial hypertension',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'ISCVT', citation: 'Ferro JM, et al. Prognosis of cerebral vein and dural sinus thrombosis: results of the ISCVT. Stroke. 2004;35(3):664-670.', pmid: '14976332' },
+      { label: 'RE-SPECT CVT', citation: 'Ferro JM, et al. Safety and Efficacy of Dabigatran Etexilate vs Dose-Adjusted Warfarin in Cerebral Venous Thrombosis. JAMA Neurol. 2019;76(12):1457-1465.', pmid: '31479105' },
+      { label: 'ACTION-CVT', citation: 'Yaghi S, et al. Direct Oral Anticoagulants Versus Warfarin in the Treatment of Cerebral Venous Thrombosis (ACTION-CVT). Stroke. 2022;53(3):728-738.', pmid: '35143325' },
+      { label: 'TO-ACT', citation: 'Coutinho JM, et al. Effect of Endovascular Treatment With Medical Management vs Standard Care on Severe Cerebral Venous Thrombosis (TO-ACT). JAMA Neurol. 2020;77(8):966-973.', pmid: '32421159' },
+      { label: 'AHA/ASA Statement', citation: 'Saposnik G, et al. Diagnosis and management of cerebral venous thrombosis: a statement for healthcare professionals from the AHA/ASA. Stroke. 2011;42(4):1158-1192.', pmid: '21293023' }
+    ]
   }
 ];
 
@@ -946,6 +961,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <AntiepilepticDrugsView />;
     case 'aspirin-failure':
       return <AspirinFailureView />;
+    case 'cerebral-venous-sinus-thrombosis':
+      return <CvstView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -4856,6 +4873,182 @@ export function AspirinFailureCard() {
               <strong>SAMMPRIS:</strong> N Engl J Med 2011. <a href="https://pubmed.ncbi.nlm.nih.gov/21899409/" target="_blank">PMID: 21899409</a>. | <strong>COMPASS:</strong> Lancet 2018. <a href="https://pubmed.ncbi.nlm.nih.gov/29141975/" target="_blank">PMID: 29141975</a>. | <strong>Review:</strong> Ann Intern Med 2005. <a href="https://pubmed.ncbi.nlm.nih.gov/15738456/" target="_blank">PMID: 15738456</a>.<br/>
               <strong>OCEANIC-STROKE (asundexian):</strong> Sharma M et al. N Engl J Med 2026;394:1467-1479. <a href="https://pubmed.ncbi.nlm.nih.gov/41985132/" target="_blank">PMID: 41985132</a>.
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// SHARED HELPERS — 2026 NEUROVASCULAR TEACHING CARD SET
+// (color-coded bordered sections + citation footer, reused across the
+//  static pocket cards below so they render identically to the
+//  FibromuscularDysplasia / BrainDeath gold-standard templates)
+// =====================================================================
+const CARD_SECTION_COLORS = {
+  purple: { base: 'var(--purple)', deep: 'var(--purple-deep)', soft: 'var(--purple-soft)' },
+  teal:   { base: 'var(--teal)',   deep: 'var(--teal-deep)',   soft: 'var(--teal-soft)' },
+  red:    { base: 'var(--red)',    deep: 'var(--red-deep)',    soft: 'var(--red-soft)' },
+  amber:  { base: 'var(--amber)',  deep: 'var(--amber-deep)',  soft: 'var(--amber-soft)' },
+};
+
+function CardSection({ color = 'purple', title, subtitle, children, style }) {
+  const c = CARD_SECTION_COLORS[color] || CARD_SECTION_COLORS.purple;
+  return (
+    <div style={{ border: `1.5px solid ${c.base}`, borderRadius: '8px', padding: '8px 10px', background: `linear-gradient(135deg, ${c.soft} 0%, #ffffff 100%)`, marginBottom: '8px', ...style }}>
+      <strong style={{ color: c.deep, fontSize: '9.5pt', display: 'block', marginBottom: subtitle ? '1px' : '4px' }}>{title}</strong>
+      {subtitle && <div style={{ color: 'var(--ink-mute)', fontSize: '7pt', fontWeight: '700', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.03em' }}>{subtitle}</div>}
+      {children}
+    </div>
+  );
+}
+
+const pubmedUrl = (pmid) => `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`;
+
+function CardRefFooter({ refs, style }) {
+  return (
+    <div className="ref-citation" style={{ marginTop: 'auto', padding: '6px 10px', fontSize: '7.4pt', lineHeight: '1.3', ...style }}>
+      {refs.map((r, i) => (
+        <span key={`${r.pmid}-${i}`}>
+          <strong>{r.label}:</strong> {r.cite}{' '}
+          <a href={pubmedUrl(r.pmid)} target="_blank" rel="noopener noreferrer">PMID: {r.pmid}</a>
+          {i < refs.length - 1 ? <br /> : null}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Cerebral Venous Sinus Thrombosis (CVST)
+// =====================================================================
+const CvstView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <CvstCard />
+  </ScaledCardWrapper>
+);
+
+export function CvstCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-cerebral-venous-sinus-thrombosis">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Cerebral Venous Sinus Thrombosis</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Dural sinus &amp; deep venous system thrombosis &mdash; diagnosis, anticoagulation, and outcome.
+            </p>
+
+            {/* Hero SVG: dural venous sinus map + venous-infarct inset */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 170" style={{ width: '100%', height: 'auto' }}>
+                {/* ---- Left: sagittal dural sinus map ---- */}
+                <text x="245" y="16" fill="var(--ink-soft)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">DURAL VENOUS SINUS MAP (SAGITTAL)</text>
+                {/* faint head silhouette, occiput to the right */}
+                <path d="M 70 120 C 55 60, 120 24, 250 24 C 360 24, 430 55, 430 100 C 430 130, 400 150, 360 150 L 350 150 C 350 138, 345 132, 335 132 L 120 132 C 92 132, 74 128, 70 120 Z" fill="#ffffff" stroke="var(--rule-soft)" strokeWidth="1.2" />
+                {/* Superior sagittal sinus (SSS) — over the convexity to the torcula */}
+                <path d="M 96 116 C 78 66, 140 40, 250 38 C 340 37, 402 62, 408 104" stroke="var(--teal)" strokeWidth="6" fill="none" strokeLinecap="round" />
+                <text x="210" y="54" fill="var(--teal-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Superior sagittal sinus</text>
+                {/* Deep venous system: internal cerebral veins → vein of Galen */}
+                <path d="M 180 96 L 250 100" stroke="var(--purple)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <circle cx="258" cy="101" r="4" fill="var(--purple)" />
+                <text x="176" y="90" fill="var(--purple-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Internal cerebral vv.</text>
+                <text x="286" y="95" fill="var(--purple-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Vein of Galen</text>
+                {/* Straight sinus: vein of Galen → torcula */}
+                <path d="M 262 102 L 404 108" stroke="var(--purple)" strokeWidth="4" fill="none" strokeLinecap="round" />
+                <text x="330" y="99" fill="var(--purple-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Straight sinus</text>
+                {/* Torcula (confluence of sinuses) */}
+                <circle cx="408" cy="106" r="6" fill="var(--teal-deep)" />
+                <text x="417" y="99" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="start">Torcula</text>
+                {/* Transverse → sigmoid sinus (THROMBOSED segment, red) */}
+                <path d="M 408 108 C 400 128, 378 138, 356 140" stroke="var(--red)" strokeWidth="6" fill="none" strokeLinecap="round" strokeDasharray="2 4" />
+                {/* clot bulge */}
+                <ellipse cx="384" cy="132" rx="11" ry="7" fill="var(--red)" opacity="0.85" transform="rotate(28 384 132)" />
+                <text x="384" y="160" fill="var(--red-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Thrombosed transverse / sigmoid sinus</text>
+
+                {/* divider */}
+                <line x1="455" y1="14" x2="455" y2="158" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* ---- Right: venous infarct inset (coronal) ---- */}
+                <text x="595" y="16" fill="var(--ink-soft)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">VENOUS INFARCT (± HEMORRHAGE)</text>
+                <path d="M 500 120 C 500 60, 690 60, 690 120 C 690 138, 660 150, 595 150 C 530 150, 500 138, 500 120 Z" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.4" />
+                <line x1="595" y1="42" x2="595" y2="150" stroke="var(--rule-soft)" strokeWidth="1" />
+                {/* parasagittal wedge infarct crossing arterial boundaries */}
+                <path d="M 595 46 L 648 66 L 640 120 L 595 116 Z" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.4" />
+                {/* hemorrhagic transformation speckle */}
+                <circle cx="620" cy="80" r="6" fill="var(--red)" opacity="0.75" />
+                <circle cx="631" cy="97" r="4.5" fill="var(--red)" opacity="0.7" />
+                <circle cx="614" cy="100" r="3.5" fill="var(--red)" opacity="0.6" />
+                <text x="595" y="168" fill="var(--ink-mute)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Non-arterial territory; bilateral / parasagittal / thalamic patterns</text>
+              </svg>
+            </div>
+
+            {/* §1 Presentation & risk factors (purple) */}
+            <CardSection color="purple" title="1. Presentation & Risk Factors">
+              <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1.1fr 0.9fr', gap: '12px', fontSize: '7.7pt', lineHeight: '1.38', color: 'var(--ink-soft)' }}>
+                <div>
+                  <strong style={{ color: 'var(--purple-deep)', fontSize: '8pt' }}>Clinical syndromes</strong>
+                  <br />&bull; <strong>Isolated intracranial hypertension</strong>: headache &plusmn; papilledema, VI-nerve palsy.
+                  <br />&bull; <strong>Focal deficits / seizures</strong> from venous infarction.
+                  <br />&bull; <strong>Encephalopathy</strong> (deep venous system).
+                  <br />&bull; Headache is the most common symptom (~90%) and can be the <em>only</em> symptom.
+                </div>
+                <div style={{ borderLeft: '1.5px dashed var(--purple)', paddingLeft: '10px' }}>
+                  <strong style={{ color: 'var(--purple-deep)', fontSize: '8pt' }}>Risk factors (~85% have ≥1)</strong>
+                  <br />&bull; <strong>Prothrombotic</strong>: pregnancy / puerperium, estrogen / OCP, inherited thrombophilia, malignancy, APS.
+                  <br />&bull; <strong>Local</strong>: sinusitis, mastoiditis, meningitis, trauma, LP.
+                  <br />&bull; <strong>Systemic</strong>: dehydration, IBD, nephrotic syndrome.
+                </div>
+                <div style={{ borderLeft: '1.5px dashed var(--purple)', paddingLeft: '10px' }}>
+                  <strong style={{ color: 'var(--red-deep)', fontSize: '8pt' }}>Pitfall</strong>
+                  <br />A <strong>normal D-dimer does NOT exclude CVST</strong>, especially with isolated headache or a subacute course. <strong>Image if suspected.</strong>
+                </div>
+              </div>
+            </CardSection>
+
+            {/* §2 Diagnosis (teal) */}
+            <CardSection color="teal" title="2. Diagnosis">
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.42', color: 'var(--ink-soft)' }}>
+                <li><strong>First-line imaging</strong>: CT venography (CTV) or MR venography (MRV).</li>
+                <li>Non-contrast CT signs (cord sign, dense triangle) are <strong>insensitive</strong>; the <strong>empty-delta sign</strong> appears on post-contrast CT. MRI T2*/SWI shows thrombus + parenchymal change.</li>
+                <li><strong>Trigger venous imaging</strong> when an infarct crosses arterial boundaries, is hemorrhagic, or is bilateral parasagittal / thalamic.</li>
+              </ul>
+            </CardSection>
+
+            {/* §3 Acute management (red) */}
+            <CardSection color="red" title="3. Acute Management">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '7.6pt', lineHeight: '1.38', color: 'var(--ink-soft)' }}>
+                <div>
+                  <strong style={{ color: 'var(--red-deep)', fontSize: '8pt' }}>Anticoagulate — even with venous hemorrhage</strong>
+                  <br />&bull; Therapeutic <strong>LMWH</strong> (or UFH) is first-line; hemorrhage from venous congestion is <strong>not a contraindication</strong> (ISCVT).
+                  <br />&bull; <strong>Transition</strong>: VKA (INR 2&ndash;3) for 3&ndash;6+ months, <em>or</em> a <strong>DOAC</strong> — RE-SPECT CVT: dabigatran 150 mg BID comparable to warfarin; ACTION-CVT: DOAC vs warfarin similar recurrence with a trend to less major hemorrhage.
+                </div>
+                <div style={{ borderLeft: '1.5px dashed var(--red)', paddingLeft: '10px' }}>
+                  <strong style={{ color: 'var(--red-deep)', fontSize: '8pt' }}>Endovascular / surgical</strong>
+                  <br />&bull; <strong>Thrombectomy is NOT routine</strong> — TO-ACT stopped for futility; reserve for deterioration despite anticoagulation (individualized).
+                  <br />&bull; <strong>Decompressive craniectomy</strong> is life-saving for large venous infarct with impending herniation.
+                  <br />&bull; Treat seizures; manage raised ICP; avoid over-aggressive LP if mass effect.
+                </div>
+              </div>
+            </CardSection>
+
+            {/* §4 Prognosis (amber) */}
+            <CardSection color="amber" title="4. Prognosis" style={{ marginBottom: '6px' }}>
+              <div style={{ fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <strong style={{ color: 'var(--amber-deep)' }}>ISCVT:</strong> ~13% dead or dependent at 6 months (better than arterial stroke).
+                <br /><strong style={{ color: 'var(--amber-deep)' }}>Predictors of poor outcome:</strong> coma / altered mental status, deep venous system thrombosis, intracranial hemorrhage, malignancy, CNS infection, male sex, older age.
+              </div>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'ISCVT', cite: 'Ferro JM et al. Stroke. 2004;35(3):664-670.', pmid: '14976332' },
+              { label: 'RE-SPECT CVT', cite: 'Ferro JM et al. JAMA Neurol. 2019;76(12):1457-1465.', pmid: '31479105' },
+              { label: 'ACTION-CVT', cite: 'Yaghi S et al. Stroke. 2022;53(3):728-738.', pmid: '35143325' },
+              { label: 'TO-ACT', cite: 'Coutinho JM et al. JAMA Neurol. 2020;77(8):966-973.', pmid: '32421159' },
+              { label: 'AHA/ASA Statement', cite: 'Saposnik G et al. Stroke. 2011;42(4):1158-1192.', pmid: '21293023' },
+            ]} />
           </div>
         </div>
       </div>

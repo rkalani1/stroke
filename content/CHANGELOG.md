@@ -7,6 +7,19 @@ re-verifications, and schema evolution. Dates are absolute (ISO).
 Format: newest first. Each entry: what changed, why, and the source it was
 verified against.
 
+## 2026-07-18 — 12 new neurovascular education modules
+
+New bedside teaching cards added to the Education section (authored in
+`src/education.jsx`; metadata projected to `content/education/*.md` by
+`content:seed`). Each card follows the existing static pocket-card / interactive
+simulator templates and cites its primary sources (PMIDs verified against
+PubMed). No change to the frozen Example Protocols zone.
+
+- **`cerebral-venous-sinus-thrombosis`** — CVST: presentation/risk factors,
+  CTV/MRV diagnosis, anticoagulation despite venous hemorrhage, DOAC transition,
+  ISCVT prognosis. Sources: ISCVT (14976332), RE-SPECT CVT (31479105),
+  ACTION-CVT (35143325), TO-ACT (32421159), AHA/ASA statement (21293023).
+
 ## 2026-07-11 — Clinical corrections (audit-flagged, clinician-directed)
 
 Factual corrections to non-frozen clinical content, each verified against the
