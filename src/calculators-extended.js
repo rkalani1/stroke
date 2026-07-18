@@ -270,24 +270,38 @@ export const calculateBAT = ({ blendSign, hypodensity, timeToCTHours }) => {
   };
 };
 
-// BRAIN score (Wang et al., Neurology 2015;85:464-71)
-// Baseline volume >10 mL = 2 (per 10 mL increase); Recurrent (prior ICH) = 1; Anticoag on admission = 1;
-// Intraventricular extension = 2; onset-to-CT Number <=1h = 1 (per hour less 6 h).
-// Simpler implementation: volume (per 10 mL >10), recurrent, AC, IVH, time<6h.
+// BRAIN score (Wang X et al., Stroke 2015;46:376-381; PMID 25503550).
+// Predicts clinically significant (≥6 mL) hematoma expansion at 24 h. Derived in
+// INTERACT2 (n=964), validated in INTERACT1 (n=346); C-statistic 0.73. Range 0-24.
+//   B = Baseline ICH volume: ≤10 mL = 0, 10-20 = 5, >20 = 7
+//   R = Recurrent ICH: 4
+//   A = Anticoagulation (warfarin) at onset: 6
+//   I = Intraventricular haemorrhage: 2
+//   N = Number of hours onset→baseline CT: ≤1 = 5, 1-2 = 4, 2-3 = 3, 3-4 = 2, 4-5 = 1, >5 = 0
+// Predicted probability of growth ranges 3.4% (0 pts) to 85.8% (24 pts).
 export const calculateBRAIN = ({ volumeMl, recurrentICH, anticoagulated, ivh, onsetToCTHours }) => {
   let score = 0;
   const v = parseFloat(volumeMl);
   const t = parseFloat(onsetToCTHours);
-  if (Number.isFinite(v)) score += Math.max(0, Math.floor(Math.max(0, v - 10) / 10)) * 2;
-  if (recurrentICH) score += 1;
-  if (anticoagulated) score += 1;
+  if (Number.isFinite(v)) score += v <= 10 ? 0 : (v <= 20 ? 5 : 7);
+  if (recurrentICH) score += 4;
+  if (anticoagulated) score += 6;
   if (ivh) score += 2;
-  if (Number.isFinite(t)) score += Math.max(0, 6 - t) >= 1 ? 1 : 0;
+  if (Number.isFinite(t)) {
+    if (t <= 1) score += 5;
+    else if (t <= 2) score += 4;
+    else if (t <= 3) score += 3;
+    else if (t <= 4) score += 2;
+    else if (t <= 5) score += 1;
+    // >5 h = 0 points
+  }
   return {
     score,
-    risk: score >= 5 ? 'high' : score >= 3 ? 'moderate' : 'low',
-    expansionProbability: score >= 5 ? '~45%+' : score >= 3 ? '~20-40%' : '~5-15%',
-    source: 'Wang Neurology 2015;85:464-71'
+    // Coarse label over the 0-24 range (source reports a continuous probability,
+    // not named bands): low <8, moderate 8-15, high >15.
+    risk: score > 15 ? 'high' : score >= 8 ? 'moderate' : 'low',
+    expansionNote: 'Predicts ≥6 mL hematoma growth at 24 h; probability rises from ~3.4% (0 pts) to ~85.8% (24 pts)',
+    source: 'Wang X et al. Stroke 2015;46:376-381 (BRAIN score; PMID 25503550)'
   };
 };
 

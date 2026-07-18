@@ -95,9 +95,17 @@ export const activeTrials = [
       'MeVO domain: non-dominant/co-dominant M2 or M3 occlusion with NIHSS ≥8'
     ],
     exclusionCriteria: [
-      'Pregnancy',
-      'Hemorrhage on imaging',
-      'ASPECTS <6 (CT) / <7 (MRI); tandem or multi-territory occlusion; ICAD; seizure at onset'
+      'Presumed septic embolus / suspected bacterial endocarditis',
+      'Seizure at stroke onset',
+      'Known contrast anaphylaxis precluding endovascular reperfusion',
+      'Suspected chronic occlusion, intracranial dissection, or cerebral vasculitis',
+      'Known or high suspicion of intracranial atherosclerotic disease (ICAD)',
+      'Known pregnancy',
+      'Pre-existing disease confounding neuro/functional evaluation; life expectancy <6 mo',
+      'Platelets <100,000/µL',
+      'CT ASPECTS <6 (MRI ASPECTS <7)',
+      'Tandem or multi-territory occlusion; unfavorable access anatomy',
+      'Significant mass effect with midline shift >5 mm; intracranial tumor; acute intracranial hemorrhage'
     ],
     matcherCriteria: [
       { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
@@ -107,8 +115,10 @@ export const activeTrials = [
       { field: 'domainMatch', operator: 'in', value: ['low-nihss-lvo', 'mevo'], label: 'Matches Low-NIHSS-LVO or M2/M3 NIHSS≥8 MeVO domain' }
     ],
     matcherExclusions: [
-      { id: 'pregnancy', field: 'pregnancy', operator: '==', value: true, label: 'Pregnancy' },
-      { id: 'hemorrhage', field: 'hemorrhage', operator: '==', value: true, label: 'Evidence of hemorrhage on imaging' },
+      { id: 'pregnancy', field: 'pregnancy', operator: '==', value: true, label: 'Known pregnancy' },
+      { id: 'hemorrhage', field: 'hemorrhage', operator: '==', value: true, label: 'Acute intracranial hemorrhage on imaging' },
+      { id: 'seizureAtOnset', field: 'seizures', operator: '==', value: true, label: 'Seizure at stroke onset' },
+      { id: 'lowAspects', field: 'aspectsScore', operator: '<', value: 6, label: 'CT ASPECTS <6 (MRI <7)' },
     ],
     relatedCompletedTrialIds: ['dawn', 'defuse-3', 'escape-mevo', 'distal'],
     link: 'https://clinicaltrials.gov/study/NCT06289985',

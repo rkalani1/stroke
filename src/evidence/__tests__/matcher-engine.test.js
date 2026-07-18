@@ -341,14 +341,14 @@ describe('matcher engine — exclusions', () => {
     expect(r.exclusions.some((x) => x.id === 'pregnancy')).toBe(true);
   });
 
-  it('every active trial has matcherExclusions populated (14 across 10 active trials)', () => {
+  it('every active trial has matcherExclusions populated (16 across 10 active trials)', () => {
     let total = 0;
     for (const t of activeTrials) {
       total += (t.matcherExclusions || []).length;
     }
     expect(total).toBeGreaterThan(0);
     // Trial-level matcherExclusions total across the active atlas.
-    expect(total).toBe(14);
+    expect(total).toBe(16);
   });
 });
 

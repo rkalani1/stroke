@@ -125,7 +125,7 @@ export const recommendations = [
     guidelineSource: 'ESO 2023; AHA/ASA 2026',
     supportingClaimIds: ['cl-tnk-noninferior-alteplase'],
     caveats: [
-      'Use TNK 0.25 mg/kg only; in EXTEND-IA TNK part 2 the higher 0.4 mg/kg dose showed no reperfusion advantage over 0.25 mg/kg (19.3% vs 19.3%) with numerically more symptomatic ICH.',
+      'Use TNK 0.25 mg/kg only; the 0.4 mg/kg dose was not non-inferior in EXTEND-IA TNK part 2.',
       'Local protocols may continue to favor alteplase; both are acceptable.'
     ],
     lastReviewed: lr,
