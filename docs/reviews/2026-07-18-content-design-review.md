@@ -239,3 +239,18 @@ Edits respected the repo's generate/seed pipeline — several "content"/"data" f
 | `npm run lint:touch-targets` | ⚠️ not runnable here (Playwright build mismatch); env-only, not a defect |
 
 **OPEN items for owner (not implemented):** C5 (af-after-ICH reframe — PRESTIGE-AF/ENRICH-AF trade-off), C8 (add SWITCH to ICH surgery), C13 (relabel/reimplement BRAIN score), STEP full exclusion set, optional OPTIMAL-BP citation on `bp-post-evt`.
+
+---
+
+## 8. Follow-up round (2026-07-18) — OPEN items implemented; C6 reverted per owner
+
+Owner directed: implement all OPEN items and show the anticoagulation-after-ICH evidence in full and objectively, with **no changes to the Protocols tab**. All new work lands in `#/trials`/`#/research`/`#/education` (a protocol-snapshot check confirmed **zero drift** across all six frozen subtabs).
+
+- **C6 REVERTED (Protocols tab):** the EXTEND-IA TNK wording change and its `ischemic.txt` re-baseline were reverted; the Protocols tab now matches `main` byte-for-byte. The EXTEND-IA "was not non-inferior" phrasing (imprecise vs PMID 32078683) is **re-filed as an OPEN Protocols-wording item** for the owner to decide on directly.
+- **C5 IMPLEMENTED — totality of anticoagulation-after-ICH evidence, objective:** added five verified entries to the `af-after-ich` atlas topic — **PRESTIGE-AF** (Lancet 2025, PMID 40023176: ischaemic HR 0.05 but recurrent-ICH non-inferiority not met, HR 10.89), **ENRICH-AF** (NCT03950076; ongoing — only reported result is the lobar-ICH arm stopped for harm), **SoSTART** (Lancet Neurol 2021, PMID 34487722; inconclusive), **APACHE-AF** (Lancet Neurol 2021, PMID 34687635; no difference, imprecise), and the **COCROACH** IPD meta-analysis (Lancet Neurol 2023, PMID 37839434; ischaemic HR 0.27 significant, composite HR 0.68 NS, bleeding HR 1.80 NS). AVERROES/ARTESiA reframed objectively to note they did **not** enrol ICH survivors.
+- **C8 IMPLEMENTED:** **SWITCH** (Lancet 2024, PMID 38761811) added to `ich-surgery` — decompressive craniectomy for severe deep ICH; mRS 5-6 44% vs 58%, aRR 0.77 (95% CI 0.59-1.01), p=0.057 (favoured surgery numerically, not significant).
+- **C13 IMPLEMENTED:** `calculateBRAIN` rewritten with the **canonical Wang et al. Stroke 2015 weights** (PMID 25503550; B 0/5/7, R 4, A 6, I 2, N 5→0 by time band; range 0-24) — replacing the prior "simpler" non-canonical arithmetic and the wrong journal citation (was "Neurology 2015").
+- **OPTIMAL-BP** (JAMA 2023, PMID 37668619) added to `bp-post-evt` — intensive SBP <140 after successful EVT reduced functional independence (39.4% vs 54.4%, aOR 0.56), a second RCT reinforcing ENCHANTED2/MT.
+- **STEP full exclusion set:** displayed exclusions expanded to the complete real STEP criteria (septic embolus, seizure at onset, ICAD, ASPECTS <6/<7, tandem/multi-territory, mass effect >5 mm, etc.); two executable matcher exclusions added (`seizures`, `aspectsScore<6`). Matcher coverage 16/16; count test updated 14→16.
+
+Verification (round 2): all trials/scores verified against PubMed/ClinicalTrials.gov (7-agent workflow); `npm test` exit 0; `test:unit` 850; `evidence:validate` 71 completed / 82 citations / 16 exclusions; `content:seed:check` in sync; `lint:tokens` clean; **protocol snapshot zero drift**; qa-smoke 4/0.
