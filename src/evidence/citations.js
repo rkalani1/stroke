@@ -954,6 +954,80 @@ export const citations = [
     url: 'https://pubmed.ncbi.nlm.nih.gov/38768626/',
     verificationStatus: 'verified-pubmed',
     verificationNotes: 'Verified via PubMed 2026-07-06; DOI corrected from local source doc (was S0140-6736(24)00827-2).'
+  }),
+
+  // ---- Anticoagulation after ICH in AF (dedicated RCTs + IPD meta-analysis) ----
+  makeCitation({
+    id: 'cit-prestige-af-2025',
+    type: 'journal-article',
+    authors: 'Veltkamp R et al.',
+    title: 'Direct oral anticoagulants versus no anticoagulation for stroke prevention in intracerebral haemorrhage survivors with atrial fibrillation (PRESTIGE-AF)',
+    journal: 'Lancet',
+    year: 2025,
+    pmid: '40023176',
+    doi: '10.1016/S0140-6736(25)00333-2',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/40023176/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-enrich-af-2023',
+    type: 'journal-article',
+    authors: 'Shoamanesh A et al.',
+    title: 'Anticoagulation in patients with cerebral amyloid angiopathy (ENRICH-AF DSMB correspondence)',
+    journal: 'Lancet',
+    year: 2023,
+    pmid: '37839419',
+    doi: '10.1016/S0140-6736(23)02025-1',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/37839419/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-sostart-2021',
+    type: 'journal-article',
+    authors: 'SoSTART Collaboration (Al-Shahi Salman R et al.)',
+    title: 'Effects of oral anticoagulation for atrial fibrillation after spontaneous intracranial haemorrhage (SoSTART)',
+    journal: 'Lancet Neurol',
+    year: 2021,
+    pmid: '34487722',
+    doi: '10.1016/S1474-4422(21)00264-7',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/34487722/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-apache-af-2021',
+    type: 'journal-article',
+    authors: 'Schreuder FHBM et al.',
+    title: 'Apixaban versus no anticoagulation after anticoagulation-associated intracerebral haemorrhage in atrial fibrillation (APACHE-AF)',
+    journal: 'Lancet Neurol',
+    year: 2021,
+    pmid: '34687635',
+    doi: '10.1016/S1474-4422(21)00298-2',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/34687635/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-cocroach-2023',
+    type: 'journal-article',
+    authors: 'COCROACH Collaboration (Al-Shahi Salman R et al.)',
+    title: 'Oral anticoagulation after intracranial haemorrhage in atrial fibrillation: individual-patient-data meta-analysis (COCROACH)',
+    journal: 'Lancet Neurol',
+    year: 2023,
+    pmid: '37839434',
+    doi: '10.1016/S1474-4422(23)00315-0',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/37839434/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-switch-2024',
+    type: 'journal-article',
+    authors: 'Beck J et al.',
+    title: 'Decompressive craniectomy plus best medical treatment versus best medical treatment alone for severe deep intracerebral haemorrhage (SWITCH)',
+    journal: 'Lancet',
+    year: 2024,
+    pmid: '38761811',
+    doi: '10.1016/S0140-6736(24)00702-5',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/38761811/',
+    verificationStatus: 'verified-pubmed'
   })
 ];
 

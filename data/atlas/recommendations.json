@@ -3,7 +3,7 @@
     "endpoint": "recommendations",
     "schemaVersion": "1.0.0",
     "appVersion": "6.11.5",
-    "checksum": "sha256:cc1b520dc4ee753e1471dab031eb99d4",
+    "checksum": "sha256:a136fba348ce3218e822e73a3c82c768",
     "count": 11,
     "source": "Evidence atlas recommendations bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -93,7 +93,7 @@
       "setting": "inpatient",
       "text": "In warfarin-associated ICH, give vitamin K 10 mg IV plus 4F-PCC dosed by INR/weight to rapidly reverse anticoagulation; FFP is an inferior alternative.",
       "classOfRecommendation": "I",
-      "levelOfEvidence": "B-NR",
+      "levelOfEvidence": "B-R",
       "guidelineSource": "AHA/ASA 2022 ICH Guideline",
       "supportingClaimIds": [
         "cl-ich-warfarin-reversal-pcc-vk"
@@ -102,7 +102,7 @@
         "Vitamin K is required for sustained reversal; PCC alone is short-acting.",
         "FFP carries volume-overload risk and slower correction."
       ],
-      "lastReviewed": "2026-04-25",
+      "lastReviewed": "2026-07-18",
       "verificationStatus": "verified-guideline",
       "verificationNotes": ""
     },

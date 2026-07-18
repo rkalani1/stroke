@@ -1,6 +1,6 @@
 # Stroke CDS Educational Demo
 
-> Synthetic educational stroke decision-support demo (v6.11.5): example acute ischemic & hemorrhagic stroke pathways, 34 calculators, an evidence atlas (64 landmark trials, 10 active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.
+> Synthetic educational stroke decision-support demo (v6.11.5): example acute ischemic & hemorrhagic stroke pathways, 34 calculators, an evidence atlas (71 landmark trials, 10 active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.
 
 Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.
 
@@ -82,7 +82,7 @@ unless the underlying clinical data changed).
 - Heart-Brain Health 2024 — 9 recommendations (doi:10.1161/STR.0000000000000476)
 - CVT Statement 2024 — 5 recommendations (doi:10.1161/STR.0000000000000456)
 - ICH 2022 — 124 recommendations (doi:10.1161/STR.0000000000000407)
-- undefined — 0 recommendations
+- Landmark Trials — 0 recommendations
 - Maternal Stroke 2026 — 3 recommendations (doi:10.1161/STR.0000000000000514)
 - Perioperative Stroke 2021 — 10 recommendations (doi:10.1161/CIR.0000000000000968)
 - Poststroke Cognition 2023 — 10 recommendations (doi:10.1161/STR.0000000000000430)

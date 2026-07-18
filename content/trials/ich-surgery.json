@@ -49,5 +49,22 @@
     "certainty": "moderate",
     "lastReviewed": "2026-07-06",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "switch",
+    "name": "SWITCH",
+    "fullName": "Decompressive Craniectomy plus Best Medical Treatment vs Best Medical Treatment Alone for Severe Deep ICH",
+    "category": "ich-surgery",
+    "population": "n=201, 18-75, NIHSS n/a, Severe deep (basal ganglia/thalamic) spontaneous ICH",
+    "finding": "Favoured surgery numerically but not significant: 44% vs 58%",
+    "teachingPoint": "Objective: numerically fewer very-poor outcomes with craniectomy, but not statistically significant; no safety excess.",
+    "PMID": "38761811",
+    "year": 2024,
+    "citationIds": [
+      "cit-switch-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-07-18",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

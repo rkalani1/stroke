@@ -3,8 +3,8 @@
     "endpoint": "completed-trials",
     "schemaVersion": "1.0.0",
     "appVersion": "6.11.5",
-    "checksum": "sha256:946e23b5cb3cec10d40905a5f4a28db4",
-    "count": 64,
+    "checksum": "sha256:4bee449ad1a019f52713b7c0a827e88f",
+    "count": 71,
     "source": "Evidence atlas completed-trials bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
@@ -1049,10 +1049,10 @@
         "crao-thrombolysis"
       ],
       "population": {
-        "n": 71,
+        "n": 70,
         "ageRange": "≥18",
         "nihssRange": "n/a",
-        "timeWindow": "≤4.5 h from vision loss",
+        "timeWindow": "≤4.5 h from severe vision loss",
         "keyInclusion": [
           "CRAO with visual acuity ≤20/200"
         ],
@@ -1084,8 +1084,8 @@
       ],
       "relatedActiveTrialIds": [],
       "practiceImpact": "CRAO IVT is reasonable in selected centers; no strong RCT support yet.",
-      "lastReviewed": "2026-04-25",
-      "promotedDate": "2026-04-25",
+      "lastReviewed": "2026-07-18",
+      "promotedDate": "2026-07-18",
       "verificationStatus": "unverified-source-limited",
       "verificationNotes": "Numeric primary-endpoint precision left qualitative pending manual verification."
     },
@@ -1673,8 +1673,8 @@
         "other": "Major bleeding similar"
       },
       "imagingCriteria": "",
-      "applicabilityNotes": "AF stroke prevention superiority of apixaban over aspirin in VKA-unsuitable patients.",
-      "limitations": "Pre-DOAC adoption era; comparator is aspirin.",
+      "applicabilityNotes": "AF stroke prevention superiority of apixaban over aspirin in VKA-unsuitable patients. Did NOT enrol ICH survivors — background context, not direct ICH-survivor evidence.",
+      "limitations": "Pre-DOAC adoption era; comparator is aspirin; prior-ICH patients not enrolled.",
       "certainty": "high",
       "evidenceType": "rct",
       "citationIds": [
@@ -1683,7 +1683,7 @@
       "relatedActiveTrialIds": [
         "aspire"
       ],
-      "practiceImpact": "Supports anticoagulation over aspirin for AF stroke prevention; informs ASPIRE rationale.",
+      "practiceImpact": "Supports anticoagulation over aspirin for AF stroke prevention generally; the ICH-survivor question is answered by the dedicated trials below.",
       "lastReviewed": "2026-04-25",
       "promotedDate": "2026-04-25",
       "verificationStatus": "verified-pubmed",
@@ -1730,8 +1730,8 @@
         "other": "Major bleeding higher with apixaban"
       },
       "imagingCriteria": "",
-      "applicabilityNotes": "Frame for ICH-survivor decisions: anticoagulation reduces stroke at the cost of bleeding.",
-      "limitations": "Subclinical AF only.",
+      "applicabilityNotes": "Subclinical-AF trial illustrating the stroke-vs-bleeding trade-off; it did NOT enrol ICH survivors, so it is background rather than direct evidence for that population.",
+      "limitations": "Subclinical AF only; prior-ICH patients not enrolled.",
       "certainty": "high",
       "evidenceType": "rct",
       "citationIds": [
@@ -1740,7 +1740,7 @@
       "relatedActiveTrialIds": [
         "aspire"
       ],
-      "practiceImpact": "Establishes apixaban benefit even in subclinical AF; informs ICH-survivor decisions.",
+      "practiceImpact": "Establishes apixaban benefit in subclinical AF; the ICH-survivor question is addressed by PRESTIGE-AF, SoSTART, APACHE-AF and the COCROACH meta-analysis, which enrolled that population.",
       "lastReviewed": "2026-04-25",
       "promotedDate": "2026-04-25",
       "verificationStatus": "verified-pubmed",
@@ -3592,6 +3592,385 @@
       "promotedDate": "2026-07-06",
       "verificationStatus": "verified-pubmed",
       "verificationNotes": "PubMed 38768626; DOI corrected to 10.1016/S0140-6736(24)00921-8. Verified 2026-07-06."
+    },
+    {
+      "id": "prestige-af",
+      "shortName": "PRESTIGE-AF",
+      "fullName": "Prevention of Stroke in Intracerebral Haemorrhage Survivors with Atrial Fibrillation",
+      "topic": "af-after-ich",
+      "diseaseArea": [
+        "ich",
+        "af-after-ich",
+        "secondary-prevention"
+      ],
+      "population": {
+        "n": 319,
+        "ageRange": "median 79",
+        "nihssRange": "n/a",
+        "timeWindow": "Spontaneous ICH survivors with AF, mRS ≤4",
+        "keyInclusion": [
+          "Spontaneous ICH survivor with AF and an anticoagulation indication"
+        ],
+        "keyExclusion": []
+      },
+      "intervention": "DOAC (apixaban/dabigatran/edoxaban/rivaroxaban), n=158",
+      "comparator": "No anticoagulation (antiplatelet permitted), n=161",
+      "primaryEndpoint": {
+        "definition": "Coprimary: first ischaemic stroke (superiority) and first recurrent ICH (non-inferiority), ITT",
+        "timepoint": "trial follow-up",
+        "result": "Ischaemic stroke markedly reduced (0.83 vs 8.60 per 100 patient-years); recurrent ICH did NOT meet non-inferiority (5.00 vs 0.82 per 100 patient-years)",
+        "effectSize": "ischaemic HR 0.05; recurrent-ICH HR 10.89",
+        "confidenceInterval": "ischaemic 95% CI 0.01-0.36; ICH 90% CI 1.95-60.72",
+        "pValue": "ischaemic p<0.0001; ICH non-inferiority not met"
+      },
+      "secondaryEndpoints": [
+        {
+          "name": "Death",
+          "result": "10% (DOAC) vs 13% (no anticoagulation)"
+        }
+      ],
+      "safetyFindings": {
+        "sich": "Recurrent ICH ~10-fold higher with DOAC",
+        "mortality": "Numerically lower with DOAC (NS)",
+        "other": "Serious adverse events 44% vs 55%"
+      },
+      "imagingCriteria": "",
+      "applicabilityNotes": "Dedicated ICH-survivor RCT: DOAC lowers ischaemic stroke but raises recurrent ICH; net benefit uncertain in a small trial with few events.",
+      "limitations": "Small (n=319); wide CIs; source uses discordant CI conventions (95% for ischaemic HR, 90% for ICH HR).",
+      "certainty": "moderate",
+      "evidenceType": "rct",
+      "citationIds": [
+        "cit-prestige-af-2025"
+      ],
+      "relatedActiveTrialIds": [],
+      "practiceImpact": "Objective: anticoagulation after ICH in AF trades a large ischaemic-stroke reduction against a substantial recurrent-ICH increase; individualize.",
+      "lastReviewed": "2026-07-18",
+      "promotedDate": "2026-07-18",
+      "verificationStatus": "verified-pubmed",
+      "verificationNotes": ""
+    },
+    {
+      "id": "enrich-af",
+      "shortName": "ENRICH-AF",
+      "fullName": "Edoxaban for Intracranial Hemorrhage Survivors with Atrial Fibrillation",
+      "topic": "af-after-ich",
+      "diseaseArea": [
+        "ich",
+        "af-after-ich",
+        "secondary-prevention"
+      ],
+      "population": {
+        "n": 948,
+        "ageRange": "≥45",
+        "nihssRange": "n/a",
+        "timeWindow": "Intracranial-haemorrhage survivors with high-risk AF (CHA₂DS₂-VASc ≥2)",
+        "keyInclusion": [
+          "Intracranial haemorrhage survivor with AF"
+        ],
+        "keyExclusion": []
+      },
+      "intervention": "Edoxaban 60 mg (30 mg reduced-dose) daily",
+      "comparator": "Non-anticoagulant therapy (none or antiplatelet)",
+      "primaryEndpoint": {
+        "definition": "Coprimary: stroke/systemic embolism; ISTH major haemorrhage",
+        "timepoint": "event-driven (primary completion 2026)",
+        "result": "Full efficacy not yet reported; the lobar-ICH subgroup was stopped by the DSMB for excess recurrent haemorrhagic stroke",
+        "effectSize": "",
+        "confidenceInterval": "",
+        "pValue": ""
+      },
+      "secondaryEndpoints": [],
+      "safetyFindings": {
+        "sich": "Excess recurrent haemorrhagic stroke in the lobar-ICH (CAA-enriched) subgroup → edoxaban stopped in that subgroup",
+        "mortality": "",
+        "other": ""
+      },
+      "imagingCriteria": "",
+      "applicabilityNotes": "Ongoing; the only reported result to date is a safety signal in lobar ICH. Do not infer net benefit from ENRICH-AF alone.",
+      "limitations": "Primary efficacy pending (2026); lobar-arm-stopped subgroup details partly from secondary reporting.",
+      "certainty": "low",
+      "evidenceType": "rct",
+      "citationIds": [
+        "cit-enrich-af-2023"
+      ],
+      "relatedActiveTrialIds": [],
+      "practiceImpact": "Objective: interim DSMB stopped edoxaban in lobar ICH for excess rebleeding; the main efficacy comparison is awaited.",
+      "lastReviewed": "2026-07-18",
+      "promotedDate": "2026-07-18",
+      "verificationStatus": "unverified-source-limited",
+      "verificationNotes": "Design/NCT (NCT03950076) and lobar-arm-stopped safety signal verified; full primary efficacy result not yet published (expected 2026)."
+    },
+    {
+      "id": "sostart",
+      "shortName": "SoSTART",
+      "fullName": "Start or Stop Anticoagulants Randomised Trial",
+      "topic": "af-after-ich",
+      "diseaseArea": [
+        "ich",
+        "af-after-ich",
+        "secondary-prevention"
+      ],
+      "population": {
+        "n": 203,
+        "ageRange": "adults",
+        "nihssRange": "n/a",
+        "timeWindow": "Survivors of spontaneous intracranial haemorrhage with AF (CHA₂DS₂-VASc ≥2)",
+        "keyInclusion": [
+          "Spontaneous intracranial haemorrhage survivor with AF"
+        ],
+        "keyExclusion": []
+      },
+      "intervention": "Start long-term oral anticoagulation (n=101)",
+      "comparator": "Avoid anticoagulation (antiplatelet or none, n=102)",
+      "primaryEndpoint": {
+        "definition": "Recurrent symptomatic spontaneous intracranial haemorrhage",
+        "timepoint": "~1-2 y",
+        "result": "Inconclusive: 8/101 (8%) start vs 4/102 (4%) avoid; starting NOT shown non-inferior",
+        "effectSize": "adjusted HR 2.42",
+        "confidenceInterval": "95% CI 0.72-8.09",
+        "pValue": "p=0.152"
+      },
+      "secondaryEndpoints": [
+        {
+          "name": "Death",
+          "result": "22% (start) vs 11% (avoid)"
+        }
+      ],
+      "safetyFindings": {
+        "sich": "Recurrent ICH numerically higher with anticoagulation (imprecise)",
+        "mortality": "Numerically higher with start",
+        "other": ""
+      },
+      "imagingCriteria": "",
+      "applicabilityNotes": "Pilot-phase non-inferiority RCT; underpowered and inconclusive for the ICH-survivor anticoagulation question.",
+      "limitations": "Small pilot (n=203); wide CIs; open-label.",
+      "certainty": "low",
+      "evidenceType": "rct",
+      "citationIds": [
+        "cit-sostart-2021"
+      ],
+      "relatedActiveTrialIds": [],
+      "practiceImpact": "Objective: did not establish non-inferiority of starting anticoagulation after ICH; hypothesis-generating.",
+      "lastReviewed": "2026-07-18",
+      "promotedDate": "2026-07-18",
+      "verificationStatus": "verified-pubmed",
+      "verificationNotes": ""
+    },
+    {
+      "id": "apache-af",
+      "shortName": "APACHE-AF",
+      "fullName": "Apixaban After Anticoagulation-Associated Intracerebral Haemorrhage in Atrial Fibrillation",
+      "topic": "af-after-ich",
+      "diseaseArea": [
+        "ich",
+        "af-after-ich",
+        "secondary-prevention"
+      ],
+      "population": {
+        "n": 101,
+        "ageRange": "median 78",
+        "nihssRange": "n/a",
+        "timeWindow": "7-90 d after anticoagulation-associated ICH; AF, CHA₂DS₂-VASc ≥2, mRS ≤4",
+        "keyInclusion": [
+          "Anticoagulation-associated ICH survivor with AF"
+        ],
+        "keyExclusion": []
+      },
+      "intervention": "Apixaban 5 mg (or 2.5 mg) BID (n=50)",
+      "comparator": "Avoid anticoagulation (antiplatelet allowed, n=51)",
+      "primaryEndpoint": {
+        "definition": "Composite of non-fatal stroke or vascular death",
+        "timepoint": "annualized",
+        "result": "No difference: 26% (12.6%/y) apixaban vs 24% (11.9%/y) avoid; high absolute risk in both arms",
+        "effectSize": "adjusted HR 1.05",
+        "confidenceInterval": "95% CI 0.48-2.31",
+        "pValue": "p=0.90"
+      },
+      "secondaryEndpoints": [],
+      "safetyFindings": {
+        "sich": "",
+        "mortality": "",
+        "other": "Serious adverse events ~57-58% in both arms"
+      },
+      "imagingCriteria": "",
+      "applicabilityNotes": "Phase-2 feasibility RCT to estimate event rates; not powered for efficacy. ~12%/y absolute risk of non-fatal stroke or vascular death regardless of arm.",
+      "limitations": "Small phase-2 (n=101); imprecise estimate.",
+      "certainty": "low",
+      "evidenceType": "rct",
+      "citationIds": [
+        "cit-apache-af-2021"
+      ],
+      "relatedActiveTrialIds": [],
+      "practiceImpact": "Objective: no clear difference; both strategies carry high residual vascular risk.",
+      "lastReviewed": "2026-07-18",
+      "promotedDate": "2026-07-18",
+      "verificationStatus": "verified-pubmed",
+      "verificationNotes": ""
+    },
+    {
+      "id": "cocroach",
+      "shortName": "COCROACH",
+      "fullName": "Oral Anticoagulation after Intracranial Haemorrhage in AF: Individual-Patient-Data Meta-analysis",
+      "topic": "af-after-ich",
+      "diseaseArea": [
+        "ich",
+        "af-after-ich",
+        "secondary-prevention"
+      ],
+      "population": {
+        "n": 412,
+        "ageRange": "75% ≥75",
+        "nihssRange": "n/a",
+        "timeWindow": "AF with prior spontaneous intracranial haemorrhage (pooled RCTs: SoSTART, APACHE-AF, NASPAF-ICH)",
+        "keyInclusion": [
+          "Randomised in an anticoagulation-after-ICH trial"
+        ],
+        "keyExclusion": []
+      },
+      "intervention": "Start oral anticoagulation (DOAC in 99%), n=212",
+      "comparator": "Avoid anticoagulation (antiplatelet in 33%), n=200",
+      "primaryEndpoint": {
+        "definition": "Any stroke or cardiovascular death",
+        "timepoint": "pooled",
+        "result": "Favoured anticoagulation but non-significant: 14% vs 22%",
+        "effectSize": "HR 0.68 (I²=0%)",
+        "confidenceInterval": "95% CI 0.42-1.10",
+        "pValue": "NS"
+      },
+      "secondaryEndpoints": [
+        {
+          "name": "Ischaemic major adverse cardiovascular events",
+          "result": "4% vs 19%; HR 0.27 (95% CI 0.13-0.56) — significant reduction"
+        },
+        {
+          "name": "Haemorrhagic MACE",
+          "result": "HR 1.80 (95% CI 0.77-4.21) — numerically higher, NS"
+        }
+      ],
+      "safetyFindings": {
+        "sich": "Recurrent bleeding numerically higher with anticoagulation (NS, wide CI)",
+        "mortality": "",
+        "other": ""
+      },
+      "imagingCriteria": "",
+      "applicabilityNotes": "IPD meta-analysis of the completed pre-2025 RCTs. Anticoagulation significantly cut ischaemic events; the composite of any stroke/CV death favoured anticoagulation but was not statistically significant; recurrent bleeding was numerically higher.",
+      "limitations": "Pools small trials (n=412); predates PRESTIGE-AF and ENRICH-AF.",
+      "certainty": "moderate",
+      "evidenceType": "meta-analysis",
+      "citationIds": [
+        "cit-cocroach-2023"
+      ],
+      "relatedActiveTrialIds": [],
+      "practiceImpact": "Objective synthesis: net benefit of anticoagulation after ICH in AF remains statistically uncertain; ischaemic reduction is offset by a non-significant bleeding increase.",
+      "lastReviewed": "2026-07-18",
+      "promotedDate": "2026-07-18",
+      "verificationStatus": "verified-pubmed",
+      "verificationNotes": ""
+    },
+    {
+      "id": "switch",
+      "shortName": "SWITCH",
+      "fullName": "Decompressive Craniectomy plus Best Medical Treatment vs Best Medical Treatment Alone for Severe Deep ICH",
+      "topic": "ich-surgery",
+      "diseaseArea": [
+        "ich",
+        "ich-surgery"
+      ],
+      "population": {
+        "n": 201,
+        "ageRange": "18-75",
+        "nihssRange": "n/a",
+        "timeWindow": "Severe deep (basal ganglia/thalamic) spontaneous ICH",
+        "keyInclusion": [
+          "Severe deep spontaneous ICH"
+        ],
+        "keyExclusion": []
+      },
+      "intervention": "Decompressive craniectomy (no clot evacuation) + best medical treatment (n=96 analysed)",
+      "comparator": "Best medical treatment alone (n=101 analysed)",
+      "primaryEndpoint": {
+        "definition": "mRS 5-6 (death or very severe disability) at 180 d",
+        "timepoint": "180 d",
+        "result": "Favoured surgery numerically but not significant: 44% vs 58%",
+        "effectSize": "adjusted RR 0.77; adjusted risk difference -13%",
+        "confidenceInterval": "RR 95% CI 0.59-1.01; RD 95% CI -26 to 0",
+        "pValue": "p=0.057"
+      },
+      "secondaryEndpoints": [],
+      "safetyFindings": {
+        "sich": "",
+        "mortality": "Similar",
+        "other": "Severe adverse events 41% (surgery) vs 44% (medical) — no excess with surgery"
+      },
+      "imagingCriteria": "",
+      "applicabilityNotes": "First RCT of decompressive craniectomy (without evacuation) for severe deep ICH — a distinct surgical modality from clot evacuation (ENRICH/MISTIE III).",
+      "limitations": "Modest size (n=201); primary-outcome CI crossed the null.",
+      "certainty": "moderate",
+      "evidenceType": "rct",
+      "citationIds": [
+        "cit-switch-2024"
+      ],
+      "relatedActiveTrialIds": [],
+      "practiceImpact": "Objective: numerically fewer very-poor outcomes with craniectomy, but not statistically significant; no safety excess.",
+      "lastReviewed": "2026-07-18",
+      "promotedDate": "2026-07-18",
+      "verificationStatus": "verified-pubmed",
+      "verificationNotes": ""
+    },
+    {
+      "id": "optimal-bp",
+      "shortName": "OPTIMAL-BP",
+      "fullName": "Intensive vs Conventional Blood Pressure Lowering after Successful Endovascular Thrombectomy",
+      "topic": "bp-post-evt",
+      "diseaseArea": [
+        "acute-ischemic-stroke",
+        "bp-post-evt"
+      ],
+      "population": {
+        "n": 306,
+        "ageRange": "≥18",
+        "nihssRange": "all",
+        "timeWindow": "After successful EVT (mTICI ≥2b)",
+        "keyInclusion": [
+          "LVO stroke with successful reperfusion after EVT"
+        ],
+        "keyExclusion": []
+      },
+      "intervention": "Intensive SBP <140 mmHg for 24 h (n=155)",
+      "comparator": "Conventional SBP 140-180 mmHg for 24 h (n=150)",
+      "primaryEndpoint": {
+        "definition": "Functional independence (mRS 0-2) at 3 months",
+        "timepoint": "90 d",
+        "result": "Intensive worse: 39.4% vs 54.4%",
+        "effectSize": "adjusted OR 0.56; risk difference -15.1%",
+        "confidenceInterval": "OR 95% CI 0.33-0.96; RD 95% CI -26.2 to -3.9",
+        "pValue": "p=0.03"
+      },
+      "secondaryEndpoints": [
+        {
+          "name": "Symptomatic ICH ≤36 h",
+          "result": "9.0% vs 8.1% (NS)"
+        }
+      ],
+      "safetyFindings": {
+        "sich": "No difference (9.0% vs 8.1%)",
+        "mortality": "",
+        "other": ""
+      },
+      "imagingCriteria": "",
+      "applicabilityNotes": "Second RCT (with ENCHANTED2/MT) showing harm from intensive BP lowering after successful EVT; supports avoiding SBP <140.",
+      "limitations": "Single-country (South Korea); open-label with blinded endpoints.",
+      "certainty": "high",
+      "evidenceType": "rct",
+      "citationIds": [
+        "cit-optimal-bp-2023"
+      ],
+      "relatedActiveTrialIds": [],
+      "practiceImpact": "Objective: intensive SBP <140 after successful EVT reduced functional independence; reinforces ENCHANTED2/MT.",
+      "lastReviewed": "2026-07-18",
+      "promotedDate": "2026-07-18",
+      "verificationStatus": "verified-pubmed",
+      "verificationNotes": ""
     }
   ]
 }

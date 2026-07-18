@@ -88,7 +88,8 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, timeFromLKWh, nihss, age }
 // CHANCE-2 (Wang NEJM 2021;385:2520-30): in CYP2C19 LOF carriers, ticagrelor+ASA superior to clopidogrel+ASA for NIHSS <=3 / ABCD2 >=4.
 // INSPIRES (Gao NEJM 2023;389:2413-24, PMID 38157499): clopidogrel+ASA x 21d extended eligibility — NIHSS <=5 AND time-from-onset <=72h,
 //   INCLUDING patients with symptomatic intra-/extracranial atherosclerotic stenosis >=50% (LVD). 7.3% vs 9.2% recurrent stroke (HR 0.79).
-//   Now Class 1 per AHA/ASA 2024 focused update on antiplatelet therapy in secondary stroke prevention.
+//   DAPT for high-risk TIA / minor stroke is Class 1 in the 2021 AHA/ASA secondary-prevention guideline;
+//   INSPIRES extended the eligibility window/population (no 2024 AHA/ASA antiplatelet update exists).
 //
 // Inputs:
 //   nihss            — admission NIHSS (number)
@@ -137,10 +138,10 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
       duration: '30 days',
       dosing: 'Ticagrelor 180 mg load, then 90 mg BID + ASA 325 mg load then 75-100 mg daily',
       rationale: isAtherosclerotic
-        ? `Atherosclerotic minor-to-moderate stroke (NIHSS ≤5) within 24h: THALES showed 17% RRR in stroke/death at 30 d. ${lvdSymptomatic ? 'Symptomatic LVD ≥50% → INSPIRES (clopi+ASA) is the alternative Class 1 option per 2024 update.' : ''}`.trim()
+        ? `Atherosclerotic minor-to-moderate stroke (NIHSS ≤5) within 24h: THALES showed 17% RRR in stroke/death at 30 d. ${lvdSymptomatic ? 'Symptomatic LVD ≥50% → INSPIRES (clopi+ASA) is an alternative option (Gao NEJM 2023).' : ''}`.trim()
         : `Very-high-risk TIA (ABCD² ${ab} ≥6): escalate to ticagrelor+ASA × 30d.`,
       source: 'Johnston NEJM 2020;383:207-17 (THALES); INSPIRES NEJM 2023;389:2413-24 alternative for atherosclerotic LVD',
-      class: 'Class 2a (AHA/ASA secondary prevention 2021); INSPIRES upgrades atherosclerotic-LVD branch to Class 1 (2024 focused update)'
+      class: 'Class 2a (AHA/ASA 2021 secondary prevention); atherosclerotic-LVD branch supported by INSPIRES (Gao NEJM 2023), not yet in an AHA/ASA guideline update'
     };
   }
 
@@ -155,7 +156,7 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
         : 'Clopidogrel 300-600 mg load then 75 mg daily + ASA 75-100 mg daily',
       rationale: `INSPIRES eligibility: NIHSS ${n} (4-5) within ${tH}h (≤72h). DAPT × 21d reduces 90-d stroke recurrence (HR 0.79). ${lvdSymptomatic ? 'Includes symptomatic LVD ≥50% per INSPIRES.' : ''}`.trim(),
       source: 'Gao NEJM 2023;389:2413-24 (INSPIRES, PMID 38157499); CYP2C19 branch CHANCE-2 NEJM 2021',
-      class: 'Class 1 (AHA/ASA 2024 focused update on antiplatelet therapy)'
+      class: 'INSPIRES-supported (Gao NEJM 2023); DAPT for high-risk TIA/minor stroke is Class 1 in the 2021 AHA/ASA secondary-prevention guideline (no 2024 AHA/ASA antiplatelet update exists)'
     };
   }
 
@@ -269,24 +270,38 @@ export const calculateBAT = ({ blendSign, hypodensity, timeToCTHours }) => {
   };
 };
 
-// BRAIN score (Wang et al., Neurology 2015;85:464-71)
-// Baseline volume >10 mL = 2 (per 10 mL increase); Recurrent (prior ICH) = 1; Anticoag on admission = 1;
-// Intraventricular extension = 2; onset-to-CT Number <=1h = 1 (per hour less 6 h).
-// Simpler implementation: volume (per 10 mL >10), recurrent, AC, IVH, time<6h.
+// BRAIN score (Wang X et al., Stroke 2015;46:376-381; PMID 25503550).
+// Predicts clinically significant (≥6 mL) hematoma expansion at 24 h. Derived in
+// INTERACT2 (n=964), validated in INTERACT1 (n=346); C-statistic 0.73. Range 0-24.
+//   B = Baseline ICH volume: ≤10 mL = 0, 10-20 = 5, >20 = 7
+//   R = Recurrent ICH: 4
+//   A = Anticoagulation (warfarin) at onset: 6
+//   I = Intraventricular haemorrhage: 2
+//   N = Number of hours onset→baseline CT: ≤1 = 5, 1-2 = 4, 2-3 = 3, 3-4 = 2, 4-5 = 1, >5 = 0
+// Predicted probability of growth ranges 3.4% (0 pts) to 85.8% (24 pts).
 export const calculateBRAIN = ({ volumeMl, recurrentICH, anticoagulated, ivh, onsetToCTHours }) => {
   let score = 0;
   const v = parseFloat(volumeMl);
   const t = parseFloat(onsetToCTHours);
-  if (Number.isFinite(v)) score += Math.max(0, Math.floor(Math.max(0, v - 10) / 10)) * 2;
-  if (recurrentICH) score += 1;
-  if (anticoagulated) score += 1;
+  if (Number.isFinite(v)) score += v <= 10 ? 0 : (v <= 20 ? 5 : 7);
+  if (recurrentICH) score += 4;
+  if (anticoagulated) score += 6;
   if (ivh) score += 2;
-  if (Number.isFinite(t)) score += Math.max(0, 6 - t) >= 1 ? 1 : 0;
+  if (Number.isFinite(t)) {
+    if (t <= 1) score += 5;
+    else if (t <= 2) score += 4;
+    else if (t <= 3) score += 3;
+    else if (t <= 4) score += 2;
+    else if (t <= 5) score += 1;
+    // >5 h = 0 points
+  }
   return {
     score,
-    risk: score >= 5 ? 'high' : score >= 3 ? 'moderate' : 'low',
-    expansionProbability: score >= 5 ? '~45%+' : score >= 3 ? '~20-40%' : '~5-15%',
-    source: 'Wang Neurology 2015;85:464-71'
+    // Coarse label over the 0-24 range (source reports a continuous probability,
+    // not named bands): low <8, moderate 8-15, high >15.
+    risk: score > 15 ? 'high' : score >= 8 ? 'moderate' : 'low',
+    expansionNote: 'Predicts ≥6 mL hematoma growth at 24 h; probability rises from ~3.4% (0 pts) to ~85.8% (24 pts)',
+    source: 'Wang X et al. Stroke 2015;46:376-381 (BRAIN score; PMID 25503550)'
   };
 };
 
@@ -676,7 +691,7 @@ export const recommendLateWindowLytic = ({ timeFromLKWh, evtAvailable, lvo, nihs
   const v = parseFloat(mismatchVolumeMl);
 
   if (!Number.isFinite(t)) return null;
-  if (t <= 4.5) return { eligible: false, reason: 'Standard 0-4.5h window — use routine TNK 0.25 mg/kg (max 25 mg).', source: 'AHA/ASA 2024 focused update' };
+  if (t <= 4.5) return { eligible: false, reason: 'Standard 0-4.5h window — use routine TNK 0.25 mg/kg (max 25 mg).', source: 'AHA/ASA 2026 AIS guideline' };
   if (t > 24) return { eligible: false, reason: 'Beyond 24h — outside any thrombolysis evidence.', source: null };
   if (lvo !== true) return { eligible: false, reason: 'TRACE-III enrolled only anterior LVO (ICA/M1). Non-LVO late-window IV lysis not supported by trial evidence.', source: 'TRACE-III NEJM 2024;391:203-12' };
   if (evtAvailable === true) return { eligible: false, reason: 'EVT is available — proceed to thrombectomy. TRACE-III applies only when EVT cannot be performed; TIMELESS was negative when most patients got EVT.', source: 'Xiong NEJM 2024 (TRACE-III); Albers NEJM 2024 (TIMELESS, PMID 38329148)' };
@@ -1060,7 +1075,7 @@ export const evaluatePASCAL = ({ ropeScore, largeShunt, atrialSeptalAneurysm }) 
     nnt,
     ageEligibility: 'PFO closure trials enrolled age 18-60. For age >60, individualize with shared decision-making; data sparser.',
     source: 'Kent JAMA 2021;326:2277-86 (PASCAL, PMID 34905030); CLOSE/REDUCE/RESPECT/DEFENSE-PFO RCTs',
-    class: 'Class 1 for Probable; Class 2a for Possible (AAN PFO advisory 2020, AHA SPS 2024 focused update)'
+    class: 'Class 1 for Probable; Class 2a for Possible (AAN 2020 PFO practice advisory; 2021 AHA/ASA secondary-prevention guideline)'
   };
 };
 
