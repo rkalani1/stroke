@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:78b4a2868afb2d29c01992d7a3d2c7fe",
+    "checksum": "sha256:69738525d786beed2660f10b449d5e77",
     "counts": {
       "guidelines": 11,
       "trials": 71,
@@ -1663,7 +1663,7 @@
           "\"pmid\"": "38749032"
         },
         {
-          "\"label\"": "REVERSE-AD",
+          "\"label\"": "RE-VERSE AD",
           "\"citation\"": "Pollack CV, et al. Idarucizumab for Dabigatran Reversal — Full Cohort Analysis. N Engl J Med. 2017;377(5):431-441.",
           "\"pmid\"": "28693366"
         },

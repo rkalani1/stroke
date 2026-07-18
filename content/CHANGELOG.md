@@ -49,7 +49,7 @@ PubMed). No change to the frozen Example Protocols zone.
 - **`anticoagulation-reversal`** — agent-specific ICH reversal (4F-PCC +
   vitamin K, idarucizumab, andexanet/4F-PCC) with the ANNEXA-I thrombotic
   caveat and parallel BP/neurosurgery steps. Sources: ANNEXA-4 (30730782),
-  ANNEXA-I (38749032), REVERSE-AD (28693366), AHA/ASA 2022 ICH (35579034),
+  ANNEXA-I (38749032), RE-VERSE AD (28693366), AHA/ASA 2022 ICH (35579034),
   NCS/SCCM reversal (26714677).
 - **`nihss-simulator`** (interactive) — score the 15 NIHSS items on case
   vignettes with immediate feedback, running 0–42 total, the scoring rules
@@ -68,6 +68,24 @@ PubMed). No change to the frozen Example Protocols zone.
   microbleeds / cortical superficial siderosis, Boston Criteria 2.0, the
   antithrombotic dilemma, and CAA-ri. Sources: Boston 2.0 (35841910), Linn
   cSS (20421578).
+
+Accuracy audit before release (adversarial, cross-checked against the PubMed
+abstracts for all 43 cited PMIDs): every citation's author/title/journal/year/
+volume/issue/pages verified. Ten claims across six cards were corrected:
+- BAOCHE mRS 0–3 → **46% vs 24%** (was 39%; abstract: 51/110 = 46%).
+- ANNEXA-I split into overall thrombotic events (**10.3% vs 5.6%**) and ischemic
+  stroke (**6.5% vs 1.5%**) — the parenthetical previously conflated the two.
+- ACTION-CVT major hemorrhage stated as a **lower rate (aHR 0.35)** rather than
+  a "trend" (abstract wording).
+- ISCVT death/dependence at **final follow-up** (median 16 months), not 6 months.
+- Wallenberg row: corticospinal tract **spared → no hemiparesis** (removed the
+  misleading "face-sparing motor," which is the Dejerine pearl).
+- NIHSS interpretation caveat now notes the extinction/inattention item captures
+  right-hemisphere neglect (removed the internally inconsistent "none purely for
+  right-hemisphere").
+- TESLA row: utility-weighted mRS **posterior probability 0.96 vs the 0.975**
+  threshold; large-core §1 clarified five trials met their primary endpoint.
+- Trial name rendered **RE-VERSE AD** (registered name).
 
 ## 2026-07-11 — Clinical corrections (audit-flagged, clinician-directed)
 

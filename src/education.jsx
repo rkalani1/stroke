@@ -549,7 +549,7 @@ const EDUCATION_MODULES = [
     references: [
       { label: 'ANNEXA-4', citation: 'Connolly SJ, et al. Full Study Report of Andexanet Alfa for Bleeding Associated with Factor Xa Inhibitors. N Engl J Med. 2019;380(14):1326-1335.', pmid: '30730782' },
       { label: 'ANNEXA-I', citation: 'Connolly SJ, et al. Andexanet for Factor Xa Inhibitor–Associated Acute Intracerebral Hemorrhage. N Engl J Med. 2024;390(19):1745-1755.', pmid: '38749032' },
-      { label: 'REVERSE-AD', citation: 'Pollack CV, et al. Idarucizumab for Dabigatran Reversal — Full Cohort Analysis. N Engl J Med. 2017;377(5):431-441.', pmid: '28693366' },
+      { label: 'RE-VERSE AD', citation: 'Pollack CV, et al. Idarucizumab for Dabigatran Reversal — Full Cohort Analysis. N Engl J Med. 2017;377(5):431-441.', pmid: '28693366' },
       { label: 'AHA/ASA 2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
       { label: 'NCS/SCCM Reversal Guideline', citation: 'Frontera JA, et al. Guideline for Reversal of Antithrombotics in Intracranial Hemorrhage. Neurocrit Care. 2016;24(1):6-46.', pmid: '26714677' }
     ]
@@ -5202,7 +5202,7 @@ export function CvstCard() {
                 <div>
                   <strong style={{ color: 'var(--red-deep)', fontSize: '8pt' }}>Anticoagulate — even with venous hemorrhage</strong>
                   <br />&bull; Therapeutic <strong>LMWH</strong> (or UFH) is first-line; hemorrhage from venous congestion is <strong>not a contraindication</strong> (ISCVT).
-                  <br />&bull; <strong>Transition</strong>: VKA (INR 2&ndash;3) for 3&ndash;6+ months, <em>or</em> a <strong>DOAC</strong> — RE-SPECT CVT: dabigatran 150 mg BID comparable to warfarin; ACTION-CVT: DOAC vs warfarin similar recurrence with a trend to less major hemorrhage.
+                  <br />&bull; <strong>Transition</strong>: VKA (INR 2&ndash;3) for 3&ndash;6+ months, <em>or</em> a <strong>DOAC</strong> — RE-SPECT CVT: dabigatran 150 mg BID comparable to warfarin; ACTION-CVT: DOAC vs warfarin similar recurrence with a lower rate of major hemorrhage (aHR 0.35).
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--red)', paddingLeft: '10px' }}>
                   <strong style={{ color: 'var(--red-deep)', fontSize: '8pt' }}>Endovascular / surgical</strong>
@@ -5216,7 +5216,7 @@ export function CvstCard() {
             {/* §4 Prognosis (amber) */}
             <CardSection color="amber" title="4. Prognosis" style={{ marginBottom: '6px' }}>
               <div style={{ fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
-                <strong style={{ color: 'var(--amber-deep)' }}>ISCVT:</strong> ~13% dead or dependent at 6 months (better than arterial stroke).
+                <strong style={{ color: 'var(--amber-deep)' }}>ISCVT:</strong> ~13% dead or dependent at final follow-up (better than arterial stroke).
                 <br /><strong style={{ color: 'var(--amber-deep)' }}>Predictors of poor outcome:</strong> coma / altered mental status, deep venous system thrombosis, intracranial hemorrhage, malignancy, CNS infection, male sex, older age.
               </div>
             </CardSection>
@@ -5252,7 +5252,7 @@ export function LargeCoreThrombectomyCard() {
     { t: 'ANGEL-ASPECT', pop: 'ASPECTS 3–5 or core 70–100 mL', res: 'mRS 0–2: 30% vs 12%; positive mRS shift' },
     { t: 'TENSION', pop: 'ASPECTS 3–5', res: 'mRS 0–3 higher with EVT; positive shift' },
     { t: 'LASTE', pop: 'ASPECTS 0–5 (incl. <3)', res: 'EVT benefit on the mRS distribution' },
-    { t: 'TESLA', pop: 'ASPECTS 2–5', res: 'Utility-weighted mRS did NOT reach the pre-set Bayesian threshold; several secondary functional endpoints favored EVT' },
+    { t: 'TESLA', pop: 'ASPECTS 2–5', res: 'Utility-weighted mRS favored EVT (posterior probability 0.96) but did NOT reach the pre-set 0.975 Bayesian threshold' },
   ];
   return (
     <div className="bedside-card-view screen-layout">
@@ -5315,7 +5315,7 @@ export function LargeCoreThrombectomyCard() {
             {/* §1 The question (purple) */}
             <CardSection color="purple" title="1. The Question">
               <div style={{ fontSize: '7.9pt', lineHeight: '1.42', color: 'var(--ink-soft)' }}>
-                Historically EVT required a <strong>small core (ASPECTS ≥6)</strong>. Six 2022&ndash;2024 RCTs tested EVT for a <strong>large ischemic core</strong> (low ASPECTS or large core volume). All were <strong>positive or supportive</strong> for a functional-outcome benefit <strong>despite higher symptomatic hemorrhage</strong>.
+                Historically EVT required a <strong>small core (ASPECTS ≥6)</strong>. Six 2022&ndash;2024 RCTs tested EVT for a <strong>large ischemic core</strong> (low ASPECTS or large core volume). All pointed toward a functional-outcome benefit — five met their primary endpoint; <strong>TESLA missed its Bayesian threshold but trended favorably</strong> — generally with <strong>higher symptomatic hemorrhage</strong>.
               </div>
             </CardSection>
 
@@ -5468,9 +5468,9 @@ export function BasilarArteryOcclusionCard() {
                 </thead>
                 <tbody>
                   <tr><td><strong>BEST</strong></td><td>Terminated, heavy crossover</td><td>Neutral overall &mdash; confounded by crossover</td></tr>
-                  <tr><td><strong>BASICS</strong></td><td>≤6 h</td><td>No significant overall benefit &mdash; enrollment/crossover confounded</td></tr>
+                  <tr><td><strong>BASICS</strong></td><td>≤6 h</td><td>No significant overall benefit &mdash; underpowered (slow enrollment, wide CI)</td></tr>
                   <tr><td><strong>ATTENTION</strong></td><td>NIHSS ≥10, ≤12 h</td><td><strong>mRS 0–3: 46% EVT vs 23%</strong> medical</td></tr>
-                  <tr><td><strong>BAOCHE</strong></td><td>6–24 h</td><td><strong>mRS 0–3: 39% EVT vs 24%</strong> &mdash; extends the window</td></tr>
+                  <tr><td><strong>BAOCHE</strong></td><td>6–24 h</td><td><strong>mRS 0–3: 46% EVT vs 24%</strong> &mdash; extends the window</td></tr>
                 </tbody>
               </table>
               <div style={{ fontSize: '7.5pt', color: 'var(--ink-soft)', lineHeight: '1.35' }}>
@@ -5757,7 +5757,7 @@ const BrainstemSyndromesView = () => (
 
 export function BrainstemSyndromesCard() {
   const rows = [
-    { s: 'Wallenberg (lateral medullary)', v: 'PICA / vertebral', d: 'Ipsi facial pain-temp loss (V), Horner, ataxia, dysphagia/hoarseness (IX/X); contra body pain-temp loss (spinothalamic). Face-sparing motor.', lvl: 'medulla' },
+    { s: 'Wallenberg (lateral medullary)', v: 'PICA / vertebral', d: 'Ipsi facial pain-temp loss (V), Horner, ataxia, dysphagia/hoarseness (IX/X); contra body pain-temp loss (spinothalamic). Corticospinal tract spared → no hemiparesis.', lvl: 'medulla' },
     { s: 'Dejerine (medial medullary)', v: 'Anterior spinal / vertebral', d: 'Contra arm/leg weakness (pyramid, face spared), contra proprioception loss (medial lemniscus), ipsi tongue weakness (XII).', lvl: 'medulla' },
     { s: 'Millard-Gubler (ventral pons)', v: 'Basilar perforators', d: 'Ipsi VI + VII palsy; contra hemiparesis.', lvl: 'pons' },
     { s: 'Foville (dorsal pons)', v: 'Basilar perforators', d: 'Ipsi horizontal gaze palsy + VII; contra hemiparesis.', lvl: 'pons' },
@@ -6112,7 +6112,7 @@ export function AnticoagulationReversalCard() {
                 {/* reversal boxes */}
                 {[
                   { x: 35, cx: 130, col: 'purple', t: '4F-PCC', sub: '+ IV vitamin K 10 mg' },
-                  { x: 273, cx: 368, col: 'teal', t: 'Idarucizumab', sub: '5 g IV (REVERSE-AD)' },
+                  { x: 273, cx: 368, col: 'teal', t: 'Idarucizumab', sub: '5 g IV (RE-VERSE AD)' },
                   { x: 511, cx: 606, col: 'amber', t: 'Andexanet alfa', sub: 'or 4F-PCC ~50 U/kg' },
                 ].map((a) => (
                   <g key={a.t}>
@@ -6159,12 +6159,12 @@ export function AnticoagulationReversalCard() {
                   <tr>
                     <td><strong>Dabigatran</strong> (DTI)</td>
                     <td><strong>Idarucizumab 5 g IV</strong></td>
-                    <td>REVERSE-AD: rapid, near-complete reversal. Hemodialysis is an adjunct.</td>
+                    <td>RE-VERSE AD: rapid, near-complete reversal. Hemodialysis is an adjunct.</td>
                   </tr>
                   <tr>
                     <td><strong>Factor Xa inhibitors</strong> (apixaban, rivaroxaban, edoxaban)</td>
                     <td><strong>Andexanet alfa</strong> (low/high dose by agent, dose, timing); <strong>4F-PCC ~50 U/kg</strong> if unavailable</td>
-                    <td>ANNEXA-4: good hemostatic efficacy. <strong>ANNEXA-I</strong> (RCT in acute ICH): better hemostasis / less hematoma expansion vs usual care <strong>but more thrombotic events, incl. ischemic stroke (~10% vs ~6%)</strong> — weigh carefully.</td>
+                    <td>ANNEXA-4: good hemostatic efficacy. <strong>ANNEXA-I</strong> (RCT in acute ICH): better hemostasis / less hematoma expansion vs usual care <strong>but more thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%)</strong> — weigh carefully.</td>
                   </tr>
                   <tr>
                     <td><strong>Antiplatelets</strong></td>
@@ -6185,7 +6185,7 @@ export function AnticoagulationReversalCard() {
             <CardRefFooter style={{ fontSize: '7.2pt' }} refs={[
               { label: 'ANNEXA-4', cite: 'Connolly SJ et al. N Engl J Med. 2019;380(14):1326-1335.', pmid: '30730782' },
               { label: 'ANNEXA-I', cite: 'Connolly SJ et al. N Engl J Med. 2024;390(19):1745-1755.', pmid: '38749032' },
-              { label: 'REVERSE-AD', cite: 'Pollack CV et al. N Engl J Med. 2017;377(5):431-441.', pmid: '28693366' },
+              { label: 'RE-VERSE AD', cite: 'Pollack CV et al. N Engl J Med. 2017;377(5):431-441.', pmid: '28693366' },
               { label: 'AHA/ASA 2022 ICH Guideline', cite: 'Greenberg SM et al. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
               { label: 'NCS/SCCM Reversal Guideline', cite: 'Frontera JA et al. Neurocrit Care. 2016;24(1):6-46.', pmid: '26714677' },
             ]} />
@@ -6381,7 +6381,7 @@ export function NihssSimulator() {
         </div>
         <div>
           <p className="text-xs font-semibold text-warn-800 dark:text-warn-400">Interpretation caveat</p>
-          <p className="text-xs text-ink-2 mt-1">The scale is <strong>weighted toward left-hemisphere / cortical function</strong> (multiple language items, none purely for right-hemisphere or posterior signs), so it <strong>underestimates posterior-circulation and right-hemisphere strokes</strong> — a low NIHSS does not exclude a disabling or LVO stroke (e.g., isolated hemianopia, vertigo, or ataxia).</p>
+          <p className="text-xs text-ink-2 mt-1">The scale is <strong>weighted toward left-hemisphere / cortical function</strong> (multiple language-dependent items; only the single extinction / inattention item, max 2 points, captures right-hemisphere neglect), so it <strong>underestimates posterior-circulation and right-hemisphere strokes</strong> — a low NIHSS does not exclude a disabling or LVO stroke (e.g., isolated hemianopia, vertigo, or ataxia).</p>
         </div>
         <div className="text-[11px] text-mute border-t border-line pt-2">
           NIHSS (original): Brott T et al. Stroke. 1989;20(7):864-870. <a className="text-cobalt-700 dark:text-cobalt-300 underline" href="https://pubmed.ncbi.nlm.nih.gov/2749846/" target="_blank" rel="noopener noreferrer">PMID: 2749846</a> · Training/reliability: Lyden P et al. Stroke. 1994;25(11):2220-2226. <a className="text-cobalt-700 dark:text-cobalt-300 underline" href="https://pubmed.ncbi.nlm.nih.gov/7974549/" target="_blank" rel="noopener noreferrer">PMID: 7974549</a>
