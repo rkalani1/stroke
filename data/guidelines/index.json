@@ -3,7 +3,7 @@
     "endpoint": "guidelines-index",
     "schemaVersion": "1.0.0",
     "appVersion": "6.11.5",
-    "checksum": "sha256:162e28ebbab63768eabb5e181497e977",
+    "checksum": "sha256:5f9dc84965d320534fe01dcd9d994875",
     "count": 18,
     "source": "Guideline metadata bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -61,6 +61,8 @@
       "url": "https://rkalani1.github.io/stroke/data/guidelines/ich-2022.json"
     },
     {
+      "id": "landmark-trials",
+      "title": "Landmark Trials",
       "recommendationCount": 0,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/landmark-trials.json"
     },

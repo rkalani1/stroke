@@ -3,7 +3,7 @@
     "endpoint": "completed-trials",
     "schemaVersion": "1.0.0",
     "appVersion": "6.11.5",
-    "checksum": "sha256:946e23b5cb3cec10d40905a5f4a28db4",
+    "checksum": "sha256:04f3fe041dde0a13d380944b4f07b16b",
     "count": 64,
     "source": "Evidence atlas completed-trials bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -1049,10 +1049,10 @@
         "crao-thrombolysis"
       ],
       "population": {
-        "n": 71,
+        "n": 70,
         "ageRange": "≥18",
         "nihssRange": "n/a",
-        "timeWindow": "≤4.5 h from vision loss",
+        "timeWindow": "≤4.5 h from severe vision loss",
         "keyInclusion": [
           "CRAO with visual acuity ≤20/200"
         ],
@@ -1084,8 +1084,8 @@
       ],
       "relatedActiveTrialIds": [],
       "practiceImpact": "CRAO IVT is reasonable in selected centers; no strong RCT support yet.",
-      "lastReviewed": "2026-04-25",
-      "promotedDate": "2026-04-25",
+      "lastReviewed": "2026-07-18",
+      "promotedDate": "2026-07-18",
       "verificationStatus": "unverified-source-limited",
       "verificationNotes": "Numeric primary-endpoint precision left qualitative pending manual verification."
     },

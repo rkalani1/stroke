@@ -82,7 +82,7 @@ unless the underlying clinical data changed).
 - Heart-Brain Health 2024 — 9 recommendations (doi:10.1161/STR.0000000000000476)
 - CVT Statement 2024 — 5 recommendations (doi:10.1161/STR.0000000000000456)
 - ICH 2022 — 124 recommendations (doi:10.1161/STR.0000000000000407)
-- undefined — 0 recommendations
+- Landmark Trials — 0 recommendations
 - Maternal Stroke 2026 — 3 recommendations (doi:10.1161/STR.0000000000000514)
 - Perioperative Stroke 2021 — 10 recommendations (doi:10.1161/CIR.0000000000000968)
 - Poststroke Cognition 2023 — 10 recommendations (doi:10.1161/STR.0000000000000430)

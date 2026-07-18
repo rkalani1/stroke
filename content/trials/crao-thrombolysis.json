@@ -4,7 +4,7 @@
     "name": "THEIA",
     "fullName": "Thrombolysis for Central Retinal Artery Occlusion",
     "category": "crao-thrombolysis",
-    "population": "n=71, ≥18, NIHSS n/a, ≤4.5 h from vision loss",
+    "population": "n=70, ≥18, NIHSS n/a, ≤4.5 h from severe vision loss",
     "finding": "No significant benefit overall (qualitative summary)",
     "teachingPoint": "CRAO IVT is reasonable in selected centers; no strong RCT support yet.",
     "PMID": "41109232",
@@ -13,7 +13,7 @@
       "cit-theia-2023"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-07-18",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

@@ -108,7 +108,7 @@
     "year": 2022,
     "section": "ich-anticoag-reversal",
     "COR": "I",
-    "LOE": "B-NR",
+    "LOE": "B-R",
     "statement": "In warfarin-associated ICH, give vitamin K 10 mg IV plus 4F-PCC dosed by INR/weight to rapidly reverse anticoagulation; FFP is an inferior alternative.",
     "PMIDs": [
       "35579034"
@@ -124,7 +124,7 @@
       "FFP carries volume-overload risk and slower correction."
     ],
     "setting": "inpatient",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-07-18",
     "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
     "provenance": "src/evidence/recommendations.js"
   }

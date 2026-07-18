@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:9a7d71868b8dbd55044e05da598fb07e",
+    "checksum": "sha256:89890817417473c6f4f555ffd6c13cc0",
     "counts": {
       "guidelines": 11,
       "trials": 64,
@@ -195,7 +195,7 @@
       "year": 2022,
       "section": "ich-anticoag-reversal",
       "COR": "I",
-      "LOE": "B-NR",
+      "LOE": "B-R",
       "statement": "In warfarin-associated ICH, give vitamin K 10 mg IV plus 4F-PCC dosed by INR/weight to rapidly reverse anticoagulation; FFP is an inferior alternative.",
       "PMIDs": [
         "35579034"
@@ -211,7 +211,7 @@
         "FFP carries volume-overload risk and slower correction."
       ],
       "setting": "inpatient",
-      "lastReviewed": "2026-04-25",
+      "lastReviewed": "2026-07-18",
       "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
       "provenance": "src/evidence/recommendations.js"
     },
@@ -342,7 +342,7 @@
         "cit-eso-tnk-2023"
       ],
       "caveats": [
-        "Use TNK 0.25 mg/kg only; the 0.4 mg/kg dose was not non-inferior in EXTEND-IA TNK part 2.",
+        "Use TNK 0.25 mg/kg only; in EXTEND-IA TNK part 2 the higher 0.4 mg/kg dose showed no reperfusion advantage over 0.25 mg/kg (19.3% vs 19.3%) with numerically more symptomatic ICH.",
         "Local protocols may continue to favor alteplase; both are acceptable."
       ],
       "setting": "inpatient",
@@ -527,7 +527,7 @@
       "name": "THEIA",
       "fullName": "Thrombolysis for Central Retinal Artery Occlusion",
       "category": "crao-thrombolysis",
-      "population": "n=71, ≥18, NIHSS n/a, ≤4.5 h from vision loss",
+      "population": "n=70, ≥18, NIHSS n/a, ≤4.5 h from severe vision loss",
       "finding": "No significant benefit overall (qualitative summary)",
       "teachingPoint": "CRAO IVT is reasonable in selected centers; no strong RCT support yet.",
       "PMID": "41109232",
@@ -536,7 +536,7 @@
         "cit-theia-2023"
       ],
       "certainty": "low",
-      "lastReviewed": "2026-04-25",
+      "lastReviewed": "2026-07-18",
       "provenance": "src/evidence/completedTrials.js"
     },
     {
@@ -1567,7 +1567,7 @@
         },
         {
           "\"label\"": "INSPIRES Trial",
-          "\"citation\"": "Gao Y, et al. Dual Antiplatelet Therapy for Acute Ischemic Stroke or TIA. N Engl J Med. 2024;390:59-69.",
+          "\"citation\"": "Gao Y, et al. Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke. N Engl J Med. 2023;389:2413-2424.",
           "\"pmid\"": "38157499"
         },
         {
@@ -1591,7 +1591,7 @@
           "\"pmid\"": "41985132"
         }
       ],
-      "lastReviewed": "2026-07-13",
+      "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
       "body": "Clinical definition, mechanisms of resistance, diagnostic evaluation, and evidence-based secondary prevention strategies for patients who stroke on aspirin.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
