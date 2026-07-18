@@ -1,11 +1,11 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:d8aff2442e0013902fd5ecd0556435ee",
+    "checksum": "sha256:d7420edf825019d8533f435ed7c14c3e",
     "counts": {
       "guidelines": 11,
       "trials": 71,
-      "education": 23,
+      "education": 24,
       "calculators": 34,
       "references": 18
     },
@@ -2492,6 +2492,36 @@
       "lastReviewed": "2026-07-13",
       "provenance": "src/education.jsx",
       "body": "Trial of Org 10172 in Acute Stroke Treatment (TOAST) diagnostic criteria for ischemic stroke etiology.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "vascular-territory-atlas",
+      "title": "Cerebral Vascular Territory & Watershed Atlas",
+      "summary": "Anterior (ACA/MCA/lenticulostriate/anterior-choroidal) and posterior (PCA/PICA/AICA/SCA/basilar-perforator) territories with their clinical signatures, plus cortical and internal watershed patterns and mechanisms.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "\"label\"": "Arterial territories — cerebral hemispheres",
+          "\"citation\"": "Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.",
+          "\"pmid\"": "9633714"
+        },
+        {
+          "\"label\"": "Arterial territories — brainstem/cerebellum",
+          "\"citation\"": "Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.",
+          "\"pmid\"": "8909417"
+        }
+      ],
+      "lastReviewed": "2026-07-18",
+      "provenance": "src/education.jsx",
+      "body": "Anterior (ACA/MCA/lenticulostriate/anterior-choroidal) and posterior (PCA/PICA/AICA/SCA/basilar-perforator) territories with their clinical signatures, plus cortical and internal watershed patterns and mechanisms.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     }
   ],
   "calculators": [

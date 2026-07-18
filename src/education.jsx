@@ -526,6 +526,18 @@ const EDUCATION_MODULES = [
       { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' },
       { label: 'Arterial territories — cerebral hemispheres', citation: 'Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' }
     ]
+  },
+  {
+    id: 'vascular-territory-atlas',
+    title: 'Cerebral Vascular Territory & Watershed Atlas',
+    purpose: 'Anterior (ACA/MCA/lenticulostriate/anterior-choroidal) and posterior (PCA/PICA/AICA/SCA/basilar-perforator) territories with their clinical signatures, plus cortical and internal watershed patterns and mechanisms.',
+    actions: 'vascular territory atlas aca mca pca lenticulostriate anterior choroidal pica aica sca basilar perforator watershed borderzone cortical internal wedge rosary hemodynamic hypoperfusion hemianopia neglect aphasia lacunar tatu circle of willis',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'Arterial territories — cerebral hemispheres', citation: 'Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' },
+      { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' }
+    ]
   }
 ];
 
@@ -1045,6 +1057,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <CarotidStenosisView />;
     case 'brainstem-stroke-syndromes':
       return <BrainstemSyndromesView />;
+    case 'vascular-territory-atlas':
+      return <VascularTerritoryAtlasView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -5772,6 +5786,189 @@ export function BrainstemSyndromesCard() {
             <CardRefFooter refs={[
               { label: 'Tatu — brainstem / cerebellum', cite: 'Tatu L et al. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' },
               { label: 'Tatu — cerebral hemispheres', cite: 'Tatu L et al. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Cerebral Vascular Territory & Watershed Atlas
+// =====================================================================
+const VascularTerritoryAtlasView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <VascularTerritoryAtlasCard />
+  </ScaledCardWrapper>
+);
+
+export function VascularTerritoryAtlasCard() {
+  // Axial territory "pie": center + elliptical sectors (anterior = top).
+  const cx = 138, cy = 86, rx = 104, ry = 58;
+  const P = (deg) => {
+    const t = (deg * Math.PI) / 180;
+    return [cx + rx * Math.cos(t), cy + ry * Math.sin(t)];
+  };
+  const wedge = (a, b) => {
+    const pts = [`${cx},${cy}`];
+    for (let d = a; d <= b; d += 6) { const [x, y] = P(d); pts.push(`${x.toFixed(1)},${y.toFixed(1)}`); }
+    const [x, y] = P(b); pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+    return pts.join(' ');
+  };
+  const ant = [
+    { t: 'ACA', s: 'Contra leg > arm weakness, abulia, transcortical aphasia, grasp', c: 'purple' },
+    { t: 'MCA', s: 'Contra face/arm > leg weakness + sensory loss, gaze toward lesion, hemianopia; dominant → aphasia, non-dominant → neglect', c: 'teal' },
+    { t: 'Lenticulostriate', s: 'Pure lacunar syndromes (pure motor, sensorimotor) — deep MCA perforators', c: 'purple' },
+    { t: 'Anterior choroidal', s: 'Contra hemiparesis + hemisensory loss + hemianopia (posterior limb internal capsule)', c: 'red' },
+  ];
+  const post = [
+    { t: 'PCA', s: 'Homonymous hemianopia (macular sparing), alexia without agraphia (dominant), memory loss; thalamic/midbrain variants', c: 'amber' },
+    { t: 'PICA', s: 'Lateral medulla + inferior cerebellum → Wallenberg', c: 'amber' },
+    { t: 'AICA', s: 'Lateral pons + labyrinth → vertigo, ipsi deafness / facial palsy, ataxia', c: 'teal' },
+    { t: 'SCA', s: 'Superior cerebellum → ataxia, dysarthria', c: 'teal' },
+    { t: 'Basilar perforators', s: 'Pons → crossed syndromes, locked-in', c: 'red' },
+  ];
+  const cc = { purple: 'var(--purple-deep)', teal: 'var(--teal-deep)', amber: 'var(--amber-deep)', red: 'var(--red-deep)' };
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-vascular-territory-atlas">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px', fontSize: '18pt' }}>Vascular Territory &amp; Watershed Atlas</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Territories, clinical signatures, and the borderzone patterns.
+            </p>
+
+            {/* Hero SVG: axial territory pie | watershed patterns | circle of Willis */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 178" style={{ width: '100%', height: 'auto' }}>
+                <defs>
+                  <pattern id="vta-hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <line x1="0" y1="0" x2="0" y2="5" stroke="var(--slate)" strokeWidth="1" />
+                  </pattern>
+                </defs>
+
+                {/* Panel 1 — axial territory pie (anterior = top) */}
+                <text x={cx} y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">AXIAL TERRITORIES</text>
+                <ellipse cx={cx} cy={cy} rx={rx} ry={ry} fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                <polygon points={wedge(235, 305)} fill="var(--purple-soft)" opacity="0.9" />
+                <polygon points={wedge(305, 415)} fill="var(--teal-soft)" opacity="0.9" />
+                <polygon points={wedge(55, 125)} fill="var(--amber-soft)" opacity="0.9" />
+                <polygon points={wedge(125, 235)} fill="var(--teal-soft)" opacity="0.9" />
+                {/* watershed hatch bands along the sector borders */}
+                {[235, 305, 55, 125].map((deg) => {
+                  const [x, y] = P(deg); const [xi, yi] = [cx + (x - cx) * 0.62, cy + (y - cy) * 0.62];
+                  return <line key={deg} x1={xi} y1={yi} x2={x} y2={y} stroke="url(#vta-hatch)" strokeWidth="8" strokeLinecap="butt" />;
+                })}
+                {/* deep territories */}
+                <ellipse cx={cx} cy={cy} rx="20" ry="13" fill="var(--purple)" opacity="0.85" />
+                <circle cx={cx} cy={cy + 16} r="6" fill="var(--red)" opacity="0.85" />
+                <ellipse cx={cx} cy={cy} rx={rx} ry={ry} fill="none" stroke="var(--rule)" strokeWidth="1.3" />
+                <line x1={cx} y1={cy - ry} x2={cx} y2={cy + ry} stroke="var(--rule-soft)" strokeWidth="0.8" />
+                {/* labels */}
+                <text x={cx} y="40" fill="var(--purple-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ACA</text>
+                <text x="60" y={cy + 2} fill="var(--teal-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MCA</text>
+                <text x="216" y={cy + 2} fill="var(--teal-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MCA</text>
+                <text x={cx} y="134" fill="var(--amber-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PCA</text>
+                <text x={cx} y={cy + 2} fill="#ffffff" fontSize="4.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LSA</text>
+                <text x={cx + 44} y="150" fill="var(--slate)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">▒ watershed</text>
+                <text x={cx} y="164" fill="var(--ink-mute)" fontSize="4.8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">anterior (top) → posterior (bottom); deep = LSA / AChA</text>
+
+                <line x1="252" y1="12" x2="252" y2="168" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 2 — watershed patterns (coronal) */}
+                <text x="368" y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">WATERSHED PATTERNS</text>
+                <path d="M 300 118 C 300 44 436 44 436 118 C 436 128 420 134 368 134 C 316 134 300 128 300 118 Z" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                <line x1="368" y1="46" x2="368" y2="134" stroke="var(--rule-soft)" strokeWidth="0.8" />
+                {/* cortical watershed wedge (superolateral) */}
+                <polygon points="330,54 348,52 352,96 336,98" fill="url(#vta-hatch)" stroke="var(--slate)" strokeWidth="0.8" />
+                <text x="316" y="50" fill="var(--slate)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">cortical</text>
+                <text x="316" y="58" fill="var(--slate)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">(wedge)</text>
+                {/* internal watershed = chain of beads */}
+                {[70, 84, 98, 112].map((y) => <circle key={y} cx="392" cy={y} r="3.4" fill="var(--slate)" opacity="0.8" />)}
+                <text x="420" y="70" fill="var(--slate)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">internal</text>
+                <text x="420" y="78" fill="var(--slate)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">(chain)</text>
+                <text x="368" y="150" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Cortical = ACA-MCA &amp; MCA-PCA borders</text>
+                <text x="368" y="160" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Internal = deep white-matter rosary</text>
+
+                <line x1="484" y1="12" x2="484" y2="168" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 3 — circle of Willis inset */}
+                <text x="606" y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">CIRCLE OF WILLIS</text>
+                {/* ACA + ACoM (top) */}
+                <line x1="586" y1="40" x2="626" y2="40" stroke="var(--purple)" strokeWidth="2.6" />
+                <line x1="586" y1="40" x2="576" y2="26" stroke="var(--purple)" strokeWidth="2.6" />
+                <line x1="626" y1="40" x2="636" y2="26" stroke="var(--purple)" strokeWidth="2.6" />
+                <text x="606" y="24" fill="var(--purple-deep)" fontSize="5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ACA</text>
+                {/* ICA (both sides) */}
+                <line x1="576" y1="40" x2="568" y2="78" stroke="var(--slate)" strokeWidth="2.6" />
+                <line x1="636" y1="40" x2="644" y2="78" stroke="var(--slate)" strokeWidth="2.6" />
+                {/* MCA (M1 lateral) */}
+                <line x1="568" y1="62" x2="536" y2="60" stroke="var(--teal)" strokeWidth="2.6" />
+                <line x1="644" y1="62" x2="676" y2="60" stroke="var(--teal)" strokeWidth="2.6" />
+                <text x="528" y="52" fill="var(--teal-deep)" fontSize="5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MCA</text>
+                <text x="684" y="52" fill="var(--teal-deep)" fontSize="5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MCA</text>
+                {/* PCoM + PCA */}
+                <line x1="568" y1="78" x2="576" y2="100" stroke="var(--slate)" strokeWidth="2" />
+                <line x1="644" y1="78" x2="636" y2="100" stroke="var(--slate)" strokeWidth="2" />
+                <line x1="576" y1="100" x2="606" y2="106" stroke="var(--amber)" strokeWidth="2.6" />
+                <line x1="636" y1="100" x2="606" y2="106" stroke="var(--amber)" strokeWidth="2.6" />
+                <text x="606" y="102" fill="var(--amber-deep)" fontSize="5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PCA</text>
+                {/* basilar + vertebrals */}
+                <line x1="606" y1="106" x2="606" y2="132" stroke="var(--red)" strokeWidth="2.8" />
+                <line x1="606" y1="132" x2="594" y2="150" stroke="var(--red)" strokeWidth="2.4" />
+                <line x1="606" y1="132" x2="618" y2="150" stroke="var(--red)" strokeWidth="2.4" />
+                <text x="640" y="124" fill="var(--red-deep)" fontSize="5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">basilar</text>
+                <text x="606" y="164" fill="var(--ink-mute)" fontSize="4.8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">collateral ring links anterior ↔ posterior</text>
+              </svg>
+            </div>
+
+            {/* §1 Anterior circulation (purple, table) */}
+            <CardSection color="purple" title="1. Anterior Circulation">
+              <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '7pt' }}>
+                <thead>
+                  <tr style={{ background: 'var(--purple)' }}>
+                    <th style={{ width: '120px' }}>Territory</th>
+                    <th>Clinical signature</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ant.map((r) => (
+                    <tr key={r.t}><td><strong style={{ color: cc[r.c] }}>{r.t}</strong></td><td>{r.s}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardSection>
+
+            {/* §2 Posterior circulation (teal, table) */}
+            <CardSection color="teal" title="2. Posterior Circulation">
+              <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '7pt' }}>
+                <thead>
+                  <tr style={{ background: 'var(--teal)' }}>
+                    <th style={{ width: '120px' }}>Territory</th>
+                    <th>Clinical signature</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {post.map((r) => (
+                    <tr key={r.t}><td><strong style={{ color: cc[r.c] }}>{r.t}</strong></td><td>{r.s}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardSection>
+
+            {/* §3 Watershed / borderzone (red) */}
+            <CardSection color="red" title="3. Watershed / Borderzone" style={{ marginBottom: '6px' }}>
+              <div style={{ fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <strong>Cortical (ACA-MCA &amp; MCA-PCA):</strong> wedge-shaped. <strong>Internal (deep white matter):</strong> rosary / "chain" pattern. Mechanism is <strong>hemodynamic</strong> (proximal stenosis/occlusion + hypotension) or <strong>shower emboli</strong> — flags a search for large-artery disease or a hypoperfusion event rather than a single embolus.
+              </div>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'Tatu — cerebral hemispheres', cite: 'Tatu L et al. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' },
+              { label: 'Tatu — brainstem / cerebellum', cite: 'Tatu L et al. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' },
             ]} />
           </div>
         </div>

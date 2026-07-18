@@ -41,6 +41,11 @@ PubMed). No change to the frozen Example Protocols zone.
   the classic syndromes (Wallenberg, Dejerine, Millard-Gubler, Foville,
   one-and-a-half, Weber, Benedikt, Claude) by level/vessel/deficit. Sources:
   Tatu brainstem/cerebellum (8909417), Tatu cerebral hemispheres (9633714).
+- **`vascular-territory-atlas`** — anterior (ACA/MCA/lenticulostriate/
+  anterior-choroidal) and posterior (PCA/PICA/AICA/SCA/basilar-perforator)
+  territories with clinical signatures, plus cortical and internal watershed
+  patterns. Sources: Tatu cerebral hemispheres (9633714), Tatu
+  brainstem/cerebellum (8909417).
 
 ## 2026-07-11 — Clinical corrections (audit-flagged, clinician-directed)
 
