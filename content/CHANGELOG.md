@@ -51,6 +51,10 @@ PubMed). No change to the frozen Example Protocols zone.
   caveat and parallel BP/neurosurgery steps. Sources: ANNEXA-4 (30730782),
   ANNEXA-I (38749032), REVERSE-AD (28693366), AHA/ASA 2022 ICH (35579034),
   NCS/SCCM reversal (26714677).
+- **`nihss-simulator`** (interactive) — score the 15 NIHSS items on case
+  vignettes with immediate feedback, running 0–42 total, the scoring rules
+  that trip people up, and the left-hemisphere-weighting interpretation
+  caveat. Sources: Brott 1989 (2749846), Lyden 1994 (7974549).
 
 ## 2026-07-11 — Clinical corrections (audit-flagged, clinician-directed)
 

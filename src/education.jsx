@@ -553,6 +553,18 @@ const EDUCATION_MODULES = [
       { label: 'AHA/ASA 2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
       { label: 'NCS/SCCM Reversal Guideline', citation: 'Frontera JA, et al. Guideline for Reversal of Antithrombotics in Intracranial Hemorrhage. Neurocrit Care. 2016;24(1):6-46.', pmid: '26714677' }
     ]
+  },
+  {
+    id: 'nihss-simulator',
+    title: 'NIHSS Certification Simulator',
+    purpose: 'Interactive NIHSS scoring trainer: score each of the 15 items on short case vignettes with immediate right/wrong feedback and rationale, a running 0–42 total, the scoring rules that trip people up, and the interpretation caveats.',
+    actions: 'nihss simulator certification scoring stroke scale 15 items loc gaze visual fields facial palsy motor arm leg ataxia sensory language dysarthria extinction inattention neglect 0-42 interactive practice cases posterior right hemisphere underestimate lvo',
+    categories: ['simulators'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'NIHSS (original)', citation: 'Brott T, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.', pmid: '2749846' },
+      { label: 'NIHSS training/reliability', citation: 'Lyden P, et al. Improved reliability of the NIH Stroke Scale using video training. Stroke. 1994;25(11):2220-2226.', pmid: '7974549' }
+    ]
   }
 ];
 
@@ -1076,6 +1088,15 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <VascularTerritoryAtlasView />;
     case 'anticoagulation-reversal':
       return <AnticoagulationReversalView />;
+    case 'nihss-simulator':
+      return (
+        <ErrorBoundary>
+          <div className="bg-card border border-line rounded-lg p-6">
+            <h2 className="font-serif text-xl font-bold text-ink mb-4">NIHSS Certification Simulator</h2>
+            <NihssSimulator />
+          </div>
+        </ErrorBoundary>
+      );
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -6124,6 +6145,201 @@ export function AnticoagulationReversalCard() {
               { label: 'NCS/SCCM Reversal Guideline', cite: 'Frontera JA et al. Neurocrit Care. 2016;24(1):6-46.', pmid: '26714677' },
             ]} />
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — NIHSS Certification Simulator (INTERACTIVE)
+// =====================================================================
+const NIHSS_ITEMS = [
+  { id: '1a', label: '1a · LOC', max: 3 },
+  { id: '1b', label: '1b · LOC questions', max: 2 },
+  { id: '1c', label: '1c · LOC commands', max: 2 },
+  { id: '2', label: '2 · Best gaze', max: 2 },
+  { id: '3', label: '3 · Visual fields', max: 3 },
+  { id: '4', label: '4 · Facial palsy', max: 3 },
+  { id: '5a', label: '5a · Motor left arm', max: 4 },
+  { id: '5b', label: '5b · Motor right arm', max: 4 },
+  { id: '6a', label: '6a · Motor left leg', max: 4 },
+  { id: '6b', label: '6b · Motor right leg', max: 4 },
+  { id: '7', label: '7 · Limb ataxia', max: 2 },
+  { id: '8', label: '8 · Sensory', max: 2 },
+  { id: '9', label: '9 · Best language', max: 3 },
+  { id: '10', label: '10 · Dysarthria', max: 2 },
+  { id: '11', label: '11 · Extinction / inattention', max: 2 },
+];
+
+const NIHSS_CASES = [
+  {
+    id: 'A',
+    title: 'Case A — 68F, sudden right-sided weakness and speech difficulty',
+    vignette: 'Dominant (left) MCA syndrome. Alert but non-fluent, effortful speech; right face/arm/leg weakness.',
+    items: {
+      '1a': { score: 0, finding: 'Alert and keenly responsive.', rationale: 'Alert → 0.' },
+      '1b': { score: 1, finding: 'States her age correctly; cannot name the month.', rationale: 'One of two answered correctly → 1 (score the first attempt; aphasia is captured in item 9, not here).' },
+      '1c': { score: 0, finding: 'Opens/closes eyes and grips on command.', rationale: 'Performs both tasks → 0.' },
+      '2': { score: 1, finding: 'Forced gaze to the left, overcome with oculocephalics.', rationale: 'Partial gaze palsy that can be overcome → 1.' },
+      '3': { score: 2, finding: 'Complete right homonymous hemianopia.', rationale: 'Complete hemianopia → 2.' },
+      '4': { score: 2, finding: 'Right lower-face droop; forehead spared.', rationale: 'Partial (lower-face) paralysis → 2.' },
+      '5a': { score: 0, finding: 'Left arm holds 10 s, no drift.', rationale: 'No drift → 0.' },
+      '5b': { score: 3, finding: 'Right arm: no effort against gravity, falls immediately.', rationale: 'No antigravity effort → 3.' },
+      '6a': { score: 0, finding: 'Left leg holds 5 s.', rationale: 'No drift → 0.' },
+      '6b': { score: 2, finding: 'Right leg has some antigravity effort but drifts to the bed by 5 s.', rationale: 'Some effort against gravity, falls to bed → 2.' },
+      '7': { score: 0, finding: 'Right limbs are plegic; no ataxia out of proportion.', rationale: 'Ataxia is absent (0) when the limb is plegic or the deficit is explained by weakness — "untestable" is reserved for amputation/joint fusion.' },
+      '8': { score: 1, finding: 'Blunted pinprick on the right.', rationale: 'Mild-to-moderate sensory loss → 1.' },
+      '9': { score: 2, finding: 'Fragmentary, effortful output; frequent word-finding failure.', rationale: 'Severe aphasia → 2 (you rate language from naming/reading/description — you do not skip it).' },
+      '10': { score: 1, finding: 'Mild slurring, intelligible.', rationale: 'Mild-to-moderate dysarthria → 1.' },
+      '11': { score: 0, finding: 'Attends to both sides; no neglect.', rationale: 'No extinction/inattention → 0 (neglect is uncommon with dominant-hemisphere lesions).' },
+    },
+    teaching: 'Total 15. Score the first effort and what you see — do not coach. A dominant-hemisphere MCA stroke loads the language/motor items heavily.',
+  },
+  {
+    id: 'B',
+    title: 'Case B — 72M, sudden imbalance and "can\'t see to the left"',
+    vignette: 'Right PCA + cerebellar (posterior circulation) stroke. Awake, fluent, coordinated arm strength but veers when walking; vertigo.',
+    items: {
+      '1a': { score: 0, finding: 'Alert.', rationale: 'Alert → 0.' },
+      '1b': { score: 0, finding: 'Age and month correct.', rationale: 'Both correct → 0.' },
+      '1c': { score: 0, finding: 'Follows both commands.', rationale: 'Both tasks → 0.' },
+      '2': { score: 0, finding: 'Full conjugate eye movements.', rationale: 'Normal gaze → 0.' },
+      '3': { score: 2, finding: 'Complete left homonymous hemianopia.', rationale: 'Complete hemianopia → 2.' },
+      '4': { score: 0, finding: 'Symmetric face.', rationale: 'Normal → 0.' },
+      '5a': { score: 0, finding: 'Left arm holds.', rationale: 'No drift → 0.' },
+      '5b': { score: 0, finding: 'Right arm holds.', rationale: 'No drift → 0.' },
+      '6a': { score: 0, finding: 'Left leg holds.', rationale: 'No drift → 0.' },
+      '6b': { score: 0, finding: 'Right leg holds.', rationale: 'No drift → 0.' },
+      '7': { score: 1, finding: 'Dysmetria on right finger-nose out of proportion to strength.', rationale: 'Ataxia present in one limb → 1 (limbs are strong, so it is testable).' },
+      '8': { score: 0, finding: 'Intact pinprick.', rationale: 'Normal sensation → 0.' },
+      '9': { score: 0, finding: 'Fluent, names and repeats normally.', rationale: 'No aphasia → 0.' },
+      '10': { score: 1, finding: 'Slurred, intelligible speech.', rationale: 'Mild-to-moderate dysarthria → 1.' },
+      '11': { score: 0, finding: 'Attends to both sides.', rationale: 'No extinction → 0.' },
+    },
+    teaching: 'Total 4. A disabling posterior-circulation stroke (hemianopia + ataxia + vertigo) scores LOW because the scale has no items for vertigo and few for posterior/right-hemisphere signs — a low NIHSS does not exclude a disabling or LVO stroke.',
+  },
+];
+
+export function NihssSimulator() {
+  const [caseIdx, setCaseIdx] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const activeCase = NIHSS_CASES[caseIdx];
+  const correctTotal = NIHSS_ITEMS.reduce((s, it) => s + activeCase.items[it.id].score, 0);
+  const answeredIds = Object.keys(answers);
+  const userTotal = answeredIds.reduce((s, id) => s + answers[id], 0);
+  const allAnswered = NIHSS_ITEMS.every((it) => answers[it.id] != null);
+  const numCorrect = NIHSS_ITEMS.filter((it) => answers[it.id] === activeCase.items[it.id].score).length;
+
+  const pick = (id, n) => setAnswers((a) => ({ ...a, [id]: n }));
+  const selectCase = (i) => { setCaseIdx(i); setAnswers({}); };
+  const reset = () => setAnswers({});
+
+  return (
+    <div className="space-y-4">
+      {/* Case selector */}
+      <div className="flex flex-wrap items-center gap-2">
+        {NIHSS_CASES.map((c, i) => (
+          <button
+            key={c.id}
+            type="button"
+            onClick={() => selectCase(i)}
+            className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${i === caseIdx ? 'bg-cobalt-600 text-white shadow-sm' : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'}`}
+          >
+            Case {c.id}
+          </button>
+        ))}
+        <button type="button" onClick={reset} className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 min-h-[38px] dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+          Reset
+        </button>
+        <div className="ml-auto flex items-center gap-3">
+          <span className="text-sm font-semibold text-ink">Running total: <span className="text-cobalt-700 dark:text-cobalt-300">{userTotal}</span> / 42</span>
+        </div>
+      </div>
+
+      {/* Vignette */}
+      <div className="p-3.5 rounded-lg bg-cobalt-50 border border-cobalt-200 dark:bg-cobalt-950/40 dark:border-cobalt-800/60">
+        <h3 className="text-sm font-bold text-ink">{activeCase.title}</h3>
+        <p className="text-xs text-ink-2 mt-1">{activeCase.vignette}</p>
+        <p className="text-[11px] text-mute mt-2">Score each item from the exam finding shown. You get immediate feedback and the rationale. Score the first effort / what you see — do not coach.</p>
+      </div>
+
+      {/* Items */}
+      <div className="space-y-2">
+        {NIHSS_ITEMS.map((it) => {
+          const data = activeCase.items[it.id];
+          const ans = answers[it.id];
+          const answered = ans != null;
+          const correct = answered && ans === data.score;
+          return (
+            <div key={it.id} className={`rounded-lg border p-3 ${!answered ? 'border-line bg-card' : correct ? 'border-ok-300 bg-ok-50 dark:bg-ok-950/30 dark:border-ok-800' : 'border-crit-300 bg-crit-50 dark:bg-crit-950/30 dark:border-crit-800'}`}>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <span className="text-xs font-bold text-ink">{it.label}</span>
+                  <span className="text-xs text-ink-2"> — {data.finding}</span>
+                </div>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  {Array.from({ length: it.max + 1 }, (_, n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => pick(it.id, n)}
+                      aria-label={`Score ${n} for item ${it.label}`}
+                      className={`w-8 h-8 rounded-md text-xs font-bold transition-all ${ans === n ? 'bg-cobalt-600 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'}`}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {answered && (
+                <div className="mt-2 text-xs flex items-start gap-1.5">
+                  <span className={`font-bold shrink-0 ${correct ? 'text-ok-700 dark:text-ok-400' : 'text-crit-700 dark:text-crit-400'}`}>
+                    {correct ? '✓ Correct' : `✗ Correct = ${data.score}`}
+                  </span>
+                  <span className="text-ink-2">{data.rationale}</span>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Summary */}
+      {allAnswered && (
+        <div className="rounded-lg border border-cobalt-300 bg-cobalt-50 p-4 dark:bg-cobalt-950/40 dark:border-cobalt-800">
+          <h3 className="text-sm font-bold text-ink">Case complete</h3>
+          <p className="text-sm text-ink-2 mt-1">
+            Your total: <strong className="text-ink">{userTotal}</strong> · Correct total: <strong className="text-ink">{correctTotal}</strong> · Items correct: <strong className="text-ink">{numCorrect}/15</strong>
+          </p>
+          <p className="text-xs text-ink-2 mt-2"><strong className="text-ink">Teaching point:</strong> {activeCase.teaching}</p>
+        </div>
+      )}
+
+      {/* Scoring-rules reference panel */}
+      <div className="rounded-lg border border-line bg-slate-50 p-4 dark:bg-slate-800/40 space-y-3">
+        <h3 className="text-sm font-bold text-ink">Scoring rules reference</h3>
+        <div>
+          <p className="text-xs font-semibold text-cobalt-700 dark:text-cobalt-300">The 15 items (range 0–42)</p>
+          <p className="text-xs text-ink-2 mt-1">1a LOC, 1b LOC questions, 1c LOC commands, 2 best gaze, 3 visual fields, 4 facial palsy, 5a/5b motor arms, 6a/6b motor legs, 7 limb ataxia, 8 sensory, 9 best language, 10 dysarthria, 11 extinction/inattention.</p>
+        </div>
+        <div>
+          <p className="text-xs font-semibold text-cobalt-700 dark:text-cobalt-300">Rules that trip people up</p>
+          <ul className="text-xs text-ink-2 mt-1 list-disc pl-4 space-y-0.5">
+            <li>Score the <strong>first effort / what you see</strong>, not the best attempt; don't coach.</li>
+            <li><strong>Coma (1a = 3)</strong> drives defaults across items per the standardized instructions.</li>
+            <li>Items 5/6 (motor): score the drift/fall timing; amputation or joint fusion = untestable.</li>
+            <li><strong>Item 7 (ataxia):</strong> absent (0) if the patient can't understand or is plegic; "untestable" only for amputation/fusion.</li>
+            <li><strong>Item 9 (language)</strong> captures aphasia — you rate it from naming/reading/description, you don't skip it.</li>
+            <li><strong>Item 10 (dysarthria):</strong> intubated / mechanical barrier = untestable (UN).</li>
+          </ul>
+        </div>
+        <div>
+          <p className="text-xs font-semibold text-warn-800 dark:text-warn-400">Interpretation caveat</p>
+          <p className="text-xs text-ink-2 mt-1">The scale is <strong>weighted toward left-hemisphere / cortical function</strong> (multiple language items, none purely for right-hemisphere or posterior signs), so it <strong>underestimates posterior-circulation and right-hemisphere strokes</strong> — a low NIHSS does not exclude a disabling or LVO stroke (e.g., isolated hemianopia, vertigo, or ataxia).</p>
+        </div>
+        <div className="text-[11px] text-mute border-t border-line pt-2">
+          NIHSS (original): Brott T et al. Stroke. 1989;20(7):864-870. <a className="text-cobalt-700 dark:text-cobalt-300 underline" href="https://pubmed.ncbi.nlm.nih.gov/2749846/" target="_blank" rel="noopener noreferrer">PMID: 2749846</a> · Training/reliability: Lyden P et al. Stroke. 1994;25(11):2220-2226. <a className="text-cobalt-700 dark:text-cobalt-300 underline" href="https://pubmed.ncbi.nlm.nih.gov/7974549/" target="_blank" rel="noopener noreferrer">PMID: 7974549</a>
         </div>
       </div>
     </div>

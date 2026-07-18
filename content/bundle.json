@@ -1,11 +1,11 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:a06b6181e7523305c062bb94f730e42e",
+    "checksum": "sha256:ae715562c78842a54f01b11d1b07bd47",
     "counts": {
       "guidelines": 11,
       "trials": 71,
-      "education": 25,
+      "education": 26,
       "calculators": 34,
       "references": 18
     },
@@ -2396,6 +2396,35 @@
       "lastReviewed": "2026-05-30",
       "provenance": "src/education.jsx",
       "body": "Interactive bedside clinical exam assistant for classifying aphasia types, delirium (CAM-ICU), and structured coma examinations.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "nihss-simulator",
+      "title": "NIHSS Certification Simulator",
+      "summary": "Interactive NIHSS scoring trainer: score each of the 15 items on short case vignettes with immediate right/wrong feedback and rationale, a running 0–42 total, the scoring rules that trip people up, and the interpretation caveats.",
+      "tags": [
+        "simulators"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "\"label\"": "NIHSS (original)",
+          "\"citation\"": "Brott T, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
+          "\"pmid\"": "2749846"
+        },
+        {
+          "\"label\"": "NIHSS training/reliability",
+          "\"citation\"": "Lyden P, et al. Improved reliability of the NIH Stroke Scale using video training. Stroke. 1994;25(11):2220-2226.",
+          "\"pmid\"": "7974549"
+        }
+      ],
+      "lastReviewed": "2026-07-18",
+      "provenance": "src/education.jsx",
+      "body": "Interactive NIHSS scoring trainer: score each of the 15 items on short case vignettes with immediate right/wrong feedback and rationale, a running 0–42 total, the scoring rules that trip people up, and the interpretation caveats.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "pupillometry",
