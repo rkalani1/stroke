@@ -28,6 +28,10 @@ PubMed). No change to the frozen Example Protocols zone.
   ATTENTION/BAOCHE evidence arc (vs the confounded BEST/BASICS trials),
   imaging selection, and pitfalls. Sources: ATTENTION (36239644), BAOCHE
   (36239645), BASICS (34010530), BEST (31831388).
+- **`lipid-management-after-stroke`** — LDL-C targets and the statin →
+  ezetimibe → PCSK9i ladder, with the hemorrhagic-stroke caveat. Sources:
+  SPARCL (16899775), Treat Stroke to Target (31738483), FOURIER (28304224),
+  IMPROVE-IT (26039521), AHA/ASA 2021 secondary prevention (34024117).
 
 ## 2026-07-11 — Clinical corrections (audit-flagged, clinician-directed)
 

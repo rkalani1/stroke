@@ -485,6 +485,21 @@ const EDUCATION_MODULES = [
       { label: 'BASICS', citation: 'Langezaal LCM, et al. Endovascular Therapy for Stroke Due to Basilar-Artery Occlusion (BASICS). N Engl J Med. 2021;384(20):1910-1920.', pmid: '34010530' },
       { label: 'BEST', citation: 'Liu X, et al. Endovascular treatment versus standard medical treatment for vertebrobasilar artery occlusion (BEST). Lancet Neurol. 2020;19(2):115-122.', pmid: '31831388' }
     ]
+  },
+  {
+    id: 'lipid-management-after-stroke',
+    title: 'Lipid Management After Ischemic Stroke',
+    purpose: 'LDL-C targets after atherosclerotic ischemic stroke, the high-intensity statin → ezetimibe → PCSK9 inhibitor ladder, the supporting trials (SPARCL, TST, IMPROVE-IT, FOURIER), and the hemorrhagic-stroke caveat.',
+    actions: 'lipid ldl cholesterol statin high-intensity atorvastatin rosuvastatin ezetimibe pcsk9 evolocumab target 70 55 sparcl treat stroke to target tst improve-it fourier secondary prevention hemorrhagic caution',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'SPARCL', citation: 'Amarenco P, et al. High-dose atorvastatin after stroke or transient ischemic attack (SPARCL). N Engl J Med. 2006;355(6):549-559.', pmid: '16899775' },
+      { label: 'Treat Stroke to Target', citation: 'Amarenco P, et al. A Comparison of Two LDL Cholesterol Targets after Ischemic Stroke. N Engl J Med. 2020;382(1):9-19.', pmid: '31738483' },
+      { label: 'FOURIER', citation: 'Sabatine MS, et al. Evolocumab and Clinical Outcomes in Patients with Cardiovascular Disease. N Engl J Med. 2017;376(18):1713-1722.', pmid: '28304224' },
+      { label: 'IMPROVE-IT', citation: 'Cannon CP, et al. Ezetimibe Added to Statin Therapy after Acute Coronary Syndromes. N Engl J Med. 2015;372(25):2387-2397.', pmid: '26039521' },
+      { label: 'AHA/ASA 2021 Secondary Prevention', citation: 'Kleindorfer DO, et al. 2021 Guideline for the Prevention of Stroke in Patients With Stroke and TIA. Stroke. 2021;52(7):e364-e467.', pmid: '34024117' }
+    ]
   }
 ];
 
@@ -998,6 +1013,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <LargeCoreThrombectomyView />;
     case 'basilar-artery-occlusion':
       return <BasilarArteryOcclusionView />;
+    case 'lipid-management-after-stroke':
+      return <LipidManagementView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -5348,6 +5365,119 @@ export function BasilarArteryOcclusionCard() {
               { label: 'BAOCHE', cite: 'Jovin TG et al. N Engl J Med. 2022;387(15):1373-1384.', pmid: '36239645' },
               { label: 'BASICS', cite: 'Langezaal LCM et al. N Engl J Med. 2021;384(20):1910-1920.', pmid: '34010530' },
               { label: 'BEST', cite: 'Liu X et al. Lancet Neurol. 2020;19(2):115-122.', pmid: '31831388' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Lipid Management After Ischemic Stroke
+// =====================================================================
+const LipidManagementView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <LipidManagementCard />
+  </ScaledCardWrapper>
+);
+
+export function LipidManagementCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-lipid-management-after-stroke">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Lipid Management After Ischemic Stroke</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Lower LDL-C in atherosclerotic stroke &mdash; statin → ezetimibe → PCSK9 inhibitor.
+            </p>
+
+            {/* Hero SVG: LDL-lowering ladder + hemorrhagic-stroke caution */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 178" style={{ width: '100%', height: 'auto' }}>
+                <text x="235" y="13" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LDL-LOWERING LADDER</text>
+                {/* LDL axis (descending) */}
+                <line x1="34" y1="24" x2="34" y2="162" stroke="var(--ink-mute)" strokeWidth="1.2" markerEnd="url(#lm-arrow)" />
+                <defs>
+                  <marker id="lm-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                    <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--ink-mute)" />
+                  </marker>
+                </defs>
+                <text x="18" y="20" fill="var(--ink-mute)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LDL</text>
+                {[['~130', 34], ['100', 74], ['<70', 114], ['<55', 150]].map(([v, y]) => (
+                  <g key={v}>
+                    <line x1="30" y1={y} x2="38" y2={y} stroke="var(--ink-mute)" strokeWidth="1" />
+                    <text x="27" y={y + 2.5} fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="end">{v}</text>
+                  </g>
+                ))}
+                {/* Step 1 — statin */}
+                <rect x="52" y="24" width="250" height="34" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.4" />
+                <text x="62" y="38" fill="var(--teal-deep)" fontSize="7.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">① High-intensity statin</text>
+                <text x="62" y="50" fill="var(--ink-soft)" fontSize="5.8pt" fontFamily="IBM Plex Sans" textAnchor="start">atorva 80 / rosuva 20–40 → goal LDL &lt;70 (SPARCL, TST)</text>
+                {/* Step 2 — ezetimibe */}
+                <rect x="118" y="66" width="250" height="34" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.4" />
+                <text x="128" y="80" fill="var(--purple-deep)" fontSize="7.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">② Add ezetimibe</text>
+                <text x="128" y="92" fill="var(--ink-soft)" fontSize="5.8pt" fontFamily="IBM Plex Sans" textAnchor="start">further LDL + event reduction (IMPROVE-IT)</text>
+                {/* Step 3 — PCSK9i */}
+                <rect x="184" y="108" width="250" height="34" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.4" />
+                <text x="194" y="122" fill="var(--amber-deep)" fontSize="7.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">③ Add PCSK9 inhibitor</text>
+                <text x="194" y="134" fill="var(--ink-soft)" fontSize="5.8pt" fontFamily="IBM Plex Sans" textAnchor="start">evolocumab → very low LDL (FOURIER)</text>
+                {/* descending connectors */}
+                <path d="M 96 58 L 150 66" stroke="var(--ink-mute)" strokeWidth="1.2" strokeDasharray="2 2" fill="none" />
+                <path d="M 162 100 L 216 108" stroke="var(--ink-mute)" strokeWidth="1.2" strokeDasharray="2 2" fill="none" />
+
+                {/* Caution branch */}
+                <rect x="470" y="30" width="252" height="118" rx="8" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.4" />
+                <path d="M 486 46 L 486 66 M 486 46 L 506 51 L 486 57 Z" fill="var(--red)" stroke="var(--red)" strokeWidth="1" />
+                <text x="512" y="52" fill="var(--red-deep)" fontSize="6.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">Hemorrhagic-stroke branch</text>
+                <text x="484" y="82" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">SPARCL showed a small excess of</text>
+                <text x="484" y="94" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">hemorrhagic stroke. Intensive LDL</text>
+                <text x="484" y="106" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">lowering purely for a primary ICH is</text>
+                <text x="484" y="118" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">individualized. The strong indication</text>
+                <text x="484" y="130" fill="var(--red-deep)" fontSize="6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="start">is atherosclerotic ischemic disease.</text>
+              </svg>
+            </div>
+
+            {/* §1 Targets (purple) */}
+            <CardSection color="purple" title="1. Targets">
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.8pt', lineHeight: '1.42', color: 'var(--ink-soft)' }}>
+                <li>Atherosclerotic ischemic stroke: <strong>high-intensity statin, LDL-C goal &lt;70 mg/dL</strong> (AHA/ASA 2021 secondary prevention).</li>
+                <li><strong>SPARCL:</strong> atorvastatin 80 mg reduced recurrent stroke (adjusted HR ~0.84; ~2.2% absolute reduction over 5 y) in recent stroke/TIA without known CHD; a <strong>small excess of hemorrhagic stroke</strong> was seen.</li>
+                <li><strong>Treat Stroke to Target (TST):</strong> LDL &lt;70 vs 90–110 mg/dL lowered major cardiovascular events (HR 0.78) <strong>without</strong> a significant increase in ICH.</li>
+              </ul>
+            </CardSection>
+
+            {/* §2 Add-on therapy (teal) */}
+            <CardSection color="teal" title="2. Add-on Therapy">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <div>
+                  <strong style={{ color: 'var(--teal-deep)', fontSize: '8pt' }}>Ezetimibe (IMPROVE-IT)</strong>
+                  <br />Adding ezetimibe to a statin further lowered LDL and events, <strong>including a reduction in ischemic stroke</strong> — supports non-statin LDL lowering.
+                </div>
+                <div style={{ borderLeft: '1.5px dashed var(--teal)', paddingLeft: '10px' }}>
+                  <strong style={{ color: 'var(--teal-deep)', fontSize: '8pt' }}>PCSK9 inhibitors (FOURIER)</strong>
+                  <br />Evolocumab reduced cardiovascular events and ischemic stroke at very low LDL with <strong>no increase in hemorrhagic stroke</strong> — for patients not at goal on statin ± ezetimibe.
+                </div>
+              </div>
+            </CardSection>
+
+            {/* §3 Practical & cautions (red) */}
+            <CardSection color="red" title="3. Practical & Cautions" style={{ marginBottom: '6px' }}>
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <li><strong>Start/continue a high-intensity statin in-hospital</strong>; recheck a lipid panel and titrate; add ezetimibe then PCSK9i to reach &lt;70 (many favor <strong>&lt;55</strong> in very-high-risk polyvascular disease).</li>
+                <li><strong>Statin intolerance:</strong> rechallenge, lower / alternate-day dosing, then non-statin agents.</li>
+                <li><strong>Hemorrhagic stroke:</strong> the SPARCL signal means intensive LDL lowering purely for a primary ICH is individualized — the strong indication is atherosclerotic <em>ischemic</em> disease.</li>
+              </ul>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'SPARCL', cite: 'Amarenco P et al. N Engl J Med. 2006;355(6):549-559.', pmid: '16899775' },
+              { label: 'Treat Stroke to Target', cite: 'Amarenco P et al. N Engl J Med. 2020;382(1):9-19.', pmid: '31738483' },
+              { label: 'FOURIER', cite: 'Sabatine MS et al. N Engl J Med. 2017;376(18):1713-1722.', pmid: '28304224' },
+              { label: 'IMPROVE-IT', cite: 'Cannon CP et al. N Engl J Med. 2015;372(25):2387-2397.', pmid: '26039521' },
+              { label: 'AHA/ASA 2021 Secondary Prevention', cite: 'Kleindorfer DO et al. Stroke. 2021;52(7):e364-e467.', pmid: '34024117' },
             ]} />
           </div>
         </div>

@@ -1,11 +1,11 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:6c8b1019edcdf76b0cba63bd8fa0dbb6",
+    "checksum": "sha256:e8d1d8c1ac6414ac8eafe433f06f1178",
     "counts": {
       "guidelines": 11,
       "trials": 71,
-      "education": 20,
+      "education": 21,
       "calculators": 34,
       "references": 18
     },
@@ -2166,6 +2166,51 @@
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
       "body": "Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the symptomatic-hemorrhage trade-off.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "lipid-management-after-stroke",
+      "title": "Lipid Management After Ischemic Stroke",
+      "summary": "LDL-C targets after atherosclerotic ischemic stroke, the high-intensity statin → ezetimibe → PCSK9 inhibitor ladder, the supporting trials (SPARCL, TST, IMPROVE-IT, FOURIER), and the hemorrhagic-stroke caveat.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "\"label\"": "SPARCL",
+          "\"citation\"": "Amarenco P, et al. High-dose atorvastatin after stroke or transient ischemic attack (SPARCL). N Engl J Med. 2006;355(6):549-559.",
+          "\"pmid\"": "16899775"
+        },
+        {
+          "\"label\"": "Treat Stroke to Target",
+          "\"citation\"": "Amarenco P, et al. A Comparison of Two LDL Cholesterol Targets after Ischemic Stroke. N Engl J Med. 2020;382(1):9-19.",
+          "\"pmid\"": "31738483"
+        },
+        {
+          "\"label\"": "FOURIER",
+          "\"citation\"": "Sabatine MS, et al. Evolocumab and Clinical Outcomes in Patients with Cardiovascular Disease. N Engl J Med. 2017;376(18):1713-1722.",
+          "\"pmid\"": "28304224"
+        },
+        {
+          "\"label\"": "IMPROVE-IT",
+          "\"citation\"": "Cannon CP, et al. Ezetimibe Added to Statin Therapy after Acute Coronary Syndromes. N Engl J Med. 2015;372(25):2387-2397.",
+          "\"pmid\"": "26039521"
+        },
+        {
+          "\"label\"": "AHA/ASA 2021 Secondary Prevention",
+          "\"citation\"": "Kleindorfer DO, et al. 2021 Guideline for the Prevention of Stroke in Patients With Stroke and TIA. Stroke. 2021;52(7):e364-e467.",
+          "\"pmid\"": "34024117"
+        }
+      ],
+      "lastReviewed": "2026-07-18",
+      "provenance": "src/education.jsx",
+      "body": "LDL-C targets after atherosclerotic ischemic stroke, the high-intensity statin → ezetimibe → PCSK9 inhibitor ladder, the supporting trials (SPARCL, TST, IMPROVE-IT, FOURIER), and the hemorrhagic-stroke caveat.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "malignant-infarction",
