@@ -17,6 +17,19 @@
     <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png">
     <meta name="apple-mobile-web-app-title" content="Stroke CDS Demo">
 
+    <!-- Open Graph / Twitter Card for link previews (messaging, Slack, social) -->
+    <link rel="canonical" href="https://rkalani1.github.io/stroke/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Stroke CDS Educational Demo">
+    <meta property="og:title" content="Stroke CDS Educational Demo">
+    <meta property="og:description" content="Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.">
+    <meta property="og:url" content="https://rkalani1.github.io/stroke/">
+    <meta property="og:image" content="https://rkalani1.github.io/stroke/icon-192.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Stroke CDS Educational Demo">
+    <meta name="twitter:description" content="Synthetic educational stroke decision-support demo. Not medical advice; do not enter PHI; not an approved clinical tool.">
+    <meta name="twitter:image" content="https://rkalani1.github.io/stroke/icon-192.png">
+
     <!-- Crawler/agent discovery -->
     <link rel="sitemap" type="application/xml" href="sitemap.xml">
     <!-- Structured data (schema.org). Institution-neutral by design; mirrors /llms.txt + /data/index.json. -->
@@ -77,8 +90,8 @@
           media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
     <title>Stroke CDS Educational Demo</title>
 
-    <link rel="preload" as="script" href="app.js?v=6.11.5">
-    <link rel="stylesheet" href="tailwind.css?v=6.11.5">
+    <link rel="preload" as="script" href="app.js?v=6.11.6">
+    <link rel="stylesheet" href="tailwind.css?v=6.11.6">
     <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/publicsans-normal-400.woff2">
     <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/bricolage-700.woff2">
     <style>
@@ -701,7 +714,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = '6.11.5'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
+            const APP_VERSION = '6.11.6'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
             const STORAGE_PREFIX = 'strokeApp:';
             const APP_DATA_KEY = 'stroke.appData.v2';
             const IS_PUBLIC_PAGES = /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -928,6 +941,6 @@
             return false;
         };
     </script>
-    <script src="app.js?v=6.11.5" defer></script>
+    <script src="app.js?v=6.11.6" defer></script>
 </body>
 </html>
