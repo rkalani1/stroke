@@ -37,6 +37,10 @@ PubMed). No change to the frozen Example Protocols zone.
   asymptomatic results, and intensive medical therapy as the foundation.
   Sources: CREST-2 (41269206), CREST (20505173), ACST-2 (34469763),
   NASCET (1852179).
+- **`brainstem-stroke-syndromes`** — the crossed-deficit localization rule and
+  the classic syndromes (Wallenberg, Dejerine, Millard-Gubler, Foville,
+  one-and-a-half, Weber, Benedikt, Claude) by level/vessel/deficit. Sources:
+  Tatu brainstem/cerebellum (8909417), Tatu cerebral hemispheres (9633714).
 
 ## 2026-07-11 — Clinical corrections (audit-flagged, clinician-directed)
 

@@ -514,6 +514,18 @@ const EDUCATION_MODULES = [
       { label: 'ACST-2', citation: 'Halliday A, et al. Second asymptomatic carotid surgery trial (ACST-2): stenting vs endarterectomy. Lancet. 2021;398(10305):1065-1073.', pmid: '34469763' },
       { label: 'NASCET', citation: 'North American Symptomatic Carotid Endarterectomy Trial Collaborators. Beneficial effect of carotid endarterectomy in symptomatic patients with high-grade stenosis. N Engl J Med. 1991;325(7):445-453.', pmid: '1852179' }
     ]
+  },
+  {
+    id: 'brainstem-stroke-syndromes',
+    title: 'Brainstem Stroke Syndromes Atlas',
+    purpose: 'The crossed-deficit localization rule and the classic brainstem stroke syndromes (Wallenberg, Dejerine, Millard-Gubler, Foville, one-and-a-half, Weber, Benedikt, Claude) by level, vessel, and deficit.',
+    actions: 'brainstem syndrome wallenberg lateral medullary dejerine medial medullary millard-gubler foville one-and-a-half weber benedikt claude crossed deficit cranial nerve midbrain pons medulla pica aica locked-in tatu localization',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' },
+      { label: 'Arterial territories — cerebral hemispheres', citation: 'Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' }
+    ]
   }
 ];
 
@@ -1031,6 +1043,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <LipidManagementView />;
     case 'carotid-stenosis-management':
       return <CarotidStenosisView />;
+    case 'brainstem-stroke-syndromes':
+      return <BrainstemSyndromesView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -5626,6 +5640,138 @@ export function CarotidStenosisCard() {
               { label: 'CREST', cite: 'Brott TG et al. N Engl J Med. 2010;363(1):11-23.', pmid: '20505173' },
               { label: 'ACST-2', cite: 'Halliday A et al. Lancet. 2021;398(10305):1065-1073.', pmid: '34469763' },
               { label: 'NASCET', cite: 'NASCET Collaborators. N Engl J Med. 1991;325(7):445-453.', pmid: '1852179' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Brainstem Stroke Syndromes Atlas
+// =====================================================================
+const BrainstemSyndromesView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <BrainstemSyndromesCard />
+  </ScaledCardWrapper>
+);
+
+export function BrainstemSyndromesCard() {
+  const rows = [
+    { s: 'Wallenberg (lateral medullary)', v: 'PICA / vertebral', d: 'Ipsi facial pain-temp loss (V), Horner, ataxia, dysphagia/hoarseness (IX/X); contra body pain-temp loss (spinothalamic). Face-sparing motor.', lvl: 'medulla' },
+    { s: 'Dejerine (medial medullary)', v: 'Anterior spinal / vertebral', d: 'Contra arm/leg weakness (pyramid, face spared), contra proprioception loss (medial lemniscus), ipsi tongue weakness (XII).', lvl: 'medulla' },
+    { s: 'Millard-Gubler (ventral pons)', v: 'Basilar perforators', d: 'Ipsi VI + VII palsy; contra hemiparesis.', lvl: 'pons' },
+    { s: 'Foville (dorsal pons)', v: 'Basilar perforators', d: 'Ipsi horizontal gaze palsy + VII; contra hemiparesis.', lvl: 'pons' },
+    { s: 'One-and-a-half (dorsal pons)', v: 'PPRF + MLF', d: 'Ipsi conjugate gaze palsy + INO — only residual movement is contralateral eye abduction.', lvl: 'pons' },
+    { s: 'Weber (ventral midbrain)', v: 'PCA / basilar perforators', d: 'Ipsi CN III palsy; contra hemiparesis.', lvl: 'midbrain' },
+    { s: 'Benedikt (midbrain tegmentum)', v: 'PCA perforators', d: 'Ipsi CN III; contra tremor / involuntary movements (red nucleus).', lvl: 'midbrain' },
+    { s: 'Claude (midbrain)', v: 'PCA perforators', d: 'Ipsi CN III; contra ataxia (superior cerebellar peduncle).', lvl: 'midbrain' },
+  ];
+  const lvlColor = { midbrain: 'var(--purple)', pons: 'var(--teal)', medulla: 'var(--amber)' };
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-brainstem-stroke-syndromes">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Brainstem Stroke Syndromes</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              The crossed-deficit rule &mdash; ipsilateral cranial nerve + contralateral long tract.
+            </p>
+
+            {/* Hero SVG: sagittal levels + axial cross-sections + rule legend */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 165" style={{ width: '100%', height: 'auto' }}>
+                {/* Sagittal brainstem with CN levels */}
+                <text x="78" y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LEVEL → CN</text>
+                <rect x="54" y="22" width="48" height="34" rx="7" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.4" />
+                <text x="78" y="36" fill="var(--purple-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Midbrain</text>
+                <text x="78" y="47" fill="var(--purple-deep)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">III</text>
+                <path d="M 48 56 C 44 74 44 84 50 100 L 106 100 C 112 84 112 74 108 56 Z" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.4" />
+                <text x="78" y="74" fill="var(--teal-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Pons</text>
+                <text x="78" y="86" fill="var(--teal-deep)" fontSize="6.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">VI · VII</text>
+                <path d="M 58 100 L 98 100 L 92 146 L 64 146 Z" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.4" />
+                <text x="78" y="120" fill="var(--amber-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Medulla</text>
+                <text x="78" y="132" fill="var(--amber-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">IX–XII</text>
+
+                <line x1="130" y1="12" x2="130" y2="152" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Axial cross-sections: medial vs lateral */}
+                <text x="290" y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">AXIAL — MEDIAL vs LATERAL</text>
+                {[
+                  { cx: 195, col: 'var(--purple)', soft: 'var(--purple-soft)', lab: 'Midbrain' },
+                  { cx: 295, col: 'var(--teal)', soft: 'var(--teal-soft)', lab: 'Pons' },
+                  { cx: 395, col: 'var(--amber)', soft: 'var(--amber-soft)', lab: 'Medulla' },
+                ].map((a) => (
+                  <g key={a.lab}>
+                    <ellipse cx={a.cx} cy="66" rx="42" ry="30" fill="#ffffff" stroke={a.col} strokeWidth="1.4" />
+                    {/* medial column */}
+                    <rect x={a.cx - 12} y="40" width="24" height="52" rx="4" fill={a.soft} stroke={a.col} strokeWidth="0.8" />
+                    {/* ventral basilar dot */}
+                    <circle cx={a.cx} cy="94" r="4" fill="var(--red)" />
+                    <text x={a.cx} y="68" fill={a.col} fontSize="4.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">med</text>
+                    <text x={a.cx - 30} y="68" fill="var(--ink-mute)" fontSize="4.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">lat</text>
+                    <text x={a.cx + 30} y="68" fill="var(--ink-mute)" fontSize="4.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">lat</text>
+                    <text x={a.cx} y="112" fill="var(--ink-soft)" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">{a.lab}</text>
+                  </g>
+                ))}
+                <text x="290" y="128" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Medial = long tracts + medial CNs (III, VI, XII) · Lateral = spinothalamic, Horner, cerebellar + lateral CNs</text>
+
+                <line x1="452" y1="12" x2="452" y2="152" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Rule legend */}
+                <rect x="464" y="24" width="262" height="118" rx="8" fill="#ffffff" stroke="var(--purple)" strokeWidth="1.3" />
+                <text x="476" y="42" fill="var(--purple-deep)" fontSize="6.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">THE CROSSED-DEFICIT RULE</text>
+                <text x="476" y="62" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">Ipsilateral cranial-nerve signs</text>
+                <text x="476" y="74" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">+ contralateral long-tract signs</text>
+                <text x="476" y="86" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">= brainstem localization.</text>
+                <text x="476" y="104" fill="var(--teal-deep)" fontSize="6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="start">The involved CN identifies</text>
+                <text x="476" y="116" fill="var(--teal-deep)" fontSize="6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="start">the level (III / VI-VII / IX-XII).</text>
+                <text x="476" y="132" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="start">Territory anatomy per Tatu (1996).</text>
+              </svg>
+            </div>
+
+            {/* §1 Localization rule (purple) */}
+            <CardSection color="purple" title="1. The Localization Rule">
+              <div style={{ fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                A <strong>crossed deficit</strong> — ipsilateral cranial-nerve signs + contralateral long-tract (motor/sensory) signs — localizes to the brainstem. The involved CN identifies the level. <strong>Medial</strong> lesions hit long tracts (corticospinal, medial lemniscus) + medial CNs (III, VI, XII); <strong>lateral</strong> lesions hit spinothalamic, sympathetic, cerebellar peduncles + lateral CNs (V, VII, VIII, IX, X).
+              </div>
+            </CardSection>
+
+            {/* §2 Classic syndromes (teal, table) */}
+            <CardSection color="teal" title="2. Classic Syndromes">
+              <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '6.9pt' }}>
+                <thead>
+                  <tr style={{ background: 'var(--teal)' }}>
+                    <th style={{ width: '150px' }}>Syndrome</th>
+                    <th style={{ width: '112px' }}>Level / vessel</th>
+                    <th>Deficits</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((r) => (
+                    <tr key={r.s}>
+                      <td><strong style={{ color: lvlColor[r.lvl] }}>{r.s}</strong></td>
+                      <td>{r.v}</td>
+                      <td>{r.d}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardSection>
+
+            {/* §3 Pearls (amber) */}
+            <CardSection color="amber" title="3. Pearls" style={{ marginBottom: '6px' }}>
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <li><strong>Isolated vertigo</strong> can be a lateral medullary / AICA stroke — pair with the HINTS+ module.</li>
+                <li><strong>Locked-in syndrome</strong> = ventral pontine (basilar): preserved vertical gaze / blink, quadriplegia, anarthria.</li>
+              </ul>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'Tatu — brainstem / cerebellum', cite: 'Tatu L et al. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' },
+              { label: 'Tatu — cerebral hemispheres', cite: 'Tatu L et al. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' },
             ]} />
           </div>
         </div>

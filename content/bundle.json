@@ -1,11 +1,11 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:9645630c030a8548e130e64d9bf20756",
+    "checksum": "sha256:d8aff2442e0013902fd5ecd0556435ee",
     "counts": {
       "guidelines": 11,
       "trials": 71,
-      "education": 22,
+      "education": 23,
       "calculators": 34,
       "references": 18
     },
@@ -1784,6 +1784,36 @@
       "lastReviewed": "2026-06-09",
       "provenance": "src/education.jsx",
       "body": "Consensus guidelines for the determination of Brain Death / Death by Neurologic Criteria (BD/DNC) in adult and pediatric patients.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "brainstem-stroke-syndromes",
+      "title": "Brainstem Stroke Syndromes Atlas",
+      "summary": "The crossed-deficit localization rule and the classic brainstem stroke syndromes (Wallenberg, Dejerine, Millard-Gubler, Foville, one-and-a-half, Weber, Benedikt, Claude) by level, vessel, and deficit.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "\"label\"": "Arterial territories — brainstem/cerebellum",
+          "\"citation\"": "Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.",
+          "\"pmid\"": "8909417"
+        },
+        {
+          "\"label\"": "Arterial territories — cerebral hemispheres",
+          "\"citation\"": "Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.",
+          "\"pmid\"": "9633714"
+        }
+      ],
+      "lastReviewed": "2026-07-18",
+      "provenance": "src/education.jsx",
+      "body": "The crossed-deficit localization rule and the classic brainstem stroke syndromes (Wallenberg, Dejerine, Millard-Gubler, Foville, one-and-a-half, Weber, Benedikt, Claude) by level, vessel, and deficit.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "carotid-stenosis-management",
