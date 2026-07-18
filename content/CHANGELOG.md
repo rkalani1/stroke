@@ -55,6 +55,19 @@ PubMed). No change to the frozen Example Protocols zone.
   vignettes with immediate feedback, running 0–42 total, the scoring rules
   that trip people up, and the left-hemisphere-weighting interpretation
   caveat. Sources: Brott 1989 (2749846), Lyden 1994 (7974549).
+- **`rcvs`** — reversible cerebral vasoconstriction syndrome: recurrent
+  thunderclap headache, triggers, the reversible string-of-beads, the RCVS²
+  score (RCVS vs PACNS), and management (CCBs, avoid steroids). Sources:
+  RCVS² (30635475), Ducros (18025032), Singhal (21482916).
+- **`aneurysmal-sah-management`** — grading (Hunt-Hess, WFNS, modified Fisher),
+  early aneurysm securing (ISAT), nimodipine, and DCI/vasospasm management.
+  Sources: AHA/ASA 2023 aSAH (37212182), ISAT (12414200), BRANT nimodipine
+  (2496789), modified Fisher (16823296). Note: 37212182 is the correct PMID
+  for the 2023 aSAH guideline (verified on PubMed).
+- **`cerebral-amyloid-angiopathy`** — lobar vs deep hemorrhage, strictly lobar
+  microbleeds / cortical superficial siderosis, Boston Criteria 2.0, the
+  antithrombotic dilemma, and CAA-ri. Sources: Boston 2.0 (35841910), Linn
+  cSS (20421578).
 
 ## 2026-07-11 — Clinical corrections (audit-flagged, clinician-directed)
 

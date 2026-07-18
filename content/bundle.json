@@ -1,11 +1,11 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:ae715562c78842a54f01b11d1b07bd47",
+    "checksum": "sha256:78b4a2868afb2d29c01992d7a3d2c7fe",
     "counts": {
       "guidelines": 11,
       "trials": 71,
-      "education": 26,
+      "education": 29,
       "calculators": 34,
       "references": 18
     },
@@ -1598,6 +1598,46 @@
       "body": "Evidence-based schedule for starting or restarting DOACs after acute ischemic stroke or TIA.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
+      "id": "aneurysmal-sah-management",
+      "title": "Aneurysmal SAH: Grading & Early Management",
+      "summary": "Grading scales (Hunt-Hess, WFNS, modified Fisher), early aneurysm securing (ISAT coiling vs clipping), nimodipine, and delayed cerebral ischemia / vasospasm management for aneurysmal subarachnoid hemorrhage.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "\"label\"": "AHA/ASA 2023 aSAH Guideline",
+          "\"citation\"": "Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.",
+          "\"pmid\"": "37212182"
+        },
+        {
+          "\"label\"": "ISAT",
+          "\"citation\"": "Molyneux A, et al. International Subarachnoid Aneurysm Trial (ISAT): coiling vs clipping. Lancet. 2002;360(9342):1267-1274.",
+          "\"pmid\"": "12414200"
+        },
+        {
+          "\"label\"": "Nimodipine (BRANT)",
+          "\"citation\"": "Pickard JD, et al. Effect of oral nimodipine on cerebral infarction and outcome after subarachnoid haemorrhage (British Aneurysm Nimodipine Trial). BMJ. 1989;298(6674):636-642.",
+          "\"pmid\"": "2496789"
+        },
+        {
+          "\"label\"": "Modified Fisher scale",
+          "\"citation\"": "Frontera JA, et al. Prediction of symptomatic vasospasm after SAH: the modified Fisher scale. Neurosurgery. 2006;59(1):21-27.",
+          "\"pmid\"": "16823296"
+        }
+      ],
+      "lastReviewed": "2026-07-18",
+      "provenance": "src/education.jsx",
+      "body": "Grading scales (Hunt-Hess, WFNS, modified Fisher), early aneurysm securing (ISAT coiling vs clipping), nimodipine, and delayed cerebral ischemia / vasospasm management for aneurysmal subarachnoid hemorrhage.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
       "id": "anticoagulation-reversal",
       "title": "Anticoagulation Reversal in Acute Hemorrhage",
       "summary": "Agent-specific reversal for intracranial hemorrhage — 4F-PCC + vitamin K for warfarin, idarucizumab for dabigatran, andexanet alfa (or 4F-PCC) for factor Xa inhibitors — with the ANNEXA-I thrombotic caveat and parallel BP/neurosurgery steps.",
@@ -1899,6 +1939,36 @@
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
       "body": "Symptomatic vs asymptomatic carotid stenosis, NASCET measurement, CEA vs CAS (CREST), the CREST-2 asymptomatic results, and intensive medical therapy as the common foundation.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "cerebral-amyloid-angiopathy",
+      "title": "Cerebral Amyloid Angiopathy (CAA)",
+      "summary": "Recognition of lobar hemorrhage / strictly lobar microbleeds / cortical superficial siderosis, Boston Criteria 2.0 diagnosis, the antithrombotic dilemma, and CAA-related inflammation.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "\"label\"": "Boston Criteria 2.0",
+          "\"citation\"": "Charidimou A, et al. The Boston criteria version 2.0 for cerebral amyloid angiopathy: a multicentre, retrospective, MRI-neuropathology diagnostic accuracy study. Lancet Neurol. 2022;21(8):714-725.",
+          "\"pmid\"": "35841910"
+        },
+        {
+          "\"label\"": "Cortical superficial siderosis in CAA",
+          "\"citation\"": "Linn J, et al. Prevalence of superficial siderosis in patients with cerebral amyloid angiopathy. Neurology. 2010;74(17):1346-1350.",
+          "\"pmid\"": "20421578"
+        }
+      ],
+      "lastReviewed": "2026-07-18",
+      "provenance": "src/education.jsx",
+      "body": "Recognition of lobar hemorrhage / strictly lobar microbleeds / cortical superficial siderosis, Boston Criteria 2.0 diagnosis, the antithrombotic dilemma, and CAA-related inflammation.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "cerebral-venous-sinus-thrombosis",
@@ -2450,6 +2520,41 @@
       "lastReviewed": "2026-05-30",
       "provenance": "src/education.jsx",
       "body": "Bedside automated pupillometry simulator for adjusting pupil size, latency, and constriction velocity to calculate Neurological Pupil Index (NPi).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "rcvs",
+      "title": "Reversible Cerebral Vasoconstriction Syndrome (RCVS)",
+      "summary": "Recurrent thunderclap headache, triggers, reversible segmental vasoconstriction, the RCVS² score to distinguish RCVS from PACNS, and management (calcium-channel blockers, avoid steroids).",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "\"label\"": "RCVS² score",
+          "\"citation\"": "Rocha EA, et al. RCVS2 score and diagnostic approach for reversible cerebral vasoconstriction syndrome. Neurology. 2019;92(7):e639-e647.",
+          "\"pmid\"": "30635475"
+        },
+        {
+          "\"label\"": "Ducros cohort",
+          "\"citation\"": "Ducros A, et al. The clinical and radiological spectrum of reversible cerebral vasoconstriction syndrome (67 patients). Brain. 2007;130(Pt 12):3091-3101.",
+          "\"pmid\"": "18025032"
+        },
+        {
+          "\"label\"": "Singhal series",
+          "\"citation\"": "Singhal AB, et al. Reversible cerebral vasoconstriction syndromes: analysis of 139 cases. Arch Neurol. 2011;68(8):1005-1012.",
+          "\"pmid\"": "21482916"
+        }
+      ],
+      "lastReviewed": "2026-07-18",
+      "provenance": "src/education.jsx",
+      "body": "Recurrent thunderclap headache, triggers, reversible segmental vasoconstriction, the RCVS² score to distinguish RCVS from PACNS, and management (calcium-channel blockers, avoid steroids).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "stk-core-measures",

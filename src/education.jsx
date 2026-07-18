@@ -565,6 +565,45 @@ const EDUCATION_MODULES = [
       { label: 'NIHSS (original)', citation: 'Brott T, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.', pmid: '2749846' },
       { label: 'NIHSS training/reliability', citation: 'Lyden P, et al. Improved reliability of the NIH Stroke Scale using video training. Stroke. 1994;25(11):2220-2226.', pmid: '7974549' }
     ]
+  },
+  {
+    id: 'rcvs',
+    title: 'Reversible Cerebral Vasoconstriction Syndrome (RCVS)',
+    purpose: 'Recurrent thunderclap headache, triggers, reversible segmental vasoconstriction, the RCVS² score to distinguish RCVS from PACNS, and management (calcium-channel blockers, avoid steroids).',
+    actions: 'rcvs reversible cerebral vasoconstriction syndrome thunderclap headache string of beads segmental postpartum cannabis ssri triptan trigger convexity sah pres watershed rcvs2 score pacns vasculitis nimodipine verapamil steroids ducros singhal',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'RCVS² score', citation: 'Rocha EA, et al. RCVS2 score and diagnostic approach for reversible cerebral vasoconstriction syndrome. Neurology. 2019;92(7):e639-e647.', pmid: '30635475' },
+      { label: 'Ducros cohort', citation: 'Ducros A, et al. The clinical and radiological spectrum of reversible cerebral vasoconstriction syndrome (67 patients). Brain. 2007;130(Pt 12):3091-3101.', pmid: '18025032' },
+      { label: 'Singhal series', citation: 'Singhal AB, et al. Reversible cerebral vasoconstriction syndromes: analysis of 139 cases. Arch Neurol. 2011;68(8):1005-1012.', pmid: '21482916' }
+    ]
+  },
+  {
+    id: 'aneurysmal-sah-management',
+    title: 'Aneurysmal SAH: Grading & Early Management',
+    purpose: 'Grading scales (Hunt-Hess, WFNS, modified Fisher), early aneurysm securing (ISAT coiling vs clipping), nimodipine, and delayed cerebral ischemia / vasospasm management for aneurysmal subarachnoid hemorrhage.',
+    actions: 'aneurysmal subarachnoid hemorrhage asah sah hunt-hess wfns modified fisher grading vasograde ogilvy-carter aneurysm coiling clipping isat rebleed nimodipine brant dci vasospasm delayed cerebral ischemia euvolemia hyponatremia hydrocephalus evd',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'AHA/ASA 2023 aSAH Guideline', citation: 'Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.', pmid: '37212182' },
+      { label: 'ISAT', citation: 'Molyneux A, et al. International Subarachnoid Aneurysm Trial (ISAT): coiling vs clipping. Lancet. 2002;360(9342):1267-1274.', pmid: '12414200' },
+      { label: 'Nimodipine (BRANT)', citation: 'Pickard JD, et al. Effect of oral nimodipine on cerebral infarction and outcome after subarachnoid haemorrhage (British Aneurysm Nimodipine Trial). BMJ. 1989;298(6674):636-642.', pmid: '2496789' },
+      { label: 'Modified Fisher scale', citation: 'Frontera JA, et al. Prediction of symptomatic vasospasm after SAH: the modified Fisher scale. Neurosurgery. 2006;59(1):21-27.', pmid: '16823296' }
+    ]
+  },
+  {
+    id: 'cerebral-amyloid-angiopathy',
+    title: 'Cerebral Amyloid Angiopathy (CAA)',
+    purpose: 'Recognition of lobar hemorrhage / strictly lobar microbleeds / cortical superficial siderosis, Boston Criteria 2.0 diagnosis, the antithrombotic dilemma, and CAA-related inflammation.',
+    actions: 'cerebral amyloid angiopathy caa lobar hemorrhage microbleeds cortical superficial siderosis amyloid spells transient focal neurologic episodes boston criteria 2.0 swir gre antithrombotic anticoagulation laac caa-ri inflammation steroids bp control',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'Boston Criteria 2.0', citation: 'Charidimou A, et al. The Boston criteria version 2.0 for cerebral amyloid angiopathy: a multicentre, retrospective, MRI-neuropathology diagnostic accuracy study. Lancet Neurol. 2022;21(8):714-725.', pmid: '35841910' },
+      { label: 'Cortical superficial siderosis in CAA', citation: 'Linn J, et al. Prevalence of superficial siderosis in patients with cerebral amyloid angiopathy. Neurology. 2010;74(17):1346-1350.', pmid: '20421578' }
+    ]
   }
 ];
 
@@ -1097,6 +1136,12 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
           </div>
         </ErrorBoundary>
       );
+    case 'rcvs':
+      return <RcvsView />;
+    case 'aneurysmal-sah-management':
+      return <AneurysmalSahView />;
+    case 'cerebral-amyloid-angiopathy':
+      return <CerebralAmyloidAngiopathyView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -6340,6 +6385,314 @@ export function NihssSimulator() {
         </div>
         <div className="text-[11px] text-mute border-t border-line pt-2">
           NIHSS (original): Brott T et al. Stroke. 1989;20(7):864-870. <a className="text-cobalt-700 dark:text-cobalt-300 underline" href="https://pubmed.ncbi.nlm.nih.gov/2749846/" target="_blank" rel="noopener noreferrer">PMID: 2749846</a> · Training/reliability: Lyden P et al. Stroke. 1994;25(11):2220-2226. <a className="text-cobalt-700 dark:text-cobalt-300 underline" href="https://pubmed.ncbi.nlm.nih.gov/7974549/" target="_blank" rel="noopener noreferrer">PMID: 7974549</a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Reversible Cerebral Vasoconstriction Syndrome (RCVS)
+// =====================================================================
+const RcvsView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <RcvsCard />
+  </ScaledCardWrapper>
+);
+
+export function RcvsCard() {
+  const rcvs2 = [
+    { v: 'Recurrent or single thunderclap headache', p: '+5' },
+    { v: 'Intracranial carotid artery involvement', p: '−2' },
+    { v: 'Vasoconstrictive trigger', p: '+3' },
+    { v: 'Female sex', p: '+1' },
+    { v: 'Subarachnoid hemorrhage (SAH)', p: '+1' },
+  ];
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-rcvs">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px', fontSize: '18pt' }}>Reversible Cerebral Vasoconstriction Syndrome</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Recurrent thunderclap headache + reversible segmental vasoconstriction (RCVS).
+            </p>
+
+            {/* Hero SVG: string-of-beads reversing + RCVS vs PACNS */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 168" style={{ width: '100%', height: 'auto' }}>
+                {/* Panel A — before/after */}
+                <text x="168" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">SEGMENTAL VASOCONSTRICTION — REVERSIBLE</text>
+                <path d="M 30 42 C 52 32 66 52 90 36 C 114 52 128 32 152 48 C 176 32 190 52 214 36 C 238 52 252 34 300 44" stroke="var(--purple)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M 30 62 C 52 72 66 52 90 68 C 114 52 128 72 152 56 C 176 72 190 52 214 68 C 238 52 252 70 300 60" stroke="var(--purple)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <text x="165" y="86" fill="var(--purple-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Acute: "string of beads"</text>
+                <path d="M 165 92 L 165 104" stroke="var(--teal-deep)" strokeWidth="1.4" markerEnd="url(#rcvs-arrow)" />
+                <defs>
+                  <marker id="rcvs-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="var(--teal-deep)" /></marker>
+                </defs>
+                <text x="240" y="101" fill="var(--teal-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">reverses ≤12 weeks</text>
+                <line x1="30" y1="120" x2="300" y2="120" stroke="var(--teal)" strokeWidth="3" strokeLinecap="round" />
+                <line x1="30" y1="136" x2="300" y2="136" stroke="var(--teal)" strokeWidth="3" strokeLinecap="round" />
+                <text x="165" y="156" fill="var(--teal-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">≤12 weeks: normalized caliber</text>
+
+                <line x1="342" y1="12" x2="342" y2="156" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel B — RCVS vs PACNS */}
+                <text x="538" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">RCVS vs PACNS</text>
+                <rect x="360" y="24" width="172" height="126" rx="8" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.4" />
+                <text x="446" y="40" fill="var(--purple-deep)" fontSize="7.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">RCVS</text>
+                {['Thunderclap onset', 'Vasoconstrictive trigger', 'Reverses ≤12 weeks', 'CCB; AVOID steroids'].map((t, i) => (
+                  <text key={t} x="372" y={58 + i * 18} fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">• {t}</text>
+                ))}
+                <rect x="544" y="24" width="180" height="126" rx="8" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.4" />
+                <text x="634" y="40" fill="var(--red-deep)" fontSize="7.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PACNS</text>
+                {['Subacute / progressive', 'No trigger', 'Enhancing lesions', 'Biopsy + immunosuppress'].map((t, i) => (
+                  <text key={t} x="556" y={58 + i * 18} fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">• {t}</text>
+                ))}
+              </svg>
+            </div>
+
+            {/* §1 Presentation (purple) */}
+            <CardSection color="purple" title="1. Presentation">
+              <div style={{ fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <strong>Recurrent thunderclap headaches</strong> over 1&ndash;3 weeks are the hallmark. <strong>Triggers:</strong> postpartum; vasoactive substances (cannabis, SSRIs/SNRIs, sympathomimetics, nasal decongestants, triptans, ergots); blood products / immunoglobulin; exertion, Valsalva, sexual activity, bathing. <strong>Female predominance.</strong>
+              </div>
+            </CardSection>
+
+            {/* §2 Diagnosis (teal) */}
+            <CardSection color="teal" title="2. Diagnosis">
+              <div style={{ fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                Multifocal <strong>segmental vasoconstriction of medium-caliber arteries</strong> that <strong>reverses within ~12 weeks</strong>. Early angiography can be <strong>normal</strong> (dynamic) — repeat at 1&ndash;3 weeks. Complications by phase: <strong>convexity (non-aneurysmal) SAH</strong> and PRES early; <strong>ischemic stroke</strong> (often watershed) later; occasionally ICH.
+              </div>
+            </CardSection>
+
+            {/* §3 RCVS vs PACNS — RCVS² score (red) */}
+            <CardSection color="red" title="3. RCVS² Score (RCVS vs PACNS)">
+              <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 1fr', gap: '10px' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '7.2pt', color: 'var(--ink-soft)' }}>
+                  <tbody>
+                    {rcvs2.map((r) => (
+                      <tr key={r.v} style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                        <td style={{ padding: '2px 0' }}>{r.v}</td>
+                        <td style={{ padding: '2px 0', textAlign: 'right', fontWeight: 700, color: 'var(--red-deep)' }}>{r.p}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div style={{ fontSize: '7.2pt', lineHeight: '1.35', color: 'var(--ink-soft)' }}>
+                  Range <strong>−2 to +10</strong>.
+                  <br /><strong style={{ color: 'var(--red-deep)' }}>≥5</strong> → RCVS (99% spec, 90% sens).
+                  <br /><strong style={{ color: 'var(--teal-deep)' }}>≤2</strong> → excludes RCVS (100% spec, 85% sens).
+                  <br /><strong>3–4</strong> indeterminate.
+                </div>
+              </div>
+            </CardSection>
+
+            {/* §4 Management (amber) */}
+            <CardSection color="amber" title="4. Management" style={{ marginBottom: '6px' }}>
+              <div style={{ fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                Remove triggers; <strong>calcium-channel blockers</strong> (nimodipine / verapamil) for headache control (do not clearly prevent stroke); <strong>avoid glucocorticoids</strong> (associated with worse outcomes); do NOT start empiric immunosuppression (contrast with PACNS). Course is usually <strong>monophasic with good prognosis</strong>.
+              </div>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'RCVS² score', cite: 'Rocha EA et al. Neurology. 2019;92(7):e639-e647.', pmid: '30635475' },
+              { label: 'Ducros cohort', cite: 'Ducros A et al. Brain. 2007;130(Pt 12):3091-3101.', pmid: '18025032' },
+              { label: 'Singhal series', cite: 'Singhal AB et al. Arch Neurol. 2011;68(8):1005-1012.', pmid: '21482916' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Aneurysmal SAH: Grading & Early Management
+// =====================================================================
+const AneurysmalSahView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <AneurysmalSahCard />
+  </ScaledCardWrapper>
+);
+
+export function AneurysmalSahCard() {
+  const dx = (d) => 384 + d * 14.8; // timeline day → x (0..21)
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-aneurysmal-sah-management">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Aneurysmal SAH</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Grading, early aneurysm securing, nimodipine, and delayed cerebral ischemia.
+            </p>
+
+            {/* Hero SVG: basal-cistern SAH + aneurysm | management timeline */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 168" style={{ width: '100%', height: 'auto' }}>
+                {/* Panel A — basal cistern star + aneurysm */}
+                <text x="130" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">BASAL-CISTERN SAH + ANEURYSM</text>
+                <ellipse cx="130" cy="88" rx="102" ry="60" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                <polygon points="130,56 138,78 160,78 142,92 149,114 130,101 111,114 118,92 100,78 122,78" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.3" />
+                {/* extend blood into sylvian fissures */}
+                <path d="M 100 78 C 78 74 70 88 78 96" stroke="var(--red)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M 160 78 C 182 74 190 88 182 96" stroke="var(--red)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <circle cx="130" cy="50" r="7" fill="var(--red)" stroke="var(--red-deep)" strokeWidth="1.2" />
+                <text x="150" y="46" fill="var(--red-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">saccular aneurysm</text>
+                <text x="150" y="54" fill="var(--red-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">(ACoM / PCoM)</text>
+                <text x="130" y="140" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">star-shaped blood in the basal cisterns</text>
+
+                <line x1="252" y1="12" x2="252" y2="156" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel B — timeline */}
+                <text x="540" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">EARLY-MANAGEMENT TIMELINE</text>
+                <line x1={dx(0)} y1="118" x2={dx(21)} y2="118" stroke="var(--ink-mute)" strokeWidth="1.2" />
+                {[0, 7, 14, 21].map((d) => (
+                  <g key={d}>
+                    <line x1={dx(d)} y1="115" x2={dx(d)} y2="121" stroke="var(--ink-mute)" strokeWidth="1" />
+                    <text x={dx(d)} y="131" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">d{d}</text>
+                  </g>
+                ))}
+                {/* day 0 secure */}
+                <rect x={dx(0) - 4} y="30" width="112" height="22" rx="5" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.2" />
+                <text x={dx(0) + 52} y="44" fill="var(--purple-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Day 0: secure aneurysm</text>
+                <line x1={dx(0)} y1="52" x2={dx(0)} y2="66" stroke="var(--purple)" strokeWidth="1" strokeDasharray="2 2" />
+                {/* nimodipine bar */}
+                <rect x={dx(0)} y="66" width={dx(21) - dx(0)} height="16" rx="4" fill="var(--teal)" />
+                <text x={(dx(0) + dx(21)) / 2} y="77" fill="#ffffff" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Nimodipine × 21 days</text>
+                {/* DCI watch bar */}
+                <rect x={dx(4)} y="90" width={dx(14) - dx(4)} height="16" rx="4" fill="var(--amber)" />
+                <text x={(dx(4) + dx(14)) / 2} y="101" fill="#ffffff" fontSize="5.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">DCI watch d4–14</text>
+                <text x="540" y="150" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Secure early → nimodipine for all → watch for delayed cerebral ischemia</text>
+              </svg>
+            </div>
+
+            {/* §1 Grade it (purple) */}
+            <CardSection color="purple" title="1. Grade It">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', fontSize: '7.4pt', lineHeight: '1.35', color: 'var(--ink-soft)' }}>
+                <div style={{ border: '1px solid var(--purple)', borderRadius: '5px', padding: '4px 7px', background: '#ffffff' }}>
+                  <strong style={{ color: 'var(--purple-deep)' }}>Hunt-Hess (I–V)</strong><br />Clinical: headache / nuchal → coma.
+                </div>
+                <div style={{ border: '1px solid var(--purple)', borderRadius: '5px', padding: '4px 7px', background: '#ffffff' }}>
+                  <strong style={{ color: 'var(--purple-deep)' }}>WFNS (I–V)</strong><br />GCS-based ± motor deficit.
+                </div>
+                <div style={{ border: '1px solid var(--amber)', borderRadius: '5px', padding: '4px 7px', background: '#ffffff' }}>
+                  <strong style={{ color: 'var(--amber-deep)' }}>Modified Fisher (0–4)</strong><br />Cisternal blood + IVH → predicts vasospasm / DCI.
+                </div>
+              </div>
+            </CardSection>
+
+            {/* §2 Secure the aneurysm (teal) */}
+            <CardSection color="teal" title="2. Secure the Aneurysm Early">
+              <div style={{ fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                Treat within <strong>~24&ndash;72 h</strong> to prevent rebleeding, by <strong>endovascular coiling or surgical clipping</strong>. <strong>ISAT:</strong> for ruptured aneurysms suitable for either, coiling gave <strong>better 1-year disability-free survival</strong> (≈7% absolute reduction in death/dependency) than clipping, with a small increase in late rebleeding / retreatment — modality is a multidisciplinary decision by aneurysm morphology and patient factors.
+              </div>
+            </CardSection>
+
+            {/* §3 Prevent secondary injury (red) */}
+            <CardSection color="red" title="3. Prevent Secondary Injury" style={{ marginBottom: '6px' }}>
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.4pt', lineHeight: '1.36', color: 'var(--ink-soft)' }}>
+                <li><strong>Pre-securing:</strong> control BP (avoid extremes), analgesia; a short antifibrinolytic course (&lt;72 h) is optional to reduce ultra-early rebleed.</li>
+                <li><strong>Nimodipine 60 mg PO q4h × 21 days for all</strong> — improves neurologic outcome / reduces DCI, even though it does not reduce angiographic vasospasm (BRANT).</li>
+                <li><strong>DCI / vasospasm peaks days 4&ndash;14:</strong> monitor exam ± TCD; treat with induced hypertension and, if refractory, endovascular angioplasty / intra-arterial vasodilators. Maintain <strong>euvolemia</strong> (avoid prophylactic hypervolemia). Watch for hyponatremia (SIADH vs cerebral salt wasting) and hydrocephalus (EVD).</li>
+              </ul>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'AHA/ASA 2023 aSAH Guideline', cite: 'Hoh BL et al. Stroke. 2023;54(7):e314-e370.', pmid: '37212182' },
+              { label: 'ISAT', cite: 'Molyneux A et al. Lancet. 2002;360(9342):1267-1274.', pmid: '12414200' },
+              { label: 'Nimodipine (BRANT)', cite: 'Pickard JD et al. BMJ. 1989;298(6674):636-642.', pmid: '2496789' },
+              { label: 'Modified Fisher scale', cite: 'Frontera JA et al. Neurosurgery. 2006;59(1):21-27.', pmid: '16823296' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Cerebral Amyloid Angiopathy (CAA)
+// =====================================================================
+const CerebralAmyloidAngiopathyView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <CerebralAmyloidAngiopathyCard />
+  </ScaledCardWrapper>
+);
+
+export function CerebralAmyloidAngiopathyCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-cerebral-amyloid-angiopathy">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Cerebral Amyloid Angiopathy (CAA)</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Lobar bleeds, strictly lobar microbleeds, and cortical superficial siderosis.
+            </p>
+
+            {/* Hero SVG: lobar vs deep pattern | SWI markers */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 168" style={{ width: '100%', height: 'auto' }}>
+                {/* Panel A — lobar vs deep */}
+                <text x="188" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">HEMORRHAGE LOCATION</text>
+                {/* CAA lobar */}
+                <ellipse cx="105" cy="80" rx="72" ry="46" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                <line x1="105" y1="36" x2="105" y2="124" stroke="var(--rule-soft)" strokeWidth="0.8" />
+                <path d="M 138 52 C 156 58 156 78 140 84 C 128 80 126 62 138 52 Z" fill="var(--red)" opacity="0.8" />
+                <text x="105" y="140" fill="var(--red-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">CAA: lobar (cortico-subcortical)</text>
+                {/* Hypertensive deep */}
+                <ellipse cx="272" cy="80" rx="72" ry="46" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                <line x1="272" y1="36" x2="272" y2="124" stroke="var(--rule-soft)" strokeWidth="0.8" />
+                <ellipse cx="288" cy="80" rx="13" ry="11" fill="var(--slate)" opacity="0.85" />
+                <text x="272" y="140" fill="var(--slate)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Hypertensive: deep (basal ganglia)</text>
+
+                <line x1="360" y1="12" x2="360" y2="156" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel B — SWI markers (dark) */}
+                <text x="548" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">SWI / GRE MARKERS</text>
+                <ellipse cx="548" cy="82" rx="88" ry="52" fill="var(--ink)" stroke="var(--ink-mute)" strokeWidth="1.2" />
+                {/* strictly lobar microbleeds (peripheral dark dots) */}
+                {[[500, 52], [590, 50], [478, 82], [618, 84], [512, 116], [588, 118], [548, 44]].map(([x, y], i) => (
+                  <circle key={i} cx={x} cy={y} r="3.4" fill="#000000" stroke="#3a3a3a" strokeWidth="0.6" />
+                ))}
+                {/* cortical superficial siderosis (dark gyral rim) */}
+                <path d="M 486 60 C 500 46 540 42 566 46" stroke="#000000" strokeWidth="4" fill="none" strokeLinecap="round" opacity="0.9" />
+                <text x="548" y="150" fill="var(--ink-mute)" fontSize="5.2pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">strictly lobar microbleeds + cortical superficial siderosis</text>
+              </svg>
+            </div>
+
+            {/* §1 Recognize it (purple) */}
+            <CardSection color="purple" title="1. Recognize It">
+              <div style={{ fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                Sporadic CAA = β-amyloid in cortical / leptomeningeal vessels of the <strong>elderly</strong>, causing <strong>lobar (cortico-subcortical) ICH</strong>, strictly lobar cerebral microbleeds, <strong>cortical superficial siderosis (cSS)</strong>, convexity SAH, <strong>transient focal neurologic episodes ("amyloid spells")</strong>, and cognitive impairment. Deep / basal-ganglia bleeds point to <strong>hypertensive arteriopathy</strong> instead.
+              </div>
+            </CardSection>
+
+            {/* §2 Boston Criteria 2.0 (teal) */}
+            <CardSection color="teal" title="2. Diagnose It — Boston Criteria 2.0">
+              <div style={{ fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                MRI <strong>SWI/GRE</strong> for hemorrhagic markers (lobar ICH/CMB, cSS) <strong>plus non-hemorrhagic white-matter features</strong> (severe visible perivascular spaces in the centrum semiovale, multispot WMH pattern). Boston 2.0 defines "probable" and "possible" CAA and was validated against pathology. <strong>Disseminated cSS carries a particularly high future-ICH risk.</strong>
+              </div>
+            </CardSection>
+
+            {/* §3 Manage it (red) */}
+            <CardSection color="red" title="3. Manage It" style={{ marginBottom: '6px' }}>
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.5pt', lineHeight: '1.38', color: 'var(--ink-soft)' }}>
+                <li><strong>Antithrombotic dilemma:</strong> CAA (especially with cSS or multiple lobar CMBs) carries a high <strong>recurrent lobar ICH</strong> risk; anticoagulation for AF is individualized, and LAA closure is a device alternative. Avoid unnecessary antiplatelets; <strong>aggressive BP control is the best-supported prevention</strong>.</li>
+                <li><strong>CAA-related inflammation (CAA-ri):</strong> subacute encephalopathy / seizures + asymmetric white-matter edema + underlying CAA markers — often <strong>steroid-responsive</strong>; consider biopsy in atypical cases.</li>
+              </ul>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'Boston Criteria 2.0', cite: 'Charidimou A et al. Lancet Neurol. 2022;21(8):714-725.', pmid: '35841910' },
+              { label: 'Cortical superficial siderosis in CAA', cite: 'Linn J et al. Neurology. 2010;74(17):1346-1350.', pmid: '20421578' },
+            ]} />
+          </div>
         </div>
       </div>
     </div>
