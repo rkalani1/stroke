@@ -439,6 +439,171 @@ const EDUCATION_MODULES = [
       { label: 'Narrative Review', citation: 'Sanderson S, et al. Aspirin Resistance and Its Clinical Implications. Ann Intern Med. 2005;142:370-380.', pmid: '15738456' },
       { label: 'OCEANIC-STROKE Trial', citation: 'Sharma M, et al. Asundexian for Secondary Stroke Prevention. N Engl J Med. 2026;394(15):1467-1479.', pmid: '41985132' }
     ]
+  },
+  {
+    id: 'cerebral-venous-sinus-thrombosis',
+    title: 'Cerebral Venous Sinus Thrombosis (CVST)',
+    purpose: 'Presentation, risk factors, venography-based diagnosis, anticoagulation despite venous hemorrhage, DOAC transition, and prognosis for cerebral venous and dural sinus thrombosis.',
+    actions: 'cvst cvt cerebral venous sinus thrombosis dural sagittal transverse sigmoid straight sinus vein of galen venous infarct hemorrhagic transformation d-dimer ctv mrv anticoagulation lmwh dabigatran doac iscvt re-spect action-cvt to-act thrombectomy papilledema intracranial hypertension',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'ISCVT', citation: 'Ferro JM, et al. Prognosis of cerebral vein and dural sinus thrombosis: results of the ISCVT. Stroke. 2004;35(3):664-670.', pmid: '14976332' },
+      { label: 'RE-SPECT CVT', citation: 'Ferro JM, et al. Safety and Efficacy of Dabigatran Etexilate vs Dose-Adjusted Warfarin in Cerebral Venous Thrombosis. JAMA Neurol. 2019;76(12):1457-1465.', pmid: '31479105' },
+      { label: 'ACTION-CVT', citation: 'Yaghi S, et al. Direct Oral Anticoagulants Versus Warfarin in the Treatment of Cerebral Venous Thrombosis (ACTION-CVT). Stroke. 2022;53(3):728-738.', pmid: '35143325' },
+      { label: 'TO-ACT', citation: 'Coutinho JM, et al. Effect of Endovascular Treatment With Medical Management vs Standard Care on Severe Cerebral Venous Thrombosis (TO-ACT). JAMA Neurol. 2020;77(8):966-973.', pmid: '32421159' },
+      { label: 'AHA/ASA Statement', citation: 'Saposnik G, et al. Diagnosis and management of cerebral venous thrombosis: a statement for healthcare professionals from the AHA/ASA. Stroke. 2011;42(4):1158-1192.', pmid: '21293023' }
+    ]
+  },
+  {
+    id: 'large-core-thrombectomy',
+    title: 'Large-Core Thrombectomy',
+    purpose: 'Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the symptomatic-hemorrhage trade-off.',
+    actions: 'large core thrombectomy evt endovascular aspects 3-5 low aspects core volume salvageable penumbra select2 angel-aspect tension laste tesla rescue-japan limit symptomatic hemorrhage mrs shift 2026 aha asa guideline reperfusion',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'SELECT2', citation: 'Sarraj A, et al. Trial of Endovascular Thrombectomy for Large Ischemic Strokes (SELECT2). N Engl J Med. 2023;388(14):1259-1271.', pmid: '36762865' },
+      { label: 'ANGEL-ASPECT', citation: 'Huo X, et al. Trial of Endovascular Therapy for Acute Ischemic Stroke with Large Infarct (ANGEL-ASPECT). N Engl J Med. 2023;388(14):1272-1283.', pmid: '36762852' },
+      { label: 'TENSION', citation: 'Bendszus M, et al. Endovascular thrombectomy for acute ischaemic stroke with established large infarct (TENSION). Lancet. 2023;402(10414):1753-1763.', pmid: '37837989' },
+      { label: 'LASTE', citation: 'Costalat V, et al. Trial of Thrombectomy for Stroke with a Large Infarct of Unrestricted Size (LASTE). N Engl J Med. 2024;390(18):1677-1689.', pmid: '38718358' },
+      { label: 'TESLA', citation: 'Yoo AJ, et al. Thrombectomy for Stroke With Large Infarct on Noncontrast CT: The TESLA Randomized Clinical Trial. JAMA. 2024;332(16):1355-1366.', pmid: '39374319' },
+      { label: 'RESCUE-Japan LIMIT', citation: 'Yoshimura S, et al. Endovascular Therapy for Acute Stroke with a Large Ischemic Region. N Engl J Med. 2022;386(14):1303-1313.', pmid: '35138767' },
+      { label: '2026 AIS Guideline', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' }
+    ]
+  },
+  {
+    id: 'basilar-artery-occlusion',
+    title: 'Basilar Artery Occlusion',
+    purpose: 'Protean brainstem presentation, the ATTENTION/BAOCHE evidence arc for endovascular therapy, imaging selection (pc-ASPECTS, perfusion/collaterals), and pitfalls for basilar artery occlusion.',
+    actions: 'basilar artery occlusion bao vertebrobasilar posterior circulation brainstem pons locked-in coma crossed deficit herald tia attention baoche basics best pc-aspects perforator evt thrombectomy time window',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'ATTENTION', citation: 'Tao C, et al. Trial of Endovascular Treatment of Acute Basilar-Artery Occlusion (ATTENTION). N Engl J Med. 2022;387(15):1361-1372.', pmid: '36239644' },
+      { label: 'BAOCHE', citation: 'Jovin TG, et al. Trial of Thrombectomy 6 to 24 Hours after Stroke Due to Basilar-Artery Occlusion (BAOCHE). N Engl J Med. 2022;387(15):1373-1384.', pmid: '36239645' },
+      { label: 'BASICS', citation: 'Langezaal LCM, et al. Endovascular Therapy for Stroke Due to Basilar-Artery Occlusion (BASICS). N Engl J Med. 2021;384(20):1910-1920.', pmid: '34010530' },
+      { label: 'BEST', citation: 'Liu X, et al. Endovascular treatment versus standard medical treatment for vertebrobasilar artery occlusion (BEST). Lancet Neurol. 2020;19(2):115-122.', pmid: '31831388' }
+    ]
+  },
+  {
+    id: 'lipid-management-after-stroke',
+    title: 'Lipid Management After Ischemic Stroke',
+    purpose: 'LDL-C targets after atherosclerotic ischemic stroke, the high-intensity statin → ezetimibe → PCSK9 inhibitor ladder, the supporting trials (SPARCL, TST, IMPROVE-IT, FOURIER), and the hemorrhagic-stroke caveat.',
+    actions: 'lipid ldl cholesterol statin high-intensity atorvastatin rosuvastatin ezetimibe pcsk9 evolocumab target 70 55 sparcl treat stroke to target tst improve-it fourier secondary prevention hemorrhagic caution',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'SPARCL', citation: 'Amarenco P, et al. High-dose atorvastatin after stroke or transient ischemic attack (SPARCL). N Engl J Med. 2006;355(6):549-559.', pmid: '16899775' },
+      { label: 'Treat Stroke to Target', citation: 'Amarenco P, et al. A Comparison of Two LDL Cholesterol Targets after Ischemic Stroke. N Engl J Med. 2020;382(1):9-19.', pmid: '31738483' },
+      { label: 'FOURIER', citation: 'Sabatine MS, et al. Evolocumab and Clinical Outcomes in Patients with Cardiovascular Disease. N Engl J Med. 2017;376(18):1713-1722.', pmid: '28304224' },
+      { label: 'IMPROVE-IT', citation: 'Cannon CP, et al. Ezetimibe Added to Statin Therapy after Acute Coronary Syndromes. N Engl J Med. 2015;372(25):2387-2397.', pmid: '26039521' },
+      { label: 'AHA/ASA 2021 Secondary Prevention', citation: 'Kleindorfer DO, et al. 2021 Guideline for the Prevention of Stroke in Patients With Stroke and TIA. Stroke. 2021;52(7):e364-e467.', pmid: '34024117' }
+    ]
+  },
+  {
+    id: 'carotid-stenosis-management',
+    title: 'Carotid Stenosis: Revascularization vs Medical Therapy',
+    purpose: 'Symptomatic vs asymptomatic carotid stenosis, NASCET measurement, CEA vs CAS (CREST), the CREST-2 asymptomatic results, and intensive medical therapy as the common foundation.',
+    actions: 'carotid stenosis nascet cea carotid endarterectomy cas stenting revascularization symptomatic asymptomatic crest crest-2 acst-2 intensive medical therapy imm plaque bifurcation ldl antiplatelet',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'CREST-2', citation: 'Brott TG, et al. Medical Management and Revascularization for Asymptomatic Carotid Stenosis (CREST-2). N Engl J Med. 2025;394(3):219-231.', pmid: '41269206' },
+      { label: 'CREST', citation: 'Brott TG, et al. Stenting versus Endarterectomy for Treatment of Carotid-Artery Stenosis (CREST). N Engl J Med. 2010;363(1):11-23.', pmid: '20505173' },
+      { label: 'ACST-2', citation: 'Halliday A, et al. Second asymptomatic carotid surgery trial (ACST-2): stenting vs endarterectomy. Lancet. 2021;398(10305):1065-1073.', pmid: '34469763' },
+      { label: 'NASCET', citation: 'North American Symptomatic Carotid Endarterectomy Trial Collaborators. Beneficial effect of carotid endarterectomy in symptomatic patients with high-grade stenosis. N Engl J Med. 1991;325(7):445-453.', pmid: '1852179' }
+    ]
+  },
+  {
+    id: 'brainstem-stroke-syndromes',
+    title: 'Brainstem Stroke Syndromes Atlas',
+    purpose: 'The crossed-deficit localization rule and the classic brainstem stroke syndromes (Wallenberg, Dejerine, Millard-Gubler, Foville, one-and-a-half, Weber, Benedikt, Claude) by level, vessel, and deficit.',
+    actions: 'brainstem syndrome wallenberg lateral medullary dejerine medial medullary millard-gubler foville one-and-a-half weber benedikt claude crossed deficit cranial nerve midbrain pons medulla pica aica locked-in tatu localization',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' },
+      { label: 'Arterial territories — cerebral hemispheres', citation: 'Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' }
+    ]
+  },
+  {
+    id: 'vascular-territory-atlas',
+    title: 'Cerebral Vascular Territory & Watershed Atlas',
+    purpose: 'Anterior (ACA/MCA/lenticulostriate/anterior-choroidal) and posterior (PCA/PICA/AICA/SCA/basilar-perforator) territories with their clinical signatures, plus cortical and internal watershed patterns and mechanisms.',
+    actions: 'vascular territory atlas aca mca pca lenticulostriate anterior choroidal pica aica sca basilar perforator watershed borderzone cortical internal wedge rosary hemodynamic hypoperfusion hemianopia neglect aphasia lacunar tatu circle of willis',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'Arterial territories — cerebral hemispheres', citation: 'Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' },
+      { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' }
+    ]
+  },
+  {
+    id: 'anticoagulation-reversal',
+    title: 'Anticoagulation Reversal in Acute Hemorrhage',
+    purpose: 'Agent-specific reversal for intracranial hemorrhage — 4F-PCC + vitamin K for warfarin, idarucizumab for dabigatran, andexanet alfa (or 4F-PCC) for factor Xa inhibitors — with the ANNEXA-I thrombotic caveat and parallel BP/neurosurgery steps.',
+    actions: 'anticoagulation reversal ich hemorrhage warfarin vka 4f-pcc pcc vitamin k dabigatran idarucizumab factor xa apixaban rivaroxaban edoxaban andexanet annexa-4 annexa-i reverse-ad patch platelet desmopressin bp control neurosurgery',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'ANNEXA-4', citation: 'Connolly SJ, et al. Full Study Report of Andexanet Alfa for Bleeding Associated with Factor Xa Inhibitors. N Engl J Med. 2019;380(14):1326-1335.', pmid: '30730782' },
+      { label: 'ANNEXA-I', citation: 'Connolly SJ, et al. Andexanet for Factor Xa Inhibitor–Associated Acute Intracerebral Hemorrhage. N Engl J Med. 2024;390(19):1745-1755.', pmid: '38749032' },
+      { label: 'RE-VERSE AD', citation: 'Pollack CV, et al. Idarucizumab for Dabigatran Reversal — Full Cohort Analysis. N Engl J Med. 2017;377(5):431-441.', pmid: '28693366' },
+      { label: 'AHA/ASA 2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
+      { label: 'NCS/SCCM Reversal Guideline', citation: 'Frontera JA, et al. Guideline for Reversal of Antithrombotics in Intracranial Hemorrhage. Neurocrit Care. 2016;24(1):6-46.', pmid: '26714677' }
+    ]
+  },
+  {
+    id: 'nihss-simulator',
+    title: 'NIHSS Certification Simulator',
+    purpose: 'Interactive NIHSS scoring trainer: score each of the 15 items on short case vignettes with immediate right/wrong feedback and rationale, a running 0–42 total, the scoring rules that trip people up, and the interpretation caveats.',
+    actions: 'nihss simulator certification scoring stroke scale 15 items loc gaze visual fields facial palsy motor arm leg ataxia sensory language dysarthria extinction inattention neglect 0-42 interactive practice cases posterior right hemisphere underestimate lvo',
+    categories: ['simulators'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'NIHSS (original)', citation: 'Brott T, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.', pmid: '2749846' },
+      { label: 'NIHSS training/reliability', citation: 'Lyden P, et al. Improved reliability of the NIH Stroke Scale using video training. Stroke. 1994;25(11):2220-2226.', pmid: '7974549' }
+    ]
+  },
+  {
+    id: 'rcvs',
+    title: 'Reversible Cerebral Vasoconstriction Syndrome (RCVS)',
+    purpose: 'Recurrent thunderclap headache, triggers, reversible segmental vasoconstriction, the RCVS² score to distinguish RCVS from PACNS, and management (calcium-channel blockers, avoid steroids).',
+    actions: 'rcvs reversible cerebral vasoconstriction syndrome thunderclap headache string of beads segmental postpartum cannabis ssri triptan trigger convexity sah pres watershed rcvs2 score pacns vasculitis nimodipine verapamil steroids ducros singhal',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'RCVS² score', citation: 'Rocha EA, et al. RCVS2 score and diagnostic approach for reversible cerebral vasoconstriction syndrome. Neurology. 2019;92(7):e639-e647.', pmid: '30635475' },
+      { label: 'Ducros cohort', citation: 'Ducros A, et al. The clinical and radiological spectrum of reversible cerebral vasoconstriction syndrome (67 patients). Brain. 2007;130(Pt 12):3091-3101.', pmid: '18025032' },
+      { label: 'Singhal series', citation: 'Singhal AB, et al. Reversible cerebral vasoconstriction syndromes: analysis of 139 cases. Arch Neurol. 2011;68(8):1005-1012.', pmid: '21482916' }
+    ]
+  },
+  {
+    id: 'aneurysmal-sah-management',
+    title: 'Aneurysmal SAH: Grading & Early Management',
+    purpose: 'Grading scales (Hunt-Hess, WFNS, modified Fisher), early aneurysm securing (ISAT coiling vs clipping), nimodipine, and delayed cerebral ischemia / vasospasm management for aneurysmal subarachnoid hemorrhage.',
+    actions: 'aneurysmal subarachnoid hemorrhage asah sah hunt-hess wfns modified fisher grading vasograde ogilvy-carter aneurysm coiling clipping isat rebleed nimodipine brant dci vasospasm delayed cerebral ischemia euvolemia hyponatremia hydrocephalus evd',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'AHA/ASA 2023 aSAH Guideline', citation: 'Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.', pmid: '37212182' },
+      { label: 'ISAT', citation: 'Molyneux A, et al. International Subarachnoid Aneurysm Trial (ISAT): coiling vs clipping. Lancet. 2002;360(9342):1267-1274.', pmid: '12414200' },
+      { label: 'Nimodipine (BRANT)', citation: 'Pickard JD, et al. Effect of oral nimodipine on cerebral infarction and outcome after subarachnoid haemorrhage (British Aneurysm Nimodipine Trial). BMJ. 1989;298(6674):636-642.', pmid: '2496789' },
+      { label: 'Modified Fisher scale', citation: 'Frontera JA, et al. Prediction of symptomatic vasospasm after SAH: the modified Fisher scale. Neurosurgery. 2006;59(1):21-27.', pmid: '16823296' }
+    ]
+  },
+  {
+    id: 'cerebral-amyloid-angiopathy',
+    title: 'Cerebral Amyloid Angiopathy (CAA)',
+    purpose: 'Recognition of lobar hemorrhage / strictly lobar microbleeds / cortical superficial siderosis, Boston Criteria 2.0 diagnosis, the antithrombotic dilemma, and CAA-related inflammation.',
+    actions: 'cerebral amyloid angiopathy caa lobar hemorrhage microbleeds cortical superficial siderosis amyloid spells transient focal neurologic episodes boston criteria 2.0 swir gre antithrombotic anticoagulation laac caa-ri inflammation steroids bp control',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-18',
+    references: [
+      { label: 'Boston Criteria 2.0', citation: 'Charidimou A, et al. The Boston criteria version 2.0 for cerebral amyloid angiopathy: a multicentre, retrospective, MRI-neuropathology diagnostic accuracy study. Lancet Neurol. 2022;21(8):714-725.', pmid: '35841910' },
+      { label: 'Cortical superficial siderosis in CAA', citation: 'Linn J, et al. Prevalence of superficial siderosis in patients with cerebral amyloid angiopathy. Neurology. 2010;74(17):1346-1350.', pmid: '20421578' }
+    ]
   }
 ];
 
@@ -946,6 +1111,37 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <AntiepilepticDrugsView />;
     case 'aspirin-failure':
       return <AspirinFailureView />;
+    case 'cerebral-venous-sinus-thrombosis':
+      return <CvstView />;
+    case 'large-core-thrombectomy':
+      return <LargeCoreThrombectomyView />;
+    case 'basilar-artery-occlusion':
+      return <BasilarArteryOcclusionView />;
+    case 'lipid-management-after-stroke':
+      return <LipidManagementView />;
+    case 'carotid-stenosis-management':
+      return <CarotidStenosisView />;
+    case 'brainstem-stroke-syndromes':
+      return <BrainstemSyndromesView />;
+    case 'vascular-territory-atlas':
+      return <VascularTerritoryAtlasView />;
+    case 'anticoagulation-reversal':
+      return <AnticoagulationReversalView />;
+    case 'nihss-simulator':
+      return (
+        <ErrorBoundary>
+          <div className="bg-card border border-line rounded-lg p-6">
+            <h2 className="font-serif text-xl font-bold text-ink mb-4">NIHSS Certification Simulator</h2>
+            <NihssSimulator />
+          </div>
+        </ErrorBoundary>
+      );
+    case 'rcvs':
+      return <RcvsView />;
+    case 'aneurysmal-sah-management':
+      return <AneurysmalSahView />;
+    case 'cerebral-amyloid-angiopathy':
+      return <CerebralAmyloidAngiopathyView />;
     default:
       return <p className="text-xs">Module content not found.</p>;
   }
@@ -4862,4 +5058,1646 @@ export function AspirinFailureCard() {
     </div>
   );
 }
+
+// =====================================================================
+// SHARED HELPERS — 2026 NEUROVASCULAR TEACHING CARD SET
+// (color-coded bordered sections + citation footer, reused across the
+//  static pocket cards below so they render identically to the
+//  FibromuscularDysplasia / BrainDeath gold-standard templates)
+// =====================================================================
+const CARD_SECTION_COLORS = {
+  purple: { base: 'var(--purple)', deep: 'var(--purple-deep)', soft: 'var(--purple-soft)' },
+  teal:   { base: 'var(--teal)',   deep: 'var(--teal-deep)',   soft: 'var(--teal-soft)' },
+  red:    { base: 'var(--red)',    deep: 'var(--red-deep)',    soft: 'var(--red-soft)' },
+  amber:  { base: 'var(--amber)',  deep: 'var(--amber-deep)',  soft: 'var(--amber-soft)' },
+};
+
+function CardSection({ color = 'purple', title, subtitle, children, style }) {
+  const c = CARD_SECTION_COLORS[color] || CARD_SECTION_COLORS.purple;
+  return (
+    <div style={{ border: `1.5px solid ${c.base}`, borderRadius: '8px', padding: '8px 10px', background: `linear-gradient(135deg, ${c.soft} 0%, #ffffff 100%)`, marginBottom: '8px', ...style }}>
+      <strong style={{ color: c.deep, fontSize: '9.5pt', display: 'block', marginBottom: subtitle ? '1px' : '4px' }}>{title}</strong>
+      {subtitle && <div style={{ color: 'var(--ink-mute)', fontSize: '7pt', fontWeight: '700', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.03em' }}>{subtitle}</div>}
+      {children}
+    </div>
+  );
+}
+
+const pubmedUrl = (pmid) => `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`;
+
+function CardRefFooter({ refs, style }) {
+  return (
+    <div className="ref-citation" style={{ marginTop: 'auto', padding: '6px 10px', fontSize: '7.4pt', lineHeight: '1.3', ...style }}>
+      {refs.map((r, i) => (
+        <span key={`${r.pmid}-${i}`}>
+          <strong>{r.label}:</strong> {r.cite}{' '}
+          <a href={pubmedUrl(r.pmid)} target="_blank" rel="noopener noreferrer">PMID: {r.pmid}</a>
+          {i < refs.length - 1 ? <br /> : null}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Cerebral Venous Sinus Thrombosis (CVST)
+// =====================================================================
+const CvstView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <CvstCard />
+  </ScaledCardWrapper>
+);
+
+export function CvstCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-cerebral-venous-sinus-thrombosis">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Cerebral Venous Sinus Thrombosis</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Dural sinus &amp; deep venous system thrombosis &mdash; diagnosis, anticoagulation, and outcome.
+            </p>
+
+            {/* Hero SVG: dural venous sinus map + venous-infarct inset */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 170" style={{ width: '100%', height: 'auto' }}>
+                {/* ---- Left: sagittal dural sinus map ---- */}
+                <text x="245" y="16" fill="var(--ink-soft)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">DURAL VENOUS SINUS MAP (SAGITTAL)</text>
+                {/* faint head silhouette, occiput to the right */}
+                <path d="M 70 120 C 55 60, 120 24, 250 24 C 360 24, 430 55, 430 100 C 430 130, 400 150, 360 150 L 350 150 C 350 138, 345 132, 335 132 L 120 132 C 92 132, 74 128, 70 120 Z" fill="#ffffff" stroke="var(--rule-soft)" strokeWidth="1.2" />
+                {/* Superior sagittal sinus (SSS) — over the convexity to the torcula */}
+                <path d="M 96 116 C 78 66, 140 40, 250 38 C 340 37, 402 62, 408 104" stroke="var(--teal)" strokeWidth="6" fill="none" strokeLinecap="round" />
+                <text x="210" y="54" fill="var(--teal-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Superior sagittal sinus</text>
+                {/* Deep venous system: internal cerebral veins → vein of Galen */}
+                <path d="M 180 96 L 250 100" stroke="var(--purple)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <circle cx="258" cy="101" r="4" fill="var(--purple)" />
+                <text x="176" y="90" fill="var(--purple-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Internal cerebral vv.</text>
+                <text x="286" y="95" fill="var(--purple-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Vein of Galen</text>
+                {/* Straight sinus: vein of Galen → torcula */}
+                <path d="M 262 102 L 404 108" stroke="var(--purple)" strokeWidth="4" fill="none" strokeLinecap="round" />
+                <text x="330" y="99" fill="var(--purple-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Straight sinus</text>
+                {/* Torcula (confluence of sinuses) */}
+                <circle cx="408" cy="106" r="6" fill="var(--teal-deep)" />
+                <text x="417" y="99" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="start">Torcula</text>
+                {/* Transverse → sigmoid sinus (THROMBOSED segment, red) */}
+                <path d="M 408 108 C 400 128, 378 138, 356 140" stroke="var(--red)" strokeWidth="6" fill="none" strokeLinecap="round" strokeDasharray="2 4" />
+                {/* clot bulge */}
+                <ellipse cx="384" cy="132" rx="11" ry="7" fill="var(--red)" opacity="0.85" transform="rotate(28 384 132)" />
+                <text x="384" y="160" fill="var(--red-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Thrombosed transverse / sigmoid sinus</text>
+
+                {/* divider */}
+                <line x1="455" y1="14" x2="455" y2="158" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* ---- Right: venous infarct inset (coronal) ---- */}
+                <text x="595" y="16" fill="var(--ink-soft)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">VENOUS INFARCT (± HEMORRHAGE)</text>
+                <path d="M 500 120 C 500 60, 690 60, 690 120 C 690 138, 660 150, 595 150 C 530 150, 500 138, 500 120 Z" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.4" />
+                <line x1="595" y1="42" x2="595" y2="150" stroke="var(--rule-soft)" strokeWidth="1" />
+                {/* parasagittal wedge infarct crossing arterial boundaries */}
+                <path d="M 595 46 L 648 66 L 640 120 L 595 116 Z" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.4" />
+                {/* hemorrhagic transformation speckle */}
+                <circle cx="620" cy="80" r="6" fill="var(--red)" opacity="0.75" />
+                <circle cx="631" cy="97" r="4.5" fill="var(--red)" opacity="0.7" />
+                <circle cx="614" cy="100" r="3.5" fill="var(--red)" opacity="0.6" />
+                <text x="595" y="168" fill="var(--ink-mute)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Non-arterial territory; bilateral / parasagittal / thalamic patterns</text>
+              </svg>
+            </div>
+
+            {/* §1 Presentation & risk factors (purple) */}
+            <CardSection color="purple" title="1. Presentation & Risk Factors">
+              <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1.1fr 0.9fr', gap: '12px', fontSize: '7.7pt', lineHeight: '1.38', color: 'var(--ink-soft)' }}>
+                <div>
+                  <strong style={{ color: 'var(--purple-deep)', fontSize: '8pt' }}>Clinical syndromes</strong>
+                  <br />&bull; <strong>Isolated intracranial hypertension</strong>: headache &plusmn; papilledema, VI-nerve palsy.
+                  <br />&bull; <strong>Focal deficits / seizures</strong> from venous infarction.
+                  <br />&bull; <strong>Encephalopathy</strong> (deep venous system).
+                  <br />&bull; Headache is the most common symptom (~90%) and can be the <em>only</em> symptom.
+                </div>
+                <div style={{ borderLeft: '1.5px dashed var(--purple)', paddingLeft: '10px' }}>
+                  <strong style={{ color: 'var(--purple-deep)', fontSize: '8pt' }}>Risk factors (~85% have ≥1)</strong>
+                  <br />&bull; <strong>Prothrombotic</strong>: pregnancy / puerperium, estrogen / OCP, inherited thrombophilia, malignancy, APS.
+                  <br />&bull; <strong>Local</strong>: sinusitis, mastoiditis, meningitis, trauma, LP.
+                  <br />&bull; <strong>Systemic</strong>: dehydration, IBD, nephrotic syndrome.
+                </div>
+                <div style={{ borderLeft: '1.5px dashed var(--purple)', paddingLeft: '10px' }}>
+                  <strong style={{ color: 'var(--red-deep)', fontSize: '8pt' }}>Pitfall</strong>
+                  <br />A <strong>normal D-dimer does NOT exclude CVST</strong>, especially with isolated headache or a subacute course. <strong>Image if suspected.</strong>
+                </div>
+              </div>
+            </CardSection>
+
+            {/* §2 Diagnosis (teal) */}
+            <CardSection color="teal" title="2. Diagnosis">
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.42', color: 'var(--ink-soft)' }}>
+                <li><strong>First-line imaging</strong>: CT venography (CTV) or MR venography (MRV).</li>
+                <li>Non-contrast CT signs (cord sign, dense triangle) are <strong>insensitive</strong>; the <strong>empty-delta sign</strong> appears on post-contrast CT. MRI T2*/SWI shows thrombus + parenchymal change.</li>
+                <li><strong>Trigger venous imaging</strong> when an infarct crosses arterial boundaries, is hemorrhagic, or is bilateral parasagittal / thalamic.</li>
+              </ul>
+            </CardSection>
+
+            {/* §3 Acute management (red) */}
+            <CardSection color="red" title="3. Acute Management">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '7.6pt', lineHeight: '1.38', color: 'var(--ink-soft)' }}>
+                <div>
+                  <strong style={{ color: 'var(--red-deep)', fontSize: '8pt' }}>Anticoagulate — even with venous hemorrhage</strong>
+                  <br />&bull; Therapeutic <strong>LMWH</strong> (or UFH) is first-line; hemorrhage from venous congestion is <strong>not a contraindication</strong> (ISCVT).
+                  <br />&bull; <strong>Transition</strong>: VKA (INR 2&ndash;3) for 3&ndash;6+ months, <em>or</em> a <strong>DOAC</strong> — RE-SPECT CVT: dabigatran 150 mg BID comparable to warfarin; ACTION-CVT: DOAC vs warfarin similar recurrence with a lower rate of major hemorrhage (aHR 0.35).
+                </div>
+                <div style={{ borderLeft: '1.5px dashed var(--red)', paddingLeft: '10px' }}>
+                  <strong style={{ color: 'var(--red-deep)', fontSize: '8pt' }}>Endovascular / surgical</strong>
+                  <br />&bull; <strong>Thrombectomy is NOT routine</strong> — TO-ACT stopped for futility; reserve for deterioration despite anticoagulation (individualized).
+                  <br />&bull; <strong>Decompressive craniectomy</strong> is life-saving for large venous infarct with impending herniation.
+                  <br />&bull; Treat seizures; manage raised ICP; avoid over-aggressive LP if mass effect.
+                </div>
+              </div>
+            </CardSection>
+
+            {/* §4 Prognosis (amber) */}
+            <CardSection color="amber" title="4. Prognosis" style={{ marginBottom: '6px' }}>
+              <div style={{ fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <strong style={{ color: 'var(--amber-deep)' }}>ISCVT:</strong> ~13% dead or dependent at final follow-up (better than arterial stroke).
+                <br /><strong style={{ color: 'var(--amber-deep)' }}>Predictors of poor outcome:</strong> coma / altered mental status, deep venous system thrombosis, intracranial hemorrhage, malignancy, CNS infection, male sex, older age.
+              </div>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'ISCVT', cite: 'Ferro JM et al. Stroke. 2004;35(3):664-670.', pmid: '14976332' },
+              { label: 'RE-SPECT CVT', cite: 'Ferro JM et al. JAMA Neurol. 2019;76(12):1457-1465.', pmid: '31479105' },
+              { label: 'ACTION-CVT', cite: 'Yaghi S et al. Stroke. 2022;53(3):728-738.', pmid: '35143325' },
+              { label: 'TO-ACT', cite: 'Coutinho JM et al. JAMA Neurol. 2020;77(8):966-973.', pmid: '32421159' },
+              { label: 'AHA/ASA Statement', cite: 'Saposnik G et al. Stroke. 2011;42(4):1158-1192.', pmid: '21293023' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Large-Core Thrombectomy
+// =====================================================================
+const LargeCoreThrombectomyView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <LargeCoreThrombectomyCard />
+  </ScaledCardWrapper>
+);
+
+export function LargeCoreThrombectomyCard() {
+  const trials = [
+    { t: 'RESCUE-Japan LIMIT', pop: 'ASPECTS 3–5', res: 'mRS 0–3: 31% vs 13% with EVT' },
+    { t: 'SELECT2', pop: 'ASPECTS 3–5 or core ≥50 mL', res: 'mRS 0–2: 20% vs 7%; positive mRS shift' },
+    { t: 'ANGEL-ASPECT', pop: 'ASPECTS 3–5 or core 70–100 mL', res: 'mRS 0–2: 30% vs 12%; positive mRS shift' },
+    { t: 'TENSION', pop: 'ASPECTS 3–5', res: 'mRS 0–3 higher with EVT; positive shift' },
+    { t: 'LASTE', pop: 'ASPECTS 0–5 (incl. <3)', res: 'EVT benefit on the mRS distribution' },
+    { t: 'TESLA', pop: 'ASPECTS 2–5', res: 'Utility-weighted mRS favored EVT (posterior probability 0.96) but did NOT reach the pre-set 0.975 Bayesian threshold' },
+  ];
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-large-core-thrombectomy">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Large-Core Thrombectomy</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              EVT for large ischemic core (low ASPECTS / large core volume) &mdash; the 2022&ndash;2024 evidence.
+            </p>
+
+            {/* Hero SVG: ASPECTS core | core-vs-penumbra | forest-plot motif */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 180" style={{ width: '100%', height: 'auto' }}>
+                {/* Panel 1 — low ASPECTS core */}
+                <text x="120" y="14" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LOW ASPECTS = LARGE CORE</text>
+                <ellipse cx="118" cy="72" rx="96" ry="46" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                <line x1="118" y1="28" x2="118" y2="116" stroke="var(--rule-soft)" strokeWidth="1" />
+                <ellipse cx="150" cy="72" rx="46" ry="33" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.4" />
+                <ellipse cx="146" cy="72" rx="26" ry="20" fill="var(--amber)" opacity="0.85" />
+                <text x="146" y="74" fill="#ffffff" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Core</text>
+                <text x="120" y="140" fill="var(--amber-deep)" fontSize="9pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ASPECTS 3&ndash;5</text>
+                <text x="120" y="153" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">≈ 5&ndash;7 of 10 MCA regions involved</text>
+
+                <line x1="240" y1="12" x2="240" y2="164" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 2 — core vs salvageable */}
+                <text x="360" y="14" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">CORE vs SALVAGEABLE</text>
+                <ellipse cx="358" cy="74" rx="80" ry="44" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.4" />
+                <ellipse cx="342" cy="74" rx="40" ry="28" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.3" />
+                <ellipse cx="338" cy="74" rx="18" ry="13" fill="var(--amber)" opacity="0.85" />
+                <text x="338" y="76" fill="#ffffff" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Core</text>
+                <text x="405" y="48" fill="var(--teal-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Salvageable</text>
+                <text x="405" y="57" fill="var(--teal-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">penumbra</text>
+                <text x="360" y="140" fill="var(--ink-mute)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">EVT rescues salvageable tissue beyond the core</text>
+
+                <line x1="478" y1="12" x2="478" y2="164" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 3 — forest-plot motif */}
+                <text x="605" y="14" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">2022&ndash;2024 RCTs &mdash; mRS SHIFT</text>
+                <line x1="600" y1="26" x2="600" y2="142" stroke="var(--ink-mute)" strokeWidth="1.2" strokeDasharray="3 2" />
+                {[
+                  { n: 'RESCUE-Japan LIMIT', y: 34, dot: 662, lo: 636, hi: 686, c: 'var(--teal-deep)' },
+                  { n: 'SELECT2', y: 52, dot: 650, lo: 626, hi: 672, c: 'var(--teal-deep)' },
+                  { n: 'ANGEL-ASPECT', y: 70, dot: 644, lo: 622, hi: 664, c: 'var(--teal-deep)' },
+                  { n: 'TENSION', y: 88, dot: 654, lo: 630, hi: 676, c: 'var(--teal-deep)' },
+                  { n: 'LASTE', y: 106, dot: 658, lo: 632, hi: 682, c: 'var(--teal-deep)' },
+                  { n: 'TESLA', y: 124, dot: 612, lo: 588, hi: 636, c: 'var(--amber)' },
+                ].map((r) => (
+                  <g key={r.n}>
+                    <text x="486" y={r.y + 2.5} fill="var(--ink-soft)" fontSize="4.8pt" fontFamily="Outfit" fontWeight="700" textAnchor="start">{r.n}</text>
+                    <line x1={r.lo} y1={r.y} x2={r.hi} y2={r.y} stroke={r.c} strokeWidth="1.4" />
+                    <circle cx={r.dot} cy={r.y} r="3.4" fill={r.c} />
+                  </g>
+                ))}
+                <text x="605" y="156" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">← medical  |  EVT favored →</text>
+              </svg>
+            </div>
+
+            {/* §1 The question (purple) */}
+            <CardSection color="purple" title="1. The Question">
+              <div style={{ fontSize: '7.9pt', lineHeight: '1.42', color: 'var(--ink-soft)' }}>
+                Historically EVT required a <strong>small core (ASPECTS ≥6)</strong>. Six 2022&ndash;2024 RCTs tested EVT for a <strong>large ischemic core</strong> (low ASPECTS or large core volume). All pointed toward a functional-outcome benefit — five met their primary endpoint; <strong>TESLA missed its Bayesian threshold but trended favorably</strong> — generally with <strong>higher symptomatic hemorrhage</strong>.
+              </div>
+            </CardSection>
+
+            {/* §2 The trials (teal) */}
+            <CardSection color="teal" title="2. The Trials (2022–2024)">
+              <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '7.4pt' }}>
+                <thead>
+                  <tr style={{ background: 'var(--teal)' }}>
+                    <th style={{ width: '120px' }}>Trial</th>
+                    <th style={{ width: '160px' }}>Population</th>
+                    <th>Key result</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {trials.map((r) => (
+                    <tr key={r.t}>
+                      <td><strong>{r.t}</strong></td>
+                      <td>{r.pop}</td>
+                      <td>{r.res}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardSection>
+
+            {/* §3 Bottom line & caveats (red) */}
+            <CardSection color="red" title="3. Bottom Line & Caveats" style={{ marginBottom: '6px' }}>
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <li>EVT is now recommended for <strong>selected large-core patients</strong> (low ASPECTS or large core with salvageable tissue) — reflected in the 2026 AHA/ASA AIS guideline. Benefit is usually a <strong>shift toward less disability</strong>, not independence.</li>
+                <li>Symptomatic ICH is <strong>higher than in small-core EVT</strong>, but net functional benefit persists.</li>
+                <li>Very large cores (<strong>ASPECTS 0–2</strong>) benefit less and carry the highest hemorrhage risk — <strong>individualize</strong>.</li>
+              </ul>
+            </CardSection>
+
+            <CardRefFooter style={{ fontSize: '7pt' }} refs={[
+              { label: 'SELECT2', cite: 'Sarraj A et al. N Engl J Med. 2023;388(14):1259-1271.', pmid: '36762865' },
+              { label: 'ANGEL-ASPECT', cite: 'Huo X et al. N Engl J Med. 2023;388(14):1272-1283.', pmid: '36762852' },
+              { label: 'TENSION', cite: 'Bendszus M et al. Lancet. 2023;402(10414):1753-1763.', pmid: '37837989' },
+              { label: 'LASTE', cite: 'Costalat V et al. N Engl J Med. 2024;390(18):1677-1689.', pmid: '38718358' },
+              { label: 'TESLA', cite: 'Yoo AJ et al. JAMA. 2024;332(16):1355-1366.', pmid: '39374319' },
+              { label: 'RESCUE-Japan LIMIT', cite: 'Yoshimura S et al. N Engl J Med. 2022;386(14):1303-1313.', pmid: '35138767' },
+              { label: '2026 AIS Guideline', cite: 'Prabhakaran S et al. Stroke. 2026.', pmid: '41582814' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Basilar Artery Occlusion
+// =====================================================================
+const BasilarArteryOcclusionView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <BasilarArteryOcclusionCard />
+  </ScaledCardWrapper>
+);
+
+export function BasilarArteryOcclusionCard() {
+  const hx = (h) => 500 + h * 8.75; // timeline hour → x
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-basilar-artery-occlusion">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Basilar Artery Occlusion</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              A time-critical posterior-circulation emergency &mdash; recognition, evidence, and selection.
+            </p>
+
+            {/* Hero SVG: vertebrobasilar occlusion | pontine territory | windows */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 180" style={{ width: '100%', height: 'auto' }}>
+                {/* Panel 1 — vertebrobasilar tree + occlusion */}
+                <text x="120" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">VERTEBROBASILAR OCCLUSION</text>
+                {/* faint brainstem */}
+                <path d="M 104 40 C 96 40, 92 60, 96 90 C 100 130, 108 150, 120 158 C 132 150, 140 130, 144 90 C 148 60, 144 40, 136 40 Z" fill="#ffffff" stroke="var(--rule-soft)" strokeWidth="1" />
+                {/* vertebral arteries → basilar */}
+                <path d="M 96 160 L 118 116" stroke="var(--teal)" strokeWidth="3.4" fill="none" strokeLinecap="round" />
+                <path d="M 146 160 L 120 116" stroke="var(--teal)" strokeWidth="3.4" fill="none" strokeLinecap="round" />
+                <line x1="119" y1="116" x2="119" y2="48" stroke="var(--teal)" strokeWidth="4" strokeLinecap="round" />
+                {/* PCA / SCA bifurcation at the tip */}
+                <path d="M 119 48 L 98 32" stroke="var(--teal)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M 119 48 L 140 32" stroke="var(--teal)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                {/* paramedian perforators */}
+                <line x1="119" y1="66" x2="104" y2="62" stroke="var(--teal)" strokeWidth="1.4" />
+                <line x1="119" y1="66" x2="134" y2="62" stroke="var(--teal)" strokeWidth="1.4" />
+                <line x1="119" y1="96" x2="104" y2="94" stroke="var(--teal)" strokeWidth="1.4" />
+                <line x1="119" y1="96" x2="134" y2="94" stroke="var(--teal)" strokeWidth="1.4" />
+                {/* occlusion clot (mid-basilar), flow above faded */}
+                <line x1="119" y1="86" x2="119" y2="48" stroke="var(--rule)" strokeWidth="4" strokeLinecap="round" strokeDasharray="2 3" />
+                <ellipse cx="119" cy="84" rx="7.5" ry="6" fill="var(--red)" />
+                <text x="150" y="86" fill="var(--red-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">Occlusion</text>
+                <text x="119" y="174" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Vertebral aa. → basilar → PCA</text>
+
+                <line x1="205" y1="12" x2="205" y2="166" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 2 — pontine cross section */}
+                <text x="335" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PONTINE PERFORATOR TERRITORY</text>
+                <path d="M 260 74 C 260 44, 410 44, 410 74 C 410 108, 372 124, 335 124 C 298 124, 260 108, 260 74 Z" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                {/* paramedian perforator territory shading (ventral/medial) */}
+                <path d="M 335 118 C 312 116, 300 96, 306 74 L 364 74 C 370 96, 358 116, 335 118 Z" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.2" />
+                {/* basilar artery ventral */}
+                <circle cx="335" cy="122" r="5.5" fill="var(--red)" />
+                <line x1="335" y1="118" x2="335" y2="86" stroke="var(--red)" strokeWidth="1.2" strokeDasharray="2 2" />
+                <text x="335" y="92" fill="var(--amber-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Paramedian pons</text>
+                <text x="335" y="145" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Extensive established pontine infarct</text>
+                <text x="335" y="156" fill="var(--red-deep)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">predicts futile recanalization</text>
+
+                <line x1="462" y1="12" x2="462" y2="166" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 3 — treatment windows timeline */}
+                <text x="605" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">TREATMENT WINDOWS (0–24 h)</text>
+                <line x1={hx(0)} y1="118" x2={hx(24)} y2="118" stroke="var(--ink-mute)" strokeWidth="1.2" />
+                {[0, 6, 12, 18, 24].map((h) => (
+                  <g key={h}>
+                    <line x1={hx(h)} y1="115" x2={hx(h)} y2="121" stroke="var(--ink-mute)" strokeWidth="1" />
+                    <text x={hx(h)} y="131" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">{h}h</text>
+                  </g>
+                ))}
+                {/* ATTENTION ≤12h */}
+                <rect x={hx(0)} y="46" width={hx(12) - hx(0)} height="16" rx="4" fill="var(--teal)" />
+                <text x={(hx(0) + hx(12)) / 2} y="57" fill="#ffffff" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ATTENTION ≤12h</text>
+                {/* BAOCHE 6–24h */}
+                <rect x={hx(6)} y="74" width={hx(24) - hx(6)} height="16" rx="4" fill="var(--purple)" />
+                <text x={(hx(6) + hx(24)) / 2} y="85" fill="#ffffff" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">BAOCHE 6–24h</text>
+                <text x="605" y="150" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Posterior circulation tolerates longer windows</text>
+                <text x="605" y="160" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">with imaging selection</text>
+              </svg>
+            </div>
+
+            {/* §1 Why it's different (purple) */}
+            <CardSection color="purple" title="1. Why It's Different">
+              <div style={{ fontSize: '7.9pt', lineHeight: '1.42', color: 'var(--ink-soft)' }}>
+                BAO is ~<strong>1&ndash;4% of strokes</strong> but historically carried <strong>80&ndash;90% mortality / severe disability untreated</strong>. Presentation is <strong>protean</strong>: fluctuating or progressive brainstem signs, crossed deficits, coma, "locked-in," and gaze/oculomotor abnormalities. <strong>Herald TIAs are common.</strong> Keep a <strong>low threshold for CTA</strong> in unexplained coma or posterior-circulation signs.
+              </div>
+            </CardSection>
+
+            {/* §2 The evidence arc (teal) */}
+            <CardSection color="teal" title="2. The Evidence Arc">
+              <table className="card-table" style={{ margin: '2px 0 6px 0', fontSize: '7.4pt' }}>
+                <thead>
+                  <tr style={{ background: 'var(--teal)' }}>
+                    <th style={{ width: '92px' }}>Trial</th>
+                    <th style={{ width: '150px' }}>Population / window</th>
+                    <th>Result</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>BEST</strong></td><td>Terminated, heavy crossover</td><td>Neutral overall &mdash; confounded by crossover</td></tr>
+                  <tr><td><strong>BASICS</strong></td><td>≤6 h</td><td>No significant overall benefit &mdash; underpowered (slow enrollment, wide CI)</td></tr>
+                  <tr><td><strong>ATTENTION</strong></td><td>NIHSS ≥10, ≤12 h</td><td><strong>mRS 0–3: 46% EVT vs 23%</strong> medical</td></tr>
+                  <tr><td><strong>BAOCHE</strong></td><td>6–24 h</td><td><strong>mRS 0–3: 46% EVT vs 24%</strong> &mdash; extends the window</td></tr>
+                </tbody>
+              </table>
+              <div style={{ fontSize: '7.5pt', color: 'var(--ink-soft)', lineHeight: '1.35' }}>
+                EVT (± IV thrombolysis) is now <strong>standard for BAO with salvageable tissue</strong>.
+              </div>
+            </CardSection>
+
+            {/* §3 Selection & pitfalls (red) */}
+            <CardSection color="red" title="3. Selection & Pitfalls" style={{ marginBottom: '6px' }}>
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <li>Use <strong>pc-ASPECTS</strong> and perfusion / collateral assessment; <strong>extensive established pontine infarction predicts futile recanalization</strong>.</li>
+                <li><strong>Time-to-treatment still matters</strong>; posterior circulation tolerates somewhat longer windows than anterior.</li>
+                <li><strong>Combine with IVT</strong> when eligible.</li>
+              </ul>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'ATTENTION', cite: 'Tao C et al. N Engl J Med. 2022;387(15):1361-1372.', pmid: '36239644' },
+              { label: 'BAOCHE', cite: 'Jovin TG et al. N Engl J Med. 2022;387(15):1373-1384.', pmid: '36239645' },
+              { label: 'BASICS', cite: 'Langezaal LCM et al. N Engl J Med. 2021;384(20):1910-1920.', pmid: '34010530' },
+              { label: 'BEST', cite: 'Liu X et al. Lancet Neurol. 2020;19(2):115-122.', pmid: '31831388' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Lipid Management After Ischemic Stroke
+// =====================================================================
+const LipidManagementView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <LipidManagementCard />
+  </ScaledCardWrapper>
+);
+
+export function LipidManagementCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-lipid-management-after-stroke">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Lipid Management After Ischemic Stroke</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Lower LDL-C in atherosclerotic stroke &mdash; statin → ezetimibe → PCSK9 inhibitor.
+            </p>
+
+            {/* Hero SVG: LDL-lowering ladder + hemorrhagic-stroke caution */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 178" style={{ width: '100%', height: 'auto' }}>
+                <text x="235" y="13" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LDL-LOWERING LADDER</text>
+                {/* LDL axis (descending) */}
+                <line x1="34" y1="24" x2="34" y2="162" stroke="var(--ink-mute)" strokeWidth="1.2" markerEnd="url(#lm-arrow)" />
+                <defs>
+                  <marker id="lm-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                    <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--ink-mute)" />
+                  </marker>
+                </defs>
+                <text x="18" y="20" fill="var(--ink-mute)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LDL</text>
+                {[['~130', 34], ['100', 74], ['<70', 114], ['<55', 150]].map(([v, y]) => (
+                  <g key={v}>
+                    <line x1="30" y1={y} x2="38" y2={y} stroke="var(--ink-mute)" strokeWidth="1" />
+                    <text x="27" y={y + 2.5} fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="end">{v}</text>
+                  </g>
+                ))}
+                {/* Step 1 — statin */}
+                <rect x="52" y="24" width="250" height="34" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.4" />
+                <text x="62" y="38" fill="var(--teal-deep)" fontSize="7.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">① High-intensity statin</text>
+                <text x="62" y="50" fill="var(--ink-soft)" fontSize="5.8pt" fontFamily="IBM Plex Sans" textAnchor="start">atorva 80 / rosuva 20–40 → goal LDL &lt;70 (SPARCL, TST)</text>
+                {/* Step 2 — ezetimibe */}
+                <rect x="118" y="66" width="250" height="34" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.4" />
+                <text x="128" y="80" fill="var(--purple-deep)" fontSize="7.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">② Add ezetimibe</text>
+                <text x="128" y="92" fill="var(--ink-soft)" fontSize="5.8pt" fontFamily="IBM Plex Sans" textAnchor="start">further LDL + event reduction (IMPROVE-IT)</text>
+                {/* Step 3 — PCSK9i */}
+                <rect x="184" y="108" width="250" height="34" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.4" />
+                <text x="194" y="122" fill="var(--amber-deep)" fontSize="7.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">③ Add PCSK9 inhibitor</text>
+                <text x="194" y="134" fill="var(--ink-soft)" fontSize="5.8pt" fontFamily="IBM Plex Sans" textAnchor="start">evolocumab → very low LDL (FOURIER)</text>
+                {/* descending connectors */}
+                <path d="M 96 58 L 150 66" stroke="var(--ink-mute)" strokeWidth="1.2" strokeDasharray="2 2" fill="none" />
+                <path d="M 162 100 L 216 108" stroke="var(--ink-mute)" strokeWidth="1.2" strokeDasharray="2 2" fill="none" />
+
+                {/* Caution branch */}
+                <rect x="470" y="30" width="252" height="118" rx="8" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.4" />
+                <path d="M 486 46 L 486 66 M 486 46 L 506 51 L 486 57 Z" fill="var(--red)" stroke="var(--red)" strokeWidth="1" />
+                <text x="512" y="52" fill="var(--red-deep)" fontSize="6.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">Hemorrhagic-stroke branch</text>
+                <text x="484" y="82" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">SPARCL showed a small excess of</text>
+                <text x="484" y="94" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">hemorrhagic stroke. Intensive LDL</text>
+                <text x="484" y="106" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">lowering purely for a primary ICH is</text>
+                <text x="484" y="118" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">individualized. The strong indication</text>
+                <text x="484" y="130" fill="var(--red-deep)" fontSize="6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="start">is atherosclerotic ischemic disease.</text>
+              </svg>
+            </div>
+
+            {/* §1 Targets (purple) */}
+            <CardSection color="purple" title="1. Targets">
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.8pt', lineHeight: '1.42', color: 'var(--ink-soft)' }}>
+                <li>Atherosclerotic ischemic stroke: <strong>high-intensity statin, LDL-C goal &lt;70 mg/dL</strong> (AHA/ASA 2021 secondary prevention).</li>
+                <li><strong>SPARCL:</strong> atorvastatin 80 mg reduced recurrent stroke (adjusted HR ~0.84; ~2.2% absolute reduction over 5 y) in recent stroke/TIA without known CHD; a <strong>small excess of hemorrhagic stroke</strong> was seen.</li>
+                <li><strong>Treat Stroke to Target (TST):</strong> LDL &lt;70 vs 90–110 mg/dL lowered major cardiovascular events (HR 0.78) <strong>without</strong> a significant increase in ICH.</li>
+              </ul>
+            </CardSection>
+
+            {/* §2 Add-on therapy (teal) */}
+            <CardSection color="teal" title="2. Add-on Therapy">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <div>
+                  <strong style={{ color: 'var(--teal-deep)', fontSize: '8pt' }}>Ezetimibe (IMPROVE-IT)</strong>
+                  <br />Adding ezetimibe to a statin further lowered LDL and events, <strong>including a reduction in ischemic stroke</strong> — supports non-statin LDL lowering.
+                </div>
+                <div style={{ borderLeft: '1.5px dashed var(--teal)', paddingLeft: '10px' }}>
+                  <strong style={{ color: 'var(--teal-deep)', fontSize: '8pt' }}>PCSK9 inhibitors (FOURIER)</strong>
+                  <br />Evolocumab reduced cardiovascular events and ischemic stroke at very low LDL with <strong>no increase in hemorrhagic stroke</strong> — for patients not at goal on statin ± ezetimibe.
+                </div>
+              </div>
+            </CardSection>
+
+            {/* §3 Practical & cautions (red) */}
+            <CardSection color="red" title="3. Practical & Cautions" style={{ marginBottom: '6px' }}>
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <li><strong>Start/continue a high-intensity statin in-hospital</strong>; recheck a lipid panel and titrate; add ezetimibe then PCSK9i to reach &lt;70 (many favor <strong>&lt;55</strong> in very-high-risk polyvascular disease).</li>
+                <li><strong>Statin intolerance:</strong> rechallenge, lower / alternate-day dosing, then non-statin agents.</li>
+                <li><strong>Hemorrhagic stroke:</strong> the SPARCL signal means intensive LDL lowering purely for a primary ICH is individualized — the strong indication is atherosclerotic <em>ischemic</em> disease.</li>
+              </ul>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'SPARCL', cite: 'Amarenco P et al. N Engl J Med. 2006;355(6):549-559.', pmid: '16899775' },
+              { label: 'Treat Stroke to Target', cite: 'Amarenco P et al. N Engl J Med. 2020;382(1):9-19.', pmid: '31738483' },
+              { label: 'FOURIER', cite: 'Sabatine MS et al. N Engl J Med. 2017;376(18):1713-1722.', pmid: '28304224' },
+              { label: 'IMPROVE-IT', cite: 'Cannon CP et al. N Engl J Med. 2015;372(25):2387-2397.', pmid: '26039521' },
+              { label: 'AHA/ASA 2021 Secondary Prevention', cite: 'Kleindorfer DO et al. Stroke. 2021;52(7):e364-e467.', pmid: '34024117' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Carotid Stenosis: Revascularization vs Medical Therapy
+// =====================================================================
+const CarotidStenosisView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <CarotidStenosisCard />
+  </ScaledCardWrapper>
+);
+
+export function CarotidStenosisCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-carotid-stenosis-management">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px', fontSize: '18pt' }}>Carotid Stenosis</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Revascularization vs medical therapy &mdash; NASCET, CREST, and CREST-2.
+            </p>
+
+            {/* Hero SVG: carotid bifurcation + NASCET | decision fork */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 180" style={{ width: '100%', height: 'auto' }}>
+                {/* Panel 1 — carotid bifurcation with plaque + NASCET */}
+                <text x="120" y="13" fill="var(--ink-soft)" fontSize="6.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">CAROTID PLAQUE &amp; NASCET</text>
+                {/* CCA + ICA vessel */}
+                <path d="M 78 168 L 78 112 C 70 104 64 96 66 84 L 68 28 L 90 28 L 88 84 C 90 96 98 104 102 112 L 102 168 Z" fill="var(--red-soft)" stroke="var(--slate)" strokeWidth="1.3" />
+                {/* ECA branch */}
+                <path d="M 96 110 L 120 34 L 132 36 L 106 112 Z" fill="var(--red-soft)" stroke="var(--slate)" strokeWidth="1.2" />
+                {/* plaque narrowing ICA */}
+                <path d="M 66 52 C 78 60 78 74 68 80 L 66 80 Z" fill="var(--amber)" stroke="var(--amber-deep)" strokeWidth="0.8" />
+                <path d="M 90 52 C 78 60 78 74 88 80 L 90 80 Z" fill="var(--amber)" stroke="var(--amber-deep)" strokeWidth="0.8" />
+                {/* measurement leaders */}
+                <line x1="78" y1="66" x2="150" y2="66" stroke="var(--red-deep)" strokeWidth="0.8" strokeDasharray="2 2" />
+                <text x="153" y="68" fill="var(--red-deep)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="start">① residual lumen</text>
+                <line x1="78" y1="36" x2="150" y2="36" stroke="var(--teal-deep)" strokeWidth="0.8" strokeDasharray="2 2" />
+                <text x="153" y="38" fill="var(--teal-deep)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="start">② distal ICA</text>
+                <text x="54" y="150" fill="var(--slate)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">CCA</text>
+                <text x="120" y="52" fill="var(--slate)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">ECA</text>
+                <rect x="120" y="92" width="150" height="24" rx="4" fill="#ffffff" stroke="var(--rule)" strokeWidth="1" />
+                <text x="195" y="102" fill="var(--ink-soft)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">NASCET % =</text>
+                <text x="195" y="112" fill="var(--ink-soft)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">(1 − ① ÷ ②) × 100</text>
+
+                <line x1="300" y1="12" x2="300" y2="168" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 2 — decision fork */}
+                <text x="520" y="13" fill="var(--ink-soft)" fontSize="6.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MANAGEMENT DECISION</text>
+                <rect x="455" y="22" width="130" height="24" rx="6" fill="var(--slate-soft)" stroke="var(--slate)" strokeWidth="1.3" />
+                <text x="520" y="37" fill="var(--slate)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Carotid stenosis</text>
+                <path d="M 490 46 L 420 62" stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" />
+                <path d="M 550 46 L 632 62" stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" />
+                {/* symptomatic */}
+                <rect x="330" y="62" width="185" height="28" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.3" />
+                <text x="422" y="73" fill="var(--purple-deep)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">SYMPTOMATIC</text>
+                <text x="422" y="84" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">recent TIA / stroke, ipsilateral</text>
+                <rect x="330" y="96" width="185" height="26" rx="5" fill="#ffffff" stroke="var(--purple)" strokeWidth="1" />
+                <text x="422" y="106" fill="var(--purple-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">≥70%: revascularize early</text>
+                <text x="422" y="116" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">(CEA or CAS, ≤2 wk) + IMM</text>
+                <rect x="330" y="128" width="185" height="24" rx="5" fill="#ffffff" stroke="var(--rule)" strokeWidth="1" />
+                <text x="422" y="143" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">50–69%: individualized · &lt;50%: none</text>
+                {/* asymptomatic */}
+                <rect x="540" y="62" width="185" height="28" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.3" />
+                <text x="632" y="73" fill="var(--teal-deep)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ASYMPTOMATIC</text>
+                <text x="632" y="84" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">≥70%, no recent event</text>
+                <rect x="540" y="96" width="185" height="56" rx="5" fill="#ffffff" stroke="var(--teal)" strokeWidth="1" />
+                <text x="632" y="108" fill="var(--teal-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Intensive medical mgmt (IMM)</text>
+                <text x="632" y="119" fill="var(--teal-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">is the foundation</text>
+                <text x="632" y="132" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">Add CEA / CAS selectively</text>
+                <text x="632" y="143" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">(CREST-2, shared decision)</text>
+              </svg>
+            </div>
+
+            {/* §1 Symptomatic disease (purple) */}
+            <CardSection color="purple" title="1. Symptomatic Disease">
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <li><strong>NASCET 70–99%:</strong> CEA gave a large benefit — <strong>~17% absolute reduction</strong> in ipsilateral stroke at 2 years (<strong>NNT ~6</strong>).</li>
+                <li><strong>50–69%:</strong> moderate benefit (~4.6% absolute over 5 y; greater in men and with hemispheric symptoms). <strong>&lt;50%:</strong> no benefit.</li>
+                <li><strong>Revascularize early</strong> (ideally within 2 weeks) on top of intensive medical therapy.</li>
+              </ul>
+            </CardSection>
+
+            {/* §2 CEA vs CAS (teal) */}
+            <CardSection color="teal" title="2. CEA vs CAS">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '7.5pt', lineHeight: '1.38', color: 'var(--ink-soft)' }}>
+                <div>
+                  <strong style={{ color: 'var(--teal-deep)', fontSize: '8pt' }}>CREST</strong>
+                  <br />Primary composite similar for CEA vs CAS; <strong>periprocedural stroke higher with CAS</strong>, <strong>periprocedural MI higher with CEA</strong>. Age interaction (~70 crossover: younger did relatively better with CAS, older with CEA).
+                </div>
+                <div style={{ borderLeft: '1.5px dashed var(--teal)', paddingLeft: '10px' }}>
+                  <strong style={{ color: 'var(--teal-deep)', fontSize: '8pt' }}>ACST-2 (asymptomatic)</strong>
+                  <br />CAS and CEA yielded <strong>similar</strong> rates of serious procedural complications and non-procedural stroke.
+                </div>
+              </div>
+            </CardSection>
+
+            {/* §3 Asymptomatic — CREST-2 (red) */}
+            <CardSection color="red" title="3. Asymptomatic — CREST-2 (2025)">
+              <div style={{ fontSize: '7.5pt', lineHeight: '1.38', color: 'var(--ink-soft)' }}>
+                Two parallel RCTs, ≥70% asymptomatic stenosis, on modern intensive medical management (IMM). <strong>4-yr primary composite (periprocedural stroke/death + ipsilateral stroke):</strong>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', margin: '4px 0 3px 0' }}>
+                  <div style={{ border: '1px solid var(--red)', borderRadius: '5px', padding: '4px 7px', background: '#ffffff' }}>
+                    <strong style={{ color: 'var(--red-deep)' }}>Stenting</strong> (n=1245): <strong>2.8%</strong> stenting+IMM vs <strong>6.0%</strong> IMM alone (P=0.02)
+                  </div>
+                  <div style={{ border: '1px solid var(--slate)', borderRadius: '5px', padding: '4px 7px', background: '#ffffff' }}>
+                    <strong style={{ color: 'var(--slate)' }}>Endarterectomy</strong> (n=1240): <strong>3.7%</strong> CEA+IMM vs <strong>5.3%</strong> IMM alone (P=0.24, NS)
+                  </div>
+                </div>
+                Event rates on contemporary IMM are low; adding stenting reduced events, CEA did not reach significance. <strong>IMM is the foundation for all</strong>; asymptomatic revascularization is selective and shared-decision-based.
+              </div>
+            </CardSection>
+
+            {/* §4 Intensive medical therapy (amber) */}
+            <CardSection color="amber" title="4. Intensive Medical Therapy" style={{ marginBottom: '6px' }}>
+              <div style={{ fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <strong>High-intensity statin (LDL &lt;70), antiplatelet, BP control, diabetes / lifestyle, smoking cessation</strong> — the common denominator across every arm.
+              </div>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'CREST-2', cite: 'Brott TG et al. N Engl J Med. 2025;394(3):219-231.', pmid: '41269206' },
+              { label: 'CREST', cite: 'Brott TG et al. N Engl J Med. 2010;363(1):11-23.', pmid: '20505173' },
+              { label: 'ACST-2', cite: 'Halliday A et al. Lancet. 2021;398(10305):1065-1073.', pmid: '34469763' },
+              { label: 'NASCET', cite: 'NASCET Collaborators. N Engl J Med. 1991;325(7):445-453.', pmid: '1852179' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Brainstem Stroke Syndromes Atlas
+// =====================================================================
+const BrainstemSyndromesView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <BrainstemSyndromesCard />
+  </ScaledCardWrapper>
+);
+
+export function BrainstemSyndromesCard() {
+  const rows = [
+    { s: 'Wallenberg (lateral medullary)', v: 'PICA / vertebral', d: 'Ipsi facial pain-temp loss (V), Horner, ataxia, dysphagia/hoarseness (IX/X); contra body pain-temp loss (spinothalamic). Corticospinal tract spared → no hemiparesis.', lvl: 'medulla' },
+    { s: 'Dejerine (medial medullary)', v: 'Anterior spinal / vertebral', d: 'Contra arm/leg weakness (pyramid, face spared), contra proprioception loss (medial lemniscus), ipsi tongue weakness (XII).', lvl: 'medulla' },
+    { s: 'Millard-Gubler (ventral pons)', v: 'Basilar perforators', d: 'Ipsi VI + VII palsy; contra hemiparesis.', lvl: 'pons' },
+    { s: 'Foville (dorsal pons)', v: 'Basilar perforators', d: 'Ipsi horizontal gaze palsy + VII; contra hemiparesis.', lvl: 'pons' },
+    { s: 'One-and-a-half (dorsal pons)', v: 'PPRF + MLF', d: 'Ipsi conjugate gaze palsy + INO — only residual movement is contralateral eye abduction.', lvl: 'pons' },
+    { s: 'Weber (ventral midbrain)', v: 'PCA / basilar perforators', d: 'Ipsi CN III palsy; contra hemiparesis.', lvl: 'midbrain' },
+    { s: 'Benedikt (midbrain tegmentum)', v: 'PCA perforators', d: 'Ipsi CN III; contra tremor / involuntary movements (red nucleus).', lvl: 'midbrain' },
+    { s: 'Claude (midbrain)', v: 'PCA perforators', d: 'Ipsi CN III; contra ataxia (superior cerebellar peduncle).', lvl: 'midbrain' },
+  ];
+  const lvlColor = { midbrain: 'var(--purple)', pons: 'var(--teal)', medulla: 'var(--amber)' };
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-brainstem-stroke-syndromes">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Brainstem Stroke Syndromes</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              The crossed-deficit rule &mdash; ipsilateral cranial nerve + contralateral long tract.
+            </p>
+
+            {/* Hero SVG: sagittal levels + axial cross-sections + rule legend */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 165" style={{ width: '100%', height: 'auto' }}>
+                {/* Sagittal brainstem with CN levels */}
+                <text x="78" y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LEVEL → CN</text>
+                <rect x="54" y="22" width="48" height="34" rx="7" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.4" />
+                <text x="78" y="36" fill="var(--purple-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Midbrain</text>
+                <text x="78" y="47" fill="var(--purple-deep)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">III</text>
+                <path d="M 48 56 C 44 74 44 84 50 100 L 106 100 C 112 84 112 74 108 56 Z" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.4" />
+                <text x="78" y="74" fill="var(--teal-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Pons</text>
+                <text x="78" y="86" fill="var(--teal-deep)" fontSize="6.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">VI · VII</text>
+                <path d="M 58 100 L 98 100 L 92 146 L 64 146 Z" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.4" />
+                <text x="78" y="120" fill="var(--amber-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Medulla</text>
+                <text x="78" y="132" fill="var(--amber-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">IX–XII</text>
+
+                <line x1="130" y1="12" x2="130" y2="152" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Axial cross-sections: medial vs lateral */}
+                <text x="290" y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">AXIAL — MEDIAL vs LATERAL</text>
+                {[
+                  { cx: 195, col: 'var(--purple)', soft: 'var(--purple-soft)', lab: 'Midbrain' },
+                  { cx: 295, col: 'var(--teal)', soft: 'var(--teal-soft)', lab: 'Pons' },
+                  { cx: 395, col: 'var(--amber)', soft: 'var(--amber-soft)', lab: 'Medulla' },
+                ].map((a) => (
+                  <g key={a.lab}>
+                    <ellipse cx={a.cx} cy="66" rx="42" ry="30" fill="#ffffff" stroke={a.col} strokeWidth="1.4" />
+                    {/* medial column */}
+                    <rect x={a.cx - 12} y="40" width="24" height="52" rx="4" fill={a.soft} stroke={a.col} strokeWidth="0.8" />
+                    {/* ventral basilar dot */}
+                    <circle cx={a.cx} cy="94" r="4" fill="var(--red)" />
+                    <text x={a.cx} y="68" fill={a.col} fontSize="4.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">med</text>
+                    <text x={a.cx - 30} y="68" fill="var(--ink-mute)" fontSize="4.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">lat</text>
+                    <text x={a.cx + 30} y="68" fill="var(--ink-mute)" fontSize="4.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">lat</text>
+                    <text x={a.cx} y="112" fill="var(--ink-soft)" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">{a.lab}</text>
+                  </g>
+                ))}
+                <text x="290" y="128" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Medial = long tracts + medial CNs (III, VI, XII) · Lateral = spinothalamic, Horner, cerebellar + lateral CNs</text>
+
+                <line x1="452" y1="12" x2="452" y2="152" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Rule legend */}
+                <rect x="464" y="24" width="262" height="118" rx="8" fill="#ffffff" stroke="var(--purple)" strokeWidth="1.3" />
+                <text x="476" y="42" fill="var(--purple-deep)" fontSize="6.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">THE CROSSED-DEFICIT RULE</text>
+                <text x="476" y="62" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">Ipsilateral cranial-nerve signs</text>
+                <text x="476" y="74" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">+ contralateral long-tract signs</text>
+                <text x="476" y="86" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">= brainstem localization.</text>
+                <text x="476" y="104" fill="var(--teal-deep)" fontSize="6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="start">The involved CN identifies</text>
+                <text x="476" y="116" fill="var(--teal-deep)" fontSize="6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="start">the level (III / VI-VII / IX-XII).</text>
+                <text x="476" y="132" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="start">Territory anatomy per Tatu (1996).</text>
+              </svg>
+            </div>
+
+            {/* §1 Localization rule (purple) */}
+            <CardSection color="purple" title="1. The Localization Rule">
+              <div style={{ fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                A <strong>crossed deficit</strong> — ipsilateral cranial-nerve signs + contralateral long-tract (motor/sensory) signs — localizes to the brainstem. The involved CN identifies the level. <strong>Medial</strong> lesions hit long tracts (corticospinal, medial lemniscus) + medial CNs (III, VI, XII); <strong>lateral</strong> lesions hit spinothalamic, sympathetic, cerebellar peduncles + lateral CNs (V, VII, VIII, IX, X).
+              </div>
+            </CardSection>
+
+            {/* §2 Classic syndromes (teal, table) */}
+            <CardSection color="teal" title="2. Classic Syndromes">
+              <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '6.9pt' }}>
+                <thead>
+                  <tr style={{ background: 'var(--teal)' }}>
+                    <th style={{ width: '150px' }}>Syndrome</th>
+                    <th style={{ width: '112px' }}>Level / vessel</th>
+                    <th>Deficits</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((r) => (
+                    <tr key={r.s}>
+                      <td><strong style={{ color: lvlColor[r.lvl] }}>{r.s}</strong></td>
+                      <td>{r.v}</td>
+                      <td>{r.d}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardSection>
+
+            {/* §3 Pearls (amber) */}
+            <CardSection color="amber" title="3. Pearls" style={{ marginBottom: '6px' }}>
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <li><strong>Isolated vertigo</strong> can be a lateral medullary / AICA stroke — pair with the HINTS+ module.</li>
+                <li><strong>Locked-in syndrome</strong> = ventral pontine (basilar): preserved vertical gaze / blink, quadriplegia, anarthria.</li>
+              </ul>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'Tatu — brainstem / cerebellum', cite: 'Tatu L et al. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' },
+              { label: 'Tatu — cerebral hemispheres', cite: 'Tatu L et al. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Cerebral Vascular Territory & Watershed Atlas
+// =====================================================================
+const VascularTerritoryAtlasView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <VascularTerritoryAtlasCard />
+  </ScaledCardWrapper>
+);
+
+export function VascularTerritoryAtlasCard() {
+  // Axial territory "pie": center + elliptical sectors (anterior = top).
+  const cx = 138, cy = 86, rx = 104, ry = 58;
+  const P = (deg) => {
+    const t = (deg * Math.PI) / 180;
+    return [cx + rx * Math.cos(t), cy + ry * Math.sin(t)];
+  };
+  const wedge = (a, b) => {
+    const pts = [`${cx},${cy}`];
+    for (let d = a; d <= b; d += 6) { const [x, y] = P(d); pts.push(`${x.toFixed(1)},${y.toFixed(1)}`); }
+    const [x, y] = P(b); pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+    return pts.join(' ');
+  };
+  const ant = [
+    { t: 'ACA', s: 'Contra leg > arm weakness, abulia, transcortical aphasia, grasp', c: 'purple' },
+    { t: 'MCA', s: 'Contra face/arm > leg weakness + sensory loss, gaze toward lesion, hemianopia; dominant → aphasia, non-dominant → neglect', c: 'teal' },
+    { t: 'Lenticulostriate', s: 'Pure lacunar syndromes (pure motor, sensorimotor) — deep MCA perforators', c: 'purple' },
+    { t: 'Anterior choroidal', s: 'Contra hemiparesis + hemisensory loss + hemianopia (posterior limb internal capsule)', c: 'red' },
+  ];
+  const post = [
+    { t: 'PCA', s: 'Homonymous hemianopia (macular sparing), alexia without agraphia (dominant), memory loss; thalamic/midbrain variants', c: 'amber' },
+    { t: 'PICA', s: 'Lateral medulla + inferior cerebellum → Wallenberg', c: 'amber' },
+    { t: 'AICA', s: 'Lateral pons + labyrinth → vertigo, ipsi deafness / facial palsy, ataxia', c: 'teal' },
+    { t: 'SCA', s: 'Superior cerebellum → ataxia, dysarthria', c: 'teal' },
+    { t: 'Basilar perforators', s: 'Pons → crossed syndromes, locked-in', c: 'red' },
+  ];
+  const cc = { purple: 'var(--purple-deep)', teal: 'var(--teal-deep)', amber: 'var(--amber-deep)', red: 'var(--red-deep)' };
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-vascular-territory-atlas">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px', fontSize: '18pt' }}>Vascular Territory &amp; Watershed Atlas</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Territories, clinical signatures, and the borderzone patterns.
+            </p>
+
+            {/* Hero SVG: axial territory pie | watershed patterns | circle of Willis */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 178" style={{ width: '100%', height: 'auto' }}>
+                <defs>
+                  <pattern id="vta-hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <line x1="0" y1="0" x2="0" y2="5" stroke="var(--slate)" strokeWidth="1" />
+                  </pattern>
+                </defs>
+
+                {/* Panel 1 — axial territory pie (anterior = top) */}
+                <text x={cx} y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">AXIAL TERRITORIES</text>
+                <ellipse cx={cx} cy={cy} rx={rx} ry={ry} fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                <polygon points={wedge(235, 305)} fill="var(--purple-soft)" opacity="0.9" />
+                <polygon points={wedge(305, 415)} fill="var(--teal-soft)" opacity="0.9" />
+                <polygon points={wedge(55, 125)} fill="var(--amber-soft)" opacity="0.9" />
+                <polygon points={wedge(125, 235)} fill="var(--teal-soft)" opacity="0.9" />
+                {/* watershed hatch bands along the sector borders */}
+                {[235, 305, 55, 125].map((deg) => {
+                  const [x, y] = P(deg); const [xi, yi] = [cx + (x - cx) * 0.62, cy + (y - cy) * 0.62];
+                  return <line key={deg} x1={xi} y1={yi} x2={x} y2={y} stroke="url(#vta-hatch)" strokeWidth="8" strokeLinecap="butt" />;
+                })}
+                {/* deep territories */}
+                <ellipse cx={cx} cy={cy} rx="20" ry="13" fill="var(--purple)" opacity="0.85" />
+                <circle cx={cx} cy={cy + 16} r="6" fill="var(--red)" opacity="0.85" />
+                <ellipse cx={cx} cy={cy} rx={rx} ry={ry} fill="none" stroke="var(--rule)" strokeWidth="1.3" />
+                <line x1={cx} y1={cy - ry} x2={cx} y2={cy + ry} stroke="var(--rule-soft)" strokeWidth="0.8" />
+                {/* labels */}
+                <text x={cx} y="40" fill="var(--purple-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ACA</text>
+                <text x="60" y={cy + 2} fill="var(--teal-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MCA</text>
+                <text x="216" y={cy + 2} fill="var(--teal-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MCA</text>
+                <text x={cx} y="134" fill="var(--amber-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PCA</text>
+                <text x={cx} y={cy + 2} fill="#ffffff" fontSize="4.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LSA</text>
+                <text x={cx + 44} y="150" fill="var(--slate)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">▒ watershed</text>
+                <text x={cx} y="164" fill="var(--ink-mute)" fontSize="4.8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">anterior (top) → posterior (bottom); deep = LSA / AChA</text>
+
+                <line x1="252" y1="12" x2="252" y2="168" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 2 — watershed patterns (coronal) */}
+                <text x="368" y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">WATERSHED PATTERNS</text>
+                <path d="M 300 118 C 300 44 436 44 436 118 C 436 128 420 134 368 134 C 316 134 300 128 300 118 Z" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                <line x1="368" y1="46" x2="368" y2="134" stroke="var(--rule-soft)" strokeWidth="0.8" />
+                {/* cortical watershed wedge (superolateral) */}
+                <polygon points="330,54 348,52 352,96 336,98" fill="url(#vta-hatch)" stroke="var(--slate)" strokeWidth="0.8" />
+                <text x="316" y="50" fill="var(--slate)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">cortical</text>
+                <text x="316" y="58" fill="var(--slate)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">(wedge)</text>
+                {/* internal watershed = chain of beads */}
+                {[70, 84, 98, 112].map((y) => <circle key={y} cx="392" cy={y} r="3.4" fill="var(--slate)" opacity="0.8" />)}
+                <text x="420" y="70" fill="var(--slate)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">internal</text>
+                <text x="420" y="78" fill="var(--slate)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">(chain)</text>
+                <text x="368" y="150" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Cortical = ACA-MCA &amp; MCA-PCA borders</text>
+                <text x="368" y="160" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Internal = deep white-matter rosary</text>
+
+                <line x1="484" y1="12" x2="484" y2="168" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel 3 — circle of Willis inset */}
+                <text x="606" y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">CIRCLE OF WILLIS</text>
+                {/* ACA + ACoM (top) */}
+                <line x1="586" y1="40" x2="626" y2="40" stroke="var(--purple)" strokeWidth="2.6" />
+                <line x1="586" y1="40" x2="576" y2="26" stroke="var(--purple)" strokeWidth="2.6" />
+                <line x1="626" y1="40" x2="636" y2="26" stroke="var(--purple)" strokeWidth="2.6" />
+                <text x="606" y="24" fill="var(--purple-deep)" fontSize="5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ACA</text>
+                {/* ICA (both sides) */}
+                <line x1="576" y1="40" x2="568" y2="78" stroke="var(--slate)" strokeWidth="2.6" />
+                <line x1="636" y1="40" x2="644" y2="78" stroke="var(--slate)" strokeWidth="2.6" />
+                {/* MCA (M1 lateral) */}
+                <line x1="568" y1="62" x2="536" y2="60" stroke="var(--teal)" strokeWidth="2.6" />
+                <line x1="644" y1="62" x2="676" y2="60" stroke="var(--teal)" strokeWidth="2.6" />
+                <text x="528" y="52" fill="var(--teal-deep)" fontSize="5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MCA</text>
+                <text x="684" y="52" fill="var(--teal-deep)" fontSize="5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MCA</text>
+                {/* PCoM + PCA */}
+                <line x1="568" y1="78" x2="576" y2="100" stroke="var(--slate)" strokeWidth="2" />
+                <line x1="644" y1="78" x2="636" y2="100" stroke="var(--slate)" strokeWidth="2" />
+                <line x1="576" y1="100" x2="606" y2="106" stroke="var(--amber)" strokeWidth="2.6" />
+                <line x1="636" y1="100" x2="606" y2="106" stroke="var(--amber)" strokeWidth="2.6" />
+                <text x="606" y="102" fill="var(--amber-deep)" fontSize="5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PCA</text>
+                {/* basilar + vertebrals */}
+                <line x1="606" y1="106" x2="606" y2="132" stroke="var(--red)" strokeWidth="2.8" />
+                <line x1="606" y1="132" x2="594" y2="150" stroke="var(--red)" strokeWidth="2.4" />
+                <line x1="606" y1="132" x2="618" y2="150" stroke="var(--red)" strokeWidth="2.4" />
+                <text x="640" y="124" fill="var(--red-deep)" fontSize="5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">basilar</text>
+                <text x="606" y="164" fill="var(--ink-mute)" fontSize="4.8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">collateral ring links anterior ↔ posterior</text>
+              </svg>
+            </div>
+
+            {/* §1 Anterior circulation (purple, table) */}
+            <CardSection color="purple" title="1. Anterior Circulation">
+              <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '7pt' }}>
+                <thead>
+                  <tr style={{ background: 'var(--purple)' }}>
+                    <th style={{ width: '120px' }}>Territory</th>
+                    <th>Clinical signature</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ant.map((r) => (
+                    <tr key={r.t}><td><strong style={{ color: cc[r.c] }}>{r.t}</strong></td><td>{r.s}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardSection>
+
+            {/* §2 Posterior circulation (teal, table) */}
+            <CardSection color="teal" title="2. Posterior Circulation">
+              <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '7pt' }}>
+                <thead>
+                  <tr style={{ background: 'var(--teal)' }}>
+                    <th style={{ width: '120px' }}>Territory</th>
+                    <th>Clinical signature</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {post.map((r) => (
+                    <tr key={r.t}><td><strong style={{ color: cc[r.c] }}>{r.t}</strong></td><td>{r.s}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardSection>
+
+            {/* §3 Watershed / borderzone (red) */}
+            <CardSection color="red" title="3. Watershed / Borderzone" style={{ marginBottom: '6px' }}>
+              <div style={{ fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <strong>Cortical (ACA-MCA &amp; MCA-PCA):</strong> wedge-shaped. <strong>Internal (deep white matter):</strong> rosary / "chain" pattern. Mechanism is <strong>hemodynamic</strong> (proximal stenosis/occlusion + hypotension) or <strong>shower emboli</strong> — flags a search for large-artery disease or a hypoperfusion event rather than a single embolus.
+              </div>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'Tatu — cerebral hemispheres', cite: 'Tatu L et al. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' },
+              { label: 'Tatu — brainstem / cerebellum', cite: 'Tatu L et al. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Anticoagulation Reversal in Acute Hemorrhage
+// =====================================================================
+const AnticoagulationReversalView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <AnticoagulationReversalCard />
+  </ScaledCardWrapper>
+);
+
+export function AnticoagulationReversalCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-anticoagulation-reversal">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px', fontSize: '18pt' }}>Anticoagulation Reversal in Acute Hemorrhage</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Identify the agent → give the specific reversal → BP control, neurosurgery, hold the drug.
+            </p>
+
+            {/* Hero SVG: agent → reversal decision tree + parallel steps */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 176" style={{ width: '100%', height: 'auto' }}>
+                {/* root */}
+                <rect x="283" y="14" width="170" height="24" rx="6" fill="var(--slate-soft)" stroke="var(--slate)" strokeWidth="1.3" />
+                <text x="368" y="29" fill="var(--slate)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ICH on anticoagulant</text>
+                {/* connectors root → agents */}
+                <path d="M 320 38 L 130 52" stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" />
+                <path d="M 368 38 L 368 52" stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" />
+                <path d="M 416 38 L 606 52" stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" />
+                {/* agent boxes */}
+                {[
+                  { x: 35, cx: 130, col: 'purple', t: 'Warfarin (VKA)', sub: '↑ INR' },
+                  { x: 273, cx: 368, col: 'teal', t: 'Dabigatran (DTI)', sub: 'direct thrombin' },
+                  { x: 511, cx: 606, col: 'amber', t: 'Factor Xa inhibitor', sub: 'apixaban / riva / edox' },
+                ].map((a) => (
+                  <g key={a.t}>
+                    <rect x={a.x} y="52" width="190" height="28" rx="6" fill={`var(--${a.col}-soft)`} stroke={`var(--${a.col})`} strokeWidth="1.3" />
+                    <text x={a.cx} y="64" fill={`var(--${a.col}-deep)`} fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">{a.t}</text>
+                    <text x={a.cx} y="75" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">{a.sub}</text>
+                    <path d={`M ${a.cx} 80 L ${a.cx} 92`} stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" markerEnd="url(#acr-arrow)" />
+                  </g>
+                ))}
+                <defs>
+                  <marker id="acr-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                    <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--ink-mute)" />
+                  </marker>
+                </defs>
+                {/* reversal boxes */}
+                {[
+                  { x: 35, cx: 130, col: 'purple', t: '4F-PCC', sub: '+ IV vitamin K 10 mg' },
+                  { x: 273, cx: 368, col: 'teal', t: 'Idarucizumab', sub: '5 g IV (RE-VERSE AD)' },
+                  { x: 511, cx: 606, col: 'amber', t: 'Andexanet alfa', sub: 'or 4F-PCC ~50 U/kg' },
+                ].map((a) => (
+                  <g key={a.t}>
+                    <rect x={a.x} y="94" width="190" height="30" rx="6" fill="#ffffff" stroke={`var(--${a.col})`} strokeWidth="1.4" />
+                    <text x={a.cx} y="107" fill={`var(--${a.col}-deep)`} fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">{a.t}</text>
+                    <text x={a.cx} y="118" fill="var(--ink-soft)" fontSize="5.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">{a.sub}</text>
+                    <path d={`M ${a.cx} 124 L ${a.cx} 138`} stroke="var(--red)" strokeWidth="1.1" fill="none" />
+                  </g>
+                ))}
+                {/* parallel steps bar */}
+                <rect x="35" y="140" width="666" height="28" rx="6" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.4" />
+                <text x="52" y="150" fill="var(--red-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">IN PARALLEL</text>
+                <text x="200" y="158" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">BP control</text>
+                <line x1="300" y1="144" x2="300" y2="164" stroke="var(--red)" strokeWidth="0.8" strokeDasharray="2 2" />
+                <text x="400" y="158" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Neurosurgery consult</text>
+                <line x1="510" y1="144" x2="510" y2="164" stroke="var(--red)" strokeWidth="0.8" strokeDasharray="2 2" />
+                <text x="610" y="158" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Hold the agent</text>
+              </svg>
+            </div>
+
+            {/* §1 Identify agent & last dose (purple) */}
+            <CardSection color="purple" title="1. Identify the Agent & Last Dose">
+              <div style={{ fontSize: '7.8pt', lineHeight: '1.42', color: 'var(--ink-soft)' }}>
+                Establish <strong>drug, dose, time of last intake, indication, and renal function</strong>. Send baseline coags (INR/PTT; anti-Xa where available), but <strong>do not delay reversal</strong> for a hemorrhagic ICH while awaiting levels.
+              </div>
+            </CardSection>
+
+            {/* §2 Agent-specific reversal (teal, table) */}
+            <CardSection color="teal" title="2. Agent-Specific Reversal">
+              <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '7pt' }}>
+                <thead>
+                  <tr style={{ background: 'var(--teal)' }}>
+                    <th style={{ width: '112px' }}>Agent</th>
+                    <th style={{ width: '132px' }}>Reversal</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Warfarin (VKA)</strong></td>
+                    <td><strong>4F-PCC</strong> (25–50 U/kg by INR/wt) <strong>+ IV vitamin K 10 mg</strong></td>
+                    <td>Target INR &lt;1.4. PCC preferred over FFP (faster, lower volume).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Dabigatran</strong> (DTI)</td>
+                    <td><strong>Idarucizumab 5 g IV</strong></td>
+                    <td>RE-VERSE AD: rapid, near-complete reversal. Hemodialysis is an adjunct.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Factor Xa inhibitors</strong> (apixaban, rivaroxaban, edoxaban)</td>
+                    <td><strong>Andexanet alfa</strong> (low/high dose by agent, dose, timing); <strong>4F-PCC ~50 U/kg</strong> if unavailable</td>
+                    <td>ANNEXA-4: good hemostatic efficacy. <strong>ANNEXA-I</strong> (RCT in acute ICH): better hemostasis / less hematoma expansion vs usual care <strong>but more thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%)</strong> — weigh carefully.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Antiplatelets</strong></td>
+                    <td>Platelet transfusion <strong>not</strong> recommended (PATCH)</td>
+                    <td>Exception: peri-neurosurgery. Consider desmopressin.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </CardSection>
+
+            {/* §3 In parallel (red) */}
+            <CardSection color="red" title="3. In Parallel" style={{ marginBottom: '6px' }}>
+              <div style={{ fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                Guideline-based <strong>BP control</strong>, <strong>neurosurgical evaluation</strong>, reverse only with a <strong>real bleed or urgent procedure</strong>, and plan <strong>restart timing</strong>. Anchor to the AHA/ASA 2022 ICH guideline and the NCS/SCCM reversal guideline; confirm exact andexanet dosing tier and current ANNEXA-I thrombotic figures against the primary papers.
+              </div>
+            </CardSection>
+
+            <CardRefFooter style={{ fontSize: '7.2pt' }} refs={[
+              { label: 'ANNEXA-4', cite: 'Connolly SJ et al. N Engl J Med. 2019;380(14):1326-1335.', pmid: '30730782' },
+              { label: 'ANNEXA-I', cite: 'Connolly SJ et al. N Engl J Med. 2024;390(19):1745-1755.', pmid: '38749032' },
+              { label: 'RE-VERSE AD', cite: 'Pollack CV et al. N Engl J Med. 2017;377(5):431-441.', pmid: '28693366' },
+              { label: 'AHA/ASA 2022 ICH Guideline', cite: 'Greenberg SM et al. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
+              { label: 'NCS/SCCM Reversal Guideline', cite: 'Frontera JA et al. Neurocrit Care. 2016;24(1):6-46.', pmid: '26714677' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — NIHSS Certification Simulator (INTERACTIVE)
+// =====================================================================
+const NIHSS_ITEMS = [
+  { id: '1a', label: '1a · LOC', max: 3 },
+  { id: '1b', label: '1b · LOC questions', max: 2 },
+  { id: '1c', label: '1c · LOC commands', max: 2 },
+  { id: '2', label: '2 · Best gaze', max: 2 },
+  { id: '3', label: '3 · Visual fields', max: 3 },
+  { id: '4', label: '4 · Facial palsy', max: 3 },
+  { id: '5a', label: '5a · Motor left arm', max: 4 },
+  { id: '5b', label: '5b · Motor right arm', max: 4 },
+  { id: '6a', label: '6a · Motor left leg', max: 4 },
+  { id: '6b', label: '6b · Motor right leg', max: 4 },
+  { id: '7', label: '7 · Limb ataxia', max: 2 },
+  { id: '8', label: '8 · Sensory', max: 2 },
+  { id: '9', label: '9 · Best language', max: 3 },
+  { id: '10', label: '10 · Dysarthria', max: 2 },
+  { id: '11', label: '11 · Extinction / inattention', max: 2 },
+];
+
+const NIHSS_CASES = [
+  {
+    id: 'A',
+    title: 'Case A — 68F, sudden right-sided weakness and speech difficulty',
+    vignette: 'Dominant (left) MCA syndrome. Alert but non-fluent, effortful speech; right face/arm/leg weakness.',
+    items: {
+      '1a': { score: 0, finding: 'Alert and keenly responsive.', rationale: 'Alert → 0.' },
+      '1b': { score: 1, finding: 'States her age correctly; cannot name the month.', rationale: 'One of two answered correctly → 1 (score the first attempt; aphasia is captured in item 9, not here).' },
+      '1c': { score: 0, finding: 'Opens/closes eyes and grips on command.', rationale: 'Performs both tasks → 0.' },
+      '2': { score: 1, finding: 'Forced gaze to the left, overcome with oculocephalics.', rationale: 'Partial gaze palsy that can be overcome → 1.' },
+      '3': { score: 2, finding: 'Complete right homonymous hemianopia.', rationale: 'Complete hemianopia → 2.' },
+      '4': { score: 2, finding: 'Right lower-face droop; forehead spared.', rationale: 'Partial (lower-face) paralysis → 2.' },
+      '5a': { score: 0, finding: 'Left arm holds 10 s, no drift.', rationale: 'No drift → 0.' },
+      '5b': { score: 3, finding: 'Right arm: no effort against gravity, falls immediately.', rationale: 'No antigravity effort → 3.' },
+      '6a': { score: 0, finding: 'Left leg holds 5 s.', rationale: 'No drift → 0.' },
+      '6b': { score: 2, finding: 'Right leg has some antigravity effort but drifts to the bed by 5 s.', rationale: 'Some effort against gravity, falls to bed → 2.' },
+      '7': { score: 0, finding: 'Right limbs are plegic; no ataxia out of proportion.', rationale: 'Ataxia is absent (0) when the limb is plegic or the deficit is explained by weakness — "untestable" is reserved for amputation/joint fusion.' },
+      '8': { score: 1, finding: 'Blunted pinprick on the right.', rationale: 'Mild-to-moderate sensory loss → 1.' },
+      '9': { score: 2, finding: 'Fragmentary, effortful output; frequent word-finding failure.', rationale: 'Severe aphasia → 2 (you rate language from naming/reading/description — you do not skip it).' },
+      '10': { score: 1, finding: 'Mild slurring, intelligible.', rationale: 'Mild-to-moderate dysarthria → 1.' },
+      '11': { score: 0, finding: 'Attends to both sides; no neglect.', rationale: 'No extinction/inattention → 0 (neglect is uncommon with dominant-hemisphere lesions).' },
+    },
+    teaching: 'Total 15. Score the first effort and what you see — do not coach. A dominant-hemisphere MCA stroke loads the language/motor items heavily.',
+  },
+  {
+    id: 'B',
+    title: 'Case B — 72M, sudden imbalance and "can\'t see to the left"',
+    vignette: 'Right PCA + cerebellar (posterior circulation) stroke. Awake, fluent, coordinated arm strength but veers when walking; vertigo.',
+    items: {
+      '1a': { score: 0, finding: 'Alert.', rationale: 'Alert → 0.' },
+      '1b': { score: 0, finding: 'Age and month correct.', rationale: 'Both correct → 0.' },
+      '1c': { score: 0, finding: 'Follows both commands.', rationale: 'Both tasks → 0.' },
+      '2': { score: 0, finding: 'Full conjugate eye movements.', rationale: 'Normal gaze → 0.' },
+      '3': { score: 2, finding: 'Complete left homonymous hemianopia.', rationale: 'Complete hemianopia → 2.' },
+      '4': { score: 0, finding: 'Symmetric face.', rationale: 'Normal → 0.' },
+      '5a': { score: 0, finding: 'Left arm holds.', rationale: 'No drift → 0.' },
+      '5b': { score: 0, finding: 'Right arm holds.', rationale: 'No drift → 0.' },
+      '6a': { score: 0, finding: 'Left leg holds.', rationale: 'No drift → 0.' },
+      '6b': { score: 0, finding: 'Right leg holds.', rationale: 'No drift → 0.' },
+      '7': { score: 1, finding: 'Dysmetria on right finger-nose out of proportion to strength.', rationale: 'Ataxia present in one limb → 1 (limbs are strong, so it is testable).' },
+      '8': { score: 0, finding: 'Intact pinprick.', rationale: 'Normal sensation → 0.' },
+      '9': { score: 0, finding: 'Fluent, names and repeats normally.', rationale: 'No aphasia → 0.' },
+      '10': { score: 1, finding: 'Slurred, intelligible speech.', rationale: 'Mild-to-moderate dysarthria → 1.' },
+      '11': { score: 0, finding: 'Attends to both sides.', rationale: 'No extinction → 0.' },
+    },
+    teaching: 'Total 4. A disabling posterior-circulation stroke (hemianopia + ataxia + vertigo) scores LOW because the scale has no items for vertigo and few for posterior/right-hemisphere signs — a low NIHSS does not exclude a disabling or LVO stroke.',
+  },
+];
+
+export function NihssSimulator() {
+  const [caseIdx, setCaseIdx] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const activeCase = NIHSS_CASES[caseIdx];
+  const correctTotal = NIHSS_ITEMS.reduce((s, it) => s + activeCase.items[it.id].score, 0);
+  const answeredIds = Object.keys(answers);
+  const userTotal = answeredIds.reduce((s, id) => s + answers[id], 0);
+  const allAnswered = NIHSS_ITEMS.every((it) => answers[it.id] != null);
+  const numCorrect = NIHSS_ITEMS.filter((it) => answers[it.id] === activeCase.items[it.id].score).length;
+
+  const pick = (id, n) => setAnswers((a) => ({ ...a, [id]: n }));
+  const selectCase = (i) => { setCaseIdx(i); setAnswers({}); };
+  const reset = () => setAnswers({});
+
+  return (
+    <div className="space-y-4">
+      {/* Case selector */}
+      <div className="flex flex-wrap items-center gap-2">
+        {NIHSS_CASES.map((c, i) => (
+          <button
+            key={c.id}
+            type="button"
+            onClick={() => selectCase(i)}
+            className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${i === caseIdx ? 'bg-cobalt-600 text-white shadow-sm' : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'}`}
+          >
+            Case {c.id}
+          </button>
+        ))}
+        <button type="button" onClick={reset} className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 min-h-[38px] dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+          Reset
+        </button>
+        <div className="ml-auto flex items-center gap-3">
+          <span className="text-sm font-semibold text-ink">Running total: <span className="text-cobalt-700 dark:text-cobalt-300">{userTotal}</span> / 42</span>
+        </div>
+      </div>
+
+      {/* Vignette */}
+      <div className="p-3.5 rounded-lg bg-cobalt-50 border border-cobalt-200 dark:bg-cobalt-950/40 dark:border-cobalt-800/60">
+        <h3 className="text-sm font-bold text-ink">{activeCase.title}</h3>
+        <p className="text-xs text-ink-2 mt-1">{activeCase.vignette}</p>
+        <p className="text-[11px] text-mute mt-2">Score each item from the exam finding shown. You get immediate feedback and the rationale. Score the first effort / what you see — do not coach.</p>
+      </div>
+
+      {/* Items */}
+      <div className="space-y-2">
+        {NIHSS_ITEMS.map((it) => {
+          const data = activeCase.items[it.id];
+          const ans = answers[it.id];
+          const answered = ans != null;
+          const correct = answered && ans === data.score;
+          return (
+            <div key={it.id} className={`rounded-lg border p-3 ${!answered ? 'border-line bg-card' : correct ? 'border-ok-300 bg-ok-50 dark:bg-ok-950/30 dark:border-ok-800' : 'border-crit-300 bg-crit-50 dark:bg-crit-950/30 dark:border-crit-800'}`}>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <span className="text-xs font-bold text-ink">{it.label}</span>
+                  <span className="text-xs text-ink-2"> — {data.finding}</span>
+                </div>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  {Array.from({ length: it.max + 1 }, (_, n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => pick(it.id, n)}
+                      aria-label={`Score ${n} for item ${it.label}`}
+                      className={`w-8 h-8 rounded-md text-xs font-bold transition-all ${ans === n ? 'bg-cobalt-600 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'}`}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {answered && (
+                <div className="mt-2 text-xs flex items-start gap-1.5">
+                  <span className={`font-bold shrink-0 ${correct ? 'text-ok-700 dark:text-ok-400' : 'text-crit-700 dark:text-crit-400'}`}>
+                    {correct ? '✓ Correct' : `✗ Correct = ${data.score}`}
+                  </span>
+                  <span className="text-ink-2">{data.rationale}</span>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Summary */}
+      {allAnswered && (
+        <div className="rounded-lg border border-cobalt-300 bg-cobalt-50 p-4 dark:bg-cobalt-950/40 dark:border-cobalt-800">
+          <h3 className="text-sm font-bold text-ink">Case complete</h3>
+          <p className="text-sm text-ink-2 mt-1">
+            Your total: <strong className="text-ink">{userTotal}</strong> · Correct total: <strong className="text-ink">{correctTotal}</strong> · Items correct: <strong className="text-ink">{numCorrect}/15</strong>
+          </p>
+          <p className="text-xs text-ink-2 mt-2"><strong className="text-ink">Teaching point:</strong> {activeCase.teaching}</p>
+        </div>
+      )}
+
+      {/* Scoring-rules reference panel */}
+      <div className="rounded-lg border border-line bg-slate-50 p-4 dark:bg-slate-800/40 space-y-3">
+        <h3 className="text-sm font-bold text-ink">Scoring rules reference</h3>
+        <div>
+          <p className="text-xs font-semibold text-cobalt-700 dark:text-cobalt-300">The 15 items (range 0–42)</p>
+          <p className="text-xs text-ink-2 mt-1">1a LOC, 1b LOC questions, 1c LOC commands, 2 best gaze, 3 visual fields, 4 facial palsy, 5a/5b motor arms, 6a/6b motor legs, 7 limb ataxia, 8 sensory, 9 best language, 10 dysarthria, 11 extinction/inattention.</p>
+        </div>
+        <div>
+          <p className="text-xs font-semibold text-cobalt-700 dark:text-cobalt-300">Rules that trip people up</p>
+          <ul className="text-xs text-ink-2 mt-1 list-disc pl-4 space-y-0.5">
+            <li>Score the <strong>first effort / what you see</strong>, not the best attempt; don't coach.</li>
+            <li><strong>Coma (1a = 3)</strong> drives defaults across items per the standardized instructions.</li>
+            <li>Items 5/6 (motor): score the drift/fall timing; amputation or joint fusion = untestable.</li>
+            <li><strong>Item 7 (ataxia):</strong> absent (0) if the patient can't understand or is plegic; "untestable" only for amputation/fusion.</li>
+            <li><strong>Item 9 (language)</strong> captures aphasia — you rate it from naming/reading/description, you don't skip it.</li>
+            <li><strong>Item 10 (dysarthria):</strong> intubated / mechanical barrier = untestable (UN).</li>
+          </ul>
+        </div>
+        <div>
+          <p className="text-xs font-semibold text-warn-800 dark:text-warn-400">Interpretation caveat</p>
+          <p className="text-xs text-ink-2 mt-1">The scale is <strong>weighted toward left-hemisphere / cortical function</strong> (multiple language-dependent items; only the single extinction / inattention item, max 2 points, captures right-hemisphere neglect), so it <strong>underestimates posterior-circulation and right-hemisphere strokes</strong> — a low NIHSS does not exclude a disabling or LVO stroke (e.g., isolated hemianopia, vertigo, or ataxia).</p>
+        </div>
+        <div className="text-[11px] text-mute border-t border-line pt-2">
+          NIHSS (original): Brott T et al. Stroke. 1989;20(7):864-870. <a className="text-cobalt-700 dark:text-cobalt-300 underline" href="https://pubmed.ncbi.nlm.nih.gov/2749846/" target="_blank" rel="noopener noreferrer">PMID: 2749846</a> · Training/reliability: Lyden P et al. Stroke. 1994;25(11):2220-2226. <a className="text-cobalt-700 dark:text-cobalt-300 underline" href="https://pubmed.ncbi.nlm.nih.gov/7974549/" target="_blank" rel="noopener noreferrer">PMID: 7974549</a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Reversible Cerebral Vasoconstriction Syndrome (RCVS)
+// =====================================================================
+const RcvsView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <RcvsCard />
+  </ScaledCardWrapper>
+);
+
+export function RcvsCard() {
+  const rcvs2 = [
+    { v: 'Recurrent or single thunderclap headache', p: '+5' },
+    { v: 'Intracranial carotid artery involvement', p: '−2' },
+    { v: 'Vasoconstrictive trigger', p: '+3' },
+    { v: 'Female sex', p: '+1' },
+    { v: 'Subarachnoid hemorrhage (SAH)', p: '+1' },
+  ];
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-rcvs">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px', fontSize: '18pt' }}>Reversible Cerebral Vasoconstriction Syndrome</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Recurrent thunderclap headache + reversible segmental vasoconstriction (RCVS).
+            </p>
+
+            {/* Hero SVG: string-of-beads reversing + RCVS vs PACNS */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 168" style={{ width: '100%', height: 'auto' }}>
+                {/* Panel A — before/after */}
+                <text x="168" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">SEGMENTAL VASOCONSTRICTION — REVERSIBLE</text>
+                <path d="M 30 42 C 52 32 66 52 90 36 C 114 52 128 32 152 48 C 176 32 190 52 214 36 C 238 52 252 34 300 44" stroke="var(--purple)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M 30 62 C 52 72 66 52 90 68 C 114 52 128 72 152 56 C 176 72 190 52 214 68 C 238 52 252 70 300 60" stroke="var(--purple)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <text x="165" y="86" fill="var(--purple-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Acute: "string of beads"</text>
+                <path d="M 165 92 L 165 104" stroke="var(--teal-deep)" strokeWidth="1.4" markerEnd="url(#rcvs-arrow)" />
+                <defs>
+                  <marker id="rcvs-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="var(--teal-deep)" /></marker>
+                </defs>
+                <text x="240" y="101" fill="var(--teal-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">reverses ≤12 weeks</text>
+                <line x1="30" y1="120" x2="300" y2="120" stroke="var(--teal)" strokeWidth="3" strokeLinecap="round" />
+                <line x1="30" y1="136" x2="300" y2="136" stroke="var(--teal)" strokeWidth="3" strokeLinecap="round" />
+                <text x="165" y="156" fill="var(--teal-deep)" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">≤12 weeks: normalized caliber</text>
+
+                <line x1="342" y1="12" x2="342" y2="156" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel B — RCVS vs PACNS */}
+                <text x="538" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">RCVS vs PACNS</text>
+                <rect x="360" y="24" width="172" height="126" rx="8" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.4" />
+                <text x="446" y="40" fill="var(--purple-deep)" fontSize="7.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">RCVS</text>
+                {['Thunderclap onset', 'Vasoconstrictive trigger', 'Reverses ≤12 weeks', 'CCB; AVOID steroids'].map((t, i) => (
+                  <text key={t} x="372" y={58 + i * 18} fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">• {t}</text>
+                ))}
+                <rect x="544" y="24" width="180" height="126" rx="8" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.4" />
+                <text x="634" y="40" fill="var(--red-deep)" fontSize="7.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PACNS</text>
+                {['Subacute / progressive', 'No trigger', 'Enhancing lesions', 'Biopsy + immunosuppress'].map((t, i) => (
+                  <text key={t} x="556" y={58 + i * 18} fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="start">• {t}</text>
+                ))}
+              </svg>
+            </div>
+
+            {/* §1 Presentation (purple) */}
+            <CardSection color="purple" title="1. Presentation">
+              <div style={{ fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <strong>Recurrent thunderclap headaches</strong> over 1&ndash;3 weeks are the hallmark. <strong>Triggers:</strong> postpartum; vasoactive substances (cannabis, SSRIs/SNRIs, sympathomimetics, nasal decongestants, triptans, ergots); blood products / immunoglobulin; exertion, Valsalva, sexual activity, bathing. <strong>Female predominance.</strong>
+              </div>
+            </CardSection>
+
+            {/* §2 Diagnosis (teal) */}
+            <CardSection color="teal" title="2. Diagnosis">
+              <div style={{ fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                Multifocal <strong>segmental vasoconstriction of medium-caliber arteries</strong> that <strong>reverses within ~12 weeks</strong>. Early angiography can be <strong>normal</strong> (dynamic) — repeat at 1&ndash;3 weeks. Complications by phase: <strong>convexity (non-aneurysmal) SAH</strong> and PRES early; <strong>ischemic stroke</strong> (often watershed) later; occasionally ICH.
+              </div>
+            </CardSection>
+
+            {/* §3 RCVS vs PACNS — RCVS² score (red) */}
+            <CardSection color="red" title="3. RCVS² Score (RCVS vs PACNS)">
+              <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 1fr', gap: '10px' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '7.2pt', color: 'var(--ink-soft)' }}>
+                  <tbody>
+                    {rcvs2.map((r) => (
+                      <tr key={r.v} style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                        <td style={{ padding: '2px 0' }}>{r.v}</td>
+                        <td style={{ padding: '2px 0', textAlign: 'right', fontWeight: 700, color: 'var(--red-deep)' }}>{r.p}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div style={{ fontSize: '7.2pt', lineHeight: '1.35', color: 'var(--ink-soft)' }}>
+                  Range <strong>−2 to +10</strong>.
+                  <br /><strong style={{ color: 'var(--red-deep)' }}>≥5</strong> → RCVS (99% spec, 90% sens).
+                  <br /><strong style={{ color: 'var(--teal-deep)' }}>≤2</strong> → excludes RCVS (100% spec, 85% sens).
+                  <br /><strong>3–4</strong> indeterminate.
+                </div>
+              </div>
+            </CardSection>
+
+            {/* §4 Management (amber) */}
+            <CardSection color="amber" title="4. Management" style={{ marginBottom: '6px' }}>
+              <div style={{ fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                Remove triggers; <strong>calcium-channel blockers</strong> (nimodipine / verapamil) for headache control (do not clearly prevent stroke); <strong>avoid glucocorticoids</strong> (associated with worse outcomes); do NOT start empiric immunosuppression (contrast with PACNS). Course is usually <strong>monophasic with good prognosis</strong>.
+              </div>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'RCVS² score', cite: 'Rocha EA et al. Neurology. 2019;92(7):e639-e647.', pmid: '30635475' },
+              { label: 'Ducros cohort', cite: 'Ducros A et al. Brain. 2007;130(Pt 12):3091-3101.', pmid: '18025032' },
+              { label: 'Singhal series', cite: 'Singhal AB et al. Arch Neurol. 2011;68(8):1005-1012.', pmid: '21482916' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Aneurysmal SAH: Grading & Early Management
+// =====================================================================
+const AneurysmalSahView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <AneurysmalSahCard />
+  </ScaledCardWrapper>
+);
+
+export function AneurysmalSahCard() {
+  const dx = (d) => 384 + d * 14.8; // timeline day → x (0..21)
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-aneurysmal-sah-management">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Aneurysmal SAH</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Grading, early aneurysm securing, nimodipine, and delayed cerebral ischemia.
+            </p>
+
+            {/* Hero SVG: basal-cistern SAH + aneurysm | management timeline */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 168" style={{ width: '100%', height: 'auto' }}>
+                {/* Panel A — basal cistern star + aneurysm */}
+                <text x="130" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">BASAL-CISTERN SAH + ANEURYSM</text>
+                <ellipse cx="130" cy="88" rx="102" ry="60" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                <polygon points="130,56 138,78 160,78 142,92 149,114 130,101 111,114 118,92 100,78 122,78" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.3" />
+                {/* extend blood into sylvian fissures */}
+                <path d="M 100 78 C 78 74 70 88 78 96" stroke="var(--red)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M 160 78 C 182 74 190 88 182 96" stroke="var(--red)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <circle cx="130" cy="50" r="7" fill="var(--red)" stroke="var(--red-deep)" strokeWidth="1.2" />
+                <text x="150" y="46" fill="var(--red-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">saccular aneurysm</text>
+                <text x="150" y="54" fill="var(--red-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">(ACoM / PCoM)</text>
+                <text x="130" y="140" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">star-shaped blood in the basal cisterns</text>
+
+                <line x1="252" y1="12" x2="252" y2="156" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel B — timeline */}
+                <text x="540" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">EARLY-MANAGEMENT TIMELINE</text>
+                <line x1={dx(0)} y1="118" x2={dx(21)} y2="118" stroke="var(--ink-mute)" strokeWidth="1.2" />
+                {[0, 7, 14, 21].map((d) => (
+                  <g key={d}>
+                    <line x1={dx(d)} y1="115" x2={dx(d)} y2="121" stroke="var(--ink-mute)" strokeWidth="1" />
+                    <text x={dx(d)} y="131" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">d{d}</text>
+                  </g>
+                ))}
+                {/* day 0 secure */}
+                <rect x={dx(0) - 4} y="30" width="112" height="22" rx="5" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.2" />
+                <text x={dx(0) + 52} y="44" fill="var(--purple-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Day 0: secure aneurysm</text>
+                <line x1={dx(0)} y1="52" x2={dx(0)} y2="66" stroke="var(--purple)" strokeWidth="1" strokeDasharray="2 2" />
+                {/* nimodipine bar */}
+                <rect x={dx(0)} y="66" width={dx(21) - dx(0)} height="16" rx="4" fill="var(--teal)" />
+                <text x={(dx(0) + dx(21)) / 2} y="77" fill="#ffffff" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Nimodipine × 21 days</text>
+                {/* DCI watch bar */}
+                <rect x={dx(4)} y="90" width={dx(14) - dx(4)} height="16" rx="4" fill="var(--amber)" />
+                <text x={(dx(4) + dx(14)) / 2} y="101" fill="#ffffff" fontSize="5.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">DCI watch d4–14</text>
+                <text x="540" y="150" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Secure early → nimodipine for all → watch for delayed cerebral ischemia</text>
+              </svg>
+            </div>
+
+            {/* §1 Grade it (purple) */}
+            <CardSection color="purple" title="1. Grade It">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', fontSize: '7.4pt', lineHeight: '1.35', color: 'var(--ink-soft)' }}>
+                <div style={{ border: '1px solid var(--purple)', borderRadius: '5px', padding: '4px 7px', background: '#ffffff' }}>
+                  <strong style={{ color: 'var(--purple-deep)' }}>Hunt-Hess (I–V)</strong><br />Clinical: headache / nuchal → coma.
+                </div>
+                <div style={{ border: '1px solid var(--purple)', borderRadius: '5px', padding: '4px 7px', background: '#ffffff' }}>
+                  <strong style={{ color: 'var(--purple-deep)' }}>WFNS (I–V)</strong><br />GCS-based ± motor deficit.
+                </div>
+                <div style={{ border: '1px solid var(--amber)', borderRadius: '5px', padding: '4px 7px', background: '#ffffff' }}>
+                  <strong style={{ color: 'var(--amber-deep)' }}>Modified Fisher (0–4)</strong><br />Cisternal blood + IVH → predicts vasospasm / DCI.
+                </div>
+              </div>
+            </CardSection>
+
+            {/* §2 Secure the aneurysm (teal) */}
+            <CardSection color="teal" title="2. Secure the Aneurysm Early">
+              <div style={{ fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                Treat within <strong>~24&ndash;72 h</strong> to prevent rebleeding, by <strong>endovascular coiling or surgical clipping</strong>. <strong>ISAT:</strong> for ruptured aneurysms suitable for either, coiling gave <strong>better 1-year disability-free survival</strong> (≈7% absolute reduction in death/dependency) than clipping, with a small increase in late rebleeding / retreatment — modality is a multidisciplinary decision by aneurysm morphology and patient factors.
+              </div>
+            </CardSection>
+
+            {/* §3 Prevent secondary injury (red) */}
+            <CardSection color="red" title="3. Prevent Secondary Injury" style={{ marginBottom: '6px' }}>
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.4pt', lineHeight: '1.36', color: 'var(--ink-soft)' }}>
+                <li><strong>Pre-securing:</strong> control BP (avoid extremes), analgesia; a short antifibrinolytic course (&lt;72 h) is optional to reduce ultra-early rebleed.</li>
+                <li><strong>Nimodipine 60 mg PO q4h × 21 days for all</strong> — improves neurologic outcome / reduces DCI, even though it does not reduce angiographic vasospasm (BRANT).</li>
+                <li><strong>DCI / vasospasm peaks days 4&ndash;14:</strong> monitor exam ± TCD; treat with induced hypertension and, if refractory, endovascular angioplasty / intra-arterial vasodilators. Maintain <strong>euvolemia</strong> (avoid prophylactic hypervolemia). Watch for hyponatremia (SIADH vs cerebral salt wasting) and hydrocephalus (EVD).</li>
+              </ul>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'AHA/ASA 2023 aSAH Guideline', cite: 'Hoh BL et al. Stroke. 2023;54(7):e314-e370.', pmid: '37212182' },
+              { label: 'ISAT', cite: 'Molyneux A et al. Lancet. 2002;360(9342):1267-1274.', pmid: '12414200' },
+              { label: 'Nimodipine (BRANT)', cite: 'Pickard JD et al. BMJ. 1989;298(6674):636-642.', pmid: '2496789' },
+              { label: 'Modified Fisher scale', cite: 'Frontera JA et al. Neurosurgery. 2006;59(1):21-27.', pmid: '16823296' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =====================================================================
+// MODULE — Cerebral Amyloid Angiopathy (CAA)
+// =====================================================================
+const CerebralAmyloidAngiopathyView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <CerebralAmyloidAngiopathyCard />
+  </ScaledCardWrapper>
+);
+
+export function CerebralAmyloidAngiopathyCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-cerebral-amyloid-angiopathy">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px' }}>Cerebral Amyloid Angiopathy (CAA)</h1>
+            <p style={{ fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '10px', textAlign: 'center', fontWeight: '500' }}>
+              Lobar bleeds, strictly lobar microbleeds, and cortical superficial siderosis.
+            </p>
+
+            {/* Hero SVG: lobar vs deep pattern | SWI markers */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 168" style={{ width: '100%', height: 'auto' }}>
+                {/* Panel A — lobar vs deep */}
+                <text x="188" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">HEMORRHAGE LOCATION</text>
+                {/* CAA lobar */}
+                <ellipse cx="105" cy="80" rx="72" ry="46" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                <line x1="105" y1="36" x2="105" y2="124" stroke="var(--rule-soft)" strokeWidth="0.8" />
+                <path d="M 138 52 C 156 58 156 78 140 84 C 128 80 126 62 138 52 Z" fill="var(--red)" opacity="0.8" />
+                <text x="105" y="140" fill="var(--red-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">CAA: lobar (cortico-subcortical)</text>
+                {/* Hypertensive deep */}
+                <ellipse cx="272" cy="80" rx="72" ry="46" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
+                <line x1="272" y1="36" x2="272" y2="124" stroke="var(--rule-soft)" strokeWidth="0.8" />
+                <ellipse cx="288" cy="80" rx="13" ry="11" fill="var(--slate)" opacity="0.85" />
+                <text x="272" y="140" fill="var(--slate)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Hypertensive: deep (basal ganglia)</text>
+
+                <line x1="360" y1="12" x2="360" y2="156" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel B — SWI markers (dark) */}
+                <text x="548" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">SWI / GRE MARKERS</text>
+                <ellipse cx="548" cy="82" rx="88" ry="52" fill="var(--ink)" stroke="var(--ink-mute)" strokeWidth="1.2" />
+                {/* strictly lobar microbleeds (peripheral dark dots) */}
+                {[[500, 52], [590, 50], [478, 82], [618, 84], [512, 116], [588, 118], [548, 44]].map(([x, y], i) => (
+                  <circle key={i} cx={x} cy={y} r="3.4" fill="#000000" stroke="#3a3a3a" strokeWidth="0.6" />
+                ))}
+                {/* cortical superficial siderosis (dark gyral rim) */}
+                <path d="M 486 60 C 500 46 540 42 566 46" stroke="#000000" strokeWidth="4" fill="none" strokeLinecap="round" opacity="0.9" />
+                <text x="548" y="150" fill="var(--ink-mute)" fontSize="5.2pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">strictly lobar microbleeds + cortical superficial siderosis</text>
+              </svg>
+            </div>
+
+            {/* §1 Recognize it (purple) */}
+            <CardSection color="purple" title="1. Recognize It">
+              <div style={{ fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                Sporadic CAA = β-amyloid in cortical / leptomeningeal vessels of the <strong>elderly</strong>, causing <strong>lobar (cortico-subcortical) ICH</strong>, strictly lobar cerebral microbleeds, <strong>cortical superficial siderosis (cSS)</strong>, convexity SAH, <strong>transient focal neurologic episodes ("amyloid spells")</strong>, and cognitive impairment. Deep / basal-ganglia bleeds point to <strong>hypertensive arteriopathy</strong> instead.
+              </div>
+            </CardSection>
+
+            {/* §2 Boston Criteria 2.0 (teal) */}
+            <CardSection color="teal" title="2. Diagnose It — Boston Criteria 2.0">
+              <div style={{ fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                MRI <strong>SWI/GRE</strong> for hemorrhagic markers (lobar ICH/CMB, cSS) <strong>plus non-hemorrhagic white-matter features</strong> (severe visible perivascular spaces in the centrum semiovale, multispot WMH pattern). Boston 2.0 defines "probable" and "possible" CAA and was validated against pathology. <strong>Disseminated cSS carries a particularly high future-ICH risk.</strong>
+              </div>
+            </CardSection>
+
+            {/* §3 Manage it (red) */}
+            <CardSection color="red" title="3. Manage It" style={{ marginBottom: '6px' }}>
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.5pt', lineHeight: '1.38', color: 'var(--ink-soft)' }}>
+                <li><strong>Antithrombotic dilemma:</strong> CAA (especially with cSS or multiple lobar CMBs) carries a high <strong>recurrent lobar ICH</strong> risk; anticoagulation for AF is individualized, and LAA closure is a device alternative. Avoid unnecessary antiplatelets; <strong>aggressive BP control is the best-supported prevention</strong>.</li>
+                <li><strong>CAA-related inflammation (CAA-ri):</strong> subacute encephalopathy / seizures + asymmetric white-matter edema + underlying CAA markers — often <strong>steroid-responsive</strong>; consider biopsy in atypical cases.</li>
+              </ul>
+            </CardSection>
+
+            <CardRefFooter refs={[
+              { label: 'Boston Criteria 2.0', cite: 'Charidimou A et al. Lancet Neurol. 2022;21(8):714-725.', pmid: '35841910' },
+              { label: 'Cortical superficial siderosis in CAA', cite: 'Linn J et al. Neurology. 2010;74(17):1346-1350.', pmid: '20421578' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// __NV_MODULES_END__  (new neurovascular module components are inserted above this line)
 

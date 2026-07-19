@@ -7,6 +7,86 @@ re-verifications, and schema evolution. Dates are absolute (ISO).
 Format: newest first. Each entry: what changed, why, and the source it was
 verified against.
 
+## 2026-07-18 — 12 new neurovascular education modules
+
+New bedside teaching cards added to the Education section (authored in
+`src/education.jsx`; metadata projected to `content/education/*.md` by
+`content:seed`). Each card follows the existing static pocket-card / interactive
+simulator templates and cites its primary sources (PMIDs verified against
+PubMed). No change to the frozen Example Protocols zone.
+
+- **`cerebral-venous-sinus-thrombosis`** — CVST: presentation/risk factors,
+  CTV/MRV diagnosis, anticoagulation despite venous hemorrhage, DOAC transition,
+  ISCVT prognosis. Sources: ISCVT (14976332), RE-SPECT CVT (31479105),
+  ACTION-CVT (35143325), TO-ACT (32421159), AHA/ASA statement (21293023).
+- **`large-core-thrombectomy`** — EVT for large ischemic core (low ASPECTS /
+  large core volume): the six 2022–2024 RCTs and the mRS-shift benefit vs
+  higher symptomatic hemorrhage. Sources: SELECT2 (36762865), ANGEL-ASPECT
+  (36762852), TENSION (37837989), LASTE (38718358), TESLA (39374319),
+  RESCUE-Japan LIMIT (35138767), 2026 AIS guideline (41582814).
+- **`basilar-artery-occlusion`** — protean brainstem presentation, the
+  ATTENTION/BAOCHE evidence arc (vs the confounded BEST/BASICS trials),
+  imaging selection, and pitfalls. Sources: ATTENTION (36239644), BAOCHE
+  (36239645), BASICS (34010530), BEST (31831388).
+- **`lipid-management-after-stroke`** — LDL-C targets and the statin →
+  ezetimibe → PCSK9i ladder, with the hemorrhagic-stroke caveat. Sources:
+  SPARCL (16899775), Treat Stroke to Target (31738483), FOURIER (28304224),
+  IMPROVE-IT (26039521), AHA/ASA 2021 secondary prevention (34024117).
+- **`carotid-stenosis-management`** — symptomatic vs asymptomatic carotid
+  stenosis, NASCET measurement, CEA vs CAS (CREST/ACST-2), the CREST-2
+  asymptomatic results, and intensive medical therapy as the foundation.
+  Sources: CREST-2 (41269206), CREST (20505173), ACST-2 (34469763),
+  NASCET (1852179).
+- **`brainstem-stroke-syndromes`** — the crossed-deficit localization rule and
+  the classic syndromes (Wallenberg, Dejerine, Millard-Gubler, Foville,
+  one-and-a-half, Weber, Benedikt, Claude) by level/vessel/deficit. Sources:
+  Tatu brainstem/cerebellum (8909417), Tatu cerebral hemispheres (9633714).
+- **`vascular-territory-atlas`** — anterior (ACA/MCA/lenticulostriate/
+  anterior-choroidal) and posterior (PCA/PICA/AICA/SCA/basilar-perforator)
+  territories with clinical signatures, plus cortical and internal watershed
+  patterns. Sources: Tatu cerebral hemispheres (9633714), Tatu
+  brainstem/cerebellum (8909417).
+- **`anticoagulation-reversal`** — agent-specific ICH reversal (4F-PCC +
+  vitamin K, idarucizumab, andexanet/4F-PCC) with the ANNEXA-I thrombotic
+  caveat and parallel BP/neurosurgery steps. Sources: ANNEXA-4 (30730782),
+  ANNEXA-I (38749032), RE-VERSE AD (28693366), AHA/ASA 2022 ICH (35579034),
+  NCS/SCCM reversal (26714677).
+- **`nihss-simulator`** (interactive) — score the 15 NIHSS items on case
+  vignettes with immediate feedback, running 0–42 total, the scoring rules
+  that trip people up, and the left-hemisphere-weighting interpretation
+  caveat. Sources: Brott 1989 (2749846), Lyden 1994 (7974549).
+- **`rcvs`** — reversible cerebral vasoconstriction syndrome: recurrent
+  thunderclap headache, triggers, the reversible string-of-beads, the RCVS²
+  score (RCVS vs PACNS), and management (CCBs, avoid steroids). Sources:
+  RCVS² (30635475), Ducros (18025032), Singhal (21482916).
+- **`aneurysmal-sah-management`** — grading (Hunt-Hess, WFNS, modified Fisher),
+  early aneurysm securing (ISAT), nimodipine, and DCI/vasospasm management.
+  Sources: AHA/ASA 2023 aSAH (37212182), ISAT (12414200), BRANT nimodipine
+  (2496789), modified Fisher (16823296). Note: 37212182 is the correct PMID
+  for the 2023 aSAH guideline (verified on PubMed).
+- **`cerebral-amyloid-angiopathy`** — lobar vs deep hemorrhage, strictly lobar
+  microbleeds / cortical superficial siderosis, Boston Criteria 2.0, the
+  antithrombotic dilemma, and CAA-ri. Sources: Boston 2.0 (35841910), Linn
+  cSS (20421578).
+
+Accuracy audit before release (adversarial, cross-checked against the PubMed
+abstracts for all 43 cited PMIDs): every citation's author/title/journal/year/
+volume/issue/pages verified. Ten claims across six cards were corrected:
+- BAOCHE mRS 0–3 → **46% vs 24%** (was 39%; abstract: 51/110 = 46%).
+- ANNEXA-I split into overall thrombotic events (**10.3% vs 5.6%**) and ischemic
+  stroke (**6.5% vs 1.5%**) — the parenthetical previously conflated the two.
+- ACTION-CVT major hemorrhage stated as a **lower rate (aHR 0.35)** rather than
+  a "trend" (abstract wording).
+- ISCVT death/dependence at **final follow-up** (median 16 months), not 6 months.
+- Wallenberg row: corticospinal tract **spared → no hemiparesis** (removed the
+  misleading "face-sparing motor," which is the Dejerine pearl).
+- NIHSS interpretation caveat now notes the extinction/inattention item captures
+  right-hemisphere neglect (removed the internally inconsistent "none purely for
+  right-hemisphere").
+- TESLA row: utility-weighted mRS **posterior probability 0.96 vs the 0.975**
+  threshold; large-core §1 clarified five trials met their primary endpoint.
+- Trial name rendered **RE-VERSE AD** (registered name).
+
 ## 2026-07-11 — Clinical corrections (audit-flagged, clinician-directed)
 
 Factual corrections to non-frozen clinical content, each verified against the
