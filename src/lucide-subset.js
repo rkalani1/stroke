@@ -99,11 +99,32 @@ export function createIcons({ icons: iconMap = icons } = {}) {
 
     const svg = document.createElementNS(SVG_NS, 'svg');
     for (const [key, value] of Object.entries(BASE_ATTRS)) svg.setAttribute(key, value);
-    svg.setAttribute('aria-hidden', node.getAttribute('aria-hidden') || 'true');
+
+    const hasAccessibleLabel = Boolean(
+      node.getAttribute('aria-label') ||
+      node.getAttribute('aria-labelledby') ||
+      node.getAttribute('title')
+    );
+
+    const explicitAriaHidden = node.getAttribute('aria-hidden');
+    let ariaHiddenVal;
+    if (explicitAriaHidden === '' || explicitAriaHidden === 'true') {
+      ariaHiddenVal = 'true';
+    } else if (explicitAriaHidden === 'false') {
+      ariaHiddenVal = 'false';
+    } else {
+      ariaHiddenVal = hasAccessibleLabel ? 'false' : 'true';
+    }
+    svg.setAttribute('aria-hidden', ariaHiddenVal);
     svg.setAttribute('focusable', 'false');
 
     const className = node.getAttribute('class');
     if (className) svg.setAttribute('class', className);
+
+    ['aria-label', 'role', 'aria-labelledby', 'title'].forEach(attr => {
+      const val = node.getAttribute(attr);
+      if (val) svg.setAttribute(attr, val);
+    });
 
     for (const [tag, attrs] of icon) {
       const child = document.createElementNS(SVG_NS, tag);

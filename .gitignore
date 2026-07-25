@@ -55,3 +55,7 @@ scratch/
 
 # Scaffolded content drafts pending human review (promote by moving out of _drafts/)
 content/_drafts/
+
+# Agent metadata workspaces
+.agents/
+

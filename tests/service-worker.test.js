@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
@@ -127,4 +127,64 @@ describe('service worker update lifecycle', () => {
     expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
     expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version: '6.11.6' });
   });
+
+  it('includes static JSON clinical endpoints, core assets, and iOS splash screens in precache list', () => {
+    expect(workerSource).toContain("'./data/index.json'");
+    expect(workerSource).toContain("'./whats-new.json'");
+    expect(workerSource).toContain("'./config.example.json'");
+    expect(workerSource).toContain("'./data/guidelines/index.json'");
+    expect(workerSource).toContain("'./data/management-cards.json'");
+    expect(workerSource).toContain("'./data/generic-protocols.json'");
+    expect(workerSource).toContain("'./data/calculators-index.json'");
+    expect(workerSource).toContain("'./data/atlas/active-trials.json'");
+    expect(workerSource).toContain("'./data/atlas/completed-trials.json'");
+
+    const splashAssets = [
+      './assets/splash/splash-ipad-mini.png',
+      './assets/splash/splash-ipad-pro-11.png',
+      './assets/splash/splash-ipad-pro-129.png',
+      './assets/splash/splash-iphone-13-mini-12-mini-x-xs.png',
+      './assets/splash/splash-iphone-15-14-13-12.png',
+      './assets/splash/splash-iphone-15-plus.png',
+      './assets/splash/splash-iphone-16-pro-max.png',
+      './assets/splash/splash-iphone-16-pro.png',
+      './assets/splash/splash-iphone-16.png',
+      './assets/splash/splash-iphone-8-7-6.png',
+    ];
+    for (const splash of splashAssets) {
+      expect(workerSource).toContain(`'${splash}'`);
+    }
+  });
+
+  it('verifies all files declared in CORE_ASSETS exist on disk', () => {
+    const match = workerSource.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/);
+    expect(match).not.toBeNull();
+    // eslint-disable-next-line no-eval
+    const coreAssets = eval(match[1]);
+    for (const asset of coreAssets) {
+      const relPath = asset.startsWith('./') ? asset.slice(2) : asset;
+      const fullPath = join(repoRoot, relPath);
+      expect(existsSync(fullPath), `Asset ${asset} should exist on disk`).toBe(true);
+    }
+  });
 });
+
+describe('PWA manifest configuration', () => {
+  it('uses clean relative paths for start_url, scope, id, and shortcuts for GitHub Pages installation', () => {
+    const manifest = JSON.parse(readFileSync(join(repoRoot, 'manifest.json'), 'utf8'));
+
+    expect(manifest.id).toBe('stroke-cds-app');
+    expect(manifest.start_url).toBe('./#/encounter');
+    expect(manifest.scope).toBe('./');
+    for (const shortcut of manifest.shortcuts) {
+      expect(shortcut.url).toMatch(/^\.\//);
+    }
+  });
+
+  it('does not contain missing screenshot references', () => {
+    const manifest = JSON.parse(readFileSync(join(repoRoot, 'manifest.json'), 'utf8'));
+    expect(manifest.screenshots).toBeUndefined();
+    expect(existsSync(join(repoRoot, 'screenshot1.png'))).toBe(false);
+  });
+});
+

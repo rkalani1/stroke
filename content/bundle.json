@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:0b916b0d49d9c3dfe05b6c2f3e72d7ee",
+    "checksum": "sha256:0d557287143d11eb1f8755a3f2ecda95",
     "counts": {
       "guidelines": 11,
       "trials": 71,
@@ -1721,7 +1721,7 @@
         {
           "\"label\"": "SeLECT Score Study",
           "\"citation\"": "Galovic M, et al. SeLECT: a prediction model for late seizures after ischemic stroke. Lancet Neurol. 2018;17(2):143-152.",
-          "\"pmid\"": "29329707"
+          "\"pmid\"": "29413315"
         }
       ],
       "lastReviewed": "2026-07-13",
@@ -2088,7 +2088,7 @@
         {
           "\"label\"": "AHA Statement 2021",
           "\"citation\"": "Mac Grory B, et al. Management of Central Retinal Artery Occlusion. Stroke. 2021;52(6):e282-e294.",
-          "\"pmid\"": "33678099"
+          "\"pmid\"": "33677974"
         },
         {
           "\"label\"": "THEIA Trial 2025",
@@ -2635,7 +2635,7 @@
         {
           "\"label\"": "SeLECT Score Study",
           "\"citation\"": "Galovic M, et al. Prediction of late seizures after ischaemic stroke with the SeLECT score. Lancet Neurol. 2018;17(2):143-152.",
-          "\"pmid\"": "29329707"
+          "\"pmid\"": "29413315"
         }
       ],
       "lastReviewed": "2026-07-24",

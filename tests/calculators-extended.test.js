@@ -18,7 +18,10 @@ import {
   interpretBarnesJewishDysphagia,
   recommendVTEProphylaxis,
   computeNeurocheckSchedule,
-  computeLKWCountdown
+  computeLKWCountdown,
+  evaluateCRAOTreatment,
+  calculateSeLECTScore,
+  calculateEDEMAScore
 } from '../src/calculators-extended.js';
 
 describe('evaluateDAWN', () => {
@@ -280,5 +283,194 @@ describe('SEDAN direction regression (from app.jsx)', () => {
     expect(sedanPoints(130, false, false, 60, 5)).toBe(0);
     expect(sedanPoints(180, false, false, 60, 5)).toBe(1);
     expect(sedanPoints(240, false, false, 60, 5)).toBe(2);
+  });
+});
+
+describe('evaluateCRAOTreatment', () => {
+  it('recommends lytic when all CRAO criteria are met <= 4.5h', () => {
+    const r = evaluateCRAOTreatment({
+      onsetHours: 2.5,
+      visualAcuity: 'count-fingers',
+      fundusHemorrhage: false,
+      ivtContraindicated: false,
+      age: 65
+    });
+    expect(r.eligible).toBe(true);
+    expect(r.recommendation).toMatch(/Eligible for acute IV thrombolysis/);
+    expect(r.sources).toMatch(/THEIA Trial/);
+  });
+
+  it('declines lytic when onset > 4.5h', () => {
+    const r = evaluateCRAOTreatment({
+      onsetHours: 5.0,
+      visualAcuity: 'count-fingers',
+      fundusHemorrhage: false,
+      ivtContraindicated: false
+    });
+    expect(r.eligible).toBe(false);
+    expect(r.contraindications).toContain('Onset 5h exceeds 4.5h window');
+  });
+
+  it('declines lytic when retinal hemorrhage is present on fundoscopy', () => {
+    const r = evaluateCRAOTreatment({
+      onsetHours: 2.0,
+      visualAcuity: 'no-light-perception',
+      fundusHemorrhage: true,
+      ivtContraindicated: false
+    });
+    expect(r.eligible).toBe(false);
+    expect(r.noHemorrhage).toBe(false);
+  });
+
+  it('declines lytic when systemic contraindication is present', () => {
+    const r = evaluateCRAOTreatment({
+      onsetHours: 1.5,
+      visualAcuity: 'severe',
+      fundusHemorrhage: false,
+      ivtContraindicated: true
+    });
+    expect(r.eligible).toBe(false);
+  });
+
+  it('returns null if onsetHours is missing or non-numeric', () => {
+    expect(evaluateCRAOTreatment({ onsetHours: 'invalid' })).toBeNull();
+  });
+
+  it('correctly handles severe vision loss Snellen denominators >= 200 (20/500, 20/800, 20/1000)', () => {
+    ['20/200', '20/300', '20/500', '20/800', '20/1000'].forEach(va => {
+      const r = evaluateCRAOTreatment({
+        onsetHours: 2.0,
+        visualAcuity: va,
+        fundusHemorrhage: false,
+        ivtContraindicated: false
+      });
+      expect(r.visualAcuityOk).toBe(true);
+      expect(r.eligible).toBe(true);
+    });
+    expect(evaluateCRAOTreatment({ onsetHours: 2.0, visualAcuity: '20/50', fundusHemorrhage: false, ivtContraindicated: false }).visualAcuityOk).toBe(false);
+  });
+});
+
+describe('calculateSeLECTScore', () => {
+  it('calculates score 0 for low risk patient', () => {
+    const r = calculateSeLECTScore({
+      nihss: 2,
+      corticalInvolvement: false,
+      earlySeizure: false,
+      lvoArtery: false,
+      middleCerebralTerritory: false
+    });
+    expect(r.score).toBe(0);
+    expect(r.oneYearRisk).toBe('0.7%');
+    expect(r.fiveYearRisk).toBe('1.3%');
+    expect(r.riskTier).toBe('Low');
+  });
+
+  it('calculates score 9 for maximum risk patient', () => {
+    const r = calculateSeLECTScore({
+      nihss: 15,
+      corticalInvolvement: true,
+      earlySeizure: true,
+      lvoArtery: true,
+      middleCerebralTerritory: true
+    });
+    expect(r.score).toBe(9);
+    expect(r.fiveYearRisk).toBe('76.2%');
+    expect(r.riskTier).toBe('Very High');
+    expect(r.recommendation).toMatch(/High risk/);
+  });
+
+  it('correctly scores components and breakdown', () => {
+    const r = calculateSeLECTScore({
+      nihss: 5,
+      corticalInvolvement: true,
+      earlySeizure: false,
+      lvoArtery: false,
+      middleCerebralTerritory: true
+    });
+    // NIHSS 5 -> 1 pt; Cortical -> 2 pts; MCA -> 1 pt = Total 4
+    expect(r.score).toBe(4);
+    expect(r.fiveYearRisk).toBe('12.4%');
+    expect(r.breakdown.nihssPoints).toBe(1);
+    expect(r.breakdown.corticalPoints).toBe(2);
+    expect(r.breakdown.mcaPoints).toBe(1);
+  });
+
+  it('coerces boolean-like strings and numbers consistently between score and breakdown', () => {
+    const r = calculateSeLECTScore({
+      nihss: '5',
+      corticalInvolvement: 'true',
+      earlySeizure: 1,
+      lvoArtery: 'TRUE',
+      middleCerebralTerritory: 0
+    });
+    const breakdownSum = r.breakdown.nihssPoints + r.breakdown.corticalPoints + r.breakdown.earlySeizurePoints + r.breakdown.lvoPoints + r.breakdown.mcaPoints;
+    expect(r.score).toBe(breakdownSum);
+    expect(r.breakdown.corticalPoints).toBe(2);
+    expect(r.breakdown.earlySeizurePoints).toBe(3);
+    expect(r.breakdown.lvoPoints).toBe(1);
+  });
+
+  it('returns null if NIHSS is non-numeric', () => {
+    expect(calculateSeLECTScore({ nihss: null })).toBeNull();
+  });
+});
+
+describe('calculateEDEMAScore', () => {
+  it('calculates low risk for minor stroke without edema markers', () => {
+    const r = calculateEDEMAScore({
+      nihss: 15,
+      aspects: 9,
+      denseArterySign: false,
+      bloodGlucoseMgDl: 120,
+      massEffect: 'none',
+      historyHypertension: false
+    });
+    // NIHSS 15 -> 1 pt; total = 1
+    expect(r.score).toBe(1);
+    expect(r.riskTier).toBe('Low');
+    expect(r.highRiskForMalignantEdema).toBe(false);
+  });
+
+  it('calculates high risk (>=6) and triggers neurosurgery recommendation', () => {
+    const r = calculateEDEMAScore({
+      nihss: 22,
+      aspects: 5,
+      denseArterySign: true,
+      bloodGlucoseMgDl: 200,
+      massEffect: 'midline-shift',
+      historyHypertension: true
+    });
+    // NIHSS 22 -> 2; ASPECTS <7 -> 2; Dense artery -> 1; Glucose >162 -> 1; Shift -> 2; HTN -> 1 = Total 9
+    expect(r.score).toBe(9);
+    expect(r.riskTier).toBe('High');
+    expect(r.highRiskForMalignantEdema).toBe(true);
+    expect(r.recommendation).toMatch(/decompressive hemicraniectomy/);
+  });
+
+  it('handles negation in massEffect and applies Math.floor on numeric massEffect', () => {
+    const rNoShift = calculateEDEMAScore({ nihss: 15, massEffect: 'no shift' });
+    expect(rNoShift.breakdown.massEffectPoints).toBe(0);
+
+    const rWithoutShift = calculateEDEMAScore({ nihss: 15, massEffect: 'without midline shift' });
+    expect(rWithoutShift.breakdown.massEffectPoints).toBe(0);
+
+    const rNoEffacement = calculateEDEMAScore({ nihss: 15, massEffect: 'no effacement' });
+    expect(rNoEffacement.breakdown.massEffectPoints).toBe(0);
+
+    const rFloatMass = calculateEDEMAScore({ nihss: 15, massEffect: 1.9 });
+    expect(rFloatMass.breakdown.massEffectPoints).toBe(1);
+  });
+
+  it('handles bloodGlucoseMmolL correctly', () => {
+    const r = calculateEDEMAScore({
+      nihss: 14,
+      bloodGlucoseMmolL: 10.5
+    });
+    expect(r.breakdown.glucosePoints).toBe(1);
+  });
+
+  it('returns null for non-numeric NIHSS', () => {
+    expect(calculateEDEMAScore({})).toBeNull();
   });
 });

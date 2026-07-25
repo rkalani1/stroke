@@ -173,5 +173,43 @@ describe('lucide-subset', () => {
       expect(newSvg._children[0].tagName).toBe('RECT');
       expect(newSvg._children[0]._attributes['width']).toBe('10');
     });
+
+    it('transfers aria-label, role, aria-labelledby, and title attributes from placeholder to svg', () => {
+      const el = globalThis.createMockLucideElement('activity', {
+        'aria-label': 'Activity indicator',
+        'role': 'img',
+        'aria-labelledby': 'act-title',
+        'title': 'Activity'
+      });
+      createIcons();
+
+      const newSvg = el._replacedWith;
+      expect(newSvg._attributes['aria-label']).toBe('Activity indicator');
+      expect(newSvg._attributes['role']).toBe('img');
+      expect(newSvg._attributes['aria-labelledby']).toBe('act-title');
+      expect(newSvg._attributes['title']).toBe('Activity');
+    });
+
+    it('sets aria-hidden to "false" when an accessible label or title is present', () => {
+      const el = globalThis.createMockLucideElement('activity', {
+        'aria-label': 'System status active'
+      });
+      createIcons();
+
+      const newSvg = el._replacedWith;
+      expect(newSvg._attributes['aria-hidden']).toBe('false');
+      expect(newSvg._attributes['aria-label']).toBe('System status active');
+    });
+
+    it('preserves explicit aria-hidden="true" even when accessible label is present', () => {
+      const el = globalThis.createMockLucideElement('activity', {
+        'aria-label': 'Decorative graphic',
+        'aria-hidden': 'true'
+      });
+      createIcons();
+
+      const newSvg = el._replacedWith;
+      expect(newSvg._attributes['aria-hidden']).toBe('true');
+    });
   });
 });

@@ -20,7 +20,7 @@ export const TimeWindowRing = ({ timeFromLKW, onNavigate }) => {
         aria-label="Start acute stroke encounter"
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onNavigate?.('encounter'); }}
       >
-        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
           <circle
             cx="50"
             cy="50"
@@ -90,7 +90,7 @@ export const TimeWindowRing = ({ timeFromLKW, onNavigate }) => {
       role="timer"
       aria-label={`Stroke window position: ${label}, elapsed ${elapsedStr}`}
     >
-      <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+      <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
         {/* Track circle */}
         <circle
           cx="50"

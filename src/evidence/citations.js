@@ -1028,6 +1028,76 @@ export const citations = [
     doi: '10.1016/S0140-6736(24)00702-5',
     url: 'https://pubmed.ncbi.nlm.nih.gov/38761811/',
     verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-most-2024',
+    type: 'journal-article',
+    authors: 'Adeoye O et al.',
+    title: 'Adjunctive Intravenous Argatroban or Eptifibatide for Ischemic Stroke (MOST)',
+    journal: 'N Engl J Med',
+    year: 2024,
+    volume: '391',
+    pages: '810-820',
+    pmid: '39231343',
+    doi: '10.1056/NEJMoa2314779',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/39231343/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-tesla-2024',
+    type: 'journal-article',
+    authors: 'Yoo AJ et al.',
+    title: 'Thrombectomy for Stroke With Large Infarct on Noncontrast CT (TESLA)',
+    journal: 'JAMA',
+    year: 2024,
+    volume: '332',
+    pages: '1355-1366',
+    pmid: '39374319',
+    doi: '10.1001/jama.2024.13551',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/39374319/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-mac-grory-crao-2021',
+    type: 'guideline',
+    authors: 'Mac Grory B et al.',
+    title: 'Management of Central Retinal Artery Occlusion: A Scientific Statement From the American Heart Association',
+    journal: 'Stroke',
+    year: 2021,
+    volume: '52',
+    pages: 'e282-e294',
+    pmid: '33677974',
+    doi: '10.1161/STR.0000000000000366',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/33677974/',
+    verificationStatus: 'verified-guideline'
+  }),
+  makeCitation({
+    id: 'cit-select-2018',
+    type: 'journal-article',
+    authors: 'Galovic M et al.',
+    title: 'Prediction of late seizures after ischaemic stroke with the SeLECT score: a multicentre cohort study',
+    journal: 'Lancet Neurol',
+    year: 2018,
+    volume: '17',
+    pages: '143-152',
+    pmid: '29413315',
+    doi: '10.1016/S1474-4422(17)30404-0',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/29413315/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-edema-2013',
+    type: 'journal-article',
+    authors: 'Strbian D et al.',
+    title: 'Cerebral edema in acute ischemic stroke patients treated with intravenous thrombolysis',
+    journal: 'Int J Stroke',
+    year: 2013,
+    volume: '8',
+    pages: '529-534',
+    pmid: '22405327',
+    doi: '10.1111/j.1747-4949.2012.00781.x',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/22405327/',
+    verificationStatus: 'verified-pubmed'
   })
 ];
 

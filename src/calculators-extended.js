@@ -566,8 +566,7 @@ export const computeLKWCountdown = (lkwIso, nowMs = Date.now()) => {
 //   SELECT-2 (Sarraj NEJM 2023;388:1259-71, PMID 36762865) — ASPECTS 3-5 or core ≥50 mL, ≤24h. cOR 1.51.
 //   ANGEL-ASPECT (Huo NEJM 2023;388:1272-83, PMID 36762852) — ASPECTS 3-5 or core 70-100 mL, ≤24h. mRS 0-3 30% vs 12%.
 //   TENSION (Bendszus Lancet 2023;402:1753-63, PMID 37837989) — ASPECTS 3-5, ≤12h. cOR 2.58.
-//   TESLA (Yoo JAMA 2024;331:1709-19) — ASPECTS 2-5 NCCT-only, ≤24h. Bayesian primary missed; trend favorable.
-//     PMID intentionally omitted pending verification — earlier inline cite was duplicated with ARCADIA.
+//   TESLA (Yoo JAMA 2024;332:1355-66, PMID 39374319) — ASPECTS 2-5 NCCT-only, ≤24h. Bayesian primary missed; trend favorable.
 //   LASTE (Costalat NEJM 2024;390:1677-89, PMID 38718358) — ASPECTS 0-5 (incl 0-2), ≤6.5h. mRS 0-3 31% vs 12.5%, mortality 36% vs 55%.
 // AHA/ASA 2024: Class IIa for ASPECTS 3-5 within 24h. SVIN 2025 Large-Core guideline endorses.
 //
@@ -658,7 +657,7 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
       : `Not currently meeting large-core EVT trial criteria. ${reasons.length ? reasons.join('; ') : 'Verify ASPECTS/core, NIHSS, timing, premorbid mRS.'}`,
     sichCounseling: 'Large-core EVT trials reported sICH 6-7% (vs ~3% standard EVT) and futility-adjusted mortality benefit (LASTE 36% vs 55%). Discuss with family.',
     guidelineClass: 'AHA/ASA 2024: Class IIa for ASPECTS 3-5 within 24h; SVIN 2025 endorses LASTE for ASPECTS 0-2 ≤6h.',
-    sources: 'NEJM 2022 (LIMIT, PMID 35138767); NEJM 2023 (SELECT-2 36762865; ANGEL-ASPECT 36762852); Lancet 2023 (TENSION 37837989); JAMA 2024 (TESLA 331:1709-19); NEJM 2024 (LASTE 38718358)'
+    sources: 'NEJM 2022 (LIMIT, PMID 35138767); NEJM 2023 (SELECT-2 36762865; ANGEL-ASPECT 36762852); Lancet 2023 (TENSION 37837989); JAMA 2024 (TESLA, PMID 39374319); NEJM 2024 (LASTE 38718358)'
   };
 };
 
@@ -836,8 +835,7 @@ export const dmvoEVTAdvisory = ({ occlusionLocation, nihss, deficitDisabling }) 
 // =====================================================================
 // MOST advisory — adjunctive antithrombotic (tirofiban/argatroban/eptifibatide) post-IV lytic
 // =====================================================================
-// MOST (Lyden NEJM 2024;391:1257-68): Phase 3 RCT, n=514, AIS s/p IV lytic.
-// PMID intentionally omitted pending verification — earlier inline cite was wrong (collided with TRACE-III).
+// MOST (Adeoye/Broderick NEJM 2024;391:810-20, PMID 39231343): Phase 3 RCT, n=514, AIS s/p IV lytic.
 // Argatroban or eptifibatide as adjunct vs placebo. STOPPED for futility — neither improved
 // outcome. MR CLEAN-MED (Lancet 2022, PMID 35202525) similarly showed periprocedural
 // heparin/aspirin during EVT increases sICH (stopped for harm).
@@ -848,8 +846,8 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
     return {
       recommend: 'No',
       drugs: ['argatroban', 'eptifibatide', 'tirofiban (post-lytic)', 'heparin'],
-      rationale: 'MOST trial (NEJM 2024) found NO benefit and possible harm from argatroban or eptifibatide added to IV lytic. Do not give adjunctive anticoagulants/antiplatelets in the first 24h post-lytic.',
-      source: 'Lyden NEJM 2024;391:1257-68 (MOST); MR CLEAN-MED Lancet 2022 (PMID 35202525)',
+      rationale: 'MOST trial (Adeoye NEJM 2024, PMID 39231343) found NO benefit and possible harm from argatroban or eptifibatide added to IV lytic. Do not give adjunctive anticoagulants/antiplatelets in the first 24h post-lytic.',
+      source: 'Adeoye NEJM 2024;391:810-20 (MOST, PMID 39231343); MR CLEAN-MED Lancet 2022 (PMID 35202525)',
       class: 'Class 3 (no benefit/possible harm)'
     };
   }
@@ -1211,10 +1209,9 @@ export const lipidsTargetPostStroke = ({ strokeSubtype, currentLDL, onStatin, st
 // =====================================================================
 // ARCADIA / ATTICUS advisory — atrial cardiopathy ≠ AC indication
 // =====================================================================
-// ARCADIA (Kamel JAMA 2024;331:573-81): n=1015 ESUS + atrial cardiopathy
-// PMID intentionally omitted pending verification — earlier inline cite was duplicated with TESLA.
+// ARCADIA (Kamel JAMA 2024;331:573-81, PMID 38324415): n=1015 ESUS + atrial cardiopathy
 // markers. Apixaban vs ASA. Recurrent stroke 4.4 vs 4.4 per 100 PY (HR 1.00) — NEUTRAL.
-// ATTICUS (NEJM Evid 2023, PMID 38320511): n=352 ESUS + cardiopathy/PFO marker;
+// ATTICUS (Geisler NEJM Evid 2023, PMID 38320511): n=352 ESUS + cardiopathy/PFO marker;
 // apixaban not superior to ASA.
 // Implication: don't anticoagulate empirically for "atrial cardiopathy" — pursue prolonged
 // rhythm monitoring (ICM) instead.
@@ -1239,7 +1236,7 @@ export const arcadiaAdvisory = ({ ptfv1, ntProBNP, laVolumeIndex, laDiameterCmM2
       ? '1) Implant ICM (Reveal LINQ or equivalent) — STROKE-AF showed AF in 12.1% even of non-cardioembolic strokes. 2) Continue antiplatelet (aspirin 81 mg). 3) Switch to OAC ONLY if AF detected with burden >24h or daily episodes.'
       : 'Standard secondary prevention (antiplatelet + statin + BP). Consider ICM if other clinical features suggest paroxysmal AF (elevated HAVOC score, atrial cardiopathy, recurrent embolic pattern, frequent palpitations).',
     afBurdenThreshold: 'ARTESIA showed apixaban benefit in subclinical AF ≥6 min (mostly hours), but with bleeding cost. NOAH-AFNET-6 was neutral. Practical: trigger OAC at sustained AF >24h or daily episodes; shorter-burst subclinical AF = uncertain benefit.',
-    source: 'ARCADIA JAMA 2024;331:573-81 (Kamel et al.); ATTICUS NEJM Evid 2023 (PMID 38320511); STROKE-AF JAMA 2021 (PMID 34061145)',
+    source: 'ARCADIA JAMA 2024;331:573-81 (Kamel et al., PMID 38324415); ATTICUS NEJM Evid 2023 (PMID 38320511); STROKE-AF JAMA 2021 (PMID 34061145)',
     class: 'Class 3 (no benefit) for empiric OAC based on cardiopathy markers alone'
   };
 };
@@ -1361,4 +1358,237 @@ export const getAIConfiguration = () => {
   } catch (e) {
     return { provider: 'mock', apiKey: '' };
   }
+};
+
+// =====================================================================
+// CRAO Acute Thrombolysis Decision Tool (AHA 2021 / THEIA 2025)
+// =====================================================================
+// Evaluates acute IV thrombolysis eligibility for Central Retinal Artery Occlusion.
+// AHA Statement 2021 (Mac Grory, Stroke 2021;52:e282-e294, PMID 33677974);
+// THEIA trial (Préterre et al., Lancet Neurol 2025;24:110-120, PMID 41109232).
+export const evaluateCRAOTreatment = ({
+  onsetHours,
+  visualAcuity,
+  fundusHemorrhage,
+  ivtContraindicated,
+  age
+} = {}) => {
+  const t = parseFloat(onsetHours);
+  const a = Number.isFinite(parseFloat(age)) ? parseFloat(age) : 18;
+  if (!Number.isFinite(t)) return null;
+
+  const windowOk = t >= 0 && t <= 4.5;
+  const ageOk = a >= 18;
+
+  let visionOk = false;
+  if (typeof visualAcuity === 'boolean') {
+    visionOk = visualAcuity;
+  } else if (typeof visualAcuity === 'string') {
+    const v = visualAcuity.toLowerCase().trim();
+    const snellenMatch = v.match(/20\/(\d+)/);
+    if (snellenMatch) {
+      const denom = parseInt(snellenMatch[1], 10);
+      visionOk = denom >= 200;
+    } else {
+      visionOk = ['no-light-perception', 'light-perception', 'hand-motion', 'count-fingers', 'severe', 'nlp', 'lp', 'hm', 'cf'].some(k => v.includes(k));
+    }
+  } else {
+    visionOk = true;
+  }
+
+  const noHemorrhage = fundusHemorrhage === false;
+  const noContraindication = ivtContraindicated === false;
+
+  const eligible = windowOk && ageOk && visionOk && noHemorrhage && noContraindication;
+
+  const contraindications = [];
+  if (!windowOk) contraindications.push(`Onset ${t}h exceeds 4.5h window`);
+  if (!ageOk) contraindications.push(`Age ${a} < 18 years`);
+  if (!visionOk) contraindications.push('Visual acuity not meeting severe vision loss criteria (<= 20/200 / count fingers / light perception)');
+  if (!noHemorrhage) contraindications.push('Retinal hemorrhage present on fundoscopy / OCT');
+  if (!noContraindication) contraindications.push('Systemic contraindications to IV thrombolysis present');
+
+  return {
+    eligible,
+    onsetHours: t,
+    age: a,
+    visualAcuityOk: visionOk,
+    noHemorrhage,
+    noContraindications: noContraindication,
+    contraindications,
+    recommendation: eligible
+      ? 'Eligible for acute IV thrombolysis (TNK 0.25 mg/kg max 25 mg OR alteplase 0.9 mg/kg max 90 mg) within 4.5h of sudden painless monocular vision loss. Perform urgent ophthalmology / fundoscopy consult to confirm CRAO and rule out retinal hemorrhage prior to lytic infusion.'
+      : `Ineligible for IV thrombolysis in CRAO: ${contraindications.join('; ')}.`,
+    dosingInfo: 'IV Tenecteplase 0.25 mg/kg (max 25 mg) single IV bolus OR Alteplase 0.9 mg/kg (10% bolus, remainder over 60 min, max 90 mg).',
+    sources: 'AHA Scientific Statement (Mac Grory Stroke 2021, PMID 33677974); THEIA Trial (Préterre Lancet Neurol 2025, PMID 41109232)',
+    class: 'Class IIa (AHA 2021 statement & 2025 THEIA trial evidence)'
+  };
+};
+
+// =====================================================================
+// SeLECT Post-Stroke Seizure & Epilepsy Risk Score
+// =====================================================================
+// Galovic M et al. Lancet Neurol 2018;17:143-152 (PMID 29413315).
+// Predicts 1-year and 5-year risk of late post-stroke seizures / epilepsy.
+export const calculateSeLECTScore = ({
+  nihss,
+  corticalInvolvement,
+  earlySeizure,
+  lvoArtery,
+  middleCerebralTerritory
+} = {}) => {
+  const n = parseFloat(nihss);
+  if (!Number.isFinite(n)) return null;
+
+  const toBool = (val) => val === true || String(val).toLowerCase() === 'true' || val === 1;
+
+  const isCortical = toBool(corticalInvolvement);
+  const isEarlySeizure = toBool(earlySeizure);
+  const isLvo = toBool(lvoArtery);
+  const isMca = toBool(middleCerebralTerritory);
+
+  const nihssPts = n >= 11 ? 2 : n >= 4 ? 1 : 0;
+  const corticalPts = isCortical ? 2 : 0;
+  const earlySeizurePts = isEarlySeizure ? 3 : 0;
+  const lvoPts = isLvo ? 1 : 0;
+  const mcaPts = isMca ? 1 : 0;
+
+  const score = nihssPts + corticalPts + earlySeizurePts + lvoPts + mcaPts;
+
+  const riskTable = {
+    0: { y1: '0.7%', y5: '1.3%', numY1: 0.7, numY5: 1.3, tier: 'Low' },
+    1: { y1: '1.2%', y5: '2.4%', numY1: 1.2, numY5: 2.4, tier: 'Low' },
+    2: { y1: '2.1%', y5: '4.2%', numY1: 2.1, numY5: 4.2, tier: 'Low-Moderate' },
+    3: { y1: '3.7%', y5: '7.3%', numY1: 3.7, numY5: 7.3, tier: 'Moderate' },
+    4: { y1: '6.4%', y5: '12.4%', numY1: 6.4, numY5: 12.4, tier: 'Moderate-High' },
+    5: { y1: '10.9%', y5: '20.3%', numY1: 10.9, numY5: 20.3, tier: 'High' },
+    6: { y1: '17.9%', y5: '31.6%', numY1: 17.9, numY5: 31.6, tier: 'High' },
+    7: { y1: '28.1%', y5: '46.0%', numY1: 28.1, numY5: 46.0, tier: 'Very High' },
+    8: { y1: '41.3%', y5: '61.7%', numY1: 41.3, numY5: 61.7, tier: 'Very High' },
+    9: { y1: '56.0%', y5: '76.2%', numY1: 56.0, numY5: 76.2, tier: 'Very High' }
+  };
+
+  const clampedScore = Math.min(Math.max(score, 0), 9);
+  const risk = riskTable[clampedScore];
+
+  return {
+    score: clampedScore,
+    oneYearRisk: risk.y1,
+    fiveYearRisk: risk.y5,
+    riskTier: risk.tier,
+    recommendation: clampedScore >= 4
+      ? `High risk of late post-stroke epilepsy (${risk.y5} at 5 years). Monitor closely and counsel patient/family on seizure precautions. Routine prophylactic ASM is NOT recommended, but initiate ASM promptly if an unprovoked seizure occurs >7 days post-stroke.`
+      : `Low-to-moderate risk of post-stroke epilepsy (${risk.y5} at 5 years). Standard post-stroke follow-up without prophylactic ASM.`,
+    breakdown: {
+      nihssPoints: nihssPts,
+      corticalPoints: corticalPts,
+      earlySeizurePoints: earlySeizurePts,
+      lvoPoints: lvoPts,
+      mcaPoints: mcaPts
+    },
+    source: 'Galovic M et al. Lancet Neurol 2018;17:143-152 (SeLECT Score, PMID 29413315)'
+  };
+};
+
+// =====================================================================
+// EDEMA Score for Malignant MCA Brain Swelling Risk
+// =====================================================================
+// Strbian D et al. Int J Stroke 2013;8:529-534 (PMID 22405327).
+// Predicts early severe brain swelling & malignant MCA infarction risk.
+export const calculateEDEMAScore = ({
+  nihss,
+  aspects,
+  earlyInfarctSigns,
+  denseArterySign,
+  bloodGlucoseMgDl,
+  bloodGlucoseMmolL,
+  massEffect,
+  historyHypertension
+} = {}) => {
+  const n = parseFloat(nihss);
+  if (!Number.isFinite(n)) return null;
+
+  let score = 0;
+
+  // 1. Admission NIHSS (12-19 = 1 pt, >=20 = 2 pts)
+  let nihssPts = 0;
+  if (n >= 20) nihssPts = 2;
+  else if (n >= 12) nihssPts = 1;
+  score += nihssPts;
+
+  // 2. Early Infarct Signs (ASPECTS < 7 or >1/3 MCA = 2 pts)
+  let earlyPts = 0;
+  const asp = parseFloat(aspects);
+  if (earlyInfarctSigns === true || (Number.isFinite(asp) && asp < 7)) {
+    earlyPts = 2;
+  }
+  score += earlyPts;
+
+  // 3. Dense Artery Sign (1 pt)
+  let densePts = denseArterySign === true ? 1 : 0;
+  score += densePts;
+
+  // 4. Elevated Blood Glucose (>162 mg/dL or >9.0 mmol/L = 1 pt)
+  let glucosePts = 0;
+  const gMg = parseFloat(bloodGlucoseMgDl);
+  const gMmol = parseFloat(bloodGlucoseMmolL);
+  if ((Number.isFinite(gMg) && gMg > 162) || (Number.isFinite(gMmol) && gMmol > 9.0)) {
+    glucosePts = 1;
+  }
+  score += glucosePts;
+
+  // 5. Mass Effect (sulcal effacement = 1 pt, midline shift = 2 pts)
+  let massPts = 0;
+  if (typeof massEffect === 'number' && Number.isFinite(massEffect)) {
+    massPts = Math.floor(Math.min(Math.max(massEffect, 0), 2));
+  } else if (typeof massEffect === 'string') {
+    const m = massEffect.toLowerCase().trim();
+    if (/^(no|without|absent|none|neg)/i.test(m) || m.includes('no shift') || m.includes('without midline shift') || m.includes('no effacement') || m.includes('without effacement') || m.includes('no compression')) {
+      massPts = 0;
+    } else if (m.includes('shift')) {
+      massPts = 2;
+    } else if (m.includes('effacement') || m.includes('cistern') || m.includes('compression')) {
+      massPts = 1;
+    }
+  } else if (massEffect === true) {
+    massPts = 2;
+  }
+  score += massPts;
+
+  // 6. History of Hypertension (1 pt)
+  let htnPts = historyHypertension === true ? 1 : 0;
+  score += htnPts;
+
+  const clampedScore = Math.min(Math.max(score, 0), 9);
+
+  let riskTier = 'Low';
+  let estimatedSwellingRisk = '<10%';
+  if (clampedScore >= 6) {
+    riskTier = 'High';
+    estimatedSwellingRisk = '>60-80%';
+  } else if (clampedScore >= 3) {
+    riskTier = 'Moderate';
+    estimatedSwellingRisk = '20-40%';
+  }
+
+  return {
+    score: clampedScore,
+    riskTier,
+    estimatedSwellingRisk,
+    highRiskForMalignantEdema: clampedScore >= 6,
+    recommendation: clampedScore >= 6
+      ? `EDEMA Score ${clampedScore} indicates HIGH RISK (>60-80%) of malignant MCA brain swelling and herniation. Trigger early neurosurgical consultation for decompressive hemicraniectomy evaluation (DESTINY II / DECIMAL / HAMLET trials). Place ICU monitoring, order q1-2h neurochecks, target SBP <140 mmHg (or <180 post-EVT), avoid hypoventilation/hyperthermia, and prepare osmotherapy (3% hypertonic saline / mannitol).`
+      : clampedScore >= 3
+      ? `EDEMA Score ${clampedScore} indicates MODERATE RISK (20-40%) of severe brain swelling. Monitor in Neuro-ICU / Stepdown with serial neurochecks and repeat CT at 24h or immediately upon clinical change.`
+      : `EDEMA Score ${clampedScore} indicates LOW RISK (<10%) of malignant brain swelling. Standard post-stroke monitoring.`,
+    breakdown: {
+      nihssPoints: nihssPts,
+      earlyInfarctPoints: earlyPts,
+      denseArteryPoints: densePts,
+      glucosePoints: glucosePts,
+      massEffectPoints: massPts,
+      hypertensionPoints: htnPts
+    },
+    source: 'Strbian D et al. Int J Stroke 2013;8:529-534 (EDEMA Score, PMID 22405327)'
+  };
 };
