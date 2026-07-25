@@ -212,7 +212,7 @@ const EDUCATION_MODULES = [
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-07-24',
     references: [
-      { label: 'AHA Statement 2021', citation: 'Mac Grory B, et al. Management of Central Retinal Artery Occlusion. Stroke. 2021;52(6):e282-e294.', pmid: '33678099' },
+      { label: 'AHA Statement 2021', citation: 'Mac Grory B, et al. Management of Central Retinal Artery Occlusion. Stroke. 2021;52(6):e282-e294.', pmid: '33677974' },
       { label: 'THEIA Trial 2025', citation: 'Préterre C, et al. Intravenous alteplase versus oral aspirin for acute central retinal artery occlusion (THEIA). Lancet Neurol. 2025;24:110-120.', pmid: '41109232' }
     ]
   },
@@ -224,7 +224,7 @@ const EDUCATION_MODULES = [
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-07-24',
     references: [
-      { label: 'SeLECT Score Study', citation: 'Galovic M, et al. Prediction of late seizures after ischaemic stroke with the SeLECT score. Lancet Neurol. 2018;17(2):143-152.', pmid: '29329707' }
+      { label: 'SeLECT Score Study', citation: 'Galovic M, et al. Prediction of late seizures after ischaemic stroke with the SeLECT score. Lancet Neurol. 2018;17(2):143-152.', pmid: '29413315' }
     ]
   },
   {
@@ -452,7 +452,7 @@ const EDUCATION_MODULES = [
       { label: 'AHA/ASA 2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
       { label: 'AHA/ASA 2023 aSAH Guideline', citation: 'Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.', pmid: '37212182' },
       { label: 'IsCHEMiA Score Validation', citation: 'IsCHEMiA in Vascular Epilepsy: Identifying Risks for Post Stroke Epilepsy. Epilepsy Currents. 2026;26.', pmid: null },
-      { label: 'SeLECT Score Study', citation: 'Galovic M, et al. SeLECT: a prediction model for late seizures after ischemic stroke. Lancet Neurol. 2018;17(2):143-152.', pmid: '29329707' }
+      { label: 'SeLECT Score Study', citation: 'Galovic M, et al. SeLECT: a prediction model for late seizures after ischemic stroke. Lancet Neurol. 2018;17(2):143-152.', pmid: '29413315' }
     ]
   },
   {
@@ -5019,7 +5019,7 @@ export function AntiepilepticDrugsCard() {
             {/* Citations Footer */}
             <div className="ref-citation" style={{marginTop: 'auto', padding: '6px 10px 0 10px', fontSize: '8.2pt', lineHeight: '1.25', borderTop: '1px solid var(--rule-soft)'}}>
               <strong>AIS Guidelines:</strong> Prabhakaran S et al. Stroke. 2026. <a href="https://pubmed.ncbi.nlm.nih.gov/41582814/" target="_blank">PMID: 41582814</a>. | <strong>ICH Guidelines:</strong> Greenberg SM et al. Stroke. 2022. <a href="https://pubmed.ncbi.nlm.nih.gov/35579034/" target="_blank">PMID: 35579034</a>.<br/>
-              <strong>IsCHEMiA Score:</strong> Epilepsy Currents. 2026. | <strong>SeLECT Score:</strong> Galovic M et al. Lancet Neurol. 2018. <a href="https://pubmed.ncbi.nlm.nih.gov/29329707/" target="_blank">PMID: 29329707</a>.
+              <strong>IsCHEMiA Score:</strong> Epilepsy Currents. 2026. | <strong>SeLECT Score:</strong> Galovic M et al. Lancet Neurol. 2018. <a href="https://pubmed.ncbi.nlm.nih.gov/29413315/" target="_blank">PMID: 29413315</a>.
             </div>
           </div>
         </div>
@@ -6851,7 +6851,7 @@ export function CraoThrombolysisCard() {
               <div className="toast-card neutral">
                 <h3>2. Evidence Base (AHA 2021 &amp; THEIA 2025)</h3>
                 <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
-                  <li><strong>AHA Statement 2021 (PMID 33678099):</strong> Recommends acute IV thrombolysis in eligible CRAO presenting &le;4.5h without retinal hemorrhage.</li>
+                  <li><strong>AHA Statement 2021 (PMID 33677974):</strong> Recommends acute IV thrombolysis in eligible CRAO presenting &le;4.5h without retinal hemorrhage.</li>
                   <li><strong>THEIA Trial 2025 (PMID 41109232):</strong> Randomized clinical trial showing IV alteplase significantly improved visual recovery (&gt;3 lines improvement) compared to oral aspirin (OR 3.1) when treated within 4.5h.</li>
                 </ul>
               </div>
@@ -6886,7 +6886,7 @@ export function SelectSeizureRiskCard() {
         <div className="card-content">
           <h1 style={{textAlign: 'center', marginBottom: '4px'}}>SeLECT Post-Stroke Seizure &amp; Epilepsy Risk Score</h1>
           <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
-            Galovic M et al. Lancet Neurol 2018 Reference Card (PMID 29329707)
+            Galovic M et al. Lancet Neurol 2018 Reference Card (PMID 29413315)
           </p>
 
           <svg viewBox="0 0 735 90" role="img" aria-label="SeLECT Post-Stroke Seizure Risk Pathway" style={{width: '100%', height: '90px', marginBottom: '10px'}}>
@@ -6977,7 +6977,7 @@ export function EdemaSwellingRiskCard() {
         <div className="card-content">
           <h1 style={{textAlign: 'center', marginBottom: '4px'}}>EDEMA Score: Malignant MCA Brain Swelling Risk</h1>
           <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
-            Strbian D et al. Stroke 2013 Reference Card (PMID 23887841)
+            Strbian D et al. Stroke 2013 Reference Card (PMID 22405327)
           </p>
 
           <svg viewBox="0 0 735 90" role="img" aria-label="EDEMA Malignant Brain Swelling Pathway" style={{width: '100%', height: '90px', marginBottom: '10px'}}>
