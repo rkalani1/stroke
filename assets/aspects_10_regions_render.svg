@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="100%" height="100%" role="img" aria-labelledby="aspects-title aspects-desc">
+  <title id="aspects-title">ASPECTS 10 Anatomical Regions Render</title>
+  <desc id="aspects-desc">Annotated axial non-contrast CT brain render showing all 10 ASPECTS regions (Caudate, Lentiform, Internal Capsule, Insular ribbon, M1-M6 MCA cortical territories) with scoring rules.</desc>
+  <defs>
+    <style>
+      .bg { fill: #090d16; }
+      .card-bg { fill: #131c2e; stroke: #1e2d4a; stroke-width: 1.5; }
+      .title-text { font-family: system-ui, -apple-system, sans-serif; font-size: 26px; font-weight: 800; fill: #f8fafc; }
+      .subtitle-text { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; fill: #a7f3d0; }
+      .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 17px; font-weight: 700; }
+      .card-body { font-family: system-ui, -apple-system, sans-serif; font-size: 13.5px; fill: #e2e8f0; line-height: 1.5; }
+      .card-sub { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #94a3b8; }
+      .region-tag { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 800; text-anchor: middle; fill: #ffffff; }
+      
+      @media (prefers-color-scheme: light) {
+        .bg { fill: #0f172a; }
+        .card-bg { fill: #1e293b; stroke: #334155; }
+        .title-text { fill: #f8fafc; }
+        .subtitle-text { fill: #34d399; }
+        .card-body { fill: #e2e8f0; }
+        .card-sub { fill: #94a3b8; }
+      }
+    </style>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <rect class="bg" width="1200" height="900" rx="16"/>
+
+  <!-- Header -->
+  <g transform="translate(40, 30)" filter="url(#shadow)">
+    <rect class="card-bg" width="1120" height="90" rx="12" stroke="#10b981" stroke-width="2"/>
+    <text x="560" y="40" class="title-text" text-anchor="middle">ASPECTS: 10 ANATOMICAL REGIONS ON NCCT BRAIN</text>
+    <text x="560" y="68" class="subtitle-text" text-anchor="middle">Alberta Stroke Program Early CT Score • Ganglionic &amp; Supraganglionic Axial Level Mapping</text>
+  </g>
+
+  <!-- Left: Axial NCCT Brain Slice 1 - Ganglionic Level (7 Regions: C, L, IC, I, M1, M2, M3) -->
+  <g transform="translate(40, 140)" filter="url(#shadow)">
+    <rect class="card-bg" width="540" height="660" rx="12"/>
+    <text x="270" y="35" class="card-title" fill="#34d399" text-anchor="middle">1. GANGLIONIC LEVEL (SUBCORTICAL &amp; INFERIOR MCA)</text>
+
+    <!-- Brain Slice Contour -->
+    <g transform="translate(30, 60)">
+      <path d="M 240 20 C 370 20 440 100 440 250 C 440 400 370 480 240 480 C 110 480 40 400 40 250 C 40 100 110 20 240 20 Z" fill="#1e293b" stroke="#64748b" stroke-width="12"/>
+      <line x1="240" y1="30" x2="240" y2="470" stroke="#475569" stroke-width="2" stroke-dasharray="4 4"/>
+
+      <!-- Lateral Ventricles -->
+      <path d="M 225 170 C 220 200 220 240 228 270 C 235 240 235 200 225 170 Z" fill="#090d16"/>
+      <path d="M 255 170 C 260 200 260 240 252 270 C 245 240 245 200 255 170 Z" fill="#090d16"/>
+
+      <!-- REGION C: Caudate Head (Cyan) -->
+      <path d="M 255 160 C 275 165 285 190 275 210 C 265 210 255 185 255 160 Z" fill="#0284c7" stroke="#38bdf8" stroke-width="2" opacity="0.85"/>
+      <text x="270" y="185" class="region-tag">C</text>
+
+      <!-- REGION L: Lentiform Nucleus (Amber) -->
+      <path d="M 295 215 L 340 235 L 305 270 Z" fill="#d97706" stroke="#fbbf24" stroke-width="2" opacity="0.85"/>
+      <text x="315" y="245" class="region-tag">L</text>
+
+      <!-- REGION IC: Internal Capsule (Purple) -->
+      <path d="M 275 200 L 292 212 L 285 260 L 265 235 Z" fill="#7c3aed" stroke="#c084fc" stroke-width="2" opacity="0.85"/>
+      <text x="280" y="232" class="region-tag" font-size="10">IC</text>
+
+      <!-- REGION I: Insular Ribbon (Red) -->
+      <path d="M 355 210 C 365 230 365 260 355 280 L 345 275 C 352 258 352 232 345 215 Z" fill="#ef4444" stroke="#f87171" stroke-width="2" opacity="0.85"/>
+      <text x="356" y="250" class="region-tag" font-size="11">I</text>
+
+      <!-- REGION M1: Anterior MCA Cortex (Green) -->
+      <path d="M 240 25 C 320 25 380 60 390 120 L 320 160 C 300 120 270 80 240 70 Z" fill="#059669" stroke="#34d399" stroke-width="2" opacity="0.85"/>
+      <text x="320" y="95" class="region-tag">M1</text>
+
+      <!-- REGION M2: MCA Lateral Cortex (Blue) -->
+      <path d="M 395 125 C 430 180 430 260 400 310 L 350 280 C 370 240 370 190 350 165 Z" fill="#2563eb" stroke="#60a5fa" stroke-width="2" opacity="0.85"/>
+      <text x="390" y="220" class="region-tag">M2</text>
+
+      <!-- REGION M3: Posterior MCA Cortex (Orange) -->
+      <path d="M 395 315 C 375 390 320 450 240 470 L 240 400 C 290 380 340 340 350 300 Z" fill="#ea580c" stroke="#fb923c" stroke-width="2" opacity="0.85"/>
+      <text x="330" y="400" class="region-tag">M3</text>
+    </g>
+
+    <text x="270" y="630" class="card-sub" text-anchor="middle">Inferior MCA Territory &amp; Basal Ganglia Level</text>
+  </g>
+
+  <!-- Right: Axial NCCT Brain Slice 2 - Supraganglionic Level (3 Regions: M4, M5, M6) + Legend -->
+  <g transform="translate(620, 140)" filter="url(#shadow)">
+    <rect class="card-bg" width="540" height="660" rx="12"/>
+    <text x="270" y="35" class="card-title" fill="#34d399" text-anchor="middle">2. SUPRAGANGLIONIC LEVEL &amp; SCORING RULES</text>
+
+    <!-- Brain Slice Contour 2 -->
+    <g transform="translate(30, 60)">
+      <path d="M 240 20 C 370 20 440 100 440 250 C 440 400 370 480 240 480 C 110 480 40 400 40 250 C 40 100 110 20 240 20 Z" fill="#1e293b" stroke="#64748b" stroke-width="12"/>
+      <line x1="240" y1="30" x2="240" y2="470" stroke="#475569" stroke-width="2" stroke-dasharray="4 4"/>
+
+      <!-- Corona Radiata Ventricle Bodies -->
+      <path d="M 228 200 L 232 280" stroke="#090d16" stroke-width="8"/>
+      <path d="M 252 200 L 248 280" stroke="#090d16" stroke-width="8"/>
+
+      <!-- REGION M4: Anterior Superior MCA (Lime) -->
+      <path d="M 240 25 C 320 25 380 60 390 130 L 310 170 C 290 120 270 80 240 70 Z" fill="#65a30d" stroke="#a3e635" stroke-width="2" opacity="0.85"/>
+      <text x="320" y="95" class="region-tag">M4</text>
+
+      <!-- REGION M5: Lateral Superior MCA (Magenta) -->
+      <path d="M 395 135 C 430 190 430 260 400 315 L 310 270 C 340 240 340 190 320 175 Z" fill="#c026d3" stroke="#e879f9" stroke-width="2" opacity="0.85"/>
+      <text x="385" y="220" class="region-tag">M5</text>
+
+      <!-- REGION M6: Posterior Superior MCA (Rose) -->
+      <path d="M 395 320 C 375 395 320 455 240 470 L 240 400 C 290 380 340 340 320 300 Z" fill="#e11d48" stroke="#fb7185" stroke-width="2" opacity="0.85"/>
+      <text x="330" y="400" class="region-tag">M6</text>
+    </g>
+
+    <!-- ASPECTS Scoring Guidance Footer Inside Panel -->
+    <g transform="translate(20, 520)">
+      <rect width="500" height="120" fill="#0f172a" stroke="#10b981" stroke-width="1.5" rx="8"/>
+      <text x="15" y="25" class="card-title" fill="#34d399" font-size="14">ASPECTS SCORING ALGORITHM:</text>
+      <text x="15" y="48" class="card-body">• Baseline Score = <tspan font-weight="800" fill="#ffffff">10 Points</tspan> (Normal NCCT brain).</text>
+      <text x="15" y="68" class="card-body">• Subtract <tspan font-weight="800" fill="#ef4444">1 Point</tspan> for early ischemic change (EIC) in each region.</text>
+      <text x="15" y="88" class="card-body">• EIC defined as: Parenchymal hypodensity, sulcal effacement, loss of gray-white distinction.</text>
+      <text x="15" y="108" class="card-sub" fill="#fbbf24">• ASPECTS ≥ 6: Small-to-moderate core (Favorable EVT outcome).</text>
+    </g>
+  </g>
+</svg>

@@ -83,7 +83,27 @@ const CORE_ASSETS = [
   './assets/splash/splash-iphone-16-pro-max.png',
   './assets/splash/splash-iphone-16-pro.png',
   './assets/splash/splash-iphone-16.png',
-  './assets/splash/splash-iphone-8-7-6.png'
+  './assets/splash/splash-iphone-8-7-6.png',
+  './assets/toast_classification_infographic.png',
+  './assets/toast_classification_infographic.svg',
+  './assets/dapt_flowchart_timeline.png',
+  './assets/dapt_flowchart_timeline.svg',
+  './assets/afib_timing_protocol.png',
+  './assets/afib_timing_protocol.svg',
+  './assets/crao_emergency_workflow.png',
+  './assets/crao_emergency_workflow.svg',
+  './assets/select_score_chart.png',
+  './assets/select_score_chart.svg',
+  './assets/edema_swelling_risk.png',
+  './assets/edema_swelling_risk.svg',
+  './assets/ischemic_core_penumbra_render.png',
+  './assets/ischemic_core_penumbra_render.svg',
+  './assets/aspects_10_regions_render.png',
+  './assets/aspects_10_regions_render.svg',
+  './assets/evt_lvo_occlusion_sites.png',
+  './assets/evt_lvo_occlusion_sites.svg',
+  './assets/hematoma_expansion_render.png',
+  './assets/hematoma_expansion_render.svg'
 ];
 
 const CDN_ASSETS = [];

@@ -6143,6 +6143,8 @@ Clinician Name`;
                         </button>
                       )}
                       <svg
+                        aria-hidden="true"
+                        focusable="false"
                         className="w-5 h-5 text-slate-500 transition-transform group-open:rotate-180 dark:text-mute"
                         fill="none"
                         stroke="currentColor"
@@ -6249,7 +6251,7 @@ Clinician Name`;
                         className="bg-cobalt-600 hover:bg-cobalt-700 text-white px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center"
                         onClick={() => window.open(clinicalTrialsUrl, '_blank', 'noopener,noreferrer')}
                       >
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg aria-hidden="true" focusable="false" className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                         View Full Details on ClinicalTrials.gov
@@ -27223,13 +27225,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     aria-label={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}
                                   >
                                     {alertsMuted ? (
-                                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                      <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <path d="m11 5-6 6h-4v6h4l6 6v-18z"></path>
                                         <line x1="23" y1="9" x2="17" y2="15"></line>
                                         <line x1="17" y1="9" x2="23" y2="15"></line>
                                       </svg>
                                     ) : (
-                                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                      <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
                                         <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
                                         <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
@@ -31898,14 +31900,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="space-y-4">
                           <div className="bg-card p-4 rounded-md border border-line relative overflow-hidden group">
                              <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-cobalt-500">
+                                <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-cobalt-500">
                                   <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-4A2.5 2.5 0 0 1 9.5 2Z" />
                                   <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-4A2.5 2.5 0 0 0 14.5 2Z" />
                                 </svg>
                              </div>
                             <div className="mb-4 relative z-10">
                               <h4 className="text-sm font-bold text-slate-700 flex items-center gap-2 dark:text-ink-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-cobalt-500">
+                                <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-cobalt-500">
                                   <rect width="16" height="20" x="4" y="2" rx="2" />
                                   <line x1="8" x2="16" y1="6" y2="6" />
                                   <path d="M16 14v4" />
@@ -32000,7 +32002,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <label className="flex items-center space-x-3 cursor-pointer group">
                               <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${ichScoreItems.volume30 ? 'bg-crit-500 border-crit-500' : 'bg-white border-slate-300 group-hover:border-crit-400 dark:bg-card dark:border-strong'}`}>
                                 {ichScoreItems.volume30 && (
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+                                  <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-white">
                                     <polyline points="20 6 9 17 4 12" />
                                   </svg>
                                 )}
@@ -32017,7 +32019,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <label className="flex items-center space-x-3 cursor-pointer group">
                               <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${ichScoreItems.ivh ? 'bg-crit-500 border-crit-500' : 'bg-white border-slate-300 group-hover:border-crit-400 dark:bg-card dark:border-strong'}`}>
                                 {ichScoreItems.ivh && (
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+                                  <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-white">
                                     <polyline points="20 6 9 17 4 12" />
                                   </svg>
                                 )}
@@ -32034,7 +32036,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <label className="flex items-center space-x-3 cursor-pointer group">
                               <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${ichScoreItems.infratentorial ? 'bg-crit-500 border-crit-500' : 'bg-white border-slate-300 group-hover:border-crit-400 dark:bg-card dark:border-strong'}`}>
                                 {ichScoreItems.infratentorial && (
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+                                  <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-white">
                                     <polyline points="20 6 9 17 4 12" />
                                   </svg>
                                 )}

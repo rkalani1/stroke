@@ -6,6 +6,7 @@ import { PupillometrySimulator } from './simulators/PupillometrySimulator.jsx';
 import { NeuroExamsTool } from './simulators/NeuroExamsTool.jsx';
 import { SubTabs as V7SubTabs } from './design/primitives.jsx';
 import { LandmarkTrialsCard } from './teaching.jsx';
+import { InteractiveImageLightbox, VisualAssetFigure } from './components.jsx';
 import {
   completedTrials as evidenceCompletedTrials,
   recommendations as evidenceRecommendations,
@@ -1656,6 +1657,7 @@ const BedsidePocketCardsStyles = () => (
 
 
 export function ToastClassificationCard() {
+  const [lightboxImage, setLightboxImage] = useState(null);
   return (
     <div className="bedside-card-view screen-layout">
       <div className="card-wrapper card-add_figure_01_toast">
@@ -1666,48 +1668,16 @@ export function ToastClassificationCard() {
       Trial of Org 10172 in Acute Stroke Treatment (TOAST) diagnostic criteria for ischemic stroke etiology.
     </p>
     
-    
-    <svg viewBox="0 0 735 120" role="img" aria-label="TOAST Ischemic Stroke Subtype Classification Flowchart" style={{width: '100%', height: '120px', marginBottom: '8px'}}>
-      
-      <rect x="0" y="0" width="735" height="120" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
-      
-      
-      <rect x="267" y="10" width="200" height="30" rx="15" fill="var(--purple-deep)" />
-      <text x="367" y="25" fill="white" fontSize="8.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle" dominantBaseline="central">ACUTE ISCHEMIC STROKE</text>
-      
-      
-      <path d="M 367 40 L 367 55 M 92 55 L 642 55 M 92 55 L 92 80 M 230 55 L 230 80 M 367 55 L 367 80 M 505 55 L 505 80 M 642 55 L 642 80" stroke="var(--purple)" strokeWidth="2" fill="none" />
-      
-      
-      <polygon points="92,85 88,77 96,77" fill="var(--purple)" />
-      <polygon points="230,85 226,77 234,77" fill="var(--purple)" />
-      <polygon points="367,85 363,77 371,77" fill="var(--purple)" />
-      <polygon points="505,85 501,77 509,77" fill="var(--purple)" />
-      <polygon points="642,85 638,77 646,77" fill="var(--purple)" />
-      
-      
-      
-      <rect x="32" y="85" width="120" height="25" rx="5" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1"/>
-      <text x="92" y="101" fill="var(--purple-deep)" fontSize="8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Large Artery (LAA)</text>
-      
-      
-      <rect x="170" y="85" width="120" height="25" rx="5" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1"/>
-      <text x="230" y="101" fill="var(--teal-deep)" fontSize="8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Small Vessel (SVO)</text>
-      
-      
-      <rect x="307" y="85" width="120" height="25" rx="5" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1"/>
-      <text x="367" y="101" fill="var(--red-deep)" fontSize="8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Cardioembolic (CE)</text>
-      
-      
-      <rect x="445" y="85" width="120" height="25" rx="5" fill="var(--slate-soft)" stroke="var(--slate)" strokeWidth="1"/>
-      <text x="505" y="101" fill="var(--slate)" fontSize="8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Other Det. (ODE)</text>
-      
-      
-      <rect x="582" y="85" width="120" height="25" rx="5" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1"/>
-      <text x="642" y="101" fill="var(--amber-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Undetermined Etiology</text>
-    </svg>
+    <VisualAssetFigure
+      src="assets/toast_classification_infographic.png"
+      fallbackSvgSrc="assets/toast_classification_infographic.svg"
+      alt="TOAST Ischemic Stroke Subtype Classification Diagram showing Large Artery Atherosclerosis, Cardioembolism, Small Vessel Occlusion, Other Determined, and Undetermined Etiologies"
+      title="TOAST Ischemic Stroke Subtype Classification"
+      captionId="toast-caption"
+      caption="TOAST Diagnostic Classification for Ischemic Stroke Etiology (LAA, SVO, CE, Other, Undetermined)"
+      onOpenLightbox={setLightboxImage}
+    />
 
-    
     <div className="toast-grid">
       
       <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
@@ -1749,46 +1719,45 @@ export function ToastClassificationCard() {
           <h3>3. Cardioembolism (CE)</h3>
           <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '8.2pt', lineHeight: '1.3', color: 'var(--ink-soft)', marginTop: '2px'}}>
             <div>
-              <strong style={{color: 'var(--red-deep)', fontSize: '8.2pt', textTransform: 'uppercase', display: 'block', marginBottom: '4px'}}>High-Risk Sources</strong>
-              • Atrial Fibrillation / Flutter<br/>
+              <strong style={{color: 'var(--red-deep)', display: 'block', fontSize: '7.5pt', marginBottom: '2px'}}>HIGH-RISK SOURCES:</strong>
               • Mechanical prosthetic valve<br/>
+              • Mitral stenosis w/ AFib<br/>
+              • Atrial fibrillation / flutter<br/>
               • Left atrial / LAA thrombus<br/>
-              • Recent anterior MI (&lt;3 mo)<br/>
-              • Dilated cardiomyopathy (EF&lt;30%)<br/>
-              • Infective endocarditis<br/>
-              • Sick sinus syndrome / LA myxoma
+              • Sick sinus syndrome<br/>
+              • Recent MI (&lt; 4 weeks)<br/>
+              • LVEF &lt; 28% or LV thrombus<br/>
+              • Infective endocarditis
             </div>
             <div>
-              <strong style={{color: 'var(--amber-deep)', fontSize: '8.2pt', textTransform: 'uppercase', display: 'block', marginBottom: '4px'}}>Medium-Risk Sources</strong>
-              • PFO + Atrial Septal Aneurysm<br/>
+              <strong style={{color: 'var(--amber-deep)', display: 'block', fontSize: '7.5pt', marginBottom: '2px'}}>MEDIUM-RISK SOURCES:</strong>
               • Mitral valve prolapse<br/>
-              • Mitral annulus calcification<br/>
+              • Mitral ring calcification<br/>
+              • Mitral stenosis w/o AFib<br/>
+              • Left atrial turbulence/smoke<br/>
+              • PFO w/ atrial septal aneurysm<br/>
+              • Atrial flutter (isolated)<br/>
               • Bioprosthetic heart valve<br/>
-              • Calcific aortic stenosis<br/>
-              • LV dysfunction (EF 30–40%)<br/>
-              • LA spontaneous echo contrast
+              • Nonbacterial endocarditis
             </div>
           </div>
         </div>
         
         <div className="toast-card alert-orange">
-          <h3>5. Undetermined Etiology</h3>
+          <h3>5. Undetermined Etiology (UDE / ESUS)</h3>
           <ul className="toast-card-list">
-            <li><strong>Due to competing risks:</strong> ≥ 2 potential etiologies found (e.g., active AFib AND ≥50% ipsilateral carotid stenosis).</li>
-            <li><strong>Negative evaluation:</strong> Complete diagnostic workup identifies no clear source (Cryptogenic stroke).</li>
-            <li><strong>Incomplete evaluation:</strong> Workup is unfinished (e.g., patient discharged/AMA before Echo or vascular imaging).</li>
+            <li><strong>Two or more potential causes:</strong> e.g. 60% carotid stenosis AND atrial fibrillation (unable to assign single primary cause).</li>
+            <li><strong>Incomplete evaluation:</strong> Imaging or cardiac workup pending/incomplete.</li>
+            <li><strong>Cryptogenic / ESUS:</strong> Comprehensive workup unrevealing (Embolic Stroke of Undetermined Source).</li>
           </ul>
-          <div style={{marginTop: '4px', borderTop: '1px dashed rgba(217,134,11,0.3)', paddingTop: '3px', fontSize: '8.8pt', lineHeight: '1.45', color: 'var(--ink-soft)'}}>
-            <strong style={{color: 'var(--amber-deep)'}}>ESUS Criteria (Negative evaluation subset):</strong> non-lacunar stroke, no relevant &gt;50% stenosis, no high-risk cardioembolic source, negative ECG/telemetry ≥24 hours.
-          </div>
         </div>
       </div>
     </div>
 
     
-    <div style={{borderLeft: '4px solid var(--purple)', background: 'var(--purple-soft)', padding: '12px 15px', borderRadius: '6px', fontSize: '9.5pt', marginBottom: '20px'}}>
-      <strong style={{color: 'var(--purple-deep)', textTransform: 'uppercase', fontSize: '9.2pt', letterSpacing: '0.05em', display: 'block', marginBottom: '3px'}}>Required Diagnostic Workup to Complete TOAST Classification</strong>
-      <div className="checklist-grid">
+    <div style={{marginTop: '12px', marginBottom: '12px'}}>
+      <h3 style={{fontSize: '9.5pt', color: 'var(--purple-deep)', fontWeight: '700', marginBottom: '6px'}}>Mandatory Etiologic Workup Checklist</h3>
+      <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', fontSize: '8.5pt'}}>
         <div className="checklist-item">
           <div className="checklist-dot">✓</div>
           <div><strong>Parenchymal:</strong> MRI Brain (DWI/ADC) preferred, or CT Head.</div>
@@ -1821,12 +1790,22 @@ export function ToastClassificationCard() {
   </div>
 </div>
 </div>
+      {lightboxImage && (
+        <InteractiveImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          title={lightboxImage.title}
+          fallbackSvgSrc={lightboxImage.fallbackSvgSrc}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </div>
   );
 }
 
 
 export function DaptRegimensCard() {
+  const [lightboxImage, setLightboxImage] = useState(null);
   return (
     <div className="bedside-card-view screen-layout">
       <div className="card-wrapper card-add_figure_03_dapt_regimens landscape-card">
@@ -1834,81 +1813,15 @@ export function DaptRegimensCard() {
   <div className="card-content">
     <h1 style={{textAlign: 'center', marginBottom: '8px'}}>DAPT for Non-Cardioembolic Ischemic Stroke</h1>
 
-    
-    <svg viewBox="0 0 735 240" role="img" aria-label="DAPT Secondary Stroke Prevention Regimens and Timeline" style={{width: '100%', height: '210px', marginBottom: '6px'}}>
-      
-      <rect x="0" y="0" width="735" height="240" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
-      
-      
-      <rect x="292" y="10" width="150" height="35" rx="6" fill="var(--purple-deep)" />
-      <text x="367" y="23" fill="white" fontSize="8.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">ACUTE STROKE / TIA</text>
-      <text x="367" y="36" fill="rgba(255,255,255,0.8)" fontSize="7pt" fontFamily="IBM Plex Sans" textAnchor="middle">Non-Cardioembolic Onset</text>
-      
-      
-      <path d="M 367 45 L 367 60 M 120 60 L 615 60 M 120 60 L 120 75 M 367 60 L 367 75 M 615 60 L 615 75" stroke="var(--purple)" strokeWidth="1.5" fill="none"/>
-      
-      
-      <rect x="35" y="75" width="170" height="40" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5"/>
-      <text x="120" y="87" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Symptomatic Intracranial</text>
-      <text x="120" y="97" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Atherosclerotic Stenosis</text>
-      <text x="120" y="108" fill="var(--ink-soft)" fontSize="7pt" fontFamily="IBM Plex Sans" textAnchor="middle">70-99% Stenosis (SAMMPRIS)</text>
-      
-      <path d="M 120 115 L 120 140" stroke="var(--teal)" strokeWidth="1.5" fill="none"/>
-      <polygon points="120,145 117,137 123,137" fill="var(--teal)" />
-      
-      <rect x="35" y="145" width="170" height="40" rx="6" fill="white" stroke="var(--teal)" strokeWidth="2" style={{filter: 'drop-shadow(0 2px 4px var(--teal-glow))'}}/>
-      <text x="120" y="159" fill="var(--teal-deep)" fontSize="9pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ASA + CLOPIDOGREL</text>
-      <text x="120" y="172" fill="var(--red-deep)" fontSize="8pt" fontFamily="IBM Plex Mono" fontWeight="700" textAnchor="middle">Duration: 90 Days</text>
-      
-      
-      <rect x="252" y="75" width="230" height="42" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.5"/>
-      <text x="367" y="88" fill="var(--purple-deep)" fontSize="8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Minor Stroke (NIHSS≤3) / TIA</text>
-      <text x="367" y="99" fill="var(--purple-deep)" fontSize="7pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">Start Clopidogrel + ASA (Day 1)</text>
-      <text x="367" y="110" fill="var(--purple-deep)" fontSize="6.5pt" fontFamily="IBM Plex Mono" fontWeight="600" textAnchor="middle">Send CYP2C19 Genotype on Admission</text>
-      
-      
-      <path d="M 367 117 L 367 127 M 290 127 L 444 127 M 290 127 L 290 145 M 444 127 L 444 145" stroke="var(--purple)" strokeWidth="1.5" fill="none"/>
-      
-      
-      <rect x="215" y="145" width="140" height="42" rx="6" fill="white" stroke="var(--red)" strokeWidth="1.5"/>
-      <text x="285" y="157" fill="var(--red-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">LOF Carrier (*2, *3)</text>
-      <text x="285" y="169" fill="var(--ink-soft)" fontSize="6.5pt" fontFamily="IBM Plex Sans" textAnchor="middle">Results Return (Days 1–3)</text>
-      <text x="285" y="180" fill="var(--red-deep)" fontSize="6.5pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">Switch to Ticagrelor</text>
-      
-      <path d="M 285 187 L 285 203" stroke="var(--red)" strokeWidth="1.5" fill="none"/>
-      <polygon points="285,203 282,195 288,195" fill="var(--red)" />
-      
-      <rect x="215" y="203" width="140" height="32" rx="4" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="2"/>
-      <text x="285" y="213" fill="var(--red-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ASA + TICAGRELOR</text>
-      <text x="285" y="222" fill="var(--red-deep)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Load 180mg STAT, then BID</text>
-      <text x="285" y="231" fill="var(--red-deep)" fontSize="6pt" fontFamily="IBM Plex Mono" fontWeight="700" textAnchor="middle">Complete 21d DAPT</text>
-      
-      
-      <rect x="375" y="145" width="140" height="42" rx="6" fill="white" stroke="var(--purple)" strokeWidth="1.5"/>
-      <text x="445" y="157" fill="var(--purple-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Normal Metabolizer</text>
-      <text x="445" y="169" fill="var(--ink-soft)" fontSize="6.5pt" fontFamily="IBM Plex Sans" textAnchor="middle">Results Return (Days 1–3)</text>
-      <text x="445" y="180" fill="var(--purple-deep)" fontSize="6.5pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">Continue Clopidogrel</text>
-      
-      <path d="M 445 187 L 445 203" stroke="var(--purple)" strokeWidth="1.5" fill="none"/>
-      <polygon points="445,203 442,195 448,195" fill="var(--purple)" />
-      
-      <rect x="375" y="203" width="140" height="32" rx="4" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="2"/>
-      <text x="445" y="213" fill="var(--purple-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ASA + CLOPIDOGREL</text>
-      <text x="445" y="222" fill="var(--purple-deep)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Continue Clopidogrel 75mg qD</text>
-      <text x="445" y="231" fill="var(--purple-deep)" fontSize="6pt" fontFamily="IBM Plex Mono" fontWeight="700" textAnchor="middle">Complete 21d DAPT</text>
-      
-      
-      <rect x="530" y="75" width="170" height="40" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.5"/>
-      <text x="615" y="90" fill="var(--amber-deep)" fontSize="8pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Mild-Mod Stroke (NIHSS≤5)</text>
-      <text x="615" y="102" fill="var(--ink-soft)" fontSize="7pt" fontFamily="IBM Plex Sans" textAnchor="middle">Or High-Risk TIA (THALES)</text>
-      
-      <path d="M 615 115 L 615 140" stroke="var(--amber)" strokeWidth="1.5" fill="none"/>
-      <polygon points="615,145 612,137 618,137" fill="var(--amber)" />
-      
-      <rect x="530" y="145" width="170" height="40" rx="6" fill="white" stroke="var(--amber)" strokeWidth="2" style={{filter: 'drop-shadow(0 2px 4px var(--amber-glow))'}}/>
-      <text x="615" y="159" fill="var(--amber-deep)" fontSize="9pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ASA + TICAGRELOR</text>
-      <text x="615" y="172" fill="var(--red-deep)" fontSize="8pt" fontFamily="IBM Plex Mono" fontWeight="700" textAnchor="middle">Duration: 30 Days</text>
-    </svg>
+    <VisualAssetFigure
+      src="assets/dapt_flowchart_timeline.png"
+      fallbackSvgSrc="assets/dapt_flowchart_timeline.svg"
+      alt="Dual Antiplatelet Therapy (DAPT) Decision Flowchart and 21-to-90 Day Timeline for High-Risk TIA and Minor Ischemic Stroke (CHANCE, POINT, THALES trials)"
+      title="DAPT Flowchart & Timelines"
+      captionId="dapt-caption"
+      caption="Acute Dual Antiplatelet Therapy (DAPT) Decision Flowchart and Regimen Timelines"
+      onOpenLightbox={setLightboxImage}
+    />
 
     
     <table className="card-table" style={{fontSize: '9.0pt', margin: '0 0 10px 0', width: '100%', borderCollapse: 'collapse'}}>
@@ -2039,6 +1952,15 @@ export function DaptRegimensCard() {
   </div>
 </div>
 </div>
+      {lightboxImage && (
+        <InteractiveImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          title={lightboxImage.title}
+          fallbackSvgSrc={lightboxImage.fallbackSvgSrc}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </div>
   );
 }
@@ -2056,7 +1978,7 @@ export function MalignantInfarctionCard() {
     </p>
 
     
-    <svg viewBox="0 0 735 65" role="img" aria-label="Malignant MCA Infarction Clinical Timeline and Surgical Window" style={{width: '100%', height: '65px', marginBottom: '8px'}}>
+    <svg viewBox="0 0 735 65" role="img" focusable="false" aria-label="Malignant MCA Infarction Clinical Timeline and Surgical Window" style={{width: '100%', height: '65px', marginBottom: '8px'}}>
       
       <polygon points="0,0 230,0 242,32 230,65 0,65" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
       <text x="110" y="28" fill="var(--teal-deep)" fontSize="8.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">STAGE 1: 0 - 24 HOURS</text>
@@ -2220,12 +2142,23 @@ export function MalignantInfarctionCard() {
 
 
 export function AfibAnticoagTimingCard() {
+  const [lightboxImage, setLightboxImage] = useState(null);
   return (
     <div className="bedside-card-view screen-layout">
       <div className="card-wrapper card-add_figure_05_afib_anticoag_timing landscape-card">
 <div className="card-container" style={{boxSizing: 'border-box'}}>
   <div className="card-content">
     <h1 style={{textAlign: 'center', marginBottom: '12px'}}>AFib Anticoagulation Restart Timing After Acute Ischemic Stroke</h1>
+
+    <VisualAssetFigure
+      src="assets/afib_timing_protocol.png"
+      fallbackSvgSrc="assets/afib_timing_protocol.svg"
+      alt="Atrial Fibrillation Post-Stroke DOAC Resumption Protocol Diagram showing 1-3-6-12 day rule and CATALYST meta-analysis timing criteria based on stroke severity"
+      title="AFib Anticoagulation Resumption Protocol"
+      captionId="afib-caption"
+      caption="Atrial Fibrillation Post-Stroke Anticoagulation Resumption Protocol & CATALYST Timing"
+      onOpenLightbox={setLightboxImage}
+    />
 
     
     <div style={{borderLeft: '4px solid var(--teal)', background: 'var(--teal-soft)', padding: '6px 10px', borderRadius: '6px', fontSize: '7.8pt', marginBottom: '4px', lineHeight: '1.45', boxShadow: '0 2px 8px var(--teal-glow)'}}>
@@ -2253,7 +2186,7 @@ export function AfibAnticoagTimingCard() {
     </div>
 
     
-    <svg viewBox="0 0 735 150" role="img" aria-label="AFib Anticoagulation Resumption Timing by Infarct Severity" style={{width: '100%', height: '150px', marginBottom: '12px'}}>
+    <svg viewBox="0 0 735 150" role="img" focusable="false" aria-label="AFib Anticoagulation Resumption Timing by Infarct Severity" style={{width: '100%', height: '150px', marginBottom: '12px'}}>
       
       <rect x="0" y="0" width="735" height="150" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
       
@@ -2398,60 +2331,21 @@ export function AfibAnticoagTimingCard() {
   </div>
 </div>
 </div>
+      {lightboxImage && (
+        <InteractiveImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          title={lightboxImage.title}
+          fallbackSvgSrc={lightboxImage.fallbackSvgSrc}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </div>
   );
-}const ImageLightbox = ({ src, alt, title, onClose }) => {
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
-    };
-  }, [onClose]);
+}
 
-  return createPortal(
-    <div 
-      className="fixed inset-0 z-[250] flex flex-col items-center justify-center bg-slate-950/95 p-4 no-print backdrop-blur-sm cursor-zoom-out"
-      role="dialog"
-      aria-modal="true"
-      onClick={onClose}
-    >
-      <button 
-        type="button"
-        className="absolute top-4 right-4 p-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-full transition-colors focus:outline-none shadow-md z-[260]"
-        onClick={(e) => { e.stopPropagation(); onClose(); }}
-        aria-label="Close image preview"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-      
-      <div 
-        className="relative w-full flex justify-center items-center p-2 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 cursor-default"
-        style={{ maxHeight: '88vh', maxWidth: '92vw', display: 'flex', flexDirection: 'column', width: 'auto', height: 'auto' }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <img 
-          src={src} 
-          alt={alt} 
-          style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', display: 'block' }}
-          className="rounded-lg shadow-inner"
-        />
-        {title && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-slate-900/80 text-white text-[11px] px-3.5 py-1.5 rounded-full font-medium shadow-md flex items-center gap-1.5 backdrop-blur-sm border border-white/10 select-none">
-            <span>{title}</span>
-          </div>
-        )}
-      </div>
-    </div>,
-    document.body
-  );
-};
+export const ImageLightbox = InteractiveImageLightbox;
+
 
 
 
@@ -2563,7 +2457,7 @@ export const EVDInfographic = () => {
               </ul>
             </div>
             <div className="flex justify-center items-center p-3 border-t border-slate-150 bg-white dark:bg-slate-800 h-[55px]">
-              <svg viewBox="0 0 280 50" className="w-full max-h-[40px] object-contain select-none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SNACC - Society for Neuroscience in Anesthesiology and Critical Care Logo">
+              <svg viewBox="0 0 280 50" className="w-full max-h-[40px] object-contain select-none" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-label="SNACC - Society for Neuroscience in Anesthesiology and Critical Care Logo">
                 <path d="M 10,25 C 10,15 18,8 28,8 C 38,8 46,15 46,25 C 46,35 38,42 28,42 C 18,42 10,35 10,25 Z" fill="none" stroke="#5B3B9C" strokeWidth="1.5" />
                 <circle cx="28" cy="25" r="4" fill="#18849E" />
                 <line x1="28" y1="25" x2="20" y2="18" stroke="#5B3B9C" strokeWidth="1.2" />
@@ -2877,7 +2771,7 @@ export const ICPInfographic = () => {
           </div>
           <div className="p-4 bg-slate-50/50 dark:bg-slate-950/15 flex flex-col items-center gap-4">
             <div className="bg-slate-950 p-2 rounded-lg border border-slate-250 dark:border-slate-800 w-full">
-              <svg viewBox="0 0 420 150" className="w-full h-auto max-w-[450px] mx-auto block select-none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ICP Waveform Analysis: Normal Compliance (P1 > P2 > P3) versus Impaired Compliance (P2 > P1) Diagram">
+              <svg viewBox="0 0 420 150" className="w-full h-auto max-w-[450px] mx-auto block select-none" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-label="ICP Waveform Analysis: Normal Compliance (P1 > P2 > P3) versus Impaired Compliance (P2 > P1) Diagram">
                 <line x1="10" y1="25" x2="410" y2="25" stroke="#1e293b" strokeWidth="1" />
                 <line x1="10" y1="50" x2="410" y2="50" stroke="#1e293b" strokeWidth="1" />
                 <line x1="10" y1="75" x2="410" y2="75" stroke="#1e293b" strokeWidth="1" />
@@ -2956,7 +2850,7 @@ export function IvThrombolysisCard() {
           </p>
 
           {/* Time-window pathway */}
-          <svg viewBox="0 0 735 96" role="img" aria-label="IV Thrombolysis Thrombolytic Agent Selection and Window Algorithm" style={{width: '100%', height: '96px', marginBottom: '10px'}}>
+          <svg viewBox="0 0 735 96" role="img" focusable="false" aria-label="IV Thrombolysis Thrombolytic Agent Selection and Window Algorithm" style={{width: '100%', height: '96px', marginBottom: '10px'}}>
             <rect x="0" y="0" width="735" height="96" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
             <rect x="18" y="14" width="214" height="30" rx="6" fill="var(--purple-deep)" />
             <text x="125" y="29" fill="white" fontSize="8.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle" dominantBaseline="central">STANDARD WINDOW &le; 4.5 h</text>
@@ -3875,7 +3769,7 @@ export function StrokePrognosisCard() {
               Clinical prediction scales for ischemic and hemorrhagic stroke outcomes.
             </p>
 
-            <svg viewBox="0 0 735 80" role="img" aria-label="Cervical Artery Dissection Pathophysiology Diagram" style={{width: '100%', height: '80px', marginBottom: '8px'}}>
+            <svg viewBox="0 0 735 80" role="img" focusable="false" aria-label="Cervical Artery Dissection Pathophysiology Diagram" style={{width: '100%', height: '80px', marginBottom: '8px'}}>
               <rect x="0" y="0" width="735" height="80" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
               
               <rect x="267" y="10" width="200" height="25" rx="12.5" fill="var(--purple-deep)" />
@@ -4057,7 +3951,7 @@ export function CervicalDissectionCard() {
   const [pngHover, setPngHover] = useState(false);
 
   const renderSVG = () => (
-    <svg viewBox="0 0 735 110" role="img" aria-label="Fibromuscular Dysplasia String of Beads Pathophysiology Diagram" style={{width: '100%', height: '100%'}}>
+    <svg viewBox="0 0 735 110" role="img" focusable="false" aria-label="Fibromuscular Dysplasia String of Beads Pathophysiology Diagram" style={{width: '100%', height: '100%'}}>
       <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
       <path d="M 20 25 L 430 25 M 20 85 L 430 85" stroke="#4A5A6D" strokeWidth="3" strokeLinecap="round" />
       <path d="M 20 33 L 150 33" stroke="#94a3b8" strokeWidth="2" fill="none" />
@@ -4332,7 +4226,7 @@ export function FibromuscularDysplasiaCard() {
   const [lightboxImage, setLightboxImage] = useState(null);
 
   const renderSVG = () => (
-    <svg viewBox="0 0 735 120" role="img" aria-label="Brain Death Evaluation Prerequisites and Clinical Testing Flowchart" style={{width: '100%', height: '100%'}}>
+    <svg viewBox="0 0 735 120" role="img" focusable="false" aria-label="Brain Death Evaluation Prerequisites and Clinical Testing Flowchart" style={{width: '100%', height: '100%'}}>
       <rect x="0" y="0" width="735" height="120" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
       
       {/* --- NORMAL ARTERY --- */}
@@ -4583,7 +4477,7 @@ export function BrainDeathCard() {
             </p>
 
             {/* SVG Visual Pathway */}
-            <svg viewBox="0 0 735 90" role="img" aria-label="Seizure Prophylaxis and Antiepileptic Choice in Stroke" style={{width: '100%', height: '90px', marginBottom: '8px'}}>
+            <svg viewBox="0 0 735 90" role="img" focusable="false" aria-label="Seizure Prophylaxis and Antiepileptic Choice in Stroke" style={{width: '100%', height: '90px', marginBottom: '8px'}}>
               <rect x="0" y="0" width="735" height="90" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
               
               {/* Step 1 */}
@@ -4807,7 +4701,7 @@ export function AntiepilepticDrugsCard() {
             </p>
 
             {/* SVG Visual Pathway */}
-            <svg viewBox="0 0 735 90" role="img" aria-label="Wallenberg Syndrome Lateral Medullary Anatomy and Symptoms Map" style={{width: '100%', height: '90px', marginBottom: '8px'}}>
+            <svg viewBox="0 0 735 90" role="img" focusable="false" aria-label="Wallenberg Syndrome Lateral Medullary Anatomy and Symptoms Map" style={{width: '100%', height: '90px', marginBottom: '8px'}}>
               <rect x="0" y="0" width="735" height="90" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
               
               {/* Step 1 */}
@@ -5064,7 +4958,7 @@ export function AspirinFailureCard() {
               AHA/ASA 2021 Secondary Prevention Guideline &amp; Landmark Trials, updated with evidence through 2026.
             </p>
 
-            <svg viewBox="0 0 735 125" role="img" aria-label="Cerebral Venous Sinus Thrombosis Pathophysiology and Anticoagulation Flowchart" style={{width: '100%', height: '125px', marginBottom: '10px'}}>
+            <svg viewBox="0 0 735 125" role="img" focusable="false" aria-label="Cerebral Venous Sinus Thrombosis Pathophysiology and Anticoagulation Flowchart" style={{width: '100%', height: '125px', marginBottom: '10px'}}>
               <rect x="0" y="0" width="735" height="125" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
               
               <rect x="20" y="20" width="150" height="40" rx="20" fill="var(--purple-deep)" />
@@ -5213,7 +5107,7 @@ export function CvstCard() {
 
             {/* Hero SVG: dural venous sinus map + venous-infarct inset */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 170" role="img" aria-label="Dural Venous Sinus Sagittal Map and Deep Venous System Diagram" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 170" role="img" focusable="false" aria-label="Dural Venous Sinus Sagittal Map and Deep Venous System Diagram" style={{ width: '100%', height: 'auto' }}>
                 {/* ---- Left: sagittal dural sinus map ---- */}
                 <text x="245" y="16" fill="var(--ink-soft)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">DURAL VENOUS SINUS MAP (SAGITTAL)</text>
                 {/* faint head silhouette, occiput to the right */}
@@ -5337,6 +5231,7 @@ const LargeCoreThrombectomyView = () => (
 );
 
 export function LargeCoreThrombectomyCard() {
+  const [lightboxImage, setLightboxImage] = useState(null);
   const trials = [
     { t: 'RESCUE-Japan LIMIT', pop: 'ASPECTS 3–5', res: 'mRS 0–3: 31% vs 13% with EVT' },
     { t: 'SELECT2', pop: 'ASPECTS 3–5 or core ≥50 mL', res: 'mRS 0–2: 20% vs 7%; positive mRS shift' },
@@ -5355,52 +5250,25 @@ export function LargeCoreThrombectomyCard() {
               EVT for large ischemic core (low ASPECTS / large core volume) &mdash; the 2022&ndash;2024 evidence.
             </p>
 
-            {/* Hero SVG: ASPECTS core | core-vs-penumbra | forest-plot motif */}
-            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 180" role="img" aria-label="Large Core EVT ASPECTS Core Penumbra and Trial Forest Plot Diagram" style={{ width: '100%', height: 'auto' }}>
-                {/* Panel 1 — low ASPECTS core */}
-                <text x="120" y="14" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LOW ASPECTS = LARGE CORE</text>
-                <ellipse cx="118" cy="72" rx="96" ry="46" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
-                <line x1="118" y1="28" x2="118" y2="116" stroke="var(--rule-soft)" strokeWidth="1" />
-                <ellipse cx="150" cy="72" rx="46" ry="33" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.4" />
-                <ellipse cx="146" cy="72" rx="26" ry="20" fill="var(--amber)" opacity="0.85" />
-                <text x="146" y="74" fill="#ffffff" fontSize="6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Core</text>
-                <text x="120" y="140" fill="var(--amber-deep)" fontSize="9pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ASPECTS 3&ndash;5</text>
-                <text x="120" y="153" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">≈ 5&ndash;7 of 10 MCA regions involved</text>
-
-                <line x1="240" y1="12" x2="240" y2="164" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
-
-                {/* Panel 2 — core vs salvageable */}
-                <text x="360" y="14" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">CORE vs SALVAGEABLE</text>
-                <ellipse cx="358" cy="74" rx="80" ry="44" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.4" />
-                <ellipse cx="342" cy="74" rx="40" ry="28" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.3" />
-                <ellipse cx="338" cy="74" rx="18" ry="13" fill="var(--amber)" opacity="0.85" />
-                <text x="338" y="76" fill="#ffffff" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Core</text>
-                <text x="405" y="48" fill="var(--teal-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Salvageable</text>
-                <text x="405" y="57" fill="var(--teal-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">penumbra</text>
-                <text x="360" y="140" fill="var(--ink-mute)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">EVT rescues salvageable tissue beyond the core</text>
-
-                <line x1="478" y1="12" x2="478" y2="164" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
-
-                {/* Panel 3 — forest-plot motif */}
-                <text x="605" y="14" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">2022&ndash;2024 RCTs &mdash; mRS SHIFT</text>
-                <line x1="600" y1="26" x2="600" y2="142" stroke="var(--ink-mute)" strokeWidth="1.2" strokeDasharray="3 2" />
-                {[
-                  { n: 'RESCUE-Japan LIMIT', y: 34, dot: 662, lo: 636, hi: 686, c: 'var(--teal-deep)' },
-                  { n: 'SELECT2', y: 52, dot: 650, lo: 626, hi: 672, c: 'var(--teal-deep)' },
-                  { n: 'ANGEL-ASPECT', y: 70, dot: 644, lo: 622, hi: 664, c: 'var(--teal-deep)' },
-                  { n: 'TENSION', y: 88, dot: 654, lo: 630, hi: 676, c: 'var(--teal-deep)' },
-                  { n: 'LASTE', y: 106, dot: 658, lo: 632, hi: 682, c: 'var(--teal-deep)' },
-                  { n: 'TESLA', y: 124, dot: 612, lo: 588, hi: 636, c: 'var(--amber)' },
-                ].map((r) => (
-                  <g key={r.n}>
-                    <text x="486" y={r.y + 2.5} fill="var(--ink-soft)" fontSize="4.8pt" fontFamily="Outfit" fontWeight="700" textAnchor="start">{r.n}</text>
-                    <line x1={r.lo} y1={r.y} x2={r.hi} y2={r.y} stroke={r.c} strokeWidth="1.4" />
-                    <circle cx={r.dot} cy={r.y} r="3.4" fill={r.c} />
-                  </g>
-                ))}
-                <text x="605" y="156" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">← medical  |  EVT favored →</text>
-              </svg>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-2">
+              <VisualAssetFigure
+                src="assets/ischemic_core_penumbra_render.png"
+                fallbackSvgSrc="assets/ischemic_core_penumbra_render.svg"
+                alt="CT Perfusion Ischemic Core vs Penumbra Mismatch Render showing cerebral blood flow (CBF < 30%) core volume and cerebral blood volume mismatch zone for extended window thrombectomy"
+                title="CT Perfusion Core vs Penumbra Mismatch"
+                captionId="core-penumbra-caption"
+                caption="CT Perfusion Mismatch: Ischemic Core (rCBF < 30%) vs. Salvageable Penumbra Zone"
+                onOpenLightbox={setLightboxImage}
+              />
+              <VisualAssetFigure
+                src="assets/aspects_10_regions_render.png"
+                fallbackSvgSrc="assets/aspects_10_regions_render.svg"
+                alt="ASPECTS 10 Anatomical Region CT Neuroimaging Render highlighting subcortical (C, P, IC, M1-M3) and superior cortical (M4-M6) MCA territory regions"
+                title="ASPECTS 10 Anatomical Regions Render"
+                captionId="aspects-caption"
+                caption="ASPECTS 10 Anatomical MCA Territory Regions for Non-Contrast CT Evaluation"
+                onOpenLightbox={setLightboxImage}
+              />
             </div>
 
             {/* §1 The question (purple) */}
@@ -5453,6 +5321,15 @@ export function LargeCoreThrombectomyCard() {
           </div>
         </div>
       </div>
+      {lightboxImage && (
+        <InteractiveImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          title={lightboxImage.title}
+          fallbackSvgSrc={lightboxImage.fallbackSvgSrc}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </div>
   );
 }
@@ -5468,6 +5345,7 @@ const BasilarArteryOcclusionView = () => (
 );
 
 export function BasilarArteryOcclusionCard() {
+  const [lightboxImage, setLightboxImage] = useState(null);
   const hx = (h) => 500 + h * 8.75; // timeline hour → x
   return (
     <div className="bedside-card-view screen-layout">
@@ -5479,66 +5357,15 @@ export function BasilarArteryOcclusionCard() {
               A time-critical posterior-circulation emergency &mdash; recognition, evidence, and selection.
             </p>
 
-            {/* Hero SVG: vertebrobasilar occlusion | pontine territory | windows */}
-            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 180" role="img" aria-label="Basilar Artery Occlusion Brainstem Perfusion and EVT Selection Flowchart" style={{ width: '100%', height: 'auto' }}>
-                {/* Panel 1 — vertebrobasilar tree + occlusion */}
-                <text x="120" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">VERTEBROBASILAR OCCLUSION</text>
-                {/* faint brainstem */}
-                <path d="M 104 40 C 96 40, 92 60, 96 90 C 100 130, 108 150, 120 158 C 132 150, 140 130, 144 90 C 148 60, 144 40, 136 40 Z" fill="#ffffff" stroke="var(--rule-soft)" strokeWidth="1" />
-                {/* vertebral arteries → basilar */}
-                <path d="M 96 160 L 118 116" stroke="var(--teal)" strokeWidth="3.4" fill="none" strokeLinecap="round" />
-                <path d="M 146 160 L 120 116" stroke="var(--teal)" strokeWidth="3.4" fill="none" strokeLinecap="round" />
-                <line x1="119" y1="116" x2="119" y2="48" stroke="var(--teal)" strokeWidth="4" strokeLinecap="round" />
-                {/* PCA / SCA bifurcation at the tip */}
-                <path d="M 119 48 L 98 32" stroke="var(--teal)" strokeWidth="3" fill="none" strokeLinecap="round" />
-                <path d="M 119 48 L 140 32" stroke="var(--teal)" strokeWidth="3" fill="none" strokeLinecap="round" />
-                {/* paramedian perforators */}
-                <line x1="119" y1="66" x2="104" y2="62" stroke="var(--teal)" strokeWidth="1.4" />
-                <line x1="119" y1="66" x2="134" y2="62" stroke="var(--teal)" strokeWidth="1.4" />
-                <line x1="119" y1="96" x2="104" y2="94" stroke="var(--teal)" strokeWidth="1.4" />
-                <line x1="119" y1="96" x2="134" y2="94" stroke="var(--teal)" strokeWidth="1.4" />
-                {/* occlusion clot (mid-basilar), flow above faded */}
-                <line x1="119" y1="86" x2="119" y2="48" stroke="var(--rule)" strokeWidth="4" strokeLinecap="round" strokeDasharray="2 3" />
-                <ellipse cx="119" cy="84" rx="7.5" ry="6" fill="var(--red)" />
-                <text x="150" y="86" fill="var(--red-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">Occlusion</text>
-                <text x="119" y="174" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Vertebral aa. → basilar → PCA</text>
-
-                <line x1="205" y1="12" x2="205" y2="166" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
-
-                {/* Panel 2 — pontine cross section */}
-                <text x="335" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PONTINE PERFORATOR TERRITORY</text>
-                <path d="M 260 74 C 260 44, 410 44, 410 74 C 410 108, 372 124, 335 124 C 298 124, 260 108, 260 74 Z" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
-                {/* paramedian perforator territory shading (ventral/medial) */}
-                <path d="M 335 118 C 312 116, 300 96, 306 74 L 364 74 C 370 96, 358 116, 335 118 Z" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.2" />
-                {/* basilar artery ventral */}
-                <circle cx="335" cy="122" r="5.5" fill="var(--red)" />
-                <line x1="335" y1="118" x2="335" y2="86" stroke="var(--red)" strokeWidth="1.2" strokeDasharray="2 2" />
-                <text x="335" y="92" fill="var(--amber-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Paramedian pons</text>
-                <text x="335" y="145" fill="var(--ink-mute)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Extensive established pontine infarct</text>
-                <text x="335" y="156" fill="var(--red-deep)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">predicts futile recanalization</text>
-
-                <line x1="462" y1="12" x2="462" y2="166" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
-
-                {/* Panel 3 — treatment windows timeline */}
-                <text x="605" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">TREATMENT WINDOWS (0–24 h)</text>
-                <line x1={hx(0)} y1="118" x2={hx(24)} y2="118" stroke="var(--ink-mute)" strokeWidth="1.2" />
-                {[0, 6, 12, 18, 24].map((h) => (
-                  <g key={h}>
-                    <line x1={hx(h)} y1="115" x2={hx(h)} y2="121" stroke="var(--ink-mute)" strokeWidth="1" />
-                    <text x={hx(h)} y="131" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">{h}h</text>
-                  </g>
-                ))}
-                {/* ATTENTION ≤12h */}
-                <rect x={hx(0)} y="46" width={hx(12) - hx(0)} height="16" rx="4" fill="var(--teal)" />
-                <text x={(hx(0) + hx(12)) / 2} y="57" fill="#ffffff" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ATTENTION ≤12h</text>
-                {/* BAOCHE 6–24h */}
-                <rect x={hx(6)} y="74" width={hx(24) - hx(6)} height="16" rx="4" fill="var(--purple)" />
-                <text x={(hx(6) + hx(24)) / 2} y="85" fill="#ffffff" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">BAOCHE 6–24h</text>
-                <text x="605" y="150" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Posterior circulation tolerates longer windows</text>
-                <text x="605" y="160" fill="var(--ink-mute)" fontSize="5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">with imaging selection</text>
-              </svg>
-            </div>
+            <VisualAssetFigure
+              src="assets/evt_lvo_occlusion_sites.png"
+              fallbackSvgSrc="assets/evt_lvo_occlusion_sites.svg"
+              alt="Endovascular Thrombectomy Large Vessel Occlusion (LVO) Sites Diagram showing ICA terminus, MCA M1/M2, and Basilar Artery occlusion locations"
+              title="EVT Occlusion Sites (ICA, M1, M2, Basilar)"
+              captionId="evt-occlusions-caption"
+              caption="Endovascular Thrombectomy (EVT) Occlusion Sites: ICA, MCA M1/M2, and Basilar Artery"
+              onOpenLightbox={setLightboxImage}
+            />
 
             {/* §1 Why it's different (purple) */}
             <CardSection color="purple" title="1. Why It's Different">
@@ -5587,6 +5414,15 @@ export function BasilarArteryOcclusionCard() {
           </div>
         </div>
       </div>
+      {lightboxImage && (
+        <InteractiveImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          title={lightboxImage.title}
+          fallbackSvgSrc={lightboxImage.fallbackSvgSrc}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </div>
   );
 }
@@ -5614,7 +5450,7 @@ export function LipidManagementCard() {
 
             {/* Hero SVG: LDL-lowering ladder + hemorrhagic-stroke caution */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 178" role="img" aria-label="ICH Hematoma Expansion Blood Pressure and Reversal Pathway" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 178" role="img" focusable="false" aria-label="ICH Hematoma Expansion Blood Pressure and Reversal Pathway" style={{ width: '100%', height: 'auto' }}>
                 <text x="235" y="13" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LDL-LOWERING LADDER</text>
                 {/* LDL axis (descending) */}
                 <line x1="34" y1="24" x2="34" y2="162" stroke="var(--ink-mute)" strokeWidth="1.2" markerEnd="url(#lm-arrow)" />
@@ -5727,7 +5563,7 @@ export function CarotidStenosisCard() {
 
             {/* Hero SVG: carotid bifurcation + NASCET | decision fork */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 180" role="img" aria-label="Aneurysmal SAH Vasospasm EVD Management and Triple-H Therapy Diagram" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 180" role="img" focusable="false" aria-label="Aneurysmal SAH Vasospasm EVD Management and Triple-H Therapy Diagram" style={{ width: '100%', height: 'auto' }}>
                 {/* Panel 1 — carotid bifurcation with plaque + NASCET */}
                 <text x="120" y="13" fill="var(--ink-soft)" fontSize="6.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">CAROTID PLAQUE &amp; NASCET</text>
                 {/* CCA + ICA vessel */}
@@ -5870,7 +5706,7 @@ export function BrainstemSyndromesCard() {
 
             {/* Hero SVG: sagittal levels + axial cross-sections + rule legend */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 165" role="img" aria-label="Asymptomatic Carotid Stenosis Revascularization vs Best Medical Therapy Pathway" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 165" role="img" focusable="false" aria-label="Asymptomatic Carotid Stenosis Revascularization vs Best Medical Therapy Pathway" style={{ width: '100%', height: 'auto' }}>
                 {/* Sagittal brainstem with CN levels */}
                 <text x="78" y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LEVEL → CN</text>
                 <rect x="54" y="22" width="48" height="34" rx="7" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.4" />
@@ -6017,7 +5853,7 @@ export function VascularTerritoryAtlasCard() {
 
             {/* Hero SVG: axial territory pie | watershed patterns | circle of Willis */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 178" role="img" aria-label="Intracranial Atherosclerotic Disease Stenting versus Aggressive BMT Diagram" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 178" role="img" focusable="false" aria-label="Intracranial Atherosclerotic Disease Stenting versus Aggressive BMT Diagram" style={{ width: '100%', height: 'auto' }}>
                 <defs>
                   <pattern id="vta-hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
                     <line x1="0" y1="0" x2="0" y2="5" stroke="var(--slate)" strokeWidth="1" />
@@ -6162,6 +5998,7 @@ const AnticoagulationReversalView = () => (
 );
 
 export function AnticoagulationReversalCard() {
+  const [lightboxImage, setLightboxImage] = useState(null);
   return (
     <div className="bedside-card-view screen-layout">
       <div className="card-wrapper card-anticoagulation-reversal">
@@ -6172,57 +6009,15 @@ export function AnticoagulationReversalCard() {
               Identify the agent → give the specific reversal → BP control, neurosurgery, hold the drug.
             </p>
 
-            {/* Hero SVG: agent → reversal decision tree + parallel steps */}
-            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 176" role="img" aria-label="PFO Stroke Risk Device Closure vs Medical Management Decision Tree" style={{ width: '100%', height: 'auto' }}>
-                {/* root */}
-                <rect x="283" y="14" width="170" height="24" rx="6" fill="var(--slate-soft)" stroke="var(--slate)" strokeWidth="1.3" />
-                <text x="368" y="29" fill="var(--slate)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ICH on anticoagulant</text>
-                {/* connectors root → agents */}
-                <path d="M 320 38 L 130 52" stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" />
-                <path d="M 368 38 L 368 52" stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" />
-                <path d="M 416 38 L 606 52" stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" />
-                {/* agent boxes */}
-                {[
-                  { x: 35, cx: 130, col: 'purple', t: 'Warfarin (VKA)', sub: '↑ INR' },
-                  { x: 273, cx: 368, col: 'teal', t: 'Dabigatran (DTI)', sub: 'direct thrombin' },
-                  { x: 511, cx: 606, col: 'amber', t: 'Factor Xa inhibitor', sub: 'apixaban / riva / edox' },
-                ].map((a) => (
-                  <g key={a.t}>
-                    <rect x={a.x} y="52" width="190" height="28" rx="6" fill={`var(--${a.col}-soft)`} stroke={`var(--${a.col})`} strokeWidth="1.3" />
-                    <text x={a.cx} y="64" fill={`var(--${a.col}-deep)`} fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">{a.t}</text>
-                    <text x={a.cx} y="75" fill="var(--ink-soft)" fontSize="5.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">{a.sub}</text>
-                    <path d={`M ${a.cx} 80 L ${a.cx} 92`} stroke="var(--ink-mute)" strokeWidth="1.1" fill="none" markerEnd="url(#acr-arrow)" />
-                  </g>
-                ))}
-                <defs>
-                  <marker id="acr-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                    <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--ink-mute)" />
-                  </marker>
-                </defs>
-                {/* reversal boxes */}
-                {[
-                  { x: 35, cx: 130, col: 'purple', t: '4F-PCC', sub: '+ IV vitamin K 10 mg' },
-                  { x: 273, cx: 368, col: 'teal', t: 'Idarucizumab', sub: '5 g IV (RE-VERSE AD)' },
-                  { x: 511, cx: 606, col: 'amber', t: 'Andexanet alfa', sub: 'or 4F-PCC ~50 U/kg' },
-                ].map((a) => (
-                  <g key={a.t}>
-                    <rect x={a.x} y="94" width="190" height="30" rx="6" fill="#ffffff" stroke={`var(--${a.col})`} strokeWidth="1.4" />
-                    <text x={a.cx} y="107" fill={`var(--${a.col}-deep)`} fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">{a.t}</text>
-                    <text x={a.cx} y="118" fill="var(--ink-soft)" fontSize="5.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">{a.sub}</text>
-                    <path d={`M ${a.cx} 124 L ${a.cx} 138`} stroke="var(--red)" strokeWidth="1.1" fill="none" />
-                  </g>
-                ))}
-                {/* parallel steps bar */}
-                <rect x="35" y="140" width="666" height="28" rx="6" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.4" />
-                <text x="52" y="150" fill="var(--red-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">IN PARALLEL</text>
-                <text x="200" y="158" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">BP control</text>
-                <line x1="300" y1="144" x2="300" y2="164" stroke="var(--red)" strokeWidth="0.8" strokeDasharray="2 2" />
-                <text x="400" y="158" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Neurosurgery consult</text>
-                <line x1="510" y1="144" x2="510" y2="164" stroke="var(--red)" strokeWidth="0.8" strokeDasharray="2 2" />
-                <text x="610" y="158" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">Hold the agent</text>
-              </svg>
-            </div>
+            <VisualAssetFigure
+              src="assets/hematoma_expansion_render.png"
+              fallbackSvgSrc="assets/hematoma_expansion_render.svg"
+              alt="Intracerebral Hemorrhage (ICH) Hematoma Expansion Risk and Spot Sign Neuroimaging Render illustrating acute expansion criteria and reversal targets"
+              title="ICH Hematoma Expansion Risk & Spot Sign Render"
+              captionId="hematoma-expansion-caption"
+              caption="Intracerebral Hemorrhage (ICH) Hematoma Expansion Risk & CTA Spot Sign Render"
+              onOpenLightbox={setLightboxImage}
+            />
 
             {/* §1 Identify agent & last dose (purple) */}
             <CardSection color="purple" title="1. Identify the Agent & Last Dose">
@@ -6266,11 +6061,13 @@ export function AnticoagulationReversalCard() {
               </table>
             </CardSection>
 
-            {/* §3 In parallel (red) */}
-            <CardSection color="red" title="3. In Parallel" style={{ marginBottom: '6px' }}>
-              <div style={{ fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
-                Guideline-based <strong>BP control</strong>, <strong>neurosurgical evaluation</strong>, reverse only with a <strong>real bleed or urgent procedure</strong>, and plan <strong>restart timing</strong>. Anchor to the AHA/ASA 2022 ICH guideline and the NCS/SCCM reversal guideline; confirm exact andexanet dosing tier and current ANNEXA-I thrombotic figures against the primary papers.
-              </div>
+            {/* §3 Parallel steps & BP targets (red) */}
+            <CardSection color="red" title="3. Parallel Steps & BP Targets" style={{ marginBottom: '6px' }}>
+              <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <li><strong>BP target (INTERACT2 / ATACH-2):</strong> Smooth, rapid lowering to <strong>SBP &lt;140 mmHg</strong> (target range 130–140; avoid acute drops &lt;110 mmHg). First-line IV nicardipine, clevidipine, or labetalol.</li>
+                <li><strong>Neurosurgery consult:</strong> Urgent for cerebellar ICH with brainstem compression / hydrocephalus, large lobar ICH with mass effect, or intraventricular hemorrhage with EVD need.</li>
+                <li><strong>Hold all antithrombotics:</strong> Re-evaluate resumption timeline based on indication (AFib vs mechanical valve) and ICH expansion stability.</li>
+              </ul>
             </CardSection>
 
             <CardRefFooter style={{ fontSize: '7.2pt' }} refs={[
@@ -6283,6 +6080,15 @@ export function AnticoagulationReversalCard() {
           </div>
         </div>
       </div>
+      {lightboxImage && (
+        <InteractiveImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          title={lightboxImage.title}
+          fallbackSvgSrc={lightboxImage.fallbackSvgSrc}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </div>
   );
 }
@@ -6512,7 +6318,7 @@ export function RcvsCard() {
 
             {/* Hero SVG: string-of-beads reversing + RCVS vs PACNS */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 168" role="img" aria-label="Tenecteplase versus Alteplase Mechanism Thrombolysis Pathway" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 168" role="img" focusable="false" aria-label="Tenecteplase versus Alteplase Mechanism Thrombolysis Pathway" style={{ width: '100%', height: 'auto' }}>
                 {/* Panel A — before/after */}
                 <text x="168" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">SEGMENTAL VASOCONSTRICTION — REVERSIBLE</text>
                 <path d="M 30 42 C 52 32 66 52 90 36 C 114 52 128 32 152 48 C 176 32 190 52 214 36 C 238 52 252 34 300 44" stroke="var(--purple)" strokeWidth="3" fill="none" strokeLinecap="round" />
@@ -6623,7 +6429,7 @@ export function AneurysmalSahCard() {
 
             {/* Hero SVG: basal-cistern SAH + aneurysm | management timeline */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 168" role="img" aria-label="Extended Window Perfusion Imaging Core Penumbra Mismatch Map" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 168" role="img" focusable="false" aria-label="Extended Window Perfusion Imaging Core Penumbra Mismatch Map" style={{ width: '100%', height: 'auto' }}>
                 {/* Panel A — basal cistern star + aneurysm */}
                 <text x="130" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">BASAL-CISTERN SAH + ANEURYSM</text>
                 <ellipse cx="130" cy="88" rx="102" ry="60" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
@@ -6728,7 +6534,7 @@ export function CerebralAmyloidAngiopathyCard() {
 
             {/* Hero SVG: lobar vs deep pattern | SWI markers */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 168" role="img" aria-label="Reversal Agents Andexanet Alfa and Idarucizumab Mechanism Diagram" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 168" role="img" focusable="false" aria-label="Reversal Agents Andexanet Alfa and Idarucizumab Mechanism Diagram" style={{ width: '100%', height: 'auto' }}>
                 {/* Panel A — lobar vs deep */}
                 <text x="188" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">HEMORRHAGE LOCATION</text>
                 {/* CAA lobar */}
@@ -6793,6 +6599,7 @@ export function CerebralAmyloidAngiopathyCard() {
 // __NV_MODULES_END__  (new neurovascular module components are inserted above this line)
 
 export function CraoThrombolysisCard() {
+  const [lightboxImage, setLightboxImage] = useState(null);
   return (
     <div className="bedside-card-view screen-layout">
       <div className="card-container" style={{boxSizing: 'border-box'}}>
@@ -6802,41 +6609,15 @@ export function CraoThrombolysisCard() {
             AHA 2021 Scientific Statement &amp; 2025 THEIA Trial Reference Card
           </p>
 
-          <svg viewBox="0 0 735 90" role="img" aria-label="CRAO Acute Thrombolysis Decision Pathway" style={{width: '100%', height: '90px', marginBottom: '10px'}}>
-            <rect x="0" y="0" width="735" height="90" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
-            
-            <rect x="15" y="15" width="145" height="60" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.5" />
-            <text x="87.5" y="32" fill="var(--purple-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">1. ACUTE VISION LOSS</text>
-            <text x="87.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Sudden painless monocular</text>
-            <text x="87.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Onset &le; 4.5 hours</text>
-
-            <path d="M 160 45 L 190 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-crao)" />
-
-            <rect x="190" y="15" width="145" height="60" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
-            <text x="262.5" y="32" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">2. OPHTHALMIC EXAM</text>
-            <text x="262.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Visual acuity &le; 20/200</text>
-            <text x="262.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">No retinal hemorrhage</text>
-
-            <path d="M 335 45 L 365 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-crao)" />
-
-            <rect x="365" y="15" width="145" height="60" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.5" />
-            <text x="437.5" y="32" fill="var(--amber-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">3. LYTIC DOSING</text>
-            <text x="437.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">TNK 0.25 mg/kg (max 25mg)</text>
-            <text x="437.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">OR Alteplase 0.9 mg/kg</text>
-
-            <path d="M 510 45 L 540 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-crao)" />
-
-            <rect x="540" y="15" width="180" height="60" rx="6" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.5" />
-            <text x="630" y="32" fill="var(--red-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">4. MONITOR &amp; ETIOLOGY</text>
-            <text x="630" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">BP &lt; 180/105 x 24h</text>
-            <text x="630" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Carotid CTA + Telemetry</text>
-
-            <defs>
-              <marker id="arrow-crao" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--teal)" />
-              </marker>
-            </defs>
-          </svg>
+          <VisualAssetFigure
+            src="assets/crao_emergency_workflow.png"
+            fallbackSvgSrc="assets/crao_emergency_workflow.svg"
+            alt="Central Retinal Artery Occlusion (CRAO) Emergency Thrombolysis Protocol and Ophthalmic Evaluation Workflow within 4.5 Hour Window"
+            title="CRAO Emergency Thrombolysis Workflow"
+            captionId="crao-caption"
+            caption="Emergency Central Retinal Artery Occlusion (CRAO) Thrombolysis Protocol & Diagnostic Workflow"
+            onOpenLightbox={setLightboxImage}
+          />
 
           <div className="toast-grid" style={{marginBottom: '10px'}}>
             <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
@@ -6875,11 +6656,21 @@ export function CraoThrombolysisCard() {
           </div>
         </div>
       </div>
+      {lightboxImage && (
+        <InteractiveImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          title={lightboxImage.title}
+          fallbackSvgSrc={lightboxImage.fallbackSvgSrc}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </div>
   );
 }
 
 export function SelectSeizureRiskCard() {
+  const [lightboxImage, setLightboxImage] = useState(null);
   return (
     <div className="bedside-card-view screen-layout">
       <div className="card-container" style={{boxSizing: 'border-box'}}>
@@ -6889,41 +6680,15 @@ export function SelectSeizureRiskCard() {
             Galovic M et al. Lancet Neurol 2018 Reference Card (PMID 29413315)
           </p>
 
-          <svg viewBox="0 0 735 90" role="img" aria-label="SeLECT Post-Stroke Seizure Risk Pathway" style={{width: '100%', height: '90px', marginBottom: '10px'}}>
-            <rect x="0" y="0" width="735" height="90" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
-            
-            <rect x="15" y="15" width="145" height="60" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.5" />
-            <text x="87.5" y="32" fill="var(--purple-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">1. STROKE SEVERITY</text>
-            <text x="87.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">NIHSS 0-3: 0 pts</text>
-            <text x="87.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">4-10: 1 pt | &ge;11: 2 pts</text>
-
-            <path d="M 160 45 L 190 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-select)" />
-
-            <rect x="190" y="15" width="145" height="60" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
-            <text x="262.5" y="32" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">2. ANATOMY &amp; ETIOLOGY</text>
-            <text x="262.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Cortical: +2 pts</text>
-            <text x="262.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">LVO (+1) | MCA (+1)</text>
-
-            <path d="M 335 45 L 365 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-select)" />
-
-            <rect x="365" y="15" width="145" height="60" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.5" />
-            <text x="437.5" y="32" fill="var(--amber-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">3. EARLY SEIZURE</text>
-            <text x="437.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Acute seizure &le;7 days</text>
-            <text x="437.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">+3 points (Strongest predictor)</text>
-
-            <path d="M 510 45 L 540 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-select)" />
-
-            <rect x="540" y="15" width="180" height="60" rx="6" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.5" />
-            <text x="630" y="32" fill="var(--red-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">4. RISK STRATIFICATION</text>
-            <text x="630" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Score &ge;4: High Risk (&gt;12% 5y)</text>
-            <text x="630" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Counsel patient &amp; EEG follow-up</text>
-
-            <defs>
-              <marker id="arrow-select" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--teal)" />
-              </marker>
-            </defs>
-          </svg>
+          <VisualAssetFigure
+            src="assets/select_score_chart.png"
+            fallbackSvgSrc="assets/select_score_chart.svg"
+            alt="SeLECT Score Nomogram and Risk Stratification Chart for Post-Stroke Seizure Risk Assessment"
+            title="SeLECT Score Seizure Risk Chart"
+            captionId="select-caption"
+            caption="SeLECT Score Risk Stratification Chart for Post-Stroke Seizure Prediction"
+            onOpenLightbox={setLightboxImage}
+          />
 
           <div className="toast-grid" style={{marginBottom: '10px'}}>
             <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
@@ -6966,11 +6731,21 @@ export function SelectSeizureRiskCard() {
           </div>
         </div>
       </div>
+      {lightboxImage && (
+        <InteractiveImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          title={lightboxImage.title}
+          fallbackSvgSrc={lightboxImage.fallbackSvgSrc}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </div>
   );
 }
 
 export function EdemaSwellingRiskCard() {
+  const [lightboxImage, setLightboxImage] = useState(null);
   return (
     <div className="bedside-card-view screen-layout">
       <div className="card-container" style={{boxSizing: 'border-box'}}>
@@ -6980,41 +6755,15 @@ export function EdemaSwellingRiskCard() {
             Strbian D et al. Stroke 2013 Reference Card (PMID 22405327)
           </p>
 
-          <svg viewBox="0 0 735 90" role="img" aria-label="EDEMA Malignant Brain Swelling Pathway" style={{width: '100%', height: '90px', marginBottom: '10px'}}>
-            <rect x="0" y="0" width="735" height="90" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
-            
-            <rect x="15" y="15" width="145" height="60" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.5" />
-            <text x="87.5" y="32" fill="var(--purple-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">1. INFARCT SIZE</text>
-            <text x="87.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">ASPECTS &lt;7 / &gt;1/3 MCA</text>
-            <text x="87.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">+2 points</text>
-
-            <path d="M 160 45 L 190 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-edema)" />
-
-            <rect x="190" y="15" width="145" height="60" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
-            <text x="262.5" y="32" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">2. NCCT &amp; GLUCOSE</text>
-            <text x="262.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Dense artery sign: +1 pt</text>
-            <text x="262.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Glucose &gt;162 mg/dL: +1 pt</text>
-
-            <path d="M 335 45 L 365 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-edema)" />
-
-            <rect x="365" y="15" width="145" height="60" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.5" />
-            <text x="437.5" y="32" fill="var(--amber-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">3. CLINICAL &amp; MASS</text>
-            <text x="437.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">NIHSS 12-19 (1) | &ge;20 (2)</text>
-            <text x="437.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Shift (2) | Cisterns (1)</text>
-
-            <path d="M 510 45 L 540 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-edema)" />
-
-            <rect x="540" y="15" width="180" height="60" rx="6" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.5" />
-            <text x="630" y="32" fill="var(--red-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">4. SURGICAL CONSULT</text>
-            <text x="630" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Score &ge;6: High Risk (&gt;60%)</text>
-            <text x="630" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Early Hemicraniectomy Consult</text>
-
-            <defs>
-              <marker id="arrow-edema" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--teal)" />
-              </marker>
-            </defs>
-          </svg>
+          <VisualAssetFigure
+            src="assets/edema_swelling_risk.png"
+            fallbackSvgSrc="assets/edema_swelling_risk.svg"
+            alt="EDEMA Score Risk Stratification Chart for Malignant Cerebral Edema and Swelling Risk in Large Hemisphere Infarction"
+            title="EDEMA Score Malignant Swelling Chart"
+            captionId="edema-caption"
+            caption="EDEMA Score Risk Stratification Chart for Malignant Cerebral Swelling"
+            onOpenLightbox={setLightboxImage}
+          />
 
           <div className="toast-grid" style={{marginBottom: '10px'}}>
             <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
@@ -7057,6 +6806,15 @@ export function EdemaSwellingRiskCard() {
           </div>
         </div>
       </div>
+      {lightboxImage && (
+        <InteractiveImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          title={lightboxImage.title}
+          fallbackSvgSrc={lightboxImage.fallbackSvgSrc}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </div>
   );
 }

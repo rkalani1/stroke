@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="100%" height="100%" role="img" aria-labelledby="ich-title ich-desc">
+  <title id="ich-title">NCCT ICH Hematoma Expansion Markers Render</title>
+  <desc id="ich-desc">Non-contrast CT brain scan render showing acute intracerebral hemorrhage with spot sign, island sign, blend sign, and expansion risk formula.</desc>
+  <defs>
+    <style>
+      .bg { fill: #090d16; }
+      .card-bg { fill: #131c2e; stroke: #1e2d4a; stroke-width: 1.5; }
+      .title-text { font-family: system-ui, -apple-system, sans-serif; font-size: 26px; font-weight: 800; fill: #f8fafc; }
+      .subtitle-text { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; fill: #ef4444; }
+      .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 17px; font-weight: 700; }
+      .card-body { font-family: system-ui, -apple-system, sans-serif; font-size: 13.5px; fill: #e2e8f0; line-height: 1.5; }
+      .card-sub { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #94a3b8; }
+      
+      @media (prefers-color-scheme: light) {
+        .bg { fill: #0f172a; }
+        .card-bg { fill: #1e293b; stroke: #334155; }
+        .title-text { fill: #f8fafc; }
+        .subtitle-text { fill: #f87171; }
+        .card-body { fill: #e2e8f0; }
+        .card-sub { fill: #94a3b8; }
+      }
+    </style>
+    <filter id="glow-spot" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <radialGradient id="ich-main" cx="45%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="40%" stop-color="#f87171"/>
+      <stop offset="85%" stop-color="#dc2626"/>
+      <stop offset="100%" stop-color="#7f1d1d"/>
+    </radialGradient>
+  </defs>
+
+  <rect class="bg" width="1200" height="900" rx="16"/>
+
+  <!-- Header -->
+  <g transform="translate(40, 30)" filter="url(#shadow)">
+    <rect class="card-bg" width="1120" height="90" rx="12" stroke="#ef4444" stroke-width="2"/>
+    <text x="560" y="40" class="title-text" text-anchor="middle">NCCT ICH: HEMATOMA EXPANSION RISK MARKERS</text>
+    <text x="560" y="68" class="subtitle-text" text-anchor="middle">Radiographic Predictors of Intracerebral Hemorrhage Growth • Spot Sign, Island Sign &amp; Blend Sign</text>
+  </g>
+
+  <!-- Left: Axial Brain CT Hemorrhage Scan Display -->
+  <g transform="translate(40, 140)" filter="url(#shadow)">
+    <rect class="card-bg" width="600" height="660" rx="12"/>
+    <text x="300" y="35" class="card-title" fill="#f87171" text-anchor="middle">AXIAL NCCT BRAIN — ACUTE BASAL GANGLIA ICH</text>
+
+    <g transform="translate(60, 60)">
+      <!-- Skull Contour -->
+      <path d="M 240 20 C 370 20 440 100 440 250 C 440 400 370 480 240 480 C 110 480 40 400 40 250 C 40 100 110 20 240 20 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="14"/>
+      <line x1="240" y1="30" x2="240" y2="470" stroke="#475569" stroke-width="2" stroke-dasharray="4 4"/>
+
+      <!-- Compressed Ventricles due to mass effect -->
+      <path d="M 215 180 C 210 210 210 250 218 280 Z" fill="#090d16"/>
+
+      <!-- MAIN HYPERDENSE HEMATOMA (Basal Ganglia ICH Mass) -->
+      <path d="M 260 210 C 340 190 380 240 370 310 C 360 360 310 370 270 350 C 240 330 245 250 260 210 Z" fill="url(#ich-main)" opacity="0.95"/>
+
+      <!-- MARKER 1: CTA SPOT SIGN (Focal Intra-Hematoma Contrast Extravasation) -->
+      <g filter="url(#glow-spot)">
+        <circle cx="315" cy="270" r="10" fill="#38bdf8" stroke="#ffffff" stroke-width="2"/>
+      </g>
+      <polyline points="315, 270 420, 220 470, 220" stroke="#38bdf8" stroke-width="2.5" fill="none"/>
+      <circle cx="315" cy="270" r="4" fill="#ffffff"/>
+      <rect x="470" y="200" width="105" height="36" fill="#0c4a6e" rx="6" stroke="#38bdf8"/>
+      <text x="522" y="223" font-family="sans-serif" font-size="11" font-weight="900" fill="#ffffff" text-anchor="middle">SPOT SIGN</text>
+
+      <!-- MARKER 2: ISLAND SIGN (Separate Satellite Hemorrhages) -->
+      <circle cx="365" cy="385" r="8" fill="#f87171" stroke="#ffffff" stroke-width="1.5"/>
+      <circle cx="385" cy="360" r="6" fill="#f87171" stroke="#ffffff" stroke-width="1.5"/>
+      <polyline points="375, 372 440, 400 470, 400" stroke="#f87171" stroke-width="2.5" fill="none"/>
+      <rect x="470" y="380" width="105" height="36" fill="#7f1d1d" rx="6" stroke="#f87171"/>
+      <text x="522" y="403" font-family="sans-serif" font-size="11" font-weight="900" fill="#ffffff" text-anchor="middle">ISLAND SIGN</text>
+
+      <!-- MARKER 3: BLEND SIGN (Adjacent Hypodense/Hyperdense Boundary) -->
+      <path d="M 270 330 C 260 360 290 370 310 360 C 290 340 280 335 270 330 Z" fill="#475569" stroke="#fbbf24" stroke-width="1.5"/>
+      <polyline points="280, 345 200, 420 120, 420" stroke="#fbbf24" stroke-width="2.5" fill="none"/>
+      <circle cx="280" cy="345" r="5" fill="#fbbf24"/>
+      <rect x="15" y="400" width="105" height="36" fill="#78350f" rx="6" stroke="#fbbf24"/>
+      <text x="67" y="423" font-family="sans-serif" font-size="11" font-weight="900" fill="#ffffff" text-anchor="middle">BLEND SIGN</text>
+    </g>
+
+    <!-- CT Attenuation Hounsfield Scale Footer -->
+    <g transform="translate(60, 580)">
+      <text x="0" y="18" class="card-sub">NCCT Attenuation Scale:</text>
+      <rect x="150" y="5" width="390" height="18" fill="#1e293b" stroke="#334155" rx="4"/>
+      <rect x="150" y="5" width="100" fill="#0f172a"/>
+      <rect x="250" y="5" width="120" fill="#475569"/>
+      <rect x="370" y="5" width="170" fill="#f87171"/>
+      <text x="200" y="38" class="card-sub" fill="#94a3b8" text-anchor="middle">CSF (0-10 HU)</text>
+      <text x="310" y="38" class="card-sub" fill="#e2e8f0" text-anchor="middle">Brain (30-40 HU)</text>
+      <text x="455" y="38" class="card-sub" fill="#f87171" font-weight="800" text-anchor="middle">Blood (60-80 HU)</text>
+    </g>
+  </g>
+
+  <!-- Right: Hematoma Volume & Risk Score Panel -->
+  <g transform="translate(660, 140)" filter="url(#shadow)">
+    <rect class="card-bg" width="500" height="660" rx="12"/>
+    <text x="250" y="35" class="card-title" fill="#f87171" text-anchor="middle">HEMATOMA VOLUME &amp; EXPANSION RISK</text>
+
+    <!-- ABC/2 Volume Formula Box -->
+    <g transform="translate(25, 55)">
+      <rect width="450" height="140" fill="#0f172a" stroke="#ef4444" stroke-width="2" rx="10"/>
+      <text x="225" y="28" class="card-title" fill="#ef4444" text-anchor="middle">ABC / 2 HEMATOMA VOLUME FORMULA</text>
+      <text x="225" y="65" font-family="sans-serif" font-size="28" font-weight="900" fill="#ffffff" text-anchor="middle">Volume = (A × B × C) / 2</text>
+      <text x="20" y="95" class="card-sub" fill="#e2e8f0">• <tspan font-weight="700" fill="#f87171">A:</tspan> Largest diameter of hematoma on CT slice (cm)</text>
+      <text x="20" y="112" class="card-sub" fill="#e2e8f0">• <tspan font-weight="700" fill="#f87171">B:</tspan> Perpendicular diameter to A (cm)  |  <tspan font-weight="700" fill="#f87171">C:</tspan> Number of 1cm slices with blood</text>
+      <text x="225" y="132" class="card-sub" fill="#fbbf24" font-weight="700" text-anchor="middle">Baseline Volume &gt; 30 mL = High 30-Day Mortality Risk</text>
+    </g>
+
+    <!-- Radiographic Marker Descriptions -->
+    <g transform="translate(25, 210)">
+      <!-- Spot Sign -->
+      <rect width="450" height="85" fill="#0f172a" stroke="#38bdf8" rx="8"/>
+      <text x="15" y="24" class="card-title" fill="#38bdf8" font-size="14">1. CTA Spot Sign (High Specificity ~93%)</text>
+      <text x="15" y="46" class="card-body">• Focus of contrast extravasation within hematoma on CTA.</text>
+      <text x="15" y="66" class="card-sub" fill="#7dd3fc" font-weight="700">• Predicts &gt; 33% or &gt; 6 mL hematoma expansion (80% risk).</text>
+    </g>
+
+    <g transform="translate(25, 305)">
+      <!-- Island Sign -->
+      <rect width="450" height="85" fill="#0f172a" stroke="#f87171" rx="8"/>
+      <text x="15" y="24" class="card-title" fill="#f87171" font-size="14">2. Island Sign (3+ Small Satellite Hemorrhages)</text>
+      <text x="15" y="46" class="card-body">• Scattered small hematomas separated from main body on NCCT.</text>
+      <text x="15" y="66" class="card-sub" fill="#fca5a5" font-weight="700">• Indicates multifocal active bleeding sites in parenchyma.</text>
+    </g>
+
+    <g transform="translate(25, 400)">
+      <!-- Blend Sign -->
+      <rect width="450" height="85" fill="#0f172a" stroke="#fbbf24" rx="8"/>
+      <text x="15" y="24" class="card-title" fill="#fbbf24" font-size="14">3. Blend Sign (Hypo/Hyperdense Margin)</text>
+      <text x="15" y="46" class="card-body">• Blending of low-attenuation &amp; high-attenuation blood.</text>
+      <text x="15" y="66" class="card-sub" fill="#fde68a" font-weight="700">• Signifies active acute bleeding adjacent to older clotted blood.</text>
+    </g>
+
+    <!-- Hemostasis Reversal Protocol Box -->
+    <g transform="translate(25, 500)">
+      <rect width="450" height="140" fill="#7f1d1d" stroke="#ef4444" stroke-width="2" rx="10"/>
+      <text x="225" y="28" font-family="sans-serif" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle">URGENT ANTICOAGULATION REVERSAL</text>
+      <text x="15" y="55" class="card-body" font-weight="700" fill="#ffffff">• Warfarin / VKA: <tspan font-weight="400" fill="#fecaca">4-Factor PCC (50 IU/kg) + IV Vitamin K 10mg.</tspan></text>
+      <text x="15" y="78" class="card-body" font-weight="700" fill="#ffffff">• Dabigatran: <tspan font-weight="400" fill="#fecaca">Idarucizumab 5g IV (2x 2.5g vials).</tspan></text>
+      <text x="15" y="101" class="card-body" font-weight="700" fill="#ffffff">• Factor Xa Inhibitor: <tspan font-weight="400" fill="#fecaca">Andexanet Alfa (or 4F-PCC 50 IU/kg).</tspan></text>
+      <text x="225" y="125" class="card-sub" fill="#fbbf24" font-weight="700" text-anchor="middle">Target SBP &lt; 140 mmHg within 1 hour (INTERACT-2 / ATTACH-2)</text>
+    </g>
+  </g>
+</svg>

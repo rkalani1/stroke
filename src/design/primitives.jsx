@@ -232,7 +232,7 @@ export const Checkbox = ({ checked, onChange, label, id, disabled, ariaLabel }) 
         checked ? 'bg-cobalt-600 border-cobalt-600' : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600',
         disabled && 'opacity-50'
       )}>
-        {checked && <svg focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 12 10 18 20 6"/></svg>}
+        {checked && <svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 12 10 18 20 6"/></svg>}
       </span>
       <input id={cbId} type="checkbox" checked={!!checked} disabled={disabled}
              onChange={e => onChange?.(e.target.checked)} aria-label={ariaLabel} className="sr-only"/>

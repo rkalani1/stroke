@@ -499,7 +499,7 @@ export function EvdIcpSimulator() {
         {/* EVD apparatus SVG */}
         <section className="bg-white border border-line rounded-lg p-3 dark:bg-card">
           <h4 className="text-sm font-semibold text-slate-800 mb-2 dark:text-ink">EVD Apparatus &amp; Leveling</h4>
-          <svg viewBox="0 0 320 240" className="w-full h-auto" role="img"
+          <svg viewBox="0 0 320 240" className="w-full h-auto" role="img" focusable="false"
             aria-label={`External ventricular drain. Stopcock ${stopcockLabel}. Drip chamber at ${evdHeight} centimeters water. ${drip.drips ? 'Draining' : 'Not draining'}.`}>
             {/* Drip chamber column */}
             <rect x="36" y={dripTopY} width="28" height={dripBottomY - dripTopY} rx="6"

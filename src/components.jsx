@@ -2,6 +2,7 @@
 // monolithic app.jsx for maintainability.
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import {
   evaluateDAWN,
   evaluateDEFUSE3,
@@ -797,3 +798,297 @@ export const PHQ9Screen = () => {
     </div>
   );
 };
+
+// =========================================================================
+// Interactive Image Lightbox Modal & WCAG 2.1 AA Visual Asset Figure Wrapper
+// =========================================================================
+export const InteractiveImageLightbox = ({ src, alt, title, onClose, fallbackSvgSrc }) => {
+  const [scale, setScale] = useState(1.0);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [hasError, setHasError] = useState(false);
+  const isDraggingRef = useRef(false);
+  const dragStartRef = useRef({ x: 0, y: 0 });
+  const initialPosRef = useRef({ x: 0, y: 0 });
+  const containerRef = useRef(null);
+  const closeButtonRef = useRef(null);
+  const previousActiveElementRef = useRef(null);
+
+  useEffect(() => {
+    previousActiveElementRef.current = document.activeElement;
+    if (closeButtonRef.current) {
+      closeButtonRef.current.focus();
+    }
+    const origOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = origOverflow;
+      if (previousActiveElementRef.current && typeof previousActiveElementRef.current.focus === 'function') {
+        previousActiveElementRef.current.focus();
+      }
+    };
+  }, []);
+
+  const handleZoomIn = () => {
+    setScale((prev) => Math.min(4.0, prev + 0.5));
+  };
+
+  const handleZoomOut = () => {
+    setScale((prev) => {
+      const next = Math.max(1.0, prev - 0.5);
+      if (next === 1.0) setPosition({ x: 0, y: 0 });
+      return next;
+    });
+  };
+
+  const handleReset = () => {
+    setScale(1.0);
+    setPosition({ x: 0, y: 0 });
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+      if (e.key === '+' || e.key === '=') {
+        e.preventDefault();
+        handleZoomIn();
+        return;
+      }
+      if (e.key === '-' || e.key === '_') {
+        e.preventDefault();
+        handleZoomOut();
+        return;
+      }
+      if (e.key === '0') {
+        e.preventDefault();
+        handleReset();
+        return;
+      }
+      if (e.key === 'Tab' && containerRef.current) {
+        const focusables = containerRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusables.length > 0) {
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose, scale]);
+
+  const handleWheel = (e) => {
+    e.preventDefault();
+    const delta = e.deltaY < 0 ? 0.25 : -0.25;
+    setScale((prev) => {
+      const next = Math.min(4.0, Math.max(1.0, prev + delta));
+      if (next === 1.0) setPosition({ x: 0, y: 0 });
+      return next;
+    });
+  };
+
+  const handleStart = (clientX, clientY) => {
+    if (scale <= 1.0) return;
+    isDraggingRef.current = true;
+    dragStartRef.current = { x: clientX, y: clientY };
+    initialPosRef.current = position;
+  };
+
+  const handleMove = (clientX, clientY) => {
+    if (!isDraggingRef.current || scale <= 1.0) return;
+    const dx = clientX - dragStartRef.current.x;
+    const dy = clientY - dragStartRef.current.y;
+    setPosition({
+      x: initialPosRef.current.x + dx,
+      y: initialPosRef.current.y + dy,
+    });
+  };
+
+  const handleEnd = () => {
+    isDraggingRef.current = false;
+  };
+
+  const activeSrc = hasError && fallbackSvgSrc ? fallbackSvgSrc : src;
+  const modalLabel = title || alt || 'Interactive Image Lightbox Modal';
+
+  return createPortal(
+    <div
+      ref={containerRef}
+      className="fixed inset-0 z-[250] flex flex-col items-center justify-center bg-slate-950/95 p-4 no-print backdrop-blur-sm select-none"
+      role="dialog"
+      aria-label={modalLabel}
+      aria-modal="true"
+      onClick={onClose}
+    >
+      <div
+        className="absolute top-4 z-[260] flex items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-4 py-2 text-slate-900 shadow-xl backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-100"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={handleZoomOut}
+          disabled={scale <= 1.0}
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 font-bold text-slate-700 transition-colors hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-cobalt-500 disabled:opacity-40 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+          aria-label="Zoom Out (-)"
+          title="Zoom Out (-)"
+        >
+          &minus;
+        </button>
+
+        <span className="min-w-[48px] text-center font-mono text-xs font-bold text-slate-800 dark:text-slate-100" aria-live="polite">
+          {scale.toFixed(1)}x
+        </span>
+
+        <button
+          type="button"
+          onClick={handleZoomIn}
+          disabled={scale >= 4.0}
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 font-bold text-slate-700 transition-colors hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-cobalt-500 disabled:opacity-40 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+          aria-label="Zoom In (+)"
+          title="Zoom In (+)"
+        >
+          &#43;
+        </button>
+
+        <div className="mx-1 h-4 w-[1px] bg-slate-300 dark:bg-slate-700" />
+
+        <button
+          type="button"
+          onClick={handleReset}
+          disabled={scale === 1.0 && position.x === 0 && position.y === 0}
+          className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-cobalt-500 disabled:opacity-40 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+          aria-label="Reset Zoom (0)"
+          title="Reset Zoom (0)"
+        >
+          Reset
+        </button>
+
+        <div className="mx-1 h-4 w-[1px] bg-slate-300 dark:bg-slate-700" />
+
+        <button
+          ref={closeButtonRef}
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:bg-slate-700 dark:hover:bg-slate-600"
+          aria-label="Close image preview"
+          title="Close (Esc)"
+        >
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div
+        className="relative flex max-h-[85vh] max-w-[92vw] cursor-grab items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white p-2 shadow-2xl dark:border-slate-800 dark:bg-slate-900 active:cursor-grabbing"
+        onClick={(e) => e.stopPropagation()}
+        onWheel={handleWheel}
+        onMouseDown={(e) => handleStart(e.clientX, e.clientY)}
+        onMouseMove={(e) => handleMove(e.clientX, e.clientY)}
+        onMouseUp={handleEnd}
+        onMouseLeave={handleEnd}
+        onTouchStart={(e) => e.touches[0] && handleStart(e.touches[0].clientX, e.touches[0].clientY)}
+        onTouchMove={(e) => e.touches[0] && handleMove(e.touches[0].clientX, e.touches[0].clientY)}
+        onTouchEnd={handleEnd}
+      >
+        <img
+          src={activeSrc}
+          alt={alt || modalLabel}
+          onError={() => setHasError(true)}
+          style={{
+            transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+            transition: isDraggingRef.current ? 'none' : 'transform 0.15s ease-out',
+            maxWidth: '100%',
+            maxHeight: '78vh',
+            objectFit: 'contain',
+            display: 'block',
+            userSelect: 'none',
+            pointerEvents: scale > 1.0 ? 'none' : 'auto',
+          }}
+          className="rounded-lg shadow-inner"
+        />
+
+        {title && (
+          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 select-none items-center gap-1.5 rounded-full border border-white/10 bg-slate-900/85 px-4 py-1.5 text-xs font-medium text-white shadow-md backdrop-blur-sm">
+            <span>{title}</span>
+          </div>
+        )}
+      </div>
+    </div>,
+    document.body
+  );
+};
+
+export const VisualAssetFigure = ({
+  src,
+  fallbackSvgSrc,
+  alt,
+  title,
+  captionId,
+  caption,
+  onOpenLightbox,
+  className = ''
+}) => {
+  const [hasError, setHasError] = useState(false);
+
+  const activeSrc = hasError && fallbackSvgSrc ? fallbackSvgSrc : src;
+
+  return (
+    <figure
+      role="group"
+      aria-labelledby={captionId}
+      className={`my-3 rounded-xl border border-slate-200 bg-slate-50 p-2.5 shadow-sm dark:border-slate-800 dark:bg-slate-900/60 ${className}`}
+    >
+      <div
+        className="group relative flex cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-white p-1 dark:bg-slate-950"
+        onClick={() => onOpenLightbox && onOpenLightbox({ src: activeSrc, alt, title: title || caption, fallbackSvgSrc })}
+        tabIndex={0}
+        role="button"
+        aria-label={`Open interactive lightbox preview: ${title || caption}`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onOpenLightbox && onOpenLightbox({ src: activeSrc, alt, title: title || caption, fallbackSvgSrc });
+          }
+        }}
+      >
+        <img
+          src={activeSrc}
+          alt={alt}
+          onError={() => setHasError(true)}
+          className="h-auto max-h-[280px] w-full object-contain transition-transform duration-200 group-hover:scale-[1.01]"
+          loading="lazy"
+        />
+        <div className="absolute right-2.5 top-2.5 flex items-center gap-1.5 rounded-full border border-white/20 bg-slate-900/80 px-2.5 py-1 text-[11px] font-medium text-white opacity-80 shadow backdrop-blur-sm transition-opacity group-hover:opacity-100">
+          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+          </svg>
+          <span>Click to Zoom</span>
+        </div>
+      </div>
+      <figcaption
+        id={captionId}
+        className="mt-2 text-center text-xs font-medium text-slate-600 dark:text-slate-400"
+      >
+        {caption}
+      </figcaption>
+    </figure>
+  );
+};
+

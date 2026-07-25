@@ -4,18 +4,44 @@ import path from 'path';
 
 function findSvgElementsInFile(filePath) {
   const content = fs.readFileSync(filePath, 'utf-8');
-  const lines = content.split('\n');
   const svgMatches = [];
 
-  // Simple regex parser for <svg ...> tags across multi-line or single-line
-  const svgRegex = /<svg\b([\s\S]*?)>/gi;
+  // Parse <svg ... > opening tags safely even if attribute values contain '>' inside quotes or braces
+  const svgRegex = /<svg\b/gi;
   let match;
   while ((match = svgRegex.exec(content)) !== null) {
-    const rawTag = match[0];
-    const attributesRaw = match[1];
+    const startIdx = match.index;
+    let i = startIdx + 4; // after '<svg'
+    let inQuote = null;
+    let braceDepth = 0;
+    let endIdx = -1;
+
+    while (i < content.length) {
+      const char = content[i];
+      if (inQuote) {
+        if (char === inQuote) {
+          inQuote = null;
+        }
+      } else if (char === '"' || char === "'") {
+        inQuote = char;
+      } else if (char === '{') {
+        braceDepth++;
+      } else if (char === '}') {
+        if (braceDepth > 0) braceDepth--;
+      } else if (char === '>' && braceDepth === 0) {
+        endIdx = i + 1;
+        break;
+      }
+      i++;
+    }
+
+    if (endIdx === -1) continue;
+
+    const rawTag = content.substring(startIdx, endIdx);
+    const attributesRaw = content.substring(startIdx + 4, endIdx - 1);
     
     // Calculate line number
-    const lineNum = content.substring(0, match.index).split('\n').length;
+    const lineNum = content.substring(0, startIdx).split('\n').length;
     
     // Extract attributes
     const hasAriaHidden = /aria-hidden=(?:["']([^"']*)["']|{([^}]+)})/i.test(attributesRaw);
@@ -33,7 +59,7 @@ function findSvgElementsInFile(filePath) {
     const hasTitleAttr = /title=(?:["']([^"']*)["']|{([^}]+)})/i.test(attributesRaw);
 
     svgMatches.push({
-      filePath: path.relative('/Users/rizwankalani/stroke', filePath),
+      filePath: path.relative(process.cwd(), filePath),
       lineNum,
       rawTag,
       hasAriaHidden,
@@ -67,22 +93,22 @@ function getAllJsxFiles(dir) {
 }
 
 describe('SVG WCAG Audit in stroke codebase', () => {
-  const files = getAllJsxFiles('/Users/rizwankalani/stroke/src');
+  const files = getAllJsxFiles(path.resolve(process.cwd(), 'src'));
   const allSvgs = files.flatMap(f => findSvgElementsInFile(f));
 
   it('scans and finds all inline SVGs in src/', () => {
     expect(allSvgs.length).toBeGreaterThan(0);
-    // console.log(`Scanned ${files.length} files, found ${allSvgs.length} SVG elements.`);
   });
 
   it('identifies SVGs missing aria-hidden and focusable="false" (Decorative SVGs without WCAG attributes)', () => {
-    const decorativeWithoutAriaHidden = allSvgs.filter(svg => 
-      !svg.hasRole && !svg.hasAriaLabel && !svg.hasTitleAttr && (!svg.hasAriaHidden || svg.ariaHiddenValue !== 'true')
+    const decorativeNonCompliant = allSvgs.filter(svg => 
+      !svg.hasRole && !svg.hasAriaLabel && !svg.hasTitleAttr && (
+        !svg.hasAriaHidden || svg.ariaHiddenValue !== 'true' ||
+        !svg.hasFocusable || svg.focusableValue !== 'false'
+      )
     );
 
-    // console.log('Decorative SVGs missing aria-hidden="true":', decorativeWithoutAriaHidden);
-    // Document all instances for our empirical report!
-    expect(decorativeWithoutAriaHidden).toBeDefined();
+    expect(decorativeNonCompliant).toHaveLength(0);
   });
 
   it('identifies SVGs with conflicting aria-hidden="true" AND role="img" / aria-label', () => {
@@ -90,13 +116,20 @@ describe('SVG WCAG Audit in stroke codebase', () => {
       (svg.hasRole || svg.hasAriaLabel) && svg.hasAriaHidden && svg.ariaHiddenValue === 'true'
     );
 
-    // console.log('Conflicting SVGs (has aria-label/role BUT aria-hidden="true"):', conflictingSvgs);
-    expect(conflictingSvgs).toBeDefined();
+    expect(conflictingSvgs).toHaveLength(0);
   });
 
   it('identifies informative SVGs missing focusable="false" or internal <title>', () => {
-    const informativeSvgs = allSvgs.filter(svg => svg.roleValue === 'img' || svg.hasAriaLabel);
-    
-    expect(informativeSvgs.length).toBeGreaterThan(0);
+    const nonCompliantInformativeSvgs = allSvgs.filter(svg => {
+      const isInformative = svg.roleValue === 'img' || svg.hasAriaLabel || svg.hasRole;
+      if (!isInformative) return false;
+
+      const hasAccessibleLabel = svg.hasAriaLabel || svg.hasTitleAttr;
+      const isFocusableFalse = svg.hasFocusable && svg.focusableValue === 'false';
+
+      return !hasAccessibleLabel || !isFocusableFalse;
+    });
+
+    expect(nonCompliantInformativeSvgs).toHaveLength(0);
   });
 });

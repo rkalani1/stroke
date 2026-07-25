@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" width="100%" height="100%" role="img" aria-labelledby="crao-title crao-desc">
+  <title id="crao-title">Central Retinal Artery Occlusion (CRAO) Emergency Workflow</title>
+  <desc id="crao-desc">Clinical flowchart for emergency management of acute CRAO vision loss, including bedside intraocular pressure reduction and thrombolysis timing.</desc>
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .card-bg { fill: #1e293b; stroke: #334155; stroke-width: 1.5; }
+      .title-text { font-family: system-ui, -apple-system, sans-serif; font-size: 26px; font-weight: 800; fill: #f8fafc; }
+      .subtitle-text { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; fill: #f43f5e; }
+      .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 17px; font-weight: 700; }
+      .card-body { font-family: system-ui, -apple-system, sans-serif; font-size: 13.5px; fill: #e2e8f0; line-height: 1.5; }
+      .card-sub { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #94a3b8; }
+      
+      @media (prefers-color-scheme: light) {
+        .bg { fill: #f8fafc; }
+        .card-bg { fill: #ffffff; stroke: #cbd5e1; }
+        .title-text { fill: #0f172a; }
+        .subtitle-text { fill: #e11d48; }
+        .card-body { fill: #334155; }
+        .card-sub { fill: #64748b; }
+      }
+    </style>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <rect class="bg" width="1200" height="850" rx="16"/>
+
+  <!-- Header -->
+  <g transform="translate(40, 30)" filter="url(#shadow)">
+    <rect class="card-bg" width="1120" height="90" rx="12" stroke="#f43f5e" stroke-width="2"/>
+    <text x="560" y="40" class="title-text" text-anchor="middle">CENTRAL RETINAL ARTERY OCCLUSION (CRAO) EMERGENCY WORKFLOW</text>
+    <text x="560" y="68" class="subtitle-text" text-anchor="middle">Acute Monocular Painless Vision Loss • "Eye Stroke" Code Stroke Response Protocol</text>
+  </g>
+
+  <!-- Step 1: Rapid Triage -->
+  <g transform="translate(40, 140)" filter="url(#shadow)">
+    <rect class="card-bg" width="350" height="460" rx="12" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="0" y="0" width="350" height="45" fill="#0284c7" rx="11"/>
+    <text x="175" y="28" font-family="sans-serif" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle">STEP 1: TRIAGE &amp; DIAGNOSIS (&lt; 15 MINS)</text>
+
+    <text x="20" y="75" class="card-title" fill="#38bdf8">Clinical Triad:</text>
+    <text x="20" y="98" class="card-body">• Acute painless sudden vision loss in 1 eye.</text>
+    <text x="20" y="118" class="card-body">• Afferent Pupillary Defect (Marcus Gunn pupil).</text>
+    <text x="20" y="138" class="card-body">• Visual Acuity: Count fingers / Light perception.</text>
+
+    <text x="20" y="175" class="card-title" fill="#fbbf24">Fundoscopy Findings:</text>
+    <text x="20" y="198" class="card-body">• <tspan font-weight="700" fill="#ef4444">Cherry-Red Spot</tspan> on macula.</text>
+    <text x="20" y="218" class="card-body">• Retinal arteriolar attenuation / boxcarring.</text>
+    <text x="20" y="238" class="card-body">• Pale, edematous retina.</text>
+
+    <text x="20" y="275" class="card-title" fill="#f8fafc">Emergency Alerts:</text>
+    <text x="20" y="298" class="card-body">• Activate <tspan font-weight="700" fill="#38bdf8">CODE STROKE</tspan> immediately.</text>
+    <text x="20" y="318" class="card-body">• Stat Ophthalmology &amp; Neurology consult.</text>
+    <text x="20" y="338" class="card-body">• Stat Head NCCT + CTA Head/Neck.</text>
+
+    <rect x="15" y="380" width="320" height="65" fill="#0c4a6e" rx="8"/>
+    <text x="175" y="405" class="card-title" fill="#7dd3fc" font-size="14" text-anchor="middle">TIME IS RETINA</text>
+    <text x="175" y="428" class="card-sub" fill="#ffffff" text-anchor="middle">Irreversible damage in &gt; 240 minutes</text>
+  </g>
+
+  <!-- Step 2: Immediate Bedside Interventions -->
+  <g transform="translate(425, 140)" filter="url(#shadow)">
+    <rect class="card-bg" width="350" height="460" rx="12" stroke="#f59e0b" stroke-width="2"/>
+    <rect x="0" y="0" width="350" height="45" fill="#d97706" rx="11"/>
+    <text x="175" y="28" font-family="sans-serif" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle">STEP 2: BEDSIDE CONSERVATIVE THERAPY</text>
+
+    <text x="20" y="75" class="card-title" fill="#fbbf24">1. Ocular Massage (Immediate):</text>
+    <text x="20" y="98" class="card-body">• Digital pressure over closed eyelid for 10-15s.</text>
+    <text x="20" y="118" class="card-body">• Abrupt release for 3-5s. Repeat x 15-20 min.</text>
+    <text x="20" y="138" class="card-sub">• Goal: Induce IOP fluctuations to dislodge embolus.</text>
+
+    <text x="20" y="175" class="card-title" fill="#fbbf24">2. Lower Intraocular Pressure (IOP):</text>
+    <text x="20" y="198" class="card-body">• <tspan font-weight="700">IV Acetazolamide 500 mg</tspan> stat.</text>
+    <text x="20" y="218" class="card-body">• <tspan font-weight="700">Topical Timolol 0.5%</tspan> eye drop x 1.</text>
+    <text x="20" y="238" class="card-body">• Sublingual Isosorbide Dinitrate 5 mg.</text>
+
+    <text x="20" y="275" class="card-title" fill="#fbbf24">3. Vasodilation / Carbogen:</text>
+    <text x="20" y="298" class="card-body">• Rebreathing into paper bag x 10 min q1h.</text>
+    <text x="20" y="318" class="card-body">• Or 95% O² / 5% CO² (Carbogen) inhalation.</text>
+
+    <rect x="15" y="380" width="320" height="65" fill="#78350f" rx="8"/>
+    <text x="175" y="405" class="card-title" fill="#fde68a" font-size="14" text-anchor="middle">PARACENTESIS OPTION</text>
+    <text x="175" y="428" class="card-sub" fill="#ffffff" text-anchor="middle">Anterior chamber paracentesis by Ophtho</text>
+  </g>
+
+  <!-- Step 3: Reperfusion & Secondary Workup -->
+  <g transform="translate(810, 140)" filter="url(#shadow)">
+    <rect class="card-bg" width="350" height="460" rx="12" stroke="#ef4444" stroke-width="2"/>
+    <rect x="0" y="0" width="350" height="45" fill="#dc2626" rx="11"/>
+    <text x="175" y="28" font-family="sans-serif" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle">STEP 3: REPERFUSION &amp; ETIOLOGY</text>
+
+    <text x="20" y="75" class="card-title" fill="#fca5a5">Systemic Thrombolysis (&lt; 4.5h):</text>
+    <text x="20" y="98" class="card-body">• <tspan font-weight="700" fill="#4ade80">IV Alteplase 0.9 mg/kg</tspan> (or Tenecteplase)</text>
+    <text x="20" y="118" class="card-body">• Administer if onset &lt; 4.5h and no standard IVT contraindications.</text>
+    <text x="20" y="138" class="card-sub">• Visual recovery rate ~50% vs 17% conservative.</text>
+
+    <text x="20" y="175" class="card-title" fill="#fca5a5">Intra-Arterial Thrombolysis (&lt; 6h):</text>
+    <text x="20" y="198" class="card-body">• Ophthalmic artery catheterization with low-dose tPA (10-20mg) by NeuroInterventional.</text>
+
+    <text x="20" y="240" class="card-title" fill="#f8fafc">Mandatory Secondary Workup:</text>
+    <text x="20" y="263" class="card-body">• CTA Head/Neck (Carotid stenosis &gt; 70%).</text>
+    <text x="20" y="283" class="card-body">• ECG, Telemetry &amp; Echo (Cardiac embolus).</text>
+    <text x="20" y="303" class="card-body">• <tspan font-weight="700" fill="#fbbf24">ESR &amp; CRP</tspan> stat if age &gt; 50 (Rule out GCA!).</text>
+
+    <rect x="15" y="380" width="320" height="65" fill="#7f1d1d" rx="8"/>
+    <text x="175" y="405" class="card-title" fill="#fecaca" font-size="14" text-anchor="middle">GIANT CELL ARTERITIS</text>
+    <text x="175" y="428" class="card-sub" fill="#ffffff" text-anchor="middle">High dose IV Methylprednisolone if GCA suspect</text>
+  </g>
+
+  <!-- Bottom Timeline & Summary Bar -->
+  <g transform="translate(40, 620)" filter="url(#shadow)">
+    <rect class="card-bg" width="1120" height="190" rx="12"/>
+    <text x="25" y="30" class="card-title" fill="#38bdf8">CRAO CLINICAL PATHWAY SUMMARY &amp; TIME WINDOWS:</text>
+    
+    <g transform="translate(25, 45)">
+      <rect width="340" height="120" fill="#0f172a" stroke="#38bdf8" rx="8"/>
+      <text x="15" y="25" class="card-title" fill="#38bdf8" font-size="14">WINDOW: 0 – 4.5 HOURS</text>
+      <text x="15" y="48" class="card-body" font-weight="700" fill="#4ade80">IV Thrombolysis (tPA) Window</text>
+      <text x="15" y="70" class="card-sub">Eligible patients should receive IV Alteplase 0.9 mg/kg following standard AIS protocols.</text>
+      <text x="15" y="90" class="card-sub" fill="#fbbf24">Stat CTA Head/Neck to exclude ICA occlusion.</text>
+    </g>
+
+    <g transform="translate(390, 45)">
+      <rect width="340" height="120" fill="#0f172a" stroke="#f59e0b" rx="8"/>
+      <text x="15" y="25" class="card-title" fill="#f59e0b" font-size="14">WINDOW: 4.5 – 6.0 HOURS</text>
+      <text x="15" y="48" class="card-body" font-weight="700" fill="#fde68a">Intra-Arterial (IAT) Option</text>
+      <text x="15" y="70" class="card-sub">Consider selective intra-arterial tPA via microcatheter in specialized stroke centers.</text>
+      <text x="15" y="90" class="card-sub" fill="#e2e8f0">Maintain bedside IOP lowering measures.</text>
+    </g>
+
+    <g transform="translate(755, 45)">
+      <rect width="340" height="120" fill="#0f172a" stroke="#ef4444" rx="8"/>
+      <text x="15" y="25" class="card-title" fill="#ef4444" font-size="14">WINDOW: &gt; 6.0 HOURS / SUBACUTE</text>
+      <text x="15" y="48" class="card-body" font-weight="700" fill="#fca5a5">Secondary Prevention Priority</text>
+      <text x="15" y="70" class="card-sub">Thrombolysis ineffective. Focus on antiplatelet therapy, statin, carotid endarterectomy (CEA).</text>
+      <text x="15" y="90" class="card-sub" fill="#4ade80">Screen ESR/CRP to rule out Temporal Arteritis.</text>
+    </g>
+  </g>
+</svg>

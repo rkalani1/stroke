@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="100%" height="100%" role="img" aria-labelledby="evt-title evt-desc">
+  <title id="evt-title">EVT LVO Occlusion Sites &amp; Thrombectomy Render</title>
+  <desc id="evt-desc">3D CTA angiography render illustrating key Large Vessel Occlusion (LVO) sites in cerebral circulation (ICA terminus, MCA M1, M2, Basilar) with stent retriever and aspiration catheter orientation.</desc>
+  <defs>
+    <style>
+      .bg { fill: #090d16; }
+      .card-bg { fill: #131c2e; stroke: #1e2d4a; stroke-width: 1.5; }
+      .title-text { font-family: system-ui, -apple-system, sans-serif; font-size: 26px; font-weight: 800; fill: #f8fafc; }
+      .subtitle-text { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; fill: #f59e0b; }
+      .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 17px; font-weight: 700; }
+      .card-body { font-family: system-ui, -apple-system, sans-serif; font-size: 13.5px; fill: #e2e8f0; line-height: 1.5; }
+      .card-sub { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #94a3b8; }
+      
+      @media (prefers-color-scheme: light) {
+        .bg { fill: #0f172a; }
+        .card-bg { fill: #1e293b; stroke: #334155; }
+        .title-text { fill: #f8fafc; }
+        .subtitle-text { fill: #fbbf24; }
+        .card-body { fill: #e2e8f0; }
+        .card-sub { fill: #94a3b8; }
+      }
+    </style>
+    <filter id="glow-gold" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <rect class="bg" width="1200" height="900" rx="16"/>
+
+  <!-- Header -->
+  <g transform="translate(40, 30)" filter="url(#shadow)">
+    <rect class="card-bg" width="1120" height="90" rx="12" stroke="#f59e0b" stroke-width="2"/>
+    <text x="560" y="40" class="title-text" text-anchor="middle">EVT LVO OCCLUSION SITES &amp; THROMBECTOMY DEVICE ORIENTATION</text>
+    <text x="560" y="68" class="subtitle-text" text-anchor="middle">Cerebral Angiography Anatomy • Target Occlusions for Endovascular Thrombectomy</text>
+  </g>
+
+  <!-- Left: 3D Vascular Tree Render (Circle of Willis & Occlusion Pins) -->
+  <g transform="translate(40, 140)" filter="url(#shadow)">
+    <rect class="card-bg" width="620" height="660" rx="12"/>
+    <text x="310" y="35" class="card-title" fill="#fbbf24" text-anchor="middle">3D ANGIOGRAPHY VASCULAR TREE &amp; TARGET LVO LOCATIONS</text>
+
+    <!-- Vessel Tree Graphics -->
+    <g transform="translate(60, 60)" filter="url(#glow-gold)">
+      <!-- Aorta / Carotid Trunks -->
+      <path d="M 250 480 L 250 350 M 150 480 L 170 380 L 230 350" stroke="#d97706" stroke-width="14" fill="none" stroke-linecap="round"/>
+      
+      <!-- Internal Carotid Arteries (ICA Left & Right) -->
+      <path d="M 230 350 C 230 280 200 240 200 200" stroke="#f59e0b" stroke-width="10" fill="none"/>
+      <path d="M 270 350 C 270 280 320 230 320 180" stroke="#f59e0b" stroke-width="10" fill="none"/>
+
+      <!-- Circle of Willis Center (Acom & Pcom) -->
+      <path d="M 200 200 L 320 180" stroke="#fbbf24" stroke-width="6" fill="none"/>
+      
+      <!-- Anterior Cerebral Arteries (ACA A1 & A2) -->
+      <path d="M 250 185 L 250 80 C 250 50 220 30 200 20" stroke="#fbbf24" stroke-width="6" fill="none"/>
+      <path d="M 250 185 L 260 80 C 260 50 300 30 320 20" stroke="#fbbf24" stroke-width="6" fill="none"/>
+
+      <!-- Middle Cerebral Artery (MCA M1 Main Trunk & M2 Branches) -->
+      <!-- Right MCA M1 -->
+      <path d="M 200 200 L 100 210 C 70 215 50 250 40 300" stroke="#f59e0b" stroke-width="8" fill="none"/>
+      <!-- Left MCA M1 (Target Occlusion Side) -->
+      <path d="M 320 180 L 400 170" stroke="#ef4444" stroke-width="8" fill="none"/>
+      <!-- Left MCA M2 Bifurcation -->
+      <path d="M 400 170 L 460 130 M 400 170 L 470 210" stroke="#f87171" stroke-width="5" fill="none"/>
+
+      <!-- Vertebrobasilar Circulation (Vertebrals & Basilar Artery) -->
+      <path d="M 120 480 L 160 410 L 250 380 L 250 280" stroke="#38bdf8" stroke-width="8" fill="none"/>
+      <!-- Posterior Cerebral Arteries (PCA) -->
+      <path d="M 250 280 L 180 260 M 250 280 L 330 270" stroke="#0284c7" stroke-width="6" fill="none"/>
+
+      <!-- OCCLUSION SITE PINS & CALLOUTS -->
+      <!-- 1. ICA Terminus (T-Occlusion) -->
+      <circle cx="320" cy="180" r="12" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+      <text x="320" y="184" font-family="sans-serif" font-size="11" font-weight="900" fill="#ffffff" text-anchor="middle">1</text>
+
+      <!-- 2. MCA M1 Segment -->
+      <circle cx="370" cy="173" r="12" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+      <text x="370" y="177" font-family="sans-serif" font-size="11" font-weight="900" fill="#ffffff" text-anchor="middle">2</text>
+
+      <!-- 3. MCA M2 Segment -->
+      <circle cx="430" cy="150" r="12" fill="#d97706" stroke="#ffffff" stroke-width="2"/>
+      <text x="430" y="154" font-family="sans-serif" font-size="11" font-weight="900" fill="#ffffff" text-anchor="middle">3</text>
+
+      <!-- 4. Basilar Artery -->
+      <circle cx="250" cy="310" r="12" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+      <text x="250" y="314" font-family="sans-serif" font-size="11" font-weight="900" fill="#ffffff" text-anchor="middle">4</text>
+    </g>
+
+    <!-- Occlusion Legend Below Display -->
+    <g transform="translate(30, 560)">
+      <rect width="560" height="80" fill="#0f172a" stroke="#334155" rx="8"/>
+      <text x="15" y="24" class="card-title" fill="#fbbf24" font-size="13">TARGET LVO SITES:</text>
+      <text x="15" y="46" class="card-sub" fill="#ffffff"><tspan font-weight="800" fill="#ef4444">1. ICA Terminus</tspan> (T-occlusion)  |  <tspan font-weight="800" fill="#ef4444">2. MCA M1</tspan> (Main stem)</text>
+      <text x="15" y="66" class="card-sub" fill="#ffffff"><tspan font-weight="800" fill="#f59e0b">3. MCA M2</tspan> (Dominant division)  |  <tspan font-weight="800" fill="#ef4444">4. Basilar Artery</tspan> (Basilar trunk/apex)</text>
+    </g>
+  </g>
+
+  <!-- Right: Thrombectomy Device Technique Panel (Solumbra Technique) -->
+  <g transform="translate(680, 140)" filter="url(#shadow)">
+    <rect class="card-bg" width="480" height="660" rx="12"/>
+    <text x="240" y="35" class="card-title" fill="#38bdf8" text-anchor="middle">THROMBECTOMY TECHNIQUE &amp; DEVICE ORIENTATION</text>
+
+    <!-- Stent Retriever & Aspiration Graphic Schematic -->
+    <g transform="translate(20, 55)">
+      <rect width="440" height="340" fill="#0f172a" stroke="#0284c7" stroke-width="1.5" rx="10"/>
+      <text x="220" y="30" class="card-title" fill="#38bdf8" font-size="15" text-anchor="middle">COMBINED ASPIRATION + STENT RETRIEVER (SOLUMBRA)</text>
+
+      <!-- Blood Vessel Wall (Artery Outline) -->
+      <path d="M 40 100 L 400 100 M 40 220 L 400 220" stroke="#f59e0b" stroke-width="6" opacity="0.6"/>
+
+      <!-- Thrombus / Clot Blockage -->
+      <rect x="220" y="104" width="70" height="112" fill="#7f1d1d" stroke="#ef4444" stroke-width="2" rx="6"/>
+      <text x="255" y="165" font-family="sans-serif" font-size="12" font-weight="900" fill="#ffffff" text-anchor="middle">CLOT</text>
+
+      <!-- Aspiration Catheter (Positioned Proximal to Clot) -->
+      <rect x="40" y="125" width="170" height="70" fill="#1e293b" stroke="#38bdf8" stroke-width="3" rx="4"/>
+      <text x="125" y="165" class="card-sub" fill="#38bdf8" font-weight="800" text-anchor="middle">ASPIRATION CATHETER</text>
+      <!-- Suction Arrows inside catheter -->
+      <path d="M 190 160 L 150 160 M 170 150 L 150 160 L 170 170" stroke="#38bdf8" stroke-width="2.5" fill="none"/>
+
+      <!-- Microcatheter / Stent Retriever Wire Deployed ACROSS Clot -->
+      <line x1="120" y1="160" x2="380" y2="160" stroke="#a7f3d0" stroke-width="3"/>
+      <!-- Mesh Stent Structure across Clot -->
+      <path d="M 210 115 L 360 205 M 210 205 L 360 115 M 240 115 L 390 205 M 240 205 L 390 115" stroke="#34d399" stroke-width="2.5" opacity="0.9"/>
+      <text x="310" y="90" font-family="sans-serif" font-size="12" font-weight="800" fill="#34d399" text-anchor="middle">STENT RETRIEVER DEPLOYED</text>
+
+      <!-- Summary Callout Below Schematic -->
+      <text x="220" y="270" class="card-body" text-anchor="middle">1. Stent retriever integrates into clot mass.</text>
+      <text x="220" y="295" class="card-body" text-anchor="middle">2. Continuous negative suction via aspiration catheter.</text>
+      <text x="220" y="320" class="card-body" font-weight="700" fill="#34d399" text-anchor="middle">3. Pin-pull retrieval for complete TICI 3 revascularization.</text>
+    </g>
+
+    <!-- TICI Revascularization Grade Box -->
+    <g transform="translate(20, 415)">
+      <rect width="440" height="225" fill="#0f172a" stroke="#10b981" stroke-width="1.5" rx="10"/>
+      <text x="220" y="30" class="card-title" fill="#34d399" text-anchor="middle">TICI REPERFUSION GRADING SCALE</text>
+      
+      <text x="20" y="60" class="card-body">• <tspan font-weight="700" fill="#ef4444">TICI 0:</tspan> No perfusion (Complete occlusion)</text>
+      <text x="20" y="85" class="card-body">• <tspan font-weight="700" fill="#f59e0b">TICI 1:</tspan> Minimal perfusion past obstruction</text>
+      <text x="20" y="110" class="card-body">• <tspan font-weight="700" fill="#fbbf24">TICI 2a:</tspan> Partial perfusion (&lt; 50% territory)</text>
+      <text x="20" y="135" class="card-body">• <tspan font-weight="700" fill="#34d399">TICI 2b:</tspan> Partial perfusion (≥ 50% territory) [SUCCESS]</text>
+      <text x="20" y="160" class="card-body">• <tspan font-weight="700" fill="#38bdf8">TICI 2c:</tspan> Near complete perfusion except slow distal branch</text>
+      <text x="20" y="185" class="card-body">• <tspan font-weight="700" fill="#a7f3d0">TICI 3:</tspan> Full complete normal perfusion [OPTIMAL TARGET]</text>
+      <text x="220" y="210" class="card-sub" fill="#fbbf24" font-weight="700" text-anchor="middle">Goal: Revascularization to TICI 2b / 2c / 3 within 24 hours.</text>
+    </g>
+  </g>
+</svg>

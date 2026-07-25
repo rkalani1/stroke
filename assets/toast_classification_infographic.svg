@@ -1,0 +1,215 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="100%" height="100%" role="img" aria-labelledby="toast-title toast-desc">
+  <title id="toast-title">TOAST Stroke Subtype Classification Algorithm</title>
+  <desc id="toast-desc">High-contrast flowchart detailing the 5 TOAST etiologic subtypes of acute ischemic stroke: Large Artery Atherosclerosis, Cardioembolism, Small Vessel Occlusion, Other Etiology, and Undetermined.</desc>
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .card-bg { fill: #1e293b; stroke: #334155; stroke-width: 1.5; }
+      .header-bg { fill: #1e1b4b; stroke: #6366f1; stroke-width: 2; }
+      .title-text { font-family: system-ui, -apple-system, sans-serif; font-size: 26px; font-weight: 800; fill: #f8fafc; }
+      .subtitle-text { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; fill: #a5b4fc; }
+      .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 18px; font-weight: 700; }
+      .card-body { font-family: system-ui, -apple-system, sans-serif; font-size: 13.5px; fill: #e2e8f0; line-height: 1.5; }
+      .card-sub { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #94a3b8; }
+      .arrow { stroke: #64748b; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .arrow-active { stroke: #38bdf8; stroke-width: 2.5; fill: none; stroke-dasharray: 4 4; }
+      .badge { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 700; text-anchor: middle; }
+      
+      @media (prefers-color-scheme: light) {
+        .bg { fill: #f8fafc; }
+        .card-bg { fill: #ffffff; stroke: #cbd5e1; }
+        .header-bg { fill: #eef2ff; stroke: #4f46e5; }
+        .title-text { fill: #0f172a; }
+        .subtitle-text { fill: #4338ca; }
+        .card-body { fill: #334155; }
+        .card-sub { fill: #64748b; }
+        .arrow { stroke: #94a3b8; }
+      }
+    </style>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1200" height="900" rx="16"/>
+
+  <!-- Header Banner -->
+  <g transform="translate(40, 30)" filter="url(#shadow)">
+    <rect class="header-bg" width="1120" height="110" rx="12"/>
+    <text x="560" y="45" class="title-text" text-anchor="middle">TOAST STROKE SUBTYPE CLASSIFICATION ALGORITHM</text>
+    <text x="560" y="73" class="subtitle-text" text-anchor="middle">Trial of ORG 10172 in Acute Stroke Treatment • Etiologic Diagnostic Criteria</text>
+    <text x="560" y="93" class="card-sub" text-anchor="middle">Diagnostic Workup Required: Brain MRI/DWI + CTA/MRA + 24h+ Telemetry + Transthoracic/Transesophageal Echo</text>
+  </g>
+
+  <!-- Central Decision Node -->
+  <g transform="translate(40, 160)" filter="url(#shadow)">
+    <rect class="card-bg" width="1120" height="70" rx="10"/>
+    <text x="560" y="32" class="card-title" fill="#38bdf8" text-anchor="middle">Acute Ischemic Stroke Evaluation Gate</text>
+    <text x="560" y="54" class="card-body" text-anchor="middle">Clinical Symptoms + Brain Neuroimaging (CT/MRI) + Vascular &amp; Cardiac Workup</text>
+  </g>
+
+  <!-- Branching Arrows from Gate -->
+  <path class="arrow" d="M 560 230 L 560 265 M 150 265 L 970 265 M 150 265 L 150 290 M 355 265 L 355 290 M 560 265 L 560 290 M 765 265 L 765 290 M 970 265 L 970 290" />
+
+  <!-- Subtype 1: LAA -->
+  <g transform="translate(40, 290)" filter="url(#shadow)">
+    <rect class="card-bg" width="210" height="460" rx="10" stroke="#0284c7" stroke-width="2"/>
+    <rect x="0" y="0" width="210" height="42" fill="#0284c7" rx="9"/>
+    <text x="105" y="26" class="card-title" fill="#ffffff" text-anchor="middle">1. LAA</text>
+    
+    <text x="15" y="65" class="card-title" fill="#38bdf8" font-size="14">Large-Artery</text>
+    <text x="15" y="82" class="card-title" fill="#38bdf8" font-size="14">Atherosclerosis</text>
+    
+    <text x="15" y="115" class="card-body" font-weight="700">• Stenosis &gt; 50%</text>
+    <text x="25" y="133" class="card-sub">or occlusion of major</text>
+    <text x="25" y="148" class="card-sub">brain-supplying artery.</text>
+    
+    <text x="15" y="175" class="card-body" font-weight="700">• Lesion Location:</text>
+    <text x="25" y="193" class="card-sub">Cortical, subcortical,</text>
+    <text x="25" y="208" class="card-sub">cerebellar, brainstem.</text>
+
+    <text x="15" y="235" class="card-body" font-weight="700">• Size Criteria:</text>
+    <text x="25" y="253" class="card-sub">Infarct &gt; 1.5 cm on CT/MRI.</text>
+
+    <text x="15" y="280" class="card-body" font-weight="700">• Key Signs:</text>
+    <text x="25" y="298" class="card-sub">Aphasia, neglect, focal</text>
+    <text x="25" y="313" class="card-sub">motor, cerebellar signs.</text>
+
+    <text x="15" y="340" class="card-body" font-weight="700">• Exclusions:</text>
+    <text x="25" y="358" class="card-sub">No high-risk cardiac source.</text>
+
+    <rect x="15" y="390" width="180" height="50" fill="#0369a1" rx="6"/>
+    <text x="105" y="410" class="badge" fill="#ffffff">RECURRENT RISK: HIGH</text>
+    <text x="105" y="426" class="card-sub" fill="#e0f2fe" text-anchor="middle">Rx: DAPT / Statin / CEA</text>
+  </g>
+
+  <!-- Subtype 2: Cardioembolic -->
+  <g transform="translate(265, 290)" filter="url(#shadow)">
+    <rect class="card-bg" width="210" height="460" rx="10" stroke="#e11d48" stroke-width="2"/>
+    <rect x="0" y="0" width="210" height="42" fill="#e11d48" rx="9"/>
+    <text x="105" y="26" class="card-title" fill="#ffffff" text-anchor="middle">2. Cardioembolic</text>
+    
+    <text x="15" y="65" class="card-title" fill="#fb7185" font-size="14">Cardiac Source</text>
+    <text x="15" y="82" class="card-title" fill="#fb7185" font-size="14">Embolism</text>
+    
+    <text x="15" y="115" class="card-body" font-weight="700">• High Risk Sources:</text>
+    <text x="25" y="133" class="card-sub">AFib, LA thrombus, mech</text>
+    <text x="25" y="148" class="card-sub">valve, EF &lt; 28%, LVT.</text>
+    
+    <text x="15" y="175" class="card-body" font-weight="700">• Medium Risk:</text>
+    <text x="25" y="193" class="card-sub">PFO, ASA, bioprosthetic</text>
+    <text x="25" y="208" class="card-sub">valve, hypokinetic wall.</text>
+
+    <text x="15" y="235" class="card-body" font-weight="700">• Features:</text>
+    <text x="25" y="253" class="card-sub">Sudden maximal onset;</text>
+    <text x="25" y="268" class="card-sub">multiple territories.</text>
+
+    <text x="15" y="295" class="card-body" font-weight="700">• Hemorrhagic Transformation:</text>
+    <text x="25" y="313" class="card-sub">Common secondary sign.</text>
+
+    <text x="15" y="340" class="card-body" font-weight="700">• Exclusions:</text>
+    <text x="25" y="358" class="card-sub">No &gt;50% arterial stenosis.</text>
+
+    <rect x="15" y="390" width="180" height="50" fill="#be123c" rx="6"/>
+    <text x="105" y="410" class="badge" fill="#ffffff">PRIMARY PREVENTION</text>
+    <text x="105" y="426" class="card-sub" fill="#ffe4e6" text-anchor="middle">Rx: DOAC (1-3-6-12 Rule)</text>
+  </g>
+
+  <!-- Subtype 3: Small Vessel Occlusion -->
+  <g transform="translate(490, 290)" filter="url(#shadow)">
+    <rect class="card-bg" width="210" height="460" rx="10" stroke="#d97706" stroke-width="2"/>
+    <rect x="0" y="0" width="210" height="42" fill="#d97706" rx="9"/>
+    <text x="105" y="26" class="card-title" fill="#ffffff" text-anchor="middle">3. Small Vessel</text>
+    
+    <text x="15" y="65" class="card-title" fill="#fbbf24" font-size="14">Lacunar Infarct</text>
+    <text x="15" y="82" class="card-title" fill="#fbbf24" font-size="14">(SVO)</text>
+    
+    <text x="15" y="115" class="card-body" font-weight="700">• Lesion Size &lt; 1.5 cm:</text>
+    <text x="25" y="133" class="card-sub">Subcortical / basal ganglia</text>
+    <text x="25" y="148" class="card-sub">thalamus, pons, internal cap.</text>
+    
+    <text x="15" y="175" class="card-body" font-weight="700">• Classic Syndromes:</text>
+    <text x="25" y="193" class="card-sub">Pure Motor Hemiparesis</text>
+    <text x="25" y="208" class="card-sub">Pure Sensory Stroke</text>
+    <text x="25" y="223" class="card-sub">Dysarthria-Clumsy Hand</text>
+
+    <text x="15" y="248" class="card-body" font-weight="700">• Risk Factors:</text>
+    <text x="25" y="266" class="card-sub">HTN, Diabetes, Lipohyalinosis.</text>
+
+    <text x="15" y="293" class="card-body" font-weight="700">• Negative Signs:</text>
+    <text x="25" y="311" class="card-sub">No cortical dysfunction</text>
+    <text x="25" y="326" class="card-sub">(Aphasia/Neglect absent).</text>
+
+    <rect x="15" y="390" width="180" height="50" fill="#b45309" rx="6"/>
+    <text x="105" y="410" class="badge" fill="#ffffff">MICROVASCULAR</text>
+    <text x="105" y="426" class="card-sub" fill="#fef3c7" text-anchor="middle">Rx: SAPT / Strict BP Control</text>
+  </g>
+
+  <!-- Subtype 4: Other Etiology -->
+  <g transform="translate(715, 290)" filter="url(#shadow)">
+    <rect class="card-bg" width="210" height="460" rx="10" stroke="#7c3aed" stroke-width="2"/>
+    <rect x="0" y="0" width="210" height="42" fill="#7c3aed" rx="9"/>
+    <text x="105" y="26" class="card-title" fill="#ffffff" text-anchor="middle">4. Other Etiology</text>
+    
+    <text x="15" y="65" class="card-title" fill="#c084fc" font-size="14">Specific Rare</text>
+    <text x="15" y="82" class="card-title" fill="#c084fc" font-size="14">Vasculopathy</text>
+    
+    <text x="15" y="115" class="card-body" font-weight="700">• Non-Atherosclerotic:</text>
+    <text x="25" y="133" class="card-sub">Arterial Dissection (Carotid/VAD)</text>
+    <text x="25" y="148" class="card-sub">Moyamoya, FMD, RCVS.</text>
+    
+    <text x="15" y="175" class="card-body" font-weight="700">• Inflammatory:</text>
+    <text x="25" y="193" class="card-sub">CNS Vasculitis, VZV,</text>
+    <text x="25" y="208" class="card-sub">Systemic Lupus (SLE).</text>
+
+    <text x="15" y="235" class="card-body" font-weight="700">• Hypercoagulable:</text>
+    <text x="25" y="253" class="card-sub">APLS, Factor V Leiden,</text>
+    <text x="25" y="268" class="card-sub">Malignancy / Trousseau.</text>
+
+    <text x="15" y="295" class="card-body" font-weight="700">• Confirmed by:</text>
+    <text x="25" y="313" class="card-sub">Angiography, Serology, LP.</text>
+
+    <rect x="15" y="390" width="180" height="50" fill="#6d28d9" rx="6"/>
+    <text x="105" y="410" class="badge" fill="#ffffff">TARGETED THERAPY</text>
+    <text x="105" y="426" class="card-sub" fill="#f3e8ff" text-anchor="middle">Rx: Disease Specific</text>
+  </g>
+
+  <!-- Subtype 5: Undetermined -->
+  <g transform="translate(940, 290)" filter="url(#shadow)">
+    <rect class="card-bg" width="210" height="460" rx="10" stroke="#0d9488" stroke-width="2"/>
+    <rect x="0" y="0" width="210" height="42" fill="#0d9488" rx="9"/>
+    <text x="105" y="26" class="card-title" fill="#ffffff" text-anchor="middle">5. Undetermined</text>
+    
+    <text x="15" y="65" class="card-title" fill="#2dd4bf" font-size="14">Cryptogenic /</text>
+    <text x="15" y="82" class="card-title" fill="#2dd4bf" font-size="14">Multi-Etiology</text>
+    
+    <text x="15" y="115" class="card-body" font-weight="700">• 5a. Two+ Causes:</text>
+    <text x="25" y="133" class="card-sub">E.g., AFib AND &gt;50%</text>
+    <text x="25" y="148" class="card-sub">carotid stenosis present.</text>
+    
+    <text x="15" y="175" class="card-body" font-weight="700">• 5b. Cryptogenic (ESUS):</text>
+    <text x="25" y="193" class="card-sub">Embolic stroke of</text>
+    <text x="25" y="208" class="card-sub">undetermined source after</text>
+    <text x="25" y="223" class="card-sub">complete workup.</text>
+
+    <text x="15" y="248" class="card-body" font-weight="700">• 5c. Incomplete:</text>
+    <text x="25" y="266" class="card-sub">Workup pending or incomplete.</text>
+
+    <text x="15" y="293" class="card-body" font-weight="700">• Action:</text>
+    <text x="25" y="311" class="card-sub">Extended cardiac monitor (ILR),</text>
+    <text x="25" y="326" class="card-sub">Transesophageal Echo (TEE).</text>
+
+    <rect x="15" y="390" width="180" height="50" fill="#0f766e" rx="6"/>
+    <text x="105" y="410" class="badge" fill="#ffffff">EXTENDED WORKUP</text>
+    <text x="105" y="426" class="card-sub" fill="#ccfbf1" text-anchor="middle">Rx: SAPT + Loop Monitor</text>
+  </g>
+
+  <!-- Diagnostic Summary Footer -->
+  <g transform="translate(40, 770)" filter="url(#shadow)">
+    <rect class="card-bg" width="1120" height="100" rx="10"/>
+    <text x="25" y="30" class="card-title" fill="#f59e0b">CLINICAL HIGHLIGHT &amp; DIAGNOSTIC MANDATE:</text>
+    <text x="25" y="55" class="card-body">1. Complete mandatory workup before finalizing TOAST classification: Brain MRI/DWI, CTA/MRA, Transthoracic Echo (TEE if indicated), and prolonged arrhythmia monitoring (≥24-72h telemetry/Holter or implantable loop recorder).</text>
+    <text x="25" y="78" class="card-body" fill="#38bdf8">2. ESUS (Embolic Stroke of Undetermined Source) falls under Category 5b and warrants prolonged cardiac monitoring to detect occult Atrial Fibrillation.</text>
+  </g>
+</svg>
