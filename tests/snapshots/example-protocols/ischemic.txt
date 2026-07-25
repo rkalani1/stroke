@@ -1,0 +1,1449 @@
+No diagnosis set.
+Set a working diagnosis on the Encounter tab to activate pathway-specific management recommendations and auto-populate relevant protocols.
+Set diagnosis
+Protocols & Algorithms
+›
+Ischemic
+ICH
+Ischemic
+SAH
+TIA
+CVT
+References
+Calculators
+Acute ischemic stroke
+Acute Stroke Pathways
+Evidence-bound decisions for the acute ischemic stroke pathway — reperfusion, telestroke sequencing, and pediatric considerations. Each card is COR/LOE-graded against the 2026 AHA/ASA AIS guideline where applicable.
+First decision after hemorrhage excluded
+0-4.5h IV Thrombolysis
+TNK / alteplase
+COR
+I
+LOE
+A
+What changed
+Expanded TNK endorsement within 4.5h; stronger emphasis that extra imaging should not delay IVT in otherwise eligible patients. RAISE makes reteplase an evidence-watch item, not a default protocol agent.
+If adult AIS has a disabling deficit and no exclusion, give IVT as fast as safely possible. Tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg are both Class I/A in the 2026 AHA/ASA guideline.
+Do now
+Do not wait for CTA, CTP, MRI, ECG, troponin, or routine labs when there is no clinical suspicion of an abnormal result.
+Check glucose before IVT; correct severe hypo- or hyperglycemia, then treat if a disabling deficit persists.
+Lower BP to <185/110 before IVT and maintain <180/105 for at least 24h after treatment.
+Use TNK 0.25 mg/kg only; do not use the 0.4 mg/kg stroke dose.
+Do not add routine argatroban, eptifibatide, or other adjunctive antithrombotics to IVT outside a protocol/trial.
+Decision pathway
+Scenario
+Decision
+COR / LOE
+Disabling deficit, <=4.5h, no exclusion
+Give TNK 0.25 mg/kg IV bolus or alteplase 0.9 mg/kg
+I
+A
+Mild but disabling symptom
+Treat; NIHSS alone should not block IVT
+I
+A
+Non-disabling minor deficit
+Usually no IVT; start antiplatelet pathway if no lytic
+III
+B-R
+TNK 0.4 mg/kg
+Do not use for AIS
+III
+A
+TNK dose from weight
+Alteplase calculator
+NIHSS
+Pitfalls
+Treating "low NIHSS" as a reason to withhold IVT despite aphasia, hemianopia, severe neglect, dominant-hand weakness, gait-precluding ataxia, or disabling visual loss.
+Getting perfusion imaging before lysis in an otherwise eligible <=4.5h patient.
+Using a TNK STEMI-style 0.5 mg/kg dose or the older 0.4 mg/kg stroke dose.
+Treating RAISE as permission to substitute reteplase into routine US telestroke practice; the 2026 guideline notes benefit but also limited generalizability.
+Teaching pearl
+The 2026 shift is practical: TNK 0.25 mg/kg is no longer just an alternative; the guideline lists TNK or alteplase as recommended Class I/A options within 4.5h.
+Why this recommendation? (
+1
+supporting claim
+)
+Tenecteplase 0.25 mg/kg is non-inferior to alteplase 0.9 mg/kg for 90-day functional outcome in eligible AIS within 4.5 h.
+Certainty:
+high
+Intravenous Tenecteplase Compared with Alteplase for Acute Ischaemic Stroke in Canada (AcT)
+(
+Lancet
+2022
+)
+·
+PMID 35779553
+Trial of Tenecteplase in Chinese Patients with Acute Ischemic Stroke (TRACE-2)
+(
+Lancet
+2023
+)
+·
+PMID 36774935
+Tenecteplase vs Alteplase in AIS (ORIGINAL)
+(
+JAMA
+2024
+)
+·
+PMID 39264623
+European Stroke Organisation expedited recommendation on tenecteplase
+(
+Eur Stroke J
+2023
+)
+·
+DOI 10.1177/23969873231177508
+Caveats:
+Use TNK 0.25 mg/kg only; the 0.4 mg/kg dose was not non-inferior in EXTEND-IA TNK part 2. · Local protocols may continue to favor alteplase; both are acceptable.
+Use only with tissue selection and expert review
+Wake-Up and 4.5-24h IVT
+Mismatch-selected lysis
+COR
+IIa
+LOE
+B-R
+What changed
+The 2026 guideline incorporates WAKE-UP, EXTEND, TRACE-III, TIMELESS, and related mismatch trials; OPTION 2026 adds newer non-LVO TNK data after the guideline literature lock.
+Late IVT is not a clock-only decision. Use MRI DWI-FLAIR mismatch, automated perfusion mismatch, or carefully selected no-EVT 4.5-24h pathways; counsel explicitly about higher sICH risk.
+Do now
+Unknown onset: if within 4.5h of symptom recognition and MRI DWI lesion is <1/3 MCA territory without marked FLAIR change, IVT can be beneficial.
+4.5-9h or wake-up within 9h from sleep midpoint: automated perfusion mismatch makes IVT reasonable.
+4.5-24h LVO: prioritize EVT; consider IVT only if EVT cannot be provided or will be materially delayed.
+4.5-24h non-LVO with salvageable tissue: OPTION 2026 and HOPE 2025 support benefit but with higher sICH; use expert/shared decision-making.
+Decision pathway
+Scenario
+Decision
+COR / LOE
+Wake-up, MRI DWI+/FLAIR-negative
+IVT can be beneficial
+IIa
+B-R
+4.5-9h or wake-up <=9h, perfusion mismatch
+IVT may be reasonable
+IIa
+B-R
+4.5-24h LVO, EVT unavailable/delayed
+Expert-directed IVT may be beneficial
+IIb
+B-R
+4.5-24h non-LVO, salvageable tissue
+Post-guideline trial-supported option; document risk/benefit
+IIb
+B-R
+Late-window IVT calculator
+ASPECTS
+Evidence Atlas
+Pitfalls
+Using NCCT alone to justify 4.5-24h thrombolysis.
+Giving late IVT to an LVO patient while slowing transfer for EVT.
+Ignoring the sICH tradeoff: OPTION and HOPE were positive but both increased symptomatic ICH.
+Teaching pearl
+Late-window IVT asks whether there is still salvageable brain and whether EVT is the better reperfusion tool. It is not simply "TNK up to 24h."
+Why this recommendation? (
+2
+supporting claim
+s
+)
+In the 4.5-24 h window without EVT eligibility, perfusion- or DWI-FLAIR-mismatch-selected IVT (alteplase or TNK) improves functional outcome vs standard care (WAKE-UP, EXTEND, TIMELESS, TWIST mixed, TRACE-III).
+Certainty:
+moderate
+· Conflict: TWIST (unselected wake-up TNK) was negative; benefit requires imaging-based mismatch selection.
+MRI-Guided Thrombolysis for Stroke with Unknown Time of Onset (WAKE-UP)
+(
+N Engl J Med
+2018
+)
+·
+PMID 29766770
+Thrombolysis Guided by Perfusion Imaging up to 9 Hours after Onset of Stroke (EXTEND)
+(
+N Engl J Med
+2019
+)
+·
+PMID 31067369
+Tenecteplase for Stroke at 4.5 to 24 Hours with Perfusion-Imaging Selection (TIMELESS)
+(
+N Engl J Med
+2024
+)
+·
+PMID 38329148
+Intravenous thrombolysis with tenecteplase in patients with wake-up stroke (TWIST)
+(
+Lancet Neurol
+2023
+)
+·
+PMID 36549308
+Tenecteplase for Ischemic Stroke at 4.5 to 24 Hours without Thrombectomy (TRACE-III)
+(
+N Engl J Med
+2024
+)
+·
+PMID 38884324
+TNK 0.25 mg/kg in the 4.5-24 h window with perfusion-imaging selection improves outcomes vs standard care in patients without LVO/EVT (TIMELESS, TRACE-III).
+Certainty:
+moderate
+· Conflict: TIMELESS primary endpoint did not reach statistical significance for the overall population; pre-specified subgroups suggest benefit. TRACE-III demonstrated benefit in the LVO-only late-window population without EVT.
+Tenecteplase for Stroke at 4.5 to 24 Hours with Perfusion-Imaging Selection (TIMELESS)
+(
+N Engl J Med
+2024
+)
+·
+PMID 38329148
+Tenecteplase for Ischemic Stroke at 4.5 to 24 Hours without Thrombectomy (TRACE-III)
+(
+N Engl J Med
+2024
+)
+·
+PMID 38884324
+Caveats:
+Imaging-based selection is required; unselected late-window thrombolysis is not supported (TWIST). · Time from LKW remains a key safety determinant; TIMELESS extended TNK to 24 h with mismatch selection but the overall primary endpoint did not reach significance.
+Activate transfer while lysis is being decided
+EVT Selection
+LVO / large core / basilar
+COR
+I
+LOE
+A
+What changed
+Large-core EVT and posterior-circulation EVT moved into stronger guideline territory; dominant proximal M2 is separated from nondominant/distal occlusions.
+Large core and late-window status are no longer automatic EVT exclusions. Use vessel, time, premorbid mRS, ASPECTS/core, salvageable tissue, and local EVT speed.
+Do now
+Anterior ICA/M1 LVO: activate EVT pathway immediately; do not wait for TNK response.
+0-6h: ASPECTS 3-10 with premorbid mRS 0-1 is guideline-supported; selected ASPECTS 0-2 patients may still benefit if no major mass effect.
+6-24h: treat DAWN/DEFUSE-3-eligible LVO and selected large-core patients with salvageable profile.
+Basilar occlusion: EVT within 24h is recommended when baseline mRS 0-1, NIHSS >=10, and PC-ASPECTS >=6.
+Decision pathway
+Scenario
+Decision
+COR / LOE
+ICA/M1, ASPECTS 3-10, mRS 0-1
+EVT recommended
+I
+A
+Large core ASPECTS 3-5 or core 50-100 mL
+EVT recommended if otherwise eligible
+I
+A
+ASPECTS 0-2, age <80, NIHSS >=6, mRS 0-1, no mass effect
+Selected EVT is reasonable
+IIa
+B-R
+Basilar, NIHSS >=10, PC-ASPECTS >=6, mRS 0-1
+EVT recommended within 24h
+I
+B-R
+EVT builder
+ASPECTS
+PC-ASPECTS
+mTICI
+Pitfalls
+Excluding large-core patients reflexively because "ASPECTS is low."
+Letting a reassuring low NIHSS mask dominant-hemisphere or posterior-circulation disability.
+Failing to start transfer before all perfusion details are finalized.
+Teaching pearl
+Modern EVT selection has moved from "small core only" to "will reperfusion still change this person's outcome?"
+Why this recommendation? (
+1
+supporting claim
+)
+EVT improves functional outcomes vs medical therapy in selected patients with large-core infarct (ASPECTS 3-5 or core 50-100 mL).
+Certainty:
+high
+Trial of Endovascular Thrombectomy for Large Ischemic Strokes (SELECT2)
+(
+N Engl J Med
+2023
+)
+·
+PMID 36762865
+Endovascular Therapy for Acute Stroke with Large Ischemic Region (RESCUE-Japan LIMIT)
+(
+N Engl J Med
+2022
+)
+·
+PMID 35138767
+Endovascular Therapy for Acute Ischemic Stroke with Large Infarct (ANGEL-ASPECT)
+(
+N Engl J Med
+2023
+)
+·
+PMID 36762852
+Endovascular Thrombectomy for Acute Ischemic Stroke with Established Large Infarct (TENSION)
+(
+Lancet
+2023
+)
+·
+PMID 37837989
+Caveats:
+Pre-stroke mRS, life expectancy, and goals of care still inform shared decision-making. · ASPECTS <3 was not adequately enrolled in the seminal RCTs and is a Class IIb area.
+Prevents treatment-caused harm
+Physiology Guardrails
+BP / glucose / oxygen
+COR
+I
+LOE
+B-R
+What changed
+The 2026 guideline adds explicit harm/no-benefit recommendations against intensive BP and glucose targets after newer RCTs. HOPE-BP is a May 2026 signal for future individualized post-EVT targets, not a replacement for the guideline guardrail.
+Treat physiology that blocks reperfusion or causes harm, but avoid aggressive normalization that worsens ischemia or adds hypoglycemia risk.
+Do now
+Pre-IVT: lower BP to <185/110. Post-IVT: maintain <180/105 for at least 24h.
+Post-EVT: maintain <=180/105 for 24h; after successful anterior LVO reperfusion, do not target SBP <140 for 72h unless another indication exists.
+HOPE-BP (ESOC 2026, conference-reported): reperfusion-guided targets improved 90-day mRS 0-2, but use only as attending-directed/protocolized care until peer-reviewed publication and guideline review.
+Glucose: treat hypoglycemia <60 mg/dL; treat persistent hyperglycemia toward 140-180 mg/dL; do not target 80-130 mg/dL with IV insulin.
+Oxygen: give supplemental oxygen for hypoxia to maintain SpO2 >94%; avoid routine oxygen in nonhypoxic AIS unless selected pre-EVT NBO pathway applies.
+Decision pathway
+Scenario
+Decision
+COR / LOE
+BP >185/110 and IVT otherwise eligible
+Lower before IVT
+I
+B-NR
+Post-IVT BP
+Maintain <180/105 for >=24h
+I
+B-R
+Successful EVT, anterior LVO
+Avoid SBP <140 target for 72h
+III
+A
+HOPE-BP protocol context
+mTICI 2b: 140-160; mTICI 2c-3: 100-140; conference-only and not guideline-changing
+Evidence watch
+Low
+Persistent hyperglycemia
+Treat toward 140-180, avoid hypoglycemia
+IIa
+C-LD
+NBO before EVT, selected anterior LVO
+May be reasonable; not routine oxygen for everyone
+IIb
+B-R
+Post-EVT BP guardrail
+mTICI
+Pitfalls
+Driving SBP below 140 after successful EVT because "lower is safer."
+Applying HOPE-BP to incomplete reperfusion, posterior circulation, or non-protocol settings; the conference report enrolled successful anterior-circulation LVO thrombectomy patients.
+Using intensive insulin targets that increase severe hypoglycemia without improving outcome.
+Putting every nonhypoxic stroke patient on oxygen.
+Teaching pearl
+In acute ischemic stroke, normal numbers are not always physiologic. Preserve penumbral perfusion while meeting safety thresholds.
+Search the evidence (PubMed)
+Avoid routine procedural harm
+MeVO / Distal Occlusion
+Trial-first exceptions
+COR
+III
+LOE
+A
+What changed
+2025 MeVO RCTs and 2026 AHA/ASA recommendations moved routine distal EVT from enthusiasm to restraint.
+Dominant proximal M2 is a selective exception. Routine EVT for nondominant M2, distal MCA, ACA, or PCA occlusions is not recommended to improve functional outcomes.
+Do now
+Dominant proximal M2 within 6h, NIHSS >=6, ASPECTS >=6, mRS 0-1: EVT is reasonable but benefit is uncertain.
+Nondominant/codominant M2, distal MCA, ACA, or PCA: default to medical management and trial enrollment.
+Treat disabling deficits with IVT if eligible; do not substitute routine distal EVT for thrombolysis.
+Escalate only for exceptional anatomy, severe disabling deficit, low procedural risk, and consensus with the neurointerventionalist.
+Decision pathway
+Scenario
+Decision
+COR / LOE
+Dominant proximal M2, high disability, favorable imaging
+EVT reasonable; benefit uncertain
+IIa
+B-NR
+Nondominant M2, M3/M4, ACA, PCA
+Routine EVT not recommended
+III
+A
+Active trial available
+Prefer trial enrollment over ad hoc EVT
+Statement
+C-EO
+STEP-EVT trial matcher
+EVT builder
+Pitfalls
+Conflating dominant proximal M2 with all distal occlusions.
+Anchoring on the angiogram instead of clinical disability and procedural risk.
+Treating neutral MeVO RCTs as "no distal EVT ever" rather than "no routine EVT."
+Teaching pearl
+MeVO is where anatomy, deficit eloquence, and procedural risk matter most. The safest default is medical therapy plus trial enrollment.
+Search the evidence (PubMed)
+Have rescue orders ready before drug goes in
+Post-Treatment Complications
+sICH / angioedema / antithrombotics
+COR
+I
+LOE
+B-NR
+What changed
+The 2026 guideline emphasizes readiness for emergent bleeding and angioedema complications as part of safe IVT administration.
+The lytic decision is incomplete until the team has a rescue plan for neurological worsening, post-lytic ICH, angioedema, and antithrombotic timing.
+Do now
+If severe headache, acute hypertension, nausea/vomiting, or worsening exam occurs: stop alteplase infusion if running, obtain emergent CT, and activate reversal protocol.
+For suspected post-lytic sICH: hold antithrombotics, send CBC/PT/INR/aPTT/fibrinogen/type-screen, give cryoprecipitate targeting fibrinogen >200 mg/dL, and involve neurosurgery/ICU.
+Monitor for orolingual angioedema, especially with ACE inhibitor use and insular/anterior circulation stroke; prepare airway early.
+No antiplatelet or anticoagulant for 24h after IVT until follow-up imaging excludes hemorrhage.
+Decision pathway
+Scenario
+Decision
+COR / LOE
+Post-IVT neurological worsening
+Emergency CT + labs + reversal pathway
+I
+B-NR
+Orolingual angioedema
+Airway-first protocol; steroids/H1/H2, epinephrine if progressing
+I
+C-LD
+Antithrombotic restart after IVT
+Hold 24h and image first
+I
+B-NR
+Post-lytic ICH protocol
+Angioedema protocol
+SEDAN/DRAGON
+Pitfalls
+Calling a worsening exam "expected evolution" after IVT without immediate imaging.
+Waiting for fibrinogen before giving cryoprecipitate in a clinically severe bleed.
+Treating tongue swelling with medications while delaying airway planning.
+Teaching pearl
+Good thrombolysis workflow is not just door-to-needle. It is door-to-needle with a rehearsed rescue pathway.
+Search the evidence (PubMed)
+Generic decision-support principle — verify against local protocol
+Telestroke Decision Sequence
+Lyse first, then thrombectomy/transfer
+COR
+Workflow
+LOE
+Consensus
+What changed
+Reflects 2026 telestroke workflow consensus emphasizing a thrombolysis-first decision sequence and a structured pre-bolus safety pause. This card is an educational principle only — not local workflow, staffing, or transfer policy.
+In remote/telestroke assessment, make the time-critical thrombolysis decision first, then work the thrombectomy and transfer logistics. This is a generic decision-support sequence, not any institution's workflow or transfer policy; confirm every step against your approved local protocol.
+Do now
+Assemble the minimal urgent dataset before the lytic decision: confirmed last-known-well, a disabling deficit (NIHSS or enough exam to show disability), glucose that is not a mimic emergency, CT excluding hemorrhage, BP below threshold or actively controlled, and an anticoagulant/contraindication review.
+Do not delay noncontrast CT/CTA for administrative or video-connection setup.
+If thrombolysis is likely, have the local team prepare/mix the medication while final eligibility is confirmed.
+Run a safety pause before the bolus: confirm diagnosis/disabling deficit, imaging, window or advanced-imaging selection, BP <185/110, glucose, anticoagulants/coags when relevant, contraindications, a risk-benefit discussion when feasible, and team agreement.
+Address thrombectomy next: LVO on CTA/MRA, treatable within 24h, ASPECTS/core/clinical criteria, goals of care, and transfer feasibility.
+Decision pathway
+Scenario
+Decision
+COR / LOE
+Time-critical reperfusion
+Decide IV thrombolysis first; do not wait on EVT/transfer logistics
+Workflow
+Consensus
+Imaging
+Do not delay noncontrast CT/CTA for setup
+Workflow
+Consensus
+Before bolus
+Safety pause: dataset + BP <185/110 + team agreement
+Workflow
+Consensus
+After the lytic decision
+Sequence thrombectomy candidacy and transfer
+Workflow
+Consensus
+NIHSS
+TNK dose from weight
+Pitfalls
+Letting video or administrative setup delay CT/CTA or the thrombolysis decision.
+Sequencing transfer logistics ahead of an otherwise-eligible thrombolysis decision.
+Skipping the pre-bolus safety pause under time pressure.
+Teaching pearl
+Telestroke is a sequence, not a parallel checklist: the thrombolysis decision is the most time-critical step and should not wait on thrombectomy or transfer logistics.
+Search the evidence (PubMed)
+Not FDA-approved — pediatric stroke expertise + shared decision-making
+Pediatric Acute Ischemic Stroke
+Expert-guided, off-label, evidence-limited
+COR
+IIb
+LOE
+C-LD
+What changed
+The 2026 AHA/ASA guideline extended consideration of IV thrombolysis (alteplase; ages 28 days-18 years; COR IIb/C-LD) and EVT (age >=6y COR IIa/B-NR; age 28 days-<6y COR IIb/B-NR) — pediatric reperfusion is not categorically excluded in young children, but stays expert-guided, off-label for lytics, and shared-decision-based.
+Pediatric AIS evidence is far more limited than adult AIS. Treat this as an educational framework, not a formal treatment recommendation: confirm true arterial ischemic stroke (mimics are common), engage pediatric stroke expertise, and verify any dose against local pediatric pharmacy/ICU protocol.
+Do now
+Preferred imaging when feasible: MRI brain plus MRA head/neck (mimics are common in children); CT/CTA is acceptable for time-critical, high-suspicion presentations.
+IVT with alteplase may be considered for a disabling, imaging-supported AIS treatable within 4.5h of LKW (the 2026 AHA/ASA guideline names alteplase for ages 28 days-18 years, COR IIb); thrombolysis is NOT FDA-approved in children and requires pediatric stroke expertise and family shared decision-making.
+If a weight-based dose is used, verify it against local pediatric pharmacy/ICU protocol: alteplase 0.9 mg/kg (max 90 mg) is the guideline-referenced agent; tenecteplase 0.25 mg/kg (max 25 mg) is adult-derived extrapolation only and is not specifically endorsed for children.
+EVT may be considered for LVO with a measurable deficit and salvageable tissue, generally within 24h: age >=6y is reasonable (COR IIa) and age 28 days-<6y may be reasonable in selected cases (COR IIb) — pediatric EVT is not categorically excluded in young children. Adapt adult criteria cautiously with the neurointerventionalist.
+Moyamoya and focal cerebral arteriopathy are generally not thrombolysis or thrombectomy targets (non-thromboembolic, vessel-fragility risk); in sickle cell disease, acute pediatric management centers on exchange transfusion (STOP-era protocols) rather than lysis.
+Screen for pediatric-specific risk factors: congenital/acquired heart disease, sickle cell disease, arteriopathy/moyamoya, inflammatory/autoimmune disease, thrombophilia/prior thrombosis, malignancy/chemotherapy, infection, trauma, and OCPs in adolescents.
+Manage blood pressure using age-specific percentile thresholds and local pediatric protocol rather than adult numeric targets. Data below ~age 2 are especially sparse — treat any lower age boundary as expert-consensus caution, not a formal guideline exclusion.
+Decision pathway
+Scenario
+Decision
+COR / LOE
+Disabling AIS, imaging-supported, <=4.5h (age 28d-18y)
+IVT (alteplase) may be considered — off-label, expert-guided, family shared decision
+IIb
+C-LD
+LVO + salvageable tissue, <=24h, age >=6y
+EVT is reasonable in selected cases
+IIa
+B-NR
+LVO + salvageable tissue, <=24h, age 28d-<6y
+EVT may be reasonable in selected cases
+IIb
+B-NR
+Moyamoya / focal cerebral arteriopathy / mineralizing lenticulostriate vasculopathy
+Generally not reperfusion targets (non-thromboembolic) — high caution
+III
+C-LD
+NIHSS / PedNIHSS
+Alteplase calculator
+Pitfalls
+Reaching for tenecteplase as a co-equal pediatric lytic: the guideline references alteplase for children; TNK use is adult-derived extrapolation. Verify any agent and dose with pediatric pharmacy/ICU.
+Treating pediatric thrombolysis as standard care — it is not FDA-approved and the evidence base is limited (e.g., the TIPS trial stopped early for low enrollment).
+Assuming infants and toddlers are categorically excluded from EVT: the 2026 guideline offers a IIb pathway for LVO down to 28 days, distinct from the >=6y IIa pathway.
+Overlooking mineralizing lenticulostriate vasculopathy (basal-ganglia stroke after minor head trauma with basal-ganglia calcifications) — not thrombolysis-responsive and carries basal-ganglia hemorrhage risk.
+Teaching pearl
+Pediatric acute reperfusion mirrors the adult framework, but the evidence and approvals do not: confirm true arterial ischemic stroke, engage pediatric stroke expertise, and verify every agent and dose locally. Note the pediatric EVT evidence (B-NR) is stronger than the lytic evidence (C-LD).
+Search the evidence (PubMed)
+Last reviewed
+2026-07-03
+· Sources:
+2026 AHA/ASA AIS Guideline
+·
+AHA 2026 AIS Hub
+·
+OPTION 2026
+·
+HOPE-BP ESOC 2026
+·
+RAISE reteplase
+Jump to Section
+EVT Eligibility
+AF/DOAC Timing
+BP Management
+NBO
+Post-Lytic ICH
+HT Classification
+Angioedema
+Antiplatelets
+Statins
+Large Core
+Post-EVT
+MeVO
+Contrast Allergy
+ICAD
+Posterior Circ
+CAD
+Seizure Ppx
+Key Principles
+IV alteplase/tenecteplase within 4.5 hours remains the standard of care
+I
+EVT for LVO within 24 hours with favorable imaging (DAWN/DEFUSE 3 criteria)
+I
+Do NOT target SBP <140 post-EVT — maintain <180/105 (ENCHANTED2/MT)
+III
+EVT Eligibility — Quick Reference
+Adult AIS — EVT Eligibility
+LVO (ICA-T / M1)
+I
+NIHSS ≥6 unless otherwise specified
+0 – 6 hours
+ASPECTS 3-10, mRS 0-1
+→
+Recommended
+ASPECTS 6-10, mRS 2
+→
+Reasonable
+ASPECTS 6-10, mRS 3-4
+→
+May be considered
+ASPECTS 0-2, mRS 0-1 — consider CTP core ≤70-100cc
+→
+Very select cases
+6 – 24 hours
+ASPECTS 6-10, mRS 0-1
+→
+Recommended
+ASPECTS 3-5, mRS 0-1 — consider CTP core ≤100cc + mismatch
+→
+Recommended
+ASPECTS 0-2
+→
+Benefit unclear
+>24 hours
+Any
+→
+Individualized
+Basilar Artery
+0 – 24 hours • PC-ASPECTS ≥6
+mRS 0-1, NIHSS ≥10
+→
+Recommended
+NIHSS 6-9
+→
+May be considered
+mRS 2+
+→
+Individualized
+M2 / Distal Vessels
+Proximal/dominant M2 ≤1cm of bifurcation, salvageable tissue, LKW ≤24h
+→
+May be considered (select cases)
+M2-M4 MCA, ACA, PCA occlusions
+→
+No routine EVT (select/trial only)
+Pediatric AIS — EVT Eligibility
+Pediatric LVO
+Age 6-17y, 0-24h, salvageable tissue
+→
+Reasonable
+Age 28d-5y, 0-24h, salvageable tissue
+→
+May be considered
+Neonates (0-28d) / >24h
+→
+Individualized
+Recommended
+Reasonable
+May be considered / Uncertain
+Not recommended
+Individualized decision
+Post-EVT BP Guardrail
+Reperfusion status
+Auto from TICI
+Successful (mTICI 2b-3)
+Partial/none (<2b)
+Current BP
+Infusion agent
+Select
+Nicardipine drip
+Clevidipine drip
+Intermittent labetalol
+No IV infusion
+Target strategy
+Guideline default
+SBP <180/105
+SBP 130-180 guardrail
+Target:
+SBP 140-180
+Enter post-EVT BP to activate automated guardrails.
+Ischemic protocol details
+EVT Eligibility Builder
+Guideline-aligned decision support (adult algorithm). Pediatric criteria kept separate.
+Auto time:
+Set LKW
+Occlusion
+LVO (ICA-T / M1)
+MVO (dominant M2)
+MVO non-dominant M2 or DVO
+Basilar artery
+Time window
+Auto (from LKW)
+0-6 h
+6-24 h
+>24 h
+ASPECTS
+6-10
+3-5
+0-2
+Pre-stroke mRS
+0-1
+2
+3-4
+≥2
+NIHSS (Basilar)
+PC-ASPECTS (Basilar)
+≥6
+<6
+CTP Core (mL)
+Mismatch ratio
+Mismatch volume (mL)
+Disabling deficit present (supports selective MeVO EVT)
+Pull from Encounter CTP
+Perfusion fields are optional but strongly recommended for large-core and MeVO decisions.
+Class of Recommendation
+IDD
+Set LKW or select time window
+Pediatric Reperfusion (28 days–18 years)
+• MRI is preferred for diagnostic imaging when feasible.
+• IV thrombolysis may be considered within 4.5h in select children at experienced centers (Class IIb).
+• EVT for LVO is reasonable for age ≥6 years (Class IIa).
+• EVT may be considered for age 28 days–6 years with experienced neurointerventionalist (Class IIb).
+AF Anticoagulation Timing (CATALYST)
+Computes earliest start date based on NIHSS severity and protocol selection.
+NIHSS
+Onset (LKW)
+Protocol
+ELAN/OPTIMAS — early start (default)
+Expert-consensus NIHSS-stratified (legacy)
+Expert-consensus NIHSS-stratified (legacy)
+1-3-6-12 rule
+Enter NIHSS and LKW to calculate the earliest DOAC start date.
+CATALYST meta-analysis (ELAN, OPTIMAS, TIMING, START) supports early DOAC initiation as safe and non-inferior to delayed initiation.
+Minor
+NIHSS <8
+Within 48h
+Moderate
+NIHSS 8-15
+Day 3-5
+Severe
+NIHSS >15
+Day 6-14
+Preferred DOACs
+•
+Apixaban
+5 mg BID (2.5 mg if age ≥80, weight ≤60 kg, or Cr ≥1.5)
+•
+Rivaroxaban
+20 mg daily (15 mg if CrCl 15-50)
+•
+Dabigatran
+150 mg BID (75 mg BID if CrCl 15-30 mL/min)
+DOAC preferred over warfarin (Class I, LOE A) — AHA/ASA 2021
+Fischer U et al. Lancet Neurol. 2025. Reassess imaging before DOAC start if concern for hemorrhagic transformation.
+Blood Pressure Management
+I
+Phase-aware BP target
+Toggles update the target and highlight current BP status.
+Pre-lysis
+Post-TNK
+Post-EVT (SBP <180 per AHA/ASA 2019; avoid <140 through ≥72h — ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II showed harm/no benefit)
+No lytics/No EVT
+ICH (smooth control; target SBP 140, range 130-150 when appropriate; avoid <130 Class 3:Harm)
+SAH (pre-securing, target <160)
+SAH (post-securing)
+CVT (permissive)
+CVT with hemorrhage
+Pregnancy/Postpartum stroke
+Preeclampsia/Eclampsia
+Target
+SBP <
+185
+/ DBP <
+110
+Current BP
+Uses Post-EVT, then Pre-TNK, then Presenting BP.
+Status
+Enter BP to check
+BP Goals
+Ischemic stroke:
+SBP <220, DBP <120
+Before lytics:
+SBP <185, DBP <110
+After lytics:
+SBP <180, DBP <105
+After thrombectomy:
+SBP <180, DBP <105
+IPH:
+target SBP 140, range 130-150 when appropriate; no specific DBP target
+Quick Reference
+First-line:
+Labetalol IV push OR Nicardipine drip
+Second-line:
+Clevidipine or Hydralazine
+Avoid:
+Sublingual nifedipine (unpredictable drops), nitroprusside (raises ICP)
+IV Antihypertensive Titration Protocols
+Labetalol IV Push Protocol
+Step
+Dose
+Timing
+Cumulative
+1
+10 mg IV over 1-2 min
+Time 0
+10 mg
+2
+20 mg IV
++10 min
+30 mg
+3
+40 mg IV
++10 min
+70 mg
+4
+80 mg IV
++10 min
+150 mg
+5
+80 mg IV
++10 min
+230 mg
+• Max cumulative dose: 300 mg in 24 hours
+• Onset: 2-5 min | Peak: 5-15 min | Duration: 2-4 hours
+• Hold if HR <60 or SBP <100
+• Contraindicated: asthma/severe COPD, 2nd/3rd degree AV block, decompensated HF, HR <60
+Nicardipine IV Drip Protocol
+Step
+Rate
+Instructions
+Start
+5 mg/hr
+Check BP q5 min
+Titrate up
++2.5 mg/hr
+q5-15 min until target
+Max
+15 mg/hr
+Call MD if not at goal
+At goal
+Decrease by 3 mg/hr
+q30 min, maintain lowest effective rate
+• Onset: 5-15 min | Duration: continuous while infusing
+• Preferred for: sustained BP control, patients needing precise titration
+• Standard dilution: 25 mg/250 mL NS (0.1 mg/mL) or 50 mg/250 mL (0.2 mg/mL)
+• Transition to PO antihypertensive 1h before stopping drip
+Clevidipine IV Drip Protocol
+• Start:
+1-2 mg/hr
+• Titrate:
+Double the rate q90 seconds
+until near goal
+• Fine-tune: increase by <double as goal is approached
+• Max:
+32 mg/hr
+(max 1000 mL/24h due to lipid load)
+• Onset: 2-4 min | Duration: 5-15 min after stopping
+Advantage: ultra-short acting, no renal/hepatic adjustment needed. Contains soy/egg lecithin — check allergies.
+Hydralazine (Rescue)
+•
+10-20 mg IV q20-30 min PRN
+(max 40 mg/dose)
+• Onset: 10-20 min | Duration: 1-4 hours
+• Less predictable response — use as adjunct when labetalol/nicardipine insufficient
+• Avoid in aortic dissection (reflex tachycardia)
+Normobaric Oxygen (NBO) Before EVT
+IIa
+In AIS within 6h with anterior LVO, NIHSS 10-20, and ASPECTS ≥6, NBO is reasonable before EVT.
+• 100% O₂ at 10 L/min via non-rebreather for 4 hours (or FiO₂ 1.0 if intubated)
+•
+Class IIb, LOE B-R
+(2026 AHA/ASA)
+• Evidence: PROOF-ICL trial — NBO showed improved 90-day functional outcomes (mRS 0-2: 50% vs 38%)
+• Do NOT apply supplemental O₂ to non-hypoxic AIS patients without LVO (Class III: No Benefit)
+Nursing Flowsheet Generator
+Auto-generates q15m ×4, then q30m ×4 checks from groin puncture.
+Use current time
+Groin puncture time
+Enter puncture time to generate schedule.
+Post-Lytic ICH Protocol
+Immediate Actions
+Stop thrombolytic if still running
+STAT non-contrast CT head + STAT blood draw (PT/INR, platelets, fibrinogen, PTT, TT, D-dimers, CBC, Type & Cross)
+Contact blood bank/transfusion services; order 2 pools cryoprecipitate
+Notify patient's family
+Reversal (if blood on CT)
+Cryoprecipitate:
+2 pools IV over 10-30 min (empirically if CT delayed >30 min and fibrinogen <200)
+TXA:
+Tranexamic acid 1000 mg IV over 10 min STAT (or aminocaproic acid 4-5 g IV if TXA unavailable)
+Repeat hemorrhage panel
+Consult neurosurgery
+ECASS Hemorrhagic Transformation Classification
+ECASS classification determines severity and guides anticoagulation restart decisions. Obtain CT 24h post-TNK or if neurological decline.
+HI-1 (Hemorrhagic Infarction Type 1)
+Small petechiae along the margins of the infarct
+Clinical impact: Benign. No change in management. May restart anticoagulation per schedule.
+HI-2 (Hemorrhagic Infarction Type 2)
+Confluent petechiae within the infarcted area, no mass effect
+Clinical impact: Usually benign. Monitor closely. May delay anticoagulation restart by a few days.
+PH-1 (Parenchymal Hematoma Type 1)
+Blood clot ≤30% of infarcted area, with mild mass effect
+Clinical impact: Moderate. Hold anticoagulation/antiplatelets. Repeat imaging in 24-48h. Consider cautious restart after 1-2 weeks if stable.
+PH-2 (Parenchymal Hematoma Type 2)
+Blood clot >30% of infarcted area, with significant mass effect (or remote hemorrhage)
+Clinical impact: SEVERE. Symptomatic sICH. Associated with neurological deterioration and increased mortality. Hold all antithrombotics. Neurosurgery consult. Delay anticoagulation ≥4 weeks.
+sICH (Symptomatic ICH) definition:
+PH-2 with NIHSS increase ≥4 points within 36h of treatment (ECASS II/III definition). Occurs in 2-7% of IV thrombolysis patients.
+Anticoagulation restart after HT:
+HI-1/HI-2 → per standard DOAC timing (see AF section above). PH-1 → delay 7-14 days, repeat imaging first. PH-2 → delay ≥4 weeks, multidisciplinary discussion, consider LAA closure (Watchman) if high rebleed risk.
+Orolingual Angioedema Protocol
+Risk Factors
+• ACE inhibitor use
+• Insular cortex involvement
+• Frontal operculum stroke
+Treatment
+Maintain airway
+— fiberoptic intubation if needed
+Discontinue IV alteplase
+and hold ACE inhibitors
+Methylprednisolone:
+125 mg IV
+Diphenhydramine:
+50 mg IV
+Famotidine:
+20 mg IV (H2 blocker)
+If worsening: Epinephrine
+0.3 mg IM (anterolateral thigh) or nebulized 3-5 mL of 1:1000
+Icatibant
+(bradykinin B2 antagonist)
+Berinert:
+20 IU/kg IV (C1 esterase inhibitor)
+Antiplatelet Loading Protocol
+I
+Minor Stroke / High-Risk TIA
+DAPT x 21 days:
+• ASA 325 mg load → 81 mg daily
+• Clopidogrel 300 mg load → 75 mg daily
+• Start within 24h (NIHSS ≤3 or ABCD2 ≥4)
+• Then single antiplatelet after 21 days
+NIHSS 4-5 or 24-72h Window
+DAPT is reasonable:
+• Start within 24-72h if NIHSS 4-5 or delayed presentation
+• DAPT x 21 days → then single antiplatelet
+Moderate-Severe Stroke (no lysis)
+Single antiplatelet:
+• ASA 325 mg load within 24-48h of onset, then 81 mg daily
+• If post-TNK: delay ASA 24 hours
+• If AF: transition to DOAC per CATALYST timing
+Statin Initiation
+I
+High-Intensity Statin (LDL <70)
+•
+Atorvastatin 80 mg
+daily (preferred)
+•
+Rosuvastatin 20-40 mg
+daily
+• Start during inpatient stay
+• Add ezetimibe 10 mg if LDL not at goal
+• Consider PCSK9i if still above target
+Special Considerations
+• sICAS (70-99%): high-intensity statin + LDL <70
+• Lobar ICH on a statin: SATURN trial (continue vs stop statin) enrolling — consider referral
+• Check LFTs at baseline, recheck 4-12 weeks
+• Do not discontinue statin for mild transaminase elevation (<3x ULN)
+Large Core EVT Selection
+Evidence Highlight (Conservative Interpretation)
+Large core should not be an automatic exclusion. SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and SVIN 2025 support EVT in many ASPECTS 3-5 patients when clinical and imaging context is favorable.
+Default rule: do not exclude solely for large core; confirm neurointerventional review and document individualized risk (including higher sICH risk at lower ASPECTS).
+Early Window (0-6h)
+• ASPECTS 3-5: EVT recommended
+• ASPECTS 0-2: EVT reasonable in select patients without mass effect (age <80)
+• ICA/M1 occlusion; pre-stroke mRS 0-1; age 18-80; NIHSS ≥6
+• Higher sICH risk; discuss goals of care
+Late Window (6-24h)
+• ASPECTS 3-5: EVT recommended
+• ASPECTS 0-2: Benefit uncertain
+• CTP core 50-100 mL supports EVT
+• Eligibility is not limited to strict DAWN/DEFUSE mismatch criteria
+Trial Outcome Data for Goals-of-Care Counseling
+Trial
+Window
+ASPECTS
+Primary endpoint
+mRS 0-2 (EVT vs ctrl)
+NNT mRS 0-2
+sICH (EVT vs ctrl)
+SELECT2
+0-24h
+3-5
+mRS 0-4 shift
+20.3% vs 7.0%
+~7.5
+0.6% vs 1.1%
+ANGEL-ASPECT
+0-24h
+3-5
+mRS 0-3 shift
+30.0% vs 11.6%
+~5.4
+6.1% vs 2.7%
+RESCUE-Japan LIMIT
+0-6h
+3-5
+mRS 0-3
+14.0% vs 7.8%
+~16
+9.0% vs 4.5%
+TENSION
+0-12h
+3-5
+mRS 0-6 shift
+16.8% vs 8.4%
+~12
+5.9% vs 4.3%
+LASTE
+0-6.5h
+0-5
+mRS 0-3 shift
+~14% vs ~6%
+~13
+9.6% vs 1.7%
+DAWN (pooled)
+6-24h
+≥6
+mRS-weighted
+49% vs 13%
+~2.8
+6% vs 3%
+DEFUSE-3
+6-16h
+≥6
+mRS 0-2
+45% vs 17%
+~3.6
+7% vs 4%
+NNT values calculated from published primary/key-secondary outcomes; primary endpoints differed by trial (shift vs. dichotomized mRS). Large-core NNTs for mRS 0-2 are larger (less favorable) than standard-core NNTs — ~5-16 vs ~2.8-3.6 — but absolute benefit remains clinically meaningful. RESCUE-Japan LIMIT's primary endpoint was mRS 0-3 (NNT 5.5); its mRS 0-2 NNT of ~16 reflects the heavier-deficit population enrolled.
+Goals-of-care counseling framing (evidence-based):
+“For large-core stroke patients meeting trial criteria, EVT roughly doubles the chance of independent recovery (mRS 0-2) compared with medical management alone, but most patients still have moderate-to-severe disability or death regardless of treatment. Symptomatic hemorrhage risk is modestly higher with EVT in most trials (LASTE notably had ~10% sICH). Pre-stroke independence (mRS 0-1) is required by all trial protocols and is critical to replicated benefit.”
+Post-EVT Management
+IIa
+Post-Procedure Care
+• Groin check q15 min x 4, q30 min x 4, then q1h
+• Bed rest per protocol (typically 2-6h)
+• Follow-up imaging: CT/CTA at 24h or if neuro change
+• Antiplatelet: ASA 325 mg load within 24h if no hemorrhagic conversion, then 81 mg daily
+• Neuro checks q1h x 24h minimum
+Use the BP Management section and Nursing Flowsheet Generator for targets and monitoring cadence.
+Groin Complication Recognition
+Expanding Hematoma
+- Firm, expanding groin mass
+- Pain disproportionate to exam
+- Apply direct pressure 20 min
+- Call IR if not controlled
+Pseudoaneurysm
+- Pulsatile mass + bruit
+- Confirm with duplex US
+- Thrombin injection or surgery
+- Avoid anticoag until resolved
+Retroperitoneal Bleed
+- Back/flank/abdominal pain
+- Unexplained tachycardia/hypotension
+- Dropping hemoglobin
+- CT abdomen/pelvis with contrast
+- STAT call IR + vascular surgery
+Call interventional radiology STAT if: expanding hematoma despite 20 min pressure, hemodynamic instability, or suspected retroperitoneal bleed.
+Medium Vessel Occlusion (MeVO) EVT
+Routine EVT for isolated MeVO (M2/M3/distal) is not supported by current RCT evidence
+•
+ESCAPE-MeVO:
+EVT did not improve outcomes vs medical therapy for isolated MeVO
+•
+DISTAL:
+No benefit AND
+increased mortality
+with EVT (13.3% vs 8.4%, aHR 1.82); higher sICH (5.4% vs 2.2%)
+•
+DISCOUNT:
+Negative for M2 thrombectomy
+• Current default is medical management, with EVT reserved for highly selected anatomy and multidisciplinary agreement
+• Favor trial enrollment when possible (e.g., STEP-EVT adaptive platform)
+Note: LVO (ICA-T, M1, basilar) EVT remains recommended. This applies only to isolated medium/distal vessel occlusions.
+Contrast Allergy + Suspected LVO Protocol
+Eligibility:
+• CT contrast allergy (mild/moderate/unknown severity) AND suspected LVO
+•
+Excludes:
+known contrast-related anaphylaxis
+Requirements:
+• Consent from patient or LNOK
+• Pre-administration approval from the on-call stroke clinician, emergency clinician, and neuroradiology
+Pre-medication:
+•
+Hydrocortisone 200 mg IV
+OR
+Methylprednisolone 40 mg IV
+•
+PLUS
+Diphenhydramine 50 mg IV
+Intracranial Atherosclerotic Disease (ICAD)
+Symptomatic ICAD (70-99% stenosis)
+• DAPT x 90 days (ASA + clopidogrel)
+• High-intensity statin (LDL <70)
+• SBP <140 mmHg
+•
+NO intracranial stenting
+(SAMMPRIS, CASSISS: stenting inferior to medical therapy)
+Class III (Harm) for stenting — SAMMPRIS, CASSISS
+Moderate ICAD (50-69%)
+• Single antiplatelet preferred
+• Aggressive risk factor management
+• Consider DAPT if recent symptomatic event
+• Serial vascular imaging (MRA or CTA q6-12mo)
+Posterior Circulation Stroke
+Basilar Artery Occlusion (BAO)
+Clinical presentation:
+Coma, quadriplegia, locked-in syndrome, bilateral cranial nerve palsies, vertigo, dysarthria, ataxia
+EVT evidence (0-24h):
+ATTENTION trial: EVT + medical vs medical alone — significant benefit (mRS 0-3: 46% vs 23%)
+BAOCHE trial: EVT benefit in 6-24h window with favorable imaging
+BASICS trial: Neutral — but underpowered, slow enrollment
+Current recommendation:
+EVT reasonable for BAO 0-24h with PC-ASPECTS ≥6, NIHSS ≥10 (Class IIa)
+IV thrombolysis:
+Give TNK if within 4.5h and no contraindications, even if planning EVT (bridging therapy)
+PC-ASPECTS Scoring
+10 points
+(normal), subtract points for each affected region:
+Left/Right thalamus (1 each)
+Left/Right cerebellum (1 each)
+Left/Right PCA territory (1 each)
+Midbrain (2)
+Pons (2)
+PC-ASPECTS ≥8:
+Good EVT candidate
+PC-ASPECTS 6-7:
+Consider EVT on case-by-case basis
+PC-ASPECTS <6:
+Poor prognosis, EVT benefit uncertain
+Cerebellar Stroke
+Key danger:
+Posterior fossa edema → brainstem compression → rapid deterioration
+Monitor:
+Neuro checks q1h, repeat CT if any decline
+Neurosurgery consult early
+for infarcts >1/3 cerebellar hemisphere
+Suboccipital decompressive craniectomy:
+Lifesaving if brainstem compression (Class I, LOE C-LD)
+EVD:
+If obstructive hydrocephalus. Do NOT rely on EVD alone if mass effect present — decompress.
+Osmotic therapy (mannitol/HTS) is temporizing only — NOT definitive
+Wallenberg Syndrome (Lateral Medullary)
+Vessel:
+PICA or vertebral artery
+Classic findings:
+Ipsilateral: facial pain/numbness, Horner syndrome, cerebellar ataxia, vocal cord paralysis
+Contralateral: body pain/temperature loss
+Dysphagia:
+Major concern — aspiration risk is HIGH. Early SLP eval essential.
+Prognosis:
+Generally good for motor recovery. Dysphagia and neuropathic pain may be prolonged.
+Workup:
+MRI DWI (CT often negative), CTA/MRA vertebral arteries, evaluate for vertebral dissection
+Cannot-Miss Posterior Circulation Patterns
+High-yield pattern recognition for ED triage. If any pattern is present, obtain emergent CTA head/neck and consult stroke neurology.
+Acute vertigo + ANY neuro sign
+= posterior fossa until proven otherwise (PICA, AICA, or vertebral occlusion)
+Bilateral motor/sensory symptoms
+= basilar artery occlusion until proven otherwise
+Horner + ipsilateral facial numbness
+= vertebral/PICA (Wallenberg) — CT often negative, MRI DWI required
+Acute dysarthria + ataxia
+without cortical signs = lateral pontine or cerebellar stroke
+Sudden bilateral vision loss ± confusion
+= top-of-basilar (bilateral PCA + thalamic + midbrain) — may present as "AMS" or "confusion" without obvious motor deficits
+Acute vertigo + hearing loss
+= AICA syndrome (not just labyrinthitis). Check: ipsilateral facial weakness, cerebellar ataxia, Horner
+Acute nausea/vomiting only
+= can be sole presentation of medullary or cerebellar stroke. Apply HINTS if vestibular component
+Fluctuating/waxing-waning deficits
+= basilar artery stenosis with flow-dependent ischemia — high risk of complete occlusion
+NIHSS underscores posterior circulation strokes. A "low NIHSS" does NOT exclude significant posterior fossa pathology.
+Cervical Artery Dissection (CAD)
+Diagnosis
+Classic triad (carotid):
+ipsilateral neck pain/headache, partial Horner syndrome, cerebral ischemia
+Vertebral:
+occipital/posterior neck pain, lateral medullary or cerebellar infarct
+Imaging:
+CTA neck: intimal flap, vessel irregularity, string sign, occlusion
+MRI/MRA neck with fat-sat: intramural hematoma (crescent sign)
+Conventional angiography: gold standard (rarely needed)
+Risk factors:
+Recent trauma/chiropractic manipulation, connective tissue disorders (FMD, Ehlers-Danlos IV, Marfan), recent infection
+Antithrombotic Management
+CADISS trial:
+Antiplatelet vs anticoagulation — NO significant difference in stroke recurrence or death
+Either approach acceptable
+(Class IIa, LOE B-R)
+Antiplatelet preferred if:
+Large completed infarct (hemorrhagic transformation risk)
+Intracranial extension of dissection
+Pseudoaneurysm (debatable)
+Anticoagulation preferred if:
+Free-floating thrombus
+Recurrent ischemic events on antiplatelet therapy
+High-grade stenosis with hemodynamic compromise
+Duration:
+3-6 months, then reassess with follow-up imaging
+Follow-Up Imaging
+• CTA or MRA neck at 3-6 months to assess healing
+• Most dissections heal within 3-6 months
+• If recanalized → can consider stopping anticoagulation/simplifying antiplatelet
+• If persistent stenosis/occlusion → continue antithrombotic, repeat imaging at 12 months
+• Pseudoaneurysm: low risk of thromboembolic events; usually managed conservatively
+Special Populations
+Fibromuscular dysplasia (FMD):
+Screen all cervical/cerebral vessels (multivessel disease common). Screen renal arteries.
+Connective tissue disorders:
+Genetic testing if recurrent dissection, family history, or phenotypic features. Vascular EDS (type IV) = high mortality risk.
+Young stroke (<50):
+Dissection accounts for ~15-25% of ischemic strokes. Always consider in the workup.
+Thrombolysis:
+TNK is NOT contraindicated in suspected dissection if within treatment window. Treat the stroke first.
+Intracranial vs Extracranial Vertebral Artery Dissection
+Extracranial VA dissection:
+• Most common at V3 segment (atlas loop)
+• Usually causes ischemia (embolism to posterior circulation)
+• Antiplatelet or anticoagulation per CADISS (either acceptable)
+• SAH risk is very low
+• Good prognosis; most heal within 3-6 months
+Intracranial VA dissection:
+•
+Risk of SAH
+(intradural = no adventitial protection)
+• If SAH present: anticoagulation is CONTRAINDICATED
+• Urgent neurosurgical/neurointerventional consultation
+• May extend into basilar artery → catastrophic occlusion risk
+• Consider flow diverter or parent vessel sacrifice if recurrent SAH
+Seizure Prophylaxis in Ischemic Stroke
+AHA/ASA Recommendations
+• Routine prophylactic AEDs are
+NOT recommended
+(Class III: No Benefit, LOE A)
+• Treat acute symptomatic seizures with standard AEDs
+• Post-stroke epilepsy risk: ~5-10% in ischemic stroke
+• Higher risk with cortical involvement, hemorrhagic transformation, severe stroke
+When to Treat
+• Witnessed clinical seizure or confirmed EEG seizure activity
+• First-line:
+Levetiracetam
+1000-1500 mg IV load, then 500-1000 mg BID
+• Alternative: Lacosamide 200 mg IV load, then 100-200 mg BID
+• Avoid phenytoin if thrombolytics given (drug interaction, hypotension risk)
+• Consider cEEG monitoring if persistent altered mental status out of proportion to infarct size
+Protocol Cards — Example Institutional Patterns
+Illustrative decision-support cards based on current published evidence. Not endorsed by any named institution.
+v2
+EX
+IVT Eligibility Decision Algorithm
+ICH on CT
+Disabling deficit
+LKW (h)
+Glucose
+Weight (kg)
+Age
+CRAO (central retinal artery occlusion)
+Enter LKW time to evaluate window
+EX
+IVT Contraindications
+Absolute
+CT with hemorrhage
+Acute intracranial hemorrhage on imaging.
+CT with extensive hypodensity
+Clear hypodensity responsible for symptoms.
+Acute intracranial or spinal cord injury <14 days
+Likely contraindicated.
+Neurosurgery <14 days
+Potentially harmful; should not be administered.
+Infective endocarditis
+Should not be administered.
+Severe coagulopathy
+Plt <100K, INR >1.7, aPTT >40s, PT >15s.
+Aortic arch dissection
+Potentially harmful; should not be administered.
+Moderate-severe TBI <14 days
+GCS <10 or hemorrhage/contusion/skull fracture.
+Amyloid immunotherapy / ARIA
+ICH risk unknown; IV thrombolysis should be avoided.
+Relative (individualize)
+Pre-existing disability/frailty
+Treatment on individual basis.
+DOAC exposure <48h
+Potential efficacy supported by observational studies; see DOAC pathway.
+Prior ischemic stroke <3 months
+Weigh timing/size against IVT benefit.
+Prior ICH
+Amyloid angiopathy = higher risk. Modifiable causes (HTN) may have greater net benefit.
+Major non-CNS trauma (14d-3mo)
+Surgical consultation; consider involved areas.
+Major non-CNS surgery <10 days
+Consider surgical area and bleeding risk.
+GI/GU bleeding <21 days
+GI/GU consultation.
+Arterial/dural puncture <7 days
+May be considered in individual cases.
+Intracranial vascular malformations
+Safety unknown; unruptured and untreated.
+Intracranial arterial dissection
+Safety unknown.
+Recent STEMI <3 months
+Cardiology consult; hemopericardium risk.
+Acute pericarditis
+May be reasonable. Emergent cardiology consult.
+Left atrial or ventricular thrombus
+May be reasonable if major AIS. Cardiology consult.
+Pregnancy / post-partum
+Obstetric consultation; benefits vs uterine bleeding risk.
+Systemic active malignancy
+Oncology consultation; consider type, stage, complications.
+Neurosurgery 14 days-3 months
+Individual basis; neurosurgical consultation recommended.
+Benefit > Risk · Consider IVT
+Extracranial cervical dissection
+Reasonably safe within 4.5h; probably recommended.
+Extra-axial intracranial neoplasm
+Benefit likely outweighs risk.
+Unruptured intracranial aneurysm
+Benefit likely outweighs risk; treatment should be considered.
+Angiographic procedural stroke
+Benefit likely outweighs risk.
+History of GI/GU bleeding (remote)
+Candidates if stable; GI/GU consultation.
+History of MI (remote)
+Probably greater benefit from IVT.
+Recreational drug use
+Greater benefit than risk in most patients.
+Stroke mimic uncertainty
+Risk of harm with IVT is low; benefit likely outweighs risk.
+Moya-moya disease
+No increased ICH risk; benefit likely outweighs risk.
+EX
+DOAC-Exposed AIS Patient — IVT Pathway
+Site
+Primary hub (anti-Xa-based pathway)
+Spoke / tele-consult (time-based pathway)
+Telestroke spoke site
+Hours since last DOAC dose
+Anti-Xa
+UNDETECTABLE
+Disabling stroke deficits
+EVT candidate (bypass IVT)
+HUB-PENDING-LAB
+Primary-hub pathway requires anti-Xa undetectable; if detectable or unavailable, IVT not recommended.
+Requirement:
+anti-Xa level required before IVT — order STAT
+EX
+EVT Eligibility Matrix
+Anterior LVO
+M2 / Distal
+Basilar
+ASPECTS
+LKW (h)
+NIHSS
+Pre-stroke mRS
+0
+1
+2
+3
+4
+Age
+Significant mass effect
+Awaiting input
+Need ASPECTS, LKW hours, and NIHSS.
+Generalizability is limited for:
+Age >80; Significant head-size or vessel tortuosity; Comorbidities that affect assessment; Seizures at stroke onset; High suspicion for underlying ICAD; Life expectancy <6 months
+.
+EX
+Blood Pressure Management
+Scenario
+Target
+COR / LOE
+Example protocol
+Before IVT
+BP <185/110
+COR
+1
+LOE
+B-NR
+Labetalol 10 mg IV, repeat q15 min; escalate to 20 mg, then 40 mg, then 60 mg (max single bolus). Max 300 mg in 2h.
+Nicardipine 5 mg/hr IV, titrate by 2.5 mg/hr q5 min (max 15 mg/hr). Clevidipine 1-2 mg/hr, double q90 sec (max 32 mg/hr).
+After IVT (24h)
+BP <180/105
+COR
+1
+LOE
+B-R
+Monitor q15 min × 2h → q30 min × 6h → q1h until 24h. Treat if SBP >180 or DBP >105.
+After EVT (24h)
+BP <180/105
+COR
+2a
+LOE
+B-NR
+For successful recanalization (mTICI ≥2b) maintain SBP in range 140-180 (preserve SBP floor of 140).
+SBP <140 after IVT
+Not recommended
+COR
+3 (No Benefit)
+LOE
+B-R
+No functional improvement vs <180 target (ENCHANTED2-MT context).
+SBP <140 after EVT (×72h)
+Likely harmful / Class III (Harm)
+COR
+3 (Harm)
+LOE
+A (4 RCTs negative/harm)
+Formal Class III (Potential Harm) COR in AHA/ASA 2026 Guidelines. Lowering SBP below 140 mm Hg after successful endovascular therapy is associated with increased risk of death or disability. ENCHANTED2-MT (Lancet 2022, n=821) worse mRS shift with <120 × 72h; OPTIMAL-BP (JAMA 2023, n=306) worse mRS 0-2 with <140; BP-TARGET (Lancet Neurol 2021, n=324) neutral/trend harm with 100-129; BEST-II (JAMA 2023) futility for lower targets. Practical implication: maintain SBP floor of 140 (typically 140-180 target) for ≥72h post-successful EVT.
+Ischemic stroke (no reperfusion therapy)
+Permissive until SBP ≥220/120
+COR
+3 (No Benefit)
+LOE
+A
+No benefit to initiating antihypertensive treatment if BP <220/120 without comorbid indication.
+EX
+Pulsara Safety Pause (pre-thrombolytic)
+Consent type
+informed
+presumed (unable to provide, no surrogate)
+surrogate
+declined
+BP at attestation
+SAFE PAUSE BEFORE THROMBOLYTIC ADMINISTRATION: (1) Consent confirmed (informed). (2) BP confirmed <185/110. (3) Absolute & relative contraindications reviewed. (4) Dose confirmed (weight-based, max 25 mg TNK / 90 mg alteplase). (5) Safety-pause documented in communication platform. Attestation: #STROKESAFEPAUSE
+Copy for Pulsara
+Attestation tag:
+#STROKESAFEPAUSE
+Class of Recommendation / Level of Evidence
+Class of Recommendation
+Class 1 (Strong)
+Benefit >>> Risk
+Is recommended
+Class 2a (Moderate)
+Benefit >> Risk
+Is reasonable
+Class 2b (Weak)
+Benefit ≥ Risk
+May be considered
+Class 3: No Benefit
+Benefit = Risk
+Not recommended
+Class 3: Harm
+Risk > Benefit
+Avoid (harmful)
+Level of Evidence
+Level
+A
+High-quality RCTs / meta-analyses
+Level
+B-R
+Moderate-quality RCTs
+Level
+B-NR
+Well-designed observational / registry
+Level
+C-LD
+Limited data / mechanistic studies
+Level
+C-EO
+Expert opinion / consensus
+--- modal via "Hydrocortisone 200 mg IV" ---
+Hydrocortisone
+Dosing
+200 mg IV (OR Methylprednisolone 40 mg IV).
+Emergency contrast allergy premedication for suspected LVO requiring CTA/CTP: Give Hydrocortisone 200mg IV OR Methylprednisolone 40mg + Diphenhydramine 50mg IV immediately prior to contrast. Obtain informed consent and document. Excludes known contrast-related anaphylaxis (cardiovascular collapse). Per ACR guidelines, premedication in emergencies may be given as a single dose immediately before contrast (ACR Manual on Contrast Media 2024).
+Press Esc or click outside to close
+--- modal via "Methylprednisolone 40 mg IV" ---
+Methylprednisolone
+Dosing
+125 mg IV (for angioedema).
+Part of angioedema management protocol. For contrast allergy premedication: 40 mg IV.
+Press Esc or click outside to close
+--- modal via "Diphenhydramine 50 mg IV" ---
+Diphenhydramine
+Dosing
+50 mg IV.
+For angioedema management and contrast allergy premedication.
+Press Esc or click outside to close

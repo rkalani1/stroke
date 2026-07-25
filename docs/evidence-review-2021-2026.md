@@ -128,6 +128,21 @@
   - Keep structured pathways for PFO and carotid disease selection.
 - Evidence strength: Guideline-grade + RCT-supported.
 
+### AUTO-UPDATE 2026-07-16 - FDA action: verification-gated additive block (Lipfendra)
+<!-- machine-drafted 2026-07-16; auto-published, verification-gated -->
+<!-- AUTO-UPDATE 2026-07-16: LIPFENDRA FDA ACTION VERIFIED ADDITIVE BLOCK START -->
+
+#### Lipfendra (enlicitide) - FDA approval of the first oral PCSK9 inhibitor
+- Inclusion class: FDA action posted July 16, 2026; verified against the FDA action, two Phase 3 randomized trials, PubMed abstracts, ClinicalTrials.gov records, and Crossref DOI records. This additive summary does not change existing LDL-C targets, recommendations, or local protocols.
+- Approved use: FDA approved Lipfendra, with diet and exercise, to reduce LDL-C in adults with hypercholesterolemia or heterozygous familial hypercholesterolemia (HeFH). It is the first orally administered drug that blocks PCSK9.
+- Stroke-content boundary: This is a lipid-related vascular risk-factor action, not a stroke-specific indication. Neither supporting trial tested recurrent stroke or another clinical vascular event as its primary outcome; do not infer stroke-risk reduction from the LDL-C results or substitute this agent into a post-stroke protocol without physician review.
+- Supporting Phase 3 evidence (PICO):
+  - CORALreef Lipids - Population: adults with established or high risk of atherosclerotic cardiovascular disease and elevated LDL-C despite lipid-lowering therapy; Intervention: enlicitide for 52 weeks; Comparator: placebo; Outcomes: primary endpoint verbatim excerpt, "mean percent change in LDL cholesterol level from baseline to week 24"; key effect estimate verbatim excerpt, "adjusted between-group difference of -55.8 percentage points (95% CI, -60.9 to -50.7; P<0.001)". Adverse-event incidence did not appear to differ between groups.
+  - CORALreef HeFH - Population: adults with HeFH requiring additional LDL-C lowering despite statin therapy; Intervention: enlicitide for 52 weeks; Comparator: placebo; Outcomes: primary endpoint verbatim excerpt, "mean percentage change in LDL-C level at week 24"; key effect estimate verbatim excerpt, "between-group difference, -59.4% [95% CI, -65.6% to -53.2%]; P < .001". Adverse events, serious adverse events, and discontinuations due to adverse events were similar between groups.
+- Verified sources: FDA action (https://www.fda.gov/drugs/news-events-human-drugs/fda-approves-first-oral-therapy-inhibits-proprotein-convertase-subtilisinkexin-type-9-pcsk9-lower); CORALreef Lipids - PMID: 41879224 (https://pubmed.ncbi.nlm.nih.gov/41879224/), DOI: 10.1056/NEJMoa2511002 (https://doi.org/10.1056/NEJMoa2511002), NCT: NCT05952856 (https://clinicaltrials.gov/study/NCT05952856); CORALreef HeFH - PMID: 41206969 (https://pubmed.ncbi.nlm.nih.gov/41206969/), DOI: 10.1001/jama.2025.20620 (https://doi.org/10.1001/jama.2025.20620), NCT: NCT05952869 (https://clinicaltrials.gov/study/NCT05952869).
+
+<!-- AUTO-UPDATE 2026-07-16: LIPFENDRA FDA ACTION VERIFIED ADDITIVE BLOCK END -->
+
 ## 7) Special populations (pediatrics, pregnancy/peripartum, anticoagulated, renal dysfunction)
 - Practical recommendation:
   - Pregnancy/peripartum: treat stroke as a time-critical emergency with maternal-fetal coordination, avoiding delays in reperfusion/reversal pathways.

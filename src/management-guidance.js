@@ -2,7 +2,7 @@
 // Keep this file pure data so the same content can be reused by the Management
 // tab, pocket-card exports, and future offline evidence refresh tooling.
 
-export const AIS_COMMAND_CENTER_LAST_REVIEWED = '2026-05-08';
+export const AIS_COMMAND_CENTER_LAST_REVIEWED = '2026-07-03';
 
 export const AIS_SOURCE_LINKS = [
   {
@@ -270,5 +270,88 @@ export const AIS_COMMAND_CENTER_CARDS = [
       'Good thrombolysis workflow is not just door-to-needle. It is door-to-needle with a rehearsed rescue pathway.',
     changedSinceLastGuideline:
       'The 2026 guideline emphasizes readiness for emergent bleeding and angioedema complications as part of safe IVT administration.'
+  },
+  {
+    id: 'ais-telestroke-sequence',
+    title: 'Telestroke Decision Sequence',
+    shortLabel: 'Lyse first, then thrombectomy/transfer',
+    urgency: 'Generic decision-support principle — verify against local protocol',
+    classOfRecommendation: 'Workflow',
+    levelOfEvidence: 'Consensus',
+    lastReviewed: AIS_COMMAND_CENTER_LAST_REVIEWED,
+    recommendationId: 'rec-telestroke-sequence',
+    evidenceQuery: 'telestroke workflow thrombolysis decision acute ischemic stroke',
+    anchor: 'isch-evt',
+    summary:
+      'In remote/telestroke assessment, make the time-critical thrombolysis decision first, then work the thrombectomy and transfer logistics. This is a generic decision-support sequence, not any institution\'s workflow or transfer policy; confirm every step against your approved local protocol.',
+    actions: [
+      'Assemble the minimal urgent dataset before the lytic decision: confirmed last-known-well, a disabling deficit (NIHSS or enough exam to show disability), glucose that is not a mimic emergency, CT excluding hemorrhage, BP below threshold or actively controlled, and an anticoagulant/contraindication review.',
+      'Do not delay noncontrast CT/CTA for administrative or video-connection setup.',
+      'If thrombolysis is likely, have the local team prepare/mix the medication while final eligibility is confirmed.',
+      'Run a safety pause before the bolus: confirm diagnosis/disabling deficit, imaging, window or advanced-imaging selection, BP <185/110, glucose, anticoagulants/coags when relevant, contraindications, a risk-benefit discussion when feasible, and team agreement.',
+      'Address thrombectomy next: LVO on CTA/MRA, treatable within 24h, ASPECTS/core/clinical criteria, goals of care, and transfer feasibility.'
+    ],
+    pathway: [
+      { label: 'Time-critical reperfusion', decision: 'Decide IV thrombolysis first; do not wait on EVT/transfer logistics', cor: 'Workflow', loe: 'Consensus' },
+      { label: 'Imaging', decision: 'Do not delay noncontrast CT/CTA for setup', cor: 'Workflow', loe: 'Consensus' },
+      { label: 'Before bolus', decision: 'Safety pause: dataset + BP <185/110 + team agreement', cor: 'Workflow', loe: 'Consensus' },
+      { label: 'After the lytic decision', decision: 'Sequence thrombectomy candidacy and transfer', cor: 'Workflow', loe: 'Consensus' }
+    ],
+    calculators: [
+      { label: 'NIHSS', tab: 'management', subTab: 'calculators', anchor: 'calc-nihss' },
+      { label: 'TNK dose from weight', tab: 'encounter', anchor: 'treatment-decision' }
+    ],
+    pitfalls: [
+      'Letting video or administrative setup delay CT/CTA or the thrombolysis decision.',
+      'Sequencing transfer logistics ahead of an otherwise-eligible thrombolysis decision.',
+      'Skipping the pre-bolus safety pause under time pressure.'
+    ],
+    teachingPearl:
+      'Telestroke is a sequence, not a parallel checklist: the thrombolysis decision is the most time-critical step and should not wait on thrombectomy or transfer logistics.',
+    changedSinceLastGuideline:
+      'Reflects 2026 telestroke workflow consensus emphasizing a thrombolysis-first decision sequence and a structured pre-bolus safety pause. This card is an educational principle only — not local workflow, staffing, or transfer policy.'
+  },
+  {
+    id: 'ais-pediatric',
+    title: 'Pediatric Acute Ischemic Stroke',
+    shortLabel: 'Expert-guided, off-label, evidence-limited',
+    urgency: 'Not FDA-approved — pediatric stroke expertise + shared decision-making',
+    classOfRecommendation: 'IIb',
+    levelOfEvidence: 'C-LD',
+    lastReviewed: AIS_COMMAND_CENTER_LAST_REVIEWED,
+    recommendationId: 'rec-pediatric-ais',
+    evidenceQuery: 'pediatric acute ischemic stroke thrombolysis thrombectomy 2026 guideline',
+    anchor: 'isch-evt',
+    summary:
+      'Pediatric AIS evidence is far more limited than adult AIS. Treat this as an educational framework, not a formal treatment recommendation: confirm true arterial ischemic stroke (mimics are common), engage pediatric stroke expertise, and verify any dose against local pediatric pharmacy/ICU protocol.',
+    actions: [
+      'Preferred imaging when feasible: MRI brain plus MRA head/neck (mimics are common in children); CT/CTA is acceptable for time-critical, high-suspicion presentations.',
+      'IVT with alteplase may be considered for a disabling, imaging-supported AIS treatable within 4.5h of LKW (the 2026 AHA/ASA guideline names alteplase for ages 28 days-18 years, COR IIb); thrombolysis is NOT FDA-approved in children and requires pediatric stroke expertise and family shared decision-making.',
+      'If a weight-based dose is used, verify it against local pediatric pharmacy/ICU protocol: alteplase 0.9 mg/kg (max 90 mg) is the guideline-referenced agent; tenecteplase 0.25 mg/kg (max 25 mg) is adult-derived extrapolation only and is not specifically endorsed for children.',
+      'EVT may be considered for LVO with a measurable deficit and salvageable tissue, generally within 24h: age >=6y is reasonable (COR IIa) and age 28 days-<6y may be reasonable in selected cases (COR IIb) — pediatric EVT is not categorically excluded in young children. Adapt adult criteria cautiously with the neurointerventionalist.',
+      'Moyamoya and focal cerebral arteriopathy are generally not thrombolysis or thrombectomy targets (non-thromboembolic, vessel-fragility risk); in sickle cell disease, acute pediatric management centers on exchange transfusion (STOP-era protocols) rather than lysis.',
+      'Screen for pediatric-specific risk factors: congenital/acquired heart disease, sickle cell disease, arteriopathy/moyamoya, inflammatory/autoimmune disease, thrombophilia/prior thrombosis, malignancy/chemotherapy, infection, trauma, and OCPs in adolescents.',
+      'Manage blood pressure using age-specific percentile thresholds and local pediatric protocol rather than adult numeric targets. Data below ~age 2 are especially sparse — treat any lower age boundary as expert-consensus caution, not a formal guideline exclusion.'
+    ],
+    pathway: [
+      { label: 'Disabling AIS, imaging-supported, <=4.5h (age 28d-18y)', decision: 'IVT (alteplase) may be considered — off-label, expert-guided, family shared decision', cor: 'IIb', loe: 'C-LD' },
+      { label: 'LVO + salvageable tissue, <=24h, age >=6y', decision: 'EVT is reasonable in selected cases', cor: 'IIa', loe: 'B-NR' },
+      { label: 'LVO + salvageable tissue, <=24h, age 28d-<6y', decision: 'EVT may be reasonable in selected cases', cor: 'IIb', loe: 'B-NR' },
+      { label: 'Moyamoya / focal cerebral arteriopathy / mineralizing lenticulostriate vasculopathy', decision: 'Generally not reperfusion targets (non-thromboembolic) — high caution', cor: 'III', loe: 'C-LD' }
+    ],
+    calculators: [
+      { label: 'NIHSS / PedNIHSS', tab: 'management', subTab: 'calculators', anchor: 'calc-nihss' },
+      { label: 'Alteplase calculator', tab: 'management', subTab: 'calculators', anchor: 'calc-alteplase' }
+    ],
+    pitfalls: [
+      'Reaching for tenecteplase as a co-equal pediatric lytic: the guideline references alteplase for children; TNK use is adult-derived extrapolation. Verify any agent and dose with pediatric pharmacy/ICU.',
+      'Treating pediatric thrombolysis as standard care — it is not FDA-approved and the evidence base is limited (e.g., the TIPS trial stopped early for low enrollment).',
+      'Assuming infants and toddlers are categorically excluded from EVT: the 2026 guideline offers a IIb pathway for LVO down to 28 days, distinct from the >=6y IIa pathway.',
+      'Overlooking mineralizing lenticulostriate vasculopathy (basal-ganglia stroke after minor head trauma with basal-ganglia calcifications) — not thrombolysis-responsive and carries basal-ganglia hemorrhage risk.'
+    ],
+    teachingPearl:
+      'Pediatric acute reperfusion mirrors the adult framework, but the evidence and approvals do not: confirm true arterial ischemic stroke, engage pediatric stroke expertise, and verify every agent and dose locally. Note the pediatric EVT evidence (B-NR) is stronger than the lytic evidence (C-LD).',
+    changedSinceLastGuideline:
+      'The 2026 AHA/ASA guideline extended consideration of IV thrombolysis (alteplase; ages 28 days-18 years; COR IIb/C-LD) and EVT (age >=6y COR IIa/B-NR; age 28 days-<6y COR IIb/B-NR) — pediatric reperfusion is not categorically excluded in young children, but stays expert-guided, off-label for lytics, and shared-decision-based.'
   }
 ];

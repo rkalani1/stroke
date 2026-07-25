@@ -16,6 +16,7 @@ import {
   calculatePHASESScore,
   getPHASESRisk,
   calculateICHVolume,
+  isJune2026MieLobarLocationText,
   calculateEnoxaparinDose,
   calculateAndexanetDose,
   calculateCrCl,
@@ -32,8 +33,15 @@ import {
   PatientCensus,
   ClinicWorkflow,
   WardsWorkflow,
-  PHQ9Screen
+  PHQ9Screen,
+  PHIBanner,
+  PublicDemoConsentModal
 } from './components.jsx';
+import {
+  getPublicDemoPhiWarnings,
+  isSyntheticDemoText,
+  PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX
+} from './public-demo-guardrails.js';
 import { PocketCards } from './pocket-cards.jsx';
 import { LandmarkTrialsCard } from './teaching.jsx';
 import Education, { EVDInfographic, ICPInfographic } from './education.jsx';
@@ -103,7 +111,7 @@ import {
   afDetectionStrategy,
   evaluateBostonCAA20
 } from './calculators-extended.js';
-import { getLocalInstitutionalContent } from './institutional-protocols.js';
+import { getLocalInstitutionalContent, ICH_INITIAL_EVALUATION_ALGORITHM } from './institutional-protocols.js';
 // v7 theme controller — the SINGLE source of truth for theme pref + DOM state.
 // Replaces the legacy in-component darkMode boolean. theme.js owns the
 // `data-theme` attribute, the `dark` class, and the stroke.v7.theme storage key.
@@ -139,6 +147,15 @@ import {
   AIS_SOURCE_LINKS,
   AIS_COMMAND_CENTER_LAST_REVIEWED
 } from './management-guidance.js';
+// Content data layer access + workflow-context (Telestroke/Inpatient/Clinic)
+// filtering. Pure module over the build-time /content bundle; powers the
+// context switch and the unified command-palette index.
+import {
+  WORKFLOW_CONTEXTS,
+  getSearchIndex as getContentSearchIndex,
+  getEducation as getContentEducation,
+  isRelevantTo as isContentRelevantTo
+} from './content-context.js';
 // What's New feed — generated at build time (npm run evidence:whats-new) from the
 // verified-PubMed Evidence Atlas. esbuild inlines this JSON, so the Research &
 // Guidelines tab works fully offline.
@@ -294,7 +311,17 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         const LAST_UPDATED_KEY = 'lastUpdated';
         const LEGACY_MIGRATION_KEY = 'legacyMigrated';
         const APP_DATA_SCHEMA_VERSION = 1;
-        const PUBLIC_DEMO_MODE = typeof window !== 'undefined' && /(^|\.)github\.io$/i.test(window.location.hostname || '');
+        const getPublicDemoMode = () => {
+          if (typeof window === 'undefined') return false;
+          if (window.__STROKE_PUBLIC_DEMO_MODE__ === true) return true;
+          const hostIsPublicPages = /(^|\.)github\.io$/i.test(window.location.hostname || '');
+          try {
+            return hostIsPublicPages || new URLSearchParams(window.location.search || '').get('publicDemo') === '1';
+          } catch (_) {
+            return hostIsPublicPages;
+          }
+        };
+        const PUBLIC_DEMO_MODE = getPublicDemoMode();
         // Default contacts (editable in Settings > Contact Directory).
         const DEFAULT_CONTACTS = [];
 
@@ -338,7 +365,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           try {
             localStorage.setItem(STORAGE_PREFIX + LAST_UPDATED_KEY, JSON.stringify(Date.now()));
           } catch (e) {
-            console.warn('Failed to update lastUpdated:', e);
             if (e.name === 'QuotaExceededError' || e.code === 22) {
               throw e;
             }
@@ -353,7 +379,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               touchLastUpdated();
             }
           } catch (e) {
-            console.warn('Failed to save key:', name, e);
             if (e.name === 'QuotaExceededError' || e.code === 22) {
               throw e; // Re-throw quota errors for caller to handle
             }
@@ -386,7 +411,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             });
             LEGACY_SESSION_KEYS.forEach((key) => sessionStorage.removeItem(key));
           } catch (e) {
-            console.warn('Storage clear failed:', e);
           }
         };
 
@@ -399,7 +423,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               indexedDB.deleteDatabase('strokeAppCensus');
             }
           } catch (e) {
-            console.warn('Public demo storage cleanup failed:', e);
           }
         }
 
@@ -419,7 +442,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             });
             localStorage.setItem(STORAGE_PREFIX + LEGACY_MIGRATION_KEY, JSON.stringify(true));
           } catch (e) {
-            console.warn('Legacy storage migration failed:', e);
           }
         };
 
@@ -551,10 +573,18 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             const stack = err && err.stack ? String(err.stack) : '';
             const componentStack = this.state.errorInfo && this.state.errorInfo.componentStack ? String(this.state.errorInfo.componentStack) : '';
             const appVersion = (window.strokeAppStorage && window.strokeAppStorage.appVersion) || 'unknown';
+            let storageStatus = 'ok';
+            try {
+              localStorage.setItem('__diag_probe__', '1');
+              localStorage.removeItem('__diag_probe__');
+            } catch (probeErr) {
+              storageStatus = `unavailable (${probeErr && probeErr.name ? probeErr.name : 'error'})`;
+            }
             // Intentionally no patient-identifying data — keep the 12-hour no-PII policy intact.
             return [
               `Stroke app diagnostics (${new Date().toISOString()})`,
               `Version: ${appVersion}`,
+              `Storage: ${storageStatus}`,
               `URL hash: ${typeof location !== 'undefined' ? location.hash : ''}`,
               `UA: ${typeof navigator !== 'undefined' ? navigator.userAgent : ''}`,
               `Message: ${err && err.message ? err.message : String(err)}`,
@@ -574,10 +604,15 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             };
             try {
               if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(done).catch(done);
+                navigator.clipboard.writeText(text).then(done).catch((err) => {
+                  console.warn('Clipboard API failed:', err);
+                  done();
+                });
                 return;
               }
-            } catch (e) { /* fall through */ }
+            } catch (e) {
+              console.warn('Clipboard API error, falling back:', e);
+            }
             try {
               const ta = document.createElement('textarea');
               ta.value = text;
@@ -588,7 +623,9 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               ta.select();
               document.execCommand('copy');
               document.body.removeChild(ta);
-            } catch (e) { /* ignore */ }
+            } catch (e) {
+              console.error('Fallback execCommand failed:', e);
+            }
             done();
           };
           render() {
@@ -646,7 +683,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           tnk: 'TNK 0.25 mg/kg is non-inferior to alteplase with similar sICH rates (3.4% vs 3.2%) and simpler single-bolus administration (AcT trial, Lancet 2022).',
           evt: 'EVT benefit is time-dependent: NNT ~2.6 overall at 0-6h (HERMES). Late-window with perfusion selection: NNT ~2.8 (DAWN), ~3.6 (DEFUSE-3). Every 15-min delay reduces benefit.',
           ich_bp: 'INTERACT3: Intensive BP lowering + bundle of care improves functional outcomes in ICH (Lancet 2023).',
-          doac_timing: 'ELAN/CATALYST: Early DOAC restart after ischemic stroke — mild (NIHSS <8): 48h; moderate (NIHSS 8-15): day 3-5; severe (NIHSS ≥16): day 6-14 with repeat imaging.',
+          doac_timing: 'ELAN/OPTIMAS/CATALYST: early DOAC after AF-related stroke, ≤4 days reasonable across severities (OPTIMAS non-inferior across infarct sizes; CATALYST superior vs delay). Tiered default: minor (NIHSS <8) ~day 1; moderate (8-15) ~day 3; severe (16-20) ~day 6; very severe (≥21) or extensive hemorrhagic transformation ~day 7+ with repeat imaging.',
           aspects: 'ASPECTS 6-10: Standard EVT eligibility. ASPECTS 3-5: Consider EVT for mRS 0-1 patients with anterior LVO (SELECT2, ANGEL-ASPECT).',
           pcc: 'Weight-based 4F-PCC (25-50 IU/kg by INR) for warfarin reversal in ICH (AHA/ASA 2022 COR I/B-R).',
           wakeup: 'DWI-FLAIR mismatch suggests onset <4.5h; CTP mismatch allows treatment up to 9h from midpoint of sleep (WAKE-UP, EXTEND).'
@@ -662,7 +699,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           { version: '3.1', date: '2025-09', items: ['Added vital signs (HR, SpO2, Temp) to encounter and notes', 'Added EKG/Telemetry input fields', 'GCS score included in all note templates', 'Weight unit toggle (kg/lbs) with auto-conversion', 'Edoxaban added to anticoagulant system', 'aPTT auto-blocks TNK when >40s', 'Standardized platelet units (K/μL) throughout', 'Inline lab validation badges (glucose, INR, platelets, aPTT)', 'Andexanet alfa aligned to PCC-first protocol', 'Consent documentation in transfer notes', 'Fixed keyboard shortcut conflicts and section completion', 'Improved reset logic for new patients'] },
           { version: '3.2', date: '2025-10', items: ['Notes now show consultation type (Telephone vs Video Telestroke)', 'BP phase target included in consultation, transfer, and signout notes', 'TOAST classification in transfer and discharge notes', 'Anticoagulation details with DOAC timing in consultation note', 'Transfer note shows weight, premorbid mRS, contrast allergy flag', 'Dysphagia screening and VTE prophylaxis in discharge note', 'Transfer note alerts for NPO status and contrast allergy', 'SAH + anticoagulation reversal warning', 'GCS ≤8 airway protection alert', 'Edoxaban CrCl >95 reduced efficacy warning', 'Hypoglycemia + TNK escalated to error severity', 'BP phase auto-reverts when diagnosis changes', 'Fixed INR/aPTT orphaned comma in lab line', 'Trial eligibility reset on new case'] },
           { version: '3.3', date: '2025-11', items: ['CrCl calculator prioritized by diagnosis in calculator tab', 'Post-TNK neuro check schedule standardized (q15min×2h, q30min×6h, q1h×16h)', 'SAH seizure prophylaxis with specific indications in admission orders', 'Osmotic therapy data in discharge note (agent, Na+ target, osmolality)', 'Nutritional support and feeding route in discharge note', 'Falls risk screening in discharge note', 'Driving restrictions with commercial driver flag in discharge note', 'Clipboard fallback for insecure contexts (HTTP/dev builds)', 'Deep merge of stored data prevents crashes when new fields are added', 'All calculator copy buttons now have accessible labels', 'ICH Volume, Andexanet, and Enoxaparin calculators now sort by diagnosis priority'] },
-          { version: '3.4', date: '2026-02', items: ['SAH aneurysm characteristics (location, size, securing method) with posterior circulation and giant aneurysm alerts', 'SAH vasospasm/DCI monitoring protocol (TCD, neuro checks, sodium, induced HTN) with safety guard', 'ICH surgical decision support (cerebellar >15mL, hydrocephalus, midline shift, deterioration) with neurosurgery urgency alert', 'Stroke vascular territory selector (MCA/ACA/PCA/basilar/vertebral/cerebellar/lacunar/watershed) with posterior circulation guidance', 'Stroke phenotype classifier (cortical-LVO, embolic, lacunar, posterior, dissection, watershed, cardioembolic)', 'Symptom trajectory tracking (stable/improving/fluctuating/worsening/resolved) with clinical alerts', 'Post-thrombolytic monitoring protocol checklist with sICH risk calculator (5 factors)', 'Family/surrogate communication log with auto-timestamp', 'All new fields integrated into consult, transfer, signout, progress, discharge, and Pulsara templates', 'Fixed GCS reference in ICH guideline conditions (seizure prophylaxis, MIE eligibility)', 'Fixed FUNC score GCS 13-15 returning null instead of 2 points', 'State cleanup on diagnosis category change includes nested objects'] }
+          { version: '3.4', date: '2026-02', items: ['SAH aneurysm characteristics (location, size, securing method) with posterior circulation and giant aneurysm alerts', 'SAH vasospasm/DCI monitoring protocol (TCD, neuro checks, sodium, induced HTN) with safety guard', 'ICH surgical decision support (cerebellar posterior-fossa mass effect/hydrocephalus, midline shift, deterioration) with neurosurgery urgency alert', 'Stroke vascular territory selector (MCA/ACA/PCA/basilar/vertebral/cerebellar/lacunar/watershed) with posterior circulation guidance', 'Stroke phenotype classifier (cortical-LVO, embolic, lacunar, posterior, dissection, watershed, cardioembolic)', 'Symptom trajectory tracking (stable/improving/fluctuating/worsening/resolved) with clinical alerts', 'Post-thrombolytic monitoring protocol checklist with sICH risk calculator (5 factors)', 'Family/surrogate communication log with auto-timestamp', 'All new fields integrated into consult, transfer, signout, progress, discharge, and Pulsara templates', 'Fixed GCS reference in ICH guideline conditions (seizure prophylaxis, MIE eligibility)', 'Fixed FUNC score GCS 13-15 returning null instead of 2 points', 'State cleanup on diagnosis category change includes nested objects'] }
         ];
 
         const parseBloodPressure = (bpString) => {
@@ -742,8 +779,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             crypto.getRandomValues(array);
             return `${prefix}_${stamp}_${array[0].toString(36).slice(0, 6)}`;
           }
-          const rand = Math.random().toString(36).slice(2, 8);
-          return `${prefix}_${stamp}_${rand}`;
+          throw new Error('Secure random number generation is not supported by this environment');
         };
 
         const copyPlainText = async (text) => {
@@ -823,23 +859,8 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           });
         };
 
-        const DEID_PATTERNS = [
-          { id: 'mrn', label: 'Possible MRN (long numeric ID)', regex: /\b\d{7,}\b/ },
-          { id: 'ssn', label: 'Possible SSN (XXX-XX-XXXX)', regex: /\b\d{3}-\d{2}-\d{4}\b/ },
-          { id: 'birth-date', label: 'Possible birth date/date (US format)', regex: /\b\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}\b/ },
-          { id: 'iso-date', label: 'Possible date (ISO YYYY-MM-DD)', regex: /\b(19|20)\d{2}[\/\-]\d{1,2}[\/\-]\d{1,2}\b/ },
-          { id: 'phone', label: 'Possible phone number', regex: /\b(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/ },
-          { id: 'email', label: 'Possible email address', regex: /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i },
-          { id: 'zip', label: 'Possible ZIP+4 (XXXXX-XXXX)', regex: /\b\d{5}-\d{4}\b/ },
-          // Street-address heuristic: digit + word + (St / Street / Ave / Avenue / Rd / Road /
-          // Blvd / Boulevard / Ln / Lane / Dr / Drive / Ct / Court / Way / Pl / Place).
-          // High-precision form — avoids false positives on numeric measurements.
-          { id: 'street', label: 'Possible street address', regex: /\b\d{1,5}\s+[A-Z][A-Za-z]{2,}(?:\s+[A-Z][A-Za-z]+)*\s+(St(reet)?|Ave(nue)?|R(oa)?d|Blvd|Boulevard|Ln|Lane|Dr(ive)?|Ct|Court|Way|Pl(ace)?)\b/i }
-        ];
-
         const getDeidWarnings = (text) => {
-          if (!text || typeof text !== 'string') return [];
-          return DEID_PATTERNS.filter(pattern => pattern.regex.test(text)).map(pattern => pattern.label);
+          return getPublicDemoPhiWarnings(text);
         };
 
         const getDefaultClipboardPacks = () => ([
@@ -965,7 +986,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             const merged = mergeAppData(base, parsed);
             return migrateLegacyToAppData(migrateAppData(merged));
           } catch (e) {
-            console.warn('Failed to parse app data:', e);
             return migrateLegacyToAppData(base);
           }
         };
@@ -977,10 +997,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             touchLastUpdated();
           } catch (e) {
             if (e.name === 'QuotaExceededError' || e.code === 22) {
-              console.error('Storage quota exceeded:', e);
               try { document.dispatchEvent(new CustomEvent('storage-quota-exceeded')); } catch (_) {}
-            } else {
-              console.warn('Failed to save app data:', e);
             }
           }
         };
@@ -1139,6 +1156,53 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               return '#/encounter';
           }
         };
+
+
+const AutoDetectedContraindicationsBanner = ({ autoAbsolute, autoRelative, autoCautionary }) => {
+  if (autoAbsolute.length > 0) {
+    return (
+      <div className="bg-crit-100 border-2 border-crit-400 rounded-lg p-3 dark:bg-crit-950">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="bg-crit-600 text-white px-2 py-0.5 rounded text-xs font-bold">AUTO-DETECTED</span>
+          <span className="text-sm font-bold text-crit-900 dark:text-crit-300">TNK Contraindication{autoAbsolute.length > 1 ? 's' : ''} Found From Patient Data</span>
+        </div>
+        <ul className="text-xs text-crit-800 space-y-0.5 ml-2 dark:text-crit-300">
+          {autoAbsolute.map(c => <li key={c.id}>&#10007; <strong>{c.label}</strong>{c.note ? ` (${c.note})` : ''}</li>)}
+        </ul>
+      </div>
+    );
+  }
+
+  if (autoRelative.length > 0) {
+    return (
+      <div className="bg-warn-100 border-2 border-warn-400 rounded-lg p-3 dark:bg-warn-900">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="bg-warn-500 text-white px-2 py-0.5 rounded text-xs font-bold">AUTO-DETECTED</span>
+          <span className="text-sm font-bold text-warn-900 dark:text-warn-300">{autoRelative.length} Relative Contraindication{autoRelative.length > 1 ? 's' : ''} — Use Clinical Judgment</span>
+        </div>
+        <ul className="text-xs text-warn-800 space-y-0.5 ml-2 dark:text-warn-300">
+          {autoRelative.map(c => <li key={c.id}>&#9888; {c.label}{c.note ? ` (${c.note})` : ''}</li>)}
+        </ul>
+      </div>
+    );
+  }
+
+  if (autoCautionary.length > 0) {
+    return (
+      <div className="bg-cobalt-50 border-2 border-cobalt-300 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="bg-cobalt-500 text-white px-2 py-0.5 rounded text-xs font-bold dark:bg-cobalt-700">AUTO-DETECTED</span>
+          <span className="text-sm font-bold text-cobalt-900 dark:text-cobalt-300">{autoCautionary.length} Cautionary Condition{autoCautionary.length > 1 ? 's' : ''} — IVT Benefit Outweighs Risk</span>
+        </div>
+        <ul className="text-xs text-cobalt-800 space-y-0.5 ml-2 dark:text-cobalt-300">
+          {autoCautionary.map(c => <li key={c.id}>&#8505; {c.label}{c.note ? ` (${c.note})` : ''}</li>)}
+        </ul>
+      </div>
+    );
+  }
+
+  return null;
+};
 
         const StrokeClinicalTool = () => {
           const defaultTelestrokeTemplate = `Reason for Consultation: Acute stroke evaluation — {chiefComplaint}
@@ -1421,7 +1485,7 @@ Clinician Name`;
             },
             // ICH surgical assessment
             ichSurgicalCriteria: {
-              cerebellarGt15mL: false,
+              cerebellarMassEffect: false,
               hydrocephalus: false,
               midlineShift: false,
               clinicalDeterioration: false,
@@ -1925,13 +1989,11 @@ Clinician Name`;
 
               // Validate that arrays are actually arrays (fix for completedSteps issue)
               if (Array.isArray(defaultValue) && !Array.isArray(saved)) {
-                console.warn(`Invalid data type for ${key}, expected array. Resetting to default.`);
                 return defaultValue;
               }
 
               return saved;
             } catch (e) {
-              console.warn(`Error loading ${key} from localStorage:`, e);
               return defaultValue;
             }
           };
@@ -1953,7 +2015,6 @@ Clinician Name`;
               }
               return item;
             } catch (e) {
-              console.warn(`Error loading ${key}:`, e);
               return defaultValue;
             }
           };
@@ -1962,7 +2023,6 @@ Clinician Name`;
             try {
               setKey(key, { data: value, expiresAt: Date.now() + SHIFT_DATA_TTL_MS });
             } catch (e) {
-              console.warn(`Error saving ${key}:`, e);
             }
           };
 
@@ -2011,7 +2071,7 @@ Clinician Name`;
           const [noteTemplate, setNoteTemplate] = useState(loadFromStorage('noteTemplate', 'consult'));
           const [calcDrawerOpen, setCalcDrawerOpen] = useState(false);
           const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
-          // Theme is owned entirely by src/design/theme.js (the v7 controller).
+          // Theme is owned entirely by the v7 controller.
           // We mirror its preference ('auto'|'light'|'dark') and derived effective
           // theme ('dark' boolean) into React state for rendering. theme.js owns the
           // DOM (data-theme + `dark` class) and the stroke.v7.theme storage key; we
@@ -2033,6 +2093,7 @@ Clinician Name`;
           };
           const [updateAvailable, setUpdateAvailable] = useState(false);
           const [pendingWorker, setPendingWorker] = useState(null);
+          const [pendingUpdateAction, setPendingUpdateAction] = useState(null);
           // PWA install state. installPrompt holds the captured BeforeInstallPromptEvent
           // (Chrome / Edge / Android). isInstalled is true when the app is launched
           // from the home screen / app drawer (display-mode standalone OR iOS Safari's
@@ -2082,11 +2143,9 @@ Clinician Name`;
               // Choose the last (deepest) section whose marker has scrolled above the
               // band trigger line; default to the first section near the top.
               let current = ENCOUNTER_TOC_SECTIONS[0].id;
-              for (const s of ENCOUNTER_TOC_SECTIONS) {
-                const el = document.getElementById(s.id);
-                if (!el) continue;
+              for (const el of els) {
                 const top = el.getBoundingClientRect().top;
-                if (top <= 200) current = s.id;
+                if (top <= 200) current = el.id;
               }
               setActiveEncSection(current);
             }, { rootMargin: '-160px 0px -55% 0px', threshold: [0, 1] });
@@ -2147,6 +2206,20 @@ Clinician Name`;
           const [searchOpen, setSearchOpen] = useState(false);
           const [searchContext, setSearchContext] = useState('header');
           const [searchActiveIndex, setSearchActiveIndex] = useState(-1);
+
+          // Workflow context switch (Telestroke / Inpatient / Clinic). null = "All"
+          // — the default, which hides nothing. Filters/reorders content surfaces
+          // to the active setting WITHOUT ever scoping global search (that always
+          // passes null). Persisted via the storage helper (no-op in demo mode).
+          const [workflowContext, setWorkflowContextState] = useState(() => {
+            const v = loadFromStorage('workflowContext', null);
+            return WORKFLOW_CONTEXTS.includes(v) ? v : null;
+          });
+          const setWorkflowContext = (ctx) => {
+            const next = WORKFLOW_CONTEXTS.includes(ctx) ? ctx : null;
+            setWorkflowContextState(next);
+            setKey('workflowContext', next); // no-op in public demo mode
+          };
 
           // Command palette (first-class, app-wide navigation jump-list).
           // Distinct from the free-text header search above: this is a focus-
@@ -2226,9 +2299,8 @@ Clinician Name`;
           /* v7 SW opt-in update — binding amendment #2.
              Listens for {type:'sw-update-ready'} broadcasts from the service worker
              service worker. Shows a non-blocking sticky toast inviting the
-             clinician to refresh on their own schedule (no auto-claim, no
-             mid-consult interruption). Tap the toast → acceptUpdate() →
-             clients.claim() → soft reload. */
+             clinician to use the explicit Reload to update banner on their own
+             schedule (no auto-claim, no mid-consult interruption). */
           useEffect(() => {
             let unsub = () => {};
             (async () => {
@@ -2236,8 +2308,13 @@ Clinician Name`;
                 const sw = await import('./design/sw-controller.js');
                 sw.bindSWController();
                 unsub = sw.onUpdateReady(({ version }) => {
+                  setPendingWorker(null);
+                  setPendingUpdateAction(() => () => {
+                    sw.acceptUpdate().catch(() => window.location.reload());
+                  });
+                  setUpdateAvailable(true);
                   addToast(
-                    `New version ${version || 'available'} ready — tap when you're between consults.`,
+                    `New version ${version || 'available'} ready. Use the Reload to update banner when you're between consults.`,
                     'info',
                     0
                   );
@@ -2389,6 +2466,7 @@ Clinician Name`;
             return {
               value: vol,
               display: vol.toFixed(1),
+              exceeds15: vol >= 15,
               exceeds30: vol >= 30
             };
           }, [ichVolumeParams]);
@@ -2483,21 +2561,25 @@ Clinician Name`;
             const defaults = getDefaultTelestrokeNote();
             const merged = { ...defaults };
             for (const key of Object.keys(saved)) {
-              if (saved[key] !== undefined && saved[key] !== null) {
-                if (typeof defaults[key] === 'object' && defaults[key] !== null && !Array.isArray(defaults[key])
-                    && typeof saved[key] === 'object' && !Array.isArray(saved[key])) {
-                  merged[key] = { ...defaults[key], ...saved[key] };
+              const savedVal = saved[key];
+              if (savedVal !== undefined && savedVal !== null) {
+                const defVal = defaults[key];
+                if (typeof defVal === 'object' && defVal !== null && !Array.isArray(defVal)
+                    && typeof savedVal === 'object' && !Array.isArray(savedVal)) {
+                  const mergedKeyObj = { ...defVal, ...savedVal };
+                  merged[key] = mergedKeyObj;
                   // Two-level deep merge: restore default sub-objects (e.g. wakeUpStrokeWorkflow.dwi)
-                  for (const subKey of Object.keys(defaults[key])) {
-                    if (typeof defaults[key][subKey] === 'object' && defaults[key][subKey] !== null && !Array.isArray(defaults[key][subKey])
-                        && typeof merged[key][subKey] === 'object' && merged[key][subKey] !== null && !Array.isArray(merged[key][subKey])) {
-                      merged[key][subKey] = { ...defaults[key][subKey], ...merged[key][subKey] };
-                    } else if (merged[key][subKey] === undefined || merged[key][subKey] === null) {
-                      merged[key][subKey] = defaults[key][subKey];
+                  for (const [subKey, defSubVal] of Object.entries(defVal)) {
+                    const mergedSubVal = mergedKeyObj[subKey];
+                    if (typeof defSubVal === 'object' && defSubVal !== null && !Array.isArray(defSubVal)
+                        && typeof mergedSubVal === 'object' && mergedSubVal !== null && !Array.isArray(mergedSubVal)) {
+                      mergedKeyObj[subKey] = { ...defSubVal, ...mergedSubVal };
+                    } else if (mergedSubVal === undefined || mergedSubVal === null) {
+                      mergedKeyObj[subKey] = defSubVal;
                     }
                   }
                 } else {
-                  merged[key] = saved[key];
+                  merged[key] = savedVal;
                 }
               }
             }
@@ -2528,9 +2610,9 @@ Clinician Name`;
           const [protocolModal, setProtocolModal] = useState(null);
 
           const [apiProvider, setApiProvider] = useState(() => loadFromStorage('apiProvider', 'mock'));
-          const [apiKey, setApiKey] = useState(() => loadFromStorage('apiKey', ''));
+          const [apiKey, setApiKey] = useState(() => { try { localStorage.removeItem((window.strokeAppStorage && window.strokeAppStorage.prefix || 'strokeApp:') + 'apiKey'); } catch (e) {} return sessionStorage.getItem('apiKey') || ''; });
           const [tempProvider, setTempProvider] = useState(() => loadFromStorage('apiProvider', 'mock'));
-          const [tempKey, setTempKey] = useState(() => loadFromStorage('apiKey', ''));
+          const [tempKey, setTempKey] = useState(() => sessionStorage.getItem('apiKey') || '');
           const [showKey, setShowKey] = useState(false);
 
           useEffect(() => {
@@ -2644,7 +2726,7 @@ Clinician Name`;
             'post-tnk': { label: 'Post-TNK', systolic: 180, diastolic: 105 },
             'post-evt': { label: 'Post-EVT (SBP <180 per AHA/ASA 2019; avoid <140 through ≥72h — ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II showed harm/no benefit)', systolic: 180, diastolic: 105, systolicLow: 140, systolicHigh: 180 },
             'no-lytics': { label: 'No lytics/No EVT', systolic: 220, diastolic: 120 },
-            'ich': { label: 'ICH (target SBP 140, range 130-150; AHA/ASA 2022 Class 2a; avoid <130 Class 3:Harm)', systolic: 140, diastolic: 90, systolicLow: 130, systolicHigh: 150 },
+            'ich': { label: 'ICH (smooth control; target SBP 140, range 130-150 when appropriate; avoid <130 Class 3:Harm)', systolic: 140, diastolic: 90, systolicLow: 130, systolicHigh: 150 },
             'sah': { label: 'SAH (pre-securing, target <160)', systolic: 160, diastolic: 100 },
             'sah-secured': { label: 'SAH (post-securing)', systolic: 140, diastolic: 90 },
             'cvt': { label: 'CVT (permissive)', systolic: 220, diastolic: 110 },
@@ -2738,7 +2820,7 @@ Clinician Name`;
             FAMOTIDINE: {
               title: 'Famotidine',
               dosing: 'Famotidine 20 mg IV.',
-              note: 'H2 blocker for angioedema management protocol. (Ranitidine withdrawn by FDA April 2020 due to NDMA.)'
+              note: 'H2 antihistamine given with an H1 blocker (e.g., diphenhydramine) for thrombolysis-associated orolingual angioedema. Use the H2 agent on your local formulary.'
             },
             PROT1: {
               title: 'Protamine (UFH)',
@@ -3099,6 +3181,41 @@ Clinician Name`;
                         title: "Trials",
                         trials: [
                             {
+                                name: "SATURN Trial",
+                                nct: "NCT03936361",
+                                phase: "Phase 3",
+                                status: "",
+                                description: "Statins for intracerebral hemorrhage: continue vs discontinue after lobar ICH (also tests whether APOE genotype should guide the decision)",
+                                inclusion: [
+                                    "Age ≥50 years",
+                                    "Spontaneous lobar intracerebral hemorrhage confirmed by CT or MRI",
+                                    "Taking statin therapy at time of ICH onset",
+                                    "Pre-morbid mRS ≤3",
+                                    "Randomization within 7 days of ICH",
+                                    "Able to provide informed consent or has LAR (after consultation with statin prescriber)",
+                                    "Expected to survive at least 24 months"
+                                ],
+                                exclusion: [
+                                    "Deep (non-lobar) ICH location",
+                                    "Secondary causes of ICH:",
+                                    "• Trauma",
+                                    "• Known brain tumor",
+                                    "• Known vascular malformation or aneurysm",
+                                    "• Hemorrhagic transformation of ischemic stroke",
+                                    "• Known or suspected CNS vasculitis",
+                                    "• Coagulopathy",
+                                    "ICH score >3 at presentation",
+                                    "Recent MI (<3 months) or unstable angina",
+                                    "Diabetes mellitus with prior MI or coronary revascularization",
+                                    "Familial hypercholesterolemia or PCSK9-inhibitor use",
+                                    "Severe dementia",
+                                    "Statin-related myopathy or rhabdomyolysis, or significant transaminase/CK elevation",
+                                    "Life expectancy <24 months from non-ICH condition",
+                                    "Woman of childbearing potential",
+                                    "Participation in another interventional trial"
+                                ]
+                            },
+                            {
                                 name: "ASPIRE Trial",
                                 nct: "NCT03907046",
                                 phase: "Phase 3",
@@ -3140,19 +3257,16 @@ Clinician Name`;
                                 name: "MINUTE Trial",
                                 nct: "NCT07260916",
                                 phase: "Phase 2",
-                                status: "Not yet recruiting",
-                                description: "Multi-arm pilot trial of intravenous glibenclamide and blood-pressure treatment strategy in acute spontaneous intracerebral hemorrhage with CTA spot sign",
+                                status: "Enrolling",
+                                description: "Initial-evaluation screen for selected acute spontaneous non-traumatic basal-ganglia IPH candidates; confirm current enrollment status and contact route locally",
                                 inclusion: [
-                                    "Age ≥18 years",
-                                    "Acute spontaneous supratentorial intracerebral hemorrhage",
-                                    "Presentation within 6 hours from symptom onset or last known well",
-                                    "Baseline Glasgow Coma Scale >4",
-                                    "Baseline NIHSS >6",
-                                    "Baseline ICH volume 5-80 mL",
-                                    "Pre-event modified Rankin Scale <3",
-                                    "Persistent systolic blood pressure >140 mmHg despite at least one antihypertensive treatment",
-                                    "Initial CTA demonstrates active contrast extravasation (spot sign)",
-                                    "Willing and able to comply with protocol and follow-up"
+                                    "Age 18-80 years",
+                                    "Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH",
+                                    "IPH volume >=15 mL by ABC/2, or close enough to prompt screening",
+                                    "NIHSS >=6",
+                                    "Arrival/evaluation <=15 hours from last known well",
+                                    "CTA/MRA without underlying vascular lesion or anomaly",
+                                    "No clear standard-of-care surgical indication"
                                 ],
                                 exclusion: [
                                     "Secondary cause of intracerebral hemorrhage, including:",
@@ -3162,16 +3276,10 @@ Clinician Name`;
                                     "• Dural arteriovenous fistula",
                                     "• Brain tumor",
                                     "• Hemorrhagic transformation of ischemic stroke",
-                                    "Brainstem hemorrhage",
-                                    "Large intraventricular hemorrhage as primary diagnosis",
-                                    "Need for immediate surgery at presentation",
-                                    "Baseline INR >1.4 or platelet count <100,000/mm3",
-                                    "Use of anticoagulant medication within 48 hours",
-                                    "Known allergy or hypersensitivity to glibenclamide or formulation excipients",
-                                    "Severe renal impairment (eGFR <30 mL/min/1.73m²)",
-                                    "Active severe hepatic disease",
-                                    "Pregnancy or breastfeeding",
-                                    "Participation in another interventional trial that may confound outcomes"
+                                    "Thalamic, brainstem, cerebellar, infratentorial, or primary intraventricular hemorrhage",
+                                    "Underlying vascular lesion or anomaly on CTA/MRA",
+                                    "Need for immediate standard-of-care surgery at presentation",
+                                    "Unable to confirm timing or current protocol eligibility"
                                 ]
                             }
                         ]
@@ -3188,13 +3296,15 @@ Clinician Name`;
                                 inclusion: [
                                     "Age ≥18 years",
                                     "Spontaneous supratentorial ICH confirmed by CT",
-                                    "ICH volume ≥20mL",
-                                    "Surgery planned within 24 hours of last known well",
-                                    "NIHSS >5",
-                                    "Baseline mRS ≤2",
-                                    "GCS ≥5",
+                                    "Volume threshold is version-sensitive and must be checked against the active registry protocol",
+                                    "MIS possible within 24 hours of last known well, or within the qualifying wake-up hemorrhage window",
+                                    "NIHSS threshold must be verified against the active registry protocol",
+                                    "Premorbid mRS threshold must be verified against the active registry protocol",
+                                    "GCS range must be verified against the active registry protocol",
+                                    "No vascular lesion or anomaly",
                                     "Ability to undergo general anesthesia",
-                                    "Informed consent from patient or LAR"
+                                    "Informed consent from patient or authorized representative",
+                                    "When both MINUTE and MIRROR appear possible, prioritize MINUTE screening first"
                                 ],
                                 exclusion: [
                                     "Secondary ICH due to:",
@@ -3453,11 +3563,19 @@ Clinician Name`;
             'ACC Expert Consensus': 'https://doi.org/10.1016/j.jacc.2024.03.389'
           };
 
+          const GUIDELINE_KEYS_REGEX = new RegExp(
+            Object.keys(GUIDELINE_URLS)
+              .map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+              .join('|')
+          );
+
           const getGuidelineUrl = (guidelineStr) => {
             if (!guidelineStr) return null;
-            for (const [key, url] of Object.entries(GUIDELINE_URLS)) {
-              if (guidelineStr.includes(key)) return url;
-            }
+            const exactMatch = GUIDELINE_URLS[guidelineStr];
+            if (exactMatch) return exactMatch;
+
+            const match = guidelineStr.match(GUIDELINE_KEYS_REGEX);
+            if (match) return GUIDELINE_URLS[match[0]];
             return null;
           };
 
@@ -3497,6 +3615,7 @@ Clinician Name`;
             IIa: 'bg-cobalt-500 text-white dark:bg-cobalt-700',
             IIb: 'bg-warn-700 text-white',
             III: 'bg-crit-600 text-white',
+            'III-harm': 'bg-crit-600 text-white',
             Statement: 'bg-slate-500 text-white'
           };
 
@@ -3572,10 +3691,26 @@ Clinician Name`;
             bp_ich_acute: {
               id: 'bp_ich_acute',
               category: 'Blood Pressure',
-              title: 'ICH acute BP target',
-              recommendation: 'For spontaneous ICH with presenting SBP 150-220 mmHg, smooth and sustained control to target SBP 140 mmHg (maintained within 130-150 mmHg) is safe and may be reasonable for improving functional outcomes (Class 2a, LOE B-R per AHA/ASA 2022). Acute lowering to SBP <130 mmHg is potentially harmful (Class 3: Harm, LOE B-R; ATACH-2).',
-              detail: 'AHA/ASA Spontaneous ICH 2022 (Greenberg): (1) For presenting SBP 150-220 mmHg, target SBP 140 mmHg within range 130-150 mmHg — Class 2a, LOE B-R (INTERACT2). (2) Acute lowering to SBP <130 mmHg is potentially harmful — Class 3: Harm, LOE B-R (ATACH-2). (3) For SBP >220 mmHg the safety of intensive lowering is uncertain; aggressive reduction with continuous IV infusion is reasonable. INTERACT3 (Lancet 2023) showed a care bundle — early intensive BP lowering (SBP target <140) plus glucose, anticoagulation reversal, and fever management — improves functional outcomes; BP lowering alone is one component of that bundle. Nicardipine or clevidipine infusion preferred; labetalol bolus as adjunct. Maintain target ≥24 hours, then transition to oral antihypertensives to SBP <130 for secondary prevention.',
+              title: 'ICH BP control process',
+              recommendation: 'For acute spontaneous ICH, use medication titration for continuous, smooth, sustained BP control and timely treatment when BP lowering is indicated (Class 2a).',
+              detail: 'AHA/ASA Spontaneous ICH 2022 (Greenberg): smooth, sustained BP control and timely treatment are Class 2a process recommendations. This is separate from the numeric SBP target/range recommendation below. Avoid abrupt large BP drops and avoid treating the number in isolation from neurologic status, hematoma severity, anticoagulation reversal, and neurosurgical planning. For large/severe ICH or surgical decompression candidates, safety and efficacy of intensive lowering are not well established. INTERACT3 (Lancet 2023) tested a care bundle - early BP lowering plus glucose, anticoagulation reversal, and fever management - so do not treat its result as BP-only class evidence. Nicardipine or clevidipine infusion preferred; labetalol bolus as adjunct.',
               classOfRec: 'IIa',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
+              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=17',
+              medications: ['Nicardipine 5 mg/hr IV (titrate to 15 mg/hr)', 'Labetalol 10-20 mg IV bolus PRN'],
+              conditions: (data) => {
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
+              }
+            },
+            bp_ich_target_range: {
+              id: 'bp_ich_target_range',
+              category: 'Blood Pressure',
+              title: 'ICH SBP 140/range 130-150 target',
+              recommendation: 'For mild-to-moderate spontaneous ICH with presenting SBP 150-220 mmHg, targeting SBP 140 mmHg and maintaining 130-150 mmHg when appropriate is safe and may be reasonable.',
+              detail: 'Class 2b, LOE B-R per AHA/ASA Spontaneous ICH 2022. This target/range applies to selected mild-to-moderate presentations and should not be generalized to large/severe ICH or surgical decompression candidates without individualized judgment and continuous monitoring. Use alongside the separate Class 2a process recommendation for smooth, sustained control and timely treatment.',
+              classOfRec: 'IIb',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
@@ -3589,9 +3724,9 @@ Clinician Name`;
               id: 'bp_ich_avoid_low',
               category: 'Blood Pressure',
               title: 'Avoid overly aggressive BP lowering in ICH',
-              recommendation: 'Avoid lowering SBP to <130 mmHg in mild to moderate ICH (potentially harmful).',
-              detail: 'Aggressive SBP <130 is associated with worse outcomes in mild to moderate ICH.',
-              classOfRec: 'III',
+              recommendation: 'Avoid acute lowering to SBP <130 mmHg in mild-to-moderate spontaneous ICH because it is potentially harmful.',
+              detail: 'Class 3: Harm, LOE B-R per AHA/ASA Spontaneous ICH 2022, supported by ATACH-2 safety signal. This harm guard is separate from the Class 2b SBP 140/range 130-150 target recommendation.',
+              classOfRec: 'III-harm',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
@@ -4122,9 +4257,9 @@ Clinician Name`;
             ich_mis_evac: {
               id: 'ich_mis_evac',
               category: 'ICH',
-              title: 'Minimally invasive ICH evacuation (MIE)',
-              recommendation: 'For spontaneous lobar IPH 30-80cc, ≤24h onset, NIHSS >5, GCS 5-15, age 18-80, mRS 0-1: consider MIE (ENRICH criteria). Consult neurosurgery per local protocol.',
-              detail: 'Select endoscopic or stereotactic aspiration approaches based on local expertise. Functional outcome benefit is uncertain.',
+              title: 'Minimally invasive ICH evacuation (MIE) screen',
+              recommendation: 'Screen for MIE only when spontaneous lobar IPH 30-80cc, NIHSS >5, GCS 5-14, age 18-80, and no underlying vascular lesion are confirmed; otherwise use this as a criteria checklist and discuss with Neurosurgery.',
+              detail: 'This card does not infer MIE eligibility from ICH alone. Confirm lobar location, ABC/2 volume 30-80 mL, age, NIHSS, GCS, CTA/MRA without vascular lesion, and operative timing before presenting MIE as an option. Functional outcome benefit remains selection-dependent.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4133,7 +4268,20 @@ Clinician Name`;
               conditions: (data) => {
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const gcs = data.gcsScore || null;
-                return isICH && gcs !== null && gcs >= 5 && gcs <= 15;
+                const age = parseFloat(data.telestrokeNote?.age);
+                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
+                const ichVol = calculateICHVolume(data.telestrokeNote?.ichVolumeCalc || {});
+                const dxText = `${data.telestrokeNote?.diagnosis || ''} ${data.telestrokeNote?.ctResults || ''}`.toLowerCase();
+                const vesselText = `${data.telestrokeNote?.ctaResults || ''} ${data.telestrokeNote?.ctResults || ''}`.toLowerCase();
+                const isLobar = isJune2026MieLobarLocationText(dxText);
+                const noVascularLesion = /\b(no|without|negative for)\b.{0,80}\b(vascular lesion|underlying lesion|avm|aneurysm|dural avf|fistula|malformation)\b/.test(vesselText);
+                return isICH
+                  && ichVol?.volume >= 30 && ichVol.volume <= 80
+                  && Number.isFinite(age) && age >= 18 && age <= 80
+                  && nihss > 5
+                  && gcs !== null && gcs >= 5 && gcs <= 14
+                  && isLobar
+                  && noVascularLesion;
               }
             },
 
@@ -4161,9 +4309,9 @@ Clinician Name`;
             cerebellar_ich_surgery: {
               id: 'cerebellar_ich_surgery',
               category: 'Disposition',
-              title: 'Cerebellar ICH: surgical evacuation',
-              recommendation: 'Urgent surgical evacuation for cerebellar ICH >15 mL with neurological deterioration, brainstem compression, or obstructive hydrocephalus.',
-              detail: 'EVD alone insufficient for large cerebellar hemorrhages. Suboccipital craniectomy recommended. Transfer to neurosurgical center emergently.',
+              title: 'Cerebellar ICH: urgent surgical screen',
+              recommendation: 'Cerebellar hemorrhage requires early Neurosurgery assessment. Evaluate urgently for suboccipital decompression when posterior-fossa mass effect is present, usually with obstructive hydrocephalus and/or brainstem compression.',
+              detail: 'Do not infer suboccipital decompression from cerebellar location or volume alone. Confirm neurologic trajectory, posterior-fossa mass effect, hydrocephalus, brainstem compression, and goals of care with Neurosurgery; EVD alone may be insufficient when cerebellar mass effect is the primary problem.',
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4174,7 +4322,8 @@ Clinician Name`;
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const isCerebellar = ct.includes('cerebell') || dx.includes('cerebell') || ct.includes('posterior fossa');
-                return isICH && isCerebellar;
+                const surgicalFeature = /(hydrocephal|brainstem|compression|mass effect|deteriorat|herniat|effacement|obstruct)/i.test(`${ct} ${dx}`);
+                return isICH && isCerebellar && surgicalFeature;
               }
             },
             supratentorial_ich_surgery: {
@@ -4292,13 +4441,13 @@ Clinician Name`;
             neurosurgery_communication: {
               id: 'neurosurgery_communication',
               category: 'Acute',
-              title: 'Neurosurgery consultation protocol',
-              recommendation: 'Neurology/stroke attending should approve neurosurgery consultations for IPH or large ischemic stroke. Structured communication reduces unnecessary consultations.',
-              detail: 'Suggested protocol: (1) Neurology team evaluates patient and discusses with stroke attending before consulting neurosurgery. (2) If stroke attending recommends against surgery, communicate this clearly. (3) If disagreement, stroke attending and neurosurgery attending discuss directly. (4) Do not recommend surgical procedures to families without a finalized, mutually agreed plan with neurosurgery.',
+              title: 'Neurosurgery consultation communication',
+              recommendation: 'For non-traumatic IPH >=15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, vascular lesion concern, multicompartmental hemorrhage, ED attending discretion, or clinician concern, ED clinicians or the stroke service may consult Neurosurgery directly. Prior approval before the consult call is not required; close the loop with the designated on-call stroke attending and other involved service.',
+              detail: 'Suggested protocol: (1) ED clinicians or the stroke service can make the direct Neurosurgery call when a trigger is present. (2) The caller immediately closes the loop with the designated on-call stroke attending and other involved service, then documents the shared plan. (3) Separate attending-of-record notification is not default unless explicitly requested, especially overnight. (4) If surgery is recommended, stop for a bedside safety pause and confirm agreement across Neurosurgery, the stroke service, and the ICU team before any surgical action. (5) Do not present operative procedures to families as finalized until the cross-team plan is explicit.',
               classOfRec: 'N/A',
               levelOfEvidence: 'N/A',
               guideline: 'Suggested Protocol',
-              reference: 'Communication with Neurosurgery protocol.',
+              reference: 'Initial non-traumatic IPH evaluation algorithm.',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isICH = cat === 'ich';
@@ -5016,7 +5165,7 @@ Clinician Name`;
               category: 'Complications',
               title: 'Hemorrhagic transformation management',
               recommendation: 'Classify hemorrhagic transformation using ECASS criteria (HI-1, HI-2, PH-1, PH-2). Symptomatic ICH (PH-2 or neurological worsening) requires emergent management.',
-              detail: 'ECASS Classification: HI-1 (small petechiae along infarct margin), HI-2 (confluent petechiae within infarct, no mass effect), PH-1 (blood clots ≤30% of infarct, mild mass effect), PH-2 (blood clots >30% with significant mass effect). SYMPTOMATIC HT MANAGEMENT (PH-2 or NIHSS worsening ≥4): (1) STOP TNK infusion immediately if still running. (2) STAT CT head. (3) STAT labs: CBC, PT/INR, aPTT, fibrinogen, type & screen. (4) Cryoprecipitate 10 units IV (target fibrinogen >200 mg/dL); give empirically if fibrinogen result delayed. (5) TXA 1g IV over 10 min AFTER cryoprecipitate started. (6) Platelet transfusion 6-10 units if platelets <100K; recheck CBC 15-30 min post-transfusion. (7) Hold all antithrombotics and antiplatelet agents. (8) Target SBP <140 mmHg. (9) NEUROSURGERY CONSULTATION for: ICH volume >30 mL, >30% hematoma expansion, IVH with mass effect, midline shift >5 mm, herniation risk, or refractory coagulopathy. (10) ICU admission for PH-1/PH-2. (11) Repeat imaging at 24h.',
+              detail: 'ECASS Classification: HI-1 (small petechiae along infarct margin), HI-2 (confluent petechiae within infarct, no mass effect), PH-1 (blood clots ≤30% of infarct, mild mass effect), PH-2 (blood clots >30% with significant mass effect). SYMPTOMATIC HT MANAGEMENT (PH-2 or NIHSS worsening ≥4): (1) STOP TNK infusion immediately if still running. (2) STAT CT head. (3) STAT labs: CBC, PT/INR, aPTT, fibrinogen, type & screen. (4) Cryoprecipitate 10 units IV (target fibrinogen >200 mg/dL); give empirically if fibrinogen result delayed. (5) TXA 1g IV over 10 min AFTER cryoprecipitate started. (6) Platelet transfusion 6-10 units if platelets <100K; recheck CBC 15-30 min post-transfusion. (7) Hold all antithrombotics and antiplatelet agents. (8) Target SBP around 140 mmHg with smooth control; avoid <130. (9) NEUROSURGERY CONSULTATION for: ICH volume >30 mL, >30% hematoma expansion, IVH with mass effect, midline shift >5 mm, herniation risk, or refractory coagulopathy. (10) ICU admission for PH-1/PH-2. (11) Repeat imaging at 24h.',
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -6729,49 +6878,6 @@ Clinician Name`;
           };
 
           // =================================================================
-          // 4-FACTOR PCC (KCENTRA) DOSING CALCULATOR
-          // =================================================================
-          const calculate4FPCC = (weightKg, inr) => {
-            const weight = parseFloat(weightKg);
-            const inrValue = parseFloat(inr);
-            if (isNaN(weight) || weight <= 0 || weight > 350) return null;
-
-            let unitsPerKg;
-            let description;
-
-            if (isNaN(inrValue)) {
-              unitsPerKg = 25;
-              description = 'INR unknown — using default 25 IU/kg';
-            } else if (inrValue < 1.3) {
-              unitsPerKg = null;
-              description = 'INR <1.3 — PCC likely not needed; give Vitamin K 10 mg IV';
-            } else if (inrValue < 2) {
-              unitsPerKg = 25;
-              description = 'INR 1.3-1.9 — consider PCC 25 IU/kg (COR 2b/C)';
-            } else if (inrValue < 4) {
-              unitsPerKg = 25;
-              description = 'INR 2.0-3.9 — PCC 25 IU/kg (COR 1/B)';
-            } else if (inrValue <= 6) {
-              unitsPerKg = 35;
-              description = 'INR 4.0-6.0 — PCC 35 IU/kg (COR 1/B)';
-            } else {
-              unitsPerKg = 50;
-              description = 'INR >6 — PCC 50 IU/kg (COR 1/B)';
-            }
-
-            const totalDose = unitsPerKg ? Math.min(weight * unitsPerKg, 5000) : null;
-
-            return {
-              weightKg: weight,
-              inr: inrValue || 'unknown',
-              unitsPerKg,
-              totalDose: totalDose ? Math.round(totalDose) : null,
-              isMaxDose: unitsPerKg ? weight * unitsPerKg >= 5000 : false,
-              description
-            };
-          };
-
-          // =================================================================
           // DTN (DOOR-TO-NEEDLE) TIME CALCULATIONS
           // =================================================================
           const calculateDTNMetrics = () => {
@@ -7116,7 +7222,6 @@ Clinician Name`;
               setLastSaved(new Date());
             } catch (e) {
               setSaveStatus('error');
-              console.error('Save failed:', e);
               if (e.name === 'QuotaExceededError' || e.code === 22) {
                 addToast('Storage full — data may not be saved. Export your note or clear old data.', 'error');
               }
@@ -7127,7 +7232,6 @@ Clinician Name`;
             try {
               return loadFromStorage(key, defaultValue);
             } catch (e) {
-              console.warn('Load failed:', e);
               return defaultValue;
             }
           };
@@ -7151,7 +7255,6 @@ Clinician Name`;
                   // Re-queue failed writes so they retry on next flush
                   pendingWritesRef.current[k] = v;
                   anyFailed = true;
-                  console.error('Partial save failed for key:', k, e);
                 }
               }
               if (anyFailed) {
@@ -7173,7 +7276,7 @@ Clinician Name`;
               crypto.getRandomValues(array);
               return `pt_${Date.now().toString(36)}_${array[0].toString(36)}${array[1].toString(36)}`;
             }
-            return `pt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            throw new Error('Secure random number generation is not supported by this environment');
           };
 
           // Get current patient summary for display
@@ -7638,7 +7741,7 @@ Clinician Name`;
             setEncounterHistory(prev => {
               if (PUBLIC_DEMO_MODE) return prev;
               const next = [snapshot, ...prev].slice(0, 20);
-              try { localStorage.setItem('strokeApp:encounterHistory', JSON.stringify(next)); } catch (e) { console.warn('Encounter history save failed:', e.name); if (e.name === 'QuotaExceededError' || e.code === 22) { try { addToast('Storage full — encounter history may not be saved. Export your data or clear old encounters.', 'error'); } catch (_) {} } }
+              try { localStorage.setItem('strokeApp:encounterHistory', JSON.stringify(next)); } catch (e) { if (e.name === 'QuotaExceededError' || e.code === 22) { try { addToast('Storage full — encounter history may not be saved. Export your data or clear old encounters.', 'error'); } catch (_) {} } }
               return next;
             });
           }, [telestrokeNote, nihssScore, consultationType]);
@@ -7891,6 +7994,8 @@ Clinician Name`;
               setManagementSubTab(resolvedSubTab);
             } else if (nextTab === 'education') {
               setEducationSubTab(subTab || 'onboarding');
+            } else if (nextTab === 'research') {
+              setResearchSubTab(normalizeResearchSubTab(subTab) || researchSubTab || 'guidelines');
             }
 
             setActiveTab(nextTab);
@@ -7946,7 +8051,7 @@ Clinician Name`;
           const paletteCommands = React.useMemo(() => [
             // ---- Top-level sections ----
             { id: 'go-encounter', group: 'Go to', label: 'Acute Encounter', hint: 'Active stroke workup', icon: 'activity', keywords: ['encounter', 'acute', 'consult', 'telestroke', 'patient', 'workup'], run: () => navigateTo('encounter', { clearSearch: true }) },
-            { id: 'go-protocols', group: 'Go to', label: 'Institutional Protocols & Algorithms', hint: 'Pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library'], run: () => navigateTo('protocols', { clearSearch: true }) },
+            { id: 'go-protocols', group: 'Go to', label: 'Protocols', hint: 'Example pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library', 'example', 'not local policy'], run: () => navigateTo('protocols', { clearSearch: true }) },
             { id: 'go-research', group: 'Go to', label: 'Guidelines & References', hint: 'Guidelines & Reference Library', icon: 'book-open', keywords: ['research', 'references', 'guidelines', 'whats new', "what's new", 'evidence', 'updates'], run: () => navigateTo('research', { clearSearch: true }) },
             { id: 'go-trials', group: 'Go to', label: 'Trials & Evidence', hint: 'Screener, tables, atlas', icon: 'flask-conical', keywords: ['trials', 'evidence', 'atlas', 'eligibility', 'screener'], run: () => navigateTo('trials', { clearSearch: true }) },
             { id: 'go-education', group: 'Go to', label: 'Education', hint: 'Curricula & pocket cards', icon: 'brain', keywords: ['education', 'curricula', 'onboarding', 'icu', 'resident', 'nurse', 'pocket cards', 'teaching'], run: () => navigateTo('education', { clearSearch: true }) },
@@ -8447,9 +8552,7 @@ Clinician Name`;
               randNoun = array[1] % nouns.length;
               randCode = (array[2] % 90) + 10;
             } else {
-              randAdj = Math.floor(Math.random() * adjectives.length);
-              randNoun = Math.floor(Math.random() * nouns.length);
-              randCode = Math.floor(Math.random() * 90 + 10);
+              throw new Error('Secure random number generation is not supported by this environment');
             }
 
             const adj = adjectives[randAdj];
@@ -8476,7 +8579,28 @@ Clinician Name`;
           };
 
           const copyTimeoutRef = React.useRef(null);
+          // Public-safe, institution-neutral EMR documentation templates surfaced
+          // in the encounter tab. Restored 2026-07-06 (the risk/benefit-discussion
+          // and post-reperfusion management templates had become reachable only
+          // deep in the gated telestroke flow). Educational examples only — verify
+          // against the approved local protocol before clinical use.
+          const DOC_TEMPLATES = {
+            tnkRiskBenefit: `Thrombolysis (IV tenecteplase/alteplase) risk-benefit discussion — documentation:\nAfter confirming no evident contraindications, IV thrombolysis was recommended for acute ischemic stroke. The potential benefits (improved chance of recovery without disability, greatest when treated early), the potential risks (including a risk of symptomatic intracranial hemorrhage of up to ~4%, and rarely orolingual angioedema), and the alternatives to treatment (standard supportive stroke care without thrombolysis) were discussed with the referring provider and the patient/family prior to initiating treatment. The patient/family expressed understanding and treatment proceeded per shared decision-making.`,
+            evtRiskBenefit: `Endovascular therapy (mechanical thrombectomy) risk-benefit discussion — documentation:\nGiven a large-vessel occlusion with disabling neurological deficits and no evident contraindications, mechanical thrombectomy was recommended and the patient will be transferred to a thrombectomy-capable comprehensive stroke center for evaluation. The potential benefits, the potential risks (including groin/access-site complications, vessel injury, and intracranial hemorrhage), and the alternatives to treatment were discussed with the referring provider and the patient/family; the neurointerventional team will obtain informed consent from the patient/family prior to the procedure.`,
+            postTnk: `Post-IV thrombolysis (TNK/tPA) management:\n- Admit to ICU / monitored stroke unit\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h\n- No antiplatelet or anticoagulant agents for 24h after thrombolysis\n- Maintain BP <180/105 for 24h after thrombolysis\n- Non-contrast head CT at ~24h post-thrombolysis (sooner if any deterioration)\n- MRI brain with diffusion-weighted imaging when feasible\n- EKG and continuous telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention\n- Monitor for post-thrombolysis complications: symptomatic ICH and orolingual angioedema`,
+            postEvt: `Post-endovascular thrombectomy (EVT) management:\n- Admit to Neuro ICU for ≥24h\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h; monitor arterial access site and distal pulses\n- Blood pressure after successful reperfusion: maintain SBP 140-180 mmHg for ≥72h; avoid SBP <140 (associated with harm — ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II); keep BP <180/105\n- Antithrombotic timing per the neurointerventional team, after 24h imaging excludes hemorrhage\n- Non-contrast head CT (or dual-energy CT if available) at ~24h; immediate CT if clinical deterioration or failed recanalization (mTICI 0-2a)\n- MRI brain with diffusion-weighted imaging when feasible; EKG and telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention`
+          };
+
           const copyToClipboard = (text, label) => {
+            if (PUBLIC_DEMO_MODE) {
+              const identifierWarnings = getPublicDemoPhiWarnings(text);
+              const isGeneratedDemoNote = typeof text === 'string' && text.startsWith(PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX);
+              const allowSyntheticExample = isSyntheticDemoText(text) && !isGeneratedDemoNote;
+              if (identifierWarnings.length > 0 && !allowSyntheticExample) {
+                addToast(`Copy blocked in public demo: possible PHI or identifiers detected (${identifierWarnings.slice(0, 3).join(', ')}). Use only synthetic examples.`, 'warning');
+                return;
+              }
+            }
             const onSuccess = () => {
               setCopiedText(label);
               if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
@@ -8590,8 +8714,8 @@ Clinician Name`;
 
           const handleShare = async () => {
             const shareData = {
-              title: 'Stroke',
-              text: 'Clinical decision support toolkit for stroke management',
+              title: 'Stroke CDS Educational Demo',
+              text: 'Synthetic educational stroke decision-support demo. Not medical advice; do not enter PHI.',
               url: window.location.href
             };
 
@@ -8733,7 +8857,10 @@ Clinician Name`;
             if (cw.pfoEvaluation && cw.pfoEvaluation !== 'no-pfo') brief += `- PFO: ${cw.pfoEvaluation.replace(/-/g, ' ')}\n`;
             // Pending workup items
             if (ew.completedTests && Object.keys(ew.completedTests).length > 0) {
-              const pending = Object.entries(ew.completedTests).filter(([k, v]) => !v).map(([k]) => k);
+              const pending = [];
+              for (const [k, v] of Object.entries(ew.completedTests)) {
+                if (!v) pending.push(k);
+              }
               if (pending.length > 0) {
                 brief += `\nPENDING WORKUP:\n`;
                 pending.forEach(k => brief += `- ${k.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase()).trim()}\n`);
@@ -8951,9 +9078,15 @@ Clinician Name`;
             // mRS tracking
             {
               const mrs = telestrokeNote.mrsAssessment || {};
-              const mrsEntries = Object.entries(mrs).filter(([k, v]) => v);
-              if (mrsEntries.length > 0) {
-                brief += `\nmRS TRACKING: ${mrsEntries.map(([k, v]) => `${k}: ${v}`).join(', ')}\n`;
+              const mrsStr = Object.keys(mrs).reduce((acc, k) => {
+                const v = mrs[k];
+                if (v) {
+                  return acc ? `${acc}, ${k}: ${v}` : `${k}: ${v}`;
+                }
+                return acc;
+              }, '');
+              if (mrsStr) {
+                brief += `\nmRS TRACKING: ${mrsStr}\n`;
               }
             }
             // Driving restrictions
@@ -9387,7 +9520,7 @@ Clinician Name`;
                 if (telestrokeNote.ichNeurosurgeryConsulted) ichTransfer += '- Neurosurgery consulted\n';
                 if (telestrokeNote.ichSeizureProphylaxis) ichTransfer += '- Seizure prophylaxis ordered\n';
                 const ichSurgTx = telestrokeNote.ichSurgicalCriteria || {};
-                if (ichSurgTx.cerebellarGt15mL) ichTransfer += '- SURGICAL: Cerebellar ICH >15 mL\n';
+                if (ichSurgTx.cerebellarMassEffect) ichTransfer += '- SURGICAL: Cerebellar mass effect with hydrocephalus/brainstem compression concern\n';
                 if (ichSurgTx.hydrocephalus) ichTransfer += '- SURGICAL: Obstructive hydrocephalus\n';
                 if (ichSurgTx.midlineShift) ichTransfer += '- Midline shift / herniation risk\n';
                 if (ichSurgTx.clinicalDeterioration) ichTransfer += '- Clinical deterioration\n';
@@ -9678,7 +9811,7 @@ Clinician Name`;
               note += `\nPENDING AT TRANSFER:\n`;
               note += `- Follow-up CT: ${telestrokeNote.tnkRecommended ? '24h post-TNK' : 'Per clinical indication'}\n`;
               if (telestrokeNote.evtRecommended) note += `- EVT evaluation at receiving hub\n`;
-              note += `- Telestroke attending available for questions: [on-call stroke phone]\n`;
+              note += `- Telestroke attending available for questions: [on-call stroke clinician]\n`;
               return note;
             }
 
@@ -9902,7 +10035,7 @@ Clinician Name`;
                 if (telestrokeNote.ichNeurosurgeryConsulted) snIchParts.push('NSG consulted');
                 if (telestrokeNote.ichSeizureProphylaxis) snIchParts.push('seizure ppx');
                 const snIchSurg = telestrokeNote.ichSurgicalCriteria || {};
-                if (snIchSurg.cerebellarGt15mL) snIchParts.push('cerebellar >15mL');
+                if (snIchSurg.cerebellarMassEffect) snIchParts.push('cerebellar mass effect/hydrocephalus concern');
                 if (snIchSurg.hydrocephalus) snIchParts.push('hydrocephalus');
                 if (snIchSurg.surgeryDecision) snIchParts.push(`surgery: ${snIchSurg.surgeryDecision}`);
                 if (snIchParts.length > 0) note += `- ICH: ${snIchParts.join(', ')}\n`;
@@ -10183,7 +10316,7 @@ Clinician Name`;
 
             if (noteTemplate === 'progress') {
               let note = `STROKE INPATIENT PROGRESS NOTE\n${'='.repeat(40)}\n\n`;
-              note += `Date: ${new Date().toLocaleDateString()}\n`;
+              note += `Date: ${PUBLIC_DEMO_MODE ? '[synthetic demo date]' : new Date().toLocaleDateString()}\n`;
               note += `Facility Day #: ___\n`;
               note += `Patient: ${telestrokeNote.age || '___'} y/o ${telestrokeNote.sex || '___'}`;
               if (telestrokeNote.weight) note += ` | ${telestrokeNote.weight} kg`;
@@ -10379,7 +10512,7 @@ Clinician Name`;
                 if (telestrokeNote.ichNeurosurgeryConsulted) prIchParts.push('NSG consulted');
                 if (telestrokeNote.ichSeizureProphylaxis) prIchParts.push('seizure ppx');
                 const prIchSurg = telestrokeNote.ichSurgicalCriteria || {};
-                if (prIchSurg.cerebellarGt15mL) prIchParts.push('cerebellar >15mL');
+                if (prIchSurg.cerebellarMassEffect) prIchParts.push('cerebellar mass effect/hydrocephalus concern');
                 if (prIchSurg.hydrocephalus) prIchParts.push('hydrocephalus');
                 if (prIchSurg.midlineShift) prIchParts.push('midline shift');
                 if (prIchSurg.surgeryDecision) prIchParts.push(`surgery: ${prIchSurg.surgeryDecision}`);
@@ -11223,9 +11356,9 @@ Clinician Name`;
               note += `  - [Review and reconcile all home medications]\n\n`;
               note += `FOLLOW-UP:\n`;
               if (telestrokeNote.diagnosisCategory === 'tia') {
-                note += `- URGENT Stroke/Neurology clinic: within 24-72 hours (TIA — high early recurrence risk)\n`;
+                note += `- URGENT stroke or neurology clinic: within 24-72 hours (TIA — high early recurrence risk)\n`;
               } else {
-                note += `- Stroke/Neurology clinic: 1-2 weeks (review imaging, labs, secondary prevention)\n`;
+                note += `- Stroke or neurology clinic: 1-2 weeks (review imaging, labs, secondary prevention)\n`;
               }
               note += `- PCP: 1 week (BP, statin titration, medication reconciliation)\n`;
               if (dcCw.extendedMonitoringType) note += `- Cardiology: cardiac monitoring review (${dcCw.extendedMonitoringType})\n`;
@@ -11617,8 +11750,13 @@ Clinician Name`;
             // Add etiology workup status
             const ew = telestrokeNote.etiologyWorkup || {};
             if (ew.completedTests && Object.keys(ew.completedTests).length > 0) {
-              const completed = Object.entries(ew.completedTests).filter(([k, v]) => v).map(([k]) => k.replace(/([A-Z])/g, ' $1').trim());
-              const pending = Object.entries(ew.completedTests).filter(([k, v]) => !v).map(([k]) => k.replace(/([A-Z])/g, ' $1').trim());
+              const completed = [];
+              const pending = [];
+              for (const [k, v] of Object.entries(ew.completedTests)) {
+                const formatted = k.replace(/([A-Z])/g, ' $1').trim();
+                if (v) completed.push(formatted);
+                else pending.push(formatted);
+              }
               if (completed.length > 0) note += `Workup completed: ${completed.join(', ')}\n`;
               if (pending.length > 0) note += `Workup pending: ${pending.join(', ')}\n`;
             }
@@ -11673,7 +11811,7 @@ Clinician Name`;
                 const ichVol = calculateICHVolume(ichCalc);
                 if (ichVol && ichVol.volume) ichNote += `- ICH volume (ABC/2): ${ichVol.volume} mL${ichVol.isLarge ? ' (LARGE)' : ''}\n`;
               }
-              if (telestrokeNote.ichBPManaged) ichNote += '- BP managed (target SBP 140, range 130-150; Class 2a; avoid <130 Class 3:Harm)\n';
+              if (telestrokeNote.ichBPManaged) ichNote += '- BP managed (smooth control; target SBP 140, range 130-150 when appropriate; avoid <130 Class 3:Harm)\n';
               if (telestrokeNote.ichReversalInitiated) ichNote += '- Anticoagulation reversal initiated\n';
               const ichConsultTiming = getIchEscalationSummary();
               if (ichConsultTiming) ichNote += `- ICH timing KPIs: ${ichConsultTiming}\n`;
@@ -12004,25 +12142,24 @@ Clinician Name`;
 
             // Screening assessments
             {
-              const scItems = [];
-              if (telestrokeNote.phq2Score) scItems.push(`PHQ-2: ${telestrokeNote.phq2Score}${telestrokeNote.phq2Positive ? ' (positive — PHQ-9 follow-up needed)' : ''}`);
-              if (telestrokeNote.mocaScore) scItems.push(`MoCA: ${telestrokeNote.mocaScore}/30${telestrokeNote.mocaReferral ? ' — neuropsych referral placed' : ''}`);
-              if (telestrokeNote.stopBangScore) scItems.push(`STOP-BANG: ${telestrokeNote.stopBangScore}${parseInt(telestrokeNote.stopBangScore, 10) >= 5 ? ' (high risk — sleep study recommended)' : ''}`);
-              if (scItems.length > 0) {
-                note += `\nScreening Assessments:\n${scItems.map(i => `- ${i}`).join('\n')}\n`;
+              let scNote = '';
+              if (telestrokeNote.phq2Score) scNote += `- PHQ-2: ${telestrokeNote.phq2Score}${telestrokeNote.phq2Positive ? ' (positive — PHQ-9 follow-up needed)' : ''}\n`;
+              if (telestrokeNote.mocaScore) scNote += `- MoCA: ${telestrokeNote.mocaScore}/30${telestrokeNote.mocaReferral ? ' — neuropsych referral placed' : ''}\n`;
+              if (telestrokeNote.stopBangScore) scNote += `- STOP-BANG: ${telestrokeNote.stopBangScore}${parseInt(telestrokeNote.stopBangScore, 10) >= 5 ? ' (high risk — sleep study recommended)' : ''}\n`;
+              if (scNote !== '') {
+                note += `\nScreening Assessments:\n${scNote}`;
               }
             }
 
             return note;
             } catch (err) {
-              console.error('Error generating note:', err);
               return `[Error generating note: ${err.message}. Please try again or report this issue.]`;
             }
           };
           // D3 — on the public github.io demo, the COPIED note must carry a
           // synthetic-demo disclaimer (matching TrialScreener/EligibilityTables).
           // Local/institutional builds emit the clinical note unchanged.
-          const DEMO_NOTE_DISCLAIMER = 'SYNTHETIC EDUCATIONAL DEMO — NOT A REAL CLINICAL NOTE. NO PHI.';
+          const DEMO_NOTE_DISCLAIMER = PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX;
           const generateTelestrokeNote = () => {
             const note = generateTelestrokeNoteBody();
             if (PUBLIC_DEMO_MODE && note && !note.startsWith(DEMO_NOTE_DISCLAIMER)) {
@@ -12067,7 +12204,7 @@ Clinician Name`;
             if (dx === 'ich') {
               sentences.push('Diagnosis: Intracerebral hemorrhage.');
               const ichActions = [];
-              if (telestrokeNote.ichBPManaged) ichActions.push('BP management initiated (target SBP <140 (Class IIa; avoid <130))');
+              if (telestrokeNote.ichBPManaged) ichActions.push('BP management initiated (smooth control; target SBP 140/range 130-150 when appropriate; avoid <130)');
               if (telestrokeNote.ichReversalInitiated) ichActions.push('anticoagulation reversal initiated');
               const ichVoiceTiming = getIchEscalationSummary();
               if (ichVoiceTiming) ichActions.push(`timing KPIs: ${ichVoiceTiming}`);
@@ -12137,8 +12274,17 @@ Clinician Name`;
           // Time calculation functions
           const getDiscoveryDateTime = () => {
             if (!telestrokeNote.discoveryDate || !telestrokeNote.discoveryTime) return null;
-            const [year, month, day] = telestrokeNote.discoveryDate.split('-').map(Number);
-            const [hours, minutes] = telestrokeNote.discoveryTime.split(':').map(Number);
+
+            const dParts = telestrokeNote.discoveryDate.split('-');
+            const tParts = telestrokeNote.discoveryTime.split(':');
+
+            const year = +dParts[0];
+            const month = +dParts[1];
+            const day = +dParts[2];
+
+            const hours = +tParts[0];
+            const minutes = +tParts[1];
+
             if (!year || !month || !day || Number.isNaN(hours) || Number.isNaN(minutes)) return null;
             return new Date(year, month - 1, day, hours, minutes);
           };
@@ -13019,7 +13165,7 @@ Clinician Name`;
 
             // BP phase-diagnosis coherence
             if (n.diagnosisCategory === 'ich' && n.bpPhase && !['ich'].includes(n.bpPhase)) {
-              warnings.push({ id: 'bp-phase-ich-mismatch', severity: 'warn', msg: `ICH diagnosis but BP phase set to '${n.bpPhase}' — ICH guideline recommends SBP <140 (INTERACT3/AHA 2022). Set BP phase to ICH.` });
+              warnings.push({ id: 'bp-phase-ich-mismatch', severity: 'warn', msg: `ICH diagnosis but BP phase set to '${n.bpPhase}' — use the ICH BP phase for smooth/timely control, usually targeting SBP 140 with range 130-150 when appropriate and avoiding <130.` });
             }
             if (n.diagnosisCategory === 'sah' && n.bpPhase && !['sah', 'sah-secured'].includes(n.bpPhase)) {
               warnings.push({ id: 'bp-phase-sah-mismatch', severity: 'warn', msg: `SAH diagnosis but BP phase set to '${n.bpPhase}' — SAH target is SBP <160 (pre-securing) or <140 (post-securing). Verify BP phase.` });
@@ -13186,7 +13332,7 @@ Clinician Name`;
                 icon: 'heart-pulse',
                 color: 'red',
                 orders: [
-                  'Target SBP <140 mmHg within 2h of onset (Class IIa, INTERACT2). Avoid SBP <130 (ATACH-2).',
+                  'Use smooth BP control; target SBP 140 mmHg, maintain range 130-150 when appropriate, and avoid SBP <130 (ATACH-2).',
                   'Nicardipine 5 mg/hr IV, titrate by 2.5 mg/hr q5-15 min (max 15 mg/hr)',
                   'Avoid SBP <130 mmHg (renal AKI risk)',
                   `Current BP: ${n.presentingBP || '***'}`,
@@ -13524,7 +13670,7 @@ Clinician Name`;
             // Nursing Communication Parameter Sheet
             if (isIschemic || isICH || isSAH || cat === 'cvt') {
               const nursingOrders = [];
-              const bpTarget = isICH ? 'SBP <140 mmHg (INTERACT2)' : isSAH ? 'SBP <160 until aneurysm secured' :
+              const bpTarget = isICH ? 'SBP 140 mmHg, range 130-150 when appropriate; avoid <130' : isSAH ? 'SBP <160 until aneurysm secured' :
                 cat === 'cvt' ? 'SBP <220 (permissive; <140 if hemorrhagic infarction)' :
                 n.tnkAdminTime ? 'SBP <180/105 x 24h post-lytic' : n.evtRecommended ? 'SBP <180, avoid <140 post-EVT' : 'SBP <220 (permissive HTN)';
               nursingOrders.push(`BP target: ${bpTarget}`);
@@ -13666,7 +13812,7 @@ Clinician Name`;
                   updated.ichBPManaged = false;
                   updated.ichNeurosurgeryConsulted = false;
                   updated.ichSeizureProphylaxis = false;
-                  updated.ichSurgicalCriteria = { cerebellarGt15mL: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
+                  updated.ichSurgicalCriteria = { cerebellarMassEffect: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
                   updated.osmoticTherapy = { agentUsed: '', indication: '', serumSodium: '', serumOsmolality: '', sodiumTarget: '', correctionRate: '', baselineNa: '', baselineNaTime: '', repeatNa: '', repeatNaTime: '', weight: '', mannitolOsmGap: '' };
                 }
                 if (category !== 'sah') {
@@ -13728,7 +13874,7 @@ Clinician Name`;
               ichScore: typeof calculateICHScore === 'function' ? calculateICHScore(ichScoreItems) : 0
             };
             return Object.values(GUIDELINE_RECOMMENDATIONS).filter(rec => {
-              try { return rec.conditions(data); } catch (err) { console.warn(`Guideline condition failed for "${rec.id || 'unknown'}":`, err.message); return false; }
+              try { return rec.conditions(data); } catch (err) { return false; }
             });
           };
 
@@ -14168,7 +14314,7 @@ Clinician Name`;
                           next.ichBPManaged = false;
                           next.ichNeurosurgeryConsulted = false;
                           next.ichSeizureProphylaxis = false;
-                          next.ichSurgicalCriteria = { cerebellarGt15mL: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
+                          next.ichSurgicalCriteria = { cerebellarMassEffect: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
                           next.osmoticTherapy = { agentUsed: '', indication: '', serumSodium: '', serumOsmolality: '', sodiumTarget: '', correctionRate: '', baselineNa: '', baselineNaTime: '', repeatNa: '', repeatNaTime: '', weight: '', mannitolOsmGap: '' };
                         }
                         if (category !== 'sah') {
@@ -14668,6 +14814,30 @@ Clinician Name`;
               }
             });
 
+            // Unified /content index — guidelines, trials, education,
+            // calculators, references — so global search spans every data source
+            // at once. Indexed UNCONDITIONALLY (the workflow context never scopes
+            // global search); the context switch only filters browsing surfaces.
+            const CONTENT_TYPE_LABELS = { guideline: 'Guideline', trial: 'Trial', education: 'Education', calculator: 'Calculator', reference: 'Reference' };
+            const contentNav = (entry) => ({
+              guideline: () => navigateTo('research', { clearSearch: true, subTab: 'guidelines' }),
+              trial: () => navigateTo('trials', { clearSearch: true }),
+              education: () => navigateTo('education', { clearSearch: true, subTab: entry.id }),
+              calculator: () => navigateTo('protocols', { clearSearch: true, subTab: 'calculators' }),
+              reference: () => navigateTo('research', { clearSearch: true, subTab: 'references' })
+            }[entry.domain] || (() => navigateTo('research', { clearSearch: true })));
+            getContentSearchIndex().forEach((entry) => {
+              const score = scoreFor([entry.title, entry.subtitle, entry.keywords, entry.id]);
+              if (score <= 0) return;
+              results.push({
+                type: CONTENT_TYPE_LABELS[entry.domain] || 'Content',
+                title: String(entry.title || '').slice(0, 90),
+                description: String(entry.subtitle || CONTENT_TYPE_LABELS[entry.domain] || '').slice(0, 120),
+                score,
+                action: contentNav(entry)
+              });
+            });
+
             const dedupedResults = [];
             const seenResultKeys = new Set();
             results
@@ -14737,21 +14907,29 @@ Clinician Name`;
             } else {
               note = { ...defaults };
               for (const key of Object.keys(savedNote)) {
-                if (savedNote[key] !== undefined && savedNote[key] !== null) {
-                  if (typeof defaults[key] === 'object' && defaults[key] !== null && !Array.isArray(defaults[key])
-                      && typeof savedNote[key] === 'object' && !Array.isArray(savedNote[key])) {
-                    note[key] = { ...defaults[key], ...savedNote[key] };
+                const savedVal = savedNote[key];
+                if (savedVal !== undefined && savedVal !== null) {
+                  const defVal = defaults[key];
+                  if (typeof defVal === 'object' && defVal !== null && !Array.isArray(defVal)
+                      && typeof savedVal === 'object' && !Array.isArray(savedVal)) {
+
+                    const mergedObj = { ...defVal, ...savedVal };
+                    note[key] = mergedObj;
+
                     // Two-level deep merge: restore default sub-objects (e.g. wakeUpStrokeWorkflow.dwi)
-                    for (const subKey of Object.keys(defaults[key])) {
-                      if (typeof defaults[key][subKey] === 'object' && defaults[key][subKey] !== null && !Array.isArray(defaults[key][subKey])
-                          && typeof note[key][subKey] === 'object' && note[key][subKey] !== null && !Array.isArray(note[key][subKey])) {
-                        note[key][subKey] = { ...defaults[key][subKey], ...note[key][subKey] };
-                      } else if (note[key][subKey] === undefined || note[key][subKey] === null) {
-                        note[key][subKey] = defaults[key][subKey];
+                    for (const subKey of Object.keys(defVal)) {
+                      const defSub = defVal[subKey];
+                      const noteSub = mergedObj[subKey];
+
+                      if (typeof defSub === 'object' && defSub !== null && !Array.isArray(defSub)
+                          && typeof noteSub === 'object' && noteSub !== null && !Array.isArray(noteSub)) {
+                        mergedObj[subKey] = { ...defSub, ...noteSub };
+                      } else if (noteSub === undefined || noteSub === null) {
+                        mergedObj[subKey] = defSub;
                       }
                     }
                   } else {
-                    note[key] = savedNote[key];
+                    note[key] = savedVal;
                   }
                 }
               }
@@ -14961,7 +15139,6 @@ Clinician Name`;
               try {
                 localStorage.removeItem(key);
               } catch (e) {
-                console.warn('Failed to remove legacy key:', key, e);
               }
             });
             showNotice('Legacy keys removed.', 'success');
@@ -15017,7 +15194,6 @@ Clinician Name`;
                 });
               });
             }).catch((err) => {
-              console.warn('Service worker registration failed:', err);
             });
             let refreshing = false;
             const onControllerChange = () => {
@@ -15034,7 +15210,9 @@ Clinician Name`;
 
           const applyPendingUpdate = () => {
             if (pendingWorker) {
-              try { pendingWorker.postMessage({ type: 'SKIP_WAITING' }); } catch (e) { /* ignore */ }
+              try { pendingWorker.postMessage({ type: 'CLAIM_AND_RELOAD' }); } catch (e) { /* ignore */ }
+            } else if (pendingUpdateAction) {
+              pendingUpdateAction();
             } else {
               window.location.reload();
             }
@@ -15088,7 +15266,6 @@ Clinician Name`;
                 setIsInstalled(true);
               }
             } catch (e) {
-              console.warn('install prompt failed:', e);
             } finally {
               setInstallPrompt(null);
             }
@@ -15498,7 +15675,6 @@ Clinician Name`;
                 currentTime += config.duration + 0.15; // Gap between beeps
               }
             } catch (e) {
-              console.warn('Audio alert not supported:', e);
             }
           };
 
@@ -15675,7 +15851,7 @@ Clinician Name`;
 
           // De-ID warning scan for free-text inputs
           useEffect(() => {
-            if (!settings.deidMode) {
+            if (!settings.deidMode && !PUBLIC_DEMO_MODE) {
               setDeidWarnings({});
               return;
             }
@@ -15810,29 +15986,34 @@ Clinician Name`;
 
             const loadConfig = async () => {
               try {
-                const baseResponse = await fetch('config.example.json', { cache: 'no-store' });
+                const baseFetch = fetch('config.example.json', { cache: 'no-store' });
+                const localFetch = useLocalOverride
+                  ? fetch('config.local.json', { cache: 'no-store' }).catch(localErr => {
+                      console.warn('Optional local config load failed:', localErr);
+                      return null;
+                    })
+                  : Promise.resolve(null);
+
+                const [baseResponse, localResponse] = await Promise.all([baseFetch, localFetch]);
+
                 if (!baseResponse.ok) {
                   throw new Error('Base config fetch failed');
                 }
                 let mergedConfig = await baseResponse.json();
 
-                if (useLocalOverride) {
+                if (localResponse && localResponse.ok) {
                   try {
-                    const localResponse = await fetch('config.local.json', { cache: 'no-store' });
-                    if (localResponse.ok) {
-                      const localConfig = await localResponse.json();
-                      if (localConfig && typeof localConfig === 'object' && !Array.isArray(localConfig)) {
-                        mergedConfig = {
-                          ...mergedConfig,
-                          ...localConfig,
-                          institutionLinks: Array.isArray(localConfig.institutionLinks)
-                            ? localConfig.institutionLinks
-                            : mergedConfig.institutionLinks
-                        };
-                      }
+                    const localConfig = await localResponse.json();
+                    if (localConfig && typeof localConfig === 'object' && !Array.isArray(localConfig)) {
+                      mergedConfig = {
+                        ...mergedConfig,
+                        ...localConfig,
+                        institutionLinks: Array.isArray(localConfig.institutionLinks)
+                          ? localConfig.institutionLinks
+                          : mergedConfig.institutionLinks
+                      };
                     }
                   } catch (localErr) {
-                    console.warn('Optional local config load failed:', localErr);
                   }
                 }
 
@@ -15840,7 +16021,6 @@ Clinician Name`;
                 applyConfigData(mergedConfig);
               } catch (err) {
                 if (cancelled) return;
-                console.warn('Config load failed:', err);
                 removeKey('ttlHoursOverride');
                 setTtlHours(DEFAULT_TTL_HOURS);
                 setConfigLoaded(true);
@@ -15899,6 +16079,10 @@ Clinician Name`;
                   setEducationSubTab(parsed.sub || null);
                 }
                 return;
+              }
+              const rawHash = typeof window !== 'undefined' ? window.location.hash : '';
+              if (rawHash && rawHash !== '#' && rawHash !== '#/') {
+                addToast('Link not recognized — opening your last view.', 'info');
               }
               const savedTab = appData.uiState.lastActiveTab || getKey('activeTab', null);
               if (savedTab) {
@@ -16086,7 +16270,7 @@ ${telestrokeNote.evtRecommended ? `EVT: Recommended` : 'EVT: Not Recommended'}`;
 
             const bpTarget = receivedTNK ? 'SBP <180, DBP <105 x 24h'
               : receivedEVT ? 'SBP <180, DBP <105 (avoid SBP <140)'
-              : diagCat === 'ich' ? 'SBP <140 (Class IIa, INTERACT2; avoid <130 per ATACH-2)'
+              : diagCat === 'ich' ? 'SBP 140, range 130-150 when appropriate; avoid <130 per ATACH-2'
               : diagCat === 'sah' ? 'SBP <160 until aneurysm secured'
               : 'SBP <220, DBP <120 (if no thrombolysis)';
 
@@ -16310,7 +16494,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             <div className="relative v7-skin">
               {/* v7: skip-link → semantic <main id="main">; cobalt accent, no link-* override */}
               <a href="#main" data-skip-tap className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-cobalt-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">Skip to main content</a>
-
               {protocolModal && (
                 <div className="clinician-only fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="protocol-modal-title" onClick={() => setProtocolModal(null)}>
                   <div className="w-full max-w-lg bg-white rounded-md shadow-xl border border-line dark:bg-card" onClick={(e) => e.stopPropagation()}>
@@ -16359,7 +16542,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               {!isOnline && (
                 <div className="bg-warn-500 text-white px-4 py-2 text-center text-sm font-medium flex items-center justify-center gap-2 no-print" role="alert">
                   <i aria-hidden="true" data-lucide="wifi-off" className="w-4 h-4"></i>
-                  <span>You are offline — changes are saved locally</span>
+                  <span>{PUBLIC_DEMO_MODE ? 'Offline - public demo mode: changes are not saved and may be cleared on reload.' : 'You are offline - changes are saved locally'}</span>
                 </div>
               )}
 
@@ -16427,11 +16610,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <h1 className="font-serif text-[1.5rem] sm:text-[2.25rem] leading-none text-ink">
                         Stroke
                       </h1>
-                      {/* v6.0-07: encounter auto-save indicator. Mono tabular,
-                          ticks every 5 s, reads localStorage lastUpdated. */}
-                      {activeTab === 'encounter' && (
-                        <SavedAgo storageKey={STORAGE_PREFIX + LAST_UPDATED_KEY} />
-                      )}
                     </div>
                   </div>
                   <div className="flex w-full flex-col items-center justify-center gap-2 lg:w-auto lg:items-end lg:justify-end">
@@ -16615,17 +16793,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
 
                     <div className="flex w-full flex-wrap items-center justify-center gap-2 lg:w-auto lg:justify-end">
-                      <button
-                        type="button"
-                        onClick={openCommandPalette}
-                        className="flex items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong dark:hover:bg-paper-2 dark:text-ink-2"
-                        aria-label="Search — open command palette"
-                        title="Open command palette (⌘K or /)"
-                      >
-                        <i aria-hidden="true" data-lucide="search" className="w-4 h-4"></i>
-                        <span className="hidden sm:inline">Search</span>
-                        <kbd aria-hidden="true" className="hidden sm:inline-flex items-center px-1 py-0.5 text-2xs font-mono text-slate-600 bg-slate-100 border border-slate-300 rounded dark:text-ink-2 dark:bg-paper-2 dark:border-strong">⌘K</kbd>
-                      </button>
                       <details ref={resourcesDetailsRef} className="relative">
                         <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700 dark:border-strong dark:hover:bg-paper-2 dark:text-ink-2">
                           <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
@@ -16942,6 +17109,33 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 </div>
               )}
 
+              {/* Workflow context switch — filters/reorders content surfaces to
+                  the active setting (Telestroke / Inpatient / Clinic). "All" is
+                  the default and hides nothing; the switch never scopes global
+                  search. */}
+              <div className="mb-3 flex items-center gap-1.5 flex-wrap" role="group" aria-label="Workflow context">
+                <span className="text-xs font-medium text-slate-500 mr-1 dark:text-mute">Context</span>
+                {[
+                  { id: null, label: 'All' },
+                  { id: 'telestroke', label: 'Telestroke' },
+                  { id: 'inpatient', label: 'Inpatient' },
+                  { id: 'clinic', label: 'Clinic' }
+                ].map((c) => {
+                  const active = workflowContext === c.id;
+                  return (
+                    <button
+                      key={c.label}
+                      type="button"
+                      onClick={() => setWorkflowContext(c.id)}
+                      aria-pressed={active}
+                      className={`px-3 py-1.5 rounded-full text-xs font-semibold min-h-[36px] transition-colors ${active ? 'bg-cobalt-600 text-white' : 'bg-white text-slate-600 border border-line hover:bg-slate-50 dark:bg-card dark:text-mute dark:hover:bg-slate-800'}`}
+                    >
+                      {c.label}
+                    </button>
+                  );
+                })}
+              </div>
+
               {/* Primary Navigation — sticks just below the sticky header on
                   ≥768px via --app-header-h (U4). z-30 keeps it under the header
                   (z-40) so the two stack cleanly instead of overlapping. */}
@@ -16963,7 +17157,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     // (Cycle2 U2). Full canonical name stays as title/aria-label and
                     // is shown at lg+; the section H1/title is unchanged elsewhere.
                     { id: 'encounter', name: 'Encounter', short: 'Encounter' },
-                    { id: 'protocols', name: 'Institutional Protocols & Algorithms', short: 'Protocols' },
+                    { id: 'protocols', name: 'Protocols', short: 'Protocols' },
                     { id: 'research', name: 'Guidelines & References', short: 'Guidelines' },
                     { id: 'trials', name: 'Trials', short: 'Trials' },
                     { id: 'education', name: 'Educational Resources', short: 'Educational Resources' }
@@ -16997,9 +17191,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 lg:inline and renders BOTH spans. */}
                             <span className="whitespace-nowrap leading-none truncate lg:!hidden" aria-hidden="true">{tab.short}</span>
                             {/* V2 — at lg+ the nav is a 248px vertical sidebar. The long
-                                canonical name ("Institutional Protocols & Algorithms",
-                                ~265px) clipped under truncate; allow it to wrap to 2 lines
-                                instead of dropping "Institutional". The `!` display wins
+                                canonical name can clip under truncate; allow it to wrap to 2 lines
+                                instead of losing safety copy. The `!` display wins
                                 over index.html's `.app-shell > .app-nav .tab-pill span
                                 { display:inline-flex }` (0,1,3, non-important); whitespace-
                                 normal + 2-line clamp + snug leading keeps the row tidy. */}
@@ -17075,6 +17268,44 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         })}
                       </ul>
                     </nav>
+
+                    {/* Documentation templates — always-visible copy-paste EMR templates.
+                         Restored 2026-07-06: the thrombolysis/EVT risk-benefit discussion and
+                         post-TNK/post-EVT management note templates had become reachable only
+                         deep in the gated telestroke flow. Institution-neutral educational
+                         examples — verify against the approved local protocol before use. */}
+                    <details id="doc-templates-section" className="bg-card border border-line rounded-md">
+                      <summary className="cursor-pointer select-none px-4 py-3 text-section text-ink flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                        Documentation templates
+                        <span className="text-xs font-sans text-mute font-normal">— risk-benefit discussion + post-reperfusion management (copy into EMR note)</span>
+                      </summary>
+                      <div className="px-4 pb-4">
+                        <p className="text-xs text-mute mb-3">Educational examples only — not local policy. Verify against your approved local protocol before clinical use.</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {[
+                            { key: 'doc-tnk-rb', title: 'Thrombolysis risk-benefit discussion', text: DOC_TEMPLATES.tnkRiskBenefit },
+                            { key: 'doc-evt-rb', title: 'Thrombectomy (EVT) risk-benefit discussion', text: DOC_TEMPLATES.evtRiskBenefit },
+                            { key: 'doc-post-tnk', title: 'Post-TNK / tPA management note', text: DOC_TEMPLATES.postTnk },
+                            { key: 'doc-post-evt', title: 'Post-EVT (thrombectomy) management note', text: DOC_TEMPLATES.postEvt }
+                          ].map((tpl) => (
+                            <div key={tpl.key} className="bg-paper-2 border border-line rounded-md p-3">
+                              <div className="flex items-center justify-between gap-2 mb-2">
+                                <h3 className="font-semibold text-sm text-ink">{tpl.title}</h3>
+                                <button
+                                  type="button"
+                                  onClick={() => copyToClipboard(tpl.text, tpl.key)}
+                                  className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors min-h-[32px] shrink-0 ${copiedText === tpl.key ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}
+                                >
+                                  <i aria-hidden="true" data-lucide={copiedText === tpl.key ? 'check' : 'copy'} className="w-3 h-3"></i>
+                                  {copiedText === tpl.key ? 'Copied' : 'Copy'}
+                                </button>
+                              </div>
+                              <pre tabIndex={0} className="whitespace-pre-wrap break-words text-xs text-ink-2 font-sans max-h-56 overflow-y-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded">{tpl.text}</pre>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </details>
 
                     {/* ===== v7 PATIENT STRIP (mobile) — sticky chip row above v6 strip during transition.
                          Phase 5 IA overhaul will remove the v6 strip below and promote Incomplete /
@@ -17819,21 +18050,21 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="bg-white border border-cobalt-200 rounded-lg p-2 space-y-1 text-sm dark:bg-card dark:border-cobalt-700">
                                   <div className="font-bold text-cobalt-800 dark:text-cobalt-300">WAKE-UP Trial Criteria</div>
                                   {[
-                                    { key: 'dwi', label: 'DWI positive lesion', path: 'dwi.positiveForLesion' },
-                                    { key: 'flair', label: 'No FLAIR hyperintensity', path: 'flair.noMarkedHyperintensity' },
-                                    { key: 'age', label: 'Age 18-80', path: 'ageEligible' },
-                                    { key: 'nihss', label: 'NIHSS ≤25', path: 'nihssEligible' }
+                                    { key: 'dwi', label: 'DWI positive lesion', parent: 'dwi', child: 'positiveForLesion' },
+                                    { key: 'flair', label: 'No FLAIR hyperintensity', parent: 'flair', child: 'noMarkedHyperintensity' },
+                                    { key: 'age', label: 'Age 18-80', field: 'ageEligible' },
+                                    { key: 'nihss', label: 'NIHSS ≤25', field: 'nihssEligible' }
                                   ].map(item => (
                                     <label key={item.key} className="flex items-center gap-2 cursor-pointer">
                                       <input type="checkbox"
-                                        checked={item.path.includes('.') ? (telestrokeNote.wakeUpStrokeWorkflow?.[item.path.split('.')[0]] || {})[item.path.split('.')[1]] : telestrokeNote.wakeUpStrokeWorkflow?.[item.path]}
+                                        checked={item.parent ? (telestrokeNote.wakeUpStrokeWorkflow?.[item.parent] || {})[item.child] : telestrokeNote.wakeUpStrokeWorkflow?.[item.field]}
                                         onChange={(e) => {
                                           const checked = e.target.checked;
-                                          if (item.path.includes('.')) {
-                                            const [parent, child] = item.path.split('.');
+                                          if (item.parent) {
+                                            const { parent, child } = item;
                                             setTelestrokeNote(prev => ({...prev, wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), [parent]: {...(prev.wakeUpStrokeWorkflow?.[parent] || {}), [child]: checked}}}));
                                           } else {
-                                            setTelestrokeNote(prev => ({...prev, wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), [item.path]: checked}}));
+                                            setTelestrokeNote(prev => ({...prev, wakeUpStrokeWorkflow: {...(prev.wakeUpStrokeWorkflow || {}), [item.field]: checked}}));
                                           }
                                         }}
                                         className="w-4 h-4 rounded border-cobalt-400 text-cobalt-600 dark:text-cobalt-300" />
@@ -18917,7 +19148,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <input type="checkbox" checked={!!telestrokeNote.ichBPManaged}
                                       onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, ichBPManaged: c})); }}
                                       className="w-4 h-4 text-crit-600 dark:text-crit-300" />
-                                    <span>BP managed (target SBP &lt;140)</span>
+                                    <span>BP managed (target SBP 140; range 130-150 when appropriate)</span>
                                   </label>
                                   <label className="flex items-center gap-2 cursor-pointer text-sm">
                                     <input type="checkbox" checked={!!telestrokeNote.ichReversalInitiated}
@@ -18974,7 +19205,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   );
                                 })()}
                                 <div className="text-xs text-crit-700 bg-crit-100 rounded p-1.5 dark:text-crit-300 dark:bg-crit-950">
-                                  TNK is contraindicated. Targets: SBP &lt;140 (Class IIa, INTERACT2; avoid &lt;130), reverse anticoagulation if applicable, repeat CT in 6h, ICU admission.
+                                  TNK is contraindicated. Targets: smooth BP control around SBP 140, maintain 130-150 when appropriate and avoid &lt;130; reverse anticoagulation if applicable, repeat CT in 6h, ICU admission.
                                 </div>
 
                                 {/* ICH Surgical Decision Triggers */}
@@ -18982,7 +19213,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="text-sm font-semibold text-crit-800 mb-2 dark:text-crit-300">Surgical Assessment</div>
                                   <div className="space-y-1.5">
                                     {[
-                                      { key: 'cerebellarGt15mL', label: 'Cerebellar ICH >15 mL or >3 cm', detail: 'Class I indication for surgical evacuation if deteriorating' },
+                                      { key: 'cerebellarMassEffect', label: 'Cerebellar mass effect with hydrocephalus/brainstem compression', detail: 'Evaluate urgently for suboccipital decompression with or without EVD' },
                                       { key: 'hydrocephalus', label: 'Obstructive hydrocephalus', detail: 'EVD placement indicated' },
                                       { key: 'midlineShift', label: 'Midline shift / herniation risk', detail: 'Consider decompressive craniectomy or evacuation' },
                                       { key: 'clinicalDeterioration', label: 'Clinical deterioration', detail: 'GCS drop >=2 points or pupil asymmetry — urgent neurosurgery' },
@@ -19012,7 +19243,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <option value="not-candidate">Not a surgical candidate</option>
                                     </select>
                                   </div>
-                                  {((telestrokeNote.ichSurgicalCriteria || {}).cerebellarGt15mL || (telestrokeNote.ichSurgicalCriteria || {}).clinicalDeterioration) && !(telestrokeNote.ichSurgicalCriteria || {}).surgeryDiscussed && (
+                                  {((telestrokeNote.ichSurgicalCriteria || {}).cerebellarMassEffect || (telestrokeNote.ichSurgicalCriteria || {}).clinicalDeterioration) && !(telestrokeNote.ichSurgicalCriteria || {}).surgeryDiscussed && (
                                     <div className="mt-2 bg-crit-200 border border-crit-500 rounded p-2 text-xs text-crit-900 font-bold dark:bg-crit-950 dark:text-crit-300">
                                       URGENT: Surgical criteria met — neurosurgery must be contacted immediately.
                                     </div>
@@ -19222,8 +19453,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         className="w-full mt-1 px-2 py-1 border border-slate-300 rounded text-xs dark:border-strong">
                                         <option value="">-- DAPT duration --</option>
                                         <option value="21 days">21 days (POINT/CHANCE)</option>
-                                        <option value="30 days">30 days</option>
-                                        <option value="90 days">90 days (CHANCE-2/THALES)</option>
+                                        <option value="30 days">30 days (THALES)</option>
+                                        <option value="90 days">90 days (CHANCE-2)</option>
                                       </select></>
                                     )}
                                     {(() => {
@@ -19302,6 +19533,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                             Generate Auto-Note
                             </button>
                           </div>
+                          {PUBLIC_DEMO_MODE && (
+                            <p className="mb-3 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                              <strong>Public demo note output:</strong> Generated recommendations are not EHR-ready clinical documentation. Do not enter or copy PHI; verify against primary sources and approved local protocol.
+                            </p>
+                          )}
                           <textarea
                             id="input-recommendations"
                             value={telestrokeNote.recommendationsText}
@@ -19311,47 +19547,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cobalt-500 text-sm dark:border-strong"
                           />
                         </div>
-
-                        {/* Missing Fields Warning */}
-                        {(() => {
-                          const missing = [
-                            !telestrokeNote.age && 'Age',
-                            !lkwTime && !telestrokeNote.lkwUnknown && 'LKW',
-                            !(telestrokeNote.nihss || nihssScore) && 'NIHSS',
-                            !telestrokeNote.diagnosisCategory && 'Diagnosis',
-                            !telestrokeNote.ctResults && 'CT Results',
-                            !telestrokeNote.ctaResults && 'CTA Results',
-                            !telestrokeNote.disposition && 'Disposition'
-                          ].filter(Boolean);
-                          const safetyGaps = [
-                            !telestrokeNote.presentingBP && 'BP',
-                            !telestrokeNote.glucose && 'Glucose',
-                            telestrokeNote.tnkRecommended && !telestrokeNote.weight && 'Weight (TNK dosing)',
-                            telestrokeNote.tnkRecommended && !telestrokeNote.tnkConsentDiscussed && 'TNK Consent',
-                            !telestrokeNote.plateletCount && 'Platelets',
-                          ].filter(Boolean);
-                          if (missing.length === 0 && safetyGaps.length === 0) return null;
-                          return (
-                            <div className="space-y-1.5">
-                              {missing.length > 0 && (
-                                <div className="bg-warn-50 border border-warn-300 rounded-lg px-3 py-2 flex items-start gap-2 dark:bg-warn-950 dark:border-warn-800">
-                                  <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-warn-600 mt-0.5 flex-shrink-0 dark:text-warn-300"></i>
-                                  <span className="text-xs text-warn-800 dark:text-warn-300">
-                                    <span className="font-semibold">Incomplete:</span> {missing.join(', ')}
-                                  </span>
-                                </div>
-                              )}
-                              {safetyGaps.length > 0 && (
-                                <div className="bg-crit-50 border border-crit-200 rounded-lg px-3 py-2 flex items-start gap-2 dark:bg-crit-950 dark:border-crit-800">
-                                  <i aria-hidden="true" data-lucide="shield-alert" className="w-4 h-4 text-crit-500 mt-0.5 flex-shrink-0"></i>
-                                  <span className="text-xs text-crit-700 dark:text-crit-300">
-                                    <span className="font-semibold">Safety-critical:</span> {safetyGaps.join(', ')}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })()}
 
                         {/* Section 7: Compact Note Output — clinician-only (Phase 4).
                             Note-template generator (consult/transfer/discharge/etc.);
@@ -20396,6 +20591,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="flex items-center gap-2 mb-3">
                                   <span className="text-section text-ink">Recommendation</span>
                                 </div>
+                                {PUBLIC_DEMO_MODE && (
+                                  <div className="mb-3 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                                    <strong>Demo-only output.</strong> Verify TNK/EVT decisions against approved local protocol, source guidelines, imaging, and bedside clinical judgment before any clinical action.
+                                  </div>
+                                )}
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                   {/* TNK Recommendation */}
@@ -20627,7 +20827,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               updated.ichBPManaged = false;
                                               updated.ichNeurosurgeryConsulted = false;
                                               updated.ichSeizureProphylaxis = false;
-                                              updated.ichSurgicalCriteria = { cerebellarGt15mL: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
+                                              updated.ichSurgicalCriteria = { cerebellarMassEffect: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
                                               updated.osmoticTherapy = { agentUsed: '', indication: '', serumSodium: '', serumOsmolality: '', sodiumTarget: '', correctionRate: '', baselineNa: '', baselineNaTime: '', repeatNa: '', repeatNaTime: '', weight: '', mannitolOsmGap: '' };
                                             }
                                             if (newCategory !== 'sah') {
@@ -20783,9 +20983,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="mt-3 text-sm">
                                   <div className="font-medium text-slate-700 mb-1 dark:text-ink-2">Active ICH Trials:</div>
                                   <ul className="text-slate-600 space-y-0.5 ml-4 dark:text-ink-2">
-                                    <li>• <strong>MINUTE</strong> – Intracerebral hemorrhage trial (NCT07260916)</li>
+                                    <li>• <strong>MINUTE</strong> – Basal-ganglia IPH &ge;15 mL, NIHSS &ge;6, &le;15h screen</li>
+                                    <li>• <strong>SATURN</strong> – Statin continuation vs discontinuation after lobar ICH (NCT03936361)</li>
                                     <li>• <strong>ASPIRE</strong> – Apixaban vs aspirin post-ICH with AF</li>
-                                    <li>• <strong>MIRROR Registry</strong> – Minimally invasive ICH evacuation</li>
+                                    <li>• <strong>MIRROR Registry</strong> – MIS registry screen; verify active criteria locally</li>
                                   </ul>
                                 </div>
                               )}
@@ -20797,7 +20998,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <h3 className="text-sm font-bold text-crit-800 mb-2 uppercase tracking-wide dark:text-crit-300">ICH Pathway Checklist</h3>
                                 <div className="space-y-2">
                                   {[
-                                    { field: 'ichBPManaged', label: 'BP managed (SBP <140 target)', detail: 'Class IIa, INTERACT2; avoid <130' },
+                                    { field: 'ichBPManaged', label: 'BP managed (target SBP 140)', detail: 'Maintain 130-150 when appropriate; avoid <130' },
                                     { field: 'ichReversalInitiated', label: 'Anticoag reversal ordered (if applicable)', detail: 'Skip if no anticoagulants', skipIf: !telestrokeNote.lastDOACType },
                                     { field: 'ichNeurosurgeryConsulted', label: 'Neurosurgery consulted/evaluated', detail: 'Surgical candidacy assessed' }
                                   ].filter(item => !item.skipIf).map(item => (
@@ -21038,39 +21239,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               return (
                                 <>
-                                {autoAbsolute.length > 0 && (
-                                  <div className="bg-crit-100 border-2 border-crit-400 rounded-lg p-3 dark:bg-crit-950">
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span className="bg-crit-600 text-white px-2 py-0.5 rounded text-xs font-bold">AUTO-DETECTED</span>
-                                      <span className="text-sm font-bold text-crit-900 dark:text-crit-300">TNK Contraindication{autoAbsolute.length > 1 ? 's' : ''} Found From Patient Data</span>
-                                    </div>
-                                    <ul className="text-xs text-crit-800 space-y-0.5 ml-2 dark:text-crit-300">
-                                      {autoAbsolute.map(c => <li key={c.id}>&#10007; <strong>{c.label}</strong>{c.note ? ` (${c.note})` : ''}</li>)}
-                                    </ul>
-                                  </div>
-                                )}
-                                {autoAbsolute.length === 0 && autoRelative.length > 0 && (
-                                  <div className="bg-warn-100 border-2 border-warn-400 rounded-lg p-3 dark:bg-warn-900">
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span className="bg-warn-500 text-white px-2 py-0.5 rounded text-xs font-bold">AUTO-DETECTED</span>
-                                      <span className="text-sm font-bold text-warn-900 dark:text-warn-300">{autoRelative.length} Relative Contraindication{autoRelative.length > 1 ? 's' : ''} — Use Clinical Judgment</span>
-                                    </div>
-                                    <ul className="text-xs text-warn-800 space-y-0.5 ml-2 dark:text-warn-300">
-                                      {autoRelative.map(c => <li key={c.id}>&#9888; {c.label}{c.note ? ` (${c.note})` : ''}</li>)}
-                                    </ul>
-                                  </div>
-                                )}
-                                {autoAbsolute.length === 0 && autoRelative.length === 0 && autoCautionary.length > 0 && (
-                                  <div className="bg-cobalt-50 border-2 border-cobalt-300 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span className="bg-cobalt-500 text-white px-2 py-0.5 rounded text-xs font-bold dark:bg-cobalt-700">AUTO-DETECTED</span>
-                                      <span className="text-sm font-bold text-cobalt-900 dark:text-cobalt-300">{autoCautionary.length} Cautionary Condition{autoCautionary.length > 1 ? 's' : ''} — IVT Benefit Outweighs Risk</span>
-                                    </div>
-                                    <ul className="text-xs text-cobalt-800 space-y-0.5 ml-2 dark:text-cobalt-300">
-                                      {autoCautionary.map(c => <li key={c.id}>&#8505; {c.label}{c.note ? ` (${c.note})` : ''}</li>)}
-                                    </ul>
-                                  </div>
-                                )}
+                                <AutoDetectedContraindicationsBanner autoAbsolute={autoAbsolute} autoRelative={autoRelative} autoCautionary={autoCautionary} />
                                 <details id="tnk-contraindications" className="bg-critical-soft border border-line border-l-[3px] border-l-critical rounded-md">
                                   <summary className="cursor-pointer p-3 font-semibold text-orange-900 hover:bg-orange-100 rounded-lg flex items-center justify-between dark:text-orange-300">
                                     <span>TNK Contraindications <span className="text-[10px] font-normal text-slate-500 ml-1 dark:text-mute">(AHA/ASA 2026 Table 8)</span></span>
@@ -21836,6 +22005,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <span className="text-xs text-cobalt-500 font-normal">Evidence-based, auto-matched to patient data</span>
                                 </summary>
                                 <div className="p-4 pt-0 space-y-4">
+                                  {PUBLIC_DEMO_MODE && (
+                                    <p className="rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                                      <strong>Public demo:</strong> These auto-matched recommendations are educational references only; verify the primary source and approved local protocol before acting.
+                                    </p>
+                                  )}
                                   {Object.entries(grouped).map(([category, catRecs]) => (
                                     <div key={category}>
                                       <h3 className="text-sm font-bold text-cobalt-800 uppercase tracking-wide mb-2 border-b border-cobalt-100 pb-1 dark:text-cobalt-300">{category}</h3>
@@ -21884,8 +22058,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                     no further code. See docs/evidence-atlas-extension-guide.md. */}
                                                 {(() => {
                                                   const MANAGEMENT_REC_TO_ATLAS_REC = {
-                                                    'bp_ich_acute': 'rec-ich-bp-target',
-                                                    'bp_ich_avoid_low': 'rec-ich-bp-target',
+                                                    'bp_ich_acute': 'rec-ich-bp-smooth-control',
+                                                    'bp_ich_target_range': 'rec-ich-bp-target',
+                                                    'bp_ich_avoid_low': 'rec-ich-bp-avoid-low',
                                                     'reversal_warfarin': 'rec-ich-anticoag-reversal-warfarin',
                                                     'reversal_doac_xa': 'rec-ich-anticoag-reversal-fxa',
                                                     'tnk_dose': 'rec-tnk-first-line',
@@ -21982,6 +22157,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </summary>
                               <div className="p-3 space-y-2">
                                 <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">Auto-compared against patient data (age, NIHSS, LKW, imaging, diagnosis). Criteria update in real-time as you enter data.</p>
+                                {PUBLIC_DEMO_MODE && (
+                                  <p className="rounded-md border border-warn-300 bg-warn-50 px-2.5 py-1.5 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                                    <strong>Trial-screening check:</strong> Confirm every apparent match against ClinicalTrials.gov, approved study materials, and local research workflow before contacting a team or patient.
+                                  </p>
+                                )}
                                 {sorted.map(trial => {
                                   // The engine result already exposes everything the UI consumes
                                   // (name, nct, quickDescription, lookingFor, keyTakeaways);
@@ -26206,6 +26386,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           {/* Auto-Note Generation Button */}
                           <div className="mb-3">
+                            {PUBLIC_DEMO_MODE && (
+                              <p className="mb-2 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                                <strong>Public demo note output:</strong> Generated text is synthetic education only. Do not copy PHI, encounter details, or operational handoff content from this public build.
+                              </p>
+                            )}
                             <button
                               type="button"
                               onClick={() => {
@@ -26223,7 +26408,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                 // Header
                                 note += `TELESTROKE CONSULTATION NOTE\n`;
-                                note += `Date: ${new Date().toLocaleDateString()}\n\n`;
+                                note += `Date: ${PUBLIC_DEMO_MODE ? '[synthetic demo date]' : new Date().toLocaleDateString()}\n\n`;
 
                                 // HPI
                                 note += `HPI: ${age} year old ${sex}`;
@@ -26275,14 +26460,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   }
                                 } else if (pathwayType === 'ich') {
                                   note += `PLAN:\n`;
-                                  if (telestrokeNote.ichBPManaged) note += `- BP management initiated (target SBP <140 (Class IIa; avoid <130)).\n`;
+                                  if (telestrokeNote.ichBPManaged) note += `- BP management initiated (smooth control; target SBP 140/range 130-150 when appropriate; avoid <130).\n`;
                                   if (telestrokeNote.ichReversalInitiated) note += `- Anticoagulation reversal ordered.\n`;
                                   const ichPlanTiming = getIchEscalationSummary();
                                   if (ichPlanTiming) note += `- ICH timing KPIs: ${ichPlanTiming}.\n`;
                                   if (telestrokeNote.ichNeurosurgeryConsulted) note += `- Neurosurgery consulted.\n`;
                                   const ichSurg = telestrokeNote.ichSurgicalCriteria || {};
                                   if (ichSurg.surgeryDecision) note += `- Surgical decision: ${ichSurg.surgeryDecision}.\n`;
-                                  if (ichSurg.cerebellarGt15mL) note += `- Cerebellar ICH >15 mL identified.\n`;
+                                  if (ichSurg.cerebellarMassEffect) note += `- Cerebellar mass effect with hydrocephalus/brainstem compression concern identified.\n`;
                                   if (ichSurg.hydrocephalus) note += `- Obstructive hydrocephalus present.\n`;
                                 } else if (pathwayType === 'sah') {
                                   note += `PLAN:\n`;
@@ -27282,6 +27467,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {copiedText === 'handoff-summary' ? 'Copied!' : 'Copy handoff'}
                         </V7Button>
                       </div>
+                      {PUBLIC_DEMO_MODE && (
+                        <p className="mb-3 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                          <strong>Public demo handoff:</strong> Copy is blocked when obvious identifiers are detected. Use synthetic examples only; do not move operational handoff content through this public build.
+                        </p>
+                      )}
                       {(() => {
                         const fields = getHandoffSummaryFields();
                         const cards = [
@@ -27358,29 +27548,36 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                          reach the top-right of the Encounter to copy their work.
                          Hidden ≥md (desktop has the inline buttons in scroll). */}
                     <div className="md:hidden fixed bottom-16 left-0 right-0 z-50 px-3 pb-2 pointer-events-none">
-                      <div className="pointer-events-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-2 flex gap-2">
-                        <V7Button
-                          variant="primary"
-                          size="md"
-                          className="flex-1"
-                          onClick={() => {
-                            const note = generateTelestrokeNote();
-                            copyToClipboard(note, 'encounter-note');
-                          }}
-                        >
-                          {copiedText === 'encounter-note' ? 'Copied note' : 'Copy Note'}
-                        </V7Button>
-                        <V7Button
-                          variant="secondary"
-                          size="md"
-                          className="flex-1"
-                          onClick={() => {
-                            const summary = buildHandoffSummary();
-                            copyToClipboard(summary, 'handoff-summary');
-                          }}
-                        >
-                          {copiedText === 'handoff-summary' ? 'Copied handoff' : 'Copy Handoff'}
-                        </V7Button>
+                      <div className="pointer-events-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-2 space-y-2">
+                        {PUBLIC_DEMO_MODE && (
+                          <p className="text-[11px] leading-snug text-warn-800 dark:text-warn-300">
+                            Public demo copy uses synthetic examples only; obvious identifiers are blocked.
+                          </p>
+                        )}
+                        <div className="flex gap-2">
+                          <V7Button
+                            variant="primary"
+                            size="md"
+                            className="flex-1"
+                            onClick={() => {
+                              const note = generateTelestrokeNote();
+                              copyToClipboard(note, 'encounter-note');
+                            }}
+                          >
+                            {copiedText === 'encounter-note' ? 'Copied note' : 'Copy Note'}
+                          </V7Button>
+                          <V7Button
+                            variant="secondary"
+                            size="md"
+                            className="flex-1"
+                            onClick={() => {
+                              const summary = buildHandoffSummary();
+                              copyToClipboard(summary, 'handoff-summary');
+                            }}
+                          >
+                            {copiedText === 'handoff-summary' ? 'Copied handoff' : 'Copy Handoff'}
+                          </V7Button>
+                        </div>
                       </div>
                     </div>
 
@@ -27462,29 +27659,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {railLkwIso && <LKWCountdown lkwIso={railLkwIso} className="mt-2" />}
                           </div>
 
-                          {/* Safety-critical + Incomplete (mirror of inline Missing-Fields banner) */}
-                          <div className="px-4 py-3 space-y-2">
-                            <p className="font-mono uppercase text-eyebrow text-mute">Readiness</p>
-                            {railSafetyGaps.length > 0 ? (
-                              <div className="bg-crit-50 border border-crit-200 rounded-lg px-3 py-2 flex items-start gap-2 dark:bg-crit-950 dark:border-crit-800">
-                                <i aria-hidden="true" data-lucide="shield-alert" className="w-4 h-4 text-crit-500 mt-0.5 flex-shrink-0"></i>
-                                <span className="text-xs text-crit-700 dark:text-crit-300"><span className="font-semibold">Safety-critical:</span> {railSafetyGaps.join(', ')}</span>
-                              </div>
-                            ) : null}
-                            {railMissing.length > 0 ? (
-                              <div className="bg-warn-50 border border-warn-300 rounded-lg px-3 py-2 flex items-start gap-2 dark:bg-warn-950 dark:border-warn-800">
-                                <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-warn-600 mt-0.5 flex-shrink-0 dark:text-warn-300"></i>
-                                <span className="text-xs text-warn-800 dark:text-warn-300"><span className="font-semibold">Incomplete:</span> {railMissing.join(', ')}</span>
-                              </div>
-                            ) : null}
-                            {railSafetyGaps.length === 0 && railMissing.length === 0 ? (
-                              <div className="bg-ok-50 border border-ok-200 rounded-lg px-3 py-2 flex items-start gap-2 dark:bg-ok-950 dark:border-ok-800">
-                                <i aria-hidden="true" data-lucide="check-circle" className="w-4 h-4 text-ok-600 mt-0.5 flex-shrink-0 dark:text-ok-300"></i>
-                                <span className="text-xs text-ok-800 font-medium dark:text-ok-300">All core fields captured.</span>
-                              </div>
-                            ) : null}
-                          </div>
-
                           {/* Live Pulsara case summary preview (compact, scrollable) */}
                           <div className="px-4 py-3">
                             <div className="flex items-center justify-between mb-2">
@@ -27518,10 +27692,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {activeTab === 'protocols' && (
                   <ErrorBoundary>
                   <div id="tabpanel-protocols" role="tabpanel" aria-labelledby="tab-protocols" className="space-y-6">
-                    {/* ===== PRIVATE INSTITUTIONAL LAYER (local-only, never public) =====
-                        Rendered only when private/institutional.js is present on disk.
-                        window.__INSTITUTIONAL_LOCAL__ is set by that gitignored script
-                        before app.js loads. Zero output on the public/deployed build. */}
+                    {/* ===== NON-PUBLIC EXTENSION LAYER =====
+                        Rendered only when a local extension populates
+                        window.__INSTITUTIONAL_LOCAL__ before app.js loads.
+                        Zero output on the public/deployed build. */}
                     {(() => {
                       const localInst = getLocalInstitutionalContent();
                       if (!localInst) return null;
@@ -27815,10 +27989,70 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="border-l-4 border-crit-400 bg-slate-50 px-3 py-2 text-sm space-y-1 dark:bg-paper-2">
                             <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide dark:text-ink">Key Principles</p>
                             <ul className="list-disc pl-4 text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
-                              <li>Rapid BP reduction to SBP ~140 within 1 hour (INTERACT3 bundle) <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></li>
+                              <li>Smooth, sustained BP control and timely treatment <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span>; target SBP 140/range 130-150 when appropriate <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['IIb']}`}>IIb</span>; avoid &lt;130 <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['III-harm']}`}>III harm</span></li>
                               <li>Immediate anticoagulant reversal — do not wait for labs if clinical suspicion <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></li>
-                              <li>Early neurosurgical consultation for cerebellar ICH, hydrocephalus, or mass effect <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></li>
+                              <li>Early Neurosurgery + stroke-service evaluation for non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, vascular lesion concern, multicompartmental hemorrhage, ED attending discretion, or clinician concern <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></li>
                             </ul>
+                          </div>
+                          <div className="bg-white border border-crit-300 border-l-4 border-l-crit-600 rounded-md p-4 dark:bg-card dark:border-crit-800">
+                            <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between mb-3">
+                              <div>
+                                <p className="text-xs font-semibold uppercase tracking-wide text-crit-700 dark:text-crit-300">Initial Non-Traumatic IPH Evaluation</p>
+                                <h3 className="text-lg font-semibold text-slate-900 dark:text-ink">{ICH_INITIAL_EVALUATION_ALGORITHM.title}</h3>
+                              </div>
+                              <span className="text-[11px] text-slate-500 font-medium dark:text-mute">Reviewed {ICH_INITIAL_EVALUATION_ALGORITHM.lastReviewed}</span>
+                            </div>
+                            <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">{ICH_INITIAL_EVALUATION_ALGORITHM.scope}</p>
+                            <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 mb-3 dark:bg-crit-950 dark:border-crit-800">
+                              <p className="text-sm font-semibold text-crit-800 dark:text-crit-300">{ICH_INITIAL_EVALUATION_ALGORITHM.consultTrigger}</p>
+                              <p className="text-xs text-crit-700 mt-1 dark:text-crit-300">ED clinicians or the stroke service may call Neurosurgery directly; prior approval is not required, but the plan must be closed-looped with the designated on-call stroke attending and other involved service.</p>
+                            </div>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                              {ICH_INITIAL_EVALUATION_ALGORITHM.decisionNodes.map((node) => (
+                                <div key={node.title} className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
+                                  <h4 className="font-semibold text-slate-800 text-sm mb-2 dark:text-ink">{node.title}</h4>
+                                  <ul className="text-xs text-slate-700 space-y-1 dark:text-ink-2">
+                                    {node.items.map((item) => <li key={item}>&#x2022; {item}</li>)}
+                                  </ul>
+                                </div>
+                              ))}
+                            </div>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-3">
+                              <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
+                                <h4 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Surgery Screens</h4>
+                                <div className="space-y-2">
+                                  {ICH_INITIAL_EVALUATION_ALGORITHM.surgicalScreens.map((screen) => (
+                                    <div key={screen.title}>
+                                      <p className="text-xs font-semibold text-cobalt-800 dark:text-cobalt-300">{screen.title}</p>
+                                      <p className="text-xs text-slate-700 dark:text-ink-2">{screen.criteria.join('; ')}. {screen.action}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
+                                <h4 className="font-semibold text-warn-800 text-sm mb-2 dark:text-warn-300">Trial and Registry Screens</h4>
+                                <div className="space-y-2">
+                                  {ICH_INITIAL_EVALUATION_ALGORITHM.researchScreens.map((screen) => (
+                                    <div key={screen.title}>
+                                      <p className="text-xs font-semibold text-warn-800 dark:text-warn-300">{screen.title}</p>
+                                      <p className="text-xs text-slate-700 dark:text-ink-2">{screen.criteria.join('; ')}. {screen.action}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="bg-slate-900 text-white rounded-lg p-3 mt-3 dark:bg-slate-950">
+                              <p className="text-sm font-semibold">{ICH_INITIAL_EVALUATION_ALGORITHM.safetyPause.title}</p>
+                              <ul className="text-xs text-slate-100 space-y-1 mt-1">
+                                {ICH_INITIAL_EVALUATION_ALGORITHM.safetyPause.items.map((item) => <li key={item}>&#x2022; {item}</li>)}
+                              </ul>
+                            </div>
+                            <div className="bg-slate-50 border border-line rounded-lg p-3 mt-3 dark:bg-paper-2">
+                              <p className="text-sm font-semibold text-slate-800 dark:text-ink">Documentation expectations</p>
+                              <ul className="text-xs text-slate-700 space-y-1 mt-1 dark:text-ink-2">
+                                {ICH_INITIAL_EVALUATION_ALGORITHM.documentation.map((item) => <li key={item}>&#x2022; {item}</li>)}
+                              </ul>
+                            </div>
                           </div>
                           {/* === ALL PATIENTS INITIAL STEPS === */}
                           <div className="bg-white border border-crit-300 border-l-4 border-l-red-600 rounded-md p-4 dark:bg-card dark:border-crit-800 ">
@@ -27851,11 +28085,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-slate-700 dark:text-ink-2">Escalate airway and ICU-level monitoring early when exam worsens or airway protection is uncertain.</p>
                               </div>
                               <div className="bg-white border border-crit-200 rounded-lg p-2 dark:bg-card dark:border-crit-800">
-                                <p className="font-semibold text-crit-800 dark:text-crit-300">2. Blood Pressure Strategy <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></p>
-                                <p className="text-slate-700 dark:text-ink-2">Use rapid but controlled BP reduction (often around SBP 140) while avoiding hypotension and neurologic decline.</p>
+                                <p className="font-semibold text-crit-800 dark:text-crit-300">2. Blood Pressure Strategy <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></p>
+                                <p className="text-slate-700 dark:text-ink-2">Use smooth, sustained BP control and timely treatment; target SBP 140 with range 130-150 when appropriate, and avoid acute SBP &lt;130.</p>
                                 <details className="mt-1">
                                   <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-700 dark:text-mute dark:hover:text-ink">Evidence</summary>
-                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">INTERACT3 (2023): Intensive care bundle targeting SBP 130-140 within 1h improved functional outcomes (OR 0.86). AHA/ASA 2022: Class I, LOE A for SBP reduction to 140 if presenting SBP 150-220.</p>
+                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">AHA/ASA 2022: smooth, sustained BP control and timely treatment are Class IIa; for mild-moderate ICH with SBP 150-220, target 140 (range 130-150) is Class IIb; acute SBP &lt;130 is Class III harm. INTERACT3 tested a care bundle, not BP alone.</p>
                                 </details>
                               </div>
                               <div className="bg-white border border-crit-200 rounded-lg p-2 dark:bg-card dark:border-crit-800">
@@ -27875,7 +28109,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-slate-700 dark:text-ink-2">Promptly screen for neurosurgical escalation in cerebellar decline, hydrocephalus, mass effect, or selected lobar large ICH.</p>
                                 <details className="mt-1">
                                   <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-700 dark:text-mute dark:hover:text-ink">Evidence</summary>
-                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">ENRICH (2024): Early MIS for lobar ICH 20-50 mL improved outcomes vs medical management (mRS shift OR 0.74). STICH II: Open craniotomy for lobar ICH did not show clear benefit. Cerebellar ICH with neurologic deterioration: Class I for surgical evacuation.</p>
+                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">ENRICH (2024): Early MIS for selected lobar ICH in the 30-80 mL trial range improved outcomes vs medical management (mRS shift OR 0.74). STICH II: Open craniotomy for lobar ICH did not show clear benefit. Cerebellar hemorrhage with posterior-fossa mass effect, usually with obstructive hydrocephalus and/or brainstem compression: urgent suboccipital decompression screen.</p>
                                 </details>
                               </div>
                             </div>
@@ -28094,7 +28328,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
                                 <p className="text-xs font-semibold text-slate-700 mb-1 dark:text-ink-2">Follow-up & Management:</p>
                                 <ul className="text-xs space-y-0.5 text-slate-600 dark:text-ink-2">
-                                  <li>• Target SBP &lt;140 mmHg for confirmed sICH</li>
+                                  <li>• Target SBP around 140 mmHg for confirmed sICH; avoid &lt;130</li>
                                   <li>• Target fibrinogen &gt;200 mg/dL (repeat cryo if low)</li>
                                   <li>• If labs abnormal or uncontrolled bleeding → consult Hematology</li>
                                   <li>• Repeat hemorrhage panel q4h until normal</li>
@@ -28154,7 +28388,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="flex items-center justify-between mb-3">
                               <h3 className="text-sm font-semibold text-crit-700 dark:text-crit-300">ABC/2 ICH Volume Calculator</h3>
                               {ichVolumeEstimate && (
-                                <span className={`text-xs font-semibold px-2 py-1 rounded-full ${ichVolumeEstimate.exceeds30 ? 'bg-crit-100 text-crit-700 dark:bg-crit-950 dark:text-crit-300' : 'bg-ok-100 text-ok-700 dark:bg-ok-900 dark:text-ok-300'}`}>
+                                <span className={`text-xs font-semibold px-2 py-1 rounded-full ${ichVolumeEstimate.exceeds30 ? 'bg-crit-100 text-crit-700 dark:bg-crit-950 dark:text-crit-300' : ichVolumeEstimate.exceeds15 ? 'bg-warn-100 text-warn-800 dark:bg-warn-950 dark:text-warn-300' : 'bg-ok-100 text-ok-700 dark:bg-ok-900 dark:text-ok-300'}`}>
                                   {ichVolumeEstimate.display} mL
                                 </span>
                               )}
@@ -28202,15 +28436,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             </div>
                             <p className="text-xs text-slate-500 mt-3 dark:text-mute">
-                              Auto-flags volume ≥30 mL (predictive of worse outcomes and surgical consideration).
+                              For confirmed non-traumatic IPH, auto-flags volume ≥15 mL for early Neurosurgery + stroke-service evaluation; ≥30 mL remains the MIE/prognostic screen tier when other criteria fit.
                             </p>
+                            {ichVolumeEstimate?.exceeds15 && (
+                              <p className="text-xs font-semibold text-warn-800 bg-warn-50 border border-warn-200 rounded-md p-2 mt-2 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
+                                Confirmed non-traumatic IPH volume ≥15 mL by ABC/2 meets the June 2026 early Neurosurgery + stroke-service evaluation threshold.
+                              </p>
+                            )}
                           </div>
                           <div className="bg-white border border-crit-200 rounded-md p-4 dark:bg-card dark:border-crit-800">
                               <h3 className="text-sm font-semibold text-crit-700 mb-2 dark:text-crit-300">Telestroke rapid actions (phone or video)</h3>
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                                 <li>Confirm anticoagulant/antiplatelet use and initiate reversal.</li>
-                                <li>Target SBP &lt;140 (Class IIa, INTERACT2; avoid &lt;130 per ATACH-2). Use IV nicardipine or clevidipine for smooth control.</li>
-                                <li>Screen for transfer triggers: cerebellar ICH ≥15 mL with deterioration/brainstem compression/hydrocephalus, IVH with hydrocephalus requiring EVD, or worsening supratentorial ICH.</li>
+                                <li>Use smooth BP control; target SBP 140, maintain 130-150 when appropriate, and avoid &lt;130 per ATACH-2. Use IV nicardipine or clevidipine for titration.</li>
+                                <li>Screen for early Neurosurgery + stroke-service evaluation triggers: non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, ED attending discretion, or clinician concern.</li>
                                 <li>Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.</li>
                               </ul>
                               <p className="text-xs text-slate-500 mt-2 dark:text-mute">
@@ -28222,7 +28461,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="bg-white border border-crit-200 rounded-md p-4 dark:bg-card dark:border-crit-800">
                               <h3 className="text-sm font-semibold text-crit-700 mb-2 dark:text-crit-300">Inpatient priorities</h3>
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
-                                <li>Continue anticoagulant reversal, monitor for hematoma expansion, and maintain SBP &lt;140.</li>
+                                <li>Continue anticoagulant reversal, monitor for hematoma expansion, and maintain smooth BP control around SBP 140 when appropriate.</li>
                                 <li>Evaluate IVH/hydrocephalus for EVD and monitor for neurologic decline.</li>
                                 <li>Manage seizures, avoid prophylaxis without seizures, and use EEG when indicated.</li>
                                 <li>Implement supportive care bundle, early rehab, and structured goals-of-care discussions.</li>
@@ -28239,25 +28478,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-white p-3 rounded border mb-4 dark:bg-card">
                           <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Surgical Selection</h4>
                           <ul className="text-sm space-y-1">
-                            <li>Supratentorial ICH volume &gt;20-30 mL with GCS 5-12: MIS evacuation can reduce mortality.</li>
-                            <li>MIS may be reasonable over conventional craniotomy in eligible patients.</li>
-                            <li>Functional outcome benefit remains uncertain.</li>
+                            <li>June 2026 operational MIE screen: lobar IPH 30-80 mL, NIHSS &gt;5, GCS 5-14, age 18-80, and no underlying lesion.</li>
+                            <li>General guideline evidence supports selected minimally invasive evacuation for supratentorial ICH, especially for mortality; older/general guideline framing kept broad functional-outcome benefit uncertain.</li>
+                            <li>ENRICH supports selected lobar 30-80 mL patients; use the June 2026 screen below and confirm neurosurgery/local-protocol activation.</li>
+                            <li>MIS may be reasonable over conventional craniotomy in eligible patients; do not generalize outside the June 2026 screen.</li>
                           </ul>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div className="bg-white p-3 rounded border dark:bg-card">
-                            <h4 className="font-semibold text-ok-600 mb-2 dark:text-ok-300">ENRICH MIE Inclusion (NCT02880878)</h4>
+                            <h4 className="font-semibold text-ok-600 mb-2 dark:text-ok-300">June 2026 MIE Screen (ENRICH-Based)</h4>
                             <ul className="text-sm space-y-1">
                               <li>• Spontaneous <strong>lobar</strong> IPH — no underlying lesion (tumor/AVM)</li>
                               <li>• ICH volume 30-80 cc</li>
-                              <li>• ≤24 hours of symptom onset</li>
                               <li>• Age 18-80 years</li>
                               <li>• NIHSS &gt;5</li>
-                              <li>• GCS 5-15</li>
-                              <li>• Pre-morbid mRS 0-1</li>
+                              <li>• GCS 5-14</li>
                             </ul>
-                            <p className="text-xs text-ok-700 mt-2 italic dark:text-ok-300">* Reasonable to consider in cases 24-72h after onset and outside trial criteria — discuss with neurosurgery.</p>
+                            <p className="text-xs text-ok-700 mt-2 italic dark:text-ok-300">Confirm operative timing, detailed exclusions, and pathway activation with neurosurgery and the active local protocol.</p>
                           </div>
 
                           <div className="bg-white p-3 rounded border dark:bg-card">
@@ -28375,7 +28613,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-crit-600 mb-2 dark:text-crit-300">Blood Pressure Target</h4>
                             <ul className="text-sm space-y-1">
-                              <li><strong>Target:</strong> SBP &lt;140 mmHg within 2h (Class IIa, INTERACT2). Avoid SBP &lt;130 (ATACH-2).</li>
+                              <li><strong>Target:</strong> SBP 140 mmHg, maintain 130-150 when appropriate, with timely smooth control. Avoid SBP &lt;130 (ATACH-2).</li>
                               <li><strong>Smooth control:</strong> avoid peaks and variability.</li>
                               <li><strong>SBP &gt;220:</strong> Safety of intensive lowering is uncertain (Class IIb, LOE C-EO, AHA 2022). Reasonable to target modest reduction (SBP 140-160) using continuous IV infusion with close monitoring. Avoid rapid drops &gt;60 mmHg in the first hour. Consider starting nicardipine at a lower rate (2.5-5 mg/hr) and titrating slowly.</li>
                               <li><strong>Agent:</strong> IV nicardipine or clevidipine for titration.</li>
@@ -28422,7 +28660,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-cobalt-600 mb-2 dark:text-cobalt-300">Surgical Indications</h4>
                             <ul className="text-sm space-y-1">
-                              <li><strong>Cerebellar ICH &gt;=15 mL</strong> with neurologic deterioration, brainstem compression, or hydrocephalus: immediate evacuation +/- EVD.</li>
+                              <li><strong>Cerebellar ICH with mass effect</strong>: urgent Neurosurgery evaluation for suboccipital decompression; obstructive hydrocephalus and/or brainstem compression commonly increase urgency and may require EVD.</li>
                               <li><strong>Supratentorial ICH:</strong> routine craniotomy for outcome benefit is uncertain.</li>
                               <li><strong>Deteriorating supratentorial ICH:</strong> craniotomy may be considered as a lifesaving measure.</li>
                             </ul>
@@ -28587,7 +28825,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div>
                               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-cobalt-600 dark:text-cobalt-300">Acute ischemic stroke</p>
                               <h2 id="acute-stroke-pathways-heading" className="text-lg font-semibold text-slate-900 dark:text-ink">Acute Stroke Pathways</h2>
-                              <p className="text-xs text-slate-600 mt-0.5 dark:text-ink-2">Six evidence-bound decisions for the fastest reperfusion workflow. Each card is COR/LOE-graded against the 2026 AHA/ASA AIS guideline.</p>
+                              <p className="text-xs text-slate-600 mt-0.5 dark:text-ink-2">Evidence-bound decisions for the acute ischemic stroke pathway — reperfusion, telestroke sequencing, and pediatric considerations. Each card is COR/LOE-graded against the 2026 AHA/ASA AIS guideline where applicable.</p>
                             </div>
                           </div>
 
@@ -29417,7 +29655,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
                                 <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105</li>
                                 <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105</li>
-                                <li><strong>IPH:</strong> SBP &lt;140 (INTERACT2; no specific DBP target)</li>
+                                <li><strong>IPH:</strong> target SBP 140, range 130-150 when appropriate; no specific DBP target</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
@@ -29732,6 +29970,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h3 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Special Considerations</h3>
                               <ul className="text-sm space-y-1">
                                 <li>• sICAS (70-99%): high-intensity statin + LDL &lt;70</li>
+                                <li>• Lobar ICH on a statin: SATURN trial (continue vs stop statin) enrolling — consider referral</li>
                                 <li>• Check LFTs at baseline, recheck 4-12 weeks</li>
                                 <li>• Do not discontinue statin for mild transaminase elevation (&lt;3x ULN)</li>
                               </ul>
@@ -29964,7 +30203,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <p className="text-sm font-semibold text-teal-700 mb-2 dark:text-teal-300">Requirements:</p>
                             <ul className="text-sm space-y-1">
                               <li>• Consent from patient or LNOK</li>
-                              <li>• Pre-administration approval from <strong>Stroke phone</strong>, <strong>Emergency MD</strong>, and <strong>Neuroradiology</strong></li>
+                              <li>• Pre-administration approval from the on-call stroke clinician, emergency clinician, and neuroradiology</li>
                             </ul>
                           </div>
                           <div className="bg-white p-3 rounded border dark:bg-card">
@@ -32754,12 +32993,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               : <p className="text-xs text-slate-600 italic dark:text-mute">Enter A, B, and C measurements from CT to calculate ICH volume.</p>;
                           }
                           return (
-                            <div className={`p-3 rounded-lg border ${result.isLarge ? 'bg-crit-100 border-crit-300 dark:bg-crit-950 dark:border-crit-800' : 'bg-ok-100 border-ok-300 dark:bg-ok-900 dark:border-ok-800'}`}>
+                            <div className={`p-3 rounded-lg border ${result.isLarge ? 'bg-crit-100 border-crit-300 dark:bg-crit-950 dark:border-crit-800' : result.isDualConsult ? 'bg-warn-100 border-warn-300 dark:bg-warn-950 dark:border-warn-800' : 'bg-ok-100 border-ok-300 dark:bg-ok-900 dark:border-ok-800'}`}>
                               <p className="text-lg font-bold">Volume: {result.volume} mL</p>
                               <p className="text-sm text-slate-700 dark:text-ink-2">
                                 {result.volume >= 60 ? 'Very large hematoma — poor prognosis, consider GOC discussion' :
                                  result.volume >= 30 ? 'Large hematoma (30-80 mL) — may qualify for ENRICH MIE' :
-                                 result.volume >= 20 ? 'Moderate hematoma — monitor for expansion' :
+                                 result.volume >= 15 ? 'If confirmed non-traumatic IPH: meets ≥15 mL early Neurosurgery + stroke-service evaluation threshold' :
                                  'Small hematoma'}
                               </p>
                               <button onClick={() => copyToClipboard(`ICH Volume (ABC/2): ${result.volume} mL`, 'ICH Volume')}
@@ -33834,7 +34073,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
                             <h4 className="font-bold text-warn-900 text-sm mb-2 dark:text-warn-300">ICH Pearls</h4>
                             <ul className="text-xs text-slate-700 space-y-1.5 dark:text-ink-2">
-                              <li><strong>BP control matters most in first 2h:</strong> Target SBP &lt;140 mmHg within 2h (INTERACT2, Class IIa). Avoid SBP &lt;130 (ATACH-2 showed no benefit of intensive SBP 110-139 vs 140-179, with trend toward renal harm). Nicardipine drip preferred for smooth control.</li>
+                              <li><strong>BP control matters most early:</strong> Initiate smooth, sustained BP lowering promptly. For mild-to-moderate ICH with SBP 150-220, target SBP 140 and maintain 130-150 when appropriate; avoid SBP &lt;130. Nicardipine drip preferred for smooth control.</li>
                               <li><strong>Anticoagulant reversal:</strong> This is the MOST time-sensitive intervention in ICH. Give PCC/idarucizumab BEFORE the CT in known anticoagulated patients.</li>
                               <li><strong>Spot sign on CTA:</strong> Contrast extravasation predicts hematoma expansion. If present → more aggressive BP control and close monitoring.</li>
                               <li><strong>IVH worsens prognosis:</strong> Consider EVD if hydrocephalus develops. Intraventricular alteplase (CLEAR III) reduces mortality but doesn't improve functional outcome.</li>
@@ -34325,7 +34564,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                               <div className="space-y-1">
                                 <p className="font-bold text-crit-700 mb-1 dark:text-crit-300">BP & Medications</p>
-                                <p>Target SBP &lt;140 mmHg (INTERACT2, Class IIa, LOE B-R). Avoid SBP &lt;130 (ATACH-2: no benefit, possible harm).</p>
+                                <p>Target SBP 140 mmHg, maintain 130-150 when appropriate, and avoid SBP &lt;130. Use smooth titration rather than abrupt large drops.</p>
                                 <p>Nicardipine drip preferred (see BP section)</p>
                                 <p>Reversal agents if on anticoagulation (see ICH tab)</p>
                                 <p>Hold all antithrombotics</p>
@@ -34493,7 +34732,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
 
                       {filteredGuidelineLibrary.length === 0 ? (
-                        <p className="text-sm text-slate-600 mt-3 dark:text-ink-2">No recommendations match the current filters.</p>
+                        <p className="text-sm text-slate-600 mt-3 dark:text-ink-2">No recommendations match the current filters. <button type="button" onClick={() => { setGuidelineLibraryQuery(''); setGuidelineLibraryGuideline(''); setGuidelineLibrarySection(''); setGuidelineLibraryClass(''); }} className="text-cobalt-700 underline dark:text-cobalt-300">Clear filters</button>.</p>
                       ) : (
                         <div className="mt-4 space-y-3">
                           {filteredGuidelineLibrary.map((guideline) => {
@@ -35523,6 +35762,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           : 'Live eligibility verdict from patient parameters'}
                       </span>
                     </div>
+                    {PUBLIC_DEMO_MODE && (
+                      <p className="rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                        <strong>Public demo trial workflow:</strong> Do not enter PHI or real encounter data. Trial matching is a first-pass educational screen; confirm against ClinicalTrials.gov and approved study materials.
+                      </p>
+                    )}
 
                     {/* Sub-view: Bedside Screener (iframe embed) */}
                     {trialsView === 'screener' && (
@@ -35569,6 +35813,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       addToast={addToast}
                       navigateTo={navigateTo}
                       isTraineeMode={isTraineeMode}
+                      workflowContext={workflowContext}
+                      contextHiddenIds={
+                        workflowContext
+                          ? new Set(
+                              getContentEducation()
+                                .filter((e) => !isContentRelevantTo(e, workflowContext))
+                                .map((e) => e.id)
+                            )
+                          : null
+                      }
                     />
                   </ErrorBoundary>
                 )}
@@ -35650,8 +35904,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 }
                                 setApiProvider(tempProvider);
                                 setApiKey(trimmedKey);
-                                saveToStorage('apiProvider', tempProvider);
-                                saveToStorage('apiKey', trimmedKey);
+                                setKey('apiProvider', tempProvider); // was an undefined saveToStorage() — ReferenceError blocked the save
+                                sessionStorage.setItem('apiKey', trimmedKey);
                                 addToast('API Settings saved successfully.', 'success');
                                 navigateTo('encounter');
                               }}
@@ -35948,7 +36202,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 explicit role="tablist" overrides its implicit navigation landmark, so
                 we mirror the desktop pattern (~app.jsx:16882): an outer
                 role="navigation" wrapper holds the tablist. */}
-            <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-[0_-1px_3px_rgba(0,0,0,0.08)] sm:hidden dark:bg-card dark:border-line" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }} role="navigation" aria-label="Mobile navigation">
+            <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-[0_-1px_3px_rgba(0,0,0,0.08)] sm:hidden dark:bg-card dark:border-line" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))', paddingLeft: 'env(safe-area-inset-left)', paddingRight: 'env(safe-area-inset-right)' }} role="navigation" aria-label="Mobile navigation">
               <div className="flex items-stretch justify-around" role="tablist" aria-label="Mobile sections">
                 {[
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },

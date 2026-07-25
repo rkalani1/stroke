@@ -1,0 +1,36 @@
+[
+  {
+    "id": "dawn",
+    "name": "DAWN",
+    "fullName": "Thrombectomy 6 to 24 Hours after Stroke with Mismatch between Deficit and Infarct",
+    "category": "evt-late-window",
+    "population": "n=206, ≥18, NIHSS ≥10, 6-24 h",
+    "finding": "Favored EVT: 49% vs 13% (functional independence)",
+    "teachingPoint": "Foundational evidence for late-window EVT.",
+    "PMID": "29129157",
+    "year": 2018,
+    "citationIds": [
+      "cit-dawn-2018"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "defuse-3",
+    "name": "DEFUSE-3",
+    "fullName": "Thrombectomy at 6-16 Hours with Selection by Perfusion Imaging",
+    "category": "evt-late-window",
+    "population": "n=182, 18-90, NIHSS ≥6, 6-16 h",
+    "finding": "Favored EVT",
+    "teachingPoint": "Established perfusion-mismatch criteria for late-window EVT.",
+    "PMID": "29364767",
+    "year": 2018,
+    "citationIds": [
+      "cit-defuse3-2018"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

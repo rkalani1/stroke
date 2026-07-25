@@ -4,7 +4,16 @@
 // must be adapted to local policy before clinical use. Do not rely on this
 // module as the sole source of truth for any patient encounter.
 //
-// EVIDENCE AUDIT: Last comprehensive review 2026-05-31 against:
+// EVIDENCE AUDIT: Last comprehensive review 2026-05-31; IVT/EVT eligibility and
+// BP-target content re-verified 2026-07-03 against the 2026 acute-stroke algorithm,
+// IVT/EVT eligibility, and telestroke source updates (no clinical changes required).
+// 2026-07-06: re-verified against the newest institution-neutral source translations
+// (June-30 telestroke workflow + pediatric framework) and the AHA/ASA 2026 AIS
+// guideline (Stroke; DOI 10.1161/STR.0000000000000513, PMID 41582814, PubMed-
+// verified). Extended-window IVT remains framed as emerging (not routine to 24h);
+// TNK 0.25 mg/kg max 25 mg; BP <185/110 pre-IVT and <180/105 post-IVT/EVT; no
+// routine SBP <140 after successful EVT. No clinical changes required.
+// Reviewed against:
 // — AHA/ASA AIS 2026 Guidelines
 // — AHA/ASA ICH 2022 (Greenberg)
 // — AHA/ASA aSAH 2023
@@ -66,6 +75,110 @@ export const INSTITUTIONAL_BP_PROTOCOLS = {
     loe: 'A',
     rationale: 'No benefit to initiating antihypertensive treatment if BP <220/120 without comorbid indication.'
   }
+};
+
+// =====================================================================
+// Initial non-traumatic IPH evaluation — public-safe workflow translation
+// =====================================================================
+export const ICH_INITIAL_EVALUATION_ALGORITHM = {
+  title: 'Initial non-traumatic IPH evaluation',
+  lastReviewed: '2026-07-03',
+  sourceWindow: 'Reviewed June 2026 public-safe algorithm translation',
+  scope: 'Institution-neutral educational translation. Use this as a workflow checklist only; verify against the current approved local protocol before clinical action.',
+  consultTrigger: 'Non-traumatic IPH >=15 mL by ABC/2 prompts early Neurosurgery and stroke-service evaluation.',
+  decisionNodes: [
+    {
+      title: 'Transfers and first contact',
+      items: [
+        'Start standard stabilization: agent-specific reversal, controlled BP lowering, head-of-bed elevation, and osmotic therapy when indicated.',
+        'Confirm last-known-well time, estimated arrival time, antithrombotic exposure, and legal next-of-kin/contact information.',
+        'Notify the receiving ED, stroke service, and ICU admitting service for ICU-level admissions.'
+      ]
+    },
+    {
+      title: 'ED diagnosis or arrival',
+      items: [
+        'Measure hematoma volume using ABC/2 and treat >=15 mL as the early Neurosurgery + stroke-service evaluation threshold.',
+        'ED clinicians or the stroke service may consult Neurosurgery directly; prior approval is not required.',
+        'Whichever service calls Neurosurgery closes the loop with the designated on-call stroke attending and other involved service so the plan is shared and documented.',
+        'Separate attending-of-record notification is not default unless that expectation is explicitly requested, especially overnight.',
+        'Consult earlier at any size for IVH, hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, vascular lesion concern, ED attending discretion, or clinician concern.'
+      ]
+    },
+    {
+      title: 'CTA/MRA branch',
+      items: [
+        'If CTA/MRA shows an underlying vascular lesion or anomaly, the Neurosurgery/neurointerventional pathway leads admission or operative/interventional planning with neurocritical care or ICU support.',
+        'If there is no vascular lesion and no surgical pathway, the stroke service leads admission with ICU support as needed.'
+      ]
+    },
+    {
+      title: 'Monitoring adjuncts',
+      items: [
+        'Use close serial neurologic exams and repeat imaging when the exam changes.',
+        'Use pupillometry where available as an adjunct for patients at risk of hydrocephalus, herniation, or neurologic deterioration.'
+      ]
+    }
+  ],
+  surgicalScreens: [
+    {
+      title: 'CSF diversion',
+      criteria: ['IVH or IPH with developing/symptomatic hydrocephalus', 'Decreased consciousness or obstructive physiology'],
+      action: 'Evaluate urgently for EVD.'
+    },
+    {
+      title: 'Decompression',
+      criteria: ['Life-threatening mass effect', 'Full-care goals after outcome discussion'],
+      action: 'Neurosurgery determines operative approach.'
+    },
+    {
+      title: 'Cerebellar decompression',
+      criteria: ['Cerebellar mass effect', 'Usually obstructive hydrocephalus and/or brainstem compression'],
+      action: 'Evaluate urgently for suboccipital decompression with or without EVD.'
+    },
+    {
+      title: 'Minimally invasive evacuation',
+      criteria: ['Lobar IPH 30-80 mL', 'Age 18-80', 'NIHSS >5', 'GCS 5-14', 'No underlying vascular lesion'],
+      action: 'Screen for the approved ENRICH-based standard-of-care pathway.'
+    }
+  ],
+  researchScreens: [
+    {
+      title: 'MINUTE screen',
+      criteria: [
+        'Age 18-80',
+        'Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH',
+        'Volume >=15 mL by ABC/2, or close enough to prompt screening',
+        'NIHSS >=6',
+        'CTA/MRA without vascular lesion',
+        'Arrival/evaluation <=15 hours since last known well',
+        'No clear standard-of-care surgical indication'
+      ],
+      action: 'MINUTE has operational priority over MIRROR when both are possible. Notify the approved trial pathway using current study materials; do not publish or infer internal contact details.'
+    },
+    {
+      title: 'MIRROR registry screen',
+      criteria: [
+        'Selected spontaneous supratentorial IPH being considered for minimally invasive evacuation',
+        'Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol before use',
+        'No underlying vascular lesion',
+        'Potential MIS timing within 24 hours of last known well or qualifying wake-up hemorrhage window'
+      ],
+      action: 'Do not let registry screening delay urgent surgical, trial, or stabilization decisions.'
+    }
+  ],
+  safetyPause: {
+    title: 'Before any surgical action',
+    items: [
+      'Stop at bedside for a time-out/safety pause.',
+      'Confirm that Neurosurgery, the stroke service, and the ICU team agree on the plan.',
+      'Do not present an operative plan as final until the cross-team agreement is explicit.'
+    ]
+  },
+  documentation: [
+    'If Neurosurgery recommends no procedure, document no current surgical indication within 24 hours.',
+    'Document the caller, receiving consultant, closed-loop recipient, and agreed next step.'
+  ]
 };
 
 // =====================================================================
@@ -470,13 +583,11 @@ export const GENERALIZABILITY_LIMITATIONS = [
 
 // =====================================================================
 // =====================================================================
-// Private institutional layer — local-only override hook
+// Local-only institutional extension hook
 // =====================================================================
-// The public build exports null here. When the local gitignored file
-//   private/institutional.js
-// is present on disk and served (via the optional <script> tag in
-// index.html), it sets window.__INSTITUTIONAL_LOCAL__ to a structured
-// object before app.js loads. This function reads that global.
+// The public build exports null here. A separate gitignored local extension
+// may set window.__INSTITUTIONAL_LOCAL__ to a structured object before app.js
+// loads. This function reads that global.
 //
 // Consumers: src/app.jsx reads this once at render to surface a
 // clearly-labelled "Institutional (local — not public)" section in the

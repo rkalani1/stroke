@@ -35,7 +35,8 @@ const safeJSONGet = (k) => {
 export function runV7Migration() {
   if (safeGet(MIGRATED_KEY)) return;
   if (isPublicPages()) {
-    try { localStorage.removeItem(PREF_KEY); } catch { /* ignore */ }
+    try { localStorage.removeItem('darkMode'); } catch { /* ignore */ }
+    try { localStorage.removeItem('strokeApp:darkMode'); } catch { /* ignore */ }
     safeSet(MIGRATED_KEY, '1');
     return;
   }

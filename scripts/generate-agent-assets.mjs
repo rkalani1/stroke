@@ -13,7 +13,7 @@
 //   data/generic-protocols.json          — institution-neutral BP protocols
 //   data/guidelines/index.json + *.json  — guideline metadata + copies
 //   data/whats-new.json                  — copy of the served whats-new feed
-//   data/calculators-index.json          — calculator catalog (also feeds MCP server)
+//   data/calculators-index.json          — calculator catalog
 //   llms.txt / llms-full.txt             — AI-crawler manifests
 //   robots.txt / sitemap.xml             — crawler guidance
 //
@@ -34,11 +34,11 @@ const checkOnly = args.has('--check');
 
 const SCHEMA_VERSION = '1.0.0';
 const BASE_URL = 'https://rkalani1.github.io/stroke';
-const LICENSE = 'Content for clinical reference by qualified clinicians. No warranty.';
-const DISCLAIMER =
-  'Decision support only — NOT medical advice and NOT a substitute for clinical judgment. ' +
-  'Institution-neutral and evidence-based; verify against primary sources and local policy ' +
-  'before any patient care decision.';
+const LICENSE = 'Synthetic educational reference content for qualified review. No warranty.';
+// NOTE: must stay byte-identical to PUBLIC_DEMO_AGENT_DISCLAIMER in
+// src/public-demo-guardrails.js (duplicated because that file is ESM-syntax in a
+// CJS-default package). tests/public-demo-labels.test.js asserts the two match.
+const DISCLAIMER = 'Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.';
 
 const pkg = JSON.parse(await fs.readFile(path.join(ROOT, 'package.json'), 'utf8'));
 const APP_VERSION = pkg.version;
@@ -64,6 +64,24 @@ function envelope(endpoint, source, data) {
   };
 }
 
+const PUBLIC_SOURCE_LABELS = {
+  'src/evidence/completedTrials.js': 'Evidence atlas completed-trials bundle',
+  'src/evidence/activeTrials.js': 'Evidence atlas active-trials bundle',
+  'src/evidence/recommendations.js': 'Evidence atlas recommendations bundle',
+  'src/evidence/citations.js': 'Evidence atlas citations bundle',
+  'src/evidence/claims.js': 'Evidence atlas claims bundle',
+  'src/evidence/topics.js': 'Evidence atlas topics bundle',
+  'src/evidence/index.js': 'Evidence atlas labels bundle',
+  'src/management-guidance.js': 'Management-card reference bundle',
+  'src/institutional-protocols.js': 'Public protocol reference bundle',
+  'src/guidelines/': 'Guideline metadata bundle',
+  'src/calculators.js, src/calculators-extended.js': 'Calculator catalog bundle',
+};
+
+function publicSourceLabel(source) {
+  return PUBLIC_SOURCE_LABELS[source] || source;
+}
+
 const writes = [];
 function write(rel, content) {
   const abs = path.join(ROOT, rel);
@@ -77,39 +95,21 @@ function write(rel, content) {
   );
 }
 
-// ── Calculator catalog (also the source-of-truth for the MCP server) ──────────
-const CALCULATORS = [
-  { id: 'nihss', name: 'NIH Stroke Scale', category: 'severity', fn: 'calculateNIHSS' },
-  { id: 'ich-score', name: 'ICH Score', category: 'prognosis', fn: 'calculateICHScore' },
-  { id: 'ich-volume', name: 'ICH Volume (ABC/2)', category: 'imaging', fn: 'calculateICHVolume' },
-  { id: 'gcs', name: 'Glasgow Coma Scale', category: 'severity', fn: 'calculateGCS' },
-  { id: 'abcd2', name: 'ABCD² (TIA risk)', category: 'risk', fn: 'calculateABCD2WithDetail' },
-  { id: 'aspects-pc', name: 'pc-ASPECTS', category: 'imaging', fn: 'calculatePCAspects' },
-  { id: 'chadsvasc', name: 'CHA₂DS₂-VASc', category: 'risk', fn: 'calculateCHADS2VascScore' },
-  { id: 'hasbled', name: 'HAS-BLED', category: 'risk', fn: 'calculateHASBLEDScore' },
-  { id: 'rope', name: 'RoPE (PFO)', category: 'risk', fn: 'calculateROPEScore' },
-  { id: 'rcvs2', name: 'RCVS²', category: 'risk', fn: 'calculateRCVS2Score' },
-  { id: 'phases', name: 'PHASES (aneurysm)', category: 'risk', fn: 'calculatePHASESScore' },
-  { id: 'tnk-dose', name: 'Tenecteplase dose (0.25 mg/kg)', category: 'dosing', fn: 'calculateTNKDose' },
-  { id: 'alteplase-dose', name: 'Alteplase dose (0.9 mg/kg)', category: 'dosing', fn: 'calculateAlteplaseDose' },
-  { id: 'doac-start', name: 'DOAC start timing (post-stroke AF)', category: 'dosing', fn: 'calculateDOACStart' },
-  { id: 'pcc-dose', name: '4F-PCC dose', category: 'dosing', fn: 'calculatePCCDose' },
-  { id: 'andexanet', name: 'Andexanet alfa dose', category: 'dosing', fn: 'calculateAndexanetDose' },
-  { id: 'enoxaparin', name: 'Enoxaparin dose', category: 'dosing', fn: 'calculateEnoxaparinDose' },
-  { id: 'crcl', name: 'Creatinine clearance (Cockcroft-Gault)', category: 'dosing', fn: 'calculateCrCl' },
-  { id: 'dawn', name: 'DAWN EVT eligibility', category: 'reperfusion', fn: 'evaluateDAWN' },
-  { id: 'defuse3', name: 'DEFUSE-3 EVT eligibility', category: 'reperfusion', fn: 'evaluateDEFUSE3' },
-  { id: 'acute-dapt', name: 'Acute DAPT recommendation', category: 'secondary-prevention', fn: 'recommendAcuteDAPT' },
-  { id: 'essen', name: 'Essen Stroke Risk Score', category: 'risk', fn: 'calculateESSEN' },
-  { id: 'spi2', name: 'Stroke Prognosis Instrument II', category: 'prognosis', fn: 'calculateSPI2' },
-  { id: 'vasograde', name: 'VASOGRADE (DCI risk)', category: 'risk', fn: 'calculateVASOGRADE' },
-];
+// ── Calculator catalog ───────────────────────────────────────────────────────
+// Single source of truth: content/calculators/registry.json (seeded from and
+// verified against the compute-module exports by scripts/seed-content.mjs).
+// Projected to the served {id,name,category,fn} shape so this asset stays
+// decoupled from the registry's internal fields (e.g. `module`).
+const CALCULATOR_REGISTRY = JSON.parse(
+  await fs.readFile(path.join(ROOT, 'content', 'calculators', 'registry.json'), 'utf8')
+);
+const CALCULATORS = CALCULATOR_REGISTRY.map(({ id, name, category, fn }) => ({ id, name, category, fn }));
 
 // ── Addressable hash routes (deep links for agents + humans) ──────────────────
 const ROUTES = [
-  { route: '#/encounter', label: 'Encounter workflow' },
-  { route: '#/protocols', label: 'Protocols & algorithms (institution-neutral)' },
-  { route: '#/protocols/ischemic', label: 'Acute ischemic stroke pathways' },
+  { route: '#/encounter', label: 'Synthetic encounter demo' },
+  { route: '#/protocols', label: 'Example protocols (not local policy)' },
+  { route: '#/protocols/ischemic', label: 'Example acute ischemic stroke pathways' },
   { route: '#/protocols/ich', label: 'Intracerebral hemorrhage' },
   { route: '#/protocols/calculators', label: 'Calculators' },
   { route: '#/research', label: 'Evidence atlas / guidelines' },
@@ -120,13 +120,13 @@ const ROUTES = [
 async function main() {
   // ---- Evidence atlas ----
   const atlas = await import(pathToFileURL(path.join(ROOT, 'src/evidence/index.js')).href);
-  write('data/atlas/completed-trials.json', envelope('completed-trials', 'src/evidence/completedTrials.js', atlas.completedTrials));
-  write('data/atlas/active-trials.json', envelope('active-trials', 'src/evidence/activeTrials.js', atlas.activeTrials));
-  write('data/atlas/recommendations.json', envelope('recommendations', 'src/evidence/recommendations.js', atlas.recommendations));
-  write('data/atlas/citations.json', envelope('citations', 'src/evidence/citations.js', atlas.citations));
-  write('data/atlas/claims.json', envelope('claims', 'src/evidence/claims.js', atlas.claims));
-  write('data/atlas/topics.json', envelope('topics', 'src/evidence/topics.js', atlas.topics));
-  write('data/atlas/labels.json', envelope('labels', 'src/evidence/index.js', {
+  write('data/atlas/completed-trials.json', envelope('completed-trials', publicSourceLabel('src/evidence/completedTrials.js'), atlas.completedTrials));
+  write('data/atlas/active-trials.json', envelope('active-trials', publicSourceLabel('src/evidence/activeTrials.js'), atlas.activeTrials));
+  write('data/atlas/recommendations.json', envelope('recommendations', publicSourceLabel('src/evidence/recommendations.js'), atlas.recommendations));
+  write('data/atlas/citations.json', envelope('citations', publicSourceLabel('src/evidence/citations.js'), atlas.citations));
+  write('data/atlas/claims.json', envelope('claims', publicSourceLabel('src/evidence/claims.js'), atlas.claims));
+  write('data/atlas/topics.json', envelope('topics', publicSourceLabel('src/evidence/topics.js'), atlas.topics));
+  write('data/atlas/labels.json', envelope('labels', publicSourceLabel('src/evidence/index.js'), {
     verificationStatus: atlas.VERIFICATION_STATUS_LABELS,
     certainty: atlas.CERTAINTY_LABELS,
     evidenceType: atlas.EVIDENCE_TYPE_LABELS,
@@ -135,7 +135,7 @@ async function main() {
 
   // ---- Management cards ----
   const mg = await import(pathToFileURL(path.join(ROOT, 'src/management-guidance.js')).href);
-  write('data/management-cards.json', envelope('management-cards', 'src/management-guidance.js', {
+  write('data/management-cards.json', envelope('management-cards', publicSourceLabel('src/management-guidance.js'), {
     lastReviewed: mg.AIS_COMMAND_CENTER_LAST_REVIEWED,
     sourceLinks: mg.AIS_SOURCE_LINKS,
     cards: mg.AIS_COMMAND_CENTER_CARDS,
@@ -144,8 +144,9 @@ async function main() {
   // ---- Generic (institution-neutral) protocols ----
   try {
     const ip = await import(pathToFileURL(path.join(ROOT, 'src/institutional-protocols.js')).href);
-    write('data/generic-protocols.json', envelope('generic-protocols', 'src/institutional-protocols.js', {
+    write('data/generic-protocols.json', envelope('generic-protocols', publicSourceLabel('src/institutional-protocols.js'), {
       bpProtocols: ip.INSTITUTIONAL_BP_PROTOCOLS,
+      ichInitialEvaluation: ip.ICH_INITIAL_EVALUATION_ALGORITHM,
       safePauseAttestation: ip.SAFE_PAUSE_ATTESTATION,
     }));
   } catch (e) {
@@ -159,20 +160,25 @@ async function main() {
   for (const f of gfiles) {
     const raw = await fs.readFile(path.join(gdir, f), 'utf8');
     const g = JSON.parse(raw);
+    // Fallback id/title derived from the filename so non-guideline catalogs
+    // (e.g. landmark-trials.json, which has no id/title/doi metadata) still
+    // produce an identifiable, machine-parseable index entry.
+    const derivedId = f.replace(/\.json$/, '');
+    const humanTitle = derivedId.replace(/(^|-)([a-z])/g, (_, sep, c) => (sep ? ' ' : '') + c.toUpperCase());
     gindex.push({
-      id: g.id, title: g.title, shortTitle: g.shortTitle, doi: g.doi,
+      id: g.id || derivedId, title: g.title || humanTitle, shortTitle: g.shortTitle, doi: g.doi,
       publisherUrl: g.publisherUrl, pdfUrl: g.pdfUrl,
       recommendationCount: Array.isArray(g.recommendations) ? g.recommendations.length : 0,
       url: `${BASE_URL}/data/guidelines/${f}`,
     });
     write(`data/guidelines/${f}`, raw); // verbatim copy — no reformatting churn
   }
-  write('data/guidelines/index.json', envelope('guidelines-index', 'src/guidelines/', gindex));
+  write('data/guidelines/index.json', envelope('guidelines-index', publicSourceLabel('src/guidelines/'), gindex));
 
   // ---- whats-new: the root /whats-new.json is already served; do not duplicate ----
 
   // ---- calculators index ----
-  write('data/calculators-index.json', envelope('calculators', 'src/calculators.js, src/calculators-extended.js', CALCULATORS));
+  write('data/calculators-index.json', envelope('calculators', publicSourceLabel('src/calculators.js, src/calculators-extended.js'), CALCULATORS));
 
   // ---- master manifest ----
   const endpoints = [
@@ -191,14 +197,14 @@ async function main() {
     },
     endpoints: endpoints.map((e) => `${BASE_URL}/${e}`),
     routes: ROUTES.map((r) => ({ ...r, url: `${BASE_URL}/${r.route}` })),
-    mcpServer: `${BASE_URL}/mcp/ (see repo /mcp for the stroke-cds MCP server)`,
+    mcpServer: null,
   });
 
   // ---- llms.txt ----
   const llms = [
-    '# Stroke Clinical Decision Support',
+    '# Stroke CDS Educational Demo',
     '',
-    `> Client-side, offline-capable stroke CDS toolkit (v${APP_VERSION}): acute ischemic & hemorrhagic stroke pathways, ${CALCULATORS.length} calculators, an evidence atlas (${atlas.completedTrials.length} landmark trials, ${atlas.activeTrials.length} active trials), guideline summaries, and a trial screener. Institution-neutral and evidence-based.`,
+    `> Synthetic educational stroke decision-support demo (v${APP_VERSION}): example acute ischemic & hemorrhagic stroke pathways, ${CALCULATORS.length} calculators, an evidence atlas (${atlas.completedTrials.length} landmark trials, ${atlas.activeTrials.length} active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.`,
     '',
     `${DISCLAIMER}`,
     '',
@@ -218,12 +224,12 @@ async function main() {
     ...ROUTES.map((r) => `- \`${r.route}\` — ${r.label}`),
     '',
     '## For AI agents',
-    '- A stroke-CDS MCP server (in the repo under `/mcp`) exposes the calculators and atlas as callable tools.',
-    '- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, source, disclaimer).',
-    '- No hospital-specific institutional content is published here; the site is institution-neutral by design.',
+    '- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, public source label, disclaimer). Agents must propagate the disclaimer with any output.',
+    '- Agents must not process PHI or real encounter details from this public demo.',
+    '- No hospital-specific protocols are published here; do not use this public demo for real encounters or PHI.',
     '',
     '## Policy',
-    '- Not medical advice. Verify against primary sources (PMIDs/DOIs included in the atlas) and local policy.',
+    '- Not medical advice. Do not enter PHI or real encounter details. Verify against primary sources (PMIDs/DOIs included in the atlas) and approved local protocol.',
     `- License: ${LICENSE}`,
     '',
   ].join('\n');

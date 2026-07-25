@@ -117,7 +117,12 @@ describe('matcher engine — operators', () => {
       expect(resolveField('reperfusion', { telestrokeNote: {} })).toBeNull();
       // Definitive false-false → false (no reperfusion plan recorded).
       expect(resolveField('reperfusion', { telestrokeNote: { tnkRecommended: false, evtRecommended: false } })).toBe(false);
-      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'] } })).toBe('mevo');
+      // STEP MVO domain (NCT06289985) requires non-dominant M2/M3 AND NIHSS ≥8;
+      // M2/M3 alone (low or unknown NIHSS) must NOT match — that false positive
+      // was the pre-fix bug.
+      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'], nihss: '8' }, nihssScore: 8 })).toBe('mevo');
+      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'] } })).toBe('none');
+      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M4'], nihss: '12' }, nihssScore: 12 })).toBe('none');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M1'], nihss: '4' }, nihssScore: 4 })).toBe('low-nihss-lvo');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M1'], nihss: '8' }, nihssScore: 8 })).toBe('none');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: [] } })).toBeNull();
@@ -250,6 +255,16 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
     expect(r.status).toBe('eligible');
   });
 
+  it('SATURN: lobar ICH on statin → eligible', () => {
+    const data = {
+      telestrokeNote: { age: '72', premorbidMRS: '2' },
+      ichLocation: 'lobar parietal',
+      onStatin: true
+    };
+    const r = evaluateActiveTrial(getActiveTrial('saturn'), data);
+    expect(r.status).toBe('eligible');
+  });
+
   it('ASPIRE: ICH + AF + mRS 3 → eligible', () => {
     const data = {
       telestrokeNote: {
@@ -326,14 +341,14 @@ describe('matcher engine — exclusions', () => {
     expect(r.exclusions.some((x) => x.id === 'pregnancy')).toBe(true);
   });
 
-  it('every active trial has matcherExclusions populated (13 across 9 active trials)', () => {
+  it('every active trial has matcherExclusions populated (16 across 10 active trials)', () => {
     let total = 0;
     for (const t of activeTrials) {
       total += (t.matcherExclusions || []).length;
     }
     expect(total).toBeGreaterThan(0);
     // Trial-level matcherExclusions total across the active atlas.
-    expect(total).toBe(13);
+    expect(total).toBe(16);
   });
 });
 

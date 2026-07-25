@@ -7,6 +7,7 @@ import { chromium } from 'playwright';
 
 const PORT = 4173;
 const LOCAL_URL = `http://127.0.0.1:${PORT}/`;
+const PUBLIC_DEMO_LOCAL_URL = `${LOCAL_URL}?publicDemo=1`;
 const LIVE_URL = process.env.STROKE_LIVE_URL || 'https://rkalani1.github.io/stroke/';
 const VIEWPORTS = [
   { name: 'desktop', width: 1440, height: 900 },
@@ -322,6 +323,35 @@ async function clickElementRobust(locator) {
   }
 }
 
+async function auditPublicDemoSurface(page, context, target, issues, notes) {
+  const shouldCheckPublicDemo =
+    target.isPublicDemo ||
+    (target.name === 'live' && target.enforceLiveParityChecks && /(^|\.)github\.io$/i.test(new URL(target.url).hostname));
+  if (!shouldCheckPublicDemo) return;
+
+  notes.publicDemoChecked = true;
+
+  // The public-demo consent modal and standing PHI banner were removed from the
+  // UI (owner decision). The no-PHI posture is preserved in metadata/policy
+  // (index.html meta, data/*.json disclaimers, COMPLIANCE.md) rather than a
+  // blocking surface. We still assert no named-institution label leaks visibly.
+  let bodyText = await page.locator('body').innerText();
+  if (/Institutional Protocols & Algorithms/i.test(bodyText)) {
+    addIssue(issues, 'public-demo-institutional-label-visible');
+  }
+
+  await context.setOffline(true);
+  await page.evaluate(() => window.dispatchEvent(new Event('offline')));
+  await page.waitForTimeout(250);
+  bodyText = await page.locator('body').innerText();
+  if (!/Offline - public demo mode: changes are not saved and may be cleared on reload/i.test(bodyText)) {
+    addIssue(issues, 'public-demo-offline-copy-missing');
+  }
+  await context.setOffline(false);
+  await page.evaluate(() => window.dispatchEvent(new Event('online')));
+  await page.waitForTimeout(150);
+}
+
 async function auditView(browser, target, viewport) {
   const context = await browser.newContext({
     viewport: { width: viewport.width, height: viewport.height },
@@ -385,6 +415,8 @@ async function auditView(browser, target, viewport) {
   if (!rootInfo.rootExists || rootInfo.rootChildren < 1 || rootInfo.textLength < 300) {
     addIssue(issues, 'render-risk', { rootInfo });
   }
+
+  await auditPublicDemoSurface(page, context, target, issues, notes);
 
   const tabButtons = page.locator('button.tab-pill');
   const tabCount = await tabButtons.count();
@@ -668,7 +700,7 @@ async function auditView(browser, target, viewport) {
   // Library tab retired; content folded into Management/Protocols sub-tabs.
   let navigatedToManagement = await navigateToTab(page, 'Management');
   if (!navigatedToManagement) navigatedToManagement = await navigateToTab(page, 'Protocols');
-  if (!navigatedToManagement) navigatedToManagement = await navigateToTab(page, 'Institutional Protocols');
+  if (!navigatedToManagement) navigatedToManagement = await navigateToTab(page, 'Example Protocols');
 
   if (!navigatedToManagement) {
     addIssue(issues, 'tab-nav', { tab: 'Management' });
@@ -708,6 +740,77 @@ async function auditView(browser, target, viewport) {
           postEvtPlanConfigured = true;
         } else {
           addIssue(issues, 'missing-post-evt-bp-inputs');
+        }
+      }
+    }
+
+    const ichButton = page.locator('#mgmt-tab-ich').first();
+    if ((await ichButton.count()) === 0) {
+      addIssue(issues, 'missing-library-subtab', { subtab: 'ICH' });
+    } else {
+      await clickElementRobust(ichButton);
+      await page.waitForTimeout(200);
+      await page.evaluate(() => {
+        document.querySelectorAll('#mgmt-tabpanel-ich details').forEach((details) => {
+          details.open = true;
+        });
+      }).catch(() => {});
+
+      const ichPanel = page.locator('#mgmt-tabpanel-ich').first();
+      if ((await ichPanel.count()) === 0) {
+        addIssue(issues, 'missing-ich-tabpanel');
+      } else {
+        const ichText = await ichPanel.innerText().catch(() => '');
+        const requiredIchText = [
+          { label: 'initial-eval-heading', re: /Initial Non-Traumatic IPH Evaluation/i },
+          { label: 'abc2-trigger', re: /Non-traumatic IPH (?:>=|≥)15 mL by ABC\/2/i },
+          { label: 'direct-neurosurgery-call', re: /ED clinicians or the stroke service may call Neurosurgery directly/i },
+          { label: 'prior-approval-not-required', re: /prior approval is not required/i },
+          { label: 'closed-loop-stroke-attending', re: /designated on-call stroke attending/i },
+          { label: 'attending-record-not-default', re: /attending-of-record notification is not default/i },
+          { label: 'ivh-hydrocephalus', re: /IVH(?:\/|, )hydrocephalus/i },
+          { label: 'cerebellar-hemorrhage-trigger', re: /cerebellar hemorrhage/i },
+          { label: 'mass-effect-trigger', re: /mass effect/i },
+          { label: 'vascular-lesion-trigger', re: /vascular lesion concern/i },
+          { label: 'neurologic-decline-trigger', re: /neurologic decline/i },
+          { label: 'multicompartmental-trigger', re: /multicompartmental hemorrhage/i },
+          { label: 'ed-attending-discretion-trigger', re: /ED attending discretion/i },
+          { label: 'clinician-concern-trigger', re: /clinician concern/i },
+          {
+            label: 'scoped-early-neurosurgery-stroke-service-trigger-list',
+            re: /Screen for early Neurosurgery \+ stroke-service evaluation triggers:[\s\S]{0,360}clinician concern/i
+          },
+          { label: 'smooth-bp-class', re: /Smooth, sustained BP control and timely treatment/i },
+          { label: 'sbp-140-range', re: /target SBP 140\/range 130-150 when appropriate/i },
+          { label: 'avoid-lt-130', re: /avoid <130/i },
+          { label: 'minute-priority', re: /MINUTE has operational priority over MIRROR/i },
+          { label: 'minute-volume-15ml', re: /(?:Volume (?:>=|≥)15 mL by ABC\/2|Basal-ganglia IPH (?:>=|≥)15 mL)/i },
+          { label: 'minute-nihss-6', re: /NIHSS (?:>=|≥)6/i },
+          { label: 'minute-window-15h', re: /(?:<=|≤)15h|(?:<=|≤)15 hours|15 hours from last known well/i },
+          {
+            label: 'mirror-thresholds-version-sensitive',
+            re: /Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol/i
+          },
+          { label: 'enrich-mie-range', re: /ENRICH supports selected lobar 30-80 mL patients/i },
+          { label: 'mie-gcs-5-14', re: /GCS 5-14/i }
+        ];
+        for (const assertion of requiredIchText) {
+          if (!assertion.re.test(ichText)) {
+            addIssue(issues, 'missing-ich-algorithm-text', { label: assertion.label });
+          }
+        }
+        const forbiddenIchText = [
+          { label: 'rapid-bp-class-i', re: /Rapid BP reduction to SBP ~140 within 1 hour/i },
+          { label: 'sbp-class-i-loe-a', re: /Class I, LOE A for SBP reduction to 140/i },
+          { label: 'uncaveated-functional-outcome', re: /Functional outcome benefit remains uncertain\./i },
+          { label: 'settled-mirror-mrs', re: /Baseline mRS ≤2|Premorbid mRS 0-1/i },
+          { label: 'settled-mirror-gcs', re: /GCS ≥5|Baseline GCS:?\s*5-15/i },
+          { label: 'stale-dual-consult-label', re: /early dual-consult/i }
+        ];
+        for (const assertion of forbiddenIchText) {
+          if (assertion.re.test(ichText)) {
+            addIssue(issues, 'forbidden-ich-algorithm-text', { label: assertion.label });
+          }
         }
       }
     }
@@ -971,7 +1074,10 @@ async function auditView(browser, target, viewport) {
 async function main() {
   await fs.mkdir(outDir, { recursive: true });
 
-  const targets = [{ name: 'local', url: LOCAL_URL }];
+  const targets = [
+    { name: 'local', url: LOCAL_URL },
+    { name: 'local-public-demo', url: PUBLIC_DEMO_LOCAL_URL, isPublicDemo: true, viewports: [VIEWPORTS[0]] }
+  ];
   if (!localOnly) targets.push({ name: 'live', url: LIVE_URL });
 
   let server = null;
@@ -986,6 +1092,15 @@ async function main() {
     const localVersion = await fetchAppVersion(LOCAL_URL);
     const liveVersion = localOnly ? null : await fetchAppVersion(LIVE_URL);
     const liveVersionMatchesLocal = !localOnly && Boolean(localVersion) && Boolean(liveVersion) && localVersion === liveVersion;
+    const liveParityIssues = [];
+    if (!localOnly && !liveVersionMatchesLocal) {
+      liveParityIssues.push({
+        type: 'live-deployment-parity',
+        message: 'Live app version does not match the checked-out local build.',
+        localAppVersion: localVersion || null,
+        liveAppVersion: liveVersion || null
+      });
+    }
 
     const effectiveTargets = targets.map((target) => {
       if (target.name === 'live') {
@@ -1002,11 +1117,17 @@ async function main() {
       };
     });
 
-  const browser = await chromium.launch({ headless: true });
+  // STROKE_CHROMIUM_PATH override (mirrors scripts/snapshot-example-protocols.mjs)
+  // lets CI/local envs point at an already-installed Chromium instead of the
+  // Playwright-pinned build. No override → default resolution, unchanged.
+  const browser = await chromium.launch({
+    headless: true,
+    ...(process.env.STROKE_CHROMIUM_PATH ? { executablePath: process.env.STROKE_CHROMIUM_PATH } : {})
+  });
   const runs = [];
 
   for (const target of effectiveTargets) {
-    for (const viewport of VIEWPORTS) {
+    for (const viewport of target.viewports || VIEWPORTS) {
       try {
         runs.push(await auditView(browser, target, viewport));
       } catch (error) {
@@ -1024,6 +1145,22 @@ async function main() {
   }
 
     await browser.close();
+
+    if (liveParityIssues.length > 0) {
+      runs.push({
+        target: 'live',
+        url: LIVE_URL,
+        viewport: 'deployment-parity',
+        issues: liveParityIssues,
+        issueCount: liveParityIssues.length,
+        notes: {
+          localAppVersion: localVersion || null,
+          liveAppVersion: liveVersion || null,
+          liveParityChecksEnabled: false
+        },
+        screenshot: null
+      });
+    }
 
     const totalIssues = runs.reduce((sum, run) => sum + run.issueCount, 0);
     const timedRuns = runs.filter((run) => Number.isFinite(run?.notes?.runDurationMs));

@@ -2,12 +2,12 @@
   "_meta": {
     "endpoint": "guidelines-index",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.9.24",
-    "checksum": "sha256:162e28ebbab63768eabb5e181497e977",
+    "appVersion": "6.11.6",
+    "checksum": "sha256:5f9dc84965d320534fe01dcd9d994875",
     "count": 18,
-    "source": "src/guidelines/",
-    "license": "Content for clinical reference by qualified clinicians. No warranty.",
-    "disclaimer": "Decision support only — NOT medical advice and NOT a substitute for clinical judgment. Institution-neutral and evidence-based; verify against primary sources and local policy before any patient care decision."
+    "source": "Guideline metadata bundle",
+    "license": "Synthetic educational reference content for qualified review. No warranty.",
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
   },
   "data": [
     {
@@ -61,6 +61,8 @@
       "url": "https://rkalani1.github.io/stroke/data/guidelines/ich-2022.json"
     },
     {
+      "id": "landmark-trials",
+      "title": "Landmark Trials",
       "recommendationCount": 0,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/landmark-trials.json"
     },

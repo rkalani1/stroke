@@ -128,3 +128,32 @@ test('acceptUpdate: handles environments without serviceWorker support', async (
     });
   }
 });
+
+test('notify: error path explicitly swallows listener exceptions without propagating', () => {
+  let subsequentListenerExecuted = false;
+  const unregister1 = onUpdateReady(() => { throw new Error('Forced mock error state to test swallow'); });
+  const unregister2 = onUpdateReady(() => { subsequentListenerExecuted = true; });
+
+  bindSWController();
+  const handler = mockServiceWorker._handlers['message'];
+
+  assert.doesNotThrow(() => {
+    handler({ data: { type: 'sw-update-ready', version: 'error-path-test' } });
+  }, 'The notify function must swallow errors from throwing listeners');
+
+  assert.strictEqual(subsequentListenerExecuted, true, 'Listeners after the throwing listener must still execute');
+
+  unregister1();
+  unregister2();
+});
+
+test('bindSWController: handles messages with missing or undefined data gracefully', () => {
+  bindSWController();
+  const handler = mockServiceWorker._handlers['message'];
+  assert.strictEqual(typeof handler, 'function', 'Message handler should be registered');
+
+  // Passing event with no data should fall back to {} and not throw
+  assert.doesNotThrow(() => {
+    handler({});
+  }, 'Should handle missing event.data gracefully');
+});

@@ -1,5 +1,206 @@
 # CHANGELOG
 
+## v6.11.5 — 2026-07-13 — 2026 guideline refresh for education cards
+
+Updated the clinical education cards in `src/education.jsx` to current (through
+2026) standards, with every trial result and guideline verified against primary
+PubMed sources before it was written. No changes to the institutional
+`PLACEHOLDERS`/protocol zone (leak-guard green).
+
+- **New card — "IV Thrombolysis: TNK & Time Windows":** tenecteplase 0.25 mg/kg
+  single bolus as the preferred agent, the standard 4.5 h window, and extended
+  4.5–24 h perfusion-based windows. Integrates ATTEST-2 (TNK non-inferior to
+  alteplase → preferred; PMID 39424558), TRACE-III (positive 4.5–24 h when EVT
+  unavailable; 38884324), TIMELESS (neutral when EVT available; 38329148), and
+  TEMPO-2 (futile in minor stroke with occlusion; 38768626).
+- **STK-4 core measure** made thrombolytic-agnostic (tenecteplase or alteplase;
+  TNK preferred per the 2026 AHA/ASA AIS guideline, PMID 41582814 — verified real).
+- **Secondary prevention:** added Factor XIa inhibition (asundexian, OCEANIC-STROKE
+  — ischemic stroke HR 0.74, bleeding not increased; PMID 41985132) to the Aspirin
+  Failure card and a 2026 prevention note to TOAST. OCEANIC-STROKE is a *completed,
+  positive* trial — the "early termination" belongs to OCEANIC-AF (asundexian
+  inferior to apixaban in AF); the card states this distinction and that asundexian
+  is an add-on, not a replacement for antiplatelets/anticoagulation, and unapproved.
+- **ICH:** added a FASTEST note (rFVIIa within 2 h *stopped for futility* — slowed
+  hematoma growth but no functional benefit and more thromboembolism; PMID 41653933;
+  not recommended). Fixed a wrong ICH-guideline citation (PMID 35579047, a dental-
+  education paper → correct Greenberg 2022, 35579034). ICH Score math unchanged.
+- **DAPT:** made the 21-day (minor stroke/high-risk TIA) vs 90-day (SAMMPRIS
+  intracranial stenosis) vs 30-day (THALES) durations explicit.
+- **ASMs:** added an early-seizure / cortical-ICH nuance; fixed the same ICH PMID.
+- Regenerated the `/content` data layer (education 16 → 17) and rebuilt `app.js`.
+  Version bumped 6.11.4 → 6.11.5 to bust HTTP/SW caches. Gates: leak-guard 0 ·
+  850 unit tests · content + citation validators · protocol snapshot lock · build.
+
+## v6.11.4 — 2026-07-12 — rename "Example Protocols" tab to "Protocols"
+
+Renamed the top-level **"Example Protocols"** tab (and its command-palette
+"Go to" entry) to **"Protocols"** at owner request. The "example / not local
+policy" framing is preserved elsewhere — the palette keywords (`example`,
+`not local policy`), the in-panel disclaimer ("Educational examples only — not
+local policy…"), and the machine-readable data-route descriptor
+(`Example protocols (not local policy)`) are unchanged, so the tab is not
+reframed as vetted institutional policy. Label-only change: the frozen
+protocols content is untouched, so the Example Protocols snapshot lock stays
+green (the tab label lives in the tablist, outside `#tabpanel-protocols`).
+Rebuilt `app.js`; updated the public-demo label guard test. Version bumped
+6.11.3 → 6.11.4 to bust HTTP/SW caches so the relabel reaches returning
+clients. Gates: leak-guard 0 · unit tests · protocol snapshot lock · build.
+
+## v6.11.3 — 2026-07-11 — clinical corrections + context switch + unified search
+
+Completes the refactor: applies the audit-flagged clinical corrections, ships
+the Telestroke/Inpatient/Clinic context switch, and expands the calculator
+registry. Version bumped 6.11.2 → 6.11.3 for cache-bust. Example Protocols
+wording unchanged (snapshot lock green).
+
+- **Clinical corrections** (6 factual errors, each verified against the
+  authoritative source already in the repo; none in the frozen protocols zone;
+  locked by `tests/clinical-corrections.test.js`):
+  - THALES DAPT duration no longer mislabelled as 90 days (it is 30).
+  - ICH Score 4 mortality 94% → 97% (Hemphill) in the education card.
+  - HINTS peripheral/central pattern corrected in the cranial-nerve card.
+  - TREAT-CAD: removed the overstated "aspirin non-inferior" claim (it was not).
+  - Mannitol osmolar-gap hold threshold 55 → 20.
+  - AF-timing pearl aligned to the canonical ELAN/OPTIMAS/CATALYST model.
+  - (CVT seizure prophylaxis reviewed — guideline-consistent, no change.)
+- **Context switch:** header control (All / Telestroke / Inpatient / Clinic)
+  that filters/reorders content surfaces; the education gallery filters by
+  context (hides nothing by default). Never scopes global search.
+- **Unified search:** the command palette now indexes all five `/content` data
+  sources (guidelines, trials, education, calculators, references).
+- **Calculator registry** expanded to 34 catalogued calculators (each with a
+  verified compute export); palette + agent index derive from it.
+- **Bugfix:** repaired a latent ReferenceError (undefined `saveToStorage`) that
+  blocked the AI-provider settings save.
+- Gates: leak-guard 0 · 849 unit tests · protocol snapshot lock · content
+  schema/link/currency validators · browser-verified (context switch + search).
+
+## v6.11.2 — 2026-07-11 — content data layer + Example Protocols content lock
+
+Maintainability refactor. **No user-facing behavior change** — the rendered app
+is identical (Example Protocols wording is byte-locked; all tabs verified
+rendering with zero console errors). Version bumped 6.11.1 → 6.11.2 for
+cache-bust of the rebuilt bundle.
+
+- **Example Protocols content lock:** `scripts/snapshot-example-protocols.mjs`
+  renders the built app and diffs every `#/protocols/*` subtab's visible text +
+  drug-modal content against committed baselines. Wired into CI + `npm test`;
+  frozen clinical wording can no longer drift silently.
+- **`/content` data layer:** typed, schema-validated clinical data
+  (guidelines, trials, education, calculators, references) with build-time
+  validation that fails on malformed entries, unresolved citations, or stale
+  review dates. Single calculator registry (the agent-asset generator now
+  derives from it — `data/calculators-index.json` byte-identical). Single
+  citations module enforced. Excluded from the Pages serve (`_config.yml`).
+- **Update pipeline:** `check-currency.mjs`, PDF/PMID `scaffold-content.mjs`
+  (drafts only, never auto-publishes), `CONTRIBUTING-content.md`, per-entry
+  provenance + content CHANGELOG.
+- **De-dup:** removed dead inline `calculate4FPCC` (duplicated
+  `calculators.js` `calculatePCCDose`, zero call sites) — the only `app.js`
+  change, hence the cache-bust.
+- **Docs:** `REFACTOR_MAP.md` (full audit), `REMAINING-WORK.md` (sequenced,
+  snapshot-gated plan for the remaining render integration + a clinical-review
+  queue held for clinician sign-off).
+- Gates: leak-guard 0 · 828 unit tests · protocol snapshot lock · content
+  schema/link/currency validators · browser-verified render.
+
+## v6.11.1 — 2026-07-06 — restore encounter documentation templates
+
+Restored the risk-benefit discussion and post-reperfusion management note
+templates to the encounter tab as an always-visible, copy-pasteable
+"Documentation templates" section (they had become reachable only deep in the
+gated telestroke flow). Four copy-into-EMR templates, each with a Copy button:
+- Thrombolysis (IV TNK/tPA) risk-benefit discussion documentation
+- Endovascular therapy (mechanical thrombectomy) risk-benefit discussion documentation
+- Post-TNK/tPA management note (ICU, neuro-check cadence, BP <180/105 ×24h, imaging, workup)
+- Post-EVT (thrombectomy) management note — restored counterpart (Neuro ICU, post-EVT
+  BP 140-180 ×72h with avoid-SBP<140 harm caveat, access-site monitoring, 24h CT/DECT)
+
+All templates are institution-neutral, public-safe educational examples labeled
+"not local policy — verify against approved local protocol." No institutional
+identifiers, contacts, or PHI. Version bumped 6.11.0 → 6.11.1 for cache-bust.
+Gates: leak-guard 0 · protocol + unit tests pass · build · browser-verified render
++ working Copy buttons.
+
+## v6.11.0 — 2026-07-06 — evidence refresh (2026-07-06)
+
+Evidence Atlas / Guidelines refresh, every claim verified live against PubMed
+on 2026-07-06 (access date recorded per record):
+- Added 6 PubMed-verified completed trials (`src/evidence/completedTrials.js`
+  + `citations.js`, all `verified-pubmed`): BRIDGE-TNK (NEJM 2025, PMID
+  40396577), HOPE (JAMA 2025, PMID 40773205), EXPECTS (NEJM 2025, PMID
+  40174223), MIND (JAMA Neurol 2025, PMID 40892424 — a NEGATIVE trial),
+  CHABLIS-T II (Stroke 2025, PMID 39744861), TEMPO-2 (Lancet 2024, PMID
+  38768626). Two source-doc DOI errors corrected against PubMed (TEMPO-2,
+  ROSE-TNK). Atlas: 58→64 completed, 70→76 citations.
+- Extended-window alteplase framed as emerging (not routine to 24h); MIND kept
+  as a negative trial (no MIS superiority).
+- Thrombolysis-angioedema H2 note made formulary-neutral (removed ranitidine
+  token; famotidine retained).
+- `src/institutional-protocols.js` audit header refreshed to 2026-07-06
+  (re-verified vs June-2026 sources + AHA/ASA 2026 AIS guideline PMID 41582814;
+  no clinical change).
+- +3 protocol-currency regression guards (evidence-refresh presence + PMIDs/
+  DOIs, corrected TEMPO-2 DOI, TNK 0.25 mg/kg max 25 with 0.4 mg/kg prohibition).
+
+Version bumped 6.10.1 → 6.11.0 to bust HTTP/SW caches so the new bundle
+propagates immediately. Public-safe: no institutional identifiers added;
+leak-guard 0. Gates: all evidence/citation validators + unit/protocol tests +
+build pass; browser QA (desktop + mobile) clean.
+
+## v6.10.1 — 2026-07-04 — UI declutter
+
+Owner-directed removal of low-value surfaces (no clinical-content changes):
+- Public-demo consent modal + standing PHI banner (no-PHI posture kept in
+  metadata/policy: index.html meta, `data/*.json`, COMPLIANCE.md).
+- Encounter-summary "Readiness" rail block and its inline Missing-Fields twin
+  (Incomplete / Safety-critical chips).
+- "not saved yet" auto-save subtitle by the logo.
+- Redundant header "Search" button (search bar retained; ⌘K / "/" still open
+  the command palette).
+- Shortened the Protocols tab label to "Example Protocols" (dropped the
+  "(Not Local Policy)" parenthetical; retained as a palette keyword and in the
+  machine-readable data route).
+
+Version bumped 6.10.0 → 6.10.1 to bust HTTP/SW caches so the change propagates
+immediately. Gates: leak-guard 0 · 683 unit tests · qa-smoke 4/0 · browser QA.
+
+## v6.10.0 — 2026-07-03 — privacy/identity hardening + polish
+
+### Privacy & identity
+- All public safety copy is now **institution-neutral**: "not an approved
+  clinical tool" replaces every named-institution approval disclaimer across
+  the app banner/modal, `index.html` metadata + JSON-LD, `manifest.json`,
+  the `data/*.json` `_meta.disclaimer`, `llms.txt` / `llms-full.txt`, the MCP
+  server, and `COMPLIANCE.md` (clinical-use gate genericized).
+- Leak guard gained a third tier — `identityTokens` (maintainer name,
+  personal email, institutional domains) scanned in **every** tracked file
+  with no exemptions; the docs/ exemption for institution names was removed
+  (Pages serves the repo root, so docs/ is public surface); the negative
+  institutional-disclaimer allowance was deleted so named-institution copy
+  cannot return. Bundle guard tests hardened to match.
+- Author metadata stripped from four served reference PDFs.
+- Dev debris removed from the public surface: `scratch/`, `docs/superpowers/`,
+  sprint/status/resume notes, debug HTML, one-off scripts, orphaned images,
+  and an internal consolidation inventory.
+
+### UX / accessibility
+- Unknown deep links now show a "Link not recognized" notice instead of
+  silently landing on Encounter.
+- Guideline Library empty state gained a "Clear filters" action (matches the
+  Evidence Atlas pattern).
+- ASTRAL/PLAN sliders have accessible labels; error diagnostics now report
+  storage availability; ward-census demo copy clarified; bottom nav respects
+  side safe-area insets on notched phones.
+
+### Performance
+- All 15 fonts converted TTF → WOFF2 (1,175 KB → 441 KB, −62%); font
+  preloads added for the two above-the-fold faces; service-worker precache
+  updated.
+- Broken antiseizure-pathway image reference removed (production 404);
+  education figures now lazy-load.
+
 ## v6.0.0 — 2026-05-23 — v7 visual overhaul
 
 **Major bump.** The visual surface is breaking even though APIs are not. The

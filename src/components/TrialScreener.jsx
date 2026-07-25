@@ -678,8 +678,8 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
                           onChange={(v) => set({ volume: v })}
                           options={[
                             { value: 'unselected', label: 'Select…' },
-                            { value: 'bg_small', label: 'Small/Moderate (< 20 mL)' },
-                            { value: 'bg_large', label: 'Large (≥ 20 mL)' }
+                            { value: 'bg_small', label: 'Below screening threshold' },
+                            { value: 'bg_large', label: 'Screen-positive (>=15 mL or close)' }
                           ]}
                         />
                       )}

@@ -112,7 +112,7 @@ The following items were surfaced by code review. They are **tracked, not done**
 
 ## 7. Constraints Upheld
 
-- **Institution-neutral public site**: zero HMC / UW / UW-Medicine content on `rkalani1.github.io/stroke`. Verified clean.
+- **Institution-neutral public site**: zero named-institution content on `rkalani1.github.io/stroke`. Verified clean.
 - **Extend, not rewrite**: all existing routes, calculators, IndexedDB ward census, post-tPA timer, LKW countdown, 8 note generators, disclaimers, and aria/keyboard behavior preserved. 0 lines of logic removed from `src/app.jsx`.
 - **Offline PWA**: service worker bumped to `v6.1.0` / `stroke-cache-v6-1-0`; deployed clients will refetch re-skinned assets on next visit.
 - **Token names frozen**: all CSS-variable names unchanged; only their resolved values were re-set.

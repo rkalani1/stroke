@@ -713,9 +713,9 @@
     {
       "section": "Craniotomy for Posterior Fossa Hemorrhage",
       "classOfRec": "I",
-      "classNote": null,
+      "classNote": "June 2026 operational overlay",
       "levelOfEvidence": "B-NR",
-      "text": "Immediate surgical evacuation of the hemorrhage, with or without EVD, is recommended over medical management alone for patients with cerebellar ICH who are neurologically deteriorating, have brainstem compression and/or hydrocephalus from ventricular obstruction, or have cerebellar ICH volume >= 15 mL, to reduce mortality.",
+      "text": "Urgent posterior-fossa surgical evaluation is recommended for cerebellar ICH with neurologic deterioration, brainstem compression, or obstructive hydrocephalus. The June 2026 initial-evaluation algorithm does not use cerebellar volume alone as an operative trigger.",
       "page": 42
     },
     {

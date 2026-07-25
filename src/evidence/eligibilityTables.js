@@ -228,20 +228,40 @@ const TRIALS = {
   MINUTE: {
     acronym: 'MINUTE',
     nct: 'NCT07260916',
-    status: 'soon',
+    status: 'enrolling',
     href: CTGOV('NCT07260916'),
     summary:
       'Prospective, randomized trial evaluating the clinical utility of ultra-early SCUBA neuroendoscopic evacuation of basal-ganglia hemorrhages.',
     eligibility: [
-      'Age 18–80 with pre-ICH mRS 0–2',
-      'Non-traumatic spontaneous basal-ganglia hemorrhage ≥ 20 mL',
-      'Randomization ≤ 16 hours from LKW; anticipated surgery start < 120 minutes from randomization',
-      'NIHSS ≥ 6; CTA/MRA without underlying vascular lesion'
+      'Age 18–80',
+      'Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH',
+      'Volume >=15 mL by ABC/2, or close enough to prompt screening',
+      'Arrival/evaluation <=15 hours since LKW',
+      'NIHSS >=6; CTA/MRA without underlying vascular lesion',
+      'No clear standard-of-care surgical indication'
     ],
     exclusions: [
       'Suspected secondary cause, infratentorial/thalamic hemorrhage, or midbrain extension',
       'INR > 1.4, aPTT > 40 s, DOAC/LMWH use at onset, or platelet count < 100 × 10³/mm³',
-      'GCS < 7, active infection, pregnancy, pre-existing DNR/DNI, or severe dementia'
+      'Clear standard-of-care surgical indication, active infection, pregnancy, pre-existing DNR/DNI, or severe dementia'
+    ]
+  },
+  SATURN: {
+    acronym: 'SATURN',
+    nct: 'NCT03936361',
+    status: 'enrolling',
+    href: CTGOV('NCT03936361'),
+    summary:
+      'Evaluating continuation vs discontinuation of statins on lobar ICH recurrence in patients taking a statin at onset.',
+    eligibility: [
+      'Spontaneous lobar ICH confirmed by CT or MRI',
+      'Can be randomized within 7 days of onset',
+      'Age ≥ 50 years, taking a statin at onset, with consent after statin-prescriber consultation'
+    ],
+    exclusions: [
+      'ICH score > 3 or pre-morbid mRS > 3',
+      'Suspected secondary cause, recent MI/unstable angina, severe dementia, or life expectancy < 24 months',
+      'Familial hypercholesterolemia or PCSK9-inhibitor use'
     ]
   },
 
@@ -358,14 +378,14 @@ export const eligibilityTables = [
     category: 'ich',
     phase: 'acute',
     title: 'Intracranial Hemorrhage (ICH) — Acute (Onset ≤ 24 Hours)',
-    trials: [TRIALS.MINUTE]
+    trials: [TRIALS.MINUTE, TRIALS.SATURN]
   },
   {
     id: 'ich-inpatient',
     category: 'ich',
     phase: 'inpatient',
     title: 'Intracranial Hemorrhage (ICH) — Inpatient (Admission to Day 30)',
-    trials: [TRIALS['SCOUTS-3-ICH'], TRIALS.ASPIRE]
+    trials: [TRIALS.SATURN, TRIALS['SCOUTS-3-ICH'], TRIALS.ASPIRE]
   },
   {
     id: 'ich-outpatient',

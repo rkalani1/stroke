@@ -272,6 +272,12 @@ function pushIf(list, condition, message) {
   if (condition) list.push(message);
 }
 
+function checkVerificationNotes(obj, where, errors) {
+  if (obj.verificationStatus === TODO_VERIFY_STATUS && !obj.verificationNotes) {
+    errors.push(`${where}: verificationStatus=${TODO_VERIFY_STATUS} requires verificationNotes`);
+  }
+}
+
 export function validateCompletedTrial(t, ctx = {}) {
   const errors = [];
   const warnings = [];
@@ -286,9 +292,7 @@ export function validateCompletedTrial(t, ctx = {}) {
   pushIf(errors, !VERIFICATION_VALUES.includes(t.verificationStatus), `${where}: verificationStatus invalid`);
   pushIf(errors, !t.primaryEndpoint?.result, `${where}: primaryEndpoint.result required`);
 
-  if (t.verificationStatus === TODO_VERIFY_STATUS && !t.verificationNotes) {
-    errors.push(`${where}: verificationStatus=${TODO_VERIFY_STATUS} requires verificationNotes`);
-  }
+  checkVerificationNotes(t, where, errors);
 
   if (!ISO_DATE.test(t.lastReviewed || '')) {
     errors.push(`${where}: lastReviewed must be ISO date YYYY-MM-DD`);
@@ -339,9 +343,7 @@ export function validateActiveTrial(t, ctx = {}) {
     errors.push(`${where}: at least one matcherCriteria entry required`);
   }
 
-  if (t.verificationStatus === TODO_VERIFY_STATUS && !t.verificationNotes) {
-    errors.push(`${where}: verificationStatus=${TODO_VERIFY_STATUS} requires verificationNotes`);
-  }
+  checkVerificationNotes(t, where, errors);
 
   if (!ISO_DATE.test(t.lastReviewed || '')) {
     errors.push(`${where}: lastReviewed must be ISO date YYYY-MM-DD`);
@@ -376,9 +378,7 @@ export function validateCitation(c) {
     errors.push(`${where}: doi '${c.doi}' fails DOI pattern`);
   }
 
-  if (c.verificationStatus === TODO_VERIFY_STATUS && !c.verificationNotes) {
-    errors.push(`${where}: verificationStatus=${TODO_VERIFY_STATUS} requires verificationNotes`);
-  }
+  checkVerificationNotes(c, where, errors);
 
   return { errors, warnings };
 }
@@ -400,9 +400,7 @@ export function validateRecommendation(r, ctx = {}) {
     }
   }
 
-  if (r.verificationStatus === TODO_VERIFY_STATUS && !r.verificationNotes) {
-    errors.push(`${where}: verificationStatus=${TODO_VERIFY_STATUS} requires verificationNotes`);
-  }
+  checkVerificationNotes(r, where, errors);
 
   if (!ISO_DATE.test(r.lastReviewed || '')) {
     errors.push(`${where}: lastReviewed must be ISO date YYYY-MM-DD`);

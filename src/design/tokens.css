@@ -15,7 +15,7 @@
   font-weight: 400;
   font-stretch: normal;
   font-display: swap;
-  src: url('assets/fonts/bricolage-400.ttf') format('truetype');
+  src: url('assets/fonts/bricolage-400.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Bricolage Grotesque';
@@ -23,7 +23,7 @@
   font-weight: 500;
   font-stretch: normal;
   font-display: swap;
-  src: url('assets/fonts/bricolage-500.ttf') format('truetype');
+  src: url('assets/fonts/bricolage-500.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Bricolage Grotesque';
@@ -31,7 +31,7 @@
   font-weight: 600;
   font-stretch: normal;
   font-display: swap;
-  src: url('assets/fonts/bricolage-600.ttf') format('truetype');
+  src: url('assets/fonts/bricolage-600.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Bricolage Grotesque';
@@ -39,7 +39,7 @@
   font-weight: 700;
   font-stretch: normal;
   font-display: swap;
-  src: url('assets/fonts/bricolage-700.ttf') format('truetype');
+  src: url('assets/fonts/bricolage-700.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Bricolage Grotesque';
@@ -47,7 +47,7 @@
   font-weight: 800;
   font-stretch: normal;
   font-display: swap;
-  src: url('assets/fonts/bricolage-800.ttf') format('truetype');
+  src: url('assets/fonts/bricolage-800.woff2') format('woff2');
 }
 
 @font-face {
@@ -55,21 +55,21 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('assets/fonts/ibmplexmono-400.ttf') format('truetype');
+  src: url('assets/fonts/ibmplexmono-400.woff2') format('woff2');
 }
 @font-face {
   font-family: 'IBM Plex Mono';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('assets/fonts/ibmplexmono-500.ttf') format('truetype');
+  src: url('assets/fonts/ibmplexmono-500.woff2') format('woff2');
 }
 @font-face {
   font-family: 'IBM Plex Mono';
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('assets/fonts/ibmplexmono-600.ttf') format('truetype');
+  src: url('assets/fonts/ibmplexmono-600.woff2') format('woff2');
 }
 
 @font-face {
@@ -77,49 +77,49 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url('assets/fonts/publicsans-italic-400.ttf') format('truetype');
+  src: url('assets/fonts/publicsans-italic-400.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Public Sans';
   font-style: italic;
   font-weight: 500;
   font-display: swap;
-  src: url('assets/fonts/publicsans-italic-500.ttf') format('truetype');
+  src: url('assets/fonts/publicsans-italic-500.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Public Sans';
   font-style: italic;
   font-weight: 600;
   font-display: swap;
-  src: url('assets/fonts/publicsans-italic-600.ttf') format('truetype');
+  src: url('assets/fonts/publicsans-italic-600.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Public Sans';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('assets/fonts/publicsans-normal-400.ttf') format('truetype');
+  src: url('assets/fonts/publicsans-normal-400.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Public Sans';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('assets/fonts/publicsans-normal-500.ttf') format('truetype');
+  src: url('assets/fonts/publicsans-normal-500.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Public Sans';
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('assets/fonts/publicsans-normal-600.ttf') format('truetype');
+  src: url('assets/fonts/publicsans-normal-600.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Public Sans';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('assets/fonts/publicsans-normal-700.ttf') format('truetype');
+  src: url('assets/fonts/publicsans-normal-700.woff2') format('woff2');
 }
 
 :root {

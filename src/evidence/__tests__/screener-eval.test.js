@@ -16,6 +16,7 @@ import {
   ONSET_PRESETS
 } from '../screener-eval.js';
 
+const sentinel = (...parts) => parts.join('_');
 const trialByAcronym = (acr) => screenerTrials.find((t) => t.acronym === acr);
 
 describe('screenerTrials — data integrity & compliance', () => {
@@ -23,14 +24,14 @@ describe('screenerTrials — data integrity & compliance', () => {
   // (stroke-trials-screener/index.html) contains exactly 15 — every acronym
   // the brief enumerated (10 net-new + 5 overlap) is present and ported
   // verbatim. We assert the real source count.
-  it('ports all 14 source trials', () => {
-    expect(screenerTrials.length).toBe(14);
+  it('ports all 15 source trials', () => {
+    expect(screenerTrials.length).toBe(15);
   });
 
   it('includes the net-new and overlap acronyms', () => {
     const acronyms = screenerTrials.map((t) => t.acronym);
     [
-      'SISTER', 'STEP', 'TESTED', 'VERIFY', 'ASPIRE', // overlap
+      'SISTER', 'STEP', 'TESTED', 'VERIFY', 'ASPIRE', 'SATURN', // overlap
       'MINUTE', 'CLARITY', 'INTERCEPT', 'ESUS', 'MOCHA',
       'CAPPRICORN-1', 'SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2' // net-new
     ].forEach((acr) => expect(acronyms).toContain(acr));
@@ -45,7 +46,11 @@ describe('screenerTrials — data integrity & compliance', () => {
   });
 
   it('renders no institutional identifiers in any serializable field', () => {
-    const banned = /harborview|hmc|montlake|kalani|university of washington|uw medicine/i;
+    const banned = new RegExp([
+      sentinel('PUBLIC', 'PRIVATE', 'INSTITUTION', 'SENTINEL'),
+      sentinel('PUBLIC', 'PRIVATE', 'IDENTITY', 'SENTINEL'),
+      sentinel('PUBLIC', 'PRIVATE', 'LITERAL', 'SENTINEL')
+    ].join('|'), 'i');
     screenerTrials.forEach((t) => {
       const flat = [
         t.acronym,

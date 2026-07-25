@@ -1,0 +1,36 @@
+[
+  {
+    "id": "wake-up",
+    "name": "WAKE-UP",
+    "fullName": "MRI-Guided Thrombolysis for Stroke with Unknown Time of Onset",
+    "category": "wake-up-stroke",
+    "population": "n=503, 18-80, NIHSS NIHSS ≤25, unknown onset (last seen well >4.5 h)",
+    "finding": "Favored alteplase: 53.3% vs 41.8%",
+    "teachingPoint": "Foundational evidence for imaging-selected thrombolysis in wake-up / unknown onset stroke.",
+    "PMID": "29766770",
+    "year": 2018,
+    "citationIds": [
+      "cit-wake-up-2018"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "twist",
+    "name": "TWIST",
+    "fullName": "Tenecteplase in Wake-up Ischaemic Stroke Trial",
+    "category": "wake-up-stroke",
+    "population": "n=578, ≥18, wake-up <4.5 h after waking",
+    "finding": "No significant benefit overall",
+    "teachingPoint": "Late-window thrombolysis without advanced imaging is not supported.",
+    "PMID": "36549308",
+    "year": 2023,
+    "citationIds": [
+      "cit-twist-2023"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

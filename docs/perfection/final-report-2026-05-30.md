@@ -81,7 +81,7 @@ public-safety were CLEAN for the final ~6–9 consecutive cycles.
   device classes captured in parallel, zero failures.
 
 ## Top improvements by impact
-1. **Public-safety breach closed (P0):** ~25 real institutional identifiers (HMC/UW/VA/SCH) were leaking into
+1. **Public-safety breach closed (P0):** ~25 real institutional identifiers were leaking into
    the deployed bundle via the Education tab → scrubbed institution-neutral + a permanent **CI guard that scans
    the built `app.js`** so it can never regress. 4 consecutive clean public-safety cycles since.
 2. **Evidence integrity (P0):** **35 wrong-article citation PMIDs corrected** in total (11 rendered citations

@@ -622,7 +622,7 @@
 ## Iteration 067 update (2026-02-20, macOS session)
 - Restored on-call quick-call workflow for institutional stroke operations:
   - Reintroduced bottom-right Quick Contacts FAB with tap-to-call `tel:` links.
-  - Restored institutional default contact numbers (stroke phone, radiology lines, angio, imaging, IT/paging) and added Settings contact-directory editor (add/remove/reset defaults).
+  - Restored institutional default contact numbers (stroke on-call line, radiology lines, angio, imaging, IT/paging) and added Settings contact-directory editor (add/remove/reset defaults).
 - Evidence/content refresh:
   - TIA disposition wording changed from universal-admission language to risk-stratified pathways aligned with AHA TIA ED statement framing.
   - Extended-window IVT recommendation text updated with TIMELESS + OPTION context for imaging-selected late presenters.
@@ -670,7 +670,7 @@
 
 ## Iteration 070 update (2026-02-20, macOS session)
 - Added explicit protected-contact regression invariants to smoke automation:
-  - Quick Contacts must contain Stroke Phone, STAT Pharmacy, and Stroke RAD Hotline.
+  - Quick Contacts must contain stroke on-call, STAT Pharmacy, and Stroke RAD Hotline entries.
   - Settings Contact Directory must retain protected label/phone pairs for those three defaults.
 - Validation status:
   - `npm run build` pass

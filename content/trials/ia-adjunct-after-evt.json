@@ -1,0 +1,36 @@
+[
+  {
+    "id": "choice",
+    "name": "CHOICE",
+    "fullName": "Intra-arterial Alteplase Following Successful Thrombectomy",
+    "category": "ia-adjunct-after-evt",
+    "population": "n=121, ≥18, NIHSS all, post-EVT",
+    "finding": "Favored alteplase: 59.0% vs 40.4%",
+    "teachingPoint": "IA alteplase after successful EVT may improve outcomes; not yet standard of care.",
+    "PMID": "35143603",
+    "year": 2022,
+    "citationIds": [
+      "cit-choice-2022"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "choice-2",
+    "name": "CHOICE-2",
+    "fullName": "Adjunctive Intra-Arterial Alteplase After Successful Thrombectomy for Acute Ischemic Stroke",
+    "category": "ia-adjunct-after-evt",
+    "population": "n=433, Median 76, ≤24 h",
+    "finding": "Higher with IA alteplase: 57.5% vs 42.5%",
+    "teachingPoint": "IA alteplase after successful EVT improved excellent outcomes and reperfusion — but a higher mortality signal warrants caution before adoption.",
+    "PMID": "42096239",
+    "year": 2026,
+    "citationIds": [
+      "cit-choice-2-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-05-30",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

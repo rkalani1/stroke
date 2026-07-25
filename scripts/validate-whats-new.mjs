@@ -95,13 +95,13 @@ async function main() {
     return;
   }
 
-  if (feed.generatedFrom !== 'clinical-intelligence-briefing') {
+  if (feed.generatedFrom !== 'curated-public-evidence-feed') {
     errors.push(
-      `whats-new.json: unexpected generatedFrom='${feed.generatedFrom}' (expected 'clinical-intelligence-briefing')`
+      `whats-new.json: unexpected generatedFrom='${feed.generatedFrom}' (expected 'curated-public-evidence-feed')`
     );
   }
-  if (feed.sourceDoc !== 'briefing-latest.md') {
-    errors.push(`whats-new.json: unexpected sourceDoc='${feed.sourceDoc}' (expected 'briefing-latest.md')`);
+  if (feed.sourceDoc !== 'curated-source') {
+    errors.push(`whats-new.json: unexpected sourceDoc='${feed.sourceDoc}' (expected 'curated-source')`);
   }
   if (typeof feed.count !== 'number') {
     errors.push('whats-new.json: missing numeric "count" field');

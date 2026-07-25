@@ -1,0 +1,19 @@
+[
+  {
+    "id": "hyponatremia-ich",
+    "name": "Hyponatremia & ICH",
+    "fullName": "Severity-Stratified Hyponatremia Is Associated with Increased Mortality and Complications in Nontraumatic Intracerebral Hemorrhage",
+    "category": "ich",
+    "population": "n=45114, Serum Na ≤7 d of diagnosis",
+    "finding": "Moderate 17.5% vs 13.3%; severe 18.7% vs 12.9%",
+    "teachingPoint": "Serum sodium is a readily-available risk-stratification marker in acute ICH; supports vigilant Na monitoring (causality not established).",
+    "PMID": "42194925",
+    "year": 2026,
+    "citationIds": [
+      "cit-hyponatremia-ich-2026"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-05-30",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

@@ -3,7 +3,7 @@
 // Design goals:
 // 1. Multi-patient census for ward rounds (8-20 patients typical).
 // 2. Per-patient encounter state (fully isolated from acute-telestroke state).
-// 3. Use only synthetic placeholders unless the deployment has any organization-approved
+// 3. Use only synthetic placeholders unless the deployment has organization-approved
 //    storage, access control, security review, and local governance.
 // 4. Graceful fallback to localStorage if IndexedDB blocked (e.g., private-mode Safari before iOS 15).
 // 5. Zero external dependencies — avoids Dexie to keep the bundle lean.
@@ -42,11 +42,22 @@ const openDB = () => {
 };
 
 // Fallback helpers
-const lsReadAll = () => {
-  try { return JSON.parse(localStorage.getItem(LS_FALLBACK_KEY) || '[]'); } catch (_) { return []; }
+const lsReadMap = () => {
+  try {
+    const raw = localStorage.getItem(LS_FALLBACK_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      return parsed.reduce((acc, patient) => {
+        if (patient && patient.id) acc[patient.id] = patient;
+        return acc;
+      }, {});
+    }
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch (_) { return {}; }
 };
-const lsWriteAll = (patients) => {
-  try { localStorage.setItem(LS_FALLBACK_KEY, JSON.stringify(patients)); return true; } catch (_) { return false; }
+const lsWriteMap = (patientsById) => {
+  try { localStorage.setItem(LS_FALLBACK_KEY, JSON.stringify(patientsById)); return true; } catch (_) { return false; }
 };
 
 export const generatePatientId = () => {
@@ -57,7 +68,7 @@ export const generatePatientId = () => {
     crypto.getRandomValues(array);
     return `p_${Date.now().toString(36)}_${array[0].toString(36)}${array[1].toString(36)}`;
   }
-  return `p_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+  throw new Error('Secure random number generation is not supported by this environment');
 };
 
 export const makePatientStub = ({ initials, mrnLast4, birthYear, service = 'stroke', label = '' } = {}) => {
@@ -81,7 +92,7 @@ export const makePatientStub = ({ initials, mrnLast4, birthYear, service = 'stro
 
 export const listPatients = async (filter = {}) => {
   const db = await openDB();
-  if (!db) return lsReadAll().filter(filterPatient(filter)).sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
+  if (!db) return Object.values(lsReadMap()).filter(filterPatient(filter)).sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
   return new Promise((resolve) => {
     const tx = db.transaction(STORE_NAME, 'readonly');
     const store = tx.objectStore(STORE_NAME);
@@ -105,10 +116,9 @@ export const savePatient = async (patient) => {
   const toSave = { ...patient, updatedAt: new Date().toISOString(), lastSavedAt: new Date().toISOString() };
   const db = await openDB();
   if (!db) {
-    const all = lsReadAll();
-    const idx = all.findIndex((p) => p.id === toSave.id);
-    if (idx >= 0) all[idx] = toSave; else all.push(toSave);
-    lsWriteAll(all);
+    const patientsById = lsReadMap();
+    patientsById[toSave.id] = toSave;
+    lsWriteMap(patientsById);
     return toSave;
   }
   return new Promise((resolve, reject) => {
@@ -122,7 +132,7 @@ export const savePatient = async (patient) => {
 
 export const getPatient = async (id) => {
   const db = await openDB();
-  if (!db) return lsReadAll().find((p) => p.id === id) || null;
+  if (!db) return lsReadMap()[id] || null;
   return new Promise((resolve) => {
     const tx = db.transaction(STORE_NAME, 'readonly');
     const store = tx.objectStore(STORE_NAME);
@@ -134,7 +144,12 @@ export const getPatient = async (id) => {
 
 export const deletePatient = async (id) => {
   const db = await openDB();
-  if (!db) { lsWriteAll(lsReadAll().filter((p) => p.id !== id)); return true; }
+  if (!db) {
+    const patientsById = lsReadMap();
+    delete patientsById[id];
+    lsWriteMap(patientsById);
+    return true;
+  }
   return new Promise((resolve) => {
     const tx = db.transaction(STORE_NAME, 'readwrite');
     const store = tx.objectStore(STORE_NAME);
@@ -163,12 +178,11 @@ export const savePatientsBatch = async (patients) => {
   }));
   const db = await openDB();
   if (!db) {
-    const all = lsReadAll();
+    const patientsById = lsReadMap();
     for (const p of processed) {
-      const idx = all.findIndex((x) => x.id === p.id);
-      if (idx >= 0) all[idx] = p; else all.push(p);
+      patientsById[p.id] = p;
     }
-    lsWriteAll(all);
+    lsWriteMap(patientsById);
     return processed;
   }
   return new Promise((resolve, reject) => {

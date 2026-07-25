@@ -141,7 +141,7 @@ The native wrapper hosts the same web app. Everything in the
   post-tPA timer, LKW countdown, quick-link bar, disclaimer language, note
   templates, EVT eligibility components, etc.
 
-Native distribution for any real clinical workflow requires any organization review
+Native distribution for any real clinical workflow requires organizational review
 for hosting, storage, access control, support, medical-app classification, and
 patient-data handling before enabling census or encounter persistence.
 

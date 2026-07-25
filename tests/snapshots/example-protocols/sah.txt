@@ -1,0 +1,234 @@
+No diagnosis set.
+Set a working diagnosis on the Encounter tab to activate pathway-specific management recommendations and auto-populate relevant protocols.
+Set diagnosis
+Protocols & Algorithms
+›
+SAH
+ICH
+Ischemic
+SAH
+TIA
+CVT
+References
+Calculators
+Subarachnoid Hemorrhage Management
+2023 AHA/ASA Guidelines for Management of Aneurysmal SAH
+Key Principles
+Nimodipine 60 mg PO/NG q4h for 21 days — only proven agent to reduce DCI
+I
+Secure aneurysm within 24 hours when feasible (coil or clip)
+I
+Maintain euvolemia — avoid prophylactic hypervolemia (triple-H)
+III
+1
+Immediate Actions (First 6 Hours)
+1
+Secure airway
+Intubate if GCS ≤8; elevate HOB 30°
+2
+BP control: SBP <160 mmHg
+Nicardipine 5-15 mg/h IV or labetalol IV (pre-aneurysm securing). Class I, LOE B-NR
+3
+Start Nimodipine 60 mg PO/NG q4h
+Begin within 96h of onset; continue 21 days. Class I, LOE A for DCI prevention. Only calcium channel blocker with proven benefit
+4
+Neurosurgery/Neurointerventional consult
+For aneurysm securing strategy (clip vs coil) — target within 24h
+5
+Analgesia for headache
+Acetaminophen 1g IV/PO q6h. Avoid NSAIDs. Cautious opioids if severe
+6
+Seizure prophylaxis (if indicated)
+Short-term (3-7d) levetiracetam 500-1000mg BID. Not routine for all patients
+7
+EVD placement
+If acute hydrocephalus or GCS ≤8 with IVH. Open at 15-20 cmH₂O
+8
+Labs: CBC, BMP, Coags, Type & Screen, Troponin, Mg²⁺
+Repeat BMP q6h initially for Na⁺ monitoring
+2
+Fisher Grade — Vasospasm Risk Prediction
+Grade
+1
+No blood detected
+Spasm risk:
+~0%
+Grade
+2
+Diffuse thin SAH (<1 mm thick)
+Spasm risk:
+~20%
+Grade
+3
+Localized clot or thick layer (>1 mm)
+Spasm risk:
+~33%
+Grade
+4
+Intraventricular or intracerebral blood ± diffuse SAH
+Spasm risk:
+~25%
++
+Modified Fisher Scale (Better Vasospasm Prediction)
+Frontera et al., 2006. More predictive of symptomatic vasospasm than original Fisher grade.
+mF
+0
+No SAH or IVH
+Spasm:
+Minimal
+mF
+1
+Thin SAH, no IVH
+Spasm:
+24%
+mF
+2
+Thin SAH with IVH
+Spasm:
+33%
+mF
+3
+Thick SAH, no IVH
+Spasm:
+33%
+mF
+4
+Thick SAH with IVH
+Spasm:
+40%
+Thick = >1mm layer. IVH = intraventricular hemorrhage present bilaterally.
+3
+Vasospasm Monitoring & DCI Management
+Monitoring Protocol
+•
+Daily TCD: Days 3-14 (peak vasospasm window)
+•
+MCA velocity >120 cm/s = mild spasm
+•
+MCA velocity >200 cm/s or Lindegaard ratio >6 = severe
+•
+Neuro checks q1h for first 14 days
+•
+CTP if new deficit or rising TCD velocities
+DCI Treatment Escalation
+1
+Euvolemia + induced hypertension:
+Phenylephrine or norepinephrine to raise MAP 20-25% above baseline
+2
+No improvement:
+Endovascular rescue — intra-arterial verapamil/nicardipine
+3
+Refractory:
+Balloon angioplasty for proximal vasospasm
+4
+Electrolyte Monitoring — CSW vs SIADH
+Feature
+Cerebral Salt Wasting
+SIADH
+Volume status
+Hypovolemic (dehydrated)
+Euvolemic / mildly hypervolemic
+Urine output
+High (polyuria)
+Low / normal
+Serum Na⁺
+Low (<135)
+Low (<135)
+Urine Na⁺
+High (>40 mEq/L)
+High (>40 mEq/L)
+Urine osmolality
+High
+Inappropriately high
+CVP / volume markers
+Low (hemoconcentration)
+Normal / elevated
+Treatment
+NS or hypertonic saline + fludrocortisone 0.1-0.2 mg BID
+Fluid restriction ± salt tabs ± conivaptan/tolvaptan
+Key differentiator
+Volume depletion + high urine output
+Euvolemia + concentrated urine
+Monitor Na⁺ q4-6h. Correct hyponatremia slowly (max 8-10 mEq/L per 24h). CSW is more common in SAH than SIADH.
+5
+Rebleeding Risk & Aneurysm Securing
+Rebleeding Risk Timeline
+First 6 hours
+~15% (peak risk)
+6-24 hours
+~5-10%
+Day 2-14
+~1-2%/day
+After 14 days
+~0.5%/day declining
+Securing Strategy
+Coiling (endovascular):
+Preferred for posterior circulation, elderly, poor-grade, basilar tip. Class I.
+Clipping (surgical):
+Consider for MCA, large/wide-necked aneurysms, concurrent hematoma needing evacuation.
+Timeline:
+Secure within 24h of presentation (Class I, LOE B-NR).
+Risk Factors for Rebleeding
+• Unsecured aneurysm (most important)
+• Poor clinical grade (H&H 4-5)
+• Systolic BP >160 mmHg
+• Large aneurysm size (>10 mm)
+• Posterior circulation location
+6
+BP Targets by Phase
+Pre-Securing
+SBP <160
+Until aneurysm clipped/coiled
+Post-Securing
+SBP <180
+First 24-72h after securing
+DCI Treatment
+Induced HTN
+MAP +20-25% above baseline
+SAH ICU Supportive Care Bundle
+Cardiac
+•
+Troponin + ECG on admission (SAH can cause stress cardiomyopathy)
+•
+Continuous telemetry
+•
+Echo if troponin elevated or hemodynamic instability
+DVT Prevention
+•
+SCDs immediately
+•
+UFH 5000u SC q8-12h after aneurysm secured
+•
+LMWH if no EVD and aneurysm secured
+Glycemic Control
+•
+Target glucose 140-180 mg/dL
+•
+Insulin drip if persistent hyperglycemia
+•
+Avoid hypoglycemia (<70 mg/dL)
+Fever Management
+•
+Target normothermia (<38°C)
+•
+Acetaminophen 1g q6h scheduled
+•
+Cooling device if refractory
+•
+Workup: blood/urine cultures, CXR
+Nutrition
+•
+NPO until swallow evaluation
+•
+Dobhoff if intubated >48h or failed swallow
+•
+Early enteral nutrition preferred
+Positioning
+•
+HOB 30°
+•
+Quiet, low-stimulation environment
+•
+Stool softeners (avoid Valsalva)
+•
+Activity restrictions until aneurysm secured

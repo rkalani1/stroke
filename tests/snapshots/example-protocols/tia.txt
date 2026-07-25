@@ -1,0 +1,201 @@
+No diagnosis set.
+Set a working diagnosis on the Encounter tab to activate pathway-specific management recommendations and auto-populate relevant protocols.
+Set diagnosis
+Protocols & Algorithms
+›
+TIA
+ICH
+Ischemic
+SAH
+TIA
+CVT
+References
+Calculators
+TIA Management & Secondary Prevention
+Urgent evaluation and risk reduction for transient ischemic attack
+Disposition is risk-stratified: admit/observe high-risk TIAs, and use rapid outpatient pathways only when same-day workup plus reliable 24-48h stroke follow-up are guaranteed. Do not use ABCD2 alone.
+TIA Disposition Engine
+ABCD2 + imaging/etiology reliability overlay (AHA TIA ED 2023 aligned). This card is used to drive disposition decisions, not ABCD2 alone.
+DWI-positive lesion (tissue-based stroke risk)
+Crescendo/recurrent TIA in 24h
+Symptomatic severe carotid stenosis
+Suspected cardioembolic source / new AF concern
+Persistent deficit (not fully resolved)
+Same-day ED workup completed
+Reliable stroke follow-up in 24-48h secured
+ABCD2:
+0
+| Recommendation:
+Observation until pathway reliability confirmed
+Low-risk clinical profile, but outpatient pathway is unsafe until same-day workup and 24-48h follow-up are guaranteed.
+Apply disposition to encounter
+1
+Risk Stratification (ABCD2)
+Score
+Risk Level
+2-Day Stroke Risk
+7-Day
+90-Day
+Action
+0-3
+Low
+1.0%
+1.2%
+3.1%
+Rapid TIA pathway or observation only if complete ED workup + guaranteed follow-up; otherwise admit
+4-5
+Moderate
+4.1%
+5.9%
+9.8%
+24h observation or admission for expedited workup + DAPT when indicated
+6-7
+High
+8.1%
+11.7%
+17.8%
+Admit for STAT workup + vascular imaging + immediate prevention plan
+ABCD2 is adjunctive only. Use vessel imaging, clinical trajectory, and local follow-up reliability to finalize disposition.
+2
+Urgent Imaging Protocol
+Brain Imaging
+1.
+MRI DWI
+(preferred) — 80% sensitivity for acute ischemia. Obtain within 24h.
+2.
+CT Head
+— if MRI unavailable. Low sensitivity for TIA but rules out hemorrhage.
+3.
+DWI-positive TIA
+= higher stroke risk. Consider as minor stroke.
+Vascular Imaging
+1.
+CTA Head & Neck
+(preferred) or MRA — Obtain STAT
+2.
+Carotid duplex
+— if anterior circulation TIA + CTA not done
+3.
+Intracranial vessel imaging
+— CTA or MRA for ICAD evaluation
+3
+Antiplatelet Therapy — DAPT Protocol
+High-Risk TIA or Minor Stroke (NIHSS ≤3) — CHANCE/POINT Protocol
+Day 1 (Loading)
+ASA 325 mg + Clopidogrel 300 mg
+Days 2-21
+ASA 81 mg + Clopidogrel 75 mg daily
+Day 22+
+Mono antiplatelet (ASA 81 or Clop 75)
+CYP2C19 Testing:
+Order CYP2C19 genotyping. Poor metabolizers (*2/*2, *2/*3, *3/*3) have reduced clopidogrel efficacy — switch to ticagrelor 90mg BID.
+If AF identified:
+Switch from DAPT to anticoagulation (DOAC preferred). Do NOT combine long-term DAPT + anticoagulation.
+Phenotype-Based DAPT Quick Matrix
+Phenotype
+Preferred regimen
+Duration
+Evidence anchor
+Minor stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4)
+ASA + clopidogrel
+21 days, then single antiplatelet
+CHANCE, POINT
+CYP2C19 loss-of-function carrier
+ASA + ticagrelor (then ticagrelor monotherapy)
+21 days DAPT
+CHANCE-2
+Mild-to-moderate non-cardioembolic stroke (NIHSS 4-5) without high bleed risk
+ASA + ticagrelor
+30 days
+THALES; AIS 2026 Class IIb framing
+Atherosclerotic minor stroke/TIA enrolled within 72h
+ASA + clopidogrel
+21 days DAPT then clopidogrel through day 90
+INSPIRES
+Severe symptomatic intracranial stenosis (70-99%)
+ASA + clopidogrel with intensive risk-factor control
+Up to 90 days
+SAMMPRIS paradigm
+Avoid prolonged DAPT beyond intended windows unless a specific vascular phenotype justifies it; de-escalate to monotherapy promptly.
+4
+Etiologic Workup Checklist
+Cardiac
+•
+12-Lead ECG
+•
+Continuous telemetry (≥24h)
+•
+TTE with bubble study
+•
+Extended cardiac monitoring (14-30 day) if no AF on telemetry
+Vascular
+•
+CTA Head & Neck (or MRA)
+•
+Carotid duplex if anterior TIA
+•
+Vessel wall MRI if ICAD suspected
+•
+Aortic arch imaging if embolism suspected
+Laboratory
+•
+CBC, BMP, HbA1c
+•
+Fasting lipid panel
+•
+TSH
+•
+ESR/CRP if vasculitis suspected
+•
+Hypercoagulable panel if age <50 or cryptogenic
+5
+Carotid Stenosis Management
+70-99% Symptomatic
+CEA within 2 weeks (Class I, LOE A)
+CAS reasonable alternative if high surgical risk. Best outcomes if revascularization within 14 days.
+50-69% Symptomatic
+Individualize — CEA may be considered
+Benefit greatest in males, age >75, recent symptoms. Consider patient comorbidities.
+<50% Symptomatic
+Medical management only
+DAPT + high-intensity statin + BP control. Revascularization NOT recommended.
+Near-occlusion / string sign
+Medical management preferred
+Revascularization benefit uncertain. Aggressive medical therapy.
+Secondary Prevention — Complete Checklist
+Antithrombotic
+•
+DAPT x21d then mono antiplatelet (if no AF)
+•
+DOAC if AF confirmed (apixaban/rivaroxaban preferred)
+•
+CYP2C19 genotyping for clopidogrel efficacy
+Lipid Management
+•
+High-intensity statin: Atorvastatin 80mg or Rosuvastatin 20-40mg
+•
+LDL target <70 mg/dL
+•
+Add ezetimibe 10mg if not at goal
+•
+PCSK9i if refractory (evolocumab, alirocumab)
+Blood Pressure
+•
+Target <130/80 mmHg (Class I)
+•
+Initiate/optimize after 24-48h post-event
+•
+Preferred: ACE-I/ARB + thiazide or CCB
+•
+Home BP monitoring
+Diabetes & Lifestyle
+•
+HbA1c target <7%
+•
+GLP-1 RA (semaglutide/liraglutide) — CV benefit
+•
+Smoking cessation (varenicline/NRT)
+•
+Mediterranean diet
+•
+Exercise: 150 min/week moderate intensity

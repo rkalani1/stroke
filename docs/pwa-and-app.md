@@ -7,7 +7,7 @@ paths behave, how updates roll out, and what works offline.
 Public GitHub Pages deployments are synthetic demos only. Do not enter PHI,
 patient identifiers, MRN fragments, real encounter details, or ward census
 content into the public site. Any real clinical handoff, census, or encounter
-workflow must run only in an approved any organization environment with access
+workflow must run only in an approved organizational environment with access
 control, approved storage, security review, and local governance.
 
 ## Install paths

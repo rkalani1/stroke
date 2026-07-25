@@ -1,6 +1,6 @@
 {
-  "generatedFrom": "clinical-intelligence-briefing",
-  "sourceDoc": "briefing-latest.md",
+  "generatedFrom": "curated-public-evidence-feed",
+  "sourceDoc": "curated-source",
   "count": 50,
   "verifiedCount": 21,
   "unverifiedCount": 29,

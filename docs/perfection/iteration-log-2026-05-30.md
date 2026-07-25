@@ -31,8 +31,8 @@ on the real `github.io` host** (load-bearing: it catches host-gated bugs local g
 **Baseline:** v6.5.0. Parallel audit found defects across 4/5 dimensions.
 
 **Audit → classified:**
-- **P0** D1: `src/education.jsx` (Education tab) leaked ~25 REAL institutional identifiers (HMC Policy 35.12,
-  VA Puget Sound, UW Neurology Residency, SCH/UWMC) into the **deployed bundle** — public-safety breach.
+- **P0** D1: `src/education.jsx` (Education tab) leaked ~25 real institutional identifiers
+  into the **deployed bundle** — public-safety breach.
 - **P0** A1: AF-anticoagulation-timing recommendation cited pre-OPTIMAS/CATALYST evidence (stale clinical guidance).
 - **P0** A2: What's-New ATLAS appraisal **fabricated** "sICH 5.5% vs 2.7% significantly higher" (truth: 1.1%
   vs 1.0%, no difference) + CHOICE-2 "no mortality increase" (truth 12.1% vs 6.4%) — fabricated statistics.

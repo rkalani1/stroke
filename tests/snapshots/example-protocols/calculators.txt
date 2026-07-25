@@ -1,0 +1,794 @@
+No diagnosis set.
+Set a working diagnosis on the Encounter tab to activate pathway-specific management recommendations and auto-populate relevant protocols.
+Set diagnosis
+Protocols & Algorithms
+›
+Calculators
+ICH
+Ischemic
+SAH
+TIA
+CVT
+References
+Calculators
+PHQ-9 Depression Screen (post-stroke)
+PHQ-9 Depression Screen
+Over the past 2 weeks, how often have you been bothered by:
+Question
+Not at all (0)
+Several days (1)
+More than half (2)
+Nearly every day (3)
+Little interest or pleasure in doing things
+Feeling down, depressed, or hopeless
+Trouble falling/staying asleep, or sleeping too much
+Feeling tired or having little energy
+Poor appetite or overeating
+Feeling bad about yourself / failure
+Trouble concentrating
+Moving/speaking slowly or being fidgety/restless
+Thoughts of self-harm or being better off dead
+Total:
+0
+none
+No treatment needed; monitor.
+Kroenke JGIM 2001;16:606-13
+Quick Dosing Reference
+TNK (Tenecteplase)
+0.25 mg/kg IV bolus (max 25 mg)
+Click to copy
+Alteplase (tPA)
+0.9 mg/kg IV (max 90 mg): 10% bolus, 90% over 60 min
+Click to copy
+Nimodipine (SAH)
+60 mg PO/NG q4h x 21 days. If hypotension: 30 mg q2h.
+Click to copy
+PCC / Kcentra
+INR 2-3.9: 25 IU/kg (max 2500); INR 4-6: 35 IU/kg (max 3500); INR >6: 50 IU/kg (max 5000)
+Click to copy
+Idarucizumab
+5 g IV (two 2.5 g vials) over 5-10 min. For dabigatran reversal.
+Click to copy
+FFP (if no PCC)
+10-15 mL/kg IV. Goal INR <1.5.
+Click to copy
+Labetalol IV
+10-20 mg IV q10-20min (max 300 mg). Alt: nicardipine 5 mg/h, titrate q5min by 2.5 mg/h (max 15).
+Click to copy
+Levetiracetam
+1000-1500 mg IV load, then 500-1000 mg IV/PO q12h. For acute seizures.
+Click to copy
+Patient snapshot
+Age:
+--
+Sex:
+--
+Cr:
+--
+Dx:
+--
+Auto-sync calculators with encounter data
+Updates score tools plus CrCl/DOAC calculator inputs from age, sex, weight, and creatinine.
+Filter calculators
+NIHSS
+ICH
+TIA
+Dosing
+CrCl
+SAH
+NIHSS Score
+Score:
+0
+Score:
+0
+/42
+0-4
+Minor
+5-15
+Moderate
+16-20
+Mod-Severe
+21-42
+Severe
+Use the NIHSS panel in the Encounter tab for full item-by-item scoring.
+Clinical significance:
+NIHSS ≤3: Consider DAPT (CHANCE/POINT criteria)
+NIHSS ≥6: Likely LVO — consider EVT evaluation
+NIHSS ≥8: CATALYST moderate severity — DOAC start day 3-5
+NIHSS >15: CATALYST severe — DOAC start day 6-14
+NIHSS Scoring Pitfalls
+1a (LOC):
+Do NOT score sedation/intubation as decreased LOC. Score best response. If patient requires stimulation only because of intubation/sedation, score 0.
+3 (Visual):
+Must use finger counting or visual stimulus, NOT visual threat. Test each eye's temporal and nasal field.
+5/6 (Motor):
+"Drift" = limb falls before 10s (arms) or 5s (legs). Amputation/fusion = 0, not UN. Test arms with palms down.
+7 (Ataxia):
+Test ONLY if there is no weakness obscuring assessment. If limb is plegic, score 0 (not UN). Ataxia must be out of proportion to weakness.
+9 (Language):
+Requires testing naming, reading, AND description — comprehension alone is insufficient. Use standardized picture card.
+11 (Extinction):
+Must test BILATERAL SIMULTANEOUS visual AND tactile stimulation, not just unilateral.
+Posterior circulation bias:
+Scale heavily weighted toward anterior/left MCA. Devastating posterior strokes (diplopia, vertigo, ataxia, dysphagia) may score 0-3. NIHSS 0 does NOT exclude stroke.
+General rule:
+Score WORST performance during exam, not best. Do not coach the patient.
+NIHSS Exam Technique Guide (for telestroke coaching)
+Use this to coach spoke ED staff through each NIHSS item over video/phone.
+1a. LOC:
+Observe alertness. If not alert, apply escalating stimuli: voice → loud voice → nail-bed pressure. Score response to each level. Do not attribute decreased LOC to sedation or intubation.
+1b. LOC Questions:
+Ask: "What month is it?" and "What is your age?" Patient must answer both correctly (no partial credit). Intubated/dysarthric patients who approximate answers score 1. Do NOT accept pointing or gestures.
+1c. LOC Commands:
+"Open and close your eyes" then "Grip and release your non-paretic hand." If patient cannot use hands, substitute another one-step command. Score only first attempt. Demonstrate if there is a language barrier.
+2. Best Gaze:
+Test horizontal eye movements only. Ask patient to look left and right, or track your finger. If patient cannot follow commands, use oculocephalic reflex (doll's eyes). Score only conjugate horizontal gaze deviation or gaze palsy.
+3. Visual Fields:
+Test by finger counting or visual stimulus in all four quadrants. Patient fixates on your nose. Present 1-3 fingers in upper and lower temporal and nasal fields of each eye separately, or simultaneously if bilateral assessment needed. Do NOT use visual threat (finger poke) — it tests a different pathway. If one eye blind, test the other.
+4. Facial Palsy:
+Ask patient to show teeth (or smile) AND raise eyebrows. Compare both sides. If patient cannot follow commands: observe symmetry of grimace to nail-bed pressure. Central palsy = lower face only; peripheral = upper and lower face.
+5a/5b. Motor Arms:
+Position: arms extended 90° if sitting, 45° if supine, palms DOWN. Count aloud to 10. Score each arm separately. "Drift" = any downward movement before 10 seconds. If limb cannot be positioned against gravity due to pain/contracture, score best effort. Amputation/fusion = 0.
+6a/6b. Motor Legs:
+Position: supine, each leg raised to 30° from bed. Count aloud to 5. Score each leg separately. "Drift" = leg falls to bed before 5 seconds. Test one leg at a time.
+7. Limb Ataxia:
+Finger-nose-finger test (arms) and heel-shin test (legs). Patient must reach YOUR finger, not their own nose repeatedly. Test must be meaningful — do NOT test if limb is plegic (score 0) or if weakness obscures assessment. Ataxia must be OUT OF PROPORTION to weakness. Eyes open during testing.
+8. Sensory:
+Use pinprick (broken tongue depressor or pin). Test face, arm, trunk, and leg bilaterally. Ask "Does this feel sharp? Does it feel the same on both sides?" If patient cannot report, score grimace asymmetry to noxious stimulus. Only stroke-related loss counts — pre-existing neuropathy = 0.
+9. Best Language:
+Three required components: (1) Show cookie theft picture — patient describes the scene; (2) Naming card — patient names objects (feather, hammock, cactus); (3) Reading card — patient reads sentences aloud. Comprehension alone is NOT sufficient. If no cards available: ask patient to describe what happened, name objects in the room, read text on a clipboard. Mute/intubated who cannot write = score 3.
+10. Dysarthria:
+Ask patient to read or repeat: "You know how." "Down to earth." "I got home from work." "Near the table in the dining room." "They heard him speak on the radio last night." Score clarity. Intubated/mechanical barrier = UN. If patient has severe aphasia, score dysarthria from spontaneous speech.
+11. Extinction/Inattention:
+Two simultaneous tests required: (1) VISUAL: Stand in front of patient, raise one finger on each side in peripheral fields simultaneously — ask "Which side did you see?" (2) TACTILE: With patient's eyes closed, touch both hands simultaneously — ask "Where did I touch you?" Both must be tested. Score only if one-sided extinction (perceives single stimuli but ignores one side during bilateral stimulation).
+COR/LOE Reference Legend
+Class of Recommendation (COR)
+Class I
+Strong benefit, should be performed
+Class IIa
+Reasonable, benefit likely outweighs risk
+Class IIb
+May be considered, benefit uncertain
+Class III: No Benefit
+Not useful
+Class III: Harm
+Harmful, should NOT be performed
+Level of Evidence (LOE)
+A:
+Multiple RCTs or meta-analyses
+B-R:
+Randomized, moderate-quality evidence
+B-NR:
+Non-randomized, well-designed studies
+C-LD:
+Limited data, observational/registries
+C-EO:
+Expert opinion/consensus
+Modified Fisher Scale
+Vasospasm Risk
+Predicts risk of symptomatic vasospasm after SAH based on CT appearance.
+Grade
+0
+:
+No SAH or IVH
+Vasospasm risk:
+~0%
+Grade
+1
+:
+Thin SAH, no IVH
+Vasospasm risk:
+~24%
+Grade
+2
+:
+Thin SAH with IVH
+Vasospasm risk:
+~33%
+Grade
+3
+:
+Thick SAH, no IVH
+Vasospasm risk:
+~33%
+Grade
+4
+:
+Thick SAH with IVH
+Vasospasm risk:
+~40%
+Frontera et al., Neurosurgery 2006. Thin = <1mm, Thick = ≥1mm.
+Glasgow Coma Scale (GCS)
+Score:
+0
+Score:
+0
+Range: 3-15
+Eye Opening
+4
+Spontaneous
+3
+To sound
+2
+To pain
+1
+None
+Verbal Response
+5
+Oriented
+4
+Confused
+3
+Inappropriate
+2
+Incomprehensible
+1
+None
+Motor Response
+6
+Obeying
+5
+Localizing
+4
+Flexing
+3
+Abnormal flexion
+2
+Extending
+1
+None
+ICH Score
+Score:
+0
+Score:
+0
+Interpretation:
+Lower risk
+(ICH Score
+0
+)
+30-day mortality:
+0%
+Hemphill et al., Stroke 2001; validated in multiple cohorts
+Standard vs comfort-care-excluded cohort — teaching comparison
+ICH Score
+Standard (Hemphill)
+Comfort-care-excluded cohort
+0
+0%
+0.9%
+1
+13%
+0.7%
+2
+26%
+5.3%
+3
+72%
+15.3%
+4
+97%
+36.8%
+5
+100%
+60.0%
+6
+100%
+100% (predicted)
+Illustrative comfort-care-excluded cohort (unvalidated)
+— de-identified, provenance-unverified figures shown only to teach the
+self-fulfilling-prophecy effect of early care limitation
+. NOT validated or institutional data; do not use for individual prognostication. When aggressive care is sustained, observed mortality falls well below the Hemphill estimates that were derived from cohorts with high rates of early DNR/withdrawal.
+Standard column: Hemphill et al., Stroke 2001. AHA/ASA 2022 ICH guideline recommends postponing new DNR orders until at least the second full hospital day (Class IIa).
+Glasgow Coma Scale:
+GCS 3-4
+(
++2 points
+)
+GCS 5-12
+(
++1 point
+)
+GCS 13-15
+(
+0 points
+)
+Age ≥80 (+1)
+ICH Volume Calculator (ABC/2)
+Calculate hematoma volume from CT measurements.
+A: Length
+cm
+B: Width
+cm
+Slice Thickness
+mm
+# Slices
+#
+Calculated Volume
+0.0
+cc
+ICH volume ≥30 cc (+1)
+Intraventricular hemorrhage (+1)
+Infratentorial origin (+1)
+FUNC Score (ICH Functional Outcome)
+Prognosis
+Predicts functional independence (GOS ≥4) at 90 days after ICH. Range 0-11. Higher = better prognosis. (Rost et al., Stroke 2008)
+ICH Volume
+<30 mL: +4 | 30-59 mL: +2 | ≥60 mL: +0
+Enter ICH volume above
+Age
+<70: +2 | 70-79: +1 | ≥80: +0
+Enter age in encounter
+ICH Location
+Lobar: +2 | Deep: +1 | Infratentorial: +0
+Lobar
+(+
+2
+)
+Deep
+(+
+1
+)
+Infratentorial
+(+
+0
+)
+GCS Score
+≥9: +2 | 5-8: +1 | 3-4: +0
+Current: +
+2
+Pre-ICH Cognitive Status
+No impairment: +1 | Pre-ICH dementia: +0
+Pre-ICH cognitive impairment
+Current: +
+1
+FUNC Score:
+4
+/11
+(partial — enter missing values)
+Poor (<50% chance of functional independence)
+Important:
+FUNC Score should NOT be used alone for withdrawal-of-care decisions. Early aggressive care limitations (self-fulfilling prophecy) contribute to poor outcomes. AHA/ASA recommends postponing DNR orders for at least 24h after ICH onset.
+Modified Rankin Scale (mRS)
+Score:
+Not Selected
+Score:
+Not Selected
+Range: 0-6
+0 - No symptoms
+Completely recovered; no residual symptoms
+1 - No significant disability
+Able to carry out all usual duties and activities despite some symptoms
+2 - Slight disability
+Unable to carry out all previous activities but able to look after own affairs without assistance
+3 - Moderate disability
+Requires some help, but able to walk without assistance
+4 - Moderately severe disability
+Unable to walk without assistance and unable to attend to own bodily needs without assistance
+5 - Severe disability
+Bedridden, incontinent, and requires constant nursing care and attention
+6 - Dead
+EVT Trial Eligibility by Premorbid mRS:
+mRS 0-1: MR CLEAN, ESCAPE, EXTEND-IA, SWIFT PRIME, REVASCAT, DAWN, DEFUSE 3
+mRS 0-2: EXTEND, ECASS III (IVT), HERMES meta-analysis
+mRS 0-3: SELECT2 (large core), ANGEL-ASPECT
+ABCD² Score
+Score:
+0
+Score:
+0
+Interpretation:
+Lower risk
+2-day stroke risk (ABCD²
+0
+)
+Age ≥60 (+1)
+BP: SBP≥140 or DBP≥90 (+1)
+Unilateral weakness (+2)
+Speech disturbance w/o weakness (+1)
+Symptom Duration:
+≥60 minutes
+(
++2 points
+)
+10-59 minutes
+(
++1 point
+)
+<10 minutes
+(
+0 points
+)
+Diabetes mellitus (+1)
+2-Day, 7-Day, and 90-Day Stroke Risk
+0-3:
+2-day: 1%
+7-day: 1.2%
+90-day: 3.1%
+4-5:
+2-day: 4.1%
+7-day: 5.9%
+90-day: 9.8%
+6-7:
+2-day: 8.1%
+7-day: 11.7%
+90-day: 17.8%
+CHA₂DS₂-VASc Score
+Score:
+0
+Score:
+0
+Age 65-74 (+1)
+Age ≥75 (+2)
+CHF (+1)
+Hypertension (+1)
+Diabetes (+1)
+Stroke/TIA (+2)
+Vascular disease (+1)
+Female sex (+1)
+Annual Stroke/TE Risk (Friberg et al., JACC 2012)
+Score 0:
+0.2%
+Score 1:
+0.6%
+Score 2:
+2.2%
+Score 3:
+3.2%
+Score 4:
+4.8%
+Score 5:
+7.2%
+Score 6:
+9.7%
+Score 7:
+11.2%
+Score 8:
+10.8%
+Score 9:
+12.2%
+HAS-BLED Score
+Score:
+0
+Score:
+0
+H
+ypertension (uncontrolled SBP >160) (+1)
+A
+bnormal renal function (dialysis, transplant, Cr >2.6) (+1)
+A
+bnormal liver function (cirrhosis, bilirubin >2x, AST/ALT >3x) (+1)
+S
+troke history (+1)
+B
+leeding history or predisposition (+1)
+L
+abile INR (TTR <60%) (+1)
+E
+lderly (age ≥65) (+1)
+D
+rugs (antiplatelet agents, NSAIDs) (+1)
+D
+(cont.) Alcohol use (≥8 drinks/week) (+1)
+Annual Bleeding Risk
+Score 0:
+1.13% per year
+Score 1:
+1.02% per year
+Score 2:
+1.88% per year
+Score ≥3:
+3.74% per year (high risk)
+High risk (≥3) indicates need for more frequent monitoring and caution with anticoagulation, but should not automatically exclude from treatment.
+ROPE Score and PASCAL Classification
+Score:
+0
+Score:
+0
+No history of hypertension (+1)
+No history of diabetes (+1)
+No history of stroke or TIA (+1)
+Nonsmoker (+1)
+Cortical infarct (+1)
+Age (years)
+18-29: +5, 30-39: +4, 40-49: +3, 50-59: +2, 60-69: +1, ≥70: 0
+PFO-attributable fraction
+Score 0-3:
+0-23%
+Score 4:
+38%
+Score 5:
+34%
+Score 6:
+62%
+Score 7:
+72%
+Score 8:
+84%
+Score 9-10:
+88%
+2-Year Recurrent Stroke/TIA Risk
+Score 0-3:
+20%
+Score 4:
+12%
+Score 5:
+15%
+Score 6:
+8%
+Score 7:
+6%
+Score 8:
+6%
+Score 9-10:
+2%
+PASCAL Classification (Kent et al., JAHA 2020)
+Definite PFO-related stroke (closure strongly recommended):
+RoPE ≥7 + high-risk PFO (large shunt or atrial septal aneurysm)
+Probable PFO-related stroke (closure reasonable):
+• RoPE ≥7 + low-risk PFO (small shunt, no ASA)
+• RoPE <7 + high-risk PFO (large shunt or ASA)
+Possible PFO-related stroke (closure uncertain benefit):
+RoPE <7 + low-risk PFO, no clear alternative stroke etiology
+Unlikely PFO-related stroke (closure not recommended):
+Clear alternative stroke etiology identified (AF, LAA, etc.), regardless of PFO features
+RCVS² Score
+Score:
+0
+Score:
+0
+Recurrent thunderclap headaches (+5)
+Intracranial carotid artery involvement (-2)
+Vasoconstrictive trigger exposure (+3)
+Female sex (+1)
+Subarachnoid hemorrhage on imaging (+1)
+RCVS Probability
+Score <2:
+Low probability of RCVS
+Score 2-4:
+Intermediate probability
+Score ≥5:
+High probability of RCVS
+RCVS² score helps distinguish RCVS from other causes of thunderclap headache. Consider vascular imaging and repeat imaging in 2-4 weeks if high suspicion.
+Hunt and Hess / WFNS Scale (SAH Grading)
+H&H:
+Not Selected
+| WFNS:
+Not Selected
+Hunt and Hess Scale
+Grade 1
+Asymptomatic or mild headache
+Grade 2
+Moderate-severe headache, nuchal rigidity, no deficit (except CN palsy)
+Grade 3
+Drowsiness, confusion, or mild focal deficit
+Grade 4
+Stupor, moderate-severe hemiparesis
+Grade 5
+Deep coma, decerebrate rigidity, moribund
+WFNS Scale
+Grade 1
+GCS 15, no motor deficit
+Grade 2
+GCS 13-14, no motor deficit
+Grade 3
+GCS 13-14, with motor deficit
+Grade 4
+GCS 7-12, with or without motor deficit
+Grade 5
+GCS 3-6, with or without motor deficit
+PREVENT 10-year ASCVD Risk Estimate
+Open PREVENT Calculator →
+PHASES Score (Aneurysm Rupture Risk)
+Score:
+0
+—
+0.4%
+5-yr risk
+Predicts 5-year absolute risk of rupture for unruptured intracranial aneurysms. Useful for counseling in stroke prevention clinic.
+Population
+North American / European (0 pts)
+Japanese (+3 pts)
+Finnish (+5 pts)
+History of hypertension (+1)
+Age ≥70 years (+1)
+Aneurysm size (mm)
+<7mm: 0 pts | 7-9.9mm: +3 | 10-19.9mm: +6 | ≥20mm: +10
+Earlier SAH from a different aneurysm (+1)
+Aneurysm site
+ICA (0 pts)
+MCA (+2 pts)
+ACA / Pcomm / Posterior circulation (+4 pts)
+PHASES Score:
+0
+—
+Very low
+5-year absolute rupture risk:
+0.4%
+Copy
+Greving JP et al.
+Lancet Neurol
+2014;13(1):59-66. PHASES: Population, Hypertension, Age, Size, Earlier SAH, Site.
+Note: PHASES score should be one factor in the treatment decision. Consider patient life expectancy, aneurysm morphology, family history, and patient preference.
+ICH Volume Calculator (ABC/2 Method)
+A: Largest diameter (cm)
+B: Perpendicular diameter (cm)
+C: Slices x thickness (cm)
+Enter A, B, and C measurements from CT to calculate ICH volume.
+ABC/2 method: A = largest diameter, B = perpendicular diameter on same slice, C = number of slices with ICH x slice thickness.
+Andexanet Alfa (Andexxa) Dosing
+DOAC Type
+Select DOAC
+Apixaban (Eliquis)
+Rivaroxaban (Xarelto)
+Other (not indicated for andexanet)
+Hours since last DOAC dose
+DOAC dose (mg per dose)
+Select apixaban or rivaroxaban. Andexanet not indicated for dabigatran (use idarucizumab) or edoxaban.
+Practice note:
+AHA/ASA 2022 lists andexanet alfa as Class IIa (reasonable) for Xa inhibitor-associated ICH reversal. 4F-PCC is an alternative when andexanet is unavailable or contraindicated. Monitor closely for thrombotic complications after any reversal strategy.
+ANNEXA-4 trial. Low-dose if last DOAC ≥8h ago (or apixaban ≤5mg). High-dose if last dose <8h ago (or rivaroxaban >10mg, apixaban >5mg). Monitor for thrombotic events post-reversal.
+Creatinine Clearance (Cockcroft-Gault)
+Age
+Weight (kg)
+Sex
+Select
+Male
+Female
+Serum Cr (mg/dL)
+Height (cm) — for obesity-adjusted CrCl
+Enter age, weight, sex, and creatinine to calculate.
+Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × Cr). Uses actual body weight. For obesity, consider adjusted body weight or cystatin C-based eGFR.
+Enoxaparin Weight-Based Dosing
+Weight (kg)
+CrCl (mL/min)
+Treatment: 1 mg/kg SC BID (standard) or 1.5 mg/kg SC daily (alternative). CrCl <30: 1 mg/kg SC daily. Prophylaxis: 40 mg SC daily (30 mg if CrCl <30). Check anti-Xa for extremes of weight.
+ASPECTS Score (Interactive)
+Score:
+10
+/10
+Click regions with
+early ischemic changes
+on CT. ASPECTS = 10 minus number of affected regions.
+C
+Caudate
+L
+Lentiform
+IC
+Internal Capsule
+I
+Insular Ribbon
+M1
+Anterior MCA
+M2
+MCA lateral to insular ribbon
+M3
+Posterior MCA
+M4
+Anterior MCA above M1
+M5
+Lateral MCA above M2
+M6
+Posterior MCA above M3
+ASPECTS:
+10
+Favorable for EVT
+ASPECTS 6-10: Standard EVT candidacy (Class I for LVO 0-6h)
+Reset all regions
+PC-ASPECTS (Posterior Circulation)
+Score:
+10
+/10
+Click regions with early ischemic changes. Used for basilar artery EVT eligibility (≥6 favors intervention).
+Pons
+2
+pt
+s
+Midbrain
+2
+pt
+s
+Cerebellum L
+1
+pt
+Cerebellum R
+1
+pt
+PCA L
+1
+pt
+PCA R
+1
+pt
+Thalamus L
+1
+pt
+Thalamus R
+1
+pt
+PC-ASPECTS:
+10
+Favorable for basilar EVT (ATTENTION/BAOCHE trials)
+Alteplase (tPA) Dosing Calculator
+0.9 mg/kg, max 90 mg
+Enter patient weight in the encounter section to calculate dose.
+Thrombolysis Risk Scores (SPAN-100, DRAGON, SEDAN)
+sICH Risk Assessment
+SPAN-100 Index
+Age + NIHSS ≥ 100 predicts higher symptomatic ICH risk and lower chance of good outcome after IV thrombolysis.
+Age (
+?
+) + NIHSS (
+?
+) =
+?
+NEGATIVE — Lower Risk
+SEDAN Score (sICH Risk Post-Thrombolysis)
+Sugar + Early infarct signs + Dense artery + Age + NIHSS
+•
+Glucose ≤144 (0)
+•
+Early infarct signs on CT (0) — set in Treatment Decision section
+•
+Dense artery sign (0) — set in Treatment Decision section
+•
+Age ≤75 (0)
+•
+NIHSS <10 (0)
+SEDAN:
+0
+/6
+Estimated sICH risk:
+~1%
+mTICI Reperfusion Score (Post-EVT)
+Modified Treatment in Cerebral Ischemia. Select the grade that best describes post-procedure reperfusion.
+mTICI
+0
+No perfusion
+No antegrade flow beyond occlusion
+mTICI
+1
+Minimal perfusion
+Antegrade flow past occlusion, no distal filling
+mTICI
+2a
+Partial (< 50%)
+Antegrade flow fills <50% of downstream territory
+mTICI
+2b
+Substantial (50-99%)
+Antegrade flow fills 50-99% of downstream territory
+mTICI
+2c
+Near-complete
+Near-complete perfusion with slow flow or few small distal emboli
+mTICI
+3
+Complete perfusion
+Full antegrade flow, normal filling speed
+DRAGON Score (IVT Outcome Prediction)
+Predicts 3-month outcome after IV thrombolysis. Auto-calculated from patient data where available.
+Dense artery sign or early infarct on NCCT
++1-2
+manual
+Pre-stroke mRS > 1
++0
+manual
+Age <65 (?)
++0
+manual
+Glucose ≤8 mmol/L (?)
++0
+manual
+Onset to treatment >90 min
++1
+manual
+NIHSS <5 (?)
++0
+manual
+DRAGON:
+0
+(auto-components)
+Good
+Good outcome likely (mRS 0-2)
+Note: D (dense artery/early infarct) and O (onset time) must be assessed manually. Add +1-2 for D and +1 for O if applicable.

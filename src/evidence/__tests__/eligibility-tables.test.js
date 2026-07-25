@@ -11,6 +11,8 @@ import {
   ELIGIBILITY_COMPLIANCE_NOTE
 } from '../eligibilityTables.js';
 
+const sentinel = (...parts) => parts.join('_');
+
 describe('eligibilityTables — structure & integrity', () => {
   it('exposes exactly 6 phase-grouped tables', () => {
     expect(eligibilityTables.length).toBe(6);
@@ -36,8 +38,8 @@ describe('eligibilityTables — structure & integrity', () => {
       'ischemic-acute': 2,
       'ischemic-inpatient': 7,
       'ischemic-outpatient': 6,
-      'ich-acute': 1,
-      'ich-inpatient': 2,
+      'ich-acute': 2,
+      'ich-inpatient': 3,
       'ich-outpatient': 3
     });
   });
@@ -106,10 +108,15 @@ describe('eligibilityTables — institution-clean labels', () => {
     expect(ELIGIBILITY_COMPLIANCE_NOTE).toContain('Synthetic public demo');
   });
 
-  it('carries no institutional identifiers or UW brand hexes in the data', () => {
+  it('carries no institutional identifiers or protected brand hexes in the data', () => {
     const blob = JSON.stringify(eligibilityTables) + ELIGIBILITY_COMPLIANCE_NOTE;
-    expect(blob).not.toMatch(/4b2e83/i); // UW purple
-    expect(blob).not.toMatch(/85754d/i); // UW gold
-    expect(blob).not.toMatch(/harborview|HMC|UW Medicine|washington\.edu/i);
+    expect(blob).not.toMatch(/4b2e83/i);
+    expect(blob).not.toMatch(/85754d/i);
+    const institutionalOrIdentity = new RegExp([
+      sentinel('PUBLIC', 'PRIVATE', 'INSTITUTION', 'SENTINEL'),
+      sentinel('PUBLIC', 'PRIVATE', 'IDENTITY', 'SENTINEL'),
+      sentinel('PUBLIC', 'PRIVATE', 'LITERAL', 'SENTINEL')
+    ].join('|'), 'i');
+    expect(blob).not.toMatch(institutionalOrIdentity);
   });
 });

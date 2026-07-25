@@ -1,0 +1,36 @@
+[
+  {
+    "id": "enchanted2-mt",
+    "name": "ENCHANTED2/MT",
+    "fullName": "Intensive BP Control after Endovascular Thrombectomy",
+    "category": "bp-post-evt",
+    "population": "n=821, ≥18, NIHSS all, post-successful EVT",
+    "finding": "Favored less-intensive (worse with intensive)",
+    "teachingPoint": "Avoid intensive BP lowering after successful EVT; target 140-180 mmHg.",
+    "PMID": "36341753",
+    "year": 2022,
+    "citationIds": [
+      "cit-enchanted2-mt-2022"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "optimal-bp",
+    "name": "OPTIMAL-BP",
+    "fullName": "Intensive vs Conventional Blood Pressure Lowering after Successful Endovascular Thrombectomy",
+    "category": "bp-post-evt",
+    "population": "n=306, ≥18, NIHSS all, After successful EVT (mTICI ≥2b)",
+    "finding": "Intensive worse: 39.4% vs 54.4%",
+    "teachingPoint": "Objective: intensive SBP <140 after successful EVT reduced functional independence; reinforces ENCHANTED2/MT.",
+    "PMID": "37668619",
+    "year": 2023,
+    "citationIds": [
+      "cit-optimal-bp-2023"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-07-18",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

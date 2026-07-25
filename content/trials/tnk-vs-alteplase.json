@@ -1,0 +1,104 @@
+[
+  {
+    "id": "act",
+    "name": "AcT",
+    "fullName": "Intravenous Tenecteplase Compared with Alteplase for Acute Ischaemic Stroke in Canada",
+    "category": "tnk-vs-alteplase",
+    "population": "n=1577, adults ≥18, ≤4.5 h",
+    "finding": "Non-inferior: 36.9% (TNK) vs 34.8% (alteplase)",
+    "teachingPoint": "Supports TNK 0.25 mg/kg as a preferred IV thrombolytic for IVT-eligible AIS within 4.5 h.",
+    "PMID": "35779553",
+    "year": 2022,
+    "citationIds": [
+      "cit-act-2022"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "trace-2",
+    "name": "TRACE-2",
+    "fullName": "Trial of Tenecteplase in Chinese Patients with Acute Ischemic Stroke",
+    "category": "tnk-vs-alteplase",
+    "population": "n=1430, ≥18, NIHSS NIHSS ≤25, ≤4.5 h",
+    "finding": "Non-inferior: 62.0% (TNK) vs 58.0% (alteplase)",
+    "teachingPoint": "Confirms non-inferiority of TNK in non-LVO eligible AIS within 4.5 h.",
+    "PMID": "36774935",
+    "year": 2023,
+    "citationIds": [
+      "cit-trace2-2023"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "original",
+    "name": "ORIGINAL",
+    "fullName": "Tenecteplase vs Alteplase in AIS (ORIGINAL)",
+    "category": "tnk-vs-alteplase",
+    "population": "n=1489, ≥18, ≤4.5 h",
+    "finding": "Non-inferior",
+    "teachingPoint": "Adds further RCT support for TNK as alteplase-equivalent first-line.",
+    "PMID": "39264623",
+    "year": 2024,
+    "citationIds": [
+      "cit-original-2024"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-04-25",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "tnk-vs-alteplase-rwe",
+    "name": "TNK vs alteplase · RWE",
+    "fullName": "Real-World Efficacy and Safety of Tenecteplase versus Alteplase in Acute Ischemic Stroke: A Propensity Score-Matched Analysis",
+    "category": "tnk-vs-alteplase",
+    "population": "n=371",
+    "finding": "Comparable (p>0.05)",
+    "teachingPoint": "Adds real-world support for tenecteplase as a practical alteplase alternative — consistent with trial-level non-inferiority.",
+    "PMID": "42206304",
+    "year": 2026,
+    "citationIds": [
+      "cit-tnk-vs-alteplase-rwe-2026"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-05-30",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "bridge-tnk",
+    "name": "BRIDGE-TNK",
+    "fullName": "Intravenous Tenecteplase before Thrombectomy in Stroke",
+    "category": "tnk-vs-alteplase",
+    "population": "n=550, adults, ≤4.5 h",
+    "finding": "Favored TNK + thrombectomy: 52.9% vs 44.1%",
+    "teachingPoint": "Reinforces bridging IV thrombolysis before thrombectomy for eligible LVO within 4.5 h; do not routinely skip IVT in eligible patients headed to EVT.",
+    "PMID": "40396577",
+    "year": 2025,
+    "citationIds": [
+      "cit-bridge-tnk-2025"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-07-06",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "tempo-2",
+    "name": "TEMPO-2",
+    "fullName": "Tenecteplase versus Standard of Care for Minor Ischaemic Stroke with Proven Occlusion (TEMPO-2)",
+    "category": "tnk-vs-alteplase",
+    "population": "n=886, adults, NIHSS 0-5 (minor), ≤12 h",
+    "finding": "No benefit of tenecteplase vs standard of care",
+    "teachingPoint": "Argues against routine thrombolysis for minor non-disabling stroke solely because an occlusion is present; keep the disabling-deficit gate.",
+    "PMID": "38768626",
+    "year": 2024,
+    "citationIds": [
+      "cit-tempo-2-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-07-06",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "id": "aneurysms-unruptured-cerebral-aneurysms",
+    "title": "Unruptured Cerebral Aneurysms",
+    "category": "aneurysms",
+    "type": "pdf",
+    "path": "documents/aneurysms/Unruptured Cerebral Aneurysms.pdf",
+    "provenance": "src/app.jsx reference library"
+  }
+]

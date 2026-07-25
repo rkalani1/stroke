@@ -13,7 +13,8 @@
 //   compatibility but renamed here to disambiguate from the formal IPDMA.
 // '1-3-6-12': legacy rule (Heidbuchel 2017 EHRA practical guide) — preserved for institutions
 //   still using this default.
-// AHA/ASA 2024 focused update endorses early DOAC initiation (≤4 days) for minor/moderate AF strokes.
+// Early DOAC initiation (≤4 days) for minor/moderate AF strokes is supported by ELAN (2023),
+// OPTIMAS (2024) and the CATALYST IPD meta-analysis (2025) — not by any AHA/ASA 2024 guideline update.
 export const DOAC_PROTOCOLS = {
   'elan-optimas': {
     label: 'ELAN/OPTIMAS — early start (default)',
@@ -262,7 +263,9 @@ export const getPHASESRisk = (score) => {
 // ABC/2 (Kothari Stroke 1996). Inputs MUST be in centimeters; if any dimension
 // is suspiciously large (>15 cm) or computed volume exceeds 500 mL, surface a
 // likely-unit-confusion warning so a mm-vs-cm typo doesn't silently 1000× the
-// estimate. ICH ≥30 mL is the prognostic and surgical-decision threshold.
+// estimate. In the June 2026 algorithm, confirmed non-traumatic IPH >=15 mL
+// is the early Neurosurgery + stroke-service evaluation trigger; >=30 mL
+// remains the prognostic / MIE-screen volume tier when other criteria fit.
 export const calculateICHVolume = (items) => {
   if (!items || typeof items !== 'object') return null;
   const a = parseFloat(items.lengthCm) || 0;
@@ -277,10 +280,21 @@ export const calculateICHVolume = (items) => {
     : null;
   return {
     volume: Math.round(volume * 10) / 10,
+    isDualConsult: volume >= 15,
+    meetsNonTraumaticIphDualConsultVolume: volume >= 15,
     isLarge: volume >= 30,
     isExpanding: false,
     unitWarning
   };
+};
+
+const JUNE_2026_MIE_LOBAR_PATTERN = /\b(lobar|frontal|temporal|parietal|occipital|cortical)\b/;
+const JUNE_2026_MIE_DEEP_LOCATION_PATTERN = /\b(subcortical|deep|basal[-\s]?ganglia|thalamic|thalamus|brainstem|pons|midbrain|cerebellar|cerebellum|caudate|putamen|globus\s+pallidus|internal\s+capsule)\b/;
+
+export const isJune2026MieLobarLocationText = (text = '') => {
+  const normalized = String(text || '').toLowerCase();
+  return JUNE_2026_MIE_LOBAR_PATTERN.test(normalized)
+    && !JUNE_2026_MIE_DEEP_LOCATION_PATTERN.test(normalized);
 };
 
 export const calculateEnoxaparinDose = (weightKg, crCl) => {
@@ -460,7 +474,10 @@ export const calculatePCCDose = (weightKg, inrVal, indication = 'warfarin') => {
     else if (inr <= 6) { iuPerKg = 35; inrTierNote = 'INR 4.0-6.0 — 4F-PCC 35 IU/kg (COR 1/B)'; }
     else { iuPerKg = 50; inrTierNote = 'INR >6 — 4F-PCC 50 IU/kg (COR 1/B)'; }
   }
-  const ahaDose = iuPerKg ? Math.min(Math.round(weight * iuPerKg), 5000) : null;
+  // Kcentra label doses by weight up to but not exceeding 100 kg, giving
+  // per-tier maxima of 2500 (25 U/kg), 3500 (35 U/kg), 5000 (50 U/kg). A flat
+  // 5000 cap over-doses the 25/35 U/kg tiers for patients >100 kg.
+  const ahaDose = iuPerKg ? Math.round(Math.min(weight, 100) * iuPerKg) : null;
   return { ahaDose, iuPerKg, weight, inrTierNote, indication: 'warfarin' };
 };
 

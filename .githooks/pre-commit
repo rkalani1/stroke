@@ -1,5 +1,5 @@
 #!/bin/sh
-# Pre-commit leak guard — blocks staging real HMC/UW/Harborview institutional or
+# Pre-commit leak guard -- blocks staging real local institutional or
 # PHI-adjacent content into this public repo. Defense-in-depth layer #4 (after
 # .gitignore, the index.html host-gate, and the CI gate via `npm test`).
 #
@@ -9,17 +9,14 @@
 # Scans only STAGED files, so it is fast and runs on every commit.
 
 if command -v node >/dev/null 2>&1; then
-  STAGED="$(git diff --cached --name-only --diff-filter=ACMR)"
-  if [ -n "$STAGED" ]; then
-    printf '%s\n' "$STAGED" | node ./scripts/check-no-institutional-leak.mjs
-    if [ $? -ne 0 ]; then
-      echo ""
-      echo "❌ Commit blocked by leak guard. Real institutional content belongs in"
-      echo "   private/institutional.js (gitignored), never in a committed file."
-      echo "   To override a confirmed false-positive: refine scripts/leak-guard-denylist.json,"
-      echo "   or (last resort) commit with --no-verify."
-      exit 1
-    fi
+  if ! sh ./scripts/check-staged-leak-guard.sh; then
+    echo ""
+    echo "Commit blocked by leak guard. Real local protocol/contact/source"
+    echo "   content belongs only in gitignored local extension files."
+    echo "   To override a confirmed false-positive: refine the generic public denylist"
+    echo "   or a gitignored private denylist,"
+    echo "   or (last resort) commit with --no-verify."
+    exit 1
   fi
 else
   echo "⚠️  pre-commit leak guard skipped: node not found on PATH."
