@@ -1417,6 +1417,41 @@ const BedsidePocketCardsStyles = () => (
     table.card-table tbody tr:nth-child(even) td {
       background: var(--fill-soft);
     }
+    table.card-table tbody tr {
+      transition: background 0.15s ease;
+    }
+    table.card-table tbody tr:hover {
+      background: rgba(91, 59, 156, 0.04);
+    }
+
+    /* SVG Diagram Card Container */
+    .svg-diagram-card {
+      width: 100%;
+      border-radius: 10px;
+      border: 1.5px solid var(--rule-soft);
+      background: linear-gradient(180deg, var(--fill-soft) 0%, #ffffff 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 4px 12px rgba(0,0,0,0.03);
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    /* Badge Pills for Risk Levels & Scores */
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: 9999px;
+      font-size: 7.5pt;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+    .badge-pill-cobalt { background: var(--teal-soft); color: var(--teal-deep); border: 1px solid rgba(24,132,158,0.3); }
+    .badge-pill-crit   { background: var(--red-soft); color: var(--red-deep); border: 1px solid rgba(198,46,46,0.3); }
+    .badge-pill-warn   { background: var(--amber-soft); color: var(--amber-deep); border: 1px solid rgba(217,134,11,0.3); }
+    .badge-pill-ok     { background: #e8f5e9; color: #1b5e20; border: 1px solid rgba(46,125,50,0.3); }
+    .badge-pill-purple { background: var(--purple-soft); color: var(--purple-deep); border: 1px solid rgba(91,59,156,0.3); }
 
     /* Outcome chart for Malignant MCA counseling */
     .outcome-chart-container {
@@ -3825,11 +3860,11 @@ export function StrokePrognosisCard() {
                 </table>
                 <strong style={{color: 'var(--purple-deep)', display: 'block', marginTop: '6px', fontSize: '7.8pt'}}>Score vs. 90-Day Unfavorable Outcome (mRS &gt; 2) Risk:</strong>
                 <div style={{display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '4px', textAlign: 'center', fontSize: '7.2pt', marginTop: '3px'}}>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>&lt;20</strong><br/><span style={{color: '#2e7d32'}}>&lt;5%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>23</strong><br/><span style={{color: '#2e7d32'}}>15%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>31</strong><br/><span style={{color: '#f57c00'}}>50%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>35</strong><br/><span style={{color: '#e64a19'}}>70%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>40+</strong><br/><span style={{color: '#c62828'}}>&gt;90%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>&lt;20</strong><br/><span className="badge-pill badge-pill-ok">&lt;5%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>23</strong><br/><span className="badge-pill badge-pill-ok">15%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>31</strong><br/><span className="badge-pill badge-pill-warn">50%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>35</strong><br/><span className="badge-pill badge-pill-crit">70%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>40+</strong><br/><span className="badge-pill badge-pill-crit">&gt;90%</span></div>
                 </div>
               </div>
 
@@ -3855,11 +3890,11 @@ export function StrokePrognosisCard() {
                 </table>
                 <strong style={{color: 'var(--teal-deep)', display: 'block', marginTop: '6px', fontSize: '7.8pt'}}>Score vs. 30-Day Mortality Risk:</strong>
                 <div style={{display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '4px', textAlign: 'center', fontSize: '7.2pt', marginTop: '3px'}}>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>&lt;6</strong><br/><span style={{color: '#2e7d32'}}>0.7%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>9-10</strong><br/><span style={{color: '#2e7d32'}}>4.4%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>13</strong><br/><span style={{color: '#f57c00'}}>15%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>16</strong><br/><span style={{color: '#e64a19'}}>35%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>&gt;19</strong><br/><span style={{color: '#c62828'}}>&gt;65%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>&lt;6</strong><br/><span className="badge-pill badge-pill-ok">0.7%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>9-10</strong><br/><span className="badge-pill badge-pill-ok">4.4%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>13</strong><br/><span className="badge-pill badge-pill-warn">15%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>16</strong><br/><span className="badge-pill badge-pill-crit">35%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>&gt;19</strong><br/><span className="badge-pill badge-pill-crit">&gt;65%</span></div>
                 </div>
               </div>
             </div>
@@ -3887,12 +3922,12 @@ export function StrokePrognosisCard() {
                 </table>
                 <strong style={{color: 'var(--red-deep)', display: 'block', marginTop: '6px', fontSize: '7.8pt'}}>Score vs. 30-Day Mortality Risk:</strong>
                 <div style={{display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '3px', textAlign: 'center', fontSize: '7.2pt', marginTop: '3px'}}>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>0</strong><br/><span style={{color: '#2e7d32'}}>0%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>1</strong><br/><span style={{color: '#2e7d32'}}>13%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>2</strong><br/><span style={{color: '#f57c00'}}>26%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>3</strong><br/><span style={{color: '#e64a19'}}>72%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>4</strong><br/><span style={{color: '#c62828'}}>97%</span></div>
-                  <div style={{background: 'white', borderRadius: '3px', padding: '2px'}}><strong>5-6</strong><br/><span style={{color: '#c62828'}}>100%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>0</strong><br/><span className="badge-pill badge-pill-ok">0%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>1</strong><br/><span className="badge-pill badge-pill-ok">13%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>2</strong><br/><span className="badge-pill badge-pill-warn">26%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>3</strong><br/><span className="badge-pill badge-pill-crit">72%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>4</strong><br/><span className="badge-pill badge-pill-crit">97%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>5-6</strong><br/><span className="badge-pill badge-pill-crit">100%</span></div>
                 </div>
               </div>
 
