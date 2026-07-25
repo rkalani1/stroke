@@ -1611,7 +1611,7 @@ export function ToastClassificationCard() {
     </p>
     
     
-    <svg viewBox="0 0 735 120" style={{width: '100%', height: '120px', marginBottom: '8px'}}>
+    <svg viewBox="0 0 735 120" role="img" aria-label="TOAST Ischemic Stroke Subtype Classification Flowchart" style={{width: '100%', height: '120px', marginBottom: '8px'}}>
       
       <rect x="0" y="0" width="735" height="120" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
       
@@ -1779,7 +1779,7 @@ export function DaptRegimensCard() {
     <h1 style={{textAlign: 'center', marginBottom: '8px'}}>DAPT for Non-Cardioembolic Ischemic Stroke</h1>
 
     
-    <svg viewBox="0 0 735 240" style={{width: '100%', height: '210px', marginBottom: '6px'}}>
+    <svg viewBox="0 0 735 240" role="img" aria-label="DAPT Secondary Stroke Prevention Regimens and Timeline" style={{width: '100%', height: '210px', marginBottom: '6px'}}>
       
       <rect x="0" y="0" width="735" height="240" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
       
@@ -2000,7 +2000,7 @@ export function MalignantInfarctionCard() {
     </p>
 
     
-    <svg viewBox="0 0 735 65" style={{width: '100%', height: '65px', marginBottom: '8px'}}>
+    <svg viewBox="0 0 735 65" role="img" aria-label="Malignant MCA Infarction Clinical Timeline and Surgical Window" style={{width: '100%', height: '65px', marginBottom: '8px'}}>
       
       <polygon points="0,0 230,0 242,32 230,65 0,65" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
       <text x="110" y="28" fill="var(--teal-deep)" fontSize="8.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">STAGE 1: 0 - 24 HOURS</text>
@@ -2197,7 +2197,7 @@ export function AfibAnticoagTimingCard() {
     </div>
 
     
-    <svg viewBox="0 0 735 150" style={{width: '100%', height: '150px', marginBottom: '12px'}}>
+    <svg viewBox="0 0 735 150" role="img" aria-label="AFib Anticoagulation Resumption Timing by Infarct Severity" style={{width: '100%', height: '150px', marginBottom: '12px'}}>
       
       <rect x="0" y="0" width="735" height="150" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
       
@@ -2900,7 +2900,7 @@ export function IvThrombolysisCard() {
           </p>
 
           {/* Time-window pathway */}
-          <svg viewBox="0 0 735 96" style={{width: '100%', height: '96px', marginBottom: '10px'}}>
+          <svg viewBox="0 0 735 96" role="img" aria-label="IV Thrombolysis Thrombolytic Agent Selection and Window Algorithm" style={{width: '100%', height: '96px', marginBottom: '10px'}}>
             <rect x="0" y="0" width="735" height="96" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
             <rect x="18" y="14" width="214" height="30" rx="6" fill="var(--purple-deep)" />
             <text x="125" y="29" fill="white" fontSize="8.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle" dominantBaseline="central">STANDARD WINDOW &le; 4.5 h</text>
@@ -3819,7 +3819,7 @@ export function StrokePrognosisCard() {
               Clinical prediction scales for ischemic and hemorrhagic stroke outcomes.
             </p>
 
-            <svg viewBox="0 0 735 80" style={{width: '100%', height: '80px', marginBottom: '8px'}}>
+            <svg viewBox="0 0 735 80" role="img" aria-label="Cervical Artery Dissection Pathophysiology Diagram" style={{width: '100%', height: '80px', marginBottom: '8px'}}>
               <rect x="0" y="0" width="735" height="80" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
               
               <rect x="267" y="10" width="200" height="25" rx="12.5" fill="var(--purple-deep)" />
@@ -4001,7 +4001,7 @@ export function CervicalDissectionCard() {
   const [pngHover, setPngHover] = useState(false);
 
   const renderSVG = () => (
-    <svg viewBox="0 0 735 110" style={{width: '100%', height: '100%'}}>
+    <svg viewBox="0 0 735 110" role="img" aria-label="Fibromuscular Dysplasia String of Beads Pathophysiology Diagram" style={{width: '100%', height: '100%'}}>
       <rect x="0" y="0" width="735" height="110" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
       <path d="M 20 25 L 430 25 M 20 85 L 430 85" stroke="#4A5A6D" strokeWidth="3" strokeLinecap="round" />
       <path d="M 20 33 L 150 33" stroke="#94a3b8" strokeWidth="2" fill="none" />
@@ -4276,7 +4276,7 @@ export function FibromuscularDysplasiaCard() {
   const [lightboxImage, setLightboxImage] = useState(null);
 
   const renderSVG = () => (
-    <svg viewBox="0 0 735 120" style={{width: '100%', height: '100%'}}>
+    <svg viewBox="0 0 735 120" role="img" aria-label="Brain Death Evaluation Prerequisites and Clinical Testing Flowchart" style={{width: '100%', height: '100%'}}>
       <rect x="0" y="0" width="735" height="120" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
       
       {/* --- NORMAL ARTERY --- */}
@@ -4527,7 +4527,7 @@ export function BrainDeathCard() {
             </p>
 
             {/* SVG Visual Pathway */}
-            <svg viewBox="0 0 735 90" style={{width: '100%', height: '90px', marginBottom: '8px'}}>
+            <svg viewBox="0 0 735 90" role="img" aria-label="Seizure Prophylaxis and Antiepileptic Choice in Stroke" style={{width: '100%', height: '90px', marginBottom: '8px'}}>
               <rect x="0" y="0" width="735" height="90" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
               
               {/* Step 1 */}
@@ -4751,7 +4751,7 @@ export function AntiepilepticDrugsCard() {
             </p>
 
             {/* SVG Visual Pathway */}
-            <svg viewBox="0 0 735 90" style={{width: '100%', height: '90px', marginBottom: '8px'}}>
+            <svg viewBox="0 0 735 90" role="img" aria-label="Wallenberg Syndrome Lateral Medullary Anatomy and Symptoms Map" style={{width: '100%', height: '90px', marginBottom: '8px'}}>
               <rect x="0" y="0" width="735" height="90" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
               
               {/* Step 1 */}
@@ -5008,7 +5008,7 @@ export function AspirinFailureCard() {
               AHA/ASA 2021 Secondary Prevention Guideline &amp; Landmark Trials, updated with evidence through 2026.
             </p>
 
-            <svg viewBox="0 0 735 125" style={{width: '100%', height: '125px', marginBottom: '10px'}}>
+            <svg viewBox="0 0 735 125" role="img" aria-label="Cerebral Venous Sinus Thrombosis Pathophysiology and Anticoagulation Flowchart" style={{width: '100%', height: '125px', marginBottom: '10px'}}>
               <rect x="0" y="0" width="735" height="125" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
               
               <rect x="20" y="20" width="150" height="40" rx="20" fill="var(--purple-deep)" />
@@ -5157,7 +5157,7 @@ export function CvstCard() {
 
             {/* Hero SVG: dural venous sinus map + venous-infarct inset */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 170" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 170" role="img" aria-label="Dural Venous Sinus Sagittal Map and Deep Venous System Diagram" style={{ width: '100%', height: 'auto' }}>
                 {/* ---- Left: sagittal dural sinus map ---- */}
                 <text x="245" y="16" fill="var(--ink-soft)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">DURAL VENOUS SINUS MAP (SAGITTAL)</text>
                 {/* faint head silhouette, occiput to the right */}
@@ -5301,7 +5301,7 @@ export function LargeCoreThrombectomyCard() {
 
             {/* Hero SVG: ASPECTS core | core-vs-penumbra | forest-plot motif */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 180" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 180" role="img" aria-label="Large Core EVT ASPECTS Core Penumbra and Trial Forest Plot Diagram" style={{ width: '100%', height: 'auto' }}>
                 {/* Panel 1 — low ASPECTS core */}
                 <text x="120" y="14" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LOW ASPECTS = LARGE CORE</text>
                 <ellipse cx="118" cy="72" rx="96" ry="46" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
@@ -5425,7 +5425,7 @@ export function BasilarArteryOcclusionCard() {
 
             {/* Hero SVG: vertebrobasilar occlusion | pontine territory | windows */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 180" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 180" role="img" aria-label="Basilar Artery Occlusion Brainstem Perfusion and EVT Selection Flowchart" style={{ width: '100%', height: 'auto' }}>
                 {/* Panel 1 — vertebrobasilar tree + occlusion */}
                 <text x="120" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">VERTEBROBASILAR OCCLUSION</text>
                 {/* faint brainstem */}
@@ -5558,7 +5558,7 @@ export function LipidManagementCard() {
 
             {/* Hero SVG: LDL-lowering ladder + hemorrhagic-stroke caution */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 178" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 178" role="img" aria-label="ICH Hematoma Expansion Blood Pressure and Reversal Pathway" style={{ width: '100%', height: 'auto' }}>
                 <text x="235" y="13" fill="var(--ink-soft)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LDL-LOWERING LADDER</text>
                 {/* LDL axis (descending) */}
                 <line x1="34" y1="24" x2="34" y2="162" stroke="var(--ink-mute)" strokeWidth="1.2" markerEnd="url(#lm-arrow)" />
@@ -5671,7 +5671,7 @@ export function CarotidStenosisCard() {
 
             {/* Hero SVG: carotid bifurcation + NASCET | decision fork */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 180" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 180" role="img" aria-label="Aneurysmal SAH Vasospasm EVD Management and Triple-H Therapy Diagram" style={{ width: '100%', height: 'auto' }}>
                 {/* Panel 1 — carotid bifurcation with plaque + NASCET */}
                 <text x="120" y="13" fill="var(--ink-soft)" fontSize="6.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">CAROTID PLAQUE &amp; NASCET</text>
                 {/* CCA + ICA vessel */}
@@ -5814,7 +5814,7 @@ export function BrainstemSyndromesCard() {
 
             {/* Hero SVG: sagittal levels + axial cross-sections + rule legend */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 165" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 165" role="img" aria-label="Asymptomatic Carotid Stenosis Revascularization vs Best Medical Therapy Pathway" style={{ width: '100%', height: 'auto' }}>
                 {/* Sagittal brainstem with CN levels */}
                 <text x="78" y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LEVEL → CN</text>
                 <rect x="54" y="22" width="48" height="34" rx="7" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.4" />
@@ -5961,7 +5961,7 @@ export function VascularTerritoryAtlasCard() {
 
             {/* Hero SVG: axial territory pie | watershed patterns | circle of Willis */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 178" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 178" role="img" aria-label="Intracranial Atherosclerotic Disease Stenting versus Aggressive BMT Diagram" style={{ width: '100%', height: 'auto' }}>
                 <defs>
                   <pattern id="vta-hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
                     <line x1="0" y1="0" x2="0" y2="5" stroke="var(--slate)" strokeWidth="1" />
@@ -6118,7 +6118,7 @@ export function AnticoagulationReversalCard() {
 
             {/* Hero SVG: agent → reversal decision tree + parallel steps */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 176" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 176" role="img" aria-label="PFO Stroke Risk Device Closure vs Medical Management Decision Tree" style={{ width: '100%', height: 'auto' }}>
                 {/* root */}
                 <rect x="283" y="14" width="170" height="24" rx="6" fill="var(--slate-soft)" stroke="var(--slate)" strokeWidth="1.3" />
                 <text x="368" y="29" fill="var(--slate)" fontSize="7pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">ICH on anticoagulant</text>
@@ -6456,7 +6456,7 @@ export function RcvsCard() {
 
             {/* Hero SVG: string-of-beads reversing + RCVS vs PACNS */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 168" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 168" role="img" aria-label="Tenecteplase versus Alteplase Mechanism Thrombolysis Pathway" style={{ width: '100%', height: 'auto' }}>
                 {/* Panel A — before/after */}
                 <text x="168" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">SEGMENTAL VASOCONSTRICTION — REVERSIBLE</text>
                 <path d="M 30 42 C 52 32 66 52 90 36 C 114 52 128 32 152 48 C 176 32 190 52 214 36 C 238 52 252 34 300 44" stroke="var(--purple)" strokeWidth="3" fill="none" strokeLinecap="round" />
@@ -6567,7 +6567,7 @@ export function AneurysmalSahCard() {
 
             {/* Hero SVG: basal-cistern SAH + aneurysm | management timeline */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 168" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 168" role="img" aria-label="Extended Window Perfusion Imaging Core Penumbra Mismatch Map" style={{ width: '100%', height: 'auto' }}>
                 {/* Panel A — basal cistern star + aneurysm */}
                 <text x="130" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">BASAL-CISTERN SAH + ANEURYSM</text>
                 <ellipse cx="130" cy="88" rx="102" ry="60" fill="#ffffff" stroke="var(--rule)" strokeWidth="1.3" />
@@ -6672,7 +6672,7 @@ export function CerebralAmyloidAngiopathyCard() {
 
             {/* Hero SVG: lobar vs deep pattern | SWI markers */}
             <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
-              <svg viewBox="0 0 735 168" style={{ width: '100%', height: 'auto' }}>
+              <svg viewBox="0 0 735 168" role="img" aria-label="Reversal Agents Andexanet Alfa and Idarucizumab Mechanism Diagram" style={{ width: '100%', height: 'auto' }}>
                 {/* Panel A — lobar vs deep */}
                 <text x="188" y="13" fill="var(--ink-soft)" fontSize="6.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">HEMORRHAGE LOCATION</text>
                 {/* CAA lobar */}
