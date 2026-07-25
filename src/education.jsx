@@ -2370,7 +2370,7 @@ export function AfibAnticoagTimingCard() {
         onClick={(e) => { e.stopPropagation(); onClose(); }}
         aria-label="Close image preview"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -2507,7 +2507,7 @@ export const EVDInfographic = () => {
               </ul>
             </div>
             <div className="flex justify-center items-center p-3 border-t border-slate-150 bg-white dark:bg-slate-800 h-[55px]">
-              <svg viewBox="0 0 280 50" className="w-full max-h-[40px] object-contain select-none" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 280 50" className="w-full max-h-[40px] object-contain select-none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SNACC - Society for Neuroscience in Anesthesiology and Critical Care Logo">
                 <path d="M 10,25 C 10,15 18,8 28,8 C 38,8 46,15 46,25 C 46,35 38,42 28,42 C 18,42 10,35 10,25 Z" fill="none" stroke="#5B3B9C" strokeWidth="1.5" />
                 <circle cx="28" cy="25" r="4" fill="#18849E" />
                 <line x1="28" y1="25" x2="20" y2="18" stroke="#5B3B9C" strokeWidth="1.2" />
@@ -2821,7 +2821,7 @@ export const ICPInfographic = () => {
           </div>
           <div className="p-4 bg-slate-50/50 dark:bg-slate-950/15 flex flex-col items-center gap-4">
             <div className="bg-slate-950 p-2 rounded-lg border border-slate-250 dark:border-slate-800 w-full">
-              <svg viewBox="0 0 420 150" className="w-full h-auto max-w-[450px] mx-auto block select-none" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 420 150" className="w-full h-auto max-w-[450px] mx-auto block select-none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ICP Waveform Analysis: Normal Compliance (P1 > P2 > P3) versus Impaired Compliance (P2 > P1) Diagram">
                 <line x1="10" y1="25" x2="410" y2="25" stroke="#1e293b" strokeWidth="1" />
                 <line x1="10" y1="50" x2="410" y2="50" stroke="#1e293b" strokeWidth="1" />
                 <line x1="10" y1="75" x2="410" y2="75" stroke="#1e293b" strokeWidth="1" />
