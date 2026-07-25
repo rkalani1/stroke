@@ -1,11 +1,11 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:69738525d786beed2660f10b449d5e77",
+    "checksum": "sha256:0b916b0d49d9c3dfe05b6c2f3e72d7ee",
     "counts": {
       "guidelines": 11,
       "trials": 71,
-      "education": 29,
+      "education": 32,
       "calculators": 34,
       "references": 18
     },
@@ -1711,7 +1711,7 @@
         {
           "\"label\"": "AHA/ASA 2023 aSAH Guideline",
           "\"citation\"": "Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.",
-          "\"pmid\"": "37219934"
+          "\"pmid\"": "37212182"
         },
         {
           "\"label\"": "IsCHEMiA Score Validation",
@@ -2071,6 +2071,36 @@
       "body": "Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence (CADISS, TREAT-CAD, STOP-CAD, and 2024 IPD meta-analysis) for cervical artery dissection.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
+      "id": "crao-thrombolysis",
+      "title": "CRAO Acute Thrombolysis",
+      "summary": "Central Retinal Artery Occlusion (CRAO) acute IV thrombolysis decision framework, visual acuity criteria, and THEIA trial evidence.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "\"label\"": "AHA Statement 2021",
+          "\"citation\"": "Mac Grory B, et al. Management of Central Retinal Artery Occlusion. Stroke. 2021;52(6):e282-e294.",
+          "\"pmid\"": "33678099"
+        },
+        {
+          "\"label\"": "THEIA Trial 2025",
+          "\"citation\"": "Préterre C, et al. Intravenous alteplase versus oral aspirin for acute central retinal artery occlusion (THEIA). Lancet Neurol. 2025;24:110-120.",
+          "\"pmid\"": "41109232"
+        }
+      ],
+      "lastReviewed": "2026-07-24",
+      "provenance": "src/education.jsx",
+      "body": "Central Retinal Artery Occlusion (CRAO) acute IV thrombolysis decision framework, visual acuity criteria, and THEIA trial evidence.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
       "id": "dapt-regimens",
       "title": "DAPT for Non-Cardioembolic Ischemic Stroke",
       "summary": "Guideline-directed Dual Antiplatelet Therapy (DAPT) for secondary non-cardioembolic stroke prevention.",
@@ -2119,6 +2149,37 @@
       "lastReviewed": "2026-07-13",
       "provenance": "src/education.jsx",
       "body": "Guideline-directed Dual Antiplatelet Therapy (DAPT) for secondary non-cardioembolic stroke prevention.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "edema-swelling-risk",
+      "title": "EDEMA Score & Malignant Swelling",
+      "summary": "EDEMA score for early stratification of severe brain swelling and malignant MCA infarction risk after acute ischemic stroke.",
+      "tags": [
+        "pocket-card",
+        "printable",
+        "icu"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "\"label\"": "EDEMA Score Study",
+          "\"citation\"": "Strbian D, et al. The EDEMA score: a practical tool to predict severe brain swelling. Stroke. 2013;44(10):2728-2733.",
+          "\"pmid\"": "23887841"
+        },
+        {
+          "\"label\"": "DESTINY II Trial",
+          "\"citation\"": "Jüttler E, et al. Decompressive Surgery for Severe Middle-Cerebral-Artery Infarction in Elderly Patients. N Engl J Med. 2014;370:1091-1100.",
+          "\"pmid\"": "24645942"
+        }
+      ],
+      "lastReviewed": "2026-07-24",
+      "provenance": "src/education.jsx",
+      "body": "EDEMA score for early stratification of severe brain swelling and malignant MCA infarction risk after acute ischemic stroke.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "evd-maintenance",
@@ -2555,6 +2616,31 @@
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
       "body": "Recurrent thunderclap headache, triggers, reversible segmental vasoconstriction, the RCVS² score to distinguish RCVS from PACNS, and management (calcium-channel blockers, avoid steroids).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "select-seizure-risk",
+      "title": "SeLECT Post-Stroke Seizure Risk",
+      "summary": "SeLECT score for predicting 1-year and 5-year risk of late post-stroke seizures and epilepsy after ischemic stroke.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "\"label\"": "SeLECT Score Study",
+          "\"citation\"": "Galovic M, et al. Prediction of late seizures after ischaemic stroke with the SeLECT score. Lancet Neurol. 2018;17(2):143-152.",
+          "\"pmid\"": "29329707"
+        }
+      ],
+      "lastReviewed": "2026-07-24",
+      "provenance": "src/education.jsx",
+      "body": "SeLECT score for predicting 1-year and 5-year risk of late post-stroke seizures and epilepsy after ischemic stroke.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "stk-core-measures",

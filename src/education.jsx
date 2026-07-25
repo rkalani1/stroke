@@ -205,6 +205,41 @@ const PLACEHOLDERS = {
 
 const EDUCATION_MODULES = [
   {
+    id: 'crao-thrombolysis',
+    title: 'CRAO Acute Thrombolysis',
+    purpose: 'Central Retinal Artery Occlusion (CRAO) acute IV thrombolysis decision framework, visual acuity criteria, and THEIA trial evidence.',
+    actions: 'crao central retinal artery occlusion eye stroke visual acuity monocular vision loss thrombolysis tnk alteplase theia mac grory aha statement 4.5h window',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-24',
+    references: [
+      { label: 'AHA Statement 2021', citation: 'Mac Grory B, et al. Management of Central Retinal Artery Occlusion. Stroke. 2021;52(6):e282-e294.', pmid: '33678099' },
+      { label: 'THEIA Trial 2025', citation: 'Préterre C, et al. Intravenous alteplase versus oral aspirin for acute central retinal artery occlusion (THEIA). Lancet Neurol. 2025;24:110-120.', pmid: '41109232' }
+    ]
+  },
+  {
+    id: 'select-seizure-risk',
+    title: 'SeLECT Post-Stroke Seizure Risk',
+    purpose: 'SeLECT score for predicting 1-year and 5-year risk of late post-stroke seizures and epilepsy after ischemic stroke.',
+    actions: 'select score post stroke seizure epilepsy risk galovic cortical involvement early seizure lvo mca territory asm antiseizure',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-07-24',
+    references: [
+      { label: 'SeLECT Score Study', citation: 'Galovic M, et al. Prediction of late seizures after ischaemic stroke with the SeLECT score. Lancet Neurol. 2018;17(2):143-152.', pmid: '29329707' }
+    ]
+  },
+  {
+    id: 'edema-swelling-risk',
+    title: 'EDEMA Score & Malignant Swelling',
+    purpose: 'EDEMA score for early stratification of severe brain swelling and malignant MCA infarction risk after acute ischemic stroke.',
+    actions: 'edema score malignant mca brain swelling herniation strbian dense artery aspectos glucose midline shift decompressive hemicraniectomy',
+    categories: ['pocket-card', 'printable', 'icu'],
+    lastReviewed: '2026-07-24',
+    references: [
+      { label: 'EDEMA Score Study', citation: 'Strbian D, et al. The EDEMA score: a practical tool to predict severe brain swelling. Stroke. 2013;44(10):2728-2733.', pmid: '23887841' },
+      { label: 'DESTINY II Trial', citation: 'Jüttler E, et al. Decompressive Surgery for Severe Middle-Cerebral-Artery Infarction in Elderly Patients. N Engl J Med. 2014;370:1091-1100.', pmid: '24645942' }
+    ]
+  },
+  {
     id: 'toast-classification',
     title: 'TOAST Stroke Classification',
     purpose: 'Trial of Org 10172 in Acute Stroke Treatment (TOAST) diagnostic criteria for ischemic stroke etiology.',
@@ -1090,6 +1125,27 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
         <ScaledCardWrapper isLandscape={false}>
           <BedsidePocketCardsStyles />
           <IvThrombolysisCard />
+        </ScaledCardWrapper>
+      );
+    case 'crao-thrombolysis':
+      return (
+        <ScaledCardWrapper isLandscape={false}>
+          <BedsidePocketCardsStyles />
+          <CraoThrombolysisCard />
+        </ScaledCardWrapper>
+      );
+    case 'select-seizure-risk':
+      return (
+        <ScaledCardWrapper isLandscape={false}>
+          <BedsidePocketCardsStyles />
+          <SelectSeizureRiskCard />
+        </ScaledCardWrapper>
+      );
+    case 'edema-swelling-risk':
+      return (
+        <ScaledCardWrapper isLandscape={false}>
+          <BedsidePocketCardsStyles />
+          <EdemaSwellingRiskCard />
         </ScaledCardWrapper>
       );
     case 'stk-core-measures':
@@ -6735,4 +6791,273 @@ export function CerebralAmyloidAngiopathyCard() {
 }
 
 // __NV_MODULES_END__  (new neurovascular module components are inserted above this line)
+
+export function CraoThrombolysisCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-container" style={{boxSizing: 'border-box'}}>
+        <div className="card-content">
+          <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Central Retinal Artery Occlusion (CRAO): Acute IV Thrombolysis</h1>
+          <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
+            AHA 2021 Scientific Statement &amp; 2025 THEIA Trial Reference Card
+          </p>
+
+          <svg viewBox="0 0 735 90" role="img" aria-label="CRAO Acute Thrombolysis Decision Pathway" style={{width: '100%', height: '90px', marginBottom: '10px'}}>
+            <rect x="0" y="0" width="735" height="90" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
+            
+            <rect x="15" y="15" width="145" height="60" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.5" />
+            <text x="87.5" y="32" fill="var(--purple-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">1. ACUTE VISION LOSS</text>
+            <text x="87.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Sudden painless monocular</text>
+            <text x="87.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Onset &le; 4.5 hours</text>
+
+            <path d="M 160 45 L 190 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-crao)" />
+
+            <rect x="190" y="15" width="145" height="60" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
+            <text x="262.5" y="32" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">2. OPHTHALMIC EXAM</text>
+            <text x="262.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Visual acuity &le; 20/200</text>
+            <text x="262.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">No retinal hemorrhage</text>
+
+            <path d="M 335 45 L 365 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-crao)" />
+
+            <rect x="365" y="15" width="145" height="60" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.5" />
+            <text x="437.5" y="32" fill="var(--amber-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">3. LYTIC DOSING</text>
+            <text x="437.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">TNK 0.25 mg/kg (max 25mg)</text>
+            <text x="437.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">OR Alteplase 0.9 mg/kg</text>
+
+            <path d="M 510 45 L 540 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-crao)" />
+
+            <rect x="540" y="15" width="180" height="60" rx="6" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.5" />
+            <text x="630" y="32" fill="var(--red-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">4. MONITOR &amp; ETIOLOGY</text>
+            <text x="630" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">BP &lt; 180/105 x 24h</text>
+            <text x="630" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Carotid CTA + Telemetry</text>
+
+            <defs>
+              <marker id="arrow-crao" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--teal)" />
+              </marker>
+            </defs>
+          </svg>
+
+          <div className="toast-grid" style={{marginBottom: '10px'}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+              <div className="toast-card primary">
+                <h3>1. CRAO as an Ocular Emergency</h3>
+                <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
+                  <li><strong>Pathophysiology:</strong> Embolic or thrombotic occlusion of the central retinal artery causing acute inner retinal ischemia ("eye stroke").</li>
+                  <li><strong>Time Window:</strong> Irreversible retinal damage occurs within 240 minutes. IV thrombolysis should be initiated within <strong>4.5 hours</strong> of symptom onset.</li>
+                  <li><strong>Visual Threshold:</strong> Severe vision loss (count fingers, hand motion, light perception, or visual acuity &le; 20/200).</li>
+                </ul>
+              </div>
+              <div className="toast-card neutral">
+                <h3>2. Evidence Base (AHA 2021 &amp; THEIA 2025)</h3>
+                <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
+                  <li><strong>AHA Statement 2021 (PMID 33678099):</strong> Recommends acute IV thrombolysis in eligible CRAO presenting &le;4.5h without retinal hemorrhage.</li>
+                  <li><strong>THEIA Trial 2025 (PMID 41109232):</strong> Randomized clinical trial showing IV alteplase significantly improved visual recovery (&gt;3 lines improvement) compared to oral aspirin (OR 3.1) when treated within 4.5h.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+              <div className="toast-card alert-orange">
+                <h3>3. Key Contraindications &amp; Workup</h3>
+                <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
+                  <li><strong>Fundoscopy / OCT:</strong> Exclude active retinal hemorrhage, retinal vein occlusion, or optic disc drusen.</li>
+                  <li><strong>Standard Lytic Checks:</strong> Recent major bleeding, severe hypertension (SBP &gt;185 or DBP &gt;110), active anticoagulation (INR &gt;1.7 or DOAC within 24h), recent surgery/trauma.</li>
+                </ul>
+              </div>
+              <div className="toast-card alert-red">
+                <h3>4. Etiology &amp; Secondary Prevention</h3>
+                <p style={{fontSize: '8.2pt', lineHeight: '1.4', color: 'var(--ink-soft)', marginTop: '4px'}}>
+                  CRAO is a vascular stroke equivalent. Perform urgent carotid artery imaging (CTA/duplex) for ipsilateral stenosis, ECG/telemetry for paroxysmal AF, and transthoracic echocardiogram. Initiate standard secondary prevention (antiplatelet + high-intensity statin + BP control).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function SelectSeizureRiskCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-container" style={{boxSizing: 'border-box'}}>
+        <div className="card-content">
+          <h1 style={{textAlign: 'center', marginBottom: '4px'}}>SeLECT Post-Stroke Seizure &amp; Epilepsy Risk Score</h1>
+          <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
+            Galovic M et al. Lancet Neurol 2018 Reference Card (PMID 29329707)
+          </p>
+
+          <svg viewBox="0 0 735 90" role="img" aria-label="SeLECT Post-Stroke Seizure Risk Pathway" style={{width: '100%', height: '90px', marginBottom: '10px'}}>
+            <rect x="0" y="0" width="735" height="90" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
+            
+            <rect x="15" y="15" width="145" height="60" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.5" />
+            <text x="87.5" y="32" fill="var(--purple-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">1. STROKE SEVERITY</text>
+            <text x="87.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">NIHSS 0-3: 0 pts</text>
+            <text x="87.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">4-10: 1 pt | &ge;11: 2 pts</text>
+
+            <path d="M 160 45 L 190 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-select)" />
+
+            <rect x="190" y="15" width="145" height="60" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
+            <text x="262.5" y="32" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">2. ANATOMY &amp; ETIOLOGY</text>
+            <text x="262.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Cortical: +2 pts</text>
+            <text x="262.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">LVO (+1) | MCA (+1)</text>
+
+            <path d="M 335 45 L 365 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-select)" />
+
+            <rect x="365" y="15" width="145" height="60" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.5" />
+            <text x="437.5" y="32" fill="var(--amber-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">3. EARLY SEIZURE</text>
+            <text x="437.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Acute seizure &le;7 days</text>
+            <text x="437.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">+3 points (Strongest predictor)</text>
+
+            <path d="M 510 45 L 540 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-select)" />
+
+            <rect x="540" y="15" width="180" height="60" rx="6" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.5" />
+            <text x="630" y="32" fill="var(--red-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">4. RISK STRATIFICATION</text>
+            <text x="630" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Score &ge;4: High Risk (&gt;12% 5y)</text>
+            <text x="630" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Counsel patient &amp; EEG follow-up</text>
+
+            <defs>
+              <marker id="arrow-select" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--teal)" />
+              </marker>
+            </defs>
+          </svg>
+
+          <div className="toast-grid" style={{marginBottom: '10px'}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+              <div className="toast-card primary">
+                <h3>1. SeLECT Score Criteria (0 to 9 Points)</h3>
+                <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
+                  <li><strong>Severity (NIHSS):</strong> 0-3 (0 pts), 4-10 (1 pt), &ge;11 (2 pts).</li>
+                  <li><strong>Large-artery atherosclerosis (LVO):</strong> Yes (1 pt).</li>
+                  <li><strong>Early seizure (&le;7 days):</strong> Yes (3 pts).</li>
+                  <li><strong>Cortical involvement:</strong> Yes (2 pts).</li>
+                  <li><strong>Territory:</strong> Middle cerebral artery (MCA) territory (1 pt).</li>
+                </ul>
+              </div>
+              <div className="toast-card neutral">
+                <h3>2. 1-Year &amp; 5-Year Post-Stroke Epilepsy Risk</h3>
+                <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
+                  <li><strong>Score 0-1:</strong> 1y risk 0.7-1.2%, 5y risk 1.3-2.4% (Low).</li>
+                  <li><strong>Score 2-3:</strong> 1y risk 2.1-3.7%, 5y risk 4.2-7.3% (Moderate).</li>
+                  <li><strong>Score 4-5:</strong> 1y risk 6.4-10.9%, 5y risk 12.4-20.3% (High).</li>
+                  <li><strong>Score 6-9:</strong> 1y risk 17.9-56.0%, 5y risk 31.6-76.2% (Very High).</li>
+                </ul>
+              </div>
+            </div>
+
+            <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+              <div className="toast-card alert-orange">
+                <h3>3. Prophylaxis &amp; ASM Guidance</h3>
+                <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
+                  <li><strong>No Primary Prophylaxis:</strong> AHA/ASA guidelines do NOT recommend routine primary prophylactic antiseizure medication (ASM) after ischemic stroke.</li>
+                  <li><strong>Unprovoked Seizure (&gt;7d):</strong> Meets criteria for Post-Stroke Epilepsy; initiate long-term ASM (Levetiracetam or Lamotrigine).</li>
+                </ul>
+              </div>
+              <div className="toast-card alert-red">
+                <h3>4. Drug Selection Considerations</h3>
+                <p style={{fontSize: '8.2pt', lineHeight: '1.4', color: 'var(--ink-soft)', marginTop: '4px'}}>
+                  Prefer non-enzyme-inducing ASMs (Levetiracetam, Lamotrigine, Lacosamide). Avoid strong CYP3A4/P-gp enzyme-inducing ASMs (Phenytoin, Carbamazepine) in patients receiving DOACs or DAPT due to severe drug interactions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function EdemaSwellingRiskCard() {
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-container" style={{boxSizing: 'border-box'}}>
+        <div className="card-content">
+          <h1 style={{textAlign: 'center', marginBottom: '4px'}}>EDEMA Score: Malignant MCA Brain Swelling Risk</h1>
+          <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
+            Strbian D et al. Stroke 2013 Reference Card (PMID 23887841)
+          </p>
+
+          <svg viewBox="0 0 735 90" role="img" aria-label="EDEMA Malignant Brain Swelling Pathway" style={{width: '100%', height: '90px', marginBottom: '10px'}}>
+            <rect x="0" y="0" width="735" height="90" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
+            
+            <rect x="15" y="15" width="145" height="60" rx="6" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.5" />
+            <text x="87.5" y="32" fill="var(--purple-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">1. INFARCT SIZE</text>
+            <text x="87.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">ASPECTS &lt;7 / &gt;1/3 MCA</text>
+            <text x="87.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">+2 points</text>
+
+            <path d="M 160 45 L 190 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-edema)" />
+
+            <rect x="190" y="15" width="145" height="60" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.5" />
+            <text x="262.5" y="32" fill="var(--teal-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">2. NCCT &amp; GLUCOSE</text>
+            <text x="262.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Dense artery sign: +1 pt</text>
+            <text x="262.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Glucose &gt;162 mg/dL: +1 pt</text>
+
+            <path d="M 335 45 L 365 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-edema)" />
+
+            <rect x="365" y="15" width="145" height="60" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.5" />
+            <text x="437.5" y="32" fill="var(--amber-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">3. CLINICAL &amp; MASS</text>
+            <text x="437.5" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">NIHSS 12-19 (1) | &ge;20 (2)</text>
+            <text x="437.5" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Shift (2) | Cisterns (1)</text>
+
+            <path d="M 510 45 L 540 45" stroke="var(--teal)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-edema)" />
+
+            <rect x="540" y="15" width="180" height="60" rx="6" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.5" />
+            <text x="630" y="32" fill="var(--red-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">4. SURGICAL CONSULT</text>
+            <text x="630" y="48" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Score &ge;6: High Risk (&gt;60%)</text>
+            <text x="630" y="60" fill="var(--ink-soft)" fontSize="6.2pt" fontFamily="IBM Plex Sans" textAnchor="middle">Early Hemicraniectomy Consult</text>
+
+            <defs>
+              <marker id="arrow-edema" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M 0 2 L 8 5 L 0 8 z" fill="var(--teal)" />
+              </marker>
+            </defs>
+          </svg>
+
+          <div className="toast-grid" style={{marginBottom: '10px'}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+              <div className="toast-card primary">
+                <h3>1. EDEMA Score Criteria (0 to 9 Points)</h3>
+                <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
+                  <li><strong>E - Early Infarct signs:</strong> ASPECTS &lt;7 or &gt;1/3 MCA territory (2 pts).</li>
+                  <li><strong>D - Dense artery sign:</strong> Hyperdense MCA or basilar sign (1 pt).</li>
+                  <li><strong>E - Elevated blood glucose:</strong> Baseline glucose &gt;162 mg/dL / &gt;9 mmol/L (1 pt).</li>
+                  <li><strong>M - Mass effect / midline shift:</strong> Sulcal effacement (1 pt) or Midline shift (2 pts).</li>
+                  <li><strong>A - Admission NIHSS:</strong> NIHSS 12-19 (1 pt), &ge;20 (2 pts).</li>
+                  <li><strong>H - History of Hypertension:</strong> Documented HTN (1 pt).</li>
+                </ul>
+              </div>
+              <div className="toast-card neutral">
+                <h3>2. Malignant Swelling Risk Stratification</h3>
+                <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
+                  <li><strong>Score 0-2 (Low Risk):</strong> &lt;10% risk of severe swelling. Standard neuro-ICU care.</li>
+                  <li><strong>Score 3-5 (Moderate Risk):</strong> 20-40% risk of severe brain swelling. Serial CT at 24h or upon deterioration.</li>
+                  <li><strong>Score 6-9 (High Risk):</strong> &gt;60-80% risk of malignant MCA syndrome and fatal herniation. Immediate neurosurgery consult.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+              <div className="toast-card alert-orange">
+                <h3>3. Neuro-ICU Medical Management</h3>
+                <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
+                  <li><strong>Osmotherapy:</strong> 3% Hypertonic Saline (250 mL IV bolus or 1 mL/kg/h) or Mannitol 0.5-1.0 g/kg for acute ICP spikes.</li>
+                  <li><strong>Hemodynamics &amp; Fluids:</strong> Maintain euvolemia with 0.9% NS; target SBP &lt;140 mmHg (&lt;180 post-EVT). Avoid hypotonic fluids and corticosteroids (Class III, Harm).</li>
+                </ul>
+              </div>
+              <div className="toast-card alert-red">
+                <h3>4. Surgical Decompression (DHC)</h3>
+                <p style={{fontSize: '8.2pt', lineHeight: '1.4', color: 'var(--ink-soft)', marginTop: '4px'}}>
+                  Decompressive hemicraniectomy (&ge;12 cm bone flap) within 48h of onset reduces 12-month mortality from 71% to 22% in patients age &le;60 (DECIMAL, DESTINY, HAMLET pooled analysis) and age &gt;60 (DESTINY II).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
