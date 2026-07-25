@@ -472,3 +472,27 @@ export const calculateAlteplaseDose = (weightKg) => {
   const infusion = +(totalDose * 0.9).toFixed(1);
   return { totalDose, bolus, infusion, weightKg: weight, capped: weight * 0.9 > 90 };
 };
+
+// CHOICE-2 Trial (Ren et al., JAMA 2026): Adjunctive IA alteplase for eTICI 2b50-3
+// 0.225 mg/kg (max 22.5 mg) infused over 15-30 minutes post-thrombectomy.
+export const calculateAdjunctiveIAAlteplase = (weightKg, eTICI) => {
+  const weight = parseFloat(weightKg);
+  if (isNaN(weight) || weight <= 0 || weight > 350) return null;
+  
+  // Eligible if eTICI is 2b50, 2b67, 2c, or 3
+  const isEligibleTICI = ['2b50', '2b67', '2c', '3'].includes(String(eTICI).toLowerCase());
+  
+  const rawDose = weight * 0.225;
+  const finalDose = Math.min(+(rawDose).toFixed(2), 22.5);
+  
+  return {
+    weightKg: weight,
+    eTICI: eTICI,
+    isEligible: isEligibleTICI,
+    dose: finalDose,
+    maxDoseReached: rawDose >= 22.5,
+    note: isEligibleTICI
+      ? `CHOICE-2 (JAMA 2026): Adjunctive IA alteplase 0.225 mg/kg (max 22.5 mg) over 15-30 min.`
+      : `CHOICE-2 criteria generally require successful reperfusion (eTICI 2b50-3) before adjunctive IA alteplase.`
+  };
+};

@@ -21,7 +21,8 @@ import {
   calculateCrCl,
   calculateTNKDose,
   calculatePCCDose,
-  calculateAlteplaseDose
+  calculateAlteplaseDose,
+  calculateAdjunctiveIAAlteplase
 } from './calculators.js';
 import {
   LKWCountdown,
@@ -3729,15 +3730,15 @@ Clinician Name`;
             evt_large_core_early: {
               id: 'evt_large_core_early',
               category: 'EVT',
-              title: 'EVT for large core (ASPECTS 0-5, 0-6h)',
-              recommendation: 'EVT is recommended for anterior LVO within 0-6 hours when ASPECTS is 3-5 (generally eligible). ASPECTS 0-2: consider in very select cases with CTP core ≤70-100cc.',
-              detail: 'Suggested protocol: ASPECTS 3-10 generally eligible in early window. ASPECTS 0-2: consider CTP to evaluate if estimated core volume ≤70-100cc. SVIN 2025 large-core guidance supports EVT across ASPECTS 0-5 in the early window based on LASTE, SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and TESLA. Higher sICH risk with lower ASPECTS; discuss goals of care.',
+              title: 'EVT for large core (ASPECTS 0-5, 0-24h)',
+              recommendation: 'EVT is recommended for anterior LVO within 0-24 hours when ASPECTS is 0-5 (ATLAS Trial 2026).',
+              detail: 'ATLAS Trial (2026) extended the large-core EVT window to 24 hours for all patients with ASPECTS ≤ 5. CTP core estimation is no longer strictly required for ASPECTS 0-2 in the late window. Discuss goals of care as sICH risk remains elevated with lower ASPECTS.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
-              guideline: 'SVIN Large-Core EVT 2025',
-              reference: 'Mokin M et al. Stroke Vasc Interv Neurol. 2025;5:e001581. DOI: 10.1161/SVIN.124.001581.',
-              caveats: 'Trial eligibility generally required pre-stroke mRS 0-1 and age 18-80. Higher sICH risk; discuss goals of care.',
-              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/SVIN.124.001581#page=10',
+              guideline: 'ATLAS Trial 2026 / SVIN 2025',
+              reference: 'ATLAS Investigators. 2026; Mokin M et al. Stroke Vasc Interv Neurol. 2025;5:e001581.',
+              caveats: 'Pre-stroke mRS 0-1 and age 18-80 generally expected. Higher sICH risk; discuss goals of care.',
+              sourceUrl: '',
               conditions: (data) => {
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
@@ -3745,50 +3746,7 @@ Clinician Name`;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /ica|m1|mca/i.test(v)
                 );
-                return nihss >= 6 && !!timeFrom && timeFrom.total <= 6 && aspects !== null && aspects <= 5 && hasLVO;
-              }
-            },
-            evt_large_core_late: {
-              id: 'evt_large_core_late',
-              category: 'EVT',
-              title: 'EVT for large core (ASPECTS 3-5, 6-24h)',
-              recommendation: 'EVT is recommended for anterior circulation LVO within 6-24 hours when ASPECTS is 3-5.',
-              detail: 'SVIN 2025: late-window large-core EVT supported by ANGEL-ASPECT and RESCUE-Japan LIMIT. CTP-based selection per SELECT2/ANGEL-ASPECT (core 50-100 mL) is also Class I, LOE A.',
-              classOfRec: 'I',
-              levelOfEvidence: 'A',
-              guideline: 'SVIN Large-Core EVT 2025',
-              reference: 'Mokin M et al. Stroke Vasc Interv Neurol. 2025;5:e001581. DOI: 10.1161/SVIN.124.001581.',
-              caveats: 'Eligibility often required pre-stroke mRS 0-1 and age 18-80. Discuss goals of care and higher hemorrhage risk.',
-              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/SVIN.124.001581#page=10',
-              conditions: (data) => {
-                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
-                const timeFrom = data.timeFromLKW;
-                const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
-                const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca/i.test(v)
-                );
-                return nihss >= 6 && !!timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && aspects !== null && aspects >= 3 && aspects <= 5 && hasLVO;
-              }
-            },
-            evt_large_core_uncertain: {
-              id: 'evt_large_core_uncertain',
-              category: 'EVT',
-              title: 'EVT for very large core (ASPECTS 0-2, 6-24h)',
-              recommendation: 'For ASPECTS 0-2 in the 6-24 hour window, the benefit of EVT is uncertain.',
-              detail: 'SVIN 2025 assigns Class IIb, LOE B-R for ASPECTS 0-2 in late window. Consider exceptional cases or trials only.',
-              classOfRec: 'IIb',
-              levelOfEvidence: 'B-R',
-              guideline: 'SVIN Large-Core EVT 2025',
-              reference: 'Mokin M et al. Stroke Vasc Interv Neurol. 2025;5:e001581. DOI: 10.1161/SVIN.124.001581.',
-              caveats: 'Discuss goals of care and low likelihood of independence; prioritize trial enrollment when available.',
-              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/SVIN.124.001581#page=10',
-              conditions: (data) => {
-                const timeFrom = data.timeFromLKW;
-                const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
-                const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca/i.test(v)
-                );
-                return !!timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && aspects !== null && aspects <= 2 && hasLVO;
+                return nihss >= 6 && !!timeFrom && timeFrom.total <= 24 && aspects !== null && aspects <= 5 && hasLVO;
               }
             },
             evt_basilar: {
@@ -5667,6 +5625,24 @@ Clinician Name`;
                 const hx = (data.telestrokeNote?.pmh || '').toLowerCase();
                 const hasPolyvasc = hx.includes('cad') || hx.includes('coronary') || hx.includes('pad') || hx.includes('peripheral arterial') || hx.includes('mi') || hx.includes('cabg') || hx.includes('stent');
                 return isIschemic && hasPolyvasc;
+              }
+            },
+            // OCEANIC-STROKE: Factor XIa inhibition (Asundexian) for secondary prevention
+            oceanic_stroke_fxia: {
+              id: 'oceanic_stroke_fxia',
+              category: 'Secondary Prevention',
+              title: 'OCEANIC-STROKE: Factor XIa inhibition (Asundexian)',
+              recommendation: 'In patients with non-cardioembolic ischemic stroke or high-risk TIA, adding a Factor XIa inhibitor (e.g., asundexian) to standard antiplatelet therapy may be considered to reduce ischemic events.',
+              detail: 'OCEANIC-STROKE evaluates asundexian 50 mg daily vs placebo, on top of standard antiplatelet therapy, in patients with acute non-cardioembolic ischemic stroke or high-risk TIA (within 48h). Factor XIa inhibition aims to uncouple hemostasis from thrombosis, potentially reducing recurrent ischemic events without significantly increasing major bleeding.',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'B-R',
+              guideline: 'OCEANIC-STROKE',
+              reference: 'OCEANIC-STROKE Trial.',
+              conditions: (data) => {
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
+                const ap = (data.telestrokeNote?.secondaryPrevention?.antiplateletRegimen || '');
+                return isIschemic && ap === 'factor-xia-asundexian';
               }
             },
             // DRUG INTERACTION: AED-DOAC
@@ -23282,6 +23258,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <option value="asa-mono">ASA 81-325 mg monotherapy</option>
                                   <option value="clopidogrel-mono">Clopidogrel 75 mg monotherapy</option>
                                   <option value="asa-er-dipyridamole">ASA/ER-Dipyridamole (Aggrenox)</option>
+                                  <option value="factor-xia-asundexian">Factor XIa inhibitor + ASA (Asundexian/OCEANIC-STROKE)</option>
                                   <option value="doac-af">DOAC for AF (per CATALYST timing)</option>
                                   <option value="anticoag-other">Anticoagulation (other indication)</option>
                                 </select>
@@ -23384,6 +23361,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </div>
                                 )}
                               </div>
+
+                              {/* OCEANIC-STROKE Reference */}
+                              {((telestrokeNote.secondaryPrevention || {}).antiplateletRegimen === 'factor-xia-asundexian') && (
+                                <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-950 dark:border-cobalt-800">
+                                  <h3 className="font-semibold text-cobalt-800 mb-2 text-sm flex items-center gap-2 dark:text-cobalt-300">
+                                    <i aria-hidden="true" data-lucide="shield" className="w-4 h-4"></i>
+                                    OCEANIC-STROKE (Factor XIa inhibition)
+                                  </h3>
+                                  <div className="mt-1 bg-white border border-cobalt-200 rounded p-2 text-xs text-slate-700 dark:bg-card dark:border-cobalt-800 dark:text-ink-2">
+                                    <p>In patients with non-cardioembolic ischemic stroke or high-risk TIA, adding a Factor XIa inhibitor (e.g., asundexian) to standard antiplatelet therapy aims to reduce ischemic events without significantly increasing major bleeding by targeting the intrinsic coagulation pathway.</p>
+                                  </div>
+                                </div>
+                              )}
 
                               {/* AF Anticoag Timing Quick Reference */}
                               {((telestrokeNote.secondaryPrevention || {}).antiplateletRegimen === 'doac-af' || (telestrokeNote.secondaryPrevention || {}).antiplateletRegimen === 'anticoag-other') && (
@@ -23783,15 +23773,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                               </div>
 
-                              <div className="bg-white border border-line rounded-lg p-3 dark:bg-card">
-                                <h3 className="font-semibold text-slate-800 mb-2 text-sm dark:text-ink">DAPT Duration Trial-Matching Figure</h3>
-                                <img
-                                  src="documents/antiplatelet/DAPT%20After%20Ischemic%20Stroke-TIA.jpeg"
-                                  alt="DAPT duration after ischemic stroke/TIA trial-matching summary"
-                                  className="w-full h-auto rounded border border-line"
-                                  loading="lazy"
-                                />
-                              </div>
 
                               {/* Anticoagulant Bridging - PAUSE Protocol */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
@@ -33682,9 +33663,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Intracranial Hypertension & Herniation */}
-                    <details id="ref-icp" className="bg-white border border-red-200 rounded-lg dark:bg-card dark:border-red-900">
-                      <summary className="cursor-pointer p-4 font-semibold text-red-800 hover:bg-red-50 rounded-lg flex items-center gap-2 dark:text-red-300 dark:hover:bg-slate-850">
-                        <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-red-600 dark:text-red-400"></i>
+                    <details id="ref-icp" className="bg-white border border-crit-200 rounded-lg dark:bg-card dark:border-crit-900">
+                      <summary className="cursor-pointer p-4 font-semibold text-crit-800 hover:bg-crit-50 rounded-lg flex items-center gap-2 dark:text-crit-300 dark:hover:bg-slate-850">
+                        <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-crit-600 dark:text-crit-400"></i>
                         Intracranial Hypertension &amp; Herniation Infographic
                       </summary>
                       <div className="px-4 pb-4">

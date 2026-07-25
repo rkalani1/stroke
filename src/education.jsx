@@ -56,7 +56,7 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="p-4 border border-red-300 bg-red-50 text-red-900 rounded-lg dark:bg-red-950 dark:text-red-300 dark:border-red-800">
+        <div className="p-4 border border-crit-300 bg-crit-50 text-crit-900 rounded-lg dark:bg-crit-950 dark:text-crit-300 dark:border-crit-800">
           <h3 className="font-bold text-sm">Failed to load simulator</h3>
           <p className="text-xs mt-1">An error occurred while rendering this interactive tool.</p>
         </div>
@@ -396,7 +396,7 @@ const EDUCATION_MODULES = [
     references: [
       { label: 'AHA/ASA 2026 Stroke Guideline', citation: 'Prabhakaran S, et al. 2026 Guidelines for the Early Management of Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' },
       { label: 'AHA/ASA 2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579047' },
-      { label: 'AHA/ASA 2023 aSAH Guideline', citation: 'Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.', pmid: '37219934' },
+      { label: 'AHA/ASA 2023 aSAH Guideline', citation: 'Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.', pmid: '37212182' },
       { label: 'IsCHEMiA Score Validation', citation: 'IsCHEMiA in Vascular Epilepsy: Identifying Risks for Post Stroke Epilepsy. Epilepsy Currents. 2026;26.', pmid: null },
       { label: 'SeLECT Score Study', citation: 'Galovic M, et al. SeLECT: a prediction model for late seizures after ischemic stroke. Lancet Neurol. 2018;17(2):143-152.', pmid: '29329707' }
     ]
@@ -685,7 +685,7 @@ const ToastClassificationView = () => {
       subtitle="TOAST Subtype Reference Guide"
       pdfPath="documents/references/TOAST Stroke Classification.pdf"
       pdfName="TOAST Stroke Classification.pdf"
-      iconColorClass="text-purple-600 dark:text-purple-400"
+      iconColorClass="text-cobalt-600 dark:text-cobalt-400"
     >
       <ScaledCardWrapper isLandscape={false}>
         <BedsidePocketCardsStyles />
@@ -702,7 +702,7 @@ const DaptRegimensView = () => {
       subtitle="DAPT Guidelines Reference Card"
       pdfPath="documents/references/DAPT Guidelines.pdf"
       pdfName="DAPT Guidelines.pdf"
-      iconColorClass="text-teal-600 dark:text-teal-400"
+      iconColorClass="text-cobalt-600 dark:text-cobalt-400"
     >
       <ScaledCardWrapper isLandscape={true}>
         <BedsidePocketCardsStyles />
@@ -719,7 +719,7 @@ const MalignantInfarctionView = () => {
       subtitle="Decompressive Hemicraniectomy Pocket Card"
       pdfPath="documents/references/Malignant Infarction.pdf"
       pdfName="Malignant Infarction.pdf"
-      iconColorClass="text-red-600 dark:text-red-400"
+      iconColorClass="text-crit-600 dark:text-crit-400"
     >
       <ScaledCardWrapper isLandscape={false}>
         <BedsidePocketCardsStyles />
@@ -736,7 +736,7 @@ const AfibAnticoagTimingView = () => {
       subtitle="DOAC Restart Protocol Reference Guide"
       pdfPath="documents/references/AFib DOAC Start Timing.pdf"
       pdfName="AFib DOAC Start Timing.pdf"
-      iconColorClass="text-purple-600 dark:text-purple-400"
+      iconColorClass="text-cobalt-600 dark:text-cobalt-400"
     >
       <ScaledCardWrapper isLandscape={true}>
         <BedsidePocketCardsStyles />
@@ -781,7 +781,7 @@ const EvdMaintenanceView = () => {
       ) : (
         <ErrorBoundary>
           <div className="bg-white border border-line rounded-lg p-6 dark:bg-card">
-            <div className="p-3 mb-4 bg-red-50 text-red-900 border border-red-200 rounded-lg dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60">
+            <div className="p-3 mb-4 bg-crit-50 text-crit-900 border border-crit-200 rounded-lg dark:bg-crit-950/40 dark:text-crit-300 dark:border-crit-800/60">
               <h3 className="font-bold text-xs uppercase mb-1">Safety Notice - EVD Orders</h3>
               <p className="text-xs">Do not independently change drain height, clamping, flushing, or collection-system setup. When open and correctly leveled, a lower EVD height drains at a lower ICP threshold; a higher height drains less readily. Follow local policy and explicit Neurosurgery or Neurocritical Care orders.</p>
             </div>
@@ -2203,29 +2203,11 @@ export const EVDInfographic = () => {
         </div>
 
         {/* Top Split Area */}
-        <div className="grid grid-cols-1 md:grid-cols-2 border-b border-slate-200 dark:border-slate-800">
-          {/* Left Col: SVG Graphic (Vector Replacement) */}
-          <div className="flex justify-center items-center p-4 bg-slate-50 dark:bg-slate-950/20 border-r border-slate-200 dark:border-slate-800">
-            <div 
-              className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center"
-              onClick={() => setLightboxImage({ src: 'assets/evd_photo_cropped.png', alt: 'EVD Cylinder Setup', title: 'External Ventricular Drain Setup' })}
-            >
-              <img 
-                src="assets/evd_photo_cropped.png" 
-                alt="EVD Cylinder Setup" 
-                className="max-h-[260px] object-contain rounded-md shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
-              />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
-                <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
-                  <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
-                </span>
-              </div>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 border-b border-slate-200 dark:border-slate-800">
 
           {/* Right Col: Basics & SNACC Vector Logo */}
           <div className="flex flex-col">
-            <div className="bg-emerald-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
+            <div className="bg-ok-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
               Basics
             </div>
             <div className="p-4 flex-grow text-xs text-slate-600 dark:text-slate-350 space-y-2">
@@ -2250,7 +2232,7 @@ export const EVDInfographic = () => {
                 <circle cx="36" cy="18" r="2" fill="#5B3B9C" />
                 <circle cx="20" cy="32" r="2" fill="#5B3B9C" />
                 <circle cx="36" cy="32" r="2" fill="#5B3B9C" />
-                <text x="56" y="24" fill="#3A2368" fontSize="16" fontFamily="'Outfit', sans-serif" fontWeight="900" letterSpacing="1px" className="dark:fill-purple-400">SNACC</text>
+                <text x="56" y="24" fill="#3A2368" fontSize="16" fontFamily="'Outfit', sans-serif" fontWeight="900" letterSpacing="1px" className="dark:fill-cobalt-400">SNACC</text>
                 <text x="56" y="38" fill="#636472" fontSize="6.5" fontFamily="sans-serif" fontWeight="600" letterSpacing="0.2px" className="dark:fill-slate-400">SOCIETY FOR NEUROSCIENCE</text>
                 <text x="56" y="45" fill="#636472" fontSize="5.5" fontFamily="sans-serif" fontWeight="400" className="dark:fill-slate-400">IN ANESTHESIOLOGY AND CRITICAL CARE</text>
               </svg>
@@ -2288,19 +2270,19 @@ export const EVDInfographic = () => {
 
         {/* Signs of Obstructive Hydrocephalus Section */}
         <div>
-          <div className="bg-purple-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
+          <div className="bg-cobalt-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
             Signs of Obstructive Hydrocephalus
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 bg-purple-50/20 dark:bg-purple-950/5 border-b border-slate-200 dark:border-slate-800">
+          <div className="grid grid-cols-1 md:grid-cols-2 bg-cobalt-50/20 dark:bg-cobalt-950/5 border-b border-slate-200 dark:border-slate-800">
             <div className="p-4 border-r border-slate-200 dark:border-slate-800">
-              <h5 className="font-bold text-xs text-purple-800 dark:text-purple-300 mb-1.5">Clinical Signs:</h5>
+              <h5 className="font-bold text-xs text-cobalt-800 dark:text-cobalt-300 mb-1.5">Clinical Signs:</h5>
               <ul className="list-disc pl-4 space-y-1.5 text-xs text-slate-600 dark:text-slate-350">
                 <li>Decline in Level of Consciousness (LOC) or progressive somnolence.</li>
                 <li><strong>Parinaud's Syndrome:</strong> Upward gaze palsy (setting sun sign), retraction nystagmus on convergence, and pupillary light-near dissociation.</li>
               </ul>
             </div>
             <div className="p-4">
-              <h5 className="font-bold text-xs text-purple-800 dark:text-purple-300 mb-1.5">Radiographic Signs (NCCT Head):</h5>
+              <h5 className="font-bold text-xs text-cobalt-800 dark:text-cobalt-300 mb-1.5">Radiographic Signs (NCCT Head):</h5>
               <ul className="list-disc pl-4 space-y-1.5 text-xs text-slate-600 dark:text-slate-350">
                 <li>Progressive enlargement of the cerebral ventricles.</li>
                 <li>Temporal horn dilation (sensitive early sign of obstruction).</li>
@@ -2355,7 +2337,7 @@ export const ICPInfographic = () => {
       {/* PDF Action Bar */}
       <div className="flex flex-wrap items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-lg dark:bg-slate-800/40 dark:border-slate-700/60 gap-3 no-print">
         <div className="flex items-center gap-2">
-          <i aria-hidden="true" data-lucide="file-output" className="w-5 h-5 text-red-600 dark:text-red-400"></i>
+          <i aria-hidden="true" data-lucide="file-output" className="w-5 h-5 text-crit-600 dark:text-crit-400"></i>
           <div>
             <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">Intracranial Hypertension &amp; Herniation - Stroke</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400">PDF Reference Guide</p>
@@ -2398,9 +2380,9 @@ export const ICPInfographic = () => {
       )}
 
       {/* Static Quick Reference Card */}
-      <div className="icp-infographic-card border border-red-200 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
+      <div className="icp-infographic-card border border-crit-200 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
         {/* Header */}
-        <div className="bg-slate-800 text-white text-center py-3.5 px-4 border-b border-red-200 dark:border-red-900/50">
+        <div className="bg-slate-800 text-white text-center py-3.5 px-4 border-b border-crit-200 dark:border-crit-900/50">
           <h3 className="font-serif text-lg font-bold tracking-wide">Intracranial Hypertension &amp; Herniation - Stroke</h3>
         </div>
 
@@ -2410,32 +2392,15 @@ export const ICPInfographic = () => {
             Clinical Signs of Herniation
           </div>
           <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-orange-50/10 dark:bg-orange-950/5 border-b border-slate-200 dark:border-slate-800">
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div className="flex flex-col gap-4 items-center justify-between">
               <div className="flex-1 w-full">
                 <ul className="list-disc pl-5 space-y-1.5">
                   <li><strong>Motor decline:</strong> Spontaneous GCS motor score decrease of &ge; 1 point.</li>
                   <li><strong>Pupillary reactivity:</strong> Decrease in pupillary reactivity (Neurological Pupil Index, NPi &lt; 3).</li>
                   <li><strong>Asymmetry:</strong> New pupillary asymmetry or unilateral dilation (ipsilateral mydriasis).</li>
                   <li><strong>Focal deficit:</strong> New focal motor deficit or abnormal posturing (decorticate / decerebrate).</li>
-                  <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <span className="font-bold text-red-600 dark:text-red-400">*Cushing triad is a LATE sign of brainstem compression.*</span></li>
+                  <li><strong>Cushing's Triad (Late Sign):</strong> Systolic hypertension, bradycardia, and irregular respirations. <span className="font-bold text-crit-600 dark:text-crit-400">*Cushing triad is a LATE sign of brainstem compression.*</span></li>
                 </ul>
-              </div>
-              <div className="w-full md:w-[42%] flex justify-center items-center p-1.5 bg-white dark:bg-slate-950 rounded-lg border border-orange-200 dark:border-orange-900 shrink-0">
-                <div 
-                  className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full"
-                  onClick={() => setLightboxImage({ src: 'assets/herniation_diagram.png', alt: 'Brain Herniation Diagram', title: 'Brain Herniation Syndromes' })}
-                >
-                  <img 
-                    src="assets/herniation_diagram.png" 
-                    alt="Brain Herniation Diagram" 
-                    className="max-h-[160px] object-contain rounded-md transition-transform duration-200 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
-                    <span className="text-[10px] text-white font-semibold bg-black/60 px-2 py-1 rounded-md flex items-center gap-1">
-                      <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
-                    </span>
-                  </div>
-                </div>
               </div>
             </div>
             
@@ -2477,15 +2442,15 @@ export const ICPInfographic = () => {
 
         {/* Management Section */}
         <div>
-          <div className="bg-emerald-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
+          <div className="bg-ok-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
             Management
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 bg-emerald-50/15 dark:bg-emerald-950/5 border-b border-slate-200 dark:border-slate-800">
+          <div className="grid grid-cols-1 md:grid-cols-2 bg-ok-50/15 dark:bg-ok-950/5 border-b border-slate-200 dark:border-slate-800">
             {/* Left Column: General approach */}
             <div className="p-4 space-y-3">
-              <h5 className="font-bold text-xs text-emerald-800 dark:text-emerald-300 border-b border-emerald-100 dark:border-emerald-900/40 pb-1 uppercase tracking-wider">General approach</h5>
+              <h5 className="font-bold text-xs text-ok-800 dark:text-ok-300 border-b border-ok-100 dark:border-ok-900/40 pb-1 uppercase tracking-wider">General approach</h5>
               <div className="space-y-1">
-                <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Fundamental Measures</strong>
+                <strong className="text-ok-800 dark:text-ok-400 block text-xs">Fundamental Measures</strong>
                 <ul className="list-disc pl-5 space-y-0.5 text-[11px] text-slate-600 dark:text-slate-350">
                   <li>Elevate HOB 30°; strict neutral midline neck alignment to preserve venous outflow.</li>
                   <li>Euvolemia (isotonic saline; avoid hypotonic <code className="text-rose-600 dark:text-rose-450 font-mono text-[10px]">D5W</code>).</li>
@@ -2495,11 +2460,11 @@ export const ICPInfographic = () => {
                 </ul>
               </div>
               <div className="space-y-1">
-                <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Medical Interventions</strong>
+                <strong className="text-ok-800 dark:text-ok-400 block text-xs">Medical Interventions</strong>
                 <ul className="list-disc pl-5 space-y-1 text-[11px] text-slate-600 dark:text-slate-350">
                   <li><strong>Analgesia/sedation (fentanyl/propofol):</strong> Target RASS -1 to +1 to prevent coughing, agitation, or ventilator dyssynchrony.</li>
-                  <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Osmolarity &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
-                  <li><strong>Hypertonic Saline (HTS):</strong> 3% (150–250 mL bolus) or 23.4% (30 mL rescue bolus; central line access only). <span className="font-semibold text-red-600 dark:text-red-400">Hold if Serum Sodium &gt; 155–160 mEq/L or Chloride &gt; 115–120 mEq/L.</span></li>
+                  <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span className="font-semibold text-crit-600 dark:text-crit-400">Hold if Serum Osmolarity &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
+                  <li><strong>Hypertonic Saline (HTS):</strong> 3% (150–250 mL bolus) or 23.4% (30 mL rescue bolus; central line access only). <span className="font-semibold text-crit-600 dark:text-crit-400">Hold if Serum Sodium &gt; 155–160 mEq/L or Chloride &gt; 115–120 mEq/L.</span></li>
                   <li><strong>Ventilation:</strong> Maintain normocapnia (<code className="font-mono">PaCO2</code> 35–45 mmHg). For impending herniation only, use brief controlled hyperventilation targeting about 30–35 mmHg while definitive therapy is initiated; avoid prophylactic or prolonged hypocapnia.</li>
                   <li><strong>Refractory ICP Elevation:</strong> High-dose barbiturate therapy (pentobarbital) titrated to burst suppression on EEG.</li>
                 </ul>
@@ -2508,15 +2473,15 @@ export const ICPInfographic = () => {
 
             {/* Right Column: Surgical Management */}
             <div className="p-4 space-y-4 border-t md:border-t-0 md:border-l border-slate-200 dark:border-slate-800">
-              <h5 className="font-bold text-xs text-emerald-800 dark:text-emerald-300 border-b border-emerald-100 dark:border-emerald-900/40 pb-1 uppercase tracking-wider">Surgical Management</h5>
+              <h5 className="font-bold text-xs text-ok-800 dark:text-ok-300 border-b border-ok-100 dark:border-ok-900/40 pb-1 uppercase tracking-wider">Surgical Management</h5>
               <div className="space-y-1">
-                <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">CSF Diversion:</strong>
+                <strong className="text-ok-800 dark:text-ok-400 block text-xs">CSF Diversion:</strong>
                 <ul className="list-disc pl-5 space-y-0.5 text-[11px] text-slate-600 dark:text-slate-350">
                   <li>EVD placement for acute hydrocephalus, intraventricular hemorrhage (IVH), or mass effect with ventriculomegaly.</li>
                 </ul>
               </div>
               <div className="space-y-2 border-t border-slate-100 dark:border-slate-800/40 pt-3">
-                <strong className="text-emerald-800 dark:text-emerald-400 block text-xs">Decompressive Surgery:</strong>
+                <strong className="text-ok-800 dark:text-ok-400 block text-xs">Decompressive Surgery:</strong>
                 <ul className="list-disc pl-5 space-y-2 text-[11px] text-slate-600 dark:text-slate-350">
                   <li>
                     <strong>Malignant MCA (DHC):</strong> Age &le; 60 years, clinical decline, infarct &ge; 50% MCA territory, within 48h of onset (DECIMAL/DESTINY trials).
@@ -2531,13 +2496,13 @@ export const ICPInfographic = () => {
               </div>
             </div>
           </div>
-          <div className="p-4 bg-emerald-50/15 dark:bg-emerald-950/5 border-b border-slate-200 dark:border-slate-800">
-            <div className="border border-red-200 dark:border-red-900 bg-red-50/50 dark:bg-red-950/10 p-3 rounded-lg text-slate-700 dark:text-slate-350 text-[11px] leading-relaxed space-y-2">
+          <div className="p-4 bg-ok-50/15 dark:bg-ok-950/5 border-b border-slate-200 dark:border-slate-800">
+            <div className="border border-crit-200 dark:border-crit-900 bg-crit-50/50 dark:bg-crit-950/10 p-3 rounded-lg text-slate-700 dark:text-slate-350 text-[11px] leading-relaxed space-y-2">
               <div>
-                <strong className="text-red-700 dark:text-red-400 block font-bold mb-1">Management is not necessarily sequential</strong>
+                <strong className="text-crit-700 dark:text-crit-400 block font-bold mb-1">Management is not necessarily sequential</strong>
                 For active herniation or rapid clinical/radiographic deterioration, immediately initiate medical interventions & call Neurosurgery.
               </div>
-              <div className="border-t border-red-200/50 dark:border-red-900/50 pt-2 font-semibold text-red-700 dark:text-red-400">
+              <div className="border-t border-crit-200/50 dark:border-crit-900/50 pt-2 font-semibold text-crit-700 dark:text-crit-400">
                 Corticosteroids are not indicated for cytotoxic edema in stroke and increase infection risk.
               </div>
             </div>
@@ -2599,8 +2564,8 @@ export const ICPInfographic = () => {
             </div>
 
             {/* Perfusion Trap Warning Box */}
-            <div className="w-full border border-red-200 dark:border-red-900 bg-red-50/50 dark:bg-red-950/10 p-3 rounded-lg text-slate-700 dark:text-slate-300 text-[11px] leading-relaxed">
-              <strong className="text-red-700 dark:text-red-400 block font-bold mb-1">CPP = MAP - ICP</strong>
+            <div className="w-full border border-crit-200 dark:border-crit-900 bg-crit-50/50 dark:bg-crit-950/10 p-3 rounded-lg text-slate-700 dark:text-slate-300 text-[11px] leading-relaxed">
+              <strong className="text-crit-700 dark:text-crit-400 block font-bold mb-1">CPP = MAP - ICP</strong>
               In patients with intracranial hypertension or mass effect, cerebral perfusion is highly pressure dependent, and cautious BP lowering is recommended.
             </div>
           </div>
@@ -2709,7 +2674,7 @@ const StrokePrognosisView = () => {
       subtitle="Stroke Prognosis Reference Guide"
       pdfPath="documents/references/Stroke Prognosis.pdf"
       pdfName="Stroke Prognosis.pdf"
-      iconColorClass="text-emerald-600 dark:text-emerald-400"
+      iconColorClass="text-ok-600 dark:text-ok-400"
     >
       {/* Mobile Selector Tab */}
       <div className="flex justify-center mb-4 lg:hidden no-print">
@@ -2989,7 +2954,7 @@ export function StrokePrognosisCalculator() {
           <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">Interactive Bedside Calculator</h3>
           <p className="text-[10px] text-slate-500 dark:text-slate-400">Calculate stroke prognosis metrics in real-time</p>
         </div>
-        <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold">clinical tool</span>
+        <span className="font-mono text-[9px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold">clinical tool</span>
       </div>
 
       {/* Tabs Selector */}
@@ -2999,7 +2964,7 @@ export function StrokePrognosisCalculator() {
             onClick={() => setActiveTab('astral')}
             className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
               activeTab === 'astral'
-                ? 'bg-purple-600 text-white shadow-sm'
+                ? 'bg-cobalt-600 text-white shadow-sm'
                 : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
             }`}
           >
@@ -3019,7 +2984,7 @@ export function StrokePrognosisCalculator() {
             onClick={() => setActiveTab('ich')}
             className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
               activeTab === 'ich'
-                ? 'bg-red-700 text-white shadow-sm'
+                ? 'bg-crit-700 text-white shadow-sm'
                 : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
             }`}
           >
@@ -3033,20 +2998,20 @@ export function StrokePrognosisCalculator() {
         {/* ASTRAL TAB */}
         {activeTab === 'astral' && (
           <div className="space-y-3">
-            <h4 className="text-xs font-extrabold uppercase tracking-wider text-purple-700 dark:text-purple-400">ASTRAL Variables</h4>
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-cobalt-700 dark:text-cobalt-400">ASTRAL Variables</h4>
             
             {/* Age Slider */}
             <div className="space-y-1 py-2 border-b border-slate-100 dark:border-slate-800/40">
               <div className="flex justify-between items-center">
                 <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Patient Age</span>
-                <span className="text-xs font-bold text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-950/40 px-2 py-0.5 rounded">
+                <span className="text-xs font-bold text-cobalt-700 dark:text-cobalt-300 bg-cobalt-50 dark:bg-cobalt-950/40 px-2 py-0.5 rounded">
                   {astralAge} yrs ({astralAgePoints} pt{astralAgePoints !== 1 ? 's' : ''})
                 </span>
               </div>
               <input
                 type="range" min="18" max="100" value={astralAge}
                 onChange={(e) => setAstralAge(Number(e.target.value))}
-                className="w-full accent-purple-600 h-2 rounded-lg cursor-pointer bg-slate-200 dark:bg-slate-700"
+                className="w-full accent-cobalt-600 h-2 rounded-lg cursor-pointer bg-slate-200 dark:bg-slate-700"
               />
             </div>
 
@@ -3054,14 +3019,14 @@ export function StrokePrognosisCalculator() {
             <div className="space-y-1 py-2 border-b border-slate-100 dark:border-slate-800/40">
               <div className="flex justify-between items-center">
                 <span className="text-xs font-bold text-slate-800 dark:text-slate-200">NIHSS score on admission</span>
-                <span className="text-xs font-bold text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-950/40 px-2 py-0.5 rounded">
+                <span className="text-xs font-bold text-cobalt-700 dark:text-cobalt-300 bg-cobalt-50 dark:bg-cobalt-950/40 px-2 py-0.5 rounded">
                   {astralNihss} ({astralNihssPoints} pt{astralNihssPoints !== 1 ? 's' : ''})
                 </span>
               </div>
               <input
                 type="range" min="0" max="42" value={astralNihss}
                 onChange={(e) => setAstralNihss(Number(e.target.value))}
-                className="w-full accent-purple-600 h-2 rounded-lg cursor-pointer bg-slate-200 dark:bg-slate-700"
+                className="w-full accent-cobalt-600 h-2 rounded-lg cursor-pointer bg-slate-200 dark:bg-slate-700"
               />
             </div>
 
@@ -3073,7 +3038,7 @@ export function StrokePrognosisCalculator() {
                   <input
                     type="number" step="0.1" value={astralGlucose}
                     onChange={(e) => setAstralGlucose(e.target.value)}
-                    className="w-16 px-1.5 py-0.5 text-xs text-right font-semibold rounded border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-purple-600"
+                    className="w-16 px-1.5 py-0.5 text-xs text-right font-semibold rounded border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-cobalt-600"
                   />
                   <div className="inline-flex rounded bg-slate-100 dark:bg-slate-800 p-0.5 text-[9px] font-bold">
                     <button
@@ -3083,7 +3048,7 @@ export function StrokePrognosisCalculator() {
                           setAstralGlucoseUnit('mmol');
                         }
                       }}
-                      className={`px-1 rounded ${astralGlucoseUnit === 'mmol' ? 'bg-purple-600 text-white' : 'text-slate-600 dark:text-slate-400'}`}
+                      className={`px-1 rounded ${astralGlucoseUnit === 'mmol' ? 'bg-cobalt-600 text-white' : 'text-slate-600 dark:text-slate-400'}`}
                     >
                       mmol
                     </button>
@@ -3094,7 +3059,7 @@ export function StrokePrognosisCalculator() {
                           setAstralGlucoseUnit('mgdl');
                         }
                       }}
-                      className={`px-1 rounded ${astralGlucoseUnit === 'mgdl' ? 'bg-purple-600 text-white' : 'text-slate-600 dark:text-slate-400'}`}
+                      className={`px-1 rounded ${astralGlucoseUnit === 'mgdl' ? 'bg-cobalt-600 text-white' : 'text-slate-600 dark:text-slate-400'}`}
                     >
                       mg/dL
                     </button>
@@ -3115,7 +3080,7 @@ export function StrokePrognosisCalculator() {
               desc="New visual field defect present on admission examination"
               value={astralVisualDefect}
               onChange={setAstralVisualDefect}
-              colorClass="bg-purple-600"
+              colorClass="bg-cobalt-600"
             />
 
             {/* Time delay toggle */}
@@ -3124,7 +3089,7 @@ export function StrokePrognosisCalculator() {
               desc="Time from symptom onset (or last-known-well) to admission is > 3 hours"
               value={astralTimeDelay}
               onChange={setAstralTimeDelay}
-              colorClass="bg-purple-600"
+              colorClass="bg-cobalt-600"
             />
 
             {/* LOC toggle */}
@@ -3133,25 +3098,25 @@ export function StrokePrognosisCalculator() {
               desc="Reduced LOC on admission (NIHSS item 1a > 0)"
               value={astralLocImpaired}
               onChange={setAstralLocImpaired}
-              colorClass="bg-purple-600"
+              colorClass="bg-cobalt-600"
             />
 
             {/* Results */}
-            <div className="rounded-xl border border-purple-200 bg-purple-50/50 p-4 dark:border-purple-900/60 dark:bg-purple-950/20">
+            <div className="rounded-xl border border-cobalt-200 bg-cobalt-50/50 p-4 dark:border-cobalt-900/60 dark:bg-cobalt-950/20">
               <div className="flex justify-between items-start">
                 <div>
-                  <span className="text-[10px] uppercase tracking-wide font-bold text-purple-700 dark:text-purple-400">ASTRAL Score Result</span>
-                  <h4 className="text-2xl font-black text-purple-900 dark:text-white">{astralTotal} <span className="text-sm font-normal text-slate-500">points</span></h4>
+                  <span className="text-[10px] uppercase tracking-wide font-bold text-cobalt-700 dark:text-cobalt-400">ASTRAL Score Result</span>
+                  <h4 className="text-2xl font-black text-cobalt-900 dark:text-white">{astralTotal} <span className="text-sm font-normal text-slate-500">points</span></h4>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] uppercase tracking-wide font-bold text-purple-700 dark:text-purple-400">90d Poor Outcome (mRS &gt; 2)</span>
-                  <h4 className="text-2xl font-black text-purple-900 dark:text-white">{astralRisk}</h4>
+                  <span className="text-[10px] uppercase tracking-wide font-bold text-cobalt-700 dark:text-cobalt-400">90d Poor Outcome (mRS &gt; 2)</span>
+                  <h4 className="text-2xl font-black text-cobalt-900 dark:text-white">{astralRisk}</h4>
                 </div>
               </div>
               <div className="mt-3">
                 <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
                   <div 
-                    className="h-full rounded-full bg-purple-600 transition-all duration-300" 
+                    className="h-full rounded-full bg-cobalt-600 transition-all duration-300" 
                     style={{ width: `${Math.min(100, (astralTotal / 45) * 100)}%` }}
                   />
                 </div>
@@ -3305,7 +3270,7 @@ export function StrokePrognosisCalculator() {
         {/* ICH TAB */}
         {activeTab === 'ich' && (
           <div className="space-y-3">
-            <h4 className="text-xs font-extrabold uppercase tracking-wider text-red-700 dark:text-red-400">ICH Variables</h4>
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-crit-700 dark:text-crit-400">ICH Variables</h4>
 
             {/* GCS Category */}
             <div className="space-y-2 py-1.5 border-b border-slate-100 dark:border-slate-800/40">
@@ -3315,7 +3280,7 @@ export function StrokePrognosisCalculator() {
                   onClick={() => setIchGcsCategory(0)}
                   className={`flex-1 py-1.5 text-xs font-semibold rounded border transition-colors ${
                     ichGcsCategory === 0
-                      ? 'bg-red-50 text-red-700 border-red-500 dark:bg-red-950/40 dark:border-red-800'
+                      ? 'bg-crit-50 text-crit-700 border-crit-500 dark:bg-crit-950/40 dark:border-crit-800'
                       : 'bg-slate-50 text-slate-600 border-slate-200 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400'
                   }`}
                 >
@@ -3325,7 +3290,7 @@ export function StrokePrognosisCalculator() {
                   onClick={() => setIchGcsCategory(1)}
                   className={`flex-1 py-1.5 text-xs font-semibold rounded border transition-colors ${
                     ichGcsCategory === 1
-                      ? 'bg-red-50 text-red-700 border-red-500 dark:bg-red-950/40 dark:border-red-800'
+                      ? 'bg-crit-50 text-crit-700 border-crit-500 dark:bg-crit-950/40 dark:border-crit-800'
                       : 'bg-slate-50 text-slate-600 border-slate-200 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400'
                   }`}
                 >
@@ -3335,7 +3300,7 @@ export function StrokePrognosisCalculator() {
                   onClick={() => setIchGcsCategory(2)}
                   className={`flex-1 py-1.5 text-xs font-semibold rounded border transition-colors ${
                     ichGcsCategory === 2
-                      ? 'bg-red-50 text-red-700 border-red-500 dark:bg-red-950/40 dark:border-red-800'
+                      ? 'bg-crit-50 text-crit-700 border-crit-500 dark:bg-crit-950/40 dark:border-crit-800'
                       : 'bg-slate-50 text-slate-600 border-slate-200 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400'
                   }`}
                 >
@@ -3350,7 +3315,7 @@ export function StrokePrognosisCalculator() {
               desc="Patient age is 80 years or older"
               value={ichAge80}
               onChange={setIchAge80}
-              colorClass="bg-red-700"
+              colorClass="bg-crit-700"
             />
 
             {/* ICH Volume >= 30 toggle */}
@@ -3359,7 +3324,7 @@ export function StrokePrognosisCalculator() {
               desc="Intracerebral hemorrhage volume estimated at 30 mL or larger"
               value={ichVolume30}
               onChange={setIchVolume30}
-              colorClass="bg-red-700"
+              colorClass="bg-crit-700"
             />
 
             {/* IVH toggle */}
@@ -3368,7 +3333,7 @@ export function StrokePrognosisCalculator() {
               desc="Hemorrhage extension into the ventricles present"
               value={ichIvh}
               onChange={setIchIvh}
-              colorClass="bg-red-700"
+              colorClass="bg-crit-700"
             />
 
             {/* Infratentorial toggle */}
@@ -3377,25 +3342,25 @@ export function StrokePrognosisCalculator() {
               desc="Brainstem or cerebellar origin of hemorrhage (vs. supratentorial)"
               value={ichInfratentorial}
               onChange={setIchInfratentorial}
-              colorClass="bg-red-700"
+              colorClass="bg-crit-700"
             />
 
             {/* Results */}
-            <div className="rounded-xl border border-red-200 bg-red-50/50 p-4 dark:border-red-900/60 dark:bg-red-950/20">
+            <div className="rounded-xl border border-crit-200 bg-crit-50/50 p-4 dark:border-crit-900/60 dark:bg-crit-950/20">
               <div className="flex justify-between items-start">
                 <div>
-                  <span className="text-[10px] uppercase tracking-wide font-bold text-red-700 dark:text-red-400">ICH Score Result</span>
-                  <h4 className="text-2xl font-black text-red-900 dark:text-white">{ichTotal} <span className="text-sm font-normal text-slate-500">points</span></h4>
+                  <span className="text-[10px] uppercase tracking-wide font-bold text-crit-700 dark:text-crit-400">ICH Score Result</span>
+                  <h4 className="text-2xl font-black text-crit-900 dark:text-white">{ichTotal} <span className="text-sm font-normal text-slate-500">points</span></h4>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] uppercase tracking-wide font-bold text-red-700 dark:text-red-400">30d Mortality Risk</span>
-                  <h4 className="text-2xl font-black text-red-900 dark:text-white">{ichRisk}</h4>
+                  <span className="text-[10px] uppercase tracking-wide font-bold text-crit-700 dark:text-crit-400">30d Mortality Risk</span>
+                  <h4 className="text-2xl font-black text-crit-900 dark:text-white">{ichRisk}</h4>
                 </div>
               </div>
               <div className="mt-3">
                 <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
                   <div 
-                    className="h-full rounded-full bg-red-700 transition-all duration-300" 
+                    className="h-full rounded-full bg-crit-700 transition-all duration-300" 
                     style={{ width: `${(ichTotal / 6) * 100}%` }}
                   />
                 </div>
@@ -3675,63 +3640,6 @@ export function CervicalDissectionCard() {
           <div className="card-content">
             <h1 style={{textAlign: 'center', marginBottom: '8px'}}>Cervical Artery Dissection</h1>
 
-            {/* Diagrams Banner - Stacked Vertically (No Toggling, Optimally Seen on Page) */}
-            {/* Anatomy & Dissection SVG */}
-            <div 
-              style={{
-                width: '100%', 
-                height: 'auto', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                background: 'var(--fill-soft)', 
-                borderRadius: '8px', 
-                border: '1.5px solid var(--rule-soft)', 
-                overflow: 'hidden', 
-                boxSizing: 'border-box', 
-                marginBottom: '8px',
-                padding: '6px'
-              }}
-              title="Anatomy Diagram"
-            >
-              {renderSVG()}
-            </div>
-
-            {/* Stroke Mechanisms Illustration */}
-            <div 
-              style={{
-                width: '100%', 
-                height: '150px', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                background: 'var(--fill-soft)', 
-                borderRadius: '8px', 
-                border: '1.5px solid var(--rule-soft)', 
-                overflow: 'hidden', 
-                boxSizing: 'border-box', 
-                marginBottom: '8px'
-              }}
-              title="Stroke Mechanisms"
-            >
-              <div 
-                className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full h-full"
-                onClick={() => setLightboxImage({ src: 'assets/dissection_stroke_mechanisms.png', alt: 'Cervical Artery Dissection Stroke Mechanisms', title: 'Stroke Mechanisms in Cervical Artery Dissection' })}
-              >
-                <img 
-                  src="assets/dissection_stroke_mechanisms.png" 
-                  alt="Cervical Artery Dissection Stroke Mechanisms" 
-                  style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
-                  className="transition-transform duration-200 group-hover:scale-[1.02]"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
-                  <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
-                    <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
-                  </span>
-                </div>
-              </div>
-            </div>
-
             <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%)', marginBottom: '8px'}}>
               <strong style={{color: 'var(--purple-deep)', fontSize: '9.5pt', display: 'block', marginBottom: '4px'}}>1. Clinical Presentation &amp; Pathophysiology</strong>
               <div style={{display: 'grid', gridTemplateColumns: '1.2fr 0.8fr 1fr', gap: '12px', fontSize: '7.8pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
@@ -3871,7 +3779,7 @@ const FibromuscularDysplasiaView = () => {
       title="Fibromuscular Dysplasia & Stroke"
       pdfPath="documents/references/Fibromuscular Dysplasia.pdf"
       pdfName="Fibromuscular Dysplasia.pdf"
-      iconColorClass="text-indigo-600 dark:text-indigo-400"
+      iconColorClass="text-cobalt-600 dark:text-cobalt-400"
     >
       <ScaledCardWrapper isLandscape={false}>
         <BedsidePocketCardsStyles />
@@ -3953,40 +3861,6 @@ export function FibromuscularDysplasiaCard() {
               {renderSVG()}
             </div>
 
-            {/* Generated Image Banner */}
-            <div 
-              style={{
-                width: '100%', 
-                height: '150px', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                background: 'var(--fill-soft)', 
-                borderRadius: '8px', 
-                border: '1.5px solid var(--rule-soft)', 
-                overflow: 'hidden', 
-                boxSizing: 'border-box', 
-                marginBottom: '8px'
-              }}
-              title="Stroke Mechanisms &amp; Systemic Vascular Beds"
-            >
-              <div 
-                className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full h-full"
-                onClick={() => setLightboxImage({ src: 'assets/fmd_stroke_mechanisms.png', alt: 'Fibromuscular Dysplasia Stroke Mechanisms', title: 'Stroke Mechanisms &amp; Systemic Beds in FMD' })}
-              >
-                <img 
-                  src="assets/fmd_stroke_mechanisms.png" 
-                  alt="Fibromuscular Dysplasia Stroke Mechanisms" 
-                  style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
-                  className="transition-transform duration-200 group-hover:scale-[1.02]"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
-                  <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
-                    <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
-                  </span>
-                </div>
-              </div>
-            </div>
 
             {/* Section 1: Pathophysiology, Presentation &amp; Screening */}
             <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '8px 10px', background: 'linear-gradient(135deg, var(--purple-soft) 0%, #ffffff 100%)', marginBottom: '8px'}}>
@@ -4110,7 +3984,7 @@ const BrainDeathView = () => {
       subtitle="BD/DNC Consensus Guidelines Reference Card"
       pdfPath="documents/references/Brain Death Guidelines.pdf"
       pdfName="Brain Death Guidelines.pdf"
-      iconColorClass="text-red-600 dark:text-red-400"
+      iconColorClass="text-crit-600 dark:text-crit-400"
     >
       <ScaledCardWrapper isLandscape={false}>
         <BedsidePocketCardsStyles />
@@ -4177,40 +4051,6 @@ export function BrainDeathCard() {
               </defs>
             </svg>
 
-            {/* Generated Image Banner */}
-            <div 
-              style={{
-                width: '100%', 
-                height: '150px', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                background: 'var(--fill-soft)', 
-                borderRadius: '8px', 
-                border: '1.5px solid var(--rule-soft)', 
-                overflow: 'hidden', 
-                boxSizing: 'border-box', 
-                marginBottom: '8px'
-              }}
-              title="Cranial Nerve Reflexes &amp; Apnea Test Setup"
-            >
-              <div 
-                className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full h-full"
-                onClick={() => setLightboxImage({ src: 'assets/brain_death_evaluation.png', alt: 'Brain Death Evaluation Pathway', title: 'Brainstem Reflexes &amp; Apnea Test Setup' })}
-              >
-                <img 
-                  src="assets/brain_death_evaluation.png" 
-                  alt="Brain Death Evaluation Pathway" 
-                  style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
-                  className="transition-transform duration-200 group-hover:scale-[1.02]"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
-                  <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
-                    <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
-                  </span>
-                </div>
-              </div>
-            </div>
 
             {/* Grid for Prerequisites & Exam */}
             <div className="toast-grid" style={{marginBottom: '10px'}}>
@@ -4332,7 +4172,7 @@ const AntiepilepticDrugsView = () => {
       subtitle="Antiseizure Medication (ASM) Selection &amp; Reference Card"
       pdfPath="documents/references/Antiepileptic Drugs.pdf"
       pdfName="Antiepileptic Drugs.pdf"
-      iconColorClass="text-violet-600 dark:text-violet-400"
+      iconColorClass="text-cobalt-600 dark:text-cobalt-400"
     >
       <ScaledCardWrapper isLandscape={false}>
         <BedsidePocketCardsStyles />
@@ -4343,8 +4183,6 @@ const AntiepilepticDrugsView = () => {
 };
 
 export function AntiepilepticDrugsCard() {
-  const [lightboxImage, setLightboxImage] = useState(null);
-
   return (
     <div className="bedside-card-view screen-layout">
       <div className="card-wrapper card-antiepileptic-drugs">
@@ -4398,41 +4236,6 @@ export function AntiepilepticDrugsCard() {
                 </marker>
               </defs>
             </svg>
-
-            {/* Click-to-Zoom Image Banner */}
-            <div 
-              style={{
-                width: '100%', 
-                height: '140px', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                background: 'var(--fill-soft)', 
-                borderRadius: '8px', 
-                border: '1.5px solid var(--rule-soft)', 
-                overflow: 'hidden', 
-                boxSizing: 'border-box', 
-                marginBottom: '8px'
-              }}
-              title="Antiseizure Medication Selection Pathway &amp; Profiles"
-            >
-              <div 
-                className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full h-full"
-                onClick={() => setLightboxImage({ src: 'assets/aed_stroke_selection.png', alt: 'Antiseizure Medication Selection Pathway', title: 'Antiseizure Medication Selection Pathway &amp; Profiles' })}
-              >
-                <img 
-                  src="assets/aed_stroke_selection.png" 
-                  alt="Antiseizure Medication Selection Pathway" 
-                  style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
-                  className="transition-transform duration-200 group-hover:scale-[1.02]"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
-                  <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
-                    <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
-                  </span>
-                </div>
-              </div>
-            </div>
 
             {/* Grid for Seizure Classification & Risk Scores */}
             <div className="toast-grid" style={{marginBottom: '10px'}}>
@@ -4607,14 +4410,6 @@ export function AntiepilepticDrugsCard() {
           </div>
         </div>
       </div>
-      {lightboxImage && (
-        <ImageLightbox 
-          src={lightboxImage.src} 
-          alt={lightboxImage.alt} 
-          title={lightboxImage.title} 
-          onClose={() => setLightboxImage(null)} 
-        />
-      )}
     </div>
   );
 }
@@ -4626,7 +4421,7 @@ const AspirinFailureView = () => {
       subtitle="Antiplatelet Failure Guidelines &amp; Clinical Management"
       pdfPath="documents/references/Aspirin Failure.pdf"
       pdfName="Aspirin Failure.pdf"
-      iconColorClass="text-amber-600 dark:text-amber-400"
+      iconColorClass="text-warn-600 dark:text-warn-400"
     >
       <ScaledCardWrapper isLandscape={false}>
         <BedsidePocketCardsStyles />

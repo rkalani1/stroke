@@ -716,7 +716,7 @@ export function EvdIcpSimulator() {
               <div className="p-3 space-y-2">
                 <p className="text-xs font-semibold text-slate-800 dark:text-ink">A serious deterioration in clinical neurologic status such as:</p>
                 <ul className="list-disc pl-4 text-2xs text-slate-600 dark:text-ink-2 space-y-1">
-                  <li>Spontaneous GCS motor score decrease of <strong className="text-red-500 font-bold">&ge; 1 points</strong> (compared with previous examination)</li>
+                  <li>Spontaneous GCS motor score decrease of <strong className="text-crit-500 font-bold">&ge; 1 points</strong> (compared with previous examination)</li>
                   <li>New decrease in pupillary reactivity</li>
                   <li>New pupillary asymmetry or bilateral mydriasis</li>
                   <li>New focal motor deficit</li>
@@ -732,7 +732,7 @@ export function EvdIcpSimulator() {
                 <ul className="list-disc pl-4 text-2xs text-slate-600 dark:text-ink-2 space-y-1">
                   <li>Emergent evaluation to identify possible cause* of neuroworsening</li>
                   <li><strong>If herniation is suspected, initiate empiric treatment:</strong>
-                    <ul className="list-[square] pl-4 mt-1 text-red-400 font-medium">
+                    <ul className="list-[square] pl-4 mt-1 text-crit-400 font-medium">
                       <li><strong>hyperventilation**</strong></li>
                       <li><strong>bolus of hypertonic solution</strong></li>
                     </ul>
@@ -745,7 +745,7 @@ export function EvdIcpSimulator() {
           </div>
           <div className="pt-3 border-t border-slate-100 dark:border-slate-800 text-3xs text-slate-500 dark:text-mute space-y-1">
             <p><strong>* Possible causes of neuroworsening include:</strong> expanding intracranial mass lesion, cerebral edema, elevated ICP, stroke, electrolyte or other metabolic disturbance, medical comorbidity, medication effect, impaired renal/hepatic function, systemic hypotension, seizure/post-ictal, hypoxemia/tissue hypoxia, CNS infection, sepsis/infection, substance withdrawal, dehydration, hyper/hypothermia.</p>
-            <p className="text-red-400 font-semibold mt-1">** the hyperventilation PaCO₂ limit of 30 mmHg/4.0 kPa does not apply here</p>
+            <p className="text-crit-400 font-semibold mt-1">** the hyperventilation PaCO₂ limit of 30 mmHg/4.0 kPa does not apply here</p>
           </div>
         </div>
       </section>
@@ -785,8 +785,8 @@ export function EvdIcpSimulator() {
             </tbody>
           </table>
         </div>
-        <div className="mt-3 bg-amber-500/5 border border-amber-500/20 rounded p-2.5">
-          <p className="text-3xs text-amber-600 dark:text-amber-400 leading-normal">
+        <div className="mt-3 bg-warn-500/5 border border-warn-500/20 rounded p-2.5">
+          <p className="text-3xs text-warn-600 dark:text-warn-400 leading-normal">
             <strong>⚠️ Stroke MAP Precaution:</strong> Mannitol acts as an osmotic diuretic which can trigger systemic hypotension. In acute stroke, penumbral perfusion is pressure-dependent. Hypotension drops MAP, reducing Cerebral Perfusion Pressure (CPP = MAP - ICP) and expanding the infarct. Hypertonic saline (HTS) is generally preferred to expand volume and preserve blood pressure while lowering ICP.
           </p>
         </div>

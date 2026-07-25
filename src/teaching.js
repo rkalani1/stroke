@@ -286,6 +286,16 @@ export const TEACHING_PEARLS = [
     category: 'Prognosis',
     q: 'What is the natural history of functional recovery after stroke?',
     a: 'Most recovery occurs first 3 months. Further gains are incremental but continue at least 6-12 months. 90-day mRS is the traditional trial endpoint because most recovery has plateaued by then. Language recovery can continue for 2+ years.'
+  },
+  {
+    category: 'Biomarkers',
+    q: 'What is a potential CSF biomarker for NORSE (New-Onset Refractory Status Epilepticus)?',
+    a: 'Atypical lymphocytes in the CSF may serve as a potential biomarker for NORSE (New-Onset Refractory Status Epilepticus). Their presence supports an underlying immune-mediated or inflammatory pathophysiology, guiding earlier immunomodulatory therapies. (The Neurohospitalist Vol. 16, No. 3)'
+  },
+  {
+    category: 'Special Populations',
+    q: 'What are the key considerations for AHLE (Acute Hemorrhagic Leukoencephalitis) in pregnancy?',
+    a: 'AHLE (Acute Hemorrhagic Leukoencephalitis), a severe form of ADEM, can rarely present during pregnancy. It requires prompt recognition via MRI (hemorrhagic demyelinating lesions) and aggressive immunomodulation (high-dose steroids, PLEX), balancing fetal safety with life-saving maternal interventions. (The Neurohospitalist Vol. 16, No. 3)'
   }
 ];
 
