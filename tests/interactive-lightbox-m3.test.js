@@ -1,11 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'node:url';
 
 describe('Milestone M3-1: Interactive Lightbox & Visual Asset Integration', () => {
-  const componentsPath = path.resolve('/Users/rizwankalani/stroke/src/components.jsx');
-  const educationPath = path.resolve('/Users/rizwankalani/stroke/src/education.jsx');
-  const serviceWorkerPath = path.resolve('/Users/rizwankalani/stroke/service-worker.js');
+  const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const componentsPath = path.join(repoRoot, 'src/components.jsx');
+  const educationPath = path.join(repoRoot, 'src/education.jsx');
+  const serviceWorkerPath = path.join(repoRoot, 'service-worker.js');
 
   const componentsContent = fs.readFileSync(componentsPath, 'utf-8');
   const educationContent = fs.readFileSync(educationPath, 'utf-8');
@@ -107,4 +109,3 @@ describe('Milestone M3-1: Interactive Lightbox & Visual Asset Integration', () =
     expect(componentsContent).toContain('onError={() => setHasError(true)}');
   });
 });
-
