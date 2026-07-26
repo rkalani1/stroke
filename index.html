@@ -232,10 +232,11 @@
         @media (min-width: 1024px) {
             .app-shell {
                 display: grid;
-                grid-template-columns: minmax(220px, 248px) 1fr;
-                column-gap: 1.75rem;
+                grid-template-columns: minmax(216px, 236px) minmax(0, 1fr);
+                column-gap: 0;
                 row-gap: 0;
                 align-items: start;
+                padding: 1.25rem 1.5rem 2rem !important;
             }
             .app-shell > .app-header,
             .app-shell > [role="alert"],
@@ -253,11 +254,17 @@
                 margin-bottom: 0 !important;
                 max-height: calc(100vh - var(--app-header-h, 0px) - 1rem);
                 overflow-y: auto;
-                padding: 0.75rem 0.5rem !important;
+                padding: 0.25rem 1.25rem 0.75rem 0.25rem !important;
+                background: transparent;
+                border: 0;
+                border-radius: 0;
+                box-shadow: none;
             }
             .app-shell > #main {
                 grid-column: 2;
                 min-width: 0;
+                border-left: 1px solid var(--panel-border);
+                padding-left: 2rem;
             }
             .app-shell > .app-nav nav {
                 flex-direction: column !important;
@@ -270,7 +277,7 @@
             .app-shell > .app-nav .tab-pill {
                 width: 100% !important;
                 justify-content: flex-start !important;
-                padding: 0.625rem 0.875rem !important;
+                padding: 0.7rem 0.875rem !important;
                 border-radius: 10px !important;
                 text-align: left;
                 flex: 0 0 auto !important;
@@ -281,13 +288,36 @@
             .app-shell > .app-nav .tab-pill.active {
                 background: var(--accent-soft) !important;
                 color: var(--accent-ink) !important;
-                box-shadow: inset 3px 0 0 0 var(--accent), 0 1px 0 rgba(15,23,42,.02) !important;
+                box-shadow: inset 3px 0 0 0 var(--accent), 0 1px 0 rgba(15,23,42,.025) !important;
             }
             .app-shell > .app-nav .tab-pill span {
                 display: inline-flex;
                 align-items: center;
                 width: 100%;
                 justify-content: flex-start;
+            }
+        }
+
+        /* Keep the clinical workspace visually quiet: navigation is a rail,
+           while the active task remains the only full-width paper surface. */
+        @media (min-width: 1280px) {
+            .app-shell {
+                padding-left: 1.75rem !important;
+                padding-right: 2rem !important;
+            }
+            .app-shell > #main {
+                padding-left: 2.25rem;
+            }
+        }
+
+        .app-shell > #main > [role="tabpanel"] {
+            animation: workspace-enter 180ms ease-out both;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            @keyframes workspace-enter {
+                from { opacity: 0.72; transform: translateY(3px); }
+                to { opacity: 1; transform: translateY(0); }
             }
         }
 
