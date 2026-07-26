@@ -1,9 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'node:url';
 
 describe('Empirical Stress Testing — InteractiveImageLightbox & VisualAssetFigure', () => {
-  const componentsPath = path.resolve('/Users/rizwankalani/stroke/src/components.jsx');
+  const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const componentsPath = path.join(repoRoot, 'src/components.jsx');
   const componentsCode = fs.readFileSync(componentsPath, 'utf-8');
 
   describe('1. Lightbox Zoom Limits (1.0x to 4.0x) & State Math Oracle', () => {
