@@ -42,6 +42,11 @@ import {
   isSyntheticDemoText,
   PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX
 } from './public-demo-guardrails.js';
+import {
+  createEncounterOutputGate,
+  renderEncounterOutput as renderGatedEncounterOutput,
+  runEncounterOutput as runGatedEncounterOutput
+} from './encounter-output-gate.js';
 import { PocketCards } from './pocket-cards.jsx';
 import { LandmarkTrialsCard } from './teaching.jsx';
 import Education, { EVDInfographic, ICPInfographic } from './education.jsx';
@@ -2257,6 +2262,7 @@ Clinician Name`;
           const [lkwCardCollapsed, setLkwCardCollapsed] = useState(false);
           const [snapshotShowAll, setSnapshotShowAll] = useState(false);
           const [inputEntryFocused, setInputEntryFocused] = useState(false);
+          const [mobileHeaderCompact, setMobileHeaderCompact] = useState(false);
 
           // ============================================
           // CONSULTATION TYPE: Telephone, Video Telestroke
@@ -2403,6 +2409,7 @@ Clinician Name`;
           const headerBannerRef = useRef(null);
           const generateNoteRef = useRef(null);
           const copyToClipboardRef = useRef(null);
+          const runEncounterOutputRef = useRef(null);
           const navigateToRef = useRef(null);
           const exportToPDFRef = useRef(null);
           // Element to restore focus to when the command palette closes without
@@ -7792,8 +7799,10 @@ Clinician Name`;
               // Ctrl/Cmd+Shift+C — copy consult note
               if (primary && e.shiftKey && !e.altKey && lowerKey === 'c') {
                 e.preventDefault();
-                const note = generateNoteRef.current?.();
-                if (note) copyToClipboardRef.current?.(note, 'consult-note');
+                runEncounterOutputRef.current?.(() => {
+                  const note = generateNoteRef.current?.();
+                  if (note) copyToClipboardRef.current?.(note, 'consult-note');
+                });
                 return;
               }
 
@@ -8663,55 +8672,60 @@ Clinician Name`;
           };
 
           const exportToPDF = async () => {
-            addToast('PDF export is disabled in this public build. Use an approved workflow for any real clinical documentation.', 'warning');
+            const result = runEncounterOutputRef.current?.(() => {
+              addToast('PDF export is disabled in this public build. Use an approved workflow for any real clinical documentation.', 'warning');
+            });
+            return result?.value;
           };
           exportToPDFRef.current = exportToPDF;
 
           const exportEncounterJSON = () => {
-            if (PUBLIC_DEMO_MODE) {
-              addToast('Encounter export is disabled in the public demo. Do not create files containing PHI or real encounter details here.', 'warning');
-              return;
-            }
-            try {
-              const data = {
-                schemaVersion: 1,
-                appVersion: document.querySelector('script[data-version]')?.dataset.version || '',
-                exportDate: new Date().toISOString(),
-                consultationType,
-                telestrokeNote,
-                nihssScore,
-                gcsItems,
-                ichScoreItems,
-                ichVolumeParams,
-                aspectsScore,
-                aspectsRegionState,
-                pcAspectsRegions,
-                mrsScore,
-                abcd2Items,
-                chads2vascItems,
-                ropeItems,
-                huntHessGrade,
-                wfnsGrade,
-                hasbledItems,
-                rcvs2Items,
-                phasesItems,
-                evtDecisionInputs,
-                doacProtocol,
-                strokeCodeForm
-              };
-              const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = `stroke-encounter-${new Date().toISOString().split('T')[0]}.json`;
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              URL.revokeObjectURL(url);
-              addToast('Encounter exported as JSON', 'success');
-            } catch (err) {
-              addToast('Export failed — ' + (err.message || 'unknown error'), 'error');
-            }
+            return runEncounterOutputRef.current?.(() => {
+              if (PUBLIC_DEMO_MODE) {
+                addToast('Encounter export is disabled in the public demo. Do not create files containing PHI or real encounter details here.', 'warning');
+                return;
+              }
+              try {
+                const data = {
+                  schemaVersion: 1,
+                  appVersion: document.querySelector('script[data-version]')?.dataset.version || '',
+                  exportDate: new Date().toISOString(),
+                  consultationType,
+                  telestrokeNote,
+                  nihssScore,
+                  gcsItems,
+                  ichScoreItems,
+                  ichVolumeParams,
+                  aspectsScore,
+                  aspectsRegionState,
+                  pcAspectsRegions,
+                  mrsScore,
+                  abcd2Items,
+                  chads2vascItems,
+                  ropeItems,
+                  huntHessGrade,
+                  wfnsGrade,
+                  hasbledItems,
+                  rcvs2Items,
+                  phasesItems,
+                  evtDecisionInputs,
+                  doacProtocol,
+                  strokeCodeForm
+                };
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `stroke-encounter-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                addToast('Encounter exported as JSON', 'success');
+              } catch (err) {
+                addToast('Export failed — ' + (err.message || 'unknown error'), 'error');
+              }
+            });
           };
 
           const handleShare = async () => {
@@ -14103,6 +14117,21 @@ Clinician Name`;
             nihssScore,
             patientData
           ]);
+          const encounterOutputGate = useMemo(
+            () => createEncounterOutputGate(encounterReadiness.required),
+            [encounterReadiness.required]
+          );
+          const runEncounterOutput = (action) => runGatedEncounterOutput(
+            encounterOutputGate,
+            action,
+            (gate) => {
+              addToast(gate.message, 'warning');
+              jumpToNextRequiredEncounterField();
+            }
+          );
+          const renderEncounterOutput = (buildOutput) =>
+            renderGatedEncounterOutput(encounterOutputGate, buildOutput);
+          runEncounterOutputRef.current = runEncounterOutput;
 
           const QUICK_SEARCH_COMMANDS = [
             { value: 'next required', label: 'next required', hint: 'Jump to highest-priority missing field', category: 'Navigation' },
@@ -14472,9 +14501,11 @@ Clinician Name`;
                 description: 'Generates and copies the current consult note',
                 score: 970,
                 action: () => {
-                  const note = generateTelestrokeNote();
-                  copyToClipboard(note, 'Consult Note');
-                  navigateTo('encounter', { clearSearch: true });
+                  runEncounterOutput(() => {
+                    const note = generateTelestrokeNote();
+                    copyToClipboard(note, 'Consult Note');
+                    navigateTo('encounter', { clearSearch: true });
+                  });
                 }
               });
             }
@@ -14539,8 +14570,10 @@ Clinician Name`;
                 description: 'Generates and copies the Pulsara summary',
                 score: 968,
                 action: () => {
-                  copyToClipboard(generatePulsaraSummary(), 'tel-pulsara');
-                  navigateTo('encounter', { clearSearch: true });
+                  runEncounterOutput(() => {
+                    copyToClipboard(generatePulsaraSummary(), 'tel-pulsara');
+                    navigateTo('encounter', { clearSearch: true });
+                  });
                 }
               });
             }
@@ -14552,8 +14585,10 @@ Clinician Name`;
                 description: 'Generates and copies the narrative smart note',
                 score: 967,
                 action: () => {
-                  copyToClipboard(buildSmartNote(), 'smart-note');
-                  navigateTo('encounter', { clearSearch: true });
+                  runEncounterOutput(() => {
+                    copyToClipboard(buildSmartNote(), 'smart-note');
+                    navigateTo('encounter', { clearSearch: true });
+                  });
                 }
               });
             }
@@ -14565,14 +14600,16 @@ Clinician Name`;
                 description: 'Copy history of present illness section',
                 score: 960,
                 action: () => {
-                  const age = telestrokeNote.age || '***';
-                  const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
-                  let hpi = `HPI: ${age} year old ${sex}`;
-                  if (telestrokeNote.pmh) hpi += ` with PMH of ${telestrokeNote.pmh}`;
-                  hpi += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
-                  if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
-                  copyToClipboard(hpi, 'tel-hpi');
-                  navigateTo('encounter', { clearSearch: true });
+                  runEncounterOutput(() => {
+                    const age = telestrokeNote.age || '***';
+                    const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
+                    let hpi = `HPI: ${age} year old ${sex}`;
+                    if (telestrokeNote.pmh) hpi += ` with PMH of ${telestrokeNote.pmh}`;
+                    hpi += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
+                    if (lkwTime) hpi += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
+                    copyToClipboard(hpi, 'tel-hpi');
+                    navigateTo('encounter', { clearSearch: true });
+                  });
                 }
               });
             }
@@ -14584,10 +14621,12 @@ Clinician Name`;
                 description: 'Copy exam findings and labs',
                 score: 959,
                 action: () => {
-                  let exam = `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
-                  exam += `\nBP: ${telestrokeNote.presentingBP || 'N/A'}, Glucose: ${telestrokeNote.glucose || 'N/A'}, INR: ${telestrokeNote.inr || 'N/A'}, Plt: ${telestrokeNote.plateletCount || 'N/A'}`;
-                  copyToClipboard(exam, 'tel-exam');
-                  navigateTo('encounter', { clearSearch: true });
+                  runEncounterOutput(() => {
+                    let exam = `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
+                    exam += `\nBP: ${telestrokeNote.presentingBP || 'N/A'}, Glucose: ${telestrokeNote.glucose || 'N/A'}, INR: ${telestrokeNote.inr || 'N/A'}, Plt: ${telestrokeNote.plateletCount || 'N/A'}`;
+                    copyToClipboard(exam, 'tel-exam');
+                    navigateTo('encounter', { clearSearch: true });
+                  });
                 }
               });
             }
@@ -14599,12 +14638,14 @@ Clinician Name`;
                 description: 'Copy assessment and plan section',
                 score: 958,
                 action: () => {
-                  let mdm = `ASSESSMENT: ${telestrokeNote.diagnosis || '***'}\n\nPLAN:\n`;
-                  mdm += `TNK: ${telestrokeNote.tnkRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
-                  mdm += `EVT: ${telestrokeNote.evtRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
-                  if (telestrokeNote.disposition) mdm += `Disposition: ${telestrokeNote.disposition}\n`;
-                  copyToClipboard(mdm, 'tel-mdm');
-                  navigateTo('encounter', { clearSearch: true });
+                  runEncounterOutput(() => {
+                    let mdm = `ASSESSMENT: ${telestrokeNote.diagnosis || '***'}\n\nPLAN:\n`;
+                    mdm += `TNK: ${telestrokeNote.tnkRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
+                    mdm += `EVT: ${telestrokeNote.evtRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
+                    if (telestrokeNote.disposition) mdm += `Disposition: ${telestrokeNote.disposition}\n`;
+                    copyToClipboard(mdm, 'tel-mdm');
+                    navigateTo('encounter', { clearSearch: true });
+                  });
                 }
               });
             }
@@ -16162,6 +16203,20 @@ Clinician Name`;
           }, [activeTab, isMounted]);
 
           useEffect(() => {
+            const syncMobileHeader = () => {
+              const compact = window.matchMedia('(max-width: 767px)').matches && window.scrollY > 72;
+              setMobileHeaderCompact((current) => (current === compact ? current : compact));
+            };
+            syncMobileHeader();
+            window.addEventListener('scroll', syncMobileHeader, { passive: true });
+            window.addEventListener('resize', syncMobileHeader);
+            return () => {
+              window.removeEventListener('scroll', syncMobileHeader);
+              window.removeEventListener('resize', syncMobileHeader);
+            };
+          }, []);
+
+          useEffect(() => {
             if (activeTab !== 'protocols') return;
             updateAppData((prev) => ({
               ...prev,
@@ -16492,10 +16547,39 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             : '';
           const hasNihssInputs = nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
           const nihssDisplay = nihssFromNote || (hasNihssInputs ? String(nihssScore) : '--');
+          const workflowContextLabel = workflowContext
+            ? workflowContext.charAt(0).toUpperCase() + workflowContext.slice(1)
+            : 'All';
+          const educationContextTotal = getContentEducation().length;
+          const educationContextVisible = workflowContext
+            ? getContentEducation().filter((entry) => isContentRelevantTo(entry, workflowContext)).length
+            : educationContextTotal;
+          const activeRouteLabel = {
+            encounter: 'Encounter',
+            protocols: 'Protocols',
+            research: 'Guidelines',
+            trials: 'Trials',
+            education: 'Education',
+            settings: 'Settings'
+          }[activeTab] || 'Current view';
+          const workflowContextFeedback = activeTab === 'education'
+            ? `${workflowContextLabel} context · ${educationContextVisible} of ${educationContextTotal} education modules shown.`
+            : `${workflowContextLabel} context · ${activeRouteLabel} is not context-filtered · 1 workspace shown.`;
           return (
             <div className="relative v7-skin">
               {/* v7: skip-link → semantic <main id="main">; cobalt accent, no link-* override */}
               <a href="#main" data-skip-tap className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-cobalt-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">Skip to main content</a>
+              {PUBLIC_DEMO_MODE && (
+                <>
+                  <div className="public-demo-shell-banner no-print">
+                    <PHIBanner />
+                  </div>
+                  <div className="public-demo-mode-badge no-print" role="status" aria-label="Public synthetic demo mode">
+                    <span aria-hidden="true"></span>
+                    Demo mode
+                  </div>
+                </>
+              )}
               {protocolModal && (
                 <div className="clinician-only fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="protocol-modal-title" onClick={() => setProtocolModal(null)}>
                   <div className="w-full max-w-lg bg-white rounded-md shadow-xl border border-line dark:bg-card" onClick={(e) => e.stopPropagation()}>
@@ -16597,11 +16681,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   via --app-header-h (measured by an effect). */}
               <div
                 ref={headerBannerRef}
-                className="mb-4 sm:mb-6 app-header pwa-safe-top pwa-safe-x md:sticky md:top-0 md:z-40"
+                className={`mb-4 sm:mb-6 app-header pwa-safe-top pwa-safe-x sticky top-0 z-40 ${mobileHeaderCompact ? 'is-mobile-compact' : ''}`}
                 role="banner"
               >
                 <div className="flex flex-col lg:flex-row justify-between items-start gap-3">
-                  <div className="flex-1 min-w-0 w-full lg:w-auto">
+                  <div className="mobile-header-brand flex-1 min-w-0 w-full lg:w-auto">
                     <div className="flex items-center gap-3 justify-center sm:justify-start">
                       <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-cobalt-200 bg-cobalt-50 text-cobalt-700 dark:border-cobalt-700 dark:bg-cobalt-900 dark:text-cobalt-300" aria-hidden="true">
                         <i data-lucide="activity" className="w-5 h-5"></i>
@@ -16794,7 +16878,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       )}
                     </div>
 
-                    <div className="flex w-full flex-wrap items-center justify-center gap-2 lg:w-auto lg:justify-end">
+                    <div className="mobile-header-actions flex w-full flex-wrap items-center justify-center gap-2 lg:w-auto lg:justify-end">
                       <details ref={resourcesDetailsRef} className="relative">
                         <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700 dark:border-strong dark:hover:bg-paper-2 dark:text-ink-2">
                           <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
@@ -17115,27 +17199,59 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   the active setting (Telestroke / Inpatient / Clinic). "All" is
                   the default and hides nothing; the switch never scopes global
                   search. */}
-              <div className="mb-3 flex items-center gap-1.5 flex-wrap" role="group" aria-label="Workflow context">
-                <span className="text-xs font-medium text-slate-500 mr-1 dark:text-mute">Context</span>
-                {[
-                  { id: null, label: 'All' },
-                  { id: 'telestroke', label: 'Telestroke' },
-                  { id: 'inpatient', label: 'Inpatient' },
-                  { id: 'clinic', label: 'Clinic' }
-                ].map((c) => {
-                  const active = workflowContext === c.id;
-                  return (
-                    <button
-                      key={c.label}
-                      type="button"
-                      onClick={() => setWorkflowContext(c.id)}
-                      aria-pressed={active}
-                      className={`px-3 py-1.5 rounded-full text-xs font-semibold min-h-[36px] transition-colors ${active ? 'bg-cobalt-600 text-white' : 'bg-white text-slate-600 border border-line hover:bg-slate-50 dark:bg-card dark:text-mute dark:hover:bg-slate-800'}`}
-                    >
-                      {c.label}
-                    </button>
-                  );
-                })}
+              <div className="mb-3">
+                <div className="hidden sm:flex items-center gap-1.5 flex-wrap" role="group" aria-label="Workflow context">
+                  <span className="text-xs font-medium text-slate-500 mr-1 dark:text-mute">Context</span>
+                  {[
+                    { id: null, label: 'All' },
+                    { id: 'telestroke', label: 'Telestroke' },
+                    { id: 'inpatient', label: 'Inpatient' },
+                    { id: 'clinic', label: 'Clinic' }
+                  ].map((c) => {
+                    const active = workflowContext === c.id;
+                    return (
+                      <button
+                        key={c.label}
+                        type="button"
+                        onClick={() => setWorkflowContext(c.id)}
+                        aria-pressed={active}
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold min-h-[36px] transition-colors ${active ? 'bg-cobalt-600 text-white' : 'bg-white text-slate-600 border border-line hover:bg-slate-50 dark:bg-card dark:text-mute dark:hover:bg-slate-800'}`}
+                      >
+                        {c.label}
+                      </button>
+                    );
+                  })}
+                </div>
+                <details className="sm:hidden context-mobile-disclosure rounded-md border border-line bg-card">
+                  <summary className="flex min-h-[44px] cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm font-semibold text-ink">
+                    <span>Context: {workflowContextLabel}</span>
+                    <span className="text-xs text-cobalt-700 dark:text-cobalt-300">Change</span>
+                  </summary>
+                  <div className="grid grid-cols-2 gap-2 border-t border-line p-2" role="group" aria-label="Workflow context">
+                    {[
+                      { id: null, label: 'All' },
+                      { id: 'telestroke', label: 'Telestroke' },
+                      { id: 'inpatient', label: 'Inpatient' },
+                      { id: 'clinic', label: 'Clinic' }
+                    ].map((c) => {
+                      const active = workflowContext === c.id;
+                      return (
+                        <button
+                          key={c.label}
+                          type="button"
+                          onClick={() => setWorkflowContext(c.id)}
+                          aria-pressed={active}
+                          className={`min-h-[44px] rounded-md px-3 py-2 text-xs font-semibold ${active ? 'bg-cobalt-600 text-white' : 'border border-line bg-paper-2 text-ink-2'}`}
+                        >
+                          {c.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </details>
+                <p className="mt-1.5 text-[11px] text-mute" role="status" aria-live="polite">
+                  {workflowContextFeedback}
+                </p>
               </div>
 
               {/* Primary Navigation — sticks just below the sticky header on
@@ -17270,6 +17386,89 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         })}
                       </ul>
                     </nav>
+
+                    <section className="encounter-readiness-bar sticky top-[var(--app-header-h,0px)] z-20 rounded-md border border-line bg-card/95 p-3 shadow-sm backdrop-blur sm:static" aria-labelledby="encounter-readiness-title">
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                            <h2 id="encounter-readiness-title" className="font-serif text-base text-ink">Encounter readiness</h2>
+                            <span className="font-mono text-xs font-semibold text-cobalt-700 dark:text-cobalt-300">
+                              {encounterReadiness.readinessPercent}% · {encounterReadiness.completedCount}/{encounterReadiness.trackedFields.length}
+                            </span>
+                          </div>
+                          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-overlay" aria-hidden="true">
+                            <div className="h-full rounded-full bg-cobalt-600 transition-[width]" style={{ width: `${encounterReadiness.readinessPercent}%` }}></div>
+                          </div>
+                        </div>
+                        {encounterReadiness.nextField && (
+                          <button
+                            type="button"
+                            onClick={jumpToNextRequiredEncounterField}
+                            className="min-h-[44px] rounded-md border border-cobalt-300 bg-cobalt-50 px-3 py-2 text-xs font-semibold text-cobalt-800 hover:bg-cobalt-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 dark:border-cobalt-700 dark:bg-cobalt-900 dark:text-cobalt-300"
+                          >
+                            Next incomplete · {encounterReadiness.nextField}
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="mt-2 flex gap-1.5 overflow-x-auto pb-1" aria-label="Encounter completion fields">
+                        {encounterReadiness.trackedFields.map((field) => {
+                          const isMissing = encounterReadiness.missing.some((item) => item.name === field.name);
+                          const isRequired = encounterReadiness.required.some((item) => item.name === field.name);
+                          return (
+                            <button
+                              key={field.name}
+                              type="button"
+                              onClick={() => jumpToEncounterField(field.name)}
+                              aria-label={`${field.name}: ${isMissing ? (isRequired ? 'required and incomplete' : 'recommended and incomplete') : 'complete'}`}
+                              className={`min-h-[36px] shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-semibold ${
+                                isMissing
+                                  ? isRequired
+                                    ? 'border-crit-300 bg-crit-50 text-crit-800 dark:border-crit-800 dark:bg-crit-950 dark:text-crit-300'
+                                    : 'border-warn-300 bg-warn-50 text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300'
+                                  : 'border-ok-300 bg-ok-50 text-ok-800 dark:border-ok-800 dark:bg-ok-950 dark:text-ok-300'
+                              }`}
+                            >
+                              <span aria-hidden="true">{isMissing ? (isRequired ? '!' : '○') : '✓'}</span> {field.name}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      <div className="mt-2 flex flex-col gap-2 border-t border-line pt-2 sm:flex-row sm:items-center sm:justify-between">
+                        <p className="text-[11px] leading-snug text-mute" role="status" aria-live="polite">
+                          {encounterReadiness.required.length
+                            ? `Outputs locked. Required: ${encounterReadiness.required.map((field) => field.name).join(', ')}.`
+                            : 'Required synthetic fields complete. Outputs are ready.'}
+                        </p>
+                        <div className="grid grid-cols-2 gap-2 sm:flex">
+                          <button
+                            type="button"
+                            disabled={encounterReadiness.required.length > 0}
+                            onClick={() => {
+                              runEncounterOutput(() =>
+                                copyToClipboard(generatePulsaraSummary(), 'output-summary')
+                              );
+                            }}
+                            className="min-h-[44px] rounded-md bg-cobalt-600 px-3 py-2 text-xs font-semibold text-white hover:bg-cobalt-700 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-600 dark:disabled:bg-overlay dark:disabled:text-mute"
+                          >
+                            {copiedText === 'output-summary' ? 'Summary copied' : 'Copy Summary'}
+                          </button>
+                          <button
+                            type="button"
+                            disabled={encounterReadiness.required.length > 0}
+                            onClick={() => {
+                              runEncounterOutput(() =>
+                                copyToClipboard(buildHandoffSummary(), 'output-handoff')
+                              );
+                            }}
+                            className="min-h-[44px] rounded-md border border-line bg-paper-2 px-3 py-2 text-xs font-semibold text-ink hover:border-cobalt-300 hover:bg-cobalt-50 disabled:cursor-not-allowed disabled:text-mute dark:hover:bg-cobalt-900"
+                          >
+                            {copiedText === 'output-handoff' ? 'Handoff copied' : 'Copy Handoff'}
+                          </button>
+                        </div>
+                      </div>
+                    </section>
 
                     {/* Documentation templates — always-visible copy-paste EMR templates.
                          Restored 2026-07-06: the thrombolysis/EVT risk-benefit discussion and
@@ -19527,8 +19726,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <button
                               type="button"
                               onClick={() => {
-                                const note = generateTelestrokeNote();
-                                setTelestrokeNote(prev => ({...prev, recommendationsText: note}));
+                                const result = runEncounterOutput(generateTelestrokeNote);
+                                if (result.ok) {
+                                  setTelestrokeNote(prev => ({...prev, recommendationsText: result.value}));
+                                }
                               }}
                               className="flex items-center gap-2 px-3 py-1.5 bg-cobalt-600 text-white text-xs font-medium rounded-lg hover:bg-cobalt-700 transition-colors"
                             >
@@ -19573,17 +19774,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </select>
                           <div className="flex items-center justify-between">
                             <span className="text-xs font-semibold text-slate-700 dark:text-ink-2">Pulsara Case Summary</span>
-                            <button
-                              onClick={() => { copyToClipboard(generatePulsaraSummary(), 'tel-pulsara'); }}
-                              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${copiedText === 'tel-pulsara' ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                              {copiedText === 'tel-pulsara' ? 'Copied!' : 'Copy Pulsara Note'}
-                            </button>
+                            <span className="text-[11px] text-mute">{encounterReadiness.required.length ? 'Locked' : 'Ready above'}</span>
                           </div>
                           <div tabIndex={0} role="region" aria-label="Pulsara summary preview" className="bg-white p-2.5 rounded border border-line max-h-40 overflow-y-auto dark:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">
                             <pre className="whitespace-pre-wrap text-[11px] text-slate-700 font-mono dark:text-slate-300">
-                              {generatePulsaraSummary()}
+                              {renderEncounterOutput(generatePulsaraSummary)}
                             </pre>
                           </div>
                         </div>
@@ -27069,18 +27264,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </select>
                           <div className="flex items-center justify-between">
                             <span className="text-xs font-semibold text-slate-700 dark:text-ink-2">Pulsara Case Summary</span>
-                            <button
-                              onClick={() => { copyToClipboard(generatePulsaraSummary(), 'tel-pulsara'); }}
-                              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${copiedText === 'tel-pulsara' ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}
-                            >
-                              <i aria-hidden="true" data-lucide={copiedText === 'tel-pulsara' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                              {copiedText === 'tel-pulsara' ? 'Copied!' : 'Copy Pulsara Note'}
-                            </button>
+                            <span className="text-[11px] text-mute">{encounterReadiness.required.length ? 'Locked' : 'Ready above'}</span>
                           </div>
                           {/* Note preview */}
                           <div tabIndex={0} role="region" aria-label="Generated Pulsara note preview" className="bg-white p-3 rounded border border-line max-h-96 overflow-y-auto dark:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">
                             <pre className="whitespace-pre-wrap text-xs text-slate-800 font-mono dark:text-ink">
-                              {generatePulsaraSummary()}
+                              {renderEncounterOutput(generatePulsaraSummary)}
                             </pre>
                           </div>
                         </div>
@@ -27457,24 +27646,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div>
                           <p className="text-xs uppercase tracking-wide text-slate-500 font-semibold dark:text-mute">Handoff Summary</p>
                         </div>
-                        {/* v7: dark slate-900 copy button → cobalt primary V7Button (single-accent rule) */}
-                        <V7Button
-                          variant="primary"
-                          size="md"
-                          onClick={() => {
-                            const summary = buildHandoffSummary();
-                            copyToClipboard(summary, 'handoff-summary');
-                          }}
-                        >
-                          {copiedText === 'handoff-summary' ? 'Copied!' : 'Copy handoff'}
-                        </V7Button>
+                        <span className="text-[11px] text-mute">Use the readiness action bar to copy the current output.</span>
                       </div>
                       {PUBLIC_DEMO_MODE && (
                         <p className="mb-3 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
                           <strong>Public demo handoff:</strong> Copy is blocked when obvious identifiers are detected. Use synthetic examples only; do not move operational handoff content through this public build.
                         </p>
                       )}
-                      {(() => {
+                      {encounterReadiness.required.length > 0 ? (
+                        <div className="rounded-md border border-dashed border-crit-300 bg-crit-50 p-4 text-sm text-crit-900 dark:border-crit-800 dark:bg-crit-950 dark:text-crit-300" role="status">
+                          <p className="font-semibold">Preview locked</p>
+                          <p className="mt-1 text-xs">Complete {encounterReadiness.required.map((field) => field.name).join(', ')} with synthetic information to reveal the handoff preview.</p>
+                          <button type="button" onClick={jumpToNextRequiredEncounterField} className="mt-3 min-h-[44px] rounded-md border border-crit-300 bg-white px-3 py-2 text-xs font-semibold text-crit-800 dark:border-crit-800 dark:bg-card dark:text-crit-300">
+                            Go to {encounterReadiness.nextField}
+                          </button>
+                        </div>
+                      ) : (() => {
                         const fields = getHandoffSummaryFields();
                         const cards = [
                           { label: 'Dx', value: fields.diagnosis },
@@ -27510,7 +27697,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <details className="mt-3 bg-slate-50 border border-line rounded-lg dark:bg-paper-2">
                               <summary className="cursor-pointer px-3 py-2 text-xs font-semibold text-slate-700 dark:text-ink-2">Full handoff text</summary>
                               <div className="px-3 pb-3">
-                                <pre className="whitespace-pre-wrap text-xs text-slate-700 dark:text-ink-2">{buildHandoffSummary()}</pre>
+                                <pre className="whitespace-pre-wrap text-xs text-slate-700 dark:text-ink-2">{renderEncounterOutput(buildHandoffSummary)}</pre>
                               </div>
                             </details>
                           </>
@@ -27541,48 +27728,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
                       </details>
                     )}
-
-
-
-                    {/* ===== v7 MOBILE FLOATING ACTION BAR ============================
-                         Thumb-zone duplicates of Copy Note + Copy Handoff so a
-                         clinician one-handed on a 375pt iPhone doesn't have to
-                         reach the top-right of the Encounter to copy their work.
-                         Hidden ≥md (desktop has the inline buttons in scroll). */}
-                    <div className="md:hidden fixed bottom-16 left-0 right-0 z-50 px-3 pb-2 pointer-events-none">
-                      <div className="pointer-events-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-2 space-y-2">
-                        {PUBLIC_DEMO_MODE && (
-                          <p className="text-[11px] leading-snug text-warn-800 dark:text-warn-300">
-                            Public demo copy uses synthetic examples only; obvious identifiers are blocked.
-                          </p>
-                        )}
-                        <div className="flex gap-2">
-                          <V7Button
-                            variant="primary"
-                            size="md"
-                            className="flex-1"
-                            onClick={() => {
-                              const note = generateTelestrokeNote();
-                              copyToClipboard(note, 'encounter-note');
-                            }}
-                          >
-                            {copiedText === 'encounter-note' ? 'Copied note' : 'Copy Note'}
-                          </V7Button>
-                          <V7Button
-                            variant="secondary"
-                            size="md"
-                            className="flex-1"
-                            onClick={() => {
-                              const summary = buildHandoffSummary();
-                              copyToClipboard(summary, 'handoff-summary');
-                            }}
-                          >
-                            {copiedText === 'handoff-summary' ? 'Copied handoff' : 'Copy Handoff'}
-                          </V7Button>
-                        </div>
-                      </div>
-                    </div>
-
                     {/* ===== END CLINICIAN WORKBENCH ===== */}
 
                   </div>
@@ -27615,7 +27760,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       try { return new Date(`${d}T${t}:00`).toISOString(); } catch (_) { return null; }
                     })();
                     let railPulsaraPreview = '';
-                    try { railPulsaraPreview = (generatePulsaraSummary() || '').trim(); } catch (_) { railPulsaraPreview = ''; }
+                    try { railPulsaraPreview = (renderEncounterOutput(generatePulsaraSummary) || '').trim(); } catch (_) { railPulsaraPreview = ''; }
                     const railHasPatient = telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis;
                     return (
                       <aside
@@ -27665,14 +27810,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="px-4 py-3">
                             <div className="flex items-center justify-between mb-2">
                               <p className="font-mono uppercase text-eyebrow text-mute">Pulsara Summary</p>
-                              <button
-                                type="button"
-                                onClick={() => { copyToClipboard(generatePulsaraSummary(), 'encounter-pulsara'); }}
-                                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors min-h-[32px] ${copiedText === 'encounter-pulsara' ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}
-                              >
-                                <i aria-hidden="true" data-lucide={copiedText === 'encounter-pulsara' ? 'check' : 'copy'} className="w-3 h-3"></i>
-                                {copiedText === 'encounter-pulsara' ? 'Copied' : 'Copy'}
-                              </button>
+                              <span className="text-[11px] text-mute">{encounterReadiness.required.length ? 'Locked' : 'Ready in action bar'}</span>
                             </div>
                             {railPulsaraPreview ? (
                               <pre tabIndex={0} role="region" aria-label="Live Pulsara case summary preview" className="text-2xs leading-snug text-ink-2 whitespace-pre-wrap break-words font-mono max-h-48 overflow-y-auto bg-paper-2 border border-line rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-cobalt-500">{railPulsaraPreview}</pre>
@@ -36204,27 +36342,28 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 explicit role="tablist" overrides its implicit navigation landmark, so
                 we mirror the desktop pattern (~app.jsx:16882): an outer
                 role="navigation" wrapper holds the tablist. */}
-            <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-[0_-1px_3px_rgba(0,0,0,0.08)] sm:hidden dark:bg-card dark:border-line" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))', paddingLeft: 'env(safe-area-inset-left)', paddingRight: 'env(safe-area-inset-right)' }} role="navigation" aria-label="Mobile navigation">
-              <div className="flex items-stretch justify-around" role="tablist" aria-label="Mobile sections">
+            <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-[0_-1px_3px_rgba(0,0,0,0.08)] sm:hidden dark:bg-card dark:border-line" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)', paddingLeft: 'env(safe-area-inset-left)', paddingRight: 'env(safe-area-inset-right)' }} role="navigation" aria-label="Mobile navigation">
+              <div className="flex min-h-[72px] items-stretch justify-around" role="tablist" aria-label="Mobile sections">
                 {[
                   { id: 'encounter', name: 'Encounter', icon: 'activity' },
                   { id: 'protocols', name: 'Protocols', icon: 'library' },
                   { id: 'research', name: 'Guidelines', icon: 'book-open' },
                   { id: 'trials', name: 'Trials', icon: 'flask-conical' },
-                  { id: 'education', name: 'Educational Resources', icon: 'brain' }
+                  { id: 'education', name: 'Education', accessibleName: 'Educational Resources', icon: 'brain' }
                 ].map(tab => {
                   const isActive = activeTab === tab.id;
                   return (
                     <button
                       key={tab.id}
                       onClick={() => navigateTo(tab.id)}
-                      className={`flex-1 flex flex-col items-center justify-center gap-1 py-2 px-1 min-h-[56px] text-[11px] font-medium transition-colors ${isActive ? 'text-cobalt-600 dark:text-cobalt-300' : 'text-slate-600 active:text-slate-700 dark:text-mute'}`}
+                      className={`flex-1 flex flex-col items-center justify-center gap-1 py-1 px-0.5 min-h-[72px] text-[10px] font-medium transition-colors ${isActive ? 'text-cobalt-600 dark:text-cobalt-300' : 'text-slate-600 active:text-slate-700 dark:text-mute'}`}
                       role="tab"
                       aria-selected={isActive}
                       aria-controls={`tabpanel-${tab.id}`}
+                      aria-label={tab.accessibleName || tab.name}
                     >
                       <i aria-hidden="true" data-lucide={tab.icon} className={`w-5 h-5 ${isActive ? 'text-cobalt-600 dark:text-cobalt-300' : ''}`}></i>
-                      <span>{tab.name}</span>
+                      <span className="whitespace-nowrap">{tab.name}</span>
                     </button>
                   );
                 })}
