@@ -42,8 +42,8 @@ The Stroke Clinical Decision Support (CDS) application is a high-reliability, cl
 | M1 | Clinical Guidelines & Decision Trees Audit | Verify and ensure 100% accuracy of all 2024-2026 guidelines, COR/LOE grading, PMIDs, large-core EVT, BP guardrails, pediatric reperfusion, CATALYST DOAC timing, and interactive recommendation builders (Features 1-7) | none | DONE |
 | M2 | Education Section & UX Accordion Verification | Verify all 32 educational modules, minimized `<details>` accordion containers, dark-mode AA contrast compliance, and 2024-2026 citations (Features 8-11) | M1 | DONE |
 | M3 | Content Bundling & Automated Validation Pipeline | Execute and verify complete validation suite (`content:bundle`, `content:validate`, `evidence:validate`, `validate:citations`, `validate:inline-citations`, `test:protocol-snapshot`, `check:leak-guard`) (Features 12-17) | M1, M2 | DONE |
-| M4 | Production Build & Deployment | Run `npm run build:prod`, verify compressed bundles, verify clean working tree, and push to `origin/main` (Features 18-19) | M3 | IN_PROGRESS |
-| Final | E2E Test Suite & Adversarial Hardening | Execute full E2E test suite (Tiers 1-4) and Tier 5 Adversarial Coverage Hardening (Feature 20) | M1, M2, M3, M4 | PLANNED |
+| M4 | Production Build & Deployment | Run `npm run build:prod`, verify compressed bundles, verify clean working tree, and push to `origin/main` (Features 18-19) | M3 | DONE |
+| Final | E2E Test Suite & Adversarial Hardening | Execute full E2E test suite (Tiers 1-4) and Tier 5 Adversarial Coverage Hardening (Feature 20) | M1, M2, M3, M4 | DONE |
 
 ---
 
