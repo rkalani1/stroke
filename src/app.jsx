@@ -16558,17 +16558,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const educationContextVisible = workflowContext
             ? getContentEducation().filter((entry) => isContentRelevantTo(entry, workflowContext)).length
             : educationContextTotal;
-          const activeRouteLabel = {
-            encounter: 'Encounter',
-            protocols: 'Protocols',
-            research: 'Guidelines',
-            trials: 'Trials',
-            education: 'Education',
-            settings: 'Settings'
-          }[activeTab] || 'Current view';
-          const workflowContextFeedback = activeTab === 'education'
-            ? `${workflowContextLabel} context · ${educationContextVisible} of ${educationContextTotal} education modules shown.`
-            : `${workflowContextLabel} context · ${activeRouteLabel} is not context-filtered · 1 workspace shown.`;
+          const workflowContextFeedback = `${workflowContextLabel} context · ${educationContextVisible} of ${educationContextTotal} education modules shown.`;
           return (
             <div className="relative v7-skin">
               {/* v7: skip-link → semantic <main id="main">; cobalt accent, no link-* override */}
@@ -17194,10 +17184,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 </div>
               )}
 
-              {/* Workflow context switch — filters/reorders content surfaces to
-                  the active setting (Telestroke / Inpatient / Clinic). "All" is
-                  the default and hides nothing; the switch never scopes global
-                  search. */}
+              {/* Workflow context switch — filters Education modules by the
+                  active setting (Telestroke / Inpatient / Clinic). "All" is the
+                  default and hides nothing; the switch never scopes global
+                  search. Education is the only surface it filters, so it renders
+                  only there — on every other route it was a control that changed
+                  nothing on screen. */}
+              {activeTab === 'education' && (
               <div className="mb-3">
                 <div className="hidden sm:flex items-center gap-1.5 flex-wrap" role="group" aria-label="Workflow context">
                   <span className="text-xs font-medium text-slate-500 mr-1 dark:text-mute">Context</span>
@@ -17252,6 +17245,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   {workflowContextFeedback}
                 </p>
               </div>
+              )}
 
               {/* Primary Navigation — sticks just below the sticky header on
                   ≥768px via --app-header-h (U4). z-30 keeps it under the header
