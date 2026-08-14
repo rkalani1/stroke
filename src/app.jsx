@@ -16879,9 +16879,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     <div className="mobile-header-actions flex w-full flex-wrap items-center justify-center gap-2 lg:w-auto lg:justify-end">
                       <details ref={resourcesDetailsRef} className="relative">
-                        <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700 dark:border-strong dark:hover:bg-paper-2 dark:text-ink-2">
+                        <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700 dark:border-strong dark:hover:bg-paper-2 dark:text-ink-2" aria-label="External links menu">
                           <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
-                          <span>Resources</span>
+                          <span>Links</span>
                           <i aria-hidden="true" data-lucide="chevron-down" className="w-3.5 h-3.5 text-slate-500 dark:text-mute"></i>
                         </summary>
                         {/* U2 — on phone the button sits far enough right that an
