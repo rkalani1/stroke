@@ -1311,6 +1311,7 @@ Clinician Name`;
             age: '',
             sex: '',
             affectedSide: '',
+            course: '',
             weight: '',
             weightEstimated: false,
             lastDOACDose: '',
@@ -9223,8 +9224,8 @@ Clinician Name`;
               ctpExtra = ` (${parts.join(', ')})`;
             }
             const territoryStr = telestrokeNote.strokeTerritory ? ` Territory: ${telestrokeNote.strokeTerritory}.` : '';
-            const trajectoryStr = telestrokeNote.symptomTrajectory ? ` Trajectory: ${telestrokeNote.symptomTrajectory}.` : '';
-            return `${age} year old ${sex}${wtStr} with ${pmh} who presents with ${symptoms}. ${lkwStr}.${gcsStr}${mrsStr} NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${ctExtra}${aspectsStr}${ichVolStr}${vesselStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}${ctpExtra}.${collatStr}${wusStr}${territoryStr}${trajectoryStr} TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}.${compStr} Rationale: ${rationale}.`;
+            const courseStr = telestrokeNote.course ? ` Course: ${telestrokeNote.course}.` : (telestrokeNote.symptomTrajectory ? ` Trajectory: ${telestrokeNote.symptomTrajectory}.` : '');
+            return `${age} year old ${sex}${wtStr} with ${pmh} who presents with ${symptoms}. ${lkwStr}.${gcsStr}${mrsStr} NIHSS score: ${nihss}${nihssDeficits}. Head CT: ${ctResults}.${ctExtra}${aspectsStr}${ichVolStr}${vesselStr} CTA Head/Neck: ${ctaResults}. CTP: ${ctpResults}${ctpExtra}.${collatStr}${wusStr}${territoryStr}${courseStr} TNK Treatment: ${tnkStatus}. EVT: ${evtStatus}.${compStr} Rationale: ${rationale}.`;
           };
           const generatePulsaraPreview = () => {
             const age = telestrokeNote.age || "***";
@@ -9318,7 +9319,8 @@ Clinician Name`;
                 note += `\n`;
               }
               if (telestrokeNote.strokeTerritory) note += `Territory: ${telestrokeNote.strokeTerritory}${telestrokeNote.strokePhenotype ? ` (${telestrokeNote.strokePhenotype})` : ''}\n`;
-              if (telestrokeNote.symptomTrajectory) note += `Trajectory: ${telestrokeNote.symptomTrajectory}\n`;
+              if (telestrokeNote.course) note += `Course: ${telestrokeNote.course}\n`;
+              else if (telestrokeNote.symptomTrajectory) note += `Trajectory: ${telestrokeNote.symptomTrajectory}\n`;
               note += `\n`;
               note += `Imaging:\n`;
               note += `- CT Head: ${telestrokeNote.ctResults || '___'}`;
@@ -18411,37 +18413,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               })()}
                             </div>
                             <div>
-                              <label htmlFor="input-height" className="block text-xs font-medium text-slate-600 mb-1 dark:text-ink-2">Height (cm)</label>
-                              <input
-                                id="input-height"
-                                type="number"
-                                min="100" max="250" step="1"
-                                value={telestrokeNote.height}
-                                onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, height: v})); }}
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
-                                placeholder="e.g. 170"
-                              />
-                            </div>
-                            <div>
-                              <label htmlFor="input-creatinine" className="block text-xs font-medium text-slate-600 mb-1 dark:text-ink-2">Cr (mg/dL)</label>
-                              <input
-                                id="input-creatinine"
-                                type="number"
-                                step="0.1" min="0.1" max="20"
-                                value={telestrokeNote.creatinine}
-                                onChange={(e) => {
-                                  const raw = e.target.value;
-                                  if (raw === '') { setTelestrokeNote(prev => ({...prev, creatinine: ''})); return; }
-                                  const parsed = parseFloat(raw);
-                                  if (isNaN(parsed)) return;
-                                  const clamped = Math.max(0.1, Math.min(20, parsed));
-                                  setTelestrokeNote(prev => ({...prev, creatinine: String(clamped)}));
-                                }}
-                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
-                                placeholder="e.g. 1.2"
-                              />
-                            </div>
-                            <div>
                               <label htmlFor="input-premorbid-mrs" className="block text-xs font-medium text-slate-600 mb-1 dark:text-ink-2">Pre-stroke mRS</label>
                               <select
                                 id="input-premorbid-mrs"
@@ -18458,6 +18429,53 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <option value="5">5</option>
                               </select>
                             </div>
+                          </div>
+
+                          {/* Optional Secondary Labs / Renal Function Row */}
+                          <div className="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800">
+                            <details className="group">
+                              <summary className="text-xs font-medium text-slate-500 hover:text-slate-700 cursor-pointer flex items-center gap-1.5 dark:text-mute dark:hover:text-ink-2 select-none">
+                                <span className="font-semibold text-slate-600 dark:text-ink-2">Renal Function & Height (Optional)</span>
+                                {telestrokeNote.creatinine ? (
+                                  <span className="text-xs text-cobalt-600 font-semibold dark:text-cobalt-400">· Cr {telestrokeNote.creatinine}</span>
+                                ) : (
+                                  <span className="text-2xs text-mute">· click to enter Cr / CrCl</span>
+                                )}
+                              </summary>
+                              <div className="grid grid-cols-2 gap-3 mt-2">
+                                <div>
+                                  <label htmlFor="input-creatinine" className="block text-xs font-medium text-slate-600 mb-1 dark:text-ink-2">Cr (mg/dL)</label>
+                                  <input
+                                    id="input-creatinine"
+                                    type="number"
+                                    step="0.1" min="0.1" max="20"
+                                    value={telestrokeNote.creatinine}
+                                    onChange={(e) => {
+                                      const raw = e.target.value;
+                                      if (raw === '') { setTelestrokeNote(prev => ({...prev, creatinine: ''})); return; }
+                                      const parsed = parseFloat(raw);
+                                      if (isNaN(parsed)) return;
+                                      const clamped = Math.max(0.1, Math.min(20, parsed));
+                                      setTelestrokeNote(prev => ({...prev, creatinine: String(clamped)}));
+                                    }}
+                                    className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
+                                    placeholder="e.g. 1.2"
+                                  />
+                                </div>
+                                <div>
+                                  <label htmlFor="input-height" className="block text-xs font-medium text-slate-600 mb-1 dark:text-ink-2">Height (cm)</label>
+                                  <input
+                                    id="input-height"
+                                    type="number"
+                                    min="100" max="250" step="1"
+                                    value={telestrokeNote.height}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, height: v})); }}
+                                    className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
+                                    placeholder="e.g. 170"
+                                  />
+                                </div>
+                              </div>
+                            </details>
                           </div>
 
                           {/* Auto-calculated CrCl Display */}
@@ -19126,19 +19144,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </select>
                             </div>
 
+                            {/* Clinical Course */}
                             <div>
-                              <label htmlFor="input-affected-side" className="block text-xs text-slate-600 mb-1 dark:text-ink-2">Affected Side</label>
-                              <select
-                                id="input-affected-side"
-                                value={telestrokeNote.affectedSide || ''}
-                                onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, affectedSide: v})); }}
+                              <label htmlFor="input-course" className="block text-xs font-medium text-slate-600 mb-1 dark:text-ink-2">Course</label>
+                              <input
+                                id="input-course"
+                                type="text"
+                                value={telestrokeNote.course || ''}
+                                onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, course: v})); }}
+                                placeholder="e.g. abrupt onset, stable / fluctuating / improving / worsening"
                                 className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
-                              >
-                                <option value="">-- Select --</option>
-                                <option value="Left">Left</option>
-                                <option value="Right">Right</option>
-                                <option value="Bilateral">Bilateral</option>
-                              </select>
+                              />
                             </div>
 
                             {/* Stroke Territory & Phenotype */}
@@ -19181,41 +19197,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {['basilar', 'vertebral', 'cerebellar'].includes(telestrokeNote.strokeTerritory) && (
                               <div className="bg-cobalt-50 border border-cobalt-300 rounded-lg p-2 text-xs text-cobalt-800 dark:bg-cobalt-900 dark:border-cobalt-700 dark:text-cobalt-300">
                                 <strong>Posterior circulation:</strong> Consider pc-ASPECTS (if available), extended EVT window for basilar occlusion (BAOCHE/ATTENTION: up to 24h), and higher index of suspicion for missed diagnosis. Ataxia, vertigo, diplopia, and dysarthria without hemiparesis may be overlooked.
-                              </div>
-                            )}
-
-                            {/* Symptom Trajectory */}
-                            <div className="grid grid-cols-2 gap-3">
-                              <div>
-                                <label htmlFor="input-symptom-trajectory" className="block text-xs text-slate-600 mb-1 dark:text-ink-2">Symptom Trajectory</label>
-                                <select id="input-symptom-trajectory" value={telestrokeNote.symptomTrajectory || ''}
-                                  onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, symptomTrajectory: v})); }}
-                                  className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 dark:border-strong">
-                                  <option value="">-- Trajectory --</option>
-                                  <option value="stable">Stable since onset</option>
-                                  <option value="improving">Improving</option>
-                                  <option value="fluctuating">Fluctuating</option>
-                                  <option value="worsening">Worsening</option>
-                                  <option value="resolved">Completely resolved</option>
-                                </select>
-                              </div>
-                              <div>
-                                <label htmlFor="input-onset-nihss" className="block text-xs text-slate-600 mb-1 dark:text-ink-2">Estimated Onset NIHSS</label>
-                                <input id="input-onset-nihss" type="number" min="0" max="42"
-                                  value={telestrokeNote.symptomOnsetNIHSS || ''}
-                                  onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, symptomOnsetNIHSS: v})); }}
-                                  placeholder="If different from current"
-                                  className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 dark:border-strong" />
-                              </div>
-                            </div>
-                            {telestrokeNote.symptomTrajectory === 'worsening' && (
-                              <div className="bg-crit-50 border border-crit-300 rounded-lg p-2 text-xs text-crit-800 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300">
-                                <strong>Worsening symptoms:</strong> Consider repeat imaging to rule out hemorrhagic transformation, edema, or new infarction. If post-tPA/TNK, assess for sICH. If LVO, reassess EVT candidacy.
-                              </div>
-                            )}
-                            {telestrokeNote.symptomTrajectory === 'resolved' && telestrokeNote.diagnosisCategory === 'ischemic' && (
-                              <div className="bg-warn-50 border border-warn-300 rounded-lg p-2 text-xs text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
-                                <strong>Resolved symptoms with ischemic diagnosis:</strong> Consider TIA vs minor stroke. If DWI positive, this is a completed stroke despite resolution. ABCD2 score may help risk-stratify. Dual antiplatelet (DAPT) x21 days if minor stroke (NIHSS &le;3) or high-risk TIA.
                               </div>
                             )}
 
@@ -19712,7 +19693,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="clinician-only bg-white border border-cobalt-200 rounded-md p-4 dark:bg-card dark:border-cobalt-700 ">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-md font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
-                                                            <label htmlFor="input-recommendations">Recommendations</label>
+                              <label htmlFor="input-recommendations">Recommendations</label>
                             </h3>
                             <button
                               type="button"
@@ -19724,14 +19705,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               }}
                               className="flex items-center gap-2 px-3 py-1.5 bg-cobalt-600 text-white text-xs font-medium rounded-lg hover:bg-cobalt-700 transition-colors"
                             >
-                                                            Generate Auto-Note
+                              Generate Auto-Note
                             </button>
                           </div>
-                          {PUBLIC_DEMO_MODE && (
-                            <p className="mb-3 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
-                              <strong>Public demo note output:</strong> Generated recommendations are not EHR-ready clinical documentation. Do not enter or copy PHI; verify against primary sources and approved local protocol.
-                            </p>
-                          )}
                           <textarea
                             id="input-recommendations"
                             value={telestrokeNote.recommendationsText}
@@ -26574,11 +26550,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           {/* Auto-Note Generation Button */}
                           <div className="mb-3">
-                            {PUBLIC_DEMO_MODE && (
-                              <p className="mb-2 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
-                                <strong>Public demo note output:</strong> Generated text is synthetic education only. Do not copy PHI, encounter details, or operational handoff content from this public build.
-                              </p>
-                            )}
                             <button
                               type="button"
                               onClick={() => {
