@@ -207,7 +207,6 @@ function sleep(ms) {
 function httpGet(urlStr) {
   return new Promise((resolve, reject) => {
     try {
-<<<<<<< HEAD
       const urlObj = new URL(urlStr);
       const client = urlObj.protocol === 'https:' ? https : http;
       const req = client.get(urlStr, { headers: { Connection: 'close' } }, (res) => {
@@ -224,22 +223,6 @@ function httpGet(urlStr) {
       });
     } catch (e) {
       reject(e);
-=======
-      const url = new URL(urlStr);
-      const client = url.protocol === 'https:' ? https : http;
-      const req = client.get(url, { headers: { Connection: 'close' } }, (res) => {
-        let body = '';
-        res.setEncoding('utf8');
-        res.on('data', (chunk) => { body += chunk; });
-        res.on('end', () => {
-          resolve({ ok: res.statusCode >= 200 && res.statusCode < 400, status: res.statusCode, text: async () => body });
-        });
-      });
-      req.on('error', reject);
-      req.setTimeout(5000, () => { req.destroy(new Error('timeout')); });
-    } catch (err) {
-      reject(err);
->>>>>>> fce3e52 (feat: expand educational resources curriculum with comprehensive cards, infographics, and verified trial citations)
     }
   });
 }
@@ -759,6 +742,11 @@ async function auditView(browser, target, viewport) {
     } else {
       await clickElementRobust(ischemicButton);
       await page.waitForTimeout(200);
+      await page.evaluate(() => {
+        document.querySelectorAll('details').forEach((details) => {
+          details.open = true;
+        });
+      }).catch(() => {});
       if ((await page.getByText(/Post-EVT BP Guardrail/i).count()) === 0) {
         addIssue(issues, 'missing-post-evt-bp-guardrail');
       }
@@ -768,9 +756,8 @@ async function auditView(browser, target, viewport) {
 
       const guardrailHeading = page.getByRole('heading', { name: /Post-EVT BP Guardrail/i }).first();
       if ((await guardrailHeading.count()) > 0) {
-        // v6.0-05: card radii changed from rounded-xl to rounded-md across the app.
-        // Match either form so the smoke check works during/after the migration.
-        const guardrailCard = guardrailHeading.locator('xpath=ancestor::div[contains(@class,"rounded-md") or contains(@class,"rounded-xl")][1]');
+        // Match details or card container
+        const guardrailCard = guardrailHeading.locator('xpath=ancestor::*[self::details or contains(@class,"rounded-md") or contains(@class,"rounded-xl")][1]');
         const guardrailSelects = guardrailCard.locator('select');
         const guardrailBpInput = guardrailCard.locator('input[type="text"]').first();
         if ((await guardrailSelects.count()) >= 3 && (await guardrailBpInput.count()) > 0) {
@@ -863,6 +850,11 @@ async function auditView(browser, target, viewport) {
     } else {
       await clickElementRobust(tiaButton);
       await page.waitForTimeout(200);
+      await page.evaluate(() => {
+        document.querySelectorAll('details').forEach((details) => {
+          details.open = true;
+        });
+      }).catch(() => {});
       if ((await page.getByText(/TIA Disposition Engine/i).count()) === 0) {
         addIssue(issues, 'missing-tia-disposition-engine');
       }
