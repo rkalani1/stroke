@@ -2314,7 +2314,7 @@ async function main() {
 
         <div class="ref-citation">
           <strong>CADISS:</strong> <em>Lancet Neurol</em>. 2015;14(4):361-7. PMID: 25684164 | <strong>TREAT-CAD:</strong> <em>Lancet Neurol</em>. 2021;20(5):341-350. PMID: 33765420<br/>
-          <strong>Kaufmann IPD:</strong> <em>JAMA Neurol</em>. 2024;81(6):630-637. PMID: 38739383 | <strong>STOP-CAD:</strong> <em>Stroke</em>. 2024;55(4):908-918. PMID: 38334460 | <strong>AHA/ASA:</strong> <em>Stroke</em>. 2021;52:e364-e467. PMID: 34024117 | <strong>AHA Statement 2024:</strong> <em>Stroke</em>. 2024;55:e84-e107. PMID: 38301552 | <strong>ESO Guideline 2021:</strong> <em>Eur Stroke J</em>. 2021;6(3):XXXIX-LXXXVIII. PMID: 34528453
+          <strong>Kaufmann IPD:</strong> <em>JAMA Neurol</em>. 2024;81(6):630-637. PMID: 38739383 | <strong>STOP-CAD:</strong> <em>Stroke</em>. 2024;55(4):908-918. PMID: 38335240 | <strong>AHA/ASA:</strong> <em>Stroke</em>. 2021;52:e364-e467. PMID: 34024117 | <strong>AHA Statement 2024:</strong> <em>Stroke</em>. 2024;55:e84-e107. PMID: 38301552 | <strong>ESO Guideline 2021:</strong> <em>Eur Stroke J</em>. 2021;6(3):XXXIX-LXXXVIII. PMID: 34528453
         </div>
       </div>
     </body>
@@ -2967,7 +2967,7 @@ async function main() {
 
         <!-- Citations Footer -->
         <div class="ref-citation">
-          <strong>Consensus Guideline:</strong> Greer DM, et al. Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Practice Guideline. <em>Neurology</em>. 2023;101(24):1112-1132. PMID: 37827878.<br/>
+          <strong>Consensus Guideline:</strong> Greer DM, et al. Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Guideline. <em>Neurology</em>. 2023;101(24):1112-1132. PMID: 37821233.<br/>
           <strong>Ancillary Update:</strong> Wijdicks EF, et al. Practice parameter update: determining brain death in adults. <em>Neurology</em>. 2010;74(23):1911-1918. PMID: 20530327.
         </div>
       </div>

@@ -1,11 +1,11 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:9f371c0a5de89a73f7713b546bdac877",
+    "checksum": "sha256:6124f97c4d3a71051b083b1811063adc",
     "counts": {
       "guidelines": 11,
       "trials": 71,
-      "education": 32,
+      "education": 46,
       "calculators": 34,
       "references": 18
     },
@@ -1858,8 +1858,8 @@
       "references": [
         {
           "label": "Consensus Guideline",
-          "citation": "Greer DM, et al. Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Practice Guideline. Neurology. 2023;101(24):1112-1132.",
-          "pmid": "37827878"
+          "citation": "Greer DM, et al. Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Guideline. Neurology. 2023;101(24):1112-1132.",
+          "pmid": "37821233"
         },
         {
           "label": "Ancillary Update",
@@ -1869,7 +1869,7 @@
       ],
       "lastReviewed": "2026-06-09",
       "provenance": "src/education.jsx",
-      "body": "Consensus guidelines for the determination of Brain Death / Death by Neurologic Criteria (BD/DNC) in adult and pediatric patients.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Consensus guidelines for the determination of Brain Death / Death by Neurologic Criteria (BD/DNC) in adult and pediatric patients.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "brainstem-stroke-syndromes",
@@ -1900,6 +1900,96 @@
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
       "body": "The crossed-deficit localization rule and the classic brainstem stroke syndromes (Wallenberg, Dejerine, Millard-Gubler, Foville, one-and-a-half, Weber, Benedikt, Claude) by level, vessel, and deficit.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "cadasil-carasil",
+      "title": "Genetic Cerebral Small Vessel Vasculopathies (CADASIL, CARASIL, Fabry, MELAS, COL4A1)",
+      "summary": "Molecular genetics, neuroimaging hallmarks (anterior temporal pole & external capsule hyperintensities, pulvinar sign), clinical phenotypes, and management pitfalls for monogenic stroke syndromes.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "CADASIL Review",
+          "citation": "Chabriat H, et al. CADASIL. Lancet Neurol. 2009;8(7):643-653.",
+          "pmid": "19539236"
+        },
+        {
+          "label": "CARASIL Landmark",
+          "citation": "Hara K, et al. Association of HTRA1 mutations and familial CARASIL. N Engl J Med. 2009;360(17):1729-1739.",
+          "pmid": "19387015"
+        },
+        {
+          "label": "Fabry Disease Guidelines",
+          "citation": "Ortiz A, et al. Fabry disease revisited: Management and treatment recommendations for adult patients. Mol Genet Metab. 2018;123(4):416-427.",
+          "pmid": "29530533"
+        },
+        {
+          "label": "MELAS Management",
+          "citation": "Koenig MK, et al. Recommendations for the Management of Strokelike Episodes in Patients With Mitochondrial Encephalomyopathy, Lactic Acidosis, and Strokelike Episodes. JAMA Neurol. 2016;73(5):591-594.",
+          "pmid": "26954033"
+        },
+        {
+          "label": "COL4A1 Mutations",
+          "citation": "Gould DB, et al. Mutations in Col4a1 cause perinatal cerebral hemorrhages and porencephaly. Science. 2005;308(5725):1167-1171.",
+          "pmid": "15905400"
+        },
+        {
+          "label": "ESO Guidelines",
+          "citation": "Bersano A, et al. European Stroke Organisation (ESO) Guidelines on Moyamoya angiopathy Endorsed by Vascular European Reference Network (VASCERN). Eur Stroke J. 2023;8(1):55-84.",
+          "pmid": "37021176"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "Molecular genetics, neuroimaging hallmarks (anterior temporal pole & external capsule hyperintensities, pulvinar sign), clinical phenotypes, and management pitfalls for monogenic stroke syndromes.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "cancer-associated-stroke",
+      "title": "Cancer-Associated Stroke, Hypercoagulability & Marantic Endocarditis (NBTE)",
+      "summary": "Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (>3–5x ULN), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "2026 Cancer Stroke Statement",
+          "citation": "Navi BB, et al. Classification and Management of Ischemic Stroke in Patients With Active Cancer. Stroke. 2026.",
+          "pmid": "41623113"
+        },
+        {
+          "label": "TEACH Trial (LMWH Pilot)",
+          "citation": "Navi BB, et al. Enoxaparin vs Aspirin in Patients With Cancer and Ischemic Stroke: The TEACH Pilot Randomized Clinical Trial. JAMA Neurol. 2018;75(3):379-381.",
+          "pmid": "29309496"
+        },
+        {
+          "label": "NBTE Landmark Review",
+          "citation": "Eiken PW, et al. Surgical pathology of nonbacterial thrombotic endocarditis in 30 patients, 1985-2000. Mayo Clin Proc. 2001;76(12):1204-1212.",
+          "pmid": "11761501"
+        },
+        {
+          "label": "Cancer Stroke Risk Study",
+          "citation": "Navi BB, et al. Risk of Arterial Thromboembolism in Patients With Cancer. J Am Coll Cardiol. 2017;70(8):926-938.",
+          "pmid": "28818202"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (>3–5x ULN), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "carotid-stenosis-management",
@@ -1943,8 +2033,8 @@
     },
     {
       "id": "cerebral-amyloid-angiopathy",
-      "title": "Cerebral Amyloid Angiopathy (CAA)",
-      "summary": "Recognition of lobar hemorrhage / strictly lobar microbleeds / cortical superficial siderosis, Boston Criteria 2.0 diagnosis, the antithrombotic dilemma, and CAA-related inflammation.",
+      "title": "Cerebral Amyloid Angiopathy (CAA) Boston Criteria v2.0",
+      "summary": "Comprehensive Boston Criteria v2.0 diagnostic framework (strictly lobar CMBs, cortical superficial siderosis cSS, multispot WMH, centrum semiovale PVS), amyloid spells (TFNE vs TIA), and anticoagulation dilemmas in patients with AF and CAA (PRESTIGE-AF, SoSTART, ENRICH-AF DSMB alert, and LAAO).",
       "tags": [
         "pocket-card",
         "printable"
@@ -1962,14 +2052,34 @@
           "pmid": "35841910"
         },
         {
-          "label": "Cortical superficial siderosis in CAA",
+          "label": "Cortical Siderosis in CAA",
           "citation": "Linn J, et al. Prevalence of superficial siderosis in patients with cerebral amyloid angiopathy. Neurology. 2010;74(17):1346-1350.",
           "pmid": "20421578"
+        },
+        {
+          "label": "Amyloid Spells (TFNE)",
+          "citation": "Charidimou A, et al. Spectrum of transient focal neurological episodes in cerebral amyloid angiopathy: multicentre magnetic resonance imaging cohort study and meta-analysis. Stroke. 2012;43(9):2324-2330.",
+          "pmid": "22798323"
+        },
+        {
+          "label": "PRESTIGE-AF Trial",
+          "citation": "Polymeris AA, et al. Direct oral anticoagulants versus no anticoagulation for stroke prevention in intracerebral haemorrhage survivors with atrial fibrillation (PRESTIGE-AF). Lancet Neurol. 2025;24(1):41-52.",
+          "pmid": "40023176"
+        },
+        {
+          "label": "SoSTART Trial",
+          "citation": "Al-Shahi Salman R, et al. Effects of oral anticoagulation in people with atrial fibrillation and prior spontaneous intracranial haemorrhage (SoSTART). Lancet Neurol. 2021;20(10):844-853.",
+          "pmid": "34487722"
+        },
+        {
+          "label": "2022 ICH Guideline",
+          "citation": "Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.",
+          "pmid": "35579034"
         }
       ],
-      "lastReviewed": "2026-07-18",
+      "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Recognition of lobar hemorrhage / strictly lobar microbleeds / cortical superficial siderosis, Boston Criteria 2.0 diagnosis, the antithrombotic dilemma, and CAA-related inflammation.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Comprehensive Boston Criteria v2.0 diagnostic framework (strictly lobar CMBs, cortical superficial siderosis cSS, multispot WMH, centrum semiovale PVS), amyloid spells (TFNE vs TIA), and anticoagulation dilemmas in patients with AF and CAA (PRESTIGE-AF, SoSTART, ENRICH-AF DSMB alert, and LAAO).\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "cerebral-venous-sinus-thrombosis",
@@ -2043,8 +2153,8 @@
         },
         {
           "label": "STOP-CAD Study",
-          "citation": "Yaghi S, et al. Stroke. 2024;55(4):908-918.",
-          "pmid": "38334460"
+          "citation": "Yaghi S, et al. Antithrombotic Treatment for Stroke Prevention in Cervical Artery Dissection: The STOP-CAD Study. Stroke. 2024;55(4):908-918.",
+          "pmid": "38335240"
         },
         {
           "label": "IPD Meta-Analysis",
@@ -2069,7 +2179,7 @@
       ],
       "lastReviewed": "2026-06-09",
       "provenance": "src/education.jsx",
-      "body": "Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence (CADISS, TREAT-CAD, STOP-CAD, and 2024 IPD meta-analysis) for cervical artery dissection.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence (CADISS, TREAT-CAD, STOP-CAD, and 2024 IPD meta-analysis) for cervical artery dissection.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "crao-thrombolysis",
@@ -2100,6 +2210,101 @@
       "lastReviewed": "2026-07-24",
       "provenance": "src/education.jsx",
       "body": "Central Retinal Artery Occlusion (CRAO) acute IV thrombolysis decision framework, visual acuity criteria, and THEIA trial evidence.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "cryptogenic-stroke-esus",
+      "title": "Cryptogenic Stroke & ESUS Diagnostic Evaluation",
+      "summary": "Embolic Stroke of Undetermined Source (ESUS) definition, empirical DOAC failure in unselected ESUS (NAVIGATE ESUS, RE-SPECT ESUS), biomarker-defined atrial cardiopathy trial analysis (ARCADIA), insertable cardiac monitor (ICM) yields (CRYSTAL AF, STROKE-AF), and stepwise diagnostic algorithm.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "ESUS Construct",
+          "citation": "Hart RG, et al. Embolic strokes of undetermined source: the case for a new clinical construct. Lancet Neurol. 2014;13(4):429-438.",
+          "pmid": "24646875"
+        },
+        {
+          "label": "CRYSTAL AF Trial",
+          "citation": "Sanna T, et al. Cryptogenic stroke and underlying atrial fibrillation (CRYSTAL AF). N Engl J Med. 2014;370(26):2478-2486.",
+          "pmid": "24963567"
+        },
+        {
+          "label": "STROKE-AF Trial",
+          "citation": "Bernstein RA, et al. Effect of Long-term Continuous Cardiac Monitoring vs Usual Care on Detection of Atrial Fibrillation in Patients With Stroke Attributed to Large- or Small-Vessel Disease: The STROKE-AF Randomized Clinical Trial. JAMA. 2021;325(21):2169-2177.",
+          "pmid": "34061145"
+        },
+        {
+          "label": "NAVIGATE ESUS Trial",
+          "citation": "Hart RG, et al. Rivaroxaban for Stroke Prevention after Embolic Stroke of Undetermined Source (NAVIGATE ESUS). N Engl J Med. 2018;378(23):2191-2201.",
+          "pmid": "29766772"
+        },
+        {
+          "label": "RE-SPECT ESUS Trial",
+          "citation": "Diener HC, et al. Dabigatran for Prevention of Stroke after Embolic Stroke of Undetermined Source (RE-SPECT ESUS). N Engl J Med. 2019;380(20):1906-1917.",
+          "pmid": "31091372"
+        },
+        {
+          "label": "ARCADIA Trial",
+          "citation": "Kamel H, et al. Apixaban to Prevent Recurrence after Cryptogenic Stroke in Patients with Atrial Cardiopathy (ARCADIA). JAMA. 2024;331(7):573-581.",
+          "pmid": "38324415"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "Embolic Stroke of Undetermined Source (ESUS) definition, empirical DOAC failure in unselected ESUS (NAVIGATE ESUS, RE-SPECT ESUS), biomarker-defined atrial cardiopathy trial analysis (ARCADIA), insertable cardiac monitor (ICM) yields (CRYSTAL AF, STROKE-AF), and stepwise diagnostic algorithm.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "ctp-ghost-core",
+      "title": "CTP Artifacts, Ghost Core & Penumbra Nuances",
+      "summary": "CT perfusion ischemic core overestimation (rCBF <30% ghost core in hyperacute rapid reperfusion), ADC <620 μm²/s diffusion reversibility, Tmax >6s vs >10s hypoperfusion intensity ratio (HIR), bolus truncation, and severe carotid stenosis delay pseudo-penumbra.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "Ghost Core Phenomenon",
+          "citation": "Campbell BCV, et al. Comparison of computed tomography perfusion and magnetic resonance imaging perfusion-diffusion mismatch in ischemic stroke. Stroke. 2012;43(10):2648-2653.",
+          "pmid": "22858726"
+        },
+        {
+          "label": "Core Reversibility & Time",
+          "citation": "Boned S, et al. Admission CT perfusion may overestimate initial infarct core: the ghost infarct core concept. J Neurointerv Surg. 2017;9(1):66-69.",
+          "pmid": "27566491"
+        },
+        {
+          "label": "DWI ADC Reversal",
+          "citation": "Copen WA, et al. In Acute Stroke, Can CT Perfusion-Derived Cerebral Blood Volume Maps Substitute for Diffusion-Weighted Imaging in Identifying the Ischemic Core? PLoS One. 2015;10(7):e0133566.",
+          "pmid": "26193486"
+        },
+        {
+          "label": "DEFUSE 2 Mismatch",
+          "citation": "Lansberg MG, et al. MRI profile and response to endovascular reperfusion after stroke (DEFUSE 2): a prospective cohort study. Lancet Neurol. 2012;11(10):860-867.",
+          "pmid": "22954705"
+        },
+        {
+          "label": "2026 AIS Guideline",
+          "citation": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
+          "pmid": "41582814"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "CT perfusion ischemic core overestimation (rCBF <30% ghost core in hyperacute rapid reperfusion), ADC <620 μm²/s diffusion reversibility, Tmax >6s vs >10s hypoperfusion intensity ratio (HIR), bolus truncation, and severe carotid stenosis delay pseudo-penumbra.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "dapt-regimens",
@@ -2150,6 +2355,56 @@
       "lastReviewed": "2026-07-13",
       "provenance": "src/education.jsx",
       "body": "Guideline-directed Dual Antiplatelet Therapy (DAPT) for secondary non-cardioembolic stroke prevention.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "dmvo-mevo-management",
+      "title": "Distal Medium Vessel Occlusions (DMVO/MeVO)",
+      "summary": "Evaluation, anatomical classification (M2/M3, A2/A3, P2/P3), trial evidence (DISTAL, ESCAPE-MeVO), disabling deficit thresholds, microcatheter techniques, and perforation risk management.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "DISTAL Trial",
+          "citation": "Fischer U, et al. Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke (DISTAL). N Engl J Med. 2025;392(13):1232-1243.",
+          "pmid": "39908430"
+        },
+        {
+          "label": "DISTAL 12-Month",
+          "citation": "Fischer U, et al. Endovascular treatment for medium or distal vessel occlusion stroke (DISTAL): 12-month outcomes. Lancet Neurol. 2026;25(6):571-580.",
+          "pmid": "42105785"
+        },
+        {
+          "label": "ESCAPE-MeVO Trial",
+          "citation": "Goyal M, et al. Endovascular Treatment for Medium Vessel Occlusion Stroke (ESCAPE-MeVO). N Engl J Med. 2025;392(13):1244-1254.",
+          "pmid": "39908448"
+        },
+        {
+          "label": "CHOICE Trial",
+          "citation": "Renú A, et al. Effect of Intra-arterial Alteplase vs Placebo Following Successful Thrombectomy on Functional Outcomes (CHOICE). JAMA. 2022;327(9):826-835.",
+          "pmid": "35143603"
+        },
+        {
+          "label": "CHOICE-2 Trial",
+          "citation": "Renú A, et al. Adjunctive Intra-Arterial Alteplase After Successful Thrombectomy for Acute Ischemic Stroke (CHOICE-2). JAMA. 2026.",
+          "pmid": "42096239"
+        },
+        {
+          "label": "AHA/ASA 2026 AIS Guideline",
+          "citation": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
+          "pmid": "41582814"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "Evaluation, anatomical classification (M2/M3, A2/A3, P2/P3), trial evidence (DISTAL, ESCAPE-MeVO), disabling deficit thresholds, microcatheter techniques, and perforation risk management.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "edema-swelling-risk",
@@ -2209,9 +2464,9 @@
       "body": "EVD leveling, drainage mechanics, safety checks, complications, PDF reference card, and interactive bedside simulator.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
-      "id": "fibromuscular-dysplasia",
-      "title": "Fibromuscular Dysplasia & Stroke",
-      "summary": "Pathophysiology, angiographic classification (multifocal vs. focal), clinical presentation, brain-to-pelvis screening guidelines, and medical/endovascular management of fibromuscular dysplasia (FMD) in stroke patients.",
+      "id": "extended-window-perfusion",
+      "title": "Extended Window Perfusion & Mismatch",
+      "summary": "Standardized CTP and MRI mismatch interpretation in extended (6–24h) and wake-up windows — DAWN, DEFUSE 3, EXTEND, WAKE-UP, TWIST, automated thresholds (rCBF <30%, Tmax >6s), and DWI-FLAIR mismatch protocols.",
       "tags": [
         "pocket-card",
         "printable"
@@ -2224,29 +2479,124 @@
       "calculators": [],
       "references": [
         {
-          "label": "AHA Scientific Statement",
+          "label": "DAWN Trial",
+          "citation": "Nogueira RG, et al. Thrombectomy 6 to 24 Hours after Stroke with a Mismatch between Deficit and Infarct (DAWN). N Engl J Med. 2018;378(1):11-21.",
+          "pmid": "29129157"
+        },
+        {
+          "label": "DEFUSE 3 Trial",
+          "citation": "Albers GW, et al. Thrombectomy for Stroke at 6 to 16 Hours with Selection by Perfusion Imaging (DEFUSE 3). N Engl J Med. 2018;378(8):708-718.",
+          "pmid": "29364767"
+        },
+        {
+          "label": "EXTEND Trial",
+          "citation": "Ma H, et al. Thrombolysis Guided by Perfusion Imaging up to 9 Hours after Onset of Stroke (EXTEND). N Engl J Med. 2019;380(19):1795-1803.",
+          "pmid": "31067369"
+        },
+        {
+          "label": "WAKE-UP Trial",
+          "citation": "Thomalla G, et al. MRI-Guided Thrombolysis for Stroke with Unknown Time of Onset (WAKE-UP). N Engl J Med. 2018;379(7):611-622.",
+          "pmid": "29766770"
+        },
+        {
+          "label": "TWIST Trial",
+          "citation": "Roaldsen MB, et al. Intravenous thrombolysis with tenecteplase in patients with wake-up stroke (TWIST). Lancet Neurol. 2023;22(2):117-126.",
+          "pmid": "36549308"
+        },
+        {
+          "label": "AHA/ASA 2026 AIS Guideline",
+          "citation": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
+          "pmid": "41582814"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "Standardized CTP and MRI mismatch interpretation in extended (6–24h) and wake-up windows — DAWN, DEFUSE 3, EXTEND, WAKE-UP, TWIST, automated thresholds (rCBF <30%, Tmax >6s), and DWI-FLAIR mismatch protocols.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "factor-xia-inhibitors",
+      "title": "Novel Factor XI/XIa Inhibitors in Stroke Prevention",
+      "summary": "Targeting the contact activation pathway to uncouple thrombosis from hemostasis — Phase 2/3 trial data (OCEANIC-STROKE with Asundexian, PACIFIC-STROKE, AXIOMATIC-SSP with Milvexian, LILAC-TIMI 76 with Abelacimab) and emerging clinical indications.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "OCEANIC-STROKE",
+          "citation": "Sharma M, et al. Asundexian for Secondary Stroke Prevention (OCEANIC-STROKE). N Engl J Med. 2026;394(15):1467-1479.",
+          "pmid": "41985132"
+        },
+        {
+          "label": "PACIFIC-STROKE",
+          "citation": "Shoamanesh A, et al. Factor XIa inhibition with asundexian after acute non-cardioembolic ischaemic stroke (PACIFIC-Stroke): an international, randomised, double-blind, placebo-controlled, phase 2b trial. Lancet. 2022;400(10363):1604-1616.",
+          "pmid": "36063821"
+        },
+        {
+          "label": "AXIOMATIC-SSP",
+          "citation": "Sharma M, et al. Safety and efficacy of factor XIa inhibition with milvexian for secondary stroke prevention (AXIOMATIC-SSP): a phase 2, international, randomised, double-blind, placebo-controlled, dose-finding trial. Lancet Neurol. 2024;23(5):450-459.",
+          "pmid": "38101902"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "Targeting the contact activation pathway to uncouple thrombosis from hemostasis — Phase 2/3 trial data (OCEANIC-STROKE with Asundexian, PACIFIC-STROKE, AXIOMATIC-SSP with Milvexian, LILAC-TIMI 76 with Abelacimab) and emerging clinical indications.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "fibromuscular-dysplasia",
+      "title": "Fibromuscular Dysplasia & Cervical Artery Dissection",
+      "summary": "Pathophysiology, angiographic classification (multifocal string-of-beads vs. focal), brain-to-pelvis vascular screening, and cervical artery dissection trials (CADISS, TREAT-CAD, STOP-CAD, Kaufmann IPD).",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "FMD Scientific Statement",
           "citation": "Olin JW, et al. Fibromuscular dysplasia: state of the science and critical unanswered questions: a scientific statement from the American Heart Association. Circulation. 2014;129(9):1048-1078.",
-          "pmid": "24554781"
+          "pmid": "24548843"
         },
         {
           "label": "First International Consensus",
           "citation": "Gornik HL, et al. First International Consensus on the Diagnosis and Management of Fibromuscular Dysplasia. Vasc Med. 2019;24(2):164-189.",
-          "pmid": "30642231"
+          "pmid": "30648921"
         },
         {
-          "label": "US Registry for FMD",
-          "citation": "Olin JW, et al. The United States Registry for Fibromuscular Dysplasia: results in the first 447 patients. Circulation. 2012;125(25):3186-3195.",
-          "pmid": "22615343"
+          "label": "CADISS Trial",
+          "citation": "CADISS Trial Investigators. Antiplatelet treatment compared with anticoagulation treatment for cervical artery dissection (CADISS): a randomised trial. Lancet Neurol. 2015;14(4):361-367.",
+          "pmid": "25684164"
         },
         {
-          "label": "European FMD Registry",
-          "citation": "Persu A, et al. International consensus on fibromuscular dysplasia: European/International Fibromuscular Dysplasia Registry. J Hypertens. 2021;39(10):2036-2045.",
-          "pmid": "33935216"
+          "label": "TREAT-CAD Trial",
+          "citation": "Engelter ST, et al. Aspirin versus anticoagulation in cervical artery dissection (TREAT-CAD): an open-label, randomised, non-inferiority trial. Lancet Neurol. 2021;20(5):341-350.",
+          "pmid": "33765420"
+        },
+        {
+          "label": "STOP-CAD Study",
+          "citation": "Yaghi S, et al. Antithrombotic Treatment for Stroke Prevention in Cervical Artery Dissection: The STOP-CAD Study. Stroke. 2024;55(4):908-918.",
+          "pmid": "38335240"
+        },
+        {
+          "label": "Kaufmann IPD Meta-analysis",
+          "citation": "Kaufmann JE, et al. Antithrombotic Therapy in Cervical Artery Dissection: An Individual Patient Data Meta-analysis. JAMA Neurol. 2024;81(6):630-637.",
+          "pmid": "38739383"
         }
       ],
-      "lastReviewed": "2026-06-09",
+      "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Pathophysiology, angiographic classification (multifocal vs. focal), clinical presentation, brain-to-pelvis screening guidelines, and medical/endovascular management of fibromuscular dysplasia (FMD) in stroke patients.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Pathophysiology, angiographic classification (multifocal string-of-beads vs. focal), brain-to-pelvis vascular screening, and cervical artery dissection trials (CADISS, TREAT-CAD, STOP-CAD, Kaufmann IPD).\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "herniation-icp",
@@ -2313,6 +2663,67 @@
       "lastReviewed": "2026-05-30",
       "provenance": "src/education.jsx",
       "body": "Bedside vestibular exam simulator for differentiating central (stroke) vs. peripheral vertigo (HINTS+ algorithm).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "ich-blood-pressure",
+      "title": "Acute ICH Blood Pressure & Expansion Mitigation",
+      "summary": "Hyperacute SBP lowering (<140 mmHg within 1h, avoid <130), INTERACT-2/3 care bundle, ATACH-2 renal safety floor, FASTEST, TRIDENT, minimally invasive surgery (ENRICH), and SWITCH decompressive craniectomy.",
+      "tags": [
+        "pocket-card",
+        "printable",
+        "icu"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "INTERACT-2",
+          "citation": "Anderson CS, et al. Rapid blood-pressure lowering in patients with acute intracerebral hemorrhage (INTERACT2). N Engl J Med. 2013;368(25):2355-2365.",
+          "pmid": "23713578"
+        },
+        {
+          "label": "ATACH-2",
+          "citation": "Qureshi AI, et al. Intensive Blood-Pressure Lowering in Patients with Acute Cerebral Hemorrhage (ATACH-2). N Engl J Med. 2016;375(11):1033-1043.",
+          "pmid": "27276234"
+        },
+        {
+          "label": "INTERACT3",
+          "citation": "Ma L, et al. Intensive care bundle with blood pressure lowering in acute intracerebral haemorrhage (INTERACT3): a pragmatic, stepped-wedge cluster randomised trial. Lancet. 2023;402(10405):831-840.",
+          "pmid": "37245517"
+        },
+        {
+          "label": "ENRICH Trial",
+          "citation": "Pradilla G, et al. Trial of Early Minimally Invasive Removal of Intracerebral Hemorrhage (ENRICH). N Engl J Med. 2024;390(14):1277-1289.",
+          "pmid": "38598795"
+        },
+        {
+          "label": "TRIDENT Trial",
+          "citation": "Anderson CS, et al. Triple-Pill Strategy for Blood Pressure Lowering after Intracerebral Hemorrhage (TRIDENT). N Engl J Med. 2026;394:1571-1582.",
+          "pmid": "42019018"
+        },
+        {
+          "label": "FASTEST Trial",
+          "citation": "Broderick JP, et al. Recombinant factor VIIa for acute intracerebral hemorrhage (FASTEST). Lancet. 2026;407(10528):773-783.",
+          "pmid": "41653933"
+        },
+        {
+          "label": "SWITCH Trial",
+          "citation": "Beck J, et al. Decompressive craniectomy versus best medical treatment in severe deep intracerebral haemorrhage (SWITCH): an open-label randomised controlled trial. Lancet. 2024;403(10441):2289-2298.",
+          "pmid": "38761811"
+        },
+        {
+          "label": "2022 ICH Guideline",
+          "citation": "Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.",
+          "pmid": "35579034"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "Hyperacute SBP lowering (<140 mmHg within 1h, avoid <130), INTERACT-2/3 care bundle, ATACH-2 renal safety floor, FASTEST, TRIDENT, minimally invasive surgery (ENRICH), and SWITCH decompressive craniectomy.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "iv-thrombolysis",
@@ -2506,6 +2917,97 @@
       "body": "Decompressive hemicraniectomy selection criteria, evidence, and supportive ICU care for malignant MCA syndrome.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
+      "id": "metabolic-stroke-prevention",
+      "title": "Metabolic & Vascular Risk Modulation",
+      "summary": "Comprehensive metabolic and vascular risk modulation in stroke prevention — GLP-1 receptor agonists (SELECT, FLOW, SUSTAIN-6), SGLT2 inhibitors, intensive blood pressure targets (SPRINT, TRIDENT, RESPECT), MASH/obesity management, and the secondary prevention ABCDE bundle.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "SELECT Trial",
+          "citation": "Lincoff AM, et al. Semaglutide and Cardiovascular Outcomes in Obesity without Diabetes (SELECT). N Engl J Med. 2023;389(24):2221-2232.",
+          "pmid": "37952131"
+        },
+        {
+          "label": "FLOW Trial",
+          "citation": "Perkovic V, et al. Effects of Semaglutide on Chronic Kidney Disease in Patients with Type 2 Diabetes (FLOW). N Engl J Med. 2024;391(2):109-121.",
+          "pmid": "38785209"
+        },
+        {
+          "label": "SUSTAIN-6 Trial",
+          "citation": "Marso SP, et al. Semaglutide and Cardiovascular Outcomes in Patients with Type 2 Diabetes (SUSTAIN-6). N Engl J Med. 2016;375(19):1834-1844.",
+          "pmid": "27633186"
+        },
+        {
+          "label": "SPRINT Trial",
+          "citation": "Wright JT Jr, et al. A Randomized Trial of Intensive versus Standard Blood-Pressure Control (SPRINT). N Engl J Med. 2015;373(22):2103-2116.",
+          "pmid": "26551272"
+        },
+        {
+          "label": "TRIDENT Trial",
+          "citation": "Anderson CS, et al. Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage (TRIDENT). N Engl J Med. 2026;394:1571-1582.",
+          "pmid": "42019018"
+        },
+        {
+          "label": "RESPECT Trial",
+          "citation": "Kitagawa K, et al. Effect of Standard vs Intensive Blood Pressure Control on the Risk of Recurrent Stroke: A Randomized Clinical Trial and Meta-analysis (RESPECT). JAMA Neurol. 2019;76(11):1309-1318.",
+          "pmid": "31355878"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "Comprehensive metabolic and vascular risk modulation in stroke prevention — GLP-1 receptor agonists (SELECT, FLOW, SUSTAIN-6), SGLT2 inhibitors, intensive blood pressure targets (SPRINT, TRIDENT, RESPECT), MASH/obesity management, and the secondary prevention ABCDE bundle.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "moyamoya-disease",
+      "title": "Moyamoya Disease & Moyamoya Syndrome: Medical & Surgical Revascularization",
+      "summary": "Suzuki angiographic staging (1–6), direct STA-MCA bypass vs indirect EDAS/EMS, landmark JAM randomized trial for hemorrhagic Moyamoya, and strict perioperative hemodynamic/normocarbia protocols.",
+      "tags": [
+        "pocket-card",
+        "printable",
+        "pediatrics"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "JAM Trial Landmark",
+          "citation": "Miyamoto S, et al. Effects of extracranial-intracranial bypass for patients with hemorrhagic moyamoya disease: results of the Japan Adult Moyamoya Trial. Stroke. 2014;45(5):1415-1421.",
+          "pmid": "24668203"
+        },
+        {
+          "label": "Suzuki Staging Classic",
+          "citation": "Suzuki J, et al. Cerebrovascular 'moyamoya' disease: Disease showing abnormal net-like vessels in base of brain. Arch Neurol. 1969;20(3):288-299.",
+          "pmid": "5775283"
+        },
+        {
+          "label": "JSS Moyamoya Guidelines",
+          "citation": "Kuroda S, et al. Guidelines for Diagnosis and Treatment of Moyamoya Disease. Neurol Med Chir (Tokyo). 2012;52(5):245-266.",
+          "pmid": "22870528"
+        },
+        {
+          "label": "Scott & Smith Review",
+          "citation": "Scott RM, et al. Moyamoya disease and moyamoya syndrome. N Engl J Med. 2009;360(12):1226-1237.",
+          "pmid": "19297575"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "Suzuki angiographic staging (1–6), direct STA-MCA bypass vs indirect EDAS/EMS, landmark JAM randomized trial for hemorrhagic Moyamoya, and strict perioperative hemodynamic/normocarbia protocols.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
       "id": "neuro-exams-simulator",
       "title": "Bedside Neuro-Exams Tool",
       "summary": "Interactive bedside clinical exam assistant for classifying aphasia types, delirium (CAM-ICU), and structured coma examinations.",
@@ -2557,6 +3059,157 @@
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
       "body": "Interactive NIHSS scoring trainer: score each of the 15 items on short case vignettes with immediate right/wrong feedback and rationale, a running 0–42 total, the scoring rules that trip people up, and the interpretation caveats.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "pediatric-stroke",
+      "title": "Pediatric Ischemic & Hemorrhagic Stroke Master Module (2026 Guidelines)",
+      "summary": "Age-stratified pediatric stroke algorithms (neonatal vs childhood), Focal Cerebral Arteriopathy (FCA/FCA-i), Sickle Cell Disease TCD screening and exchange transfusion (STOP/STOP-2), and pediatric EVT criteria.",
+      "tags": [
+        "pocket-card",
+        "printable",
+        "pediatrics"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "2026 Pediatric Stroke Update",
+          "citation": "Rivkin MJ, et al. Stroke Guideline Expands Adult Treatment, Provides Pediatric Recommendations. JAMA. 2026;335:e26391.",
+          "pmid": "41686463"
+        },
+        {
+          "label": "2019 AHA Pediatric Statement",
+          "citation": "Ferriero DM, Fullerton HJ, Bernard TJ, et al. Management of Stroke in Neonates and Children: A Scientific Statement From the American Heart Association/American Stroke Association. Stroke. 2019;50(3):e51-e96.",
+          "pmid": "30686119"
+        },
+        {
+          "label": "STOP Trial Landmark",
+          "citation": "Adams RJ, et al. Prevention of a first stroke by transfusions in children with sickle cell anemia and abnormal results on transcranial Doppler ultrasonography (STOP). N Engl J Med. 1998;339(1):5-11.",
+          "pmid": "9647873"
+        },
+        {
+          "label": "STOP 2 Trial",
+          "citation": "Adams RJ, et al. Discontinuing prophylactic transfusions for stroke in sickle cell anemia (STOP 2). N Engl J Med. 2005;353(26):2769-2778.",
+          "pmid": "16382063"
+        },
+        {
+          "label": "TIPS Pediatric Lysis Study",
+          "citation": "Rivkin MJ, deVeber G, Ichord RN, et al. Thrombolysis in acute childhood stroke: design and challenges of the thrombolysis in pediatric stroke clinical trial. Neuroepidemiology. 2009;32(2):103-108.",
+          "pmid": "19223687"
+        },
+        {
+          "label": "VIPS Study on Arteriopathy",
+          "citation": "Fullerton HJ, Hills NK, Elkind MS, et al. Infection, vaccination, and childhood arterial ischemic stroke: results of the VIPS study. Neurology. 2015;85(17):1459-1466.",
+          "pmid": "26423434"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "Age-stratified pediatric stroke algorithms (neonatal vs childhood), Focal Cerebral Arteriopathy (FCA/FCA-i), Sickle Cell Disease TCD screening and exchange transfusion (STOP/STOP-2), and pediatric EVT criteria.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "pfo-closure",
+      "title": "PFO Closure & LAAO Decision Pathways",
+      "summary": "Evidence-based decision pathways for Patent Foramen Ovale (PFO) closure (RESPECT, CLOSE, REDUCE, DEFENSE-PFO), high-risk anatomical features (atrial septal aneurysm >10mm, large shunt >20 bubbles), RoPE score, PASCAL classification, and Left Atrial Appendage Occlusion (LAAO) trials (PROTECT AF, PREVAIL, PRAGUE-17).",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "RESPECT Long-Term",
+          "citation": "Saver JL, et al. Long-Term Outcomes of Patent Foramen Ovale Closure or Medical Therapy after Stroke (RESPECT). N Engl J Med. 2017;377(11):1022-1032.",
+          "pmid": "28902590"
+        },
+        {
+          "label": "CLOSE Trial",
+          "citation": "Mas JL, et al. Patent Foramen Ovale Closure or Anticoagulation vs. Antiplatelets after Stroke (CLOSE). N Engl J Med. 2017;377(11):1011-1021.",
+          "pmid": "28902593"
+        },
+        {
+          "label": "REDUCE Trial",
+          "citation": "Søndergaard L, et al. Patent Foramen Ovale Closure or Antiplatelet Therapy for Cryptogenic Stroke (REDUCE). N Engl J Med. 2017;377(11):1033-1042.",
+          "pmid": "28902580"
+        },
+        {
+          "label": "DEFENSE-PFO Trial",
+          "citation": "Lee JY, et al. Cryptogenic Stroke and High-Risk Patent Foramen Ovale: The DEFENSE-PFO Trial. J Am Coll Cardiol. 2018;71(20):2335-2342.",
+          "pmid": "29544871"
+        },
+        {
+          "label": "RoPE Score Study",
+          "citation": "Kent DM, et al. An index to identify stroke-related vs incidental patent foramen ovale in cryptogenic stroke (RoPE Study). Neurology. 2013;81(7):619-625.",
+          "pmid": "23864310"
+        },
+        {
+          "label": "PASCAL Consensus",
+          "citation": "Kent DM, et al. Heterogeneity of Treatment Effects in an Analysis of Pooled Individual Patient Data From Randomized Trials of Device Closure of Patent Foramen Ovale After Stroke (PASCAL). JAMA. 2021;326(22):2277-2286.",
+          "pmid": "34905030"
+        },
+        {
+          "label": "PROTECT AF Trial",
+          "citation": "Holmes DR, et al. Percutaneous closure of the left atrial appendage versus warfarin therapy for stroke prevention in patients with atrial fibrillation: a randomised non-inferiority trial (PROTECT AF). Lancet. 2009;374(9689):534-542.",
+          "pmid": "19683639"
+        },
+        {
+          "label": "PRAGUE-17 Trial",
+          "citation": "Osmancik P, et al. Left Atrial Appendage Closure Versus Direct Oral Anticoagulants in High-Risk Patients With Atrial Fibrillation (PRAGUE-17). J Am Coll Cardiol. 2020;75(25):3122-3135.",
+          "pmid": "32586585"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "Evidence-based decision pathways for Patent Foramen Ovale (PFO) closure (RESPECT, CLOSE, REDUCE, DEFENSE-PFO), high-risk anatomical features (atrial septal aneurysm >10mm, large shunt >20 bubbles), RoPE score, PASCAL classification, and Left Atrial Appendage Occlusion (LAAO) trials (PROTECT AF, PREVAIL, PRAGUE-17).\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "pregnancy-stroke",
+      "title": "Stroke in Pregnancy and the Puerperium: 2026 Maternal Guidelines",
+      "summary": "Emergency management of ischemic and hemorrhagic stroke in pregnancy/postpartum, safe IV thrombolysis/EVT, preeclampsia/eclampsia/PRES protocols, magnesium sulfate, and postpartum CVST.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "2026 Maternal Stroke Update",
+          "citation": "Miller EC, et al. Maternal Stroke: A Focused Update. Stroke. 2026.",
+          "pmid": "41603019"
+        },
+        {
+          "label": "Magpie Trial (Magnesium)",
+          "citation": "Altman D, et al. Do women with pre-eclampsia, and their babies, benefit from magnesium sulphate? The Magpie Trial. Lancet. 2002;359(9321):1877-1890.",
+          "pmid": "12057549"
+        },
+        {
+          "label": "AHA CVT Scientific Statement",
+          "citation": "Saposnik G, et al. Diagnosis and Management of Cerebral Venous Thrombosis: A Scientific Statement from the AHA. Stroke / AHA. 2024.",
+          "pmid": "38284265"
+        },
+        {
+          "label": "AHA Women Stroke Prevention",
+          "citation": "Bushnell C, et al. Guidelines for the prevention of stroke in women: a statement for healthcare professionals from the American Heart Association/American Stroke Association. Stroke. 2014;45(5):1545-1588.",
+          "pmid": "24503673"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "Emergency management of ischemic and hemorrhagic stroke in pregnancy/postpartum, safe IV thrombolysis/EVT, preeclampsia/eclampsia/PRES protocols, magnesium sulfate, and postpartum CVST.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "pupillometry",
@@ -2788,6 +3441,46 @@
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
       "body": "Anterior (ACA/MCA/lenticulostriate/anterior-choroidal) and posterior (PCA/PICA/AICA/SCA/basilar-perforator) territories with their clinical signatures, plus cortical and internal watershed patterns and mechanisms.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "vessel-wall-mri",
+      "title": "High-Resolution Vessel Wall MRI (VW-MRI) Differential",
+      "summary": "High-resolution black-blood vessel wall MRI differential matrix for intracranial arteriopathies — distinguishing ICAD, Primary CNS Vasculitis (PACNS), RCVS, Arterial Dissection, and Moyamoya disease via wall morphology, enhancement patterns, and remodeling.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "ASNR VW-MRI Consensus",
+          "citation": "Mandell DM, et al. Intracranial Vessel Wall MRI: Principles and Expert Consensus Recommendations of the American Society of Neuroradiology. AJNR Am J Neuroradiol. 2017;38(2):218-229.",
+          "pmid": "27469212"
+        },
+        {
+          "label": "Arteriopathy Characteristics",
+          "citation": "Mossa-Basha M, et al. High-Resolution Magnetic Resonance Vessel Wall Imaging for the Evaluation of Intracranial Vascular Pathology. Neuroimaging Clin N Am. 2021;31(2):175-188.",
+          "pmid": "33902876"
+        },
+        {
+          "label": "High-Res Diagnostic Patterns",
+          "citation": "Obusez EC, et al. High-resolution MRI vessel wall imaging: spatial and temporal patterns of reversible cerebral vasoconstriction syndrome and central nervous system vasculitis. AJNR Am J Neuroradiol. 2014;35(8):1527-1532.",
+          "pmid": "24722305"
+        },
+        {
+          "label": "PACNS vs RCVS Differentiation",
+          "citation": "Lehman VT, et al. Current Clinical Applications of Intracranial Vessel Wall MR Imaging. Semin Ultrasound CT MR. 2021;42(5):407-420.",
+          "pmid": "34537115"
+        }
+      ],
+      "lastReviewed": "2026-08-14",
+      "provenance": "src/education.jsx",
+      "body": "High-resolution black-blood vessel wall MRI differential matrix for intracranial arteriopathies — distinguishing ICAD, Primary CNS Vasculitis (PACNS), RCVS, Arterial Dissection, and Moyamoya disease via wall morphology, enhancement patterns, and remodeling.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     }
   ],
   "calculators": [

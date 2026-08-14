@@ -207,6 +207,7 @@ function sleep(ms) {
 function httpGet(urlStr) {
   return new Promise((resolve, reject) => {
     try {
+<<<<<<< HEAD
       const urlObj = new URL(urlStr);
       const client = urlObj.protocol === 'https:' ? https : http;
       const req = client.get(urlStr, { headers: { Connection: 'close' } }, (res) => {
@@ -223,6 +224,22 @@ function httpGet(urlStr) {
       });
     } catch (e) {
       reject(e);
+=======
+      const url = new URL(urlStr);
+      const client = url.protocol === 'https:' ? https : http;
+      const req = client.get(url, { headers: { Connection: 'close' } }, (res) => {
+        let body = '';
+        res.setEncoding('utf8');
+        res.on('data', (chunk) => { body += chunk; });
+        res.on('end', () => {
+          resolve({ ok: res.statusCode >= 200 && res.statusCode < 400, status: res.statusCode, text: async () => body });
+        });
+      });
+      req.on('error', reject);
+      req.setTimeout(5000, () => { req.destroy(new Error('timeout')); });
+    } catch (err) {
+      reject(err);
+>>>>>>> fce3e52 (feat: expand educational resources curriculum with comprehensive cards, infographics, and verified trial citations)
     }
   });
 }

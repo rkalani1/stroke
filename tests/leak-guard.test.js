@@ -165,9 +165,9 @@ describe('leak guard scanner', () => {
   it('staged helper scans staged blobs rather than cleaned working-tree files', () => {
     withTempRepo((dir) => {
       mkdirSync(join(dir, 'scripts'), { recursive: true });
-      symlinkSync(guardScript, join(dir, 'scripts/check-no-institutional-leak.mjs'));
-      symlinkSync(denylistFile, join(dir, 'scripts/leak-guard-denylist.json'));
-      symlinkSync(stagedGuardScript, join(dir, 'scripts/check-staged-leak-guard.sh'));
+      linkOrCopy(guardScript, join(dir, 'scripts/check-no-institutional-leak.mjs'));
+      linkOrCopy(denylistFile, join(dir, 'scripts/leak-guard-denylist.json'));
+      linkOrCopy(stagedGuardScript, join(dir, 'scripts/check-staged-leak-guard.sh'));
       const sentinel = 'PRIVATE_STAGED_SENTINEL';
       const privateDenylist = writePrivateDenylist(dir, sentinel);
 
@@ -179,7 +179,11 @@ describe('leak guard scanner', () => {
       expect(spawnSync('git', ['add', 'fixture.txt'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
       writeFileSync(fixture, 'clean\n', 'utf8');
 
+<<<<<<< HEAD
       const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
+=======
+      const result = spawnSync(shBin, ['scripts/check-staged-leak-guard.sh'], {
+>>>>>>> fce3e52 (feat: expand educational resources curriculum with comprehensive cards, infographics, and verified trial citations)
         cwd: dir,
         encoding: 'utf8',
         env: {
@@ -198,9 +202,9 @@ describe('leak guard scanner', () => {
   it('staged helper loads the default gitignored local private denylist', () => {
     withTempRepo((dir) => {
       mkdirSync(join(dir, 'scripts'), { recursive: true });
-      symlinkSync(guardScript, join(dir, 'scripts/check-no-institutional-leak.mjs'));
-      symlinkSync(denylistFile, join(dir, 'scripts/leak-guard-denylist.json'));
-      symlinkSync(stagedGuardScript, join(dir, 'scripts/check-staged-leak-guard.sh'));
+      linkOrCopy(guardScript, join(dir, 'scripts/check-no-institutional-leak.mjs'));
+      linkOrCopy(denylistFile, join(dir, 'scripts/leak-guard-denylist.json'));
+      linkOrCopy(stagedGuardScript, join(dir, 'scripts/check-staged-leak-guard.sh'));
       const sentinel = 'PRIVATE_LOCAL_STAGED_SENTINEL';
       writePrivateDenylistFile(join(dir, 'scripts/leak-guard-denylist.local.json'), sentinel);
 
@@ -208,7 +212,11 @@ describe('leak guard scanner', () => {
       writeFileSync(join(dir, 'fixture.txt'), `${sentinel}\n`, 'utf8');
       expect(spawnSync('git', ['add', 'fixture.txt'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
 
+<<<<<<< HEAD
       const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
+=======
+      const result = spawnSync(shBin, ['scripts/check-staged-leak-guard.sh'], {
+>>>>>>> fce3e52 (feat: expand educational resources curriculum with comprehensive cards, infographics, and verified trial citations)
         cwd: dir,
         encoding: 'utf8',
         env: {
@@ -227,15 +235,19 @@ describe('leak guard scanner', () => {
   it('staged helper refuses to stage the private denylist itself', () => {
     withTempRepo((dir) => {
       mkdirSync(join(dir, 'scripts'), { recursive: true });
-      symlinkSync(guardScript, join(dir, 'scripts/check-no-institutional-leak.mjs'));
-      symlinkSync(denylistFile, join(dir, 'scripts/leak-guard-denylist.json'));
-      symlinkSync(stagedGuardScript, join(dir, 'scripts/check-staged-leak-guard.sh'));
+      linkOrCopy(guardScript, join(dir, 'scripts/check-no-institutional-leak.mjs'));
+      linkOrCopy(denylistFile, join(dir, 'scripts/leak-guard-denylist.json'));
+      linkOrCopy(stagedGuardScript, join(dir, 'scripts/check-staged-leak-guard.sh'));
 
       expect(spawnSync('git', ['init'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
       writeFileSync(join(dir, 'scripts/leak-guard-denylist.local.json'), '{"literalDenylist":["PRIVATE"]}\n', 'utf8');
       expect(spawnSync('git', ['add', 'scripts/leak-guard-denylist.local.json'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
 
+<<<<<<< HEAD
       const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
+=======
+      const result = spawnSync(shBin, ['scripts/check-staged-leak-guard.sh'], {
+>>>>>>> fce3e52 (feat: expand educational resources curriculum with comprehensive cards, infographics, and verified trial citations)
         cwd: dir,
         encoding: 'utf8'
       });
@@ -248,15 +260,19 @@ describe('leak guard scanner', () => {
   it('staged helper requires private denylist coverage', () => {
     withTempRepo((dir) => {
       mkdirSync(join(dir, 'scripts'), { recursive: true });
-      symlinkSync(guardScript, join(dir, 'scripts/check-no-institutional-leak.mjs'));
-      symlinkSync(denylistFile, join(dir, 'scripts/leak-guard-denylist.json'));
-      symlinkSync(stagedGuardScript, join(dir, 'scripts/check-staged-leak-guard.sh'));
+      linkOrCopy(guardScript, join(dir, 'scripts/check-no-institutional-leak.mjs'));
+      linkOrCopy(denylistFile, join(dir, 'scripts/leak-guard-denylist.json'));
+      linkOrCopy(stagedGuardScript, join(dir, 'scripts/check-staged-leak-guard.sh'));
 
       expect(spawnSync('git', ['init'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
       writeFileSync(join(dir, 'fixture.txt'), 'clean\n', 'utf8');
       expect(spawnSync('git', ['add', 'fixture.txt'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
 
+<<<<<<< HEAD
       const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
+=======
+      const result = spawnSync(shBin, ['scripts/check-staged-leak-guard.sh'], {
+>>>>>>> fce3e52 (feat: expand educational resources curriculum with comprehensive cards, infographics, and verified trial citations)
         cwd: dir,
         encoding: 'utf8',
         env: {
@@ -274,16 +290,20 @@ describe('leak guard scanner', () => {
   it('staged helper rejects a present but empty private denylist', () => {
     withTempRepo((dir) => {
       mkdirSync(join(dir, 'scripts'), { recursive: true });
-      symlinkSync(guardScript, join(dir, 'scripts/check-no-institutional-leak.mjs'));
-      symlinkSync(denylistFile, join(dir, 'scripts/leak-guard-denylist.json'));
-      symlinkSync(stagedGuardScript, join(dir, 'scripts/check-staged-leak-guard.sh'));
+      linkOrCopy(guardScript, join(dir, 'scripts/check-no-institutional-leak.mjs'));
+      linkOrCopy(denylistFile, join(dir, 'scripts/leak-guard-denylist.json'));
+      linkOrCopy(stagedGuardScript, join(dir, 'scripts/check-staged-leak-guard.sh'));
       writeFileSync(join(dir, 'scripts/leak-guard-denylist.local.json'), '{}\n', 'utf8');
 
       expect(spawnSync('git', ['init'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
       writeFileSync(join(dir, 'fixture.txt'), 'clean\n', 'utf8');
       expect(spawnSync('git', ['add', 'fixture.txt'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
 
+<<<<<<< HEAD
       const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
+=======
+      const result = spawnSync(shBin, ['scripts/check-staged-leak-guard.sh'], {
+>>>>>>> fce3e52 (feat: expand educational resources curriculum with comprehensive cards, infographics, and verified trial citations)
         cwd: dir,
         encoding: 'utf8',
         env: {

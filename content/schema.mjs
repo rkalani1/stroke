@@ -230,7 +230,7 @@ export const VALIDATORS = {
 // numbers, ISO dates, and flow arrays `[a, b, c]` (optionally of quoted
 // strings) or of `{k: v}` inline objects. No external YAML dependency.
 export function parseFrontmatter(md) {
-  const m = md.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+  const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
   if (!m) throw new Error('missing YAML frontmatter (--- fenced block)');
   const body = m[2];
   const data = {};
