@@ -716,6 +716,19 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           };
         };
 
+        // Convert Date to local ISO string for datetime-local inputs (avoids UTC offset bug)
+        const toLocalISO = (d) => {
+          if (!d) return '';
+          const dateObj = d instanceof Date ? d : new Date(d);
+          if (Number.isNaN(dateObj.getTime())) return '';
+          const yr = dateObj.getFullYear();
+          const mo = String(dateObj.getMonth() + 1).padStart(2, '0');
+          const dy = String(dateObj.getDate()).padStart(2, '0');
+          const hr = String(dateObj.getHours()).padStart(2, '0');
+          const mn = String(dateObj.getMinutes()).padStart(2, '0');
+          return `${yr}-${mo}-${dy}T${hr}:${mn}`;
+        };
+
         const getWindowStatusFromTime = (timeFromLKW) => {
           if (!timeFromLKW) return null;
           if (timeFromLKW.total <= 4.5) {
@@ -9223,16 +9236,6 @@ Clinician Name`;
           // Generate telestroke documentation note
           const generateTelestrokeNoteBody = () => {
             try {
-            // Convert Date to local ISO string for datetime-local inputs (avoids UTC offset bug)
-            const toLocalISO = (d) => {
-              const yr = d.getFullYear();
-              const mo = String(d.getMonth() + 1).padStart(2, '0');
-              const dy = String(d.getDate()).padStart(2, '0');
-              const hr = String(d.getHours()).padStart(2, '0');
-              const mn = String(d.getMinutes()).padStart(2, '0');
-              return `${yr}-${mo}-${dy}T${hr}:${mn}`;
-            };
-
             const formatDate = (dateStr) => {
               if (!dateStr) return '';
               const date = new Date(dateStr);
