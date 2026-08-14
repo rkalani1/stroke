@@ -151,14 +151,10 @@ import {
   AIS_SOURCE_LINKS,
   AIS_COMMAND_CENTER_LAST_REVIEWED
 } from './management-guidance.js';
-// Content data layer access + workflow-context (Telestroke/Inpatient/Clinic)
-// filtering. Pure module over the build-time /content bundle; powers the
-// context switch and the unified command-palette index.
+// Content data layer access. Pure module over the build-time /content bundle;
+// powers the unified command-palette index.
 import {
-  WORKFLOW_CONTEXTS,
-  getSearchIndex as getContentSearchIndex,
-  getEducation as getContentEducation,
-  isRelevantTo as isContentRelevantTo
+  getSearchIndex as getContentSearchIndex
 } from './content-context.js';
 // What's New feed — generated at build time (npm run evidence:whats-new) from the
 // verified-PubMed Evidence Atlas. esbuild inlines this JSON, so the Research &
@@ -2225,19 +2221,6 @@ Clinician Name`;
           const [searchContext, setSearchContext] = useState('header');
           const [searchActiveIndex, setSearchActiveIndex] = useState(-1);
 
-          // Workflow context switch (Telestroke / Inpatient / Clinic). null = "All"
-          // — the default, which hides nothing. Filters/reorders content surfaces
-          // to the active setting WITHOUT ever scoping global search (that always
-          // passes null). Persisted via the storage helper (no-op in demo mode).
-          const [workflowContext, setWorkflowContextState] = useState(() => {
-            const v = loadFromStorage('workflowContext', null);
-            return WORKFLOW_CONTEXTS.includes(v) ? v : null;
-          });
-          const setWorkflowContext = (ctx) => {
-            const next = WORKFLOW_CONTEXTS.includes(ctx) ? ctx : null;
-            setWorkflowContextState(next);
-            setKey('workflowContext', next); // no-op in public demo mode
-          };
 
           // Command palette (first-class, app-wide navigation jump-list).
           // Distinct from the free-text header search above: this is a focus-
@@ -16551,14 +16534,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             : '';
           const hasNihssInputs = nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
           const nihssDisplay = nihssFromNote || (hasNihssInputs ? String(nihssScore) : '--');
-          const workflowContextLabel = workflowContext
-            ? workflowContext.charAt(0).toUpperCase() + workflowContext.slice(1)
-            : 'All';
-          const educationContextTotal = getContentEducation().length;
-          const educationContextVisible = workflowContext
-            ? getContentEducation().filter((entry) => isContentRelevantTo(entry, workflowContext)).length
-            : educationContextTotal;
-          const workflowContextFeedback = `${workflowContextLabel} context · ${educationContextVisible} of ${educationContextTotal} education modules shown.`;
           return (
             <div className="relative v7-skin">
               {/* v7: skip-link → semantic <main id="main">; cobalt accent, no link-* override */}
@@ -17182,69 +17157,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
                   ))}
                 </div>
-              )}
-
-              {/* Workflow context switch — filters Education modules by the
-                  active setting (Telestroke / Inpatient / Clinic). "All" is the
-                  default and hides nothing; the switch never scopes global
-                  search. Education is the only surface it filters, so it renders
-                  only there — on every other route it was a control that changed
-                  nothing on screen. */}
-              {activeTab === 'education' && (
-              <div className="mb-3">
-                <div className="hidden sm:flex items-center gap-1.5 flex-wrap" role="group" aria-label="Workflow context">
-                  <span className="text-xs font-medium text-slate-500 mr-1 dark:text-mute">Context</span>
-                  {[
-                    { id: null, label: 'All' },
-                    { id: 'telestroke', label: 'Telestroke' },
-                    { id: 'inpatient', label: 'Inpatient' },
-                    { id: 'clinic', label: 'Clinic' }
-                  ].map((c) => {
-                    const active = workflowContext === c.id;
-                    return (
-                      <button
-                        key={c.label}
-                        type="button"
-                        onClick={() => setWorkflowContext(c.id)}
-                        aria-pressed={active}
-                        className={`px-3 py-1.5 rounded-full text-xs font-semibold min-h-[36px] transition-colors ${active ? 'bg-cobalt-600 text-white' : 'bg-white text-slate-600 border border-line hover:bg-slate-50 dark:bg-card dark:text-mute dark:hover:bg-slate-800'}`}
-                      >
-                        {c.label}
-                      </button>
-                    );
-                  })}
-                </div>
-                <details className="sm:hidden context-mobile-disclosure rounded-md border border-line bg-card">
-                  <summary className="flex min-h-[44px] cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm font-semibold text-ink">
-                    <span>Context: {workflowContextLabel}</span>
-                    <span className="text-xs text-cobalt-700 dark:text-cobalt-300">Change</span>
-                  </summary>
-                  <div className="grid grid-cols-2 gap-2 border-t border-line p-2" role="group" aria-label="Workflow context">
-                    {[
-                      { id: null, label: 'All' },
-                      { id: 'telestroke', label: 'Telestroke' },
-                      { id: 'inpatient', label: 'Inpatient' },
-                      { id: 'clinic', label: 'Clinic' }
-                    ].map((c) => {
-                      const active = workflowContext === c.id;
-                      return (
-                        <button
-                          key={c.label}
-                          type="button"
-                          onClick={() => setWorkflowContext(c.id)}
-                          aria-pressed={active}
-                          className={`min-h-[44px] rounded-md px-3 py-2 text-xs font-semibold ${active ? 'bg-cobalt-600 text-white' : 'border border-line bg-paper-2 text-ink-2'}`}
-                        >
-                          {c.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </details>
-                <p className="mt-1.5 text-[11px] text-mute" role="status" aria-live="polite">
-                  {workflowContextFeedback}
-                </p>
-              </div>
               )}
 
               {/* Primary Navigation — sticks just below the sticky header on
@@ -36062,16 +35974,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       addToast={addToast}
                       navigateTo={navigateTo}
                       isTraineeMode={isTraineeMode}
-                      workflowContext={workflowContext}
-                      contextHiddenIds={
-                        workflowContext
-                          ? new Set(
-                              getContentEducation()
-                                .filter((e) => !isContentRelevantTo(e, workflowContext))
-                                .map((e) => e.id)
-                            )
-                          : null
-                      }
                     />
                   </ErrorBoundary>
                 )}

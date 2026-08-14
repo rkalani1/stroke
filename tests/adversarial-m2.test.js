@@ -145,7 +145,7 @@ describe('Milestone 2 Adversarial Verification & Stress Harness', () => {
         }
       }
 
-      expect(totalDetails).toBe(181);
+      expect(totalDetails).toBe(180);
       expect(openDetails).toBe(0);
 
       const indexHtml = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');
