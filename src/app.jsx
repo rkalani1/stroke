@@ -34,7 +34,6 @@ import {
   ClinicWorkflow,
   WardsWorkflow,
   PHQ9Screen,
-  PHIBanner,
   PublicDemoConsentModal
 } from './components.jsx';
 import {
@@ -16570,15 +16569,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
               {/* v7: skip-link → semantic <main id="main">; cobalt accent, no link-* override */}
               <a href="#main" data-skip-tap className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-cobalt-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">Skip to main content</a>
               {PUBLIC_DEMO_MODE && (
-                <>
-                  <div className="public-demo-shell-banner no-print">
-                    <PHIBanner />
-                  </div>
-                  <div className="public-demo-mode-badge no-print" role="status" aria-label="Public synthetic demo mode">
-                    <span aria-hidden="true"></span>
-                    Demo mode
-                  </div>
-                </>
+                <div className="public-demo-mode-badge no-print" role="status" aria-label="Public synthetic demo mode">
+                  <span aria-hidden="true"></span>
+                  Demo mode
+                </div>
               )}
               {protocolModal && (
                 <div className="clinician-only fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="protocol-modal-title" onClick={() => setProtocolModal(null)}>
