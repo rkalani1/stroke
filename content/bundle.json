@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:0d557287143d11eb1f8755a3f2ecda95",
+    "checksum": "sha256:9f371c0a5de89a73f7713b546bdac877",
     "counts": {
       "guidelines": 11,
       "trials": 71,
@@ -327,7 +327,8 @@
       "PMIDs": [
         "35779553",
         "36774935",
-        "39264623"
+        "39264623",
+        "37305988"
       ],
       "DOIs": [
         "10.1016/S0140-6736(22)01054-6",
@@ -1578,19 +1579,19 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "ELAN Trial",
-          "\"citation\"": "Fischer U et al. N Engl J Med. 2023;388:2411-2421.",
-          "\"pmid\"": "37222476"
+          "label": "ELAN Trial",
+          "citation": "Fischer U et al. N Engl J Med. 2023;388:2411-2421.",
+          "pmid": "37222476"
         },
         {
-          "\"label\"": "CATALYST Meta-Analysis",
-          "\"citation\"": "Dehbi HM et al. Lancet 2025.",
-          "\"pmid\"": "40570866"
+          "label": "CATALYST Meta-Analysis",
+          "citation": "Dehbi HM et al. Lancet 2025.",
+          "pmid": "40570866"
         },
         {
-          "\"label\"": "AFib Guidelines",
-          "\"citation\"": "Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. Circulation. 2024;149:e1-e156.",
-          "\"pmid\"": "38043043"
+          "label": "AFib Guidelines",
+          "citation": "Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. Circulation. 2024;149:e1-e156.",
+          "pmid": "38043043"
         }
       ],
       "lastReviewed": "2026-05-30",
@@ -1613,24 +1614,24 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "AHA/ASA 2023 aSAH Guideline",
-          "\"citation\"": "Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.",
-          "\"pmid\"": "37212182"
+          "label": "AHA/ASA 2023 aSAH Guideline",
+          "citation": "Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.",
+          "pmid": "37212182"
         },
         {
-          "\"label\"": "ISAT",
-          "\"citation\"": "Molyneux A, et al. International Subarachnoid Aneurysm Trial (ISAT): coiling vs clipping. Lancet. 2002;360(9342):1267-1274.",
-          "\"pmid\"": "12414200"
+          "label": "ISAT",
+          "citation": "Molyneux A, et al. International Subarachnoid Aneurysm Trial (ISAT): coiling vs clipping. Lancet. 2002;360(9342):1267-1274.",
+          "pmid": "12414200"
         },
         {
-          "\"label\"": "Nimodipine (BRANT)",
-          "\"citation\"": "Pickard JD, et al. Effect of oral nimodipine on cerebral infarction and outcome after subarachnoid haemorrhage (British Aneurysm Nimodipine Trial). BMJ. 1989;298(6674):636-642.",
-          "\"pmid\"": "2496789"
+          "label": "Nimodipine (BRANT)",
+          "citation": "Pickard JD, et al. Effect of oral nimodipine on cerebral infarction and outcome after subarachnoid haemorrhage (British Aneurysm Nimodipine Trial). BMJ. 1989;298(6674):636-642.",
+          "pmid": "2496789"
         },
         {
-          "\"label\"": "Modified Fisher scale",
-          "\"citation\"": "Frontera JA, et al. Prediction of symptomatic vasospasm after SAH: the modified Fisher scale. Neurosurgery. 2006;59(1):21-27.",
-          "\"pmid\"": "16823296"
+          "label": "Modified Fisher scale",
+          "citation": "Frontera JA, et al. Prediction of symptomatic vasospasm after SAH: the modified Fisher scale. Neurosurgery. 2006;59(1):21-27.",
+          "pmid": "16823296"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -1653,29 +1654,29 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "ANNEXA-4",
-          "\"citation\"": "Connolly SJ, et al. Full Study Report of Andexanet Alfa for Bleeding Associated with Factor Xa Inhibitors. N Engl J Med. 2019;380(14):1326-1335.",
-          "\"pmid\"": "30730782"
+          "label": "ANNEXA-4",
+          "citation": "Connolly SJ, et al. Full Study Report of Andexanet Alfa for Bleeding Associated with Factor Xa Inhibitors. N Engl J Med. 2019;380(14):1326-1335.",
+          "pmid": "30730782"
         },
         {
-          "\"label\"": "ANNEXA-I",
-          "\"citation\"": "Connolly SJ, et al. Andexanet for Factor Xa Inhibitor–Associated Acute Intracerebral Hemorrhage. N Engl J Med. 2024;390(19):1745-1755.",
-          "\"pmid\"": "38749032"
+          "label": "ANNEXA-I",
+          "citation": "Connolly SJ, et al. Andexanet for Factor Xa Inhibitor–Associated Acute Intracerebral Hemorrhage. N Engl J Med. 2024;390(19):1745-1755.",
+          "pmid": "38749032"
         },
         {
-          "\"label\"": "RE-VERSE AD",
-          "\"citation\"": "Pollack CV, et al. Idarucizumab for Dabigatran Reversal — Full Cohort Analysis. N Engl J Med. 2017;377(5):431-441.",
-          "\"pmid\"": "28693366"
+          "label": "RE-VERSE AD",
+          "citation": "Pollack CV, et al. Idarucizumab for Dabigatran Reversal — Full Cohort Analysis. N Engl J Med. 2017;377(5):431-441.",
+          "pmid": "28693366"
         },
         {
-          "\"label\"": "AHA/ASA 2022 ICH Guideline",
-          "\"citation\"": "Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.",
-          "\"pmid\"": "35579034"
+          "label": "AHA/ASA 2022 ICH Guideline",
+          "citation": "Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.",
+          "pmid": "35579034"
         },
         {
-          "\"label\"": "NCS/SCCM Reversal Guideline",
-          "\"citation\"": "Frontera JA, et al. Guideline for Reversal of Antithrombotics in Intracranial Hemorrhage. Neurocrit Care. 2016;24(1):6-46.",
-          "\"pmid\"": "26714677"
+          "label": "NCS/SCCM Reversal Guideline",
+          "citation": "Frontera JA, et al. Guideline for Reversal of Antithrombotics in Intracranial Hemorrhage. Neurocrit Care. 2016;24(1):6-46.",
+          "pmid": "26714677"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -1699,29 +1700,29 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "AHA/ASA 2026 Stroke Guideline",
-          "\"citation\"": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
-          "\"pmid\"": "41582814"
+          "label": "AHA/ASA 2026 Stroke Guideline",
+          "citation": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
+          "pmid": "41582814"
         },
         {
-          "\"label\"": "AHA/ASA 2022 ICH Guideline",
-          "\"citation\"": "Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.",
-          "\"pmid\"": "35579034"
+          "label": "AHA/ASA 2022 ICH Guideline",
+          "citation": "Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.",
+          "pmid": "35579034"
         },
         {
-          "\"label\"": "AHA/ASA 2023 aSAH Guideline",
-          "\"citation\"": "Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.",
-          "\"pmid\"": "37212182"
+          "label": "AHA/ASA 2023 aSAH Guideline",
+          "citation": "Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.",
+          "pmid": "37212182"
         },
         {
-          "\"label\"": "IsCHEMiA Score Validation",
-          "\"citation\"": "IsCHEMiA in Vascular Epilepsy: Identifying Risks for Post Stroke Epilepsy. Epilepsy Currents. 2026;26.",
-          "\"pmid\"": "null"
+          "label": "IsCHEMiA Score Validation",
+          "citation": "IsCHEMiA in Vascular Epilepsy: Identifying Risks for Post Stroke Epilepsy. Epilepsy Currents. 2026;26.",
+          "pmid": null
         },
         {
-          "\"label\"": "SeLECT Score Study",
-          "\"citation\"": "Galovic M, et al. SeLECT: a prediction model for late seizures after ischemic stroke. Lancet Neurol. 2018;17(2):143-152.",
-          "\"pmid\"": "29413315"
+          "label": "SeLECT Score Study",
+          "citation": "Galovic M, et al. SeLECT: a prediction model for late seizures after ischemic stroke. Lancet Neurol. 2018;17(2):143-152.",
+          "pmid": "29413315"
         }
       ],
       "lastReviewed": "2026-07-13",
@@ -1745,54 +1746,54 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "AHA/ASA 2021 Guideline",
-          "\"citation\"": "Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.",
-          "\"pmid\"": "34024117"
+          "label": "AHA/ASA 2021 Guideline",
+          "citation": "Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.",
+          "pmid": "34024117"
         },
         {
-          "\"label\"": "WASID Post-Hoc",
-          "\"citation\"": "Failure of Antithrombotic Therapy and Risk of Stroke in Patients With Symptomatic Intracranial Stenosis. Stroke. 2009;40:359-364.",
-          "\"pmid\"": "19064771"
+          "label": "WASID Post-Hoc",
+          "citation": "Failure of Antithrombotic Therapy and Risk of Stroke in Patients With Symptomatic Intracranial Stenosis. Stroke. 2009;40:359-364.",
+          "pmid": "19064771"
         },
         {
-          "\"label\"": "CAPRIE Trial",
-          "\"citation\"": "CAPRIE Steering Committee. Lancet. 1996;348:1329-1339.",
-          "\"pmid\"": "8932661"
+          "label": "CAPRIE Trial",
+          "citation": "CAPRIE Steering Committee. Lancet. 1996;348:1329-1339.",
+          "pmid": "8932661"
         },
         {
-          "\"label\"": "CHANCE Trial",
-          "\"citation\"": "Wang Y, et al. Clopidogrel with Aspirin in Acute Minor Stroke or Transient Ischemic Attack. N Engl J Med. 2013;369:11-19.",
-          "\"pmid\"": "23803136"
+          "label": "CHANCE Trial",
+          "citation": "Wang Y, et al. Clopidogrel with Aspirin in Acute Minor Stroke or Transient Ischemic Attack. N Engl J Med. 2013;369:11-19.",
+          "pmid": "23803136"
         },
         {
-          "\"label\"": "POINT Trial",
-          "\"citation\"": "Johnston SC, et al. Clopidogrel and Aspirin in Acute Ischemic Stroke and High-Risk TIA. N Engl J Med. 2018;379:215-225.",
-          "\"pmid\"": "29766750"
+          "label": "POINT Trial",
+          "citation": "Johnston SC, et al. Clopidogrel and Aspirin in Acute Ischemic Stroke and High-Risk TIA. N Engl J Med. 2018;379:215-225.",
+          "pmid": "29766750"
         },
         {
-          "\"label\"": "INSPIRES Trial",
-          "\"citation\"": "Gao Y, et al. Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke. N Engl J Med. 2023;389:2413-2424.",
-          "\"pmid\"": "38157499"
+          "label": "INSPIRES Trial",
+          "citation": "Gao Y, et al. Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke. N Engl J Med. 2023;389:2413-2424.",
+          "pmid": "38157499"
         },
         {
-          "\"label\"": "SAMMPRIS Trial",
-          "\"citation\"": "Chimowitz MI, et al. Stenting versus Aggressive Medical Therapy for Intracranial Arterial Stenosis. N Engl J Med. 2011;365:993-1003.",
-          "\"pmid\"": "21899409"
+          "label": "SAMMPRIS Trial",
+          "citation": "Chimowitz MI, et al. Stenting versus Aggressive Medical Therapy for Intracranial Arterial Stenosis. N Engl J Med. 2011;365:993-1003.",
+          "pmid": "21899409"
         },
         {
-          "\"label\"": "COMPASS Trial",
-          "\"citation\"": "Connolly SJ, et al. Rivaroxaban with or without Aspirin in Stable Cardiovascular Disease. Lancet. 2018;391:319-328.",
-          "\"pmid\"": "29141975"
+          "label": "COMPASS Trial",
+          "citation": "Connolly SJ, et al. Rivaroxaban with or without Aspirin in Stable Cardiovascular Disease. Lancet. 2018;391:319-328.",
+          "pmid": "29141975"
         },
         {
-          "\"label\"": "Narrative Review",
-          "\"citation\"": "Sanderson S, et al. Aspirin Resistance and Its Clinical Implications. Ann Intern Med. 2005;142:370-380.",
-          "\"pmid\"": "15738456"
+          "label": "Narrative Review",
+          "citation": "Sanderson S, et al. Aspirin Resistance and Its Clinical Implications. Ann Intern Med. 2005;142:370-380.",
+          "pmid": "15738456"
         },
         {
-          "\"label\"": "OCEANIC-STROKE Trial",
-          "\"citation\"": "Sharma M, et al. Asundexian for Secondary Stroke Prevention. N Engl J Med. 2026;394(15):1467-1479.",
-          "\"pmid\"": "41985132"
+          "label": "OCEANIC-STROKE Trial",
+          "citation": "Sharma M, et al. Asundexian for Secondary Stroke Prevention. N Engl J Med. 2026;394(15):1467-1479.",
+          "pmid": "41985132"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -1815,24 +1816,24 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "ATTENTION",
-          "\"citation\"": "Tao C, et al. Trial of Endovascular Treatment of Acute Basilar-Artery Occlusion (ATTENTION). N Engl J Med. 2022;387(15):1361-1372.",
-          "\"pmid\"": "36239644"
+          "label": "ATTENTION",
+          "citation": "Tao C, et al. Trial of Endovascular Treatment of Acute Basilar-Artery Occlusion (ATTENTION). N Engl J Med. 2022;387(15):1361-1372.",
+          "pmid": "36239644"
         },
         {
-          "\"label\"": "BAOCHE",
-          "\"citation\"": "Jovin TG, et al. Trial of Thrombectomy 6 to 24 Hours after Stroke Due to Basilar-Artery Occlusion (BAOCHE). N Engl J Med. 2022;387(15):1373-1384.",
-          "\"pmid\"": "36239645"
+          "label": "BAOCHE",
+          "citation": "Jovin TG, et al. Trial of Thrombectomy 6 to 24 Hours after Stroke Due to Basilar-Artery Occlusion (BAOCHE). N Engl J Med. 2022;387(15):1373-1384.",
+          "pmid": "36239645"
         },
         {
-          "\"label\"": "BASICS",
-          "\"citation\"": "Langezaal LCM, et al. Endovascular Therapy for Stroke Due to Basilar-Artery Occlusion (BASICS). N Engl J Med. 2021;384(20):1910-1920.",
-          "\"pmid\"": "34010530"
+          "label": "BASICS",
+          "citation": "Langezaal LCM, et al. Endovascular Therapy for Stroke Due to Basilar-Artery Occlusion (BASICS). N Engl J Med. 2021;384(20):1910-1920.",
+          "pmid": "34010530"
         },
         {
-          "\"label\"": "BEST",
-          "\"citation\"": "Liu X, et al. Endovascular treatment versus standard medical treatment for vertebrobasilar artery occlusion (BEST). Lancet Neurol. 2020;19(2):115-122.",
-          "\"pmid\"": "31831388"
+          "label": "BEST",
+          "citation": "Liu X, et al. Endovascular treatment versus standard medical treatment for vertebrobasilar artery occlusion (BEST). Lancet Neurol. 2020;19(2):115-122.",
+          "pmid": "31831388"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -1856,14 +1857,14 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "Consensus Guideline",
-          "\"citation\"": "Greer DM, et al. Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Practice Guideline. Neurology. 2023;101(24):1112-1132.",
-          "\"pmid\"": "37827878"
+          "label": "Consensus Guideline",
+          "citation": "Greer DM, et al. Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Practice Guideline. Neurology. 2023;101(24):1112-1132.",
+          "pmid": "37827878"
         },
         {
-          "\"label\"": "Ancillary Update",
-          "\"citation\"": "Wijdicks EF, et al. Practice parameter update: determining brain death in adults. Neurology. 2010;74(23):1911-1918.",
-          "\"pmid\"": "20530327"
+          "label": "Ancillary Update",
+          "citation": "Wijdicks EF, et al. Practice parameter update: determining brain death in adults. Neurology. 2010;74(23):1911-1918.",
+          "pmid": "20530327"
         }
       ],
       "lastReviewed": "2026-06-09",
@@ -1886,14 +1887,14 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "Arterial territories — brainstem/cerebellum",
-          "\"citation\"": "Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.",
-          "\"pmid\"": "8909417"
+          "label": "Arterial territories — brainstem/cerebellum",
+          "citation": "Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.",
+          "pmid": "8909417"
         },
         {
-          "\"label\"": "Arterial territories — cerebral hemispheres",
-          "\"citation\"": "Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.",
-          "\"pmid\"": "9633714"
+          "label": "Arterial territories — cerebral hemispheres",
+          "citation": "Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.",
+          "pmid": "9633714"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -1916,24 +1917,24 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "CREST-2",
-          "\"citation\"": "Brott TG, et al. Medical Management and Revascularization for Asymptomatic Carotid Stenosis (CREST-2). N Engl J Med. 2025;394(3):219-231.",
-          "\"pmid\"": "41269206"
+          "label": "CREST-2",
+          "citation": "Brott TG, et al. Medical Management and Revascularization for Asymptomatic Carotid Stenosis (CREST-2). N Engl J Med. 2025;394(3):219-231.",
+          "pmid": "41269206"
         },
         {
-          "\"label\"": "CREST",
-          "\"citation\"": "Brott TG, et al. Stenting versus Endarterectomy for Treatment of Carotid-Artery Stenosis (CREST). N Engl J Med. 2010;363(1):11-23.",
-          "\"pmid\"": "20505173"
+          "label": "CREST",
+          "citation": "Brott TG, et al. Stenting versus Endarterectomy for Treatment of Carotid-Artery Stenosis (CREST). N Engl J Med. 2010;363(1):11-23.",
+          "pmid": "20505173"
         },
         {
-          "\"label\"": "ACST-2",
-          "\"citation\"": "Halliday A, et al. Second asymptomatic carotid surgery trial (ACST-2): stenting vs endarterectomy. Lancet. 2021;398(10305):1065-1073.",
-          "\"pmid\"": "34469763"
+          "label": "ACST-2",
+          "citation": "Halliday A, et al. Second asymptomatic carotid surgery trial (ACST-2): stenting vs endarterectomy. Lancet. 2021;398(10305):1065-1073.",
+          "pmid": "34469763"
         },
         {
-          "\"label\"": "NASCET",
-          "\"citation\"": "North American Symptomatic Carotid Endarterectomy Trial Collaborators. Beneficial effect of carotid endarterectomy in symptomatic patients with high-grade stenosis. N Engl J Med. 1991;325(7):445-453.",
-          "\"pmid\"": "1852179"
+          "label": "NASCET",
+          "citation": "North American Symptomatic Carotid Endarterectomy Trial Collaborators. Beneficial effect of carotid endarterectomy in symptomatic patients with high-grade stenosis. N Engl J Med. 1991;325(7):445-453.",
+          "pmid": "1852179"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -1956,14 +1957,14 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "Boston Criteria 2.0",
-          "\"citation\"": "Charidimou A, et al. The Boston criteria version 2.0 for cerebral amyloid angiopathy: a multicentre, retrospective, MRI-neuropathology diagnostic accuracy study. Lancet Neurol. 2022;21(8):714-725.",
-          "\"pmid\"": "35841910"
+          "label": "Boston Criteria 2.0",
+          "citation": "Charidimou A, et al. The Boston criteria version 2.0 for cerebral amyloid angiopathy: a multicentre, retrospective, MRI-neuropathology diagnostic accuracy study. Lancet Neurol. 2022;21(8):714-725.",
+          "pmid": "35841910"
         },
         {
-          "\"label\"": "Cortical superficial siderosis in CAA",
-          "\"citation\"": "Linn J, et al. Prevalence of superficial siderosis in patients with cerebral amyloid angiopathy. Neurology. 2010;74(17):1346-1350.",
-          "\"pmid\"": "20421578"
+          "label": "Cortical superficial siderosis in CAA",
+          "citation": "Linn J, et al. Prevalence of superficial siderosis in patients with cerebral amyloid angiopathy. Neurology. 2010;74(17):1346-1350.",
+          "pmid": "20421578"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -1986,29 +1987,29 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "ISCVT",
-          "\"citation\"": "Ferro JM, et al. Prognosis of cerebral vein and dural sinus thrombosis: results of the ISCVT. Stroke. 2004;35(3):664-670.",
-          "\"pmid\"": "14976332"
+          "label": "ISCVT",
+          "citation": "Ferro JM, et al. Prognosis of cerebral vein and dural sinus thrombosis: results of the ISCVT. Stroke. 2004;35(3):664-670.",
+          "pmid": "14976332"
         },
         {
-          "\"label\"": "RE-SPECT CVT",
-          "\"citation\"": "Ferro JM, et al. Safety and Efficacy of Dabigatran Etexilate vs Dose-Adjusted Warfarin in Cerebral Venous Thrombosis. JAMA Neurol. 2019;76(12):1457-1465.",
-          "\"pmid\"": "31479105"
+          "label": "RE-SPECT CVT",
+          "citation": "Ferro JM, et al. Safety and Efficacy of Dabigatran Etexilate vs Dose-Adjusted Warfarin in Cerebral Venous Thrombosis. JAMA Neurol. 2019;76(12):1457-1465.",
+          "pmid": "31479105"
         },
         {
-          "\"label\"": "ACTION-CVT",
-          "\"citation\"": "Yaghi S, et al. Direct Oral Anticoagulants Versus Warfarin in the Treatment of Cerebral Venous Thrombosis (ACTION-CVT). Stroke. 2022;53(3):728-738.",
-          "\"pmid\"": "35143325"
+          "label": "ACTION-CVT",
+          "citation": "Yaghi S, et al. Direct Oral Anticoagulants Versus Warfarin in the Treatment of Cerebral Venous Thrombosis (ACTION-CVT). Stroke. 2022;53(3):728-738.",
+          "pmid": "35143325"
         },
         {
-          "\"label\"": "TO-ACT",
-          "\"citation\"": "Coutinho JM, et al. Effect of Endovascular Treatment With Medical Management vs Standard Care on Severe Cerebral Venous Thrombosis (TO-ACT). JAMA Neurol. 2020;77(8):966-973.",
-          "\"pmid\"": "32421159"
+          "label": "TO-ACT",
+          "citation": "Coutinho JM, et al. Effect of Endovascular Treatment With Medical Management vs Standard Care on Severe Cerebral Venous Thrombosis (TO-ACT). JAMA Neurol. 2020;77(8):966-973.",
+          "pmid": "32421159"
         },
         {
-          "\"label\"": "AHA/ASA Statement",
-          "\"citation\"": "Saposnik G, et al. Diagnosis and management of cerebral venous thrombosis: a statement for healthcare professionals from the AHA/ASA. Stroke. 2011;42(4):1158-1192.",
-          "\"pmid\"": "21293023"
+          "label": "AHA/ASA Statement",
+          "citation": "Saposnik G, et al. Diagnosis and management of cerebral venous thrombosis: a statement for healthcare professionals from the AHA/ASA. Stroke. 2011;42(4):1158-1192.",
+          "pmid": "21293023"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -2031,39 +2032,39 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "CADISS Trial",
-          "\"citation\"": "CADISS Trial Investigators. Lancet Neurol. 2015;14(4):361-367.",
-          "\"pmid\"": "25684164"
+          "label": "CADISS Trial",
+          "citation": "CADISS Trial Investigators. Lancet Neurol. 2015;14(4):361-367.",
+          "pmid": "25684164"
         },
         {
-          "\"label\"": "TREAT-CAD Trial",
-          "\"citation\"": "Engelter ST, et al. Lancet Neurol. 2021;20(5):341-350.",
-          "\"pmid\"": "33765420"
+          "label": "TREAT-CAD Trial",
+          "citation": "Engelter ST, et al. Lancet Neurol. 2021;20(5):341-350.",
+          "pmid": "33765420"
         },
         {
-          "\"label\"": "STOP-CAD Study",
-          "\"citation\"": "Yaghi S, et al. Stroke. 2024;55(4):908-918.",
-          "\"pmid\"": "38334460"
+          "label": "STOP-CAD Study",
+          "citation": "Yaghi S, et al. Stroke. 2024;55(4):908-918.",
+          "pmid": "38334460"
         },
         {
-          "\"label\"": "IPD Meta-Analysis",
-          "\"citation\"": "Kaufmann JE, et al. JAMA Neurol. 2024;81(6):630-637.",
-          "\"pmid\"": "38739383"
+          "label": "IPD Meta-Analysis",
+          "citation": "Kaufmann JE, et al. JAMA Neurol. 2024;81(6):630-637.",
+          "pmid": "38739383"
         },
         {
-          "\"label\"": "AHA/ASA 2021 Guideline",
-          "\"citation\"": "Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.",
-          "\"pmid\"": "34024117"
+          "label": "AHA/ASA 2021 Guideline",
+          "citation": "Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.",
+          "pmid": "34024117"
         },
         {
-          "\"label\"": "AHA Statement 2024",
-          "\"citation\"": "Treatment and Outcomes of Cervical Artery Dissection in Adults. Stroke. 2024;55(3):e84-e107.",
-          "\"pmid\"": "38301552"
+          "label": "AHA Statement 2024",
+          "citation": "Treatment and Outcomes of Cervical Artery Dissection in Adults. Stroke. 2024;55(3):e84-e107.",
+          "pmid": "38301552"
         },
         {
-          "\"label\"": "ESO Guideline 2021",
-          "\"citation\"": "European Stroke Organisation guideline for the management of extracranial and intracranial artery dissection. Eur Stroke J. 2021;6(3):XXXIX-LXXXVIII.",
-          "\"pmid\"": "34528453"
+          "label": "ESO Guideline 2021",
+          "citation": "European Stroke Organisation guideline for the management of extracranial and intracranial artery dissection. Eur Stroke J. 2021;6(3):XXXIX-LXXXVIII.",
+          "pmid": "34528453"
         }
       ],
       "lastReviewed": "2026-06-09",
@@ -2086,14 +2087,14 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "AHA Statement 2021",
-          "\"citation\"": "Mac Grory B, et al. Management of Central Retinal Artery Occlusion. Stroke. 2021;52(6):e282-e294.",
-          "\"pmid\"": "33677974"
+          "label": "AHA Statement 2021",
+          "citation": "Mac Grory B, et al. Management of Central Retinal Artery Occlusion. Stroke. 2021;52(6):e282-e294.",
+          "pmid": "33677974"
         },
         {
-          "\"label\"": "THEIA Trial 2025",
-          "\"citation\"": "Préterre C, et al. Intravenous alteplase versus oral aspirin for acute central retinal artery occlusion (THEIA). Lancet Neurol. 2025;24:110-120.",
-          "\"pmid\"": "41109232"
+          "label": "THEIA Trial 2025",
+          "citation": "Préterre C, et al. Intravenous alteplase versus oral aspirin for acute central retinal artery occlusion (THEIA). Lancet Neurol. 2025;24:110-120.",
+          "pmid": "41109232"
         }
       ],
       "lastReviewed": "2026-07-24",
@@ -2116,34 +2117,34 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "POINT Trial",
-          "\"citation\"": "Johnston SC et al. N Engl J Med. 2018;379:215-225.",
-          "\"pmid\"": "29766750"
+          "label": "POINT Trial",
+          "citation": "Johnston SC et al. N Engl J Med. 2018;379:215-225.",
+          "pmid": "29766750"
         },
         {
-          "\"label\"": "CHANCE Trial",
-          "\"citation\"": "Wang Y et al. N Engl J Med. 2013;369:11-19.",
-          "\"pmid\"": "23803136"
+          "label": "CHANCE Trial",
+          "citation": "Wang Y et al. N Engl J Med. 2013;369:11-19.",
+          "pmid": "23803136"
         },
         {
-          "\"label\"": "CHANCE-2 Trial",
-          "\"citation\"": "Wang Y et al. N Engl J Med. 2021;385:2520-2530.",
-          "\"pmid\"": "34708996"
+          "label": "CHANCE-2 Trial",
+          "citation": "Wang Y et al. N Engl J Med. 2021;385:2520-2530.",
+          "pmid": "34708996"
         },
         {
-          "\"label\"": "INSPIRES Trial",
-          "\"citation\"": "Gao Y et al. N Engl J Med. 2023;389:2413-2424.",
-          "\"pmid\"": "38157499"
+          "label": "INSPIRES Trial",
+          "citation": "Gao Y et al. N Engl J Med. 2023;389:2413-2424.",
+          "pmid": "38157499"
         },
         {
-          "\"label\"": "THALES Trial",
-          "\"citation\"": "Johnston SC et al. N Engl J Med. 2020;383:207-217.",
-          "\"pmid\"": "32668111"
+          "label": "THALES Trial",
+          "citation": "Johnston SC et al. N Engl J Med. 2020;383:207-217.",
+          "pmid": "32668111"
         },
         {
-          "\"label\"": "SAMMPRIS Trial",
-          "\"citation\"": "Chimowitz MI et al. N Engl J Med. 2011;365:993-1003.",
-          "\"pmid\"": "21899409"
+          "label": "SAMMPRIS Trial",
+          "citation": "Chimowitz MI et al. N Engl J Med. 2011;365:993-1003.",
+          "pmid": "21899409"
         }
       ],
       "lastReviewed": "2026-07-13",
@@ -2167,14 +2168,14 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "EDEMA Score Study",
-          "\"citation\"": "Strbian D, et al. The EDEMA score: a practical tool to predict severe brain swelling. Stroke. 2013;44(10):2728-2733.",
-          "\"pmid\"": "23887841"
+          "label": "EDEMA Score Study",
+          "citation": "Strbian D, et al. The EDEMA score: a practical tool to predict severe brain swelling. Stroke. 2013;44(10):2728-2733.",
+          "pmid": "23887841"
         },
         {
-          "\"label\"": "DESTINY II Trial",
-          "\"citation\"": "Jüttler E, et al. Decompressive Surgery for Severe Middle-Cerebral-Artery Infarction in Elderly Patients. N Engl J Med. 2014;370:1091-1100.",
-          "\"pmid\"": "24645942"
+          "label": "DESTINY II Trial",
+          "citation": "Jüttler E, et al. Decompressive Surgery for Severe Middle-Cerebral-Artery Infarction in Elderly Patients. N Engl J Med. 2014;370:1091-1100.",
+          "pmid": "24645942"
         }
       ],
       "lastReviewed": "2026-07-24",
@@ -2198,9 +2199,9 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "NCS Consensus Statement",
-          "\"citation\"": "Fried HI, et al. The Insertion and Management of External Ventricular Drains. Neurocrit Care. 2016;24:61-81.",
-          "\"pmid\"": "26738503"
+          "label": "NCS Consensus Statement",
+          "citation": "Fried HI, et al. The Insertion and Management of External Ventricular Drains. Neurocrit Care. 2016;24:61-81.",
+          "pmid": "26738503"
         }
       ],
       "lastReviewed": "2026-06-03",
@@ -2223,24 +2224,24 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "AHA Scientific Statement",
-          "\"citation\"": "Olin JW, et al. Fibromuscular dysplasia: state of the science and critical unanswered questions: a scientific statement from the American Heart Association. Circulation. 2014;129(9):1048-1078.",
-          "\"pmid\"": "24554781"
+          "label": "AHA Scientific Statement",
+          "citation": "Olin JW, et al. Fibromuscular dysplasia: state of the science and critical unanswered questions: a scientific statement from the American Heart Association. Circulation. 2014;129(9):1048-1078.",
+          "pmid": "24554781"
         },
         {
-          "\"label\"": "First International Consensus",
-          "\"citation\"": "Gornik HL, et al. First International Consensus on the Diagnosis and Management of Fibromuscular Dysplasia. Vasc Med. 2019;24(2):164-189.",
-          "\"pmid\"": "30642231"
+          "label": "First International Consensus",
+          "citation": "Gornik HL, et al. First International Consensus on the Diagnosis and Management of Fibromuscular Dysplasia. Vasc Med. 2019;24(2):164-189.",
+          "pmid": "30642231"
         },
         {
-          "\"label\"": "US Registry for FMD",
-          "\"citation\"": "Olin JW, et al. The United States Registry for Fibromuscular Dysplasia: results in the first 447 patients. Circulation. 2012;125(25):3186-3195.",
-          "\"pmid\"": "22615343"
+          "label": "US Registry for FMD",
+          "citation": "Olin JW, et al. The United States Registry for Fibromuscular Dysplasia: results in the first 447 patients. Circulation. 2012;125(25):3186-3195.",
+          "pmid": "22615343"
         },
         {
-          "\"label\"": "European FMD Registry",
-          "\"citation\"": "Persu A, et al. International consensus on fibromuscular dysplasia: European/International Fibromuscular Dysplasia Registry. J Hypertens. 2021;39(10):2036-2045.",
-          "\"pmid\"": "33935216"
+          "label": "European FMD Registry",
+          "citation": "Persu A, et al. International consensus on fibromuscular dysplasia: European/International Fibromuscular Dysplasia Registry. J Hypertens. 2021;39(10):2036-2045.",
+          "pmid": "33935216"
         }
       ],
       "lastReviewed": "2026-06-09",
@@ -2265,19 +2266,19 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "AHA/ASA Guidelines",
-          "\"citation\"": "Prabhakaran S, et al. 2026 Guidelines for the Early Management of Acute Ischemic Stroke. Stroke. 2026.",
-          "\"pmid\"": "41582814"
+          "label": "AHA/ASA Guidelines",
+          "citation": "Prabhakaran S, et al. 2026 Guidelines for the Early Management of Acute Ischemic Stroke. Stroke. 2026.",
+          "pmid": "41582814"
         },
         {
-          "\"label\"": "Cerebral Edema Recommendations",
-          "\"citation\"": "Wijdicks EF, et al. Recommendations for the Management of Cerebral and Cerebellar Infarction With Swelling. Stroke. 2014;45:1222–1238.",
-          "\"pmid\"": "24481970"
+          "label": "Cerebral Edema Recommendations",
+          "citation": "Wijdicks EF, et al. Recommendations for the Management of Cerebral and Cerebellar Infarction With Swelling. Stroke. 2014;45:1222–1238.",
+          "pmid": "24481970"
         },
         {
-          "\"label\"": "NCS Guidelines",
-          "\"citation\"": "Cook AM, et al. Guidelines for the Acute Treatment of Cerebral Edema in Neurocritical Care Patients. Neurocrit Care. 2020;32:647–666.",
-          "\"pmid\"": "32227294"
+          "label": "NCS Guidelines",
+          "citation": "Cook AM, et al. Guidelines for the Acute Treatment of Cerebral Edema in Neurocritical Care Patients. Neurocrit Care. 2020;32:647–666.",
+          "pmid": "32227294"
         }
       ],
       "lastReviewed": "2026-05-31",
@@ -2299,14 +2300,14 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "Kattah Study",
-          "\"citation\"": "Kattah JC et al. Stroke. 2009;40:3504-10.",
-          "\"pmid\"": "19762654"
+          "label": "Kattah Study",
+          "citation": "Kattah JC et al. Stroke. 2009;40:3504-10.",
+          "pmid": "19762654"
         },
         {
-          "\"label\"": "AHA/ASA Guideline",
-          "\"citation\"": "Prabhakaran S et al. Stroke. 2026.",
-          "\"pmid\"": "41582814"
+          "label": "AHA/ASA Guideline",
+          "citation": "Prabhakaran S et al. Stroke. 2026.",
+          "pmid": "41582814"
         }
       ],
       "lastReviewed": "2026-05-30",
@@ -2329,29 +2330,29 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "ATTEST-2 Trial",
-          "\"citation\"": "Muir KW, et al. Tenecteplase versus alteplase for acute stroke within 4.5 h (ATTEST-2). Lancet Neurol. 2024;23(11):1087-1096.",
-          "\"pmid\"": "39424558"
+          "label": "ATTEST-2 Trial",
+          "citation": "Muir KW, et al. Tenecteplase versus alteplase for acute stroke within 4.5 h (ATTEST-2). Lancet Neurol. 2024;23(11):1087-1096.",
+          "pmid": "39424558"
         },
         {
-          "\"label\"": "TIMELESS Trial",
-          "\"citation\"": "Albers GW, et al. Tenecteplase for Stroke at 4.5 to 24 Hours with Perfusion-Imaging Selection. N Engl J Med. 2024;390(8):701-711.",
-          "\"pmid\"": "38329148"
+          "label": "TIMELESS Trial",
+          "citation": "Albers GW, et al. Tenecteplase for Stroke at 4.5 to 24 Hours with Perfusion-Imaging Selection. N Engl J Med. 2024;390(8):701-711.",
+          "pmid": "38329148"
         },
         {
-          "\"label\"": "TRACE-III Trial",
-          "\"citation\"": "Xiong Y, et al. Tenecteplase for Ischemic Stroke at 4.5 to 24 Hours without Thrombectomy. N Engl J Med. 2024;391(3):203-212.",
-          "\"pmid\"": "38884324"
+          "label": "TRACE-III Trial",
+          "citation": "Xiong Y, et al. Tenecteplase for Ischemic Stroke at 4.5 to 24 Hours without Thrombectomy. N Engl J Med. 2024;391(3):203-212.",
+          "pmid": "38884324"
         },
         {
-          "\"label\"": "TEMPO-2 Trial",
-          "\"citation\"": "Coutts SB, et al. Tenecteplase versus standard of care for minor ischaemic stroke with proven occlusion (TEMPO-2). Lancet. 2024;403(10444):2597-2605.",
-          "\"pmid\"": "38768626"
+          "label": "TEMPO-2 Trial",
+          "citation": "Coutts SB, et al. Tenecteplase versus standard of care for minor ischaemic stroke with proven occlusion (TEMPO-2). Lancet. 2024;403(10444):2597-2605.",
+          "pmid": "38768626"
         },
         {
-          "\"label\"": "AHA/ASA 2026 AIS Guideline",
-          "\"citation\"": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
-          "\"pmid\"": "41582814"
+          "label": "AHA/ASA 2026 AIS Guideline",
+          "citation": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
+          "pmid": "41582814"
         }
       ],
       "lastReviewed": "2026-07-13",
@@ -2374,39 +2375,39 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "SELECT2",
-          "\"citation\"": "Sarraj A, et al. Trial of Endovascular Thrombectomy for Large Ischemic Strokes (SELECT2). N Engl J Med. 2023;388(14):1259-1271.",
-          "\"pmid\"": "36762865"
+          "label": "SELECT2",
+          "citation": "Sarraj A, et al. Trial of Endovascular Thrombectomy for Large Ischemic Strokes (SELECT2). N Engl J Med. 2023;388(14):1259-1271.",
+          "pmid": "36762865"
         },
         {
-          "\"label\"": "ANGEL-ASPECT",
-          "\"citation\"": "Huo X, et al. Trial of Endovascular Therapy for Acute Ischemic Stroke with Large Infarct (ANGEL-ASPECT). N Engl J Med. 2023;388(14):1272-1283.",
-          "\"pmid\"": "36762852"
+          "label": "ANGEL-ASPECT",
+          "citation": "Huo X, et al. Trial of Endovascular Therapy for Acute Ischemic Stroke with Large Infarct (ANGEL-ASPECT). N Engl J Med. 2023;388(14):1272-1283.",
+          "pmid": "36762852"
         },
         {
-          "\"label\"": "TENSION",
-          "\"citation\"": "Bendszus M, et al. Endovascular thrombectomy for acute ischaemic stroke with established large infarct (TENSION). Lancet. 2023;402(10414):1753-1763.",
-          "\"pmid\"": "37837989"
+          "label": "TENSION",
+          "citation": "Bendszus M, et al. Endovascular thrombectomy for acute ischaemic stroke with established large infarct (TENSION). Lancet. 2023;402(10414):1753-1763.",
+          "pmid": "37837989"
         },
         {
-          "\"label\"": "LASTE",
-          "\"citation\"": "Costalat V, et al. Trial of Thrombectomy for Stroke with a Large Infarct of Unrestricted Size (LASTE). N Engl J Med. 2024;390(18):1677-1689.",
-          "\"pmid\"": "38718358"
+          "label": "LASTE",
+          "citation": "Costalat V, et al. Trial of Thrombectomy for Stroke with a Large Infarct of Unrestricted Size (LASTE). N Engl J Med. 2024;390(18):1677-1689.",
+          "pmid": "38718358"
         },
         {
-          "\"label\"": "TESLA",
-          "\"citation\"": "Yoo AJ, et al. Thrombectomy for Stroke With Large Infarct on Noncontrast CT: The TESLA Randomized Clinical Trial. JAMA. 2024;332(16):1355-1366.",
-          "\"pmid\"": "39374319"
+          "label": "TESLA",
+          "citation": "Yoo AJ, et al. Thrombectomy for Stroke With Large Infarct on Noncontrast CT: The TESLA Randomized Clinical Trial. JAMA. 2024;332(16):1355-1366.",
+          "pmid": "39374319"
         },
         {
-          "\"label\"": "RESCUE-Japan LIMIT",
-          "\"citation\"": "Yoshimura S, et al. Endovascular Therapy for Acute Stroke with a Large Ischemic Region. N Engl J Med. 2022;386(14):1303-1313.",
-          "\"pmid\"": "35138767"
+          "label": "RESCUE-Japan LIMIT",
+          "citation": "Yoshimura S, et al. Endovascular Therapy for Acute Stroke with a Large Ischemic Region. N Engl J Med. 2022;386(14):1303-1313.",
+          "pmid": "35138767"
         },
         {
-          "\"label\"": "2026 AIS Guideline",
-          "\"citation\"": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
-          "\"pmid\"": "41582814"
+          "label": "2026 AIS Guideline",
+          "citation": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
+          "pmid": "41582814"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -2429,29 +2430,29 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "SPARCL",
-          "\"citation\"": "Amarenco P, et al. High-dose atorvastatin after stroke or transient ischemic attack (SPARCL). N Engl J Med. 2006;355(6):549-559.",
-          "\"pmid\"": "16899775"
+          "label": "SPARCL",
+          "citation": "Amarenco P, et al. High-dose atorvastatin after stroke or transient ischemic attack (SPARCL). N Engl J Med. 2006;355(6):549-559.",
+          "pmid": "16899775"
         },
         {
-          "\"label\"": "Treat Stroke to Target",
-          "\"citation\"": "Amarenco P, et al. A Comparison of Two LDL Cholesterol Targets after Ischemic Stroke. N Engl J Med. 2020;382(1):9-19.",
-          "\"pmid\"": "31738483"
+          "label": "Treat Stroke to Target",
+          "citation": "Amarenco P, et al. A Comparison of Two LDL Cholesterol Targets after Ischemic Stroke. N Engl J Med. 2020;382(1):9-19.",
+          "pmid": "31738483"
         },
         {
-          "\"label\"": "FOURIER",
-          "\"citation\"": "Sabatine MS, et al. Evolocumab and Clinical Outcomes in Patients with Cardiovascular Disease. N Engl J Med. 2017;376(18):1713-1722.",
-          "\"pmid\"": "28304224"
+          "label": "FOURIER",
+          "citation": "Sabatine MS, et al. Evolocumab and Clinical Outcomes in Patients with Cardiovascular Disease. N Engl J Med. 2017;376(18):1713-1722.",
+          "pmid": "28304224"
         },
         {
-          "\"label\"": "IMPROVE-IT",
-          "\"citation\"": "Cannon CP, et al. Ezetimibe Added to Statin Therapy after Acute Coronary Syndromes. N Engl J Med. 2015;372(25):2387-2397.",
-          "\"pmid\"": "26039521"
+          "label": "IMPROVE-IT",
+          "citation": "Cannon CP, et al. Ezetimibe Added to Statin Therapy after Acute Coronary Syndromes. N Engl J Med. 2015;372(25):2387-2397.",
+          "pmid": "26039521"
         },
         {
-          "\"label\"": "AHA/ASA 2021 Secondary Prevention",
-          "\"citation\"": "Kleindorfer DO, et al. 2021 Guideline for the Prevention of Stroke in Patients With Stroke and TIA. Stroke. 2021;52(7):e364-e467.",
-          "\"pmid\"": "34024117"
+          "label": "AHA/ASA 2021 Secondary Prevention",
+          "citation": "Kleindorfer DO, et al. 2021 Guideline for the Prevention of Stroke in Patients With Stroke and TIA. Stroke. 2021;52(7):e364-e467.",
+          "pmid": "34024117"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -2475,29 +2476,29 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "DECIMAL Trial",
-          "\"citation\"": "Vahedi K et al. Stroke. 2007;38:2506-2517.",
-          "\"pmid\"": "17690311"
+          "label": "DECIMAL Trial",
+          "citation": "Vahedi K et al. Stroke. 2007;38:2506-2517.",
+          "pmid": "17690311"
         },
         {
-          "\"label\"": "DESTINY Trial",
-          "\"citation\"": "Jüttler E et al. Stroke. 2007;38:2518-2525.",
-          "\"pmid\"": "17690310"
+          "label": "DESTINY Trial",
+          "citation": "Jüttler E et al. Stroke. 2007;38:2518-2525.",
+          "pmid": "17690310"
         },
         {
-          "\"label\"": "HAMLET Trial",
-          "\"citation\"": "Hofmeijer J et al. Lancet Neurol. 2009;8:326-333.",
-          "\"pmid\"": "19269254"
+          "label": "HAMLET Trial",
+          "citation": "Hofmeijer J et al. Lancet Neurol. 2009;8:326-333.",
+          "pmid": "19269254"
         },
         {
-          "\"label\"": "DESTINY II Trial",
-          "\"citation\"": "Jüttler E et al. N Engl J Med. 2014;370:1091-1100.",
-          "\"pmid\"": "24645942"
+          "label": "DESTINY II Trial",
+          "citation": "Jüttler E et al. N Engl J Med. 2014;370:1091-1100.",
+          "pmid": "24645942"
         },
         {
-          "\"label\"": "AHA Guidelines",
-          "\"citation\"": "Wijdicks EF et al. Recommendations for the Management of Cerebral and Cerebellar Infarction With Swelling. Stroke. 2014;45:1222-1238.",
-          "\"pmid\"": "24481970"
+          "label": "AHA Guidelines",
+          "citation": "Wijdicks EF et al. Recommendations for the Management of Cerebral and Cerebellar Infarction With Swelling. Stroke. 2014;45:1222-1238.",
+          "pmid": "24481970"
         }
       ],
       "lastReviewed": "2026-05-30",
@@ -2519,9 +2520,9 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "CAM-ICU Study",
-          "\"citation\"": "Ely EW et al. JAMA. 2001;286:2703-10.",
-          "\"pmid\"": "11730446"
+          "label": "CAM-ICU Study",
+          "citation": "Ely EW et al. JAMA. 2001;286:2703-10.",
+          "pmid": "11730446"
         }
       ],
       "lastReviewed": "2026-05-30",
@@ -2543,14 +2544,14 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "NIHSS (original)",
-          "\"citation\"": "Brott T, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
-          "\"pmid\"": "2749846"
+          "label": "NIHSS (original)",
+          "citation": "Brott T, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
+          "pmid": "2749846"
         },
         {
-          "\"label\"": "NIHSS training/reliability",
-          "\"citation\"": "Lyden P, et al. Improved reliability of the NIH Stroke Scale using video training. Stroke. 1994;25(11):2220-2226.",
-          "\"pmid\"": "7974549"
+          "label": "NIHSS training/reliability",
+          "citation": "Lyden P, et al. Improved reliability of the NIH Stroke Scale using video training. Stroke. 1994;25(11):2220-2226.",
+          "pmid": "7974549"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -2573,9 +2574,9 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "NCS Consensus",
-          "\"citation\"": "Olson DM et al. Neurocrit Care. 2024.",
-          "\"pmid\"": "38290918"
+          "label": "NCS Consensus",
+          "citation": "Olson DM et al. Neurocrit Care. 2024.",
+          "pmid": "38290918"
         }
       ],
       "lastReviewed": "2026-05-30",
@@ -2598,19 +2599,19 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "RCVS² score",
-          "\"citation\"": "Rocha EA, et al. RCVS2 score and diagnostic approach for reversible cerebral vasoconstriction syndrome. Neurology. 2019;92(7):e639-e647.",
-          "\"pmid\"": "30635475"
+          "label": "RCVS² score",
+          "citation": "Rocha EA, et al. RCVS2 score and diagnostic approach for reversible cerebral vasoconstriction syndrome. Neurology. 2019;92(7):e639-e647.",
+          "pmid": "30635475"
         },
         {
-          "\"label\"": "Ducros cohort",
-          "\"citation\"": "Ducros A, et al. The clinical and radiological spectrum of reversible cerebral vasoconstriction syndrome (67 patients). Brain. 2007;130(Pt 12):3091-3101.",
-          "\"pmid\"": "18025032"
+          "label": "Ducros cohort",
+          "citation": "Ducros A, et al. The clinical and radiological spectrum of reversible cerebral vasoconstriction syndrome (67 patients). Brain. 2007;130(Pt 12):3091-3101.",
+          "pmid": "18025032"
         },
         {
-          "\"label\"": "Singhal series",
-          "\"citation\"": "Singhal AB, et al. Reversible cerebral vasoconstriction syndromes: analysis of 139 cases. Arch Neurol. 2011;68(8):1005-1012.",
-          "\"pmid\"": "21482916"
+          "label": "Singhal series",
+          "citation": "Singhal AB, et al. Reversible cerebral vasoconstriction syndromes: analysis of 139 cases. Arch Neurol. 2011;68(8):1005-1012.",
+          "pmid": "21482916"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -2633,9 +2634,9 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "SeLECT Score Study",
-          "\"citation\"": "Galovic M, et al. Prediction of late seizures after ischaemic stroke with the SeLECT score. Lancet Neurol. 2018;17(2):143-152.",
-          "\"pmid\"": "29413315"
+          "label": "SeLECT Score Study",
+          "citation": "Galovic M, et al. Prediction of late seizures after ischaemic stroke with the SeLECT score. Lancet Neurol. 2018;17(2):143-152.",
+          "pmid": "29413315"
         }
       ],
       "lastReviewed": "2026-07-24",
@@ -2659,14 +2660,14 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "Joint Commission",
-          "\"citation\"": "Specifications Manual for Joint Commission National Quality Measures.",
-          "\"pmid\"": "null"
+          "label": "Joint Commission",
+          "citation": "Specifications Manual for Joint Commission National Quality Measures.",
+          "pmid": null
         },
         {
-          "\"label\"": "AHA/ASA 2026 AIS Guideline",
-          "\"citation\"": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
-          "\"pmid\"": "41582814"
+          "label": "AHA/ASA 2026 AIS Guideline",
+          "citation": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
+          "pmid": "41582814"
         }
       ],
       "lastReviewed": "2026-07-13",
@@ -2689,34 +2690,34 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "ASTRAL Score",
-          "\"citation\"": "Ntaios G, et al. Stroke. 2012;43(8):2170-2176.",
-          "\"pmid\"": "22738924"
+          "label": "ASTRAL Score",
+          "citation": "Ntaios G, et al. Stroke. 2012;43(8):2170-2176.",
+          "pmid": "22738924"
         },
         {
-          "\"label\"": "PLAN Score",
-          "\"citation\"": "O'Donnell MJ, et al. Arch Intern Med. 2012;172(20):1548-1556.",
-          "\"pmid\"": "23090225"
+          "label": "PLAN Score",
+          "citation": "O'Donnell MJ, et al. Arch Intern Med. 2012;172(20):1548-1556.",
+          "pmid": "23090225"
         },
         {
-          "\"label\"": "ICH Score",
-          "\"citation\"": "Hemphill JC 3rd, et al. Stroke. 2001;32(4):891-897.",
-          "\"pmid\"": "11283388"
+          "label": "ICH Score",
+          "citation": "Hemphill JC 3rd, et al. Stroke. 2001;32(4):891-897.",
+          "pmid": "11283388"
         },
         {
-          "\"label\"": "mRS Scale",
-          "\"citation\"": "van Swieten JC, et al. Stroke. 1988;19(5):604-607.",
-          "\"pmid\"": "3363593"
+          "label": "mRS Scale",
+          "citation": "van Swieten JC, et al. Stroke. 1988;19(5):604-607.",
+          "pmid": "3363593"
         },
         {
-          "\"label\"": "AHA/ASA 2022 ICH Guideline",
-          "\"citation\"": "Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.",
-          "\"pmid\"": "35579034"
+          "label": "AHA/ASA 2022 ICH Guideline",
+          "citation": "Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.",
+          "pmid": "35579034"
         },
         {
-          "\"label\"": "FASTEST Trial",
-          "\"citation\"": "Broderick JP, et al. Recombinant factor VIIa versus placebo for spontaneous intracerebral haemorrhage within 2 h (FASTEST). Lancet. 2026;407(10530):773-783.",
-          "\"pmid\"": "41653933"
+          "label": "FASTEST Trial",
+          "citation": "Broderick JP, et al. Recombinant factor VIIa versus placebo for spontaneous intracerebral haemorrhage within 2 h (FASTEST). Lancet. 2026;407(10530):773-783.",
+          "pmid": "41653933"
         }
       ],
       "lastReviewed": "2026-07-13",
@@ -2739,19 +2740,19 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "Original Study",
-          "\"citation\"": "Adams HP Jr, et al. TOAST. Stroke. 1993;24:35-41.",
-          "\"pmid\"": "7678184"
+          "label": "Original Study",
+          "citation": "Adams HP Jr, et al. TOAST. Stroke. 1993;24:35-41.",
+          "pmid": "7678184"
         },
         {
-          "\"label\"": "AHA/ASA Guideline",
-          "\"citation\"": "Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.",
-          "\"pmid\"": "34024117"
+          "label": "AHA/ASA Guideline",
+          "citation": "Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.",
+          "pmid": "34024117"
         },
         {
-          "\"label\"": "OCEANIC-STROKE Trial",
-          "\"citation\"": "Sharma M, et al. Asundexian for Secondary Stroke Prevention. N Engl J Med. 2026;394(15):1467-1479.",
-          "\"pmid\"": "41985132"
+          "label": "OCEANIC-STROKE Trial",
+          "citation": "Sharma M, et al. Asundexian for Secondary Stroke Prevention. N Engl J Med. 2026;394(15):1467-1479.",
+          "pmid": "41985132"
         }
       ],
       "lastReviewed": "2026-07-13",
@@ -2774,14 +2775,14 @@
       "calculators": [],
       "references": [
         {
-          "\"label\"": "Arterial territories — cerebral hemispheres",
-          "\"citation\"": "Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.",
-          "\"pmid\"": "9633714"
+          "label": "Arterial territories — cerebral hemispheres",
+          "citation": "Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.",
+          "pmid": "9633714"
         },
         {
-          "\"label\"": "Arterial territories — brainstem/cerebellum",
-          "\"citation\"": "Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.",
-          "\"pmid\"": "8909417"
+          "label": "Arterial territories — brainstem/cerebellum",
+          "citation": "Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.",
+          "pmid": "8909417"
         }
       ],
       "lastReviewed": "2026-07-18",

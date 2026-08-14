@@ -246,7 +246,10 @@ export function parseFrontmatter(md) {
 }
 
 function parseScalarOrFlow(v) {
-  if (v === '' ) return '';
+  if (v === '') return '';
+  if (v === 'null') return null;
+  if (v === 'true') return true;
+  if (v === 'false') return false;
   if (v.startsWith('[') && v.endsWith(']')) {
     const inner = v.slice(1, -1).trim();
     if (!inner) return [];
@@ -256,7 +259,11 @@ function parseScalarOrFlow(v) {
     const obj = {};
     for (const part of splitFlow(v.slice(1, -1))) {
       const kv = part.split(/:(.*)/s);
-      obj[kv[0].trim()] = parseScalarOrFlow((kv[1] || '').trim());
+      const rawKey = kv[0].trim();
+      const cleanKey = (rawKey.startsWith('"') && rawKey.endsWith('"')) || (rawKey.startsWith("'") && rawKey.endsWith("'"))
+        ? rawKey.slice(1, -1)
+        : rawKey;
+      obj[cleanKey] = parseScalarOrFlow((kv[1] || '').trim());
     }
     return obj;
   }

@@ -65,9 +65,10 @@ export const citations = [
     title: 'European Stroke Organisation expedited recommendation on tenecteplase',
     journal: 'Eur Stroke J',
     year: 2023,
+    pmid: '37305988',
     doi: '10.1177/23969873231177508',
-    url: 'https://journals.sagepub.com/doi/full/10.1177/23969873231177508',
-    verificationStatus: 'verified-doi'
+    url: 'https://pubmed.ncbi.nlm.nih.gov/37305988/',
+    verificationStatus: 'verified-pubmed'
   }),
 
   // 2) Large-core EVT

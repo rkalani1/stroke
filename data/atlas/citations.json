@@ -3,7 +3,7 @@
     "endpoint": "citations",
     "schemaVersion": "1.0.0",
     "appVersion": "6.11.8",
-    "checksum": "sha256:1fec91dac3329a69069c9ebb87c7f488",
+    "checksum": "sha256:40366d51015843899a90ece8c9132a0b",
     "count": 87,
     "source": "Evidence atlas citations bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -79,10 +79,10 @@
       "year": 2023,
       "volume": "",
       "pages": "",
-      "pmid": "",
+      "pmid": "37305988",
       "doi": "10.1177/23969873231177508",
-      "url": "https://journals.sagepub.com/doi/full/10.1177/23969873231177508",
-      "verificationStatus": "verified-doi",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37305988/",
+      "verificationStatus": "verified-pubmed",
       "verificationNotes": ""
     },
     {

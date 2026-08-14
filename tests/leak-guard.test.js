@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,6 +12,20 @@ const repoRoot = join(__dirname, '..');
 const guardScript = join(repoRoot, 'scripts/check-no-institutional-leak.mjs');
 const denylistFile = join(repoRoot, 'scripts/leak-guard-denylist.json');
 const stagedGuardScript = join(repoRoot, 'scripts/check-staged-leak-guard.sh');
+
+function getShExecutable() {
+  if (process.platform !== 'win32') return 'sh';
+  try {
+    const testRes = spawnSync('sh', ['-c', 'exit 0']);
+    if (testRes.status === 0) return 'sh';
+  } catch {}
+  const gitSh = 'C:\\Program Files\\Git\\bin\\sh.exe';
+  if (existsSync(gitSh)) return gitSh;
+  const gitUsrSh = 'C:\\Program Files\\Git\\usr\\bin\\sh.exe';
+  if (existsSync(gitUsrSh)) return gitUsrSh;
+  return 'sh';
+}
+const shCmd = getShExecutable();
 
 function withTempRepo(fn) {
   const dir = mkdtempSync(join(tmpdir(), 'stroke-leak-guard-'));
@@ -165,7 +179,7 @@ describe('leak guard scanner', () => {
       expect(spawnSync('git', ['add', 'fixture.txt'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
       writeFileSync(fixture, 'clean\n', 'utf8');
 
-      const result = spawnSync('sh', ['scripts/check-staged-leak-guard.sh'], {
+      const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
         cwd: dir,
         encoding: 'utf8',
         env: {
@@ -194,7 +208,7 @@ describe('leak guard scanner', () => {
       writeFileSync(join(dir, 'fixture.txt'), `${sentinel}\n`, 'utf8');
       expect(spawnSync('git', ['add', 'fixture.txt'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
 
-      const result = spawnSync('sh', ['scripts/check-staged-leak-guard.sh'], {
+      const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
         cwd: dir,
         encoding: 'utf8',
         env: {
@@ -221,7 +235,7 @@ describe('leak guard scanner', () => {
       writeFileSync(join(dir, 'scripts/leak-guard-denylist.local.json'), '{"literalDenylist":["PRIVATE"]}\n', 'utf8');
       expect(spawnSync('git', ['add', 'scripts/leak-guard-denylist.local.json'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
 
-      const result = spawnSync('sh', ['scripts/check-staged-leak-guard.sh'], {
+      const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
         cwd: dir,
         encoding: 'utf8'
       });
@@ -242,7 +256,7 @@ describe('leak guard scanner', () => {
       writeFileSync(join(dir, 'fixture.txt'), 'clean\n', 'utf8');
       expect(spawnSync('git', ['add', 'fixture.txt'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
 
-      const result = spawnSync('sh', ['scripts/check-staged-leak-guard.sh'], {
+      const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
         cwd: dir,
         encoding: 'utf8',
         env: {
@@ -269,7 +283,7 @@ describe('leak guard scanner', () => {
       writeFileSync(join(dir, 'fixture.txt'), 'clean\n', 'utf8');
       expect(spawnSync('git', ['add', 'fixture.txt'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
 
-      const result = spawnSync('sh', ['scripts/check-staged-leak-guard.sh'], {
+      const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
         cwd: dir,
         encoding: 'utf8',
         env: {

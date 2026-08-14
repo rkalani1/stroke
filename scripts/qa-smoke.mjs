@@ -1,5 +1,7 @@
 import fs from 'node:fs/promises';
 import fsSync from 'node:fs';
+import http from 'node:http';
+import https from 'node:https';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import process from 'node:process';
@@ -202,11 +204,34 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function httpGet(urlStr) {
+  return new Promise((resolve, reject) => {
+    try {
+      const urlObj = new URL(urlStr);
+      const client = urlObj.protocol === 'https:' ? https : http;
+      const req = client.get(urlStr, { headers: { Connection: 'close' } }, (res) => {
+        let data = '';
+        res.on('data', (chunk) => { data += chunk; });
+        res.on('end', () => {
+          resolve({ ok: res.statusCode >= 200 && res.statusCode < 400, status: res.statusCode, text: () => Promise.resolve(data) });
+        });
+      });
+      req.on('error', reject);
+      req.setTimeout(5000, () => {
+        req.destroy();
+        reject(new Error('timeout'));
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
 async function waitForHttp(url, timeoutMs = 20000) {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     try {
-      const response = await fetch(url, { method: 'GET' });
+      const response = await httpGet(url);
       if (response.ok) return;
     } catch {
       // Server may still be booting.
@@ -218,7 +243,7 @@ async function waitForHttp(url, timeoutMs = 20000) {
 
 async function canReach(url) {
   try {
-    const response = await fetch(url, { method: 'GET' });
+    const response = await httpGet(url);
     return response.ok;
   } catch {
     return false;
@@ -264,7 +289,7 @@ async function updateLatencyHistory(summary, runs) {
 
 async function fetchAppVersion(url) {
   try {
-    const response = await fetch(url, { method: 'GET' });
+    const response = await httpGet(url);
     if (!response.ok) return null;
     const html = await response.text();
     const match = html.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/i);
