@@ -9,7 +9,6 @@ Ischemic
 SAH
 TIA
 CVT
-References
 Calculators
 ICH Management
 Algorithmic workflow

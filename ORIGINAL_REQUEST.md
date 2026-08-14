@@ -1,51 +1,45 @@
 # Original User Request
 
-## 2026-08-14T08:04:26Z
+## 2026-08-14T10:59:05Z
 
-Audit and update the stroke clinical decision-support application with all recent 2024-2026 clinical guidelines, update all 32+ educational resources and pages in the Education section, ensure minimized dropdown accordion structure is preserved, run the full validation test suite, and deploy to production (git push origin main).
+This is a single self-contained fix; keep it small and focused.
 
-Working directory: C:\Users\rkala\.gemini\antigravity\scratch\stroke
+Reorganize the primary navigation tabs so that the Trials tab is positioned between Protocols and Guidelines, and consolidate Educational Resources into the Guidelines & References section as a sub-tab.
+
+Working directory: C:\Users\rkala\stroke
 Integrity mode: development
 
 ## Requirements
 
-### R1. Clinical Guideline Audit & Incorporation
-Review and incorporate any recent 2024–2026 clinical stroke guidelines across the codebase, data files, and interactive tools (including 2026 AHA/ASA AIS updates, ESO 2024-2025, CSBP 2024, SVIN 2025, CATALYST DOAC timing meta-analysis, large-core EVT criteria, AIS BP guardrails, and pediatric reperfusion criteria), ensuring COR/LOE grading, citations, and interactive decision trees accurately reflect latest evidence.
+### R1. Primary Navigation Order
+Update desktop and mobile navigation layouts, tablists, keyboard navigation sequences, and ARIA attributes so that the primary tab sequence is:
+1. Encounter
+2. Protocols
+3. Trials
+4. Guidelines & References
 
-### R2. Comprehensive Education Section & Resource Refresh
-Update all 32+ educational modules, topic reviews, case guides, pathology summaries, and clinical pearls in the Education section (#tabpanel-references / content/bundle.json / src/app.jsx / education.json):
-- Ensure latest 2024-2026 trials and clinical evidence are cited.
-- Ensure all educational cards and sub-sections follow the collapsible <details> accordion structure and are minimized by default.
-- Maintain seamless dark-mode support and AA contrast compliance across all educational elements.
+### R2. Consolidated Guidelines & References Section
+Consolidate Educational Resources into the Guidelines & References tab (`research`), providing sub-navigation across:
+1. Guidelines
+2. Reference Library
+3. Educational Resources
+Maintain full functionality of all educational modules, simulators, and calculators, while supporting backwards-compatible hash routing (e.g. redirecting legacy `#/education` routes to the consolidated section).
 
-### R3. Content Bundling & Automated Validation Pipeline
-Re-bundle content assets and execute the complete verification suite:
-- npm run content:bundle
-- npm run content:validate
-- npm run evidence:validate
-- npm run validate:citations
-- npm run validate:inline-citations
-- npm run test:protocol-snapshot (update snapshot baseline with npm run test:protocol-snapshot:update if protocol text is updated with new guideline evidence)
-- npm run check:leak-guard
-
-### R4. Production Build & Deployment
-Build the compressed production distribution (npm run build:prod) and push all verified changes to origin/main for live GitHub Pages deployment.
+### R3. Quality and Build Integrity
+Ensure the client bundle builds cleanly and all automated verification checks, static validations, and test suites pass without regression. Run production build (`npm run build:prod`) to generate production assets.
 
 ## Acceptance Criteria
 
-### Guidelines & Clinical Evidence
-- [ ] All 2024-2026 guideline statements across AIS, ICH, SAH, TIA, and CVT are accurately documented with correct Class of Recommendation (COR), Level of Evidence (LOE), and PMID citations.
-- [ ] Guideline Library (#ref-guidelines) and interactive recommendation builders match the latest guideline catalog.
+### Navigation Layout & Behavior
+- [ ] Desktop navigation tab bar displays: Encounter, Protocols, Trials, Guidelines & References in exact order.
+- [ ] Mobile bottom navigation bar displays the four tabs in the same sequential order with appropriate icons and active states.
+- [ ] Tablist keyboard navigation (Arrow Left/Right, Home, End) traverses the tabs in the updated order.
 
-### Education Section
-- [ ] All 32+ educational modules and reference pages are thoroughly updated and rendered with minimized dropdown accordions.
-- [ ] Educational content bundle (content/bundle.json / education.json) passes all schema and currency validations.
+### Section Consolidation & Routing
+- [ ] Guidelines & References contains accessible sub-tabs for Guidelines, Reference Library, and Educational Resources.
+- [ ] The Educational Resources sub-tab correctly embeds and renders all educational modules, interactive simulators, and tools.
+- [ ] Hash navigation to `#/trials`, `#/research/guidelines`, `#/research/references`, `#/research/education`, and legacy routes like `#/education` correctly loads the target views.
 
-### Verification & Deployment
-- [ ] npm run content:validate passes with 0 errors.
-- [ ] npm run evidence:validate passes with 0 errors.
-- [ ] npm run validate:citations and npm run validate:inline-citations pass with 0 errors.
-- [ ] npm run test:protocol-snapshot passes.
-- [ ] npm run check:leak-guard confirms no institutional / PHI leaks.
-- [ ] npm run build:prod builds and compresses bundle cleanly.
-- [ ] All commits are pushed to origin/main.
+### Verification & Automated Testing
+- [ ] `npm run build:prod` succeeds with zero errors, producing updated compressed production bundles.
+- [ ] `npm test` passes all test suites, including leak guards, protocol guards, citations validation, and content bundles.

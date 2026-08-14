@@ -9,7 +9,6 @@ Ischemic
 SAH
 TIA
 CVT
-References
 Calculators
 Subarachnoid Hemorrhage Management
 2023 AHA/ASA Guidelines for Management of Aneurysmal SAH

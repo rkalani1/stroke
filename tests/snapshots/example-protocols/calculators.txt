@@ -9,7 +9,6 @@ Ischemic
 SAH
 TIA
 CVT
-References
 Calculators
 PHQ-9 Depression Screen (post-stroke)
 PHQ-9 Depression Screen

@@ -9,7 +9,6 @@ Ischemic
 SAH
 TIA
 CVT
-References
 Calculators
 Cerebral Venous Thrombosis (CVT) Management
 AHA/ASA 2024 Guidelines — CSBP 2024

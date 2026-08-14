@@ -9,7 +9,6 @@ Ischemic
 SAH
 TIA
 CVT
-References
 Calculators
 TIA Management & Secondary Prevention
 Urgent evaluation and risk reduction for transient ischemic attack

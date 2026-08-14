@@ -103,5 +103,530 @@
         "durationMs": 8961
       }
     ]
+  },
+  {
+    "finishedAt": "2026-08-14T10:56:39.154Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9383,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13425
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 7292
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 7936
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13425
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 8877
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:01:00.392Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9499,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13566
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 8124
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 8240
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13566
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 8067
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:07:37.107Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9288,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13496
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 7514
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 8104
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13496
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 8037
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:09:43.561Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9474,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13358
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 8503
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 7882
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13358
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 8151
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:11:29.065Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9922,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 15279
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 7259
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 7901
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 15279
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 9250
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:16:19.287Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9651,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13547
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 9163
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 8029
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13547
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 7863
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:18:14.440Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9373,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13499
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 7817
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 8059
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13499
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 8118
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:19:45.273Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9498,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13430
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 8655
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 8078
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13430
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 7828
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:25:12.500Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9796,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13435
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 8644
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 8026
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13435
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 9080
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:27:15.810Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9530,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13472
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 8621
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 7933
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13472
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 8093
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:32:23.519Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9422,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13524
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 7774
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 8098
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13524
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 8292
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:33:46.146Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9845,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13457
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 8528
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 8002
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13457
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 9392
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:36:14.825Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9569,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13479
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 8518
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 8091
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13479
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 8188
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:38:36.164Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9307,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13431
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 7590
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 8033
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13431
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 8173
+      }
+    ]
+  },
+  {
+    "finishedAt": "2026-08-14T11:41:19.499Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9492,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 13364
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 7665
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 7939
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 13364
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 8999
+      }
+    ]
   }
 ]

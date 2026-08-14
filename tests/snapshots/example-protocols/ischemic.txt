@@ -9,7 +9,6 @@ Ischemic
 SAH
 TIA
 CVT
-References
 Calculators
 Acute ischemic stroke
 Acute Stroke Pathways

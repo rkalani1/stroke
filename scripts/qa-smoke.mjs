@@ -16,7 +16,7 @@ const VIEWPORTS = [
   { name: 'tablet', width: 768, height: 1024 },
   { name: 'mobile', width: 390, height: 844 }
 ];
-const REQUIRED_TABS = ['Encounter', 'Trials', 'Education'];
+const REQUIRED_TABS = ['Encounter', 'Trials', 'Guidelines'];
 const REQUIRED_DIAGNOSIS = [
   /Ischemic Stroke or TIA/i,
   /Intracranial Hemorrhage/i,
