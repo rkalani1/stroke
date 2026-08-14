@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:6124f97c4d3a71051b083b1811063adc",
+    "checksum": "sha256:1af300b60509fb985ab80a6e60647967",
     "counts": {
       "guidelines": 11,
       "trials": 71,
@@ -1869,7 +1869,7 @@
       ],
       "lastReviewed": "2026-06-09",
       "provenance": "src/education.jsx",
-      "body": "Consensus guidelines for the determination of Brain Death / Death by Neurologic Criteria (BD/DNC) in adult and pediatric patients.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Consensus guidelines for the determination of Brain Death / Death by Neurologic Criteria (BD/DNC) in adult and pediatric patients.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "brainstem-stroke-syndromes",
@@ -1949,7 +1949,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Molecular genetics, neuroimaging hallmarks (anterior temporal pole & external capsule hyperintensities, pulvinar sign), clinical phenotypes, and management pitfalls for monogenic stroke syndromes.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Molecular genetics, neuroimaging hallmarks (anterior temporal pole & external capsule hyperintensities, pulvinar sign), clinical phenotypes, and management pitfalls for monogenic stroke syndromes.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "cancer-associated-stroke",
@@ -1989,7 +1989,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (>3–5x ULN), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (>3–5x ULN), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "carotid-stenosis-management",
@@ -2079,7 +2079,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Comprehensive Boston Criteria v2.0 diagnostic framework (strictly lobar CMBs, cortical superficial siderosis cSS, multispot WMH, centrum semiovale PVS), amyloid spells (TFNE vs TIA), and anticoagulation dilemmas in patients with AF and CAA (PRESTIGE-AF, SoSTART, ENRICH-AF DSMB alert, and LAAO).\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Comprehensive Boston Criteria v2.0 diagnostic framework (strictly lobar CMBs, cortical superficial siderosis cSS, multispot WMH, centrum semiovale PVS), amyloid spells (TFNE vs TIA), and anticoagulation dilemmas in patients with AF and CAA (PRESTIGE-AF, SoSTART, ENRICH-AF DSMB alert, and LAAO).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "cerebral-venous-sinus-thrombosis",
@@ -2179,7 +2179,7 @@
       ],
       "lastReviewed": "2026-06-09",
       "provenance": "src/education.jsx",
-      "body": "Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence (CADISS, TREAT-CAD, STOP-CAD, and 2024 IPD meta-analysis) for cervical artery dissection.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence (CADISS, TREAT-CAD, STOP-CAD, and 2024 IPD meta-analysis) for cervical artery dissection.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "crao-thrombolysis",
@@ -2259,7 +2259,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Embolic Stroke of Undetermined Source (ESUS) definition, empirical DOAC failure in unselected ESUS (NAVIGATE ESUS, RE-SPECT ESUS), biomarker-defined atrial cardiopathy trial analysis (ARCADIA), insertable cardiac monitor (ICM) yields (CRYSTAL AF, STROKE-AF), and stepwise diagnostic algorithm.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Embolic Stroke of Undetermined Source (ESUS) definition, empirical DOAC failure in unselected ESUS (NAVIGATE ESUS, RE-SPECT ESUS), biomarker-defined atrial cardiopathy trial analysis (ARCADIA), insertable cardiac monitor (ICM) yields (CRYSTAL AF, STROKE-AF), and stepwise diagnostic algorithm.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "ctp-ghost-core",
@@ -2304,7 +2304,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "CT perfusion ischemic core overestimation (rCBF <30% ghost core in hyperacute rapid reperfusion), ADC <620 μm²/s diffusion reversibility, Tmax >6s vs >10s hypoperfusion intensity ratio (HIR), bolus truncation, and severe carotid stenosis delay pseudo-penumbra.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "CT perfusion ischemic core overestimation (rCBF <30% ghost core in hyperacute rapid reperfusion), ADC <620 μm²/s diffusion reversibility, Tmax >6s vs >10s hypoperfusion intensity ratio (HIR), bolus truncation, and severe carotid stenosis delay pseudo-penumbra.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "dapt-regimens",
@@ -2404,7 +2404,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Evaluation, anatomical classification (M2/M3, A2/A3, P2/P3), trial evidence (DISTAL, ESCAPE-MeVO), disabling deficit thresholds, microcatheter techniques, and perforation risk management.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Evaluation, anatomical classification (M2/M3, A2/A3, P2/P3), trial evidence (DISTAL, ESCAPE-MeVO), disabling deficit thresholds, microcatheter techniques, and perforation risk management.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "edema-swelling-risk",
@@ -2511,7 +2511,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Standardized CTP and MRI mismatch interpretation in extended (6–24h) and wake-up windows — DAWN, DEFUSE 3, EXTEND, WAKE-UP, TWIST, automated thresholds (rCBF <30%, Tmax >6s), and DWI-FLAIR mismatch protocols.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Standardized CTP and MRI mismatch interpretation in extended (6–24h) and wake-up windows — DAWN, DEFUSE 3, EXTEND, WAKE-UP, TWIST, automated thresholds (rCBF <30%, Tmax >6s), and DWI-FLAIR mismatch protocols.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "factor-xia-inhibitors",
@@ -2546,7 +2546,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Targeting the contact activation pathway to uncouple thrombosis from hemostasis — Phase 2/3 trial data (OCEANIC-STROKE with Asundexian, PACIFIC-STROKE, AXIOMATIC-SSP with Milvexian, LILAC-TIMI 76 with Abelacimab) and emerging clinical indications.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Targeting the contact activation pathway to uncouple thrombosis from hemostasis — Phase 2/3 trial data (OCEANIC-STROKE with Asundexian, PACIFIC-STROKE, AXIOMATIC-SSP with Milvexian, LILAC-TIMI 76 with Abelacimab) and emerging clinical indications.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "fibromuscular-dysplasia",
@@ -2596,7 +2596,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Pathophysiology, angiographic classification (multifocal string-of-beads vs. focal), brain-to-pelvis vascular screening, and cervical artery dissection trials (CADISS, TREAT-CAD, STOP-CAD, Kaufmann IPD).\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Pathophysiology, angiographic classification (multifocal string-of-beads vs. focal), brain-to-pelvis vascular screening, and cervical artery dissection trials (CADISS, TREAT-CAD, STOP-CAD, Kaufmann IPD).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "herniation-icp",
@@ -2723,7 +2723,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Hyperacute SBP lowering (<140 mmHg within 1h, avoid <130), INTERACT-2/3 care bundle, ATACH-2 renal safety floor, FASTEST, TRIDENT, minimally invasive surgery (ENRICH), and SWITCH decompressive craniectomy.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Hyperacute SBP lowering (<140 mmHg within 1h, avoid <130), INTERACT-2/3 care bundle, ATACH-2 renal safety floor, FASTEST, TRIDENT, minimally invasive surgery (ENRICH), and SWITCH decompressive craniectomy.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "iv-thrombolysis",
@@ -2964,7 +2964,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Comprehensive metabolic and vascular risk modulation in stroke prevention — GLP-1 receptor agonists (SELECT, FLOW, SUSTAIN-6), SGLT2 inhibitors, intensive blood pressure targets (SPRINT, TRIDENT, RESPECT), MASH/obesity management, and the secondary prevention ABCDE bundle.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Comprehensive metabolic and vascular risk modulation in stroke prevention — GLP-1 receptor agonists (SELECT, FLOW, SUSTAIN-6), SGLT2 inhibitors, intensive blood pressure targets (SPRINT, TRIDENT, RESPECT), MASH/obesity management, and the secondary prevention ABCDE bundle.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "moyamoya-disease",
@@ -3005,7 +3005,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Suzuki angiographic staging (1–6), direct STA-MCA bypass vs indirect EDAS/EMS, landmark JAM randomized trial for hemorrhagic Moyamoya, and strict perioperative hemodynamic/normocarbia protocols.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Suzuki angiographic staging (1–6), direct STA-MCA bypass vs indirect EDAS/EMS, landmark JAM randomized trial for hemorrhagic Moyamoya, and strict perioperative hemodynamic/normocarbia protocols.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "neuro-exams-simulator",
@@ -3109,7 +3109,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Age-stratified pediatric stroke algorithms (neonatal vs childhood), Focal Cerebral Arteriopathy (FCA/FCA-i), Sickle Cell Disease TCD screening and exchange transfusion (STOP/STOP-2), and pediatric EVT criteria.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Age-stratified pediatric stroke algorithms (neonatal vs childhood), Focal Cerebral Arteriopathy (FCA/FCA-i), Sickle Cell Disease TCD screening and exchange transfusion (STOP/STOP-2), and pediatric EVT criteria.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "pfo-closure",
@@ -3169,7 +3169,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Evidence-based decision pathways for Patent Foramen Ovale (PFO) closure (RESPECT, CLOSE, REDUCE, DEFENSE-PFO), high-risk anatomical features (atrial septal aneurysm >10mm, large shunt >20 bubbles), RoPE score, PASCAL classification, and Left Atrial Appendage Occlusion (LAAO) trials (PROTECT AF, PREVAIL, PRAGUE-17).\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Evidence-based decision pathways for Patent Foramen Ovale (PFO) closure (RESPECT, CLOSE, REDUCE, DEFENSE-PFO), high-risk anatomical features (atrial septal aneurysm >10mm, large shunt >20 bubbles), RoPE score, PASCAL classification, and Left Atrial Appendage Occlusion (LAAO) trials (PROTECT AF, PREVAIL, PRAGUE-17).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "pregnancy-stroke",
@@ -3209,7 +3209,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Emergency management of ischemic and hemorrhagic stroke in pregnancy/postpartum, safe IV thrombolysis/EVT, preeclampsia/eclampsia/PRES protocols, magnesium sulfate, and postpartum CVST.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Emergency management of ischemic and hemorrhagic stroke in pregnancy/postpartum, safe IV thrombolysis/EVT, preeclampsia/eclampsia/PRES protocols, magnesium sulfate, and postpartum CVST.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "pupillometry",
@@ -3480,7 +3480,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "High-resolution black-blood vessel wall MRI differential matrix for intracranial arteriopathies — distinguishing ICAD, Primary CNS Vasculitis (PACNS), RCVS, Arterial Dissection, and Moyamoya disease via wall morphology, enhancement patterns, and remodeling.\r\n\r\n> The interactive teaching card for this module renders from `src/education.jsx`.\r\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "High-resolution black-blood vessel wall MRI differential matrix for intracranial arteriopathies — distinguishing ICAD, Primary CNS Vasculitis (PACNS), RCVS, Arterial Dissection, and Moyamoya disease via wall morphology, enhancement patterns, and remodeling.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     }
   ],
   "calculators": [

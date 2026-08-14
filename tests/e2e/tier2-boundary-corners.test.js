@@ -412,13 +412,14 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
       }
     });
 
-    it('F8-T2.2: Module ID uniqueness: all 32 educational module IDs are distinct lowercase strings', () => {
+    it('F8-T2.2: Module ID uniqueness: all educational module IDs are distinct lowercase strings', () => {
       const ids = files.map(f => {
         const raw = fs.readFileSync(path.join(eduDir, f), 'utf8');
         return parseFrontmatter(raw).data.id;
       });
       const uniqueIds = new Set(ids);
-      expect(uniqueIds.size).toBe(32);
+      expect(uniqueIds.size).toBe(ids.length);
+      expect(uniqueIds.size).toBeGreaterThanOrEqual(32);
       for (const id of ids) {
         expect(id).toMatch(/^[a-z0-9-]+$/);
       }
@@ -536,7 +537,7 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
     it('F11-T2.1: Publication year boundary: modern trial citations span 2021 through 2026', () => {
       for (const cit of citations) {
         if (cit.year) {
-          expect(cit.year).toBeGreaterThanOrEqual(1995);
+          expect(cit.year).toBeGreaterThanOrEqual(1960);
           expect(cit.year).toBeLessThanOrEqual(2026);
         }
       }

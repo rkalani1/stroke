@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, copyFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -26,6 +26,14 @@ function getShExecutable() {
   return 'sh';
 }
 const shCmd = getShExecutable();
+
+function linkOrCopy(src, dest) {
+  try {
+    symlinkSync(src, dest);
+  } catch {
+    copyFileSync(src, dest);
+  }
+}
 
 function withTempRepo(fn) {
   const dir = mkdtempSync(join(tmpdir(), 'stroke-leak-guard-'));
@@ -179,11 +187,7 @@ describe('leak guard scanner', () => {
       expect(spawnSync('git', ['add', 'fixture.txt'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
       writeFileSync(fixture, 'clean\n', 'utf8');
 
-<<<<<<< HEAD
       const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
-=======
-      const result = spawnSync(shBin, ['scripts/check-staged-leak-guard.sh'], {
->>>>>>> fce3e52 (feat: expand educational resources curriculum with comprehensive cards, infographics, and verified trial citations)
         cwd: dir,
         encoding: 'utf8',
         env: {
@@ -212,11 +216,7 @@ describe('leak guard scanner', () => {
       writeFileSync(join(dir, 'fixture.txt'), `${sentinel}\n`, 'utf8');
       expect(spawnSync('git', ['add', 'fixture.txt'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
 
-<<<<<<< HEAD
       const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
-=======
-      const result = spawnSync(shBin, ['scripts/check-staged-leak-guard.sh'], {
->>>>>>> fce3e52 (feat: expand educational resources curriculum with comprehensive cards, infographics, and verified trial citations)
         cwd: dir,
         encoding: 'utf8',
         env: {
@@ -243,11 +243,7 @@ describe('leak guard scanner', () => {
       writeFileSync(join(dir, 'scripts/leak-guard-denylist.local.json'), '{"literalDenylist":["PRIVATE"]}\n', 'utf8');
       expect(spawnSync('git', ['add', 'scripts/leak-guard-denylist.local.json'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
 
-<<<<<<< HEAD
       const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
-=======
-      const result = spawnSync(shBin, ['scripts/check-staged-leak-guard.sh'], {
->>>>>>> fce3e52 (feat: expand educational resources curriculum with comprehensive cards, infographics, and verified trial citations)
         cwd: dir,
         encoding: 'utf8'
       });
@@ -268,11 +264,7 @@ describe('leak guard scanner', () => {
       writeFileSync(join(dir, 'fixture.txt'), 'clean\n', 'utf8');
       expect(spawnSync('git', ['add', 'fixture.txt'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
 
-<<<<<<< HEAD
       const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
-=======
-      const result = spawnSync(shBin, ['scripts/check-staged-leak-guard.sh'], {
->>>>>>> fce3e52 (feat: expand educational resources curriculum with comprehensive cards, infographics, and verified trial citations)
         cwd: dir,
         encoding: 'utf8',
         env: {
@@ -299,11 +291,7 @@ describe('leak guard scanner', () => {
       writeFileSync(join(dir, 'fixture.txt'), 'clean\n', 'utf8');
       expect(spawnSync('git', ['add', 'fixture.txt'], { cwd: dir, encoding: 'utf8' }).status).toBe(0);
 
-<<<<<<< HEAD
       const result = spawnSync(shCmd, ['scripts/check-staged-leak-guard.sh'], {
-=======
-      const result = spawnSync(shBin, ['scripts/check-staged-leak-guard.sh'], {
->>>>>>> fce3e52 (feat: expand educational resources curriculum with comprehensive cards, infographics, and verified trial citations)
         cwd: dir,
         encoding: 'utf8',
         env: {

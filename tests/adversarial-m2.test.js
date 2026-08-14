@@ -61,9 +61,9 @@ describe('Milestone 2 Adversarial Verification & Stress Harness', () => {
     [...switchBlock.matchAll(/case\s+['"]([^'"]+)['"]/g)].map(m => m[1])
   );
 
-  it('verifies exactly 32 education markdown modules in content/education', () => {
-    expect(mdFiles.length).toBe(32);
-    expect(bundleEdu.length).toBe(32);
+  it('verifies education markdown modules in content/education', () => {
+    expect(mdFiles.length).toBeGreaterThanOrEqual(32);
+    expect(bundleEdu.length).toBe(mdFiles.length);
   });
 
   describe('Audit each of the 32 education markdown modules', () => {

@@ -260,9 +260,9 @@ describe('Tier 4: Real-World Clinical Workload Application Scenarios', () => {
       expect(openMatches).toEqual([]);
     });
 
-    it('S5.2: Verifies content bundling and schema validation pass across all 32 modules', () => {
+    it('S5.2: Verifies content bundling and schema validation pass across educational modules', () => {
       const bundle = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/bundle.json'), 'utf8'));
-      expect(bundle.education.length).toBe(32);
+      expect(bundle.education.length).toBeGreaterThanOrEqual(32);
       const valRes = spawnSync('node', [path.join(ROOT, 'scripts/validate-content.mjs'), '--json'], { cwd: ROOT, encoding: 'utf8' });
       expect(valRes.status).toBe(0);
       const valJson = JSON.parse(valRes.stdout);
