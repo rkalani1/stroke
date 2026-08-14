@@ -20762,11 +20762,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="flex items-center gap-2 mb-3">
                                   <span className="text-section text-ink">Recommendation</span>
                                 </div>
-                                {PUBLIC_DEMO_MODE && (
-                                  <div className="mb-3 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
-                                    <strong>Demo-only output.</strong> Verify TNK/EVT decisions against approved local protocol, source guidelines, imaging, and bedside clinical judgment before any clinical action.
-                                  </div>
-                                )}
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                   {/* TNK Recommendation */}
@@ -22176,11 +22171,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <span className="text-xs text-cobalt-500 font-normal">Evidence-based, auto-matched to patient data</span>
                                 </summary>
                                 <div className="p-4 pt-0 space-y-4">
-                                  {PUBLIC_DEMO_MODE && (
-                                    <p className="rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
-                                      <strong>Public demo:</strong> These auto-matched recommendations are educational references only; verify the primary source and approved local protocol before acting.
-                                    </p>
-                                  )}
                                   {Object.entries(grouped).map(([category, catRecs]) => (
                                     <div key={category}>
                                       <h3 className="text-sm font-bold text-cobalt-800 uppercase tracking-wide mb-2 border-b border-cobalt-100 pb-1 dark:text-cobalt-300">{category}</h3>
@@ -22318,7 +22308,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <details className={'border-2 rounded-lg ' + (eligible.length > 0 ? 'bg-ok-50 border-ok-300 dark:bg-ok-950 dark:border-ok-800' : needsInfo.length > 0 ? 'bg-cobalt-50 border-cobalt-300 dark:bg-cobalt-900 dark:border-cobalt-700' : 'bg-slate-50 border-slate-300 dark:bg-paper-2 dark:border-strong')}>
                               <summary className="cursor-pointer p-3 font-semibold hover:bg-opacity-70 rounded-lg flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                                                    <span className={eligible.length > 0 ? 'text-ok-900 dark:text-ok-300' : 'text-cobalt-900 dark:text-cobalt-300'}>Trial Eligibility Auto-Matcher</span>
+                                  <span className={eligible.length > 0 ? 'text-ok-900 dark:text-ok-300' : 'text-cobalt-900 dark:text-cobalt-300'}>Trial Eligibility Auto-Matcher</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   {eligible.length > 0 && <span className="px-2 py-0.5 bg-ok-600 text-white rounded-full text-xs font-bold">{eligible.length} eligible</span>}
@@ -22328,11 +22318,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </summary>
                               <div className="p-3 space-y-2">
                                 <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">Auto-compared against patient data (age, NIHSS, LKW, imaging, diagnosis). Criteria update in real-time as you enter data.</p>
-                                {PUBLIC_DEMO_MODE && (
-                                  <p className="rounded-md border border-warn-300 bg-warn-50 px-2.5 py-1.5 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
-                                    <strong>Trial-screening check:</strong> Confirm every apparent match against ClinicalTrials.gov, approved study materials, and local research workflow before contacting a team or patient.
-                                  </p>
-                                )}
                                 {sorted.map(trial => {
                                   // The engine result already exposes everything the UI consumes
                                   // (name, nct, quickDescription, lookingFor, keyTakeaways);
@@ -27631,11 +27616,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {copiedText === 'output-handoff-section' ? 'Handoff Copied!' : 'Copy Handoff'}
                         </button>
                       </div>
-                      {PUBLIC_DEMO_MODE && (
-                        <p className="mb-3 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
-                          <strong>Public demo handoff:</strong> Copy is blocked when obvious identifiers are detected. Use synthetic examples only; do not move operational handoff content through this public build.
-                        </p>
-                      )}
                       {encounterReadiness.required.length > 0 ? (
                         <div className="rounded-md border border-dashed border-crit-300 bg-crit-50 p-4 text-sm text-crit-900 dark:border-crit-800 dark:bg-crit-950 dark:text-crit-300" role="status">
                           <p className="font-semibold">Preview locked</p>
@@ -35904,11 +35884,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           : 'Live eligibility verdict from patient parameters'}
                       </span>
                     </div>
-                    {PUBLIC_DEMO_MODE && (
-                      <p className="rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
-                        <strong>Public demo trial workflow:</strong> Do not enter PHI or real encounter data. Trial matching is a first-pass educational screen; confirm against ClinicalTrials.gov and approved study materials.
-                      </p>
-                    )}
 
                     {/* Sub-view: Bedside Screener (iframe embed) */}
                     {trialsView === 'screener' && (
