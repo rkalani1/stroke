@@ -19741,7 +19741,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </select>
                           <div className="flex items-center justify-between">
                             <span className="text-xs font-semibold text-slate-700 dark:text-ink-2">Pulsara Case Summary</span>
-                            <span className="text-[11px] text-mute">Live Template</span>
+                            <button
+                              type="button"
+                              onClick={() => copyToClipboard(generatePulsaraSummary(), 'output-summary-phone')}
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md bg-cobalt-600 text-white hover:bg-cobalt-700 transition-colors"
+                            >
+                              <i aria-hidden="true" data-lucide="copy" className="w-3.5 h-3.5"></i>
+                              {copiedText === 'output-summary-phone' ? 'Copied!' : 'Copy Summary'}
+                            </button>
                           </div>
                           <div tabIndex={0} role="region" aria-label="Pulsara summary preview" className="bg-white p-2.5 rounded border border-line max-h-40 overflow-y-auto dark:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">
                             <pre className="whitespace-pre-wrap text-[11px] text-slate-700 font-mono dark:text-slate-300">
@@ -27226,7 +27233,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </select>
                           <div className="flex items-center justify-between">
                             <span className="text-xs font-semibold text-slate-700 dark:text-ink-2">Pulsara Case Summary</span>
-                            <span className="text-[11px] text-mute">Live Template</span>
+                            <button
+                              type="button"
+                              onClick={() => copyToClipboard(generatePulsaraSummary(), 'output-summary-video')}
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md bg-cobalt-600 text-white hover:bg-cobalt-700 transition-colors"
+                            >
+                              <i aria-hidden="true" data-lucide="copy" className="w-3.5 h-3.5"></i>
+                              {copiedText === 'output-summary-video' ? 'Copied!' : 'Copy Summary'}
+                            </button>
                           </div>
                           {/* Note preview */}
                           <div tabIndex={0} role="region" aria-label="Generated Pulsara note preview" className="bg-white p-3 rounded border border-line max-h-96 overflow-y-auto dark:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">
@@ -27608,7 +27622,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div>
                           <p className="text-xs uppercase tracking-wide text-slate-500 font-semibold dark:text-mute">Handoff Summary</p>
                         </div>
-                        <span className="text-[11px] text-mute">Use the readiness action bar to copy the current output.</span>
+                        <button
+                          type="button"
+                          onClick={() => copyToClipboard(buildHandoffSummary(), 'output-handoff-section')}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md bg-cobalt-600 text-white hover:bg-cobalt-700 transition-colors"
+                        >
+                          <i aria-hidden="true" data-lucide="copy" className="w-3.5 h-3.5"></i>
+                          {copiedText === 'output-handoff-section' ? 'Handoff Copied!' : 'Copy Handoff'}
+                        </button>
                       </div>
                       {PUBLIC_DEMO_MODE && (
                         <p className="mb-3 rounded-md border border-warn-300 bg-warn-50 px-3 py-2 text-xs text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
@@ -27657,9 +27678,21 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               ))}
                             </div>
                             <details className="mt-3 bg-slate-50 border border-line rounded-lg dark:bg-paper-2">
-                              <summary className="cursor-pointer px-3 py-2 text-xs font-semibold text-slate-700 dark:text-ink-2">Full handoff text</summary>
+                              <summary className="cursor-pointer px-3 py-2 text-xs font-semibold text-slate-700 flex items-center justify-between dark:text-ink-2">
+                                <span>Full handoff text</span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    copyToClipboard(buildHandoffSummary(), 'output-handoff-details');
+                                  }}
+                                  className="inline-flex items-center gap-1 px-2 py-0.5 text-2xs font-semibold rounded bg-cobalt-600 text-white hover:bg-cobalt-700"
+                                >
+                                  {copiedText === 'output-handoff-details' ? 'Copied!' : 'Copy'}
+                                </button>
+                              </summary>
                               <div className="px-3 pb-3">
-                                <pre className="whitespace-pre-wrap text-xs text-slate-700 dark:text-ink-2">{renderEncounterOutput(buildHandoffSummary)}</pre>
+                                <pre className="whitespace-pre-wrap text-xs text-slate-700 dark:text-ink-2">{buildHandoffSummary()}</pre>
                               </div>
                             </details>
                           </>
@@ -27772,7 +27805,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="px-4 py-3">
                             <div className="flex items-center justify-between mb-2">
                               <p className="font-mono uppercase text-eyebrow text-mute">Pulsara Summary</p>
-                              <span className="text-[11px] text-mute">Template</span>
+                              <button
+                                type="button"
+                                onClick={() => copyToClipboard(generatePulsaraSummary(), 'output-summary-rail')}
+                                className="inline-flex items-center gap-1 px-2 py-0.5 text-2xs font-semibold rounded bg-cobalt-600 text-white hover:bg-cobalt-700 transition-colors"
+                              >
+                                <i aria-hidden="true" data-lucide="copy" className="w-3 h-3"></i>
+                                {copiedText === 'output-summary-rail' ? 'Copied!' : 'Copy'}
+                              </button>
                             </div>
                             {railPulsaraPreview ? (
                               <pre tabIndex={0} role="region" aria-label="Live Pulsara case summary preview" className="text-2xs leading-snug text-ink-2 whitespace-pre-wrap break-words font-mono max-h-48 overflow-y-auto bg-paper-2 border border-line rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-cobalt-500">{railPulsaraPreview}</pre>
