@@ -9152,8 +9152,8 @@ Clinician Name`;
             const vesselArr = telestrokeNote.vesselOcclusion || [];
             const vesselStr = vesselArr.length > 0 && !vesselArr.includes('None')
               ? ` Vessel occlusion: ${vesselArr.join(', ')}.` : "";
-            const tnkStatus = telestrokeNote.diagnosisCategory !== 'ischemic' ? `N/A (${telestrokeNote.diagnosisCategory === 'sah' ? 'SAH' : 'ICH'})` : telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
-            const evtStatus = telestrokeNote.diagnosisCategory !== 'ischemic' ? `N/A (${telestrokeNote.diagnosisCategory === 'sah' ? 'SAH' : 'ICH'})` : telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
+            const tnkStatus = telestrokeNote.diagnosisCategory === 'sah' ? 'N/A (SAH)' : telestrokeNote.diagnosisCategory === 'ich' ? 'N/A (ICH)' : telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
+            const evtStatus = telestrokeNote.diagnosisCategory === 'sah' ? 'N/A (SAH)' : telestrokeNote.diagnosisCategory === 'ich' ? 'N/A (ICH)' : telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
             const rationale = telestrokeNote.rationale || "[rationale]";
             // LKW unknown handling
             const lkwStr = telestrokeNote.lkwUnknown
@@ -14088,11 +14088,11 @@ Clinician Name`;
               return true;
             };
             const missing = trackedFields.filter((field) => !isFieldPresent(field.value));
-            const required = missing.filter((field) => ['Age', 'LKW', 'Diagnosis'].includes(field.name));
-            const recommended = missing.filter((field) => ['Weight', 'NIHSS', 'CT Head', 'Disposition'].includes(field.name));
+            const required = [];
+            const recommended = missing;
             const completedCount = trackedFields.length - missing.length;
             const readinessPercent = Math.round((completedCount / trackedFields.length) * 100);
-            const nextField = (required[0] || recommended[0] || null)?.name || null;
+            const nextField = (recommended[0] || null)?.name || null;
             return {
               trackedFields,
               missing,
@@ -17431,18 +17431,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                       <div className="mt-2 flex flex-col gap-2 border-t border-line pt-2 sm:flex-row sm:items-center sm:justify-between">
                         <p className="text-[11px] leading-snug text-mute" role="status" aria-live="polite">
-                          {encounterReadiness.required.length
-                            ? `Outputs locked. Required: ${encounterReadiness.required.map((field) => field.name).join(', ')}.`
-                            : 'Required synthetic fields complete. Outputs are ready.'}
+                          {encounterReadiness.missing.length === 0
+                            ? 'All fields complete.'
+                            : `${encounterReadiness.completedCount} of ${encounterReadiness.trackedFields.length} fields filled · templates ready.`}
                         </p>
                         <div className="grid grid-cols-2 gap-2 sm:flex">
                           <button
                             type="button"
-                            disabled={encounterReadiness.required.length > 0}
                             onClick={() => {
-                              runEncounterOutput(() =>
-                                copyToClipboard(generatePulsaraSummary(), 'output-summary')
-                              );
+                              copyToClipboard(generatePulsaraSummary(), 'output-summary');
                             }}
                             className="min-h-[44px] rounded-md bg-cobalt-600 px-3 py-2 text-xs font-semibold text-white hover:bg-cobalt-700 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-600 dark:disabled:bg-overlay dark:disabled:text-mute"
                           >
@@ -17450,11 +17447,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </button>
                           <button
                             type="button"
-                            disabled={encounterReadiness.required.length > 0}
                             onClick={() => {
-                              runEncounterOutput(() =>
-                                copyToClipboard(buildHandoffSummary(), 'output-handoff')
-                              );
+                              copyToClipboard(buildHandoffSummary(), 'output-handoff');
                             }}
                             className="min-h-[44px] rounded-md border border-line bg-paper-2 px-3 py-2 text-xs font-semibold text-ink hover:border-cobalt-300 hover:bg-cobalt-50 disabled:cursor-not-allowed disabled:text-mute dark:hover:bg-cobalt-900"
                           >
@@ -19768,11 +19762,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </select>
                           <div className="flex items-center justify-between">
                             <span className="text-xs font-semibold text-slate-700 dark:text-ink-2">Pulsara Case Summary</span>
-                            <span className="text-[11px] text-mute">{encounterReadiness.required.length ? 'Locked' : 'Ready above'}</span>
+                            <span className="text-[11px] text-mute">Live Template</span>
                           </div>
                           <div tabIndex={0} role="region" aria-label="Pulsara summary preview" className="bg-white p-2.5 rounded border border-line max-h-40 overflow-y-auto dark:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">
                             <pre className="whitespace-pre-wrap text-[11px] text-slate-700 font-mono dark:text-slate-300">
-                              {renderEncounterOutput(generatePulsaraSummary)}
+                              {generatePulsaraSummary()}
                             </pre>
                           </div>
                         </div>
@@ -27258,12 +27252,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </select>
                           <div className="flex items-center justify-between">
                             <span className="text-xs font-semibold text-slate-700 dark:text-ink-2">Pulsara Case Summary</span>
-                            <span className="text-[11px] text-mute">{encounterReadiness.required.length ? 'Locked' : 'Ready above'}</span>
+                            <span className="text-[11px] text-mute">Live Template</span>
                           </div>
                           {/* Note preview */}
                           <div tabIndex={0} role="region" aria-label="Generated Pulsara note preview" className="bg-white p-3 rounded border border-line max-h-96 overflow-y-auto dark:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">
                             <pre className="whitespace-pre-wrap text-xs text-slate-800 font-mono dark:text-ink">
-                              {renderEncounterOutput(generatePulsaraSummary)}
+                              {generatePulsaraSummary()}
                             </pre>
                           </div>
                         </div>
@@ -27754,7 +27748,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       try { return new Date(`${d}T${t}:00`).toISOString(); } catch (_) { return null; }
                     })();
                     let railPulsaraPreview = '';
-                    try { railPulsaraPreview = (renderEncounterOutput(generatePulsaraSummary) || '').trim(); } catch (_) { railPulsaraPreview = ''; }
+                    try { railPulsaraPreview = (generatePulsaraSummary() || '').trim(); } catch (_) { railPulsaraPreview = ''; }
                     const railHasPatient = telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis;
                     return (
                       <aside
@@ -27804,12 +27798,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="px-4 py-3">
                             <div className="flex items-center justify-between mb-2">
                               <p className="font-mono uppercase text-eyebrow text-mute">Pulsara Summary</p>
-                              <span className="text-[11px] text-mute">{encounterReadiness.required.length ? 'Locked' : 'Ready in action bar'}</span>
+                              <span className="text-[11px] text-mute">Template</span>
                             </div>
                             {railPulsaraPreview ? (
                               <pre tabIndex={0} role="region" aria-label="Live Pulsara case summary preview" className="text-2xs leading-snug text-ink-2 whitespace-pre-wrap break-words font-mono max-h-48 overflow-y-auto bg-paper-2 border border-line rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-cobalt-500">{railPulsaraPreview}</pre>
                             ) : (
-                              <p className="text-xs text-mute italic">Fill the encounter to build a Pulsara summary.</p>
+                              <p className="text-xs text-mute italic">Pulsara summary template.</p>
                             )}
                           </div>
                         </div>
