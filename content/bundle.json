@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:5804c165b35b6f7e9418542d6ef92395",
+    "checksum": "sha256:c90cce774e744d5a2a8c73471246104f",
     "counts": {
       "guidelines": 11,
       "trials": 113,
@@ -2596,8 +2596,8 @@
           "pmid": "37821233"
         },
         {
-          "label": "Ancillary Update",
-          "citation": "Wijdicks EF, et al. Practice parameter update: determining brain death in adults. Neurology. 2010;74(23):1911-1918.",
+          "label": "AAN 2010 Guideline Update",
+          "citation": "Wijdicks EF, et al. Evidence-based guideline update: determining brain death in adults: report of the Quality Standards Subcommittee of the American Academy of Neurology. Neurology. 2010;74(23):1911-1918.",
           "pmid": "20530327"
         }
       ],
@@ -2676,9 +2676,9 @@
           "pmid": "15905400"
         },
         {
-          "label": "ESO Guidelines",
-          "citation": "Bersano A, et al. European Stroke Organisation (ESO) Guidelines on Moyamoya angiopathy Endorsed by Vascular European Reference Network (VASCERN). Eur Stroke J. 2023;8(1):55-84.",
-          "pmid": "37021176"
+          "label": "EAN Monogenic cSVD Consensus",
+          "citation": "Mancuso M, et al. Monogenic cerebral small-vessel diseases: diagnosis and therapy. Consensus recommendations of the European Academy of Neurology. Eur J Neurol. 2020;27(6):909-927.",
+          "pmid": "32196841"
         }
       ],
       "lastReviewed": "2026-08-14",
@@ -2719,6 +2719,11 @@
           "label": "Cancer Stroke Risk Study",
           "citation": "Navi BB, et al. Risk of Arterial Thromboembolism in Patients With Cancer. J Am Coll Cardiol. 2017;70(8):926-938.",
           "pmid": "28818202"
+        },
+        {
+          "label": "Cancer Stroke DWI Phenotype",
+          "citation": "Schwarzbach CJ, et al. DWI Lesion Patterns in Cancer-Related Stroke - Specifying the Phenotype. Cerebrovasc Dis Extra. 2015;5(3):139-145.",
+          "pmid": "26648971"
         }
       ],
       "lastReviewed": "2026-08-14",
@@ -2797,18 +2802,33 @@
         },
         {
           "label": "PRESTIGE-AF Trial",
-          "citation": "Polymeris AA, et al. Direct oral anticoagulants versus no anticoagulation for stroke prevention in intracerebral haemorrhage survivors with atrial fibrillation (PRESTIGE-AF). Lancet Neurol. 2025;24(1):41-52.",
+          "citation": "Veltkamp R, et al. Direct oral anticoagulants versus no anticoagulation for the prevention of stroke in survivors of intracerebral haemorrhage with atrial fibrillation (PRESTIGE-AF): a multicentre, open-label, randomised, phase 3 trial. Lancet. 2025;405(10482):927-936.",
           "pmid": "40023176"
         },
         {
           "label": "SoSTART Trial",
-          "citation": "Al-Shahi Salman R, et al. Effects of oral anticoagulation in people with atrial fibrillation and prior spontaneous intracranial haemorrhage (SoSTART). Lancet Neurol. 2021;20(10):844-853.",
+          "citation": "Al-Shahi Salman R, et al. Effects of oral anticoagulation in people with atrial fibrillation and prior spontaneous intracranial haemorrhage (SoSTART). Lancet Neurol. 2021;20(10):842-853.",
           "pmid": "34487722"
         },
         {
           "label": "2022 ICH Guideline",
           "citation": "Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.",
           "pmid": "35579034"
+        },
+        {
+          "label": "SPARCL Hemorrhagic Stroke",
+          "citation": "Goldstein LB, et al. Hemorrhagic stroke in the Stroke Prevention by Aggressive Reduction in Cholesterol Levels study. Neurology. 2008;70(24 Pt 2):2364-2370.",
+          "pmid": "18077795"
+        },
+        {
+          "label": "cSS & ICH Recurrence",
+          "citation": "Charidimou A, et al. Cortical superficial siderosis and recurrent intracerebral hemorrhage risk in cerebral amyloid angiopathy: Large prospective cohort and preliminary meta-analysis. Int J Stroke. 2019;14(7):723-733.",
+          "pmid": "30785378"
+        },
+        {
+          "label": "TFNE Pharmacotherapy Review",
+          "citation": "Musaeus CS, et al. Pharmacological management of transient focal neurological episodes in cerebral amyloid angiopathy: a systematic review. GeroScience. 2026.",
+          "pmid": "42402536"
         }
       ],
       "lastReviewed": "2026-08-14",
@@ -3021,17 +3041,17 @@
       "calculators": [],
       "references": [
         {
-          "label": "Ghost Core Phenomenon",
+          "label": "CTP core & Tmax thresholds",
           "citation": "Campbell BCV, et al. Comparison of computed tomography perfusion and magnetic resonance imaging perfusion-diffusion mismatch in ischemic stroke. Stroke. 2012;43(10):2648-2653.",
           "pmid": "22858726"
         },
         {
-          "label": "Core Reversibility & Time",
+          "label": "Ghost Infarct Core",
           "citation": "Boned S, et al. Admission CT perfusion may overestimate initial infarct core: the ghost infarct core concept. J Neurointerv Surg. 2017;9(1):66-69.",
           "pmid": "27566491"
         },
         {
-          "label": "DWI ADC Reversal",
+          "label": "CTP-CBV vs DWI core",
           "citation": "Copen WA, et al. In Acute Stroke, Can CT Perfusion-Derived Cerebral Blood Volume Maps Substitute for Diffusion-Weighted Imaging in Identifying the Ischemic Core? PLoS One. 2015;10(7):e0133566.",
           "pmid": "26193486"
         },
@@ -3137,7 +3157,7 @@
       "references": [
         {
           "label": "DISTAL Trial",
-          "citation": "Fischer U, et al. Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke (DISTAL). N Engl J Med. 2025;392(13):1232-1243.",
+          "citation": "Fischer U, et al. Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke (DISTAL). N Engl J Med. 2025;392(14):1374-1384.",
           "pmid": "39908430"
         },
         {
@@ -3147,7 +3167,7 @@
         },
         {
           "label": "ESCAPE-MeVO Trial",
-          "citation": "Goyal M, et al. Endovascular Treatment for Medium Vessel Occlusion Stroke (ESCAPE-MeVO). N Engl J Med. 2025;392(13):1244-1254.",
+          "citation": "Goyal M, et al. Endovascular Treatment for Medium Vessel Occlusion Stroke (ESCAPE-MeVO). N Engl J Med. 2025;392(14):1385-1395.",
           "pmid": "39908448"
         },
         {
@@ -3280,7 +3300,7 @@
     {
       "id": "factor-xia-inhibitors",
       "title": "Novel Factor XI/XIa Inhibitors in Stroke Prevention",
-      "summary": "Targeting the contact activation pathway to uncouple thrombosis from hemostasis — Phase 2/3 trial data (OCEANIC-STROKE with Asundexian, PACIFIC-STROKE, AXIOMATIC-SSP with Milvexian, LILAC-TIMI 76 with Abelacimab) and emerging clinical indications.",
+      "summary": "Targeting the contact activation pathway to uncouple thrombosis from hemostasis — published Phase 2/3 trial data (OCEANIC-STROKE with Asundexian, PACIFIC-STROKE, AXIOMATIC-SSP with Milvexian), trials awaiting results (LILAC-TIMI 76 with Abelacimab, LIBREXIA-AF), and emerging clinical indications.",
       "tags": [
         "pocket-card",
         "printable"
@@ -3299,12 +3319,12 @@
         },
         {
           "label": "PACIFIC-STROKE",
-          "citation": "Shoamanesh A, et al. Factor XIa inhibition with asundexian after acute non-cardioembolic ischaemic stroke (PACIFIC-Stroke): an international, randomised, double-blind, placebo-controlled, phase 2b trial. Lancet. 2022;400(10363):1604-1616.",
+          "citation": "Shoamanesh A, et al. Factor XIa inhibition with asundexian after acute non-cardioembolic ischaemic stroke (PACIFIC-Stroke): an international, randomised, double-blind, placebo-controlled, phase 2b trial. Lancet. 2022;400(10357):997-1007.",
           "pmid": "36063821"
         },
         {
           "label": "AXIOMATIC-SSP",
-          "citation": "Sharma M, et al. Safety and efficacy of factor XIa inhibition with milvexian for secondary stroke prevention (AXIOMATIC-SSP): a phase 2, international, randomised, double-blind, placebo-controlled, dose-finding trial. Lancet Neurol. 2024;23(5):450-459.",
+          "citation": "Sharma M, et al. Safety and efficacy of factor XIa inhibition with milvexian for secondary stroke prevention (AXIOMATIC-SSP): a phase 2, international, randomised, double-blind, placebo-controlled, dose-finding trial. Lancet Neurol. 2024;23(1):46-59.",
           "pmid": "38101902"
         },
         {
@@ -3315,7 +3335,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Targeting the contact activation pathway to uncouple thrombosis from hemostasis — Phase 2/3 trial data (OCEANIC-STROKE with Asundexian, PACIFIC-STROKE, AXIOMATIC-SSP with Milvexian, LILAC-TIMI 76 with Abelacimab) and emerging clinical indications.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Targeting the contact activation pathway to uncouple thrombosis from hemostasis — published Phase 2/3 trial data (OCEANIC-STROKE with Asundexian, PACIFIC-STROKE, AXIOMATIC-SSP with Milvexian), trials awaiting results (LILAC-TIMI 76 with Abelacimab, LIBREXIA-AF), and emerging clinical indications.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "fibromuscular-dysplasia",
@@ -3420,8 +3440,8 @@
       "references": [
         {
           "label": "Kattah Study",
-          "citation": "Kattah JC et al. Stroke. 2009;40:3504-10.",
-          "pmid": "19762654"
+          "citation": "Kattah JC, et al. HINTS to diagnose stroke in the acute vestibular syndrome: three-step bedside oculomotor examination more sensitive than early MRI diffusion-weighted imaging. Stroke. 2009;40(11):3504-3510.",
+          "pmid": "19762709"
         },
         {
           "label": "AHA/ASA Guideline",
@@ -3461,7 +3481,7 @@
         },
         {
           "label": "INTERACT3",
-          "citation": "Ma L, et al. Intensive care bundle with blood pressure lowering in acute intracerebral haemorrhage (INTERACT3): a pragmatic, stepped-wedge cluster randomised trial. Lancet. 2023;402(10405):831-840.",
+          "citation": "Ma L, et al. Intensive care bundle with blood pressure lowering in acute intracerebral haemorrhage (INTERACT3): a pragmatic, stepped-wedge cluster randomised trial. Lancet. 2023;402(10395):27-40.",
           "pmid": "37245517"
         },
         {
@@ -3476,12 +3496,12 @@
         },
         {
           "label": "FASTEST Trial",
-          "citation": "Broderick JP, et al. Recombinant factor VIIa for acute intracerebral hemorrhage (FASTEST). Lancet. 2026;407(10528):773-783.",
+          "citation": "Broderick JP, et al. Recombinant factor VIIa for acute intracerebral hemorrhage (FASTEST). Lancet. 2026;407(10530):773-783.",
           "pmid": "41653933"
         },
         {
           "label": "SWITCH Trial",
-          "citation": "Beck J, et al. Decompressive craniectomy versus best medical treatment in severe deep intracerebral haemorrhage (SWITCH): an open-label randomised controlled trial. Lancet. 2024;403(10441):2289-2298.",
+          "citation": "Beck J, et al. Decompressive craniectomy versus best medical treatment in severe deep intracerebral haemorrhage (SWITCH): an open-label randomised controlled trial. Lancet. 2024;403(10442):2395-2404.",
           "pmid": "38761811"
         },
         {
@@ -3603,6 +3623,11 @@
           "label": "MR CLEAN-LATE Trial",
           "citation": "Olthuis SGH, et al. Endovascular treatment versus no endovascular treatment after 6-24 h in patients with ischaemic stroke and collateral flow on CT angiography (MR CLEAN-LATE). Lancet. 2023;401(10385):1371-1380.",
           "pmid": "37003289"
+        },
+        {
+          "label": "ATLAS IPD Meta-analysis",
+          "citation": "Sarraj A, et al. Endovascular thrombectomy for patients with large-core ischaemic stroke presenting up to 24 h after onset (ATLAS): a systematic review and individual patient data meta-analysis with central imaging adjudication. Lancet. 2026;407(10543):2015-2026.",
+          "pmid": "42107392"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -3744,6 +3769,11 @@
           "label": "RESPECT Trial",
           "citation": "Kitagawa K, et al. Effect of Standard vs Intensive Blood Pressure Control on the Risk of Recurrent Stroke: A Randomized Clinical Trial and Meta-analysis (RESPECT). JAMA Neurol. 2019;76(11):1309-1318.",
           "pmid": "31355878"
+        },
+        {
+          "label": "SPRINT MIND",
+          "citation": "Williamson JD, et al. Effect of Intensive vs Standard Blood Pressure Control on Probable Dementia: A Randomized Clinical Trial (SPRINT MIND). JAMA. 2019;321(6):553-561.",
+          "pmid": "30688979"
         }
       ],
       "lastReviewed": "2026-08-14",
@@ -3785,6 +3815,11 @@
           "label": "Scott & Smith Review",
           "citation": "Scott RM, et al. Moyamoya disease and moyamoya syndrome. N Engl J Med. 2009;360(12):1226-1237.",
           "pmid": "19297575"
+        },
+        {
+          "label": "ESO Moyamoya Guidelines",
+          "citation": "Bersano A, et al. European Stroke Organisation (ESO) Guidelines on Moyamoya angiopathy Endorsed by Vascular European Reference Network (VASCERN). Eur Stroke J. 2023;8(1):55-84.",
+          "pmid": "37021176"
         }
       ],
       "lastReviewed": "2026-08-14",
@@ -3794,7 +3829,7 @@
     {
       "id": "neuro-exams-simulator",
       "title": "Bedside Neuro-Exams Tool",
-      "summary": "Interactive bedside clinical exam assistant for classifying aphasia types, delirium (CAM-ICU), and structured coma examinations.",
+      "summary": "Interactive bedside clinical exam assistant for classifying aphasia types, differentiating delirium from aphasia, and structured coma examinations.",
       "tags": [
         "simulators"
       ],
@@ -3806,14 +3841,24 @@
       "calculators": [],
       "references": [
         {
-          "label": "CAM-ICU Study",
-          "citation": "Ely EW et al. JAMA. 2001;286:2703-10.",
+          "label": "Aphasia Classification",
+          "citation": "Mesulam MM. Principles of Behavioral and Cognitive Neurology. 2nd ed. Oxford University Press; 2000.",
+          "pmid": null
+        },
+        {
+          "label": "Coma Examination",
+          "citation": "Posner JB, Saper CB, Schiff ND, Claassen J. Plum and Posner Diagnosis of Stupor and Coma. 5th ed. Oxford University Press; 2019.",
+          "pmid": null
+        },
+        {
+          "label": "Delirium Attention Criterion (CAM-ICU)",
+          "citation": "Ely EW, et al. Delirium in mechanically ventilated patients: validity and reliability of the confusion assessment method for the intensive care unit (CAM-ICU). JAMA. 2001;286(21):2703-2710.",
           "pmid": "11730446"
         }
       ],
       "lastReviewed": "2026-05-30",
       "provenance": "src/education.jsx",
-      "body": "Interactive bedside clinical exam assistant for classifying aphasia types, delirium (CAM-ICU), and structured coma examinations.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Interactive bedside clinical exam assistant for classifying aphasia types, differentiating delirium from aphasia, and structured coma examinations.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "nihss-simulator",
@@ -3861,8 +3906,13 @@
       "calculators": [],
       "references": [
         {
-          "label": "2026 Pediatric Stroke Update",
-          "citation": "Rivkin MJ, et al. Stroke Guideline Expands Adult Treatment, Provides Pediatric Recommendations. JAMA. 2026;335:e26391.",
+          "label": "2026 AHA/ASA AIS Guideline",
+          "citation": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026;57(8):e316-e436.",
+          "pmid": "41582814"
+        },
+        {
+          "label": "2026 Guideline News Summary",
+          "citation": "Anderer S. Stroke Guideline Expands Adult Treatment, Provides Pediatric Recommendations. JAMA. 2026;335(10):840.",
           "pmid": "41686463"
         },
         {
@@ -3882,7 +3932,7 @@
         },
         {
           "label": "TIPS Pediatric Lysis Study",
-          "citation": "Rivkin MJ, deVeber G, Ichord RN, et al. Thrombolysis in acute childhood stroke: design and challenges of the thrombolysis in pediatric stroke clinical trial. Neuroepidemiology. 2009;32(2):103-108.",
+          "citation": "Amlie-Lefond C, Chan AK, Kirton A, et al. Thrombolysis in acute childhood stroke: design and challenges of the thrombolysis in pediatric stroke clinical trial. Neuroepidemiology. 2009;32(4):279-286.",
           "pmid": "19223687"
         },
         {
@@ -3957,7 +4007,7 @@
     },
     {
       "id": "pregnancy-stroke",
-      "title": "Stroke in Pregnancy and the Puerperium: 2026 Maternal Guidelines",
+      "title": "Stroke in Pregnancy and the Puerperium: 2026 AHA Maternal Scientific Statement",
       "summary": "Emergency management of ischemic and hemorrhagic stroke in pregnancy/postpartum, safe IV thrombolysis/EVT, preeclampsia/eclampsia/PRES protocols, magnesium sulfate, and postpartum CVST.",
       "tags": [
         "pocket-card",
@@ -3971,8 +4021,8 @@
       "calculators": [],
       "references": [
         {
-          "label": "2026 Maternal Stroke Update",
-          "citation": "Miller EC, et al. Maternal Stroke: A Focused Update. Stroke. 2026.",
+          "label": "2026 AHA Maternal Stroke Statement",
+          "citation": "Miller EC, et al. Prevention and Treatment of Maternal Stroke in Pregnancy and Postpartum: A Scientific Statement From the American Heart Association. Stroke. 2026;57(4):e127-e145.",
           "pmid": "41603019"
         },
         {
@@ -3982,7 +4032,7 @@
         },
         {
           "label": "AHA CVT Scientific Statement",
-          "citation": "Saposnik G, et al. Diagnosis and Management of Cerebral Venous Thrombosis: A Scientific Statement from the AHA. Stroke / AHA. 2024.",
+          "citation": "Saposnik G, et al. Diagnosis and Management of Cerebral Venous Thrombosis: A Scientific Statement From the American Heart Association. Stroke. 2024;55(3):e77-e90.",
           "pmid": "38284265"
         },
         {
@@ -4011,9 +4061,19 @@
       "calculators": [],
       "references": [
         {
-          "label": "NCS Consensus",
-          "citation": "Olson DM et al. Neurocrit Care. 2024.",
-          "pmid": "38290918"
+          "label": "ORANGE Cohort",
+          "citation": "Oddo M, et al. The Neurological Pupil index for outcome prognostication in people with acute brain injury (ORANGE): a prospective, observational, multicentre cohort study. Lancet Neurol. 2023;22(10):925-933.",
+          "pmid": "37652068"
+        },
+        {
+          "label": "NPi vs ICP (ORANGE Secondary)",
+          "citation": "Petrosino M, et al. Neurological Pupil Index and Intracranial Hypertension in Patients With Acute Brain Injury: A Secondary Analysis of the ORANGE Study. JAMA Neurol. 2025;82(2):176-184.",
+          "pmid": "39652324"
+        },
+        {
+          "label": "Pupillometry & ICP in ICH",
+          "citation": "Giede-Jeppe A, et al. Automated Pupillometry Identifies Absence of Intracranial Pressure Elevation in Intracerebral Hemorrhage Patients. Neurocrit Care. 2021;35(1):210-220.",
+          "pmid": "33367973"
         }
       ],
       "lastReviewed": "2026-05-30",
@@ -4248,7 +4308,7 @@
         },
         {
           "label": "Arteriopathy Characteristics",
-          "citation": "Mossa-Basha M, et al. High-Resolution Magnetic Resonance Vessel Wall Imaging for the Evaluation of Intracranial Vascular Pathology. Neuroimaging Clin N Am. 2021;31(2):175-188.",
+          "citation": "Vranic JE, Hartman JB, Mossa-Basha M. High-Resolution Magnetic Resonance Vessel Wall Imaging for the Evaluation of Intracranial Vascular Pathology. Neuroimaging Clin N Am. 2021;31(2):223-233.",
           "pmid": "33902876"
         },
         {
@@ -4258,7 +4318,7 @@
         },
         {
           "label": "PACNS vs RCVS Differentiation",
-          "citation": "Lehman VT, et al. Current Clinical Applications of Intracranial Vessel Wall MR Imaging. Semin Ultrasound CT MR. 2021;42(5):407-420.",
+          "citation": "Mattay RR, et al. Current Clinical Applications of Intracranial Vessel Wall MR Imaging. Semin Ultrasound CT MR. 2021;42(5):463-473.",
           "pmid": "34537115"
         }
       ],

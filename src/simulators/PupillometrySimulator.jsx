@@ -176,8 +176,8 @@ const ESCALATION = [
     detail: 'Areflexic or near-areflexic pupil. Perform emergent neurologic exam, correlate with imaging/ICP, treat clinically suspected herniation per protocol, and call neurosurgery.'
   },
   {
-    badge: '< 2.8', tone: 'gold', title: 'NPi < 2.8 — Malignant MCA-Edema Alarm',
-    detail: 'Highly specific for deterioration in large MCA stroke (Kim 2020: all NPi < 2.8 deteriorated). Triage immediately for hemicraniectomy consult.'
+    badge: '< 2.8', tone: 'gold', title: 'NPi < 2.8 — Local Escalation Threshold (unvalidated)',
+    detail: 'Some units use a sub-3.0 cutoff as an earlier trigger in large MCA stroke, but no indexed study validates 2.8 specifically, and the ORANGE cohort that established NPi prognostication enrolled TBI, aSAH and ICH — not ischemic stroke. Treat a falling NPi as a prompt for urgent re-examination and imaging, and let the clinical and radiographic picture — not the number — drive any hemicraniectomy discussion.'
   },
   {
     badge: '< 3.0', tone: 'warn', title: 'NPi < 3.0 — Abnormal Threshold',
@@ -202,19 +202,14 @@ const EVIDENCE = [
     finding: 'NO significant association between NPi and ICP. A normal NPi does NOT safely exclude elevated ICP. Pupillometry CANNOT replace invasive ICP monitoring.'
   },
   {
-    study: 'ORANGE Study — Lancet Neurol 2023',
-    cohort: '514 acute-brain-injury patients (151 ICH) across 8 countries.',
+    study: 'ORANGE Study — Lancet Neurol 2023;22(10):925-933 (PMID 37652068)',
+    cohort: '514 acute-brain-injury patients across 8 countries — 224 TBI, 139 aSAH, 151 ICH. No ischemic stroke.',
     finding: 'Abnormal NPi independently associated with poor 6-month outcome and in-hospital mortality (HR 5.58, 95% CI 3.92–7.95). Established NPi < 3.0 as a robust prognostic marker.'
   },
   {
-    study: 'Park et al. — PLoS One 2025',
-    cohort: '59 malignant anterior-circulation strokes.',
-    finding: 'Ipsilateral NPi dropped from 4.26 (at ~24 h) to 1.80 (at 0–3 h) before transtentorial herniation — up to a 24-hour warning window.'
-  },
-  {
-    study: 'Kim et al. — Neurocrit Care 2020',
-    cohort: '30 large-hemispheric strokes.',
-    finding: 'Deteriorating patients had lower mean NPi (3.88 vs 4.45, p < 0.001). ALL patients with NPi < 2.8 deteriorated — a highly specific trigger for malignant-edema intervention.'
+    study: 'Ischemic-stroke evidence gap',
+    cohort: 'No indexed cohort located.',
+    finding: 'Two small series previously cited here for a pre-herniation NPi decline and a "all NPi < 2.8 deteriorated" threshold could not be located on PubMed and have been withdrawn. NPi trending in malignant anterior-circulation infarction is a reasonable monitoring adjunct, but the specific cut-points are not validated in ischemic stroke.'
   },
   {
     study: 'Anatomic shift correlates',
