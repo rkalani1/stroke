@@ -1,24 +1,29 @@
 /**
  * Suggestions box — a page-footer feedback surface rendered on every tab.
  *
- * TWO SUBMISSION PATHS, both of which reach the maintainer by email and
- * neither of which requires the submitter to have a GitHub account:
+ * THREE ROUTES, tried in this order, so Send always resolves to something:
  *
- * 1. RELAY (preferred). When `relayUrl` is set — from `suggestionRelayUrl` in
- *    the runtime config — the composed suggestion is POSTed to a small endpoint
- *    that holds a repository token. It emails the maintainer and files the
- *    GitHub issue, so the suggestion lands in the inbox and in the tracker
- *    without the reader leaving the page. See workers/suggestion-relay/.
+ * 1. RELAY (best). When `relayUrl` is set — from `suggestionRelayUrl` in the
+ *    runtime config — the suggestion is POSTed to a small endpoint holding the
+ *    credentials. It emails the maintainer and files the GitHub issue, so the
+ *    reader needs no account and never leaves the page. See
+ *    workers/suggestion-relay/.
  *
- * 2. MAILTO (fallback). This app is a fully static client-side bundle served
- *    from GitHub Pages: there is no server and nowhere to hold a credential, so
- *    absent a relay it cannot send anything itself. It hands the composed
- *    suggestion to the reader's own mail client instead, addressed to the
- *    maintainer. That needs no account, no server and no deployment — which is
- *    why it is also the path taken when the relay is unreachable, so an endpoint
- *    that is down costs a click rather than the note.
+ * 2. MAILTO. When `contactEmail` is configured, Send hands the composed
+ *    suggestion to the reader's own mail client. No account, no server.
+ *    The address is NOT committed: it is an institutional identifier and this
+ *    repository's leak guard bans those from every tracked file, so it arrives
+ *    from deployment config or stays empty.
  *
- * Both paths share `buildSuggestionIssue`, so the suggestion reads identically
+ * 3. PREFILLED GITHUB ISSUE (last resort). Needs nothing configured at all,
+ *    which is what keeps the box working on a fresh checkout. Posting the issue
+ *    does require the submitter to have a GitHub account — the reason routes 1
+ *    and 2 rank above it.
+ *
+ * A relay that fails falls through to 2 or 3 with the text left in the box, so
+ * a dead endpoint costs a press rather than the note.
+ *
+ * All three share `buildSuggestionIssue`, so the suggestion reads identically
  * whichever way it arrived.
  *
  * UNTRUSTED INPUT: the free-text body is written by whoever is using the page.
@@ -219,6 +224,43 @@ export async function submitSuggestionToRelay(relayUrl, fields = {}, { fetchImpl
   return { url };
 }
 
+// GitHub rejects issue URLs past roughly 8k; leave room for the title + params.
+const MAX_ISSUE_URL_LENGTH = 7000;
+
+function composeIssueUrl(repoUrl, fields, message) {
+  const { title, body, labels } = buildSuggestionIssue({ ...fields, message });
+  const base = `${String(repoUrl).replace(/\/+$/, '')}/issues/new`;
+  return `${base}?title=${encodeURIComponent(title)}&labels=${encodeURIComponent(labels.join(','))}&body=${encodeURIComponent(body)}`;
+}
+
+/**
+ * Compose GitHub's "new issue" URL with the suggestion prefilled.
+ *
+ * This is the last-resort path, used when neither a relay nor a contact address
+ * is configured. It is the only route that needs nothing set up at all — which
+ * is why it exists — but posting the composed issue does require the submitter
+ * to have a GitHub account, so it ranks below the other two.
+ *
+ * @returns {{url: string, truncated: boolean}}
+ */
+export function composeSuggestionIssueUrl(repoUrl, fields = {}) {
+  const message = sliceChars(String(fields.message || '').trim(), MAX_MESSAGE_LENGTH);
+  const full = composeIssueUrl(repoUrl, fields, message);
+  if (full.length <= MAX_ISSUE_URL_LENGTH) return { url: full, truncated: false };
+
+  let lo = 0;
+  let hi = Array.from(message).length;
+  while (lo < hi) {
+    const mid = Math.ceil((lo + hi) / 2);
+    if (composeIssueUrl(repoUrl, fields, sliceChars(message, mid) + TRUNCATION_MARKER).length <= MAX_ISSUE_URL_LENGTH) {
+      lo = mid;
+    } else {
+      hi = mid - 1;
+    }
+  }
+  return { url: composeIssueUrl(repoUrl, fields, sliceChars(message, lo) + TRUNCATION_MARKER), truncated: true };
+}
+
 export function FeedbackFooter({
   // Deliberately empty. The maintainer's address is an institutional identifier
   // and the repository's leak guard bans those from every tracked file, so it
@@ -227,6 +269,7 @@ export function FeedbackFooter({
   // never touches the repo at all) or, for a fork running its own deployment,
   // as suggestionContactEmail in an untracked config.
   contactEmail = '',
+  repoUrl = 'https://github.com/rkalani1/stroke',
   appVersion = '',
   tabLabel = '',
   relayUrl = '',
@@ -244,9 +287,6 @@ export function FeedbackFooter({
   const textareaRef = useRef(null);
   const hasRelay = Boolean(String(relayUrl || '').trim());
   const hasEmail = Boolean(String(contactEmail || '').trim());
-  // With neither route configured there is nowhere for a suggestion to go, so
-  // say that rather than offering a button that silently discards it.
-  const canDeliver = hasRelay || hasEmail;
 
   useEffect(() => {
     if (open && textareaRef.current) textareaRef.current.focus();
@@ -254,18 +294,20 @@ export function FeedbackFooter({
 
   const route = typeof window !== 'undefined' ? window.location.hash || '#/' : '';
   const fields = { kind, message, contact, route, tab: tabLabel, appVersion };
-  const canSend = canDeliver && message.trim().length > 0;
+  const canSend = message.trim().length > 0;
 
-  // Without a relay, Send is a real mailto: link rather than a scripted
-  // navigation: a user-activated link is not subject to pop-up blocking, and
-  // `window.open` returns null even on success so it cannot report failure.
-  const { url: mailtoUrl, truncated } = canSend
-    ? composeSuggestionMailto(contactEmail, fields)
-    : { url: '', truncated: false };
+  // There is always a route. Preference order: relay (nothing required of the
+  // reader), then a configured mail address, then GitHub's prefilled issue form
+  // — which needs no setup at all and is therefore what keeps the box working
+  // out of the box. Send is a real link rather than a scripted navigation: a
+  // user-activated link is not blocked as a pop-up, and window.open returns null
+  // even on success so it could not report failure anyway.
+  const { url: linkUrl, truncated } = !canSend
+    ? { url: '', truncated: false }
+    : hasEmail
+      ? composeSuggestionMailto(contactEmail, fields)
+      : composeSuggestionIssueUrl(repoUrl, fields);
 
-  // Relay path: post it ourselves so the reader never leaves the page.
-  // A failure is not terminal — the text stays put and the mailto link takes
-  // over, so an endpoint that is down or misconfigured costs a click.
   const sendViaRelay = async (event) => {
     event.preventDefault();
     if (!canSend || sending) return;
@@ -280,24 +322,36 @@ export function FeedbackFooter({
       setRelayFailed(true);
       setStatus({
         tone: 'warn',
-        text: 'Could not send that automatically. Your text is still here — press Send again to email it instead.'
+        text: hasEmail
+          ? 'Could not send that automatically. Your text is still here — press Send again to email it instead.'
+          : 'Could not send that automatically. Your text is still here — press Send again to open it on GitHub instead.'
       });
     } finally {
       setSending(false);
     }
   };
 
-  const onMailtoClick = (event) => {
+  const onLinkClick = (event) => {
     if (!canSend) {
       event.preventDefault();
       return;
     }
     if (truncated) {
       // Leave the text in the box on purpose — they need it to send the rest.
-      setStatus({ tone: 'warn', text: 'Your email is opening, but the note was too long for an email link and was shortened. Paste the rest into the message before sending.' });
+      setStatus({
+        tone: 'warn',
+        text: hasEmail
+          ? 'Your email is opening, but the note was too long for an email link and was shortened. Paste the rest into the message before sending.'
+          : 'GitHub is opening, but the note was too long for a link and was shortened. Paste the rest into the issue before submitting.'
+      });
       return;
     }
-    setStatus({ tone: 'ok', text: 'Your email app is opening with the suggestion written out — press send there.' });
+    setStatus({
+      tone: 'ok',
+      text: hasEmail
+        ? 'Your email app is opening with the suggestion written out — press send there.'
+        : 'A prefilled suggestion is opening on GitHub — press "Submit new issue" there to send it.'
+    });
     setMessage('');
     setContact('');
   };
@@ -399,14 +453,9 @@ export function FeedbackFooter({
             </p>
 
             <div className="flex flex-wrap gap-2 items-center">
-              {!canDeliver && (
-                <p className="text-xs text-warn-700 dark:text-warn-300">
-                  Sending is not configured yet, so suggestions cannot be submitted from here.
-                </p>
-              )}
               {/* One action. With a relay it posts in place; without one — or
-                  after the relay has failed — it becomes a mailto: link to the
-                  maintainer, so there is always a way to send. */}
+                  after the relay has failed — it becomes a link that always
+                  resolves to something, so Send is never a dead button. */}
               {hasRelay && !relayFailed ? (
                 <button
                   id="suggestion-send"
@@ -420,10 +469,12 @@ export function FeedbackFooter({
               ) : (
                 <a
                   id="suggestion-send"
-                  href={canSend ? mailtoUrl : undefined}
+                  href={canSend ? linkUrl : undefined}
+                  target={hasEmail ? undefined : '_blank'}
+                  rel={hasEmail ? undefined : 'noopener noreferrer'}
                   role="button"
                   aria-disabled={!canSend}
-                  onClick={onMailtoClick}
+                  onClick={onLinkClick}
                   className={`inline-flex items-center px-4 py-2 min-h-[44px] rounded-md text-sm font-semibold no-underline bg-cobalt-600 text-white hover:bg-cobalt-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 dark:bg-cobalt-500 dark:hover:bg-cobalt-600 ${
                     canSend ? '' : 'opacity-50 cursor-not-allowed pointer-events-none'
                   }`}

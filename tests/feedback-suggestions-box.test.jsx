@@ -6,6 +6,7 @@ import {
   SUGGESTION_KINDS,
   buildSuggestionIssue,
   composeSuggestionMailto,
+  composeSuggestionIssueUrl,
   sliceChars,
   suggestionTitle,
   submitSuggestionToRelay
@@ -107,6 +108,37 @@ describe('buildSuggestionIssue', () => {
 
   it('says so explicitly when no message was typed', () => {
     expect(buildSuggestionIssue({}).body).toContain('(no message provided)');
+  });
+});
+
+describe('composeSuggestionIssueUrl', () => {
+  const REPO_URL = 'https://github.com/rkalani1/stroke';
+
+  it('prefills GitHub\'s new-issue form with the title, labels and body', () => {
+    const { url, truncated } = composeSuggestionIssueUrl(REPO_URL, { kind: 'addition', message: 'Add CREST-2' });
+    expect(url.startsWith(`${REPO_URL}/issues/new?`)).toBe(true);
+    const decoded = decodeURIComponent(url);
+    expect(decoded).toContain('[Suggestion] Addition: Add CREST-2');
+    expect(decoded).toContain('labels=suggestion,from-app');
+    expect(truncated).toBe(false);
+  });
+
+  // Plain text at the 4000-char message cap still encodes under the URL ceiling,
+  // so only expensively-encoded characters can force a shortening here.
+  it('shortens a note too long for a URL and says so', () => {
+    const { url, truncated } = composeSuggestionIssueUrl(REPO_URL, { message: '🧠'.repeat(2000) });
+    expect(truncated).toBe(true);
+    expect(url.length).toBeLessThanOrEqual(7000);
+  });
+
+  it('leaves a full-length plain-text note intact', () => {
+    const { truncated } = composeSuggestionIssueUrl(REPO_URL, { message: 'y'.repeat(4000) });
+    expect(truncated).toBe(false);
+  });
+
+  it('never cuts through a surrogate pair', () => {
+    const { url } = composeSuggestionIssueUrl(REPO_URL, { message: '🧠'.repeat(2000) });
+    expect(() => decodeURIComponent(url)).not.toThrow();
   });
 });
 
@@ -233,8 +265,16 @@ describe('FeedbackFooter', () => {
 
     it('withholds the link target until something has been typed', () => {
       expect(html).not.toContain('href="mailto:');
+      expect(html).not.toContain('issues/new');
       expect(html).toContain('aria-disabled="true"');
       expect(html).toContain('pointer-events-none');
+    });
+
+    // Regression: a build with nothing configured once rendered a permanently
+    // disabled Send with "Sending is not configured yet". There is always a
+    // route, so that state must not come back.
+    it('never claims sending is unconfigured', () => {
+      expect(html).not.toContain('not configured');
     });
 
     it('marks Send unavailable until something has been typed', () => {
