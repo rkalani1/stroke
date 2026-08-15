@@ -1,11 +1,11 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:bab81ac2b9668c1a261a51ea5b8460fd",
+    "checksum": "sha256:45f7c36ee1d2bb38452cc5da82886130",
     "counts": {
       "guidelines": 11,
       "trials": 113,
-      "education": 54,
+      "education": 48,
       "calculators": 34,
       "references": 18
     },
@@ -42,7 +42,8 @@
         "cit-chance2-2021"
       ],
       "caveats": [
-        "Bleeding risk increases with duration; do not extend DAPT beyond 21-30 days for this indication.",
+        "Duration is indication-specific. For THIS indication (minor stroke / high-risk TIA) the trial-supported courses are aspirin+clopidogrel 21 days or aspirin+ticagrelor 30 days; do not extend beyond 30 days.",
+        "A separate indication permits longer DAPT: severe intracranial stenosis 70-99% within 30 days of the event allows aspirin+clopidogrel up to 90 days. Beyond 90 days, or triple antiplatelet therapy, carries excess hemorrhage risk. Source of truth for both bounds: src/guidelines/secondary-prevention-2021.json.",
         "INSPIRES extended the window to 72 h in eligible mild stroke / high-risk TIA.",
         "For CYP2C19 loss-of-function carriers, ticagrelor (CHANCE-2) is preferred over clopidogrel."
       ],
@@ -79,7 +80,8 @@
       ],
       "caveats": [
         "Reserve longer delay for very severe stroke or extensive hemorrhagic transformation; confirm absence of significant hemorrhagic transformation on follow-up imaging before starting in moderate-large stroke.",
-        "Early initiation (≤4 d) is non-inferior across severities (OPTIMAS) and superior at 30 d in pooled IPD (CATALYST); individualize for the highest-risk presentations."
+        "Early initiation (≤4 d) is non-inferior across severities (OPTIMAS) and superior at 30 d in pooled IPD (CATALYST); individualize for the highest-risk presentations.",
+        "Scope note: this COR IIa statement covers the early-start question. The wider 2-14 day window carries a separate, weaker COR IIb statement — the two are not in conflict. Source of truth: src/guidelines/secondary-prevention-2021.json."
       ],
       "setting": "inpatient",
       "lastReviewed": "2026-04-25",
@@ -281,7 +283,7 @@
       ],
       "caveats": [
         "Pre-stroke mRS, life expectancy, and goals of care still inform shared decision-making.",
-        "ASPECTS <3 was not adequately enrolled in the seminal RCTs and is a Class IIb area."
+        "Very low ASPECTS is not unaddressed: ASPECTS 0-2 within 6 h and ASPECTS 0-5 within 0-6 h both carry recommendations, each bounded by age 18-80 and pre-stroke mRS 0-1. Those age and mRS limits are part of the recommendation and are easy to drop when quoting the ASPECTS number alone. Source of truth: src/guidelines/ais-2026.json."
       ],
       "setting": "inpatient",
       "lastReviewed": "2026-04-25",
@@ -2420,7 +2422,7 @@
     {
       "id": "antiepileptic-drugs",
       "title": "Antiepileptic Drugs & Post-Stroke Seizures",
-      "summary": "Clinical classification of post-stroke seizures, guideline-directed management, comparison of first-line and second-line antiepileptic drugs (ASMs), and post-stroke epilepsy risk scores (SeLECT and IsCHEMiA).",
+      "summary": "Clinical classification of post-stroke seizures, guideline-directed management, comparison of first-line and second-line antiepileptic drugs (ASMs), and post-stroke epilepsy risk stratification with the SeLECT score.",
       "tags": [
         "pocket-card",
         "printable",
@@ -2449,11 +2451,6 @@
           "pmid": "37212182"
         },
         {
-          "label": "IsCHEMiA Score Validation",
-          "citation": "IsCHEMiA in Vascular Epilepsy: Identifying Risks for Post Stroke Epilepsy. Epilepsy Currents. 2026;26.",
-          "pmid": null
-        },
-        {
           "label": "SeLECT Score Study",
           "citation": "Galovic M, et al. SeLECT: a prediction model for late seizures after ischemic stroke. Lancet Neurol. 2018;17(2):143-152.",
           "pmid": "29413315"
@@ -2461,78 +2458,7 @@
       ],
       "lastReviewed": "2026-07-13",
       "provenance": "src/education.jsx",
-      "body": "Clinical classification of post-stroke seizures, guideline-directed management, comparison of first-line and second-line antiepileptic drugs (ASMs), and post-stroke epilepsy risk scores (SeLECT and IsCHEMiA).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
-      "id": "aspirin-failure",
-      "title": "Aspirin Failure & Resistance",
-      "summary": "Clinical definition, mechanisms of resistance, diagnostic evaluation, and evidence-based secondary prevention strategies for patients who stroke on aspirin.",
-      "tags": [
-        "pocket-card",
-        "printable",
-        "icu"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "AHA/ASA 2021 Guideline",
-          "citation": "Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.",
-          "pmid": "34024117"
-        },
-        {
-          "label": "WASID Post-Hoc",
-          "citation": "Turan TN, et al. Failure of antithrombotic therapy and risk of stroke in patients with symptomatic intracranial stenosis. Stroke. 2009;40(2):505-509.",
-          "pmid": "19095991"
-        },
-        {
-          "label": "CAPRIE Trial",
-          "citation": "CAPRIE Steering Committee. A randomised, blinded, trial of clopidogrel versus aspirin in patients at risk of ischaemic events (CAPRIE). Lancet. 1996;348(9038):1329-1339.",
-          "pmid": "8918275"
-        },
-        {
-          "label": "CHANCE Trial",
-          "citation": "Wang Y, et al. Clopidogrel with Aspirin in Acute Minor Stroke or Transient Ischemic Attack. N Engl J Med. 2013;369:11-19.",
-          "pmid": "23803136"
-        },
-        {
-          "label": "POINT Trial",
-          "citation": "Johnston SC, et al. Clopidogrel and Aspirin in Acute Ischemic Stroke and High-Risk TIA. N Engl J Med. 2018;379:215-225.",
-          "pmid": "29766750"
-        },
-        {
-          "label": "INSPIRES Trial",
-          "citation": "Gao Y, et al. Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke. N Engl J Med. 2023;389:2413-2424.",
-          "pmid": "38157499"
-        },
-        {
-          "label": "SAMMPRIS Trial",
-          "citation": "Chimowitz MI, et al. Stenting versus Aggressive Medical Therapy for Intracranial Arterial Stenosis. N Engl J Med. 2011;365:993-1003.",
-          "pmid": "21899409"
-        },
-        {
-          "label": "COMPASS Trial",
-          "citation": "Connolly SJ, et al. Rivaroxaban with or without aspirin in patients with stable coronary artery disease. Lancet. 2018;391(10117):205-218.",
-          "pmid": "29132879"
-        },
-        {
-          "label": "Narrative Review",
-          "citation": "Sanderson S, et al. Aspirin Resistance and Its Clinical Implications. Ann Intern Med. 2005;142:370-380.",
-          "pmid": "15738456"
-        },
-        {
-          "label": "OCEANIC-STROKE Trial",
-          "citation": "Sharma M, et al. Asundexian for Secondary Stroke Prevention. N Engl J Med. 2026;394(15):1467-1479.",
-          "pmid": "41985132"
-        }
-      ],
-      "lastReviewed": "2026-07-18",
-      "provenance": "src/education.jsx",
-      "body": "Clinical definition, mechanisms of resistance, diagnostic evaluation, and evidence-based secondary prevention strategies for patients who stroke on aspirin.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Clinical classification of post-stroke seizures, guideline-directed management, comparison of first-line and second-line antiepileptic drugs (ASMs), and post-stroke epilepsy risk stratification with the SeLECT score.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "basilar-artery-occlusion",
@@ -2747,7 +2673,7 @@
       "references": [
         {
           "label": "CREST-2",
-          "citation": "Brott TG, et al. Medical Management and Revascularization for Asymptomatic Carotid Stenosis (CREST-2). N Engl J Med. 2025;394(3):219-231.",
+          "citation": "Brott TG, et al. Medical Management and Revascularization for Asymptomatic Carotid Stenosis (CREST-2). N Engl J Med. 2026;394(3):219-231.",
           "pmid": "41269206"
         },
         {
@@ -2769,71 +2695,6 @@
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
       "body": "Symptomatic vs asymptomatic carotid stenosis, NASCET measurement, CEA vs CAS (CREST), the CREST-2 asymptomatic results, and intensive medical therapy as the common foundation.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
-      "id": "cerebral-amyloid-angiopathy",
-      "title": "Cerebral Amyloid Angiopathy (CAA) Boston Criteria v2.0",
-      "summary": "Comprehensive Boston Criteria v2.0 diagnostic framework (strictly lobar CMBs, cortical superficial siderosis cSS, multispot WMH, centrum semiovale PVS), amyloid spells (TFNE vs TIA), and anticoagulation dilemmas in patients with AF and CAA (PRESTIGE-AF, SoSTART, ENRICH-AF DSMB alert, and LAAO).",
-      "tags": [
-        "pocket-card",
-        "printable"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "Boston Criteria 2.0",
-          "citation": "Charidimou A, et al. The Boston criteria version 2.0 for cerebral amyloid angiopathy: a multicentre, retrospective, MRI-neuropathology diagnostic accuracy study. Lancet Neurol. 2022;21(8):714-725.",
-          "pmid": "35841910"
-        },
-        {
-          "label": "Cortical Siderosis in CAA",
-          "citation": "Linn J, et al. Prevalence of superficial siderosis in patients with cerebral amyloid angiopathy. Neurology. 2010;74(17):1346-1350.",
-          "pmid": "20421578"
-        },
-        {
-          "label": "Amyloid Spells (TFNE)",
-          "citation": "Charidimou A, et al. Spectrum of transient focal neurological episodes in cerebral amyloid angiopathy: multicentre magnetic resonance imaging cohort study and meta-analysis. Stroke. 2012;43(9):2324-2330.",
-          "pmid": "22798323"
-        },
-        {
-          "label": "PRESTIGE-AF Trial",
-          "citation": "Veltkamp R, et al. Direct oral anticoagulants versus no anticoagulation for the prevention of stroke in survivors of intracerebral haemorrhage with atrial fibrillation (PRESTIGE-AF): a multicentre, open-label, randomised, phase 3 trial. Lancet. 2025;405(10482):927-936.",
-          "pmid": "40023176"
-        },
-        {
-          "label": "SoSTART Trial",
-          "citation": "Al-Shahi Salman R, et al. Effects of oral anticoagulation in people with atrial fibrillation and prior spontaneous intracranial haemorrhage (SoSTART). Lancet Neurol. 2021;20(10):842-853.",
-          "pmid": "34487722"
-        },
-        {
-          "label": "2022 ICH Guideline",
-          "citation": "Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.",
-          "pmid": "35579034"
-        },
-        {
-          "label": "SPARCL Hemorrhagic Stroke",
-          "citation": "Goldstein LB, et al. Hemorrhagic stroke in the Stroke Prevention by Aggressive Reduction in Cholesterol Levels study. Neurology. 2008;70(24 Pt 2):2364-2370.",
-          "pmid": "18077795"
-        },
-        {
-          "label": "cSS & ICH Recurrence",
-          "citation": "Charidimou A, et al. Cortical superficial siderosis and recurrent intracerebral hemorrhage risk in cerebral amyloid angiopathy: Large prospective cohort and preliminary meta-analysis. Int J Stroke. 2019;14(7):723-733.",
-          "pmid": "30785378"
-        },
-        {
-          "label": "TFNE Pharmacotherapy Review",
-          "citation": "Musaeus CS, et al. Pharmacological management of transient focal neurological episodes in cerebral amyloid angiopathy: a systematic review. GeroScience. 2026.",
-          "pmid": "42402536"
-        }
-      ],
-      "lastReviewed": "2026-08-14",
-      "provenance": "src/education.jsx",
-      "body": "Comprehensive Boston Criteria v2.0 diagnostic framework (strictly lobar CMBs, cortical superficial siderosis cSS, multispot WMH, centrum semiovale PVS), amyloid spells (TFNE vs TIA), and anticoagulation dilemmas in patients with AF and CAA (PRESTIGE-AF, SoSTART, ENRICH-AF DSMB alert, and LAAO).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "cerebral-venous-sinus-thrombosis",
@@ -2936,36 +2797,6 @@
       "body": "Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence (CADISS, TREAT-CAD, STOP-CAD, and 2024 IPD meta-analysis) for cervical artery dissection.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
-      "id": "crao-thrombolysis",
-      "title": "CRAO Acute Thrombolysis",
-      "summary": "Central Retinal Artery Occlusion (CRAO) acute IV thrombolysis decision framework, visual acuity criteria, and THEIA trial evidence.",
-      "tags": [
-        "pocket-card",
-        "printable"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "AHA Statement 2021",
-          "citation": "Mac Grory B, et al. Management of Central Retinal Artery Occlusion. Stroke. 2021;52(6):e282-e294.",
-          "pmid": "33677974"
-        },
-        {
-          "label": "THEIA Trial 2025",
-          "citation": "Préterre C, et al. Intravenous alteplase versus oral aspirin for acute central retinal artery occlusion within 4.5 h of severe vision loss (THEIA). Lancet Neurol. 2025;24(11):909-919.",
-          "pmid": "41109232"
-        }
-      ],
-      "lastReviewed": "2026-07-24",
-      "provenance": "src/education.jsx",
-      "body": "Central Retinal Artery Occlusion (CRAO) acute IV thrombolysis decision framework, visual acuity criteria, and THEIA trial evidence.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
       "id": "cryptogenic-stroke-esus",
       "title": "Cryptogenic Stroke & ESUS Diagnostic Evaluation",
       "summary": "Embolic Stroke of Undetermined Source (ESUS) definition, empirical DOAC failure in unselected ESUS (NAVIGATE ESUS, RE-SPECT ESUS), biomarker-defined atrial cardiopathy trial analysis (ARCADIA), insertable cardiac monitor (ICM) yields (CRYSTAL AF, STROKE-AF), and stepwise diagnostic algorithm.",
@@ -3024,51 +2855,6 @@
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
       "body": "Embolic Stroke of Undetermined Source (ESUS) definition, empirical DOAC failure in unselected ESUS (NAVIGATE ESUS, RE-SPECT ESUS), biomarker-defined atrial cardiopathy trial analysis (ARCADIA), insertable cardiac monitor (ICM) yields (CRYSTAL AF, STROKE-AF), and stepwise diagnostic algorithm.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
-      "id": "ctp-ghost-core",
-      "title": "CTP Artifacts, Ghost Core & Penumbra Nuances",
-      "summary": "CT perfusion ischemic core overestimation (rCBF <30% ghost core in hyperacute rapid reperfusion), ADC <620 μm²/s diffusion reversibility, Tmax >6s vs >10s hypoperfusion intensity ratio (HIR), bolus truncation, and severe carotid stenosis delay pseudo-penumbra.",
-      "tags": [
-        "pocket-card",
-        "printable"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "CTP core & Tmax thresholds",
-          "citation": "Campbell BCV, et al. Comparison of computed tomography perfusion and magnetic resonance imaging perfusion-diffusion mismatch in ischemic stroke. Stroke. 2012;43(10):2648-2653.",
-          "pmid": "22858726"
-        },
-        {
-          "label": "Ghost Infarct Core",
-          "citation": "Boned S, et al. Admission CT perfusion may overestimate initial infarct core: the ghost infarct core concept. J Neurointerv Surg. 2017;9(1):66-69.",
-          "pmid": "27566491"
-        },
-        {
-          "label": "CTP-CBV vs DWI core",
-          "citation": "Copen WA, et al. In Acute Stroke, Can CT Perfusion-Derived Cerebral Blood Volume Maps Substitute for Diffusion-Weighted Imaging in Identifying the Ischemic Core? PLoS One. 2015;10(7):e0133566.",
-          "pmid": "26193486"
-        },
-        {
-          "label": "DEFUSE 2 Mismatch",
-          "citation": "Lansberg MG, et al. MRI profile and response to endovascular reperfusion after stroke (DEFUSE 2): a prospective cohort study. Lancet Neurol. 2012;11(10):860-867.",
-          "pmid": "22954705"
-        },
-        {
-          "label": "2026 AIS Guideline",
-          "citation": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
-          "pmid": "41582814"
-        }
-      ],
-      "lastReviewed": "2026-08-14",
-      "provenance": "src/education.jsx",
-      "body": "CT perfusion ischemic core overestimation (rCBF <30% ghost core in hyperacute rapid reperfusion), ADC <620 μm²/s diffusion reversibility, Tmax >6s vs >10s hypoperfusion intensity ratio (HIR), bolus truncation, and severe carotid stenosis delay pseudo-penumbra.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "dapt-regimens",
@@ -3246,37 +3032,6 @@
       "body": "Evaluation, anatomical classification (M2/M3, A2/A3, P2/P3), trial evidence (DISTAL, ESCAPE-MeVO), disabling deficit thresholds, microcatheter techniques, and perforation risk management.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
-      "id": "edema-swelling-risk",
-      "title": "EDEMA Score & Malignant Swelling",
-      "summary": "EDEMA score for early stratification of severe brain swelling and malignant MCA infarction risk after acute ischemic stroke.",
-      "tags": [
-        "pocket-card",
-        "printable",
-        "icu"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "EDEMA Score (Ong 2017)",
-          "citation": "Ong CJ, et al. Enhanced Detection of Edema in Malignant Anterior Circulation Stroke (EDEMA) Score: A Risk Prediction Tool. Stroke. 2017;48(7):1969-1972.",
-          "pmid": "28487333"
-        },
-        {
-          "label": "DESTINY II Trial",
-          "citation": "Jüttler E, et al. Decompressive Surgery for Severe Middle-Cerebral-Artery Infarction in Elderly Patients. N Engl J Med. 2014;370:1091-1100.",
-          "pmid": "24645942"
-        }
-      ],
-      "lastReviewed": "2026-07-24",
-      "provenance": "src/education.jsx",
-      "body": "EDEMA score for early stratification of severe brain swelling and malignant MCA infarction risk after acute ischemic stroke.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
       "id": "evd-maintenance",
       "title": "External Ventricular Drain",
       "summary": "EVD leveling, drainage mechanics, safety checks, complications, PDF reference card, and interactive bedside simulator.",
@@ -3406,46 +3161,6 @@
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
       "body": "Standardized CTP and MRI mismatch interpretation in extended (6–24h) and wake-up windows — DAWN, DEFUSE 3, EXTEND, WAKE-UP, TWIST, automated thresholds (rCBF <30%, Tmax >6s), and DWI-FLAIR mismatch protocols.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
-      "id": "factor-xia-inhibitors",
-      "title": "Novel Factor XI/XIa Inhibitors in Stroke Prevention",
-      "summary": "Targeting the contact activation pathway to uncouple thrombosis from hemostasis — published Phase 2/3 trial data (OCEANIC-STROKE with Asundexian, PACIFIC-STROKE, AXIOMATIC-SSP with Milvexian), trials awaiting results (LILAC-TIMI 76 with Abelacimab, LIBREXIA-AF), and emerging clinical indications.",
-      "tags": [
-        "pocket-card",
-        "printable"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "OCEANIC-STROKE",
-          "citation": "Sharma M, et al. Asundexian for Secondary Stroke Prevention (OCEANIC-STROKE). N Engl J Med. 2026;394(15):1467-1479.",
-          "pmid": "41985132"
-        },
-        {
-          "label": "PACIFIC-STROKE",
-          "citation": "Shoamanesh A, et al. Factor XIa inhibition with asundexian after acute non-cardioembolic ischaemic stroke (PACIFIC-Stroke): an international, randomised, double-blind, placebo-controlled, phase 2b trial. Lancet. 2022;400(10357):997-1007.",
-          "pmid": "36063821"
-        },
-        {
-          "label": "AXIOMATIC-SSP",
-          "citation": "Sharma M, et al. Safety and efficacy of factor XIa inhibition with milvexian for secondary stroke prevention (AXIOMATIC-SSP): a phase 2, international, randomised, double-blind, placebo-controlled, dose-finding trial. Lancet Neurol. 2024;23(1):46-59.",
-          "pmid": "38101902"
-        },
-        {
-          "label": "OCEANIC-AF Trial",
-          "citation": "Piccini JP, et al. Asundexian versus Apixaban in Patients with Atrial Fibrillation (OCEANIC-AF). N Engl J Med. 2025;392(1):23-32.",
-          "pmid": "39225267"
-        }
-      ],
-      "lastReviewed": "2026-08-14",
-      "provenance": "src/education.jsx",
-      "body": "Targeting the contact activation pathway to uncouple thrombosis from hemostasis — published Phase 2/3 trial data (OCEANIC-STROKE with Asundexian, PACIFIC-STROKE, AXIOMATIC-SSP with Milvexian), trials awaiting results (LILAC-TIMI 76 with Abelacimab, LIBREXIA-AF), and emerging clinical indications.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "fibromuscular-dysplasia",

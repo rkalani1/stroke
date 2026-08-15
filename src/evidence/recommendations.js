@@ -143,7 +143,7 @@ export const recommendations = [
     supportingClaimIds: ['cl-evt-large-core'],
     caveats: [
       'Pre-stroke mRS, life expectancy, and goals of care still inform shared decision-making.',
-      'ASPECTS <3 was not adequately enrolled in the seminal RCTs and is a Class IIb area.'
+      'Very low ASPECTS is not unaddressed: ASPECTS 0-2 within 6 h and ASPECTS 0-5 within 0-6 h both carry recommendations, each bounded by age 18-80 and pre-stroke mRS 0-1. Those age and mRS limits are part of the recommendation and are easy to drop when quoting the ASPECTS number alone. Source of truth: src/guidelines/ais-2026.json.'
     ],
     lastReviewed: lr,
     verificationStatus: 'verified-guideline'
@@ -159,7 +159,8 @@ export const recommendations = [
     guidelineSource: 'AHA/ASA 2021 Secondary Prevention; CHANCE / POINT / THALES / INSPIRES',
     supportingClaimIds: ['cl-dapt-minor-stroke'],
     caveats: [
-      'Bleeding risk increases with duration; do not extend DAPT beyond 21-30 days for this indication.',
+      'Duration is indication-specific. For THIS indication (minor stroke / high-risk TIA) the trial-supported courses are aspirin+clopidogrel 21 days or aspirin+ticagrelor 30 days; do not extend beyond 30 days.',
+      'A separate indication permits longer DAPT: severe intracranial stenosis 70-99% within 30 days of the event allows aspirin+clopidogrel up to 90 days. Beyond 90 days, or triple antiplatelet therapy, carries excess hemorrhage risk. Source of truth for both bounds: src/guidelines/secondary-prevention-2021.json.',
       'INSPIRES extended the window to 72 h in eligible mild stroke / high-risk TIA.',
       'For CYP2C19 loss-of-function carriers, ticagrelor (CHANCE-2) is preferred over clopidogrel.'
     ],
@@ -178,7 +179,8 @@ export const recommendations = [
     supportingClaimIds: ['cl-af-early-anticoag'],
     caveats: [
       'Reserve longer delay for very severe stroke or extensive hemorrhagic transformation; confirm absence of significant hemorrhagic transformation on follow-up imaging before starting in moderate-large stroke.',
-      'Early initiation (≤4 d) is non-inferior across severities (OPTIMAS) and superior at 30 d in pooled IPD (CATALYST); individualize for the highest-risk presentations.'
+      'Early initiation (≤4 d) is non-inferior across severities (OPTIMAS) and superior at 30 d in pooled IPD (CATALYST); individualize for the highest-risk presentations.',
+      'Scope note: this COR IIa statement covers the early-start question. The wider 2-14 day window carries a separate, weaker COR IIb statement — the two are not in conflict. Source of truth: src/guidelines/secondary-prevention-2021.json.'
     ],
     lastReviewed: lr,
     verificationStatus: 'verified-guideline'

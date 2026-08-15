@@ -285,7 +285,7 @@ Lancet
 ·
 PMID 37837989
 Caveats:
-Pre-stroke mRS, life expectancy, and goals of care still inform shared decision-making. · ASPECTS <3 was not adequately enrolled in the seminal RCTs and is a Class IIb area.
+Pre-stroke mRS, life expectancy, and goals of care still inform shared decision-making. · Very low ASPECTS is not unaddressed: ASPECTS 0-2 within 6 h and ASPECTS 0-5 within 0-6 h both carry recommendations, each bounded by age 18-80 and pre-stroke mRS 0-1. Those age and mRS limits are part of the recommendation and are easy to drop when quoting the ASPECTS number alone. Source of truth: src/guidelines/ais-2026.json.
 Prevents treatment-caused harm
 Physiology Guardrails
 BP / glucose / oxygen

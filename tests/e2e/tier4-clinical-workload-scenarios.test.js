@@ -241,11 +241,14 @@ describe('Tier 4: Real-World Clinical Workload Application Scenarios', () => {
       expect(ichSnapshot).toContain('andexanet alfa');
     });
 
-    it('S4.5: Verifies educational module edema-swelling-risk.md covers ICH swelling and ICP management', () => {
-      const file = path.join(ROOT, 'content/education/edema-swelling-risk.md');
+    it('S4.5: Verifies educational module herniation-icp.md covers ICP management', () => {
+      // Retargeted from edema-swelling-risk.md, whose card was removed for
+      // rendering a fabricated "EDEMA score"; herniation-icp carries the
+      // surviving ICP-management content for this scenario.
+      const file = path.join(ROOT, 'content/education/herniation-icp.md');
       expect(fs.existsSync(file)).toBe(true);
       const content = fs.readFileSync(file, 'utf8');
-      expect(content).toContain('edema-swelling-risk');
+      expect(content).toContain('herniation-icp');
     });
   });
 

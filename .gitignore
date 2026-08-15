@@ -59,3 +59,6 @@ content/_drafts/
 # Agent metadata workspaces
 .agents/
 
+
+# PMID metadata cache for scripts/validate-pmids.mjs (regenerated on demand)
+.pmid-cache.json

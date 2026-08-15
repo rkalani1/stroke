@@ -16,21 +16,22 @@
  *      animation and simply shows the end state.
  *   2. Clinical Interpreter — an interpretation cascade (ORDER MATTERS) that
  *      keys off NPi, constriction velocity (CV), % constriction, and the
- *      inter-eye NPi asymmetry, plus a midline-shift estimate and escalation
- *      reference cards.
+ *      inter-eye NPi asymmetry, plus escalation reference cards.
  *
  * Clinical model (values are load-bearing — see app build spec):
  *   • Interpretation cascade (evaluated top → bottom; first match wins):
- *       1. NPi ≤ 1.0                              → HERNIATION CRISIS (100%, crit)
- *       2. NPi < 2.8 OR diff ≥ 0.7 OR cv < 0.5    → SEVERE SHIFT ALARM (75%, gold/orange)
- *       3. NPi < 3.0 OR cv < 0.8 OR %change < 10  → EARLY CLINICAL ALARM (45%, warn/amber)
- *       4. else                                   → NORMAL PROFILE (10%, ok/green)
+ *       1. NPi ≤ 1.0                              → HERNIATION CRISIS (crit)
+ *       2. NPi < 2.8 OR diff ≥ 0.7 OR cv < 0.5    → SEVERE SHIFT ALARM (gold/orange)
+ *       3. NPi < 3.0 OR cv < 0.8 OR %change < 10  → EARLY CLINICAL ALARM (warn/amber)
+ *       4. else                                   → NORMAL PROFILE (ok/green)
+ *     Numeric "risk %" values were removed: they had no derivation and no
+ *     source, and a displayed "100% risk" is unsupportable.
  *     NOTE: the source UI text said "NPi=0.0" for herniation but its CODE
  *     triggered at ≤ 1.0. We follow the CODE (≤ 1.0) — the herniation card
  *     reads "NPi ≤ 1.0 (areflexic / near-areflexic)". Flagged in the report.
- *   • Midline-shift estimate: ichShift = diff×5.5 mm (septum pellucidum),
- *     strokeShift = diff×8.0 mm (pineal gland); "High probability of
- *     clinically significant shift" when diff ≥ 0.7.
+ *   • The millimetre midline-shift estimator was REMOVED. It converted an
+ *     inter-eye NPi difference into a radiographic shift off a single uncited
+ *     regression, one arm of which was not statistically significant (p=0.07).
  *   • Animation kinetics: left transition duration = 0.375/cv s; left latency =
  *     npi < 3.0 ? (5.0 − npi)×0.1 : 0.2 s; right initial size =
  *     max(1.5, size − diff×1.5) (anisocoria); right constricts 20% (0% when
@@ -81,21 +82,6 @@ export function contralateralInitialSize(size, diff) {
   return Math.max(1.5, size - diff * 1.5);
 }
 
-/* Midline-shift estimate keyed off inter-eye NPi asymmetry.
-   β = 0.11 for septum-pellucidum shift in ICH → ~diff×5.5 mm.
-   β = 0.16 for pineal-gland shift in ischemic stroke → ~diff×8.0 mm.
-   diff ≥ 0.7 → "High probability of clinically significant shift". */
-export function computeMidlineShift(diff) {
-  const ichShift = round1(diff * 5.5);
-  const strokeShift = round1(diff * 8.0);
-  const highProbability = diff >= 0.7;
-  return {
-    ichShift,
-    strokeShift,
-    highProbability,
-    probabilityLabel: highProbability ? 'High probability' : 'Low probability'
-  };
-}
 
 /* Interpretation cascade — ORDER MATTERS, first match wins.
    Ported from the source CODE (not its UI text — see herniation note). */
@@ -105,14 +91,12 @@ export function interpretPupillometry({ npi, cv, change, diff }) {
     return {
       status: 'HERNIATION CRISIS (CRITICAL)',
       tone: 'crit',
-      riskPercent: 100,
-      summary: `NPi is areflexic / near-areflexic (${npi.toFixed(1)}), indicating severe brainstem compression, midbrain dysfunction, or active transtentorial herniation. Immediate hyperosmolar decompression is required.`,
+      summary: `NPi is areflexic / near-areflexic (${npi.toFixed(1)}), which is strongly associated with brainstem compression and poor outcome. Treat as a time-critical finding requiring immediate re-examination and imaging — not as a standalone trigger for osmotherapy.`,
       steps: [
-        'Administer hyperosmolar bolus immediately (mannitol 1 g/kg or 23.4% hypertonic saline 30 mL via central line).',
-        'Elevate head of bed to 30° and align the neck midline to optimize venous drainage.',
-        'Temporarily hyperventilate (target PaCO₂ 30–35 mmHg) as a bridge only.',
-        'STAT Neurosurgery for emergent decompression (hemicraniectomy / hematoma evacuation) or EVD placement.',
-        'Call for a STAT non-contrast head CT.'
+        'Prompts immediate bedside re-examination and urgent non-contrast head CT.',
+        'Escalate to the Stroke Fellow and Neurocritical Care Attending now.',
+        'Treat according to the clinical and radiographic picture and your unit ICP protocol — pupillometry alone does not establish raised ICP (Petrosino 2025) and is not an indication to give osmotherapy.',
+        'Elevate head of bed to 30° and keep the neck midline to optimize venous drainage.'
       ]
     };
   }
@@ -121,7 +105,6 @@ export function interpretPupillometry({ npi, cv, change, diff }) {
     return {
       status: 'SEVERE SHIFT ALARM',
       tone: 'gold',
-      riskPercent: 75,
       summary: 'Markedly abnormal pupillary profile (NPi < 2.8, NPi diff ≥ 0.7, or CV < 0.5 mm/s). Highly specific for impending clinical deterioration from midline shift or expanding mass effect.',
       steps: [
         'Notify the Stroke Fellow and Neurocritical Care Attending immediately.',
@@ -136,7 +119,6 @@ export function interpretPupillometry({ npi, cv, change, diff }) {
     return {
       status: 'EARLY CLINICAL ALARM',
       tone: 'warn',
-      riskPercent: 45,
       summary: 'Borderline pupillary reactivity (NPi < 3.0, CV < 0.8 mm/s, or % constriction < 10%). Suggests possible early CN III compression. Per Giede-Jeppe 2021 these CV / %-change cut-points were proposed to flag ICP ≥ 20 mmHg — but see the Petrosino 2025 caveat below.',
       steps: [
         'Perform a thorough clinical neurological assessment.',
@@ -150,7 +132,6 @@ export function interpretPupillometry({ npi, cv, change, diff }) {
   return {
     status: 'NORMAL PROFILE',
     tone: 'ok',
-    riskPercent: 10,
     summary: 'Pupillary parameters are within normal limits. Normal NPi (> 3.0) and CV (> 0.8 mm/s) suggest absence of active brainstem compression — but normal pupillometry CANNOT safely exclude elevated ICP and cannot replace invasive monitoring (Petrosino 2025).',
     steps: [
       'Continue baseline serial assessments every 4 hours.',
@@ -196,7 +177,7 @@ const ESCALATION = [
 /* ── Evidence base (net-new NPi module) ───────────────────────────────── */
 const EVIDENCE = [
   {
-    study: 'Petrosino et al. — JAMA Neurol 2025',
+    study: 'Petrosino et al. — JAMA Neurol 2025;82(2):176-184 (PMID 39652324)',
     caveat: true,
     cohort: 'Secondary analysis of ORANGE, n = 318 with invasive ICP monitoring.',
     finding: 'NO significant association between NPi and ICP. A normal NPi does NOT safely exclude elevated ICP. Pupillometry CANNOT replace invasive ICP monitoring.'
@@ -204,7 +185,7 @@ const EVIDENCE = [
   {
     study: 'ORANGE Study — Lancet Neurol 2023;22(10):925-933 (PMID 37652068)',
     cohort: '514 acute-brain-injury patients across 8 countries — 224 TBI, 139 aSAH, 151 ICH. No ischemic stroke.',
-    finding: 'Abnormal NPi independently associated with poor 6-month outcome and in-hospital mortality (HR 5.58, 95% CI 3.92–7.95). Established NPi < 3.0 as a robust prognostic marker.'
+    finding: 'Abnormal NPi independently associated with poor 6-month outcome and in-hospital mortality (adjusted HR 5.58, 95% CI 3.92–7.95). Established NPi < 3.0 as a prognostic marker. Funding disclosure: ORANGE was funded by NeurOptics, the manufacturer of the pupillometer under study.'
   },
   {
     study: 'Ischemic-stroke evidence gap',
@@ -244,7 +225,6 @@ export function PupillometrySimulator() {
   const timers = useRef([]);
 
   const result = interpretPupillometry({ npi, cv, change, diff });
-  const shift = computeMidlineShift(diff);
   const tone = TONE[result.tone] || TONE.ok;
 
   const reducedMotion = typeof window !== 'undefined' && window.matchMedia
@@ -458,18 +438,6 @@ export function PupillometrySimulator() {
             </span>
           </div>
 
-          {/* Risk meter */}
-          <div>
-            <div className="h-2.5 w-full rounded-pill bg-slate-100 overflow-hidden dark:bg-paper-2" role="img"
-              aria-label={`Risk level ${result.riskPercent} percent — ${result.status}`}>
-              <div className="h-full rounded-pill transition-all duration-300"
-                style={{ width: `${result.riskPercent}%`, background: tone.bar }} />
-            </div>
-            <div className="flex justify-between text-2xs text-slate-500 mt-1 dark:text-mute">
-              <span>Normal</span><span>Early</span><span>Severe</span><span>Herniation</span>
-            </div>
-          </div>
-
           <div className={cx('rounded-md border px-3 py-2 text-xs leading-relaxed', tone.chip)}>
             {result.summary}
           </div>
@@ -486,27 +454,6 @@ export function PupillometrySimulator() {
             </ul>
           </div>
 
-          {/* Midline-shift estimate */}
-          <div className={cx('rounded-md border p-3', shift.highProbability ? TONE.gold.chip : 'bg-slate-50 border-line text-slate-700 dark:bg-paper-2 dark:text-ink-2')}>
-            <p className="text-2xs uppercase tracking-wide font-semibold mb-1.5">
-              Radiographic midline-shift estimate (from NPi diff {diff.toFixed(1)})
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <p className="text-2xs text-slate-500 dark:text-mute">ICH · septum pellucidum</p>
-                <p className="font-mono tabular-nums text-sm font-bold">{shift.ichShift.toFixed(1)} mm</p>
-              </div>
-              <div>
-                <p className="text-2xs text-slate-500 dark:text-mute">Ischemic · pineal gland</p>
-                <p className="font-mono tabular-nums text-sm font-bold">{shift.strokeShift.toFixed(1)} mm</p>
-              </div>
-            </div>
-            <p className="text-xs font-semibold mt-2">
-              {shift.highProbability
-                ? 'High probability of clinically significant shift (NPi diff ≥ 0.7).'
-                : 'Low probability of clinically significant shift (NPi diff < 0.7).'}
-            </p>
-          </div>
         </section>
       </div>
 
