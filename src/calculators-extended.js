@@ -839,7 +839,8 @@ export const dmvoEVTAdvisory = ({ occlusionLocation, nihss, deficitDisabling }) 
 // Argatroban or eptifibatide as adjunct vs placebo. STOPPED for futility — neither improved
 // outcome. MR CLEAN-MED (Lancet 2022, PMID 35202525) similarly showed periprocedural
 // heparin/aspirin during EVT increases sICH (stopped for harm).
-// NOTE: RESCUE BT2 (China, NEJM 2024) showed tirofiban benefit in non-cardioembolic AIS who
+// NOTE: RESCUE BT2 (China, NEJM 2023;388:2025-36, PMID 37256974) showed tirofiban benefit in
+  // ischemic stroke WITHOUT large- or medium-vessel occlusion (mostly small atherosclerotic infarcts) who
 // were INELIGIBLE for lytic/EVT — different population; do NOT extrapolate to lytic-eligible.
 export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyticIneligible }) => {
   if (ivLyticGiven === true) {
@@ -864,7 +865,7 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
     return {
       recommend: 'Tirofiban may be considered',
       drugs: ['tirofiban'],
-      rationale: 'RESCUE BT2 (NEJM 2023) showed improved mRS 0-3 with tirofiban in non-cardioembolic AIS who could not receive IV lytic or EVT. Distinct population from MOST.',
+      rationale: 'RESCUE BT2 (NEJM 2023) improved the primary endpoint of excellent outcome (mRS 0-1) at 90 days — 29.1% vs 22.2%, adjusted RR 1.26 (95% CI 1.04-1.53), p=0.02, though secondary endpoints were generally not consistent with the primary result — with tirofiban in non-cardioembolic AIS who could not receive IV lytic or EVT. Distinct population from MOST.',
       source: 'RESCUE BT2 NEJM 2023 (PMID 37256974)',
       class: 'Class 2b (selected non-cardioembolic, lytic/EVT-ineligible)'
     };

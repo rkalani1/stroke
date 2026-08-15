@@ -462,7 +462,15 @@ function main() {
       practiceImpact: cleanPracticeImpact(study.bottomLine),
       result: {
         effect: extractEffect(study),
-        direction: inferDirection(study)
+        // CLINICAL-SAFETY INVARIANT (extends the PMID and appraisal.results rules above):
+        // direction is an efficacy CLAIM. inferDirection reads the briefing's prose, and that
+        // prose carries generic clinical-implications boilerplate ("can yield meaningful clinical
+        // benefits and reduce long-term morbidity") which trips the benefit regex regardless of
+        // what the trial actually found. For an entry we could not resolve to a PubMed record we
+        // have no way to check that claim, so we do not make it. CHARM is the worked example:
+        // stopped early, neutral primary endpoint, numerically higher mortality — yet the
+        // briefing prose alone infers 'benefit'.
+        direction: isVerified ? inferDirection(study) : 'unknown'
       },
       certainty: inferCertainty(study, evidenceType),
       appraisal: {

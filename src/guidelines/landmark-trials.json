@@ -355,7 +355,7 @@
       "design": "RCT, n=300, MIPS+medical vs medical for lobar ICH 30-80 mL",
       "outcomes": "Primary (utility-weighted mRS at 180d): significantly favored MIPS.",
       "bottomLine": "First positive ICH surgery trial — MIPS improves outcomes in selected lobar ICH patients.",
-      "teachingPoint": "June 2026 ICH algorithm screen: lobar ICH 30-80 mL, NIHSS >5, GCS 5-14, age 18-80, and no underlying lesion. Deep ICH and cerebellar ICH were excluded; verify operative timing and detailed trial criteria against the active protocol before applying."
+      "teachingPoint": "June 2026 ICH algorithm screen: lobar ICH 30-80 mL, NIHSS >5, GCS 5-14, age 18-80, and no underlying lesion. Deep (anterior basal ganglia) ICH was NOT excluded — it made up 30.7% of the 300 enrolled until an adaptation rule restricted enrolment to lobar only. Benefit was confined to lobar ICH (mean difference 0.127, 95% CrI 0.035 to 0.219), with none in anterior basal ganglia (-0.013, 95% CrI -0.147 to 0.116). Cerebellar ICH was not studied; verify operative timing and detailed trial criteria against the active protocol before applying."
     },
     {
       "name": "ANNEXA-4 / ANNEXA-I",
@@ -515,7 +515,7 @@
       "citation": "Lancet Neurol 2015;14:361 / Lancet Neurol 2021;20:341",
       "question": "Antiplatelet vs anticoagulation for cervical artery dissection?",
       "design": "Two RCTs, ASA vs VKA, 3-6 months",
-      "outcomes": "CADISS: no significant difference in stroke/death but underpowered (event rates lower than expected). TREAT-CAD: aspirin did NOT meet non-inferiority vs VKA — more composite endpoint events with ASA (23% vs 15%), driven by imaging outcomes.",
+      "outcomes": "CADISS: no significant difference in stroke/death but underpowered (event rates lower than expected). TREAT-CAD: aspirin did NOT meet non-inferiority vs VKA — more composite endpoint events with ASA (23% vs 15%), driven mainly by clinical ischaemic strokes (7 [8%] on aspirin vs 0 on VKA); subclinical MRI outcomes were similar between arms (15% vs 13%).",
       "bottomLine": "Antiplatelet and anticoagulation are both reasonable for cervical artery dissection; TREAT-CAD did not confirm aspirin non-inferiority, so the choice is individualized (AHA/ASA CADISS Class IIa).",
       "teachingPoint": "Both antiplatelet and anticoagulation are accepted first-line; individualize by bleeding risk, occlusion/pseudoaneurysm, and free-floating thrombus. TREAT-CAD tempered the earlier assumption of aspirin equivalence."
     },
