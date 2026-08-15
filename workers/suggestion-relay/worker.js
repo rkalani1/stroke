@@ -1,14 +1,17 @@
 /**
- * Suggestion relay — opens a GitHub issue on a submitter's behalf.
+ * Suggestion relay — emails the maintainer and files a GitHub issue.
  *
- * The app is a static bundle on GitHub Pages. GitHub's API requires a
- * credential to create an issue, and a static page cannot hold one, so without
- * this relay the only route is GitHub's own `issues/new` form — which means the
- * submitter needs a GitHub account. This worker holds the token instead, so the
- * suggestions box can post directly and anyone can send a suggestion.
+ * The app is a static bundle on GitHub Pages, so it can neither send mail nor
+ * authenticate to GitHub: both need a credential, and anything shipped to the
+ * browser is public. This worker holds those credentials, so a reader can send
+ * a suggestion without a GitHub account and without leaving the page.
  *
- * The maintainer is notified the ordinary way: GitHub emails the repository
- * owner about new issues through normal watch settings. No mail service here.
+ * Two deliveries, in this order:
+ *   1. Email to NOTIFY_EMAIL (Resend). This is the one the UI promises, so it
+ *      runs first and a GitHub failure afterwards does not undo it.
+ *   2. A GitHub issue, for tracking.
+ * Either half can be left unconfigured; the worker does whichever it can, and
+ * only reports failure when neither delivery happened.
  *
  * Deploy: see README.md in this directory.
  *
@@ -38,6 +41,9 @@ const json = (obj, status, origin) =>
       'Cache-Control': 'no-store'
     }
   });
+
+/** Loose check — only decides whether to set Reply-To, never trusted further. */
+const isEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
 
 /** Cap to whole code points so a cut never leaves a lone surrogate. */
 const clamp = (value, max) => {
@@ -126,8 +132,45 @@ export default {
     if (!labels.length) labels.push('suggestion', 'from-app');
 
     const repo = env.GITHUB_REPO;
+
+    // Email the maintainer directly. This is the delivery the suggestions box
+    // promises, so it runs even if the GitHub side is unavailable or unset —
+    // a suggestion reaching the inbox but not the tracker is a far better
+    // failure than one that vanishes. Sent before the issue is created so a
+    // GitHub outage cannot swallow it; the issue link is followed up by
+    // GitHub's own notification.
+    const emailTo = env.NOTIFY_EMAIL;
+    let emailed = false;
+    if (emailTo && env.RESEND_API_KEY) {
+      try {
+        const mail = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${env.RESEND_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            from: env.NOTIFY_FROM || 'Stroke suggestions <onboarding@resend.dev>',
+            to: [emailTo],
+            subject: title,
+            text: body,
+            // So a reply goes to the submitter when they left an address.
+            ...(isEmail(payload.contact) ? { reply_to: String(payload.contact).trim() } : {})
+          })
+        });
+        emailed = mail.ok;
+        if (!mail.ok) console.error('Email send failed', mail.status, await mail.text());
+      } catch (err) {
+        console.error('Email send threw', err && err.message);
+      }
+    }
+
     if (!repo || !env.GITHUB_TOKEN) {
-      return json({ error: 'Relay is not configured' }, 500, allowedOrigin);
+      // Email-only deployment: nothing more to do, and the submitter should
+      // still be told it went through.
+      return emailed
+        ? json({ ok: true, url: '', emailed: true }, 201, allowedOrigin)
+        : json({ error: 'Relay is not configured' }, 500, allowedOrigin);
     }
 
     const ghResponse = await fetch(`https://api.github.com/repos/${repo}/issues`, {
@@ -146,10 +189,15 @@ export default {
       // Do not echo GitHub's response to the browser — it can carry rate-limit
       // and repository detail that the submitter has no business seeing.
       console.error('GitHub issue creation failed', ghResponse.status, await ghResponse.text());
-      return json({ error: 'Could not file the suggestion' }, 502, allowedOrigin);
+      // If the email already went out the suggestion has been delivered, so
+      // report success. Returning an error here would send the reader to the
+      // mailto fallback and the maintainer would receive it twice.
+      return emailed
+        ? json({ ok: true, url: '', emailed: true }, 201, allowedOrigin)
+        : json({ error: 'Could not file the suggestion' }, 502, allowedOrigin);
     }
 
     const issue = await ghResponse.json();
-    return json({ ok: true, url: issue.html_url || '' }, 201, allowedOrigin);
+    return json({ ok: true, url: issue.html_url || '', emailed }, 201, allowedOrigin);
   }
 };

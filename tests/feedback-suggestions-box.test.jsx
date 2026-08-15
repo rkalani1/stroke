@@ -5,11 +5,9 @@ import {
   FeedbackFooter,
   SUGGESTION_KINDS,
   buildSuggestionIssue,
-  composeSuggestionUrl,
-  suggestionIssueUrl,
+  composeSuggestionMailto,
   sliceChars,
   suggestionTitle,
-  suggestionUrlWasTruncated,
   submitSuggestionToRelay
 } from '../src/feedback.jsx';
 
@@ -112,75 +110,37 @@ describe('buildSuggestionIssue', () => {
   });
 });
 
-describe('suggestionIssueUrl', () => {
-  it('targets the repository new-issue form with title, labels and body', () => {
-    const url = suggestionIssueUrl(REPO, { kind: 'addition', message: 'Add CREST-2' });
-    expect(url.startsWith(`${REPO}/issues/new?`)).toBe(true);
-    expect(url).toContain('title=');
-    expect(url).toContain('labels=suggestion%2Cfrom-app');
-    expect(url).toContain('body=');
-  });
+describe('composeSuggestionMailto', () => {
+  const fields = { kind: 'addition', message: 'Add the ATLAS meta-analysis', contact: 'dr@example.org' };
 
-  it('tolerates a repo URL with a trailing slash', () => {
-    const url = suggestionIssueUrl(`${REPO}/`, { message: 'x' });
-    expect(url.startsWith(`${REPO}/issues/new?`)).toBe(true);
-  });
-
-  it('percent-encodes the body so markdown cannot break out of the query string', () => {
-    const url = suggestionIssueUrl(REPO, { message: 'a&b=c #hash' });
-    const body = new URL(url).searchParams.get('body');
-    expect(body).toContain('a&b=c #hash');
-  });
-
-  it('sends a full-length plain-text message without shortening it', () => {
-    // 4000 ASCII characters is the field cap and still fits comfortably.
-    const { url, truncated } = composeSuggestionUrl(REPO, { message: 'q'.repeat(4000), contact: 'c'.repeat(200) });
+  it('addresses the maintainer and prefills subject and body', () => {
+    const { url, truncated } = composeSuggestionMailto('rkalani@uw.edu', fields);
+    expect(url.startsWith('mailto:rkalani@uw.edu?')).toBe(true);
+    expect(decodeURIComponent(url)).toContain('[Suggestion] Addition: Add the ATLAS meta-analysis');
+    expect(decodeURIComponent(url)).toContain('Add the ATLAS meta-analysis');
     expect(truncated).toBe(false);
-    expect(url.length).toBeLessThanOrEqual(7000);
   });
 
-  // Percent-encoding is what actually blows the budget: one CJK character costs
-  // nine URL characters, one emoji twelve.
-  it('shortens a multi-byte message rather than dropping the body', () => {
-    const { url, truncated } = composeSuggestionUrl(REPO, { message: '漢'.repeat(2000) });
+  it('carries the context table so the email is self-describing', () => {
+    const { url } = composeSuggestionMailto('rkalani@uw.edu', { ...fields, tab: 'Trials', appVersion: '6.11.8' });
+    const decoded = decodeURIComponent(url);
+    expect(decoded).toContain('| Tab | Trials |');
+    expect(decoded).toContain('| App version | 6.11.8 |');
+    expect(decoded).toContain('| Contact | dr@example.org |');
+  });
+
+  // mailto: is handled by the OS mail client, whose length ceiling is far lower
+  // than a browser's, so an over-long note is shortened rather than silently lost.
+  it('shortens an over-long note and says so', () => {
+    const { url, truncated } = composeSuggestionMailto('rkalani@uw.edu', { message: 'y'.repeat(4000) });
     expect(truncated).toBe(true);
-    expect(url.length).toBeLessThanOrEqual(7000);
-    expect(url).toContain('body=');
-    expect(url).toContain('labels=');
-    expect(decodeURIComponent(new URL(url).searchParams.get('body'))).toContain('漢');
+    expect(url.length).toBeLessThanOrEqual(1800);
+    expect(decodeURIComponent(url)).toContain('shortened to fit an email link');
   });
 
-  it('tells the reader in the issue itself that the text was cut short', () => {
-    const { url } = composeSuggestionUrl(REPO, { message: '🧠'.repeat(2000) });
-    expect(new URL(url).searchParams.get('body')).toContain('message truncated');
-  });
-
-  it('stays within the ceiling even for a message of pure wide characters', () => {
-    const { url } = composeSuggestionUrl(REPO, { message: '🧠'.repeat(4000), contact: '漢'.repeat(200) });
-    expect(url.length).toBeLessThanOrEqual(7000);
-  });
-
-  it('reports truncation only when shortening actually happened', () => {
-    expect(suggestionUrlWasTruncated(REPO, { message: 'short' })).toBe(false);
-    expect(suggestionUrlWasTruncated(REPO, { message: '漢'.repeat(2000) })).toBe(true);
-  });
-
-  // Regression: truncating with a UTF-16 `slice` could cut an emoji in half and
-  // leave a lone surrogate, which makes encodeURIComponent throw URIError and
-  // takes the Send button down. Truncation must split on code points.
-  it('never emits a lone surrogate when cutting a message full of emoji', () => {
-    expect(() => composeSuggestionUrl(REPO, { message: '🧠'.repeat(3000) })).not.toThrow();
-    const { url } = composeSuggestionUrl(REPO, { message: '🧠'.repeat(3000) });
-    const body = new URL(url).searchParams.get('body');
-    expect(body).toContain('🧠');
-    expect(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/.test(body)).toBe(false);
-  });
-
-  it('survives every truncation boundary around a surrogate pair', () => {
-    // Sweep lengths so the bisection lands on both halves of a pair.
-    for (let n = 1990; n <= 2010; n += 1) {
-      expect(() => composeSuggestionUrl(REPO, { message: '🧠'.repeat(n) })).not.toThrow();
-    }
+  it('never cuts through a surrogate pair', () => {
+    const { url } = composeSuggestionMailto('rkalani@uw.edu', { message: '🧠'.repeat(2000) });
+    expect(() => decodeURIComponent(url)).not.toThrow();
   });
 });
 
@@ -226,13 +186,6 @@ describe('FeedbackFooter', () => {
     expect(render()).toContain('--mobile-nav-offset');
   });
 
-  // The caution sits beside the send controls rather than in the collapsed
-  // header, so it is read at the moment of sending. Issues are filed to a
-  // public repository, which is what makes it worth asserting on at all.
-  it('warns against entering patient details where the note is sent', () => {
-    expect(render({ defaultOpen: true })).toContain('patient details');
-  });
-
   it('offers all four change types', () => {
     expect(SUGGESTION_KINDS.map((k) => k.id)).toEqual(['addition', 'modification', 'removal', 'other']);
   });
@@ -263,18 +216,25 @@ describe('FeedbackFooter', () => {
       expect(html).toContain('(optional)');
     });
 
-    it('offers both Send and a copy fallback', () => {
+    it('offers exactly one send action and no copy fallback', () => {
       expect(html).toContain('>Send</a>');
-      expect(html).toContain('>Copy instead</button>');
+      expect(html).not.toContain('Copy instead');
+      expect(html.match(/id="suggestion-send"/g)).toHaveLength(1);
     });
 
-    // window.open(url, target, 'noopener') returns null even on success, so a
-    // pop-up-blocked check built on it always false-alarms. A user-activated
-    // link sidesteps blockers entirely and carries the same noopener guarantee.
-    it('sends via a real link so pop-up blockers and noopener do not fight', () => {
-      expect(html).toContain('id="suggestion-send"');
-      expect(html).toContain('target="_blank"');
-      expect(html).toContain('rel="noopener noreferrer"');
+    // A user-activated link sidesteps pop-up blockers, which a scripted
+    // window.open cannot — and window.open returns null even on success, so it
+    // could not report failure either. The href is composed from the typed
+    // message, so it is absent (not empty) until there is something to send;
+    // composeSuggestionMailto covers the address and contents directly.
+    it('sends via a real link rather than a scripted navigation', () => {
+      expect(html).toContain('<a id="suggestion-send"');
+    });
+
+    it('withholds the link target until something has been typed', () => {
+      expect(html).not.toContain('href="mailto:');
+      expect(html).toContain('aria-disabled="true"');
+      expect(html).toContain('pointer-events-none');
     });
 
     it('marks Send unavailable until something has been typed', () => {
@@ -286,10 +246,6 @@ describe('FeedbackFooter', () => {
       expect(html).toContain('Trials');
       expect(html).toContain('6.11.8');
       expect(html).toContain('Nothing you typed into the encounter form is included');
-    });
-
-    it('says up front that posting needs a GitHub account when no relay is set', () => {
-      expect(html).toContain('GitHub account is needed');
     });
 
     it('announces status changes politely rather than stealing focus', () => {
@@ -310,19 +266,9 @@ describe('FeedbackFooter', () => {
       expect(html).toContain('>Send</button>');
     });
 
-    it('stops telling people they need a GitHub account', () => {
-      expect(html).not.toContain('GitHub account is needed');
-      expect(html).toContain('no GitHub account needed');
-    });
-
-    it('keeps the GitHub link and the copy fallback available', () => {
-      expect(html).toContain('id="suggestion-send-github"');
-      expect(html).toContain('>Open in GitHub</a>');
-      expect(html).toContain('>Copy instead</button>');
-    });
-
-    it('still warns against patient details', () => {
-      expect(html).toContain('patient details');
+    it('never mentions GitHub accounts or a copy fallback', () => {
+      expect(html).not.toContain('GitHub account');
+      expect(html).not.toContain('Copy instead');
     });
   });
 });

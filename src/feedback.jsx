@@ -1,25 +1,24 @@
 /**
  * Suggestions box — a page-footer feedback surface rendered on every tab.
  *
- * TWO SUBMISSION PATHS:
+ * TWO SUBMISSION PATHS, both of which reach the maintainer by email and
+ * neither of which requires the submitter to have a GitHub account:
  *
- * 1. RELAY (preferred, no GitHub account needed). When `relayUrl` is set — from
- *    `suggestionRelayUrl` in the runtime config — the composed issue is POSTed
- *    to a small endpoint that holds a repository token and opens the issue on
- *    the submitter's behalf. GitHub then notifies the repository owner by email
- *    through normal watch settings, so no separate mail service is involved.
- *    See workers/suggestion-relay/ for a deployable reference implementation.
+ * 1. RELAY (preferred). When `relayUrl` is set — from `suggestionRelayUrl` in
+ *    the runtime config — the composed suggestion is POSTed to a small endpoint
+ *    that holds a repository token. It emails the maintainer and files the
+ *    GitHub issue, so the suggestion lands in the inbox and in the tracker
+ *    without the reader leaving the page. See workers/suggestion-relay/.
  *
- * 2. PREFILLED ISSUE LINK (fallback). This app is a fully static client-side
- *    bundle served from GitHub Pages: there is no server and no place to hold a
- *    credential, so absent a relay the only way a submission reaches the
- *    repository without shipping a token to the browser is to hand the composed
- *    issue to GitHub's own `issues/new` form and let the submitter's GitHub
- *    session authenticate it. That path needs a GitHub account, which is exactly
- *    why the relay exists. The fallback also catches a relay that is down, so a
- *    misconfigured or unreachable endpoint degrades instead of losing the note.
+ * 2. MAILTO (fallback). This app is a fully static client-side bundle served
+ *    from GitHub Pages: there is no server and nowhere to hold a credential, so
+ *    absent a relay it cannot send anything itself. It hands the composed
+ *    suggestion to the reader's own mail client instead, addressed to the
+ *    maintainer. That needs no account, no server and no deployment — which is
+ *    why it is also the path taken when the relay is unreachable, so an endpoint
+ *    that is down costs a click rather than the note.
  *
- * Both paths share `buildSuggestionIssue`, so the issue reads identically
+ * Both paths share `buildSuggestionIssue`, so the suggestion reads identically
  * whichever way it arrived.
  *
  * UNTRUSTED INPUT: the free-text body is written by whoever is using the page.
@@ -40,8 +39,6 @@ export const SUGGESTION_KINDS = [
 
 const KIND_LABELS = Object.fromEntries(SUGGESTION_KINDS.map((k) => [k.id, k.label]));
 
-// GitHub rejects issue URLs past roughly 8k; leave room for the title + params.
-const MAX_URL_LENGTH = 7000;
 export const MAX_MESSAGE_LENGTH = 4000;
 export const MAX_CONTACT_LENGTH = 200;
 
@@ -140,69 +137,50 @@ export function buildSuggestionIssue({
   };
 }
 
-const TRUNCATION_MARKER = '\n\n…[message truncated to fit a GitHub issue link — use "Copy instead" to send the whole thing]';
+// mailto: URLs are handled by the OS/mail client, and the safe practical limit
+// is far lower than a browser URL bar's. Keep the composed link under this and
+// tell the reader when their note had to be shortened.
+const MAX_MAILTO_LENGTH = 1800;
+const TRUNCATION_MARKER = '\n\n…[shortened to fit an email link — reply to this message with the rest]';
 
-function composeUrl(repoUrl, fields, message) {
-  const { title, body, labels } = buildSuggestionIssue({ ...fields, message });
-  const base = `${String(repoUrl).replace(/\/+$/, '')}/issues/new`;
-  return `${base}?title=${encodeURIComponent(title)}&labels=${encodeURIComponent(labels.join(','))}&body=${encodeURIComponent(body)}`;
+function composeMailto(email, fields, message) {
+  const { title, body } = buildSuggestionIssue({ ...fields, message });
+  return `mailto:${email}?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
 }
 
 /**
- * Compose the GitHub "new issue" URL.
+ * Compose a `mailto:` link that opens the reader's mail client with the
+ * suggestion already written out.
+ *
+ * This is the fallback used when no relay is configured, and it is what makes
+ * the suggestions box work with no infrastructure at all: no GitHub account, no
+ * server, no deployment. The trade-off is that the reader needs a mail client
+ * and the note travels as an ordinary email rather than becoming an issue.
  *
  * Percent-encoding makes the encoded length unpredictable — one emoji costs
- * twelve characters — so rather than guess, shorten the message by bisection
- * until the URL fits. Shortening beats dropping the body: the reader keeps most
- * of what they wrote, and the marker tells them how to send the remainder.
+ * twelve characters — so shorten by bisection rather than guessing.
  *
  * @returns {{url: string, truncated: boolean}}
  */
-export function composeSuggestionUrl(repoUrl, fields = {}) {
+export function composeSuggestionMailto(email, fields = {}) {
+  const address = String(email || '').trim();
   const message = sliceChars(String(fields.message || '').trim(), MAX_MESSAGE_LENGTH);
-  const full = composeUrl(repoUrl, fields, message);
-  if (full.length <= MAX_URL_LENGTH) return { url: full, truncated: false };
+  const full = composeMailto(address, fields, message);
+  if (full.length <= MAX_MAILTO_LENGTH) return { url: full, truncated: false };
 
-  // Bisect over code points so a candidate never ends on half a surrogate pair.
   let lo = 0;
   let hi = Array.from(message).length;
   while (lo < hi) {
     const mid = Math.ceil((lo + hi) / 2);
-    if (composeUrl(repoUrl, fields, sliceChars(message, mid) + TRUNCATION_MARKER).length <= MAX_URL_LENGTH) {
+    if (composeMailto(address, fields, sliceChars(message, mid) + TRUNCATION_MARKER).length <= MAX_MAILTO_LENGTH) {
       lo = mid;
     } else {
       hi = mid - 1;
     }
   }
-  return { url: composeUrl(repoUrl, fields, sliceChars(message, lo) + TRUNCATION_MARKER), truncated: true };
+  return { url: composeMailto(address, fields, sliceChars(message, lo) + TRUNCATION_MARKER), truncated: true };
 }
 
-/** Convenience wrapper when only the URL is needed. */
-export function suggestionIssueUrl(repoUrl, fields = {}) {
-  return composeSuggestionUrl(repoUrl, fields).url;
-}
-
-/** True when the message had to be shortened to fit the link. */
-export function suggestionUrlWasTruncated(repoUrl, fields = {}) {
-  return composeSuggestionUrl(repoUrl, fields).truncated;
-}
-
-/**
- * POST a suggestion to the relay endpoint, which opens the GitHub issue using a
- * token it holds server-side. This is the path that does not require the
- * submitter to have a GitHub account.
- *
- * The payload carries both the composed issue (`title`/`body`/`labels`) and the
- * raw fields, so a relay can either forward the composed issue verbatim or
- * re-render it. The relay is trusted to be the only holder of the credential;
- * nothing secret is sent from here.
- *
- * Rejects on a non-2xx response or a network failure so the caller can fall
- * back to the prefilled-issue link rather than silently dropping the note.
- *
- * @returns {Promise<{url: string}>} `url` is the created issue when the relay
- *          reports one, otherwise ''.
- */
 export async function submitSuggestionToRelay(relayUrl, fields = {}, { fetchImpl } = {}) {
   const endpoint = String(relayUrl || '').trim();
   if (!endpoint) throw new Error('No relay endpoint configured');
@@ -242,11 +220,10 @@ export async function submitSuggestionToRelay(relayUrl, fields = {}, { fetchImpl
 }
 
 export function FeedbackFooter({
-  repoUrl = 'https://github.com/rkalani1/stroke',
+  contactEmail = 'rkalani@uw.edu',
   appVersion = '',
   tabLabel = '',
   relayUrl = '',
-  onCopy,
   defaultOpen = false
 }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -255,6 +232,9 @@ export function FeedbackFooter({
   const [contact, setContact] = useState('');
   const [status, setStatus] = useState(null);
   const [sending, setSending] = useState(false);
+  // Once the relay has failed for this reader, stop offering it and hand the
+  // next press to the mail client instead of making them fail twice.
+  const [relayFailed, setRelayFailed] = useState(false);
   const textareaRef = useRef(null);
   const hasRelay = Boolean(String(relayUrl || '').trim());
 
@@ -266,72 +246,50 @@ export function FeedbackFooter({
   const fields = { kind, message, contact, route, tab: tabLabel, appVersion };
   const canSend = message.trim().length > 0;
 
-  // Send is a real link, not window.open. Two reasons: `window.open(url, target,
-  // 'noopener')` returns null even when it succeeds, so there is no way to tell a
-  // blocked pop-up from a working one; and a user-activated link is not subject to
-  // pop-up blocking in the first place. rel="noopener noreferrer" does what the
-  // feature string was there for.
-  const { url: sendUrl, truncated } = canSend
-    ? composeSuggestionUrl(repoUrl, fields)
+  // Without a relay, Send is a real mailto: link rather than a scripted
+  // navigation: a user-activated link is not subject to pop-up blocking, and
+  // `window.open` returns null even on success so it cannot report failure.
+  const { url: mailtoUrl, truncated } = canSend
+    ? composeSuggestionMailto(contactEmail, fields)
     : { url: '', truncated: false };
 
-  // Relay path: post it ourselves so the submitter needs no GitHub account.
-  // A failure here is not terminal — the text stays in the box and the
-  // prefilled-issue link is offered instead, so an endpoint that is down or
-  // misconfigured costs an extra click rather than the whole suggestion.
+  // Relay path: post it ourselves so the reader never leaves the page.
+  // A failure is not terminal — the text stays put and the mailto link takes
+  // over, so an endpoint that is down or misconfigured costs a click.
   const sendViaRelay = async (event) => {
     event.preventDefault();
     if (!canSend || sending) return;
     setSending(true);
     setStatus({ tone: 'ok', text: 'Sending…' });
     try {
-      const { url } = await submitSuggestionToRelay(relayUrl, fields);
-      setStatus({
-        tone: 'ok',
-        text: url
-          ? `Thank you — your suggestion was sent. It is now issue ${url}.`
-          : 'Thank you — your suggestion was sent.'
-      });
+      await submitSuggestionToRelay(relayUrl, fields);
+      setStatus({ tone: 'ok', text: 'Thank you — your suggestion has been sent.' });
       setMessage('');
       setContact('');
     } catch {
+      setRelayFailed(true);
       setStatus({
         tone: 'warn',
-        text: 'Could not send your suggestion automatically. Your text is still here — use "Open in GitHub" or "Copy instead" to send it.'
+        text: 'Could not send that automatically. Your text is still here — press Send again to email it instead.'
       });
     } finally {
       setSending(false);
     }
   };
 
-  const onSendClick = (event) => {
+  const onMailtoClick = (event) => {
     if (!canSend) {
       event.preventDefault();
       return;
     }
     if (truncated) {
-      // Leave the text in the box on purpose — they need it to paste the rest.
-      setStatus({ tone: 'warn', text: 'GitHub is opening, but your note was too long for a link and was shortened. Use "Copy instead" and paste the full text into the issue.' });
+      // Leave the text in the box on purpose — they need it to send the rest.
+      setStatus({ tone: 'warn', text: 'Your email is opening, but the note was too long for an email link and was shortened. Paste the rest into the message before sending.' });
       return;
     }
-    setStatus({ tone: 'ok', text: 'GitHub is opening in a new tab with your suggestion filled in — press "Submit new issue" there to send it.' });
+    setStatus({ tone: 'ok', text: 'Your email app is opening with the suggestion written out — press send there.' });
     setMessage('');
     setContact('');
-  };
-
-  const copySuggestion = async () => {
-    const { title, body } = buildSuggestionIssue(fields);
-    const text = `${title}\n\n${body}`;
-    try {
-      if (onCopy) {
-        onCopy(text, 'Suggestion');
-      } else {
-        await navigator.clipboard.writeText(text);
-      }
-      setStatus({ tone: 'ok', text: 'Copied. Paste it into a new GitHub issue or send it to the maintainer.' });
-    } catch {
-      setStatus({ tone: 'warn', text: 'Could not reach the clipboard. Select the text in the box and copy it manually.' });
-    }
   };
 
   return (
@@ -431,7 +389,10 @@ export function FeedbackFooter({
             </p>
 
             <div className="flex flex-wrap gap-2 items-center">
-              {hasRelay ? (
+              {/* One action. With a relay it posts in place; without one — or
+                  after the relay has failed — it becomes a mailto: link to the
+                  maintainer, so there is always a way to send. */}
+              {hasRelay && !relayFailed ? (
                 <button
                   id="suggestion-send"
                   type="button"
@@ -441,36 +402,20 @@ export function FeedbackFooter({
                 >
                   {sending ? 'Sending…' : 'Send'}
                 </button>
-              ) : null}
-              <a
-                id={hasRelay ? 'suggestion-send-github' : 'suggestion-send'}
-                href={canSend ? sendUrl : undefined}
-                target="_blank"
-                rel="noopener noreferrer"
-                role="button"
-                aria-disabled={!canSend}
-                onClick={onSendClick}
-                className={`inline-flex items-center px-4 py-2 min-h-[44px] rounded-md text-sm font-semibold no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 ${
-                  hasRelay
-                    ? 'border border-line bg-card text-ink-2 hover:bg-slate-100 dark:hover:bg-strong'
-                    : 'bg-cobalt-600 text-white hover:bg-cobalt-700 dark:bg-cobalt-500 dark:hover:bg-cobalt-600'
-                } ${canSend ? '' : 'opacity-50 cursor-not-allowed pointer-events-none'}`}
-              >
-                {hasRelay ? 'Open in GitHub' : 'Send'}
-              </a>
-              <button
-                type="button"
-                onClick={copySuggestion}
-                disabled={!canSend}
-                className="px-4 py-2 min-h-[44px] rounded-md text-sm font-medium border border-line bg-card text-ink-2 hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 dark:hover:bg-strong"
-              >
-                Copy instead
-              </button>
-              <span className="text-xs text-mute">
-                {hasRelay
-                  ? 'Send goes straight to the maintainer — no GitHub account needed. Suggestions are reviewed in public, so please leave out patient details.'
-                  : 'Send opens GitHub with the issue pre-filled — a GitHub account is needed to post it. Please leave out patient details.'}
-              </span>
+              ) : (
+                <a
+                  id="suggestion-send"
+                  href={canSend ? mailtoUrl : undefined}
+                  role="button"
+                  aria-disabled={!canSend}
+                  onClick={onMailtoClick}
+                  className={`inline-flex items-center px-4 py-2 min-h-[44px] rounded-md text-sm font-semibold no-underline bg-cobalt-600 text-white hover:bg-cobalt-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 dark:bg-cobalt-500 dark:hover:bg-cobalt-600 ${
+                    canSend ? '' : 'opacity-50 cursor-not-allowed pointer-events-none'
+                  }`}
+                >
+                  Send
+                </a>
+              )}
             </div>
 
             <p aria-live="polite" className="min-h-[1.25rem] text-xs">
