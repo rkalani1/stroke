@@ -214,7 +214,7 @@ const EDUCATION_MODULES = [
     lastReviewed: '2026-07-24',
     references: [
       { label: 'AHA Statement 2021', citation: 'Mac Grory B, et al. Management of Central Retinal Artery Occlusion. Stroke. 2021;52(6):e282-e294.', pmid: '33677974' },
-      { label: 'THEIA Trial 2025', citation: 'Préterre C, et al. Intravenous alteplase versus oral aspirin for acute central retinal artery occlusion (THEIA). Lancet Neurol. 2025;24:110-120.', pmid: '41109232' }
+      { label: 'THEIA Trial 2025', citation: 'Préterre C, et al. Intravenous alteplase versus oral aspirin for acute central retinal artery occlusion within 4.5 h of severe vision loss (THEIA). Lancet Neurol. 2025;24(11):909-919.', pmid: '41109232' }
     ]
   },
   {
@@ -266,7 +266,11 @@ const EDUCATION_MODULES = [
       { label: 'CHANCE-2 Trial', citation: 'Wang Y et al. N Engl J Med. 2021;385:2520-2530.', pmid: '34708996' },
       { label: 'INSPIRES Trial', citation: 'Gao Y et al. N Engl J Med. 2023;389:2413-2424.', pmid: '38157499' },
       { label: 'THALES Trial', citation: 'Johnston SC et al. N Engl J Med. 2020;383:207-217.', pmid: '32668111' },
-      { label: 'SAMMPRIS Trial', citation: 'Chimowitz MI et al. N Engl J Med. 2011;365:993-1003.', pmid: '21899409' }
+      { label: 'SAMMPRIS Trial', citation: 'Chimowitz MI et al. N Engl J Med. 2011;365:993-1003.', pmid: '21899409' },
+      { label: 'SPS3 Trial', citation: 'Benavente OR, et al. Effects of clopidogrel added to aspirin in patients with recent lacunar stroke. N Engl J Med. 2012;367(9):817-825.', pmid: '22931315' },
+      { label: 'MATCH Trial', citation: 'Diener HC, et al. Aspirin and clopidogrel compared with clopidogrel alone after recent ischaemic stroke or TIA in high-risk patients (MATCH). Lancet. 2004;364(9431):331-337.', pmid: '15276392' },
+      { label: 'ARAMIS Trial', citation: 'Chen HS, et al. Dual Antiplatelet Therapy vs Alteplase for Patients With Minor Nondisabling Acute Ischemic Stroke: The ARAMIS Randomized Clinical Trial. JAMA. 2023;329(24):2135-2144.', pmid: '37367978' },
+      { label: 'CHANCE-3 (colchicine)', citation: 'Li J, et al. Colchicine in patients with acute ischaemic stroke or transient ischaemic attack (CHANCE-3). BMJ. 2024;385:e079061.', pmid: '38925803' }
     ]
   },
   {
@@ -507,7 +511,8 @@ const EDUCATION_MODULES = [
       { label: 'LASTE', citation: 'Costalat V, et al. Trial of Thrombectomy for Stroke with a Large Infarct of Unrestricted Size (LASTE). N Engl J Med. 2024;390(18):1677-1689.', pmid: '38718358' },
       { label: 'TESLA', citation: 'Yoo AJ, et al. Thrombectomy for Stroke With Large Infarct on Noncontrast CT: The TESLA Randomized Clinical Trial. JAMA. 2024;332(16):1355-1366.', pmid: '39374319' },
       { label: 'RESCUE-Japan LIMIT', citation: 'Yoshimura S, et al. Endovascular Therapy for Acute Stroke with a Large Ischemic Region. N Engl J Med. 2022;386(14):1303-1313.', pmid: '35138767' },
-      { label: '2026 AIS Guideline', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' }
+      { label: '2026 AIS Guideline', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' },
+      { label: 'MR CLEAN-LATE Trial', citation: 'Olthuis SGH, et al. Endovascular treatment versus no endovascular treatment after 6-24 h in patients with ischaemic stroke and collateral flow on CT angiography (MR CLEAN-LATE). Lancet. 2023;401(10385):1371-1380.', pmid: '37003289' }
     ]
   },
   {
@@ -628,7 +633,11 @@ const EDUCATION_MODULES = [
       { label: 'AHA/ASA 2023 aSAH Guideline', citation: 'Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.', pmid: '37212182' },
       { label: 'ISAT', citation: 'Molyneux A, et al. International Subarachnoid Aneurysm Trial (ISAT): coiling vs clipping. Lancet. 2002;360(9342):1267-1274.', pmid: '12414200' },
       { label: 'Nimodipine (BRANT)', citation: 'Pickard JD, et al. Effect of oral nimodipine on cerebral infarction and outcome after subarachnoid haemorrhage (British Aneurysm Nimodipine Trial). BMJ. 1989;298(6674):636-642.', pmid: '2496789' },
-      { label: 'Modified Fisher scale', citation: 'Frontera JA, et al. Prediction of symptomatic vasospasm after SAH: the modified Fisher scale. Neurosurgery. 2006;59(1):21-27.', pmid: '16823296' }
+      { label: 'Modified Fisher scale', citation: 'Frontera JA, et al. Prediction of symptomatic vasospasm after SAH: the modified Fisher scale. Neurosurgery. 2006;59(1):21-27.', pmid: '16823296' },
+      { label: 'SAHaRA Trial', citation: 'English SW, et al. Liberal or Restrictive Transfusion Strategy in Aneurysmal Subarachnoid Hemorrhage (SAHaRA). N Engl J Med. 2025;392(11):1079-1088.', pmid: '39655786' },
+      { label: 'EARLYDRAIN Trial', citation: 'Wolf S, et al. Effectiveness of Lumbar Cerebrospinal Fluid Drain Among Patients With Aneurysmal Subarachnoid Hemorrhage (EARLYDRAIN). JAMA Neurol. 2023;80(8):833-842.', pmid: '37330974' },
+      { label: 'ULTRA Trial', citation: 'Post R, et al. Ultra-early tranexamic acid after subarachnoid haemorrhage (ULTRA). Lancet. 2021;397(10269):112-118.', pmid: '33357465' },
+      { label: 'ISAT 18-year Follow-up', citation: 'Molyneux AJ, et al. The durability of endovascular coiling versus neurosurgical clipping of ruptured cerebral aneurysms: 18 year follow-up of the UK cohort of ISAT. Lancet. 2015;385(9969):691-697.', pmid: '25465111' }
     ]
   },
   {
@@ -673,7 +682,9 @@ const EDUCATION_MODULES = [
       { label: 'STROKE-AF Trial', citation: 'Bernstein RA, et al. Effect of Long-term Continuous Cardiac Monitoring vs Usual Care on Detection of Atrial Fibrillation in Patients With Stroke Attributed to Large- or Small-Vessel Disease: The STROKE-AF Randomized Clinical Trial. JAMA. 2021;325(21):2169-2177.', pmid: '34061145' },
       { label: 'NAVIGATE ESUS Trial', citation: 'Hart RG, et al. Rivaroxaban for Stroke Prevention after Embolic Stroke of Undetermined Source (NAVIGATE ESUS). N Engl J Med. 2018;378(23):2191-2201.', pmid: '29766772' },
       { label: 'RE-SPECT ESUS Trial', citation: 'Diener HC, et al. Dabigatran for Prevention of Stroke after Embolic Stroke of Undetermined Source (RE-SPECT ESUS). N Engl J Med. 2019;380(20):1906-1917.', pmid: '31091372' },
-      { label: 'ARCADIA Trial', citation: 'Kamel H, et al. Apixaban to Prevent Recurrence after Cryptogenic Stroke in Patients with Atrial Cardiopathy (ARCADIA). JAMA. 2024;331(7):573-581.', pmid: '38324415' }
+      { label: 'ARCADIA Trial', citation: 'Kamel H, et al. Apixaban to Prevent Recurrence after Cryptogenic Stroke in Patients with Atrial Cardiopathy (ARCADIA). JAMA. 2024;331(7):573-581.', pmid: '38324415' },
+      { label: 'NOAH-AFNET 6 Trial', citation: 'Kirchhof P, et al. Anticoagulation with Edoxaban in Patients with Atrial High-Rate Episodes (NOAH-AFNET 6). N Engl J Med. 2023;389(13):1167-1179.', pmid: '37622677' },
+      { label: 'LOOP Study', citation: 'Svendsen JH, et al. Implantable loop recorder detection of atrial fibrillation to prevent stroke (The LOOP Study). Lancet. 2021;398(10310):1507-1516.', pmid: '34469766' }
     ]
   },
   {
@@ -831,7 +842,9 @@ const EDUCATION_MODULES = [
       { label: 'TRIDENT Trial', citation: 'Anderson CS, et al. Triple-Pill Strategy for Blood Pressure Lowering after Intracerebral Hemorrhage (TRIDENT). N Engl J Med. 2026;394:1571-1582.', pmid: '42019018' },
       { label: 'FASTEST Trial', citation: 'Broderick JP, et al. Recombinant factor VIIa for acute intracerebral hemorrhage (FASTEST). Lancet. 2026;407(10528):773-783.', pmid: '41653933' },
       { label: 'SWITCH Trial', citation: 'Beck J, et al. Decompressive craniectomy versus best medical treatment in severe deep intracerebral haemorrhage (SWITCH): an open-label randomised controlled trial. Lancet. 2024;403(10441):2289-2298.', pmid: '38761811' },
-      { label: '2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' }
+      { label: '2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
+      { label: 'INTERACT4 Trial', citation: 'Li G, et al. Intensive Ambulance-Delivered Blood-Pressure Reduction in Hyperacute Stroke (INTERACT4). N Engl J Med. 2024;390(20):1862-1872.', pmid: '38752650' },
+      { label: 'TICH-2 Trial', citation: 'Sprigg N, et al. Tranexamic acid for hyperacute primary IntraCerebral Haemorrhage (TICH-2). Lancet. 2018;391(10135):2107-2115.', pmid: '29778325' }
     ]
   },
   {
@@ -844,7 +857,8 @@ const EDUCATION_MODULES = [
     references: [
       { label: 'OCEANIC-STROKE', citation: 'Sharma M, et al. Asundexian for Secondary Stroke Prevention (OCEANIC-STROKE). N Engl J Med. 2026;394(15):1467-1479.', pmid: '41985132' },
       { label: 'PACIFIC-STROKE', citation: 'Shoamanesh A, et al. Factor XIa inhibition with asundexian after acute non-cardioembolic ischaemic stroke (PACIFIC-Stroke): an international, randomised, double-blind, placebo-controlled, phase 2b trial. Lancet. 2022;400(10363):1604-1616.', pmid: '36063821' },
-      { label: 'AXIOMATIC-SSP', citation: 'Sharma M, et al. Safety and efficacy of factor XIa inhibition with milvexian for secondary stroke prevention (AXIOMATIC-SSP): a phase 2, international, randomised, double-blind, placebo-controlled, dose-finding trial. Lancet Neurol. 2024;23(5):450-459.', pmid: '38101902' }
+      { label: 'AXIOMATIC-SSP', citation: 'Sharma M, et al. Safety and efficacy of factor XIa inhibition with milvexian for secondary stroke prevention (AXIOMATIC-SSP): a phase 2, international, randomised, double-blind, placebo-controlled, dose-finding trial. Lancet Neurol. 2024;23(5):450-459.', pmid: '38101902' },
+      { label: 'OCEANIC-AF Trial', citation: 'Piccini JP, et al. Asundexian versus Apixaban in Patients with Atrial Fibrillation (OCEANIC-AF). N Engl J Med. 2025;392(1):23-32.', pmid: '39225267' }
     ]
   },
   {

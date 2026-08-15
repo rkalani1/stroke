@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:b05a5119f0b07e8d8a8805bd2cecaad9",
+    "checksum": "sha256:3f6f786cbbf631bca59f9edffffa6bfa",
     "counts": {
       "guidelines": 11,
       "trials": 101,
@@ -2142,6 +2142,26 @@
           "label": "Modified Fisher scale",
           "citation": "Frontera JA, et al. Prediction of symptomatic vasospasm after SAH: the modified Fisher scale. Neurosurgery. 2006;59(1):21-27.",
           "pmid": "16823296"
+        },
+        {
+          "label": "SAHaRA Trial",
+          "citation": "English SW, et al. Liberal or Restrictive Transfusion Strategy in Aneurysmal Subarachnoid Hemorrhage (SAHaRA). N Engl J Med. 2025;392(11):1079-1088.",
+          "pmid": "39655786"
+        },
+        {
+          "label": "EARLYDRAIN Trial",
+          "citation": "Wolf S, et al. Effectiveness of Lumbar Cerebrospinal Fluid Drain Among Patients With Aneurysmal Subarachnoid Hemorrhage (EARLYDRAIN). JAMA Neurol. 2023;80(8):833-842.",
+          "pmid": "37330974"
+        },
+        {
+          "label": "ULTRA Trial",
+          "citation": "Post R, et al. Ultra-early tranexamic acid after subarachnoid haemorrhage (ULTRA). Lancet. 2021;397(10269):112-118.",
+          "pmid": "33357465"
+        },
+        {
+          "label": "ISAT 18-year Follow-up",
+          "citation": "Molyneux AJ, et al. The durability of endovascular coiling versus neurosurgical clipping of ruptured cerebral aneurysms: 18 year follow-up of the UK cohort of ISAT. Lancet. 2015;385(9969):691-697.",
+          "pmid": "25465111"
         }
       ],
       "lastReviewed": "2026-07-18",
@@ -2713,7 +2733,7 @@
         },
         {
           "label": "THEIA Trial 2025",
-          "citation": "Préterre C, et al. Intravenous alteplase versus oral aspirin for acute central retinal artery occlusion (THEIA). Lancet Neurol. 2025;24:110-120.",
+          "citation": "Préterre C, et al. Intravenous alteplase versus oral aspirin for acute central retinal artery occlusion within 4.5 h of severe vision loss (THEIA). Lancet Neurol. 2025;24(11):909-919.",
           "pmid": "41109232"
         }
       ],
@@ -2765,6 +2785,16 @@
           "label": "ARCADIA Trial",
           "citation": "Kamel H, et al. Apixaban to Prevent Recurrence after Cryptogenic Stroke in Patients with Atrial Cardiopathy (ARCADIA). JAMA. 2024;331(7):573-581.",
           "pmid": "38324415"
+        },
+        {
+          "label": "NOAH-AFNET 6 Trial",
+          "citation": "Kirchhof P, et al. Anticoagulation with Edoxaban in Patients with Atrial High-Rate Episodes (NOAH-AFNET 6). N Engl J Med. 2023;389(13):1167-1179.",
+          "pmid": "37622677"
+        },
+        {
+          "label": "LOOP Study",
+          "citation": "Svendsen JH, et al. Implantable loop recorder detection of atrial fibrillation to prevent stroke (The LOOP Study). Lancet. 2021;398(10310):1507-1516.",
+          "pmid": "34469766"
         }
       ],
       "lastReviewed": "2026-08-14",
@@ -2860,6 +2890,26 @@
           "label": "SAMMPRIS Trial",
           "citation": "Chimowitz MI et al. N Engl J Med. 2011;365:993-1003.",
           "pmid": "21899409"
+        },
+        {
+          "label": "SPS3 Trial",
+          "citation": "Benavente OR, et al. Effects of clopidogrel added to aspirin in patients with recent lacunar stroke. N Engl J Med. 2012;367(9):817-825.",
+          "pmid": "22931315"
+        },
+        {
+          "label": "MATCH Trial",
+          "citation": "Diener HC, et al. Aspirin and clopidogrel compared with clopidogrel alone after recent ischaemic stroke or TIA in high-risk patients (MATCH). Lancet. 2004;364(9431):331-337.",
+          "pmid": "15276392"
+        },
+        {
+          "label": "ARAMIS Trial",
+          "citation": "Chen HS, et al. Dual Antiplatelet Therapy vs Alteplase for Patients With Minor Nondisabling Acute Ischemic Stroke: The ARAMIS Randomized Clinical Trial. JAMA. 2023;329(24):2135-2144.",
+          "pmid": "37367978"
+        },
+        {
+          "label": "CHANCE-3 (colchicine)",
+          "citation": "Li J, et al. Colchicine in patients with acute ischaemic stroke or transient ischaemic attack (CHANCE-3). BMJ. 2024;385:e079061.",
+          "pmid": "38925803"
         }
       ],
       "lastReviewed": "2026-07-13",
@@ -3052,6 +3102,11 @@
           "label": "AXIOMATIC-SSP",
           "citation": "Sharma M, et al. Safety and efficacy of factor XIa inhibition with milvexian for secondary stroke prevention (AXIOMATIC-SSP): a phase 2, international, randomised, double-blind, placebo-controlled, dose-finding trial. Lancet Neurol. 2024;23(5):450-459.",
           "pmid": "38101902"
+        },
+        {
+          "label": "OCEANIC-AF Trial",
+          "citation": "Piccini JP, et al. Asundexian versus Apixaban in Patients with Atrial Fibrillation (OCEANIC-AF). N Engl J Med. 2025;392(1):23-32.",
+          "pmid": "39225267"
         }
       ],
       "lastReviewed": "2026-08-14",
@@ -3229,6 +3284,16 @@
           "label": "2022 ICH Guideline",
           "citation": "Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.",
           "pmid": "35579034"
+        },
+        {
+          "label": "INTERACT4 Trial",
+          "citation": "Li G, et al. Intensive Ambulance-Delivered Blood-Pressure Reduction in Hyperacute Stroke (INTERACT4). N Engl J Med. 2024;390(20):1862-1872.",
+          "pmid": "38752650"
+        },
+        {
+          "label": "TICH-2 Trial",
+          "citation": "Sprigg N, et al. Tranexamic acid for hyperacute primary IntraCerebral Haemorrhage (TICH-2). Lancet. 2018;391(10135):2107-2115.",
+          "pmid": "29778325"
         }
       ],
       "lastReviewed": "2026-08-14",
@@ -3329,6 +3394,11 @@
           "label": "2026 AIS Guideline",
           "citation": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
           "pmid": "41582814"
+        },
+        {
+          "label": "MR CLEAN-LATE Trial",
+          "citation": "Olthuis SGH, et al. Endovascular treatment versus no endovascular treatment after 6-24 h in patients with ischaemic stroke and collateral flow on CT angiography (MR CLEAN-LATE). Lancet. 2023;401(10385):1371-1380.",
+          "pmid": "37003289"
         }
       ],
       "lastReviewed": "2026-07-18",
