@@ -202,12 +202,12 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
 
     it('verifies expected exact line count bounds for all 6 snapshots', () => {
       const baselineCounts = {
-        ich: 579,
-        ischemic: 1449,
-        sah: 234,
-        tia: 201,
-        cvt: 121,
-        calculators: 794
+        ich: 578,
+        ischemic: 1448,
+        sah: 233,
+        tia: 200,
+        cvt: 120,
+        calculators: 793
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);

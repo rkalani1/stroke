@@ -93,7 +93,7 @@ Eur Stroke J
 2023
 )
 ·
-PMID 37305988
+PMID 37021186
 Caveats:
 Use TNK 0.25 mg/kg only; the 0.4 mg/kg dose was not non-inferior in EXTEND-IA TNK part 2. · Local protocols may continue to favor alteplase; both are acceptable.
 Use only with tissue selection and expert review
