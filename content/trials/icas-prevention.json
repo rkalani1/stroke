@@ -1,0 +1,19 @@
+[
+  {
+    "id": "cassiss",
+    "name": "CASSISS",
+    "fullName": "Stenting Plus Medical Therapy vs Medical Therapy Alone for Symptomatic Severe Intracranial Atherosclerotic Stenosis",
+    "category": "icas-prevention",
+    "population": "n=358, mean 56.3; 73.5% male, NIHSS TIA or non-disabling, non-perforator-territory stroke, enrolled beyond 3 weeks from the latest ischemic event; followed 3 years",
+    "finding": "No significant difference between stenting and medical therapy",
+    "teachingPoint": "Intracranial stenting added no benefit over medical therapy for symptomatic 70-99% stenosis, even with refined selection and experienced operators.",
+    "PMID": "35943472",
+    "year": 2022,
+    "citationIds": [
+      "cit-cassiss-2022"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

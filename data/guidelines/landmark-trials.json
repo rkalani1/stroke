@@ -558,6 +558,36 @@
       "outcomes": "CONVINCE: 9.8% vs 11.7% (HR 0.84, 95% CI 0.68-1.05, p=0.12); CRP fell at all timepoints. CHANCE-3: new stroke at 90d 6.3% vs 6.5% (HR 0.98, 95% CI 0.83-1.16, p=0.79).",
       "bottomLine": "Both neutral — colchicine is not established for stroke prevention.",
       "teachingPoint": "Read them together. CHANCE-3 was large, blinded and CRP-enriched, and found nothing at 90 days. CONVINCE was stopped early for COVID-related funding and remains compatible with a modest long-term benefit. Short-course anti-inflammatory therapy looks dead; the long-term atherosclerotic question is still open."
+    },
+    {
+      "name": "CREST-2",
+      "year": 2026,
+      "citation": "NEJM 2026;394:219-31 (PMID 41269206)",
+      "question": "In ASYMPTOMATIC ≥70% carotid stenosis, does adding revascularization to intensive medical therapy help?",
+      "design": "Two parallel observer-blinded RCTs, 155 centres in 5 countries. Stenting trial n=1245; endarterectomy trial n=1240. Each compared intensive medical management alone vs medical management + revascularization.",
+      "outcomes": "4-year stroke/death ≤44d or later ipsilateral stroke — Stenting: 2.8% (95% CI 1.5-4.3) vs 6.0% (95% CI 3.8-8.3), p=0.02. Endarterectomy: 3.7% (95% CI 2.1-5.5) vs 5.3% (95% CI 3.3-7.4), p=0.24.",
+      "bottomLine": "Adding stenting reduced 4-year events; adding endarterectomy did not reach significance.",
+      "teachingPoint": "The two trials disagreed, and they were never randomized against each other — so this is not evidence that stenting beats endarterectomy. The more durable message is how LOW the medical-only event rate was (5-6% over 4 years): modern medical therapy has eroded the margin the 1990s trials were built on."
+    },
+    {
+      "name": "ECST-2",
+      "year": 2025,
+      "citation": "Lancet Neurol 2025;24:389-99 (PMID 40252662)",
+      "question": "For carotid stenosis with LOW-to-INTERMEDIATE predicted stroke risk, is medical therapy alone enough?",
+      "design": "RCT, n=429 (2-year interim), 30 centres in Europe/Canada. Stenosis ≥50% with 5-year predicted ipsilateral stroke risk <20% by Carotid Artery Risk (CAR) score. OMT alone vs OMT + revascularization. Hierarchical win-ratio endpoint.",
+      "outcomes": "No benefit from added revascularization at 2 years on the hierarchical composite (periprocedural death/fatal stroke/fatal MI → non-fatal stroke → non-fatal MI → new silent infarct).",
+      "bottomLine": "In risk-stratified low-to-intermediate-risk stenosis, optimised medical therapy alone held up at 2 years.",
+      "teachingPoint": "Selects by predicted RISK rather than by degree of stenosis — the CAR score, not the percentage, decides. Complements CREST-2 by covering symptomatic as well as asymptomatic disease. Interim only; final results pending."
+    },
+    {
+      "name": "ESPRIT (BP) / BPROAD",
+      "year": 2025,
+      "citation": "ESPRIT: Lancet 2024;404:245-55 (PMID 38945140). BPROAD: NEJM 2025;392:1155-67 (PMID 39555827)",
+      "question": "Is an SBP target <120 better than <140 in patients with diabetes or prior stroke?",
+      "design": "ESPRIT n=11,255 (3022 with prior stroke, 4359 with diabetes), median 3.4y. BPROAD n=12,821 with type 2 diabetes, median 4.2y. Both open-label, blinded outcomes, China.",
+      "outcomes": "ESPRIT: 9.7% vs 11.1% (HR 0.88, 95% CI 0.78-0.99, p=0.028), no heterogeneity by diabetes or prior stroke. BPROAD: 1.65 vs 2.09 per 100 person-years (HR 0.79, 95% CI 0.69-0.90, p<0.001).",
+      "bottomLine": "Both support an SBP target <120 for vascular prevention, including in stroke survivors.",
+      "teachingPoint": "Together they close the gaps SPRINT and ACCORD-BP left open — diabetes and prior stroke. ESPRIT found no subgroup heterogeneity, which is the key result for stroke clinicians. Balance against BPROAD’s excess symptomatic hypotension and hyperkalemia in frail patients."
     }
   ],
   "antithrombotic": [
@@ -700,6 +730,26 @@
       "outcomes": "Stroke or systemic embolism 1.3% vs 0.4% — asundexian nearly FOUR-FOLD worse (HR 3.79, 95% CI 2.46-5.83). Major bleeding LOWER with asundexian: 0.2% vs 0.7% (HR 0.32, 95% CI 0.18-0.55).",
       "bottomLine": "Asundexian is inferior to apixaban for AF despite causing less bleeding.",
       "teachingPoint": "The essential counterweight to OCEANIC-STROKE, where asundexian ADDED to antiplatelets helped non-cardioembolic stroke. Add-on to antiplatelet therapy is not the same as substitution for a DOAC. Less bleeding is worthless if thrombosis quadruples."
+    },
+    {
+      "name": "CASSISS",
+      "year": 2022,
+      "citation": "JAMA 2022;328:534-42 (PMID 35943472)",
+      "question": "With better selection and experienced operators, does intracranial stenting beat medical therapy?",
+      "design": "RCT, n=358, 8 Chinese centres. Symptomatic 70-99% intracranial stenosis, NON-perforator territory, enrolled >3 weeks after the last event. Stenting + medical vs medical alone. 3-year follow-up.",
+      "outcomes": "No significant difference in stroke/death at 30 days or qualifying-territory stroke through 1 year; no difference at 2 or 3 years; no mortality difference.",
+      "bottomLine": "Stenting added nothing, even under conditions designed to give it the best chance.",
+      "teachingPoint": "Deliberately corrected what critics blamed for SAMMPRIS: it used experienced operators, excluded perforator-territory events, and imposed a 3-week cooling-off period past the hyperacute phase. It still failed. Aggressive medical therapy remains the standard for intracranial atherosclerosis."
+    },
+    {
+      "name": "CMOSS",
+      "year": 2023,
+      "citation": "JAMA 2023;330:704-14 (PMID 37606672)",
+      "question": "Does EC-IC bypass help symptomatic ICA/MCA occlusion when patients are selected by perfusion imaging?",
+      "design": "RCT, n=324, 13 Chinese centres. ICA or MCA occlusion with hemodynamic insufficiency on CT perfusion. Bypass + medical vs medical alone. Median age 52.7.",
+      "outcomes": "Stroke/death ≤30d or ipsilateral stroke to 2 years: 8.6% (13/151) vs 12.3% (19/155); incidence difference -3.6% (95% CI -10.1% to 2.9%) — not significant.",
+      "bottomLine": "The modern re-test of the 1985 EC-IC Bypass Study reached the same conclusion.",
+      "teachingPoint": "Perfusion-based selection and contemporary surgical technique were supposed to rescue a therapy that failed forty years ago. They did not. A useful case study in why re-testing a negative trial requires a genuinely new mechanism, not just better patient selection."
     }
   ],
   "rehabilitation": [
@@ -742,6 +792,46 @@
       "outcomes": "Primary composite CV endpoint: no significant difference.",
       "bottomLine": "CPAP does not reduce CV events in moderate-severe OSA without daytime sleepiness.",
       "teachingPoint": "Doesn't mean don't treat OSA. Post-stroke OSA is common (50-70%), worsens neurologic function, treatment improves sleep quality, may improve BP. But SAVE tempers expectations for CV event reduction."
+    },
+    {
+      "name": "VNS-REHAB",
+      "year": 2021,
+      "citation": "Lancet 2021;397:1545-53 (PMID 33894832)",
+      "question": "Does vagus nerve stimulation paired with rehabilitation improve chronic arm weakness after stroke?",
+      "design": "Triple-blind, sham-controlled pivotal device RCT, n=108, 19 UK/US rehab services. ≥9 months post-stroke, moderate-to-severe arm weakness (FMA-UE 20-50). ALL participants implanted; VNS group got active stimulation, control got 0 mA. Six weeks in-clinic (18 sessions) then home exercise.",
+      "outcomes": "Change in Fugl-Meyer Upper Extremity the day after in-clinic therapy favoured paired VNS; FMA-UE response rate at 90 days also higher.",
+      "bottomLine": "Paired VNS improved chronic upper-limb impairment versus sham — the basis for FDA clearance.",
+      "teachingPoint": "Implanting EVERY participant, including controls, isolates the stimulation from the surgery — an unusually clean device design. The chronic population (≥9 months) matters too: spontaneous recovery has plateaued, so the gain is attributable to the pairing rather than natural history. Endpoint is impairment (FMA-UE), not activity or participation."
+    },
+    {
+      "name": "INTREPID",
+      "year": 2024,
+      "citation": "JAMA 2024;332:1525-34 (PMID 39320879)",
+      "question": "Does preventing fever after acute vascular brain injury improve outcome?",
+      "design": "Open-label RCT with blinded outcomes, n=677 (254 ischemic, 223 ICH, 200 SAH), 43 ICUs in 7 countries. Automated surface cooling to 37.0°C for 14 days vs standard tiered treatment at ≥38°C.",
+      "outcomes": "Fever burden markedly reduced — prevention is achievable. But 3-month mRS shift was FUTILE at planned interim analysis; enrolment stopped at 686 of a planned 1176.",
+      "bottomLine": "Fever can be prevented; preventing it did not improve function.",
+      "teachingPoint": "Cleanly separates feasibility from benefit. Fever is strongly ASSOCIATED with worse outcome, but INTREPID shows that association was largely a marker of injury severity rather than a modifiable cause — a textbook confounding-by-indication lesson."
+    },
+    {
+      "name": "SETPOINT2",
+      "year": 2022,
+      "citation": "JAMA 2022;327:1899-909 (PMID 35506515)",
+      "question": "Does early tracheostomy improve outcomes in ventilated severe stroke?",
+      "design": "RCT, n=382, 26 US and German neurocritical care centres. Early tracheostomy ≤5 days (done in 95.2%, median day 4) vs standard weaning with tracheostomy from day 10 if needed (done in 67%, median day 11). 6-month outcome.",
+      "outcomes": "No significant difference in the proportion without severe disability (mRS 0-4 vs 5-6) at 6 months.",
+      "bottomLine": "Early tracheostomy did not improve 6-month outcome.",
+      "teachingPoint": "The decisive number is in the control arm: a THIRD never needed a tracheostomy at all. Committing early means operating on patients who would have been extubated. Note the unusual mRS 0-4 vs 5-6 dichotomy sets a low functional bar and limits comparison with other trials."
+    },
+    {
+      "name": "CHARM",
+      "year": 2024,
+      "citation": "Lancet Neurol 2024;23:1205-13 (PMID 39577921)",
+      "question": "Can IV glibenclamide prevent malignant cerebral edema after large hemispheric infarction?",
+      "design": "Phase 3 double-blind placebo-controlled RCT, 143 centres in 21 countries. ASPECTS 1-5 or core 80-300 mL, drug started within 10h. Primary analysis in ages 18-70. Enrolled 535; STOPPED EARLY by sponsor for COVID-related slow enrolment, before unblinding.",
+      "outcomes": "Underpowered by early termination — see publication for the day-90 mRS shift.",
+      "bottomLine": "Pharmacologic prevention of malignant edema remains unproven.",
+      "teachingPoint": "Halted for operational, not scientific, reasons — so this is an underpowered trial, not a demonstrated absence of effect. An important distinction when reading \"negative\" trials. Decompressive hemicraniectomy remains the intervention with proven mortality benefit."
     }
   ],
   "sahCvt": [
@@ -824,6 +914,16 @@
       "outcomes": "Unfavorable outcome (mRS 3-6) at 6 months: 32.6% vs 44.8% (RR 0.73, 95% CI 0.52-0.98, p=0.04). Secondary infarction at discharge 28.5% vs 39.9% (RR 0.71, 95% CI 0.49-0.99, p=0.04).",
       "bottomLine": "One of the few POSITIVE interventions in aSAH critical care.",
       "teachingPoint": "Reduced both delayed infarction and 6-month disability. Temper enthusiasm: open-label, modest size, and p=0.04 on both endpoints. Requires the aneurysm to be secured first."
+    },
+    {
+      "name": "TO-ACT",
+      "year": 2020,
+      "citation": "JAMA Neurol 2020;77:966-73 (PMID 32421159)",
+      "question": "Does endovascular treatment help severe cerebral venous thrombosis?",
+      "design": "Open-label RCT with blinded endpoint, n=67, 8 hospitals in 3 countries. Severe CVT with ≥1 poor-prognosis feature (altered mental status, coma, ICH, or deep venous thrombosis). EVT (thrombectomy and/or intrasinus lytic) + standard care vs standard care alone. HALTED for futility at first interim analysis.",
+      "outcomes": "No benefit on mRS 0-1 at 12 months.",
+      "bottomLine": "The only randomized trial of EVT in CVT — stopped for futility.",
+      "teachingPoint": "Small (n=67), so it does not exclude benefit in the most catastrophic presentations, but it removes any basis for ROUTINE endovascular therapy. Anticoagulation remains first-line even in severe CVT, which is how the 2024 AHA CVT statement frames it."
     }
   ]
 }

@@ -3,8 +3,8 @@
     "endpoint": "topics",
     "schemaVersion": "1.0.0",
     "appVersion": "6.11.8",
-    "checksum": "sha256:b8528e66cc27561c917790c1f2ae7dad",
-    "count": 46,
+    "checksum": "sha256:cc57430cea73d2ebd7d2220d324fd24e",
+    "count": 50,
     "source": "Evidence atlas topics bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
@@ -272,6 +272,30 @@
       "id": "rehabilitation",
       "label": "Stroke rehabilitation",
       "parentId": "",
+      "notes": ""
+    },
+    {
+      "id": "bp-targets-prevention",
+      "label": "Blood-pressure targets for vascular prevention",
+      "parentId": "secondary-prevention",
+      "notes": ""
+    },
+    {
+      "id": "malignant-edema",
+      "label": "Malignant cerebral edema — prevention & treatment",
+      "parentId": "acute-ischemic-stroke",
+      "notes": ""
+    },
+    {
+      "id": "neurocritical-care",
+      "label": "Neurocritical care of severe stroke (fever, airway, tracheostomy)",
+      "parentId": "",
+      "notes": ""
+    },
+    {
+      "id": "ec-ic-bypass",
+      "label": "EC-IC bypass for symptomatic occlusion",
+      "parentId": "icas-prevention",
       "notes": ""
     },
     {

@@ -61,6 +61,10 @@ export const topics = [
   makeTopic({ id: 'acute-antithrombotic-adjuncts', label: 'Acute antithrombotic adjuncts (tirofiban, argatroban, eptifibatide)', parentId: 'acute-ischemic-stroke' }),
 
   makeTopic({ id: 'rehabilitation', label: 'Stroke rehabilitation' }),
+  makeTopic({ id: 'bp-targets-prevention', label: 'Blood-pressure targets for vascular prevention', parentId: 'secondary-prevention' }),
+  makeTopic({ id: 'malignant-edema', label: 'Malignant cerebral edema — prevention & treatment', parentId: 'acute-ischemic-stroke' }),
+  makeTopic({ id: 'neurocritical-care', label: 'Neurocritical care of severe stroke (fever, airway, tracheostomy)' }),
+  makeTopic({ id: 'ec-ic-bypass', label: 'EC-IC bypass for symptomatic occlusion', parentId: 'icas-prevention' }),
   makeTopic({ id: 'cognitive-trajectories', label: 'Post-stroke cognitive trajectories' }),
   makeTopic({ id: 'special-populations', label: 'Special populations (pregnancy, cancer, pediatrics)' })
 ];

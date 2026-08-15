@@ -3009,6 +3009,478 @@ export const completedTrials = [
     practiceImpact: 'Asundexian is inferior to apixaban for AF stroke prevention (HR 3.79) despite less bleeding — do not substitute it for a DOAC.',
     lastReviewed: '2026-08-15',
     verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Carotid & intracranial revascularization -------------------
+  t({
+    id: 'crest-2',
+    shortName: 'CREST-2',
+    fullName: 'Medical Management and Revascularization for Asymptomatic Carotid Stenosis',
+    topic: 'carotid-revasc',
+    diseaseArea: ['secondary-prevention', 'carotid-revasc'],
+    population: {
+      n: 2485,
+      ageRange: 'adults',
+      nihssRange: 'ASYMPTOMATIC high-grade (>=70%) carotid stenosis',
+      timeWindow: 'follow-up to 4 years',
+      keyInclusion: ['Asymptomatic carotid stenosis >=70%'],
+      keyExclusion: ['Symptomatic stenosis']
+    },
+    intervention: 'Intensive medical management PLUS revascularization — two parallel trials: carotid stenting (n=1245) and carotid endarterectomy (n=1240)',
+    comparator: 'Intensive medical management alone',
+    primaryEndpoint: {
+      definition: 'Any stroke or death within 44 days, or ipsilateral ischemic stroke thereafter, to 4 years',
+      timepoint: '4 years',
+      result: 'Stenting trial POSITIVE: 2.8% vs 6.0% medical alone. Endarterectomy trial NEUTRAL: 3.7% vs 5.3%',
+      effectSize: 'Stenting absolute difference ~3.2%; endarterectomy ~1.6%',
+      confidenceInterval: 'Stenting 2.8% (95% CI 1.5-4.3) vs 6.0% (95% CI 3.8-8.3); CEA 3.7% (95% CI 2.1-5.5) vs 5.3% (95% CI 3.3-7.4)',
+      pValue: 'Stenting p=0.02; endarterectomy p=0.24'
+    },
+    secondaryEndpoints: [
+      { name: 'Periprocedural (day 0-44) events, stenting trial', result: 'No strokes or deaths in the medical-therapy group over that window' }
+    ],
+    safetyFindings: { sich: '', mortality: '', other: '' },
+    imagingCriteria: 'High-grade (>=70%) asymptomatic stenosis',
+    applicabilityNotes: 'Two parallel trials across 155 centres in five countries, and they did not agree: adding stenting to intensive medical therapy reduced events, adding endarterectomy did not reach significance. Note how low the medical-only event rate was (5-6% over 4 years) — modern medical therapy has narrowed the margin that the 1990s trials were built on, which is the central message regardless of which arm you emphasise.',
+    limitations: 'Two separate trials, not a three-way randomization, so stenting and endarterectomy were never compared with each other here; event rates lower than anticipated; asymptomatic disease only.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-crest2-2026'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'In asymptomatic >=70% stenosis on intensive medical therapy, adding stenting reduced 4-year events; adding endarterectomy did not reach significance.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'ecst-2',
+    shortName: 'ECST-2',
+    fullName: 'Optimised Medical Therapy Alone versus Optimised Medical Therapy plus Revascularisation for Carotid Stenosis — 2-year interim results',
+    topic: 'carotid-revasc',
+    diseaseArea: ['secondary-prevention', 'carotid-revasc'],
+    population: {
+      n: 429,
+      ageRange: '>=18',
+      nihssRange: 'asymptomatic or symptomatic carotid stenosis >=50% with LOW-to-INTERMEDIATE predicted risk (5-year ipsilateral stroke risk <20% by Carotid Artery Risk score)',
+      timeWindow: '2-year interim analysis',
+      keyInclusion: ['Carotid stenosis >=50%', 'CAR score predicted 5-year ipsilateral stroke risk <20%'],
+      keyExclusion: ['High predicted stroke risk']
+    },
+    intervention: 'Optimised medical therapy plus revascularization (endarterectomy or stenting)',
+    comparator: 'Optimised medical therapy alone',
+    primaryEndpoint: {
+      definition: 'Hierarchical composite by win ratio: periprocedural death/fatal stroke/fatal MI, then non-fatal stroke, then non-fatal MI, then new silent cerebral infarction',
+      timepoint: '2 years',
+      result: 'No benefit from added revascularization in this low-to-intermediate-risk group',
+      effectSize: 'Win-ratio analysis',
+      confidenceInterval: '',
+      pValue: 'Interim analysis'
+    },
+    secondaryEndpoints: [],
+    safetyFindings: { sich: '', mortality: '', other: '' },
+    imagingCriteria: 'Carotid stenosis >=50%; silent infarction assessed on imaging',
+    applicabilityNotes: 'Risk-stratified rather than stenosis-stratified — the CAR score selects patients whose predicted 5-year stroke risk is under 20%, and in that group modern medical therapy alone held up. Complements CREST-2 by asking the question in symptomatic as well as asymptomatic disease. Interim at 2 years; final results pending.',
+    limitations: 'Interim analysis with modest numbers; hierarchical win-ratio endpoint is harder to interpret than a simple composite; includes silent infarction, which has uncertain patient importance.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-ecst2-2025'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'For carotid stenosis with a low-to-intermediate predicted stroke risk, adding revascularization to optimised medical therapy showed no 2-year benefit.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'cassiss',
+    shortName: 'CASSISS',
+    fullName: 'Stenting Plus Medical Therapy vs Medical Therapy Alone for Symptomatic Severe Intracranial Atherosclerotic Stenosis',
+    topic: 'icas-prevention',
+    diseaseArea: ['secondary-prevention', 'icas-prevention'],
+    population: {
+      n: 358,
+      ageRange: 'mean 56.3; 73.5% male',
+      nihssRange: 'TIA or non-disabling, non-perforator-territory stroke',
+      timeWindow: 'enrolled beyond 3 weeks from the latest ischemic event; followed 3 years',
+      keyInclusion: ['Symptomatic severe intracranial stenosis 70-99%', 'Non-perforator territory'],
+      keyExclusion: ['Brainstem or basal-ganglia end-artery (perforator) territory events', 'Within 3 weeks of symptom onset']
+    },
+    intervention: 'Intracranial stenting plus medical therapy (DAPT 90 days, then single antiplatelet, plus risk-factor control)',
+    comparator: 'Medical therapy alone',
+    primaryEndpoint: {
+      definition: 'Stroke or death within 30 days, or stroke in the qualifying artery territory from 30 days to 1 year',
+      timepoint: '1 year',
+      result: 'No significant difference between stenting and medical therapy',
+      effectSize: '',
+      confidenceInterval: '',
+      pValue: 'Not significant'
+    },
+    secondaryEndpoints: [
+      { name: 'Stroke in qualifying territory at 2 and 3 years', result: 'No significant difference' },
+      { name: 'Mortality at 3 years', result: 'No significant difference' }
+    ],
+    safetyFindings: { sich: '', mortality: 'No significant difference at 3 years', other: '' },
+    imagingCriteria: 'Angiographic stenosis 70-99% of a major intracranial artery',
+    applicabilityNotes: 'Designed to give stenting its best chance after SAMMPRIS — experienced operators, refined selection, and a deliberate 3-week cooling-off period excluding the hyperacute phase where SAMMPRIS saw most periprocedural harm. Even so, stenting added nothing. 8 Chinese centres.',
+    limitations: 'Smaller than SAMMPRIS and underpowered for modest differences; excluded perforator-territory events, so results do not apply to that common phenotype; single-country.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-cassiss-2022'],
+    relatedActiveTrialIds: ['captiva'],
+    practiceImpact: 'Intracranial stenting added no benefit over medical therapy for symptomatic 70-99% stenosis, even with refined selection and experienced operators.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'cmoss',
+    shortName: 'CMOSS',
+    fullName: 'Extracranial-Intracranial Bypass and Risk of Stroke and Death in Patients With Symptomatic Artery Occlusion',
+    topic: 'ec-ic-bypass',
+    diseaseArea: ['secondary-prevention', 'icas-prevention', 'ec-ic-bypass'],
+    population: {
+      n: 324,
+      ageRange: 'median 52.7; 79.3% men',
+      nihssRange: 'TIA or non-disabling ischemic stroke attributed to hemodynamic insufficiency',
+      timeWindow: '2 years',
+      keyInclusion: ['ICA or MCA occlusion', 'Hemodynamic insufficiency on CT perfusion'],
+      keyExclusion: []
+    },
+    intervention: 'EC-IC bypass surgery plus medical therapy',
+    comparator: 'Medical therapy alone',
+    primaryEndpoint: {
+      definition: 'Stroke or death within 30 days, or ipsilateral ischemic stroke from 30 days to 2 years',
+      timepoint: '2 years',
+      result: 'Neutral: 8.6% (13/151) vs 12.3% (19/155)',
+      effectSize: 'Incidence difference -3.6%',
+      confidenceInterval: '95% CI -10.1% to 2.9%',
+      pValue: 'Not significant'
+    },
+    secondaryEndpoints: [],
+    safetyFindings: { sich: '', mortality: '', other: '' },
+    imagingCriteria: 'CT perfusion evidence of hemodynamic insufficiency required for entry',
+    applicabilityNotes: 'The modern re-test of the 1985 EC-IC Bypass Study, with perfusion-based selection and contemporary technique, and it reached the same conclusion. 13 Chinese centres, notably young patients (median 52.7 years).',
+    limitations: 'Open-label; modest size with wide confidence interval; single-country; hemodynamic selection by CT perfusion is not standardised across centres.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-cmoss-2023'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'EC-IC bypass for symptomatic ICA/MCA occlusion with hemodynamic insufficiency showed no benefit over medical therapy at 2 years.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Blood-pressure targets -------------------
+  t({
+    id: 'esprit-bp',
+    shortName: 'ESPRIT (BP)',
+    fullName: 'Lowering Systolic Blood Pressure to <120 mm Hg versus <140 mm Hg in Patients at High Cardiovascular Risk',
+    topic: 'bp-targets-prevention',
+    diseaseArea: ['secondary-prevention', 'bp-targets-prevention'],
+    population: {
+      n: 11255,
+      ageRange: 'mean 64.6 ± 7.1',
+      nihssRange: 'high cardiovascular risk; 4359 with diabetes and 3022 with previous stroke',
+      timeWindow: 'median 3.4 years',
+      keyInclusion: ['High cardiovascular risk', 'Enrolled from 116 hospitals or communities in China'],
+      keyExclusion: []
+    },
+    intervention: 'Intensive treatment targeting office SBP <120 mm Hg (achieved mean 119.1)',
+    comparator: 'Standard treatment targeting SBP <140 mm Hg (achieved mean 134.8)',
+    primaryEndpoint: {
+      definition: 'Composite of MI, revascularization, hospitalisation for heart failure, stroke, or cardiovascular death',
+      timepoint: 'median 3.4 y',
+      result: 'Favors intensive: 9.7% vs 11.1%',
+      effectSize: 'HR 0.88',
+      confidenceInterval: '95% CI 0.78 to 0.99',
+      pValue: 'p=0.028'
+    },
+    secondaryEndpoints: [
+      { name: 'Heterogeneity by diabetes or prior stroke', result: 'None — the effect was consistent across both subgroups' }
+    ],
+    safetyFindings: { sich: '', mortality: '', other: '' },
+    imagingCriteria: '',
+    applicabilityNotes: 'Directly answers the two populations SPRINT excluded: diabetes and prior stroke. The absence of heterogeneity is the point — an SBP <120 target held its benefit in stroke survivors, who had been the main group where intensive lowering was questioned.',
+    limitations: 'Open-label with blinded outcomes; conducted entirely in China; office rather than ambulatory BP; achieved separation (119 vs 135) is narrower than the nominal targets.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-esprit-bp-2024'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'An SBP target <120 reduced major vascular events versus <140, with consistent benefit in patients with diabetes and prior stroke.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'bproad',
+    shortName: 'BPROAD',
+    fullName: 'Intensive Blood-Pressure Control in Patients with Type 2 Diabetes',
+    topic: 'bp-targets-prevention',
+    diseaseArea: ['secondary-prevention', 'bp-targets-prevention'],
+    population: {
+      n: 12821,
+      ageRange: '>=50 (mean 63.8 ± 7.5); 45.3% women',
+      nihssRange: 'type 2 diabetes with elevated SBP and increased cardiovascular risk',
+      timeWindow: 'median 4.2 years',
+      keyInclusion: ['Age >=50', 'Type 2 diabetes', 'Elevated systolic BP', 'Increased cardiovascular risk'],
+      keyExclusion: []
+    },
+    intervention: 'Intensive treatment targeting SBP <120 mm Hg (achieved 121.6 at 1 year)',
+    comparator: 'Standard treatment targeting SBP <140 mm Hg (achieved 133.2 at 1 year)',
+    primaryEndpoint: {
+      definition: 'Composite of non-fatal stroke, non-fatal MI, treatment or hospitalization for heart failure, or cardiovascular death',
+      timepoint: 'median 4.2 y',
+      result: 'Favors intensive: 1.65 vs 2.09 events per 100 person-years',
+      effectSize: 'HR 0.79',
+      confidenceInterval: '95% CI 0.69 to 0.90',
+      pValue: 'p<0.001'
+    },
+    secondaryEndpoints: [],
+    safetyFindings: {
+      sich: '',
+      mortality: '',
+      other: 'Serious adverse events similar overall, but symptomatic hypotension and hyperkalemia more frequent with intensive treatment'
+    },
+    imagingCriteria: '',
+    applicabilityNotes: 'Settles the question ACCORD-BP left open. With ESPRIT it forms a consistent pair supporting an SBP <120 target in diabetes, including for stroke prevention. Balance against the measurable excess of symptomatic hypotension and hyperkalemia, which is what limits the target in frail patients.',
+    limitations: '145 Chinese sites; open-label; multiple imputation used for missing outcomes; achieved SBP separation narrower than the targets.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-bproad-2025'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'In type 2 diabetes, an SBP target <120 cut major cardiovascular events by 21% versus <140, at the cost of more hypotension and hyperkalemia.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'clear-synergy-colchicine',
+    shortName: 'CLEAR SYNERGY (colchicine)',
+    fullName: 'Colchicine in Acute Myocardial Infarction (CLEAR SYNERGY / OASIS-9)',
+    topic: 'inflammation-stroke-prevention',
+    diseaseArea: ['secondary-prevention', 'inflammation-stroke-prevention'],
+    population: {
+      n: 7062,
+      ageRange: 'adults',
+      nihssRange: 'acute myocardial infarction',
+      timeWindow: 'median follow-up 3 years',
+      keyInclusion: ['Myocardial infarction', '104 centres in 14 countries'],
+      keyExclusion: []
+    },
+    intervention: 'Colchicine (2×2 factorial with spironolactone)',
+    comparator: 'Placebo',
+    primaryEndpoint: {
+      definition: 'Composite of cardiovascular death, recurrent MI, stroke, or unplanned ischemia-driven revascularization',
+      timepoint: 'median 3 y',
+      result: 'Neutral: 9.1% vs 9.3%',
+      effectSize: 'HR 0.99',
+      confidenceInterval: '95% CI 0.85 to 1.16',
+      pValue: 'p=0.93'
+    },
+    secondaryEndpoints: [
+      { name: 'C-reactive protein at 3 months', result: 'Lower with colchicine (adjusted mean difference -1.28 mg/L, 95% CI -1.81 to -0.75)' },
+      { name: 'Diarrhea', result: 'More frequent: 10.2% vs 6.6% (p<0.001)' }
+    ],
+    safetyFindings: { sich: '', mortality: '', other: 'No increase in serious infections; more diarrhea' },
+    imagingCriteria: '',
+    applicabilityNotes: 'Included here because it is the largest and most decisive colchicine cardiovascular trial, and stroke was a component of its primary endpoint. Read with CONVINCE and CHANCE-3: across coronary and cerebrovascular populations, colchicine reliably lowers CRP and reliably fails to change events — which weakens the inflammatory hypothesis as a treatment target rather than merely leaving it unproven.',
+    limitations: 'Cardiac rather than stroke population; factorial design with spironolactone; stroke was only one component of the composite.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-clear-synergy-colchicine-2025'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Colchicine after MI did not reduce cardiovascular events despite lowering CRP — consistent with the neutral stroke trials.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Malignant edema & neurocritical care -------------------
+  t({
+    id: 'charm',
+    shortName: 'CHARM',
+    fullName: 'Intravenous Glibenclamide for Cerebral Oedema after Large Hemispheric Stroke',
+    topic: 'malignant-edema',
+    diseaseArea: ['acute-ischemic-stroke', 'malignant-edema'],
+    population: {
+      n: 535,
+      ageRange: '18-85 (primary analysis restricted to 18-70)',
+      nihssRange: 'large hemispheric infarction',
+      timeWindow: 'study drug started within 10 h of onset',
+      keyInclusion: ['ASPECTS 1-5, OR ischemic core 80-300 mL on CT perfusion or DWI'],
+      keyExclusion: []
+    },
+    intervention: 'Intravenous glibenclamide 8.6 mg over 72 h',
+    comparator: 'Placebo',
+    primaryEndpoint: {
+      definition: 'mRS shift at day 90 (modified ITT, ages 18-70)',
+      timepoint: '90 d',
+      result: 'Trial STOPPED EARLY for slow COVID-era enrolment before the planned sample was reached',
+      effectSize: 'See publication — underpowered by early termination',
+      confidenceInterval: '',
+      pValue: ''
+    },
+    secondaryEndpoints: [],
+    safetyFindings: { sich: '', mortality: '', other: '' },
+    imagingCriteria: 'ASPECTS 1-5 or core volume 80-300 mL — an explicitly imaging-defined large-infarct population',
+    applicabilityNotes: '143 stroke centres in 21 countries — the definitive attempt at pharmacologic prevention of malignant edema, following the GAMES-RP signal in patients under 70. Terminated early by the sponsor for operational reasons (COVID-related slow enrolment) before unblinding, so the result reflects an underpowered trial rather than a demonstrated absence of effect. Decompressive hemicraniectomy remains the intervention with proven mortality benefit.',
+    limitations: 'Stopped early for non-scientific reasons; primary analysis restricted to ages 18-70 while enrolment ran to 85.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-charm-2024'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'IV glibenclamide for large hemispheric infarction remains unproven — CHARM was halted early and underpowered.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'intrepid',
+    shortName: 'INTREPID',
+    fullName: 'Fever Prevention in Patients With Acute Vascular Brain Injury',
+    topic: 'neurocritical-care',
+    diseaseArea: ['neurocritical-care', 'acute-ischemic-stroke', 'ich', 'sah'],
+    population: {
+      n: 677,
+      ageRange: 'median 62; 51% female',
+      nihssRange: 'critically ill: 254 ischemic stroke, 223 ICH, 200 SAH',
+      timeWindow: 'up to 14 days or ICU discharge',
+      keyInclusion: ['Critically ill with acute vascular brain injury', '43 ICUs in 7 countries'],
+      keyExclusion: []
+    },
+    intervention: 'Automated surface temperature management targeting 37.0 °C',
+    comparator: 'Standard tiered fever treatment triggered at >=38 °C',
+    primaryEndpoint: {
+      definition: 'Daily mean fever burden (°C-hour above 37.9 °C)',
+      timepoint: 'acute phase',
+      result: 'Fever burden markedly reduced — prevention is achievable',
+      effectSize: '',
+      confidenceInterval: '',
+      pValue: ''
+    },
+    secondaryEndpoints: [
+      { name: '3-month mRS shift (principal secondary)', result: 'FUTILE — enrolment stopped at a planned interim analysis for futility on this endpoint' }
+    ],
+    safetyFindings: { sich: '', mortality: '', other: 'Major adverse events tracked included death, pneumonia, sepsis and malignant cerebral edema' },
+    imagingCriteria: '',
+    applicabilityNotes: 'Separates two questions that are often conflated: fever CAN be prevented with device-based normothermia, and preventing it did NOT translate into better function. Stopped early for futility on the functional endpoint after enrolling 686 of a planned 1176.',
+    limitations: 'Open-label; stopped early for futility; mixed ischemic/ICH/SAH population dilutes any condition-specific effect.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-intrepid-2024'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Device-based fever prevention reduced fever burden but did not improve 3-month function; halted for futility.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'setpoint2',
+    shortName: 'SETPOINT2',
+    fullName: 'Early vs Standard Approach to Tracheostomy in Severe Stroke Receiving Mechanical Ventilation',
+    topic: 'neurocritical-care',
+    diseaseArea: ['neurocritical-care', 'acute-ischemic-stroke', 'ich'],
+    population: {
+      n: 382,
+      ageRange: 'median 59; 49.8% women',
+      nihssRange: 'severe acute ischemic or hemorrhagic stroke requiring invasive ventilation',
+      timeWindow: '6-month outcome',
+      keyInclusion: ['Severe stroke on invasive mechanical ventilation', '26 US and German neurocritical care centres'],
+      keyExclusion: []
+    },
+    intervention: 'Early tracheostomy within 5 days of intubation (performed in 95.2%, median day 4)',
+    comparator: 'Ongoing weaning with standard tracheostomy from day 10 if needed (performed in 67%, median day 11)',
+    primaryEndpoint: {
+      definition: 'mRS 0-4 (no to moderately severe disability) versus 5-6 at 6 months',
+      timepoint: '6 months',
+      result: 'No significant benefit from early tracheostomy',
+      effectSize: '',
+      confidenceInterval: '',
+      pValue: 'Not significant'
+    },
+    secondaryEndpoints: [],
+    safetyFindings: { sich: '', mortality: '', other: '' },
+    imagingCriteria: '',
+    applicabilityNotes: 'A third of the standard-care group never needed a tracheostomy at all — the strongest argument against routine early tracheostomy, since early commitment means performing the procedure on patients who would have been extubated. Note the dichotomy used (mRS 0-4 vs 5-6) sets a low functional bar.',
+    limitations: 'Open-label; modest size; the unusual mRS 0-4 vs 5-6 dichotomy limits comparability with trials using conventional cut-points.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-setpoint2-2022'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Early (<=5 day) tracheostomy did not improve 6-month outcome in ventilated severe stroke; a third of controls avoided tracheostomy entirely.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Rehabilitation -------------------
+  t({
+    id: 'vns-rehab',
+    shortName: 'VNS-REHAB',
+    fullName: 'Vagus Nerve Stimulation Paired with Rehabilitation for Upper Limb Motor Function after Ischaemic Stroke',
+    topic: 'rehabilitation',
+    diseaseArea: ['rehabilitation'],
+    population: {
+      n: 108,
+      ageRange: 'adults',
+      nihssRange: 'moderate-to-severe arm weakness (baseline Fugl-Meyer Upper Extremity 20-50)',
+      timeWindow: 'at least 9 months after ischemic stroke — the CHRONIC phase',
+      keyInclusion: ['Moderate-to-severe arm weakness >=9 months post-stroke', '19 stroke rehabilitation services in the UK and USA'],
+      keyExclusion: []
+    },
+    intervention: 'Implanted vagus nerve stimulation (0.8 mA, 100 μs, 30 Hz) paired with rehabilitation — 6 weeks in-clinic (18 sessions) then home exercise',
+    comparator: 'Sham stimulation (0 mA) paired with identical rehabilitation; ALL participants were implanted',
+    primaryEndpoint: {
+      definition: 'Change in Fugl-Meyer Assessment-Upper Extremity the day after in-clinic therapy',
+      timepoint: 'end of 6-week in-clinic therapy',
+      result: 'Favors paired VNS',
+      effectSize: 'See publication',
+      confidenceInterval: '',
+      pValue: 'Met'
+    },
+    secondaryEndpoints: [
+      { name: 'FMA-UE response rate at 90 days after in-clinic therapy', result: 'Higher with paired VNS' }
+    ],
+    safetyFindings: { sich: '', mortality: '', other: 'Implant-related risks apply to both arms since all participants were implanted' },
+    imagingCriteria: '',
+    applicabilityNotes: 'Triple-blind and sham-controlled with every participant implanted, which controls for the implant procedure itself — an unusually rigorous design for a device trial. The population is deliberately chronic (>=9 months), where spontaneous recovery has plateaued, so the gain is attributable to the pairing rather than natural history. FDA-cleared on this basis.',
+    limitations: 'Small (n=108); requires surgical implantation and intensive paired therapy, limiting scalability; impairment (Fugl-Meyer) rather than a patient-centred activity endpoint.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-vns-rehab-2021'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Paired vagus nerve stimulation improved chronic post-stroke upper-limb impairment versus sham in a rigorous implanted-control design.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- CVT endovascular therapy -------------------
+  t({
+    id: 'to-act',
+    shortName: 'TO-ACT',
+    fullName: 'Endovascular Treatment With Medical Management vs Standard Care in Severe Cerebral Venous Thrombosis',
+    topic: 'cvt',
+    diseaseArea: ['cvt'],
+    population: {
+      n: 67,
+      ageRange: 'adults',
+      nihssRange: 'severe CVT with >=1 risk factor for poor outcome',
+      timeWindow: 'EVT within 24 h of randomization; 12-month outcome',
+      keyInclusion: ['Radiologically confirmed CVT', 'At least one of: mental status disorder, coma, intracerebral hemorrhage, or deep venous system thrombosis'],
+      keyExclusion: []
+    },
+    intervention: 'Endovascular treatment (mechanical thrombectomy, intrasinus alteplase or urokinase, or both) plus standard care',
+    comparator: 'Guideline-based standard medical care alone',
+    primaryEndpoint: {
+      definition: 'mRS 0-1 at 12 months',
+      timepoint: '12 months',
+      result: 'No benefit — HALTED after the first interim analysis for futility',
+      effectSize: '',
+      confidenceInterval: '',
+      pValue: 'Futility'
+    },
+    secondaryEndpoints: [],
+    safetyFindings: { sich: '', mortality: '', other: '' },
+    imagingCriteria: 'Radiologically confirmed CVT',
+    applicabilityNotes: 'The only randomized trial of endovascular therapy in CVT, and it stopped early for futility. It is small (67 patients), so it does not exclude benefit in the most severe presentations — but it removes any basis for routine EVT in CVT, which is how the 2024 AHA CVT statement treats it. Anticoagulation remains first-line.',
+    limitations: 'Very small; halted at first interim analysis; heterogeneous endovascular techniques pooled; 8 hospitals across 3 countries.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-to-act-2020'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Endovascular therapy for severe CVT showed no benefit and was halted for futility — anticoagulation remains first-line.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
   })
 ];
 

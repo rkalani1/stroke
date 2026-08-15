@@ -15,5 +15,39 @@
     "certainty": "high",
     "lastReviewed": "2026-05-29",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "crest-2",
+    "name": "CREST-2",
+    "fullName": "Medical Management and Revascularization for Asymptomatic Carotid Stenosis",
+    "category": "carotid-revasc",
+    "population": "n=2485, adults, NIHSS ASYMPTOMATIC high-grade (>=70%) carotid stenosis, follow-up to 4 years",
+    "finding": "Stenting trial POSITIVE: 2.8% vs 6.0% medical alone. Endarterectomy trial NEUTRAL: 3.7% vs 5.3%",
+    "teachingPoint": "In asymptomatic >=70% stenosis on intensive medical therapy, adding stenting reduced 4-year events; adding endarterectomy did not reach significance.",
+    "PMID": "41269206",
+    "year": 2026,
+    "citationIds": [
+      "cit-crest2-2026"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "ecst-2",
+    "name": "ECST-2",
+    "fullName": "Optimised Medical Therapy Alone versus Optimised Medical Therapy plus Revascularisation for Carotid Stenosis — 2-year interim results",
+    "category": "carotid-revasc",
+    "population": "n=429, >=18, NIHSS asymptomatic or symptomatic carotid stenosis >=50% with LOW-to-INTERMEDIATE predicted risk (5-year ipsilateral stroke risk <20% by Carotid Artery Risk score), 2-year interim analysis",
+    "finding": "No benefit from added revascularization in this low-to-intermediate-risk group",
+    "teachingPoint": "For carotid stenosis with a low-to-intermediate predicted stroke risk, adding revascularization to optimised medical therapy showed no 2-year benefit.",
+    "PMID": "40252662",
+    "year": 2025,
+    "citationIds": [
+      "cit-ecst2-2025"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

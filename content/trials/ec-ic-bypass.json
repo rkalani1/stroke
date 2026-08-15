@@ -1,0 +1,19 @@
+[
+  {
+    "id": "cmoss",
+    "name": "CMOSS",
+    "fullName": "Extracranial-Intracranial Bypass and Risk of Stroke and Death in Patients With Symptomatic Artery Occlusion",
+    "category": "ec-ic-bypass",
+    "population": "n=324, median 52.7; 79.3% men, NIHSS TIA or non-disabling ischemic stroke attributed to hemodynamic insufficiency, 2 years",
+    "finding": "Neutral: 8.6% (13/151) vs 12.3% (19/155)",
+    "teachingPoint": "EC-IC bypass for symptomatic ICA/MCA occlusion with hemodynamic insufficiency showed no benefit over medical therapy at 2 years.",
+    "PMID": "37606672",
+    "year": 2023,
+    "citationIds": [
+      "cit-cmoss-2023"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]
