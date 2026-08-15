@@ -2314,7 +2314,7 @@ async function main() {
 
         <div class="ref-citation">
           <strong>CADISS:</strong> <em>Lancet Neurol</em>. 2015;14(4):361-7. PMID: 25684164 | <strong>TREAT-CAD:</strong> <em>Lancet Neurol</em>. 2021;20(5):341-350. PMID: 33765420<br/>
-          <strong>Kaufmann IPD:</strong> <em>JAMA Neurol</em>. 2024;81(6):630-637. PMID: 38739383 | <strong>STOP-CAD:</strong> <em>Stroke</em>. 2024;55(4):908-918. PMID: 38335240 | <strong>AHA/ASA:</strong> <em>Stroke</em>. 2021;52:e364-e467. PMID: 34024117 | <strong>AHA Statement 2024:</strong> <em>Stroke</em>. 2024;55:e84-e107. PMID: 38301552 | <strong>ESO Guideline 2021:</strong> <em>Eur Stroke J</em>. 2021;6(3):XXXIX-LXXXVIII. PMID: 34528453
+          <strong>Kaufmann IPD:</strong> <em>JAMA Neurol</em>. 2024;81(6):630-637. PMID: 38739383 | <strong>STOP-CAD:</strong> <em>Stroke</em>. 2024;55(4):908-918. PMID: 38335240 | <strong>AHA/ASA:</strong> <em>Stroke</em>. 2021;52:e364-e467. PMID: 34024117 | <strong>AHA Statement 2024:</strong> <em>Stroke</em>. 2024;55(3):e91-e106. PMID: 38299330 | <strong>ESO Guideline 2021:</strong> <em>Eur Stroke J</em>. 2021;6(3):XXXIX-LXXXVIII. PMID: 34746432
         </div>
       </div>
     </body>

@@ -399,8 +399,8 @@ const EDUCATION_MODULES = [
       { label: 'STOP-CAD Study', citation: 'Yaghi S, et al. Antithrombotic Treatment for Stroke Prevention in Cervical Artery Dissection: The STOP-CAD Study. Stroke. 2024;55(4):908-918.', pmid: '38335240' },
       { label: 'IPD Meta-Analysis', citation: 'Kaufmann JE, et al. JAMA Neurol. 2024;81(6):630-637.', pmid: '38739383' },
       { label: 'AHA/ASA 2021 Guideline', citation: 'Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.', pmid: '34024117' },
-      { label: 'AHA Statement 2024', citation: 'Treatment and Outcomes of Cervical Artery Dissection in Adults. Stroke. 2024;55(3):e84-e107.', pmid: '38301552' },
-      { label: 'ESO Guideline 2021', citation: 'European Stroke Organisation guideline for the management of extracranial and intracranial artery dissection. Eur Stroke J. 2021;6(3):XXXIX-LXXXVIII.', pmid: '34528453' }
+      { label: 'AHA Statement 2024', citation: 'Yaghi S, et al. Treatment and Outcomes of Cervical Artery Dissection in Adults: A Scientific Statement From the American Heart Association. Stroke. 2024;55(3):e91-e106.', pmid: '38299330' },
+      { label: 'ESO Guideline 2021', citation: 'Debette S, et al. ESO guideline for the management of extracranial and intracranial artery dissection. Eur Stroke J. 2021;6(3):XXXIX-LXXXVIII.', pmid: '34746432' }
     ]
   },
   {
@@ -471,13 +471,13 @@ const EDUCATION_MODULES = [
     lastReviewed: '2026-07-18',
     references: [
       { label: 'AHA/ASA 2021 Guideline', citation: 'Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.', pmid: '34024117' },
-      { label: 'WASID Post-Hoc', citation: 'Failure of Antithrombotic Therapy and Risk of Stroke in Patients With Symptomatic Intracranial Stenosis. Stroke. 2009;40:359-364.', pmid: '19064771' },
-      { label: 'CAPRIE Trial', citation: 'CAPRIE Steering Committee. Lancet. 1996;348:1329-1339.', pmid: '8932661' },
+      { label: 'WASID Post-Hoc', citation: 'Turan TN, et al. Failure of antithrombotic therapy and risk of stroke in patients with symptomatic intracranial stenosis. Stroke. 2009;40(2):505-509.', pmid: '19095991' },
+      { label: 'CAPRIE Trial', citation: 'CAPRIE Steering Committee. A randomised, blinded, trial of clopidogrel versus aspirin in patients at risk of ischaemic events (CAPRIE). Lancet. 1996;348(9038):1329-1339.', pmid: '8918275' },
       { label: 'CHANCE Trial', citation: 'Wang Y, et al. Clopidogrel with Aspirin in Acute Minor Stroke or Transient Ischemic Attack. N Engl J Med. 2013;369:11-19.', pmid: '23803136' },
       { label: 'POINT Trial', citation: 'Johnston SC, et al. Clopidogrel and Aspirin in Acute Ischemic Stroke and High-Risk TIA. N Engl J Med. 2018;379:215-225.', pmid: '29766750' },
       { label: 'INSPIRES Trial', citation: 'Gao Y, et al. Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke. N Engl J Med. 2023;389:2413-2424.', pmid: '38157499' },
       { label: 'SAMMPRIS Trial', citation: 'Chimowitz MI, et al. Stenting versus Aggressive Medical Therapy for Intracranial Arterial Stenosis. N Engl J Med. 2011;365:993-1003.', pmid: '21899409' },
-      { label: 'COMPASS Trial', citation: 'Connolly SJ, et al. Rivaroxaban with or without Aspirin in Stable Cardiovascular Disease. Lancet. 2018;391:319-328.', pmid: '29141975' },
+      { label: 'COMPASS Trial', citation: 'Connolly SJ, et al. Rivaroxaban with or without aspirin in patients with stable coronary artery disease. Lancet. 2018;391(10117):205-218.', pmid: '29132879' },
       { label: 'Narrative Review', citation: 'Sanderson S, et al. Aspirin Resistance and Its Clinical Implications. Ann Intern Med. 2005;142:370-380.', pmid: '15738456' },
       { label: 'OCEANIC-STROKE Trial', citation: 'Sharma M, et al. Asundexian for Secondary Stroke Prevention. N Engl J Med. 2026;394(15):1467-1479.', pmid: '41985132' }
     ]
@@ -4452,7 +4452,7 @@ export function CervicalDissectionCard() {
             {/* Citations footer */}
             <div className="ref-citation" style={{marginTop: 'auto', padding: '4px 8px', fontSize: '7.3pt', lineHeight: '1.2'}}>
               <strong>CADISS:</strong> *Lancet Neurol*. 2015;14(4):361-7. <a href="https://pubmed.ncbi.nlm.nih.gov/25684164/" target="_blank">PMID: 25684164</a> | <strong>TREAT-CAD:</strong> *Lancet Neurol*. 2021;20(5):341-350. <a href="https://pubmed.ncbi.nlm.nih.gov/33765420/" target="_blank">PMID: 33765420</a><br/>
-              <strong>Kaufmann IPD:</strong> *JAMA Neurol*. 2024;81(6):630-637. <a href="https://pubmed.ncbi.nlm.nih.gov/38739383/" target="_blank">PMID: 38739383</a> | <strong>STOP-CAD:</strong> *Stroke*. 2024;55(4):908-918. <a href="https://pubmed.ncbi.nlm.nih.gov/38335240/" target="_blank">PMID: 38335240</a> | <strong>AHA/ASA:</strong> *Stroke*. 2021;52:e364-e467. <a href="https://pubmed.ncbi.nlm.nih.gov/34024117/" target="_blank">PMID: 34024117</a> | <strong>AHA Statement 2024:</strong> *Stroke*. 2024;55:e84-e107. <a href="https://pubmed.ncbi.nlm.nih.gov/38301552/" target="_blank">PMID: 38301552</a> | <strong>ESO Guideline 2021:</strong> *Eur Stroke J*. 2021;6(3):XXXIX-LXXXVIII. <a href="https://pubmed.ncbi.nlm.nih.gov/34528453/" target="_blank">PMID: 34528453</a>
+              <strong>Kaufmann IPD:</strong> *JAMA Neurol*. 2024;81(6):630-637. <a href="https://pubmed.ncbi.nlm.nih.gov/38739383/" target="_blank">PMID: 38739383</a> | <strong>STOP-CAD:</strong> *Stroke*. 2024;55(4):908-918. <a href="https://pubmed.ncbi.nlm.nih.gov/38335240/" target="_blank">PMID: 38335240</a> | <strong>AHA/ASA:</strong> *Stroke*. 2021;52:e364-e467. <a href="https://pubmed.ncbi.nlm.nih.gov/34024117/" target="_blank">PMID: 34024117</a> | <strong>AHA Statement 2024:</strong> *Stroke*. 2024;55(3):e91-e106. <a href="https://pubmed.ncbi.nlm.nih.gov/38299330/" target="_blank">PMID: 38299330</a> | <strong>ESO Guideline 2021:</strong> *Eur Stroke J*. 2021;6(3):XXXIX-LXXXVIII. <a href="https://pubmed.ncbi.nlm.nih.gov/34746432/" target="_blank">PMID: 34746432</a>
             </div>
           </div>
         </div>
@@ -6757,7 +6757,7 @@ export function AneurysmalSahCard() {
             {/* §3 Prevent secondary injury (red) */}
             <CardSection color="red" title="3. Prevent Secondary Injury" style={{ marginBottom: '6px' }}>
               <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.4pt', lineHeight: '1.36', color: 'var(--ink-soft)' }}>
-                <li><strong>Pre-securing:</strong> control BP (avoid extremes), analgesia; a short antifibrinolytic course (&lt;72 h) is optional to reduce ultra-early rebleed.</li>
+                <li><strong>Pre-securing:</strong> control BP (avoid extremes), analgesia; antifibrinolytics are <strong>not</strong> recommended &mdash; ULTRA (n=955) showed ultra-early short-course tranexamic acid did not improve 6-month outcome (good outcome 60% vs 64%; adjusted OR 0.86, 95% CI 0.66&ndash;1.12) and did not significantly reduce rebleeding (10% vs 14%; OR 0.71, 95% CI 0.48&ndash;1.04). Prioritise prompt aneurysm securing instead.</li>
                 <li><strong>Nimodipine 60 mg PO q4h × 21 days for all</strong> — improves neurologic outcome / reduces DCI, even though it does not reduce angiographic vasospasm (BRANT).</li>
                 <li><strong>DCI / vasospasm peaks days 4&ndash;14:</strong> monitor exam ± TCD; treat with induced hypertension and, if refractory, endovascular angioplasty / intra-arterial vasodilators. Maintain <strong>euvolemia</strong> (avoid prophylactic hypervolemia). Watch for hyponatremia (SIADH vs cerebral salt wasting) and hydrocephalus (EVD).</li>
               </ul>
@@ -7945,7 +7945,7 @@ export function CadasilCarasilCard() {
                     <td><strong>Autosomal Dominant</strong><br />Onset: 20s–50s</td>
                     <td>1. <strong>Migraine with aura</strong> (onset ~30y)<br />2. <strong>Recurrent subcortical lacunar strokes</strong> without HTN (onset ~45y)<br />3. <strong>Subcortical dementia &amp; mood/apathy</strong></td>
                     <td>&bull; <strong>Anterior temporal lobe pole</strong> hyperintensity (O&apos;Sullivan sign, &gt;90% Sp)<br />&bull; <strong>External capsule</strong> &amp; corpus callosum WMH<br />&bull; Deep cerebral microbleeds on SWI</td>
-                    <td><strong>Genetic testing:</strong> NOTCH3 exons 2–24 (EGFR repeats). Skin biopsy: Granular osmiophilic material (GOM).<br /><span style={{ color: 'var(--red-deep)' }}><strong>AVOID:</strong> IV thrombolysis for lacunes; triptans/ergots.</span></td>
+                    <td><strong>Genetic testing:</strong> NOTCH3 exons 2–24 (EGFR repeats). Skin biopsy: Granular osmiophilic material (GOM).<br /><span style={{ color: 'var(--red-deep)' }}><strong>CAUTION:</strong> triptans/ergots (vasoconstrictive). IV thrombolysis is <strong>not</strong> contraindicated in CADASIL &mdash; data are limited but do not show excess hemorrhage; decide case by case, weighing microbleed and leukoaraiosis burden.</span></td>
                   </tr>
                   <tr>
                     <td><strong>CARASIL</strong><br /><span style={{ color: 'var(--amber-deep)' }}>HTRA1 (10q26)</span></td>
@@ -8380,7 +8380,7 @@ export function PregnancyStrokeCard() {
         <text x="8" y="67" fill="#1e40af" fontSize="5.0pt" fontFamily="Outfit" fontWeight="800">LMWH &rarr; IV UFH Delivery Switch</text>
         <text x="8" y="77" fill="var(--ink-soft)" fontSize="4.2pt" fontFamily="IBM Plex Sans">LMWH safe in pregnancy; switch to IV UFH at 36w for epidural.</text>
       </g>
-      <text x="609" y="152" fill="var(--red-deep)" fontSize="4.6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">Warfarin / DOACs contraindicated in pregnancy (safe in lactation)</text>
+      <text x="609" y="152" fill="var(--red-deep)" fontSize="4.6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">Warfarin / DOACs contraindicated in pregnancy &mdash; lactation: warfarin OK, DOACs avoid</text>
     </svg>
   );
 
@@ -8467,7 +8467,7 @@ export function PregnancyStrokeCard() {
                   <br />&bull; <strong>First-Line Anticoagulation:</strong> Full therapeutic <strong>LMWH (Enoxaparin 1 mg/kg SC q12h)</strong> throughout pregnancy (does not cross placenta; monitor anti-Xa levels to account for expanding plasma volume).
                   <br />&bull; <strong>Delivery Planning:</strong> At ~36 weeks or 24–36 hours before planned delivery, switch LMWH to continuous <strong>IV Unfractionated Heparin (UFH)</strong>.
                   <br />&bull; <strong>Neuraxial Anesthesia Guardrails:</strong> Withhold therapeutic LMWH for &ge;24 hours (or prophylactic LMWH for &ge;12 hours); discontinue IV UFH for &ge;4–6 hours with normal aPTT before epidural placement to prevent epidural hematoma.
-                  <br />&bull; <strong>Postpartum:</strong> Resume anticoagulation 6–12h after vaginal delivery or 24h after C-section; DOACs/Warfarin are safe during breastfeeding.
+                  <br />&bull; <strong>Postpartum:</strong> Resume anticoagulation 6–12h after vaginal delivery or 24h after C-section. Bridge to <strong>warfarin</strong> (compatible with breastfeeding) or continue LMWH; <span style={{ color: 'var(--red-deep)' }}><strong>DOACs are not established as safe in lactation</strong> &mdash; avoid while breastfeeding.</span>
                 </div>
               </div>
             </CardSection>
@@ -8484,6 +8484,7 @@ export function PregnancyStrokeCard() {
                   <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>Postpartum Lactation Safety</strong>
                   <br />&bull; <strong>Safe in Breastfeeding:</strong> Aspirin 81 mg, Enoxaparin, Dalteparin, Warfarin, IV/Oral Iodinated and Gadolinium contrast agents (&lt;0.04% enters breast milk).
                   <br />&bull; Labetalol, Hydralazine, and Nifedipine are fully compatible with breastfeeding.
+                  <br />&bull; <span style={{ color: 'var(--red-deep)' }}><strong>NOT established as safe: DOACs.</strong></span> Apixaban relative infant dose ~12.8&ndash;18% with a milk-to-plasma ratio ~2.6 (well above the conventional &lt;10% RID threshold); rivaroxaban, dabigatran, and edoxaban lack human lactation data. Use warfarin or LMWH if anticoagulation is needed while breastfeeding.
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>Long-Term Secondary Prevention</strong>
@@ -8496,7 +8497,7 @@ export function PregnancyStrokeCard() {
             <CardRefFooter style={{ fontSize: '6.7pt' }} refs={[
               { label: '2026 Maternal Stroke Update', cite: 'Miller EC et al. Stroke. 2026.', pmid: '41603019' },
               { label: 'Magpie Trial (Magnesium)', cite: 'Altman D et al. Lancet. 2002;359(9321):1877-1890.', pmid: '12057549' },
-              { label: 'AHA CVT Statement', cite: 'Saposnik G et al. Stroke. 2024;55:e84-e107.', pmid: '38284265' },
+              { label: 'AHA CVT Statement', cite: 'Saposnik G et al. Stroke. 2024;55(3):e91-e106.', pmid: '38284265' },
               { label: 'AHA Women Stroke Guidelines', cite: 'Bushnell C et al. Stroke. 2014;45(5):1545-1588.', pmid: '24503673' },
             ]} />
           </div>
@@ -9618,7 +9619,7 @@ export function IchBloodPressureCard() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', fontSize: '7.0pt', lineHeight: '1.32', color: 'var(--ink-soft)' }}>
                 <div>
                   <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>Imaging Markers of Expansion</strong>
-                  <br />&bull; <strong>CTA Spot Sign:</strong> Contrast extravasation into hematoma; &gt;70% sensitivity for rapid expansion.
+                  <br />&bull; <strong>CTA Spot Sign:</strong> Contrast extravasation into the hematoma. PREDICT reported sensitivity 51%, specificity 85%, PPV 61%, NPV 78% &mdash; a <strong>negative spot sign does NOT exclude expansion</strong>.
                   <br />&bull; <strong>Non-Contrast CT Signs:</strong> Black hole sign, blend sign, swirl sign, hypodense island sign (active bleeding).
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
@@ -10122,7 +10123,7 @@ export function CraoThrombolysisCard() {
               <div className="toast-card neutral">
                 <h3>2. Evidence Base (AHA 2021 &amp; THEIA 2025)</h3>
                 <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
-                  <li><strong>AHA Statement 2021 (PMID 33677974):</strong> Recommends acute IV thrombolysis in eligible CRAO presenting &le;4.5h without retinal hemorrhage.</li>
+                  <li><strong>AHA Statement 2021 (PMID 33677974):</strong> Scientific statement (not a graded guideline). States CRAO is a medical emergency and that the current literature <strong>suggests IV tPA <em>may</em> be effective</strong>; it explicitly calls for high-quality randomized trials rather than recommending routine thrombolysis. Management remains individualized and consent should reflect the uncertainty.</li>
                   <li><strong>THEIA Trial 2025 (PMID 41109232):</strong> Randomized trial (n=70) of IV alteplase 0.9 mg/kg vs oral aspirin 300 mg within 4.5 h of severe monocular vision loss (Snellen &lt;20/400). <strong>Negative for its primary endpoint</strong> (&ge;0.3 LogMAR improvement at 1 month): 66% (19/29) alteplase vs 48% (13/27) aspirin, adjusted OR 1.1 (95% CI 0.07&ndash;18.39), p=0.95. Numerically higher recovery with alteplase but not significant, and the trial was likely underpowered. One asymptomatic ICH; no symptomatic haemorrhage.</li>
                 </ul>
               </div>
