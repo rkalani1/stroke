@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:40c9890d6473baebde255baaf6394ad7",
+    "checksum": "sha256:baaf655fdd8cfb2a92720480f6c08b95",
     "counts": {
       "guidelines": 11,
       "trials": 113,
@@ -3187,9 +3187,9 @@
       "calculators": [],
       "references": [
         {
-          "label": "EDEMA Score Study",
-          "citation": "Strbian D, et al. The EDEMA score: a practical tool to predict severe brain swelling. Stroke. 2013;44(10):2728-2733.",
-          "pmid": "23887841"
+          "label": "EDEMA Score (Ong 2017)",
+          "citation": "Ong CJ, et al. Enhanced Detection of Edema in Malignant Anterior Circulation Stroke (EDEMA) Score: A Risk Prediction Tool. Stroke. 2017;48(7):1969-1972.",
+          "pmid": "28487333"
         },
         {
           "label": "DESTINY II Trial",
@@ -4128,13 +4128,13 @@
       "references": [
         {
           "label": "ASTRAL Score",
-          "citation": "Ntaios G, et al. Stroke. 2012;43(8):2170-2176.",
-          "pmid": "22738924"
+          "citation": "Ntaios G, et al. An integer-based score to predict functional outcome in acute ischemic stroke: the ASTRAL score. Neurology. 2012;78(24):1916-1922.",
+          "pmid": "22649218"
         },
         {
           "label": "PLAN Score",
-          "citation": "O'Donnell MJ, et al. Arch Intern Med. 2012;172(20):1548-1556.",
-          "pmid": "23090225"
+          "citation": "O'Donnell MJ, et al. The PLAN score: a bedside prediction rule for death and severe disability following acute ischemic stroke. Arch Intern Med. 2012;172(20):1548-1556.",
+          "pmid": "23147454"
         },
         {
           "label": "ICH Score",

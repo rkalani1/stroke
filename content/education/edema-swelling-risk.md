@@ -5,7 +5,7 @@ summary: "EDEMA score for early stratification of severe brain swelling and mali
 tags: ["pocket-card", "printable", "icu"]
 contexts: ["telestroke", "inpatient", "clinic"]
 calculators: []
-references: [{"label":"EDEMA Score Study","citation":"Strbian D, et al. The EDEMA score: a practical tool to predict severe brain swelling. Stroke. 2013;44(10):2728-2733.","pmid":"23887841"},{"label":"DESTINY II Trial","citation":"Jüttler E, et al. Decompressive Surgery for Severe Middle-Cerebral-Artery Infarction in Elderly Patients. N Engl J Med. 2014;370:1091-1100.","pmid":"24645942"}]
+references: [{"label":"EDEMA Score (Ong 2017)","citation":"Ong CJ, et al. Enhanced Detection of Edema in Malignant Anterior Circulation Stroke (EDEMA) Score: A Risk Prediction Tool. Stroke. 2017;48(7):1969-1972.","pmid":"28487333"},{"label":"DESTINY II Trial","citation":"Jüttler E, et al. Decompressive Surgery for Severe Middle-Cerebral-Artery Infarction in Elderly Patients. N Engl J Med. 2014;370:1091-1100.","pmid":"24645942"}]
 lastReviewed: 2026-07-24
 provenance: src/education.jsx
 ---

@@ -236,7 +236,7 @@ const EDUCATION_MODULES = [
     categories: ['pocket-card', 'printable', 'icu'],
     lastReviewed: '2026-07-24',
     references: [
-      { label: 'EDEMA Score Study', citation: 'Strbian D, et al. The EDEMA score: a practical tool to predict severe brain swelling. Stroke. 2013;44(10):2728-2733.', pmid: '23887841' },
+      { label: 'EDEMA Score (Ong 2017)', citation: 'Ong CJ, et al. Enhanced Detection of Edema in Malignant Anterior Circulation Stroke (EDEMA) Score: A Risk Prediction Tool. Stroke. 2017;48(7):1969-1972.', pmid: '28487333' },
       { label: 'DESTINY II Trial', citation: 'Jüttler E, et al. Decompressive Surgery for Severe Middle-Cerebral-Artery Infarction in Elderly Patients. N Engl J Med. 2014;370:1091-1100.', pmid: '24645942' }
     ]
   },
@@ -439,8 +439,8 @@ const EDUCATION_MODULES = [
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-07-13',
     references: [
-      { label: 'ASTRAL Score', citation: 'Ntaios G, et al. Stroke. 2012;43(8):2170-2176.', pmid: '22738924' },
-      { label: 'PLAN Score', citation: 'O\'Donnell MJ, et al. Arch Intern Med. 2012;172(20):1548-1556.', pmid: '23090225' },
+      { label: 'ASTRAL Score', citation: 'Ntaios G, et al. An integer-based score to predict functional outcome in acute ischemic stroke: the ASTRAL score. Neurology. 2012;78(24):1916-1922.', pmid: '22649218' },
+      { label: 'PLAN Score', citation: 'O\'Donnell MJ, et al. The PLAN score: a bedside prediction rule for death and severe disability following acute ischemic stroke. Arch Intern Med. 2012;172(20):1548-1556.', pmid: '23147454' },
       { label: 'ICH Score', citation: 'Hemphill JC 3rd, et al. Stroke. 2001;32(4):891-897.', pmid: '11283388' },
       { label: 'mRS Scale', citation: 'van Swieten JC, et al. Stroke. 1988;19(5):604-607.', pmid: '3363593' },
       { label: 'AHA/ASA 2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
@@ -4181,8 +4181,8 @@ export function StrokePrognosisCard() {
 
             {/* Citations Footer */}
             <div className="ref-citation" style={{marginTop: '0', padding: '6px 10px', fontSize: '7.2pt', lineHeight: '1.25'}}>
-              <strong>ASTRAL Score:</strong> Ntaios G, et al. *Stroke*. 2012;43:2170-6. [PMID: 22738924](https://pubmed.ncbi.nlm.nih.gov/22738924/)<br/>
-              <strong>PLAN Score:</strong> O'Donnell MJ, et al. *Arch Intern Med*. 2012;172:1548-56. [PMID: 23090225](https://pubmed.ncbi.nlm.nih.gov/23090225/)<br/>
+              <strong>ASTRAL Score:</strong> Ntaios G, et al. *Neurology*. 2012;78(24):1916-22. [PMID: 22649218](https://pubmed.ncbi.nlm.nih.gov/22649218/)<br/>
+              <strong>PLAN Score:</strong> O'Donnell MJ, et al. *Arch Intern Med*. 2012;172(20):1548-56. [PMID: 23147454](https://pubmed.ncbi.nlm.nih.gov/23147454/)<br/>
               <strong>ICH Score:</strong> Hemphill JC 3rd, et al. *Stroke*. 2001;32:891-7. [PMID: 11283388](https://pubmed.ncbi.nlm.nih.gov/11283388/)<br/>
               <strong>mRS Scale:</strong> van Swieten JC, et al. *Stroke*. 1988;19:604-7. [PMID: 3363593](https://pubmed.ncbi.nlm.nih.gov/3363593/)
             </div>
@@ -9498,7 +9498,7 @@ export function IchBloodPressureCard() {
         <rect x="0" y="38" width="221" height="34" rx="3" fill="#f0fdf4" stroke="#16a34a" strokeWidth="1" />
         <text x="6" y="49" fill="#166534" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800">SWITCH Trial (Lancet 2024; PMID 38761811)</text>
         <text x="6" y="59" fill="var(--ink)" fontSize="4.3pt" fontFamily="IBM Plex Sans">Decompressive craniectomy in severe deep basal ganglia ICH</text>
-        <text x="6" y="67" fill="#166534" fontSize="4.3pt" fontFamily="IBM Plex Sans" fontWeight="700">Reduced mortality without increasing severe vegetative disability</text>
+        <text x="6" y="67" fill="#b45309" fontSize="4.3pt" fontFamily="IBM Plex Sans" fontWeight="700">mRS 5-6 44% vs 58%, p=0.057 (NS) &bull; stopped early &bull; weak evidence</text>
 
         <rect x="0" y="76" width="221" height="36" rx="3" fill="#fffbeb" stroke="#f59e0b" strokeWidth="1" />
         <text x="6" y="87" fill="#b45309" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800">TRIDENT (NEJM 2026; PMID 42019018)</text>
@@ -9601,7 +9601,7 @@ export function IchBloodPressureCard() {
                 <div style={{ border: '1.5px solid var(--teal)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--teal-deep)', fontSize: '7.6pt' }}>SWITCH Trial: Decompressive Surgery</strong>
                   <br />&bull; <strong>Design (Lancet 2024; PMID: 38761811):</strong> Hemicraniectomy (&ge;12 cm bone flap) + best medical care vs medical care alone in deep supratentorial ICH with deteriorating GCS.
-                  <br />&bull; <strong>Result:</strong> Reduced 180-day mortality from 44% to 18% without increasing vegetative dependency.
+                  <br />&bull; <strong>Result:</strong> Primary outcome was mRS 5&ndash;6 at 180 days: 44% (42/95) with decompressive craniectomy vs 58% (55/95) with best medical treatment &mdash; adjusted RR 0.77 (95% CI 0.59&ndash;1.01), adjusted risk difference &minus;13% (95% CI &minus;26 to 0), <strong>p=0.057, not statistically significant</strong>. Stopped early for lack of funding; the authors describe this as weak evidence, and survival was associated with severe disability in both arms.
                   <br />&bull; Indicated as a life-saving rescue maneuver for progressive herniation.
                 </div>
 
@@ -9807,7 +9807,7 @@ export function FactorXiaInhibitorsCard() {
                   <tr>
                     <td><strong>AXIOMATIC-SSP</strong><br />(Lancet Neurol 2024; PMID: 38101902)<br /><em>Milvexian (Oral Small Molecule)</em></td>
                     <td>Phase 2b trial testing Milvexian (25, 50, 100 mg BID or daily) + background DAPT (Aspirin + Clopidogrel) for 21 days in 2,366 patients with acute minor stroke or high-risk TIA.</td>
-                    <td>Achieved dose-dependent reduction in clinical ischemic stroke recurrence, with highest efficacy at 25–100 mg BID tiers.</td>
+                    <td><strong>No significant dose-response</strong> was observed across the five milvexian doses for the primary composite (symptomatic ischemic stroke or covert brain infarct at 90 d): 16.8% placebo vs 15.3–16.7% across doses. Milvexian did not substantially reduce the composite and did not meaningfully increase major bleeding.</td>
                     <td><span style={{ color: '#166534' }}>Bleeding was flat across all doses; no increase in fatal bleeding or symptomatic intracranial hemorrhage compared to DAPT alone.</span></td>
                   </tr>
                 </tbody>
@@ -10123,7 +10123,7 @@ export function CraoThrombolysisCard() {
                 <h3>2. Evidence Base (AHA 2021 &amp; THEIA 2025)</h3>
                 <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
                   <li><strong>AHA Statement 2021 (PMID 33677974):</strong> Recommends acute IV thrombolysis in eligible CRAO presenting &le;4.5h without retinal hemorrhage.</li>
-                  <li><strong>THEIA Trial 2025 (PMID 41109232):</strong> Randomized clinical trial showing IV alteplase significantly improved visual recovery (&gt;3 lines improvement) compared to oral aspirin (OR 3.1) when treated within 4.5h.</li>
+                  <li><strong>THEIA Trial 2025 (PMID 41109232):</strong> Randomized trial (n=70) of IV alteplase 0.9 mg/kg vs oral aspirin 300 mg within 4.5 h of severe monocular vision loss (Snellen &lt;20/400). <strong>Negative for its primary endpoint</strong> (&ge;0.3 LogMAR improvement at 1 month): 66% (19/29) alteplase vs 48% (13/27) aspirin, adjusted OR 1.1 (95% CI 0.07&ndash;18.39), p=0.95. Numerically higher recovery with alteplase but not significant, and the trial was likely underpowered. One asymptomatic ICH; no symptomatic haemorrhage.</li>
                 </ul>
               </div>
             </div>
@@ -10242,7 +10242,7 @@ export function EdemaSwellingRiskCard() {
         <div className="card-content">
           <h1 style={{textAlign: 'center', marginBottom: '4px'}}>EDEMA Score: Malignant MCA Brain Swelling Risk</h1>
           <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
-            Strbian D et al. Stroke 2013 Reference Card (PMID 22405327)
+            Strbian D et al. Cerebral edema in acute ischemic stroke patients treated with intravenous thrombolysis. Int J Stroke. 2013;8(7):529-534 (PMID 22405327)
           </p>
 
           <VisualAssetFigure
@@ -10258,22 +10258,23 @@ export function EdemaSwellingRiskCard() {
           <div className="toast-grid" style={{marginBottom: '10px'}}>
             <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
               <div className="toast-card primary">
-                <h3>1. EDEMA Score Criteria (0 to 9 Points)</h3>
+                <h3>1. EDEMA Score Criteria (Ong 2017, max 14 points)</h3>
                 <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
-                  <li><strong>E - Early Infarct signs:</strong> ASPECTS &lt;7 or &gt;1/3 MCA territory (2 pts).</li>
-                  <li><strong>D - Dense artery sign:</strong> Hyperdense MCA or basilar sign (1 pt).</li>
-                  <li><strong>E - Elevated blood glucose:</strong> Baseline glucose &gt;162 mg/dL / &gt;9 mmol/L (1 pt).</li>
-                  <li><strong>M - Mass effect / midline shift:</strong> Sulcal effacement (1 pt) or Midline shift (2 pts).</li>
-                  <li><strong>A - Admission NIHSS:</strong> NIHSS 12-19 (1 pt), &ge;20 (2 pts).</li>
-                  <li><strong>H - History of Hypertension:</strong> Documented HTN (1 pt).</li>
+                  <li><strong>Basal cistern effacement:</strong> 3 pts.</li>
+                  <li><strong>Glucose &ge;150 mg/dL:</strong> 2 pts.</li>
+                  <li><strong>No tPA or thrombectomy:</strong> 1 pt (reperfusion is protective).</li>
+                  <li><strong>Midline shift:</strong> &gt;0&ndash;3 mm (1 pt) &bull; 3&ndash;6 mm (2 pts) &bull; 6&ndash;9 mm (4 pts) &bull; &gt;9 mm (7 pts).</li>
+                  <li><strong>No previous stroke:</strong> 1 pt.</li>
+                  <li className="text-xs"><em>Derived in 222 patients with NIHSS &ge;8 and CT within 24 h of onset. Outcome modelled: potentially lethal malignant edema (death with midline shift &ge;5 mm, or decompressive hemicraniectomy).</em></li>
                 </ul>
               </div>
               <div className="toast-card neutral">
                 <h3>2. Malignant Swelling Risk Stratification</h3>
                 <ul className="toast-card-list" style={{fontSize: '8.3pt'}}>
-                  <li><strong>Score 0-2 (Low Risk):</strong> &lt;10% risk of severe swelling. Standard neuro-ICU care.</li>
-                  <li><strong>Score 3-5 (Moderate Risk):</strong> 20-40% risk of severe brain swelling. Serial CT at 24h or upon deterioration.</li>
-                  <li><strong>Score 6-9 (High Risk):</strong> &gt;60-80% risk of malignant MCA syndrome and fatal herniation. Immediate neurosurgery consult.</li>
+                  <li><strong>Score &gt;7:</strong> 93% positive predictive value for potentially lethal malignant edema &mdash; the one threshold the derivation study reports. Escalate monitoring and obtain early neurosurgical input.</li>
+                  <li><strong>Score &le;7:</strong> Lower risk, but the score was derived in patients already selected for NIHSS &ge;8; it does not license relaxed monitoring in a large-territory infarct.</li>
+                  <li><strong>Discrimination:</strong> C statistic 0.76 (95% CI 0.68&ndash;0.82) in derivation, 0.75 (0.72&ndash;0.77) on bootstrap validation. <em>Not yet externally validated</em> &mdash; the authors call for it explicitly.</li>
+                  <li className="text-xs"><em>Banded risk percentages for intermediate scores are not published; do not quote them.</em></li>
                 </ul>
               </div>
             </div>
