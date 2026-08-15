@@ -30409,8 +30409,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li>• DAPT x 90 days (ASA + clopidogrel)</li>
                                 <li>• High-intensity statin (LDL &lt;70)</li>
                                 <li>• SBP &lt;140 mmHg</li>
-                                <li>• <strong>NO intracranial stenting</strong> (SAMMPRIS, CASSISS: stenting inferior to medical therapy)</li>
-                                <li className="text-slate-600 italic text-xs mt-1 dark:text-mute">Class III (Harm) for stenting — SAMMPRIS, CASSISS</li>
+                                <li>• <strong>NO intracranial stenting</strong> (SAMMPRIS: stenting worse than medical therapy; CASSISS: no benefit even with experienced operators — 8.0% vs 7.2%, HR 1.10, 95% CI 0.52–2.35, P=.82)</li>
+                                <li className="text-slate-600 italic text-xs mt-1 dark:text-mute">Class III for stenting — Harm per SAMMPRIS/VISSIT; no benefit per CASSISS</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">

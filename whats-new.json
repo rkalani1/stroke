@@ -2,8 +2,8 @@
   "generatedFrom": "curated-public-evidence-feed",
   "sourceDoc": "curated-source",
   "count": 50,
-  "verifiedCount": 21,
-  "unverifiedCount": 29,
+  "verifiedCount": 22,
+  "unverifiedCount": 28,
   "items": [
     {
       "id": "ai-derived",
@@ -580,6 +580,33 @@
       "sourceUrl": "https://www.nejm.org/doi/full/10.1056/NEJMoa2515043"
     },
     {
+      "id": "biib093",
+      "shortName": "BIIB093",
+      "fullName": "Intravenous glibenclamide for cerebral oedema after large hemispheric stroke (CHARM): a phase 3, double-blind, placebo-controlled, randomised trial",
+      "verificationStatus": "verified",
+      "evidenceType": "rct",
+      "topic": "stroke",
+      "topicLabel": "Stroke",
+      "journal": "Lancet Neurol",
+      "year": 2024,
+      "practiceImpact": "Evaluates IV glibenclamide safety and efficacy for severe cerebral edema following large core strokes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
+      "result": {
+        "effect": "Evaluates IV glibenclamide safety and efficacy for severe cerebral edema following large core strokes",
+        "direction": "no-benefit"
+      },
+      "certainty": "moderate",
+      "appraisal": {
+        "bottomLine": "Bottom line: Evaluates IV glibenclamide safety and efficacy for severe cerebral edema following large core strokes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Neurocritical Care can yield meaningful clinical benefits and reduce long-term morbidity..",
+        "picoQuestion": "PICO question: In patients presenting with deficits matching Neurocritical Care (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Neurocritical Care. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
+        "methodology": "Rationale: Prior observational data indicated potential for therapy in Neurocritical Care, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
+        "results": "Key finding (from the curated appraisal): Evaluates IV glibenclamide safety and efficacy for severe cerebral edema following large core strokes. See the primary publication for full endpoint data, effect sizes, and safety results."
+      },
+      "pmid": "39577921",
+      "doi": "10.1016/S1474-4422(24)00425-3",
+      "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/39577921/",
+      "sourceUrl": "https://www.ahajournals.org/"
+    },
+    {
       "id": "advances-in-neurorehabilitation-robotics-and-virtual-reality",
       "shortName": "Advances in Neurorehabilitation, Robotic",
       "fullName": "Advances in Neurorehabilitation, Robotics, and Virtual Reality Stroke Recovery: Annual Evidence Synthesis",
@@ -656,32 +683,6 @@
       "pmid": null,
       "sourceUrl": "https://www.ahajournals.org/",
       "unverifiedReason": "No DOI in source — could not auto-match to PubMed"
-    },
-    {
-      "id": "biib093",
-      "shortName": "BIIB093",
-      "fullName": "Intravenous glibenclamide (BIIB093) for cerebral oedema after large hemispheric stroke: the CHARM trial",
-      "verificationStatus": "unverified",
-      "evidenceType": "rct",
-      "topic": "stroke",
-      "topicLabel": "Stroke",
-      "journal": "Stroke",
-      "year": 2026,
-      "practiceImpact": "Evaluates IV glibenclamide safety and efficacy for severe cerebral edema following large core strokes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols.",
-      "result": {
-        "effect": "Evaluates IV glibenclamide safety and efficacy for severe cerebral edema following large core strokes",
-        "direction": "unknown"
-      },
-      "certainty": "moderate",
-      "appraisal": {
-        "bottomLine": "Bottom line: Evaluates IV glibenclamide safety and efficacy for severe cerebral edema following large core strokes. Practice impact: Practice-informing. Recommends stroke teams consider integrating these results into local clinical management protocols. Clinical implications: Suggests that targeted intervention in Neurocritical Care can yield meaningful clinical benefits and reduce long-term morbidity..",
-        "picoQuestion": "PICO question: In patients presenting with deficits matching Neurocritical Care (P), does the clinical intervention (I) compared to control or guideline-directed therapy (C) improve functional recovery (O)? Baseline cohort: Vascular neurology, neurohospitalist, or stroke patients demonstrating acute focal neurological deficits matching Neurocritical Care. Treatment contrast: Active intervention specified in the study vs. standard guideline-directed medical therapy..",
-        "methodology": "Rationale: Prior observational data indicated potential for therapy in Neurocritical Care, but clinical utility required verification in a controlled trial. Trial design: Multicenter, randomized, open-label or double-blind trial incorporating standardized blinded outcome measures. Endpoints validity: 90-day mRS shift, key safety bleeding events, or specified primary functional endpoints. Bias controls: Mitigated by strict protocolization, centralized blind outcome assessment, and intention-to-treat (ITT) analysis..",
-        "results": "Key finding (from the curated appraisal): Evaluates IV glibenclamide safety and efficacy for severe cerebral edema following large core strokes. See the primary publication for full endpoint data, effect sizes, and safety results."
-      },
-      "pmid": null,
-      "sourceUrl": "https://www.ahajournals.org/",
-      "unverifiedReason": "Not yet PubMed-indexed"
     },
     {
       "id": "cases",

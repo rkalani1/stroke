@@ -1108,7 +1108,7 @@ export const icadMedicalRegimen = ({ stenosisPercent, location, recurrentEvent, 
     applicable: true,
     severe,
     regimen,
-    avoidStenting: 'Stenting NOT recommended outside refractory cases. SAMMPRIS, VISSIT, CASSISS all showed inferiority.',
+    avoidStenting: 'Stenting NOT recommended outside refractory cases. SAMMPRIS and VISSIT showed net harm; CASSISS showed no benefit even with experienced operators and delayed treatment (8.0% vs 7.2%, HR 1.10, 95% CI 0.52-2.35, P=.82).',
     submaximalAngioplasty: severe ? 'Submaximal angioplasty without stent — observational data only; consider only at high-volume center for refractory cases or in trial.' : null,
     source: 'SAMMPRIS NEJM 2011/2014 (PMID 21899409); CASSISS JAMA 2022 (PMID 35943472); CSPS.com Lancet Neurol 2019 (PMID 31122494)',
     class: 'DAPT 90d Class 1; LDL <70 Class 1; cilostazol Class 2a for refractory'
