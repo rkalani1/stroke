@@ -47,6 +47,7 @@ import {
   runEncounterOutput as runGatedEncounterOutput
 } from './encounter-output-gate.js';
 import { PocketCards } from './pocket-cards.jsx';
+import { FeedbackFooter } from './feedback.jsx';
 import { LandmarkTrialsCard } from './teaching.jsx';
 import Education, { EVDInfographic, ICPInfographic } from './education.jsx';
 /* v7 design primitives — single accent (cobalt), one alarm (crit), one alert (warn).
@@ -1051,6 +1052,15 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
 
         const RESEARCH_SUBTABS = ['guidelines', 'references', 'education'];
+
+        // Human-readable tab names, used by the suggestions-box footer so a
+        // submitted issue records which section the reader was looking at.
+        const TAB_LABELS = {
+          encounter: 'Encounter',
+          protocols: 'Protocols',
+          trials: 'Trials',
+          research: 'Guidelines & References'
+        };
 
         const LEGACY_MANAGEMENT_TABS = {
           ich: 'ich',
@@ -36166,6 +36176,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 )}
 
               </main>
+
+              {/* ===== SUGGESTIONS BOX — page footer, present on every tab ===== */}
+              <ErrorBoundary>
+                <FeedbackFooter
+                  appVersion={(typeof window !== 'undefined' && window.strokeAppStorage && window.strokeAppStorage.appVersion) || ''}
+                  tabLabel={TAB_LABELS[activeTab] || activeTab}
+                  onCopy={copyToClipboard}
+                />
+              </ErrorBoundary>
 
             </div>
 
