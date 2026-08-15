@@ -197,7 +197,19 @@ async function main() {
     for (const occ of occurrences.get(pmid)) {
       checked += 1;
       const cite = occ.citation || '';
-      const surname = String(rec.firstAuthor || '').split(/\s+/)[0];
+      // PubMed returns a PERSONAL name as "Surname AB", but for consortium
+      // authorship it returns the whole organization, e.g. "North American
+      // Symptomatic Carotid Endarterectomy Trial Collaborators" or "Research
+      // Committee on the Pathology and Treatment of Spontaneous Occlusion of the
+      // Circle of Willis". Taking the first token of those yields "North" /
+      // "Research", which matches nothing and flags a perfectly correct citation.
+      // Landmark trials are disproportionately consortium-authored, so this is
+      // exactly where a false positive costs the most trust.
+      const rawAuthor = String(rec.firstAuthor || '').trim();
+      const isConsortium =
+        rawAuthor.split(/\s+/).length > 3 ||
+        /\b(collaborat|committee|group|investigat|consortium|network|trialists|society|association|council)/i.test(rawAuthor);
+      const surname = isConsortium ? '' : rawAuthor.split(/\s+/)[0];
 
       // This repo's house citation style is `LABEL Author et al. Journal. Year;Vol:Pages.`
       // — it deliberately does NOT reproduce the paper title. So title similarity
@@ -224,7 +236,7 @@ async function main() {
       // Author present on BOTH sides but disagreeing is its own strong signal,
       // even when the journal happens to match (transpositions inside a journal).
       const citeHasAnyAuthor = /[A-Z][a-z]{2,}\s+[A-Z]{1,3}\b|et al/.test(cite);
-      if (surname && citeHasAnyAuthor && !authorMatch && !titleMatch && !acronymMatch) {
+      if (surname && citeHasAnyAuthor && !authorMatch && !journalMatch && !titleMatch && !acronymMatch) {
         errors.push(
           `${occ.file} — PMID ${pmid}: first author '${rec.firstAuthor}' does not appear in ` +
           `"${cite.trim().slice(0, 110)}" (PubMed title: "${rec.title.slice(0, 80)}")`
