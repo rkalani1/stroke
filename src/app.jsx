@@ -113,7 +113,9 @@ import {
   lipidsTargetPostStroke,
   arcadiaAdvisory,
   afDetectionStrategy,
-  evaluateBostonCAA20
+  evaluateBostonCAA20,
+  AI_PROVIDERS,
+  getAIConfiguration
 } from './calculators-extended.js';
 import { getLocalInstitutionalContent, ICH_INITIAL_EVALUATION_ALGORITHM } from './institutional-protocols.js';
 // v7 theme controller — the SINGLE source of truth for theme pref + DOM state.
@@ -1048,6 +1050,39 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           : DEFAULT_TTL_HOURS;
         const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
 
+        // NOTE: this block sits ABOVE the management-subtab declaration on
+        // purpose. tests/navigation-reorganization.test.js slices the source
+        // between that declaration and the AutoDetectedContraindicationsBanner
+        // one and evaluates it with new Function(), so everything in that range
+        // must be self-contained. API_PROVIDERS references an import and would
+        // throw ReferenceError inside that sandbox. Keep this comment free of
+        // those two marker strings as well — the slice is found by indexOf, so
+        // repeating them here would make it start mid-comment.
+        // Display metadata for the BYOK providers. AI_PROVIDERS in
+        // calculators-extended.js is the single source of truth for WHICH
+        // providers exist and in what order; this only supplies how each one is
+        // labelled and what its key looks like. Deriving the list rather than
+        // restating it means the dropdown and the storage reader cannot drift.
+        //
+        // keyPrefix is the vendor's documented key format. It is a typo guard —
+        // it catches a key pasted under the wrong provider — not authentication;
+        // only the vendor can say whether a key is real.
+        const API_PROVIDER_META = {
+          openai: { label: 'OpenAI API', keyPrefix: 'sk-', placeholder: 'sk-...' },
+          anthropic: { label: 'Anthropic API', keyPrefix: 'sk-ant-', placeholder: 'sk-ant-...' },
+          gemini: { label: 'Google Gemini API', keyPrefix: 'AIza', placeholder: 'AIza...' },
+          grok: { label: 'xAI Grok API', keyPrefix: 'xai-', placeholder: 'xai-...' }
+        };
+        // A provider added upstream without metadata still renders, under its own
+        // id and with no prefix check, rather than vanishing from the dropdown.
+        const API_PROVIDERS = AI_PROVIDERS.map((value) => ({
+          value,
+          label: value,
+          keyPrefix: '',
+          placeholder: '',
+          ...(API_PROVIDER_META[value] || {})
+        }));
+
         const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
 
         const RESEARCH_SUBTABS = ['guidelines', 'references', 'education'];
@@ -1060,17 +1095,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         // keyPrefix is the vendor's documented key format. It is a typo guard —
         // it catches a key pasted into the wrong provider — not authentication;
         // only the vendor can say whether a key is real.
-        const API_PROVIDERS = [
-          { value: 'openai', label: 'OpenAI API', keyPrefix: 'sk-', placeholder: 'sk-...' },
-          { value: 'anthropic', label: 'Anthropic API', keyPrefix: 'sk-ant-', placeholder: 'sk-ant-...' },
-          { value: 'gemini', label: 'Google Gemini API', keyPrefix: 'AIza', placeholder: 'AIza...' },
-          { value: 'grok', label: 'xAI Grok API', keyPrefix: 'xai-', placeholder: 'xai-...' }
-        ];
-        const API_PROVIDER_VALUES = new Set(API_PROVIDERS.map((p) => p.value));
-        // '' means "no provider configured". Installs that still carry the
-        // retired 'mock' demo provider normalize to that same unconfigured
-        // state instead of rendering a <select> stuck on a missing option.
-        const normalizeApiProvider = (value) => (API_PROVIDER_VALUES.has(value) ? value : '');
 
         const LEGACY_MANAGEMENT_TABS = {
           ich: 'ich',
@@ -2660,10 +2684,16 @@ Clinician Name`;
           const [nursingFlowsheetChecks, setNursingFlowsheetChecks] = useState({});
           const [protocolModal, setProtocolModal] = useState(null);
 
-          const [apiProvider, setApiProvider] = useState(() => normalizeApiProvider(loadFromStorage('apiProvider', '')));
-          const [apiKey, setApiKey] = useState(() => { try { localStorage.removeItem((window.strokeAppStorage && window.strokeAppStorage.prefix || 'strokeApp:') + 'apiKey'); } catch (e) {} return sessionStorage.getItem('apiKey') || ''; });
-          const [tempProvider, setTempProvider] = useState(() => normalizeApiProvider(loadFromStorage('apiProvider', '')));
-          const [tempKey, setTempKey] = useState(() => sessionStorage.getItem('apiKey') || '');
+          // Single read of the stored BYOK config. getAIConfiguration owns the
+          // whole contract — normalising an unknown or retired provider to '',
+          // reading the key from sessionStorage only, and evicting any key found
+          // in localStorage — so it must be called once rather than have those
+          // rules restated here and drift.
+          const [storedAiConfig] = useState(getAIConfiguration);
+          const [apiProvider, setApiProvider] = useState(storedAiConfig.provider);
+          const [apiKey, setApiKey] = useState(storedAiConfig.apiKey);
+          const [tempProvider, setTempProvider] = useState(storedAiConfig.provider);
+          const [tempKey, setTempKey] = useState(storedAiConfig.apiKey);
           const [showKey, setShowKey] = useState(false);
 
           useEffect(() => {

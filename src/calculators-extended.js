@@ -1342,8 +1342,9 @@ export const evaluateBostonCAA20 = ({ age, lobarICH, corticalSiderosis, lobarMic
 // =====================================================================
 // client-side BYOK configuration helper
 // =====================================================================
-// Providers offered in Settings → API Configuration. Kept in sync with
-// API_PROVIDERS in src/app.jsx, which owns the UI side of the same list.
+// Single source of truth for which BYOK providers exist, and in what order.
+// The Settings → API Configuration dropdown in src/app.jsx is derived from this
+// list and only adds display metadata, so the two cannot drift apart.
 // A provider outside this set — including the retired 'mock' demo entry —
 // reads back as '' (unconfigured) so a caller can never dispatch on it.
 export const AI_PROVIDERS = ['openai', 'anthropic', 'gemini', 'grok'];
