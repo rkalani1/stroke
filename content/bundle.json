@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:baaf655fdd8cfb2a92720480f6c08b95",
+    "checksum": "sha256:5804c165b35b6f7e9418542d6ef92395",
     "counts": {
       "guidelines": 11,
       "trials": 113,
@@ -2486,13 +2486,13 @@
         },
         {
           "label": "WASID Post-Hoc",
-          "citation": "Failure of Antithrombotic Therapy and Risk of Stroke in Patients With Symptomatic Intracranial Stenosis. Stroke. 2009;40:359-364.",
-          "pmid": "19064771"
+          "citation": "Turan TN, et al. Failure of antithrombotic therapy and risk of stroke in patients with symptomatic intracranial stenosis. Stroke. 2009;40(2):505-509.",
+          "pmid": "19095991"
         },
         {
           "label": "CAPRIE Trial",
-          "citation": "CAPRIE Steering Committee. Lancet. 1996;348:1329-1339.",
-          "pmid": "8932661"
+          "citation": "CAPRIE Steering Committee. A randomised, blinded, trial of clopidogrel versus aspirin in patients at risk of ischaemic events (CAPRIE). Lancet. 1996;348(9038):1329-1339.",
+          "pmid": "8918275"
         },
         {
           "label": "CHANCE Trial",
@@ -2516,8 +2516,8 @@
         },
         {
           "label": "COMPASS Trial",
-          "citation": "Connolly SJ, et al. Rivaroxaban with or without Aspirin in Stable Cardiovascular Disease. Lancet. 2018;391:319-328.",
-          "pmid": "29141975"
+          "citation": "Connolly SJ, et al. Rivaroxaban with or without aspirin in patients with stable coronary artery disease. Lancet. 2018;391(10117):205-218.",
+          "pmid": "29132879"
         },
         {
           "label": "Narrative Review",
@@ -2902,13 +2902,13 @@
         },
         {
           "label": "AHA Statement 2024",
-          "citation": "Treatment and Outcomes of Cervical Artery Dissection in Adults. Stroke. 2024;55(3):e84-e107.",
-          "pmid": "38301552"
+          "citation": "Yaghi S, et al. Treatment and Outcomes of Cervical Artery Dissection in Adults: A Scientific Statement From the American Heart Association. Stroke. 2024;55(3):e91-e106.",
+          "pmid": "38299330"
         },
         {
           "label": "ESO Guideline 2021",
-          "citation": "European Stroke Organisation guideline for the management of extracranial and intracranial artery dissection. Eur Stroke J. 2021;6(3):XXXIX-LXXXVIII.",
-          "pmid": "34528453"
+          "citation": "Debette S, et al. ESO guideline for the management of extracranial and intracranial artery dissection. Eur Stroke J. 2021;6(3):XXXIX-LXXXVIII.",
+          "pmid": "34746432"
         }
       ],
       "lastReviewed": "2026-06-09",
