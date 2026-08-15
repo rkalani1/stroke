@@ -16142,6 +16142,15 @@ Clinician Name`;
             const loadConfig = async () => {
               try {
                 const baseFetch = fetch('config.example.json', { cache: 'no-store' });
+                // Where the suggestions box sends feedback. Its own file because
+                // it is the sole leak-guard fullyExemptFiles entry — see
+                // suggestion-contact.json. A failure here is non-fatal: the box
+                // simply falls back to its next route.
+                const contactFetch = fetch('suggestion-contact.json', { cache: 'no-store' })
+                  .catch((contactErr) => {
+                    console.warn('Suggestion contact load failed:', contactErr);
+                    return null;
+                  });
                 const localFetch = useLocalOverride
                   ? fetch('config.local.json', { cache: 'no-store' }).catch(localErr => {
                       console.warn('Optional local config load failed:', localErr);
@@ -16149,12 +16158,25 @@ Clinician Name`;
                     })
                   : Promise.resolve(null);
 
-                const [baseResponse, localResponse] = await Promise.all([baseFetch, localFetch]);
+                const [baseResponse, localResponse, contactResponse] = await Promise.all([baseFetch, localFetch, contactFetch]);
 
                 if (!baseResponse.ok) {
                   throw new Error('Base config fetch failed');
                 }
                 let mergedConfig = await baseResponse.json();
+
+                if (contactResponse && contactResponse.ok) {
+                  try {
+                    const contactConfig = await contactResponse.json();
+                    const email = String((contactConfig || {}).email || '').trim();
+                    // config.example.json may still override, so only fill a gap.
+                    if (email && !mergedConfig.suggestionContactEmail) {
+                      mergedConfig = { ...mergedConfig, suggestionContactEmail: email };
+                    }
+                  } catch (contactErr) {
+                    console.warn('Suggestion contact parse failed:', contactErr);
+                  }
+                }
 
                 if (localResponse && localResponse.ok) {
                   try {

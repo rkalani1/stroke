@@ -1,0 +1,4 @@
+{
+  "_comment": "Where the in-app suggestions box sends feedback. Deployment contact detail, deliberately isolated in its own file: it is the single leak-guard fullyExemptFiles entry, so the exemption covers only this address and never app.js, src/ or config.example.json.",
+  "email": "rkalani@uw.edu"
+}

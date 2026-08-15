@@ -29,6 +29,7 @@ const CORE_ASSETS = [
   './offline.html',
   './whats-new.json',
   './config.example.json',
+  './suggestion-contact.json',
   './data/index.json',
   './data/calculators-index.json',
   './data/generic-protocols.json',

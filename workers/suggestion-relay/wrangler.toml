@@ -3,9 +3,10 @@ main = "worker.js"
 compatibility_date = "2026-08-15"
 
 [vars]
-# Repository that receives the issues, as "owner/repo". Leave blank for
-# email-only delivery.
-GITHUB_REPO = "rkalani1/stroke"
+# Blank = email-only delivery, which is the configured behaviour: suggestions
+# go to the maintainer's inbox, not to the issue tracker. Set it to "owner/repo"
+# only if you also want an issue filed for tracking.
+GITHUB_REPO = ""
 # CORS origin for the app. Pins the browser-side caller to the app's own origin.
 ALLOWED_ORIGIN = "https://rkalani1.github.io"
 # From-address. The Resend sandbox sender works for testing; switch to an
