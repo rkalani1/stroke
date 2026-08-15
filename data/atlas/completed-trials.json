@@ -3,7 +3,7 @@
     "endpoint": "completed-trials",
     "schemaVersion": "1.0.0",
     "appVersion": "6.11.8",
-    "checksum": "sha256:67a8c4a9852a49a6229fa4ae2b2082fc",
+    "checksum": "sha256:802ebd783efce05cbe116834de721411",
     "count": 113,
     "source": "Evidence atlas completed-trials bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -85,7 +85,7 @@
       "population": {
         "n": 1430,
         "ageRange": "≥18",
-        "nihssRange": "NIHSS ≤25",
+        "nihssRange": "NIHSS 5-25",
         "timeWindow": "≤4.5 h",
         "keyInclusion": [
           "IVT-eligible"
@@ -323,10 +323,10 @@
       "primaryEndpoint": {
         "definition": "Infarct growth at 90 d",
         "timepoint": "90 d",
-        "result": "Reduced infarct growth in mismatch group; clinical co-primary not significant",
-        "effectSize": "",
-        "confidenceInterval": "",
-        "pValue": ""
+        "result": "Primary endpoint not met: infarct growth non-significantly lower with alteplase; reperfusion significantly more common",
+        "effectSize": "Geometric mean infarct growth ratio 0.69",
+        "confidenceInterval": "95% CI 0.38 to 1.28",
+        "pValue": "p=0.239"
       },
       "secondaryEndpoints": [],
       "safetyFindings": {
@@ -372,12 +372,12 @@
       "intervention": "IV alteplase",
       "comparator": "Placebo",
       "primaryEndpoint": {
-        "definition": "mRS 0-1 at 90 d",
+        "definition": "mRS distribution (ordinal shift) at 90 d",
         "timepoint": "90 d",
         "result": "Favored alteplase numerically; not statistically significant after early termination",
-        "effectSize": "",
-        "confidenceInterval": "",
-        "pValue": ""
+        "effectSize": "OR 1.20 (alteplase vs placebo)",
+        "confidenceInterval": "95% CI 0.63 to 2.27",
+        "pValue": "p=0.58"
       },
       "secondaryEndpoints": [],
       "safetyFindings": {
@@ -587,7 +587,7 @@
         "nihssRange": "≥6",
         "timeWindow": "≤24 h",
         "keyInclusion": [
-          "ASPECTS 3-5 or core 50-100 mL"
+          "ASPECTS 3-5 or core volume ≥50 mL"
         ],
         "keyExclusion": []
       },
@@ -612,7 +612,7 @@
         "mortality": "Similar",
         "other": "Vascular complications more frequent with EVT"
       },
-      "imagingCriteria": "CT or MRI; ASPECTS 3-5 or core 50-100 mL",
+      "imagingCriteria": "CT or MRI; ASPECTS 3-5 or core volume ≥50 mL",
       "applicabilityNotes": "Establishes EVT benefit for large-core anterior-circulation LVO up to 24 h.",
       "limitations": "Open-label; modest absolute benefit at lower ASPECTS.",
       "certainty": "high",
@@ -764,8 +764,8 @@
       },
       "secondaryEndpoints": [],
       "safetyFindings": {
-        "sich": "5.6% vs 0%",
-        "mortality": "Similar",
+        "sich": "5.6% (7/125, EVT) vs 4.7% (6/128, medical care)",
+        "mortality": "Lower with EVT (HR 0.67, 95% CI 0.46-0.98; p=0.038)",
         "other": ""
       },
       "imagingCriteria": "ASPECTS 3-5, ≤12 h",
@@ -912,9 +912,9 @@
         "definition": "mRS shift / 90-d functional independence",
         "timepoint": "90 d",
         "result": "Favored EVT: 49% vs 13% (functional independence)",
-        "effectSize": "Adjusted difference 33%",
-        "confidenceInterval": "95% CI 21% to 44%",
-        "pValue": "p<0.001"
+        "effectSize": "Adjusted difference 33 percentage points",
+        "confidenceInterval": "95% credible interval 24 to 44 percentage points",
+        "pValue": "Posterior probability of superiority >0.999 (Bayesian)"
       },
       "secondaryEndpoints": [],
       "safetyFindings": {
@@ -1054,19 +1054,19 @@
         "nihssRange": "n/a",
         "timeWindow": "≤4.5 h from severe vision loss",
         "keyInclusion": [
-          "CRAO with visual acuity ≤20/200"
+          "Non-arteritic acute CRAO with severe vision loss (Snellen <20/400)"
         ],
         "keyExclusion": []
       },
       "intervention": "IV alteplase 0.9 mg/kg",
-      "comparator": "Standard care",
+      "comparator": "Oral aspirin 300 mg (double-dummy with IV saline placebo)",
       "primaryEndpoint": {
-        "definition": "Visual acuity improvement",
-        "timepoint": "7 d / 30 d",
-        "result": "No significant benefit overall (qualitative summary)",
-        "effectSize": "",
-        "confidenceInterval": "",
-        "pValue": ""
+        "definition": "Improvement in visual acuity ≥0.3 LogMAR from baseline",
+        "timepoint": "1 month",
+        "result": "No significant benefit: 19/29 (66%) vs 13/27 (48%)",
+        "effectSize": "Adjusted OR 1.1",
+        "confidenceInterval": "95% CI 0.07 to 18.39",
+        "pValue": "p=0.95"
       },
       "secondaryEndpoints": [],
       "safetyFindings": {
@@ -1228,19 +1228,19 @@
         "definition": "Utility-weighted mRS at 180 d",
         "timepoint": "180 d",
         "result": "Favored surgery (Bayesian posterior probability >0.95)",
-        "effectSize": "Mean difference 0.13",
-        "confidenceInterval": "95% CrI 0.04 to 0.22",
+        "effectSize": "Mean difference 0.084 (0.458 vs 0.374)",
+        "confidenceInterval": "95% CrI 0.005 to 0.163",
         "pValue": ""
       },
       "secondaryEndpoints": [
         {
           "name": "Mortality at 30 d",
-          "result": "No significant difference"
+          "result": "9.3% (surgery) vs 18.0% (control)"
         }
       ],
       "safetyFindings": {
         "sich": "n/a",
-        "mortality": "Similar",
+        "mortality": "9.3% (surgery) vs 18.0% (control) by 30 d",
         "other": ""
       },
       "imagingCriteria": "CT-confirmed ICH 30-80 mL",
@@ -1561,9 +1561,9 @@
       "primaryEndpoint": {
         "definition": "Composite of recurrent stroke / SE / major bleeding at 30 d",
         "timepoint": "30 d",
-        "result": "Favored early",
-        "effectSize": "OR 0.57",
-        "confidenceInterval": "95% CI 0.29 to 1.07",
+        "result": "2.9% (early) vs 4.1% (later)",
+        "effectSize": "Risk difference -1.18 percentage points",
+        "confidenceInterval": "95% CI -2.84 to 0.47",
         "pValue": ""
       },
       "secondaryEndpoints": [],
@@ -1611,9 +1611,9 @@
       "primaryEndpoint": {
         "definition": "Composite ischemic event / sICH / mortality at 90 d",
         "timepoint": "90 d",
-        "result": "Non-inferior favoring early",
-        "effectSize": "Risk difference -2.5%",
-        "confidenceInterval": "95% CI -5.6 to +0.5",
+        "result": "Non-inferior: 6.89% (early) vs 8.68% (delayed)",
+        "effectSize": "Absolute risk difference -1.79%",
+        "confidenceInterval": "95% CI -5.31% to 1.74%",
         "pValue": "Non-inferiority met"
       },
       "secondaryEndpoints": [],
@@ -1765,7 +1765,7 @@
         ],
         "keyExclusion": []
       },
-      "intervention": "Intensive SBP target 120-140 mmHg",
+      "intervention": "Intensive SBP target <120 mmHg",
       "comparator": "Less-intensive SBP target 140-180 mmHg",
       "primaryEndpoint": {
         "definition": "mRS shift at 90 d",
@@ -2892,7 +2892,7 @@
         "n": 530,
         "ageRange": "Mean 69.8",
         "nihssRange": "Median 8",
-        "timeWindow": "≤24 h (median 4.6 h)",
+        "timeWindow": "≤12 h from last known well",
         "keyInclusion": [
           "Medium vessel occlusion (M2/M3 branches of MCA, A2/A3 branches of ACA, P2/P3 branches of PCA)",
           "NIHSS ≥5 or disabling NIHSS 2-4",
@@ -2903,17 +2903,17 @@
       "intervention": "Endovascular treatment + best medical management",
       "comparator": "Best medical management alone",
       "primaryEndpoint": {
-        "definition": "Disability on ordinal mRS",
+        "definition": "mRS 0-1 (independent functional outcome)",
         "timepoint": "90 d",
-        "result": "No difference (adjusted common OR 0.90)",
-        "effectSize": "Adjusted common OR 0.90",
-        "confidenceInterval": "95% CI 0.68 to 1.18",
-        "pValue": "p=0.45"
+        "result": "No difference: 41.6% (106/255) vs 43.1% (118/274)",
+        "effectSize": "Adjusted rate ratio 0.95",
+        "confidenceInterval": "95% CI 0.79 to 1.15",
+        "pValue": "p=0.61"
       },
       "secondaryEndpoints": [
         {
-          "name": "mRS 0-1 at 90 d",
-          "result": "47.5% vs 46.2% (aOR 0.99, 95% CI 0.69 to 1.43)"
+          "name": "mRS 0-1 at 90 d (primary)",
+          "result": "41.6% vs 43.1% (adjusted rate ratio 0.95, 95% CI 0.79 to 1.15, p=0.61)"
         },
         {
           "name": "mRS 0-2 at 90 d",
@@ -3502,14 +3502,14 @@
         "keyExclusion": []
       },
       "intervention": "IV tenecteplase (perfusion-selected)",
-      "comparator": "Standard care / placebo",
+      "comparator": "Best medical treatment (23% received IV alteplase)",
       "primaryEndpoint": {
-        "definition": "Reperfusion / early recanalization + functional outcome",
-        "timepoint": "90 d",
-        "result": "Improved reperfusion without a significant clinical-outcome difference",
-        "effectSize": "",
-        "confidenceInterval": "",
-        "pValue": ""
+        "definition": "Major reperfusion (>50% of involved ischaemic territory) without symptomatic ICH",
+        "timepoint": "24-48 h post-randomisation",
+        "result": "33.3% (37/111) vs 10.8% (12/113); no significant difference in 90-day clinical outcomes",
+        "effectSize": "Adjusted RR 3.0",
+        "confidenceInterval": "95% CI 1.6 to 5.7",
+        "pValue": "p=0.001"
       },
       "secondaryEndpoints": [
         {
@@ -3560,22 +3560,22 @@
       "intervention": "IV tenecteplase 0.25 mg/kg",
       "comparator": "Standard of care (antiplatelet)",
       "primaryEndpoint": {
-        "definition": "Return to baseline function (mRS 0-1)",
+        "definition": "Return to baseline function on pre-morbid mRS (ITT)",
         "timepoint": "90 d",
-        "result": "No benefit of tenecteplase vs standard of care",
-        "effectSize": "",
-        "confidenceInterval": "",
-        "pValue": "NS"
+        "result": "No benefit: 72% (309/432) tenecteplase vs 75% (338/452) control",
+        "effectSize": "RR 0.96",
+        "confidenceInterval": "95% CI 0.88 to 1.04",
+        "pValue": "p=0.29"
       },
       "secondaryEndpoints": [
         {
           "name": "Mortality",
-          "result": "Numerically higher with tenecteplase"
+          "result": "5% (20/432) vs 1% (5/454); adjusted HR 3.8, 95% CI 1.4-10.2, p=0.0085 — significant excess with tenecteplase"
         }
       ],
       "safetyFindings": {
         "sich": "Low in both arms",
-        "mortality": "Numerically higher with tenecteplase",
+        "mortality": "5% vs 1%; adjusted HR 3.8, 95% CI 1.4-10.2, p=0.0085 — statistically significant excess with tenecteplase",
         "other": ""
       },
       "imagingCriteria": "CTA — proven intracranial occlusion",
@@ -3821,7 +3821,7 @@
         "n": 412,
         "ageRange": "75% ≥75",
         "nihssRange": "n/a",
-        "timeWindow": "AF with prior spontaneous intracranial haemorrhage (pooled RCTs: SoSTART, APACHE-AF, NASPAF-ICH)",
+        "timeWindow": "AF with prior spontaneous intracranial haemorrhage (pooled RCTs: SoSTART, APACHE-AF, NASPAF-ICH, and the ICH subgroup of ELDERCARE-AF)",
         "keyInclusion": [
           "Randomised in an anticoagulation-after-ICH trial"
         ],
@@ -4808,7 +4808,7 @@
       "applicabilityNotes": "The anchor trial for mobile stroke units. Two mechanisms drive the benefit and both matter: 36 minutes faster to thrombolysis, and a far higher proportion of eligible patients actually treated (97% vs 80%). Cost and population density govern whether the model transfers.",
       "limitations": "Alternating-week design rather than individual randomization; conducted in US metropolitan areas; cost-effectiveness not addressed here.",
       "certainty": "high",
-      "evidenceType": "rct",
+      "evidenceType": "observational",
       "citationIds": [
         "cit-best-msu-2021"
       ],

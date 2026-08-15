@@ -106,7 +106,7 @@
     "name": "COCROACH",
     "fullName": "Oral Anticoagulation after Intracranial Haemorrhage in AF: Individual-Patient-Data Meta-analysis",
     "category": "af-after-ich",
-    "population": "n=412, 75% ≥75, NIHSS n/a, AF with prior spontaneous intracranial haemorrhage (pooled RCTs: SoSTART, APACHE-AF, NASPAF-ICH)",
+    "population": "n=412, 75% ≥75, NIHSS n/a, AF with prior spontaneous intracranial haemorrhage (pooled RCTs: SoSTART, APACHE-AF, NASPAF-ICH, and the ICH subgroup of ELDERCARE-AF)",
     "finding": "Favoured anticoagulation but non-significant: 14% vs 22%",
     "teachingPoint": "Objective synthesis: net benefit of anticoagulation after ICH in AF remains statistically uncertain; ischaemic reduction is offset by a non-significant bleeding increase.",
     "PMID": "37839434",

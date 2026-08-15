@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:6f9563313018affcd524544c9232259b",
+    "checksum": "sha256:40c9890d6473baebde255baaf6394ad7",
     "counts": {
       "guidelines": 11,
       "trials": 113,
@@ -328,13 +328,13 @@
         "35779553",
         "36774935",
         "39264623",
-        "37305988"
+        "37021186"
       ],
       "DOIs": [
         "10.1016/S0140-6736(22)01054-6",
         "10.1016/S0140-6736(22)02600-9",
         "10.1001/jama.2024.14721",
-        "10.1177/23969873231177508"
+        "10.1177/23969873221150022"
       ],
       "citationIds": [
         "cit-act-2022",
@@ -494,7 +494,7 @@
       "name": "COCROACH",
       "fullName": "Oral Anticoagulation after Intracranial Haemorrhage in AF: Individual-Patient-Data Meta-analysis",
       "category": "af-after-ich",
-      "population": "n=412, 75% ≥75, NIHSS n/a, AF with prior spontaneous intracranial haemorrhage (pooled RCTs: SoSTART, APACHE-AF, NASPAF-ICH)",
+      "population": "n=412, 75% ≥75, NIHSS n/a, AF with prior spontaneous intracranial haemorrhage (pooled RCTs: SoSTART, APACHE-AF, NASPAF-ICH, and the ICH subgroup of ELDERCARE-AF)",
       "finding": "Favoured anticoagulation but non-significant: 14% vs 22%",
       "teachingPoint": "Objective synthesis: net benefit of anticoagulation after ICH in AF remains statistically uncertain; ischaemic reduction is offset by a non-significant bleeding increase.",
       "PMID": "37839434",
@@ -512,7 +512,7 @@
       "fullName": "Early versus Later Anticoagulation for Stroke with Atrial Fibrillation",
       "category": "af-anticoag-timing",
       "population": "n=2013, ≥18, NIHSS all, post-AIS, ≤28 d",
-      "finding": "Favored early",
+      "finding": "2.9% (early) vs 4.1% (later)",
       "teachingPoint": "Supports early DOAC initiation per stroke severity.",
       "PMID": "37222476",
       "year": 2023,
@@ -529,7 +529,7 @@
       "fullName": "Timing of Oral Anticoagulant Therapy in AIS with AF",
       "category": "af-anticoag-timing",
       "population": "n=888, ≥18, NIHSS all, ≤72 h post-AIS",
-      "finding": "Non-inferior favoring early",
+      "finding": "Non-inferior: 6.89% (early) vs 8.68% (delayed)",
       "teachingPoint": "Supports earlier DOAC initiation.",
       "PMID": "36065821",
       "year": 2022,
@@ -733,7 +733,7 @@
       "fullName": "Thrombolysis for Central Retinal Artery Occlusion",
       "category": "crao-thrombolysis",
       "population": "n=70, ≥18, NIHSS n/a, ≤4.5 h from severe vision loss",
-      "finding": "No significant benefit overall (qualitative summary)",
+      "finding": "No significant benefit: 19/29 (66%) vs 13/27 (48%)",
       "teachingPoint": "CRAO IVT is reasonable in selected centers; no strong RCT support yet.",
       "PMID": "41109232",
       "year": 2025,
@@ -821,7 +821,7 @@
       "finding": "Favored DAPT",
       "teachingPoint": "Allows DAPT initiation up to 72 h in eligible mild stroke.",
       "PMID": "38157499",
-      "year": 2024,
+      "year": 2023,
       "citationIds": [
         "cit-inspires-2024"
       ],
@@ -1141,8 +1141,8 @@
       "name": "ESCAPE-MeVO",
       "fullName": "Endovascular Treatment for Medium Vessel Occlusion Stroke",
       "category": "evt-mevo",
-      "population": "n=530, Mean 69.8, NIHSS Median 8, ≤24 h (median 4.6 h)",
-      "finding": "No difference (adjusted common OR 0.90)",
+      "population": "n=530, Mean 69.8, NIHSS Median 8, ≤12 h from last known well",
+      "finding": "No difference: 41.6% (106/255) vs 43.1% (118/274)",
       "teachingPoint": "Does not support routine endovascular thrombectomy for isolated medium vessel occlusion stroke outside of clinical trials.",
       "PMID": "39908448",
       "year": 2025,
@@ -1210,7 +1210,7 @@
       "fullName": "Echoplanar Imaging Thrombolytic Evaluation Trial",
       "category": "extended-window-ivt",
       "population": "n=101, ≥18, NIHSS 4-22, 3-6 h",
-      "finding": "Reduced infarct growth in mismatch group; clinical co-primary not significant",
+      "finding": "Primary endpoint not met: infarct growth non-significantly lower with alteplase; reperfusion significantly more common",
       "teachingPoint": "Conceptual basis for later mismatch-based late-window trials.",
       "PMID": "18296121",
       "year": 2008,
@@ -1312,7 +1312,7 @@
       "fullName": "Tenecteplase Thrombolysis for Stroke up to 24 Hours After Onset With Perfusion Imaging Selection (CHABLIS-T II)",
       "category": "extended-window-ivt",
       "population": "n=224, adults, 4.5-24 h",
-      "finding": "Improved reperfusion without a significant clinical-outcome difference",
+      "finding": "33.3% (37/111) vs 10.8% (12/113); no significant difference in 90-day clinical outcomes",
       "teachingPoint": "Adds to the mixed late-window TNK evidence base; reinforces that reperfusion gains have not consistently translated to clinical benefit.",
       "PMID": "39744861",
       "year": 2025,
@@ -2110,7 +2110,7 @@
       "name": "TRACE-2",
       "fullName": "Trial of Tenecteplase in Chinese Patients with Acute Ischemic Stroke",
       "category": "tnk-vs-alteplase",
-      "population": "n=1430, ≥18, NIHSS NIHSS ≤25, ≤4.5 h",
+      "population": "n=1430, ≥18, NIHSS NIHSS 5-25, ≤4.5 h",
       "finding": "Non-inferior: 62.0% (TNK) vs 58.0% (alteplase)",
       "teachingPoint": "Confirms non-inferiority of TNK in non-LVO eligible AIS within 4.5 h.",
       "PMID": "36774935",
@@ -2179,7 +2179,7 @@
       "fullName": "Tenecteplase versus Standard of Care for Minor Ischaemic Stroke with Proven Occlusion (TEMPO-2)",
       "category": "tnk-vs-alteplase",
       "population": "n=886, adults, NIHSS 0-5 (minor), ≤12 h",
-      "finding": "No benefit of tenecteplase vs standard of care",
+      "finding": "No benefit: 72% (309/432) tenecteplase vs 75% (338/452) control",
       "teachingPoint": "Argues against routine thrombolysis for minor non-disabling stroke solely because an occlusion is present; keep the disabling-deficit gate.",
       "PMID": "38768626",
       "year": 2024,

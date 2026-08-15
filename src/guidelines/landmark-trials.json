@@ -57,7 +57,7 @@
       "citation": "NEJM 2019;380:1795-1803",
       "question": "Does alteplase benefit patients 4.5-9h from onset with CTP/MRP mismatch?",
       "design": "RCT, n=225, alteplase vs placebo with perfusion mismatch (core <70 mL, ratio ≥1.2, penumbra ≥10 mL)",
-      "outcomes": "mRS 0-1 at 90d: 35% vs 29%, aOR 1.44. sICH: 6% vs 1%.",
+      "outcomes": "mRS 0-1 at 90d: 35.4% vs 29.5%, adjusted risk ratio 1.44 (95% CI 1.01-2.06, p=0.04). sICH: 6.2% vs 0.9%.",
       "bottomLine": "Perfusion mismatch extends lytic window to 9h in selected patients.",
       "teachingPoint": "The imaging criteria (core <70, ratio ≥1.2, mismatch ≥10) came directly from EXTEND and are now the standard for extended-window selection."
     },
@@ -84,7 +84,7 @@
     {
       "name": "TWIST",
       "year": 2023,
-      "citation": "Lancet Neurol 2023;22:127-36",
+      "citation": "Lancet Neurol 2023;22:117-26 (PMID 36549308)",
       "question": "Does TNK benefit wake-up stroke patients without advanced imaging selection?",
       "design": "RCT, n=578, TNK vs standard care for wake-up stroke (no CTP/MRI required)",
       "outcomes": "Excellent outcome (mRS 0): no significant difference. Ordinal shift: no benefit.",
@@ -187,7 +187,7 @@
       "name": "SELECT2",
       "year": 2023,
       "citation": "NEJM 2023;388:1259-71",
-      "question": "Does EVT benefit patients with LARGE ischemic core (ASPECTS 3-5 or core 50-100 mL)?",
+      "question": "Does EVT benefit patients with LARGE ischemic core (ASPECTS 3-5 or core ≥50 mL)?",
       "design": "RCT, n=352, EVT vs medical management in 0-24h with large core",
       "outcomes": "mRS 0-2 at 90d: 20.3% vs 7.0% (NNT 7.5). sICH: 0.6% vs 1.1%.",
       "bottomLine": "EVT improves outcomes even with large core — the \"too big to treat\" paradigm was wrong.",
@@ -198,7 +198,7 @@
       "year": 2023,
       "citation": "NEJM 2023;388:1272-83",
       "question": "Does EVT benefit Chinese patients with ASPECTS 3-5?",
-      "design": "RCT, n=456, EVT vs medical management, 6-24h",
+      "design": "RCT, n=456, EVT vs medical management, within 24h of last known well",
       "outcomes": "mRS 0-2 at 90d: 30.0% vs 11.6% (NNT 5.4). sICH: 6.1% vs 2.7%.",
       "bottomLine": "Confirms SELECT2 in a different population.",
       "teachingPoint": "ANGEL-ASPECT + SELECT2 + RESCUE-Japan LIMIT together establish large-core EVT as standard of care."
@@ -208,7 +208,7 @@
       "year": 2022,
       "citation": "NEJM 2022;386:1303-13",
       "question": "Does EVT benefit patients with ASPECTS 3-5?",
-      "design": "RCT, n=203, Japanese population, 0-6h",
+      "design": "RCT, n=203, Japanese population, 0-6h (or up to 24h if no early FLAIR change)",
       "outcomes": "mRS 0-3 at 90d: 31.0% vs 12.7% (NNT 5.5). sICH: 9.0% vs 4.5%.",
       "bottomLine": "Early large-core trial establishing EVT benefit in ASPECTS 3-5.",
       "teachingPoint": "Primary endpoint was mRS 0-3 (not 0-2) — relevant when counseling, as \"functional independence\" is set lower in large-core populations."
@@ -297,11 +297,11 @@
     },
     {
       "name": "BEST-II",
-      "year": 2024,
-      "citation": "Stroke 2024",
+      "year": 2023,
+      "citation": "JAMA 2023;330:821-31 (PMID 37668620)",
       "question": "Are more aggressive SBP targets (<140, <130) better than <180 post-EVT?",
       "design": "Futility RCT, 3-arm",
-      "outcomes": "Lower targets trended toward worse outcomes; non-futility not demonstrated.",
+      "outcomes": "Lower SBP targets did NOT meet the prespecified futility criteria (infarct-volume slope -0.29, futility p=0.99; uw-mRS slope -0.0019, futility p=0.93). However, predicted probability of success in a future larger trial was only 25% (<140) and 14% (<160), and uw-mRS was numerically worse with lower targets (0.51 and 0.47 vs 0.58).",
       "bottomLine": "Seals the case — no benefit to SBP targets below 140 post-EVT.",
       "teachingPoint": "Consistent with prior trials. Standard post-EVT target SBP <180, avoid <140 for 72h."
     }
@@ -342,7 +342,7 @@
       "year": 2019,
       "citation": "Lancet 2019;393:1021-32",
       "question": "Does minimally-invasive clot lysis (alteplase through catheter) improve ICH outcomes?",
-      "design": "RCT, n=506, MIS+alteplase vs medical management for 30-100 mL ICH",
+      "design": "RCT, n=506, MIS+alteplase vs medical management for supratentorial ICH ≥30 mL",
       "outcomes": "Primary (mRS 0-3 at 1yr): no overall benefit. Per-protocol subgroup (residual clot <15 mL): mRS 0-3 significantly improved.",
       "bottomLine": "Technical success (clot reduction to <15 mL) correlates with outcome; overall neutral trial.",
       "teachingPoint": "Set up the ENRICH trial (positive) and current trend toward minimally-invasive evacuation for selected ICH."
@@ -482,10 +482,10 @@
     {
       "name": "ARCADIA",
       "year": 2024,
-      "citation": "JAMA 2024;331:573-83",
+      "citation": "JAMA 2024;331:573-81 (PMID 38324415)",
       "question": "Does apixaban reduce recurrent stroke in ESUS patients with atrial cardiopathy markers?",
       "design": "RCT, n=1015, apixaban vs ASA in ESUS with NT-proBNP ≥250 or LA enlargement",
-      "outcomes": "Primary: no significant difference. Recurrent stroke: 4.4% vs 4.7%.",
+      "outcomes": "Primary: no significant difference. Recurrent stroke: 4.4% vs 4.4% per year (40 events in each arm; HR 1.00, 95% CI 0.64-1.55).",
       "bottomLine": "Empiric anticoagulation in ESUS with atrial cardiopathy markers does NOT reduce recurrence.",
       "teachingPoint": "Joins NAVIGATE-ESUS, RE-SPECT ESUS in showing empiric AC does not work for ESUS. Search for PAF with loop recorders instead."
     },
@@ -520,34 +520,14 @@
       "teachingPoint": "Both antiplatelet and anticoagulation are accepted first-line; individualize by bleeding risk, occlusion/pseudoaneurysm, and free-floating thrombus. TREAT-CAD tempered the earlier assumption of aspirin equivalence."
     },
     {
-      "name": "CREST / CREST-2",
-      "year": "2010 / 2025",
-      "citation": "NEJM 2010;363:11 / NEJM 2025",
-      "question": "CEA vs CAS for symptomatic carotid stenosis; CAS vs medical management for asymptomatic",
-      "design": "CREST: CEA vs CAS. CREST-2: CEA+IMM vs IMM alone; CAS+IMM vs IMM alone.",
-      "outcomes": "CREST: similar primary outcomes, CAS has more peri-procedural strokes, CEA more MIs. CREST-2: modern medical management may be as good as revascularization.",
-      "bottomLine": "For asymptomatic ≥70% stenosis: intensive medical management is an evidence-based alternative to revascularization.",
-      "teachingPoint": "CREST-2 challenges decades of asymptomatic carotid management — intensive medical therapy (LDL <70, SBP <130, antiplatelet, smoking cessation) may obviate need for CEA/CAS."
-    },
-    {
-      "name": "SPS3",
-      "year": 2012,
-      "citation": "NEJM 2012;367:817-25 (PMID 22931315)",
-      "question": "Does long-term aspirin + clopidogrel prevent recurrent stroke after lacunar infarct?",
-      "design": "Double-blind RCT, n=3020, MRI-confirmed recent lacunar infarct. Clopidogrel 75mg vs placebo, both on aspirin 325mg. Mean follow-up 3.4 years.",
-      "outcomes": "Recurrent stroke 2.5%/y vs 2.7%/y (HR 0.92, 95% CI 0.72-1.16). Major hemorrhage nearly DOUBLED: 2.1%/y vs 1.1%/y (HR 1.97, p<0.001). All-cause mortality INCREASED: HR 1.52 (95% CI 1.14-2.04, p=0.004).",
-      "bottomLine": "No benefit, doubled bleeding, and increased death — long-term DAPT is harmful after lacunar stroke.",
-      "teachingPoint": "Does not contradict CHANCE/POINT: those tested 21-90 days of DAPT started acutely. SPS3 tested it indefinitely. The distinction between short-course acute DAPT and long-term DAPT is exactly what SPS3 establishes, and the mortality signal makes it more than a null result."
-    },
-    {
-      "name": "MATCH",
-      "year": 2004,
-      "citation": "Lancet 2004;364:331-7 (PMID 15276392)",
-      "question": "Does adding aspirin to clopidogrel help high-risk stroke/TIA patients?",
-      "design": "Double-blind RCT, n=7599, recent stroke/TIA plus ≥1 vascular risk factor, all on clopidogrel. Aspirin 75mg vs placebo for 18 months.",
-      "outcomes": "Primary composite 15.7% vs 16.7% (RRR 6.4%, 95% CI -4.6% to 16.3%) — not significant. Life-threatening bleeding INCREASED: 2.6% vs 1.3% (absolute increase 1.3%, 95% CI 0.6-1.9). No mortality difference.",
-      "bottomLine": "Eighteen months of DAPT gave no significant benefit and doubled life-threatening bleeding.",
-      "teachingPoint": "With SPS3, one of the two pillars establishing that DAPT duration is where the harm lives. The ischemic benefit of DAPT is front-loaded in the first weeks; the bleeding hazard accumulates indefinitely."
+      "name": "CREST",
+      "year": 2010,
+      "citation": "NEJM 2010;363:11-23 (PMID 20505173)",
+      "question": "Carotid endarterectomy versus carotid artery stenting for carotid stenosis",
+      "design": "RCT, n=2502, CEA vs CAS in symptomatic and asymptomatic carotid stenosis",
+      "outcomes": "Similar 4-year primary composite. Peri-procedural stroke higher with CAS; peri-procedural myocardial infarction higher with CEA. Age interaction: CAS favoured in younger patients, CEA in older.",
+      "bottomLine": "CEA and CAS give similar overall outcomes; the peri-procedural risk profile differs by procedure and by age.",
+      "teachingPoint": "The trade-off is the teaching point: stenting front-loads stroke risk, endarterectomy front-loads cardiac risk, and a stroke and an MI are not equivalent to a patient. For what modern medical therapy alone achieves in ASYMPTOMATIC disease, see the separate CREST-2 card — it found adding stenting reduced 4-year events, so do not read CREST as licensing medical management alone."
     },
     {
       "name": "CONVINCE / CHANCE-3",
@@ -607,14 +587,14 @@
       "citation": "Fischer NEJM 2023;388:2411-21",
       "question": "When to start DOAC after AF-related ischemic stroke — early vs late?",
       "design": "RCT, n=2013, early DOAC using ELAN imaging-defined infarct size vs later (day 3/6/12-14) initiation",
-      "outcomes": "30-day recurrence/ICH/death composite: 2.9% early vs 4.1% late (95% CI favoring early). No excess ICH.",
+      "outcomes": "30-day recurrence/ICH/death composite: 2.9% early vs 4.1% late (risk difference -1.18 percentage points, 95% CI -2.84 to +0.47 — the interval includes no difference; ELAN was not powered for superiority or non-inferiority testing). No excess sICH (0.2% in both arms).",
       "bottomLine": "Early DOAC initiation by ELAN imaging severity showed no excess ICH versus later start and supports earlier treatment in selected AF-stroke patients.",
       "teachingPoint": "ELAN classified stroke severity by imaging-defined infarct size/territory, not NIHSS cutoffs. NIHSS-based buckets can be a bedside heuristic, but should not be presented as ELAN criteria. CATALYST IPDMA (Dehbi et al., Lancet 2025, n=5441 pooling ELAN/OPTIMAS/TIMING/START) broadly supports early initiation without excess sICH."
     },
     {
       "name": "OPTIMAS",
       "year": 2024,
-      "citation": "Werring Lancet 2024 / NEJM 2024",
+      "citation": "Werring et al. Lancet 2024 (PMID 39491870)",
       "question": "Is early DOAC initiation after AF stroke non-inferior to standard timing?",
       "design": "Pragmatic open-label RCT in UK, n>3500, early (≤4 days) vs standard (7-14 days)",
       "outcomes": "Primary composite (ischemic stroke, ICH, unclassified stroke, systemic embolism at 90d): non-inferiority met. Similar safety.",
@@ -660,16 +640,6 @@
       "outcomes": "MACE: HR 0.76 (24% RRR). Stroke: HR 0.58. Major bleeding: HR 1.70 (no ICH increase).",
       "bottomLine": "Low-dose rivaroxaban + ASA reduces stroke/CV events in polyvascular disease.",
       "teachingPoint": "Consider in stable patients with CAD+PAD, CAD+cerebrovascular disease. Most benefit in polyvascular patients. AHA/ASA 2021 Class 2b option."
-    },
-    {
-      "name": "RESTART",
-      "year": 2019,
-      "citation": "Lancet 2019;393:2613-23",
-      "question": "Is it safe to RESTART antiplatelet after ICH?",
-      "design": "RCT, n=537, restart antiplatelet vs no antiplatelet after spontaneous ICH survivor",
-      "outcomes": "Recurrent ICH: 4% vs 9%, HR 0.51 (favoring restart). Ischemic events: reduced with restart.",
-      "bottomLine": "Restarting antiplatelet after ICH does NOT increase recurrent ICH and reduces ischemic events.",
-      "teachingPoint": "Practice changer — historically feared restarting antiplatelet after ICH; RESTART shows benefit. Especially important if ischemic events reasonably likely (CAD, prior stroke)."
     },
     {
       "name": "LAAOS III",
@@ -779,7 +749,7 @@
       "citation": "Lancet Neurol 2020;19:651-60",
       "question": "Does fluoxetine improve functional recovery in Australasian populations?",
       "design": "RCT, n=1280, fluoxetine vs placebo x 6 months",
-      "outcomes": "Functional outcome (mRS shift): no significant difference. Excess fractures, hyponatremia.",
+      "outcomes": "Functional outcome (mRS shift): no significant difference (adjusted common OR 0.94, 95% CI 0.76-1.15, p=0.53). Excess falls (3% vs 1%), bone fractures (3% vs 1%), and epileptic seizures (2% vs <1%).",
       "bottomLine": "Confirms FOCUS — fluoxetine does NOT improve motor/functional outcomes.",
       "teachingPoint": "Treat post-stroke depression with SSRI if clinically indicated (sertraline often preferred). Do NOT use SSRI expecting motor recovery benefit."
     },
@@ -858,7 +828,7 @@
     {
       "name": "SAHIT",
       "year": 2018,
-      "citation": "Neurology 2018",
+      "citation": "Jaja et al. BMJ 2018;360:j5745 (PMID 29348138)",
       "question": "Prognostic model for aSAH outcomes",
       "design": "Pooled data, 10,936 patients",
       "outcomes": "Validated model using age, WFNS, Fisher, hypertension, aneurysm size, treatment method.",
