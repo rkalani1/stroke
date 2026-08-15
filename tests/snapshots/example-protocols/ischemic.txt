@@ -1063,8 +1063,8 @@ Symptomatic ICAD (70-99% stenosis)
 • SBP <140 mmHg
 •
 NO intracranial stenting
-(SAMMPRIS, CASSISS: stenting inferior to medical therapy)
-Class III (Harm) for stenting — SAMMPRIS, CASSISS
+(SAMMPRIS: stenting worse than medical therapy; CASSISS: no benefit even with experienced operators — 8.0% vs 7.2%, HR 1.10, 95% CI 0.52–2.35, P=.82)
+Class III for stenting — Harm per SAMMPRIS/VISSIT; no benefit per CASSISS
 Moderate ICAD (50-69%)
 • Single antiplatelet preferred
 • Aggressive risk factor management
