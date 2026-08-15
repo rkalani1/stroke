@@ -6,5 +6,6 @@
       "note": ""
     }
   ],
-  "ttlHoursOverride": null
+  "ttlHoursOverride": null,
+  "suggestionRelayUrl": ""
 }

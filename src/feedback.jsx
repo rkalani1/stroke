@@ -1,15 +1,26 @@
 /**
  * Suggestions box — a page-footer feedback surface rendered on every tab.
  *
- * WHY A PREFILLED GITHUB ISSUE (and not a POST to an API):
- * This app is a fully static client-side bundle served from GitHub Pages. There
- * is no server and no place to hold a credential, so the only way a submission
- * can reach the repository without shipping a token to the browser is to hand
- * the composed issue to GitHub's own `issues/new` form and let the submitter's
- * GitHub session authenticate it. Consequence, stated plainly in the UI: the
- * submitter needs a GitHub account. Swapping in an authenticated POST endpoint
- * later means replacing `submitSuggestion` only — `buildSuggestionIssue` already
- * returns the payload such an endpoint would take.
+ * TWO SUBMISSION PATHS:
+ *
+ * 1. RELAY (preferred, no GitHub account needed). When `relayUrl` is set — from
+ *    `suggestionRelayUrl` in the runtime config — the composed issue is POSTed
+ *    to a small endpoint that holds a repository token and opens the issue on
+ *    the submitter's behalf. GitHub then notifies the repository owner by email
+ *    through normal watch settings, so no separate mail service is involved.
+ *    See workers/suggestion-relay/ for a deployable reference implementation.
+ *
+ * 2. PREFILLED ISSUE LINK (fallback). This app is a fully static client-side
+ *    bundle served from GitHub Pages: there is no server and no place to hold a
+ *    credential, so absent a relay the only way a submission reaches the
+ *    repository without shipping a token to the browser is to hand the composed
+ *    issue to GitHub's own `issues/new` form and let the submitter's GitHub
+ *    session authenticate it. That path needs a GitHub account, which is exactly
+ *    why the relay exists. The fallback also catches a relay that is down, so a
+ *    misconfigured or unreachable endpoint degrades instead of losing the note.
+ *
+ * Both paths share `buildSuggestionIssue`, so the issue reads identically
+ * whichever way it arrived.
  *
  * UNTRUSTED INPUT: the free-text body is written by whoever is using the page.
  * `buildSuggestionIssue` fences it and labels it as data, so an automated
@@ -176,10 +187,65 @@ export function suggestionUrlWasTruncated(repoUrl, fields = {}) {
   return composeSuggestionUrl(repoUrl, fields).truncated;
 }
 
+/**
+ * POST a suggestion to the relay endpoint, which opens the GitHub issue using a
+ * token it holds server-side. This is the path that does not require the
+ * submitter to have a GitHub account.
+ *
+ * The payload carries both the composed issue (`title`/`body`/`labels`) and the
+ * raw fields, so a relay can either forward the composed issue verbatim or
+ * re-render it. The relay is trusted to be the only holder of the credential;
+ * nothing secret is sent from here.
+ *
+ * Rejects on a non-2xx response or a network failure so the caller can fall
+ * back to the prefilled-issue link rather than silently dropping the note.
+ *
+ * @returns {Promise<{url: string}>} `url` is the created issue when the relay
+ *          reports one, otherwise ''.
+ */
+export async function submitSuggestionToRelay(relayUrl, fields = {}, { fetchImpl } = {}) {
+  const endpoint = String(relayUrl || '').trim();
+  if (!endpoint) throw new Error('No relay endpoint configured');
+  const doFetch = fetchImpl || (typeof fetch === 'function' ? fetch.bind(globalThis) : null);
+  if (!doFetch) throw new Error('fetch is unavailable');
+
+  const { title, body, labels } = buildSuggestionIssue(fields);
+  const response = await doFetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title,
+      body,
+      labels,
+      kind: fields.kind || 'other',
+      message: sliceChars(String(fields.message || '').trim(), MAX_MESSAGE_LENGTH),
+      contact: sliceChars(String(fields.contact || '').trim(), MAX_CONTACT_LENGTH),
+      route: fields.route || '',
+      tab: fields.tab || '',
+      appVersion: fields.appVersion || ''
+    })
+  });
+
+  if (!response || !response.ok) {
+    throw new Error(`Relay responded ${response ? response.status : 'with nothing'}`);
+  }
+  // A relay that returns no body, or a non-JSON one, is still a success — the
+  // issue URL is a convenience, not a requirement.
+  let url = '';
+  try {
+    const data = await response.json();
+    url = (data && typeof data.url === 'string') ? data.url : '';
+  } catch {
+    url = '';
+  }
+  return { url };
+}
+
 export function FeedbackFooter({
   repoUrl = 'https://github.com/rkalani1/stroke',
   appVersion = '',
   tabLabel = '',
+  relayUrl = '',
   onCopy,
   defaultOpen = false
 }) {
@@ -188,7 +254,9 @@ export function FeedbackFooter({
   const [message, setMessage] = useState('');
   const [contact, setContact] = useState('');
   const [status, setStatus] = useState(null);
+  const [sending, setSending] = useState(false);
   const textareaRef = useRef(null);
+  const hasRelay = Boolean(String(relayUrl || '').trim());
 
   useEffect(() => {
     if (open && textareaRef.current) textareaRef.current.focus();
@@ -206,6 +274,35 @@ export function FeedbackFooter({
   const { url: sendUrl, truncated } = canSend
     ? composeSuggestionUrl(repoUrl, fields)
     : { url: '', truncated: false };
+
+  // Relay path: post it ourselves so the submitter needs no GitHub account.
+  // A failure here is not terminal — the text stays in the box and the
+  // prefilled-issue link is offered instead, so an endpoint that is down or
+  // misconfigured costs an extra click rather than the whole suggestion.
+  const sendViaRelay = async (event) => {
+    event.preventDefault();
+    if (!canSend || sending) return;
+    setSending(true);
+    setStatus({ tone: 'ok', text: 'Sending…' });
+    try {
+      const { url } = await submitSuggestionToRelay(relayUrl, fields);
+      setStatus({
+        tone: 'ok',
+        text: url
+          ? `Thank you — your suggestion was sent. It is now issue ${url}.`
+          : 'Thank you — your suggestion was sent.'
+      });
+      setMessage('');
+      setContact('');
+    } catch {
+      setStatus({
+        tone: 'warn',
+        text: 'Could not send your suggestion automatically. Your text is still here — use "Open in GitHub" or "Copy instead" to send it.'
+      });
+    } finally {
+      setSending(false);
+    }
+  };
 
   const onSendClick = (event) => {
     if (!canSend) {
@@ -252,10 +349,6 @@ export function FeedbackFooter({
             <h2 id="suggestions-box-heading" className="font-serif text-lg text-ink">
               Something to add, change, or remove?
             </h2>
-            <p className="font-sans text-sm text-ink-2 mt-1 text-pretty">
-              Tell us in your own words. Suggestions are filed as GitHub issues for review — no patient
-              details, please.
-            </p>
           </div>
           <button
             type="button"
@@ -338,19 +431,32 @@ export function FeedbackFooter({
             </p>
 
             <div className="flex flex-wrap gap-2 items-center">
+              {hasRelay ? (
+                <button
+                  id="suggestion-send"
+                  type="button"
+                  onClick={sendViaRelay}
+                  disabled={!canSend || sending}
+                  className="inline-flex items-center px-4 py-2 min-h-[44px] rounded-md text-sm font-semibold bg-cobalt-600 text-white hover:bg-cobalt-700 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 dark:bg-cobalt-500 dark:hover:bg-cobalt-600"
+                >
+                  {sending ? 'Sending…' : 'Send'}
+                </button>
+              ) : null}
               <a
-                id="suggestion-send"
+                id={hasRelay ? 'suggestion-send-github' : 'suggestion-send'}
                 href={canSend ? sendUrl : undefined}
                 target="_blank"
                 rel="noopener noreferrer"
                 role="button"
                 aria-disabled={!canSend}
                 onClick={onSendClick}
-                className={`inline-flex items-center px-4 py-2 min-h-[44px] rounded-md text-sm font-semibold no-underline bg-cobalt-600 text-white hover:bg-cobalt-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 dark:bg-cobalt-500 dark:hover:bg-cobalt-600 ${
-                  canSend ? '' : 'opacity-50 cursor-not-allowed pointer-events-none'
-                }`}
+                className={`inline-flex items-center px-4 py-2 min-h-[44px] rounded-md text-sm font-semibold no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 ${
+                  hasRelay
+                    ? 'border border-line bg-card text-ink-2 hover:bg-slate-100 dark:hover:bg-strong'
+                    : 'bg-cobalt-600 text-white hover:bg-cobalt-700 dark:bg-cobalt-500 dark:hover:bg-cobalt-600'
+                } ${canSend ? '' : 'opacity-50 cursor-not-allowed pointer-events-none'}`}
               >
-                Send
+                {hasRelay ? 'Open in GitHub' : 'Send'}
               </a>
               <button
                 type="button"
@@ -360,7 +466,11 @@ export function FeedbackFooter({
               >
                 Copy instead
               </button>
-              <span className="text-xs text-mute">Send opens GitHub with the issue pre-filled — a GitHub account is needed to post it.</span>
+              <span className="text-xs text-mute">
+                {hasRelay
+                  ? 'Send goes straight to the maintainer — no GitHub account needed. Suggestions are reviewed in public, so please leave out patient details.'
+                  : 'Send opens GitHub with the issue pre-filled — a GitHub account is needed to post it. Please leave out patient details.'}
+              </span>
             </div>
 
             <p aria-live="polite" className="min-h-[1.25rem] text-xs">

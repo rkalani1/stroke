@@ -9,7 +9,8 @@ import {
   suggestionIssueUrl,
   sliceChars,
   suggestionTitle,
-  suggestionUrlWasTruncated
+  suggestionUrlWasTruncated,
+  submitSuggestionToRelay
 } from '../src/feedback.jsx';
 
 const REPO = 'https://github.com/rkalani1/stroke';
@@ -225,8 +226,11 @@ describe('FeedbackFooter', () => {
     expect(render()).toContain('--mobile-nav-offset');
   });
 
-  it('warns against entering patient details', () => {
-    expect(render()).toContain('no patient');
+  // The caution sits beside the send controls rather than in the collapsed
+  // header, so it is read at the moment of sending. Issues are filed to a
+  // public repository, which is what makes it worth asserting on at all.
+  it('warns against entering patient details where the note is sent', () => {
+    expect(render({ defaultOpen: true })).toContain('patient details');
   });
 
   it('offers all four change types', () => {
@@ -284,12 +288,83 @@ describe('FeedbackFooter', () => {
       expect(html).toContain('Nothing you typed into the encounter form is included');
     });
 
-    it('says up front that posting needs a GitHub account', () => {
+    it('says up front that posting needs a GitHub account when no relay is set', () => {
       expect(html).toContain('GitHub account is needed');
     });
 
     it('announces status changes politely rather than stealing focus', () => {
       expect(html).toContain('aria-live="polite"');
     });
+  });
+
+  // With a relay configured the submitter posts through it and needs no GitHub
+  // account. The prefilled-issue link stays on as a demoted fallback so a relay
+  // that is down costs a click instead of the whole suggestion.
+  describe('with a relay configured', () => {
+    const html = renderToStaticMarkup(
+      <FeedbackFooter defaultOpen relayUrl="https://relay.example.workers.dev" />
+    );
+
+    it('promotes a real Send button rather than a link to GitHub', () => {
+      expect(html).toContain('id="suggestion-send"');
+      expect(html).toContain('>Send</button>');
+    });
+
+    it('stops telling people they need a GitHub account', () => {
+      expect(html).not.toContain('GitHub account is needed');
+      expect(html).toContain('no GitHub account needed');
+    });
+
+    it('keeps the GitHub link and the copy fallback available', () => {
+      expect(html).toContain('id="suggestion-send-github"');
+      expect(html).toContain('>Open in GitHub</a>');
+      expect(html).toContain('>Copy instead</button>');
+    });
+
+    it('still warns against patient details', () => {
+      expect(html).toContain('patient details');
+    });
+  });
+});
+
+describe('submitSuggestionToRelay', () => {
+  const fields = { kind: 'addition', message: 'Add an ATLAS mention', contact: 'dr@example.org' };
+
+  it('posts the composed issue as JSON and returns the created issue URL', async () => {
+    let seen = null;
+    const fetchImpl = async (url, init) => {
+      seen = { url, init };
+      return { ok: true, status: 201, json: async () => ({ ok: true, url: 'https://github.com/o/r/issues/7' }) };
+    };
+    const result = await submitSuggestionToRelay('https://relay.example', fields, { fetchImpl });
+    expect(result.url).toBe('https://github.com/o/r/issues/7');
+    expect(seen.url).toBe('https://relay.example');
+    expect(seen.init.method).toBe('POST');
+    expect(seen.init.headers['Content-Type']).toBe('application/json');
+    const payload = JSON.parse(seen.init.body);
+    expect(payload.title).toContain('[Suggestion]');
+    expect(payload.body).toContain('Add an ATLAS mention');
+    expect(payload.labels).toEqual(['suggestion', 'from-app']);
+    expect(payload.contact).toBe('dr@example.org');
+  });
+
+  it('succeeds even when the relay returns no parseable body', async () => {
+    const fetchImpl = async () => ({ ok: true, status: 201, json: async () => { throw new Error('no body'); } });
+    await expect(submitSuggestionToRelay('https://relay.example', fields, { fetchImpl })).resolves.toEqual({ url: '' });
+  });
+
+  it('rejects on a non-2xx response so the caller can fall back', async () => {
+    const fetchImpl = async () => ({ ok: false, status: 502, json: async () => ({}) });
+    await expect(submitSuggestionToRelay('https://relay.example', fields, { fetchImpl })).rejects.toThrow('502');
+  });
+
+  it('rejects on a network failure so the caller can fall back', async () => {
+    const fetchImpl = async () => { throw new Error('offline'); };
+    await expect(submitSuggestionToRelay('https://relay.example', fields, { fetchImpl })).rejects.toThrow('offline');
+  });
+
+  it('refuses to post when no endpoint is configured', async () => {
+    await expect(submitSuggestionToRelay('', fields)).rejects.toThrow('No relay endpoint');
+    await expect(submitSuggestionToRelay('   ', fields)).rejects.toThrow('No relay endpoint');
   });
 });

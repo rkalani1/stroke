@@ -2233,7 +2233,7 @@ Clinician Name`;
           // Phase 2: Guided Clinical Pathway UI state
           const [pathwayCollapsed, setPathwayCollapsed] = useState(true);
           const [guidelineRecsExpanded, setGuidelineRecsExpanded] = useState(false);
-          const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null });
+          const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null, suggestionRelayUrl: '' });
           const [configLoaded, setConfigLoaded] = useState(false);
           const [ttlHours, setTtlHours] = useState(settings.ttlHoursOverride || DEFAULT_TTL_HOURS);
 
@@ -16100,7 +16100,30 @@ Clinician Name`;
                 data.ttlHoursOverride > 0
                 ? data.ttlHoursOverride
                 : null;
-              setAppConfig({ institutionLinks: sanitizedLinks, ttlHoursOverride: ttlOverride });
+              // Endpoint that files a suggestion as a GitHub issue on the
+              // submitter's behalf, so the suggestions box does not require a
+              // GitHub account. https is required: the box posts free text the
+              // reader typed, and a plaintext endpoint would put it on the wire
+              // in the clear. Loopback is the one exception — it never reaches a
+              // network, and browsers already treat it as a secure context — so
+              // the relay can be developed locally over http. Anything else, or
+              // an unset value, leaves the box on its prefilled-GitHub-link
+              // fallback.
+              const relayRaw = String(data.suggestionRelayUrl || '').trim();
+              let suggestionRelayUrl = '';
+              if (relayRaw) {
+                try {
+                  const parsed = new URL(relayRaw);
+                  const isLoopback = ['localhost', '127.0.0.1', '[::1]', '::1'].includes(parsed.hostname);
+                  suggestionRelayUrl =
+                    parsed.protocol === 'https:' || (parsed.protocol === 'http:' && isLoopback)
+                      ? relayRaw
+                      : '';
+                } catch (e) {
+                  suggestionRelayUrl = '';
+                }
+              }
+              setAppConfig({ institutionLinks: sanitizedLinks, ttlHoursOverride: ttlOverride, suggestionRelayUrl });
               if (ttlOverride) {
                 setTtlHours(ttlOverride);
                 setKey('ttlHoursOverride', ttlOverride, { skipLastUpdated: true });
@@ -36242,6 +36265,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 <FeedbackFooter
                   appVersion={(typeof window !== 'undefined' && window.strokeAppStorage && window.strokeAppStorage.appVersion) || ''}
                   tabLabel={TAB_LABELS[activeTab] || activeTab}
+                  relayUrl={appConfig.suggestionRelayUrl}
                   onCopy={copyToClipboard}
                 />
               </ErrorBoundary>

@@ -1,0 +1,12 @@
+name = "stroke-suggestion-relay"
+main = "worker.js"
+compatibility_date = "2026-08-15"
+
+[vars]
+# Repository that receives the issues, as "owner/repo".
+GITHUB_REPO = "rkalani1/stroke"
+# CORS origin for the app. Pins the browser-side caller to the app's own origin.
+ALLOWED_ORIGIN = "https://rkalani1.github.io"
+
+# GITHUB_TOKEN is a secret, never a var — set it with:
+#   wrangler secret put GITHUB_TOKEN
