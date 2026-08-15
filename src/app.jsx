@@ -1053,6 +1053,26 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
 
         const RESEARCH_SUBTABS = ['guidelines', 'references', 'education'];
 
+        // BYOK (bring-your-own-key) LLM providers offered in Settings → API
+        // Configuration. One table drives the <select>, the key placeholder and
+        // the save-time prefix check, so adding a provider is a single entry
+        // rather than three parallel edits that can drift apart.
+        //
+        // keyPrefix is the vendor's documented key format. It is a typo guard —
+        // it catches a key pasted into the wrong provider — not authentication;
+        // only the vendor can say whether a key is real.
+        const API_PROVIDERS = [
+          { value: 'openai', label: 'OpenAI API', keyPrefix: 'sk-', placeholder: 'sk-...' },
+          { value: 'anthropic', label: 'Anthropic API', keyPrefix: 'sk-ant-', placeholder: 'sk-ant-...' },
+          { value: 'gemini', label: 'Google Gemini API', keyPrefix: 'AIza', placeholder: 'AIza...' },
+          { value: 'grok', label: 'xAI Grok API', keyPrefix: 'xai-', placeholder: 'xai-...' }
+        ];
+        const API_PROVIDER_VALUES = new Set(API_PROVIDERS.map((p) => p.value));
+        // '' means "no provider configured". Installs that still carry the
+        // retired 'mock' demo provider normalize to that same unconfigured
+        // state instead of rendering a <select> stuck on a missing option.
+        const normalizeApiProvider = (value) => (API_PROVIDER_VALUES.has(value) ? value : '');
+
         // Human-readable tab names, used by the suggestions-box footer so a
         // submitted issue records which section the reader was looking at.
         const TAB_LABELS = {
@@ -2650,9 +2670,9 @@ Clinician Name`;
           const [nursingFlowsheetChecks, setNursingFlowsheetChecks] = useState({});
           const [protocolModal, setProtocolModal] = useState(null);
 
-          const [apiProvider, setApiProvider] = useState(() => loadFromStorage('apiProvider', 'mock'));
+          const [apiProvider, setApiProvider] = useState(() => normalizeApiProvider(loadFromStorage('apiProvider', '')));
           const [apiKey, setApiKey] = useState(() => { try { localStorage.removeItem((window.strokeAppStorage && window.strokeAppStorage.prefix || 'strokeApp:') + 'apiKey'); } catch (e) {} return sessionStorage.getItem('apiKey') || ''; });
-          const [tempProvider, setTempProvider] = useState(() => loadFromStorage('apiProvider', 'mock'));
+          const [tempProvider, setTempProvider] = useState(() => normalizeApiProvider(loadFromStorage('apiProvider', '')));
           const [tempKey, setTempKey] = useState(() => sessionStorage.getItem('apiKey') || '');
           const [showKey, setShowKey] = useState(false);
 
@@ -36135,13 +36155,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               onChange={(e) => setTempProvider(e.target.value)}
                               className="w-full max-w-md px-3 py-2 bg-card border border-line rounded-md text-ink text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500"
                             >
-                              <option value="mock">Mock LLM (Local Demo)</option>
-                              <option value="openai">OpenAI API</option>
-                              <option value="anthropic">Anthropic API</option>
+                              <option value="">Select a provider…</option>
+                              {API_PROVIDERS.map((provider) => (
+                                <option key={provider.value} value={provider.value}>{provider.label}</option>
+                              ))}
                             </select>
                           </div>
 
-                          {tempProvider !== 'mock' && (
+                          {tempProvider && (
                             <div>
                               <label className="block text-sm font-semibold text-ink mb-1.5">
                                 API Key
@@ -36151,7 +36172,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   type={showKey ? 'text' : 'password'}
                                   value={tempKey}
                                   onChange={(e) => setTempKey(e.target.value)}
-                                  placeholder={tempProvider === 'openai' ? 'sk-...' : 'sk-ant-...'}
+                                  placeholder={(API_PROVIDERS.find((p) => p.value === tempProvider) || {}).placeholder || ''}
                                   className="w-full pl-3 pr-10 py-2 bg-card border border-line rounded-md text-ink text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500"
                                 />
                                 <button
@@ -36171,12 +36192,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="button"
                               onClick={() => {
                                 const trimmedKey = tempKey.trim();
-                                if (tempProvider === 'openai' && !trimmedKey.startsWith('sk-')) {
-                                  addToast('OpenAI API key must start with "sk-".', 'error');
+                                const selectedProvider = API_PROVIDERS.find((p) => p.value === tempProvider);
+                                if (!selectedProvider) {
+                                  // Clearing the provider clears the key too, so a
+                                  // stale key can't outlive the provider it belonged to.
+                                  setApiProvider('');
+                                  setApiKey('');
+                                  setKey('apiProvider', '');
+                                  sessionStorage.removeItem('apiKey');
+                                  addToast('API provider cleared.', 'success');
+                                  navigateTo('encounter');
                                   return;
                                 }
-                                if (tempProvider === 'anthropic' && !trimmedKey.startsWith('sk-ant-')) {
-                                  addToast('Anthropic API key must start with "sk-ant-".', 'error');
+                                if (!trimmedKey.startsWith(selectedProvider.keyPrefix)) {
+                                  addToast(`${selectedProvider.label} key must start with "${selectedProvider.keyPrefix}".`, 'error');
                                   return;
                                 }
                                 setApiProvider(tempProvider);

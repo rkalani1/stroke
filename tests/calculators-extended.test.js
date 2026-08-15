@@ -21,7 +21,9 @@ import {
   computeLKWCountdown,
   evaluateCRAOTreatment,
   calculateSeLECTScore,
-  calculateEDEMAScore
+  calculateEDEMAScore,
+  AI_PROVIDERS,
+  getAIConfiguration
 } from '../src/calculators-extended.js';
 
 describe('evaluateDAWN', () => {
@@ -472,5 +474,100 @@ describe('calculateEDEMAScore', () => {
 
   it('returns null for non-numeric NIHSS', () => {
     expect(calculateEDEMAScore({})).toBeNull();
+  });
+});
+
+describe('BYOK AI provider configuration', () => {
+  const PREFIX = 'strokeApp:';
+
+  const withBrowserStorage = (setup, assert) => {
+    const local = new Map();
+    const session = new Map();
+    const store = (map) => ({
+      getItem: (k) => (map.has(k) ? map.get(k) : null),
+      setItem: (k, v) => map.set(k, String(v)),
+      removeItem: (k) => map.delete(k)
+    });
+    const prior = globalThis.window;
+    globalThis.window = { localStorage: store(local), sessionStorage: store(session) };
+    try {
+      setup(local, session);
+      assert(getAIConfiguration(), local, session);
+    } finally {
+      if (prior === undefined) delete globalThis.window;
+      else globalThis.window = prior;
+    }
+  };
+
+  it('offers exactly the four supported providers', () => {
+    expect(AI_PROVIDERS).toEqual(['openai', 'anthropic', 'gemini', 'grok']);
+  });
+
+  it('no longer offers the retired mock provider', () => {
+    expect(AI_PROVIDERS).not.toContain('mock');
+  });
+
+  it.each(AI_PROVIDERS)('reads back a stored %s provider', (provider) => {
+    withBrowserStorage(
+      (local, session) => {
+        local.set(PREFIX + 'apiProvider', JSON.stringify(provider));
+        session.set('apiKey', 'test-key');
+      },
+      (config) => {
+        expect(config.provider).toBe(provider);
+        expect(config.apiKey).toBe('test-key');
+      }
+    );
+  });
+
+  it('normalizes a legacy "mock" provider to unconfigured', () => {
+    withBrowserStorage(
+      (local) => local.set(PREFIX + 'apiProvider', JSON.stringify('mock')),
+      (config) => expect(config.provider).toBe('')
+    );
+  });
+
+  it('normalizes an unknown provider to unconfigured', () => {
+    withBrowserStorage(
+      (local) => local.set(PREFIX + 'apiProvider', JSON.stringify('some-other-vendor')),
+      (config) => expect(config.provider).toBe('')
+    );
+  });
+
+  it('reports unconfigured when nothing is stored', () => {
+    withBrowserStorage(
+      () => {},
+      (config) => expect(config).toEqual({ provider: '', apiKey: '' })
+    );
+  });
+
+  it('never returns a key from localStorage, and evicts one found there', () => {
+    withBrowserStorage(
+      (local) => {
+        local.set(PREFIX + 'apiProvider', JSON.stringify('gemini'));
+        local.set(PREFIX + 'apiKey', 'AIzaLEAKED');
+      },
+      (config, local) => {
+        expect(config.apiKey).toBe('');
+        expect(local.has(PREFIX + 'apiKey')).toBe(false);
+      }
+    );
+  });
+
+  it('survives malformed JSON in storage', () => {
+    withBrowserStorage(
+      (local) => local.set(PREFIX + 'apiProvider', '{not json'),
+      (config) => expect(config).toEqual({ provider: '', apiKey: '' })
+    );
+  });
+
+  it('reports unconfigured outside a browser', () => {
+    const prior = globalThis.window;
+    delete globalThis.window;
+    try {
+      expect(getAIConfiguration()).toEqual({ provider: '', apiKey: '' });
+    } finally {
+      if (prior !== undefined) globalThis.window = prior;
+    }
   });
 });

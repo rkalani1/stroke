@@ -1342,22 +1342,30 @@ export const evaluateBostonCAA20 = ({ age, lobarICH, corticalSiderosis, lobarMic
 // =====================================================================
 // client-side BYOK configuration helper
 // =====================================================================
+// Providers offered in Settings → API Configuration. Kept in sync with
+// API_PROVIDERS in src/app.jsx, which owns the UI side of the same list.
+// A provider outside this set — including the retired 'mock' demo entry —
+// reads back as '' (unconfigured) so a caller can never dispatch on it.
+export const AI_PROVIDERS = ['openai', 'anthropic', 'gemini', 'grok'];
+
 export const getAIConfiguration = () => {
+  const unconfigured = { provider: '', apiKey: '' };
   if (typeof window === 'undefined' || !window.localStorage) {
-    return { provider: 'mock', apiKey: '' };
+    return unconfigured;
   }
   try {
     const prefix = 'strokeApp:';
     const providerRaw = window.localStorage.getItem(prefix + 'apiProvider');
     try { window.localStorage.removeItem(prefix + 'apiKey'); } catch (e) {}
     const keyRaw = window.sessionStorage.getItem('apiKey');
-    
+
     // localStorage stores JSON-stringified values if saved by setKey
-    const provider = providerRaw ? JSON.parse(providerRaw) : 'mock';
+    const stored = providerRaw ? JSON.parse(providerRaw) : '';
+    const provider = AI_PROVIDERS.includes(stored) ? stored : '';
     const apiKey = keyRaw || '';
     return { provider, apiKey };
   } catch (e) {
-    return { provider: 'mock', apiKey: '' };
+    return unconfigured;
   }
 };
 
