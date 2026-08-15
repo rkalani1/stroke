@@ -47,6 +47,7 @@ import {
   runEncounterOutput as runGatedEncounterOutput
 } from './encounter-output-gate.js';
 import { PocketCards } from './pocket-cards.jsx';
+import { FeedbackFooter } from './feedback.jsx';
 import { LandmarkTrialsCard } from './teaching.jsx';
 import Education, { EVDInfographic, ICPInfographic } from './education.jsx';
 /* v7 design primitives — single accent (cobalt), one alarm (crit), one alert (warn).
@@ -1051,6 +1052,15 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
 
         const RESEARCH_SUBTABS = ['guidelines', 'references', 'education'];
+
+        // Human-readable tab names, used by the suggestions-box footer so a
+        // submitted issue records which section the reader was looking at.
+        const TAB_LABELS = {
+          encounter: 'Encounter',
+          protocols: 'Protocols',
+          trials: 'Trials',
+          research: 'Guidelines & References'
+        };
 
         const LEGACY_MANAGEMENT_TABS = {
           ich: 'ich',
@@ -3584,8 +3594,8 @@ Clinician Name`;
             'EXPECTS': 'https://doi.org/10.1056/NEJMoa2504158',
             'CHABLIS-T II': 'https://doi.org/10.1016/S0140-6736(25)00145-7',
             'ANNEXA-I': 'https://doi.org/10.1056/NEJMoa2313040',
-            'CREST-2': 'https://doi.org/10.1056/NEJMoa2408498',
-            'ECST-2': 'https://doi.org/10.1016/S1474-4422(25)00049-6',
+            'CREST-2': 'https://doi.org/10.1056/NEJMoa2508800',
+            'ECST-2': 'https://doi.org/10.1016/S1474-4422(25)00107-3',
             'SELECT': 'https://doi.org/10.1056/NEJMoa2305049',
             'CHANCE-2': 'https://doi.org/10.1056/NEJMoa2111749',
             'CONVINCE': 'https://doi.org/10.1016/S0140-6736(24)00663-8',
@@ -16617,12 +16627,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             <div className="relative v7-skin">
               {/* v7: skip-link → semantic <main id="main">; cobalt accent, no link-* override */}
               <a href="#main" data-skip-tap className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-cobalt-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">Skip to main content</a>
-              {PUBLIC_DEMO_MODE && (
-                <div className="public-demo-mode-badge no-print" role="status" aria-label="Public synthetic demo mode">
-                  <span aria-hidden="true"></span>
-                  Demo mode
-                </div>
-              )}
               {protocolModal && (
                 <div className="clinician-only fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="protocol-modal-title" onClick={() => setProtocolModal(null)}>
                   <div className="w-full max-w-lg bg-white rounded-md shadow-xl border border-line dark:bg-card" onClick={(e) => e.stopPropagation()}>
@@ -30405,8 +30409,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li>• DAPT x 90 days (ASA + clopidogrel)</li>
                                 <li>• High-intensity statin (LDL &lt;70)</li>
                                 <li>• SBP &lt;140 mmHg</li>
-                                <li>• <strong>NO intracranial stenting</strong> (SAMMPRIS, CASSISS: stenting inferior to medical therapy)</li>
-                                <li className="text-slate-600 italic text-xs mt-1 dark:text-mute">Class III (Harm) for stenting — SAMMPRIS, CASSISS</li>
+                                <li>• <strong>NO intracranial stenting</strong> (SAMMPRIS: stenting worse than medical therapy; CASSISS: no benefit even with experienced operators — 8.0% vs 7.2%, HR 1.10, 95% CI 0.52–2.35, P=.82)</li>
+                                <li className="text-slate-600 italic text-xs mt-1 dark:text-mute">Class III for stenting — Harm per SAMMPRIS/VISSIT; no benefit per CASSISS</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
@@ -36172,6 +36176,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 )}
 
               </main>
+
+              {/* ===== SUGGESTIONS BOX — page footer, present on every tab ===== */}
+              <ErrorBoundary>
+                <FeedbackFooter
+                  appVersion={(typeof window !== 'undefined' && window.strokeAppStorage && window.strokeAppStorage.appVersion) || ''}
+                  tabLabel={TAB_LABELS[activeTab] || activeTab}
+                  onCopy={copyToClipboard}
+                />
+              </ErrorBoundary>
 
             </div>
 

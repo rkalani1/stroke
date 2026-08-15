@@ -1,0 +1,53 @@
+[
+  {
+    "id": "sahara",
+    "name": "SAHaRA",
+    "fullName": "Liberal or Restrictive Transfusion Strategy in Aneurysmal Subarachnoid Hemorrhage",
+    "category": "sah-critical-care",
+    "population": "n=742, critically ill adults, NIHSS all clinical grades, critical-care period after aSAH",
+    "finding": "Neutral: 33.5% vs 37.7%",
+    "teachingPoint": "A liberal (Hgb ≤10) transfusion threshold after aSAH did not improve 12-month outcome — restrictive transfusion remains reasonable.",
+    "PMID": "39655786",
+    "year": 2025,
+    "citationIds": [
+      "cit-sahara-2025"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "ultra-sah",
+    "name": "ULTRA",
+    "fullName": "Ultra-Early Tranexamic Acid After Subarachnoid Haemorrhage",
+    "category": "sah-critical-care",
+    "population": "n=955, adults, NIHSS all grades, immediately after diagnosis, until aneurysm treatment or 24 h",
+    "finding": "Neutral: 60% vs 64%",
+    "teachingPoint": "Routine ultra-early tranexamic acid is not indicated in aSAH — prioritise early aneurysm securing instead.",
+    "PMID": "33357465",
+    "year": 2021,
+    "citationIds": [
+      "cit-ultra-2021"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "earlydrain",
+    "name": "EARLYDRAIN",
+    "fullName": "Effectiveness of Lumbar Cerebrospinal Fluid Drain Among Patients With Aneurysmal Subarachnoid Hemorrhage",
+    "category": "sah-critical-care",
+    "population": "n=287, median 55 (IQR 48-63); 68.6% female, NIHSS all clinical grades, lumbar drain started within 72 h of SAH, after aneurysm securing within 48 h",
+    "finding": "Favors lumbar drain: 32.6% vs 44.8%",
+    "teachingPoint": "Prophylactic early lumbar drainage after aneurysm securing reduced secondary infarction and unfavorable 6-month outcome.",
+    "PMID": "37330974",
+    "year": 2023,
+    "citationIds": [
+      "cit-earlydrain-2023"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

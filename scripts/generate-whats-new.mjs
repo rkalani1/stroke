@@ -458,11 +458,29 @@ function main() {
       topic,
       topicLabel: TOPIC_LABELS[topic] || 'Stroke',
       journal: (entry && entry.journal) || study.journalRaw,
-      year: study.year,
+      // Same override rule as journal: when the briefing's year is a placeholder
+      // taken from a publisher homepage URL, the verified record is the truth.
+      year: (isVerified && entry.verifiedYear) || study.year,
       practiceImpact: cleanPracticeImpact(study.bottomLine),
       result: {
         effect: extractEffect(study),
-        direction: inferDirection(study)
+        // CLINICAL-SAFETY INVARIANT (extends the PMID and appraisal.results rules above):
+        // direction is an efficacy CLAIM. inferDirection reads the briefing's prose, and that
+        // prose carries generic clinical-implications boilerplate ("can yield meaningful clinical
+        // benefits and reduce long-term morbidity") which trips the benefit regex regardless of
+        // what the trial actually found. For an entry we could not resolve to a PubMed record we
+        // have no way to check that claim, so we do not make it. CHARM is the worked example:
+        // stopped early, neutral primary endpoint, numerically higher mortality — yet the
+        // briefing prose alone infers 'benefit'.
+        // A cache entry may PIN the direction (entry.verifiedDirection) when the
+        // PubMed abstract states the primary result and the briefing prose would
+        // infer the opposite. CHARM is exactly that case: neutral primary endpoint
+        // and numerically higher mortality, but boilerplate prose reading as benefit.
+        // A pinned value always wins; otherwise fall back to prose inference, and
+        // for unverified entries we make no claim at all.
+        direction: isVerified
+          ? (entry.verifiedDirection || inferDirection(study))
+          : 'unknown'
       },
       certainty: inferCertainty(study, evidenceType),
       appraisal: {

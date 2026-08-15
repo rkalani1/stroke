@@ -202,12 +202,12 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
 
     it('verifies expected exact line count bounds for all 6 snapshots', () => {
       const baselineCounts = {
-        ich: 579,
-        ischemic: 1449,
-        sah: 234,
-        tia: 201,
-        cvt: 121,
-        calculators: 794
+        ich: 578,
+        ischemic: 1448,
+        sah: 233,
+        tia: 200,
+        cvt: 120,
+        calculators: 793
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);
@@ -334,7 +334,7 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       const bundlePath = path.join(REPO_ROOT, 'content', 'bundle.json');
       const bundle = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
       expect(bundle.guidelines?.length).toBe(11);
-      expect(bundle.trials?.length).toBe(71);
+      expect(bundle.trials?.length).toBe(113);
       expect(bundle.education?.length).toBeGreaterThanOrEqual(32);
       expect(bundle.calculators?.length).toBe(34);
       expect(bundle.references?.length).toBe(18);
@@ -352,7 +352,7 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       const json = JSON.parse(res.stdout);
       expect(json.errors.length).toBe(0);
       expect(json.counts.guidelines).toBe(11);
-      expect(json.counts.trials).toBe(71);
+      expect(json.counts.trials).toBe(113);
       expect(json.counts.education).toBeGreaterThanOrEqual(32);
       expect(json.counts.calculators).toBe(34);
       expect(json.counts.references).toBe(18);

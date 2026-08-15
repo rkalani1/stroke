@@ -1,0 +1,19 @@
+[
+  {
+    "id": "vns-rehab",
+    "name": "VNS-REHAB",
+    "fullName": "Vagus Nerve Stimulation Paired with Rehabilitation for Upper Limb Motor Function after Ischaemic Stroke",
+    "category": "rehabilitation",
+    "population": "n=108, adults, NIHSS moderate-to-severe arm weakness (baseline Fugl-Meyer Upper Extremity 20-50), at least 9 months after ischemic stroke — the CHRONIC phase",
+    "finding": "Favors paired VNS",
+    "teachingPoint": "Paired vagus nerve stimulation improved chronic post-stroke upper-limb impairment versus sham in a rigorous implanted-control design.",
+    "PMID": "33894832",
+    "year": 2021,
+    "citationIds": [
+      "cit-vns-rehab-2021"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

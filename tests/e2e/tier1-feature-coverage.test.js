@@ -548,7 +548,7 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       const json = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/bundle.json'), 'utf8'));
       const { guidelines, trials, education, calculators, references } = json._meta.counts;
       expect(guidelines).toBe(11);
-      expect(trials).toBe(71);
+      expect(trials).toBe(113);
       expect(education).toBeGreaterThanOrEqual(32);
       expect(calculators).toBe(34);
       expect(references).toBe(18);
@@ -618,9 +618,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(result.stdout).toContain('Evidence Atlas validation passed');
     });
 
-    it('F14-T1.2: Evidence Atlas contains exactly 10 active trials and 71 completed trials', () => {
+    it('F14-T1.2: Evidence Atlas contains exactly 10 active trials and 113 completed trials', () => {
       expect(activeTrials.length).toBe(10);
-      expect(completedTrials.length).toBe(71);
+      expect(completedTrials.length).toBe(113);
     });
 
     it('F14-T1.3: Matcher engine coverage achieves 100% (50/50 criteria and 16/16 exclusions)', () => {

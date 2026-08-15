@@ -9,27 +9,21 @@ import {
   BasilarArteryOcclusionCard,
   DmvoMevoManagementCard,
   ExtendedWindowPerfusionCard,
-  CraoThrombolysisCard,
   IchBloodPressureCard,
   AnticoagulationReversalCard,
   AneurysmalSahCard,
   MalignantInfarctionCard,
-  EdemaSwellingRiskCard,
   BrainDeathCard,
   EVDInfographic,
   ICPInfographic,
   AfibAnticoagTimingCard,
   DaptRegimensCard,
-  FactorXiaInhibitorsCard,
   LipidManagementCard,
   MetabolicStrokePreventionCard,
   CarotidStenosisCard,
-  AspirinFailureCard,
-  CtpGhostCoreCard,
   VesselWallMriCard,
   CryptogenicStrokeEsusCard,
   PfoClosureCard,
-  CerebralAmyloidAngiopathyCard,
   RcvsCard,
   CadasilCarasilCard,
   MoyamoyaDiseaseCard,
@@ -47,6 +41,14 @@ import {
   VascularTerritoryAtlasCard,
   StkCoreMeasuresCard,
   AntiepilepticDrugsCard,
+  DeviceDetectedSubclinicalAfCard,
+  IchSurgicalDecisionMakingCard,
+  EvtPeriproceduralCareCard,
+  IntracranialAtherosclerosisCard,
+  UnrupturedIntracranialAneurysmCard,
+  PrehospitalTriageSystemsCard,
+  SevereStrokeCriticalCareCard,
+  PostStrokeRecoveryCard,
   calculateAstralScore,
   getAstralRisk,
   calculatePlanScore,
@@ -64,14 +66,12 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
     { id: 'basilar-artery-occlusion', Component: BasilarArteryOcclusionCard, name: 'Basilar Artery Occlusion' },
     { id: 'dmvo-mevo-management', Component: DmvoMevoManagementCard, name: 'Distal Medium Vessel Occlusions' },
     { id: 'extended-window-perfusion', Component: ExtendedWindowPerfusionCard, name: 'Extended Window Perfusion & Mismatch' },
-    { id: 'crao-thrombolysis', Component: CraoThrombolysisCard, name: 'CRAO Acute Thrombolysis' },
 
     // Domain 2: Neurocritical Care, Hemorrhagic Stroke & ICP
     { id: 'ich-blood-pressure', Component: IchBloodPressureCard, name: 'Acute ICH Blood Pressure & Expansion Mitigation' },
     { id: 'anticoagulation-reversal', Component: AnticoagulationReversalCard, name: 'Anticoagulation Reversal' },
     { id: 'aneurysmal-sah-management', Component: AneurysmalSahCard, name: 'Aneurysmal SAH' },
     { id: 'malignant-infarction', Component: MalignantInfarctionCard, name: 'Malignant MCA Infarction & DHC' },
-    { id: 'edema-swelling-risk', Component: EdemaSwellingRiskCard, name: 'EDEMA Score & Malignant Swelling' },
     { id: 'brain-death', Component: BrainDeathCard, name: '2023 Unified Brain Death' },
     { id: 'evd-maintenance', Component: EVDInfographic, name: 'EVD Maintenance Infographic' },
     { id: 'herniation-icp', Component: ICPInfographic, name: 'Intracranial Hypertension & Herniation' },
@@ -79,18 +79,14 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
     // Domain 3: Secondary Prevention & Precision Antithrombotics
     { id: 'afib-anticoag-timing', Component: AfibAnticoagTimingCard, name: 'AFib Anticoagulation Restart Timing' },
     { id: 'dapt-regimens', Component: DaptRegimensCard, name: 'DAPT & Pharmacogenomics' },
-    { id: 'factor-xia-inhibitors', Component: FactorXiaInhibitorsCard, name: 'Novel Factor XI/XIa Inhibitors' },
     { id: 'lipid-management-after-stroke', Component: LipidManagementCard, name: 'Lipid Management After Stroke' },
     { id: 'metabolic-stroke-prevention', Component: MetabolicStrokePreventionCard, name: 'Metabolic & Vascular Risk Modulation' },
     { id: 'carotid-stenosis-management', Component: CarotidStenosisCard, name: 'Carotid Stenosis Management' },
-    { id: 'aspirin-failure', Component: AspirinFailureCard, name: 'Aspirin Failure & Resistance' },
 
     // Domain 4: Diagnostic Algorithms, Neuroimaging & ESUS
-    { id: 'ctp-ghost-core', Component: CtpGhostCoreCard, name: 'CTP Ghost Core & Penumbra Nuances' },
     { id: 'vessel-wall-mri', Component: VesselWallMriCard, name: 'Vessel Wall MRI Differential' },
     { id: 'cryptogenic-stroke-esus', Component: CryptogenicStrokeEsusCard, name: 'Cryptogenic Stroke & ESUS' },
     { id: 'pfo-closure', Component: PfoClosureCard, name: 'PFO Closure & LAAO Pathways' },
-    { id: 'cerebral-amyloid-angiopathy', Component: CerebralAmyloidAngiopathyCard, name: 'CAA Boston Criteria v2.0' },
     { id: 'rcvs', Component: RcvsCard, name: 'RCVS Diagnostic Flowchart' },
 
     // Domain 5: Rare Vasculopathies & Special Populations
@@ -112,6 +108,30 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
     { id: 'vascular-territory-atlas', Component: VascularTerritoryAtlasCard, name: 'Vascular Territory Atlas' },
     { id: 'stk-core-measures', Component: StkCoreMeasuresCard, name: 'Stroke Core Measures' },
     { id: 'antiepileptic-drugs', Component: AntiepilepticDrugsCard, name: 'Antiepileptic Drugs' },
+
+    // Added with the 2026-08 education expansion
+    { id: 'post-stroke-recovery', Component: PostStrokeRecoveryCard, name: "Post-Stroke Recovery, Cognition & Mood" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'severe-stroke-critical-care', Component: SevereStrokeCriticalCareCard, name: "Neurocritical Care of Severe Stroke" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'prehospital-triage-systems', Component: PrehospitalTriageSystemsCard, name: "Prehospital Triage & Stroke Systems of Care" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'unruptured-intracranial-aneurysm', Component: UnrupturedIntracranialAneurysmCard, name: "Unruptured Intracranial Aneurysm: Rupture Risk vs Treatment Risk" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'intracranial-atherosclerosis', Component: IntracranialAtherosclerosisCard, name: "Intracranial Atherosclerotic Disease" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'evt-periprocedural-care', Component: EvtPeriproceduralCareCard, name: "EVT Technique & Post-Thrombectomy Care" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'ich-surgical-decision-making', Component: IchSurgicalDecisionMakingCard, name: "ICH Surgical Decision-Making" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'device-detected-subclinical-af', Component: DeviceDetectedSubclinicalAfCard, name: "Device-Detected & Subclinical AF" },
   ];
 
   describe('1. SSR & HTML Rendering Integrity', () => {
@@ -177,8 +197,8 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
     const bundlePath = path.resolve(process.cwd(), 'content/bundle.json');
     const bundleData = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
 
-    it('verifies content/bundle.json contains all 46 education modules', () => {
-      expect(bundleData.education.length).toBe(46);
+    it('verifies content/bundle.json contains all 48 education modules', () => {
+      expect(bundleData.education.length).toBe(48);
     });
 
     ALL_CURRICULUM_CARDS.forEach(({ id }) => {

@@ -1,0 +1,19 @@
+[
+  {
+    "id": "invictus",
+    "name": "INVICTUS",
+    "fullName": "Rivaroxaban in Rheumatic Heart Disease-Associated Atrial Fibrillation",
+    "category": "valvular-rheumatic-af",
+    "population": "n=4531, mean 50.5; 72.3% women, NIHSS AF with echocardiographic rheumatic heart disease, restricted mean survival analysis over ~4.6 years",
+    "finding": "VKA SUPERIOR: restricted mean survival 1599 d (rivaroxaban) vs 1675 d (VKA)",
+    "teachingPoint": "Use warfarin, not a DOAC, for AF with rheumatic mitral valve disease — rivaroxaban had worse cardiovascular outcomes and higher mortality.",
+    "PMID": "36036525",
+    "year": 2022,
+    "citationIds": [
+      "cit-invictus-2022"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

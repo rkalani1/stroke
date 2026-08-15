@@ -1,0 +1,19 @@
+[
+  {
+    "id": "to-act",
+    "name": "TO-ACT",
+    "fullName": "Endovascular Treatment With Medical Management vs Standard Care in Severe Cerebral Venous Thrombosis",
+    "category": "cvt",
+    "population": "n=67, adults, NIHSS severe CVT with >=1 risk factor for poor outcome, EVT within 24 h of randomization; 12-month outcome",
+    "finding": "No benefit — HALTED after the first interim analysis for futility",
+    "teachingPoint": "Endovascular therapy for severe CVT showed no benefit and was halted for futility — anticoagulation remains first-line.",
+    "PMID": "32421159",
+    "year": 2020,
+    "citationIds": [
+      "cit-to-act-2020"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

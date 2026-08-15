@@ -1,0 +1,36 @@
+[
+  {
+    "id": "intrepid",
+    "name": "INTREPID",
+    "fullName": "Fever Prevention in Patients With Acute Vascular Brain Injury",
+    "category": "neurocritical-care",
+    "population": "n=677, median 62; 51% female, NIHSS critically ill: 254 ischemic stroke, 223 ICH, 200 SAH, up to 14 days or ICU discharge",
+    "finding": "Fever burden markedly reduced — prevention is achievable",
+    "teachingPoint": "Device-based fever prevention reduced fever burden but did not improve 3-month function; halted for futility.",
+    "PMID": "39320879",
+    "year": 2024,
+    "citationIds": [
+      "cit-intrepid-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "setpoint2",
+    "name": "SETPOINT2",
+    "fullName": "Early vs Standard Approach to Tracheostomy in Severe Stroke Receiving Mechanical Ventilation",
+    "category": "neurocritical-care",
+    "population": "n=382, median 59; 49.8% women, NIHSS severe acute ischemic or hemorrhagic stroke requiring invasive ventilation, 6-month outcome",
+    "finding": "No significant benefit from early tracheostomy",
+    "teachingPoint": "Early (<=5 day) tracheostomy did not improve 6-month outcome in ventilated severe stroke; a third of controls avoided tracheostomy entirely.",
+    "PMID": "35506515",
+    "year": 2022,
+    "citationIds": [
+      "cit-setpoint2-2022"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

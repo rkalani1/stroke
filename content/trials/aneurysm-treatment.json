@@ -1,0 +1,19 @@
+[
+  {
+    "id": "isat-18yr",
+    "name": "ISAT (18-year)",
+    "fullName": "Durability of Endovascular Coiling versus Neurosurgical Clipping of Ruptured Cerebral Aneurysms — 18-year follow-up of the UK ISAT cohort",
+    "category": "aneurysm-treatment",
+    "population": "n=1644, adults, NIHSS treatment equipoise between clipping and coiling, randomized 1994-2002; followed 10.0-18.5 years",
+    "finding": "Favors coiling: alive and independent more likely after coiling",
+    "teachingPoint": "Coiling retains a survival and disability-free-survival advantage over clipping at 10+ years when both are feasible.",
+    "PMID": "25465111",
+    "year": 2015,
+    "citationIds": [
+      "cit-isat-18yr-2015"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

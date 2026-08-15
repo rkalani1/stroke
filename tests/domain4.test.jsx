@@ -2,21 +2,17 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import {
-  CtpGhostCoreCard,
   VesselWallMriCard,
   CryptogenicStrokeEsusCard,
-  PfoClosureCard,
-  CerebralAmyloidAngiopathyCard
+  PfoClosureCard
 } from '../src/education.jsx';
 import { citations } from '../src/evidence/citations.js';
 
 describe('Domain 4: Diagnostic Algorithms, Neuroimaging Pearls & Cryptogenic Stroke', () => {
   const domain4Cards = [
-    { id: 'ctp-ghost-core', Component: CtpGhostCoreCard, name: 'CTP Ghost Core' },
     { id: 'vessel-wall-mri', Component: VesselWallMriCard, name: 'Vessel Wall MRI' },
     { id: 'cryptogenic-stroke-esus', Component: CryptogenicStrokeEsusCard, name: 'Cryptogenic Stroke & ESUS' },
     { id: 'pfo-closure', Component: PfoClosureCard, name: 'PFO Closure & LAAO' },
-    { id: 'cerebral-amyloid-angiopathy', Component: CerebralAmyloidAngiopathyCard, name: 'Cerebral Amyloid Angiopathy Boston 2.0' },
   ];
 
   describe('1. Card Rendering & HTML Integrity', () => {
@@ -46,23 +42,6 @@ describe('Domain 4: Diagnostic Algorithms, Neuroimaging Pearls & Cryptogenic Str
   });
 
   describe('3. Clinical Content & Evidence Verification', () => {
-    it('verifies CTP Ghost Core card contains core thresholds, HIR, and artifact pearls', () => {
-      const html = ReactDOMServer.renderToString(React.createElement(CtpGhostCoreCard));
-      expect(html).toContain('rCBF');
-      expect(html).toContain('&lt;30%');
-      expect(html).toContain('ADC');
-      expect(html).toContain('&lt;620');
-      expect(html).toContain('Tmax &gt;6s');
-      expect(html).toContain('Tmax &gt;10s');
-      expect(html).toContain('HIR');
-      expect(html).toContain('Ghost Core');
-      expect(html).toContain('Campbell');
-      expect(html).toContain('Boned');
-      expect(html).toContain('Carotid Stenosis');
-      expect(html).toContain('Pseudo-Penumbra');
-      expect(html).toContain('Bolus Truncation');
-    });
-
     it('verifies Vessel Wall MRI card contains 5-arteriopathy differential matrix', () => {
       const html = ReactDOMServer.renderToString(React.createElement(VesselWallMriCard));
       expect(html).toContain('ICAD');
@@ -107,20 +86,6 @@ describe('Domain 4: Diagnostic Algorithms, Neuroimaging Pearls & Cryptogenic Str
       expect(html).toContain('PRAGUE-17');
     });
 
-    it('verifies CAA card contains Boston Criteria v2.0, cSS risk, amyloid spells, and trials', () => {
-      const html = ReactDOMServer.renderToString(React.createElement(CerebralAmyloidAngiopathyCard));
-      expect(html).toContain('Boston Criteria v2.0');
-      expect(html).toContain('Charidimou');
-      expect(html).toContain('Cortical Superficial Siderosis');
-      expect(html).toContain('cSS');
-      expect(html).toContain('Amyloid Spells');
-      expect(html).toContain('TFNE');
-      expect(html).toContain('PRESTIGE-AF');
-      expect(html).toContain('SoSTART');
-      expect(html).toContain('ENRICH-AF');
-      expect(html).toContain('Centrum Semiovale');
-      expect(html).toContain('Multispot');
-    });
   });
 
   describe('4. Landmark Citation Registry Verification', () => {

@@ -1,0 +1,19 @@
+[
+  {
+    "id": "aramis",
+    "name": "ARAMIS",
+    "fullName": "Dual Antiplatelet Therapy vs Alteplase for Patients With Minor Nondisabling Acute Ischemic Stroke",
+    "category": "minor-stroke-thrombolysis",
+    "population": "n=760, median 64 (IQR 57-71); 31.0% women, NIHSS NIHSS ≤5, with ≤1 point on key single items (median 2), ≤4.5 h",
+    "finding": "Non-inferior: 93.8% (DAPT) vs 91.4% (alteplase)",
+    "teachingPoint": "For genuinely non-disabling minor stroke within 4.5 h, DAPT is a reasonable alternative to IV thrombolysis.",
+    "PMID": "37367978",
+    "year": 2023,
+    "citationIds": [
+      "cit-aramis-2023"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

@@ -1,0 +1,36 @@
+[
+  {
+    "id": "angel-reboot",
+    "name": "ANGEL-REBOOT",
+    "fullName": "Bailout Intracranial Angioplasty or Stenting Following Thrombectomy for Acute Large-Vessel Occlusion",
+    "category": "evt-technique",
+    "population": "n=348, median 63 (IQR 55-69); 74% male, NIHSS not restricted, ≤24 h from onset",
+    "finding": "Neutral, numerically worse with bailout",
+    "teachingPoint": "Routine bailout angioplasty/stenting after failed or unstable thrombectomy did not improve outcome and increased dissection and hemorrhage.",
+    "PMID": "38914085",
+    "year": 2024,
+    "citationIds": [
+      "cit-angel-reboot-2024"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "protect-mt",
+    "name": "PROTECT-MT",
+    "fullName": "Balloon Guide Catheters for Endovascular Thrombectomy in Acute Ischaemic Stroke Due to Large-Vessel Occlusion",
+    "category": "evt-technique",
+    "population": "n=329, median 69 (IQR 59-76); 61% male, NIHSS not restricted, ≤24 h from onset",
+    "finding": "WORSE with balloon guide catheter",
+    "teachingPoint": "Balloon guide catheters led to worse 90-day function than conventional guide catheters; the trial was halted for safety.",
+    "PMID": "39579782",
+    "year": 2024,
+    "citationIds": [
+      "cit-protect-mt-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

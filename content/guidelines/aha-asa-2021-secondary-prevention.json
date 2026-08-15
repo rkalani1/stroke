@@ -29,7 +29,8 @@
       "cit-chance2-2021"
     ],
     "caveats": [
-      "Bleeding risk increases with duration; do not extend DAPT beyond 21-30 days for this indication.",
+      "Duration is indication-specific. For THIS indication (minor stroke / high-risk TIA) the trial-supported courses are aspirin+clopidogrel 21 days or aspirin+ticagrelor 30 days; do not extend beyond 30 days.",
+      "A separate indication permits longer DAPT: severe intracranial stenosis 70-99% within 30 days of the event allows aspirin+clopidogrel up to 90 days. Beyond 90 days, or triple antiplatelet therapy, carries excess hemorrhage risk. Source of truth for both bounds: src/guidelines/secondary-prevention-2021.json.",
       "INSPIRES extended the window to 72 h in eligible mild stroke / high-risk TIA.",
       "For CYP2C19 loss-of-function carriers, ticagrelor (CHANCE-2) is preferred over clopidogrel."
     ],
@@ -66,7 +67,8 @@
     ],
     "caveats": [
       "Reserve longer delay for very severe stroke or extensive hemorrhagic transformation; confirm absence of significant hemorrhagic transformation on follow-up imaging before starting in moderate-large stroke.",
-      "Early initiation (≤4 d) is non-inferior across severities (OPTIMAS) and superior at 30 d in pooled IPD (CATALYST); individualize for the highest-risk presentations."
+      "Early initiation (≤4 d) is non-inferior across severities (OPTIMAS) and superior at 30 d in pooled IPD (CATALYST); individualize for the highest-risk presentations.",
+      "Scope note: this COR IIa statement covers the early-start question. The wider 2-14 day window carries a separate, weaker COR IIb statement — the two are not in conflict. Source of truth: src/guidelines/secondary-prevention-2021.json."
     ],
     "setting": "inpatient",
     "lastReviewed": "2026-04-25",

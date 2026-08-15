@@ -3,8 +3,8 @@
     "endpoint": "topics",
     "schemaVersion": "1.0.0",
     "appVersion": "6.11.8",
-    "checksum": "sha256:27e65197f9799831d46e8a162d68380d",
-    "count": 30,
+    "checksum": "sha256:cc57430cea73d2ebd7d2220d324fd24e",
+    "count": 50,
     "source": "Evidence atlas topics bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
@@ -31,6 +31,24 @@
     {
       "id": "tnk-vs-alteplase",
       "label": "Tenecteplase vs alteplase",
+      "parentId": "acute-ischemic-stroke",
+      "notes": ""
+    },
+    {
+      "id": "novel-thrombolytics",
+      "label": "Novel thrombolytics (reteplase, non-immunogenic staphylokinase)",
+      "parentId": "acute-ischemic-stroke",
+      "notes": ""
+    },
+    {
+      "id": "minor-stroke-thrombolysis",
+      "label": "Thrombolysis vs antiplatelets in minor non-disabling stroke",
+      "parentId": "acute-ischemic-stroke",
+      "notes": ""
+    },
+    {
+      "id": "evt-technique",
+      "label": "EVT technique & adjuncts (catheters, bailout stenting, anesthesia)",
       "parentId": "acute-ischemic-stroke",
       "notes": ""
     },
@@ -119,8 +137,44 @@
       "notes": ""
     },
     {
+      "id": "ich-hemostatic",
+      "label": "ICH hemostatic therapy (antifibrinolytics, factor concentrates)",
+      "parentId": "ich",
+      "notes": ""
+    },
+    {
+      "id": "ivh-management",
+      "label": "Intraventricular hemorrhage & EVD thrombolysis",
+      "parentId": "ich",
+      "notes": ""
+    },
+    {
+      "id": "prehospital-stroke-care",
+      "label": "Prehospital stroke care (mobile stroke units, ambulance triage & BP)",
+      "parentId": "",
+      "notes": ""
+    },
+    {
       "id": "sah",
       "label": "Aneurysmal subarachnoid hemorrhage",
+      "parentId": "",
+      "notes": ""
+    },
+    {
+      "id": "sah-critical-care",
+      "label": "aSAH critical care (transfusion, CSF drainage, antifibrinolytics)",
+      "parentId": "sah",
+      "notes": ""
+    },
+    {
+      "id": "aneurysm-treatment",
+      "label": "Ruptured aneurysm securing (clip vs coil)",
+      "parentId": "sah",
+      "notes": ""
+    },
+    {
+      "id": "unruptured-aneurysms",
+      "label": "Unruptured intracranial aneurysms — rupture risk & management",
       "parentId": "",
       "notes": ""
     },
@@ -173,9 +227,75 @@
       "notes": ""
     },
     {
+      "id": "lacunar-svd-prevention",
+      "label": "Lacunar stroke & small-vessel disease — secondary prevention",
+      "parentId": "secondary-prevention",
+      "notes": ""
+    },
+    {
+      "id": "subclinical-af",
+      "label": "Device-detected / subclinical atrial fibrillation",
+      "parentId": "secondary-prevention",
+      "notes": ""
+    },
+    {
+      "id": "laa-occlusion",
+      "label": "Left atrial appendage occlusion",
+      "parentId": "secondary-prevention",
+      "notes": ""
+    },
+    {
+      "id": "valvular-rheumatic-af",
+      "label": "Valvular & rheumatic atrial fibrillation",
+      "parentId": "secondary-prevention",
+      "notes": ""
+    },
+    {
+      "id": "inflammation-stroke-prevention",
+      "label": "Anti-inflammatory therapy for stroke prevention (colchicine)",
+      "parentId": "secondary-prevention",
+      "notes": ""
+    },
+    {
+      "id": "factor-xi-inhibition",
+      "label": "Factor XI / XIa inhibition",
+      "parentId": "secondary-prevention",
+      "notes": ""
+    },
+    {
+      "id": "acute-antithrombotic-adjuncts",
+      "label": "Acute antithrombotic adjuncts (tirofiban, argatroban, eptifibatide)",
+      "parentId": "acute-ischemic-stroke",
+      "notes": ""
+    },
+    {
       "id": "rehabilitation",
       "label": "Stroke rehabilitation",
       "parentId": "",
+      "notes": ""
+    },
+    {
+      "id": "bp-targets-prevention",
+      "label": "Blood-pressure targets for vascular prevention",
+      "parentId": "secondary-prevention",
+      "notes": ""
+    },
+    {
+      "id": "malignant-edema",
+      "label": "Malignant cerebral edema — prevention & treatment",
+      "parentId": "acute-ischemic-stroke",
+      "notes": ""
+    },
+    {
+      "id": "neurocritical-care",
+      "label": "Neurocritical care of severe stroke (fever, airway, tracheostomy)",
+      "parentId": "",
+      "notes": ""
+    },
+    {
+      "id": "ec-ic-bypass",
+      "label": "EC-IC bypass for symptomatic occlusion",
+      "parentId": "icas-prevention",
       "notes": ""
     },
     {

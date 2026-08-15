@@ -1,6 +1,6 @@
 # What's New — source gaps (auto-verify checklist)
 
-These 29 of 50 briefing studies are displayed as **unverified**
+These 28 of 50 briefing studies are displayed as **unverified**
 ("Not yet PubMed-indexed") because they could not be auto-matched to a real
 PubMed PMID. They are NOT removed — they render with a neutral pending-index
 chip and a link to the briefing's own source, never a PubMed/PMID link.
@@ -52,14 +52,6 @@ Generated from: briefing-latest.md · verified-pmids.json
 | SISTER | `sister` | JAMA Neurology | https://jamanetwork.com/journals/jamaneurology |
 | STEP-Mild | `step-mild` | AHA/ESOC 2026 | https://www.ahajournals.org/ |
 | TELE-REHAB-2 | `tele-rehab-2` | The Lancet | https://www.thelancet.com/ |
-
-## Not yet PubMed-indexed (1)
-
-**To auto-verify:** Embed the article DOI in the source link (e.g. https://doi.org/10.xxxx/...) once the article is indexed.
-
-| Acronym | id | Journal (briefing) | Source link in briefing |
-|---|---|---|---|
-| BIIB093 | `biib093` | Stroke | https://www.ahajournals.org/ |
 
 ## Only a study protocol is indexed — results not yet published (2)
 

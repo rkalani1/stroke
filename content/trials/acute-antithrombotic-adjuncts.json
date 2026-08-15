@@ -1,0 +1,19 @@
+[
+  {
+    "id": "rescue-bt2",
+    "name": "RESCUE BT2",
+    "fullName": "Tirofiban for Stroke without Large or Medium-Sized Vessel Occlusion",
+    "category": "acute-antithrombotic-adjuncts",
+    "population": "n=1177, adults, NIHSS NIHSS ≥5 with at least one moderately-to-severely weak limb, four entry routes: ≤24 h and ineligible for reperfusion; progression at 24-96 h; early deterioration after thrombolysis; or no improvement 4-24 h after thrombolysis",
+    "finding": "Favors tirofiban: 29.1% vs 22.2%",
+    "teachingPoint": "IV tirofiban improved 90-day excellent outcome in non-occlusive, often progressive stroke, with inconsistent secondary endpoints.",
+    "PMID": "37256974",
+    "year": 2023,
+    "citationIds": [
+      "cit-rescue-bt2-2023"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

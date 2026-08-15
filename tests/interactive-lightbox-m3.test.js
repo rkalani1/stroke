@@ -35,14 +35,12 @@ describe('Milestone M3-1: Interactive Lightbox & Visual Asset Integration', () =
     expect(componentsContent).toContain('onError');
   });
 
-  it('integrates VisualAssetFigure across all 10 card views in education.jsx', () => {
+  it('integrates VisualAssetFigure across all 8 card views in education.jsx', () => {
     const assets = [
       'assets/toast_classification_infographic.png',
       'assets/dapt_flowchart_timeline.png',
       'assets/afib_timing_protocol.png',
-      'assets/crao_emergency_workflow.png',
       'assets/select_score_chart.png',
-      'assets/edema_swelling_risk.png',
       'assets/ischemic_core_penumbra_render.png',
       'assets/aspects_10_regions_render.png',
       'assets/evt_lvo_occlusion_sites.png',
@@ -54,7 +52,7 @@ describe('Milestone M3-1: Interactive Lightbox & Visual Asset Integration', () =
     });
   });
 
-  it('precaches all 20 visual asset PNG and SVG files in service-worker.js', () => {
+  it('precaches all 16 visual asset PNG and SVG files in service-worker.js', () => {
     const swAssets = [
       './assets/toast_classification_infographic.png',
       './assets/toast_classification_infographic.svg',
@@ -62,12 +60,8 @@ describe('Milestone M3-1: Interactive Lightbox & Visual Asset Integration', () =
       './assets/dapt_flowchart_timeline.svg',
       './assets/afib_timing_protocol.png',
       './assets/afib_timing_protocol.svg',
-      './assets/crao_emergency_workflow.png',
-      './assets/crao_emergency_workflow.svg',
       './assets/select_score_chart.png',
       './assets/select_score_chart.svg',
-      './assets/edema_swelling_risk.png',
-      './assets/edema_swelling_risk.svg',
       './assets/ischemic_core_penumbra_render.png',
       './assets/ischemic_core_penumbra_render.svg',
       './assets/aspects_10_regions_render.png',

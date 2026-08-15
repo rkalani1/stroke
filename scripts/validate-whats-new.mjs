@@ -109,6 +109,31 @@ async function main() {
     errors.push(`whats-new.json: count=${feed.count} does not match items.length=${feed.items.length}`);
   }
 
+  // ── Cache keys must be reachable ──────────────────────────────────────────
+  // The generator looks the cache up by the briefing study id (byId[study.id]).
+  // A cache key that matches no study is a SILENT failure: the entry — including
+  // a hand-verified PMID — is simply never read, and the study renders as
+  // "Not yet PubMed-indexed" with no error anywhere. That is how the CHARM entry
+  // (keyed by title slug while the study id had become 'biib093') sat unverified.
+  // Cross-check both directions so a re-key or an acronym-extraction change is loud.
+  const feedIds = new Set(feed.items.map((i) => i && i.id).filter(Boolean));
+  for (const key of Object.keys(byId)) {
+    if (!feedIds.has(key)) {
+      errors.push(
+        `verified-pmids.json/${key}: cache key matches no study id in whats-new.json — ` +
+          `the entry is unreachable and will be silently ignored by the generator`
+      );
+    }
+  }
+  for (const id of feedIds) {
+    if (!byId[id]) {
+      errors.push(
+        `whats-new/${id}: no verified-pmids.json entry — every briefing study needs a cache ` +
+          `entry (status 'verified' or 'quarantine'); a missing one is indistinguishable from an unresolved lookup`
+      );
+    }
+  }
+
   // Tier counts must match the actual item tiers.
   const actualVerified = feed.items.filter((i) => i && i.verificationStatus === 'verified').length;
   const actualUnverified = feed.items.length - actualVerified;

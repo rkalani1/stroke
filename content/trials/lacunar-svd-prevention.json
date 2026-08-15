@@ -1,0 +1,19 @@
+[
+  {
+    "id": "sps3",
+    "name": "SPS3",
+    "fullName": "Secondary Prevention of Small Subcortical Strokes — clopidogrel added to aspirin after lacunar stroke",
+    "category": "lacunar-svd-prevention",
+    "population": "n=3020, mean 63; 63% men, NIHSS recent symptomatic lacunar infarct, long-term secondary prevention; mean follow-up 3.4 years",
+    "finding": "Neutral: 2.5%/y (DAPT) vs 2.7%/y (aspirin)",
+    "teachingPoint": "Do not use long-term aspirin + clopidogrel after lacunar stroke — no benefit, doubled major bleeding, increased mortality.",
+    "PMID": "22931315",
+    "year": 2012,
+    "citationIds": [
+      "cit-sps3-2012"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

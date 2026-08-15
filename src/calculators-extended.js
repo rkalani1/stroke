@@ -839,7 +839,8 @@ export const dmvoEVTAdvisory = ({ occlusionLocation, nihss, deficitDisabling }) 
 // Argatroban or eptifibatide as adjunct vs placebo. STOPPED for futility — neither improved
 // outcome. MR CLEAN-MED (Lancet 2022, PMID 35202525) similarly showed periprocedural
 // heparin/aspirin during EVT increases sICH (stopped for harm).
-// NOTE: RESCUE BT2 (China, NEJM 2024) showed tirofiban benefit in non-cardioembolic AIS who
+// NOTE: RESCUE BT2 (China, NEJM 2023;388:2025-36, PMID 37256974) showed tirofiban benefit in
+  // ischemic stroke WITHOUT large- or medium-vessel occlusion (mostly small atherosclerotic infarcts) who
 // were INELIGIBLE for lytic/EVT — different population; do NOT extrapolate to lytic-eligible.
 export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyticIneligible }) => {
   if (ivLyticGiven === true) {
@@ -864,7 +865,7 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
     return {
       recommend: 'Tirofiban may be considered',
       drugs: ['tirofiban'],
-      rationale: 'RESCUE BT2 (NEJM 2023) showed improved mRS 0-3 with tirofiban in non-cardioembolic AIS who could not receive IV lytic or EVT. Distinct population from MOST.',
+      rationale: 'RESCUE BT2 (NEJM 2023) improved the primary endpoint of excellent outcome (mRS 0-1) at 90 days — 29.1% vs 22.2%, adjusted RR 1.26 (95% CI 1.04-1.53), p=0.02, though secondary endpoints were generally not consistent with the primary result — with tirofiban in non-cardioembolic AIS who could not receive IV lytic or EVT. Distinct population from MOST.',
       source: 'RESCUE BT2 NEJM 2023 (PMID 37256974)',
       class: 'Class 2b (selected non-cardioembolic, lytic/EVT-ineligible)'
     };
@@ -1107,7 +1108,7 @@ export const icadMedicalRegimen = ({ stenosisPercent, location, recurrentEvent, 
     applicable: true,
     severe,
     regimen,
-    avoidStenting: 'Stenting NOT recommended outside refractory cases. SAMMPRIS, VISSIT, CASSISS all showed inferiority.',
+    avoidStenting: 'Stenting NOT recommended outside refractory cases. SAMMPRIS and VISSIT showed net harm; CASSISS showed no benefit even with experienced operators and delayed treatment (8.0% vs 7.2%, HR 1.10, 95% CI 0.52-2.35, P=.82).',
     submaximalAngioplasty: severe ? 'Submaximal angioplasty without stent — observational data only; consider only at high-volume center for refractory cases or in trial.' : null,
     source: 'SAMMPRIS NEJM 2011/2014 (PMID 21899409); CASSISS JAMA 2022 (PMID 35943472); CSPS.com Lancet Neurol 2019 (PMID 31122494)',
     class: 'DAPT 90d Class 1; LDL <70 Class 1; cilostazol Class 2a for refractory'
@@ -1235,7 +1236,7 @@ export const arcadiaAdvisory = ({ ptfv1, ntProBNP, laVolumeIndex, laDiameterCmM2
     nextSteps: cardiopathyMarker
       ? '1) Implant ICM (Reveal LINQ or equivalent) — STROKE-AF showed AF in 12.1% even of non-cardioembolic strokes. 2) Continue antiplatelet (aspirin 81 mg). 3) Switch to OAC ONLY if AF detected with burden >24h or daily episodes.'
       : 'Standard secondary prevention (antiplatelet + statin + BP). Consider ICM if other clinical features suggest paroxysmal AF (elevated HAVOC score, atrial cardiopathy, recurrent embolic pattern, frequent palpitations).',
-    afBurdenThreshold: 'ARTESIA showed apixaban benefit in subclinical AF ≥6 min (mostly hours), but with bleeding cost. NOAH-AFNET-6 was neutral. Practical: trigger OAC at sustained AF >24h or daily episodes; shorter-burst subclinical AF = uncertain benefit.',
+    afBurdenThreshold: 'ARTESIA showed apixaban benefit in subclinical AF ≥6 min (mostly hours), but with bleeding cost. NOAH-AFNET 6 was neutral. Practical: trigger OAC at sustained AF >24h or daily episodes; shorter-burst subclinical AF = uncertain benefit.',
     source: 'ARCADIA JAMA 2024;331:573-81 (Kamel et al., PMID 38324415); ATTICUS NEJM Evid 2023 (PMID 38320511); STROKE-AF JAMA 2021 (PMID 34061145)',
     class: 'Class 3 (no benefit) for empiric OAC based on cardiopathy markers alone'
   };
@@ -1269,9 +1270,9 @@ export const afDetectionStrategy = ({ havocScore, strokeSubtype, hasICMAccess })
   return {
     strategy,
     evidence,
-    burdenThreshold: 'AF burden threshold for OAC initiation: sustained ≥24h or daily episodes (per ARTESIA/NOAH-AFNET-6 nuance). Shorter-burst subclinical AF = individualized.',
+    burdenThreshold: 'AF burden threshold for OAC initiation: sustained ≥24h or daily episodes (per ARTESIA/NOAH-AFNET 6 nuance). Shorter-burst subclinical AF = individualized.',
     nextSteps: 'If AF detected with burden ≥24h: initiate DOAC per ELAN/OPTIMAS timing (≤4d for minor/moderate stroke; 6-7d for major). Do not bridge with heparin.',
-    source: 'CRYSTAL-AF NEJM 2014; STROKE-AF JAMA 2021; PER DIEM JAMA 2021; ARTESIA NEJM 2024 (PMID 37952132); NOAH-AFNET-6 NEJM 2023 (PMID 37622677)',
+    source: 'CRYSTAL-AF NEJM 2014; STROKE-AF JAMA 2021; PER DIEM JAMA 2021; ARTESIA NEJM 2024 (PMID 37952132); NOAH-AFNET 6 NEJM 2023 (PMID 37622677)',
     class: 'Class 2a for ICM in cryptogenic (AHA 2024)'
   };
 };

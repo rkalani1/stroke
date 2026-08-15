@@ -15,5 +15,22 @@
     "certainty": "high",
     "lastReviewed": "2026-05-30",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "restart",
+    "name": "RESTART",
+    "fullName": "REstart or STop Antithrombotics Randomised Trial — antiplatelet therapy after intracerebral haemorrhage",
+    "category": "ich-secondary-prevention",
+    "population": "n=537, ≥18, NIHSS ICH survivors, randomized a median of 76 days (IQR 29-146) after ICH; followed up to 5 years",
+    "finding": "Fewer recurrences with antiplatelet therapy: 4% (12/268) vs 9% (23/268)",
+    "teachingPoint": "Restarting antiplatelet therapy after ICH did not raise recurrent hemorrhage; the risk is likely outweighed by secondary-prevention benefit.",
+    "PMID": "31128924",
+    "year": 2019,
+    "citationIds": [
+      "cit-restart-2019"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

@@ -2,8 +2,8 @@
   "_comment": "PubMed verification cache for the What's New pipeline. Built ONCE with live PubMed MCP access (DOI->PMID, else exact-title->PMID, then title-match confirmation via get_article_metadata). Makes every subsequent build deterministic + offline. Source attribution: PubMed (NLM). Keyed by the briefing study `id` (kebab of acronym, or title slug when no acronym) because briefing URLs almost never carry a DOI. status='verified' => a real PMID whose title matches the briefing study (same intervention/topic). status='quarantine' => no PMID resolved, or the resolved title clearly mismatched (preprint/protocol/review/different-topic/conference-late-breaker).",
   "source": "PubMed (NLM) via mcp__plugin_pubmed_PubMed",
   "verifiedOn": "2026-05-30",
-  "verifiedStudies": 21,
-  "quarantinedStudies": 29,
+  "verifiedStudies": 22,
+  "quarantinedStudies": 28,
   "byId": {
     "atlas": {
       "pmid": "42107392",
@@ -173,12 +173,15 @@
       "status": "quarantine",
       "reason": "No matching PMID for 'TNK-PLUS' (IV tenecteplase before EVT at 4.5-24 h, anterior circulation). Closest hit (PMID 41946560) is the ATTENTION LATE study PROTOCOL for basilar-artery occlusion bridging — protocol, different population; source URL is the JAMA homepage."
     },
-    "intravenous-glibenclamide-biib093-for-cerebral-oedema-after-": {
-      "pmid": null,
-      "doi": null,
-      "journal": "Stroke",
-      "status": "quarantine",
-      "reason": "No matching PMID for 'the CHARM trial' (IV glibenclamide/BIIB093 for cerebral oedema after large hemispheric stroke). Closest hit (PMID 40066941) is a 2025 Cochrane systematic review on sulfonylureas in severe hemispheric stroke — different study type; source URL is the AHA journals homepage."
+    "biib093": {
+      "pmid": "39577921",
+      "doi": "10.1016/S1474-4422(24)00425-3",
+      "journal": "Lancet Neurol",
+      "verifiedTitle": "Intravenous glibenclamide for cerebral oedema after large hemispheric stroke (CHARM): a phase 3, double-blind, placebo-controlled, randomised trial.",
+      "verifiedYear": 2024,
+      "verifiedDirection": "no-benefit",
+      "status": "verified",
+      "reason": "Re-resolved 2026-08-15. The earlier quarantine was a lookup miss, not an absent paper: a title-scoped search (glibenclamide[Title] AND (hemispheric[Title] OR CHARM[Title])) returns exactly one CHARM record, PMID 39577921, Lancet Neurol 2024;23(12):1205-1213. There is no 2026 Stroke publication of CHARM, so the briefing's journal/year were placeholders from the AHA-homepage source URL and are overridden here. verifiedDirection is pinned because the trial was NEGATIVE (common OR 1.17, 95% CI 0.80-1.71, p=0.42; 90-day mortality 32% vs 29%; stopped early by the sponsor) while the briefing's boilerplate prose infers 'benefit'."
     },
     "impact-of-ultra-early-perioperative-antihypertensive-therapy": {
       "pmid": null,

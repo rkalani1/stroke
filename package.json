@@ -5,6 +5,7 @@
   "main": "service-worker.js",
   "scripts": {
     "validate:citations": "node ./scripts/validate-citations.mjs",
+    "validate:pmids": "node ./scripts/validate-pmids.mjs",
     "validate:inline-citations": "node ./scripts/validate-inline-citations.mjs",
     "validate:inline-citations:strict": "node ./scripts/validate-inline-citations.mjs --strict",
     "validate:citations:links": "node ./scripts/validate-citations.mjs --check-links",
@@ -48,7 +49,7 @@
     "evidence:template:top5": "node ./scripts/evidence-promotion-template.mjs --limit 5",
     "evidence:index": "node ./scripts/evidence-ops-index.mjs",
     "evidence:refresh": "npm run validate:evidence-churn-profiles && npm run evidence:watch && npm run evidence:promote && npm run evidence:template && npm run evidence:template:p0 && npm run evidence:index && npm run validate:evidence-promotion",
-    "test": "npm run check:leak-guard && npm run test:protocol && npm run validate:citations && npm run validate:inline-citations && npm run evidence:validate && npm run content:seed:check && npm run content:validate && npm run content:bundle:check && npm run validate:whats-new && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && npm run validate:automedbench-lite && node ./scripts/qa-smoke.mjs --local-only",
+    "test": "npm run check:leak-guard && npm run test:protocol && npm run validate:citations && npm run validate:pmids && npm run validate:inline-citations && npm run evidence:validate && npm run content:seed:check && npm run content:validate && npm run content:bundle:check && npm run validate:whats-new && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && npm run validate:automedbench-lite && node ./scripts/qa-smoke.mjs --local-only",
     "qa": "npm run check:leak-guard && npm run validate:citations && npm run validate:inline-citations && npm run evidence:validate && npm run content:seed:check && npm run content:validate && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && npm run validate:automedbench-lite && node ./scripts/qa-smoke.mjs",
     "qa:latency-adaptive-local": "node ./scripts/qa-smoke.mjs --local-only --latency-profile adaptive --latency-profiles-file docs/qa-latency-profiles.json --enforce-latency-thresholds",
     "qa:latency:recalibrate": "node ./scripts/qa-latency-recalibration.mjs",

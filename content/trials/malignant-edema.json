@@ -1,0 +1,19 @@
+[
+  {
+    "id": "charm",
+    "name": "CHARM",
+    "fullName": "Intravenous Glibenclamide for Cerebral Oedema after Large Hemispheric Stroke",
+    "category": "malignant-edema",
+    "population": "n=535, 18-85 (primary analysis restricted to 18-70), NIHSS large hemispheric infarction, study drug started within 10 h of onset",
+    "finding": "Trial STOPPED EARLY for slow COVID-era enrolment before the planned sample was reached",
+    "teachingPoint": "IV glibenclamide for large hemispheric infarction remains unproven — CHARM was halted early and underpowered.",
+    "PMID": "39577921",
+    "year": 2024,
+    "citationIds": [
+      "cit-charm-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

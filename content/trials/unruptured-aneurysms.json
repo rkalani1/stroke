@@ -1,0 +1,19 @@
+[
+  {
+    "id": "phases",
+    "name": "PHASES",
+    "fullName": "Development of the PHASES Score for Prediction of Risk of Rupture of Intracranial Aneurysms",
+    "category": "unruptured-aneurysms",
+    "population": "n=8382, adults across six prospective cohorts, NIHSS incidental unruptured saccular aneurysms, 29,166 person-years of follow-up",
+    "finding": "Mean 1-year rupture risk 1.4%; 5-year risk 3.4% (230 ruptures)",
+    "teachingPoint": "PHASES gives an absolute 5-year rupture risk for incidental aneurysms, anchoring treat-versus-observe discussions.",
+    "PMID": "24290159",
+    "year": 2014,
+    "citationIds": [
+      "cit-phases-2014"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]
