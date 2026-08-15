@@ -67,7 +67,8 @@ Free tier is enough — the worker only runs when someone sends a suggestion.
    runtime.
 
 5. **Check it.** Open the app, send a test suggestion, and confirm both that the
-   email reaches `rkalani@uw.edu` and that the issue appears in the repository.
+   email reaches the address you set in NOTIFY_EMAIL and that the issue appears
+   in the repository.
 
 ## Abuse controls
 

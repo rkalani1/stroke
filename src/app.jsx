@@ -2233,7 +2233,7 @@ Clinician Name`;
           // Phase 2: Guided Clinical Pathway UI state
           const [pathwayCollapsed, setPathwayCollapsed] = useState(true);
           const [guidelineRecsExpanded, setGuidelineRecsExpanded] = useState(false);
-          const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null, suggestionRelayUrl: '' });
+          const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null, suggestionRelayUrl: '', suggestionContactEmail: '' });
           const [configLoaded, setConfigLoaded] = useState(false);
           const [ttlHours, setTtlHours] = useState(settings.ttlHoursOverride || DEFAULT_TTL_HOURS);
 
@@ -16123,7 +16123,12 @@ Clinician Name`;
                   suggestionRelayUrl = '';
                 }
               }
-              setAppConfig({ institutionLinks: sanitizedLinks, ttlHoursOverride: ttlOverride, suggestionRelayUrl });
+              // Fallback address for the suggestions box when no relay is set.
+              // Left empty in the committed config on purpose: the maintainer's
+              // address is an institutional identifier and the leak guard bans
+              // those from tracked files, so a deployment supplies it out of band.
+              const suggestionContactEmail = String(data.suggestionContactEmail || '').trim();
+              setAppConfig({ institutionLinks: sanitizedLinks, ttlHoursOverride: ttlOverride, suggestionRelayUrl, suggestionContactEmail });
               if (ttlOverride) {
                 setTtlHours(ttlOverride);
                 setKey('ttlHoursOverride', ttlOverride, { skipLastUpdated: true });
@@ -36266,6 +36271,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   appVersion={(typeof window !== 'undefined' && window.strokeAppStorage && window.strokeAppStorage.appVersion) || ''}
                   tabLabel={TAB_LABELS[activeTab] || activeTab}
                   relayUrl={appConfig.suggestionRelayUrl}
+                  contactEmail={appConfig.suggestionContactEmail}
                   onCopy={copyToClipboard}
                 />
               </ErrorBoundary>

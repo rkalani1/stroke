@@ -7,5 +7,6 @@
     }
   ],
   "ttlHoursOverride": null,
-  "suggestionRelayUrl": ""
+  "suggestionRelayUrl": "",
+  "suggestionContactEmail": ""
 }

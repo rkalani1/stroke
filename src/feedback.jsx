@@ -220,7 +220,13 @@ export async function submitSuggestionToRelay(relayUrl, fields = {}, { fetchImpl
 }
 
 export function FeedbackFooter({
-  contactEmail = 'rkalani@uw.edu',
+  // Deliberately empty. The maintainer's address is an institutional identifier
+  // and the repository's leak guard bans those from every tracked file, so it
+  // cannot be hardcoded or committed to the runtime config. It arrives either
+  // as a NOTIFY_EMAIL secret held by the relay (preferred — the address then
+  // never touches the repo at all) or, for a fork running its own deployment,
+  // as suggestionContactEmail in an untracked config.
+  contactEmail = '',
   appVersion = '',
   tabLabel = '',
   relayUrl = '',
@@ -237,6 +243,10 @@ export function FeedbackFooter({
   const [relayFailed, setRelayFailed] = useState(false);
   const textareaRef = useRef(null);
   const hasRelay = Boolean(String(relayUrl || '').trim());
+  const hasEmail = Boolean(String(contactEmail || '').trim());
+  // With neither route configured there is nowhere for a suggestion to go, so
+  // say that rather than offering a button that silently discards it.
+  const canDeliver = hasRelay || hasEmail;
 
   useEffect(() => {
     if (open && textareaRef.current) textareaRef.current.focus();
@@ -244,7 +254,7 @@ export function FeedbackFooter({
 
   const route = typeof window !== 'undefined' ? window.location.hash || '#/' : '';
   const fields = { kind, message, contact, route, tab: tabLabel, appVersion };
-  const canSend = message.trim().length > 0;
+  const canSend = canDeliver && message.trim().length > 0;
 
   // Without a relay, Send is a real mailto: link rather than a scripted
   // navigation: a user-activated link is not subject to pop-up blocking, and
@@ -389,6 +399,11 @@ export function FeedbackFooter({
             </p>
 
             <div className="flex flex-wrap gap-2 items-center">
+              {!canDeliver && (
+                <p className="text-xs text-warn-700 dark:text-warn-300">
+                  Sending is not configured yet, so suggestions cannot be submitted from here.
+                </p>
+              )}
               {/* One action. With a relay it posts in place; without one — or
                   after the relay has failed — it becomes a mailto: link to the
                   maintainer, so there is always a way to send. */}

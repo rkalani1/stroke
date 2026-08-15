@@ -10,7 +10,7 @@ const ENV = {
   GITHUB_REPO: 'rkalani1/stroke',
   GITHUB_TOKEN: 'ghp_test_token_value',
   ALLOWED_ORIGIN: 'https://rkalani1.github.io',
-  NOTIFY_EMAIL: 'rkalani@uw.edu',
+  NOTIFY_EMAIL: 'maintainer@example.org',
   RESEND_API_KEY: 're_test_key_value'
 };
 
@@ -133,7 +133,7 @@ describe('suggestion relay worker — email delivery', () => {
 
     const mailCall = fetchMock.mock.calls.find(([u]) => String(u).includes('resend.com'));
     const mail = JSON.parse(mailCall[1].body);
-    expect(mail.to).toEqual(['rkalani@uw.edu']);
+    expect(mail.to).toEqual(['maintainer@example.org']);
     expect(mail.subject).toBe('[Suggestion] Addition: x');
     expect(mail.text).toContain('add x');
     expect(mailCall[1].headers.Authorization).toBe('Bearer re_test_key_value');

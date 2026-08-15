@@ -114,15 +114,15 @@ describe('composeSuggestionMailto', () => {
   const fields = { kind: 'addition', message: 'Add the ATLAS meta-analysis', contact: 'dr@example.org' };
 
   it('addresses the maintainer and prefills subject and body', () => {
-    const { url, truncated } = composeSuggestionMailto('rkalani@uw.edu', fields);
-    expect(url.startsWith('mailto:rkalani@uw.edu?')).toBe(true);
+    const { url, truncated } = composeSuggestionMailto('maintainer@example.org', fields);
+    expect(url.startsWith('mailto:maintainer@example.org?')).toBe(true);
     expect(decodeURIComponent(url)).toContain('[Suggestion] Addition: Add the ATLAS meta-analysis');
     expect(decodeURIComponent(url)).toContain('Add the ATLAS meta-analysis');
     expect(truncated).toBe(false);
   });
 
   it('carries the context table so the email is self-describing', () => {
-    const { url } = composeSuggestionMailto('rkalani@uw.edu', { ...fields, tab: 'Trials', appVersion: '6.11.8' });
+    const { url } = composeSuggestionMailto('maintainer@example.org', { ...fields, tab: 'Trials', appVersion: '6.11.8' });
     const decoded = decodeURIComponent(url);
     expect(decoded).toContain('| Tab | Trials |');
     expect(decoded).toContain('| App version | 6.11.8 |');
@@ -132,14 +132,14 @@ describe('composeSuggestionMailto', () => {
   // mailto: is handled by the OS mail client, whose length ceiling is far lower
   // than a browser's, so an over-long note is shortened rather than silently lost.
   it('shortens an over-long note and says so', () => {
-    const { url, truncated } = composeSuggestionMailto('rkalani@uw.edu', { message: 'y'.repeat(4000) });
+    const { url, truncated } = composeSuggestionMailto('maintainer@example.org', { message: 'y'.repeat(4000) });
     expect(truncated).toBe(true);
     expect(url.length).toBeLessThanOrEqual(1800);
     expect(decodeURIComponent(url)).toContain('shortened to fit an email link');
   });
 
   it('never cuts through a surrogate pair', () => {
-    const { url } = composeSuggestionMailto('rkalani@uw.edu', { message: '🧠'.repeat(2000) });
+    const { url } = composeSuggestionMailto('maintainer@example.org', { message: '🧠'.repeat(2000) });
     expect(() => decodeURIComponent(url)).not.toThrow();
   });
 });
