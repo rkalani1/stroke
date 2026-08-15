@@ -5,7 +5,7 @@ summary: "Evidence-based schedule for starting or restarting DOACs after acute i
 tags: ["pocket-card", "printable"]
 contexts: ["telestroke", "inpatient", "clinic"]
 calculators: []
-references: [{"label":"ELAN Trial","citation":"Fischer U et al. N Engl J Med. 2023;388:2411-2421.","pmid":"37222476"},{"label":"CATALYST Meta-Analysis","citation":"Dehbi HM et al. Lancet 2025.","pmid":"40570866"},{"label":"AFib Guidelines","citation":"Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. Circulation. 2024;149:e1-e156.","pmid":"38043043"}]
+references: [{"label":"ELAN Trial","citation":"Fischer U et al. N Engl J Med. 2023;388:2411-2421.","pmid":"37222476"},{"label":"CATALYST Meta-Analysis","citation":"Dehbi HM et al. Lancet 2025.","pmid":"40570866"},{"label":"AFib Guidelines","citation":"Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. Circulation. 2024;149:e1-e156.","pmid":"38033089"}]
 lastReviewed: 2026-05-30
 provenance: src/education.jsx
 ---

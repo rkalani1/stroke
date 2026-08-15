@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:45f7c36ee1d2bb38452cc5da82886130",
+    "checksum": "sha256:779a876b84a386d605afad2b29dcea1d",
     "counts": {
       "guidelines": 11,
       "trials": 113,
@@ -2307,7 +2307,7 @@
         {
           "label": "AFib Guidelines",
           "citation": "Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. Circulation. 2024;149:e1-e156.",
-          "pmid": "38043043"
+          "pmid": "38033089"
         }
       ],
       "lastReviewed": "2026-05-30",
