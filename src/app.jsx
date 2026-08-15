@@ -16499,6 +16499,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
             });
             return acc;
           }, { items: [], seen: new Set() }).items;
+          // The four curated clinical resources ride in the header as always-visible
+          // chips rather than behind a "Links" disclosure — one tap instead of two,
+          // and the destination is readable without opening anything. Anything the
+          // user or the institution added on top stays in a compact overflow menu so
+          // a long custom list can't push the sticky header down the viewport.
+          const curatedResourceUrls = new Set(encounterQuickLinks.map((link) => link.url));
+          const headerResourceChips = headerResourceLinks.filter((link) => curatedResourceUrls.has(link.url));
+          const headerResourceOverflow = headerResourceLinks.filter((link) => !curatedResourceUrls.has(link.url));
           const sanitizePhoneForTel = (value) => {
             const raw = String(value || '').trim();
             if (!raw) return '';
@@ -16926,35 +16934,58 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
 
                     <div className="mobile-header-actions flex w-full flex-wrap items-center justify-center gap-2 lg:w-auto lg:justify-end">
-                      <details ref={resourcesDetailsRef} className="relative">
-                        <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700 dark:border-strong dark:hover:bg-paper-2 dark:text-ink-2" aria-label="External links menu">
-                          <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
-                          <span>Links</span>
-                          <i aria-hidden="true" data-lucide="chevron-down" className="w-3.5 h-3.5 text-slate-500 dark:text-mute"></i>
-                        </summary>
-                        {/* U2 — on phone the button sits far enough right that an
-                            absolute right-0 dropdown overflowed off the LEFT edge
-                            (clipped to ~-60px at 375px). Pin to the viewport with
-                            fixed left-2/right-2 on phone; revert to the button-
-                            anchored absolute right-0 menu at ≥640px where it fits. */}
-                        <div className="fixed inset-x-2 top-[var(--app-header-h,3.5rem)] sm:absolute sm:inset-x-auto sm:right-0 sm:top-12 z-50 w-auto sm:w-72 max-w-[calc(100vw-1rem)] max-h-[70vh] overflow-y-auto rounded-md border border-line bg-white shadow-lg dark:bg-card">
-                          {headerResourceLinks.map((link) => (
+                      {headerResourceChips.length > 0 && (
+                        <nav
+                          className="flex flex-wrap items-center justify-center gap-1.5 lg:justify-end"
+                          aria-label="Clinical resources"
+                        >
+                          {headerResourceChips.map((link) => (
                             <a
                               key={link.url}
                               href={link.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-start gap-3 px-4 py-3 text-left text-sm text-slate-700 transition-colors hover:bg-cobalt-50 dark:text-ink-2 dark:hover:bg-cobalt-900"
+                              title={link.note || `Open ${link.label} in a new tab`}
+                              className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:border-cobalt-300 hover:bg-cobalt-50 hover:text-cobalt-700 dark:border-strong dark:bg-card dark:text-ink-2 dark:hover:bg-cobalt-900 dark:hover:text-cobalt-200"
                             >
-                              <i aria-hidden="true" data-lucide="external-link" className="mt-0.5 h-4 w-4 shrink-0 text-cobalt-600 dark:text-cobalt-300"></i>
-                              <span className="min-w-0">
-                                <span className="block font-semibold text-slate-900 dark:text-ink">{link.label}</span>
-                                {link.note && <span className="mt-0.5 block text-xs text-slate-500 dark:text-mute">{link.note}</span>}
-                              </span>
+                              <i aria-hidden="true" data-lucide="external-link" className="h-3.5 w-3.5 shrink-0 text-cobalt-600 dark:text-cobalt-300"></i>
+                              <span className="whitespace-nowrap">{link.label}</span>
+                              <span className="sr-only"> (opens in a new tab)</span>
                             </a>
                           ))}
-                        </div>
-                      </details>
+                        </nav>
+                      )}
+                      {headerResourceOverflow.length > 0 && (
+                        <details ref={resourcesDetailsRef} className="relative">
+                          <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700 dark:border-strong dark:hover:bg-paper-2 dark:text-ink-2" aria-label="More external links">
+                            <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
+                            <span>More links</span>
+                            <i aria-hidden="true" data-lucide="chevron-down" className="w-3.5 h-3.5 text-slate-500 dark:text-mute"></i>
+                          </summary>
+                          {/* U2 — on phone the button sits far enough right that an
+                              absolute right-0 dropdown overflowed off the LEFT edge
+                              (clipped to ~-60px at 375px). Pin to the viewport with
+                              fixed left-2/right-2 on phone; revert to the button-
+                              anchored absolute right-0 menu at ≥640px where it fits. */}
+                          <div className="fixed inset-x-2 top-[var(--app-header-h,3.5rem)] sm:absolute sm:inset-x-auto sm:right-0 sm:top-12 z-50 w-auto sm:w-72 max-w-[calc(100vw-1rem)] max-h-[70vh] overflow-y-auto rounded-md border border-line bg-white shadow-lg dark:bg-card">
+                            {headerResourceOverflow.map((link) => (
+                              <a
+                                key={link.url}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-start gap-3 px-4 py-3 text-left text-sm text-slate-700 transition-colors hover:bg-cobalt-50 dark:text-ink-2 dark:hover:bg-cobalt-900"
+                              >
+                                <i aria-hidden="true" data-lucide="external-link" className="mt-0.5 h-4 w-4 shrink-0 text-cobalt-600 dark:text-cobalt-300"></i>
+                                <span className="min-w-0">
+                                  <span className="block font-semibold text-slate-900 dark:text-ink">{link.label}</span>
+                                  {link.note && <span className="mt-0.5 block text-xs text-slate-500 dark:text-mute">{link.note}</span>}
+                                </span>
+                              </a>
+                            ))}
+                          </div>
+                        </details>
+                      )}
                       <button
                         onClick={startNewPatient}
                         className="flex items-center gap-2 px-4 py-2.5 bg-cobalt-600 text-white rounded-lg hover:bg-cobalt-700 transition-colors text-sm font-medium"
