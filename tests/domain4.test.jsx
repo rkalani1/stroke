@@ -3,8 +3,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import {
   VesselWallMriCard,
-  CryptogenicStrokeEsusCard,
-  PfoClosureCard
+  CryptogenicStrokeEsusCard
 } from '../src/education.jsx';
 import { citations } from '../src/evidence/citations.js';
 
@@ -12,7 +11,6 @@ describe('Domain 4: Diagnostic Algorithms, Neuroimaging Pearls & Cryptogenic Str
   const domain4Cards = [
     { id: 'vessel-wall-mri', Component: VesselWallMriCard, name: 'Vessel Wall MRI' },
     { id: 'cryptogenic-stroke-esus', Component: CryptogenicStrokeEsusCard, name: 'Cryptogenic Stroke & ESUS' },
-    { id: 'pfo-closure', Component: PfoClosureCard, name: 'PFO Closure & LAAO' },
   ];
 
   describe('1. Card Rendering & HTML Integrity', () => {
@@ -73,18 +71,6 @@ describe('Domain 4: Diagnostic Algorithms, Neuroimaging Pearls & Cryptogenic Str
       expect(html).toContain('38324415'); // ARCADIA JAMA PMID
     });
 
-    it('verifies PFO Closure card contains high-risk anatomy, trials, RoPE score, and PASCAL matrix', () => {
-      const html = ReactDOMServer.renderToString(React.createElement(PfoClosureCard));
-      expect(html).toContain('CLOSE');
-      expect(html).toContain('REDUCE');
-      expect(html).toContain('RESPECT');
-      expect(html).toContain('DEFENSE-PFO');
-      expect(html).toContain('Atrial Septal Aneurysm');
-      expect(html).toContain('RoPE');
-      expect(html).toContain('PASCAL');
-      expect(html).toContain('PROTECT AF');
-      expect(html).toContain('PRAGUE-17');
-    });
 
   });
 

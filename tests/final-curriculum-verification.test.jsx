@@ -4,36 +4,28 @@ import ReactDOMServer from 'react-dom/server';
 import fs from 'fs';
 import path from 'path';
 import {
-  IvThrombolysisCard,
   LargeCoreThrombectomyCard,
   BasilarArteryOcclusionCard,
   DmvoMevoManagementCard,
-  ExtendedWindowPerfusionCard,
   IchBloodPressureCard,
   AnticoagulationReversalCard,
-  AneurysmalSahCard,
   MalignantInfarctionCard,
   BrainDeathCard,
   EVDInfographic,
   ICPInfographic,
   AfibAnticoagTimingCard,
   DaptRegimensCard,
-  LipidManagementCard,
   MetabolicStrokePreventionCard,
   CarotidStenosisCard,
   VesselWallMriCard,
   CryptogenicStrokeEsusCard,
-  PfoClosureCard,
   RcvsCard,
   CadasilCarasilCard,
   MoyamoyaDiseaseCard,
   FibromuscularDysplasiaCard,
   CervicalDissectionCard,
-  PregnancyStrokeCard,
   CancerAssociatedStrokeCard,
-  PediatricStrokeCard,
   CvstCard,
-  NihssSimulator,
   StrokePrognosisCard,
   SelectSeizureRiskCard,
   ToastClassificationCard,
@@ -61,16 +53,13 @@ import { citations } from '../src/evidence/citations.js';
 describe('Comprehensive Final Challenger Curriculum Verification', () => {
   const ALL_CURRICULUM_CARDS = [
     // Domain 1: Acute Revascularization & Extended Windows
-    { id: 'iv-thrombolysis', Component: IvThrombolysisCard, name: 'IV Thrombolysis (TNK & Alteplase)' },
     { id: 'large-core-thrombectomy', Component: LargeCoreThrombectomyCard, name: 'Large-Core Thrombectomy' },
     { id: 'basilar-artery-occlusion', Component: BasilarArteryOcclusionCard, name: 'Basilar Artery Occlusion' },
     { id: 'dmvo-mevo-management', Component: DmvoMevoManagementCard, name: 'Distal Medium Vessel Occlusions' },
-    { id: 'extended-window-perfusion', Component: ExtendedWindowPerfusionCard, name: 'Extended Window Perfusion & Mismatch' },
 
     // Domain 2: Neurocritical Care, Hemorrhagic Stroke & ICP
     { id: 'ich-blood-pressure', Component: IchBloodPressureCard, name: 'Acute ICH Blood Pressure & Expansion Mitigation' },
     { id: 'anticoagulation-reversal', Component: AnticoagulationReversalCard, name: 'Anticoagulation Reversal' },
-    { id: 'aneurysmal-sah-management', Component: AneurysmalSahCard, name: 'Aneurysmal SAH' },
     { id: 'malignant-infarction', Component: MalignantInfarctionCard, name: 'Malignant MCA Infarction & DHC' },
     { id: 'brain-death', Component: BrainDeathCard, name: '2023 Unified Brain Death' },
     { id: 'evd-maintenance', Component: EVDInfographic, name: 'EVD Maintenance Infographic' },
@@ -79,14 +68,12 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
     // Domain 3: Secondary Prevention & Precision Antithrombotics
     { id: 'afib-anticoag-timing', Component: AfibAnticoagTimingCard, name: 'AFib Anticoagulation Restart Timing' },
     { id: 'dapt-regimens', Component: DaptRegimensCard, name: 'DAPT & Pharmacogenomics' },
-    { id: 'lipid-management-after-stroke', Component: LipidManagementCard, name: 'Lipid Management After Stroke' },
     { id: 'metabolic-stroke-prevention', Component: MetabolicStrokePreventionCard, name: 'Metabolic & Vascular Risk Modulation' },
     { id: 'carotid-stenosis-management', Component: CarotidStenosisCard, name: 'Carotid Stenosis Management' },
 
     // Domain 4: Diagnostic Algorithms, Neuroimaging & ESUS
     { id: 'vessel-wall-mri', Component: VesselWallMriCard, name: 'Vessel Wall MRI Differential' },
     { id: 'cryptogenic-stroke-esus', Component: CryptogenicStrokeEsusCard, name: 'Cryptogenic Stroke & ESUS' },
-    { id: 'pfo-closure', Component: PfoClosureCard, name: 'PFO Closure & LAAO Pathways' },
     { id: 'rcvs', Component: RcvsCard, name: 'RCVS Diagnostic Flowchart' },
 
     // Domain 5: Rare Vasculopathies & Special Populations
@@ -94,13 +81,10 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
     { id: 'moyamoya-disease', Component: MoyamoyaDiseaseCard, name: 'Moyamoya Disease & Bypass' },
     { id: 'fibromuscular-dysplasia', Component: FibromuscularDysplasiaCard, name: 'Fibromuscular Dysplasia' },
     { id: 'cervical-dissection', Component: CervicalDissectionCard, name: 'Cervical Artery Dissection' },
-    { id: 'pregnancy-stroke', Component: PregnancyStrokeCard, name: 'Stroke in Pregnancy & Puerperium' },
     { id: 'cancer-associated-stroke', Component: CancerAssociatedStrokeCard, name: 'Cancer-Associated Stroke & NBTE' },
-    { id: 'pediatric-stroke', Component: PediatricStrokeCard, name: 'Pediatric Stroke Master Module' },
     { id: 'cerebral-venous-sinus-thrombosis', Component: CvstCard, name: 'Cerebral Venous Sinus Thrombosis' },
 
     // Clinical Simulators & Reference Atlases
-    { id: 'nihss-simulator', Component: NihssSimulator, name: 'NIHSS Certification Simulator' },
     { id: 'stroke-prognosis', Component: StrokePrognosisCard, name: 'Stroke Prognosis & Scores' },
     { id: 'select-seizure-risk', Component: SelectSeizureRiskCard, name: 'SeLECT Seizure Risk' },
     { id: 'toast-classification', Component: ToastClassificationCard, name: 'TOAST Classification' },
@@ -198,7 +182,7 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
     const bundleData = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
 
     it('verifies content/bundle.json contains all 48 education modules', () => {
-      expect(bundleData.education.length).toBe(48);
+      expect(bundleData.education.length).toBe(40);
     });
 
     ALL_CURRICULUM_CARDS.forEach(({ id }) => {

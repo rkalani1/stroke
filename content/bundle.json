@@ -1,11 +1,11 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:779a876b84a386d605afad2b29dcea1d",
+    "checksum": "sha256:fdac870d1b167cde60ef252898796613",
     "counts": {
       "guidelines": 11,
       "trials": 113,
-      "education": 48,
+      "education": 40,
       "calculators": 34,
       "references": 18
     },
@@ -2315,66 +2315,6 @@
       "body": "Evidence-based schedule for starting or restarting DOACs after acute ischemic stroke or TIA.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
-      "id": "aneurysmal-sah-management",
-      "title": "Aneurysmal SAH: Grading & Early Management",
-      "summary": "Grading scales (Hunt-Hess, WFNS, modified Fisher), early aneurysm securing (ISAT coiling vs clipping), nimodipine, and delayed cerebral ischemia / vasospasm management for aneurysmal subarachnoid hemorrhage.",
-      "tags": [
-        "pocket-card",
-        "printable"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "AHA/ASA 2023 aSAH Guideline",
-          "citation": "Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.",
-          "pmid": "37212182"
-        },
-        {
-          "label": "ISAT",
-          "citation": "Molyneux A, et al. International Subarachnoid Aneurysm Trial (ISAT): coiling vs clipping. Lancet. 2002;360(9342):1267-1274.",
-          "pmid": "12414200"
-        },
-        {
-          "label": "Nimodipine (BRANT)",
-          "citation": "Pickard JD, et al. Effect of oral nimodipine on cerebral infarction and outcome after subarachnoid haemorrhage (British Aneurysm Nimodipine Trial). BMJ. 1989;298(6674):636-642.",
-          "pmid": "2496789"
-        },
-        {
-          "label": "Modified Fisher scale",
-          "citation": "Frontera JA, et al. Prediction of symptomatic vasospasm after SAH: the modified Fisher scale. Neurosurgery. 2006;59(1):21-27.",
-          "pmid": "16823296"
-        },
-        {
-          "label": "SAHaRA Trial",
-          "citation": "English SW, et al. Liberal or Restrictive Transfusion Strategy in Aneurysmal Subarachnoid Hemorrhage (SAHaRA). N Engl J Med. 2025;392(11):1079-1088.",
-          "pmid": "39655786"
-        },
-        {
-          "label": "EARLYDRAIN Trial",
-          "citation": "Wolf S, et al. Effectiveness of Lumbar Cerebrospinal Fluid Drain Among Patients With Aneurysmal Subarachnoid Hemorrhage (EARLYDRAIN). JAMA Neurol. 2023;80(8):833-842.",
-          "pmid": "37330974"
-        },
-        {
-          "label": "ULTRA Trial",
-          "citation": "Post R, et al. Ultra-early tranexamic acid after subarachnoid haemorrhage (ULTRA). Lancet. 2021;397(10269):112-118.",
-          "pmid": "33357465"
-        },
-        {
-          "label": "ISAT 18-year Follow-up",
-          "citation": "Molyneux AJ, et al. The durability of endovascular coiling versus neurosurgical clipping of ruptured cerebral aneurysms: 18 year follow-up of the UK cohort of ISAT. Lancet. 2015;385(9969):691-697.",
-          "pmid": "25465111"
-        }
-      ],
-      "lastReviewed": "2026-07-18",
-      "provenance": "src/education.jsx",
-      "body": "Grading scales (Hunt-Hess, WFNS, modified Fisher), early aneurysm securing (ISAT coiling vs clipping), nimodipine, and delayed cerebral ischemia / vasospasm management for aneurysmal subarachnoid hemorrhage.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
       "id": "anticoagulation-reversal",
       "title": "Anticoagulation Reversal in Acute Hemorrhage",
       "summary": "Agent-specific reversal for intracranial hemorrhage — 4F-PCC + vitamin K for warfarin, idarucizumab for dabigatran, andexanet alfa (or 4F-PCC) for factor Xa inhibitors — with the ANNEXA-I thrombotic caveat and parallel BP/neurosurgery steps.",
@@ -3113,56 +3053,6 @@
       "body": "Running the thrombectomy and the first 24 hours after it: anesthesia and intraprocedural hemodynamic floors, device strategy and first-pass effect, bailout decisions, the post-reperfusion blood pressure guardrail, and the angio-suite handoff.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
-      "id": "extended-window-perfusion",
-      "title": "Extended Window Perfusion & Mismatch",
-      "summary": "Standardized CTP and MRI mismatch interpretation in extended (6–24h) and wake-up windows — DAWN, DEFUSE 3, EXTEND, WAKE-UP, TWIST, automated thresholds (rCBF <30%, Tmax >6s), and DWI-FLAIR mismatch protocols.",
-      "tags": [
-        "pocket-card",
-        "printable"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "DAWN Trial",
-          "citation": "Nogueira RG, et al. Thrombectomy 6 to 24 Hours after Stroke with a Mismatch between Deficit and Infarct (DAWN). N Engl J Med. 2018;378(1):11-21.",
-          "pmid": "29129157"
-        },
-        {
-          "label": "DEFUSE 3 Trial",
-          "citation": "Albers GW, et al. Thrombectomy for Stroke at 6 to 16 Hours with Selection by Perfusion Imaging (DEFUSE 3). N Engl J Med. 2018;378(8):708-718.",
-          "pmid": "29364767"
-        },
-        {
-          "label": "EXTEND Trial",
-          "citation": "Ma H, et al. Thrombolysis Guided by Perfusion Imaging up to 9 Hours after Onset of Stroke (EXTEND). N Engl J Med. 2019;380(19):1795-1803.",
-          "pmid": "31067369"
-        },
-        {
-          "label": "WAKE-UP Trial",
-          "citation": "Thomalla G, et al. MRI-Guided Thrombolysis for Stroke with Unknown Time of Onset (WAKE-UP). N Engl J Med. 2018;379(7):611-622.",
-          "pmid": "29766770"
-        },
-        {
-          "label": "TWIST Trial",
-          "citation": "Roaldsen MB, et al. Intravenous thrombolysis with tenecteplase in patients with wake-up stroke (TWIST). Lancet Neurol. 2023;22(2):117-126.",
-          "pmid": "36549308"
-        },
-        {
-          "label": "AHA/ASA 2026 AIS Guideline",
-          "citation": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
-          "pmid": "41582814"
-        }
-      ],
-      "lastReviewed": "2026-08-14",
-      "provenance": "src/education.jsx",
-      "body": "Standardized CTP and MRI mismatch interpretation in extended (6–24h) and wake-up windows — DAWN, DEFUSE 3, EXTEND, WAKE-UP, TWIST, automated thresholds (rCBF <30%, Tmax >6s), and DWI-FLAIR mismatch protocols.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
       "id": "fibromuscular-dysplasia",
       "title": "Fibromuscular Dysplasia & Cervical Artery Dissection",
       "summary": "Pathophysiology, angiographic classification (multifocal string-of-beads vs. focal), brain-to-pelvis vascular screening, and cervical artery dissection trials (CADISS, TREAT-CAD, STOP-CAD, Kaufmann IPD).",
@@ -3460,51 +3350,6 @@
       "body": "Mechanism-first diagnosis and treatment of symptomatic intracranial atherosclerotic stenosis — artery-to-artery embolism, branch atheromatous perforator occlusion and hemodynamic borderzone failure; the SAMMPRIS aggressive medical bundle; and why stenting (SAMMPRIS, CASSISS), bypass (CMOSS, COSS, EC/IC 1985) and bailout angioplasty (ANGEL-REBOOT) all failed their primary endpoints.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
-      "id": "iv-thrombolysis",
-      "title": "IV Thrombolysis: TNK & Time Windows",
-      "summary": "Tenecteplase (TNK) as the standard IV thrombolytic for acute ischemic stroke — the standard 4.5-hour window, extended perfusion-based windows, and the defining trial evidence (ATTEST-2, TIMELESS, TRACE-III).",
-      "tags": [
-        "pocket-card",
-        "printable"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "ATTEST-2 Trial",
-          "citation": "Muir KW, et al. Tenecteplase versus alteplase for acute stroke within 4.5 h (ATTEST-2). Lancet Neurol. 2024;23(11):1087-1096.",
-          "pmid": "39424558"
-        },
-        {
-          "label": "TIMELESS Trial",
-          "citation": "Albers GW, et al. Tenecteplase for Stroke at 4.5 to 24 Hours with Perfusion-Imaging Selection. N Engl J Med. 2024;390(8):701-711.",
-          "pmid": "38329148"
-        },
-        {
-          "label": "TRACE-III Trial",
-          "citation": "Xiong Y, et al. Tenecteplase for Ischemic Stroke at 4.5 to 24 Hours without Thrombectomy. N Engl J Med. 2024;391(3):203-212.",
-          "pmid": "38884324"
-        },
-        {
-          "label": "TEMPO-2 Trial",
-          "citation": "Coutts SB, et al. Tenecteplase versus standard of care for minor ischaemic stroke with proven occlusion (TEMPO-2). Lancet. 2024;403(10444):2597-2605.",
-          "pmid": "38768626"
-        },
-        {
-          "label": "AHA/ASA 2026 AIS Guideline",
-          "citation": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.",
-          "pmid": "41582814"
-        }
-      ],
-      "lastReviewed": "2026-07-13",
-      "provenance": "src/education.jsx",
-      "body": "Tenecteplase (TNK) as the standard IV thrombolytic for acute ischemic stroke — the standard 4.5-hour window, extended perfusion-based windows, and the defining trial evidence (ATTEST-2, TIMELESS, TRACE-III).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
       "id": "large-core-thrombectomy",
       "title": "Large-Core Thrombectomy",
       "summary": "Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the symptomatic-hemorrhage trade-off.",
@@ -3568,51 +3413,6 @@
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
       "body": "Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the symptomatic-hemorrhage trade-off.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
-      "id": "lipid-management-after-stroke",
-      "title": "Lipid Management After Ischemic Stroke",
-      "summary": "LDL-C targets after atherosclerotic ischemic stroke, the high-intensity statin → ezetimibe → PCSK9 inhibitor ladder, the supporting trials (SPARCL, TST, IMPROVE-IT, FOURIER), and the hemorrhagic-stroke caveat.",
-      "tags": [
-        "pocket-card",
-        "printable"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "SPARCL",
-          "citation": "Amarenco P, et al. High-dose atorvastatin after stroke or transient ischemic attack (SPARCL). N Engl J Med. 2006;355(6):549-559.",
-          "pmid": "16899775"
-        },
-        {
-          "label": "Treat Stroke to Target",
-          "citation": "Amarenco P, et al. A Comparison of Two LDL Cholesterol Targets after Ischemic Stroke. N Engl J Med. 2020;382(1):9-19.",
-          "pmid": "31738483"
-        },
-        {
-          "label": "FOURIER",
-          "citation": "Sabatine MS, et al. Evolocumab and Clinical Outcomes in Patients with Cardiovascular Disease. N Engl J Med. 2017;376(18):1713-1722.",
-          "pmid": "28304224"
-        },
-        {
-          "label": "IMPROVE-IT",
-          "citation": "Cannon CP, et al. Ezetimibe Added to Statin Therapy after Acute Coronary Syndromes. N Engl J Med. 2015;372(25):2387-2397.",
-          "pmid": "26039521"
-        },
-        {
-          "label": "AHA/ASA 2021 Secondary Prevention",
-          "citation": "Kleindorfer DO, et al. 2021 Guideline for the Prevention of Stroke in Patients With Stroke and TIA. Stroke. 2021;52(7):e364-e467.",
-          "pmid": "34024117"
-        }
-      ],
-      "lastReviewed": "2026-07-18",
-      "provenance": "src/education.jsx",
-      "body": "LDL-C targets after atherosclerotic ischemic stroke, the high-intensity statin → ezetimibe → PCSK9 inhibitor ladder, the supporting trials (SPARCL, TST, IMPROVE-IT, FOURIER), and the hemorrhagic-stroke caveat.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "malignant-infarction",
@@ -3796,151 +3596,6 @@
       "body": "Interactive bedside clinical exam assistant for classifying aphasia types, differentiating delirium from aphasia, and structured coma examinations.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
-      "id": "nihss-simulator",
-      "title": "NIHSS Certification Simulator",
-      "summary": "Interactive NIHSS scoring trainer: score each of the 15 items on short case vignettes with immediate right/wrong feedback and rationale, a running 0–42 total, the scoring rules that trip people up, and the interpretation caveats.",
-      "tags": [
-        "simulators"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "NIHSS (original)",
-          "citation": "Brott T, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
-          "pmid": "2749846"
-        },
-        {
-          "label": "NIHSS training/reliability",
-          "citation": "Lyden P, et al. Improved reliability of the NIH Stroke Scale using video training. Stroke. 1994;25(11):2220-2226.",
-          "pmid": "7974549"
-        }
-      ],
-      "lastReviewed": "2026-07-18",
-      "provenance": "src/education.jsx",
-      "body": "Interactive NIHSS scoring trainer: score each of the 15 items on short case vignettes with immediate right/wrong feedback and rationale, a running 0–42 total, the scoring rules that trip people up, and the interpretation caveats.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
-      "id": "pediatric-stroke",
-      "title": "Pediatric Ischemic & Hemorrhagic Stroke Master Module (2026 Guidelines)",
-      "summary": "Age-stratified pediatric stroke algorithms (neonatal vs childhood), Focal Cerebral Arteriopathy (FCA/FCA-i), Sickle Cell Disease TCD screening and exchange transfusion (STOP/STOP-2), and pediatric EVT criteria.",
-      "tags": [
-        "pocket-card",
-        "printable",
-        "pediatrics"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "2026 AHA/ASA AIS Guideline",
-          "citation": "Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026;57(8):e316-e436.",
-          "pmid": "41582814"
-        },
-        {
-          "label": "2026 Guideline News Summary",
-          "citation": "Anderer S. Stroke Guideline Expands Adult Treatment, Provides Pediatric Recommendations. JAMA. 2026;335(10):840.",
-          "pmid": "41686463"
-        },
-        {
-          "label": "2019 AHA Pediatric Statement",
-          "citation": "Ferriero DM, Fullerton HJ, Bernard TJ, et al. Management of Stroke in Neonates and Children: A Scientific Statement From the American Heart Association/American Stroke Association. Stroke. 2019;50(3):e51-e96.",
-          "pmid": "30686119"
-        },
-        {
-          "label": "STOP Trial Landmark",
-          "citation": "Adams RJ, et al. Prevention of a first stroke by transfusions in children with sickle cell anemia and abnormal results on transcranial Doppler ultrasonography (STOP). N Engl J Med. 1998;339(1):5-11.",
-          "pmid": "9647873"
-        },
-        {
-          "label": "STOP 2 Trial",
-          "citation": "Adams RJ, et al. Discontinuing prophylactic transfusions for stroke in sickle cell anemia (STOP 2). N Engl J Med. 2005;353(26):2769-2778.",
-          "pmid": "16382063"
-        },
-        {
-          "label": "TIPS Pediatric Lysis Study",
-          "citation": "Amlie-Lefond C, Chan AK, Kirton A, et al. Thrombolysis in acute childhood stroke: design and challenges of the thrombolysis in pediatric stroke clinical trial. Neuroepidemiology. 2009;32(4):279-286.",
-          "pmid": "19223687"
-        },
-        {
-          "label": "VIPS Study on Arteriopathy",
-          "citation": "Fullerton HJ, Hills NK, Elkind MS, et al. Infection, vaccination, and childhood arterial ischemic stroke: results of the VIPS study. Neurology. 2015;85(17):1459-1466.",
-          "pmid": "26423434"
-        }
-      ],
-      "lastReviewed": "2026-08-14",
-      "provenance": "src/education.jsx",
-      "body": "Age-stratified pediatric stroke algorithms (neonatal vs childhood), Focal Cerebral Arteriopathy (FCA/FCA-i), Sickle Cell Disease TCD screening and exchange transfusion (STOP/STOP-2), and pediatric EVT criteria.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
-      "id": "pfo-closure",
-      "title": "PFO Closure & LAAO Decision Pathways",
-      "summary": "Evidence-based decision pathways for Patent Foramen Ovale (PFO) closure (RESPECT, CLOSE, REDUCE, DEFENSE-PFO), high-risk anatomical features (atrial septal aneurysm >10mm, large shunt >20 bubbles), RoPE score, PASCAL classification, and Left Atrial Appendage Occlusion (LAAO) trials (PROTECT AF, PREVAIL, PRAGUE-17).",
-      "tags": [
-        "pocket-card",
-        "printable"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "RESPECT Long-Term",
-          "citation": "Saver JL, et al. Long-Term Outcomes of Patent Foramen Ovale Closure or Medical Therapy after Stroke (RESPECT). N Engl J Med. 2017;377(11):1022-1032.",
-          "pmid": "28902590"
-        },
-        {
-          "label": "CLOSE Trial",
-          "citation": "Mas JL, et al. Patent Foramen Ovale Closure or Anticoagulation vs. Antiplatelets after Stroke (CLOSE). N Engl J Med. 2017;377(11):1011-1021.",
-          "pmid": "28902593"
-        },
-        {
-          "label": "REDUCE Trial",
-          "citation": "Søndergaard L, et al. Patent Foramen Ovale Closure or Antiplatelet Therapy for Cryptogenic Stroke (REDUCE). N Engl J Med. 2017;377(11):1033-1042.",
-          "pmid": "28902580"
-        },
-        {
-          "label": "DEFENSE-PFO Trial",
-          "citation": "Lee JY, et al. Cryptogenic Stroke and High-Risk Patent Foramen Ovale: The DEFENSE-PFO Trial. J Am Coll Cardiol. 2018;71(20):2335-2342.",
-          "pmid": "29544871"
-        },
-        {
-          "label": "RoPE Score Study",
-          "citation": "Kent DM, et al. An index to identify stroke-related vs incidental patent foramen ovale in cryptogenic stroke (RoPE Study). Neurology. 2013;81(7):619-625.",
-          "pmid": "23864310"
-        },
-        {
-          "label": "PASCAL Consensus",
-          "citation": "Kent DM, et al. Heterogeneity of Treatment Effects in an Analysis of Pooled Individual Patient Data From Randomized Trials of Device Closure of Patent Foramen Ovale After Stroke (PASCAL). JAMA. 2021;326(22):2277-2286.",
-          "pmid": "34905030"
-        },
-        {
-          "label": "PROTECT AF Trial",
-          "citation": "Holmes DR, et al. Percutaneous closure of the left atrial appendage versus warfarin therapy for stroke prevention in patients with atrial fibrillation: a randomised non-inferiority trial (PROTECT AF). Lancet. 2009;374(9689):534-542.",
-          "pmid": "19683639"
-        },
-        {
-          "label": "PRAGUE-17 Trial",
-          "citation": "Osmancik P, et al. Left Atrial Appendage Closure Versus Direct Oral Anticoagulants in High-Risk Patients With Atrial Fibrillation (PRAGUE-17). J Am Coll Cardiol. 2020;75(25):3122-3135.",
-          "pmid": "32586585"
-        }
-      ],
-      "lastReviewed": "2026-08-14",
-      "provenance": "src/education.jsx",
-      "body": "Evidence-based decision pathways for Patent Foramen Ovale (PFO) closure (RESPECT, CLOSE, REDUCE, DEFENSE-PFO), high-risk anatomical features (atrial septal aneurysm >10mm, large shunt >20 bubbles), RoPE score, PASCAL classification, and Left Atrial Appendage Occlusion (LAAO) trials (PROTECT AF, PREVAIL, PRAGUE-17).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
       "id": "post-stroke-recovery",
       "title": "Post-Stroke Recovery, Cognition & Mood",
       "summary": "Owns the recovery phase — prognosis and the sensitive window (CPASS, PREP2, AVERT), the rehabilitation setting and dose decision (LEAPS, ICARE, EXCITE), the settled negative fluoxetine question (FOCUS, AFFINITY, EFFECTS) versus the positive paired vagus nerve stimulation trial (VNS-REHAB), aphasia therapy intensity, and screening for post-stroke cognitive impairment, depression, fatigue and spasticity.",
@@ -3994,46 +3649,6 @@
       "lastReviewed": "2026-08-15",
       "provenance": "src/education.jsx",
       "body": "Owns the recovery phase — prognosis and the sensitive window (CPASS, PREP2, AVERT), the rehabilitation setting and dose decision (LEAPS, ICARE, EXCITE), the settled negative fluoxetine question (FOCUS, AFFINITY, EFFECTS) versus the positive paired vagus nerve stimulation trial (VNS-REHAB), aphasia therapy intensity, and screening for post-stroke cognitive impairment, depression, fatigue and spasticity.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
-    },
-    {
-      "id": "pregnancy-stroke",
-      "title": "Stroke in Pregnancy and the Puerperium: 2026 AHA Maternal Scientific Statement",
-      "summary": "Emergency management of ischemic and hemorrhagic stroke in pregnancy/postpartum, safe IV thrombolysis/EVT, preeclampsia/eclampsia/PRES protocols, magnesium sulfate, and postpartum CVST.",
-      "tags": [
-        "pocket-card",
-        "printable"
-      ],
-      "contexts": [
-        "telestroke",
-        "inpatient",
-        "clinic"
-      ],
-      "calculators": [],
-      "references": [
-        {
-          "label": "2026 AHA Maternal Stroke Statement",
-          "citation": "Miller EC, et al. Prevention and Treatment of Maternal Stroke in Pregnancy and Postpartum: A Scientific Statement From the American Heart Association. Stroke. 2026;57(4):e127-e145.",
-          "pmid": "41603019"
-        },
-        {
-          "label": "Magpie Trial (Magnesium)",
-          "citation": "Altman D, et al. Do women with pre-eclampsia, and their babies, benefit from magnesium sulphate? The Magpie Trial. Lancet. 2002;359(9321):1877-1890.",
-          "pmid": "12057549"
-        },
-        {
-          "label": "AHA CVT Scientific Statement",
-          "citation": "Saposnik G, et al. Diagnosis and Management of Cerebral Venous Thrombosis: A Scientific Statement From the American Heart Association. Stroke. 2024;55(3):e77-e90.",
-          "pmid": "38284265"
-        },
-        {
-          "label": "AHA Women Stroke Prevention",
-          "citation": "Bushnell C, et al. Guidelines for the prevention of stroke in women: a statement for healthcare professionals from the American Heart Association/American Stroke Association. Stroke. 2014;45(5):1545-1588.",
-          "pmid": "24503673"
-        }
-      ],
-      "lastReviewed": "2026-08-14",
-      "provenance": "src/education.jsx",
-      "body": "Emergency management of ischemic and hemorrhagic stroke in pregnancy/postpartum, safe IV thrombolysis/EVT, preeclampsia/eclampsia/PRES protocols, magnesium sulfate, and postpartum CVST.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "prehospital-triage-systems",
