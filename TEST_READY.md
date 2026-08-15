@@ -156,7 +156,7 @@ npx vitest run tests/e2e
    - *Decision Outputs*: Recommends EVT for age $\ge 6\text{y}$ (Class IIa / LOE B-NR); calculates weight-based off-label Alteplase 0.9 mg/kg (46.8 mg) with Class IIb rating; flags Tenecteplase as not endorsed; enforces age-adjusted percentile BP targets; verifies protocol snapshot lock.
 4. **Scenario 4: Spontaneous Deep ICH with Acute SBP Surge**
    - *Patient Profile*: 62yo male, GCS 13, basal ganglia ICH 22 mL (ABC/2), IVH absent, ICH Score 1, BP 210/115.
-   - *Decision Outputs*: Smooth acute IV lowering to SBP 130–140 mmHg within 1–2h; triggers Class III harm alert if lowered <130 mmHg; flags neurosurgical evaluation for volume $\ge 15\text{ mL}$; verifies acute reversal agents (4F-PCC, Idarucizumab, Andexanet); links to `edema-swelling-risk.md`.
+   - *Decision Outputs*: Smooth acute IV lowering to SBP 130–140 mmHg within 1–2h; triggers Class III harm alert if lowered <130 mmHg; flags neurosurgical evaluation for volume $\ge 15\text{ mL}$; verifies acute reversal agents (4F-PCC, Idarucizumab, Andexanet); links to `herniation-icp.md`.
 5. **Scenario 5: Education Reference Traversal & Dark-Mode Accordion Accessibility**
    - *Clinician Workflow*: Navigates educational library, filters topics, toggles dark mode, inspects citations.
    - *Decision Outputs*: Verifies all 32 modules start collapsed without open tags; verifies 0 schema errors across bundle; passes 21 contrast token pairs in light/dark mode; validates modern landmark citations (THEIA, LASTE, TESLA, ANNEXA-I, CATALYST); verifies freshness (<18 months).
