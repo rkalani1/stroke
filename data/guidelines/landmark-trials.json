@@ -472,7 +472,7 @@
     {
       "name": "TST (Treat Stroke to Target)",
       "year": 2020,
-      "citation": "NEJM 2020;382:9 (PMID 31738483)",
+      "citation": "NEJM 2020;382:9-19 (PMID 31738483)",
       "question": "Is LDL <70 better than 90-110 for secondary stroke prevention?",
       "design": "RCT, n=2860, LDL <70 vs 100±10 mg/dL",
       "outcomes": "Major CV events: 8.5% vs 10.9%, HR 0.78.",
