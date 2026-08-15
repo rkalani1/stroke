@@ -153,12 +153,22 @@ describe('composeSuggestionMailto', () => {
     expect(truncated).toBe(false);
   });
 
-  it('carries the context table so the email is self-describing', () => {
+  // An email is read by a person, so it carries plain prose and a plain list —
+  // not the markdown table and responder framing the issue body uses.
+  it('carries the context as plain lines so the email is self-describing', () => {
     const { url } = composeSuggestionMailto('maintainer@example.org', { ...fields, tab: 'Trials', appVersion: '6.11.8' });
     const decoded = decodeURIComponent(url);
-    expect(decoded).toContain('| Tab | Trials |');
-    expect(decoded).toContain('| App version | 6.11.8 |');
-    expect(decoded).toContain('| Contact | dr@example.org |');
+    expect(decoded).toContain('Tab: Trials');
+    expect(decoded).toContain('App version: 6.11.8');
+    expect(decoded).toContain('Contact: dr@example.org');
+  });
+
+  it('leaves the GitHub-issue framing out of the email', () => {
+    const { url } = composeSuggestionMailto('maintainer@example.org', fields);
+    const decoded = decodeURIComponent(url);
+    expect(decoded).not.toContain('@claude');
+    expect(decoded).not.toContain('pull request');
+    expect(decoded).not.toContain('| Field | Value |');
   });
 
   // mailto: is handled by the OS mail client, whose length ceiling is far lower

@@ -93,13 +93,10 @@ export function buildSuggestionIssue({
   route = '',
   tab = '',
   appVersion = '',
-  mentionHandle = '@claude'
+  mentionHandle = '@claude',
+  format = 'issue'
 } = {}) {
   const trimmed = sliceChars(String(message || '').trim(), MAX_MESSAGE_LENGTH);
-  // A fence longer than any run of backticks inside the text keeps the block
-  // from being closed early by pasted markdown.
-  const longestRun = (trimmed.match(/`+/g) || []).reduce((n, run) => Math.max(n, run.length), 0);
-  const fence = '`'.repeat(Math.max(3, longestRun + 1));
 
   const contextRows = [
     ['Type', KIND_LABELS[kind] || 'Other'],
@@ -108,6 +105,30 @@ export function buildSuggestionIssue({
     ['App version', appVersion || '—'],
     ['Contact', String(contact || '').trim() || 'not provided']
   ];
+
+  // An email is read by a person in an inbox, so it gets plain prose and a
+  // plain list. The issue form is read by an automated responder, so it keeps
+  // the mention, the task, and the fence that marks submitted text as data.
+  if (format === 'email') {
+    const body = [
+      'A reader of the Stroke app sent this suggestion from the in-app suggestions box.',
+      '',
+      'SUGGESTION',
+      trimmed || '(no message provided)',
+      '',
+      'CONTEXT',
+      ...contextRows.map(([k, v]) => `${k}: ${v}`),
+      '',
+      '—',
+      'Sent from the in-app suggestions box. Reply to this message to reach the sender if they left an address.'
+    ].join('\n');
+    return { title: suggestionTitle(kind, trimmed), body, labels: ['suggestion', 'from-app'] };
+  }
+
+  // A fence longer than any run of backticks inside the text keeps the block
+  // from being closed early by pasted markdown.
+  const longestRun = (trimmed.match(/`+/g) || []).reduce((n, run) => Math.max(n, run.length), 0);
+  const fence = '`'.repeat(Math.max(3, longestRun + 1));
 
   const body = [
     `${mentionHandle} A reader of the app submitted the suggestion below through the in-app suggestions box.`,
@@ -149,7 +170,7 @@ const MAX_MAILTO_LENGTH = 1800;
 const TRUNCATION_MARKER = '\n\n…[shortened to fit an email link — reply to this message with the rest]';
 
 function composeMailto(email, fields, message) {
-  const { title, body } = buildSuggestionIssue({ ...fields, message });
+  const { title, body } = buildSuggestionIssue({ ...fields, message, format: 'email' });
   return `mailto:${email}?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
 }
 
@@ -335,7 +356,7 @@ export function FeedbackFooter({
   };
 
   const copySuggestion = async () => {
-    const { title, body } = buildSuggestionIssue(fields);
+    const { title, body } = buildSuggestionIssue({ ...fields, format: 'email' });
     try {
       await navigator.clipboard.writeText(`${title}\n\n${body}`);
       setStatus({ tone: 'ok', text: `Copied. Paste it into an email to ${contactEmail}.` });

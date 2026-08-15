@@ -33,8 +33,10 @@ If the submitter left an email address in the contact field, it is set as
 
 Free tier is enough — the worker only runs when someone sends a suggestion.
 
-1. **Create a token.** GitHub → Settings → Developer settings → **Fine-grained
-   personal access tokens** → Generate new token.
+1. **Create a GitHub token — optional.** Only needed if you want an issue filed
+   as well as the email; `GITHUB_REPO` ships blank, so email-only works without
+   this. GitHub → Settings → Developer settings → **Fine-grained personal access
+   tokens** → Generate new token.
    - Repository access: **Only select repositories** → `rkalani1/stroke`
    - Repository permissions: **Issues → Read and write** (nothing else)
    - Set an expiry you will actually renew; the relay fails closed when it lapses
@@ -50,8 +52,9 @@ Free tier is enough — the worker only runs when someone sends a suggestion.
    ```bash
    cd workers/suggestion-relay
    npx wrangler login
-   npx wrangler secret put GITHUB_TOKEN     # paste the token when prompted
+   npx wrangler secret put NOTIFY_EMAIL     # the address suggestions go to
    npx wrangler secret put RESEND_API_KEY   # paste the Resend key
+   npx wrangler secret put GITHUB_TOKEN     # only if you also want issues filed
    npx wrangler deploy
    ```
    `wrangler deploy` prints the URL, e.g.

@@ -88,6 +88,14 @@ describe('suggestion relay worker', () => {
     expect(JSON.parse(fetchMock.mock.calls[0][1].body).labels).toEqual(['suggestion']);
   });
 
+  it('forwards an email-format body from the app intact', async () => {
+    const fetchMock = okGitHub();
+    vi.stubGlobal('fetch', fetchMock);
+    const appBody = 'A reader of the Stroke app sent this suggestion.\n\nSUGGESTION\nadd x\n\nCONTEXT\nTab: Trials';
+    await worker.fetch(post({ message: 'add x', body: appBody }), GH_ONLY);
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body).body).toBe(appBody);
+  });
+
   it('fences a raw message rather than trusting a caller-supplied body', async () => {
     const fetchMock = okGitHub();
     vi.stubGlobal('fetch', fetchMock);

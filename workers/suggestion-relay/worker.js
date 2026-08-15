@@ -98,11 +98,16 @@ export default {
       return json({ error: 'Empty suggestion' }, 400, allowedOrigin);
     }
 
-    // Prefer the body the app composed; it already fences the submitted text and
-    // frames it as data rather than as instructions. If a caller sent only a raw
-    // message, build an equivalent minimal body here rather than trusting theirs.
+    // Prefer the body the app composed — it carries the context block and, in
+    // the issue format, fences the submitted text as data. Accept either of the
+    // app's two shapes ('## Suggestion' for issues, 'SUGGESTION' for email). A
+    // body in neither shape came from somewhere else, so rebuild it here rather
+    // than forwarding a stranger's text verbatim.
+    const appAuthoredBody =
+      typeof payload.body === 'string' &&
+      (payload.body.includes('## Suggestion') || /(^|\n)SUGGESTION(\n|$)/.test(payload.body));
     let body;
-    if (typeof payload.body === 'string' && payload.body.includes('## Suggestion')) {
+    if (appAuthoredBody) {
       body = clamp(payload.body, MAX_BODY);
     } else {
       const longestRun = (message.match(/`+/g) || []).reduce((n, r) => Math.max(n, r.length), 0);
