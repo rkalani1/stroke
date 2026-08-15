@@ -1,0 +1,19 @@
+[
+  {
+    "id": "oceanic-af",
+    "name": "OCEANIC-AF",
+    "fullName": "Asundexian versus Apixaban in Patients with Atrial Fibrillation",
+    "category": "factor-xi-inhibition",
+    "population": "n=14810, mean 73.9 ± 7.7; 35.2% women, NIHSS mean CHA₂DS₂-VASc 4.3 ± 1.3; 18.2% prior stroke or TIA, stopped prematurely on DMC recommendation",
+    "finding": "Asundexian markedly WORSE: 1.3% (98 patients) vs 0.4% (26 patients)",
+    "teachingPoint": "Asundexian is inferior to apixaban for AF stroke prevention (HR 3.79) despite less bleeding — do not substitute it for a DOAC.",
+    "PMID": "39225267",
+    "year": 2025,
+    "citationIds": [
+      "cit-oceanic-af-2025"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

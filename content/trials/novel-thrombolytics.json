@@ -1,0 +1,19 @@
+[
+  {
+    "id": "raise",
+    "name": "RAISE",
+    "fullName": "Reteplase versus Alteplase for Acute Ischemic Stroke",
+    "category": "novel-thrombolytics",
+    "population": "n=1412, adults, NIHSS IVT-eligible, ≤4.5 h",
+    "finding": "Superior: 79.5% (reteplase) vs 70.4% (alteplase)",
+    "teachingPoint": "Reteplase beat alteplase for mRS 0-1 within 4.5 h but with more ICH overall; not a default agent outside the trial setting.",
+    "PMID": "38884332",
+    "year": 2024,
+    "citationIds": [
+      "cit-raise-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

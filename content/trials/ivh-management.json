@@ -1,0 +1,19 @@
+[
+  {
+    "id": "clear-3",
+    "name": "CLEAR III",
+    "fullName": "Thrombolytic Removal of Intraventricular Haemorrhage in Treatment of Severe Stroke",
+    "category": "ivh-management",
+    "population": "n=500, adults, NIHSS not restricted, ICU, after EVD placement",
+    "finding": "Neutral: 48% vs 45%",
+    "teachingPoint": "EVD alteplase for obstructive IVH reduces mortality but does not improve functional outcome and increases survival at mRS 5.",
+    "PMID": "28081952",
+    "year": 2017,
+    "citationIds": [
+      "cit-clear3-2017"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

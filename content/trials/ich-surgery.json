@@ -66,5 +66,39 @@
     "certainty": "moderate",
     "lastReviewed": "2026-07-18",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "stich",
+    "name": "STICH",
+    "fullName": "International Surgical Trial in Intracerebral Haemorrhage — early surgery vs initial conservative treatment",
+    "category": "ich-surgery",
+    "population": "n=1033, adults, NIHSS clinical-status stratified (good vs poor prognosis), surgery within 24 h of randomization",
+    "finding": "Neutral: 26% vs 24% favourable",
+    "teachingPoint": "No overall benefit from routine early craniotomy for supratentorial ICH — the basis for medical management as default in equipoise.",
+    "PMID": "15680453",
+    "year": 2005,
+    "citationIds": [
+      "cit-stich-2005"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "stich-2",
+    "name": "STICH II",
+    "fullName": "Early surgery versus initial conservative treatment in spontaneous supratentorial lobar intracerebral haematomas",
+    "category": "ich-surgery",
+    "population": "n=601, adults, NIHSS conscious patients, ≤48 h from ictus; surgery within 12 h of randomization",
+    "finding": "Neutral: unfavourable in 59% vs 62%",
+    "teachingPoint": "Early open surgery for superficial lobar ICH without IVH is not beneficial; motivates minimally invasive approaches instead.",
+    "PMID": "23726393",
+    "year": 2013,
+    "citationIds": [
+      "cit-stich2-2013"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

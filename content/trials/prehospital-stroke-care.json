@@ -1,0 +1,53 @@
+[
+  {
+    "id": "interact4",
+    "name": "INTERACT4",
+    "fullName": "Intensive Ambulance-Delivered Blood-Pressure Reduction in Hyperacute Stroke",
+    "category": "prehospital-stroke-care",
+    "population": "n=2404, mean age 70, NIHSS suspected stroke with motor deficit, ≤2 h from onset, assessed in the ambulance",
+    "finding": "Neutral overall: no difference in functional outcome",
+    "teachingPoint": "Do not lower BP prehospital in undifferentiated stroke — benefit in hemorrhage is offset by harm in ischemia. Supports imaging-first BP decisions.",
+    "PMID": "38752650",
+    "year": 2024,
+    "citationIds": [
+      "cit-interact4-2024"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "best-msu",
+    "name": "BEST-MSU",
+    "fullName": "Prospective, Multicenter, Controlled Trial of Mobile Stroke Units",
+    "category": "prehospital-stroke-care",
+    "population": "n=1515, adults, NIHSS all; 1047 were tPA-eligible, ≤4.5 h from onset",
+    "finding": "Favors MSU: mean uw-mRS 0.72 vs 0.66",
+    "teachingPoint": "Mobile stroke units improved 90-day disability outcomes vs standard EMS, via faster and more complete thrombolysis delivery.",
+    "PMID": "34496173",
+    "year": 2021,
+    "citationIds": [
+      "cit-best-msu-2021"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "racecat",
+    "name": "RACECAT",
+    "fullName": "Direct Transportation to a Thrombectomy-Capable Center vs Local Stroke Center in Suspected Large-Vessel Occlusion in Nonurban Areas",
+    "category": "prehospital-stroke-care",
+    "population": "n=1401, median 75 (IQR 65-83); 56% men, NIHSS median NIHSS 17 (IQR 11-21), prehospital, nonurban Catalonia",
+    "finding": "Neutral: median mRS 3 in both arms",
+    "teachingPoint": "In nonurban areas, direct transport to a thrombectomy centre did not improve 90-day outcome versus the nearest stroke centre.",
+    "PMID": "35510397",
+    "year": 2022,
+    "citationIds": [
+      "cit-racecat-2022"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

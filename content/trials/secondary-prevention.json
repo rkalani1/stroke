@@ -15,5 +15,22 @@
     "certainty": "high",
     "lastReviewed": "2026-05-30",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "match",
+    "name": "MATCH",
+    "fullName": "Aspirin and Clopidogrel Compared with Clopidogrel Alone after Recent Ischaemic Stroke or TIA in High-Risk Patients",
+    "category": "secondary-prevention",
+    "population": "n=7599, adults, NIHSS recent ischemic stroke or TIA plus ≥1 additional vascular risk factor, 18 months of treatment and follow-up",
+    "finding": "Neutral: 15.7% vs 16.7%",
+    "teachingPoint": "Adding aspirin to clopidogrel for 18 months after stroke/TIA gave no significant benefit and doubled life-threatening bleeding.",
+    "PMID": "15276392",
+    "year": 2004,
+    "citationIds": [
+      "cit-match-2004"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

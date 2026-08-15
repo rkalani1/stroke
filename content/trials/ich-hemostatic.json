@@ -1,0 +1,19 @@
+[
+  {
+    "id": "tich-2",
+    "name": "TICH-2",
+    "fullName": "Tranexamic Acid for Hyperacute Primary Intracerebral Haemorrhage",
+    "category": "ich-hemostatic",
+    "population": "n=2325, adults, NIHSS not restricted, ≤8 h from onset",
+    "finding": "Neutral: no significant shift",
+    "teachingPoint": "Tranexamic acid is not routine in spontaneous ICH — no functional benefit, though it is safe and reduces early death.",
+    "PMID": "29778325",
+    "year": 2018,
+    "citationIds": [
+      "cit-tich2-2018"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

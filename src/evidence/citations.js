@@ -2213,6 +2213,350 @@ export const citations = [
     doi: '10.1177/23969873211046475',
     url: 'https://pubmed.ncbi.nlm.nih.gov/34528453/',
     verificationStatus: 'verified-guideline'
+  }),
+
+  // ── 2026-08 evidence sweep: ICH hemostasis, IVH and surgical evacuation ──
+  // Foundational ICH-surgery and hemostatic trials that the app previously
+  // referenced only in Protocols prose, with no PMID and no Atlas card.
+  makeCitation({
+    id: 'cit-interact4-2024',
+    authors: 'Li G et al.',
+    title: 'Intensive Ambulance-Delivered Blood-Pressure Reduction in Hyperacute Stroke (INTERACT4)',
+    journal: 'N Engl J Med',
+    year: 2024,
+    pmid: '38752650',
+    doi: '10.1056/NEJMoa2314741',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/38752650/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-tich2-2018',
+    authors: 'Sprigg N et al.',
+    title: 'Tranexamic acid for hyperacute primary IntraCerebral Haemorrhage (TICH-2)',
+    journal: 'Lancet',
+    year: 2018,
+    pmid: '29778325',
+    doi: '10.1016/S0140-6736(18)31033-X',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/29778325/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-clear3-2017',
+    authors: 'Hanley DF et al.',
+    title: 'Thrombolytic removal of intraventricular haemorrhage in treatment of severe stroke (CLEAR III)',
+    journal: 'Lancet',
+    year: 2017,
+    pmid: '28081952',
+    doi: '10.1016/S0140-6736(16)32410-2',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/28081952/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-stich-2005',
+    authors: 'Mendelow AD et al.',
+    title: 'Early surgery versus initial conservative treatment in patients with spontaneous supratentorial intracerebral haematomas (STICH)',
+    journal: 'Lancet',
+    year: 2005,
+    pmid: '15680453',
+    doi: '10.1016/S0140-6736(05)17826-X',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/15680453/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-stich2-2013',
+    authors: 'Mendelow AD et al.',
+    title: 'Early surgery versus initial conservative treatment in patients with spontaneous supratentorial lobar intracerebral haematomas (STICH II)',
+    journal: 'Lancet',
+    year: 2013,
+    pmid: '23726393',
+    doi: '10.1016/S0140-6736(13)60986-1',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/23726393/',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ── 2026-08 evidence sweep: aSAH critical care and unruptured aneurysms ──
+  makeCitation({
+    id: 'cit-sahara-2025',
+    authors: 'English SW et al.',
+    title: 'Liberal or Restrictive Transfusion Strategy in Aneurysmal Subarachnoid Hemorrhage (SAHaRA)',
+    journal: 'N Engl J Med',
+    year: 2025,
+    pmid: '39655786',
+    doi: '10.1056/NEJMoa2410962',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/39655786/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-ultra-2021',
+    authors: 'Post R et al.',
+    title: 'Ultra-early tranexamic acid after subarachnoid haemorrhage (ULTRA)',
+    journal: 'Lancet',
+    year: 2021,
+    pmid: '33357465',
+    doi: '10.1016/S0140-6736(20)32518-6',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/33357465/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-earlydrain-2023',
+    authors: 'Wolf S et al.',
+    title: 'Effectiveness of Lumbar Cerebrospinal Fluid Drain Among Patients With Aneurysmal Subarachnoid Hemorrhage (EARLYDRAIN)',
+    journal: 'JAMA Neurol',
+    year: 2023,
+    pmid: '37330974',
+    doi: '10.1001/jamaneurol.2023.1792',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/37330974/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-isat-18yr-2015',
+    authors: 'Molyneux AJ et al.',
+    title: 'The durability of endovascular coiling versus neurosurgical clipping of ruptured cerebral aneurysms: 18 year follow-up of the UK cohort of ISAT',
+    journal: 'Lancet',
+    year: 2015,
+    pmid: '25465111',
+    doi: '10.1016/S0140-6736(14)60975-2',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/25465111/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-phases-2014',
+    authors: 'Greving JP et al.',
+    title: 'Development of the PHASES score for prediction of risk of rupture of intracranial aneurysms: a pooled analysis of six prospective cohort studies',
+    journal: 'Lancet Neurol',
+    year: 2014,
+    pmid: '24290159',
+    doi: '10.1016/S1474-4422(13)70263-1',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/24290159/',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ── 2026-08 evidence sweep: thrombolytic alternatives & prehospital systems ──
+  makeCitation({
+    id: 'cit-raise-2024',
+    authors: 'Li S et al.',
+    title: 'Reteplase versus Alteplase for Acute Ischemic Stroke (RAISE)',
+    journal: 'N Engl J Med',
+    year: 2024,
+    pmid: '38884332',
+    doi: '10.1056/NEJMoa2400314',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/38884332/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-aramis-2023',
+    authors: 'Chen HS et al.',
+    title: 'Dual Antiplatelet Therapy vs Alteplase for Patients With Minor Nondisabling Acute Ischemic Stroke (ARAMIS)',
+    journal: 'JAMA',
+    year: 2023,
+    pmid: '37367978',
+    doi: '10.1001/jama.2023.7827',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/37367978/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-taste-2024',
+    authors: 'Parsons MW et al.',
+    title: 'Tenecteplase versus alteplase for thrombolysis in patients selected by use of perfusion imaging within 4.5 h of onset of ischaemic stroke (TASTE)',
+    journal: 'Lancet Neurol',
+    year: 2024,
+    pmid: '38880118',
+    doi: '10.1016/S1474-4422(24)00206-0',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/38880118/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-best-msu-2021',
+    authors: 'Grotta JC et al.',
+    title: 'Prospective, Multicenter, Controlled Trial of Mobile Stroke Units (BEST-MSU)',
+    journal: 'N Engl J Med',
+    year: 2021,
+    pmid: '34496173',
+    doi: '10.1056/NEJMoa2103879',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/34496173/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-racecat-2022',
+    authors: 'Pérez de la Ossa N et al.',
+    title: 'Effect of Direct Transportation to Thrombectomy-Capable Center vs Local Stroke Center on Neurological Outcomes in Patients With Suspected Large-Vessel Occlusion Stroke in Nonurban Areas (RACECAT)',
+    journal: 'JAMA',
+    year: 2022,
+    pmid: '35510397',
+    doi: '10.1001/jama.2022.4404',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/35510397/',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ── 2026-08 evidence sweep: EVT late window, technique and adjuncts ──
+  makeCitation({
+    id: 'cit-mrclean-late-2023',
+    authors: 'Olthuis SGH et al.',
+    title: 'Endovascular treatment versus no endovascular treatment after 6-24 h in patients with ischaemic stroke and collateral flow on CT angiography (MR CLEAN-LATE)',
+    journal: 'Lancet',
+    year: 2023,
+    pmid: '37003289',
+    doi: '10.1016/S0140-6736(23)00575-5',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/37003289/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-angel-reboot-2024',
+    authors: 'Gao F et al.',
+    title: 'Bailout intracranial angioplasty or stenting following thrombectomy for acute large vessel occlusion in China (ANGEL-REBOOT)',
+    journal: 'Lancet Neurol',
+    year: 2024,
+    pmid: '38914085',
+    doi: '10.1016/S1474-4422(24)00186-8',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/38914085/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-protect-mt-2024',
+    authors: 'Liu J et al.',
+    title: 'Balloon guide catheters for endovascular thrombectomy in patients with acute ischaemic stroke due to large-vessel occlusion in China (PROTECT-MT)',
+    journal: 'Lancet',
+    year: 2024,
+    pmid: '39579782',
+    doi: '10.1016/S0140-6736(24)02315-8',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/39579782/',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ── 2026-08 evidence sweep: foundational antiplatelet & AF trials ──
+  makeCitation({
+    id: 'cit-sps3-2012',
+    authors: 'Benavente OR et al. (SPS3 Investigators)',
+    title: 'Effects of clopidogrel added to aspirin in patients with recent lacunar stroke (SPS3)',
+    journal: 'N Engl J Med',
+    year: 2012,
+    pmid: '22931315',
+    doi: '10.1056/NEJMoa1204133',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/22931315/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-match-2004',
+    authors: 'Diener HC et al.',
+    title: 'Aspirin and clopidogrel compared with clopidogrel alone after recent ischaemic stroke or transient ischaemic attack in high-risk patients (MATCH)',
+    journal: 'Lancet',
+    year: 2004,
+    pmid: '15276392',
+    doi: '10.1016/S0140-6736(04)16721-4',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/15276392/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-restart-2019',
+    authors: 'RESTART Collaboration',
+    title: 'Effects of antiplatelet therapy after stroke due to intracerebral haemorrhage (RESTART)',
+    journal: 'Lancet',
+    year: 2019,
+    pmid: '31128924',
+    doi: '10.1016/S0140-6736(19)30840-2',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/31128924/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-laaos3-2021',
+    authors: 'Whitlock RP et al.',
+    title: 'Left Atrial Appendage Occlusion during Cardiac Surgery to Prevent Stroke (LAAOS III)',
+    journal: 'N Engl J Med',
+    year: 2021,
+    pmid: '33999547',
+    doi: '10.1056/NEJMoa2101897',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/33999547/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-noah-afnet6-2023',
+    authors: 'Kirchhof P et al.',
+    title: 'Anticoagulation with Edoxaban in Patients with Atrial High-Rate Episodes (NOAH-AFNET 6)',
+    journal: 'N Engl J Med',
+    year: 2023,
+    pmid: '37622677',
+    doi: '10.1056/NEJMoa2303062',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/37622677/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-invictus-2022',
+    authors: 'Connolly SJ et al.',
+    title: 'Rivaroxaban in Rheumatic Heart Disease-Associated Atrial Fibrillation (INVICTUS)',
+    journal: 'N Engl J Med',
+    year: 2022,
+    pmid: '36036525',
+    doi: '10.1056/NEJMoa2209051',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/36036525/',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ── 2026-08 evidence sweep: inflammation, acute adjuncts, LAAO, AF screening ──
+  makeCitation({
+    id: 'cit-convince-2024',
+    authors: 'Kelly P et al.',
+    title: 'Long-term colchicine for the prevention of vascular recurrent events in non-cardioembolic stroke (CONVINCE)',
+    journal: 'Lancet',
+    year: 2024,
+    pmid: '38857611',
+    doi: '10.1016/S0140-6736(24)00968-1',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/38857611/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-chance3-2024',
+    authors: 'Li J et al.',
+    title: 'Colchicine in patients with acute ischaemic stroke or transient ischaemic attack (CHANCE-3)',
+    journal: 'BMJ',
+    year: 2024,
+    pmid: '38925803',
+    doi: '10.1136/bmj-2023-079061',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/38925803/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-rescue-bt2-2023',
+    authors: 'Zi W et al.',
+    title: 'Tirofiban for Stroke without Large or Medium-Sized Vessel Occlusion (RESCUE BT2)',
+    journal: 'N Engl J Med',
+    year: 2023,
+    pmid: '37256974',
+    doi: '10.1056/NEJMoa2214299',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/37256974/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-option-2025',
+    authors: 'Wazni OM et al.',
+    title: 'Left Atrial Appendage Closure after Ablation for Atrial Fibrillation (OPTION)',
+    journal: 'N Engl J Med',
+    year: 2025,
+    pmid: '39555822',
+    doi: '10.1056/NEJMoa2408308',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/39555822/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-loop-2021',
+    authors: 'Svendsen JH et al.',
+    title: 'Implantable loop recorder detection of atrial fibrillation to prevent stroke (The LOOP Study)',
+    journal: 'Lancet',
+    year: 2021,
+    pmid: '34469766',
+    doi: '10.1016/S0140-6736(21)01698-6',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/34469766/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-oceanic-af-2025',
+    authors: 'Piccini JP et al.',
+    title: 'Asundexian versus Apixaban in Patients with Atrial Fibrillation (OCEANIC-AF)',
+    journal: 'N Engl J Med',
+    year: 2025,
+    pmid: '39225267',
+    doi: '10.1056/NEJMoa2407105',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/39225267/',
+    verificationStatus: 'verified-pubmed'
   })
 ];
 

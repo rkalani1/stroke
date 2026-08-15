@@ -1751,6 +1751,1264 @@ export const completedTrials = [
     practiceImpact: 'Objective: intensive SBP <140 after successful EVT reduced functional independence; reinforces ENCHANTED2/MT.',
     lastReviewed: '2026-07-18',
     verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Prehospital BP in undifferentiated stroke -------------------
+  t({
+    id: 'interact4',
+    shortName: 'INTERACT4',
+    fullName: 'Intensive Ambulance-Delivered Blood-Pressure Reduction in Hyperacute Stroke',
+    topic: 'prehospital-stroke-care',
+    diseaseArea: ['ich', 'acute-ischemic-stroke', 'prehospital-stroke-care'],
+    population: {
+      n: 2404,
+      ageRange: 'mean age 70',
+      nihssRange: 'suspected stroke with motor deficit',
+      timeWindow: '≤2 h from onset, assessed in the ambulance',
+      keyInclusion: ['Suspected acute stroke with a motor deficit', 'SBP ≥150 mm Hg', 'Randomized in the ambulance within 2 h of onset'],
+      keyExclusion: ['Diagnosis already established as non-stroke']
+    },
+    intervention: 'Immediate prehospital SBP lowering (target 130-140 mm Hg)',
+    comparator: 'Usual prehospital blood-pressure management',
+    primaryEndpoint: {
+      definition: 'mRS shift at 90 days',
+      timepoint: '90 d',
+      result: 'Neutral overall: no difference in functional outcome',
+      effectSize: 'common OR 1.00',
+      confidenceInterval: '95% CI 0.87 to 1.15',
+      pValue: 'Not significant'
+    },
+    secondaryEndpoints: [
+      { name: 'Hemorrhagic stroke subgroup (n=1041, 46.5%)', result: 'Benefit: common OR 0.75 (95% CI 0.60-0.92)' },
+      { name: 'Cerebral ischemia subgroup', result: 'Harm: common OR 1.30 (95% CI 1.06-1.60)' },
+      { name: 'SBP on hospital arrival', result: '159 vs 170 mm Hg' }
+    ],
+    safetyFindings: { sich: '', mortality: 'Similar', other: 'Serious adverse events similar between groups' },
+    imagingCriteria: 'None prehospital — stroke type confirmed on arrival (imaging in 2240 patients)',
+    applicabilityNotes: 'The decisive result is the qualitative interaction: the SAME prehospital intervention helped hemorrhagic and harmed ischemic stroke. Prehospital BP lowering therefore cannot be applied before stroke type is known. Conducted entirely in China, where the hemorrhage fraction (46.5%) is far above that of most Western EMS systems, which shifts the net effect.',
+    limitations: 'Single-country; open-label; very high hemorrhage proportion limits transportability; subgroup effects are post-randomization by diagnosis.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-interact4-2024'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Do not lower BP prehospital in undifferentiated stroke — benefit in hemorrhage is offset by harm in ischemia. Supports imaging-first BP decisions.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- ICH hemostatic therapy -------------------
+  t({
+    id: 'tich-2',
+    shortName: 'TICH-2',
+    fullName: 'Tranexamic Acid for Hyperacute Primary Intracerebral Haemorrhage',
+    topic: 'ich-hemostatic',
+    diseaseArea: ['ich', 'ich-hemostatic'],
+    population: {
+      n: 2325,
+      ageRange: 'adults',
+      nihssRange: 'not restricted',
+      timeWindow: '≤8 h from onset',
+      keyInclusion: ['Spontaneous intracerebral hemorrhage within 8 h'],
+      keyExclusion: ['Secondary ICH', 'Contraindication to tranexamic acid']
+    },
+    intervention: 'Tranexamic acid 1 g IV bolus then 1 g over 8 h',
+    comparator: 'Matching placebo',
+    primaryEndpoint: {
+      definition: 'mRS shift at day 90',
+      timepoint: '90 d',
+      result: 'Neutral: no significant shift',
+      effectSize: 'adjusted OR 0.88',
+      confidenceInterval: '95% CI 0.76 to 1.03',
+      pValue: 'p=0.11'
+    },
+    secondaryEndpoints: [
+      { name: 'Death by day 7', result: 'Fewer with TXA: 9% vs 11% (aOR 0.73, 95% CI 0.53-0.99, p=0.041)' },
+      { name: 'Case fatality at 90 d', result: 'No difference: 22% vs 21% (aHR 0.92, 95% CI 0.77-1.10)' }
+    ],
+    safetyFindings: { sich: '', mortality: 'Early mortality reduced, 90-day mortality unchanged', other: 'Fewer serious adverse events with TXA at days 2, 7 and 90; no excess thromboembolism' },
+    imagingCriteria: 'CT-confirmed spontaneous ICH',
+    applicabilityNotes: 'The largest antifibrinolytic trial in ICH. Negative for functional outcome despite a real early-mortality and safety signal — the pattern of a treatment that limits early expansion without changing the disability that follows.',
+    limitations: 'Broad time window (up to 8 h) diluted any expansion effect; no imaging-based selection for patients at risk of expansion.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-tich2-2018'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Tranexamic acid is not routine in spontaneous ICH — no functional benefit, though it is safe and reduces early death.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- IVH / EVD thrombolysis -------------------
+  t({
+    id: 'clear-3',
+    shortName: 'CLEAR III',
+    fullName: 'Thrombolytic Removal of Intraventricular Haemorrhage in Treatment of Severe Stroke',
+    topic: 'ivh-management',
+    diseaseArea: ['ich', 'ivh-management', 'ich-surgery'],
+    population: {
+      n: 500,
+      ageRange: 'adults',
+      nihssRange: 'not restricted',
+      timeWindow: 'ICU, after EVD placement',
+      keyInclusion: ['Routinely placed EVD', 'Stable ICH volume <30 mL', 'IVH obstructing 3rd or 4th ventricle'],
+      keyExclusion: ['Underlying vascular pathology', 'Unstable hematoma']
+    },
+    intervention: 'Alteplase 1 mg via EVD, up to 12 doses 8 h apart',
+    comparator: '0.9% saline irrigation via EVD',
+    primaryEndpoint: {
+      definition: 'Good outcome (mRS ≤3) at 180 days',
+      timepoint: '180 d',
+      result: 'Neutral: 48% vs 45%',
+      effectSize: 'RR 1.06',
+      confidenceInterval: '95% CI 0.88 to 1.28',
+      pValue: 'p=0.554'
+    },
+    secondaryEndpoints: [
+      { name: '180-day case fatality', result: 'Lower with alteplase: 18% vs 29% (HR 0.60, 95% CI 0.41-0.86, p=0.006)' },
+      { name: 'mRS 5 (severe disability) at 180 d', result: 'Higher with alteplase: 17% vs 9% (RR 1.99, 95% CI 1.22-3.26, p=0.007)' },
+      { name: 'Ventriculitis', result: '7% vs 12% (RR 0.55, 95% CI 0.31-0.97, p=0.048)' }
+    ],
+    safetyFindings: { sich: 'Symptomatic bleeding 2% vs 2% (NS)', mortality: 'Reduced', other: 'Fewer serious adverse events (46% vs 60%, RR 0.76, p=0.002)' },
+    imagingCriteria: 'Serial CT every 24 h during dosing',
+    applicabilityNotes: 'The mortality-versus-disability trade-off is the teaching point: intraventricular alteplase converted deaths into survivors at mRS 5, with no net gain at the mRS ≤3 threshold. Discuss explicitly in goals-of-care conversations.',
+    limitations: 'Powered for mRS ≤3; the survival benefit was accompanied by more severe disability. Clot removal was often incomplete.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-clear3-2017'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'EVD alteplase for obstructive IVH reduces mortality but does not improve functional outcome and increases survival at mRS 5.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- ICH surgical evacuation (foundational) -------------------
+  t({
+    id: 'stich',
+    shortName: 'STICH',
+    fullName: 'International Surgical Trial in Intracerebral Haemorrhage — early surgery vs initial conservative treatment',
+    topic: 'ich-surgery',
+    diseaseArea: ['ich', 'ich-surgery'],
+    population: {
+      n: 1033,
+      ageRange: 'adults',
+      nihssRange: 'clinical-status stratified (good vs poor prognosis)',
+      timeWindow: 'surgery within 24 h of randomization',
+      keyInclusion: ['Spontaneous supratentorial ICH', 'Clinical equipoise about surgery'],
+      keyExclusion: ['Clear indication or contraindication to surgery']
+    },
+    intervention: 'Early hematoma evacuation (within 24 h) plus medical therapy',
+    comparator: 'Initial conservative treatment (delayed evacuation permitted)',
+    primaryEndpoint: {
+      definition: 'Favourable outcome on the 8-point Glasgow Outcome Scale, prognosis-based dichotomy',
+      timepoint: '6 months',
+      result: 'Neutral: 26% vs 24% favourable',
+      effectSize: 'OR 0.89; absolute benefit 2.3%',
+      confidenceInterval: '95% CI 0.66 to 1.19 (absolute -3.2% to 7.7%)',
+      pValue: 'p=0.414'
+    },
+    secondaryEndpoints: [],
+    safetyFindings: { sich: '', mortality: 'No overall difference', other: '' },
+    imagingCriteria: 'CT-confirmed supratentorial ICH',
+    applicabilityNotes: '83 centres in 27 countries. Sets the default of medical management for supratentorial ICH in equipoise, and frames every subsequent surgical trial. Does NOT apply to cerebellar ICH with mass effect or hydrocephalus, where evacuation remains indicated.',
+    limitations: 'Substantial crossover from conservative to surgical arms; heterogeneous surgical technique; equipoise-based enrolment selects out the clearest surgical candidates.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-stich-2005'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'No overall benefit from routine early craniotomy for supratentorial ICH — the basis for medical management as default in equipoise.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'stich-2',
+    shortName: 'STICH II',
+    fullName: 'Early surgery versus initial conservative treatment in spontaneous supratentorial lobar intracerebral haematomas',
+    topic: 'ich-surgery',
+    diseaseArea: ['ich', 'ich-surgery'],
+    population: {
+      n: 601,
+      ageRange: 'adults',
+      nihssRange: 'conscious patients',
+      timeWindow: '≤48 h from ictus; surgery within 12 h of randomization',
+      keyInclusion: ['Superficial lobar ICH 10-100 mL', 'No intraventricular hemorrhage', 'Conscious'],
+      keyExclusion: ['IVH present', 'Deep or infratentorial hematoma']
+    },
+    intervention: 'Early hematoma evacuation within 12 h plus medical therapy',
+    comparator: 'Initial medical treatment alone',
+    primaryEndpoint: {
+      definition: 'Prognosis-based dichotomised Extended Glasgow Outcome Scale',
+      timepoint: '6 months',
+      result: 'Neutral: unfavourable in 59% vs 62%',
+      effectSize: 'OR 0.86; absolute difference 3.7%',
+      confidenceInterval: '95% CI 0.62 to 1.20 (absolute -4.3% to 11.6%)',
+      pValue: 'p=0.367'
+    },
+    secondaryEndpoints: [{ name: 'Survival', result: 'Possible small survival advantage, not significant for the primary outcome' }],
+    safetyFindings: { sich: '', mortality: 'Early surgery did not increase death or disability', other: '' },
+    imagingCriteria: 'Lobar hematoma <1 cm from the cortical surface, no IVH',
+    applicabilityNotes: 'Tested the subgroup STICH suggested might benefit — superficial lobar clots without IVH — and still found no significant benefit. Together with STICH they close the case for routine open craniotomy and motivate the minimally invasive era (MISTIE III, ENRICH).',
+    limitations: 'Not masked; later evacuation permitted in the conservative arm; enrolled conscious patients only.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-stich2-2013'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Early open surgery for superficial lobar ICH without IVH is not beneficial; motivates minimally invasive approaches instead.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- aSAH critical care -------------------
+  t({
+    id: 'sahara',
+    shortName: 'SAHaRA',
+    fullName: 'Liberal or Restrictive Transfusion Strategy in Aneurysmal Subarachnoid Hemorrhage',
+    topic: 'sah-critical-care',
+    diseaseArea: ['sah', 'sah-critical-care'],
+    population: {
+      n: 742,
+      ageRange: 'critically ill adults',
+      nihssRange: 'all clinical grades',
+      timeWindow: 'critical-care period after aSAH',
+      keyInclusion: ['Acute aneurysmal SAH', 'Anemia during critical care'],
+      keyExclusion: []
+    },
+    intervention: 'Liberal transfusion — mandatory transfusion at hemoglobin ≤10 g/dL',
+    comparator: 'Restrictive transfusion — optional transfusion at hemoglobin ≤8 g/dL',
+    primaryEndpoint: {
+      definition: 'Unfavorable neurologic outcome (mRS ≥4) at 12 months',
+      timepoint: '12 months',
+      result: 'Neutral: 33.5% vs 37.7%',
+      effectSize: 'RR 0.88',
+      confidenceInterval: '95% CI 0.72 to 1.09',
+      pValue: 'p=0.22'
+    },
+    secondaryEndpoints: [
+      { name: 'Functional Independence Measure at 12 mo', result: '82.8 vs 79.8 (mean difference 3.01, 95% CI -5.49 to 11.51)' },
+      { name: 'EQ-5D-5L utility index', result: '0.5 vs 0.5 (mean difference 0.02, 95% CI -0.04 to 0.09)' }
+    ],
+    safetyFindings: { sich: '', mortality: '', other: 'Adverse events similar in the two groups' },
+    imagingCriteria: '',
+    applicabilityNotes: '23 centres; the largest transfusion-threshold trial in aSAH. Supports a restrictive threshold as the default, since liberal transfusion conferred no functional advantage at 12 months.',
+    limitations: 'Confidence interval leaves a modest benefit statistically possible; anemia definition and transfusion practice varied by site.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-sahara-2025'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'A liberal (Hgb ≤10) transfusion threshold after aSAH did not improve 12-month outcome — restrictive transfusion remains reasonable.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'ultra-sah',
+    shortName: 'ULTRA',
+    fullName: 'Ultra-Early Tranexamic Acid After Subarachnoid Haemorrhage',
+    topic: 'sah-critical-care',
+    diseaseArea: ['sah', 'sah-critical-care'],
+    population: {
+      n: 955,
+      ageRange: 'adults',
+      nihssRange: 'all grades',
+      timeWindow: 'immediately after diagnosis, until aneurysm treatment or 24 h',
+      keyInclusion: ['Spontaneous CT-proven SAH'],
+      keyExclusion: []
+    },
+    intervention: 'Tranexamic acid 1 g bolus then 1 g every 8 h until aneurysm treatment or 24 h, plus usual care',
+    comparator: 'Usual care alone',
+    primaryEndpoint: {
+      definition: 'Good clinical outcome (mRS 0-3) at 6 months',
+      timepoint: '6 months',
+      result: 'Neutral: 60% vs 64%',
+      effectSize: 'adjusted OR 0.86',
+      confidenceInterval: '95% CI 0.66 to 1.12',
+      pValue: 'Not significant'
+    },
+    secondaryEndpoints: [
+      { name: 'Rebleeding before aneurysm treatment', result: '10% vs 14% (OR 0.71, 95% CI 0.48-1.04)' }
+    ],
+    safetyFindings: { sich: '', mortality: '', other: 'Serious adverse events comparable between groups' },
+    imagingCriteria: 'CT-proven SAH',
+    applicabilityNotes: 'Ultra-early antifibrinolysis did not improve outcome even though rebleeding trended lower — the reduction in rebleeding did not translate into function. Argues for prompt aneurysm securing rather than pharmacologic bridging.',
+    limitations: 'Open-label (masked outcome assessment); short treatment duration by design.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-ultra-2021'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Routine ultra-early tranexamic acid is not indicated in aSAH — prioritise early aneurysm securing instead.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'earlydrain',
+    shortName: 'EARLYDRAIN',
+    fullName: 'Effectiveness of Lumbar Cerebrospinal Fluid Drain Among Patients With Aneurysmal Subarachnoid Hemorrhage',
+    topic: 'sah-critical-care',
+    diseaseArea: ['sah', 'sah-critical-care'],
+    population: {
+      n: 287,
+      ageRange: 'median 55 (IQR 48-63); 68.6% female',
+      nihssRange: 'all clinical grades',
+      timeWindow: 'lumbar drain started within 72 h of SAH, after aneurysm securing within 48 h',
+      keyInclusion: ['Acute aneurysmal SAH', 'Aneurysm treated by clipping or coiling within 48 h'],
+      keyExclusion: []
+    },
+    intervention: 'Additional early lumbar drain at 5 mL/h plus standard care',
+    comparator: 'Standard of care alone',
+    primaryEndpoint: {
+      definition: 'Unfavorable outcome (mRS 3-6) at 6 months',
+      timepoint: '6 months',
+      result: 'Favors lumbar drain: 32.6% vs 44.8%',
+      effectSize: 'RR 0.73; absolute risk difference -0.12',
+      confidenceInterval: '95% CI 0.52 to 0.98 (absolute -0.23 to -0.01)',
+      pValue: 'p=0.04'
+    },
+    secondaryEndpoints: [
+      { name: 'Secondary infarction at discharge', result: '28.5% vs 39.9% (RR 0.71, 95% CI 0.49-0.99, p=0.04)' }
+    ],
+    safetyFindings: { sich: '', mortality: '', other: '' },
+    imagingCriteria: '',
+    applicabilityNotes: 'One of the few positive interventions in aSAH critical care — prophylactic lumbar CSF drainage reduced both delayed infarction and 6-month disability. 19 centres in Germany, Switzerland and Canada.',
+    limitations: 'Open-label with blinded endpoint assessment; modest sample (287 analysable of 307 randomized) and a p-value close to 0.05; requires the aneurysm to be secured first.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-earlydrain-2023'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Prophylactic early lumbar drainage after aneurysm securing reduced secondary infarction and unfavorable 6-month outcome.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Aneurysm securing & unruptured aneurysms -------------------
+  t({
+    id: 'isat-18yr',
+    shortName: 'ISAT (18-year)',
+    fullName: 'Durability of Endovascular Coiling versus Neurosurgical Clipping of Ruptured Cerebral Aneurysms — 18-year follow-up of the UK ISAT cohort',
+    topic: 'aneurysm-treatment',
+    diseaseArea: ['sah', 'aneurysm-treatment'],
+    population: {
+      n: 1644,
+      ageRange: 'adults',
+      nihssRange: 'treatment equipoise between clipping and coiling',
+      timeWindow: 'randomized 1994-2002; followed 10.0-18.5 years',
+      keyInclusion: ['Ruptured intracranial aneurysm', 'Equipoise between clipping and coiling'],
+      keyExclusion: []
+    },
+    intervention: 'Endovascular coiling',
+    comparator: 'Neurosurgical clipping',
+    primaryEndpoint: {
+      definition: 'Death and independence at 10 years',
+      timepoint: '10 years',
+      result: 'Favors coiling: alive and independent more likely after coiling',
+      effectSize: 'OR 1.34 for alive and independent; survival OR 1.35 (83% vs 79% alive)',
+      confidenceInterval: '95% CI 1.07 to 1.67 (survival 1.06 to 1.73)',
+      pValue: 'Significant'
+    },
+    secondaryEndpoints: [
+      { name: 'Independence (mRS 0-2) at 10 y among responders', result: '82% vs 78% (OR 1.25, 95% CI 0.92-1.71)' },
+      { name: 'Late recurrent SAH >1 y', result: '33 patients, 17 from the target aneurysm — small absolute risk, higher after coiling' }
+    ],
+    safetyFindings: { sich: '', mortality: 'Lower with coiling at 10 years', other: 'Greater need for aneurysm re-treatment after coiling' },
+    imagingCriteria: '',
+    applicabilityNotes: 'The durability question answered: the early coiling advantage persists to 10-18 years, and the higher rebleed and re-treatment rate after coiling does not erase it. Applies to aneurysms in genuine equipoise — mostly small anterior-circulation lesions in good-grade patients.',
+    limitations: 'Reflects 1990s technique for both arms; UK cohort only; dependency self-reported by questionnaire.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-isat-18yr-2015'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Coiling retains a survival and disability-free-survival advantage over clipping at 10+ years when both are feasible.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'phases',
+    shortName: 'PHASES',
+    fullName: 'Development of the PHASES Score for Prediction of Risk of Rupture of Intracranial Aneurysms',
+    topic: 'unruptured-aneurysms',
+    diseaseArea: ['sah', 'unruptured-aneurysms'],
+    population: {
+      n: 8382,
+      ageRange: 'adults across six prospective cohorts',
+      nihssRange: 'incidental unruptured saccular aneurysms',
+      timeWindow: '29,166 person-years of follow-up',
+      keyInclusion: ['Incidental unruptured intracranial saccular aneurysm'],
+      keyExclusion: []
+    },
+    intervention: 'Risk-prediction model (Population, Hypertension, Age, Size, Earlier SAH, Site)',
+    comparator: 'N/A — pooled individual-patient prognostic analysis',
+    primaryEndpoint: {
+      definition: '5-year risk of aneurysm rupture',
+      timepoint: '5 years',
+      result: 'Mean 1-year rupture risk 1.4%; 5-year risk 3.4% (230 ruptures)',
+      effectSize: '5-year absolute risk ranges from 0.25% to >15% by risk profile',
+      confidenceInterval: '1-year 95% CI 1.1-1.6; 5-year 95% CI 2.9-4.0',
+      pValue: ''
+    },
+    secondaryEndpoints: [
+      { name: 'Geographic risk', result: 'Finnish 3.6× and Japanese 2.8× the risk of North American / other European populations' },
+      { name: 'Predictors', result: 'Age, hypertension, prior SAH, aneurysm size, aneurysm location, geographic region' }
+    ],
+    safetyFindings: { sich: '', mortality: '', other: '' },
+    imagingCriteria: 'Imaging-detected incidental saccular aneurysms',
+    applicabilityNotes: 'The standard bedside instrument for counselling a patient with an incidental aneurysm. The spread it quantifies — 0.25% to >15% over five years — is what makes treat-versus-observe a genuine calculation rather than a reflex.',
+    limitations: 'Derived from observational cohorts, so treated aneurysms drop out of follow-up; no external validation in the original report; does not model treatment risk, which must be weighed against these numbers.',
+    certainty: 'moderate',
+    evidenceType: 'meta-analysis',
+    citationIds: ['cit-phases-2014'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'PHASES gives an absolute 5-year rupture risk for incidental aneurysms, anchoring treat-versus-observe discussions.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Novel thrombolytics -------------------
+  t({
+    id: 'raise',
+    shortName: 'RAISE',
+    fullName: 'Reteplase versus Alteplase for Acute Ischemic Stroke',
+    topic: 'novel-thrombolytics',
+    diseaseArea: ['acute-ischemic-stroke', 'novel-thrombolytics'],
+    population: {
+      n: 1412,
+      ageRange: 'adults',
+      nihssRange: 'IVT-eligible',
+      timeWindow: '≤4.5 h',
+      keyInclusion: ['Ischemic stroke within 4.5 h of onset'],
+      keyExclusion: ['Standard thrombolysis contraindications']
+    },
+    intervention: 'Reteplase 18 mg IV bolus, then a second 18 mg bolus 30 min later',
+    comparator: 'Alteplase 0.9 mg/kg (max 90 mg)',
+    primaryEndpoint: {
+      definition: 'Excellent functional outcome (mRS 0-1) at 90 days',
+      timepoint: '90 d',
+      result: 'Superior: 79.5% (reteplase) vs 70.4% (alteplase)',
+      effectSize: 'RR 1.13',
+      confidenceInterval: '95% CI 1.05 to 1.21',
+      pValue: 'p<0.001 non-inferiority; p=0.002 superiority'
+    },
+    secondaryEndpoints: [
+      { name: 'Any intracranial hemorrhage at 90 d', result: 'Higher with reteplase: 7.7% vs 4.9% (RR 1.59, 95% CI 1.00-2.51)' },
+      { name: 'Any adverse event', result: '91.6% vs 82.4% (RR 1.11, 95% CI 1.03-1.20)' }
+    ],
+    safetyFindings: {
+      sich: 'Symptomatic ICH ≤36 h 2.4% vs 2.0% (RR 1.21, 95% CI 0.54-2.75)',
+      mortality: '',
+      other: 'Excess of any ICH and of adverse events overall with reteplase'
+    },
+    imagingCriteria: 'Standard non-contrast CT selection',
+    applicabilityNotes: 'Conducted entirely in China, with an alteplase excellent-outcome rate (70.4%) far above Western trials — a signal of a milder population that limits transportability. The 2026 AHA/ASA AIS guideline notes benefit alongside limited generalizability, so reteplase is an evidence-watch item rather than a protocol substitution.',
+    limitations: 'Single-country; open-label; higher rates of any ICH and adverse events; unusually high control-arm outcomes.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-raise-2024'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Reteplase beat alteplase for mRS 0-1 within 4.5 h but with more ICH overall; not a default agent outside the trial setting.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Minor non-disabling stroke -------------------
+  t({
+    id: 'aramis',
+    shortName: 'ARAMIS',
+    fullName: 'Dual Antiplatelet Therapy vs Alteplase for Patients With Minor Nondisabling Acute Ischemic Stroke',
+    topic: 'minor-stroke-thrombolysis',
+    diseaseArea: ['acute-ischemic-stroke', 'minor-stroke-thrombolysis', 'dapt-minor-stroke'],
+    population: {
+      n: 760,
+      ageRange: 'median 64 (IQR 57-71); 31.0% women',
+      nihssRange: 'NIHSS ≤5, with ≤1 point on key single items (median 2)',
+      timeWindow: '≤4.5 h',
+      keyInclusion: ['Minor non-disabling ischemic stroke within 4.5 h'],
+      keyExclusion: ['Disabling deficit on key NIHSS items']
+    },
+    intervention: 'DAPT — clopidogrel 300 mg then 75 mg daily plus aspirin 100 mg daily for 12±2 days, then guideline antiplatelet therapy',
+    comparator: 'IV alteplase 0.9 mg/kg, then guideline antiplatelet therapy from 24 h',
+    primaryEndpoint: {
+      definition: 'Excellent functional outcome (mRS 0-1) at 90 days — non-inferiority margin -4.5%',
+      timepoint: '90 d',
+      result: 'Non-inferior: 93.8% (DAPT) vs 91.4% (alteplase)',
+      effectSize: 'Risk difference 2.3%; lower bound of 1-sided 97.5% CI -1.5%',
+      confidenceInterval: '95% CI -1.5% to 6.2%',
+      pValue: 'p<0.001 for non-inferiority'
+    },
+    secondaryEndpoints: [
+      { name: 'Symptomatic ICH to 90 d', result: '0.3% (1/371) with DAPT vs 0.9% (3/351) with alteplase' }
+    ],
+    safetyFindings: { sich: '0.3% vs 0.9%', mortality: '', other: '' },
+    imagingCriteria: 'Standard CT-based selection',
+    applicabilityNotes: 'Directly addresses the common bedside question of whether to thrombolyse a minor non-disabling deficit. DAPT was non-inferior with numerically less symptomatic hemorrhage. Note the strict definition of non-disabling used here (≤1 point on key single items) — it does not license withholding thrombolysis from a low-NIHSS patient whose deficit is disabling, such as isolated aphasia or hemianopia.',
+    limitations: 'Open-label; conducted at 38 Chinese hospitals; very high event-free rates in both arms leave little room to separate them; excludes patients with LVO intended for EVT.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-aramis-2023'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'For genuinely non-disabling minor stroke within 4.5 h, DAPT is a reasonable alternative to IV thrombolysis.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Perfusion-selected TNK -------------------
+  t({
+    id: 'taste',
+    shortName: 'TASTE',
+    fullName: 'Tenecteplase versus Alteplase for Thrombolysis in Patients Selected by Perfusion Imaging within 4.5 h',
+    topic: 'tnk-vs-alteplase',
+    diseaseArea: ['acute-ischemic-stroke', 'tnk-vs-alteplase'],
+    population: {
+      n: 680,
+      ageRange: 'median 74 (IQR 63-82); 38% female',
+      nihssRange: 'median NIHSS 7 (IQR 4-11)',
+      timeWindow: '≤4.5 h from onset or last known well',
+      keyInclusion: ['Target mismatch on perfusion imaging', 'Not being considered for EVT'],
+      keyExclusion: ['Planned endovascular thrombectomy']
+    },
+    intervention: 'Tenecteplase 0.25 mg/kg',
+    comparator: 'Alteplase 0.90 mg/kg',
+    primaryEndpoint: {
+      definition: 'No disability (mRS 0-1) at 3 months — non-inferiority margin -0.03',
+      timepoint: '3 months',
+      result: 'Non-inferiority met per-protocol (59% vs 56%) but NOT in intention-to-treat (57% vs 55%)',
+      effectSize: 'ITT standardised risk difference 0.03; per-protocol 0.05',
+      confidenceInterval: 'ITT 95% CI -0.033 to 0.10; per-protocol -0.02 to 0.12',
+      pValue: 'ITT one-tailed p=0.031; per-protocol p=0.01'
+    },
+    secondaryEndpoints: [
+      { name: '90-day mortality', result: '7% vs 4% (SRD 0.02, 95% CI -0.02 to 0.05)' }
+    ],
+    safetyFindings: { sich: '3% (9/337) vs 2% (6/340); risk difference 0.01 (95% CI -0.01 to 0.03)', mortality: '7% vs 4%', other: '' },
+    imagingCriteria: 'CT or MR perfusion target mismatch required for entry',
+    applicabilityNotes: '35 hospitals in eight countries — the broadest geographic base of any TNK trial, and the only one selecting on perfusion mismatch. Recruitment stopped early once other trials reported non-inferiority, which left it underpowered; read it as supporting evidence rather than an independent verdict.',
+    limitations: 'Stopped early (680 of a planned 832); open-label; non-inferiority met only per-protocol, not in ITT.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-taste-2024'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Adds perfusion-selected, multi-country support for TNK 0.25 mg/kg, and shows large-scale CTP-guided IVT selection is feasible.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Prehospital systems of care -------------------
+  t({
+    id: 'best-msu',
+    shortName: 'BEST-MSU',
+    fullName: 'Prospective, Multicenter, Controlled Trial of Mobile Stroke Units',
+    topic: 'prehospital-stroke-care',
+    diseaseArea: ['acute-ischemic-stroke', 'prehospital-stroke-care'],
+    population: {
+      n: 1515,
+      ageRange: 'adults',
+      nihssRange: 'all; 1047 were tPA-eligible',
+      timeWindow: '≤4.5 h from onset',
+      keyInclusion: ['Acute stroke symptoms within 4.5 h', 'Attended by MSU or EMS on alternating weeks'],
+      keyExclusion: []
+    },
+    intervention: 'Mobile stroke unit — ambulance with CT scanner and stroke staff',
+    comparator: 'Standard emergency medical services management',
+    primaryEndpoint: {
+      definition: 'Utility-weighted mRS ≥0.91 at 90 days among tPA-eligible patients',
+      timepoint: '90 d',
+      result: 'Favors MSU: mean uw-mRS 0.72 vs 0.66',
+      effectSize: 'adjusted OR 2.43',
+      confidenceInterval: '95% CI 1.75 to 3.36',
+      pValue: 'p<0.001'
+    },
+    secondaryEndpoints: [
+      { name: 'Onset-to-tPA time', result: '72 min (MSU) vs 108 min (EMS)' },
+      { name: 'tPA delivered among eligible', result: '97.1% vs 79.5%' },
+      { name: 'mRS 0-1 at 90 d', result: '55.0% vs 44.4%' },
+      { name: '90-day mortality', result: '8.9% vs 11.9%' }
+    ],
+    safetyFindings: { sich: '', mortality: 'Numerically lower with MSU', other: '' },
+    imagingCriteria: 'On-board non-contrast CT',
+    applicabilityNotes: 'The anchor trial for mobile stroke units. Two mechanisms drive the benefit and both matter: 36 minutes faster to thrombolysis, and a far higher proportion of eligible patients actually treated (97% vs 80%). Cost and population density govern whether the model transfers.',
+    limitations: 'Alternating-week design rather than individual randomization; conducted in US metropolitan areas; cost-effectiveness not addressed here.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-best-msu-2021'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Mobile stroke units improved 90-day disability outcomes vs standard EMS, via faster and more complete thrombolysis delivery.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'racecat',
+    shortName: 'RACECAT',
+    fullName: 'Direct Transportation to a Thrombectomy-Capable Center vs Local Stroke Center in Suspected Large-Vessel Occlusion in Nonurban Areas',
+    topic: 'prehospital-stroke-care',
+    diseaseArea: ['acute-ischemic-stroke', 'prehospital-stroke-care', 'evt-late-window'],
+    population: {
+      n: 1401,
+      ageRange: 'median 75 (IQR 65-83); 56% men',
+      nihssRange: 'median NIHSS 17 (IQR 11-21)',
+      timeWindow: 'prehospital, nonurban Catalonia',
+      keyInclusion: ['Suspected large-vessel occlusion by EMS in an area whose closest stroke centre cannot perform thrombectomy'],
+      keyExclusion: []
+    },
+    intervention: 'Direct transport to a thrombectomy-capable centre (mothership)',
+    comparator: 'Transport to the closest local stroke centre (drip-and-ship)',
+    primaryEndpoint: {
+      definition: '90-day mRS in the target ischemic-stroke population (n=949)',
+      timepoint: '90 d',
+      result: 'Neutral: median mRS 3 in both arms',
+      effectSize: 'adjusted common OR 1.03',
+      confidenceInterval: '95% CI 0.82 to 1.29',
+      pValue: 'Not significant; halted for futility'
+    },
+    secondaryEndpoints: [
+      { name: 'IV thrombolysis received', result: 'Lower with direct transport: 47.5% vs 60.4% (OR 0.59, 95% CI 0.45-0.76)' },
+      { name: 'Thrombectomy received', result: 'Higher with direct transport: 48.8% vs 39.4% (OR 1.46, 95% CI 1.13-1.89)' },
+      { name: '90-day mortality (safety population)', result: '27.3% vs 27.2% (aHR 0.97, 95% CI 0.79-1.18)' }
+    ],
+    safetyFindings: { sich: '', mortality: 'No difference', other: '' },
+    imagingCriteria: 'RACE scale used for prehospital LVO suspicion',
+    applicabilityNotes: 'The clearest statement of the mothership-versus-drip-and-ship trade-off: bypassing the local centre bought more thrombectomy but cost thrombolysis, and the two cancelled out. Cluster-randomized in nonurban Catalonia; transport times and network maturity elsewhere may tip the balance either way, so it should not be generalised uncritically.',
+    limitations: 'Cluster randomization by geographic area; stopped for futility at the second interim analysis; single region; findings explicitly require replication.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-racecat-2022'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'In nonurban areas, direct transport to a thrombectomy centre did not improve 90-day outcome versus the nearest stroke centre.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- EVT late window: collateral-based selection -------------------
+  t({
+    id: 'mr-clean-late',
+    shortName: 'MR CLEAN-LATE',
+    fullName: 'Endovascular Treatment 6-24 h After Stroke Selected by Collateral Flow on CT Angiography',
+    topic: 'evt-late-window',
+    diseaseArea: ['acute-ischemic-stroke', 'evt-late-window'],
+    population: {
+      n: 502,
+      ageRange: '≥18; 52% female',
+      nihssRange: 'NIHSS ≥2',
+      timeWindow: '6-24 h from onset or last seen well',
+      keyInclusion: ['Anterior-circulation large-vessel occlusion', 'Collateral flow on CTA'],
+      keyExclusion: ['Already eligible for late-window EVT under DAWN/DEFUSE-3 perfusion criteria — those patients were treated per guideline and excluded']
+    },
+    intervention: 'Endovascular treatment plus best medical management',
+    comparator: 'Best medical management alone',
+    primaryEndpoint: {
+      definition: 'mRS shift at 90 days',
+      timepoint: '90 d',
+      result: 'Favors EVT: median mRS 3 (IQR 2-5) vs 4 (IQR 2-6)',
+      effectSize: 'adjusted common OR 1.67',
+      confidenceInterval: '95% CI 1.20 to 2.32',
+      pValue: 'Significant'
+    },
+    secondaryEndpoints: [
+      { name: 'All-cause mortality at 90 d', result: '24% vs 30% (aOR 0.72, 95% CI 0.44-1.18)' }
+    ],
+    safetyFindings: {
+      sich: 'Higher with EVT: 7% vs 2% (aOR 4.59, 95% CI 1.49-14.10)',
+      mortality: 'No significant difference',
+      other: ''
+    },
+    imagingCriteria: 'CTA collateral flow — deliberately NOT perfusion mismatch',
+    applicabilityNotes: 'Extends late-window EVT beyond the DAWN/DEFUSE-3 perfusion paradigm: patients selected on CTA collaterals alone benefited, and these were patients who did NOT meet perfusion criteria. Practically, this means a centre without CT perfusion can still select late-window candidates. Weigh against a roughly four-fold increase in symptomatic hemorrhage.',
+    limitations: 'Open-label with blinded endpoints; single-country (18 Dutch centres); guideline-eligible patients were excluded, so this is a distinct, more marginal population.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-mrclean-late-2023'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'CTA collateral status alone can select late-window (6-24 h) EVT candidates who fall outside DAWN/DEFUSE-3 perfusion criteria.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- EVT technique & adjuncts -------------------
+  t({
+    id: 'angel-reboot',
+    shortName: 'ANGEL-REBOOT',
+    fullName: 'Bailout Intracranial Angioplasty or Stenting Following Thrombectomy for Acute Large-Vessel Occlusion',
+    topic: 'evt-technique',
+    diseaseArea: ['acute-ischemic-stroke', 'evt-technique', 'icas-prevention'],
+    population: {
+      n: 348,
+      ageRange: 'median 63 (IQR 55-69); 74% male',
+      nihssRange: 'not restricted',
+      timeWindow: '≤24 h from onset',
+      keyInclusion: ['Unsuccessful recanalisation (eTICI 0-2a) or residual stenosis >70% with reocclusion risk after thrombectomy'],
+      keyExclusion: []
+    },
+    intervention: 'Bailout angioplasty or stenting after thrombectomy',
+    comparator: 'Standard therapy — continue or terminate the thrombectomy procedure',
+    primaryEndpoint: {
+      definition: 'mRS shift at 90 days',
+      timepoint: '90 d',
+      result: 'Neutral, numerically worse with bailout',
+      effectSize: 'common OR 0.86',
+      confidenceInterval: '95% CI 0.59 to 1.24',
+      pValue: 'p=0.41'
+    },
+    secondaryEndpoints: [
+      { name: 'Symptomatic ICH', result: 'Higher with bailout: 5% (8/175) vs 1% (1/169)' },
+      { name: 'Parenchymal hematoma type 2', result: '3% (6/175) vs 0' },
+      { name: 'Procedure-related arterial dissection', result: '14% (24/176) vs 3% (5/172)' }
+    ],
+    safetyFindings: {
+      sich: '5% vs 1%',
+      mortality: 'Similar: 11% vs 10%',
+      other: 'Marked excess of dissection and parenchymal hematoma with bailout'
+    },
+    imagingCriteria: 'eTICI grading of post-thrombectomy reperfusion',
+    applicabilityNotes: 'Answers a question that arises mid-procedure: after a failed pass or with high-grade residual stenosis, does rescue angioplasty or stenting help? It did not, and it caused substantially more dissection and hemorrhage. 36 Chinese centres, where intracranial atherosclerotic occlusion is more prevalent than in Western cohorts.',
+    limitations: 'Open-label; tirofiban was used off-label in 96% of patients, which the authors flag as affecting generalisability; Chinese population with a high ICAS burden.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-angel-reboot-2024'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Routine bailout angioplasty/stenting after failed or unstable thrombectomy did not improve outcome and increased dissection and hemorrhage.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'protect-mt',
+    shortName: 'PROTECT-MT',
+    fullName: 'Balloon Guide Catheters for Endovascular Thrombectomy in Acute Ischaemic Stroke Due to Large-Vessel Occlusion',
+    topic: 'evt-technique',
+    diseaseArea: ['acute-ischemic-stroke', 'evt-technique'],
+    population: {
+      n: 329,
+      ageRange: 'median 69 (IQR 59-76); 61% male',
+      nihssRange: 'not restricted',
+      timeWindow: '≤24 h from onset',
+      keyInclusion: ['Anterior-circulation LVO eligible for thrombectomy per local guidelines'],
+      keyExclusion: []
+    },
+    intervention: 'Balloon guide catheter during thrombectomy',
+    comparator: 'Conventional guide catheter',
+    primaryEndpoint: {
+      definition: 'mRS shift at 90 days',
+      timepoint: '90 d',
+      result: 'WORSE with balloon guide catheter',
+      effectSize: 'adjusted common OR 0.66',
+      confidenceInterval: '95% CI 0.45 to 0.98',
+      pValue: 'p=0.037'
+    },
+    secondaryEndpoints: [
+      { name: 'All-cause mortality at 90 d', result: 'Numerically higher: 24% (39/164) vs 16% (26/165)' }
+    ],
+    safetyFindings: {
+      sich: 'No significant difference',
+      mortality: 'Numerically higher with balloon guide catheter',
+      other: 'No significant difference in intracranial hemorrhage or other serious adverse events'
+    },
+    imagingCriteria: '',
+    applicabilityNotes: 'Terminated early for safety after 329 of a planned larger enrolment. A cautionary result for a device widely assumed beneficial on mechanistic grounds — flow arrest was expected to reduce distal embolisation, and the randomized comparison found worse function instead. Treat as hypothesis-generating pending replication, which the authors call for.',
+    limitations: 'Stopped early for safety, so the effect estimate may be exaggerated; open-label; 28 Chinese centres; operator familiarity with balloon guide catheters may differ elsewhere.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-protect-mt-2024'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Balloon guide catheters led to worse 90-day function than conventional guide catheters; the trial was halted for safety.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Foundational antiplatelet trials -------------------
+  t({
+    id: 'sps3',
+    shortName: 'SPS3',
+    fullName: 'Secondary Prevention of Small Subcortical Strokes — clopidogrel added to aspirin after lacunar stroke',
+    topic: 'lacunar-svd-prevention',
+    diseaseArea: ['secondary-prevention', 'lacunar-svd-prevention'],
+    population: {
+      n: 3020,
+      ageRange: 'mean 63; 63% men',
+      nihssRange: 'recent symptomatic lacunar infarct',
+      timeWindow: 'long-term secondary prevention; mean follow-up 3.4 years',
+      keyInclusion: ['MRI-confirmed recent symptomatic lacunar infarct'],
+      keyExclusion: ['Cortical infarct', 'Major cardioembolic source']
+    },
+    intervention: 'Clopidogrel 75 mg daily plus aspirin 325 mg daily',
+    comparator: 'Aspirin 325 mg daily plus placebo',
+    primaryEndpoint: {
+      definition: 'Any recurrent stroke (ischemic or intracranial hemorrhage)',
+      timepoint: 'mean 3.4 y',
+      result: 'Neutral: 2.5%/y (DAPT) vs 2.7%/y (aspirin)',
+      effectSize: 'HR 0.92',
+      confidenceInterval: '95% CI 0.72 to 1.16',
+      pValue: 'Not significant'
+    },
+    secondaryEndpoints: [
+      { name: 'Recurrent ischemic stroke', result: 'HR 0.82 (95% CI 0.63-1.09)' },
+      { name: 'Disabling or fatal stroke', result: 'HR 1.06 (95% CI 0.69-1.64)' },
+      { name: 'Recurrent ischemic strokes that were lacunar', result: '71% (133/187)' }
+    ],
+    safetyFindings: {
+      sich: '',
+      mortality: 'INCREASED with DAPT: 113 vs 77 deaths (HR 1.52, 95% CI 1.14-2.04, p=0.004), not explained by fatal hemorrhage',
+      other: 'Major hemorrhage nearly doubled: 2.1%/y vs 1.1%/y (HR 1.97, 95% CI 1.41-2.71, p<0.001)'
+    },
+    imagingCriteria: 'MRI-confirmed lacunar infarct required for entry',
+    applicabilityNotes: 'The definitive answer against LONG-TERM dual antiplatelet therapy after lacunar stroke — not merely futile but harmful, with nearly doubled major hemorrhage and increased all-cause mortality. It does not contradict CHANCE/POINT, which tested 21-90 days of DAPT started acutely; the distinction between short-course acute DAPT and indefinite DAPT is exactly what SPS3 establishes.',
+    limitations: 'Aspirin dose (325 mg) higher than contemporary practice; the mortality signal was unexplained and may be partly chance.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-sps3-2012'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Do not use long-term aspirin + clopidogrel after lacunar stroke — no benefit, doubled major bleeding, increased mortality.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'match',
+    shortName: 'MATCH',
+    fullName: 'Aspirin and Clopidogrel Compared with Clopidogrel Alone after Recent Ischaemic Stroke or TIA in High-Risk Patients',
+    topic: 'secondary-prevention',
+    diseaseArea: ['secondary-prevention', 'dapt-minor-stroke'],
+    population: {
+      n: 7599,
+      ageRange: 'adults',
+      nihssRange: 'recent ischemic stroke or TIA plus ≥1 additional vascular risk factor',
+      timeWindow: '18 months of treatment and follow-up',
+      keyInclusion: ['Recent ischemic stroke or TIA', 'At least one additional vascular risk factor', 'Already receiving clopidogrel 75 mg daily'],
+      keyExclusion: []
+    },
+    intervention: 'Aspirin 75 mg daily added to clopidogrel 75 mg daily',
+    comparator: 'Placebo added to clopidogrel 75 mg daily',
+    primaryEndpoint: {
+      definition: 'Composite of ischemic stroke, MI, vascular death, or rehospitalisation for acute ischemia',
+      timepoint: '18 months',
+      result: 'Neutral: 15.7% vs 16.7%',
+      effectSize: 'Relative risk reduction 6.4%; absolute risk reduction 1%',
+      confidenceInterval: 'RRR 95% CI -4.6% to 16.3%; ARR -0.6% to 2.7%',
+      pValue: 'Not significant'
+    },
+    secondaryEndpoints: [
+      { name: 'Life-threatening bleeding', result: 'Increased: 2.6% vs 1.3% (absolute risk increase 1.3%, 95% CI 0.6-1.9)' },
+      { name: 'Mortality', result: 'No difference' }
+    ],
+    safetyFindings: { sich: '', mortality: 'No difference', other: 'Life-threatening and major bleeding both increased with added aspirin' },
+    imagingCriteria: '',
+    applicabilityNotes: 'With SPS3, one of the two trials that established the bleeding cost of prolonged dual antiplatelet therapy in stroke. Treatment ran 18 months — a duration no current guideline endorses — and the bleeding penalty appeared without a matching ischemic benefit.',
+    limitations: 'Enrolled a high-risk, largely small-vessel population; predates the short-course acute DAPT paradigm; single antiplatelet backbone was clopidogrel rather than aspirin.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-match-2004'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Adding aspirin to clopidogrel for 18 months after stroke/TIA gave no significant benefit and doubled life-threatening bleeding.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Antiplatelets after ICH -------------------
+  t({
+    id: 'restart',
+    shortName: 'RESTART',
+    fullName: 'REstart or STop Antithrombotics Randomised Trial — antiplatelet therapy after intracerebral haemorrhage',
+    topic: 'ich-secondary-prevention',
+    diseaseArea: ['ich', 'ich-secondary-prevention', 'secondary-prevention'],
+    population: {
+      n: 537,
+      ageRange: '≥18',
+      nihssRange: 'ICH survivors',
+      timeWindow: 'randomized a median of 76 days (IQR 29-146) after ICH; followed up to 5 years',
+      keyInclusion: ['Taking antithrombotic therapy for occlusive vascular disease when ICH occurred', 'Antithrombotic therapy discontinued', 'Survived 24 h'],
+      keyExclusion: []
+    },
+    intervention: 'Start antiplatelet therapy',
+    comparator: 'Avoid antiplatelet therapy',
+    primaryEndpoint: {
+      definition: 'Recurrent symptomatic intracerebral hemorrhage',
+      timepoint: 'median 2.0 y (IQR 1.0-3.0)',
+      result: 'Fewer recurrences with antiplatelet therapy: 4% (12/268) vs 9% (23/268)',
+      effectSize: 'adjusted HR 0.51',
+      confidenceInterval: '95% CI 0.25 to 1.03',
+      pValue: 'p=0.060'
+    },
+    secondaryEndpoints: [
+      { name: 'Major hemorrhagic events', result: '7% vs 9% (aHR 0.71, 95% CI 0.39-1.30, p=0.27)' },
+      { name: 'Major occlusive vascular events', result: '15% vs 14% (aHR 1.02, 95% CI 0.65-1.60, p=0.92)' }
+    ],
+    safetyFindings: { sich: 'Recurrent ICH numerically LOWER on antiplatelet therapy', mortality: '', other: '' },
+    imagingCriteria: '',
+    applicabilityNotes: 'Reframes a common fear: restarting an antiplatelet after ICH did not increase recurrent hemorrhage, and the point estimate favoured restarting. The trial excludes all but a very modest increase in risk, so for a patient with a clear antiplatelet indication the established secondary-prevention benefit likely dominates. 122 UK hospitals.',
+    limitations: 'Open-label; modest size and event numbers; median 76-day delay to randomization means very early restart is untested; underpowered for occlusive-event benefit.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-restart-2019'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Restarting antiplatelet therapy after ICH did not raise recurrent hemorrhage; the risk is likely outweighed by secondary-prevention benefit.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- LAA occlusion, subclinical AF, valvular AF -------------------
+  t({
+    id: 'laaos-3',
+    shortName: 'LAAOS III',
+    fullName: 'Left Atrial Appendage Occlusion during Cardiac Surgery to Prevent Stroke',
+    topic: 'laa-occlusion',
+    diseaseArea: ['secondary-prevention', 'laa-occlusion'],
+    population: {
+      n: 4770,
+      ageRange: 'mean 71',
+      nihssRange: 'AF with mean CHA₂DS₂-VASc 4.2 (≥2 required)',
+      timeWindow: 'mean follow-up 3.8 years',
+      keyInclusion: ['Atrial fibrillation', 'CHA₂DS₂-VASc ≥2', 'Scheduled for cardiac surgery for another indication'],
+      keyExclusion: []
+    },
+    intervention: 'Surgical left atrial appendage occlusion during the planned cardiac surgery, plus usual care including oral anticoagulation',
+    comparator: 'No occlusion, plus usual care including oral anticoagulation',
+    primaryEndpoint: {
+      definition: 'Ischemic stroke (including TIA with positive neuroimaging) or systemic embolism',
+      timepoint: 'mean 3.8 y',
+      result: 'Favors occlusion: 4.8% vs 7.0%',
+      effectSize: 'HR 0.67',
+      confidenceInterval: '95% CI 0.53 to 0.85',
+      pValue: 'p=0.001'
+    },
+    secondaryEndpoints: [
+      { name: 'Continued oral anticoagulation at 3 y', result: '76.8% of participants' },
+      { name: 'Assigned procedure received', result: '92.1%' }
+    ],
+    safetyFindings: { sich: '', mortality: 'No significant difference', other: 'Perioperative bleeding and heart failure did not differ significantly' },
+    imagingCriteria: '',
+    applicabilityNotes: 'The critical design point: the benefit was ON TOP of continued anticoagulation, not instead of it — three-quarters were still anticoagulated at 3 years. LAAOS III therefore supports concomitant occlusion in patients already having cardiac surgery; it says nothing about percutaneous LAAO as an anticoagulation substitute.',
+    limitations: 'Applies only to patients undergoing cardiac surgery for another indication; surgical, not percutaneous, occlusion; participants unaware of assignment but surgeons were not.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-laaos3-2021'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Concomitant surgical LAA occlusion during cardiac surgery reduced stroke/systemic embolism by a third, additive to ongoing anticoagulation.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'noah-afnet6',
+    shortName: 'NOAH-AFNET 6',
+    fullName: 'Anticoagulation with Edoxaban in Patients with Atrial High-Rate Episodes',
+    topic: 'subclinical-af',
+    diseaseArea: ['secondary-prevention', 'subclinical-af'],
+    population: {
+      n: 2536,
+      ageRange: 'mean 78; 37.4% women',
+      nihssRange: 'device-detected atrial high-rate episodes ≥6 min, median duration 2.8 h',
+      timeWindow: 'median follow-up 21 months (terminated early)',
+      keyInclusion: ['Age ≥65', 'AHRE ≥6 minutes on an implanted device', '≥1 additional stroke risk factor'],
+      keyExclusion: ['ECG-documented atrial fibrillation']
+    },
+    intervention: 'Edoxaban',
+    comparator: 'Placebo',
+    primaryEndpoint: {
+      definition: 'Composite of cardiovascular death, stroke, or systemic embolism',
+      timepoint: 'median 21 months',
+      result: 'Neutral: 3.2%/patient-year vs 4.0%/patient-year',
+      effectSize: 'HR 0.81',
+      confidenceInterval: '95% CI 0.60 to 1.08',
+      pValue: 'p=0.15'
+    },
+    secondaryEndpoints: [
+      { name: 'Stroke incidence', result: 'Approximately 1% per patient-year in BOTH groups — far lower than in clinical AF' },
+      { name: 'Progression to ECG-diagnosed AF', result: '18.2% overall (8.7% per patient-year)' }
+    ],
+    safetyFindings: {
+      sich: '',
+      mortality: '',
+      other: 'Composite of death or major bleeding INCREASED with edoxaban: 5.9%/patient-year vs 4.5%/patient-year (HR 1.31, 95% CI 1.02-1.67, p=0.03)'
+    },
+    imagingCriteria: '',
+    applicabilityNotes: 'The decisive number is the ~1%/year stroke rate in BOTH arms: device-detected atrial high-rate episodes carry far less thromboembolic risk than ECG-documented AF, leaving no margin for anticoagulation to help before bleeding harm appears. Read alongside ARTESiA, which used a lower-bleeding agent (apixaban) and found a small stroke reduction — together they define a narrow, individualised decision rather than a blanket policy.',
+    limitations: 'Terminated early for safety and informal futility; median AHRE duration only 2.8 h; elderly population with competing bleeding risk.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-noah-afnet6-2023'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Edoxaban for device-detected AHRE did not reduce cardiovascular events and increased death or major bleeding; stroke risk was ~1%/year untreated.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'invictus',
+    shortName: 'INVICTUS',
+    fullName: 'Rivaroxaban in Rheumatic Heart Disease-Associated Atrial Fibrillation',
+    topic: 'valvular-rheumatic-af',
+    diseaseArea: ['secondary-prevention', 'valvular-rheumatic-af'],
+    population: {
+      n: 4531,
+      ageRange: 'mean 50.5; 72.3% women',
+      nihssRange: 'AF with echocardiographic rheumatic heart disease',
+      timeWindow: 'restricted mean survival analysis over ~4.6 years',
+      keyInclusion: ['AF with rheumatic heart disease and either CHA₂DS₂-VASc ≥2, mitral-valve area ≤2 cm², left atrial spontaneous echo contrast, or left atrial thrombus'],
+      keyExclusion: []
+    },
+    intervention: 'Rivaroxaban at standard doses',
+    comparator: 'Dose-adjusted vitamin K antagonist',
+    primaryEndpoint: {
+      definition: 'Composite of stroke, systemic embolism, myocardial infarction, or death from vascular or unknown cause',
+      timepoint: 'restricted mean survival time',
+      result: 'VKA SUPERIOR: restricted mean survival 1599 d (rivaroxaban) vs 1675 d (VKA)',
+      effectSize: 'Difference -76 days favouring VKA',
+      confidenceInterval: '95% CI -121 to -31 days',
+      pValue: 'p<0.001'
+    },
+    secondaryEndpoints: [
+      { name: 'Death', result: 'Higher with rivaroxaban: restricted mean survival 1608 d vs 1680 d (difference -72 d, 95% CI -117 to -28)' },
+      { name: 'Study-drug discontinuation', result: 'More common with rivaroxaban at all visits' }
+    ],
+    safetyFindings: { sich: '', mortality: 'Higher with rivaroxaban', other: 'No significant difference in major bleeding' },
+    imagingCriteria: 'Echocardiographic confirmation of rheumatic heart disease',
+    applicabilityNotes: 'One of the few settings where a DOAC is clearly INFERIOR to warfarin. Rheumatic mitral disease with AF is a warfarin indication, and the excess mortality with rivaroxaban was not explained by bleeding. A young (mean age 50) predominantly female cohort in low- and middle-income countries — clinically the population most affected worldwide.',
+    limitations: 'Higher discontinuation in the rivaroxaban arm may have contributed; non-proportional hazards required restricted-mean-survival analysis; open questions remain about DOACs in other valvular lesions.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-invictus-2022'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Use warfarin, not a DOAC, for AF with rheumatic mitral valve disease — rivaroxaban had worse cardiovascular outcomes and higher mortality.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Anti-inflammatory secondary prevention -------------------
+  t({
+    id: 'convince',
+    shortName: 'CONVINCE',
+    fullName: 'Long-Term Colchicine for the Prevention of Vascular Recurrent Events in Non-Cardioembolic Stroke',
+    topic: 'inflammation-stroke-prevention',
+    diseaseArea: ['secondary-prevention', 'inflammation-stroke-prevention'],
+    population: {
+      n: 3144,
+      ageRange: 'adults',
+      nihssRange: 'non-severe ischemic stroke or high-risk TIA',
+      timeWindow: 'long-term; randomized 2016-2022, follow-up to Jan 2024',
+      keyInclusion: ['Non-severe, non-cardioembolic ischemic stroke or high-risk TIA'],
+      keyExclusion: ['Cardioembolic source']
+    },
+    intervention: 'Colchicine 0.5 mg daily plus guideline-based usual care',
+    comparator: 'Guideline-based usual care alone',
+    primaryEndpoint: {
+      definition: 'First fatal or non-fatal recurrent ischemic stroke, MI, cardiac arrest, or hospitalisation for unstable angina',
+      timepoint: 'long-term follow-up',
+      result: 'Neutral: 9.8% vs 11.7% (3.32 vs 3.92 per 100 person-years)',
+      effectSize: 'HR 0.84',
+      confidenceInterval: '95% CI 0.68 to 1.05',
+      pValue: 'p=0.12 (significance threshold 0.048)'
+    },
+    secondaryEndpoints: [
+      { name: 'C-reactive protein', result: 'Lower with colchicine at 28 days and 1, 2 and 3 years (p<0.05 at all timepoints)' }
+    ],
+    safetyFindings: { sich: '', mortality: '', other: 'Serious adverse event rates similar between groups' },
+    imagingCriteria: '',
+    applicabilityNotes: 'Underpowered rather than clearly negative: COVID-related budget constraints stopped it before the planned 367 outcomes accrued, and the confidence interval still admits a worthwhile benefit. CRP fell as expected, so the anti-inflammatory mechanism engaged — the open question is whether it translates to events in stroke as it did in coronary disease.',
+    limitations: 'Open-label; terminated early for funding with fewer events than planned; heterogeneous stroke mechanisms dilute any atherosclerosis-specific effect.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-convince-2024'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Colchicine is not established for stroke prevention — CONVINCE was neutral but underpowered; read with CHANCE-3.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
+    id: 'chance-3',
+    shortName: 'CHANCE-3',
+    fullName: 'Colchicine in Patients with Acute Ischaemic Stroke or Transient Ischaemic Attack',
+    topic: 'inflammation-stroke-prevention',
+    diseaseArea: ['secondary-prevention', 'inflammation-stroke-prevention'],
+    population: {
+      n: 8343,
+      ageRange: '≥40',
+      nihssRange: 'minor-to-moderate ischemic stroke or TIA',
+      timeWindow: 'randomized within 24 h of onset; treated 90 days',
+      keyInclusion: ['High-risk non-cardioembolic minor-to-moderate ischemic stroke or TIA', 'hs-CRP ≥2 mg/L'],
+      keyExclusion: ['Cardioembolic source']
+    },
+    intervention: 'Colchicine 0.5 mg twice daily days 1-3, then 0.5 mg daily to day 90',
+    comparator: 'Placebo',
+    primaryEndpoint: {
+      definition: 'Any new stroke within 90 days',
+      timepoint: '90 d',
+      result: 'Neutral: 6.3% vs 6.5%',
+      effectSize: 'HR 0.98',
+      confidenceInterval: '95% CI 0.83 to 1.16',
+      pValue: 'p=0.79'
+    },
+    secondaryEndpoints: [],
+    safetyFindings: { sich: '', mortality: '', other: 'Serious adverse events 2.2% vs 2.1% (p=0.83)' },
+    imagingCriteria: '',
+    applicabilityNotes: 'Large, double-blind, and enriched for inflammation (hs-CRP ≥2 mg/L required) — the design most likely to show a colchicine effect if one existed in the first 90 days. It did not. Together with CONVINCE, short-term anti-inflammatory therapy after minor stroke lacks support; any remaining hope rests on longer treatment in atherosclerotic phenotypes.',
+    limitations: '244 Chinese hospitals; 90-day treatment may be too short for an atherosclerosis-modifying effect; minor-to-moderate severity only.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-chance3-2024'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Ninety days of colchicine after minor stroke/TIA with raised hs-CRP did not reduce recurrent stroke.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Acute antithrombotic adjuncts -------------------
+  t({
+    id: 'rescue-bt2',
+    shortName: 'RESCUE BT2',
+    fullName: 'Tirofiban for Stroke without Large or Medium-Sized Vessel Occlusion',
+    topic: 'acute-antithrombotic-adjuncts',
+    diseaseArea: ['acute-ischemic-stroke', 'acute-antithrombotic-adjuncts'],
+    population: {
+      n: 1177,
+      ageRange: 'adults',
+      nihssRange: 'NIHSS ≥5 with at least one moderately-to-severely weak limb',
+      timeWindow: 'four entry routes: ≤24 h and ineligible for reperfusion; progression at 24-96 h; early deterioration after thrombolysis; or no improvement 4-24 h after thrombolysis',
+      keyInclusion: ['Ischemic stroke WITHOUT large- or medium-vessel occlusion', 'Mostly small infarcts presumed atherosclerotic'],
+      keyExclusion: ['Complete occlusion of a large or medium-sized vessel']
+    },
+    intervention: 'IV tirofiban for 2 days (plus oral placebo), then aspirin to day 90',
+    comparator: 'Oral aspirin 100 mg daily for 2 days (plus IV placebo), then aspirin to day 90',
+    primaryEndpoint: {
+      definition: 'Excellent outcome (mRS 0-1) at 90 days',
+      timepoint: '90 d',
+      result: 'Favors tirofiban: 29.1% vs 22.2%',
+      effectSize: 'adjusted RR 1.26',
+      confidenceInterval: '95% CI 1.04 to 1.53',
+      pValue: 'p=0.02'
+    },
+    secondaryEndpoints: [
+      { name: 'Secondary endpoints (functional independence, quality of life)', result: 'Generally NOT consistent with the primary result' }
+    ],
+    safetyFindings: {
+      sich: '1.0% (tirofiban) vs 0% (aspirin)',
+      mortality: 'Similar between groups',
+      other: ''
+    },
+    imagingCriteria: 'Vessel imaging required to exclude large/medium-vessel occlusion',
+    applicabilityNotes: 'Targets a genuinely unmet niche — progressive or deteriorating non-occlusive stroke, where no reperfusion option exists. Read the result cautiously: secondary endpoints did not corroborate the primary, the population was assembled from four heterogeneous clinical routes, and it was conducted entirely in China where intracranial atherosclerosis predominates.',
+    limitations: 'Four disparate enrolment pathways pooled into one trial; inconsistent secondary endpoints; single-country; small excess of symptomatic hemorrhage.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-rescue-bt2-2023'],
+    relatedActiveTrialIds: ['most'],
+    practiceImpact: 'IV tirofiban improved 90-day excellent outcome in non-occlusive, often progressive stroke, with inconsistent secondary endpoints.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- LAAO after ablation -------------------
+  t({
+    id: 'option-laao',
+    shortName: 'OPTION',
+    fullName: 'Left Atrial Appendage Closure after Ablation for Atrial Fibrillation',
+    topic: 'laa-occlusion',
+    diseaseArea: ['secondary-prevention', 'laa-occlusion'],
+    population: {
+      n: 1600,
+      ageRange: 'mean 69.6 ± 7.7; 34.1% women',
+      nihssRange: 'CHA₂DS₂-VASc ≥2 in men, ≥3 in women (mean 3.5 ± 1.3)',
+      timeWindow: '36 months',
+      keyInclusion: ['Atrial fibrillation undergoing catheter ablation', 'Elevated CHA₂DS₂-VASc'],
+      keyExclusion: []
+    },
+    intervention: 'Left atrial appendage closure',
+    comparator: 'Oral anticoagulation',
+    primaryEndpoint: {
+      definition: 'Safety: non-procedure-related major or clinically relevant non-major bleeding (superiority). Efficacy: death, stroke, or systemic embolism at 36 months (non-inferiority)',
+      timepoint: '36 months',
+      result: 'Safety superior — 8.5% vs 18.1%; efficacy non-inferior — 5.3% vs 5.8%',
+      effectSize: 'Bleeding roughly halved; efficacy composite similar',
+      confidenceInterval: '',
+      pValue: 'p<0.001 for safety superiority; p<0.001 for efficacy non-inferiority'
+    },
+    secondaryEndpoints: [
+      { name: 'Major bleeding including procedure-related, to 36 mo', result: '3.9% vs 5.0% (p<0.001 for non-inferiority)' },
+      { name: 'Device- or procedure-related complications', result: '23 patients' }
+    ],
+    safetyFindings: { sich: '', mortality: '', other: 'Device/procedure complications in 23 of 803 recipients' },
+    imagingCriteria: '',
+    applicabilityNotes: 'Unlike LAAOS III (occlusion ADDED to anticoagulation during cardiac surgery), OPTION tests percutaneous closure as a REPLACEMENT for anticoagulation after AF ablation — and it held up, with about half the bleeding. Scope is specifically the post-ablation population; it does not generalise to AF patients who have not been ablated.',
+    limitations: 'Industry-funded; open-label by necessity; restricted to patients undergoing ablation; 36-month horizon leaves longer-term device outcomes unresolved.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-option-2025'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'After AF ablation, LAA closure was non-inferior to anticoagulation for death/stroke/embolism with about half the non-procedural bleeding.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- AF screening -------------------
+  t({
+    id: 'loop-study',
+    shortName: 'LOOP',
+    fullName: 'Implantable Loop Recorder Detection of Atrial Fibrillation to Prevent Stroke',
+    topic: 'subclinical-af',
+    diseaseArea: ['secondary-prevention', 'subclinical-af'],
+    population: {
+      n: 6004,
+      ageRange: '70-90 (mean 74.7); 47.3% women',
+      nihssRange: 'no known AF, ≥1 stroke risk factor (90.7% hypertensive)',
+      timeWindow: 'median follow-up 64.5 months',
+      keyInclusion: ['Age 70-90 without known AF', 'At least one of hypertension, diabetes, previous stroke, or heart failure'],
+      keyExclusion: ['Known atrial fibrillation']
+    },
+    intervention: 'Implantable loop recorder monitoring, with anticoagulation recommended for AF episodes ≥6 minutes (n=1501)',
+    comparator: 'Usual care (n=4503)',
+    primaryEndpoint: {
+      definition: 'Time to first stroke or systemic arterial embolism',
+      timepoint: 'median 64.5 months',
+      result: 'Neutral: 4.5% vs 5.6%',
+      effectSize: 'HR 0.80',
+      confidenceInterval: '95% CI 0.61 to 1.05',
+      pValue: 'p=0.11'
+    },
+    secondaryEndpoints: [
+      { name: 'AF detected', result: '31.8% vs 12.2% (HR 3.17, 95% CI 2.81-3.59, p<0.0001)' },
+      { name: 'Anticoagulation started', result: '29.7% vs 13.1% (HR 2.72, 95% CI 2.41-3.08, p<0.0001)' },
+      { name: 'Major bleeding', result: '4.3% vs 3.5% (HR 1.26, 95% CI 0.95-1.69, p=0.11)' }
+    ],
+    safetyFindings: { sich: '', mortality: '', other: 'Major bleeding numerically higher with screening' },
+    imagingCriteria: '',
+    applicabilityNotes: 'The cleanest demonstration that detecting more AF is not the same as preventing more stroke: tripling detection and doubling anticoagulation produced no significant stroke reduction. The authors\' own conclusion is the teaching point — not all AF is worth screening for, and not all screen-detected AF merits anticoagulation.',
+    limitations: '1:3 randomization; Danish population aged 70-90; underpowered for a modest true effect (CI includes a 39% reduction); primary prevention, not post-stroke ESUS monitoring.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-loop-2021'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Loop-recorder AF screening tripled detection but did not significantly reduce stroke — detection alone is not a surrogate for benefit.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
+  }),
+
+  // ------------------- Factor XI inhibition in AF -------------------
+  t({
+    id: 'oceanic-af',
+    shortName: 'OCEANIC-AF',
+    fullName: 'Asundexian versus Apixaban in Patients with Atrial Fibrillation',
+    topic: 'factor-xi-inhibition',
+    diseaseArea: ['secondary-prevention', 'factor-xi-inhibition'],
+    population: {
+      n: 14810,
+      ageRange: 'mean 73.9 ± 7.7; 35.2% women',
+      nihssRange: 'mean CHA₂DS₂-VASc 4.3 ± 1.3; 18.2% prior stroke or TIA',
+      timeWindow: 'stopped prematurely on DMC recommendation',
+      keyInclusion: ['High-risk atrial fibrillation'],
+      keyExclusion: []
+    },
+    intervention: 'Asundexian 50 mg once daily',
+    comparator: 'Standard-dose apixaban',
+    primaryEndpoint: {
+      definition: 'Stroke or systemic embolism (non-inferiority)',
+      timepoint: 'until premature termination',
+      result: 'Asundexian markedly WORSE: 1.3% (98 patients) vs 0.4% (26 patients)',
+      effectSize: 'HR 3.79',
+      confidenceInterval: '95% CI 2.46 to 5.83',
+      pValue: 'Non-inferiority not met; trial stopped'
+    },
+    secondaryEndpoints: [
+      { name: 'Major bleeding', result: 'Lower with asundexian: 0.2% (17) vs 0.7% (53) (HR 0.32, 95% CI 0.18-0.55)' }
+    ],
+    safetyFindings: { sich: '', mortality: '', other: 'Overall adverse-event incidence similar' },
+    imagingCriteria: '',
+    applicabilityNotes: 'The essential counterweight to OCEANIC-STROKE. Asundexian is effective as an ADD-ON to antiplatelet therapy in non-cardioembolic stroke, but it is a poor SUBSTITUTE for a DOAC in atrial fibrillation — nearly four-fold more thromboembolism than apixaban. Factor XIa inhibition does not replace guideline anticoagulation for AF, however favourable its bleeding profile.',
+    limitations: 'Stopped early, so absolute event rates are low and follow-up short; tested a single asundexian dose.',
+    certainty: 'high',
+    evidenceType: 'rct',
+    citationIds: ['cit-oceanic-af-2025'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Asundexian is inferior to apixaban for AF stroke prevention (HR 3.79) despite less bleeding — do not substitute it for a DOAC.',
+    lastReviewed: '2026-08-15',
+    verificationStatus: 'verified-pubmed'
   })
 ];
 

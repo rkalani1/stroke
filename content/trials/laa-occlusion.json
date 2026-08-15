@@ -1,0 +1,36 @@
+[
+  {
+    "id": "laaos-3",
+    "name": "LAAOS III",
+    "fullName": "Left Atrial Appendage Occlusion during Cardiac Surgery to Prevent Stroke",
+    "category": "laa-occlusion",
+    "population": "n=4770, mean 71, NIHSS AF with mean CHA₂DS₂-VASc 4.2 (≥2 required), mean follow-up 3.8 years",
+    "finding": "Favors occlusion: 4.8% vs 7.0%",
+    "teachingPoint": "Concomitant surgical LAA occlusion during cardiac surgery reduced stroke/systemic embolism by a third, additive to ongoing anticoagulation.",
+    "PMID": "33999547",
+    "year": 2021,
+    "citationIds": [
+      "cit-laaos3-2021"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "option-laao",
+    "name": "OPTION",
+    "fullName": "Left Atrial Appendage Closure after Ablation for Atrial Fibrillation",
+    "category": "laa-occlusion",
+    "population": "n=1600, mean 69.6 ± 7.7; 34.1% women, NIHSS CHA₂DS₂-VASc ≥2 in men, ≥3 in women (mean 3.5 ± 1.3), 36 months",
+    "finding": "Safety superior — 8.5% vs 18.1%; efficacy non-inferior — 5.3% vs 5.8%",
+    "teachingPoint": "After AF ablation, LAA closure was non-inferior to anticoagulation for death/stroke/embolism with about half the non-procedural bleeding.",
+    "PMID": "39555822",
+    "year": 2025,
+    "citationIds": [
+      "cit-option-2025"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

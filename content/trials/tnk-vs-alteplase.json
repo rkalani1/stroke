@@ -100,5 +100,22 @@
     "certainty": "moderate",
     "lastReviewed": "2026-07-06",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "taste",
+    "name": "TASTE",
+    "fullName": "Tenecteplase versus Alteplase for Thrombolysis in Patients Selected by Perfusion Imaging within 4.5 h",
+    "category": "tnk-vs-alteplase",
+    "population": "n=680, median 74 (IQR 63-82); 38% female, NIHSS median NIHSS 7 (IQR 4-11), ≤4.5 h from onset or last known well",
+    "finding": "Non-inferiority met per-protocol (59% vs 56%) but NOT in intention-to-treat (57% vs 55%)",
+    "teachingPoint": "Adds perfusion-selected, multi-country support for TNK 0.25 mg/kg, and shows large-scale CTP-guided IVT selection is feasible.",
+    "PMID": "38880118",
+    "year": 2024,
+    "citationIds": [
+      "cit-taste-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

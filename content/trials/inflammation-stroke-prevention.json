@@ -1,0 +1,36 @@
+[
+  {
+    "id": "convince",
+    "name": "CONVINCE",
+    "fullName": "Long-Term Colchicine for the Prevention of Vascular Recurrent Events in Non-Cardioembolic Stroke",
+    "category": "inflammation-stroke-prevention",
+    "population": "n=3144, adults, NIHSS non-severe ischemic stroke or high-risk TIA, long-term; randomized 2016-2022, follow-up to Jan 2024",
+    "finding": "Neutral: 9.8% vs 11.7% (3.32 vs 3.92 per 100 person-years)",
+    "teachingPoint": "Colchicine is not established for stroke prevention — CONVINCE was neutral but underpowered; read with CHANCE-3.",
+    "PMID": "38857611",
+    "year": 2024,
+    "citationIds": [
+      "cit-convince-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "chance-3",
+    "name": "CHANCE-3",
+    "fullName": "Colchicine in Patients with Acute Ischaemic Stroke or Transient Ischaemic Attack",
+    "category": "inflammation-stroke-prevention",
+    "population": "n=8343, ≥40, NIHSS minor-to-moderate ischemic stroke or TIA, randomized within 24 h of onset; treated 90 days",
+    "finding": "Neutral: 6.3% vs 6.5%",
+    "teachingPoint": "Ninety days of colchicine after minor stroke/TIA with raised hs-CRP did not reduce recurrent stroke.",
+    "PMID": "38925803",
+    "year": 2024,
+    "citationIds": [
+      "cit-chance3-2024"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

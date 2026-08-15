@@ -32,5 +32,22 @@
     "certainty": "high",
     "lastReviewed": "2026-04-25",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "mr-clean-late",
+    "name": "MR CLEAN-LATE",
+    "fullName": "Endovascular Treatment 6-24 h After Stroke Selected by Collateral Flow on CT Angiography",
+    "category": "evt-late-window",
+    "population": "n=502, ≥18; 52% female, NIHSS NIHSS ≥2, 6-24 h from onset or last seen well",
+    "finding": "Favors EVT: median mRS 3 (IQR 2-5) vs 4 (IQR 2-6)",
+    "teachingPoint": "CTA collateral status alone can select late-window (6-24 h) EVT candidates who fall outside DAWN/DEFUSE-3 perfusion criteria.",
+    "PMID": "37003289",
+    "year": 2023,
+    "citationIds": [
+      "cit-mrclean-late-2023"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]
