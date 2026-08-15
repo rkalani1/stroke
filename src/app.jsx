@@ -47,7 +47,6 @@ import {
   runEncounterOutput as runGatedEncounterOutput
 } from './encounter-output-gate.js';
 import { PocketCards } from './pocket-cards.jsx';
-import { FeedbackFooter } from './feedback.jsx';
 import { LandmarkTrialsCard } from './teaching.jsx';
 import Education, { EVDInfographic, ICPInfographic } from './education.jsx';
 /* v7 design primitives — single accent (cobalt), one alarm (crit), one alert (warn).
@@ -1072,15 +1071,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         // retired 'mock' demo provider normalize to that same unconfigured
         // state instead of rendering a <select> stuck on a missing option.
         const normalizeApiProvider = (value) => (API_PROVIDER_VALUES.has(value) ? value : '');
-
-        // Human-readable tab names, used by the suggestions-box footer so a
-        // submitted issue records which section the reader was looking at.
-        const TAB_LABELS = {
-          encounter: 'Encounter',
-          protocols: 'Protocols',
-          trials: 'Trials',
-          research: 'Guidelines & References'
-        };
 
         const LEGACY_MANAGEMENT_TABS = {
           ich: 'ich',
@@ -2233,7 +2223,7 @@ Clinician Name`;
           // Phase 2: Guided Clinical Pathway UI state
           const [pathwayCollapsed, setPathwayCollapsed] = useState(true);
           const [guidelineRecsExpanded, setGuidelineRecsExpanded] = useState(false);
-          const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null, suggestionRelayUrl: '', suggestionContactEmail: '' });
+          const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null });
           const [configLoaded, setConfigLoaded] = useState(false);
           const [ttlHours, setTtlHours] = useState(settings.ttlHoursOverride || DEFAULT_TTL_HOURS);
 
@@ -16100,35 +16090,7 @@ Clinician Name`;
                 data.ttlHoursOverride > 0
                 ? data.ttlHoursOverride
                 : null;
-              // Endpoint that files a suggestion as a GitHub issue on the
-              // submitter's behalf, so the suggestions box does not require a
-              // GitHub account. https is required: the box posts free text the
-              // reader typed, and a plaintext endpoint would put it on the wire
-              // in the clear. Loopback is the one exception — it never reaches a
-              // network, and browsers already treat it as a secure context — so
-              // the relay can be developed locally over http. Anything else, or
-              // an unset value, leaves the box on its prefilled-GitHub-link
-              // fallback.
-              const relayRaw = String(data.suggestionRelayUrl || '').trim();
-              let suggestionRelayUrl = '';
-              if (relayRaw) {
-                try {
-                  const parsed = new URL(relayRaw);
-                  const isLoopback = ['localhost', '127.0.0.1', '[::1]', '::1'].includes(parsed.hostname);
-                  suggestionRelayUrl =
-                    parsed.protocol === 'https:' || (parsed.protocol === 'http:' && isLoopback)
-                      ? relayRaw
-                      : '';
-                } catch (e) {
-                  suggestionRelayUrl = '';
-                }
-              }
-              // Fallback address for the suggestions box when no relay is set.
-              // Left empty in the committed config on purpose: the maintainer's
-              // address is an institutional identifier and the leak guard bans
-              // those from tracked files, so a deployment supplies it out of band.
-              const suggestionContactEmail = String(data.suggestionContactEmail || '').trim();
-              setAppConfig({ institutionLinks: sanitizedLinks, ttlHoursOverride: ttlOverride, suggestionRelayUrl, suggestionContactEmail });
+              setAppConfig({ institutionLinks: sanitizedLinks, ttlHoursOverride: ttlOverride });
               if (ttlOverride) {
                 setTtlHours(ttlOverride);
                 setKey('ttlHoursOverride', ttlOverride, { skipLastUpdated: true });
@@ -16142,41 +16104,12 @@ Clinician Name`;
             const loadConfig = async () => {
               try {
                 const baseFetch = fetch('config.example.json', { cache: 'no-store' });
-                // Where the suggestions box sends feedback. Its own file because
-                // it is the sole leak-guard fullyExemptFiles entry — see
-                // suggestion-contact.json. A failure here is non-fatal: the box
-                // simply falls back to its next route.
-                const contactFetch = fetch('suggestion-contact.json', { cache: 'no-store' })
-                  .catch((contactErr) => {
-                    console.warn('Suggestion contact load failed:', contactErr);
-                    return null;
-                  });
-                const localFetch = useLocalOverride
-                  ? fetch('config.local.json', { cache: 'no-store' }).catch(localErr => {
-                      console.warn('Optional local config load failed:', localErr);
-                      return null;
-                    })
-                  : Promise.resolve(null);
-
-                const [baseResponse, localResponse, contactResponse] = await Promise.all([baseFetch, localFetch, contactFetch]);
+                const [baseResponse, localResponse] = await Promise.all([baseFetch, localFetch]);
 
                 if (!baseResponse.ok) {
                   throw new Error('Base config fetch failed');
                 }
                 let mergedConfig = await baseResponse.json();
-
-                if (contactResponse && contactResponse.ok) {
-                  try {
-                    const contactConfig = await contactResponse.json();
-                    const email = String((contactConfig || {}).email || '').trim();
-                    // config.example.json may still override, so only fill a gap.
-                    if (email && !mergedConfig.suggestionContactEmail) {
-                      mergedConfig = { ...mergedConfig, suggestionContactEmail: email };
-                    }
-                  } catch (contactErr) {
-                    console.warn('Suggestion contact parse failed:', contactErr);
-                  }
-                }
 
                 if (localResponse && localResponse.ok) {
                   try {
@@ -36287,16 +36220,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
               </main>
 
-              {/* ===== SUGGESTIONS BOX — page footer, present on every tab ===== */}
-              <ErrorBoundary>
-                <FeedbackFooter
-                  appVersion={(typeof window !== 'undefined' && window.strokeAppStorage && window.strokeAppStorage.appVersion) || ''}
-                  tabLabel={TAB_LABELS[activeTab] || activeTab}
-                  relayUrl={appConfig.suggestionRelayUrl}
-                  contactEmail={appConfig.suggestionContactEmail}
-                  onCopy={copyToClipboard}
-                />
-              </ErrorBoundary>
 
             </div>
 

@@ -33,10 +33,8 @@
   "_allowedInstitutionalDisclaimerPatterns": "Empty as of 2026-07: even negative institution-specific disclaimers are banned. Public safety copy must stay institution-neutral.",
   "allowedInstitutionalDisclaimerPatterns": [],
 
-  "_fullyExemptFilesNote": "Skipped by every scan, literal and hash rules included. Keep this list minimal. suggestion-contact.json holds one deployment contact address that the maintainer has chosen to publish so the suggestions box can reach them without a server; it is isolated in its own file precisely so this exemption cannot cover anything else.",
   "fullyExemptFiles": [
-    "scripts/leak-guard-denylist.json",
-    "suggestion-contact.json"
+    "scripts/leak-guard-denylist.json"
   ],
 
   "exemptFiles": [
