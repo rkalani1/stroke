@@ -284,6 +284,9 @@ export function FeedbackFooter({
   // Once the relay has failed for this reader, stop offering it and hand the
   // next press to the mail client instead of making them fail twice.
   const [relayFailed, setRelayFailed] = useState(false);
+  // Set when a mailto: click produced no hand-off to an external app, which is
+  // silent and indistinguishable from success without this check.
+  const [mailtoStalled, setMailtoStalled] = useState(false);
   const textareaRef = useRef(null);
   const hasRelay = Boolean(String(relayUrl || '').trim());
   const hasEmail = Boolean(String(contactEmail || '').trim());
@@ -331,6 +334,16 @@ export function FeedbackFooter({
     }
   };
 
+  const copySuggestion = async () => {
+    const { title, body } = buildSuggestionIssue(fields);
+    try {
+      await navigator.clipboard.writeText(`${title}\n\n${body}`);
+      setStatus({ tone: 'ok', text: `Copied. Paste it into an email to ${contactEmail}.` });
+    } catch {
+      setStatus({ tone: 'warn', text: 'Could not reach the clipboard — select the text in the box above and copy it manually.' });
+    }
+  };
+
   const onLinkClick = (event) => {
     if (!canSend) {
       event.preventDefault();
@@ -346,14 +359,43 @@ export function FeedbackFooter({
       });
       return;
     }
-    setStatus({
-      tone: 'ok',
-      text: hasEmail
-        ? 'Your email app is opening with the suggestion written out — press send there.'
-        : 'A prefilled suggestion is opening on GitHub — press "Submit new issue" there to send it.'
-    });
-    setMessage('');
-    setContact('');
+
+    if (!hasEmail) {
+      // GitHub opens a real tab, which the reader can see; nothing to detect.
+      setStatus({ tone: 'ok', text: 'A prefilled suggestion is opening on GitHub — press "Submit new issue" there to send it.' });
+      setMessage('');
+      setContact('');
+      return;
+    }
+
+    // mailto: hands off to an external application. When no mail client is
+    // registered the click is a silent no-op — no navigation, no error — so
+    // clearing the box here would destroy the suggestion while reporting
+    // success. Wait to see whether the page actually loses focus, and only
+    // then treat it as sent. A false "did not open" costs a copy; a false
+    // "sent" costs the note, so the check is deliberately biased that way.
+    setStatus({ tone: 'ok', text: 'Opening your email app…' });
+    if (typeof window === 'undefined') return;
+    let handedOff = false;
+    const mark = () => { handedOff = true; };
+    window.addEventListener('blur', mark, { once: true });
+    document.addEventListener('visibilitychange', mark, { once: true });
+    window.setTimeout(() => {
+      window.removeEventListener('blur', mark);
+      document.removeEventListener('visibilitychange', mark);
+      if (handedOff) {
+        setMailtoStalled(false);
+        setStatus({ tone: 'ok', text: 'Your email app opened with the suggestion written out — press send there.' });
+        setMessage('');
+        setContact('');
+      } else {
+        setMailtoStalled(true);
+        setStatus({
+          tone: 'warn',
+          text: `Your browser did not open an email app, so nothing has been sent. Your text is still here — copy it and email it to ${contactEmail}.`
+        });
+      }
+    }, 1500);
   };
 
   return (
@@ -421,7 +463,7 @@ export function FeedbackFooter({
                 id="suggestion-message"
                 ref={textareaRef}
                 value={message}
-                onChange={(e) => { setMessage(sliceChars(e.target.value, MAX_MESSAGE_LENGTH)); setStatus(null); }}
+                onChange={(e) => { setMessage(sliceChars(e.target.value, MAX_MESSAGE_LENGTH)); setStatus(null); setMailtoStalled(false); }}
                 rows={6}
                 maxLength={MAX_MESSAGE_LENGTH}
                 placeholder="For example: the large-core thrombectomy card should mention the ATLAS individual-patient-data meta-analysis, and the ASPECTS cut-off wording is ambiguous."
@@ -483,6 +525,22 @@ export function FeedbackFooter({
                 </a>
               )}
             </div>
+
+            {mailtoStalled && (
+              <div className="rounded-md border border-warn-300 bg-warn-50 p-3 text-xs dark:border-warn-700 dark:bg-warn-900/30">
+                <p className="text-ink-2">
+                  Nothing was sent. Your device has no email app set up for this browser. Copy the
+                  suggestion and send it to <strong>{contactEmail}</strong> from wherever you read mail.
+                </p>
+                <button
+                  type="button"
+                  onClick={copySuggestion}
+                  className="mt-2 px-3 py-2 min-h-[44px] rounded-md text-sm font-medium border border-line bg-card text-ink-2 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 dark:hover:bg-strong"
+                >
+                  Copy suggestion
+                </button>
+              </div>
+            )}
 
             <p aria-live="polite" className="min-h-[1.25rem] text-xs">
               {status && (
