@@ -47,6 +47,14 @@ import {
   VascularTerritoryAtlasCard,
   StkCoreMeasuresCard,
   AntiepilepticDrugsCard,
+  DeviceDetectedSubclinicalAfCard,
+  IchSurgicalDecisionMakingCard,
+  EvtPeriproceduralCareCard,
+  IntracranialAtherosclerosisCard,
+  UnrupturedIntracranialAneurysmCard,
+  PrehospitalTriageSystemsCard,
+  SevereStrokeCriticalCareCard,
+  PostStrokeRecoveryCard,
   calculateAstralScore,
   getAstralRisk,
   calculatePlanScore,
@@ -112,6 +120,30 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
     { id: 'vascular-territory-atlas', Component: VascularTerritoryAtlasCard, name: 'Vascular Territory Atlas' },
     { id: 'stk-core-measures', Component: StkCoreMeasuresCard, name: 'Stroke Core Measures' },
     { id: 'antiepileptic-drugs', Component: AntiepilepticDrugsCard, name: 'Antiepileptic Drugs' },
+
+    // Added with the 2026-08 education expansion
+    { id: 'post-stroke-recovery', Component: PostStrokeRecoveryCard, name: "Post-Stroke Recovery, Cognition & Mood" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'severe-stroke-critical-care', Component: SevereStrokeCriticalCareCard, name: "Neurocritical Care of Severe Stroke" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'prehospital-triage-systems', Component: PrehospitalTriageSystemsCard, name: "Prehospital Triage & Stroke Systems of Care" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'unruptured-intracranial-aneurysm', Component: UnrupturedIntracranialAneurysmCard, name: "Unruptured Intracranial Aneurysm: Rupture Risk vs Treatment Risk" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'intracranial-atherosclerosis', Component: IntracranialAtherosclerosisCard, name: "Intracranial Atherosclerotic Disease" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'evt-periprocedural-care', Component: EvtPeriproceduralCareCard, name: "EVT Technique & Post-Thrombectomy Care" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'ich-surgical-decision-making', Component: IchSurgicalDecisionMakingCard, name: "ICH Surgical Decision-Making" },
+
+    // Added with the 2026-08 education expansion
+    { id: 'device-detected-subclinical-af', Component: DeviceDetectedSubclinicalAfCard, name: "Device-Detected & Subclinical AF" },
   ];
 
   describe('1. SSR & HTML Rendering Integrity', () => {
@@ -177,8 +209,8 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
     const bundlePath = path.resolve(process.cwd(), 'content/bundle.json');
     const bundleData = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
 
-    it('verifies content/bundle.json contains all 46 education modules', () => {
-      expect(bundleData.education.length).toBe(46);
+    it('verifies content/bundle.json contains all 54 education modules', () => {
+      expect(bundleData.education.length).toBe(54);
     });
 
     ALL_CURRICULUM_CARDS.forEach(({ id }) => {

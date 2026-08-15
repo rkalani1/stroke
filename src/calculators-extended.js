@@ -1236,7 +1236,7 @@ export const arcadiaAdvisory = ({ ptfv1, ntProBNP, laVolumeIndex, laDiameterCmM2
     nextSteps: cardiopathyMarker
       ? '1) Implant ICM (Reveal LINQ or equivalent) — STROKE-AF showed AF in 12.1% even of non-cardioembolic strokes. 2) Continue antiplatelet (aspirin 81 mg). 3) Switch to OAC ONLY if AF detected with burden >24h or daily episodes.'
       : 'Standard secondary prevention (antiplatelet + statin + BP). Consider ICM if other clinical features suggest paroxysmal AF (elevated HAVOC score, atrial cardiopathy, recurrent embolic pattern, frequent palpitations).',
-    afBurdenThreshold: 'ARTESIA showed apixaban benefit in subclinical AF ≥6 min (mostly hours), but with bleeding cost. NOAH-AFNET-6 was neutral. Practical: trigger OAC at sustained AF >24h or daily episodes; shorter-burst subclinical AF = uncertain benefit.',
+    afBurdenThreshold: 'ARTESIA showed apixaban benefit in subclinical AF ≥6 min (mostly hours), but with bleeding cost. NOAH-AFNET 6 was neutral. Practical: trigger OAC at sustained AF >24h or daily episodes; shorter-burst subclinical AF = uncertain benefit.',
     source: 'ARCADIA JAMA 2024;331:573-81 (Kamel et al., PMID 38324415); ATTICUS NEJM Evid 2023 (PMID 38320511); STROKE-AF JAMA 2021 (PMID 34061145)',
     class: 'Class 3 (no benefit) for empiric OAC based on cardiopathy markers alone'
   };
@@ -1270,9 +1270,9 @@ export const afDetectionStrategy = ({ havocScore, strokeSubtype, hasICMAccess })
   return {
     strategy,
     evidence,
-    burdenThreshold: 'AF burden threshold for OAC initiation: sustained ≥24h or daily episodes (per ARTESIA/NOAH-AFNET-6 nuance). Shorter-burst subclinical AF = individualized.',
+    burdenThreshold: 'AF burden threshold for OAC initiation: sustained ≥24h or daily episodes (per ARTESIA/NOAH-AFNET 6 nuance). Shorter-burst subclinical AF = individualized.',
     nextSteps: 'If AF detected with burden ≥24h: initiate DOAC per ELAN/OPTIMAS timing (≤4d for minor/moderate stroke; 6-7d for major). Do not bridge with heparin.',
-    source: 'CRYSTAL-AF NEJM 2014; STROKE-AF JAMA 2021; PER DIEM JAMA 2021; ARTESIA NEJM 2024 (PMID 37952132); NOAH-AFNET-6 NEJM 2023 (PMID 37622677)',
+    source: 'CRYSTAL-AF NEJM 2014; STROKE-AF JAMA 2021; PER DIEM JAMA 2021; ARTESIA NEJM 2024 (PMID 37952132); NOAH-AFNET 6 NEJM 2023 (PMID 37622677)',
     class: 'Class 2a for ICM in cryptogenic (AHA 2024)'
   };
 };

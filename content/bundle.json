@@ -1,11 +1,11 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:c90cce774e744d5a2a8c73471246104f",
+    "checksum": "sha256:bab81ac2b9668c1a261a51ea5b8460fd",
     "counts": {
       "guidelines": 11,
       "trials": 113,
-      "education": 46,
+      "education": 54,
       "calculators": 34,
       "references": 18
     },
@@ -3141,6 +3141,61 @@
       "body": "Guideline-directed Dual Antiplatelet Therapy (DAPT) for secondary non-cardioembolic stroke prevention.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
+      "id": "device-detected-subclinical-af",
+      "title": "Device-Detected & Subclinical AF",
+      "summary": "Whether to anticoagulate an atrial high-rate episode found on a pacemaker, ICD, CRT device or insertable cardiac monitor: duration bands, mandatory electrogram adjudication, NOAH-AFNET 6 vs ARTESiA, the pooled meta-analysis, and absolute-risk framing.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "NOAH-AFNET 6 Trial",
+          "citation": "Kirchhof P, et al. Anticoagulation with Edoxaban in Patients with Atrial High-Rate Episodes. N Engl J Med. 2023;389(13):1167-1179.",
+          "pmid": "37622677"
+        },
+        {
+          "label": "ARTESiA Trial",
+          "citation": "Healey JS, et al. Apixaban for Stroke Prevention in Subclinical Atrial Fibrillation. N Engl J Med. 2024;390(2):107-117.",
+          "pmid": "37952132"
+        },
+        {
+          "label": "NOAH/ARTESiA Meta-Analysis",
+          "citation": "McIntyre WF, et al. Direct Oral Anticoagulants for Stroke Prevention in Patients With Device-Detected Atrial Fibrillation: A Study-Level Meta-Analysis of the NOAH-AFNET 6 and ARTESiA Trials. Circulation. 2024;149(13):981-988.",
+          "pmid": "37952187"
+        },
+        {
+          "label": "ARTESiA Prior Stroke/TIA Subgroup",
+          "citation": "Shoamanesh A, et al. Apixaban versus aspirin for stroke prevention in people with subclinical atrial fibrillation and a history of stroke or transient ischaemic attack: subgroup analysis of the ARTESiA randomised controlled trial. Lancet Neurol. 2025;24(2):140-151.",
+          "pmid": "39862882"
+        },
+        {
+          "label": "LOOP Study",
+          "citation": "Svendsen JH, et al. Implantable loop recorder detection of atrial fibrillation to prevent stroke (The LOOP Study): a randomised controlled trial. Lancet. 2021;398(10310):1507-1516.",
+          "pmid": "34469766"
+        },
+        {
+          "label": "ASSERT Trial",
+          "citation": "Healey JS, et al. Subclinical atrial fibrillation and the risk of stroke. N Engl J Med. 2012;366(2):120-129.",
+          "pmid": "22236222"
+        },
+        {
+          "label": "ASSERT Duration Analysis",
+          "citation": "Van Gelder IC, et al. Duration of device-detected subclinical atrial fibrillation and occurrence of stroke in ASSERT. Eur Heart J. 2017;38(17):1339-1344.",
+          "pmid": "28329139"
+        }
+      ],
+      "lastReviewed": "2026-08-15",
+      "provenance": "src/education.jsx",
+      "body": "Whether to anticoagulate an atrial high-rate episode found on a pacemaker, ICD, CRT device or insertable cardiac monitor: duration bands, mandatory electrogram adjudication, NOAH-AFNET 6 vs ARTESiA, the pooled meta-analysis, and absolute-risk framing.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
       "id": "dmvo-mevo-management",
       "title": "Distal Medium Vessel Occlusions (DMVO/MeVO)",
       "summary": "Evaluation, anatomical classification (M2/M3, A2/A3, P2/P3), trial evidence (DISTAL, ESCAPE-MeVO), disabling deficit thresholds, microcatheter techniques, and perforation risk management.",
@@ -3246,6 +3301,61 @@
       "lastReviewed": "2026-06-03",
       "provenance": "src/education.jsx",
       "body": "EVD leveling, drainage mechanics, safety checks, complications, PDF reference card, and interactive bedside simulator.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "evt-periprocedural-care",
+      "title": "EVT Technique & Post-Thrombectomy Care",
+      "summary": "Running the thrombectomy and the first 24 hours after it: anesthesia and intraprocedural hemodynamic floors, device strategy and first-pass effect, bailout decisions, the post-reperfusion blood pressure guardrail, and the angio-suite handoff.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "ENCHANTED2/MT Trial",
+          "citation": "Yang P, et al. Intensive blood pressure control after endovascular thrombectomy for acute ischaemic stroke (ENCHANTED2/MT): a multicentre, open-label, blinded-endpoint, randomised controlled trial. Lancet. 2022;400(10363):1585-1596.",
+          "pmid": "36341753"
+        },
+        {
+          "label": "OPTIMAL-BP Trial",
+          "citation": "Nam HS, et al. Intensive vs Conventional Blood Pressure Lowering After Endovascular Thrombectomy in Acute Ischemic Stroke: The OPTIMAL-BP Randomized Clinical Trial. JAMA. 2023;330(9):832-842.",
+          "pmid": "37668619"
+        },
+        {
+          "label": "BEST-II Trial",
+          "citation": "Mistry EA, et al. Blood Pressure Management After Endovascular Therapy for Acute Ischemic Stroke: The BEST-II Randomized Clinical Trial. JAMA. 2023;330(9):821-831.",
+          "pmid": "37668620"
+        },
+        {
+          "label": "BP-TARGET Trial",
+          "citation": "Mazighi M, et al. Safety and efficacy of intensive blood pressure lowering after successful endovascular therapy in acute ischaemic stroke (BP-TARGET): a multicentre, open-label, randomised controlled trial. Lancet Neurol. 2021;20(4):265-274.",
+          "pmid": "33647246"
+        },
+        {
+          "label": "PROTECT-MT Trial",
+          "citation": "Liu J, et al. Balloon guide catheters for endovascular thrombectomy in patients with acute ischaemic stroke due to large-vessel occlusion in China (PROTECT-MT): a multicentre, open-label, blinded-endpoint, randomised controlled trial. Lancet. 2024;404(10468):2165-2174.",
+          "pmid": "39579782"
+        },
+        {
+          "label": "ANGEL-REBOOT Trial",
+          "citation": "Gao F, et al. Bailout intracranial angioplasty or stenting following thrombectomy for acute large vessel occlusion in China (ANGEL-REBOOT): a multicentre, open-label, blinded-endpoint, randomised controlled trial. Lancet Neurol. 2024;23(8):797-806.",
+          "pmid": "38914085"
+        },
+        {
+          "label": "GA vs Sedation IPD Meta-Analysis",
+          "citation": "Schönenberger S, et al. Association of General Anesthesia vs Procedural Sedation With Functional Outcome Among Patients With Acute Ischemic Stroke Undergoing Thrombectomy: A Systematic Review and Meta-analysis. JAMA. 2019;322(13):1283-1293.",
+          "pmid": "31573636"
+        }
+      ],
+      "lastReviewed": "2026-08-15",
+      "provenance": "src/education.jsx",
+      "body": "Running the thrombectomy and the first 24 hours after it: anesthesia and intraprocedural hemodynamic floors, device strategy and first-pass effect, bailout decisions, the post-reperfusion blood pressure guardrail, and the angio-suite handoff.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "extended-window-perfusion",
@@ -3523,6 +3633,116 @@
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
       "body": "Hyperacute SBP lowering (<140 mmHg within 1h, avoid <130), INTERACT-2/3 care bundle, ATACH-2 renal safety floor, FASTEST, TRIDENT, minimally invasive surgery (ENRICH), and SWITCH decompressive craniectomy.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "ich-surgical-decision-making",
+      "title": "ICH Surgical Decision-Making",
+      "summary": "Which spontaneous intracerebral hemorrhage patients benefit from evacuation, by which technique, and when — the negative-trial spine (STICH, STICH II, MISTIE III, CLEAR III), the one positive lobar signal (ENRICH), decompressive craniectomy for deep ICH (SWITCH), the posterior-fossa rules that rest on non-randomized evidence, MISTIE-derived surgical-dose thresholds, and an integrated decision table by location, volume, GCS, age, and anticoagulation.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "STICH",
+          "citation": "Mendelow AD, et al. Early surgery versus initial conservative treatment in patients with spontaneous supratentorial intracerebral haematomas (STICH): a randomised trial. Lancet. 2005;365(9457):387-397.",
+          "pmid": "15680453"
+        },
+        {
+          "label": "STICH II",
+          "citation": "Mendelow AD, et al. Early surgery versus initial conservative treatment in patients with spontaneous supratentorial lobar intracerebral haematomas (STICH II): a randomised trial. Lancet. 2013;382(9890):397-408.",
+          "pmid": "23726393"
+        },
+        {
+          "label": "MISTIE III",
+          "citation": "Hanley DF, et al. Efficacy and safety of minimally invasive surgery with thrombolysis in intracerebral haemorrhage evacuation (MISTIE III): a randomised, controlled, open-label, blinded endpoint phase 3 trial. Lancet. 2019;393(10175):1021-1032.",
+          "pmid": "30739747"
+        },
+        {
+          "label": "ENRICH Trial",
+          "citation": "Pradilla G, et al. Trial of Early Minimally Invasive Removal of Intracerebral Hemorrhage (ENRICH). N Engl J Med. 2024;390(14):1277-1289.",
+          "pmid": "38598795"
+        },
+        {
+          "label": "CLEAR III",
+          "citation": "Hanley DF, et al. Thrombolytic removal of intraventricular haemorrhage in treatment of severe stroke: results of the randomised, multicentre, multiregion, placebo-controlled CLEAR III trial. Lancet. 2017;389(10069):603-611.",
+          "pmid": "28081952"
+        },
+        {
+          "label": "SWITCH Trial",
+          "citation": "Beck J, et al. Decompressive craniectomy plus best medical treatment versus best medical treatment alone for spontaneous severe deep supratentorial intracerebral haemorrhage (SWITCH): a randomised controlled clinical trial. Lancet. 2024;403(10442):2395-2404.",
+          "pmid": "38761811"
+        },
+        {
+          "label": "Cerebellar ICH Meta-analysis",
+          "citation": "Kuramatsu JB, et al. Association of Surgical Hematoma Evacuation vs Conservative Treatment With Functional Outcome in Patients With Cerebellar Intracerebral Hemorrhage. JAMA. 2019;322(14):1392-1403.",
+          "pmid": "31593272"
+        }
+      ],
+      "lastReviewed": "2026-08-15",
+      "provenance": "src/education.jsx",
+      "body": "Which spontaneous intracerebral hemorrhage patients benefit from evacuation, by which technique, and when — the negative-trial spine (STICH, STICH II, MISTIE III, CLEAR III), the one positive lobar signal (ENRICH), decompressive craniectomy for deep ICH (SWITCH), the posterior-fossa rules that rest on non-randomized evidence, MISTIE-derived surgical-dose thresholds, and an integrated decision table by location, volume, GCS, age, and anticoagulation.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "intracranial-atherosclerosis",
+      "title": "Intracranial Atherosclerotic Disease",
+      "summary": "Mechanism-first diagnosis and treatment of symptomatic intracranial atherosclerotic stenosis — artery-to-artery embolism, branch atheromatous perforator occlusion and hemodynamic borderzone failure; the SAMMPRIS aggressive medical bundle; and why stenting (SAMMPRIS, CASSISS), bypass (CMOSS, COSS, EC/IC 1985) and bailout angioplasty (ANGEL-REBOOT) all failed their primary endpoints.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "WASID Trial",
+          "citation": "Chimowitz MI, et al. Comparison of Warfarin and Aspirin for Symptomatic Intracranial Arterial Stenosis (WASID). N Engl J Med. 2005;352(13):1305-1316.",
+          "pmid": "15800226"
+        },
+        {
+          "label": "WASID High-Risk Phenotype",
+          "citation": "Kasner SE, et al. Predictors of ischemic stroke in the territory of a symptomatic intracranial arterial stenosis. Circulation. 2006;113(4):555-563.",
+          "pmid": "16432056"
+        },
+        {
+          "label": "WASID Blood Pressure Analysis",
+          "citation": "Turan TN, et al. Relationship between blood pressure and stroke recurrence in patients with intracranial arterial stenosis. Circulation. 2007;115(23):2969-2975.",
+          "pmid": "17515467"
+        },
+        {
+          "label": "SAMMPRIS Trial",
+          "citation": "Chimowitz MI, et al. Stenting versus Aggressive Medical Therapy for Intracranial Arterial Stenosis (SAMMPRIS). N Engl J Med. 2011;365(11):993-1003.",
+          "pmid": "21899409"
+        },
+        {
+          "label": "SAMMPRIS Final Results",
+          "citation": "Derdeyn CP, et al. Aggressive medical treatment with or without stenting in high-risk patients with intracranial artery stenosis (SAMMPRIS): the final results of a randomised trial. Lancet. 2014;383(9914):333-341.",
+          "pmid": "24168957"
+        },
+        {
+          "label": "CASSISS Trial",
+          "citation": "Gao P, et al. Effect of Stenting Plus Medical Therapy vs Medical Therapy Alone on Risk of Stroke and Death in Patients With Symptomatic Intracranial Stenosis (CASSISS). JAMA. 2022;328(6):534-542.",
+          "pmid": "35943472"
+        },
+        {
+          "label": "CMOSS Trial",
+          "citation": "Ma Y, et al. Extracranial-Intracranial Bypass and Risk of Stroke and Death in Patients With Symptomatic Artery Occlusion (CMOSS). JAMA. 2023;330(8):704-714.",
+          "pmid": "37606672"
+        }
+      ],
+      "lastReviewed": "2026-08-15",
+      "provenance": "src/education.jsx",
+      "body": "Mechanism-first diagnosis and treatment of symptomatic intracranial atherosclerotic stenosis — artery-to-artery embolism, branch atheromatous perforator occlusion and hemodynamic borderzone failure; the SAMMPRIS aggressive medical bundle; and why stenting (SAMMPRIS, CASSISS), bypass (CMOSS, COSS, EC/IC 1985) and bailout angioplasty (ANGEL-REBOOT) all failed their primary endpoints.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "iv-thrombolysis",
@@ -4006,6 +4226,61 @@
       "body": "Evidence-based decision pathways for Patent Foramen Ovale (PFO) closure (RESPECT, CLOSE, REDUCE, DEFENSE-PFO), high-risk anatomical features (atrial septal aneurysm >10mm, large shunt >20 bubbles), RoPE score, PASCAL classification, and Left Atrial Appendage Occlusion (LAAO) trials (PROTECT AF, PREVAIL, PRAGUE-17).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
+      "id": "post-stroke-recovery",
+      "title": "Post-Stroke Recovery, Cognition & Mood",
+      "summary": "Owns the recovery phase — prognosis and the sensitive window (CPASS, PREP2, AVERT), the rehabilitation setting and dose decision (LEAPS, ICARE, EXCITE), the settled negative fluoxetine question (FOCUS, AFFINITY, EFFECTS) versus the positive paired vagus nerve stimulation trial (VNS-REHAB), aphasia therapy intensity, and screening for post-stroke cognitive impairment, depression, fatigue and spasticity.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "FOCUS Trial",
+          "citation": "FOCUS Trial Collaboration. Effects of fluoxetine on functional outcomes after acute stroke (FOCUS): a pragmatic, double-blind, randomised, controlled trial. Lancet. 2019;393(10168):265-274.",
+          "pmid": "30528472"
+        },
+        {
+          "label": "AFFINITY Trial",
+          "citation": "AFFINITY Trial Collaboration. Safety and efficacy of fluoxetine on functional outcome after acute stroke (AFFINITY): a randomised, double-blind, placebo-controlled trial. Lancet Neurol. 2020;19(8):651-660.",
+          "pmid": "32702334"
+        },
+        {
+          "label": "EFFECTS Trial",
+          "citation": "EFFECTS Trial Collaboration. Safety and efficacy of fluoxetine on functional recovery after acute stroke (EFFECTS): a randomised, double-blind, placebo-controlled trial. Lancet Neurol. 2020;19(8):661-669.",
+          "pmid": "32702335"
+        },
+        {
+          "label": "VNS-REHAB Trial",
+          "citation": "Dawson J, et al. Vagus nerve stimulation paired with rehabilitation for upper limb motor function after ischaemic stroke (VNS-REHAB): a randomised, blinded, pivotal, device trial. Lancet. 2021;397(10284):1545-1553.",
+          "pmid": "33894832"
+        },
+        {
+          "label": "AVERT Trial",
+          "citation": "AVERT Trial Collaboration. Efficacy and safety of very early mobilisation within 24 h of stroke onset (AVERT): a randomised controlled trial. Lancet. 2015;386(9988):46-55.",
+          "pmid": "25892679"
+        },
+        {
+          "label": "CPASS Trial",
+          "citation": "Dromerick AW, et al. Critical Period After Stroke Study (CPASS): A phase II clinical trial testing an optimal time for motor recovery after stroke in humans. Proc Natl Acad Sci U S A. 2021;118(39):e2026676118.",
+          "pmid": "34544853"
+        },
+        {
+          "label": "AHA/ASA PSCI Statement",
+          "citation": "El Husseini N, et al. Cognitive Impairment After Ischemic and Hemorrhagic Stroke: A Scientific Statement From the American Heart Association/American Stroke Association. Stroke. 2023;54(6):e272-e291.",
+          "pmid": "37125534"
+        }
+      ],
+      "lastReviewed": "2026-08-15",
+      "provenance": "src/education.jsx",
+      "body": "Owns the recovery phase — prognosis and the sensitive window (CPASS, PREP2, AVERT), the rehabilitation setting and dose decision (LEAPS, ICARE, EXCITE), the settled negative fluoxetine question (FOCUS, AFFINITY, EFFECTS) versus the positive paired vagus nerve stimulation trial (VNS-REHAB), aphasia therapy intensity, and screening for post-stroke cognitive impairment, depression, fatigue and spasticity.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
       "id": "pregnancy-stroke",
       "title": "Stroke in Pregnancy and the Puerperium: 2026 AHA Maternal Scientific Statement",
       "summary": "Emergency management of ischemic and hemorrhagic stroke in pregnancy/postpartum, safe IV thrombolysis/EVT, preeclampsia/eclampsia/PRES protocols, magnesium sulfate, and postpartum CVST.",
@@ -4044,6 +4319,61 @@
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
       "body": "Emergency management of ischemic and hemorrhagic stroke in pregnancy/postpartum, safe IV thrombolysis/EVT, preeclampsia/eclampsia/PRES protocols, magnesium sulfate, and postpartum CVST.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "prehospital-triage-systems",
+      "title": "Prehospital Triage & Stroke Systems of Care",
+      "summary": "Deciding where the ambulance goes and how patients move between hospitals — mothership vs drip-and-ship and how to compute a local crossover, the neutral RACECAT result with its intracerebral hemorrhage harm signal, TRIAGE-STROKE, mobile stroke units (BEST-MSU, B_PROUD), why INTERACT4 forbids undifferentiated prehospital blood-pressure lowering, prehospital LVO scales (RACE, LAMS, C-STAT, FAST-ED), and door-in-door-out as the governing interfacility transfer metric.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "RACECAT",
+          "citation": "Pérez de la Ossa N, et al. Effect of Direct Transportation to Thrombectomy-Capable Center vs Local Stroke Center on Neurological Outcomes in Patients With Suspected Large-Vessel Occlusion Stroke in Nonurban Areas (RACECAT). JAMA. 2022;327(18):1782-1794.",
+          "pmid": "35510397"
+        },
+        {
+          "label": "RACECAT ICH Substudy",
+          "citation": "Ramos-Pachón A, et al. Effect of Bypassing the Closest Stroke Center in Patients with Intracerebral Hemorrhage: A Secondary Analysis of the RACECAT Randomized Clinical Trial. JAMA Neurol. 2023;80(10):1028-1036.",
+          "pmid": "37603325"
+        },
+        {
+          "label": "BEST-MSU",
+          "citation": "Grotta JC, et al. Prospective, Multicenter, Controlled Trial of Mobile Stroke Units (BEST-MSU). N Engl J Med. 2021;385(11):971-981.",
+          "pmid": "34496173"
+        },
+        {
+          "label": "B_PROUD",
+          "citation": "Ebinger M, et al. Association Between Dispatch of Mobile Stroke Units and Functional Outcomes Among Patients With Acute Ischemic Stroke in Berlin (B_PROUD). JAMA. 2021;325(5):454-466.",
+          "pmid": "33528537"
+        },
+        {
+          "label": "INTERACT4",
+          "citation": "Li G, et al. Intensive Ambulance-Delivered Blood-Pressure Reduction in Hyperacute Stroke (INTERACT4). N Engl J Med. 2024;390(20):1862-1872.",
+          "pmid": "38752650"
+        },
+        {
+          "label": "TRIAGE-STROKE",
+          "citation": "Behrndtz A, et al. Transport Strategy in Patients With Suspected Acute Large Vessel Occlusion Stroke: TRIAGE-STROKE, a Randomized Clinical Trial. Stroke. 2023;54(11):2714-2723.",
+          "pmid": "37800374"
+        },
+        {
+          "label": "Door-In-Door-Out (GWTG-Stroke)",
+          "citation": "Stamm B, et al. Door-in-Door-out Times for Interhospital Transfer of Patients With Stroke. JAMA. 2023;330(7):636-649.",
+          "pmid": "37581671"
+        }
+      ],
+      "lastReviewed": "2026-08-15",
+      "provenance": "src/education.jsx",
+      "body": "Deciding where the ambulance goes and how patients move between hospitals — mothership vs drip-and-ship and how to compute a local crossover, the neutral RACECAT result with its intracerebral hemorrhage harm signal, TRIAGE-STROKE, mobile stroke units (BEST-MSU, B_PROUD), why INTERACT4 forbids undifferentiated prehospital blood-pressure lowering, prehospital LVO scales (RACE, LAMS, C-STAT, FAST-ED), and door-in-door-out as the governing interfacility transfer metric.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "pupillometry",
@@ -4139,6 +4469,61 @@
       "lastReviewed": "2026-07-24",
       "provenance": "src/education.jsx",
       "body": "SeLECT score for predicting 1-year and 5-year risk of late post-stroke seizures and epilepsy after ischemic stroke.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "severe-stroke-critical-care",
+      "title": "Neurocritical Care of Severe Stroke",
+      "summary": "Supportive and systemic levers in severe stroke: fever and targeted normothermia, airway and tracheostomy timing, edema pharmacotherapy, glucose, dysphagia and nutrition, VTE prophylaxis, and mobilization dose.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "INTREPID Trial",
+          "citation": "Greer DM, et al. Fever Prevention in Patients With Acute Vascular Brain Injury: The INTREPID Randomized Clinical Trial. JAMA. 2024;332(18):1525-1534.",
+          "pmid": "39320879"
+        },
+        {
+          "label": "SETPOINT2 Trial",
+          "citation": "Bösel J, et al. Effect of Early vs Standard Approach to Tracheostomy on Functional Outcome at 6 Months Among Patients With Severe Stroke Receiving Mechanical Ventilation. JAMA. 2022;327(19):1899-1909.",
+          "pmid": "35506515"
+        },
+        {
+          "label": "CHARM Trial",
+          "citation": "Sheth KN, et al. Intravenous glibenclamide for cerebral oedema after large hemispheric stroke (CHARM): a phase 3, double-blind, placebo-controlled, randomised trial. Lancet Neurol. 2024;23(12):1205-1213.",
+          "pmid": "39577921"
+        },
+        {
+          "label": "SHINE Trial",
+          "citation": "Johnston KC, et al. Intensive vs Standard Treatment of Hyperglycemia and Functional Outcome in Patients With Acute Ischemic Stroke: The SHINE Randomized Clinical Trial. JAMA. 2019;322(4):326-335.",
+          "pmid": "31334795"
+        },
+        {
+          "label": "CLOTS 3 Trial",
+          "citation": "Dennis M, et al. Effectiveness of intermittent pneumatic compression in reduction of risk of deep vein thrombosis in patients who have had a stroke (CLOTS 3). Lancet. 2013;382(9891):516-524.",
+          "pmid": "23727163"
+        },
+        {
+          "label": "AVERT Trial",
+          "citation": "AVERT Trial Collaboration Group. Efficacy and safety of very early mobilisation within 24 h of stroke onset (AVERT): a randomised controlled trial. Lancet. 2015;386(9988):46-55.",
+          "pmid": "25892679"
+        },
+        {
+          "label": "Stroke Unit Care",
+          "citation": "Langhorne P, Ramachandra S. Organised inpatient (stroke unit) care for stroke: network meta-analysis. Cochrane Database Syst Rev. 2020;4:CD000197.",
+          "pmid": "32324916"
+        }
+      ],
+      "lastReviewed": "2026-08-15",
+      "provenance": "src/education.jsx",
+      "body": "Supportive and systemic levers in severe stroke: fever and targeted normothermia, airway and tracheostomy timing, edema pharmacotherapy, glucose, dysphagia and nutrition, VTE prophylaxis, and mobilization dose.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "stk-core-measures",
@@ -4255,6 +4640,61 @@
       "lastReviewed": "2026-07-13",
       "provenance": "src/education.jsx",
       "body": "Trial of Org 10172 in Acute Stroke Treatment (TOAST) diagnostic criteria for ischemic stroke etiology.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+    },
+    {
+      "id": "unruptured-intracranial-aneurysm",
+      "title": "Unruptured Intracranial Aneurysm: Rupture Risk vs Treatment Risk",
+      "summary": "Counseling an incidental unruptured intracranial aneurysm: separating symptomatic from truly incidental presentations, quantifying 5-year rupture risk with PHASES (and its limits), the ISUIA and UCAS Japan natural-history data, ELAPSS growth prediction, the procedural-risk side of the ledger (endovascular vs neurosurgical), and a surveillance protocol with scripts for the two hard conversations.",
+      "tags": [
+        "pocket-card",
+        "printable"
+      ],
+      "contexts": [
+        "telestroke",
+        "inpatient",
+        "clinic"
+      ],
+      "calculators": [],
+      "references": [
+        {
+          "label": "PHASES Score",
+          "citation": "Greving JP, et al. Development of the PHASES score for prediction of risk of rupture of intracranial aneurysms: a pooled analysis of six prospective cohort studies. Lancet Neurol. 2014;13(1):59-66.",
+          "pmid": "24290159"
+        },
+        {
+          "label": "ISUIA",
+          "citation": "Wiebers DO, et al. Unruptured intracranial aneurysms: natural history, clinical outcome, and risks of surgical and endovascular treatment. Lancet. 2003;362(9378):103-110.",
+          "pmid": "12867109"
+        },
+        {
+          "label": "UCAS Japan",
+          "citation": "Morita A, et al. The natural course of unruptured cerebral aneurysms in a Japanese cohort. N Engl J Med. 2012;366(26):2474-2482.",
+          "pmid": "22738097"
+        },
+        {
+          "label": "ELAPSS Score",
+          "citation": "Backes D, et al. ELAPSS score for prediction of risk of growth of unruptured intracranial aneurysms. Neurology. 2017;88(17):1600-1606.",
+          "pmid": "28363976"
+        },
+        {
+          "label": "Growth and Rupture",
+          "citation": "Villablanca JP, et al. Natural history of asymptomatic unruptured cerebral aneurysms evaluated at CT angiography: growth and rupture incidence and correlation with epidemiologic risk factors. Radiology. 2013;269(1):258-265.",
+          "pmid": "23821755"
+        },
+        {
+          "label": "Treatment Risk Meta-analysis",
+          "citation": "Algra AM, et al. Procedural Clinical Complications, Case-Fatality Risks, and Risk Factors in Endovascular and Neurosurgical Treatment of Unruptured Intracranial Aneurysms: A Systematic Review and Meta-analysis. JAMA Neurol. 2019;76(3):282-293.",
+          "pmid": "30592482"
+        },
+        {
+          "label": "AHA/ASA 2015 UIA Guideline",
+          "citation": "Thompson BG, et al. Guidelines for the Management of Patients With Unruptured Intracranial Aneurysms: A Guideline for Healthcare Professionals From the American Heart Association/American Stroke Association. Stroke. 2015;46(8):2368-2400.",
+          "pmid": "26089327"
+        }
+      ],
+      "lastReviewed": "2026-08-15",
+      "provenance": "src/education.jsx",
+      "body": "Counseling an incidental unruptured intracranial aneurysm: separating symptomatic from truly incidental presentations, quantifying 5-year rupture risk with PHASES (and its limits), the ISUIA and UCAS Japan natural-history data, ELAPSS growth prediction, the procedural-risk side of the ledger (endovascular vs neurosurgical), and a surveillance protocol with scripts for the two hard conversations.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "vascular-territory-atlas",
