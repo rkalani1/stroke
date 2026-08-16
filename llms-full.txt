@@ -1,6 +1,6 @@
 # Stroke CDS Educational Demo
 
-> Synthetic educational stroke decision-support demo (v6.11.11): example acute ischemic & hemorrhagic stroke pathways, 34 calculators, an evidence atlas (113 landmark trials, 10 active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.
+> Synthetic educational stroke decision-support demo (v6.12.0): example acute ischemic & hemorrhagic stroke pathways, 34 calculators, an evidence atlas (113 landmark trials, 10 active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.
 
 Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.
 
@@ -77,10 +77,22 @@ unless the underlying clinical data changed).
 - `mrs-9q` — mRS-9Q (simplified mRS) (severity)
 
 ### Guidelines
+- AAN Symptomatic ICAS 2022 — 4 recommendations (doi:10.1212/WNL.0000000000200030)
 - AIS 2026 — 195 recommendations (doi:10.1161/STR.0000000000000513)
 - Cancer-Associated Stroke 2026 — 18 recommendations (doi:10.1161/STR.0000000000000517)
 - Heart-Brain Health 2024 — 9 recommendations (doi:10.1161/STR.0000000000000476)
 - CVT Statement 2024 — 5 recommendations (doi:10.1161/STR.0000000000000456)
+- ESO Aphasia Rehabilitation 2025 — 1 recommendations (doi:10.1177/23969873241311025)
+- ESO/ESMINT Basilar Occlusion 2024 — 6 recommendations (doi:10.1177/23969873241257223)
+- ESO BP in Acute Stroke 2025 update — 5 recommendations (doi:10.1093/esj/aakag004)
+- ESO/EANS Spontaneous ICH 2025 — 4 recommendations (doi:10.1177/23969873251340815)
+- ESO Lacunar Ischaemic Stroke 2024 — 1 recommendations (doi:10.1177/23969873231219416)
+- ESO Motor Rehabilitation 2025 — 1 recommendations (doi:10.1177/23969873251338142)
+- ESO PACNS 2023 — 1 recommendations (doi:10.1177/23969873231190431)
+- ESO PFO After Stroke 2024 — 5 recommendations (doi:10.1177/23969873241247978)
+- ESO/EANS/ESMINT aSAH 2026 — 1 recommendations (doi:10.1093/esj/aakag043)
+- ESO Stroke-Associated Pneumonia 2026 — 1 recommendations (doi:10.1093/esj/aakag044)
+- ESO Visual Impairment 2025 — 1 recommendations (doi:10.1177/23969873251314693)
 - ICH 2022 — 124 recommendations (doi:10.1161/STR.0000000000000407)
 - Landmark Trials — 0 recommendations
 - Maternal Stroke 2026 — 3 recommendations (doi:10.1161/STR.0000000000000514)

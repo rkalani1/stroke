@@ -39,6 +39,18 @@ import sah2023 from './guidelines/sah-2023.json';
 import systemicComplications2024 from './guidelines/systemic-complications-2024.json';
 import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
 import tiaEd2023 from './guidelines/tia-ed-2023.json';
+import esoBp2025 from './guidelines/eso-bp-2025.json';
+import esoIch2025 from './guidelines/eso-ich-2025.json';
+import esoSah2026 from './guidelines/eso-sah-2026.json';
+import esoBao2024 from './guidelines/eso-bao-2024.json';
+import esoPfo2024 from './guidelines/eso-pfo-2024.json';
+import esoLacunar2024 from './guidelines/eso-lacunar-2024.json';
+import esoSap2026 from './guidelines/eso-sap-2026.json';
+import esoPacns2023 from './guidelines/eso-pacns-2023.json';
+import esoAphasiaRehab2025 from './guidelines/eso-aphasia-rehab-2025.json';
+import esoMotorRehab2025 from './guidelines/eso-motor-rehab-2025.json';
+import esoVisual2025 from './guidelines/eso-visual-2025.json';
+import aanSicas2022 from './guidelines/aan-sicas-2022.json';
 
 // =====================================================================
 // ERROR BOUNDARY FOR SIMULATORS
@@ -87,7 +99,19 @@ const GUIDELINE_LIBRARY = [
   poststrokeSpasticity2026,
   poststrokePrimaryCare2021,
   perioperativeStroke2021,
-  cardiacBrainHealth2024
+  cardiacBrainHealth2024,
+  esoBp2025,
+  esoIch2025,
+  esoSah2026,
+  esoBao2024,
+  esoPfo2024,
+  esoLacunar2024,
+  esoSap2026,
+  esoPacns2023,
+  esoAphasiaRehab2025,
+  esoMotorRehab2025,
+  esoVisual2025,
+  aanSicas2022
 ];
 
 const GUIDELINE_LIBRARY_INDEX = GUIDELINE_LIBRARY.map((guideline) => ({

@@ -1,0 +1,52 @@
+{
+  "id": "eso-pfo-2024",
+  "title": "ESO Guideline 2024: Diagnosis and Management of Patent Foramen Ovale After Stroke",
+  "shortTitle": "ESO PFO After Stroke 2024",
+  "doi": "10.1177/23969873241247978",
+  "publisherUrl": "https://doi.org/10.1177/23969873241247978",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/38752755/",
+  "pmid": "38752755",
+  "recommendations": [
+    {
+      "section": "PFO closure",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: High quality (GRADE).",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "High-quality evidence supports PFO closure plus antiplatelet therapy in selected patients aged 18-60 years in whom no other evident cause of stroke is found. The PASCAL classification can be used to select candidates; patients with both a large right-to-left shunt and an atrial septal aneurysm benefit most.",
+      "page": null
+    },
+    {
+      "section": "Age limits",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Insufficient evidence.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "There is insufficient evidence for an evidence-based recommendation on PFO closure in patients older than 60 or younger than 18 years.",
+      "page": null
+    },
+    {
+      "section": "Unlikely PFO-related stroke",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Low quality (GRADE).",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Low-quality evidence suggests against PFO closure in patients whose stroke is unlikely PFO-related by PASCAL classification, except in specific scenarios.",
+      "page": null
+    },
+    {
+      "section": "Anticoagulation",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Suggestion against.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "ESO suggests against long-term anticoagulation in PFO-associated stroke unless anticoagulation is indicated for other medical reasons.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Expert consensus.",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "The working group notes an evidentiary gap in the diagnostic algorithm for PFO detection; transoesophageal echocardiography is conventionally held as most accurate but its 'gold standard' status is not substantiated by rigorously validated evidence.",
+      "page": null
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "eso-sah-2026",
+  "title": "ESO/EANS/ESMINT Guideline 2026: Aneurysmal Subarachnoid Haemorrhage",
+  "shortTitle": "ESO/EANS/ESMINT aSAH 2026",
+  "doi": "10.1093/esj/aakag043",
+  "publisherUrl": "https://doi.org/10.1093/esj/aakag043",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42095754/",
+  "pmid": "42095754",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: GRADE.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Joint ESO/EANS/ESMINT guideline on aneurysmal subarachnoid haemorrhage, prepared using GRADE from meta-analyses, randomised trials and prospective observational data. Case fatality after aSAH is approximately 40%, with frequent functional, cognitive or emotional sequelae in survivors.",
+      "page": null
+    }
+  ]
+}

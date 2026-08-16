@@ -1,0 +1,44 @@
+{
+  "id": "aan-sicas-2022",
+  "title": "AAN Practice Advisory 2022: Stroke Prevention in Symptomatic Large Artery Intracranial Atherosclerosis",
+  "shortTitle": "AAN Symptomatic ICAS 2022",
+  "doi": "10.1212/WNL.0000000000200030",
+  "publisherUrl": "https://doi.org/10.1212/WNL.0000000000200030",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/35314513/",
+  "pmid": "35314513",
+  "recommendations": [
+    {
+      "section": "Antithrombotics",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: AAN Level B.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Clinicians should recommend aspirin 325 mg/d for long-term prevention of stroke and death, and should add clopidogrel 75 mg/d for up to 90 days to further reduce stroke risk in patients with severe (70-99%) sICAS who have low risk of haemorrhagic transformation.",
+      "page": null
+    },
+    {
+      "section": "Risk factor management",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: AAN Level B.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Clinicians should recommend high-intensity statin therapy targeting LDL-C <70 mg/dL, a long-term blood pressure target <140/90 mmHg, at least moderate physical activity, and treatment of other modifiable vascular risk factors.",
+      "page": null
+    },
+    {
+      "section": "Angioplasty and stenting",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: AAN Level B (against).",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Clinicians should NOT recommend percutaneous transluminal angioplasty and stenting for stroke prevention in moderate (50-69%) sICAS, or as initial treatment in severe sICAS.",
+      "page": null
+    },
+    {
+      "section": "Surgical options",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: AAN Level B/C (against).",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Clinicians should not routinely recommend angioplasty alone or indirect bypass outside clinical trials, and should not recommend direct bypass for stroke prevention in sICAS.",
+      "page": null
+    }
+  ]
+}

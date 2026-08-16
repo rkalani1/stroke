@@ -1,0 +1,52 @@
+{
+  "id": "eso-bp-2025",
+  "title": "ESO Guideline 2025 Update: Blood Pressure Management in Acute Ischaemic Stroke and Intracerebral Haemorrhage",
+  "shortTitle": "ESO BP in Acute Stroke 2025 update",
+  "doi": "10.1093/esj/aakag004",
+  "publisherUrl": "https://doi.org/10.1093/esj/aakag004",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42095756/",
+  "pmid": "42095756",
+  "recommendations": [
+    {
+      "section": "Pre-hospital",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Moderate certainty (GRADE).",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "ESO advises against routine pre-hospital BP lowering in suspected stroke.",
+      "page": null
+    },
+    {
+      "section": "Before and after reperfusion",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Low certainty (IVT) / moderate certainty (MT).",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Maintain BP <185/110 mmHg before the intravenous thrombolysis bolus, and <180/105 mmHg during and for 24 h after intravenous thrombolysis and/or mechanical thrombectomy.",
+      "page": null
+    },
+    {
+      "section": "After successful thrombectomy",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: High certainty (GRADE).",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "ESO recommends AGAINST intensively lowering systolic BP <140 mmHg in the first 24 h after successful mechanical thrombectomy.",
+      "page": null
+    },
+    {
+      "section": "Neurological deterioration",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Low certainty (GRADE).",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Routine use of vasopressors to raise BP in AIS patients with neurological deterioration who are not treated with acute reperfusion therapy is discouraged.",
+      "page": null
+    },
+    {
+      "section": "Acute ICH",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Expert consensus.",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Net clinical benefit of intensive BP lowering in acute ICH remains uncertain; expert consensus supports early systolic BP reduction to <140 mmHg in small-to-moderate haematomas to limit haematoma expansion.",
+      "page": null
+    }
+  ]
+}

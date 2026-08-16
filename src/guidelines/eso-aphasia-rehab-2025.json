@@ -1,0 +1,20 @@
+{
+  "id": "eso-aphasia-rehab-2025",
+  "title": "ESO Guideline 2025: Aphasia Rehabilitation",
+  "shortTitle": "ESO Aphasia Rehabilitation 2025",
+  "doi": "10.1177/23969873241311025",
+  "publisherUrl": "https://doi.org/10.1177/23969873241311025",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/40401776/",
+  "pmid": "40401776",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: GRADE.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Multi-disciplinary, evidence-based recommendations supporting delivery of high-quality stroke-related aphasia rehabilitation, developed under ESO standard procedures and GRADE. Evidence of effective aphasia rehabilitation is emerging, yet intervention and delivery vary widely.",
+      "page": null
+    }
+  ]
+}

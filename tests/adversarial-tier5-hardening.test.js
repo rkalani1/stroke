@@ -9,7 +9,7 @@
 //   2. Matcher Engine & Field Resolvers / Operators (src/evidence/matcher-engine.js)
 //   3. Guideline Recommendations Decision Logic & Edge Cases (src/app.jsx)
 //   4. Educational Accordion Architecture & Fuzzy Search (src/education.jsx)
-//   5. 17 Guideline Datasets & 771 Recommendations (data/guidelines/)
+//   5. 29 Guideline Datasets & 802 Recommendations (data/guidelines/)
 //   6. Landmark Trial Citations & Central Registry Integrity (src/evidence/citations.js)
 
 import { describe, it, expect } from 'vitest';
@@ -470,13 +470,13 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
   });
 
   // =========================================================================
-  // 5. 17 GUIDELINE DATASETS & 771 RECOMMENDATIONS ADVERSARIAL VALIDATION
+  // 5. 29 GUIDELINE DATASETS & 802 RECOMMENDATIONS ADVERSARIAL VALIDATION
   // =========================================================================
-  describe('5. 17 Guideline Datasets & 771 Recommendations Invariant Hardening', () => {
+  describe('5. 29 Guideline Datasets & 802 Recommendations Invariant Hardening', () => {
 
-    it('verifies all 17 guideline datasets exist and parse valid JSON with 771 recommendations', () => {
+    it('verifies all 29 guideline datasets exist and parse valid JSON with 802 recommendations', () => {
       const guidelineFiles = fs.readdirSync(GUIDELINES_DIR).filter(f => f.endsWith('.json') && f !== 'index.json' && f !== 'landmark-trials.json');
-      expect(guidelineFiles.length).toBe(17);
+      expect(guidelineFiles.length).toBe(29);
 
       let totalRecs = 0;
       const validCORs = new Set(['I', 'IIa', 'IIb', 'III', 'Statement']);
@@ -512,7 +512,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         }
       }
 
-      expect(totalRecs).toBe(771);
+      expect(totalRecs).toBe(802);
     });
 
     it('verifies 2026 AHA/ASA AIS guideline dataset contains 195 recommendations', () => {
