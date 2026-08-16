@@ -1,0 +1,20 @@
+{
+  "id": "eso-sap-2026",
+  "title": "ESO Guideline 2026: Stroke-Associated Pneumonia",
+  "shortTitle": "ESO Stroke-Associated Pneumonia 2026",
+  "doi": "10.1093/esj/aakag044",
+  "publisherUrl": "https://doi.org/10.1093/esj/aakag044",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42095755/",
+  "pmid": "42095755",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: GRADE / consensus.",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Stroke-associated pneumonia occurs in approximately 12% of patients and is the most frequent infectious complication after acute stroke and a major contributor to morbidity and mortality. High-quality evidence to guide diagnosis, prediction, prevention and treatment remains limited, so recommendations are largely structured consensus.",
+      "page": null
+    }
+  ]
+}

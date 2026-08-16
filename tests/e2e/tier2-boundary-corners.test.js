@@ -349,7 +349,7 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
   describe('Feature 7 Boundary & Corner Cases', () => {
     const indexData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/index.json'), 'utf8'));
 
-    it('F7-T2.1: Search query filtering across all 771 recommendations handles case-insensitivity', () => {
+    it('F7-T2.1: Search query filtering across all 802 recommendations handles case-insensitivity', () => {
       const active = indexData.data.filter(x => x.id !== 'landmark-trials');
       let total = 0;
       let matches = 0;
@@ -359,7 +359,7 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
         total += recs.length;
         matches += recs.filter(r => /thromboly|alteplase|tenecteplase|stroke|prevention|management/i.test(r.text)).length;
       }
-      expect(total).toBe(771);
+      expect(total).toBe(802);
       expect(matches).toBeGreaterThan(100);
     });
 
@@ -389,7 +389,10 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
       const active = indexData.data.filter(x => x.id !== 'landmark-trials');
       for (const g of active) {
         expect(g.publisherUrl.startsWith('https://')).toBe(true);
-        expect(g.pdfUrl.startsWith('https://')).toBe(true);
+        // Not every publisher exposes a stable public PDF path (ESO/SAGE, ESO/Oxford,
+        // AAN/Neurology). Those entries carry a resolvable DOI publisherUrl and no pdfUrl,
+        // rather than a guessed PDF link that 404s. Assert the shape only when present.
+        if (g.pdfUrl) expect(g.pdfUrl.startsWith('https://')).toBe(true);
       }
     });
   });

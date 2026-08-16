@@ -1,0 +1,44 @@
+{
+  "id": "eso-ich-2025",
+  "title": "ESO/EANS Guideline 2025: Stroke Due to Spontaneous Intracerebral Haemorrhage",
+  "shortTitle": "ESO/EANS Spontaneous ICH 2025",
+  "doi": "10.1177/23969873251340815",
+  "publisherUrl": "https://doi.org/10.1177/23969873251340815",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/40401775/",
+  "pmid": "40401775",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: GRADE.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Update of the 2014 ESO ICH guideline, developed with EANS across 37 PICO questions; 115,647 articles screened and 208 studies included.",
+      "page": null
+    },
+    {
+      "section": "Supported interventions",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Strong recommendation.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Evidence supports care on organised stroke units and secondary prevention with blood pressure lowering.",
+      "page": null
+    },
+    {
+      "section": "Recommended against",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Recommendation against.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "ESO recommends against routine rFVIIa, platelet transfusion for antiplatelet-associated ICH, prophylactic anti-seizure medicines, and general policies that limit treatment within 24 h of ICH onset.",
+      "page": null
+    },
+    {
+      "section": "Weak / consensus areas",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Weak / expert consensus. Source lists a volume figure for cerebellar evacuation; omitted here because this app deliberately does not present cerebellar volume alone as an operative trigger. See the linked source for the full graded recommendation.",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Weak recommendations or consensus statements cover acute BP lowering, craniotomy and minimally invasive surgery for supratentorial ICH, evacuation of cerebellar ICH, EVD with intraventricular thrombolysis, intermittent pneumatic compression, and care bundles.",
+      "page": null
+    }
+  ]
+}

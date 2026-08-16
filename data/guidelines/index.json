@@ -2,14 +2,24 @@
   "_meta": {
     "endpoint": "guidelines-index",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.11.11",
-    "checksum": "sha256:5f9dc84965d320534fe01dcd9d994875",
-    "count": 18,
+    "appVersion": "6.12.0",
+    "checksum": "sha256:61d0ed4fd98480ea247485aae69c3a6f",
+    "count": 30,
     "source": "Guideline metadata bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
   },
   "data": [
+    {
+      "id": "aan-sicas-2022",
+      "title": "AAN Practice Advisory 2022: Stroke Prevention in Symptomatic Large Artery Intracranial Atherosclerosis",
+      "shortTitle": "AAN Symptomatic ICAS 2022",
+      "doi": "10.1212/WNL.0000000000200030",
+      "publisherUrl": "https://doi.org/10.1212/WNL.0000000000200030",
+      "pdfUrl": null,
+      "recommendationCount": 4,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/aan-sicas-2022.json"
+    },
     {
       "id": "ais-2026",
       "title": "AHA/ASA Early Management of Acute Ischemic Stroke 2026",
@@ -49,6 +59,116 @@
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456",
       "recommendationCount": 5,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/cvt-2024.json"
+    },
+    {
+      "id": "eso-aphasia-rehab-2025",
+      "title": "ESO Guideline 2025: Aphasia Rehabilitation",
+      "shortTitle": "ESO Aphasia Rehabilitation 2025",
+      "doi": "10.1177/23969873241311025",
+      "publisherUrl": "https://doi.org/10.1177/23969873241311025",
+      "pdfUrl": null,
+      "recommendationCount": 1,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-aphasia-rehab-2025.json"
+    },
+    {
+      "id": "eso-bao-2024",
+      "title": "ESO/ESMINT Guideline 2024: Acute Management of Basilar Artery Occlusion",
+      "shortTitle": "ESO/ESMINT Basilar Occlusion 2024",
+      "doi": "10.1177/23969873241257223",
+      "publisherUrl": "https://doi.org/10.1177/23969873241257223",
+      "pdfUrl": null,
+      "recommendationCount": 6,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-bao-2024.json"
+    },
+    {
+      "id": "eso-bp-2025",
+      "title": "ESO Guideline 2025 Update: Blood Pressure Management in Acute Ischaemic Stroke and Intracerebral Haemorrhage",
+      "shortTitle": "ESO BP in Acute Stroke 2025 update",
+      "doi": "10.1093/esj/aakag004",
+      "publisherUrl": "https://doi.org/10.1093/esj/aakag004",
+      "pdfUrl": null,
+      "recommendationCount": 5,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-bp-2025.json"
+    },
+    {
+      "id": "eso-ich-2025",
+      "title": "ESO/EANS Guideline 2025: Stroke Due to Spontaneous Intracerebral Haemorrhage",
+      "shortTitle": "ESO/EANS Spontaneous ICH 2025",
+      "doi": "10.1177/23969873251340815",
+      "publisherUrl": "https://doi.org/10.1177/23969873251340815",
+      "pdfUrl": null,
+      "recommendationCount": 4,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-ich-2025.json"
+    },
+    {
+      "id": "eso-lacunar-2024",
+      "title": "ESO Guideline 2024: Cerebral Small Vessel Disease, Part 2 — Lacunar Ischaemic Stroke",
+      "shortTitle": "ESO Lacunar Ischaemic Stroke 2024",
+      "doi": "10.1177/23969873231219416",
+      "publisherUrl": "https://doi.org/10.1177/23969873231219416",
+      "pdfUrl": null,
+      "recommendationCount": 1,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-lacunar-2024.json"
+    },
+    {
+      "id": "eso-motor-rehab-2025",
+      "title": "ESO Guideline 2025: Motor Rehabilitation After Stroke",
+      "shortTitle": "ESO Motor Rehabilitation 2025",
+      "doi": "10.1177/23969873251338142",
+      "publisherUrl": "https://doi.org/10.1177/23969873251338142",
+      "pdfUrl": null,
+      "recommendationCount": 1,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-motor-rehab-2025.json"
+    },
+    {
+      "id": "eso-pacns-2023",
+      "title": "ESO Guideline 2023: Primary Angiitis of the Central Nervous System (PACNS)",
+      "shortTitle": "ESO PACNS 2023",
+      "doi": "10.1177/23969873231190431",
+      "publisherUrl": "https://doi.org/10.1177/23969873231190431",
+      "pdfUrl": null,
+      "recommendationCount": 1,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-pacns-2023.json"
+    },
+    {
+      "id": "eso-pfo-2024",
+      "title": "ESO Guideline 2024: Diagnosis and Management of Patent Foramen Ovale After Stroke",
+      "shortTitle": "ESO PFO After Stroke 2024",
+      "doi": "10.1177/23969873241247978",
+      "publisherUrl": "https://doi.org/10.1177/23969873241247978",
+      "pdfUrl": null,
+      "recommendationCount": 5,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-pfo-2024.json"
+    },
+    {
+      "id": "eso-sah-2026",
+      "title": "ESO/EANS/ESMINT Guideline 2026: Aneurysmal Subarachnoid Haemorrhage",
+      "shortTitle": "ESO/EANS/ESMINT aSAH 2026",
+      "doi": "10.1093/esj/aakag043",
+      "publisherUrl": "https://doi.org/10.1093/esj/aakag043",
+      "pdfUrl": null,
+      "recommendationCount": 1,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-sah-2026.json"
+    },
+    {
+      "id": "eso-sap-2026",
+      "title": "ESO Guideline 2026: Stroke-Associated Pneumonia",
+      "shortTitle": "ESO Stroke-Associated Pneumonia 2026",
+      "doi": "10.1093/esj/aakag044",
+      "publisherUrl": "https://doi.org/10.1093/esj/aakag044",
+      "pdfUrl": null,
+      "recommendationCount": 1,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-sap-2026.json"
+    },
+    {
+      "id": "eso-visual-2025",
+      "title": "ESO Guideline 2025: Visual Impairment in Stroke",
+      "shortTitle": "ESO Visual Impairment 2025",
+      "doi": "10.1177/23969873251314693",
+      "publisherUrl": "https://doi.org/10.1177/23969873251314693",
+      "pdfUrl": null,
+      "recommendationCount": 1,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-visual-2025.json"
     },
     {
       "id": "ich-2022",

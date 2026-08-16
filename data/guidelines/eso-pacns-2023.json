@@ -1,0 +1,20 @@
+{
+  "id": "eso-pacns-2023",
+  "title": "ESO Guideline 2023: Primary Angiitis of the Central Nervous System (PACNS)",
+  "shortTitle": "ESO PACNS 2023",
+  "doi": "10.1177/23969873231190431",
+  "publisherUrl": "https://doi.org/10.1177/23969873231190431",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/37903069/",
+  "pmid": "37903069",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: GRADE.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Guideline to assist clinicians in the diagnostic and treatment pathway for primary angiitis of the central nervous system, developed under ESO standard operating procedures and GRADE by a working group of vascular neurologists and allied specialists.",
+      "page": null
+    }
+  ]
+}

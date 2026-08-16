@@ -312,11 +312,11 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   describe('Feature 7: Guideline Library & COR/LOE Catalog', () => {
     const indexData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/index.json'), 'utf8'));
 
-    it('F7-T1.1: Guideline index lists exactly 17 clinical guideline datasets totaling 771 recommendations', () => {
+    it('F7-T1.1: Guideline index lists exactly 29 clinical guideline datasets totaling 802 recommendations', () => {
       const activeDatasets = indexData.data.filter(g => g.id !== 'landmark-trials');
-      expect(activeDatasets.length).toBe(17);
+      expect(activeDatasets.length).toBe(29);
       const totalRecs = activeDatasets.reduce((sum, g) => sum + g.recommendationCount, 0);
-      expect(totalRecs).toBe(771);
+      expect(totalRecs).toBe(802);
     });
 
     it('F7-T1.2: Every guideline in index has valid title, shortTitle, doi, and publisherUrl', () => {
@@ -836,9 +836,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.11.11', () => {
+    it('F19-T1.5: package.json version matches latest release v6.12.0', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.11.11');
+      expect(pkg.version).toBe('6.12.0');
     });
   });
 });

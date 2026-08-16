@@ -1,0 +1,60 @@
+{
+  "id": "eso-bao-2024",
+  "title": "ESO/ESMINT Guideline 2024: Acute Management of Basilar Artery Occlusion",
+  "shortTitle": "ESO/ESMINT Basilar Occlusion 2024",
+  "doi": "10.1177/23969873241257223",
+  "publisherUrl": "https://doi.org/10.1177/23969873241257223",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/38752743/",
+  "pmid": "38752743",
+  "recommendations": [
+    {
+      "section": "Intravenous thrombolysis",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Expert consensus.",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Expert consensus suggests using IVT up to 24 h in basilar artery occlusion unless otherwise contraindicated, and suggests IVT plus endovascular treatment over direct EVT.",
+      "page": null
+    },
+    {
+      "section": "EVT vs best medical treatment",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Very low certainty (GRADE).",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "ESO suggests EVT plus best medical treatment over BMT alone, derived from patients with NIHSS >=10 and a low proportion of IVT in the BMT arm.",
+      "page": null
+    },
+    {
+      "section": "NIHSS below 10",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: No recommendation.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "For patients with NIHSS below 10 there was no evidence to recommend EVT over BMT; BMT was non-significantly better and safer than EVT.",
+      "page": null
+    },
+    {
+      "section": "Occlusion location",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Very low certainty (GRADE).",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "A stronger treatment effect of EVT plus BMT over BMT alone was observed for proximal and middle basilar occlusion compared with distal location.",
+      "page": null
+    },
+    {
+      "section": "Extensive ischaemic change",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Expert consensus.",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Expert consensus suggests AGAINST reperfusion therapy in patients with extensive bilateral and/or brainstem ischaemic changes; reperfusion is suggested regardless of collateral scores.",
+      "page": null
+    },
+    {
+      "section": "Technique",
+      "classOfRec": "Statement",
+      "classNote": "Source grading: Limited evidence / expert consensus.",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Direct aspiration is suggested over stent retriever as first-line mechanical thrombectomy strategy; rescue angioplasty and/or stenting is suggested after a failed EVT procedure.",
+      "page": null
+    }
+  ]
+}
