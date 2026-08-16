@@ -330,7 +330,7 @@ NBO before EVT, selected anterior LVO
 May be reasonable; not routine oxygen for everyone
 IIb
 B-R
-Post-EVT BP guardrail
+Post-EVT BP
 mTICI
 Pitfalls
 Driving SBP below 140 after successful EVT because "lower is safer."
@@ -1301,7 +1301,7 @@ Risk of harm with IVT is low; benefit likely outweighs risk.
 Moya-moya disease
 No increased ICH risk; benefit likely outweighs risk.
 EX
-DOAC-Exposed AIS Patient — IVT Pathway
+DOAC-Exposed AIS Patient — IVT
 Site
 Primary hub (anti-Xa-based pathway)
 Spoke / tele-consult (time-based pathway)
@@ -1316,7 +1316,7 @@ Primary-hub pathway requires anti-Xa undetectable; if detectable or unavailable,
 Requirement:
 anti-Xa level required before IVT — order STAT
 EX
-EVT Eligibility Matrix
+EVT Eligibility
 Anterior LVO
 M2 / Distal
 Basilar
