@@ -231,6 +231,26 @@ describe('evaluateEVT_Anterior', () => {
     expect(r.eligible).toBe(true);
     expect(r.cor).toBe('1');
   });
+  // Source: EVT Eligibility flowchart (June 2026) routes 6-24h ASPECTS 6-10 straight to
+  // COR 1 / LOE A with no age or mass-effect qualifier — the age ceiling belongs only to
+  // the large-core tiers. Guards against re-introducing the old over-restriction.
+  it('6-24h ASPECTS ≥6 carries no age ceiling', () => {
+    const r = evaluateEVT_Anterior({ aspectsScore: 8, timeFromLKWh: 12, nihss: 10, preMRS: 0, age: 88 });
+    expect(r.eligible).toBe(true);
+    expect(r.cor).toBe('1');
+  });
+  it('6-24h ASPECTS ≥6 does not require absence of mass effect', () => {
+    const r = evaluateEVT_Anterior({ aspectsScore: 7, timeFromLKWh: 9, nihss: 14, preMRS: 1, age: 70, massEffect: true });
+    expect(r.eligible).toBe(true);
+    expect(r.cor).toBe('1');
+  });
+  it('6-24h large core (ASPECTS 3-5) needs age <80 and no mass effect', () => {
+    const ok = evaluateEVT_Anterior({ aspectsScore: 4, timeFromLKWh: 10, nihss: 16, preMRS: 0, age: 62, massEffect: false });
+    expect(ok.eligible).toBe(true);
+    expect(ok.cor).toBe('1');
+    expect(evaluateEVT_Anterior({ aspectsScore: 4, timeFromLKWh: 10, nihss: 16, preMRS: 0, age: 84, massEffect: false }).eligible).toBe(false);
+    expect(evaluateEVT_Anterior({ aspectsScore: 4, timeFromLKWh: 10, nihss: 16, preMRS: 0, age: 62, massEffect: true }).eligible).toBe(false);
+  });
 });
 
 describe('evaluateEVT_M2', () => {
@@ -248,6 +268,20 @@ describe('evaluateEVT_M2', () => {
     expect(evaluateEVT_M2({ segment: 'M3' }).eligible).toBe(false);
     expect(evaluateEVT_M2({ segment: 'ACA' }).eligible).toBe(false);
     expect(evaluateEVT_M2({ segment: 'PCA' }).eligible).toBe(false);
+  });
+  // Source adds a 6-24h dominant-M2 tier gated on CTP hypoperfusion-hypodensity mismatch.
+  it('dominant M2 at 6-24h requires CTP mismatch', () => {
+    const base = { segment: 'M2-proximal-dominant', dominant: true, hoursFromLKWh: 11, nihss: 9, preMRS: 0, aspectsScore: 7 };
+    expect(evaluateEVT_M2({ ...base, ctpMismatch: true }).eligible).toBe('consider');
+    expect(evaluateEVT_M2({ ...base, ctpMismatch: true }).cor).toBe('2a');
+    expect(evaluateEVT_M2({ ...base }).eligible).toBe('pending');
+  });
+  // Codominant M2 (90-100 mL tissue at risk) sits between dominant and non-dominant and
+  // is NOT assigned COR 3 by the source; it must not be reported as "no benefit".
+  it('codominant M2 is indeterminate, not COR 3', () => {
+    const r = evaluateEVT_M2({ segment: 'M2-codominant' });
+    expect(r.eligible).toBe('pending');
+    expect(r.cor).not.toMatch(/3/);
   });
 });
 

@@ -160,6 +160,12 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       };
 
       const customDenylistPath = path.join(REPO_ROOT, 'scripts', 'leak-guard-denylist.local.json');
+      // This path is a REAL developer file: a populated private denylist is what makes the
+      // pre-commit leak guard functional. Preserve any existing content and restore it in
+      // finally — deleting it outright silently disarms the guard until the dev notices.
+      const priorDenylist = fs.existsSync(customDenylistPath)
+        ? fs.readFileSync(customDenylistPath, 'utf8')
+        : null;
       fs.writeFileSync(customDenylistPath, JSON.stringify(customDenylist), 'utf8');
       try {
         const textHit = runLeakGuardOnContent({ 'test.js': 'Welcome to "Top   Secret   Hospital   Clinic" today' });
@@ -170,19 +176,30 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
         expect(digitHit.status, 'SHA256 digits normalization failed to catch formatted phone digits').toBe(1);
         expect(digitHit.json.violations.some(v => v.label.includes('Banned Phone'))).toBe(true);
       } finally {
-        fs.rmSync(customDenylistPath, { force: true });
+        if (priorDenylist === null) fs.rmSync(customDenylistPath, { force: true });
+        else fs.writeFileSync(customDenylistPath, priorDenylist, 'utf8');
       }
     });
 
     it('enforces --require-private failure when no private rules loaded', () => {
-      const res = spawnSync('node', [LEAK_GUARD_SCRIPT, '--json', '--require-private'], {
-        cwd: REPO_ROOT,
-        input: '',
-        encoding: 'utf8',
-      });
-      expect(res.status).toBe(1);
-      const json = JSON.parse(res.stdout);
-      expect(json.error).toContain('private denylist required');
+      // The guard resolves its private denylist from a script-relative path, so this
+      // assertion only holds when no developer denylist is present. Move any real one
+      // aside for the duration rather than asserting against developer machine state.
+      const realDenylist = path.join(REPO_ROOT, 'scripts', 'leak-guard-denylist.local.json');
+      const stashed = fs.existsSync(realDenylist) ? fs.readFileSync(realDenylist, 'utf8') : null;
+      if (stashed !== null) fs.rmSync(realDenylist, { force: true });
+      try {
+        const res = spawnSync('node', [LEAK_GUARD_SCRIPT, '--json', '--require-private'], {
+          cwd: REPO_ROOT,
+          input: '',
+          encoding: 'utf8',
+        });
+        expect(res.status).toBe(1);
+        const json = JSON.parse(res.stdout);
+        expect(json.error).toContain('private denylist required');
+      } finally {
+        if (stashed !== null) fs.writeFileSync(realDenylist, stashed, 'utf8');
+      }
     });
   });
 
@@ -201,9 +218,13 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
     });
 
     it('verifies expected exact line count bounds for all 6 snapshots', () => {
+      // 2026-08-16: ich 578->579, ischemic 1448->1450 from the reviewed clinical
+      // correction to the orolingual-angioedema step (holding ACE inhibitors now leads,
+      // and stopping the infusion is conditional on alteplase). See the git diff of
+      // tests/snapshots/example-protocols/ for the approved wording.
       const baselineCounts = {
-        ich: 578,
-        ischemic: 1448,
+        ich: 579,
+        ischemic: 1450,
         sah: 233,
         tia: 200,
         cvt: 120,

@@ -203,7 +203,7 @@ const DOACIVTCard = ({ defaults = {} }) => {
 const EVTEligibilityCard = ({ defaults = {} }) => {
   const [branch, setBranch] = useState('anterior');
   const [ant, setAnt] = useState({ aspectsScore: defaults.aspects || '', timeFromLKWh: defaults.hoursFromLKWh || '', nihss: defaults.nihss || '', preMRS: defaults.preMRS || '0', age: defaults.age || '', massEffect: false });
-  const [m2, setM2] = useState({ segment: 'M2-proximal-dominant', dominant: true, hoursFromLKWh: '', nihss: '', preMRS: '0', aspectsScore: '' });
+  const [m2, setM2] = useState({ segment: 'M2-proximal-dominant', dominant: true, hoursFromLKWh: '', nihss: '', preMRS: '0', aspectsScore: '', ctpMismatch: false });
   const [bas, setBas] = useState({ nihss: '', hoursFromLKWh: '', preMRS: '0', pcAspects: '', disabling: true, irAgreement: false });
 
   const rAnt = useMemo(() => evaluateEVT_Anterior(ant), [ant]);
@@ -275,6 +275,7 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
               </select>
             </label>
             <label><span className="block text-slate-600 dark:text-ink-2">ASPECTS</span><input type="number" value={m2.aspectsScore} onChange={(e) => setM2({ ...m2, aspectsScore: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={m2.ctpMismatch} onChange={(e) => setM2({ ...m2, ctpMismatch: e.target.checked })} />CTP hypoperfusion–hypodensity mismatch present (required beyond 6h)</label>
           </div>
           <div className={`p-2 rounded border-2 ${colorByEligible(rM2.eligible)}`}>
             <div className="flex items-center flex-wrap gap-2">
@@ -282,6 +283,7 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
               <CorChip cor={rM2.cor} /><LoeChip loe={rM2.loe} />
             </div>
             <p className="text-xs mt-1">{rM2.reason}</p>
+            {rM2.requirement && <p className="text-xs text-cobalt-900 mt-1 dark:text-cobalt-300"><strong>Requirement:</strong> {rM2.requirement}</p>}
           </div>
         </>
       )}
@@ -402,7 +404,7 @@ const SafePauseCard = ({ defaults = {} }) => {
     <div className="p-3 rounded-lg border border-ok-300 bg-white dark:border-ok-800 dark:bg-card">
       <h4 className="font-bold text-ok-900 mb-2 flex items-center gap-2 dark:text-ok-300">
         <span className="inline-block px-2 py-0.5 bg-ok-700 text-white text-xs rounded">EX</span>
-        Pulsara Safety Pause (pre-thrombolytic)
+        Safety Pause (pre-thrombolytic)
       </h4>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs mb-2">
         <label>
@@ -418,7 +420,7 @@ const SafePauseCard = ({ defaults = {} }) => {
       </div>
       <textarea readOnly aria-label="Safe Pause attestation text (read-only, copyable)" value={text} rows={7} className="w-full px-2 py-1 border rounded text-[11px] font-mono bg-slate-50 dark:bg-paper-2" />
       <div className="flex gap-2 mt-1">
-        <button type="button" onClick={() => { try { navigator.clipboard.writeText(text); } catch (_) {} }} className="px-2 py-1 bg-ok-600 hover:bg-ok-700 text-white text-xs rounded">Copy for Pulsara</button>
+        <button type="button" onClick={() => { try { navigator.clipboard.writeText(text); } catch (_) {} }} className="px-2 py-1 bg-ok-600 hover:bg-ok-700 text-white text-xs rounded">Copy for communication platform</button>
         <span className="text-[10px] text-slate-500 self-center dark:text-mute">Attestation tag: <strong>{SAFE_PAUSE_ATTESTATION}</strong></span>
       </div>
     </div>

@@ -874,8 +874,10 @@ Risk Factors
 Treatment
 Maintain airway
 — fiberoptic intubation if needed
-Discontinue IV alteplase
-and hold ACE inhibitors
+Hold ACE inhibitors
+— stop the thrombolytic infusion
+if alteplase is the agent being administered
+; tenecteplase is a single bolus, so there is no infusion to stop
 Methylprednisolone:
 125 mg IV
 Diphenhydramine:
@@ -1384,7 +1386,7 @@ LOE
 A
 No benefit to initiating antihypertensive treatment if BP <220/120 without comorbid indication.
 EX
-Pulsara Safety Pause (pre-thrombolytic)
+Safety Pause (pre-thrombolytic)
 Consent type
 informed
 presumed (unable to provide, no surrogate)
@@ -1392,7 +1394,7 @@ surrogate
 declined
 BP at attestation
 SAFE PAUSE BEFORE THROMBOLYTIC ADMINISTRATION: (1) Consent confirmed (informed). (2) BP confirmed <185/110. (3) Absolute & relative contraindications reviewed. (4) Dose confirmed (weight-based, max 25 mg TNK / 90 mg alteplase). (5) Safety-pause documented in communication platform. Attestation: #STROKESAFEPAUSE
-Copy for Pulsara
+Copy for communication platform
 Attestation tag:
 #STROKESAFEPAUSE
 Class of Recommendation / Level of Evidence

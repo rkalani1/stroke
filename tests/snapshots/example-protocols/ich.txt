@@ -260,9 +260,10 @@ Post-thrombolytic orolingual angioedema
 Maintain airway
 — may not need intubation if limited to anterior tongue/lips; fiberoptic intubation preferred if needed
 2
-Discontinue IV alteplase
-and
-hold ACE inhibitors
+Hold ACE inhibitors
+— stop the thrombolytic infusion
+if alteplase is the agent being administered
+; tenecteplase is a single bolus, so there is no infusion to stop
 3
 Methylprednisolone 125 mg IV
 4
