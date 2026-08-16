@@ -235,6 +235,14 @@ export const evaluateIVT = ({
   const decisions = [];
   const warnings = [];
 
+  // `age` was previously destructured but never read, while the calculator rendered an
+  // Age input — the card implied age was being evaluated when it was not. Source
+  // inclusion criterion is age >=18, off-label from age 2 via the pediatric pathway.
+  const yrs = parseFloat(age);
+  if (Number.isFinite(yrs) && yrs < 18) {
+    warnings.push('Age <18 — adult inclusion/exclusion criteria do not apply directly. Thrombolysis may be considered off-label from age 2; use the pediatric stroke pathway.');
+  }
+
   if (ichOnCT === true) return { eligible: false, recommendation: 'IVT not recommended', cor: '3 (Harm)', reason: 'Intracranial hemorrhage on imaging', decisions };
   if (disablingDeficit === false) {
     return {
@@ -249,6 +257,26 @@ export const evaluateIVT = ({
 
   if (Number.isFinite(glc) && (glc < 50 || glc > 400)) {
     warnings.push(`Glucose ${glc} mg/dL — correct first, then re-assess whether deficit persists on glucose-corrected exam.`);
+  }
+
+  // CRAO is evaluated BEFORE the time-window block. Every branch of that block returns,
+  // so this check was unreachable whenever an LKW time was supplied: a CRAO patient at
+  // 2h fell through to the standard-window COR 1 / LOE A recommendation and never saw
+  // the shared-decision framing the source requires.
+  if (crao) {
+    const withinWindow = !Number.isFinite(hrs) || hrs <= 4.5;
+    return {
+      eligible: withinWindow ? 'consider' : false,
+      recommendation: withinWindow
+        ? 'CRAO — consider IVT in select cases with informed consent and shared decision-making.'
+        : 'CRAO beyond 4.5h — IVT not supported; the shared-decision pathway applies within 4.5h only.',
+      cor: '—',
+      loe: 'C-LD',
+      // Source states this flatly; do not soften to "does not strongly support".
+      rationale: 'Trial evidence does not support efficacy; physiologic rationale and observational data only; use within 4.5h only.',
+      decisions,
+      warnings
+    };
   }
 
   if (Number.isFinite(hrs)) {
@@ -322,18 +350,6 @@ export const evaluateIVT = ({
       };
     }
     return { eligible: false, recommendation: 'Beyond 24h window — IVT not indicated', decisions, warnings };
-  }
-
-  if (crao) {
-    return {
-      eligible: 'consider',
-      recommendation: 'CRAO — consider IVT in select cases with informed consent and shared decision-making.',
-      cor: '—',
-      loe: 'C-LD',
-      rationale: 'Trial evidence does not strongly support efficacy; physiologic rationale + observational data; use within 4.5h only.',
-      decisions,
-      warnings
-    };
   }
 
   return { eligible: null, recommendation: 'Enter LKW time to evaluate window', decisions, warnings };
@@ -584,7 +600,11 @@ export const COR_LOE_KEY = {
 export const IVT_ABSOLUTE_CONTRAINDICATIONS = [
   { label: 'CT with hemorrhage', detail: 'Acute intracranial hemorrhage on imaging.' },
   { label: 'CT with extensive hypodensity', detail: 'Clear hypodensity responsible for symptoms.' },
-  { label: 'Acute intracranial or spinal cord injury <14 days', detail: 'Likely contraindicated.' },
+  { label: 'Acute intracranial injury <14 days', detail: 'Likely contraindicated.' },
+  { label: 'Acute spinal cord injury <90 days', detail: 'Listed as an absolute exclusion in the current local eligibility criteria.' },
+  { label: 'Symptoms or history suggestive of SAH', detail: 'Absolute exclusion even when the head CT is unremarkable.' },
+  { label: 'Active internal bleeding', detail: 'Absolute exclusion.' },
+  { label: 'Intra-axial intracranial neoplasm', detail: 'Absolute exclusion (extra-axial tumours are handled separately).' },
   { label: 'Neurosurgery <14 days', detail: 'Potentially harmful; should not be administered.' },
   { label: 'Infective endocarditis', detail: 'Should not be administered.' },
   { label: 'Severe coagulopathy', detail: 'Plt <100K, INR >1.7, aPTT >40s, PT >15s.' },
@@ -599,10 +619,11 @@ export const IVT_RELATIVE_CONTRAINDICATIONS = [
   { label: 'Prior ischemic stroke <3 months', detail: 'Weigh timing/size against IVT benefit.' },
   { label: 'Prior ICH', detail: 'Amyloid angiopathy = higher risk. Modifiable causes (HTN) may have greater net benefit.' },
   { label: 'Major non-CNS trauma (14d-3mo)', detail: 'Surgical consultation; consider involved areas.' },
-  { label: 'Major non-CNS surgery <10 days', detail: 'Consider surgical area and bleeding risk.' },
+  { label: 'Major surgery or trauma <14 days', detail: 'Consider surgical area and bleeding risk. Local criteria use a 14-day boundary.' },
   { label: 'GI/GU bleeding <21 days', detail: 'GI/GU consultation.' },
   { label: 'Arterial/dural puncture <7 days', detail: 'May be considered in individual cases.' },
   { label: 'Intracranial vascular malformations', detail: 'Safety unknown; unruptured and untreated.' },
+  { label: '>10 cerebral microbleeds', detail: 'Relative exclusion in the current local eligibility criteria.' },
   { label: 'Intracranial arterial dissection', detail: 'Safety unknown.' },
   { label: 'Recent STEMI <3 months', detail: 'Cardiology consult; hemopericardium risk.' },
   { label: 'Acute pericarditis', detail: 'May be reasonable. Emergent cardiology consult.' },
@@ -615,7 +636,7 @@ export const IVT_RELATIVE_CONTRAINDICATIONS = [
 export const IVT_BENEFIT_GREATER_CONSIDER = [
   { label: 'Extracranial cervical dissection', detail: 'Reasonably safe within 4.5h; probably recommended.' },
   { label: 'Extra-axial intracranial neoplasm', detail: 'Benefit likely outweighs risk.' },
-  { label: 'Unruptured intracranial aneurysm', detail: 'Benefit likely outweighs risk; treatment should be considered.' },
+  { label: 'Unruptured intracranial aneurysm', detail: 'Benefit likely outweighs risk for small aneurysms; local criteria list an aneurysm >10 mm as a relative exclusion.' },
   { label: 'Angiographic procedural stroke', detail: 'Benefit likely outweighs risk.' },
   { label: 'History of GI/GU bleeding (remote)', detail: 'Candidates if stable; GI/GU consultation.' },
   { label: 'History of MI (remote)', detail: 'Probably greater benefit from IVT.' },

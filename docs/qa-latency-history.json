@@ -1083,5 +1083,40 @@
         "durationMs": 8522
       }
     ]
+  },
+  {
+    "finishedAt": "2026-08-16T23:31:35.022Z",
+    "localOnly": true,
+    "latencyProfile": "flat",
+    "averageRunDurationMs": 9947,
+    "slowestRun": {
+      "target": "local",
+      "viewport": "mobile",
+      "durationMs": 16321
+    },
+    "slowRunCount": 0,
+    "slowSectionCount": 0,
+    "runDurations": [
+      {
+        "target": "local",
+        "viewport": "desktop",
+        "durationMs": 8259
+      },
+      {
+        "target": "local",
+        "viewport": "tablet",
+        "durationMs": 6719
+      },
+      {
+        "target": "local",
+        "viewport": "mobile",
+        "durationMs": 16321
+      },
+      {
+        "target": "local-public-demo",
+        "viewport": "desktop",
+        "durationMs": 8489
+      }
+    ]
   }
 ]

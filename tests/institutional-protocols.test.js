@@ -130,7 +130,61 @@ describe('GENERALIZABILITY_LIMITATIONS', () => {
   });
 });
 
+// Source: Clinical Telestroke Workflow (rev 6/30/2026) lists these explicitly. They were
+// absent from the app until the source register was corrected to include that document.
+describe('IVT contraindication lists match the current local eligibility criteria', () => {
+  const abs = () => IVT_ABSOLUTE_CONTRAINDICATIONS.map((x) => x.label).join(' | ');
+  const rel = () => IVT_RELATIVE_CONTRAINDICATIONS.map((x) => x.label).join(' | ');
+  it('absolute list carries SAH-suggestive presentation, active internal bleeding, intra-axial neoplasm', () => {
+    expect(abs()).toMatch(/suggestive of SAH/i);
+    expect(abs()).toMatch(/Active internal bleeding/i);
+    expect(abs()).toMatch(/Intra-axial intracranial neoplasm/i);
+  });
+  it('separates acute spinal cord injury (90 days) from intracranial injury (14 days)', () => {
+    expect(abs()).toMatch(/Acute spinal cord injury <90 days/);
+    expect(abs()).toMatch(/Acute intracranial injury <14 days/);
+  });
+  it('relative list carries >10 cerebral microbleeds', () => {
+    expect(rel()).toMatch(/>10 cerebral microbleeds/);
+  });
+  it('uses the 14-day major surgery/trauma boundary, not 10 days', () => {
+    expect(rel()).toMatch(/Major surgery or trauma <14 days/);
+    expect(rel()).not.toMatch(/Major non-CNS surgery <10 days/);
+  });
+});
+
 describe('evaluateIVT', () => {
+  // Regression: the CRAO branch used to sit AFTER the LKW-window block, every path of
+  // which returns. A CRAO patient with a time entered therefore received the standard
+  // -window "TNK recommended" COR 1 / LOE A result and never saw shared decision-making.
+  it('CRAO within 4.5h returns the shared-decision framing, not a standard-window recommendation', () => {
+    const r = evaluateIVT({ ichOnCT: false, disablingDeficit: true, crao: true, hoursFromLKW: 2 });
+    expect(r.eligible).toBe('consider');
+    expect(r.recommendation).toMatch(/CRAO/);
+    expect(r.recommendation).not.toMatch(/TNK recommended/i);
+    expect(r.cor).not.toBe('1');
+  });
+  it('CRAO beyond 4.5h is not supported', () => {
+    const r = evaluateIVT({ ichOnCT: false, disablingDeficit: true, crao: true, hoursFromLKW: 8 });
+    expect(r.eligible).toBe(false);
+    expect(r.recommendation).toMatch(/beyond 4\.5h/i);
+  });
+  // Source states this without hedging: "Trial evidence does not support efficacy."
+  it('does not soften the CRAO efficacy statement', () => {
+    const r = evaluateIVT({ ichOnCT: false, disablingDeficit: true, crao: true, hoursFromLKW: 2 });
+    expect(r.rationale).toMatch(/does not support efficacy/);
+    expect(r.rationale).not.toMatch(/not strongly support/);
+  });
+  // Regression: `age` was destructured but never read while the UI rendered an Age input.
+  it('warns when age is under 18 and points at the pediatric pathway', () => {
+    const r = evaluateIVT({ ichOnCT: false, disablingDeficit: true, hoursFromLKW: 2, age: 9 });
+    expect(r.warnings.join(' ')).toMatch(/pediatric/i);
+    expect(r.warnings.join(' ')).toMatch(/<18|under 18/i);
+  });
+  it('does not warn on age for adults', () => {
+    const r = evaluateIVT({ ichOnCT: false, disablingDeficit: true, hoursFromLKW: 2, age: 64 });
+    expect(r.warnings.join(' ')).not.toMatch(/pediatric/i);
+  });
   it('blocks if ICH on CT', () => {
     const r = evaluateIVT({ ichOnCT: true });
     expect(r.eligible).toBe(false);
