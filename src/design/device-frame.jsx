@@ -78,7 +78,7 @@ export const DeviceFrame = ({
     )}>
       {/* Parent breadcrumb header — sticky 40px */}
       <div className="flex items-center justify-between gap-3 px-4 h-10 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 sticky top-0 z-10">
-        <p className="text-xs text-slate-600 dark:text-slate-300 truncate">{breadcrumb}</p>
+        {breadcrumb && <p className="text-xs text-slate-600 dark:text-slate-300 truncate">{breadcrumb}</p>}
         {openHref && (
           <a href={openHref} target="_blank" rel="noreferrer"
              className="inline-flex items-center gap-1 text-xs font-semibold text-link-600 dark:text-link-400 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded">
@@ -119,9 +119,11 @@ export const DeviceFrame = ({
 
       {/* Parent footer — attribution */}
       <div className="flex items-center justify-between gap-3 px-4 h-9 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
-        <p className="font-mono text-2xs uppercase tracking-[0.06em] text-slate-500 dark:text-slate-400">
-          Powered by <span className="text-slate-700 dark:text-slate-200">{poweredBy}</span>
-        </p>
+        {poweredBy && (
+          <p className="font-mono text-2xs uppercase tracking-[0.06em] text-slate-500 dark:text-slate-400">
+            Powered by <span className="text-slate-700 dark:text-slate-200">{poweredBy}</span>
+          </p>
+        )}
         {openHref && (
           <a href={openHref} target="_blank" rel="noreferrer"
              className="inline-flex items-center gap-1 text-2xs font-semibold text-link-600 dark:text-link-400 hover:underline">

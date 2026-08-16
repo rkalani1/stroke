@@ -33913,11 +33913,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h2 className="font-serif text-section text-ink flex items-center gap-3">
                             Clinical Trials
                           </h2>
-                          <p className="font-sans text-body text-ink-2 mt-1 text-pretty">
-                            {trialsView === 'eligibility'
-                              ? 'public-reference eligibility tables — copy-paste-ready reference for intranet pages'
-                              : 'Bedside screener — auto-evaluates trial eligibility from current encounter parameters'}
-                          </p>
+                          {trialsView === 'eligibility' && (
+                            <p className="font-sans text-body text-ink-2 mt-1 text-pretty">
+                              public-reference eligibility tables — copy-paste-ready reference for intranet pages
+                            </p>
+                          )}
                         </div>
                       </div>
                     </header>
@@ -33935,11 +33935,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         value={trialsView}
                         onChange={updateTrialsView}
                       />
-                      <span className="text-xs text-slate-500 dark:text-slate-400 ml-auto hidden md:inline self-center">
-                        {trialsView === 'eligibility'
-                          ? 'Static reference tables · ischemic & ICH pathways'
-                          : 'Live eligibility verdict from patient parameters'}
-                      </span>
+                      {trialsView === 'eligibility' && (
+                        <span className="text-xs text-slate-500 dark:text-slate-400 ml-auto hidden md:inline self-center">
+                          Static reference tables · ischemic &amp; ICH pathways
+                        </span>
+                      )}
                     </div>
 
                     {/* Sub-view: Bedside Screener (iframe embed) */}
@@ -33948,8 +33948,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <V7DeviceFrame
                           src="https://rkalani1.github.io/stroke-trials-screener/"
                           title="Stroke Bedside Trial Screener"
-                          breadcrumb="Trials Screener - synthetic demo - no patient context"
-                          poweredBy="stroke-trials-screener"
                           openHref="https://rkalani1.github.io/stroke-trials-screener/"
                           sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms"
                         />
