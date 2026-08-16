@@ -235,6 +235,14 @@ export const evaluateIVT = ({
   const decisions = [];
   const warnings = [];
 
+  // `age` was previously destructured but never read, while the calculator rendered an
+  // Age input — the card implied age was being evaluated when it was not. Source
+  // inclusion criterion is age >=18, off-label from age 2 via the pediatric pathway.
+  const yrs = parseFloat(age);
+  if (Number.isFinite(yrs) && yrs < 18) {
+    warnings.push('Age <18 — adult inclusion/exclusion criteria do not apply directly. Thrombolysis may be considered off-label from age 2; use the pediatric stroke pathway.');
+  }
+
   if (ichOnCT === true) return { eligible: false, recommendation: 'IVT not recommended', cor: '3 (Harm)', reason: 'Intracranial hemorrhage on imaging', decisions };
   if (disablingDeficit === false) {
     return {
@@ -249,6 +257,26 @@ export const evaluateIVT = ({
 
   if (Number.isFinite(glc) && (glc < 50 || glc > 400)) {
     warnings.push(`Glucose ${glc} mg/dL — correct first, then re-assess whether deficit persists on glucose-corrected exam.`);
+  }
+
+  // CRAO is evaluated BEFORE the time-window block. Every branch of that block returns,
+  // so this check was unreachable whenever an LKW time was supplied: a CRAO patient at
+  // 2h fell through to the standard-window COR 1 / LOE A recommendation and never saw
+  // the shared-decision framing the source requires.
+  if (crao) {
+    const withinWindow = !Number.isFinite(hrs) || hrs <= 4.5;
+    return {
+      eligible: withinWindow ? 'consider' : false,
+      recommendation: withinWindow
+        ? 'CRAO — consider IVT in select cases with informed consent and shared decision-making.'
+        : 'CRAO beyond 4.5h — IVT not supported; the shared-decision pathway applies within 4.5h only.',
+      cor: '—',
+      loe: 'C-LD',
+      // Source states this flatly; do not soften to "does not strongly support".
+      rationale: 'Trial evidence does not support efficacy; physiologic rationale and observational data only; use within 4.5h only.',
+      decisions,
+      warnings
+    };
   }
 
   if (Number.isFinite(hrs)) {
@@ -322,18 +350,6 @@ export const evaluateIVT = ({
       };
     }
     return { eligible: false, recommendation: 'Beyond 24h window — IVT not indicated', decisions, warnings };
-  }
-
-  if (crao) {
-    return {
-      eligible: 'consider',
-      recommendation: 'CRAO — consider IVT in select cases with informed consent and shared decision-making.',
-      cor: '—',
-      loe: 'C-LD',
-      rationale: 'Trial evidence does not strongly support efficacy; physiologic rationale + observational data; use within 4.5h only.',
-      decisions,
-      warnings
-    };
   }
 
   return { eligible: null, recommendation: 'Enter LKW time to evaluate window', decisions, warnings };
