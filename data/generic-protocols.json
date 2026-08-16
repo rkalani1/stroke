@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "generic-protocols",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.14.0",
-    "checksum": "sha256:1903de83cb9fdb5bb99bd066a5e23659",
+    "appVersion": "6.15.0",
+    "checksum": "sha256:d6d019867f9b5fa2a3fa6b55b44f15cd",
     "count": 3,
     "source": "Public protocol reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -154,7 +154,7 @@
             "No underlying vascular lesion",
             "Potential MIS timing within 24 hours of last known well or qualifying wake-up hemorrhage window"
           ],
-          "action": "Do not let registry screening delay urgent surgical, trial, or stabilization decisions."
+          "action": "Do not let registry screening delay urgent surgical, trial, or stabilization decisions. Deep IPH considered for minimally invasive surgery outside the trial and registry pathways, or beyond 24 hours from last known well, requires discussion with both the on-call stroke attending and the inpatient neurology attending before proceeding."
         }
       ],
       "safetyPause": {

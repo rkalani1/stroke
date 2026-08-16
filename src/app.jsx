@@ -2931,7 +2931,7 @@ Clinician Name`;
             },
             CRYO: {
               title: 'Cryoprecipitate',
-              dosing: '2 pools cryoprecipitate IV over 10-30 min (takes ~15-20 min to prepare).',
+              dosing: '2 pools cryoprecipitate IV over 10-30 min (takes ~15-20 min to prepare). 1 pool = 5 pre-pooled units; 1-2 pools raises plasma fibrinogen by 50-100 mg/dL in a 50-100 kg patient.',
               note: 'For post-thrombolytic ICH when fibrinogen <200 mg/dL. Repeat fibrinogen and coagulation panel after administration.'
             },
             TXA: {
@@ -2951,18 +2951,18 @@ Clinician Name`;
             },
             EPI: {
               title: 'Epinephrine',
-              dosing: 'Epinephrine 0.3 mg IM (1 mg/mL solution) into anterolateral thigh. Nebulized for upper airway edema: 3-5 mL of 1:1000 (1 mg/mL) solution, or racemic epinephrine 0.5 mL of 2.25%.',
-              note: 'For worsening angioedema. IM preferred over SC (faster absorption per AHA/WAO guidelines). Use if symptoms progress despite methylprednisolone and diphenhydramine.'
+              dosing: 'Epinephrine (0.1%, 1 mg/mL) 0.3 mL subcutaneously. Nebulized for upper airway edema: 0.5 mL of the same 0.1% solution.',
+              note: 'For worsening angioedema. Give if symptoms progress despite methylprednisolone, diphenhydramine, and famotidine. The local orolingual angioedema protocol specifies the subcutaneous route and this card follows it. Note that broader anaphylaxis guidance (AHA/WAO) favours the intramuscular route for faster absorption — if the presentation is frank anaphylaxis rather than isolated orolingual angioedema, treat as anaphylaxis.'
             },
             ICATIBANT: {
               title: 'Icatibant',
-              dosing: '30 mg SC.',
-              note: 'Bradykinin B2 receptor antagonist. Consider for ACE inhibitor-related angioedema refractory to initial treatment.'
+              dosing: '30 mg subcutaneously, once (1 dose).',
+              note: 'Bradykinin B2 receptor antagonist. Standard step in the post-thrombolytic orolingual angioedema sequence, after airway management, methylprednisolone, diphenhydramine, and famotidine — not restricted to refractory or ACE-inhibitor-related cases.'
             },
             BERINERT: {
               title: 'C1 Esterase Inhibitor (Berinert)',
-              dosing: '20 IU/kg IV.',
-              note: 'Plasma-derived C1 esterase inhibitor. For refractory orolingual angioedema associated with IV thrombolytic (AHA/ASA COR IIb, LOE C-EO).'
+              dosing: '20 IU/kg IV. MUST be administered by slow IV push at a rate of 4 mL/min.',
+              note: 'Plasma-derived C1 esterase inhibitor. Not part of the current post-thrombolytic orolingual angioedema sequence, which ends at icatibant 30 mg SC; use is restricted to pregnant or pediatric patients, or those intolerant to icatibant.'
             },
             HYDROCORT: {
               title: 'Hydrocortisone',
@@ -3916,7 +3916,7 @@ Clinician Name`;
               category: 'Blood Pressure',
               title: 'ICH BP control process',
               recommendation: 'For acute spontaneous ICH, use medication titration for continuous, smooth, sustained BP control and timely treatment when BP lowering is indicated (Class 2a).',
-              detail: 'AHA/ASA Spontaneous ICH 2022 (Greenberg): smooth, sustained BP control and timely treatment are Class 2a process recommendations. This is separate from the numeric SBP target/range recommendation below. Avoid abrupt large BP drops and avoid treating the number in isolation from neurologic status, hematoma severity, anticoagulation reversal, and neurosurgical planning. For large/severe ICH or surgical decompression candidates, safety and efficacy of intensive lowering are not well established. INTERACT3 (Lancet 2023) tested a care bundle - early BP lowering plus glucose, anticoagulation reversal, and fever management - so do not treat its result as BP-only class evidence. Nicardipine or clevidipine infusion preferred; labetalol bolus as adjunct.',
+              detail: 'AHA/ASA Spontaneous ICH 2022 (Greenberg): smooth, sustained BP control and timely treatment are Class 2a process recommendations. This is separate from the numeric SBP target/range recommendation below. Avoid abrupt large BP drops and avoid treating the number in isolation from neurologic status, hematoma severity, anticoagulation reversal, and neurosurgical planning. For large/severe ICH or surgical decompression candidates, safety and efficacy of intensive lowering are not well established. INTERACT3 (Lancet 2023) tested a care bundle - early BP lowering plus glucose, anticoagulation reversal, and fever management - so do not treat its result as BP-only class evidence. Institutional ICH BP protocol agent: nicardipine IV infusion (or IV labetalol). This protocol covers spontaneous ICH and does not apply to hemorrhage from a neurosurgical vascular malformation or to post-operative neurosurgical cases.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -3932,7 +3932,7 @@ Clinician Name`;
               category: 'Blood Pressure',
               title: 'ICH SBP 140/range 130-150 target',
               recommendation: 'For mild-to-moderate spontaneous ICH with presenting SBP 150-220 mmHg, targeting SBP 140 mmHg and maintaining 130-150 mmHg when appropriate is safe and may be reasonable.',
-              detail: 'Class 2b, LOE B-R per AHA/ASA Spontaneous ICH 2022. This target/range applies to selected mild-to-moderate presentations and should not be generalized to large/severe ICH or surgical decompression candidates without individualized judgment and continuous monitoring. Use alongside the separate Class 2a process recommendation for smooth, sustained control and timely treatment.',
+              detail: 'Class 2b, LOE B-R per AHA/ASA Spontaneous ICH 2022. This target/range applies to selected mild-to-moderate presentations and should not be generalized to large/severe ICH or surgical decompression candidates without individualized judgment and continuous monitoring. Use alongside the separate Class 2a process recommendation for smooth, sustained control and timely treatment. Institutional ICH BP protocol: for large/severe ICH or surgical decompression, individualize targets and consider an initial higher goal of SBP 160-180.',
               classOfRec: 'IIb',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -3948,7 +3948,7 @@ Clinician Name`;
               category: 'Blood Pressure',
               title: 'Avoid overly aggressive BP lowering in ICH',
               recommendation: 'Avoid acute lowering to SBP <130 mmHg in mild-to-moderate spontaneous ICH because it is potentially harmful.',
-              detail: 'Class 3: Harm, LOE B-R per AHA/ASA Spontaneous ICH 2022, supported by ATACH-2 safety signal. This harm guard is separate from the Class 2b SBP 140/range 130-150 target recommendation.',
+              detail: 'Class 3: Harm, LOE B-R per AHA/ASA Spontaneous ICH 2022, supported by ATACH-2 safety signal. This harm guard is separate from the Class 2b SBP 140/range 130-150 target recommendation. Institutional ICH BP protocol: avoid iatrogenic reduction of SBP <130 mmHg in the initial 24 hours. If the patient autoregulates to SBP <130 and has no indicators of symptomatic hypotension, it is acceptable to be below target; do NOT initiate vasopressors unless discussed and approved by both the stroke attending and the neurocritical care attending.',
               classOfRec: 'III-harm',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4021,9 +4021,9 @@ Clinician Name`;
               title: 'Late-window thrombolysis (9-24h) — benefit depends on LVO status and EVT plan',
               recommendation: 'Late-window IVT benefit depends on occlusion type and whether EVT is planned. Non-LVO and LVO-without-EVT patients benefit; adding thrombolysis to LVO+EVT does NOT improve functional outcomes.',
               detail: 'Late-window thrombolysis by patient subtype:\n\n' +
-                '■ NON-LVO (MeVO/distal), 4.5-24h — POSITIVE: OPTION (JAMA 2026, N=570): TNK 0.25 mg/kg with CTP selection in 74% MeVO/distal patients improved mRS 0-1 (35.4% vs 29.5%, P=0.04) without significant sICH increase. This population has no EVT option; TNK is the only reperfusion therapy available.\n\n' +
-                '■ LVO WITHOUT EVT, 4.5-24h — POSITIVE: TRACE-III (2024, N=516): TNK for 100% LVO not receiving EVT improved mRS 0-1 (33.0% vs 24.2%, P=0.03). HOPE (2025, N=372): tPA 0.9 mg/kg in 63% LVO population improved ordinal mRS.\n\n' +
-                '■ LVO WITH EVT (bridging), 4.5-24h — NEGATIVE: TIMELESS (NEJM 2024, N=458): TNK added to EVT-planned LVO showed NO functional benefit (ordinal mRS P=0.27). CHABLIS-T II (2025, N=224): surrogate reperfusion benefit only, no mRS improvement. Do NOT extrapolate OPTION or TRACE-III results to patients already planned for EVT.\n\n' +
+                '■ NON-LVO (MeVO/distal), 4.5-24h — POSITIVE: OPTION (JAMA 2026, N=570): TNK 0.25 mg/kg with CTP-mismatch selection in a ~74% MeVO/distal population improved mRS 0-1 (43.6% vs 34.2%, P=0.02; aRR 1.28, 95% CI 1.04-1.57; ARR 9.4%, NNT 11), with sICH 2.8% vs 0% (NNH 35). This population has no EVT option; TNK is the only reperfusion therapy available.\n\n' +
+                '■ LVO WITHOUT EVT, 4.5-24h — POSITIVE: TRACE-III (2024, N=516): TNK for 100% LVO not receiving EVT improved mRS 0-1 (33.0% vs 24.2%, P=0.03). HOPE (2025, N=372): tPA 0.9 mg/kg in a ~63% LVO population improved mRS 0-1 (40.3% vs 26.3%, P=0.004; aRR 1.52, 95% CI 1.14-2.02; ARR 14%, NNT 7), with sICH 3.8% vs 0.5% (NNH 31).\n\n' +
+                '■ LVO WITH EVT (bridging), 4.5-24h — NEGATIVE: TIMELESS (NEJM 2024, N=458): TNK added to EVT-planned LVO showed NO functional benefit (ordinal mRS P=0.45; adjusted common OR 1.13, 95% CI 0.82-1.57). CHABLIS-T II (2025, N=224): surrogate reperfusion benefit only, no mRS improvement. Do NOT extrapolate OPTION or TRACE-III results to patients already planned for EVT.\n\n' +
                 '■ POSTERIOR CIRCULATION — POSITIVE: EXPECTS (2025, N=234): tPA for posterior stroke showed benefit without advanced perfusion imaging.\n\n' +
                 '■ UNSELECTED (plain CT only) — NEGATIVE: TWIST (Lancet Neurol 2023): TNK in wake-up stroke without advanced imaging showed no benefit.\n\n' +
                 'Key teaching: LVO status × EVT receipt determines late-window thrombolysis benefit.',
@@ -4649,9 +4649,9 @@ Clinician Name`;
               category: 'EVT',
               title: 'Direct-to-angio for stable LVO transfers',
               recommendation: 'For medically and neurologically STABLE transfer patients with LVO and last neuroimaging <3h who did NOT receive lytics: consider direct-to-angio (bypass repeat imaging in ED).',
-              detail: 'Suggested protocol: Goal door-to-puncture ≤45 min for transfer LVO cases. Assessment at triage by ED, Neuro, and IR. If all deem patient stable → transport directly to IR suite. Does NOT apply to: (1) clinical improvement with NIHSS <6, (2) neurologic worsening (NIHSS increase ≥4), (3) patients who received lytics at OSH, (4) unstable medical issues. Applies to transfers from referring facilities.',
-              classOfRec: 'IIa',
-              levelOfEvidence: 'C-EO',
+              detail: 'Suggested protocol: Goal door-to-puncture ≤45 min for transfer LVO cases. Assessment at triage by ED, Neuro, and IR. If all deem patient stable → transport directly to IR suite. Does NOT apply to: (1) clinical improvement such that symptoms no longer meet the intervention standard of NIHSS ≥6 WITH disabling symptoms, (2) neurologic worsening (NIHSS increase ≥4) OR any concern raised by bedside providers, (3) patients who received lytics at OSH, (4) unstable medical issues. Applies to transfers from referring facilities.',
+              classOfRec: 'N/A',
+              levelOfEvidence: 'N/A',
               guideline: 'Suggested Protocol',
               reference: 'Direct to Angio for LVO pts without lytics and within 3h of last neuroimaging.',
               conditions: (data) => {
@@ -5388,7 +5388,7 @@ Clinician Name`;
               category: 'Complications',
               title: 'Hemorrhagic transformation management',
               recommendation: 'Classify hemorrhagic transformation using ECASS criteria (HI-1, HI-2, PH-1, PH-2). Symptomatic ICH (PH-2 or neurological worsening) requires emergent management.',
-              detail: 'ECASS Classification: HI-1 (small petechiae along infarct margin), HI-2 (confluent petechiae within infarct, no mass effect), PH-1 (blood clots ≤30% of infarct, mild mass effect), PH-2 (blood clots >30% with significant mass effect). SYMPTOMATIC HT MANAGEMENT (PH-2 or NIHSS worsening ≥4): (1) STOP TNK infusion immediately if still running. (2) STAT CT head. (3) STAT labs: CBC, PT/INR, aPTT, fibrinogen, type & screen. (4) Cryoprecipitate 10 units IV (target fibrinogen >200 mg/dL); give empirically if fibrinogen result delayed. (5) TXA 1g IV over 10 min AFTER cryoprecipitate started. (6) Platelet transfusion 6-10 units if platelets <100K; recheck CBC 15-30 min post-transfusion. (7) Hold all antithrombotics and antiplatelet agents. (8) Target SBP around 140 mmHg with smooth control; avoid <130. (9) NEUROSURGERY CONSULTATION for: ICH volume >30 mL, >30% hematoma expansion, IVH with mass effect, midline shift >5 mm, herniation risk, or refractory coagulopathy. (10) ICU admission for PH-1/PH-2. (11) Repeat imaging at 24h.',
+              detail: 'ECASS Classification: HI-1 (small petechiae along infarct margin), HI-2 (confluent petechiae within infarct, no mass effect), PH-1 (blood clots ≤30% of infarct, mild mass effect), PH-2 (blood clots >30% with significant mass effect). SYMPTOMATIC HT MANAGEMENT (PH-2 or NIHSS worsening ≥4): (1) STOP TNK infusion immediately if still running. (2) STAT CT head. (3) STAT labs: CBC, PT/INR, aPTT, fibrinogen, type & screen. (4) Cryoprecipitate 2 pools = 10 individual units IV (target fibrinogen >200 mg/dL); give empirically if fibrinogen result delayed. (5) TXA 1g IV over 10 min AFTER cryoprecipitate started. (6) Hold all antithrombotics and antiplatelet agents. (7) Target SBP around 140 mmHg with smooth control; avoid <130. (8) NEUROSURGERY CONSULTATION for: ICH volume >30 mL, >30% hematoma expansion, IVH with mass effect, midline shift >5 mm, herniation risk, or refractory coagulopathy. (9) ICU admission for PH-1/PH-2. (10) Repeat imaging at 24h.',
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -5403,8 +5403,8 @@ Clinician Name`;
               category: 'Complications',
               title: 'Post-thrombolysis orolingual angioedema',
               recommendation: 'Monitor for orolingual angioedema after TNK, especially in patients on ACE inhibitors. Occurs in 1-5% of tPA/TNK recipients, typically within 2 hours. Immediate airway assessment is critical.',
-              detail: 'Stepwise management: 1) Stop TNK infusion if still running + hold ACEi. 2) Methylprednisolone 125 mg IV + Diphenhydramine 50 mg IV + Famotidine 20 mg IV. 3) If progressing: Epinephrine 0.3 mg IM (1:1000). 4) Refractory: Icatibant 30 mg SC (bradykinin B2 receptor antagonist) or C1 esterase inhibitor concentrate 20 U/kg IV. 5) Prepare for intubation if tongue/floor of mouth involvement. Risk factors: ACE inhibitor use (5x risk), anterior circulation infarcts involving insular cortex.',
-              classOfRec: 'I',
+              detail: 'Stepwise management: 1) Maintain airway — intubation may not be necessary if edema is limited to the anterior tongue and lips; edema involving the larynx, palate, floor of mouth, or oropharynx with rapid progression (within 30 min) poses higher risk of requiring intubation; awake fiberoptic intubation is optimal. 2) Hold ACE inhibitors — stop the thrombolytic infusion if alteplase is the agent being administered (tenecteplase is a single bolus, so there is no infusion to stop). 3) Methylprednisolone 125 mg IV + Diphenhydramine 50 mg IV + Famotidine 20 mg IV. 4) If there is further increase in angioedema: Epinephrine (0.1%) 0.3 mL subcutaneously or 0.5 mL by nebulizer. 5) Icatibant 30 mg subcutaneously, once (1 dose). Risk factors: ACE inhibitor use (5x risk), anterior circulation infarcts involving insular cortex.',
+              classOfRec: 'IIb',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Prabhakaran S et al. Stroke. 2026. Yayan J. Int J Gen Med. 2013;6:539-544.',
@@ -8842,7 +8842,7 @@ Clinician Name`;
             tnkRiskBenefit: `Thrombolysis (IV tenecteplase/alteplase) risk-benefit discussion — documentation:\nAfter confirming no evident contraindications, IV thrombolysis was recommended for acute ischemic stroke. The potential benefits (improved chance of recovery without disability, greatest when treated early), the potential risks (including a risk of symptomatic intracranial hemorrhage of up to ~4%, and rarely orolingual angioedema), and the alternatives to treatment (standard supportive stroke care without thrombolysis) were discussed with the referring provider and the patient/family prior to initiating treatment. The patient/family expressed understanding and treatment proceeded per shared decision-making.`,
             evtRiskBenefit: `Endovascular therapy (mechanical thrombectomy) risk-benefit discussion — documentation:\nGiven a large-vessel occlusion with disabling neurological deficits and no evident contraindications, mechanical thrombectomy was recommended and the patient will be transferred to a thrombectomy-capable comprehensive stroke center for evaluation. The potential benefits, the potential risks (including groin/access-site complications, vessel injury, and intracranial hemorrhage), and the alternatives to treatment were discussed with the referring provider and the patient/family; the neurointerventional team will obtain informed consent from the patient/family prior to the procedure.`,
             postTnk: `Post-IV thrombolysis (TNK/tPA) management:\n- Admit to ICU / monitored stroke unit\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h\n- No antiplatelet or anticoagulant agents for 24h after thrombolysis\n- Maintain BP <180/105 for 24h after thrombolysis\n- Non-contrast head CT at ~24h post-thrombolysis (sooner if any deterioration)\n- MRI brain with diffusion-weighted imaging when feasible\n- EKG and continuous telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention\n- Monitor for post-thrombolysis complications: symptomatic ICH and orolingual angioedema`,
-            postEvt: `Post-endovascular thrombectomy (EVT) management:\n- Admit to Neuro ICU for ≥24h\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h; monitor arterial access site and distal pulses\n- Blood pressure after successful reperfusion: maintain SBP 140-180 mmHg for ≥72h; avoid SBP <140 (associated with harm — ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II); keep BP <180/105\n- Antithrombotic timing per the neurointerventional team, after 24h imaging excludes hemorrhage\n- Non-contrast head CT (or dual-energy CT if available) at ~24h; immediate CT if clinical deterioration or failed recanalization (mTICI 0-2a)\n- MRI brain with diffusion-weighted imaging when feasible; EKG and telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention`
+            postEvt: `Post-endovascular thrombectomy (EVT) management:\n- Admit to Neuro ICU for ≥24h\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h; monitor arterial access site and distal pulses\n- Blood pressure during the procedure: maintain SBP >140 mmHg (neuroanesthesia responsible)\n- Blood pressure after successful reperfusion: maintain SBP 140-180 mmHg for ≥72h; avoid SBP <140 (associated with harm — ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II); keep BP <180/105\n- Antithrombotic timing per the neurointerventional team, after 24h imaging excludes hemorrhage\n- Non-contrast head CT (or dual-energy CT if available) at ~24h; immediate CT if clinical deterioration or failed recanalization (mTICI 0-2a)\n- MRI brain with diffusion-weighted imaging when feasible; EKG and telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention`
           };
 
           const copyToClipboard = (text, label) => {
@@ -12972,7 +12972,7 @@ Clinician Name`;
             }
             // --- Contrast allergy + EVT/CTA ---
             if (n.contrastAllergy && n.evtRecommended) {
-              warnings.push({ id: 'contrast-allergy-evt', severity: 'error', msg: 'CONTRAST ALLERGY with EVT recommended — CTA/angiography requires iodinated contrast. Ensure premedication protocol (methylprednisolone 32mg 12h+2h prior, diphenhydramine 50mg 1h prior) OR use MRA if available. Notify interventional team.' });
+              warnings.push({ id: 'contrast-allergy-evt', severity: 'error', msg: 'CONTRAST ALLERGY with EVT recommended — CTA/angiography requires iodinated contrast. Give the hyperacute premedication regimen — hydrocortisone 200 mg IV OR methylprednisolone 40 mg, PLUS diphenhydramine 50 mg IV — immediately prior to the contrast study; do NOT delay for a multi-hour elective oral premedication schedule. Excludes known contrast-related anaphylaxis: for severe contrast allergy obtain non-contrast TOF MRA instead. Notify interventional team.' });
             }
             if (n.contrastAllergy && n.ctaResults) {
               warnings.push({ id: 'contrast-allergy-cta-done', severity: 'warn', msg: 'Contrast allergy documented — monitor for delayed contrast reaction (4-48h post-exposure). Document any reaction for future reference.' });
@@ -13078,7 +13078,7 @@ Clinician Name`;
 
             // ACE inhibitor + TNK angioedema risk
             if (n.tnkRecommended && /lisinopril|enalapril|ramipril|captopril|benazepril|fosinopril|quinapril|perindopril|trandolapril|moexipril/.test(meds)) {
-              warnings.push({ id: 'acei-tnk', severity: 'error', msg: 'ACE inhibitor + TNK — 5x increased orolingual angioedema risk. Prepare airway: suction, nebulized epinephrine, IV dexamethasone, intubation equipment at bedside. Monitor tongue/lips q15min x 2h post-TNK.' });
+              warnings.push({ id: 'acei-tnk', severity: 'error', msg: 'ACE inhibitor + TNK — 5x increased orolingual angioedema risk. Prepare airway: suction, nebulized epinephrine, IV methylprednisolone 125 mg, intubation equipment at bedside. Monitor tongue/lips q15min x 2h post-TNK.' });
             }
 
             // Edoxaban + CrCl >95 warning
@@ -24603,8 +24603,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           {[
                                             { id: 'stopTnk', step: 1, label: 'Stop TNK if still infusing + Hold ACE inhibitor', detail: 'Discontinue immediately. ACEi increases bradykinin — primary mediator.' },
                                             { id: 'steroids', step: 2, label: 'Methylprednisolone 125 mg IV + Diphenhydramine 50 mg IV + Famotidine 20 mg IV', detail: 'Standard antihistamine/steroid protocol. Onset 15-30 min.' },
-                                            { id: 'epinephrine', step: 3, label: 'Epinephrine 0.3 mg IM (1:1000) if progressing', detail: 'For moderate-severe or any airway compromise. May repeat q5-15 min.' },
-                                            { id: 'icatibant', step: 4, label: 'Icatibant 30 mg SC OR C1 esterase inhibitor 20 U/kg IV', detail: 'Bradykinin B2 receptor antagonist. For refractory angioedema not responding to steps 1-3. Consider early if ACEi-related mechanism suspected.' },
+                                            { id: 'epinephrine', step: 3, label: 'Epinephrine (0.1%) 0.3 mL SC if progressing', detail: 'For moderate-severe or any airway compromise. May repeat q5-15 min.' },
+                                            { id: 'icatibant', step: 4, label: 'Icatibant 30 mg SC once (1 dose)', detail: 'Bradykinin B2 receptor antagonist. Standard step in the post-thrombolytic angioedema sequence after airway management, steroid, and H1/H2 blockade. C1 esterase inhibitor (Berinert) 20 IU/kg IV is reserved for pregnant or pediatric patients, or those intolerant to icatibant.' },
                                             { id: 'airway', step: 5, label: 'Prepare for intubation — call anesthesia/ENT', detail: 'Fiberoptic intubation preferred. Surgical airway backup if tongue/floor of mouth massive. Do NOT delay if stridor or desaturation.' }
                                           ].map(item => {
                                             const steps = (telestrokeNote.angioedema || {}).stepsTaken || {};
@@ -26987,7 +26987,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (angio.onsetTime) note += `- Onset: ${angio.onsetTime}.\n`;
                                   if (angio.aceInhibitorUse) note += `- ACE inhibitor use: Yes (discontinued).\n`;
                                   const steps = angio.stepsTaken || {};
-                                  const stepLabels = { stopTnk: 'TNK stopped + ACEi held', steroids: 'Methylprednisolone/Diphenhydramine/Famotidine given', epinephrine: 'Epinephrine 0.3 mg IM administered', icatibant: 'Icatibant 30 mg SC or C1 esterase inhibitor given', airway: 'Airway intervention/intubation' };
+                                  const stepLabels = { stopTnk: 'TNK stopped + ACEi held', steroids: 'Methylprednisolone/Diphenhydramine/Famotidine given', epinephrine: 'Epinephrine 0.3 mL SC administered', icatibant: 'Icatibant 30 mg SC or C1 esterase inhibitor given', airway: 'Airway intervention/intubation' };
                                   const doneSteps = Object.entries(steps).filter(([k, v]) => v).map(([k]) => stepLabels[k] || k);
                                   if (doneSteps.length > 0) { doneSteps.forEach(s => { note += `- ${s}.\n`; }); }
                                   if (angio.intubated) note += `- Patient intubated for airway protection.\n`;
@@ -28605,7 +28605,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <p className="text-xs font-semibold text-crit-700 mb-1 dark:text-crit-300">YES — Blood confirmed:</p>
                                     <ol className="text-sm space-y-1 ml-4 list-decimal">
                                       <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">2 pools Cryo</button> over 10-30 min (or continue if already started)</li>
-                                      <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.TXA)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Tranexamic acid 1000 mg IV over 10 min STAT</button> (or aminocaproic acid 4-5 g IV if TXA unavailable)</li>
+                                      <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.TXA)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Tranexamic acid 1000 mg IV over 10 min STAT</button></li>
                                       <li>Repeat hemorrhage panel</li>
                                       <li>Call Stroke/Neuro attending</li>
                                       <li>Consult neurosurgery</li>
@@ -28651,7 +28651,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <li>• Target SBP around 140 mmHg for confirmed sICH; avoid &lt;130</li>
                                   <li>• Target fibrinogen &gt;200 mg/dL (repeat cryo if low)</li>
                                   <li>• If labs abnormal or uncontrolled bleeding → consult Hematology</li>
-                                  <li>• Repeat hemorrhage panel q4h until normal</li>
+                                  <li>• Repeat hemorrhage panel STAT, then q30 min x2, then q4h until normal</li>
+                                  <li>• Neuro checks q15 min x 2h → q30 min x 6h → q1h x 16h; notify provider for new deficits or GCS drop ≥2 points</li>
                                   <li>• Repeat NCCT at 6h and 24h to assess stability</li>
                                   <li>• PH-2 with mass effect → urgent neurosurgery evaluation</li>
                                   <li>• Hold all antithrombotics until hemorrhage stable ≥24h</li>
@@ -28697,9 +28698,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
                                 <p className="text-sm font-semibold text-crit-800 mb-1 dark:text-crit-300">If worsening:</p>
                                 <ul className="text-sm space-y-1">
-                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.EPI)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Epinephrine 0.3 mg IM</button> (1 mg/mL, anterolateral thigh) or nebulized 3-5 mL of 1:1000</li>
+                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.EPI)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Epinephrine (0.1%) 0.3 mL SC</button> or 0.5 mL by nebulizer</li>
                                   <li>• <button onClick={() => setProtocolModal(protocolDetailMap.ICATIBANT)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Icatibant</button> (bradykinin B2 antagonist)</li>
-                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.BERINERT)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">C1 esterase inhibitor (Berinert) 20 IU/kg</button></li>
+                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.BERINERT)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">C1 esterase inhibitor (Berinert) 20 IU/kg</button> — slow IV push at 4 mL/min; restricted to pregnant or pediatric patients, or those intolerant to icatibant</li>
                                 </ul>
                               </div>
                             </div>
@@ -28773,7 +28774,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="p-4 pt-0">
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                                 <li>Confirm anticoagulant/antiplatelet use and initiate reversal.</li>
-                                <li>Use smooth BP control; target SBP 140, maintain 130-150 when appropriate, and avoid &lt;130 per ATACH-2. Use IV nicardipine or clevidipine for titration.</li>
+                                <li>Use smooth BP control; target SBP 140, maintain 130-150 when appropriate, and avoid &lt;130 per ATACH-2. Use IV nicardipine infusion (or IV labetalol) for titration.</li>
                                 <li>Screen for early Neurosurgery + stroke-service evaluation triggers: non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, ED attending discretion, or clinician concern.</li>
                                 <li>Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.</li>
                               </ul>
@@ -28942,11 +28943,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-crit-600 mb-2 dark:text-crit-300">Blood Pressure Target</h4>
+                            <p className="text-xs text-slate-500 mb-2 dark:text-mute">Spontaneous ICH only. Not for hemorrhage from a vascular malformation or for post-operative neurosurgical cases.</p>
                             <ul className="text-sm space-y-1">
-                              <li><strong>Target:</strong> SBP 140 mmHg, maintain 130-150 when appropriate, with timely smooth control. Avoid SBP &lt;130 (ATACH-2).</li>
+                              <li><strong>Target:</strong> SBP 140 mmHg, maintain 130-150 when appropriate, with timely smooth control. Avoid iatrogenic reduction of SBP &lt;130 mmHg in the initial 24 hours (ATACH-2).</li>
                               <li><strong>Smooth control:</strong> avoid peaks and variability.</li>
-                              <li><strong>SBP &gt;220:</strong> Safety of intensive lowering is uncertain (Class IIb, LOE C-EO, AHA 2022). Reasonable to target modest reduction (SBP 140-160) using continuous IV infusion with close monitoring. Avoid rapid drops &gt;60 mmHg in the first hour. Consider starting nicardipine at a lower rate (2.5-5 mg/hr) and titrating slowly.</li>
-                              <li><strong>Agent:</strong> IV nicardipine or clevidipine for titration.</li>
+                              <li><strong>Below target:</strong> if the patient autoregulates to SBP &lt;130 with no indicators of symptomatic hypotension, it is acceptable to be below target. Do NOT initiate vasopressors unless discussed and approved by both the stroke attending and the neurocritical care attending.</li>
+                              <li><strong>Large/severe ICH or surgical decompression:</strong> individualize targets; consider an initial higher goal of SBP 160-180.</li>
+                              <li><strong>Reassessment:</strong> if a higher target of SBP 160-180 is initially selected, reassess after ~6 hours (after time for gradual BP reduction or after repeat head CT).</li>
+                              <li><strong>Renal dysfunction:</strong> for patients with moderate-severe renal dysfunction, use caution with aggressive BP lowering.</li>
+                              <li><strong>Perfusion floor:</strong> maintain CPP &gt;60 mmHg, especially with elevated ICP.</li>
+                              <li><strong>SBP &gt;220:</strong> Safety of intensive lowering is uncertain (Class IIb, LOE C-EO, AHA 2022). Reasonable to target modest reduction (SBP 140-160) using continuous IV infusion with close monitoring. Reduce SBP by ~20% (not &gt;25%) in the first hour, then gradually reduce to SBP 140-160 mmHg. Consider starting nicardipine at a lower rate (2.5-5 mg/hr) and titrating slowly.</li>
+                              <li><strong>Agent:</strong> IV nicardipine infusion (or IV labetalol) for titration.</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border dark:bg-card">
@@ -30207,7 +30214,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h3 className="font-semibold mb-2">Reversal (if blood on CT)</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Cryoprecipitate:</strong> 2 pools IV over 10-30 min (empirically if CT delayed &gt;30 min and fibrinogen &lt;200)</li>
-                                <li><strong>TXA:</strong> Tranexamic acid 1000 mg IV over 10 min STAT (or aminocaproic acid 4-5 g IV if TXA unavailable)</li>
+                                <li><strong>TXA:</strong> Tranexamic acid 1000 mg IV over 10 min STAT</li>
                                 <li><strong>Repeat hemorrhage panel</strong></li>
                                 <li><strong>Consult neurosurgery</strong></li>
                               </ul>
@@ -30270,14 +30277,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="bg-white p-3 rounded border dark:bg-card">
                               <h3 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Treatment</h3>
                               <ul className="text-sm space-y-1">
-                                <li><strong>Maintain airway</strong> — fiberoptic intubation if needed</li>
+                                <li><strong>Maintain airway</strong> — intubation may not be necessary if edema is limited to the anterior tongue and lips; edema involving the larynx, palate, floor of mouth, or oropharynx with rapid progression (within 30 min) poses higher risk of requiring intubation. Awake fiberoptic intubation is optimal; nasal-tracheal intubation may be required but poses risk of epistaxis after IV TNK, and cricothyroidotomy is rarely needed and also problematic after IV TNK.</li>
                                 <li><strong>Hold ACE inhibitors</strong> — stop the thrombolytic infusion <em>if alteplase is the agent being administered</em>; tenecteplase is a single bolus, so there is no infusion to stop</li>
                                 <li><strong>Methylprednisolone:</strong> 125 mg IV</li>
                                 <li><strong>Diphenhydramine:</strong> 50 mg IV</li>
                                 <li><strong>Famotidine:</strong> 20 mg IV (H2 blocker)</li>
-                                <li><strong>If worsening: Epinephrine</strong> 0.3 mg IM (anterolateral thigh) or nebulized 3-5 mL of 1:1000</li>
+                                <li><strong>If worsening: Epinephrine</strong> (0.1%) 0.3 mL subcutaneously or 0.5 mL by nebulizer</li>
                                 <li><strong>Icatibant</strong> (bradykinin B2 antagonist)</li>
-                                <li><strong>Berinert:</strong> 20 IU/kg IV (C1 esterase inhibitor)</li>
+                                <li><strong>C1 esterase inhibitor (Berinert):</strong> 20 IU/kg IV by slow IV push at 4 mL/min — restricted to pregnant or pediatric patients, or those intolerant to icatibant</li>
                               </ul>
                             </div>
                           </div>
@@ -30584,17 +30591,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <ul className="text-sm space-y-1">
                               <li>• CT contrast allergy (mild/moderate/unknown severity) AND suspected LVO</li>
                               <li>• <strong>Excludes:</strong> known contrast-related anaphylaxis</li>
+                              <li>• <strong>Severe contrast allergy</strong> (cannot follow this hyperacute CTA pathway) with suspected LVO → obtain non-contrast <strong>TOF MRA</strong> as a limited hyperacute stroke MRI</li>
                             </ul>
                           </div>
                           <div className="bg-white p-3 rounded border mb-3 dark:bg-card">
                             <p className="text-sm font-semibold text-teal-700 mb-2 dark:text-teal-300">Requirements:</p>
                             <ul className="text-sm space-y-1">
-                              <li>• Consent from patient or LNOK</li>
+                              <li>• Consent from patient and/or LNOK whenever possible</li>
                               <li>• Pre-administration approval from the on-call stroke clinician, emergency clinician, and neuroradiology</li>
+                              <li>• Document in the neurology note the consent discussion and the clinicians who approved/agreed to the plan</li>
                             </ul>
                           </div>
                           <div className="bg-white p-3 rounded border dark:bg-card">
-                            <p className="text-sm font-semibold text-teal-700 mb-2 dark:text-teal-300">Pre-medication:</p>
+                            <p className="text-sm font-semibold text-teal-700 mb-2 dark:text-teal-300">Pre-medication (immediately prior to the contrast study):</p>
                             <ul className="text-sm space-y-1">
                               <li>• <button onClick={() => setProtocolModal(protocolDetailMap.HYDROCORT)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Hydrocortisone 200 mg IV</button> <strong>OR</strong> <button onClick={() => setProtocolModal(protocolDetailMap.METHYLPRED)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Methylprednisolone 40 mg IV</button></li>
                               <li>• <strong>PLUS</strong> <button onClick={() => setProtocolModal(protocolDetailMap.DIPHEN)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Diphenhydramine 50 mg IV</button></li>
@@ -30885,8 +30894,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {[
                               { step: 'Secure airway', detail: 'Intubate if GCS ≤8; elevate HOB 30°', urgent: true },
                               { step: 'BP control: SBP <160 mmHg', detail: 'Nicardipine 5-15 mg/h IV or labetalol IV (pre-aneurysm securing). Class I, LOE B-NR', urgent: true },
+                              { step: 'Reverse coagulopathy', detail: 'Screen for anticoagulant/antiplatelet exposure and reverse before the aneurysm is secured — use the coagulopathy-reversal pathway', urgent: true },
                               { step: 'Start Nimodipine 60 mg PO/NG q4h', detail: 'Begin within 96h of onset; continue 21 days. Class I, LOE A for DCI prevention. Only calcium channel blocker with proven benefit', urgent: true },
                               { step: 'Neurosurgery/Neurointerventional consult', detail: 'For aneurysm securing strategy (clip vs coil) — target within 24h', urgent: true },
+                              { step: 'Document Hunt-Hess grade', detail: 'Record the admission Hunt-Hess grade with the consult (Hunt & Hess / WFNS calculators are under Calculators)', urgent: true },
                               { step: 'Analgesia for headache', detail: 'Acetaminophen 1g IV/PO q6h. Avoid NSAIDs. Cautious opioids if severe', urgent: false },
                               { step: 'Seizure prophylaxis (if indicated)', detail: 'Short-term (3-7d) levetiracetam 500-1000mg BID. Not routine for all patients', urgent: false },
                               { step: 'EVD placement', detail: 'If acute hydrocephalus or GCS ≤8 with IVH. Open at 15-20 cmH₂O', urgent: false },
@@ -31352,7 +31363,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">Minor stroke (NIHSS &le;3) or high-risk TIA (ABCD2 &ge;4)</td>
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">ASA + clopidogrel</td>
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">21 days, then single antiplatelet</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">CHANCE, POINT</td>
+                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">CHANCE, POINT &mdash; CHANCE enrolled &le;24h (21-day DAPT); POINT enrolled &le;12h (trial DAPT duration was 90 days)</td>
                                     </tr>
                                     <tr className="bg-white/60 dark:bg-overlay">
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">CYP2C19 loss-of-function carrier</td>
@@ -31364,10 +31375,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">Mild-to-moderate non-cardioembolic stroke (NIHSS 4-5) without high bleed risk</td>
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">ASA + ticagrelor</td>
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">30 days</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">THALES; AIS 2026 Class IIb framing</td>
+                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">THALES (enrolled &le;24h); AIS 2026 Class IIb framing</td>
                                     </tr>
                                     <tr className="bg-white/60 dark:bg-overlay">
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">Atherosclerotic minor stroke/TIA enrolled within 72h</td>
+                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">Atherosclerotic minor stroke (NIHSS &le;5) or high-risk TIA (ABCD2 &ge;4) enrolled within 72h</td>
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">ASA + clopidogrel</td>
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">21 days DAPT then clopidogrel through day 90</td>
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">INSPIRES</td>
@@ -31382,6 +31393,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </table>
                               </div>
                               <p className="text-xs text-cobalt-800 mt-2 dark:text-cobalt-300">Avoid prolonged DAPT beyond intended windows unless a specific vascular phenotype justifies it; de-escalate to monotherapy promptly.</p>
+                              <p className="text-xs text-cobalt-800 mt-2 dark:text-cobalt-300"><strong>Trial primary safety outcomes (bleeding):</strong> CHANCE moderate-severe bleeding HR 0.84 (0.30&ndash;2.31), 0.4% vs 0.3% &middot; POINT major hemorrhage HR 2.32 (1.10&ndash;4.87), 0.9% vs 0.4% &middot; THALES severe bleeding HR 3.99 (1.74&ndash;9.14), 0.5% vs 0.1% &middot; INSPIRES moderate-severe bleeding HR 2.08 (1.07&ndash;4.04), 0.9% vs 0.4%.</p>
                             </div>
                           </div>
                           </div>

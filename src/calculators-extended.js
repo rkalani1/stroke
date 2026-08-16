@@ -494,11 +494,12 @@ export const recommendDriving = ({ strokeType, severity, cognitiveDeficit, visua
 // =====================================================================
 // Dysphagia screens (simple decision logic)
 // =====================================================================
-export const interpretBarnesJewishDysphagia = ({ gcs15, canSitUpright, coughOnWater3oz, voiceChange, drool }) => {
+export const interpretBarnesJewishDysphagia = ({ gcs15, canSitUpright, lowerFacialAsymmetry, tongueAsymmetry, palatalAsymmetry, throatClearing, coughOnWater3oz, voiceChange }) => {
   if (!gcs15) return { pass: false, reason: 'GCS <15 — NPO, defer screen', action: 'Strict NPO; SLP consult when GCS 15.' };
   if (!canSitUpright) return { pass: false, reason: 'Unable to sit upright', action: 'Strict NPO; reassess when mobility allows.' };
-  if (coughOnWater3oz || voiceChange || drool) return { pass: false, reason: 'Failed 3-oz water swallow', action: 'NPO; SLP evaluation; consider modified barium swallow study.' };
-  return { pass: true, reason: 'Screen passed', action: 'Soft-mechanical / IDDSI-5 diet; SLP can liberalize.' };
+  if (lowerFacialAsymmetry || tongueAsymmetry || palatalAsymmetry) return { pass: false, reason: 'Lower facial, tongue, or palatal asymmetry/weakness — stop screen before any water is given', action: 'Patient fails: keep NPO including medications (arrange non-oral medication routes with pharmacy); order speech pathology evaluation; notify the primary team the patient remains NPO.' };
+  if (throatClearing || coughOnWater3oz || voiceChange) return { pass: false, reason: 'Throat clearing, cough, and/or vocal quality change immediately after and for 1 minute following the 3-oz sequential-drink water swallow', action: 'Keep NPO including medications (arrange non-oral medication routes with pharmacy); order speech pathology evaluation; notify the primary team the patient remains NPO.' };
+  return { pass: true, reason: 'Screen passed', action: 'Place patient on an appropriate diet; notify the primary team to order any needed oral medications.' };
 };
 
 // =====================================================================

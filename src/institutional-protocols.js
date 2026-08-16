@@ -185,7 +185,7 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
         'No underlying vascular lesion',
         'Potential MIS timing within 24 hours of last known well or qualifying wake-up hemorrhage window'
       ],
-      action: 'Do not let registry screening delay urgent surgical, trial, or stabilization decisions.'
+      action: 'Do not let registry screening delay urgent surgical, trial, or stabilization decisions. Deep IPH considered for minimally invasive surgery outside the trial and registry pathways, or beyond 24 hours from last known well, requires discussion with both the on-call stroke attending and the inpatient neurology attending before proceeding.'
     }
   ],
   safetyPause: {
@@ -212,7 +212,9 @@ export const getSafePauseText = ({ consentType = 'informed', bp = '', contraindi
 (2) BP confirmed ${bp || '<185/110'}.
 (3) Absolute & relative contraindications ${contraindications}.
 (4) Dose confirmed (weight-based, max 25 mg TNK / 90 mg alteplase).
-(5) Safety-pause documented in communication platform.
+(5) Pause performed FACE-TO-FACE with the RN or anesthesia provider who will administer the drug.
+(6) Pause confirmed by neurology, the ED clinician, and the primary RN.
+(7) Safety-pause documented in communication platform.
 Attestation: ${SAFE_PAUSE_ATTESTATION}`;
 };
 
@@ -324,7 +326,7 @@ export const evaluateIVT = ({
         loe: 'B-R',
         warnings,
         decisions,
-        nextStep: 'Confirm imaging criteria, informed consent recommended, SAFE PAUSE attestation.',
+        nextStep: 'Confirm baseline mRS ≤1, imaging criteria, and that the patient is NOT an EVT candidate (IVT may be considered in select patients with LVO if EVT within 24h is not feasible — e.g., transport delay, patient declines EVT). Informed consent recommended; SAFE PAUSE attestation.',
         imagingGuidance: preferMRI ? 'Prefer MRI (small vessel / posterior / contrast allergy).' : null
       };
     }
@@ -342,11 +344,9 @@ export const evaluateIVT = ({
         recommendation: 'Consider TNK — late window (9-24h) with CTP-selected mismatch',
         agent: 'Tenecteplase 0.25 mg/kg IV bolus (max 25 mg)',
         dose: Number.isFinite(wt) ? Math.min(25, Math.round(wt * 0.25 * 2) / 2) : null,
-        cor: '2b',
-        loe: 'B-R',
         warnings,
         decisions,
-        nextStep: 'Informed consent required; discuss ~9-11% absolute benefit in 0-disability outcome and ~3% sICH risk.'
+        nextStep: 'Consent required for the 9-24h window; the source algorithm states CONSIDER TNK / consent required and assigns no COR or LOE grade to this branch. Confirm baseline mRS ≤1 and that the patient is NOT an EVT candidate; discuss ~9-11% absolute benefit in 0-disability outcome and ~3% sICH risk.'
       };
     }
     return { eligible: false, recommendation: 'Beyond 24h window — IVT not indicated', decisions, warnings };
@@ -609,6 +609,7 @@ export const IVT_ABSOLUTE_CONTRAINDICATIONS = [
   { label: 'Infective endocarditis', detail: 'Should not be administered.' },
   { label: 'Severe coagulopathy', detail: 'Plt <100K, INR >1.7, aPTT >40s, PT >15s.' },
   { label: 'Aortic arch dissection', detail: 'Potentially harmful; should not be administered.' },
+  { label: 'Unruptured, unsecured large intracranial aneurysm (>10 mm)', detail: 'Absolute exclusion; small or already-secured aneurysms are handled under benefit-greater.' },
   { label: 'Moderate-severe TBI <14 days', detail: 'GCS <10 or hemorrhage/contusion/skull fracture.' },
   { label: 'Amyloid immunotherapy / ARIA', detail: 'ICH risk unknown; IV thrombolysis should be avoided.' }
 ];
@@ -636,7 +637,7 @@ export const IVT_RELATIVE_CONTRAINDICATIONS = [
 export const IVT_BENEFIT_GREATER_CONSIDER = [
   { label: 'Extracranial cervical dissection', detail: 'Reasonably safe within 4.5h; probably recommended.' },
   { label: 'Extra-axial intracranial neoplasm', detail: 'Benefit likely outweighs risk.' },
-  { label: 'Unruptured intracranial aneurysm', detail: 'Benefit likely outweighs risk for small aneurysms; local criteria list an aneurysm >10 mm as a relative exclusion.' },
+  { label: 'Unruptured intracranial aneurysm', detail: 'Benefit likely outweighs risk for small or already-secured aneurysms; an unruptured and unsecured large aneurysm (>10 mm) is an absolute exclusion.' },
   { label: 'Angiographic procedural stroke', detail: 'Benefit likely outweighs risk.' },
   { label: 'History of GI/GU bleeding (remote)', detail: 'Candidates if stable; GI/GU consultation.' },
   { label: 'History of MI (remote)', detail: 'Probably greater benefit from IVT.' },

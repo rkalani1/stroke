@@ -98,7 +98,7 @@ Evidence anchor
 Minor stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4)
 ASA + clopidogrel
 21 days, then single antiplatelet
-CHANCE, POINT
+CHANCE, POINT — CHANCE enrolled ≤24h (21-day DAPT); POINT enrolled ≤12h (trial DAPT duration was 90 days)
 CYP2C19 loss-of-function carrier
 ASA + ticagrelor (then ticagrelor monotherapy)
 21 days DAPT
@@ -106,8 +106,8 @@ CHANCE-2
 Mild-to-moderate non-cardioembolic stroke (NIHSS 4-5) without high bleed risk
 ASA + ticagrelor
 30 days
-THALES; AIS 2026 Class IIb framing
-Atherosclerotic minor stroke/TIA enrolled within 72h
+THALES (enrolled ≤24h); AIS 2026 Class IIb framing
+Atherosclerotic minor stroke (NIHSS ≤5) or high-risk TIA (ABCD2 ≥4) enrolled within 72h
 ASA + clopidogrel
 21 days DAPT then clopidogrel through day 90
 INSPIRES
@@ -116,6 +116,8 @@ ASA + clopidogrel with intensive risk-factor control
 Up to 90 days
 SAMMPRIS paradigm
 Avoid prolonged DAPT beyond intended windows unless a specific vascular phenotype justifies it; de-escalate to monotherapy promptly.
+Trial primary safety outcomes (bleeding):
+CHANCE moderate-severe bleeding HR 0.84 (0.30–2.31), 0.4% vs 0.3% · POINT major hemorrhage HR 2.32 (1.10–4.87), 0.9% vs 0.4% · THALES severe bleeding HR 3.99 (1.74–9.14), 0.5% vs 0.1% · INSPIRES moderate-severe bleeding HR 2.08 (1.07–4.04), 0.9% vs 0.4%.
 4
 Etiologic Workup Checklist
 Cardiac

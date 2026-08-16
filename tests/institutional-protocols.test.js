@@ -214,10 +214,16 @@ describe('evaluateIVT', () => {
     expect(r.eligible).toBe('consider');
     expect(r.cor).toBe('2a');
   });
-  it('allows consider-TNK for 9-24h with CTP criteria met', () => {
+  // Source p9 (Rev 5/2026) grades exactly two boxes: "<=4.5h -> COR 1 | LOE A" and
+  // "4.5-9h or wake-up (MRI) -> COR 2a | LOE B-R". The 9-24h (CTP) box reads only
+  // "CONSIDER TNK / Consent required" and carries NO grade — the string "2b" does not
+  // appear anywhere in that source. The app previously asserted COR 2b here, which was a
+  // grade no source assigns; this test now pins the absence.
+  it('allows consider-TNK for 9-24h with CTP criteria met, and asserts no COR grade', () => {
     const r = evaluateIVT({ disablingDeficit: true, hoursFromLKW: 12, imagingPathway: { ctpCoreMl: 20, ctpRatio: 1.8, ctpMismatchVolMl: 30 } });
     expect(r.eligible).toBe('consider');
-    expect(r.cor).toBe('2b');
+    expect(r.cor).toBeUndefined();
+    expect(r.nextStep).toMatch(/consent required/i);
   });
   it('rejects 9-24h when CTP core too large', () => {
     const r = evaluateIVT({ disablingDeficit: true, hoursFromLKW: 12, imagingPathway: { ctpCoreMl: 80, ctpRatio: 1.8, ctpMismatchVolMl: 30 } });

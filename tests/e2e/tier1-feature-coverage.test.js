@@ -836,9 +836,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.14.0', () => {
+    it('F19-T1.5: package.json version matches latest release v6.15.0', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.14.0');
+      expect(pkg.version).toBe('6.15.0');
     });
   });
 });
