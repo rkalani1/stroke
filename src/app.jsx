@@ -36153,6 +36153,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <p className="font-sans text-body text-ink-2 mt-1 text-pretty">
                               Configure API provider and keys for LLM integration.
                             </p>
+                            {/* Say plainly that nothing consumes this yet. A settings
+                                panel that asks for an API key reads as a live
+                                integration, and a clinician should not paste a working
+                                credential into a clinical tool on that assumption. */}
+                            <p className="font-sans text-sm text-mute mt-2 text-pretty">
+                              No feature sends data to a provider yet, so a key saved here is stored but
+                              unused. The key is kept in this browser tab only — never written to disk
+                              and never transmitted.
+                            </p>
                           </div>
                         </div>
                       </header>

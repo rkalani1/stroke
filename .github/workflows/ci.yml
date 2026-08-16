@@ -13,7 +13,7 @@ jobs:
   unit-tests:
     name: Unit tests (vitest)
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 12
 
     steps:
       - name: Checkout
@@ -38,6 +38,29 @@ jobs:
           fi
           printf '%s' "$PRIVATE_DENYLIST_JSON" > scripts/leak-guard-denylist.local.json
           STROKE_LEAK_GUARD_REQUIRE_PRIVATE=1 npm run check:leak-guard
+
+      # test:unit includes adversarial-tier5-hardening, which shells out to
+      # scripts/snapshot-example-protocols.mjs and therefore needs a browser.
+      # Without these steps that test fails on every run with "Executable
+      # doesn't exist", which is a CI setup gap rather than a code defect —
+      # the same suite passes in build-and-smoke, which does install one.
+      # Steps mirror build-and-smoke so both jobs share the cache entry.
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright system deps (cache hit)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
 
       - name: Run vitest
         run: npm run test:unit
