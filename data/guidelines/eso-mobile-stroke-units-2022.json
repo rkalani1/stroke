@@ -1,0 +1,21 @@
+{
+  "id": "eso-mobile-stroke-units-2022",
+  "title": "European Stroke Organisation (ESO) guidelines on mobile stroke units for prehospital stroke management",
+  "shortTitle": "European Stroke Organisation (ESO) guidelines on mobile stroke units for preho",
+  "doi": "10.1177/23969873221079413",
+  "publisherUrl": "https://doi.org/10.1177/23969873221079413",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/35300251/",
+  "pmid": "35300251",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The safety and efficacy of mobile stroke units (MSUs) in prehospital stroke management has recently been investigated in different clinical studies. MSUs are ambulances equipped with a CT scanner, point-of-care lab, telemedicine and are staffed with a stroke specialised medical team.",
+      "page": null
+    }
+  ]
+}

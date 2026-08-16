@@ -1,0 +1,21 @@
+{
+  "id": "eso-intracranial-atherosclerosis-2022",
+  "title": "European Stroke Organisation guidelines on treatment of patients with intracranial atherosclerotic disease",
+  "shortTitle": "European Stroke Organisation guidelines on treatment of patients with intracra",
+  "doi": "10.1177/23969873221099715",
+  "publisherUrl": "https://doi.org/10.1177/23969873221099715",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/36082254/",
+  "pmid": "36082254",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The aim of the present European Stroke Organisation guideline is to provide clinically useful evidence-based recommendations on the management of patients with intracranial atherosclerotic disease (ICAD). The guidelines were prepared following the Standard Operational Procedure of the European Stroke Organisation guidelines and according to GRADE methodology.",
+      "page": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "aan-consent-ais-2022",
+  "title": "Consent Issues in the Management of Acute Ischemic Stroke: AAN Position Statement",
+  "shortTitle": "Consent Issues in the Management of Acute Ischemic Stroke",
+  "doi": "10.1212/WNL.0000000000013040",
+  "publisherUrl": "https://doi.org/10.1212/WNL.0000000000013040",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/35312627/",
+  "pmid": "35312627",
+  "society": "AAN",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "This position statement briefly reviews the principle of informed consent, the elements of decisional capacity, and how acute stroke may affect this capacity. It further reviews the role of surrogate decision-making, including advance directives, next of kin, physician orders for life-sustaining treatment, and guardianship. In some cases of acute stroke in which the patient lacks decisional capacity and no advance directives or surrogates are available, consent to treatment may be presumed.",
+      "page": null
+    }
+  ]
+}

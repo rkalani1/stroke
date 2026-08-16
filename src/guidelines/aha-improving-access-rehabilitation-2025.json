@@ -1,0 +1,21 @@
+{
+  "id": "aha-improving-access-rehabilitation-2025",
+  "title": "Improving Access to Stroke Rehabilitation and Recovery: A Policy Statement From the American Heart Association/American Stroke Association",
+  "shortTitle": "Improving Access to Stroke Rehabilitation and Recovery",
+  "doi": "10.1161/STR.0000000000000493",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000493",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/40740119/",
+  "pmid": "40740119",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Stroke rehabilitation is an integral component of comprehensive stroke care. Inequities in access to stroke rehabilitation can further widen the disability gap and disproportionately affect underinsured patients, patients living in rural areas, and patients from underrepresented races and ethnicities. However, even insured patients face obstacles to receiving stroke rehabilitation.",
+      "page": null
+    }
+  ]
+}

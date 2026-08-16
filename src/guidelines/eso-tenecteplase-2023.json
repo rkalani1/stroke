@@ -1,0 +1,21 @@
+{
+  "id": "eso-tenecteplase-2023",
+  "title": "European Stroke Organisation (ESO) expedited recommendation on tenecteplase for acute ischaemic stroke",
+  "shortTitle": "European Stroke Organisation (ESO) expedited recommendation on tenecteplase fo",
+  "doi": "10.1177/23969873221150022",
+  "publisherUrl": "https://doi.org/10.1177/23969873221150022",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/37021186/",
+  "pmid": "37021186",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Within the last year, four randomised-controlled clinical trials (RCTs) have been published comparing intravenous thrombolysis (IVT) with tenecteplase and alteplase in acute ischaemic stroke (AIS) patients with a non-inferiority design for three of them. An expedited recommendation process was initiated by the European Stroke Organisation (ESO) and conducted according to ESO standard operating procedure based on the Grading of Recommendations, Assessment, Development and Evaluations (GRADE) framework.",
+      "page": null
+    }
+  ]
+}

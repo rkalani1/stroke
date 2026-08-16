@@ -1,0 +1,21 @@
+{
+  "id": "aha-standards-postacute-rehabilitation-2025",
+  "title": "American Heart Association Standards for Postacute Stroke Rehabilitation Care",
+  "shortTitle": "American Heart Association Standards for Postacute Stroke Rehabilitation Care",
+  "doi": "10.1161/STROKEAHA.124.048942",
+  "publisherUrl": "https://doi.org/10.1161/STROKEAHA.124.048942",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/40408522/",
+  "pmid": "40408522",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Evidence-based rehabilitation and secondary prevention interventions improve poststroke functional recovery and reduce secondary complications. However, stroke rehabilitation expertise, processes of care, and educational resources vary among sites where postacute care (PAC) is delivered. The American Heart Association developed quality standards based on the American Heart Association 2016 Guidelines for Adult Stroke Rehabilitation and Recovery to address these gaps.",
+      "page": null
+    }
+  ]
+}

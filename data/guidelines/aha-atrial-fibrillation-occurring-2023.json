@@ -1,0 +1,21 @@
+{
+  "id": "aha-atrial-fibrillation-occurring-2023",
+  "title": "Atrial Fibrillation Occurring During Acute Hospitalization: A Scientific Statement From the American Heart Association",
+  "shortTitle": "Atrial Fibrillation Occurring During Acute Hospitalization",
+  "doi": "10.1161/CIR.0000000000001133",
+  "publisherUrl": "https://doi.org/10.1161/CIR.0000000000001133",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/36912134/",
+  "pmid": "36912134",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Acute atrial fibrillation is defined as atrial fibrillation detected in the setting of acute care or acute illness; atrial fibrillation may be detected or managed for the first time during acute hospitalization for another condition. Atrial fibrillation after cardiothoracic surgery is a distinct type of acute atrial fibrillation. Acute atrial fibrillation is associated with high risk of long-term atrial fibrillation recurrence, warranting clinical attention during acute hospitalization and over long-term follow-up.",
+      "page": null
+    }
+  ]
+}

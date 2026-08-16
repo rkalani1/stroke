@@ -1,0 +1,21 @@
+{
+  "id": "eso-carotid-stenosis-2021",
+  "title": "European Stroke Organisation guideline on endarterectomy and stenting for carotid artery stenosis",
+  "shortTitle": "European Stroke Organisation guideline on endarterectomy and stenting for caro",
+  "doi": "10.1177/23969873211012121",
+  "publisherUrl": "https://doi.org/10.1177/23969873211012121",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/34414302/",
+  "pmid": "34414302",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Atherosclerotic stenosis of the internal carotid artery is an important cause of stroke. The aim of this guideline is to analyse the evidence pertaining to medical, surgical and endovascular treatment of patients with carotid stenosis. These guidelines were developed based on the ESO standard operating procedure and followed the Grading of Recommendations, Assessment, Development, and Evaluation (GRADE) approach.",
+      "page": null
+    }
+  ]
+}

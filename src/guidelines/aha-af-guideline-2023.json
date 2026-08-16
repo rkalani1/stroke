@@ -1,0 +1,21 @@
+{
+  "id": "aha-af-guideline-2023",
+  "title": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines",
+  "shortTitle": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fib",
+  "doi": "10.1161/CIR.0000000000001193",
+  "publisherUrl": "https://doi.org/10.1161/CIR.0000000000001193",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/38033089/",
+  "pmid": "38033089",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The \"2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation\" provides recommendations to guide clinicians in the treatment of patients with atrial fibrillation.",
+      "page": null
+    }
+  ]
+}

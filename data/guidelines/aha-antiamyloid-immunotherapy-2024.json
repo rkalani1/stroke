@@ -1,0 +1,21 @@
+{
+  "id": "aha-antiamyloid-immunotherapy-2024",
+  "title": "Vascular Neurology Considerations for Antiamyloid Immunotherapy: A Science Advisory From the American Heart Association",
+  "shortTitle": "Vascular Neurology Considerations for Antiamyloid Immunotherapy",
+  "doi": "10.1161/STR.0000000000000480",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000480",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/39660440/",
+  "pmid": "39660440",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Antibodies directed at the amyloid-β peptide offer the prospect of disease-modifying therapy for early-stage Alzheimer disease but also carry the risk of brain edema or bleeding events, collectively designated amyloid-related imaging abnormalities.",
+      "page": null
+    }
+  ]
+}

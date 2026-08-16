@@ -1,0 +1,21 @@
+{
+  "id": "eso-artery-dissection-2021",
+  "title": "ESO guideline for the management of extracranial and intracranial artery dissection",
+  "shortTitle": "ESO guideline for the management of extracranial and intracranial artery disse",
+  "doi": "10.1177/23969873211046475",
+  "publisherUrl": "https://doi.org/10.1177/23969873211046475",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/34746432/",
+  "pmid": "34746432",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The aim of the present European Stroke Organisation guideline is to provide clinically useful evidence-based recommendations on the management of extracranial artery dissection (EAD) and intracranial artery dissection (IAD). EAD and IAD represent leading causes of stroke in the young, but are uncommon in the general population, thus making it challenging to conduct clinical trials and large observational studies.",
+      "page": null
+    }
+  ]
+}

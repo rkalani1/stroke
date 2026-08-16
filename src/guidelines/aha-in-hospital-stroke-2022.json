@@ -1,0 +1,21 @@
+{
+  "id": "aha-in-hospital-stroke-2022",
+  "title": "Identifying Best Practices to Improve Evaluation and Management of In-Hospital Stroke: A Scientific Statement From the American Heart Association",
+  "shortTitle": "Identifying Best Practices to Improve Evaluation and Management of In-Hospital",
+  "doi": "10.1161/STR.0000000000000402",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000402",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/35137601/",
+  "pmid": "35137601",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "This scientific statement describes a path to optimizing care for patients who experience an in-hospital stroke. Although these patients are in a monitored environment, their evaluation and treatment are often delayed compared with patients presenting to the emergency department, contributing to higher rates of morbidity and mortality. Reducing delays and optimizing treatment for patients with in-hospital stroke could improve outcomes.",
+      "page": null
+    }
+  ]
+}

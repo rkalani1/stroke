@@ -1,0 +1,21 @@
+{
+  "id": "aha-crao-2021",
+  "title": "Management of Central Retinal Artery Occlusion: A Scientific Statement From the American Heart Association",
+  "shortTitle": "Management of Central Retinal Artery Occlusion",
+  "doi": "10.1161/STR.0000000000000366",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000366",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/33677974/",
+  "pmid": "33677974",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Central retinal artery occlusion (CRAO) is a form of acute ischemic stroke that causes severe visual loss and is a harbinger of further cerebrovascular and cardiovascular events. There is a paucity of scientific information on the appropriate management of CRAO, with most strategies based on observational literature and expert opinion. In this scientific statement, we critically appraise the literature on CRAO and provide a framework within which to consider acute treatment and secondary prevention.",
+      "page": null
+    }
+  ]
+}

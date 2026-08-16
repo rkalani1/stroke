@@ -1,0 +1,21 @@
+{
+  "id": "aha-ideal-foundational-requirements-2023",
+  "title": "Ideal Foundational Requirements for Stroke Program Development and Growth: A Scientific Statement From the American Heart Association",
+  "shortTitle": "Ideal Foundational Requirements for Stroke Program Development and Growth",
+  "doi": "10.1161/STR.0000000000000424",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000424",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/36748462/",
+  "pmid": "36748462",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Stroke center certification has evolved at a rapid pace and is now available at 4 different levels of service in the United States. Although certification standards provide guidance on stroke center process elements, lack of guidance on structural components such as workforce, staffing, and unit operations has resulted in heterogeneous services among hospitals credentialed at the same stroke center level.",
+      "page": null
+    }
+  ]
+}

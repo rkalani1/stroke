@@ -1,0 +1,21 @@
+{
+  "id": "eso-esmint-thrombectomy-2022",
+  "title": "European Stroke Organisation - European Society for Minimally Invasive Neurological Therapy expedited recommendation on indication for intravenous thrombolysis before mechanical thrombectomy in patients with acute ischaemic stroke and anterior circulation large vessel occlusion",
+  "shortTitle": "European Stroke Organisation - European Society for Minimally Invasive Neurolo",
+  "doi": "10.1177/23969873221076968",
+  "publisherUrl": "https://doi.org/10.1177/23969873221076968",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/35300256/",
+  "pmid": "35300256",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Six randomized controlled clinical trials have assessed whether mechanical thrombectomy (MT) alone is non-inferior to intravenous thrombolysis (IVT) plus MT within 4.5 hours of symptom onset in patients with anterior circulation large vessel occlusion (LVO) ischaemic stroke and no contraindication to IVT.",
+      "page": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "eso-space-occupying-infarction-2021",
+  "title": "European Stroke Organisation (ESO) guidelines on the management of space-occupying brain infarction",
+  "shortTitle": "European Stroke Organisation (ESO) guidelines on the management of space-occup",
+  "doi": "10.1177/23969873211014112",
+  "publisherUrl": "https://doi.org/10.1177/23969873211014112",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/34414308/",
+  "pmid": "34414308",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Space-occupying brain oedema is a potentially life-threatening complication in the first days after large hemispheric or cerebellar infarction. Several treatment strategies for this complication are available, but the size and quality of the scientific evidence on which these strategies are based vary considerably. The aim of this Guideline document is to assist physicians in their management decisions when treating patients with space-occupying hemispheric or cerebellar infarction.",
+      "page": null
+    }
+  ]
+}

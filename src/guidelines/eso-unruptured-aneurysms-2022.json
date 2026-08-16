@@ -1,0 +1,21 @@
+{
+  "id": "eso-unruptured-aneurysms-2022",
+  "title": "European Stroke Organisation (ESO) guidelines on management of unruptured intracranial aneurysms",
+  "shortTitle": "European Stroke Organisation (ESO) guidelines on management of unruptured intr",
+  "doi": "10.1177/23969873221099736",
+  "publisherUrl": "https://doi.org/10.1177/23969873221099736",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/36082246/",
+  "pmid": "36082246",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Unruptured intracranial aneurysms (UIA) occur in around 3% of the population. Important management questions concern if and how to perform preventive UIA occlusion; if, how and when to perform follow up imaging and non-interventional means to reduce the risk of rupture. Using the Standard Operational Procedure of ESO we prepared guidelines according to GRADE methodology.",
+      "page": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "aha-care-ais-prehospital-2021",
+  "title": "Care of the Patient With Acute Ischemic Stroke (Prehospital and Acute Phase of Care): Update to the 2009 Comprehensive Nursing Care Scientific Statement: A Scientific Statement From the American Heart Association",
+  "shortTitle": "Care of the Patient With Acute Ischemic Stroke (Prehospital and Acute Phase of",
+  "doi": "10.1161/STR.0000000000000356",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000356",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/33691468/",
+  "pmid": "33691468",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The year 2020 was the year of the nurse, celebrating nurse scholarship, innovation, and leadership by promoting scientific nursing research, improving nursing practice, advancing nursing education, and providing leadership to influence health policy. As architects of stroke care, neuroscience nurses play a vital role in collaborating and coordinating care between multiple health professionals.",
+      "page": null
+    }
+  ]
+}

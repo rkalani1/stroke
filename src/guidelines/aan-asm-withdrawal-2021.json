@@ -1,0 +1,21 @@
+{
+  "id": "aan-asm-withdrawal-2021",
+  "title": "Antiseizure Medication Withdrawal in Seizure-Free Patients: Practice Advisory Update Summary: Report of the AAN Guideline Subcommittee",
+  "shortTitle": "Antiseizure Medication Withdrawal in Seizure-Free Patients",
+  "doi": "10.1212/WNL.0000000000012944",
+  "publisherUrl": "https://doi.org/10.1212/WNL.0000000000012944",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/34873018/",
+  "pmid": "34873018",
+  "society": "AAN",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "To update a 1996 American Academy of Neurology practice parameter. The authors systematically reviewed literature published from January 1991 to March 2020. The long-term (24-60 months) risk of seizure recurrence is possibly higher among adults who have been seizure-free for 2 years and taper antiseizure medications (ASMs) vs those who do not taper ASMs (15% vs 7% per the 1 Class I article addressing this issue).",
+      "page": null
+    }
+  ]
+}
