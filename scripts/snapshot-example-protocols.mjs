@@ -1,6 +1,6 @@
 // Example Protocols content lock.
 //
-// The Example Protocols tab (#/protocols/ich|ischemic|sah|tia|cvt|calculators)
+// The Protocols tab (#/protocols/ischemic|ich|complications|pediatric|sah|tia|cvt|calculators)
 // carries a HARD constraint: its clinical text, values, thresholds, algorithms,
 // and wording must not change during refactoring. This script renders the built
 // app (app.js at repo root — the same artifact GitHub Pages serves), extracts
@@ -28,7 +28,7 @@ import { chromium } from 'playwright';
 
 const PORT = 4185;
 const BASE_URL = `http://127.0.0.1:${PORT}/`;
-const SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
+const SUBTABS = ['ischemic', 'ich', 'complications', 'pediatric', 'sah', 'tia', 'cvt', 'calculators'];
 const SNAPSHOT_DIR = path.join(process.cwd(), 'tests', 'snapshots', 'example-protocols');
 const update = process.argv.includes('--update');
 

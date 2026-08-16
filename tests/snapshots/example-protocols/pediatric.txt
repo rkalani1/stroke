@@ -1,0 +1,80 @@
+De-identified current protocol translation
+Stroke protocols and algorithms
+Source review:
+2026-08-16
+Newest revision:
+August 2026
+Only the approved protocol source set was used. No outside guideline content was added.
+For trained clinical teams. Confirm the active approved source before clinical action.
+Acute ischemic
+ICH
+Complications
+Pediatric
+SAH
+TIA
+CVT
+Calculators
+Pediatric stroke framework
+A source-limited evaluation and treatment framework requiring pediatric specialist review and individualized family discussion.
+Framework dated June 30, 2026
+This source is an educational framework, not a stand-alone telephone treatment protocol. Pediatric reperfusion is off-label and evidence is limited.
+Evaluation
+⌄
+Document age, last known well, vascular and systemic risk factors, neurologic examination, and NIHSS or Pediatric NIHSS.
+Obtain glucose, CBC, coagulation studies, toxicology testing when relevant, and pregnancy testing when relevant.
+MRI with vascular imaging is preferred. CT with CTA is acceptable when the presentation is convincing and MRI would delay care.
+IV thrombolysis
+⌄
+Consider for confirmed ischemic stroke with a measurable deficit within 4.5 hours, after individualized multidisciplinary and family discussion.
+Age under 2 years is a contraindication. Also address sickle-cell disease, mineralizing lenticulostriate arteriopathy, blood pressure more than 15% above the age-based 95th percentile, and the adult exclusion set.
+Tenecteplase: 0.25 mg/kg IV bolus, maximum 25 mg. Alteplase alternative: 0.9 mg/kg IV, maximum 90 mg.
+Endovascular thrombectomy
+⌄
+Consider for ICA, M1, proximal dominant M2, or basilar occlusion; NIHSS/Pediatric NIHSS at least 6 or a non-improving moderate-to-severe deficit; and presentation within 24 hours.
+Age 6 years or older is the preferred threshold; use caution at ages 4–5. Do not use this framework under age 4, with moyamoya, or with focal cerebral arteriopathy.
+Anterior circulation imaging: ASPECTS at least 3 through 6 hours and at least 6 from 6–24 hours; imaging should be obtained within 2 hours of the treatment decision. Posterior circulation treatment may be considered through 24 hours.
+Blood pressure and complications
+⌄
+After thrombolysis, treat blood pressure that remains for more than 1 hour at least 15% above the age-based 95th percentile, or treat immediately when at least 20% above that threshold; obtain pediatric critical-care support.
+Use the adult complication pathways only with pediatric weight-based medication and specialist/pharmacy review.
+Source register and scope decisions
+Source
+Revision
+Status
+Acute stroke algorithm
+July 2026
+Authoritative
+IV thrombolytic information form
+August 2026
+Authoritative
+Endovascular treatment information form
+August 2026
+Authoritative
+Stroke pocket-card set
+May–July 2026
+Authoritative
+Intracerebral hemorrhage initial-evaluation algorithm
+June–July 2026
+Authoritative
+Anticoagulant-reversal protocol
+September 2025
+Approved
+Post-thrombolysis hemorrhage protocol
+September 2025
+Reviewed
+Thrombolysis-associated angioedema protocol
+November 2025
+Revised
+Pediatric stroke framework
+June 2026
+Current framework
+TIA/minor-stroke note framework
+March 2026
+Current framework
+Minor-stroke/TIA dual-antiplatelet evidence table
+April 2024
+Evidence summary
+Excluded pending material
+A proposed direct-to-procedure workflow was excluded because it is not an approved operational algorithm.
+A draft acute-ischemic guideline adaptation was excluded because it remains a working draft.
+A draft outpatient pathway was excluded because it remains a working draft.

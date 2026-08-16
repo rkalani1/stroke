@@ -1,0 +1,80 @@
+De-identified current protocol translation
+Stroke protocols and algorithms
+Source review:
+2026-08-16
+Newest revision:
+August 2026
+Only the approved protocol source set was used. No outside guideline content was added.
+For trained clinical teams. Confirm the active approved source before clinical action.
+Acute ischemic
+ICH
+Complications
+Pediatric
+SAH
+TIA
+CVT
+Calculators
+Treatment complications
+Immediate response to post-thrombolysis hemorrhage, orolingual angioedema, and urgent contrast-allergy premedication.
+Post-thrombolysis hemorrhage reviewed September 2025; angioedema revised November 2025
+Suspected hemorrhage after thrombolysis
+Emergency response
+⌄
+Suspect with sudden neurologic decline, new headache, acute hypertension, nausea, or vomiting.
+Stop the thrombolytic infusion. Obtain STAT noncontrast head CT, hemorrhage/coagulation studies, CBC, and type and crossmatch; notify transfusion services and order 2 units of cryoprecipitate immediately.
+If CT is delayed more than 30 minutes and fibrinogen is below 200 mg/dL, give 2 units of cryoprecipitate empirically over 10–30 minutes.
+If CT confirms blood: give 2 units of cryoprecipitate and tranexamic acid 1,000 mg IV over 10 minutes; repeat the hemorrhage panel; obtain attending and procedural input; involve hematology if laboratory abnormalities or bleeding remain uncontrolled.
+If CT shows no blood, stop any empiric cryoprecipitate infusion, do not restart the thrombolytic, and evaluate other causes. Repeat laboratory assessment every 4 hours until normalized.
+Orolingual angioedema after thrombolysis
+⌄
+Assess the airway immediately. Anterior tongue or lip swelling may not require intubation; laryngeal, palatal, floor-of-mouth, or oropharyngeal involvement—or rapid progression within 30 minutes—has greater airway risk.
+Stop alteplase if it is infusing and hold ACE-inhibitor therapy.
+Give methylprednisolone 125 mg IV, diphenhydramine 50 mg IV, and either ranitidine 50 mg IV or famotidine 20 mg IV.
+If worsening, give epinephrine 0.1% solution, 0.3 mL subcutaneously, or 0.5 mL by nebulization; give C1 esterase inhibitor 20 IU/kg IV.
+When intubation is needed, awake fiberoptic technique is preferred. Nasotracheal placement carries epistaxis risk.
+Urgent contrast-allergy premedication for suspected LVO
+⌄
+Use only for mild, moderate, or uncertain prior contrast reactions. Do not use for known contrast anaphylaxis or cardiovascular collapse.
+Immediately before contrast, give hydrocortisone 200 mg IV or methylprednisolone 40 mg IV, plus diphenhydramine 50 mg IV.
+Document consent, treating-team approval, and the planned monitoring response.
+Source register and scope decisions
+Source
+Revision
+Status
+Acute stroke algorithm
+July 2026
+Authoritative
+IV thrombolytic information form
+August 2026
+Authoritative
+Endovascular treatment information form
+August 2026
+Authoritative
+Stroke pocket-card set
+May–July 2026
+Authoritative
+Intracerebral hemorrhage initial-evaluation algorithm
+June–July 2026
+Authoritative
+Anticoagulant-reversal protocol
+September 2025
+Approved
+Post-thrombolysis hemorrhage protocol
+September 2025
+Reviewed
+Thrombolysis-associated angioedema protocol
+November 2025
+Revised
+Pediatric stroke framework
+June 2026
+Current framework
+TIA/minor-stroke note framework
+March 2026
+Current framework
+Minor-stroke/TIA dual-antiplatelet evidence table
+April 2024
+Evidence summary
+Excluded pending material
+A proposed direct-to-procedure workflow was excluded because it is not an approved operational algorithm.
+A draft acute-ischemic guideline adaptation was excluded because it remains a working draft.
+A draft outpatient pathway was excluded because it remains a working draft.
