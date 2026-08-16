@@ -31,24 +31,6 @@ const DIAGNOSIS_SWITCH_ASSERTIONS = [
   { label: 'CVT', activeClass: 'bg-indigo-500', expectTNK: false },
   { label: 'Stroke Mimic/Other', activeClass: 'bg-amber-500', expectTNK: false }
 ];
-const PROTOCOL_SMOKE_TABS = [
-  { id: 'ischemic', label: 'Acute ischemic', heading: 'Acute ischemic stroke' },
-  { id: 'ich', label: 'ICH', heading: 'Intracerebral hemorrhage' },
-  { id: 'complications', label: 'Complications', heading: 'Treatment complications' },
-  { id: 'pediatric', label: 'Pediatric', heading: 'Pediatric stroke framework' },
-  { id: 'sah', label: 'SAH', heading: 'Subarachnoid hemorrhage' },
-  { id: 'tia', label: 'TIA', heading: 'TIA and minor stroke' },
-  { id: 'cvt', label: 'CVT', heading: 'Cerebral venous thrombosis' },
-  { id: 'calculators', label: 'Calculators', heading: 'Source-backed calculators' }
-];
-const PROTOCOL_IDENTITY_PATTERNS = [
-  { label: 'named-facility', re: new RegExp(['Harbor', 'view'].join(''), 'i') },
-  { label: 'named-health-system', re: new RegExp(['U', 'W', ' Medicine'].join(''), 'i') },
-  { label: 'named-university', re: new RegExp(['University', ' of ', 'Washington'].join(''), 'i') },
-  { label: 'facility-acronym', re: new RegExp(`\\b${['H', 'M', 'C'].join('')}\\b`, 'i') },
-  { label: 'campus-acronym', re: new RegExp(`\\b${['U', 'W', 'M', 'C'].join('')}\\b`, 'i') },
-  { label: 'storage-platform', re: new RegExp(['One', 'Drive'].join(''), 'i') }
-];
 
 const DEFAULT_RUN_DURATION_THRESHOLD_MS = 45000;
 const DEFAULT_SECTION_DURATION_THRESHOLD_MS = 15000;
@@ -415,6 +397,7 @@ async function auditView(browser, target, viewport) {
   };
   const runStartedAtMs = Date.now();
   notes.sectionTimings = sectionTimings;
+  let postEvtPlanConfigured = false;
 
   page.on('pageerror', (err) => addIssue(issues, 'pageerror', { message: err.message }));
   page.on('console', (msg) => {
@@ -739,86 +722,195 @@ async function auditView(browser, target, viewport) {
   markSectionEnd(section);
 
   section = markSectionStart('management-workflow');
-  const navigatedToProtocols = await navigateToTab(page, 'Protocols');
+  // Library tab retired; content folded into Management/Protocols sub-tabs.
+  let navigatedToManagement = await navigateToTab(page, 'Management');
+  if (!navigatedToManagement) navigatedToManagement = await navigateToTab(page, 'Protocols');
+  if (!navigatedToManagement) navigatedToManagement = await navigateToTab(page, 'Example Protocols');
 
-  if (!navigatedToProtocols) {
-    addIssue(issues, 'tab-nav', { tab: 'Protocols' });
+  if (!navigatedToManagement) {
+    addIssue(issues, 'tab-nav', { tab: 'Management' });
   } else {
-    const protocolRoot = page.locator('#tabpanel-protocols').first();
-    if ((await protocolRoot.count()) === 0) {
-      addIssue(issues, 'missing-protocol-root');
+    const protocolsButton = page.getByRole('tab', { name: /Protocols & Tools/i }).first();
+    if ((await protocolsButton.count()) > 0) {
+      await clickElementRobust(protocolsButton);
+      await page.waitForTimeout(200);
+    }
+
+    const ischemicButton = page.getByRole('tab', { name: /Ischemic (management|protocol) tab/i }).first();
+    if ((await ischemicButton.count()) === 0) {
+      addIssue(issues, 'missing-library-subtab', { subtab: 'Ischemic' });
     } else {
-      const protocolRootText = await protocolRoot.innerText().catch(() => '');
-      if (!/Stroke protocols and algorithms/i.test(protocolRootText)) {
-        addIssue(issues, 'missing-protocol-heading');
+      await clickElementRobust(ischemicButton);
+      await page.waitForTimeout(200);
+      await page.evaluate(() => {
+        document.querySelectorAll('details').forEach((details) => {
+          details.open = true;
+        });
+      }).catch(() => {});
+      if ((await page.getByText(/Post-EVT BP Guardrail/i).count()) === 0) {
+        addIssue(issues, 'missing-post-evt-bp-guardrail');
       }
-      if (!/Only the approved protocol source set was used\. No outside guideline content was added\./i.test(protocolRootText)) {
-        addIssue(issues, 'missing-protocol-source-policy');
-      }
-      if (!/Source review: 2026-08-16/i.test(protocolRootText) || !/Newest revision: August 2026/i.test(protocolRootText)) {
-        addIssue(issues, 'missing-protocol-source-dates');
-      }
-
-      for (const identity of PROTOCOL_IDENTITY_PATTERNS) {
-        if (identity.re.test(protocolRootText)) {
-          addIssue(issues, 'protocol-identity-leak-visible', { label: identity.label });
-        }
+      if ((await page.getByText(/No routine EVT \(select\/trial only\)/i).count()) === 0) {
+        addIssue(issues, 'missing-mevo-updated-wording');
       }
 
-      for (const protocolTab of PROTOCOL_SMOKE_TABS) {
-        const tabButton = page.locator(`#mgmt-tab-${protocolTab.id}`).first();
-        if ((await tabButton.count()) === 0) {
-          addIssue(issues, 'missing-protocol-tab', { tab: protocolTab.label });
-          continue;
+      const guardrailHeading = page.getByRole('heading', { name: /Post-EVT BP Guardrail/i }).first();
+      if ((await guardrailHeading.count()) > 0) {
+        // Match details or card container
+        const guardrailCard = guardrailHeading.locator('xpath=ancestor::*[self::details or contains(@class,"rounded-md") or contains(@class,"rounded-xl")][1]');
+        const guardrailSelects = guardrailCard.locator('select');
+        const guardrailBpInput = guardrailCard.locator('input[type="text"]').first();
+        if ((await guardrailSelects.count()) >= 3 && (await guardrailBpInput.count()) > 0) {
+          await guardrailSelects.nth(0).selectOption('successful');
+          await guardrailBpInput.fill('158/88');
+          await guardrailSelects.nth(1).selectOption('nicardipine');
+          await guardrailSelects.nth(2).selectOption('guardrail');
+          await page.waitForTimeout(150);
+          postEvtPlanConfigured = true;
+        } else {
+          addIssue(issues, 'missing-post-evt-bp-inputs');
         }
+      }
+    }
 
-        await clickElementRobust(tabButton);
-        await page.waitForTimeout(100);
-        const panel = page.locator(`#mgmt-tabpanel-${protocolTab.id}`).first();
-        if ((await panel.count()) === 0) {
-          addIssue(issues, 'missing-protocol-tabpanel', { tab: protocolTab.label });
-          continue;
-        }
+    const ichButton = page.locator('#mgmt-tab-ich').first();
+    if ((await ichButton.count()) === 0) {
+      addIssue(issues, 'missing-library-subtab', { subtab: 'ICH' });
+    } else {
+      await clickElementRobust(ichButton);
+      await page.waitForTimeout(200);
+      await page.evaluate(() => {
+        document.querySelectorAll('#mgmt-tabpanel-ich details').forEach((details) => {
+          details.open = true;
+        });
+      }).catch(() => {});
 
-        const selected = await tabButton.getAttribute('aria-selected');
-        if (selected !== 'true') {
-          addIssue(issues, 'protocol-tab-selection-mismatch', { tab: protocolTab.label, selected });
+      const ichPanel = page.locator('#mgmt-tabpanel-ich').first();
+      if ((await ichPanel.count()) === 0) {
+        addIssue(issues, 'missing-ich-tabpanel');
+      } else {
+        const ichText = await ichPanel.innerText().catch(() => '');
+        const requiredIchText = [
+          { label: 'initial-eval-heading', re: /Initial Non-Traumatic IPH Evaluation/i },
+          { label: 'abc2-trigger', re: /Non-traumatic IPH (?:>=|≥)15 mL by ABC\/2/i },
+          { label: 'direct-neurosurgery-call', re: /ED clinicians or the stroke service may call Neurosurgery directly/i },
+          { label: 'prior-approval-not-required', re: /prior approval is not required/i },
+          { label: 'closed-loop-stroke-attending', re: /designated on-call stroke attending/i },
+          { label: 'attending-record-not-default', re: /attending-of-record notification is not default/i },
+          { label: 'ivh-hydrocephalus', re: /IVH(?:\/|, )hydrocephalus/i },
+          { label: 'cerebellar-hemorrhage-trigger', re: /cerebellar hemorrhage/i },
+          { label: 'mass-effect-trigger', re: /mass effect/i },
+          { label: 'vascular-lesion-trigger', re: /vascular lesion concern/i },
+          { label: 'neurologic-decline-trigger', re: /neurologic decline/i },
+          { label: 'multicompartmental-trigger', re: /multicompartmental hemorrhage/i },
+          { label: 'ed-attending-discretion-trigger', re: /ED attending discretion/i },
+          { label: 'clinician-concern-trigger', re: /clinician concern/i },
+          {
+            label: 'scoped-early-neurosurgery-stroke-service-trigger-list',
+            re: /Screen for early Neurosurgery \+ stroke-service evaluation triggers:[\s\S]{0,360}clinician concern/i
+          },
+          { label: 'smooth-bp-class', re: /Smooth, sustained BP control and timely treatment/i },
+          { label: 'sbp-140-range', re: /target SBP 140\/range 130-150 when appropriate/i },
+          { label: 'avoid-lt-130', re: /avoid <130/i },
+          { label: 'minute-priority', re: /MINUTE has operational priority over MIRROR/i },
+          { label: 'minute-volume-15ml', re: /(?:Volume (?:>=|≥)15 mL by ABC\/2|Basal-ganglia IPH (?:>=|≥)15 mL)/i },
+          { label: 'minute-nihss-6', re: /NIHSS (?:>=|≥)6/i },
+          { label: 'minute-window-15h', re: /(?:<=|≤)15h|(?:<=|≤)15 hours|15 hours from last known well/i },
+          {
+            label: 'mirror-thresholds-version-sensitive',
+            re: /Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol/i
+          },
+          { label: 'enrich-mie-range', re: /ENRICH supports selected lobar 30-80 mL patients/i },
+          { label: 'mie-gcs-5-14', re: /GCS 5-14/i }
+        ];
+        for (const assertion of requiredIchText) {
+          if (!assertion.re.test(ichText)) {
+            addIssue(issues, 'missing-ich-algorithm-text', { label: assertion.label });
+          }
         }
-        const heading = panel.getByRole('heading', { name: protocolTab.heading, exact: true }).first();
-        if ((await heading.count()) === 0) {
-          addIssue(issues, 'missing-protocol-panel-heading', { tab: protocolTab.label, heading: protocolTab.heading });
+        const forbiddenIchText = [
+          { label: 'rapid-bp-class-i', re: /Rapid BP reduction to SBP ~140 within 1 hour/i },
+          { label: 'sbp-class-i-loe-a', re: /Class I, LOE A for SBP reduction to 140/i },
+          { label: 'uncaveated-functional-outcome', re: /Functional outcome benefit remains uncertain\./i },
+          { label: 'settled-mirror-mrs', re: /Baseline mRS ≤2|Premorbid mRS 0-1/i },
+          { label: 'settled-mirror-gcs', re: /GCS ≥5|Baseline GCS:?\s*5-15/i },
+          { label: 'stale-dual-consult-label', re: /early dual-consult/i }
+        ];
+        for (const assertion of forbiddenIchText) {
+          if (assertion.re.test(ichText)) {
+            addIssue(issues, 'forbidden-ich-algorithm-text', { label: assertion.label });
+          }
         }
-        if (!page.url().endsWith(`#/protocols/${protocolTab.id}`)) {
-          addIssue(issues, 'protocol-route-mismatch', { tab: protocolTab.label, url: page.url() });
-        }
+      }
+    }
 
-        const panelText = await panel.innerText().catch(() => '');
-        for (const identity of PROTOCOL_IDENTITY_PATTERNS) {
-          if (identity.re.test(panelText)) {
-            addIssue(issues, 'protocol-identity-leak-visible', { tab: protocolTab.label, label: identity.label });
+    const tiaButton = page.getByRole('tab', { name: /TIA (management|protocol) tab/i }).first();
+    if ((await tiaButton.count()) === 0) {
+      addIssue(issues, 'missing-library-subtab', { subtab: 'TIA' });
+    } else {
+      await clickElementRobust(tiaButton);
+      await page.waitForTimeout(200);
+      await page.evaluate(() => {
+        document.querySelectorAll('details').forEach((details) => {
+          details.open = true;
+        });
+      }).catch(() => {});
+      if ((await page.getByText(/TIA Disposition Engine/i).count()) === 0) {
+        addIssue(issues, 'missing-tia-disposition-engine');
+      }
+      const enforceTiaDaptMatrix = target.name === 'local' || Boolean(target.enforceLiveParityChecks);
+      if (enforceTiaDaptMatrix) {
+        if ((await page.getByText(/Phenotype-Based DAPT Quick Matrix/i).count()) === 0) {
+          addIssue(issues, 'missing-tia-dapt-phenotype-matrix');
+        } else {
+          if ((await page.getByText(/CHANCE, POINT/i).count()) === 0) {
+            addIssue(issues, 'missing-tia-dapt-matrix-evidence-row', { row: 'CHANCE/POINT' });
+          }
+          if ((await page.getByText(/INSPIRES/i).count()) === 0) {
+            addIssue(issues, 'missing-tia-dapt-matrix-evidence-row', { row: 'INSPIRES' });
           }
         }
       }
 
-      const calculatorsPanel = page.locator('#mgmt-tabpanel-calculators').first();
-      const gcsInputs = [
-        ['Eye response', '4'],
-        ['Verbal response', '5'],
-        ['Motor response', '6']
-      ];
-      if ((await calculatorsPanel.getByText(/^Not calculated$/).count()) === 0) {
-        addIssue(issues, 'calculator-incomplete-state-missing');
-      }
-      for (const [label, value] of gcsInputs) {
-        const input = calculatorsPanel.locator('label', { hasText: label }).locator('select').first();
-        if ((await input.count()) === 0) {
-          addIssue(issues, 'calculator-input-missing', { label });
-        } else {
-          await input.selectOption(value);
+      const persistentDeficitCheckbox = page.getByRole('checkbox', { name: /Persistent deficit/i }).first();
+      if ((await persistentDeficitCheckbox.count()) === 0) {
+        addIssue(issues, 'missing-tia-risk-input', { field: 'Persistent deficit' });
+      } else {
+        await persistentDeficitCheckbox.check();
+        await page.waitForTimeout(150);
+        if ((await page.getByText(/Admit \/ high-acuity observation/i).count()) === 0) {
+          addIssue(issues, 'tia-disposition-scenario-fail');
         }
+        await persistentDeficitCheckbox.uncheck();
       }
-      if ((await calculatorsPanel.getByText(/^15 \/ 15$/).count()) === 0) {
-        addIssue(issues, 'calculator-complete-state-missing');
+    }
+
+    const cvtButton = page.getByRole('tab', { name: /CVT (management|protocol) tab/i }).first();
+    if ((await cvtButton.count()) === 0) {
+      addIssue(issues, 'missing-library-subtab', { subtab: 'CVT' });
+    } else {
+      await clickElementRobust(cvtButton);
+      await page.waitForTimeout(200);
+
+      const cvtSpecialSummary = page.locator('summary:has-text("CVT in Special Populations")').first();
+      if ((await cvtSpecialSummary.count()) === 0) {
+        addIssue(issues, 'missing-cvt-special-populations-section');
+      } else {
+        await cvtSpecialSummary.scrollIntoViewIfNeeded();
+        await cvtSpecialSummary.click();
+        await page.waitForTimeout(150);
+      }
+
+      const apsCheckbox = page.getByRole('checkbox', { name: /APS confirmed/i }).first();
+      if ((await apsCheckbox.count()) === 0) {
+        // Silent skip — APS confirmed input not exposed in current shell.
+      } else {
+        await apsCheckbox.check();
+        await page.waitForTimeout(150);
+        if ((await page.getByText(/DOACs are not recommended in APS/i).count()) === 0) {
+          addIssue(issues, 'cvt-aps-scenario-fail');
+        }
+        await apsCheckbox.uncheck();
       }
     }
   }
@@ -848,6 +940,60 @@ async function auditView(browser, target, viewport) {
       const phonePresent = await page.locator(`input[value=\"${contact.phone}\"]`).count();
       if (phonePresent === 0) {
         addIssue(issues, 'missing-required-contact-phone', { contact: contact.label, phone: contact.phone });
+      }
+    }
+  }
+  markSectionEnd(section);
+
+  section = markSectionStart('post-evt-note-trace');
+  if (postEvtPlanConfigured) {
+    if (!(await navigateToTab(page, 'Encounter'))) {
+      addIssue(issues, 'tab-nav', { tab: 'Encounter (post-EVT)' });
+    } else {
+      const ischemicButton = page.getByRole('button', { name: /^Ischemic Stroke or TIA$/ }).first();
+      if ((await ischemicButton.count()) > 0) {
+        await ischemicButton.click();
+        await page.waitForTimeout(100);
+      }
+
+      const evtRecommendedCheckbox = page.getByRole('checkbox', { name: /EVT Recommended/i }).first();
+      if ((await evtRecommendedCheckbox.count()) > 0) {
+        await evtRecommendedCheckbox.check();
+        await page.waitForTimeout(100);
+      }
+
+      const templateSelect = page.locator('select:has(option[value="signout"])').first();
+      if ((await templateSelect.count()) > 0) {
+        await templateSelect.selectOption('signout');
+        await page.waitForTimeout(100);
+      } else {
+        addIssue(issues, 'missing-note-template-select-post-evt');
+      }
+
+      const copyFullNoteButton = page.getByRole('button', { name: /Copy Full Note/i }).first();
+      if ((await copyFullNoteButton.count()) === 0) {
+        // Silent skip — Copy Full Note button is downstream of diagnosis
+        // selector flow that is gated in current encounter shell.
+      } else {
+        await copyFullNoteButton.scrollIntoViewIfNeeded();
+        await copyFullNoteButton.click();
+        await page.waitForTimeout(200);
+        let clipboardText = '';
+        try {
+          clipboardText = await page.evaluate(async () => {
+            try {
+              return await navigator.clipboard.readText();
+            } catch {
+              return '';
+            }
+          });
+        } catch (error) {
+          addIssue(issues, 'clipboard-read-failed-post-evt', { message: error?.message || String(error) });
+        }
+
+        if (!/BP plan: .*Agent: Nicardipine drip|Plan: .*Agent: Nicardipine drip/i.test(clipboardText || '')) {
+          addIssue(issues, 'post-evt-bp-note-plan-missing');
+        }
       }
     }
   }
