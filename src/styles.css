@@ -134,6 +134,22 @@
     display: none;
   }
 
+  /* Touch input gets full-size targets at every width. The `sm:` breakpoint
+     switches to a fine-pointer layout at 640px, but a tablet is ~820px AND a
+     finger — so the primary tab pills (min-h-[44px] sm:min-h-0) collapse to
+     29px and the header resource chips to 32px for someone tapping them.
+     Scoped to pointer: coarse, so mouse and trackpad layouts are untouched. */
+  @media (pointer: coarse) {
+    /* Selectors are doubled deliberately. The tab pills carry Tailwind's
+       `sm:min-h-0`, which is also a single-class selector and is emitted in the
+       utilities layer — i.e. after this one — so an equal-specificity rule here
+       would lose the cascade. Doubling the class wins without !important. */
+    .tab-pill.tab-pill,
+    .resource-chip.resource-chip {
+      min-height: 44px;
+    }
+  }
+
   @media (max-width: 767px) {
     .app-header.is-mobile-compact {
       padding-block: 0.4rem;

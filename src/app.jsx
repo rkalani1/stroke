@@ -16979,7 +16979,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               target="_blank"
                               rel="noopener noreferrer"
                               title={link.note || `Open ${link.label} in a new tab`}
-                              className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:border-cobalt-300 hover:bg-cobalt-50 hover:text-cobalt-700 dark:border-strong dark:bg-card dark:text-ink-2 dark:hover:bg-cobalt-900 dark:hover:text-cobalt-200"
+                              className="resource-chip inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:border-cobalt-300 hover:bg-cobalt-50 hover:text-cobalt-700 dark:border-strong dark:bg-card dark:text-ink-2 dark:hover:bg-cobalt-900 dark:hover:text-cobalt-200"
                             >
                               <i aria-hidden="true" data-lucide="external-link" className="h-3.5 w-3.5 shrink-0 text-cobalt-600 dark:text-cobalt-300"></i>
                               <span className="whitespace-nowrap">{link.label}</span>
