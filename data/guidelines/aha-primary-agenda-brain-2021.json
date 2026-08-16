@@ -1,0 +1,21 @@
+{
+  "id": "aha-primary-agenda-brain-2021",
+  "title": "A Primary Care Agenda for Brain Health: A Scientific Statement From the American Heart Association",
+  "shortTitle": "A Primary Care Agenda for Brain Health",
+  "doi": "10.1161/STR.0000000000000367",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000367",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/33719523/",
+  "pmid": "33719523",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "A healthy brain is critical for living a longer and fuller life. The projected aging of the population, however, raises new challenges in maintaining quality of life. As we age, there is increasing compromise of neuronal activity that affects functions such as cognition, also making the brain vulnerable to disease. Once pathology-induced decline begins, few therapeutic options are available. Prevention is therefore paramount, and primary care can play a critical role.",
+      "page": null
+    }
+  ]
+}

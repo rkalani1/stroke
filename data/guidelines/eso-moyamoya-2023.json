@@ -1,0 +1,21 @@
+{
+  "id": "eso-moyamoya-2023",
+  "title": "European Stroke Organisation (ESO) Guidelines on Moyamoya angiopathy Endorsed by Vascular European Reference Network (VASCERN)",
+  "shortTitle": "European Stroke Organisation (ESO) Guidelines on Moyamoya angiopathy Endorsed ",
+  "doi": "10.1177/23969873221144089",
+  "publisherUrl": "https://doi.org/10.1177/23969873221144089",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/37021176/",
+  "pmid": "37021176",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The European Stroke Organisation (ESO) guidelines on Moyamoya Angiopathy (MMA), developed according to ESO standard operating procedure and Grading of Recommendations, Assessment, Development and Evaluation (GRADE) methodology, were compiled to assist clinicians in managing patients with MMA in their decision making.",
+      "page": null
+    }
+  ]
+}

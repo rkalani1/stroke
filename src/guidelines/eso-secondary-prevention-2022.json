@@ -1,0 +1,21 @@
+{
+  "id": "eso-secondary-prevention-2022",
+  "title": "European Stroke Organisation (ESO) guideline on pharmacological interventions for long-term secondary prevention after ischaemic stroke or transient ischaemic attack",
+  "shortTitle": "European Stroke Organisation (ESO) guideline on pharmacological interventions ",
+  "doi": "10.1177/23969873221100032",
+  "publisherUrl": "https://doi.org/10.1177/23969873221100032",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/36082250/",
+  "pmid": "36082250",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Recurrent stroke affects 9% to 15% of people within 1 year. This European Stroke Organisation (ESO) guideline provides evidence-based recommendations on pharmacological management of blood pressure (BP), diabetes mellitus, lipid levels and antiplatelet therapy for the prevention of recurrent stroke and other important outcomes in people with ischaemic stroke or transient ischaemic attack (TIA).",
+      "page": null
+    }
+  ]
+}

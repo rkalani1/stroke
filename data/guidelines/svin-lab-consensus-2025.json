@@ -1,0 +1,21 @@
+{
+  "id": "svin-lab-consensus-2025",
+  "title": "Society of Vascular and Interventional Neurology (SVIN) Stroke Interventional Laboratory Consensus (SILC) Criteria for Training Standards and Maintenance of Certification in Neurointervention",
+  "shortTitle": "Society of Vascular and Interventional Neurology (SVIN) Stroke Interventional ",
+  "doi": "10.1161/SVIN.124.001478",
+  "publisherUrl": "https://doi.org/10.1161/SVIN.124.001478",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41573319/",
+  "pmid": "41573319",
+  "society": "SVIN",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The global shortage of neurointerventionalists presents a challenge to timely stroke care, particularly in low- and middle-income countries. The Society of Vascular and Interventional Neurology Stroke Interventional Laboratory Consensus criteria aim to standardize training and certification in neurointervention to address these disparities.",
+      "page": null
+    }
+  ]
+}

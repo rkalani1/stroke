@@ -1,0 +1,21 @@
+{
+  "id": "eso-ean-poststroke-cognition-2021",
+  "title": "European Stroke Organisation and European Academy of Neurology joint guidelines on post-stroke cognitive impairment",
+  "shortTitle": "European Stroke Organisation and European Academy of Neurology joint guideline",
+  "doi": "10.1177/23969873211042192",
+  "publisherUrl": "https://doi.org/10.1177/23969873211042192",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/34746430/",
+  "pmid": "34746430",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The optimal management of post-stroke cognitive impairment remains controversial. These joint European Stroke Organisation (ESO) and European Academy of Neurology (EAN) guidelines provide evidence-based recommendations to assist clinicians in decision making around prevention, diagnosis, treatment and prognosis. These guidelines were developed according to ESO standard operating procedure and the Grading of Recommendations, Assessment, Development and Evaluation (GRADE) methodology.",
+      "page": null
+    }
+  ]
+}

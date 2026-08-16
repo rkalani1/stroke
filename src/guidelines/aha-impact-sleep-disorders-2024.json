@@ -1,0 +1,21 @@
+{
+  "id": "aha-impact-sleep-disorders-2024",
+  "title": "Impact of Sleep Disorders and Disturbed Sleep on Brain Health: A Scientific Statement From the American Heart Association",
+  "shortTitle": "Impact of Sleep Disorders and Disturbed Sleep on Brain Health",
+  "doi": "10.1161/STR.0000000000000453",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000453",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/38235581/",
+  "pmid": "38235581",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Accumulating evidence supports a link between sleep disorders, disturbed sleep, and adverse brain health, ranging from stroke to subclinical cerebrovascular disease to cognitive outcomes, including the development of Alzheimer disease and Alzheimer disease-related dementias.",
+      "page": null
+    }
+  ]
+}

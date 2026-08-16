@@ -1,0 +1,21 @@
+{
+  "id": "aha-palliative-end-life-2024",
+  "title": "Palliative and End-of-Life Care in Stroke: A Scientific Statement From the American Heart Association",
+  "shortTitle": "Palliative and End-of-Life Care in Stroke",
+  "doi": "10.1161/STR.0000000000000479",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000479",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/39676661/",
+  "pmid": "39676661",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "To provide an update on palliative care needs specific to stroke and provide key points for clinicians and health care systems caring for patients with stroke and their families. Members of the writing group were chosen to represent the multidisciplinary team of professionals who care for people who have had a stroke.",
+      "page": null
+    }
+  ]
+}

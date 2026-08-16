@@ -1,0 +1,21 @@
+{
+  "id": "svin-mevo-dvo-evt-2026",
+  "title": "Endovascular Thrombectomy in Medium and Distal Vessel Occlusions: A Focused Guideline From the Society of Vascular and Interventional Neurology Guidelines and Practice Standards Committee",
+  "shortTitle": "Endovascular Thrombectomy in Medium and Distal Vessel Occlusions",
+  "doi": "10.1161/SVIN.125.002314",
+  "publisherUrl": "https://doi.org/10.1161/SVIN.125.002314",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42404835/",
+  "pmid": "42404835",
+  "society": "SVIN",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The authors present an overview of the current evidence and management recommendations for evaluation and treatment of adults with acute ischemic stroke from distal- and medium-vessel occlusion (DMVO) for endovascular thrombectomy (EVT). The intended audiences are prehospital care providers, physicians, and allied health professionals.",
+      "page": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "aha-lv-systolic-dysfunction-2026",
+  "title": "Management of Patients at Risk of Ischemic Stroke With Left Ventricular Systolic Dysfunction in the Absence of Intracardiac Thrombus: A Scientific Statement From the American Heart Association",
+  "shortTitle": "Management of Patients at Risk of Ischemic Stroke With Left Ventricular Systol",
+  "doi": "10.1161/STR.0000000000000528",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000528",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42389837/",
+  "pmid": "42389837",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Left ventricular (LV) systolic dysfunction, defined here as reduced LV ejection fraction ≤40% or left wall motion abnormality, is commonly found in patients with ischemic stroke. Although there is an increased risk of incident and recurrent embolic stroke among patients with LV dysfunction without thrombus detected, the data supporting anticoagulation in these patients are limited.",
+      "page": null
+    }
+  ]
+}

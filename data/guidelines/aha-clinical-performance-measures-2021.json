@@ -1,0 +1,21 @@
+{
+  "id": "aha-clinical-performance-measures-2021",
+  "title": "Clinical Performance Measures for Stroke Rehabilitation: Performance Measures From the American Heart Association/American Stroke Association",
+  "shortTitle": "Clinical Performance Measures for Stroke Rehabilitation",
+  "doi": "10.1161/STR.0000000000000388",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000388",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/34348470/",
+  "pmid": "34348470",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The American Heart Association/American Stroke Association released the adult stroke rehabilitation and recovery guidelines in 2016. A working group of stroke rehabilitation experts reviewed these guidelines and identified a subset of recommendations that were deemed suitable for creating performance measures.",
+      "page": null
+    }
+  ]
+}

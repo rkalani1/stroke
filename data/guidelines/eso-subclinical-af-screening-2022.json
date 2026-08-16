@@ -1,0 +1,21 @@
+{
+  "id": "eso-subclinical-af-screening-2022",
+  "title": "European Stroke Organisation (ESO) guideline on screening for subclinical atrial fibrillation after stroke or transient ischaemic attack of undetermined origin",
+  "shortTitle": "European Stroke Organisation (ESO) guideline on screening for subclinical atri",
+  "doi": "10.1177/23969873221099478",
+  "publisherUrl": "https://doi.org/10.1177/23969873221099478",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/36082257/",
+  "pmid": "36082257",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "We aimed to provide practical recommendations for the screening of subclinical atrial fibrillation (AF) in patients with ischaemic stroke or transient ischaemic attack (TIA) of undetermined origin. These guidelines are based on the Grading of Recommendations, Assessment, Development and Evaluation (GRADE) methodology. Five relevant Population, Intervention, Comparator, Outcome questions were defined by a multidisciplinary module working group (MWG).",
+      "page": null
+    }
+  ]
+}

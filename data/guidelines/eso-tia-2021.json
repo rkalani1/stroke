@@ -1,0 +1,21 @@
+{
+  "id": "eso-tia-2021",
+  "title": "European Stroke Organisation (ESO) guidelines on management of transient ischaemic attack",
+  "shortTitle": "European Stroke Organisation (ESO) guidelines on management of transient ischa",
+  "doi": "10.1177/2396987321992905",
+  "publisherUrl": "https://doi.org/10.1177/2396987321992905",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/34414299/",
+  "pmid": "34414299",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The aim of the present European Stroke Organisation Transient Ischaemic Attack (TIA) management guideline document is to provide clinically useful evidence-based recommendations on approaches to triage, investigation and secondary prevention, particularly in the acute phase following TIA. The guidelines were prepared following the Standard Operational Procedure for a European Stroke Organisation guideline document and according to GRADE methodology.",
+      "page": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "aha-cadasil-2023",
+  "title": "Management of Inherited CNS Small Vessel Diseases: The CADASIL Example: A Scientific Statement From the American Heart Association",
+  "shortTitle": "Management of Inherited CNS Small Vessel Diseases",
+  "doi": "10.1161/STR.0000000000000444",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000444",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/37602377/",
+  "pmid": "37602377",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Lacunar infarcts and vascular dementia are important phenotypic characteristics of cerebral autosomal dominant arteriopathy with subcortical infarcts and leukoencephalopathy, the most common inherited cerebral small vessel disease. Individuals with the disease show variability in the nature and onset of symptoms and rates of progression, which are only partially explained by differences in pathogenic mutations in thegene.",
+      "page": null
+    }
+  ]
+}

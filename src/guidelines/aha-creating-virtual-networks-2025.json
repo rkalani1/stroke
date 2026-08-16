@@ -1,0 +1,21 @@
+{
+  "id": "aha-creating-virtual-networks-2025",
+  "title": "Creating Virtual Stroke Networks: Current and Future Role of Artificial Intelligence, Mobile Imaging Applications, and Telehealth in Triage and Treatment of Acute Ischemic Stroke: A Scientific Statement From the American Heart Association: The American Academy of Neurology affirms the value of this statement as an educational tool for neurologists",
+  "shortTitle": "Creating Virtual Stroke Networks",
+  "doi": "10.1161/STR.0000000000000511",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000511",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41342129/",
+  "pmid": "41342129",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Rapid evaluation, triage, and transport of patients with stroke for thrombolytics, thrombectomy, and other acute treatments have become a vital part of cerebrovascular care. As such, there is a need for technology to facilitate interinstitutional coordination of care. This scientific statement describes how technology expands stroke systems of care.",
+      "page": null
+    }
+  ]
+}

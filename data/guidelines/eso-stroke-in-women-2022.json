@@ -1,0 +1,21 @@
+{
+  "id": "eso-stroke-in-women-2022",
+  "title": "European Stroke Organisation guidelines on stroke in women: Management of menopause, pregnancy and postpartum",
+  "shortTitle": "European Stroke Organisation guidelines on stroke in women",
+  "doi": "10.1177/23969873221078696",
+  "publisherUrl": "https://doi.org/10.1177/23969873221078696",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/35647308/",
+  "pmid": "35647308",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Pregnancy, postpartum and menopause are regarded as periods women are more vulnerable to ischaemic events. There are conflicting results regarding stroke risk and hormone replacement therapy (HRT) during menopause. Stroke in pregnancy is generally increasing with serious consequences for mother and child; therefore, recommendations for acute treatment with intravenous thrombolysis (IVT) and/or mechanical thrombectomy (MT) are needed.",
+      "page": null
+    }
+  ]
+}

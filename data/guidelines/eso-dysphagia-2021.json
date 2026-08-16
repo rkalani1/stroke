@@ -1,0 +1,21 @@
+{
+  "id": "eso-dysphagia-2021",
+  "title": "European Stroke Organisation and European Society for Swallowing Disorders guideline for the diagnosis and treatment of post-stroke dysphagia",
+  "shortTitle": "European Stroke Organisation and European Society for Swallowing Disorders gui",
+  "doi": "10.1177/23969873211039721",
+  "publisherUrl": "https://doi.org/10.1177/23969873211039721",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/34746431/",
+  "pmid": "34746431",
+  "society": "ESO",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Post-stroke dysphagia (PSD) is present in more than 50% of acute stroke patients, increases the risk of complications, in particular aspiration pneumonia, malnutrition and dehydration, and is linked to poor outcome and mortality. The aim of this guideline is to assist all members of the multidisciplinary team in their management of patients with PSD.",
+      "page": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "aha-acute-bp-management-2024",
+  "title": "The Management of Elevated Blood Pressure in the Acute Care Setting: A Scientific Statement From the American Heart Association",
+  "shortTitle": "The Management of Elevated Blood Pressure in the Acute Care Setting",
+  "doi": "10.1161/HYP.0000000000000238",
+  "publisherUrl": "https://doi.org/10.1161/HYP.0000000000000238",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/38804130/",
+  "pmid": "38804130",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Over the past 3 decades, a substantial body of high-quality evidence has guided the diagnosis and management of elevated blood pressure (BP) in the outpatient setting. In contrast, there is a lack of comparable evidence for guiding the management of elevated BP in the acute care setting, resulting in significant practice variation. Throughout this scientific statement, we use the terms acute care and inpatient to refer to care received in the emergency department and after admission to the hospital.",
+      "page": null
+    }
+  ]
+}

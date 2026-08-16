@@ -1,0 +1,21 @@
+{
+  "id": "aha-rural-stroke-care-2024",
+  "title": "Identifying Best Practices for Improving the Evaluation and Management of Stroke in Rural Lower-Resourced Settings: A Scientific Statement From the American Heart Association",
+  "shortTitle": "Identifying Best Practices for Improving the Evaluation and Management of Stro",
+  "doi": "10.1161/STR.0000000000000478",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000478",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/39665145/",
+  "pmid": "39665145",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Considerable variation exists in the delivery of acute stroke care and stroke outcomes across settings and population groups. This is attributable in part to variation in resources among emergency departments in the United States, most notably in rural regions.",
+      "page": null
+    }
+  ]
+}
