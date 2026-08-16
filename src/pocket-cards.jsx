@@ -149,7 +149,7 @@ const DOACIVTCard = ({ defaults = {} }) => {
     <div className="p-3 rounded-lg border border-orange-300 bg-white dark:bg-card dark:border-orange-800">
       <h4 className="font-bold text-orange-900 mb-2 flex items-center gap-2 dark:text-orange-300">
         <span className="inline-block px-2 py-0.5 bg-orange-700 text-white text-xs rounded">EX</span>
-        DOAC-Exposed AIS Patient — IVT Pathway
+        DOAC-Exposed AIS Patient — IVT
       </h4>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs mb-3">
         <label>
@@ -217,7 +217,7 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
       <div className="flex items-center justify-between mb-2">
         <h4 className="font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
           <span className="inline-block px-2 py-0.5 bg-cobalt-700 text-white text-xs rounded">EX</span>
-          EVT Eligibility Matrix
+          EVT Eligibility
         </h4>
         <div className="flex gap-1 flex-wrap">
           {['anterior', 'm2-distal', 'basilar'].map((k) => (

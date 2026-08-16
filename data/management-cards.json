@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "management-cards",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.11.9",
-    "checksum": "sha256:e8968893914944f96390eb313e96b1dd",
+    "appVersion": "6.11.10",
+    "checksum": "sha256:b54c628663af925a6632c3c95d37093c",
     "count": 3,
     "source": "Management-card reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -316,7 +316,7 @@
         ],
         "calculators": [
           {
-            "label": "Post-EVT BP guardrail",
+            "label": "Post-EVT BP",
             "tab": "management",
             "subTab": "ischemic",
             "anchor": "isch-bp"

@@ -180,7 +180,7 @@ export const AIS_COMMAND_CENTER_CARDS = [
       { label: 'NBO before EVT, selected anterior LVO', decision: 'May be reasonable; not routine oxygen for everyone', cor: 'IIb', loe: 'B-R' }
     ],
     calculators: [
-      { label: 'Post-EVT BP guardrail', tab: 'management', subTab: 'ischemic', anchor: 'isch-bp' },
+      { label: 'Post-EVT BP', tab: 'management', subTab: 'ischemic', anchor: 'isch-bp' },
       { label: 'mTICI', tab: 'management', subTab: 'calculators', anchor: 'calc-tici' }
     ],
     pitfalls: [
