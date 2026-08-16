@@ -130,6 +130,29 @@ describe('GENERALIZABILITY_LIMITATIONS', () => {
   });
 });
 
+// Source: Clinical Telestroke Workflow (rev 6/30/2026) lists these explicitly. They were
+// absent from the app until the source register was corrected to include that document.
+describe('IVT contraindication lists match the current local eligibility criteria', () => {
+  const abs = () => IVT_ABSOLUTE_CONTRAINDICATIONS.map((x) => x.label).join(' | ');
+  const rel = () => IVT_RELATIVE_CONTRAINDICATIONS.map((x) => x.label).join(' | ');
+  it('absolute list carries SAH-suggestive presentation, active internal bleeding, intra-axial neoplasm', () => {
+    expect(abs()).toMatch(/suggestive of SAH/i);
+    expect(abs()).toMatch(/Active internal bleeding/i);
+    expect(abs()).toMatch(/Intra-axial intracranial neoplasm/i);
+  });
+  it('separates acute spinal cord injury (90 days) from intracranial injury (14 days)', () => {
+    expect(abs()).toMatch(/Acute spinal cord injury <90 days/);
+    expect(abs()).toMatch(/Acute intracranial injury <14 days/);
+  });
+  it('relative list carries >10 cerebral microbleeds', () => {
+    expect(rel()).toMatch(/>10 cerebral microbleeds/);
+  });
+  it('uses the 14-day major surgery/trauma boundary, not 10 days', () => {
+    expect(rel()).toMatch(/Major surgery or trauma <14 days/);
+    expect(rel()).not.toMatch(/Major non-CNS surgery <10 days/);
+  });
+});
+
 describe('evaluateIVT', () => {
   // Regression: the CRAO branch used to sit AFTER the LKW-window block, every path of
   // which returns. A CRAO patient with a time entered therefore received the standard

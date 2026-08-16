@@ -218,13 +218,13 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
     });
 
     it('verifies expected exact line count bounds for all 6 snapshots', () => {
-      // 2026-08-16: ich 578->579, ischemic 1448->1450 from the reviewed clinical
+      // 2026-08-16: ich 578->579, ischemic 1448->1450->1460 from the reviewed clinical
       // correction to the orolingual-angioedema step (holding ACE inhibitors now leads,
       // and stopping the infusion is conditional on alteplase). See the git diff of
       // tests/snapshots/example-protocols/ for the approved wording.
       const baselineCounts = {
         ich: 579,
-        ischemic: 1450,
+        ischemic: 1460,
         sah: 233,
         tia: 200,
         cvt: 120,
