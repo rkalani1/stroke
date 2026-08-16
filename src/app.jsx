@@ -28535,7 +28535,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </div>
                                   <div className="flex gap-2 items-start">
                                     <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">2</span>
-                                    <p className="text-sm"><strong>Discontinue IV alteplase</strong> and <strong>hold ACE inhibitors</strong></p>
+                                    <p className="text-sm"><strong>Hold ACE inhibitors</strong> — stop the thrombolytic infusion <em>if alteplase is the agent being administered</em>; tenecteplase is a single bolus, so there is no infusion to stop</p>
                                   </div>
                                   <div className="flex gap-2 items-start">
                                     <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">3</span>
@@ -30129,7 +30129,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h3 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Treatment</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Maintain airway</strong> — fiberoptic intubation if needed</li>
-                                <li><strong>Discontinue IV alteplase</strong> and hold ACE inhibitors</li>
+                                <li><strong>Hold ACE inhibitors</strong> — stop the thrombolytic infusion <em>if alteplase is the agent being administered</em>; tenecteplase is a single bolus, so there is no infusion to stop</li>
                                 <li><strong>Methylprednisolone:</strong> 125 mg IV</li>
                                 <li><strong>Diphenhydramine:</strong> 50 mg IV</li>
                                 <li><strong>Famotidine:</strong> 20 mg IV (H2 blocker)</li>

@@ -13,6 +13,27 @@
 // verified). Extended-window IVT remains framed as emerging (not routine to 24h);
 // TNK 0.25 mg/kg max 25 mg; BP <185/110 pre-IVT and <180/105 post-IVT/EVT; no
 // routine SBP <140 after successful EVT. No clinical changes required.
+// 2026-08-16: reconciled against the current finalized local clinical source set
+// (July-2026 acute stroke algorithm Rev 7/2026; EVT eligibility flowchart June 2026;
+// pocket cards 7.14.2026 + the 7/17 p20 replacement page; 8/2026 IVT and EVT
+// information forms). Clinical changes made this pass:
+//   - EVT 6-24h anterior: removed the age<80 / no-mass-effect gate from the ASPECTS>=6
+//     tier. The source routes ASPECTS 6-10 straight to COR 1 / LOE A; the age ceiling
+//     belongs only to the large-core tiers (SELECT2 / ANGEL-ASPECT / LASTE enrolled <=80,
+//     whereas DAWN enrolled to 90). The app had been more restrictive than the source.
+//   - EVT 6-24h anterior: added the missing large-core tier (ASPECTS 3-5, age <80,
+//     no significant mass effect -> COR 1 / LOE A).
+//   - EVT M2: added the 6-24h dominant-M2 tier gated on CTP hypoperfusion-hypodensity
+//     mismatch (COR 2a / LOE B-NR); previously only <=6h was modelled.
+//   - EVT M2: codominant M2 no longer reported as COR 3 "no benefit". The source assigns
+//     COR 3 only to non-dominant M2 / ACA / PCA; codominant (90-100 mL tissue at risk)
+//     carries no recommendation and is now returned as indeterminate.
+//   - Orolingual angioedema: "Discontinue IV alteplase" replaced with "Hold ACE
+//     inhibitors - stop the thrombolytic infusion if alteplase is the agent being
+//     administered". Per the 7/17 p20 replacement page; tenecteplase is a single bolus,
+//     so the old unconditional instruction was not actionable in a TNK-first service.
+// Recorded evidence gaps (NOT filled by inference): no local CVT source exists, and no
+// current finalized local SAH protocol exists - both remain guideline-derived.
 // Reviewed against:
 // — AHA/ASA AIS 2026 Guidelines
 // — AHA/ASA ICH 2022 (Greenberg)
@@ -430,8 +451,11 @@ export const evaluateEVT_Anterior = ({ aspectsScore, timeFromLKWh, nihss, preMRS
   }
 
   if (hrs > 6 && hrs <= 24) {
-    if (asp >= 6 && mrs <= 1 && (!Number.isFinite(a) || a < 80) && !massEffect) {
-      return { eligible: true, window: '6-24h', reason: 'Late-window EVT — age <80, no significant mass effect; DAWN/DEFUSE-3 selection.', cor: '1', loe: 'A' };
+    if (asp >= 6 && mrs <= 1) {
+      return { eligible: true, window: '6-24h', reason: 'Late-window EVT — ASPECTS ≥6; DAWN/DEFUSE-3 selection. No age ceiling applies at this ASPECTS tier.', cor: '1', loe: 'A' };
+    }
+    if (asp >= 3 && asp <= 5 && mrs <= 1 && Number.isFinite(a) && a < 80 && !massEffect) {
+      return { eligible: true, window: '6-24h large core', reason: 'Late-window large-core EVT — ASPECTS 3-5, age <80, no significant mass effect.', cor: '1', loe: 'A' };
     }
     return { eligible: false, window: '6-24h', reason: 'Does not meet 6-24h standard criteria.', cor: '—' };
   }
@@ -439,28 +463,56 @@ export const evaluateEVT_Anterior = ({ aspectsScore, timeFromLKWh, nihss, preMRS
   return { eligible: false, reason: 'No matching eligibility tier at entered parameters.', cor: '—' };
 };
 
-export const evaluateEVT_M2 = ({ segment, dominant, hoursFromLKWh, nihss, preMRS, aspectsScore }) => {
+export const evaluateEVT_M2 = ({ segment, dominant, hoursFromLKWh, nihss, preMRS, aspectsScore, ctpMismatch }) => {
   const hrs = parseFloat(hoursFromLKWh);
   const n = parseFloat(nihss);
   const mrs = parseFloat(preMRS);
   const asp = parseFloat(aspectsScore);
   if (segment === 'M2-proximal-dominant' && dominant === true) {
-    if (hrs <= 6 && n >= 6 && mrs <= 1 && asp >= 6) {
+    const coreMet = n >= 6 && mrs <= 1 && asp >= 6;
+    if (hrs <= 6 && coreMet) {
       return {
         eligible: 'consider',
+        window: '0-6h',
         reason: 'Dominant proximal M2 (proximal segment, ≤1 cm from bifurcation, ≥50% MCA territory supply) within 6h.',
         cor: '2a',
         loe: 'B-NR'
       };
     }
-    return { eligible: false, reason: 'Dominant M2 criteria not all met (need ≤6h, NIHSS ≥6, mRS ≤1, ASPECTS ≥6).' };
+    if (hrs > 6 && hrs <= 24 && coreMet) {
+      if (ctpMismatch === true) {
+        return {
+          eligible: 'consider',
+          window: '6-24h',
+          reason: 'Dominant proximal M2 at 6-24h with CTP hypoperfusion–hypodensity mismatch present.',
+          cor: '2a',
+          loe: 'B-NR',
+          requirement: 'Mismatch defined as NCCT showing no established hypodensity in ≥90% of the CTP hypoperfused lesion.'
+        };
+      }
+      return {
+        eligible: 'pending',
+        window: '6-24h',
+        reason: 'Dominant proximal M2 beyond 6h — CTP hypoperfusion–hypodensity mismatch must be confirmed before EVT is supported.',
+        cor: '2a',
+        loe: 'B-NR'
+      };
+    }
+    return { eligible: false, reason: 'Dominant M2 criteria not all met (need ≤24h, NIHSS ≥6, mRS ≤1, ASPECTS ≥6; beyond 6h also requires CTP mismatch).' };
   }
-  if (['M2-nondominant', 'M3', 'ACA', 'PCA', 'M2-codominant'].includes(segment)) {
+  if (['M2-nondominant', 'M3', 'ACA', 'PCA'].includes(segment)) {
     return {
       eligible: false,
       cor: '3 (No Benefit)',
       loe: 'A',
-      reason: `EVT is NOT recommended for ${segment}. Includes non-dominant / codominant M2, distal MCA (M3), ACA, PCA.`
+      reason: `EVT is NOT recommended for ${segment}. Covers non-dominant M2 and distal vessel occlusions (M3, ACA, PCA).`
+    };
+  }
+  if (segment === 'M2-codominant') {
+    return {
+      eligible: 'pending',
+      cor: '—',
+      reason: 'Codominant M2 (tissue at risk 90-100 mL) carries no recommendation in the current eligibility algorithm — it falls between dominant (>100 mL) and non-dominant (<90 mL). Individualize; the COR 3 "no benefit" assignment does not apply here.'
     };
   }
   return { eligible: null, reason: 'Select segment to evaluate.' };
