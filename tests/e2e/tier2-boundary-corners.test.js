@@ -2,7 +2,7 @@
 // Tier 2: Boundary & Corner Cases (>=5 test cases per feature across all 19 features, total 95 cases)
 // Opaque-box, requirement-driven E2E tests derived from ORIGINAL_REQUEST.md & TEST_INFRA.md
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -829,6 +829,24 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
   // Feature 18 Boundary & Corner Cases (Production Build & Compression)
   // =========================================================================
   describe('Feature 18 Boundary & Corner Cases', () => {
+    // The compressed artifacts are gitignored, so a fresh checkout does not have
+    // them. They used to arrive as a side effect of compress-assets running in
+    // tier1-feature-coverage / adversarial-m4-challenger — but vitest runs files
+    // in parallel, so whether they existed by the time these assertions ran was a
+    // race. It only surfaced when unrelated timing changed. Produce them here
+    // instead, so this file depends on nothing but the committed sources.
+    beforeAll(() => {
+      const needed = ['app.js.br', 'app.js.gz', 'tailwind.css.br', 'tailwind.css.gz'];
+      if (needed.every((f) => fs.existsSync(path.join(ROOT, f)))) return;
+      const res = spawnSync('node', [path.join(ROOT, 'scripts/compress-assets.mjs')], {
+        cwd: ROOT,
+        encoding: 'utf8'
+      });
+      if (res.status !== 0) {
+        throw new Error(`compress-assets failed: ${res.stderr || res.stdout}`);
+      }
+    }, 120000);
+
     it('F18-T2.1: Brotli vs Gzip compression efficiency: app.js.br is smaller than app.js.gz', () => {
       const gzStat = fs.statSync(path.join(ROOT, 'app.js.gz'));
       const brStat = fs.statSync(path.join(ROOT, 'app.js.br'));
