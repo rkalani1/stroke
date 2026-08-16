@@ -1,6 +1,6 @@
 # Stroke CDS Educational Demo
 
-> Synthetic educational stroke decision-support demo (v6.12.0): example acute ischemic & hemorrhagic stroke pathways, 34 calculators, an evidence atlas (113 landmark trials, 10 active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.
+> Synthetic educational stroke decision-support demo (v6.11.8): example acute ischemic & hemorrhagic stroke pathways, 34 calculators, an evidence atlas (113 landmark trials, 10 active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.
 
 Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.
 
@@ -12,20 +12,15 @@ Synthetic educational demo only - NOT medical advice, NOT an approved clinical t
 - [Citations](https://rkalani1.github.io/stroke/data/atlas/citations.json)
 - [Guidelines index](https://rkalani1.github.io/stroke/data/guidelines/index.json)
 - [Management cards](https://rkalani1.github.io/stroke/data/management-cards.json)
-- [De-identified current protocols](https://rkalani1.github.io/stroke/data/generic-protocols.json)
+- [Generic BP protocols](https://rkalani1.github.io/stroke/data/generic-protocols.json)
 - [What's new feed](https://rkalani1.github.io/stroke/whats-new.json)
 - [Calculators index](https://rkalani1.github.io/stroke/data/calculators-index.json)
 
 ## Addressable views (hash routes)
 - `#/encounter` — Synthetic encounter demo
-- `#/protocols` — De-identified current protocol translation
-- `#/protocols/ischemic` — Acute ischemic stroke protocol
+- `#/protocols` — Example protocols (not local policy)
+- `#/protocols/ischemic` — Example acute ischemic stroke pathways
 - `#/protocols/ich` — Intracerebral hemorrhage
-- `#/protocols/complications` — Treatment complications
-- `#/protocols/pediatric` — Pediatric stroke framework
-- `#/protocols/sah` — Subarachnoid hemorrhage
-- `#/protocols/tia` — TIA and minor stroke
-- `#/protocols/cvt` — Cerebral venous thrombosis source gap
 - `#/protocols/calculators` — Calculators
 - `#/research` — Evidence atlas / guidelines
 - `#/trials` — Trial screener / matrix

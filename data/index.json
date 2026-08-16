@@ -1,7 +1,7 @@
 {
   "_meta": {
     "name": "stroke",
-    "appVersion": "6.12.0",
+    "appVersion": "6.11.8",
     "schemaVersion": "1.0.0",
     "baseUrl": "https://rkalani1.github.io/stroke",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -31,43 +31,18 @@
     },
     {
       "route": "#/protocols",
-      "label": "De-identified current protocol translation",
+      "label": "Example protocols (not local policy)",
       "url": "https://rkalani1.github.io/stroke/#/protocols"
     },
     {
       "route": "#/protocols/ischemic",
-      "label": "Acute ischemic stroke protocol",
+      "label": "Example acute ischemic stroke pathways",
       "url": "https://rkalani1.github.io/stroke/#/protocols/ischemic"
     },
     {
       "route": "#/protocols/ich",
       "label": "Intracerebral hemorrhage",
       "url": "https://rkalani1.github.io/stroke/#/protocols/ich"
-    },
-    {
-      "route": "#/protocols/complications",
-      "label": "Treatment complications",
-      "url": "https://rkalani1.github.io/stroke/#/protocols/complications"
-    },
-    {
-      "route": "#/protocols/pediatric",
-      "label": "Pediatric stroke framework",
-      "url": "https://rkalani1.github.io/stroke/#/protocols/pediatric"
-    },
-    {
-      "route": "#/protocols/sah",
-      "label": "Subarachnoid hemorrhage",
-      "url": "https://rkalani1.github.io/stroke/#/protocols/sah"
-    },
-    {
-      "route": "#/protocols/tia",
-      "label": "TIA and minor stroke",
-      "url": "https://rkalani1.github.io/stroke/#/protocols/tia"
-    },
-    {
-      "route": "#/protocols/cvt",
-      "label": "Cerebral venous thrombosis source gap",
-      "url": "https://rkalani1.github.io/stroke/#/protocols/cvt"
     },
     {
       "route": "#/protocols/calculators",

@@ -47,7 +47,6 @@ import {
   runEncounterOutput as runGatedEncounterOutput
 } from './encounter-output-gate.js';
 import { PocketCards } from './pocket-cards.jsx';
-import StrokeCenterProtocols from './protocols/StrokeCenterProtocols.jsx';
 import { LandmarkTrialsCard } from './teaching.jsx';
 import Education, { EVDInfographic, ICPInfographic } from './education.jsx';
 /* v7 design primitives — single accent (cobalt), one alarm (crit), one alert (warn).
@@ -1084,7 +1083,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           ...(API_PROVIDER_META[value] || {})
         }));
 
-        const MANAGEMENT_SUBTABS = ['ischemic', 'ich', 'complications', 'pediatric', 'sah', 'tia', 'cvt', 'calculators'];
+        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
 
         const RESEARCH_SUBTABS = ['guidelines', 'references', 'education'];
 
@@ -27863,15 +27862,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
 
 
-                {/* Current de-identified protocols, translated only from the approved source set. */}
+                {/* Protocols Tab (Ischemic, ICH, Calculators) */}
                 {activeTab === 'protocols' && (
-                  <ErrorBoundary>
-                    <StrokeCenterProtocols activeTab={managementSubTab} onTabChange={setManagementSubTab} />
-                  </ErrorBoundary>
-                )}
-
-                {/* Legacy Protocols implementation retained temporarily for migration history; never rendered. */}
-                {false && activeTab === 'protocols' && (
                   <ErrorBoundary>
                   <div id="tabpanel-protocols" role="tabpanel" aria-labelledby="tab-protocols" className="space-y-6">
                     {/* ===== NON-PUBLIC EXTENSION LAYER =====

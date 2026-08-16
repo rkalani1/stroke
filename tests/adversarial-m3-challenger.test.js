@@ -187,10 +187,10 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
   });
 
   describe('2. Protocol Snapshot Lock Robustness & Drift Detection', () => {
-    const SUBTABS = ['ischemic', 'ich', 'complications', 'pediatric', 'sah', 'tia', 'cvt', 'calculators'];
+    const SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
     const SNAPSHOT_DIR = path.join(REPO_ROOT, 'tests', 'snapshots', 'example-protocols');
 
-    it('verifies all 8 protocol baseline snapshots exist with substantial content', () => {
+    it('verifies all 6 protocol baseline snapshots exist with substantial content', () => {
       for (const subtab of SUBTABS) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);
         expect(fs.existsSync(file), `Snapshot file for ${subtab} must exist`).toBe(true);
@@ -200,16 +200,14 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       }
     });
 
-    it('verifies expected exact line counts for all 8 snapshots', () => {
+    it('verifies expected exact line count bounds for all 6 snapshots', () => {
       const baselineCounts = {
-        ischemic: 113,
-        ich: 105,
-        complications: 80,
-        pediatric: 80,
-        sah: 66,
-        tia: 72,
-        cvt: 65,
-        calculators: 90
+        ich: 578,
+        ischemic: 1448,
+        sah: 233,
+        tia: 200,
+        cvt: 120,
+        calculators: 793
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);

@@ -176,9 +176,9 @@ describe('Tier 3: Cross-Feature Combinations (Pairwise Interactions)', () => {
   // 16. F5 x F16: Blood Pressure Guardrails & Playwright Protocol Snapshot Lock
   it('F5xF16: Blood pressure guardrails and harm thresholds are locked into ischemic protocol baseline snapshot', () => {
     const ischemic = fs.readFileSync(path.join(ROOT, 'tests/snapshots/example-protocols/ischemic.txt'), 'utf8');
-    expect(ischemic).toContain('Below 185/110');
-    expect(ischemic).toContain('Below 180/105');
-    expect(ischemic).toContain('Tenecteplase: 0.25 mg/kg');
+    expect(ischemic).toContain('<185/110');
+    expect(ischemic).toContain('<180/105');
+    expect(ischemic).toContain('TNK 0.25 mg/kg');
   });
 
   // 17. F16 x F17: Protocol Snapshots & Institutional / PHI Leak Guard
@@ -215,12 +215,12 @@ describe('Tier 3: Cross-Feature Combinations (Pairwise Interactions)', () => {
   });
 
   // 20. F6 x F16: Pediatric Pathway & Ischemic Protocol Snapshot Lock
-  it('F6xF16: Pediatric reperfusion rules are locked into the pediatric protocol snapshot', () => {
-    const pediatric = fs.readFileSync(path.join(ROOT, 'tests/snapshots/example-protocols/pediatric.txt'), 'utf8');
-    expect(pediatric).toContain('Pediatric stroke framework');
-    expect(pediatric).toContain('Age under 2 years is a contraindication');
-    expect(pediatric).toContain('Age 6 years or older is the preferred threshold');
-    expect(pediatric).toContain('ASPECTS at least 3 through 6 hours');
+  it('F6xF16: Pediatric reperfusion rules are locked into ischemic protocol baseline snapshot', () => {
+    const ischemic = fs.readFileSync(path.join(ROOT, 'tests/snapshots/example-protocols/ischemic.txt'), 'utf8');
+    expect(ischemic).toContain('Pediatric Acute Ischemic Stroke');
+    expect(ischemic).toContain('28 days-18 years');
+    expect(ischemic).toContain('COR IIb');
+    expect(ischemic).toContain('COR IIa');
   });
 
   // 21. F3 x F8: CATALYST DOAC Timing & AFib Education Module

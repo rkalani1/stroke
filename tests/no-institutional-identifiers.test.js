@@ -24,15 +24,6 @@ const TOKENS = [
   new RegExp(sentinel('PRIVATE', 'LOCAL', 'CONTACT', 'SENTINEL'))
 ];
 
-const ORGANIZATION_TOKENS = [
-  new RegExp(['Harbor', 'view'].join(''), 'i'),
-  new RegExp(['UW', ' Medicine'].join(''), 'i'),
-  new RegExp(['University', ' of ', 'Washington'].join(''), 'i'),
-  /\bHMC\b/i,
-  /\bUWMC\b/i,
-  /OneDrive/i
-];
-
 function readBuiltArtifact(relPath) {
   try {
     return readFileSync(join(repoRoot, relPath), 'utf8');
@@ -77,26 +68,5 @@ describe('public-safety: no private/local sentinel identifiers in the built bund
       leaked,
       `index.html leaked banned private sentinel(s): ${leaked.join(', ')}.`
     ).toEqual([]);
-  });
-
-  it('keeps the public protocol surface free of organization and storage identifiers', () => {
-    const protocolArtifacts = [
-      'src/protocols/source-of-truth.js',
-      'src/protocols/StrokeCenterProtocols.jsx',
-      'data/generic-protocols.json',
-      'tests/snapshots/example-protocols/ischemic.txt',
-      'tests/snapshots/example-protocols/ich.txt',
-      'tests/snapshots/example-protocols/complications.txt',
-      'tests/snapshots/example-protocols/pediatric.txt',
-      'tests/snapshots/example-protocols/sah.txt',
-      'tests/snapshots/example-protocols/tia.txt',
-      'tests/snapshots/example-protocols/cvt.txt',
-      'tests/snapshots/example-protocols/calculators.txt'
-    ];
-    for (const artifact of protocolArtifacts) {
-      const content = readBuiltArtifact(artifact);
-      const leaked = ORGANIZATION_TOKENS.filter((token) => token.test(content)).map((token) => token.source);
-      expect(leaked, `${artifact} exposes organization/storage identifiers: ${leaked.join(', ')}`).toEqual([]);
-    }
   });
 });

@@ -53,7 +53,7 @@ describe('public demo labeling and agent disclaimers', () => {
     expect(dataIndex._meta.disclaimer).toContain('Agents and downstream consumers must display this disclaimer');
     expect(dataIndex._meta.disclaimer).toBe(PUBLIC_DEMO_AGENT_DISCLAIMER);
     expect(dataIndex.routes.find((route) => route.route === '#/protocols')?.label)
-      .toBe('De-identified current protocol translation');
+      .toBe('Example protocols (not local policy)');
 
     expect(llms).toContain('# Stroke CDS Educational Demo');
     expect(llms).toContain('Do not enter PHI');
@@ -90,7 +90,7 @@ describe('public demo labeling and agent disclaimers', () => {
     // decision); the machine-readable data route keeps the fuller
     // "not local policy" descriptor for agents.
     expect(appSource).toContain("name: 'Protocols'");
-    expect(generatedData).toContain('De-identified current protocol translation');
+    expect(generatedData).toContain('Example protocols (not local policy)');
   });
 
   it('excludes source, tests, scripts, docs, and local-only folders from GitHub Pages', () => {
@@ -148,10 +148,9 @@ describe('public demo labeling and agent disclaimers', () => {
     const manifest = readJson('data/index.json');
     const protocols = readJson('data/generic-protocols.json');
     expect(manifest.mcpServer).toBeNull();
-    expect(protocols._meta.source).toBe('De-identified current protocol source bundle');
-    expect(protocols.data.metadata.reviewedOn).toBe('2026-08-16');
-    expect(protocols.data.metadata.sourcePolicy)
-      .toBe('Only the approved protocol source set was used. No outside guideline content was added.');
+    expect(protocols._meta.source).toBe('Public protocol reference bundle');
+    expect(protocols.data.ichInitialEvaluation.sourceWindow)
+      .toBe('Reviewed June 2026 public-safe algorithm translation');
   });
 });
 

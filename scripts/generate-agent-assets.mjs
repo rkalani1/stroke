@@ -10,7 +10,7 @@
 //   data/index.json                      — endpoint manifest + addressable routes
 //   data/atlas/*.json                    — evidence atlas (trials, recs, citations…)
 //   data/management-cards.json           — AIS command-center cards
-//   data/generic-protocols.json          — de-identified current protocol bundle
+//   data/generic-protocols.json          — institution-neutral BP protocols
 //   data/guidelines/index.json + *.json  — guideline metadata + copies
 //   data/whats-new.json                  — copy of the served whats-new feed
 //   data/calculators-index.json          — calculator catalog
@@ -73,7 +73,7 @@ const PUBLIC_SOURCE_LABELS = {
   'src/evidence/topics.js': 'Evidence atlas topics bundle',
   'src/evidence/index.js': 'Evidence atlas labels bundle',
   'src/management-guidance.js': 'Management-card reference bundle',
-  'src/protocols/source-of-truth.js': 'De-identified current protocol source bundle',
+  'src/institutional-protocols.js': 'Public protocol reference bundle',
   'src/guidelines/': 'Guideline metadata bundle',
   'src/calculators.js, src/calculators-extended.js': 'Calculator catalog bundle',
 };
@@ -108,14 +108,9 @@ const CALCULATORS = CALCULATOR_REGISTRY.map(({ id, name, category, fn }) => ({ i
 // ── Addressable hash routes (deep links for agents + humans) ──────────────────
 const ROUTES = [
   { route: '#/encounter', label: 'Synthetic encounter demo' },
-  { route: '#/protocols', label: 'De-identified current protocol translation' },
-  { route: '#/protocols/ischemic', label: 'Acute ischemic stroke protocol' },
+  { route: '#/protocols', label: 'Example protocols (not local policy)' },
+  { route: '#/protocols/ischemic', label: 'Example acute ischemic stroke pathways' },
   { route: '#/protocols/ich', label: 'Intracerebral hemorrhage' },
-  { route: '#/protocols/complications', label: 'Treatment complications' },
-  { route: '#/protocols/pediatric', label: 'Pediatric stroke framework' },
-  { route: '#/protocols/sah', label: 'Subarachnoid hemorrhage' },
-  { route: '#/protocols/tia', label: 'TIA and minor stroke' },
-  { route: '#/protocols/cvt', label: 'Cerebral venous thrombosis source gap' },
   { route: '#/protocols/calculators', label: 'Calculators' },
   { route: '#/research', label: 'Evidence atlas / guidelines' },
   { route: '#/trials', label: 'Trial screener / matrix' },
@@ -146,14 +141,14 @@ async function main() {
     cards: mg.AIS_COMMAND_CENTER_CARDS,
   }));
 
-  // ---- De-identified current protocols ----
+  // ---- Generic (institution-neutral) protocols ----
   try {
-    const protocols = await import(pathToFileURL(path.join(ROOT, 'src/protocols/source-of-truth.js')).href);
-    write('data/generic-protocols.json', envelope(
-      'generic-protocols',
-      publicSourceLabel('src/protocols/source-of-truth.js'),
-      protocols.PROTOCOL_AGENT_BUNDLE
-    ));
+    const ip = await import(pathToFileURL(path.join(ROOT, 'src/institutional-protocols.js')).href);
+    write('data/generic-protocols.json', envelope('generic-protocols', publicSourceLabel('src/institutional-protocols.js'), {
+      bpProtocols: ip.INSTITUTIONAL_BP_PROTOCOLS,
+      ichInitialEvaluation: ip.ICH_INITIAL_EVALUATION_ALGORITHM,
+      safePauseAttestation: ip.SAFE_PAUSE_ATTESTATION,
+    }));
   } catch (e) {
     console.warn(`! skipped generic-protocols (${e.message})`);
   }
@@ -221,7 +216,7 @@ async function main() {
     `- [Citations](${BASE_URL}/data/atlas/citations.json)`,
     `- [Guidelines index](${BASE_URL}/data/guidelines/index.json)`,
     `- [Management cards](${BASE_URL}/data/management-cards.json)`,
-    `- [De-identified current protocols](${BASE_URL}/data/generic-protocols.json)`,
+    `- [Generic BP protocols](${BASE_URL}/data/generic-protocols.json)`,
     `- [What's new feed](${BASE_URL}/whats-new.json)`,
     `- [Calculators index](${BASE_URL}/data/calculators-index.json)`,
     '',

@@ -689,9 +689,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   // =========================================================================
   describe('Feature 16: Playwright Protocol Snapshot Lock', () => {
     const snapDir = path.join(ROOT, 'tests/snapshots/example-protocols');
-    const subtabs = ['ischemic', 'ich', 'complications', 'pediatric', 'sah', 'tia', 'cvt', 'calculators'];
+    const subtabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
 
-    it('F16-T1.1: All 8 protocol snapshot baseline files exist in tests/snapshots/example-protocols/', () => {
+    it('F16-T1.1: All 6 protocol snapshot baseline files exist in tests/snapshots/example-protocols/', () => {
       for (const subtab of subtabs) {
         const file = path.join(snapDir, `${subtab}.txt`);
         expect(fs.existsSync(file)).toBe(true);
@@ -708,20 +708,20 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
 
     it('F16-T1.3: Ischemic protocol baseline contains 2026 acute stroke management thresholds', () => {
       const ischemic = fs.readFileSync(path.join(snapDir, 'ischemic.txt'), 'utf8');
-      expect(ischemic).toContain('Tenecteplase: 0.25 mg/kg');
-      expect(ischemic).toContain('Below 185/110');
-      expect(ischemic).toContain('Below 180/105');
+      expect(ischemic).toContain('TNK 0.25 mg/kg');
+      expect(ischemic).toContain('<185/110');
+      expect(ischemic).toContain('<180/105');
     });
 
     it('F16-T1.4: ICH protocol baseline contains acute SBP target and PCC reversal protocols', () => {
       const ich = fs.readFileSync(path.join(snapDir, 'ich.txt'), 'utf8');
-      expect(ich).toContain('130–150');
-      expect(ich).toContain('four-factor PCC');
+      expect(ich).toContain('130-150');
+      expect(ich).toContain('4F-PCC');
     });
 
-    it('F16-T1.5: snapshot-example-protocols.mjs runner specifies all 8 subtabs against baseline', () => {
+    it('F16-T1.5: snapshot-example-protocols.mjs runner specifies all 6 subtabs against baseline', () => {
       const script = fs.readFileSync(path.join(ROOT, 'scripts/snapshot-example-protocols.mjs'), 'utf8');
-      expect(script).toContain("const SUBTABS = ['ischemic', 'ich', 'complications', 'pediatric', 'sah', 'tia', 'cvt', 'calculators']");
+      expect(script).toContain("const SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators']");
     });
   });
 
@@ -836,9 +836,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.12.0', () => {
+    it('F19-T1.5: package.json version matches latest release v6.11.8', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.12.0');
+      expect(pkg.version).toBe('6.11.8');
     });
   });
 });

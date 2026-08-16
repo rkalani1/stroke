@@ -79,8 +79,8 @@ describe('Navigation Reorganization and Consolidation (R1, R2)', () => {
   });
 
   it('R2: Protocols sub-tabs only contain actual clinical protocol tabs (no defunct references tab)', () => {
-    expect(scope.MANAGEMENT_SUBTABS).toEqual(['ischemic', 'ich', 'complications', 'pediatric', 'sah', 'tia', 'cvt', 'calculators']);
-    expect(appJsxContent).toContain("import StrokeCenterProtocols from './protocols/StrokeCenterProtocols.jsx';");
+    expect(scope.MANAGEMENT_SUBTABS).toEqual(['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators']);
+    expect(appJsxContent).toContain("const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];");
   });
 
   it('R2: Dynamic hash routing and backwards compatibility for legacy paths', () => {
