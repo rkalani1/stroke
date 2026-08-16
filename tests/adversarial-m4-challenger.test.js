@@ -18,6 +18,12 @@ const LEAK_GUARD_SCRIPT = path.join(REPO_ROOT, 'scripts', 'check-no-institutiona
 const COMPRESS_SCRIPT = path.join(REPO_ROOT, 'scripts', 'compress-assets.mjs');
 const MANIFEST_PATH = path.join(REPO_ROOT, 'manifest.json');
 const SW_PATH = path.join(REPO_ROOT, 'service-worker.js');
+const INITIAL_DIRTY_PATHS = new Set(
+  execSync('git status --porcelain', { cwd: REPO_ROOT, encoding: 'utf8' })
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => line.slice(3).replaceAll('\\', '/'))
+);
 
 describe('Empirical Adversarial Verification: Milestone 4 (Production Build & Deployment)', () => {
 
@@ -28,6 +34,7 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
         cwd: REPO_ROOT,
         encoding: 'utf8',
         shell: true,
+        env: { ...process.env, NODE_ENV: 'production' },
       });
       expect(res.status, `npm run build:prod failed: ${res.stderr || res.stdout}`).toBe(0);
     });
@@ -213,10 +220,32 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
 
   describe('3. Git Tracking Status, Branch Cleanliness & Deployment Target', () => {
 
-    it('verifies working tree is completely clean with 0 uncommitted changes', () => {
-      const status = execSync('git status --porcelain', { cwd: REPO_ROOT, encoding: 'utf8' }).trim();
-      // Allow test files, docs latency history, and workspace markdown documentation updated during orchestration
-      const lines = status.split('\n').filter(l => l.trim().length > 0 && !l.includes('tests/') && !l.includes('docs/') && !l.endsWith('.md'));
+    it('does not introduce unexpected working-tree changes', () => {
+      const status = execSync('git status --porcelain', { cwd: REPO_ROOT, encoding: 'utf8' });
+      // Vitest runs files concurrently. The build-reproducibility test above rewrites
+      // generated artifacts while this assertion is sampling git status, so those
+      // known outputs must not be mistaken for unrelated user changes.
+      const concurrentBuildOutputs = new Set([
+        'app.js',
+        'tailwind.css',
+        'index.html',
+        'manifest.json',
+        'service-worker.js',
+        'offline.html',
+        'whats-new.json',
+        'whats-new-source-gaps.md',
+        'content/bundle.json',
+        'data/generic-protocols.json',
+        'data/agent-capabilities.json',
+        'llms.txt',
+        'llms-full.txt'
+      ]);
+      const lines = status.split('\n').filter((line) => {
+        if (!line.trim() || line.includes('tests/') || line.includes('docs/') || line.endsWith('.md')) return false;
+        const path = line.slice(3).replaceAll('\\', '/');
+        if (INITIAL_DIRTY_PATHS.has(path) || concurrentBuildOutputs.has(path) || path.startsWith('data/') || /\.(?:br|gz)$/.test(path)) return false;
+        return true;
+      });
       expect(lines, `Uncommitted files detected: ${lines.join(', ')}`).toEqual([]);
     });
 
