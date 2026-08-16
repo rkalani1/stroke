@@ -22,7 +22,7 @@ export const claims = [
   }),
   makeClaim({
     id: 'cl-tnk-late-window-non-lvo',
-    statement: 'TNK 0.25 mg/kg in the 4.5-24 h window with perfusion-imaging selection improves outcomes vs standard care in patients without LVO/EVT (TIMELESS, TRACE-III).',
+    statement: 'TNK 0.25 mg/kg in the 4.5-24 h window with perfusion-imaging selection improves outcomes vs standard care in perfusion-selected patients not receiving EVT (TRACE-III: 100% LVO, <2% EVT, positive); benefit was NOT seen when EVT was also delivered (TIMELESS: 77% EVT, p=0.45).',
     topic: 'extended-window-ivt',
     citationIds: ['cit-timeless-2024', 'cit-trace-iii-2024'],
     certainty: 'moderate',
@@ -89,11 +89,11 @@ export const claims = [
   }),
   makeClaim({
     id: 'cl-late-window-ivt-non-lvo',
-    statement: 'In the 4.5-24 h window without EVT eligibility, perfusion- or DWI-FLAIR-mismatch-selected IVT (alteplase or TNK) improves functional outcome vs standard care (WAKE-UP, EXTEND, TIMELESS, TWIST mixed, TRACE-III).',
+    statement: 'In the 4.5-24 h window without EVT eligibility, perfusion- or DWI-FLAIR-mismatch-selected IVT (alteplase or TNK) improves functional outcome vs standard care (WAKE-UP, EXTEND, TRACE-III); TIMELESS and TWIST were negative.',
     topic: 'extended-window-ivt',
     citationIds: ['cit-wake-up-2018', 'cit-extend-2019', 'cit-timeless-2024', 'cit-twist-2023', 'cit-trace-iii-2024'],
     certainty: 'moderate',
-    conflictNotes: 'TWIST (unselected wake-up TNK) was negative; benefit requires imaging-based mismatch selection.',
+    conflictNotes: 'TWIST (NCCT-only wake-up TNK) was negative (adjusted OR 1.18, 95% CI 0.88-1.58; p=0.27); TIMELESS was negative in a 100% LVO population with 77% EVT (p=0.45). Benefit requires imaging-based mismatch selection and absence of EVT co-treatment.',
     lastReviewed: lr
   }),
   makeClaim({

@@ -341,7 +341,7 @@ const PLACEHOLDERS = {
   CONFIRM_LOCAL_PUPILLOMETRY_USE_CASES: "High-risk TBI, severe stroke, or elevated ICP monitoring",
   CONFIRM_POLICY_FINAL_TEXT: "Example IVT / EVT standard administration guidelines (your protocol)",
   CONFIRM_APOP_2026_LANGUAGE: "2026 acute stroke protocol updates (your local revision)",
-  CONFIRM_SAFETY_PAUSE_PARTICIPANTS: "Bedside Nurse, Stroke Fellow, and Pharmacist",
+  CONFIRM_SAFETY_PAUSE_PARTICIPANTS: "Neurology, ED clinician, and the primary/administering RN (or the anesthesia provider giving the drug)",
   CONFIRM_TELESTROKE_PATHWAY_SOURCE: "Example telestroke operations manual (your network)",
   CONFIRM_PUBLIC_SAFE_ROUTING_TEXT: "Tele-consult routing logic (your network)",
 };

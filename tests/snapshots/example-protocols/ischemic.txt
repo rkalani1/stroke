@@ -145,10 +145,10 @@ Why this recommendation? (
 supporting claim
 s
 )
-In the 4.5-24 h window without EVT eligibility, perfusion- or DWI-FLAIR-mismatch-selected IVT (alteplase or TNK) improves functional outcome vs standard care (WAKE-UP, EXTEND, TIMELESS, TWIST mixed, TRACE-III).
+In the 4.5-24 h window without EVT eligibility, perfusion- or DWI-FLAIR-mismatch-selected IVT (alteplase or TNK) improves functional outcome vs standard care (WAKE-UP, EXTEND, TRACE-III); TIMELESS and TWIST were negative.
 Certainty:
 moderate
-· Conflict: TWIST (unselected wake-up TNK) was negative; benefit requires imaging-based mismatch selection.
+· Conflict: TWIST (NCCT-only wake-up TNK) was negative (adjusted OR 1.18, 95% CI 0.88-1.58; p=0.27); TIMELESS was negative in a 100% LVO population with 77% EVT (p=0.45). Benefit requires imaging-based mismatch selection and absence of EVT co-treatment.
 MRI-Guided Thrombolysis for Stroke with Unknown Time of Onset (WAKE-UP)
 (
 N Engl J Med
@@ -184,7 +184,7 @@ N Engl J Med
 )
 ·
 PMID 38884324
-TNK 0.25 mg/kg in the 4.5-24 h window with perfusion-imaging selection improves outcomes vs standard care in patients without LVO/EVT (TIMELESS, TRACE-III).
+TNK 0.25 mg/kg in the 4.5-24 h window with perfusion-imaging selection improves outcomes vs standard care in perfusion-selected patients not receiving EVT (TRACE-III: 100% LVO, <2% EVT, positive); benefit was NOT seen when EVT was also delivered (TIMELESS: 77% EVT, p=0.45).
 Certainty:
 moderate
 · Conflict: TIMELESS primary endpoint did not reach statistical significance for the overall population; pre-specified subgroups suggest benefit. TRACE-III demonstrated benefit in the LVO-only late-window population without EVT.
@@ -405,8 +405,8 @@ I
 B-NR
 Orolingual angioedema
 Airway-first protocol; steroids/H1/H2, epinephrine if progressing
-I
-C-LD
+IIb
+C-EO
 Antithrombotic restart after IVT
 Hold 24h and image first
 I
@@ -845,7 +845,7 @@ Reversal (if blood on CT)
 Cryoprecipitate:
 2 pools IV over 10-30 min (empirically if CT delayed >30 min and fibrinogen <200)
 TXA:
-Tranexamic acid 1000 mg IV over 10 min STAT (or aminocaproic acid 4-5 g IV if TXA unavailable)
+Tranexamic acid 1000 mg IV over 10 min STAT
 Repeat hemorrhage panel
 Consult neurosurgery
 ECASS Hemorrhagic Transformation Classification
@@ -873,7 +873,7 @@ Risk Factors
 • Frontal operculum stroke
 Treatment
 Maintain airway
-— fiberoptic intubation if needed
+— intubation may not be necessary if edema is limited to the anterior tongue and lips; edema involving the larynx, palate, floor of mouth, or oropharynx with rapid progression (within 30 min) poses higher risk of requiring intubation. Awake fiberoptic intubation is optimal; nasal-tracheal intubation may be required but poses risk of epistaxis after IV TNK, and cricothyroidotomy is rarely needed and also problematic after IV TNK.
 Hold ACE inhibitors
 — stop the thrombolytic infusion
 if alteplase is the agent being administered
@@ -885,11 +885,11 @@ Diphenhydramine:
 Famotidine:
 20 mg IV (H2 blocker)
 If worsening: Epinephrine
-0.3 mg IM (anterolateral thigh) or nebulized 3-5 mL of 1:1000
+(0.1%) 0.3 mL subcutaneously or 0.5 mL by nebulizer
 Icatibant
 (bradykinin B2 antagonist)
-Berinert:
-20 IU/kg IV (C1 esterase inhibitor)
+C1 esterase inhibitor (Berinert):
+20 IU/kg IV by slow IV push at 4 mL/min — restricted to pregnant or pediatric patients, or those intolerant to icatibant
 Antiplatelet Loading Protocol
 I
 Minor Stroke / High-Risk TIA
@@ -1047,10 +1047,16 @@ Eligibility:
 •
 Excludes:
 known contrast-related anaphylaxis
+•
+Severe contrast allergy
+(cannot follow this hyperacute CTA pathway) with suspected LVO → obtain non-contrast
+TOF MRA
+as a limited hyperacute stroke MRI
 Requirements:
-• Consent from patient or LNOK
+• Consent from patient and/or LNOK whenever possible
 • Pre-administration approval from the on-call stroke clinician, emergency clinician, and neuroradiology
-Pre-medication:
+• Document in the neurology note the consent discussion and the clinicians who approved/agreed to the plan
+Pre-medication (immediately prior to the contrast study):
 •
 Hydrocortisone 200 mg IV
 OR
@@ -1252,6 +1258,8 @@ Severe coagulopathy
 Plt <100K, INR >1.7, aPTT >40s, PT >15s.
 Aortic arch dissection
 Potentially harmful; should not be administered.
+Unruptured, unsecured large intracranial aneurysm (>10 mm)
+Absolute exclusion; small or already-secured aneurysms are handled under benefit-greater.
 Moderate-severe TBI <14 days
 GCS <10 or hemorrhage/contusion/skull fracture.
 Amyloid immunotherapy / ARIA
@@ -1297,7 +1305,7 @@ Reasonably safe within 4.5h; probably recommended.
 Extra-axial intracranial neoplasm
 Benefit likely outweighs risk.
 Unruptured intracranial aneurysm
-Benefit likely outweighs risk for small aneurysms; local criteria list an aneurysm >10 mm as a relative exclusion.
+Benefit likely outweighs risk for small or already-secured aneurysms; an unruptured and unsecured large aneurysm (>10 mm) is an absolute exclusion.
 Angiographic procedural stroke
 Benefit likely outweighs risk.
 History of GI/GU bleeding (remote)
@@ -1403,7 +1411,7 @@ presumed (unable to provide, no surrogate)
 surrogate
 declined
 BP at attestation
-SAFE PAUSE BEFORE THROMBOLYTIC ADMINISTRATION: (1) Consent confirmed (informed). (2) BP confirmed <185/110. (3) Absolute & relative contraindications reviewed. (4) Dose confirmed (weight-based, max 25 mg TNK / 90 mg alteplase). (5) Safety-pause documented in communication platform. Attestation: #STROKESAFEPAUSE
+SAFE PAUSE BEFORE THROMBOLYTIC ADMINISTRATION: (1) Consent confirmed (informed). (2) BP confirmed <185/110. (3) Absolute & relative contraindications reviewed. (4) Dose confirmed (weight-based, max 25 mg TNK / 90 mg alteplase). (5) Pause performed FACE-TO-FACE with the RN or anesthesia provider who will administer the drug. (6) Pause confirmed by neurology, the ED clinician, and the primary RN. (7) Safety-pause documented in communication platform. Attestation: #STROKESAFEPAUSE
 Copy for communication platform
 Attestation tag:
 #STROKESAFEPAUSE

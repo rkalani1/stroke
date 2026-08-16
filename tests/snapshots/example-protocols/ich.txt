@@ -83,7 +83,7 @@ MINUTE has operational priority over MIRROR when both are possible. Notify the a
 MIRROR registry screen
 Selected spontaneous supratentorial IPH being considered for minimally invasive evacuation; Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol before use; No underlying vascular lesion; Potential MIS timing within 24 hours of last known well or qualifying wake-up hemorrhage window
 .
-Do not let registry screening delay urgent surgical, trial, or stabilization decisions.
+Do not let registry screening delay urgent surgical, trial, or stabilization decisions. Deep IPH considered for minimally invasive surgery outside the trial and registry pathways, or beyond 24 hours from last known well, requires discussion with both the on-call stroke attending and the inpatient neurology attending before proceeding.
 Before any surgical action
 •
 Stop at bedside for a time-out/safety pause.
@@ -224,7 +224,6 @@ Give
 over 10-30 min (or continue if already started)
 Give
 Tranexamic acid 1000 mg IV over 10 min STAT
-(or aminocaproic acid 4-5 g IV if TXA unavailable)
 Repeat hemorrhage panel
 Call Stroke/Neuro attending
 Consult neurosurgery
@@ -249,7 +248,8 @@ Follow-up & Management:
 • Target SBP around 140 mmHg for confirmed sICH; avoid <130
 • Target fibrinogen >200 mg/dL (repeat cryo if low)
 • If labs abnormal or uncontrolled bleeding → consult Hematology
-• Repeat hemorrhage panel q4h until normal
+• Repeat hemorrhage panel STAT, then q30 min x2, then q4h until normal
+• Neuro checks q15 min x 2h → q30 min x 6h → q1h x 16h; notify provider for new deficits or GCS drop ≥2 points
 • Repeat NCCT at 6h and 24h to assess stability
 • PH-2 with mass effect → urgent neurosurgery evaluation
 • Hold all antithrombotics until hemorrhage stable ≥24h
@@ -272,13 +272,14 @@ Diphenhydramine 50 mg IV
 Famotidine 20 mg IV
 If worsening:
 •
-Epinephrine 0.3 mg IM
-(1 mg/mL, anterolateral thigh) or nebulized 3-5 mL of 1:1000
+Epinephrine (0.1%) 0.3 mL SC
+or 0.5 mL by nebulizer
 •
 Icatibant
 (bradykinin B2 antagonist)
 •
 C1 esterase inhibitor (Berinert) 20 IU/kg
+— slow IV push at 4 mL/min; restricted to pregnant or pediatric patients, or those intolerant to icatibant
 ABC/2 ICH Volume Calculator
 A (cm)
 B (cm)
@@ -287,7 +288,7 @@ Slices w/ ICH
 For confirmed non-traumatic IPH, auto-flags volume ≥15 mL for early Neurosurgery + stroke-service evaluation; ≥30 mL remains the MIE/prognostic screen tier when other criteria fit.
 Telestroke rapid actions (phone or video)
 Confirm anticoagulant/antiplatelet use and initiate reversal.
-Use smooth BP control; target SBP 140, maintain 130-150 when appropriate, and avoid <130 per ATACH-2. Use IV nicardipine or clevidipine for titration.
+Use smooth BP control; target SBP 140, maintain 130-150 when appropriate, and avoid <130 per ATACH-2. Use IV nicardipine infusion (or IV labetalol) for titration.
 Screen for early Neurosurgery + stroke-service evaluation triggers: non-traumatic IPH ≥15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, ED attending discretion, or clinician concern.
 Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.
 Telephone: confirm NIHSS and exam details with the bedside team.
@@ -379,14 +380,25 @@ Aspirin without planned surgery: platelet transfusions are potentially harmful a
 Desmopressin 0.3 mcg/kg IV once may be considered; benefit uncertain.
 Hematoma Expansion Prevention
 Blood Pressure Target
+Spontaneous ICH only. Not for hemorrhage from a vascular malformation or for post-operative neurosurgical cases.
 Target:
-SBP 140 mmHg, maintain 130-150 when appropriate, with timely smooth control. Avoid SBP <130 (ATACH-2).
+SBP 140 mmHg, maintain 130-150 when appropriate, with timely smooth control. Avoid iatrogenic reduction of SBP <130 mmHg in the initial 24 hours (ATACH-2).
 Smooth control:
 avoid peaks and variability.
+Below target:
+if the patient autoregulates to SBP <130 with no indicators of symptomatic hypotension, it is acceptable to be below target. Do NOT initiate vasopressors unless discussed and approved by both the stroke attending and the neurocritical care attending.
+Large/severe ICH or surgical decompression:
+individualize targets; consider an initial higher goal of SBP 160-180.
+Reassessment:
+if a higher target of SBP 160-180 is initially selected, reassess after ~6 hours (after time for gradual BP reduction or after repeat head CT).
+Renal dysfunction:
+for patients with moderate-severe renal dysfunction, use caution with aggressive BP lowering.
+Perfusion floor:
+maintain CPP >60 mmHg, especially with elevated ICP.
 SBP >220:
-Safety of intensive lowering is uncertain (Class IIb, LOE C-EO, AHA 2022). Reasonable to target modest reduction (SBP 140-160) using continuous IV infusion with close monitoring. Avoid rapid drops >60 mmHg in the first hour. Consider starting nicardipine at a lower rate (2.5-5 mg/hr) and titrating slowly.
+Safety of intensive lowering is uncertain (Class IIb, LOE C-EO, AHA 2022). Reasonable to target modest reduction (SBP 140-160) using continuous IV infusion with close monitoring. Reduce SBP by ~20% (not >25%) in the first hour, then gradually reduce to SBP 140-160 mmHg. Consider starting nicardipine at a lower rate (2.5-5 mg/hr) and titrating slowly.
 Agent:
-IV nicardipine or clevidipine for titration.
+IV nicardipine infusion (or IV labetalol) for titration.
 Expansion Risk Factors
 • Spot sign on CTA
 • Anticoagulant use
@@ -526,13 +538,13 @@ Press Esc or click outside to close
 --- modal via "cryoprecipitate" ---
 Cryoprecipitate
 Dosing
-2 pools cryoprecipitate IV over 10-30 min (takes ~15-20 min to prepare).
+2 pools cryoprecipitate IV over 10-30 min (takes ~15-20 min to prepare). 1 pool = 5 pre-pooled units; 1-2 pools raises plasma fibrinogen by 50-100 mg/dL in a 50-100 kg patient.
 For post-thrombolytic ICH when fibrinogen <200 mg/dL. Repeat fibrinogen and coagulation panel after administration.
 Press Esc or click outside to close
 --- modal via "2 pools Cryo" ---
 Cryoprecipitate
 Dosing
-2 pools cryoprecipitate IV over 10-30 min (takes ~15-20 min to prepare).
+2 pools cryoprecipitate IV over 10-30 min (takes ~15-20 min to prepare). 1 pool = 5 pre-pooled units; 1-2 pools raises plasma fibrinogen by 50-100 mg/dL in a 50-100 kg patient.
 For post-thrombolytic ICH when fibrinogen <200 mg/dL. Repeat fibrinogen and coagulation panel after administration.
 Press Esc or click outside to close
 --- modal via "Tranexamic acid 1000 mg IV over 10 min STAT" ---
@@ -559,21 +571,21 @@ Dosing
 Famotidine 20 mg IV.
 H2 antihistamine given with an H1 blocker (e.g., diphenhydramine) for thrombolysis-associated orolingual angioedema. Use the H2 agent on your local formulary.
 Press Esc or click outside to close
---- modal via "Epinephrine 0.3 mg IM" ---
+--- modal via "Epinephrine (0.1%) 0.3 mL SC" ---
 Epinephrine
 Dosing
-Epinephrine 0.3 mg IM (1 mg/mL solution) into anterolateral thigh. Nebulized for upper airway edema: 3-5 mL of 1:1000 (1 mg/mL) solution, or racemic epinephrine 0.5 mL of 2.25%.
-For worsening angioedema. IM preferred over SC (faster absorption per AHA/WAO guidelines). Use if symptoms progress despite methylprednisolone and diphenhydramine.
+Epinephrine (0.1%, 1 mg/mL) 0.3 mL subcutaneously. Nebulized for upper airway edema: 0.5 mL of the same 0.1% solution.
+For worsening angioedema. Give if symptoms progress despite methylprednisolone, diphenhydramine, and famotidine. The local orolingual angioedema protocol specifies the subcutaneous route and this card follows it. Note that broader anaphylaxis guidance (AHA/WAO) favours the intramuscular route for faster absorption — if the presentation is frank anaphylaxis rather than isolated orolingual angioedema, treat as anaphylaxis.
 Press Esc or click outside to close
 --- modal via "Icatibant" ---
 Icatibant
 Dosing
-30 mg SC.
-Bradykinin B2 receptor antagonist. Consider for ACE inhibitor-related angioedema refractory to initial treatment.
+30 mg subcutaneously, once (1 dose).
+Bradykinin B2 receptor antagonist. Standard step in the post-thrombolytic orolingual angioedema sequence, after airway management, methylprednisolone, diphenhydramine, and famotidine — not restricted to refractory or ACE-inhibitor-related cases.
 Press Esc or click outside to close
 --- modal via "C1 esterase inhibitor (Berinert) 20 IU/kg" ---
 C1 Esterase Inhibitor (Berinert)
 Dosing
-20 IU/kg IV.
-Plasma-derived C1 esterase inhibitor. For refractory orolingual angioedema associated with IV thrombolytic (AHA/ASA COR IIb, LOE C-EO).
+20 IU/kg IV. MUST be administered by slow IV push at a rate of 4 mL/min.
+Plasma-derived C1 esterase inhibitor. Not part of the current post-thrombolytic orolingual angioedema sequence, which ends at icatibant 30 mg SC; use is restricted to pregnant or pediatric patients, or those intolerant to icatibant.
 Press Esc or click outside to close

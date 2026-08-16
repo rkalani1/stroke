@@ -28,21 +28,27 @@ Intubate if GCS ≤8; elevate HOB 30°
 BP control: SBP <160 mmHg
 Nicardipine 5-15 mg/h IV or labetalol IV (pre-aneurysm securing). Class I, LOE B-NR
 3
+Reverse coagulopathy
+Screen for anticoagulant/antiplatelet exposure and reverse before the aneurysm is secured — use the coagulopathy-reversal pathway
+4
 Start Nimodipine 60 mg PO/NG q4h
 Begin within 96h of onset; continue 21 days. Class I, LOE A for DCI prevention. Only calcium channel blocker with proven benefit
-4
+5
 Neurosurgery/Neurointerventional consult
 For aneurysm securing strategy (clip vs coil) — target within 24h
-5
+6
+Document Hunt-Hess grade
+Record the admission Hunt-Hess grade with the consult (Hunt & Hess / WFNS calculators are under Calculators)
+7
 Analgesia for headache
 Acetaminophen 1g IV/PO q6h. Avoid NSAIDs. Cautious opioids if severe
-6
+8
 Seizure prophylaxis (if indicated)
 Short-term (3-7d) levetiracetam 500-1000mg BID. Not routine for all patients
-7
+9
 EVD placement
 If acute hydrocephalus or GCS ≤8 with IVH. Open at 15-20 cmH₂O
-8
+10
 Labs: CBC, BMP, Coags, Type & Screen, Troponin, Mg²⁺
 Repeat BMP q6h initially for Na⁺ monitoring
 2

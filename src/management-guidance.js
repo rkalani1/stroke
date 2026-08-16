@@ -253,7 +253,7 @@ export const AIS_COMMAND_CENTER_CARDS = [
     ],
     pathway: [
       { label: 'Post-IVT neurological worsening', decision: 'Emergency CT + labs + reversal pathway', cor: 'I', loe: 'B-NR' },
-      { label: 'Orolingual angioedema', decision: 'Airway-first protocol; steroids/H1/H2, epinephrine if progressing', cor: 'I', loe: 'C-LD' },
+      { label: 'Orolingual angioedema', decision: 'Airway-first protocol; steroids/H1/H2, epinephrine if progressing', cor: 'IIb', loe: 'C-EO' },
       { label: 'Antithrombotic restart after IVT', decision: 'Hold 24h and image first', cor: 'I', loe: 'B-NR' }
     ],
     calculators: [

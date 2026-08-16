@@ -634,7 +634,7 @@ Sincerely,
 
 const STROKE_DAY_CHECKLISTS = {
   1: [
-    'Dysphagia screen (Barnes-Jewish or Yale) BEFORE any PO',
+    'Dysphagia screen by a competency-validated RN BEFORE any PO',
     'DVT prophylaxis — IPC day 0 (CLOTS-3), transition to chemical ppx day 2 for ICH if stable',
     'Imaging reconciliation: baseline CT/MRI, vessel imaging (CTA/MRA)',
     'Labs: lipid panel, HbA1c, troponin, BNP, ECG',
