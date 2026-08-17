@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "management-cards",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.16.0",
-    "checksum": "sha256:77e27a86b01aff8619bc57e8c95bcb1a",
+    "appVersion": "6.17.0",
+    "checksum": "sha256:f5642213dc12b7bbd8da624411a81dae",
     "count": 3,
     "source": "Management-card reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -220,7 +220,7 @@
             "label": "Basilar, NIHSS >=10, PC-ASPECTS >=6, mRS 0-1",
             "decision": "EVT recommended within 24h",
             "cor": "I",
-            "loe": "B-R"
+            "loe": "A"
           }
         ],
         "calculators": [

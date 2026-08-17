@@ -626,7 +626,7 @@ export const IVT_RELATIVE_CONTRAINDICATIONS = [
   { label: 'Prior ICH', detail: 'Amyloid angiopathy = higher risk. Modifiable causes (HTN) may have greater net benefit.' },
   { label: 'Major non-CNS trauma (14d-3mo)', detail: 'Surgical consultation; consider involved areas.' },
   { label: 'Major surgery or trauma <14 days', detail: 'Consider surgical area and bleeding risk. Local criteria use a 14-day boundary.' },
-  { label: 'Dural puncture <7 days', detail: 'May be considered in individual cases.' },
+  { label: 'Arterial puncture at non-compressible site <7 days', detail: 'The dedicated inclusion/exclusion criteria sheet lists this as an absolute exclusion ("Arterial puncture at non-compressible site in the last 7 days"); the condensed 6/2026 telestroke consult guide lists arterial puncture within 7 days as relative. The dedicated criteria sheet is used here as the more restrictive source — treat as a hard stop unless the treating team explicitly individualises.' },
   { label: 'Intracranial vascular malformations', detail: 'Safety unknown; unruptured and untreated.' },
   { label: '>10 cerebral microbleeds', detail: 'Relative exclusion in the current local eligibility criteria.' },
   { label: 'Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use', detail: 'May be a false positive due to lupus anticoagulant; consider the thrombolytic if able to reliably confirm the patient is not taking a direct thrombin inhibitor or factor Xa inhibitor.' },
@@ -653,7 +653,7 @@ export const IVT_BENEFIT_GREATER_CONSIDER = [
 
 export const GENERALIZABILITY_LIMITATIONS = [
   'Age >80',
-  'Significant head-size or vessel tortuosity',
+  'Significant head/neck vessel tortuosity',
   'Comorbidities that affect assessment',
   'Seizures at stroke onset',
   'High suspicion for underlying ICAD',

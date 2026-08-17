@@ -43,13 +43,13 @@ Nimodipine (SAH)
 60 mg PO/NG q4h x 21 days. If hypotension: 30 mg q2h.
 Click to copy
 PCC / Kcentra
-INR 2-3.9: 25 IU/kg (max 2500); INR 4-6: 35 IU/kg (max 3500); INR >6: 50 IU/kg (max 5000)
+2000 units IV immediately (fixed dose, not weight-based). If INR >1.5 after infusion, page hematology and consider an additional 500 units.
 Click to copy
 Idarucizumab
 5 g IV (two 2.5 g vials) over 5-10 min. For dabigatran reversal.
 Click to copy
 FFP (if no PCC)
-10-15 mL/kg IV. Goal INR <1.5.
+15 mL/kg IV (4 units emergency-release plasma immediately; request an additional 4 units). Goal INR <1.5.
 Click to copy
 Labetalol IV
 10-20 mg IV q10-20min (max 300 mg). Alt: nicardipine 5 mg/h, titrate q5min by 2.5 mg/h (max 15).
@@ -625,7 +625,7 @@ Hours since last DOAC dose
 DOAC dose (mg per dose)
 Select apixaban or rivaroxaban. Andexanet not indicated for dabigatran (use idarucizumab) or edoxaban.
 Practice note:
-AHA/ASA 2022 lists andexanet alfa as Class IIa (reasonable) for Xa inhibitor-associated ICH reversal. 4F-PCC is an alternative when andexanet is unavailable or contraindicated. Monitor closely for thrombotic complications after any reversal strategy.
+Local protocol reverses factor Xa inhibitor-associated ICH with 4-factor PCC 2000 units IV; andexanet alfa is not available on formulary, so this calculator is reference-only. Andexanet carries COR/LOE 2a / B with 82% hemostatic effectiveness. Monitor closely for thrombotic complications after any reversal strategy.
 ANNEXA-4 trial. Low-dose if last DOAC ≥8h ago (or apixaban ≤5mg). High-dose if last dose <8h ago (or rivaroxaban >10mg, apixaban >5mg). Monitor for thrombotic events post-reversal.
 Creatinine Clearance (Cockcroft-Gault)
 Age

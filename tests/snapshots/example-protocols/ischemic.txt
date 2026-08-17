@@ -238,7 +238,7 @@ B-R
 Basilar, NIHSS >=10, PC-ASPECTS >=6, mRS 0-1
 EVT recommended within 24h
 I
-B-R
+A
 EVT builder
 ASPECTS
 PC-ASPECTS
@@ -597,7 +597,7 @@ Individualized
 M2 / Distal Vessels
 Proximal/dominant M2 ≤1cm of bifurcation, salvageable tissue, LKW ≤24h
 →
-May be considered (select cases)
+Reasonable (select cases)
 M2-M4 MCA, ACA, PCA occlusions
 →
 No routine EVT (select/trial only)
@@ -632,7 +632,7 @@ No IV infusion
 Target strategy
 Guideline default
 SBP <180/105
-SBP 130-180 guardrail
+SBP 140-180 guardrail
 Target:
 SBP 140-180
 Enter post-EVT BP to activate automated guardrails.
@@ -1087,7 +1087,7 @@ ATTENTION trial: EVT + medical vs medical alone — significant benefit (mRS 0-3
 BAOCHE trial: EVT benefit in 6-24h window with favorable imaging
 BASICS trial: Neutral — but underpowered, slow enrollment
 Current recommendation:
-EVT reasonable for BAO 0-24h with PC-ASPECTS ≥6, NIHSS ≥10 (Class IIa)
+EVT recommended for BAO 0-24h with PC-ASPECTS ≥6, NIHSS ≥10 (Class I, LOE A); NIHSS 6-9 may be considered (Class 2b, LOE B-R)
 IV thrombolysis:
 Give TNK if within 4.5h and no contraindications, even if planning EVT (bridging therapy)
 PC-ASPECTS Scoring
@@ -1279,8 +1279,8 @@ Major non-CNS trauma (14d-3mo)
 Surgical consultation; consider involved areas.
 Major surgery or trauma <14 days
 Consider surgical area and bleeding risk. Local criteria use a 14-day boundary.
-Dural puncture <7 days
-May be considered in individual cases.
+Arterial puncture at non-compressible site <7 days
+The dedicated inclusion/exclusion criteria sheet lists this as an absolute exclusion ("Arterial puncture at non-compressible site in the last 7 days"); the condensed 6/2026 telestroke consult guide lists arterial puncture within 7 days as relative. The dedicated criteria sheet is used here as the more restrictive source — treat as a hard stop unless the treating team explicitly individualises.
 Intracranial vascular malformations
 Safety unknown; unruptured and untreated.
 >10 cerebral microbleeds
@@ -1354,7 +1354,7 @@ Significant mass effect
 Awaiting input
 Need ASPECTS, LKW hours, and NIHSS.
 Generalizability is limited for:
-Age >80; Significant head-size or vessel tortuosity; Comorbidities that affect assessment; Seizures at stroke onset; High suspicion for underlying ICAD; Life expectancy <6 months
+Age >80; Significant head/neck vessel tortuosity; Comorbidities that affect assessment; Seizures at stroke onset; High suspicion for underlying ICAD; Life expectancy <6 months
 .
 EX
 Blood Pressure Management

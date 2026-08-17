@@ -90,7 +90,11 @@ describe('Tier 5: Adversarial Coverage Hardening & Clinical Invariants', () => {
       expect(basilarPathway.label).toContain('PC-ASPECTS >=6');
       expect(basilarPathway.label).toContain('mRS 0-1');
       expect(basilarPathway.cor).toBe('I');
-      expect(basilarPathway.loe).toBe('B-R');
+      // Folder authority: the EVT Eligibility Flowchart (June 2026) grades basilar occlusion
+      // <=24h with PC-ASPECTS >=6 and NIHSS >=10 as COR 1 / LOE A. The app previously carried
+      // LOE B-R here and "Class IIa" on the posterior-circulation card — internally inconsistent
+      // and matching neither. COR I is unchanged; only the evidence level is corrected.
+      expect(basilarPathway.loe).toBe('A');
       expect(basilarPathway.decision).toContain('within 24h');
     });
 

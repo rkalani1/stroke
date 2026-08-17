@@ -133,7 +133,7 @@ export const AIS_COMMAND_CENTER_CARDS = [
       { label: 'ICA/M1, ASPECTS 3-10, mRS 0-1', decision: 'EVT recommended', cor: 'I', loe: 'A' },
       { label: 'Large core ASPECTS 3-5 or core 50-100 mL', decision: 'EVT recommended if otherwise eligible', cor: 'I', loe: 'A' },
       { label: 'ASPECTS 0-2, age <80, NIHSS >=6, mRS 0-1, no mass effect', decision: 'Selected EVT is reasonable', cor: 'IIa', loe: 'B-R' },
-      { label: 'Basilar, NIHSS >=10, PC-ASPECTS >=6, mRS 0-1', decision: 'EVT recommended within 24h', cor: 'I', loe: 'B-R' }
+      { label: 'Basilar, NIHSS >=10, PC-ASPECTS >=6, mRS 0-1', decision: 'EVT recommended within 24h', cor: 'I', loe: 'A' }
     ],
     calculators: [
       { label: 'EVT builder', tab: 'management', subTab: 'ischemic', anchor: 'isch-evt' },
