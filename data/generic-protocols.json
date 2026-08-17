@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "generic-protocols",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.17.0",
+    "appVersion": "6.18.0",
     "checksum": "sha256:d6d019867f9b5fa2a3fa6b55b44f15cd",
     "count": 3,
     "source": "Public protocol reference bundle",

@@ -196,7 +196,14 @@ async function captureSubtab(browser, subtab) {
     await page.waitForTimeout(600);
     const lines = await extractPanelText(page);
     if (!lines) throw new Error(`#tabpanel-protocols not found for subtab "${subtab}"`);
-    if (lines.length < 20) {
+    // A subtab may be legitimately minimal: Protocols carries institutional content only, so a
+    // topic with no Stroke Center source document renders just its header plus the
+    // "no institutional protocol document is on file" notice. That is a valid capture, not a
+    // broken one. Anything else that is this short still means extraction or routing failed.
+    const intentionallyMinimal = lines.some((l) =>
+      /No institutional protocol document is on file/i.test(l)
+    );
+    if (lines.length < 20 && !intentionallyMinimal) {
       throw new Error(
         `Suspiciously little content for subtab "${subtab}" (${lines.length} text nodes) — extraction or routing is broken; refusing to treat this as a valid capture.`
       );
