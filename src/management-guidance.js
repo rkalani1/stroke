@@ -222,7 +222,7 @@ export const AIS_COMMAND_CENTER_CARDS = [
       'Include a history of atrial fibrillation or deep vein thrombosis in the minimum thrombolysis dataset.',
       'When thrombolysis first appears possible, ask the remote team to prepare the medication while eligibility is completed.',
       'Before administration, review the dataset, confirm risk-benefit discussion and consent, confirm the last BP is below 185/110, and confirm provider agreement.',
-      'Address thrombectomy next using time, large-vessel occlusion, ASPECTS, goals of care, and transfer feasibility.'
+      'Address thrombectomy next using time from last known well (about 20 hours or less at the referring site, so transfer still allows treatment within 24 hours), large-vessel occlusion on CTA, ASPECTS, goals of care, and transfer feasibility.'
     ],
     pathway: [
       { label: 'Minimum thrombolysis dataset complete', decision: 'Make the thrombolysis decision as soon as possible', cor: 'Workflow', loe: 'Institutional' },

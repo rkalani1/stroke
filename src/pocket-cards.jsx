@@ -87,7 +87,7 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
     crao: state.crao
   }), [state]);
 
-  const colorByEligible = (e) => e === true ? 'border-ok-400 bg-ok-50 dark:bg-ok-950' : e === 'consider' ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-950' : e === false ? 'border-rose-400 bg-rose-50 dark:bg-rose-950' : 'border-slate-300 bg-slate-50 dark:border-strong dark:bg-paper-2';
+  const colorByEligible = (e) => e === true ? 'border-ok-400 bg-ok-50 dark:bg-ok-950' : e === 'consider' ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-950' : e === 'pending' ? 'border-warn-400 bg-warn-50 dark:bg-warn-950' : e === false ? 'border-rose-400 bg-rose-50 dark:bg-rose-950' : 'border-slate-300 bg-slate-50 dark:border-strong dark:bg-paper-2';
 
   return (
     <div className="p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
@@ -155,7 +155,7 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
           </div>
         </div>
       )}
-      {result.eligible !== null && result.eligible !== 'pending' && <div className={`p-3 rounded border-2 ${colorByEligible(result.eligible)}`}>
+      {result.eligible !== null && <div className={`p-3 rounded border-2 ${colorByEligible(result.eligible)}`}>
         <div className="flex items-center flex-wrap gap-2 mb-1">
           <strong className="text-sm">{result.recommendation || 'Awaiting input'}</strong>
           <CorChip cor={result.cor} /><LoeChip loe={result.loe} />
@@ -242,9 +242,9 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
               </select>
             </label>
           </div>
-          {(rAnt.eligible === true || rAnt.eligible === 'consider') && <div className={`p-2 rounded border-2 ${colorByEligible(rAnt.eligible)}`}>
+          {rAnt.eligible !== null && <div className={`p-2 rounded border-2 ${colorByEligible(rAnt.eligible)}`}>
             <div className="flex items-center flex-wrap gap-2">
-              <strong className="text-sm">EVT</strong>
+              <strong className="text-sm">{rAnt.eligible === true || rAnt.eligible === 'consider' ? 'EVT' : rAnt.eligible === false ? 'NO EVT' : (rAnt.recommendation || 'Hold')}</strong>
               <CorChip cor={rAnt.cor} /><LoeChip loe={rAnt.loe} />
               {rAnt.window && <span className="px-1.5 py-0.5 text-xs bg-cobalt-100 text-cobalt-900 rounded dark:bg-cobalt-900 dark:text-cobalt-300">{rAnt.window}</span>}
             </div>
@@ -395,7 +395,7 @@ const ContraindicationsCard = () => (
 // Safe Pause card
 // ----------------------------------------------------------------------
 const SafePauseCard = ({ defaults = {} }) => {
-  const [st, setSt] = useState({ consentType: defaults.consentType || '', bp: defaults.bp || '', contraindications: 'not reviewed' });
+  const [st, setSt] = useState({ consentType: defaults.consentType || '', bp: defaults.bp || '', contraindications: 'not reviewed', providerAgreement: 'not confirmed' });
   const issues = getSafePauseIssues(st);
   const complete = issues.length === 0;
   const text = getSafePauseText(st);
@@ -405,7 +405,7 @@ const SafePauseCard = ({ defaults = {} }) => {
         <span className="inline-block px-2 py-0.5 bg-ok-700 text-white text-xs rounded">INST</span>
         Safety Pause (pre-thrombolytic)
       </h4>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs mb-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs mb-2">
         <label>
           <span className="block text-slate-600 dark:text-ink-2">Consent type</span>
           <select value={st.consentType} onChange={(e) => setSt({ ...st, consentType: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
@@ -422,6 +422,13 @@ const SafePauseCard = ({ defaults = {} }) => {
           <select value={st.contraindications} onChange={(e) => setSt({ ...st, contraindications: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
             <option value="not reviewed">Not reviewed</option>
             <option value="reviewed">Absolute and relative contraindications reviewed</option>
+          </select>
+        </label>
+        <label>
+          <span className="block text-slate-600 dark:text-ink-2">Provider agreement</span>
+          <select value={st.providerAgreement} onChange={(e) => setSt({ ...st, providerAgreement: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
+            <option value="not confirmed">Not confirmed</option>
+            <option value="confirmed">All providers agree with the thrombolytic decision</option>
           </select>
         </label>
       </div>

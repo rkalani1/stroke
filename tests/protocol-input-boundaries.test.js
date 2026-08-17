@@ -101,8 +101,11 @@ describe('Protocols input-boundary contracts', () => {
         'const ichVolumeEstimate = useMemo',
       );
 
-      expect(volumeSyncSource).toMatch(/const hasAnyVolumeInput\s*=/);
-      expect(volumeSyncSource).toMatch(/if \(!hasValidVolumeInputs\)[\s\S]*hasAnyVolumeInput[\s\S]*volume30: false[\s\S]*criteriaReviewed: false/);
+      // 2026-08-17: the reset is now UNCONDITIONAL on invalid input. It previously ran only when
+      // at least one field was still populated, so clearing ALL four fields latched a stale
+      // "volume >=30 cc" tick and a stale reviewed flag. Pin the stronger contract.
+      expect(volumeSyncSource).not.toMatch(/hasAnyVolumeInput/);
+      expect(volumeSyncSource).toMatch(/if \(!hasValidVolumeInputs\)[\s\S]{0,220}volume30: false[\s\S]{0,40}criteriaReviewed: false/);
     });
 
     it('maps every complete GCS in the 13-15 range to the zero-point ICH tier', () => {

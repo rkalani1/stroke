@@ -228,8 +228,8 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // tests/snapshots/example-protocols/ for the approved wording. Counts below reflect
       // the approved removal of source-status boxes and relocation of calculators.
       const baselineCounts = {
-        ich: 516,
-        ischemic: 757,
+        ich: 524,
+        ischemic: 764,
         calculators: 428
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {

@@ -159,7 +159,7 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
   it('keeps institutional ICH BP branches source-specific and free of literature grades', () => {
     const app = texts['src/app.jsx'];
     expect(app).toMatch(/Presenting SBP 150-219:[\s\S]{0,80}target 140 and maintain 130-150/);
-    expect(app).toMatch(/Presenting SBP (?:&ge;|≥)220:[\s\S]{0,120}reduce (?:by )?about 20%[\s\S]{0,100}never more than 25%[\s\S]{0,100}target 140-160/);
+    expect(app).toMatch(/Presenting SBP (?:&ge;|≥)220:[\s\S]{0,120}reduce (?:by )?about 20%[\s\S]{0,100}never more than 25%[\s\S]{0,100}gradually reduce to 140-160/);
     expect(app).toMatch(/Presenting SBP (?:&lt;|<)150:[\s\S]{0,80}do not actively lower to 140/);
 
     // Literature recommendations and their COR/LOE metadata live under Guidelines
