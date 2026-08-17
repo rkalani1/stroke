@@ -103,7 +103,7 @@ CYP2C19 loss-of-function carrier
 ASA + ticagrelor (then ticagrelor monotherapy)
 21 days DAPT
 CHANCE-2
-Mild-to-moderate non-cardioembolic stroke (NIHSS 4-5) without high bleed risk
+Non-cardioembolic minor stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4) without high bleed risk
 ASA + ticagrelor
 30 days
 THALES (enrolled ≤24h); AIS 2026 Class IIb framing
