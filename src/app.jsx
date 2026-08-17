@@ -28254,14 +28254,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       })}
                     </div>
 
-                    {/* Order-bundle scaffold retained without the legacy literature-driven orders. */}
-                    <details className="bg-white border-2 border-slate-300 rounded-md dark:bg-card dark:border-strong">
-                      <summary className="cursor-pointer p-3 font-semibold text-slate-900 border-b border-slate-200 dark:text-ink dark:border-line">
-                        Order Bundles — Quick Copy
-                      </summary>
-                      <p className="p-3 text-xs text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
-                    </details>
-
                     {/* ICH Content */}
                     {managementSubTab === 'ich' && (
                       <div id="mgmt-tabpanel-ich" role="tabpanel" aria-labelledby="mgmt-tab-ich" className="bg-crit-50 border border-crit-200 rounded-lg p-4 dark:bg-crit-950 dark:border-crit-800">
