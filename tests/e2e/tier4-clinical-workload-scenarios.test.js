@@ -114,7 +114,7 @@ describe('Tier 4: Real-World Clinical Workload Application Scenarios', () => {
       const postEVTTarget = INSTITUTIONAL_BP_PROTOCOLS.afterEVT24h;
       expect(postEVTTarget.target).toBe('SBP 140-180');
       expect(postEVTTarget.appliesWhen).toBe('Documented successful recanalization (mTICI >=2b)');
-      expect(postEVTTarget.protocol).toBe('After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180.');
+      expect(postEVTTarget.protocol).toBe('After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180, and below 180/105.');
       expect(postEVTTarget.cor).toBeUndefined();
       expect(postEVTTarget.loe).toBeUndefined();
     });

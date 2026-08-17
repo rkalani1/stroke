@@ -108,7 +108,7 @@ describe('Tier 3: Cross-Feature Combinations (Pairwise Interactions)', () => {
     expect(postEVT).toBeDefined();
     expect(postEVT.target).toBe('SBP 140-180');
     expect(postEVT.appliesWhen).toBe('Documented successful recanalization (mTICI >=2b)');
-    expect(postEVT.protocol).toBe('After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180.');
+    expect(postEVT.protocol).toBe('After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180, and below 180/105.');
     expect(Object.keys(INSTITUTIONAL_BP_PROTOCOLS)).toEqual(['beforeIVT', 'afterIVT24h', 'afterEVT24h']);
   });
 

@@ -17,13 +17,13 @@ export const INSTITUTIONAL_BP_PROTOCOLS = {
   afterIVT24h: {
     scenario: 'After IVT (24h)',
     target: 'BP <180/105',
-    protocol: 'Monitor q15 min × 2h → q30 min × 6h → q1h × 16h; maintain BP below 180/105 for 24 hours.'
+    protocol: 'Monitor q15 min × 2h → q30 min × 6h → q1h × 16h; treat if SBP >180 or DBP >105; maintain BP below 180/105 for 24 hours.'
   },
   afterEVT24h: {
     scenario: 'After EVT (24h)',
     appliesWhen: 'Documented successful recanalization (mTICI >=2b)',
     target: 'SBP 140-180',
-    protocol: 'After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180.'
+    protocol: 'After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180, and below 180/105.'
   }
 };
 
@@ -75,7 +75,7 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
   surgicalScreens: [
     {
       title: 'CSF diversion',
-      criteria: ['IVH or IPH with developing/symptomatic hydrocephalus', 'Decreased consciousness or obstructive physiology'],
+      criteria: ['IVH or IPH with developing/symptomatic hydrocephalus'],
       action: 'Evaluate urgently for EVD.'
     },
     {
@@ -103,7 +103,7 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
         'Basal-ganglia IPH volume >=20 mL by ABC/2',
         'NIHSS >=6',
         'CTA/MRA without vascular lesion',
-        'Arrival/evaluation <=15 hours since last known well',
+        'Arrival <=15 hours since last known well',
         'No clear standard-of-care surgical indication'
       ],
       action: 'MINUTE has operational priority over MIRROR when both are possible. Notify the approved trial pathway using current study materials; do not publish or infer internal contact details.'
@@ -658,33 +658,33 @@ export const IVT_UNRESOLVED_SOURCE_CONFLICTS = [
 
 export const IVT_ABSOLUTE_CONTRAINDICATIONS = [
   { label: 'CT with hemorrhage', detail: 'Acute intracranial hemorrhage on imaging.' },
-  { label: 'CT with extensive hypodensity', detail: 'Clear hypodensity responsible for symptoms.' },
-  { label: 'Acute spinal cord injury <90 days', detail: 'Listed as an absolute exclusion in the current local eligibility criteria.' },
+  { label: 'CT with extensive hypodensity', detail: 'Clear hypodensity is suspicious for symptoms.' },
+  { label: 'Acute spinal cord injury <3 months', detail: 'Likely contraindicated.' },
   { label: 'Symptoms or history suggestive of SAH', detail: 'Absolute exclusion even when the head CT is unremarkable.' },
   { label: 'Active internal bleeding', detail: 'Absolute exclusion.' },
   { label: 'Glucose <50 or >400 mg/dL until corrected and reassessed', detail: 'Correct the glucose first. Do not proceed unless a disabling deficit persists on the glucose-corrected examination.' },
   { label: 'SBP >185 or DBP >110 mmHg on repeated measures', detail: 'Hypertension above these values on repeated measures prior to starting the thrombolytic; treat and re-check before proceeding.' },
-  { label: 'Intra-axial intracranial neoplasm', detail: 'Absolute exclusion (extra-axial tumours are handled separately).' },
+  { label: 'Intra-axial neoplasm', detail: 'Potentially harmful — should not be administered. Extra-axial tumours are handled separately under benefit-greater.' },
   { label: 'Intracranial or intraspinal surgery <60 days', detail: 'Interim conservative safety hold from the dedicated criteria source. The current workflow prints <14 days; keep the discrepancy visible pending protocol-owner adjudication.' },
   { label: 'Infective endocarditis', detail: 'Should not be administered.' },
   { label: 'Severe coagulopathy', detail: 'Plt <100K, INR >1.7, aPTT >40s, PT >15s. In patients without a history of thrombocytopenia the thrombolytic can be started before the platelet count returns, but should be discontinued if the platelet count returns <100,000/mm3.' },
   { label: 'Treatment-dose heparin or LMWH within 24 hours', detail: 'Treatment-dose unfractionated heparin or low-molecular-weight heparin within the previous 24 hours is an exclusion.' },
-  { label: 'Recent GI/GU hemorrhage within 21 days', detail: 'Listed as an exclusion in the current local eligibility criteria.' },
+  { label: 'History of GI malignancy, or GI/GU hemorrhage within 21 days', detail: 'The dedicated local eligibility criteria list this as one combined exclusion: a history of gastrointestinal malignancy, or gastrointestinal or urinary tract hemorrhage within the previous 21 days.' },
   { label: 'Known or suspected direct thrombin inhibitor exposure unless thrombin time is confirmed normal', detail: 'Treat the exposure as an exclusion when thrombin time is abnormal, missing, or unavailable. A confirmed normal thrombin time is the sole source-listed escape; do not infer drug clearance from PT/INR or aPTT alone.' },
   { label: 'Arterial puncture at non-compressible site <7 days', detail: 'Arterial puncture at a non-compressible site within the previous 7 days is an absolute exclusion.' },
   { label: 'Aortic arch dissection', detail: 'Potentially harmful; should not be administered.' },
+  { label: 'Amyloid immunotherapy / ARIA', detail: 'ICH risk unknown — IV fibrinolysis should be avoided. The current pocket-card eligibility table lists this in the absolute tier; an older dedicated criteria sheet listed it as relative with a direction to confirm the decision with the on-call stroke attending and prepare for possible MRI. The more restrictive current placement is applied.' },
   { label: 'Unruptured, unsecured large intracranial aneurysm (>10 mm)', detail: 'Absolute exclusion; small or already-secured aneurysms are handled under benefit-greater.' },
   { label: 'Severe head trauma <90 days', detail: 'Interim conservative safety hold from the dedicated criteria source. The current workflow prints <14 days; keep the discrepancy visible pending protocol-owner adjudication.' },
 ];
 
 export const IVT_RELATIVE_CONTRAINDICATIONS = [
-  { label: 'Anti-amyloid therapy (e.g., lecanemab) — ARIA risk', detail: 'Not recommended; confirm the decision with the on-call stroke attending and prepare for possible MRI.' },
   { label: 'Pre-existing disability/frailty', detail: 'Treatment on individual basis.' },
   { label: 'Prior ischemic stroke <90 days', detail: 'Interim conservative hard-stop counsel. The current workflow lists this under both exclusion and relative-exclusion headings; keep the ambiguity visible pending protocol-owner adjudication.' },
   { label: 'Prior ICH', detail: 'Amyloid angiopathy = higher risk. Modifiable causes (HTN) may have greater net benefit.' },
   { label: 'Major extracranial surgery or trauma <14 days', detail: 'This entry is limited to major extracranial surgery or trauma. Consider the involved site and bleeding risk; it does not resolve the separate intracranial/intraspinal surgery and severe-head-trauma source conflict.' },
   { label: 'Intracranial vascular malformations', detail: 'Safety unknown; unruptured and untreated.' },
-  { label: '>10 cerebral microbleeds', detail: 'Relative exclusion in the current local eligibility criteria.' },
+  { label: '>10 cerebral microbleeds', detail: 'More than 10 known cerebral microbleeds may increase the risk for intracranial hemorrhage.' },
   { label: 'Direct thrombin inhibitor with normal thrombin time', detail: 'A normal thrombin time may support further review in a known direct-thrombin-inhibitor exposure; confirm the approved laboratory pathway before any treatment decision.' },
   { label: 'Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use', detail: 'May be a false positive due to lupus anticoagulant. Reliably exclude direct-thrombin-inhibitor or factor-Xa-inhibitor use before proceeding; the factor-Xa pathway remains unresolved.' },
   { label: 'Intracranial arterial dissection', detail: 'Safety unknown.' },

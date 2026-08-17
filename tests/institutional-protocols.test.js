@@ -142,10 +142,11 @@ describe('IVT contraindication lists match the current local eligibility criteri
   it('absolute list carries SAH-suggestive presentation, active internal bleeding, intra-axial neoplasm', () => {
     expect(abs()).toMatch(/suggestive of SAH/i);
     expect(abs()).toMatch(/Active internal bleeding/i);
-    expect(abs()).toMatch(/Intra-axial intracranial neoplasm/i);
+    expect(abs()).toMatch(/Intra-axial neoplasm/i);
   });
   it('keeps the supported spinal-cord rule and conservative conflicted trauma/surgery holds', () => {
-    expect(abs()).toMatch(/Acute spinal cord injury <90 days/);
+    // The pocket-card table prints the same rule as "<3 months"; 90 days and 3 months are equivalent.
+    expect(abs()).toMatch(/Acute spinal cord injury <3 months/);
     expect(abs()).not.toMatch(/Acute intracranial injury <14 days/);
     expect(abs()).toMatch(/Severe head trauma <90 days/);
     expect(abs()).toMatch(/Intracranial or intraspinal surgery <60 days/);
@@ -618,7 +619,11 @@ describe('institutional BP protocols present', () => {
     expect(Object.keys(INSTITUTIONAL_BP_PROTOCOLS)).toEqual(['beforeIVT', 'afterIVT24h', 'afterEVT24h']);
     expect(INSTITUTIONAL_BP_PROTOCOLS.beforeIVT.target).toBe('BP <185/110');
     expect(INSTITUTIONAL_BP_PROTOCOLS.afterIVT24h.target).toBe('BP <180/105');
+    // The source TARGET column reads BP <180/105 and its protocol detail adds the
+    // 140-180 range. The displayed target keeps the 140 floor, because the same card
+    // grades SBP <140 after EVT as COR 3: Harm — an upper bound alone would lose that.
     expect(INSTITUTIONAL_BP_PROTOCOLS.afterEVT24h.target).toBe('SBP 140-180');
+    expect(INSTITUTIONAL_BP_PROTOCOLS.afterEVT24h.protocol).toContain('180/105');
     expect(INSTITUTIONAL_BP_PROTOCOLS.afterEVT24h.appliesWhen).toContain('mTICI >=2b');
     expect(INSTITUTIONAL_BP_PROTOCOLS.afterEVT24h.protocol).toContain('mTICI >=2b');
     expect(JSON.stringify(INSTITUTIONAL_BP_PROTOCOLS)).not.toMatch(/ENCHANTED2-MT|OPTIMAL-BP|BP-TARGET|BEST-II/);
@@ -793,5 +798,106 @@ describe('Backwards-compat aliases', () => {
     expect(evaluateEVT_Legacy_Anterior).toBe(evaluateEVT_Anterior);
     expect(evaluateEVT_Legacy_M2).toBe(evaluateEVT_M2);
     expect(evaluateEVT_Legacy_Basilar).toBe(evaluateEVT_Basilar);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 2026-08-17 source-consistency audit — regression pins.
+// Each assertion below pins a change made against a named accepted Stroke Center
+// source. Sources are never copied into the repo; the pin is on the app contract.
+// ---------------------------------------------------------------------------
+describe('2026-08-17 Protocols source-consistency audit', () => {
+  it('places amyloid immunotherapy / ARIA in the ABSOLUTE tier, not the relative tier', () => {
+    // FINAL pocket cards 7.14.2026, card page 10, ABSOLUTE CONTRAINDICATIONS table:
+    // "Amyloid immunotherapy / ARIA — ICH risk unknown — IV fibrinolysis should be avoided".
+    // An older dedicated criteria sheet listed it as relative; the more restrictive
+    // current placement is applied and the discrepancy is stated on the row.
+    const absolute = IVT_ABSOLUTE_CONTRAINDICATIONS.find((c) => /amyloid/i.test(c.label));
+    expect(absolute).toBeTruthy();
+    expect(absolute.detail).toMatch(/IV fibrinolysis should be avoided/i);
+    expect(absolute.detail).toMatch(/more restrictive current placement is applied/i);
+    expect(IVT_RELATIVE_CONTRAINDICATIONS.some((c) => /amyloid/i.test(c.label))).toBe(false);
+  });
+
+  it('carries the full combined GI exclusion, not just the haemorrhage half', () => {
+    // Dedicated criteria sheet, EXCLUSION CRITERIA: "Hx of gastrointestinal malignancy
+    // or recent gastrointestinal or urinary tract hemorrhage within 21 days".
+    const row = IVT_ABSOLUTE_CONTRAINDICATIONS.find((c) => /GI malignancy/i.test(c.label));
+    expect(row).toBeTruthy();
+    expect(row.label).toMatch(/21 days/);
+    expect(row.detail).toMatch(/gastrointestinal malignancy/i);
+  });
+
+  it('replaces provenance boilerplate with the source clinical text', () => {
+    const byLabel = (re) => IVT_ABSOLUTE_CONTRAINDICATIONS.concat(IVT_RELATIVE_CONTRAINDICATIONS)
+      .find((c) => re.test(c.label));
+    expect(byLabel(/extensive hypodensity/i).detail).toBe('Clear hypodensity is suspicious for symptoms.');
+    expect(byLabel(/spinal cord injury/i).detail).toBe('Likely contraindicated.');
+    expect(byLabel(/Intra-axial neoplasm/i).detail).toMatch(/Potentially harmful/i);
+    expect(byLabel(/cerebral microbleeds/i).detail).toMatch(/increase the risk for intracranial hemorrhage/i);
+    // No row may fall back to describing where it came from instead of what it means.
+    IVT_ABSOLUTE_CONTRAINDICATIONS.concat(IVT_RELATIVE_CONTRAINDICATIONS).forEach((c) => {
+      expect(c.detail).not.toMatch(/^Listed as an? .*exclusion in the current local eligibility criteria\.$/i);
+    });
+  });
+
+  it('keeps the BP table to the three source scenarios and holds the rest', () => {
+    // FINAL pocket cards 7.14.2026, card page 21 (image-only page, read visually).
+    // The card also prints a sub-140 harm row and a no-reperfusion row; both are held
+    // for owner adjudication because an existing invariant forbids those branches here.
+    // The card's COR/LOE column is likewise not surfaced: inserting grade cells between
+    // the 140-180 target and its mTICI qualifier breaks the adjacency invariant in
+    // tests/protocol-input-boundaries.test.js, which exists to keep them together.
+    const rows = Object.values(INSTITUTIONAL_BP_PROTOCOLS);
+    expect(rows).toHaveLength(3);
+    const find = (re) => rows.find((r) => re.test(r.scenario));
+    expect(find(/Before IVT/)).toMatchObject({ target: 'BP <185/110' });
+    expect(find(/After IVT/)).toMatchObject({ target: 'BP <180/105' });
+    expect(find(/After EVT/)).toMatchObject({ target: 'SBP 140-180' });
+    // The source keeps the mTICI >=2b qualifier on the post-EVT row — do not drop it.
+    expect(find(/After EVT/).protocol).toMatch(/mTICI >=2b/);
+    expect(find(/After EVT/).protocol).toMatch(/140-180/);
+    // Held: the card's sub-140 harm row and no-reperfusion row must NOT appear here.
+    expect(find(/SBP <140/)).toBeUndefined();
+    expect(find(/no reperfusion/)).toBeUndefined();
+  });
+
+  it('keeps the source-printed labetalol titration ladder intact', () => {
+    // Guard against a future negative-search "removal": the ladder is printed on the
+    // image-only pocket-card BP page, which does not survive text extraction.
+    const before = INSTITUTIONAL_BP_PROTOCOLS.beforeIVT.protocol;
+    expect(before).toMatch(/Labetalol 10 mg IV/);
+    expect(before).toMatch(/20 mg/);
+    expect(before).toMatch(/40 mg/);
+    expect(before).toMatch(/60 mg/);
+    expect(before).toMatch(/300 mg in 2h/);
+  });
+
+  it('limits the CSF-diversion screen to the source criterion', () => {
+    const csf = ICH_INITIAL_EVALUATION_ALGORITHM.surgicalScreens.find((s) => /CSF diversion/i.test(s.title));
+    expect(csf.criteria).toEqual(['IVH or IPH with developing/symptomatic hydrocephalus']);
+    // "obstructive physiology" appears in no accepted source.
+    expect(JSON.stringify(ICH_INITIAL_EVALUATION_ALGORITHM)).not.toMatch(/obstructive physiology/i);
+  });
+
+  it('scopes the MINUTE 15-hour criterion to arrival, as the source states', () => {
+    const minute = ICH_INITIAL_EVALUATION_ALGORITHM.researchScreens.find((s) => /MINUTE/i.test(s.title));
+    expect(minute.criteria).toContain('Arrival <=15 hours since last known well');
+    expect(minute.criteria.some((c) => /Arrival\/evaluation/i.test(c))).toBe(false);
+    // The July figure prints >=20 mL; the superseded June card printed >=15 mL.
+    expect(minute.criteria).toContain('Basal-ganglia IPH volume >=20 mL by ABC/2');
+  });
+
+  it('keeps the minimally invasive evacuation screen at the 2026 GCS bound', () => {
+    // Two independent 2026 sources print GCS 5-14. A 2024 deck printed GCS 5-15;
+    // adopting it would be a loosening and is not applied.
+    const mie = ICH_INITIAL_EVALUATION_ALGORITHM.surgicalScreens.find((s) => /Minimally invasive/i.test(s.title));
+    expect(mie.criteria).toContain('GCS 5-14');
+    expect(mie.criteria.some((c) => /GCS 5-15/.test(c))).toBe(false);
+  });
+
+  it('renders the flowchart generalizability limits rather than holding them as dead data', () => {
+    expect(GENERALIZABILITY_LIMITATIONS).toContain('Age >80');
+    expect(GENERALIZABILITY_LIMITATIONS).toContain('Life expectancy <6 months');
   });
 });

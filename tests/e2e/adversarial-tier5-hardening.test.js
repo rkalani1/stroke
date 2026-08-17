@@ -221,7 +221,7 @@ describe('Tier 5: Adversarial Coverage Hardening & Clinical Invariants', () => {
         scenario: 'After EVT (24h)',
         appliesWhen: 'Documented successful recanalization (mTICI >=2b)',
         target: 'SBP 140-180',
-        protocol: 'After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180.'
+        protocol: 'After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180, and below 180/105.'
       });
     });
 

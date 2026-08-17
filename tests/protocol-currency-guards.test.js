@@ -184,14 +184,14 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(end).toBeGreaterThan(start);
     const sourceMinute = source.slice(start, end);
     expect(sourceMinute).toMatch(/Basal-ganglia IPH volume >=20 mL by ABC\/2/);
-    expect(sourceMinute).toMatch(/Arrival\/evaluation <=15 hours since last known well/);
+    expect(sourceMinute).toMatch(/Arrival <=15 hours since last known well/);
     expect(sourceMinute).not.toMatch(/>=15 mL|or close|Pre-ICH mRS|GCS\s*</i);
 
     const generic = readJson('data/generic-protocols.json');
     const genericMinute = generic.data.ichInitialEvaluation.researchScreens.find((screen) => screen.title === 'MINUTE screen');
     expect(genericMinute).toBeDefined();
     expect(genericMinute.criteria).toContain('Basal-ganglia IPH volume >=20 mL by ABC/2');
-    expect(genericMinute.criteria).toContain('Arrival/evaluation <=15 hours since last known well');
+    expect(genericMinute.criteria).toContain('Arrival <=15 hours since last known well');
     expect(JSON.stringify(genericMinute)).not.toMatch(/>=15 mL|or close|Pre-ICH mRS|GCS\s*</i);
   });
 

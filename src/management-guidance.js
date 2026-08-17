@@ -34,7 +34,7 @@ export const AIS_COMMAND_CENTER_CARDS = [
     ],
     pathway: [
       { label: 'Disabling deficit, <=4.5h, no exclusion', decision: 'TNK recommended', cor: 'I', loe: 'A' },
-      { label: 'Non-disabling deficit', decision: 'IV thrombolysis not recommended', cor: 'III: No Benefit', loe: 'B-R' },
+      { label: 'Non-disabling deficit', decision: 'IV thrombolysis not recommended; consider early DAPT', cor: 'III: No Benefit', loe: 'B-R' },
       { label: 'Glucose <50 or >400 mg/dL', decision: 'Correct first; reassess the deficit before an eligibility verdict', cor: 'I', loe: '' }
     ],
     calculators: [
@@ -60,6 +60,7 @@ export const AIS_COMMAND_CENTER_CARDS = [
     actions: [
       'For a known 4.5-9-hour interval, require either an explicit MRI DWI-FLAIR mismatch or CTP core <50 mL, mismatch ratio >=1.2, and mismatch volume >=10 mL.',
       'For wake-up or unknown onset, require explicit MRI DWI-FLAIR mismatch; do not substitute the CTP branch.',
+      'Prefer MRI when the presentation is small-vessel, posterior circulation, or complicated by contrast allergy.',
       'Confirm baseline mRS <=1.',
       'Confirm the patient is not an EVT candidate; IVT may be considered for selected LVO only when EVT within 24 hours is not feasible.',
       'Obtain consent for the 9-24-hour time window.'
@@ -156,8 +157,8 @@ export const AIS_COMMAND_CENTER_CARDS = [
     sourceNote: 'EVT eligibility flowchart.',
     summary: 'A dominant proximal M2 has separate early and late EVT tiers. The no-benefit branch applies to nondominant M2, ACA, and PCA. The accepted flowchart supplies no recommendation for codominant M2.',
     actions: [
-      'Define dominant proximal M2 as an M2 branch <=1 cm from the MCA bifurcation that supplies >=50% of MCA territory.',
-      'For 6-24 hours, require the flowchart’s CTP hypoperfusion-hypodensity mismatch in addition to ASPECTS and NIHSS.',
+      'Define dominant proximal M2 as an M2 branch <=1 cm from the MCA bifurcation that supplies >=50% of MCA territory. The flowchart also grades dominance by tissue at risk: dominant >100 mL, codominant 90-100 mL, nondominant <90 mL.',
+      'For 6-24 hours, require the flowchart’s CTP hypoperfusion-hypodensity mismatch in addition to ASPECTS and NIHSS. Mismatch means noncontrast CT shows no established hypodensity in >=90% of the CTP hypoperfused lesion.',
       'Do not infer a codominant-M2 recommendation from the nondominant branch.'
     ],
     pathway: [
@@ -218,6 +219,7 @@ export const AIS_COMMAND_CENTER_CARDS = [
     summary: 'The accepted telestroke workflow prioritizes the thrombolysis decision, preparation when treatment first appears possible, a minimum decision dataset, a treatment time-out, and then thrombectomy and transfer decisions.',
     actions: [
       'Obtain a brief status update with last known well, NIHSS, antithrombotics, blood pressure, glucose, and obvious contraindications.',
+      'Include a history of atrial fibrillation or deep vein thrombosis in the minimum thrombolysis dataset.',
       'When thrombolysis first appears possible, ask the remote team to prepare the medication while eligibility is completed.',
       'Before administration, review the dataset, confirm risk-benefit discussion and consent, confirm the last BP is below 185/110, and confirm provider agreement.',
       'Address thrombectomy next using time, large-vessel occlusion, ASPECTS, goals of care, and transfer feasibility.'
