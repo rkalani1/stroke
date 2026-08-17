@@ -794,12 +794,25 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(content.length).toBeGreaterThan(50_000);
     });
 
+    // T1.3/T1.4 assert build artifacts that only exist once the compressor has run. They used
+    // to depend on some OTHER test file happening to build first — which made them pass or fail
+    // purely on vitest's file ordering (observed failing when a Playwright cache hit changed the
+    // schedule). Ensure the artifacts here so both tests stand on their own; T1.5 still asserts
+    // the compressor's own exit status and output separately.
+    const ensureCompressedAssets = () => {
+      if (fs.existsSync(path.join(ROOT, 'app.js.gz')) && fs.existsSync(path.join(ROOT, 'app.js.br'))) return;
+      const built = spawnSync('node', [path.join(ROOT, 'scripts/compress-assets.mjs')], { cwd: ROOT, encoding: 'utf8' });
+      expect(built.status, `compress-assets.mjs failed: ${built.stderr || ''}`).toBe(0);
+    };
+
     it('F18-T1.3: Gzip compressed assets (app.js.gz, tailwind.css.gz) exist', () => {
+      ensureCompressedAssets();
       expect(fs.existsSync(path.join(ROOT, 'app.js.gz'))).toBe(true);
       expect(fs.existsSync(path.join(ROOT, 'tailwind.css.gz'))).toBe(true);
     });
 
     it('F18-T1.4: Brotli compressed assets (app.js.br, tailwind.css.br) exist', () => {
+      ensureCompressedAssets();
       expect(fs.existsSync(path.join(ROOT, 'app.js.br'))).toBe(true);
       expect(fs.existsSync(path.join(ROOT, 'tailwind.css.br'))).toBe(true);
     });
@@ -840,9 +853,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.18.1', () => {
+    it('F19-T1.5: package.json version matches latest release v6.18.2', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.18.1');
+      expect(pkg.version).toBe('6.18.2');
     });
   });
 });

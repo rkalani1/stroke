@@ -142,7 +142,9 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
       expect(texts[f]).toMatch(/mass effect/);
       expect(texts[f]).toMatch(/vascular lesion concern/);
       expect(texts[f]).toMatch(/neurologic decline/);
-      expect(texts[f]).toMatch(/early Neurosurgery \+ stroke-service evaluation(?: threshold| triggers)?:[\s\S]{0,360}pupillometry trend\/asymmetry/i);
+      // Ordering guard retargeted after pupillometry was removed (no Stroke Center folder source);
+      // the consult-trigger sequence itself is still pinned via the surviving trigger terms.
+      expect(texts[f]).toMatch(/early Neurosurgery \+ stroke-service evaluation(?: threshold| triggers)?:[\s\S]{0,360}multicompartmental hemorrhage/i);
       expect(texts[f]).toMatch(/multicompartmental hemorrhage/);
       expect(texts[f]).toMatch(/ED attending discretion/);
       expect(texts[f]).toMatch(/clinician concern/);
@@ -153,12 +155,13 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     }
     expect(texts['data/generic-protocols.json']).toMatch(/multicompartmental hemorrhage/);
     expect(texts['data/generic-protocols.json']).toMatch(/ED attending discretion/);
-    expect(texts['data/generic-protocols.json']).toMatch(/Consult earlier at any size[\s\S]{0,260}pupillometry trend\/asymmetry[\s\S]{0,260}clinician concern/i);
-    expect(texts['src/institutional-protocols.js']).toMatch(/Consult earlier at any size[\s\S]{0,260}pupillometry trend\/asymmetry[\s\S]{0,260}clinician concern/i);
+    expect(texts['src/institutional-protocols.js']).toMatch(/Consult earlier at any size[\s\S]{0,260}multicompartmental hemorrhage[\s\S]{0,260}clinician concern/i);
     expect(texts['src/app.jsx']).toMatch(/Screen for MIE only when spontaneous lobar IPH 30-80cc, NIHSS >5, GCS 5-14, age 18-80, and no underlying vascular lesion are confirmed/i);
     expect(texts['src/app.jsx']).toMatch(/Do not infer suboccipital decompression from cerebellar location or volume alone/i);
-    expect(texts['src/institutional-protocols.js']).toMatch(/pupillometry/i);
-    expect(texts['data/generic-protocols.json']).toMatch(/pupillometry/i);
+    // Pupillometry was removed 2026-08-16: no Stroke Center folder document mentions it, and
+    // Protocols carries institutional content only. Its absence is asserted so it cannot return.
+    expect(texts['src/institutional-protocols.js']).not.toMatch(/pupillometry/i);
+    expect(texts['data/generic-protocols.json']).not.toMatch(/pupillometry/i);
     expect(texts['src/institutional-protocols.js']).toMatch(/Life-threatening mass effect/);
     expect(texts['data/generic-protocols.json']).toMatch(/Life-threatening mass effect/);
     expect(texts['src/institutional-protocols.js']).not.toMatch(/Life-threatening or significant mass effect/);
