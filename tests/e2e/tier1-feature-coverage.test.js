@@ -23,11 +23,15 @@ import {
   AIS_COMMAND_CENTER_CARDS,
   AIS_SOURCE_LINKS
 } from '../../src/management-guidance.js';
-import { INSTITUTIONAL_BP_PROTOCOLS } from '../../src/institutional-protocols.js';
+import {
+  INSTITUTIONAL_BP_PROTOCOLS,
+  evaluateEVT_Anterior
+} from '../../src/institutional-protocols.js';
 import { parseFrontmatter, VALIDATORS } from '../../content/schema.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..', '..');
+const deploymentStateIt = process.env.STROKE_VERIFY_DEPLOYMENT_STATE === '1' ? it : it.skip;
 
 const schemaContext = {
   citationIds: new Set(citations.map((c) => c.id)),
@@ -191,20 +195,47 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(trialIds.includes('laste')).toBe(true);
     });
 
-    it('F4-T1.2: AIS Command Center Cards contain dedicated EVT Selection card with large-core criteria', () => {
+    it('F4-T1.2: AIS Command Center card keeps EVT grades on the source-listed pathway rows, not on the mixed card', () => {
       const evtCard = AIS_COMMAND_CENTER_CARDS.find(c => c.id === 'ais-evt-selection');
       expect(evtCard).toBeDefined();
-      expect(evtCard.classOfRecommendation).toBe('I');
-      expect(evtCard.shortLabel).toContain('large core');
+      expect(evtCard.classOfRecommendation).toBe('');
+      expect(evtCard.levelOfEvidence).toBe('');
+      expect(evtCard.shortLabel).toBe('Institutional EVT flowchart');
+      expect(evtCard.pathway.some(p => p.label.includes('ASPECTS 3-5'))).toBe(true);
+      expect(evtCard.pathway.some(p => p.label.includes('ASPECTS 0-2'))).toBe(true);
     });
 
-    it('F4-T1.3: Large-Core decision tree defines concrete pathway steps for NCCT ASPECTS 3-5 and 0-2', () => {
+    it('F4-T1.3: Anterior EVT separates the ASPECTS 3-5 tier and holds the ambiguous 71-100 mL ASPECTS 0-2 range', () => {
       const evtCard = AIS_COMMAND_CENTER_CARDS.find(c => c.id === 'ais-evt-selection');
       expect(evtCard.pathway.length).toBeGreaterThan(0);
-      const largeCoreStep = evtCard.pathway.find(p => /Large core/i.test(p.label));
+      const largeCoreStep = evtCard.pathway.find(p => p.label.includes('0-6h, ASPECTS 3-5'));
       expect(largeCoreStep).toBeDefined();
       expect(largeCoreStep.cor).toBe('I');
       expect(largeCoreStep.loe).toBe('A');
+
+      const unambiguousCore = evaluateEVT_Anterior({
+        aspectsScore: 1,
+        timeFromLKWh: 4,
+        nihss: 12,
+        preMRS: 1,
+        age: 70,
+        massEffect: false,
+        coreVolume: 70
+      });
+      expect(unambiguousCore.eligible).toBe('consider');
+      expect(unambiguousCore.cor).toBe('2a');
+
+      const ambiguousCore = evaluateEVT_Anterior({
+        aspectsScore: 1,
+        timeFromLKWh: 4,
+        nihss: 12,
+        preMRS: 1,
+        age: 70,
+        massEffect: false,
+        coreVolume: 71
+      });
+      expect(ambiguousCore.eligible).toBe('pending');
+      expect(ambiguousCore.reason).toContain('71-100 mL');
     });
 
     it('F4-T1.4: Large-Core education module content/education/large-core-thrombectomy.md exists with RCT citations', () => {
@@ -228,42 +259,43 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   // =========================================================================
   // Feature 5: Blood Pressure Guardrails (ORIGINAL_REQUEST §R1)
   // =========================================================================
-  describe('Feature 5: Blood Pressure Guardrails & Harm Thresholds', () => {
-    it('F5-T1.1: Pre-IVT BP target is locked to <185/110 mmHg with Class 1 recommendation', () => {
+  describe('Feature 5: Institutional Blood Pressure Guardrails', () => {
+    it('F5-T1.1: Pre-IVT BP target and source-listed labetalol ceiling are preserved', () => {
       const preIVT = INSTITUTIONAL_BP_PROTOCOLS.beforeIVT;
       expect(preIVT).toBeDefined();
       expect(preIVT.target).toBe('BP <185/110');
-      expect(preIVT.cor).toBe('1');
+      expect(preIVT.protocol).toContain('Labetalol 10 mg IV');
+      expect(preIVT.protocol).toContain('Max 300 mg in 2h');
     });
 
-    it('F5-T1.2: Post-IVT 24h BP target is locked to <180/105 mmHg with Class 1 recommendation', () => {
+    it('F5-T1.2: Post-IVT 24h BP target and monitoring sequence are preserved', () => {
       const postIVT = INSTITUTIONAL_BP_PROTOCOLS.afterIVT24h;
       expect(postIVT).toBeDefined();
       expect(postIVT.target).toBe('BP <180/105');
-      expect(postIVT.cor).toBe('1');
+      expect(postIVT.protocol).toContain('q15 min × 2h → q30 min × 6h → q1h × 16h');
     });
 
-    it('F5-T1.3: Post-EVT intensive SBP lowering <140 mmHg is flagged as Class III (Harm / No Benefit)', () => {
-      const sbp140EVT = INSTITUTIONAL_BP_PROTOCOLS.sbpLT140EVT;
-      expect(sbp140EVT).toBeDefined();
-      expect(sbp140EVT.cor).toBe('3 (Harm)');
-      expect(sbp140EVT.status).toContain('Harm');
+    it('F5-T1.3: Post-EVT 24h target is limited to the source-listed SBP 140-180 range', () => {
+      const postEVT = INSTITUTIONAL_BP_PROTOCOLS.afterEVT24h;
+      expect(postEVT).toBeDefined();
+      expect(postEVT.target).toBe('SBP 140-180');
+      expect(postEVT.appliesWhen).toBe('Documented successful recanalization (mTICI >=2b)');
+      expect(postEVT.protocol).toBe('After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180.');
     });
 
-    it('F5-T1.4: Acute ICH blood pressure guidelines specify harm threshold for SBP <130 mmHg', () => {
-      const ichData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/ich-2022.json'), 'utf8'));
-      const harmRec = ichData.recommendations.find(r =>
-        r.classOfRec === 'III' && /<130\s*mm\s*Hg/i.test(r.text)
-      );
-      expect(harmRec).toBeDefined();
-      expect(harmRec.text).toContain('harmful');
+    it('F5-T1.4: Protocol BP exports contain exactly the three folder-backed ischemic scenarios', () => {
+      expect(Object.keys(INSTITUTIONAL_BP_PROTOCOLS)).toEqual([
+        'beforeIVT',
+        'afterIVT24h',
+        'afterEVT24h'
+      ]);
     });
 
-    it('F5-T1.5: First-line IV antihypertensive agents (Labetalol, Nicardipine, Clevidipine) have dosing parameters', () => {
+    it('F5-T1.5: The source-listed pre-IVT agent is limited to labetalol', () => {
       const preIVT = INSTITUTIONAL_BP_PROTOCOLS.beforeIVT;
       expect(preIVT.protocol).toContain('Labetalol');
-      expect(preIVT.alternatives).toContain('Nicardipine');
-      expect(preIVT.alternatives).toContain('Clevidipine');
+      expect(preIVT).not.toHaveProperty('alternatives');
+      expect(preIVT.protocol).not.toMatch(/Nicardipine|Clevidipine/i);
     });
   });
 
@@ -689,9 +721,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   // =========================================================================
   describe('Feature 16: Playwright Protocol Snapshot Lock', () => {
     const snapDir = path.join(ROOT, 'tests/snapshots/example-protocols');
-    const subtabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
+    const subtabs = ['ich', 'ischemic', 'calculators'];
 
-    it('F16-T1.1: All 6 protocol snapshot baseline files exist in tests/snapshots/example-protocols/', () => {
+    it('F16-T1.1: All 3 protocol snapshot baseline files exist in tests/snapshots/example-protocols/', () => {
       for (const subtab of subtabs) {
         const file = path.join(snapDir, `${subtab}.txt`);
         expect(fs.existsSync(file)).toBe(true);
@@ -710,11 +742,12 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       }
     });
 
-    it('F16-T1.3: Ischemic protocol baseline contains 2026 acute stroke management thresholds', () => {
+    it('F16-T1.3: Ischemic protocol baseline contains the folder-backed adult treatment thresholds', () => {
       const ischemic = fs.readFileSync(path.join(snapDir, 'ischemic.txt'), 'utf8');
-      expect(ischemic).toContain('TNK 0.25 mg/kg');
+      expect(ischemic).toContain('tenecteplase 0.25 mg/kg IV push, maximum 25 mg');
       expect(ischemic).toContain('<185/110');
       expect(ischemic).toContain('<180/105');
+      expect(ischemic).toContain('SBP 140-180');
     });
 
     it('F16-T1.4: ICH protocol baseline contains acute SBP target and PCC reversal protocols', () => {
@@ -723,9 +756,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(ich).toContain('4F-PCC');
     });
 
-    it('F16-T1.5: snapshot-example-protocols.mjs runner specifies all 6 subtabs against baseline', () => {
+    it('F16-T1.5: snapshot-example-protocols.mjs runner specifies all 3 subtabs against baseline', () => {
       const script = fs.readFileSync(path.join(ROOT, 'scripts/snapshot-example-protocols.mjs'), 'utf8');
-      expect(script).toContain("const SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators']");
+      expect(script).toContain("const SUBTABS = ['ich', 'ischemic', 'calculators']");
     });
   });
 
@@ -828,13 +861,13 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   // Feature 19: Git Deployment Target Verification (ORIGINAL_REQUEST §R4)
   // =========================================================================
   describe('Feature 19: Git Deployment Target Verification', () => {
-    it('F19-T1.1: Git repository branch is main', () => {
+    deploymentStateIt('F19-T1.1: Git repository branch is main', () => {
       const result = spawnSync('git', ['branch', '--show-current'], { cwd: ROOT, encoding: 'utf8' });
       expect(result.status).toBe(0);
       expect(result.stdout.trim()).toBe('main');
     });
 
-    it('F19-T1.2: Upstream tracking branch is configured to origin/main', () => {
+    deploymentStateIt('F19-T1.2: Upstream tracking branch is configured to origin/main', () => {
       const result = spawnSync('git', ['status', '-sb'], { cwd: ROOT, encoding: 'utf8' });
       expect(result.status).toBe(0);
       expect(result.stdout).toContain('main...origin/main');
@@ -853,9 +886,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.18.3', () => {
+    it('F19-T1.5: package.json version matches latest release v6.19.0', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.18.3');
+      expect(pkg.version).toBe('6.19.0');
     });
   });
 });

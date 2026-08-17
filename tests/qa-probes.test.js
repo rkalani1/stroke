@@ -77,7 +77,7 @@ describe('CRITICAL — clinical correctness probes', () => {
 
   it('ICH Score — full house is 6 (Hemphill 2001)', () => {
     expect(calculateICHScore({
-      gcs: 'gcs34', age80: true, volume30: true, ivh: true, infratentorial: true
+      gcs: 'gcs34', age80: true, volume30: true, ivh: true, infratentorial: true, criteriaReviewed: true
     })).toBe(6);
   });
 
@@ -198,32 +198,35 @@ describe('CRITICAL — clinical correctness probes', () => {
     expect(r.isRenalAdjusted).toBe(true);
   });
 
-  it('Andexanet — apixaban 5 mg, last dose 6h: low-dose', () => {
-    const r = calculateAndexanetDose('apixaban', 6, 5);
-    expect(r.regimen).toBe('low-dose');
+  it('Andexanet — institutionally unavailable and never returns an actionable regimen', () => {
+    for (const input of [['apixaban', 6, 5], ['rivaroxaban', 4, 20], ['dabigatran', 4, 150]]) {
+      const r = calculateAndexanetDose(...input);
+      expect(r.regimen).toBe('unavailable');
+      expect(r.actionable).toBe(false);
+      expect(r.bolus).toBe('');
+      expect(r.infusion).toBe('');
+    }
   });
 
-  it('Andexanet — rivaroxaban 20 mg, last dose 4h: high-dose', () => {
-    const r = calculateAndexanetDose('rivaroxaban', 4, 20);
-    expect(r.regimen).toBe('high-dose');
-  });
-
-  it('Andexanet — dabigatran returns N/A with idarucizumab guidance', () => {
-    const r = calculateAndexanetDose('dabigatran', 4, 150);
-    expect(r.regimen).toBe('N/A');
-    expect(r.doseWarning).toContain('idarucizumab');
-  });
-
-  it('PCC warfarin INR 5: 35 IU/kg', () => {
+  it('PCC warfarin INR 5: fixed 2,000 units, not weight-based', () => {
     const r = calculatePCCDose(80, 5, 'warfarin');
-    expect(r.iuPerKg).toBe(35);
-    expect(r.ahaDose).toBe(80 * 35);
+    expect(r.iuPerKg).toBeNull();
+    expect(r.ahaDose).toBe(2000);
+    expect(r.fixedDose).toBe(true);
   });
 
-  it('PCC FXa-ICH: fixed 50 IU/kg', () => {
-    const r = calculatePCCDose(70, null, 'fxa-ich');
-    expect(r.iuPerKg).toBe(50);
-    expect(r.ahaDose).toBe(70 * 50);
+  it('PCC FXa-ICH: held until both source-listed gates, then fixed 2,000 units', () => {
+    const incomplete = calculatePCCDose(70, null, 'fxa-ich');
+    expect(incomplete.iuPerKg).toBeNull();
+    expect(incomplete.ahaDose).toBeNull();
+    expect(incomplete.fixedDose).toBe(false);
+    expect(incomplete.recommendation).toBe('pending-required-gates');
+    const complete = calculatePCCDose(70, null, 'fxa-ich', {
+      directXaElevated: true,
+      pccContraindicated: false
+    });
+    expect(complete.iuPerKg).toBeNull();
+    expect(complete.ahaDose).toBe(2000);
   });
 
   it('DOAC start — minor (NIHSS 5): day 1 (ELAN/OPTIMAS)', () => {
@@ -504,11 +507,11 @@ describe('NULL-SAFETY — calculators must not crash on null/undefined inputs (r
     expect(calculateNIHSS(undefined)).toBe(0);
   });
   it('calculateGCS handles null/undefined', () => {
-    expect(calculateGCS(null)).toBe(0);
-    expect(calculateGCS(undefined)).toBe(0);
+    expect(calculateGCS(null)).toBeNull();
+    expect(calculateGCS(undefined)).toBeNull();
   });
   it('calculateICHScore / ABCD2 / CHADS2VASc / ROPE / HAS-BLED / RCVS² / PHASES handle null', () => {
-    expect(calculateICHScore(null)).toBe(0);
+    expect(calculateICHScore(null)).toBeNull();
     expect(calculateABCD2Score(null)).toBe(0);
     expect(calculateCHADS2VascScore(null)).toBe(0);
     expect(calculateROPEScore(null)).toBe(0);

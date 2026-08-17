@@ -24,6 +24,11 @@ npm run smoke   # optional: verify tools work
 `calc_crcl`, `calc_enoxaparin_dose`, `calc_doac_start_timing`,
 `calc_dawn_eligibility`, `calc_defuse3_eligibility`.
 
+`calc_pcc_dose` mirrors the source-gated fixed 2,000-unit pathways. It returns a
+pending result unless the required FXa or dabigatran-fallback confirmations are
+explicit. `calc_andexanet_dose` is retained for compatibility but returns only
+the non-actionable unavailable status and no dose.
+
 **Atlas / data**: `list_calculators`, `search_trials`, `get_trial`,
 `list_guidelines`, `get_guideline`, `whats_new`, `generic_bp_protocols`.
 

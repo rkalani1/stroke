@@ -204,10 +204,10 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
   });
 
   describe('2. Protocol Snapshot Lock Robustness & Drift Detection', () => {
-    const SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
+    const SUBTABS = ['ich', 'ischemic', 'calculators'];
     const SNAPSHOT_DIR = path.join(REPO_ROOT, 'tests', 'snapshots', 'example-protocols');
 
-    it('verifies all 6 protocol baseline snapshots exist with substantial content', () => {
+    it('verifies all 3 protocol baseline snapshots exist with substantial content', () => {
       for (const subtab of SUBTABS) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);
         expect(fs.existsSync(file), `Snapshot file for ${subtab} must exist`).toBe(true);
@@ -221,18 +221,15 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       }
     });
 
-    it('verifies expected exact line count bounds for all 6 snapshots', () => {
+    it('verifies expected exact line count bounds for all 3 snapshots', () => {
       // 2026-08-16: ich 578->579, ischemic 1448->1450->1460->1468 from the reviewed clinical
       // correction to the orolingual-angioedema step (holding ACE inhibitors now leads,
       // and stopping the infusion is conditional on alteplase). See the git diff of
       // tests/snapshots/example-protocols/ for the approved wording.
       const baselineCounts = {
-        ich: 548,
-        ischemic: 1102,
-        sah: 30,
-        tia: 72,
-        cvt: 14,
-        calculators: 651
+        ich: 522,
+        ischemic: 825,
+        calculators: 462
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);

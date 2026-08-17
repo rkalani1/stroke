@@ -80,18 +80,22 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         expect(typeof card.urgency).toBe('string');
         expect(typeof card.classOfRecommendation).toBe('string');
         expect(typeof card.levelOfEvidence).toBe('string');
-        expect(card.lastReviewed).toBe(AIS_COMMAND_CENTER_LAST_REVIEWED);
+        if (card.id === 'ais-pediatric') {
+          // Pediatric content is separately governed and was intentionally not
+          // changed by the adult institutional-source reconciliation.
+          expect(card.lastReviewed).toBe('2026-07-03');
+        } else {
+          expect(card.lastReviewed).toBe(AIS_COMMAND_CENTER_LAST_REVIEWED);
+        }
         expect(typeof card.summary).toBe('string');
         expect(card.summary.length).toBeGreaterThan(20);
 
-        // Actions array: >= 3 distinct clinical action statements
+        // Scaffolding remains structurally stable even when unsupported clinical
+        // prose is removed and an optional array becomes empty.
         expect(Array.isArray(card.actions)).toBe(true);
-        expect(card.actions.length).toBeGreaterThanOrEqual(3);
         card.actions.forEach(a => expect(typeof a).toBe('string'));
 
-        // Pathway array: >= 3 branch steps with label, decision, cor, loe
         expect(Array.isArray(card.pathway)).toBe(true);
-        expect(card.pathway.length).toBeGreaterThanOrEqual(3);
         for (const step of card.pathway) {
           expect(typeof step.label).toBe('string');
           expect(typeof step.decision).toBe('string');
@@ -99,15 +103,12 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
           expect(typeof step.loe).toBe('string');
         }
 
-        // Pitfalls array: >= 3 clinical traps
         expect(Array.isArray(card.pitfalls)).toBe(true);
-        expect(card.pitfalls.length).toBeGreaterThanOrEqual(3);
+        card.pitfalls.forEach(p => expect(typeof p).toBe('string'));
+        expect(Array.isArray(card.calculators)).toBe(true);
 
-        // Teaching pearl & changedSinceLastGuideline
         expect(typeof card.teachingPearl).toBe('string');
-        expect(card.teachingPearl.length).toBeGreaterThan(15);
         expect(typeof card.changedSinceLastGuideline).toBe('string');
-        expect(card.changedSinceLastGuideline.length).toBeGreaterThan(15);
       }
     });
 
@@ -138,7 +139,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       expect(pMoyamoya.cor).toBe('III');
     });
 
-    it('stress tests MeVO card (ais-mevo) trial-first and restraint logic', () => {
+    it('stress tests MeVO card (ais-mevo) institutional branch restraint', () => {
       const mevo = AIS_COMMAND_CENTER_CARDS.find(c => c.id === 'ais-mevo');
       expect(mevo).toBeDefined();
 
@@ -149,36 +150,41 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
 
       const distal = mevo.pathway.find(p => p.label.toLowerCase().includes('nondominant'));
       expect(distal).toBeDefined();
-      expect(distal.cor).toBe('III');
+      expect(distal.cor).toBe('III: No Benefit');
       expect(distal.loe).toBe('A');
     });
 
-    it('stress tests Physiology card (ais-physiology) blood pressure harm thresholds', () => {
+    it('stress tests Physiology card (ais-physiology) institutional blood-pressure thresholds', () => {
       const phys = AIS_COMMAND_CENTER_CARDS.find(c => c.id === 'ais-physiology');
       expect(phys).toBeDefined();
 
-      // Pre-IVT <185/110 (I/B-NR), Post-IVT <180/105 (I/B-R), Post-EVT intensive lowering <140 harm (III/A)
+      // The accepted pocket card supplies numeric thresholds, not literature
+      // grades or a trial-derived post-EVT harm claim.
       const preIVT = phys.pathway.find(p => p.label.includes('185/110'));
       expect(preIVT).toBeDefined();
-      expect(preIVT.cor).toBe('I');
+      expect(preIVT.decision).toContain('Lower below 185/110');
 
       const postIVT = phys.pathway.find(p => p.label.includes('Post-IVT'));
       expect(postIVT).toBeDefined();
-      expect(postIVT.cor).toBe('I');
+      expect(postIVT.decision).toContain('Maintain <180/105 for 24 hours');
 
-      const postEVTHarm = phys.pathway.find(p => p.label.toLowerCase().includes('successful evt'));
-      expect(postEVTHarm).toBeDefined();
-      expect(postEVTHarm.cor).toBe('III');
-      expect(postEVTHarm.loe).toBe('A');
-      expect(postEVTHarm.decision).toContain('Avoid SBP <140 target');
+      const postEVT = phys.pathway.find(p => p.label === 'Post-EVT with documented mTICI >=2b');
+      expect(postEVT).toBeDefined();
+      expect(postEVT.decision).toBe('Maintain SBP 140-180');
+      expect(phys.pathway.find(p => p.label === 'Post-EVT')).toBeUndefined();
+      for (const step of phys.pathway) {
+        expect(step.cor).toBe('');
+        expect(step.loe).toBe('');
+      }
+      expect(JSON.stringify(phys)).not.toMatch(/ENCHANTED2|OPTIMAL-BP|Class III|harm/i);
     });
 
-    it('verifies all AIS_SOURCE_LINKS have secure HTTPS or DOI links and non-empty labels', () => {
+    it('verifies AIS source references are public-safe labels without private document links', () => {
       expect(AIS_SOURCE_LINKS.length).toBeGreaterThanOrEqual(4);
       for (const link of AIS_SOURCE_LINKS) {
         expect(link.label).toBeDefined();
         expect(link.label.length).toBeGreaterThan(0);
-        expect(link.href).toMatch(/^https?:\/\//);
+        expect(Object.hasOwn(link, 'href')).toBe(false);
       }
     });
   });
@@ -614,7 +620,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
     // Dynamic import calculators
     it('verifies GCS calculator bounds, partial inputs, and clamp behavior', async () => {
       const { calculateGCS } = await import('../src/calculators.js');
-      expect(calculateGCS({})).toBe(0);
+      expect(calculateGCS({})).toBeNull();
       expect(calculateGCS({ eye: 4, verbal: 5, motor: 6 })).toBe(15);
       expect(calculateGCS({ eye: 1, verbal: 1, motor: 1 })).toBe(3);
       // Partial inputs -> null
@@ -727,4 +733,3 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
   });
 
 });
-

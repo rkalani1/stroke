@@ -1,11 +1,11 @@
-// Interactive protocol cards — example institutional decision-support
-// patterns based on published evidence. Not endorsed by any named institution;
-// adapt to local policy before clinical use.
+// Interactive adult protocol cards limited to the accepted institutional source
+// set. Public builds use de-identified source labels and omit operational tokens.
 
-import React, { useState, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   INSTITUTIONAL_BP_PROTOCOLS,
   SAFE_PAUSE_ATTESTATION,
+  getSafePauseIssues,
   getSafePauseText,
   evaluateIVT,
   evaluateDOAC_IVT,
@@ -13,12 +13,13 @@ import {
   evaluateEVT_M2,
   evaluateEVT_Basilar,
   EXTENDED_WINDOW_IVT_DISCUSSION,
-  COR_LOE_KEY,
   IVT_ABSOLUTE_CONTRAINDICATIONS,
   IVT_RELATIVE_CONTRAINDICATIONS,
   IVT_BENEFIT_GREATER_CONSIDER,
-  GENERALIZABILITY_LIMITATIONS
+  IVT_UNRESOLVED_SOURCE_CONFLICTS
 } from './institutional-protocols.js';
+
+const NO_INSTITUTIONAL_PROTOCOL_NOTICE = 'No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.';
 
 const CorChip = ({ cor }) => {
   if (!cor) return null;
@@ -42,13 +43,21 @@ const LoeChip = ({ loe }) => {
 // ----------------------------------------------------------------------
 const IVTEligibilityCard = ({ defaults = {} }) => {
   const [state, setState] = useState({
-    ichOnCT: defaults.ichOnCT === true,
-    disablingDeficit: defaults.disablingDeficit !== false,
+    ichOnCT: defaults.ichOnCT === true ? true : defaults.ichOnCT === false ? false : null,
+    disablingDeficit: defaults.disablingDeficit === true ? true : defaults.disablingDeficit === false ? false : null,
     hoursFromLKW: defaults.hoursFromLKW || '',
     glucose: defaults.glucose || '',
     weight: defaults.weight || '',
     age: defaults.age || '',
-    mismatchPresent: false,
+    bpSystolic: '',
+    bpDiastolic: '',
+    contraindicationsReviewed: false,
+    preMRS: '',
+    evtStatus: '',
+    consentObtained: false,
+    wakeUpOrUnknownOnset: defaults.wakeUpOrUnknownOnset === true,
+    glucoseCorrectedDeficitPersists: false,
+    mriDwiFlairMismatch: false,
     ctpCoreMl: '', ctpRatio: '', ctpMismatchVolMl: '',
     smallVessel: false, posteriorCirc: false, contrastAllergy: false,
     crao: false
@@ -61,8 +70,16 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
     glucose: state.glucose,
     weight: state.weight,
     age: state.age,
+    bpSystolic: state.bpSystolic,
+    bpDiastolic: state.bpDiastolic,
+    contraindicationsReviewed: state.contraindicationsReviewed,
+    preMRS: state.preMRS,
+    evtStatus: state.evtStatus,
+    consentObtained: state.consentObtained,
+    wakeUpOrUnknownOnset: state.wakeUpOrUnknownOnset,
+    glucoseCorrectedDeficitPersists: state.glucoseCorrectedDeficitPersists,
     imagingPathway: {
-      mismatchPresent: state.mismatchPresent,
+      mriDwiFlairMismatch: state.mriDwiFlairMismatch,
       ctpCoreMl: state.ctpCoreMl,
       ctpRatio: state.ctpRatio,
       ctpMismatchVolMl: state.ctpMismatchVolMl,
@@ -78,29 +95,66 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
   return (
     <div className="p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
       <h4 className="font-bold text-cobalt-900 mb-2 flex items-center gap-2 dark:text-cobalt-300">
-        <span className="inline-block px-2 py-0.5 bg-cobalt-900 text-white text-xs rounded">EX</span>
+        <span className="inline-block px-2 py-0.5 bg-cobalt-900 text-white text-xs rounded">INST</span>
         IVT Eligibility Decision Algorithm
       </h4>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs mb-3">
-        <label className="flex items-center gap-1"><input type="checkbox" checked={state.ichOnCT} onChange={(e) => set('ichOnCT', e.target.checked)} />ICH on CT</label>
-        <label className="flex items-center gap-1"><input type="checkbox" checked={state.disablingDeficit} onChange={(e) => set('disablingDeficit', e.target.checked)} />Disabling deficit</label>
+        <label><span className="block text-slate-600 dark:text-ink-2">CT hemorrhage assessment</span>
+          <select value={state.ichOnCT === null ? '' : state.ichOnCT ? 'present' : 'absent'} onChange={(e) => set('ichOnCT', e.target.value === '' ? null : e.target.value === 'present')} className="w-full px-2 py-1 border rounded text-sm">
+            <option value="">Not confirmed</option>
+            <option value="absent">No intracranial hemorrhage</option>
+            <option value="present">Intracranial hemorrhage present</option>
+          </select>
+        </label>
+        <label><span className="block text-slate-600 dark:text-ink-2">Deficit assessment</span>
+          <select value={state.disablingDeficit === null ? '' : state.disablingDeficit ? 'disabling' : 'non-disabling'} onChange={(e) => set('disablingDeficit', e.target.value === '' ? null : e.target.value === 'disabling')} className="w-full px-2 py-1 border rounded text-sm">
+            <option value="">Not confirmed</option>
+            <option value="disabling">Disabling deficit</option>
+            <option value="non-disabling">Non-disabling deficit</option>
+          </select>
+        </label>
         <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={state.hoursFromLKW} onChange={(e) => set('hoursFromLKW', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+        <label className="flex items-center gap-1"><input type="checkbox" checked={state.wakeUpOrUnknownOnset} onChange={(e) => set('wakeUpOrUnknownOnset', e.target.checked)} />Wake-up or unknown LKW (leave LKW hours blank)</label>
         <label><span className="block text-slate-600 dark:text-ink-2">Glucose</span><input type="number" value={state.glucose} onChange={(e) => set('glucose', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
         <label><span className="block text-slate-600 dark:text-ink-2">Weight (kg)</span><input type="number" value={state.weight} onChange={(e) => set('weight', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
         <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={state.age} onChange={(e) => set('age', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+        <label><span className="block text-slate-600 dark:text-ink-2">Current SBP</span><input type="number" value={state.bpSystolic} onChange={(e) => set('bpSystolic', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+        <label><span className="block text-slate-600 dark:text-ink-2">Current DBP</span><input type="number" value={state.bpDiastolic} onChange={(e) => set('bpDiastolic', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+        <label><span className="block text-slate-600 dark:text-ink-2">Baseline mRS</span>
+          <select value={state.preMRS} onChange={(e) => set('preMRS', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
+            <option value="">Not assessed</option>
+            {['0', '1', '2', '3', '4', '5'].map((x) => <option key={x} value={x}>{x}</option>)}
+          </select>
+        </label>
+        <label><span className="block text-slate-600 dark:text-ink-2">EVT candidacy / feasibility</span>
+          <select value={state.evtStatus} onChange={(e) => set('evtStatus', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
+            <option value="">Not assessed</option>
+            <option value="not-candidate">Not an EVT candidate</option>
+            <option value="candidate-feasible">EVT candidate; EVT within 24h feasible</option>
+            <option value="candidate-infeasible">EVT candidate; EVT within 24h not feasible</option>
+          </select>
+        </label>
         <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={state.crao} onChange={(e) => set('crao', e.target.checked)} />CRAO (central retinal artery occlusion)</label>
+        <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={state.contraindicationsReviewed} onChange={(e) => set('contraindicationsReviewed', e.target.checked)} />Absolute and relative contraindications reviewed</label>
+        {(parseFloat(state.glucose) < 50 || parseFloat(state.glucose) > 400) && (
+          <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={state.glucoseCorrectedDeficitPersists} onChange={(e) => set('glucoseCorrectedDeficitPersists', e.target.checked)} />Glucose corrected and disabling deficit persists on reassessment</label>
+        )}
       </div>
-      {state.hoursFromLKW && parseFloat(state.hoursFromLKW) > 4.5 && (
+      {(state.wakeUpOrUnknownOnset || (state.hoursFromLKW && parseFloat(state.hoursFromLKW) > 4.5)) && (
         <div className="mb-3 p-2 rounded border border-cobalt-200 bg-cobalt-50 text-xs dark:border-cobalt-700 dark:bg-cobalt-900">
           <p className="font-semibold text-cobalt-900 mb-1 dark:text-cobalt-300">Extended-window imaging selection (prefer MRI if small vessel, posterior, or contrast allergy):</p>
+          {state.wakeUpOrUnknownOnset && !state.hoursFromLKW && <p className="mb-2 text-cobalt-900 dark:text-cobalt-300">Wake-up/unknown-onset treatment requires MRI DWI-FLAIR mismatch in this institutional branch; the CTP fields apply only when a known interval is entered.</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
-            <label className="flex items-center gap-1"><input type="checkbox" checked={state.mismatchPresent} onChange={(e) => set('mismatchPresent', e.target.checked)} />MRI DWI-FLAIR mismatch</label>
-            <label><span className="block text-slate-600 dark:text-ink-2">CTP core (mL)</span><input type="number" value={state.ctpCoreMl} onChange={(e) => set('ctpCoreMl', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label><span className="block text-slate-600 dark:text-ink-2">CTP ratio</span><input type="number" step="0.1" value={state.ctpRatio} onChange={(e) => set('ctpRatio', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label><span className="block text-slate-600 dark:text-ink-2">Mismatch vol (mL)</span><input type="number" value={state.ctpMismatchVolMl} onChange={(e) => set('ctpMismatchVolMl', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label className="flex items-center gap-1"><input type="checkbox" checked={state.mriDwiFlairMismatch} onChange={(e) => set('mriDwiFlairMismatch', e.target.checked)} />MRI DWI-FLAIR mismatch (4.5-9h or wake-up)</label>
+            <label><span className="block text-slate-600 dark:text-ink-2">CTP core (mL)</span><input type="number" disabled={state.wakeUpOrUnknownOnset && !state.hoursFromLKW} value={state.ctpCoreMl} onChange={(e) => set('ctpCoreMl', e.target.value)} className="w-full px-2 py-1 border rounded text-sm disabled:bg-slate-100 disabled:text-slate-400" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">CTP ratio</span><input type="number" step="0.1" disabled={state.wakeUpOrUnknownOnset && !state.hoursFromLKW} value={state.ctpRatio} onChange={(e) => set('ctpRatio', e.target.value)} className="w-full px-2 py-1 border rounded text-sm disabled:bg-slate-100 disabled:text-slate-400" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">Mismatch vol (mL)</span><input type="number" disabled={state.wakeUpOrUnknownOnset && !state.hoursFromLKW} value={state.ctpMismatchVolMl} onChange={(e) => set('ctpMismatchVolMl', e.target.value)} className="w-full px-2 py-1 border rounded text-sm disabled:bg-slate-100 disabled:text-slate-400" /></label>
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.smallVessel} onChange={(e) => set('smallVessel', e.target.checked)} />Small vessel</label>
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.posteriorCirc} onChange={(e) => set('posteriorCirc', e.target.checked)} />Posterior circulation</label>
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.contrastAllergy} onChange={(e) => set('contrastAllergy', e.target.checked)} />Contrast allergy</label>
+            {parseFloat(state.hoursFromLKW) >= 9 && parseFloat(state.hoursFromLKW) <= 24 && (
+              <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={state.consentObtained} onChange={(e) => set('consentObtained', e.target.checked)} />Consent obtained for the 9-24-hour window</label>
+            )}
           </div>
         </div>
       )}
@@ -120,7 +174,7 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
           </ul>
         )}
       </div>
-      {parseFloat(state.hoursFromLKW) > 4.5 && result.eligible === 'consider' && (
+      {(state.wakeUpOrUnknownOnset || parseFloat(state.hoursFromLKW) > 4.5) && result.eligible === 'consider' && (
         <details className="mt-2">
           <summary className="cursor-pointer text-xs font-semibold text-cobalt-900 dark:text-cobalt-300">Read-aloud patient discussion script (extended-window IVT)</summary>
           <div className="mt-1 p-2 rounded border border-cobalt-200 bg-cobalt-50 text-xs whitespace-pre-wrap dark:border-cobalt-700 dark:bg-cobalt-900">{EXTENDED_WINDOW_IVT_DISCUSSION}</div>
@@ -148,16 +202,16 @@ const DOACIVTCard = ({ defaults = {} }) => {
   return (
     <div className="p-3 rounded-lg border border-orange-300 bg-white dark:bg-card dark:border-orange-800">
       <h4 className="font-bold text-orange-900 mb-2 flex items-center gap-2 dark:text-orange-300">
-        <span className="inline-block px-2 py-0.5 bg-orange-700 text-white text-xs rounded">EX</span>
-        DOAC-Exposed AIS Patient — IVT
+        <span className="inline-block px-2 py-0.5 bg-orange-700 text-white text-xs rounded">INST</span>
+        DOAC-Exposed AIS Patient — Unresolved Institutional Rule
       </h4>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs mb-3">
         <label>
           <span className="block text-slate-600 dark:text-ink-2">Site</span>
           <select value={state.site} onChange={(e) => set('site', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
-            <option value="hub">Primary hub (anti-Xa-based pathway)</option>
-            <option value="spoke">Spoke / tele-consult (time-based pathway)</option>
-            <option value="telestroke">Telestroke spoke site</option>
+            <option value="hub">Anti-Xa-based source branch</option>
+            <option value="spoke">Time-based source branch</option>
+            <option value="telestroke">Telestroke source branch</option>
           </select>
         </label>
         <label>
@@ -175,7 +229,7 @@ const DOACIVTCard = ({ defaults = {} }) => {
           </label>
         )}
         <label className="flex items-center gap-1"><input type="checkbox" checked={state.disablingDeficit} onChange={(e) => set('disablingDeficit', e.target.checked)} />Disabling stroke deficits</label>
-        <label className="flex items-center gap-1"><input type="checkbox" checked={state.endovascularCandidate} onChange={(e) => set('endovascularCandidate', e.target.checked)} />EVT candidate (bypass IVT)</label>
+        <label className="flex items-center gap-1"><input type="checkbox" checked={state.endovascularCandidate} onChange={(e) => set('endovascularCandidate', e.target.checked)} />EVT candidate (documentation only; not a categorical IVT bypass)</label>
       </div>
       <div className={`p-2 rounded border-2 ${r.eligible === true ? 'border-ok-400 bg-ok-50 dark:bg-ok-950' : r.eligible === 'consider' ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-950' : r.eligible === 'preferred-other' ? 'border-cobalt-400 bg-cobalt-50 dark:bg-cobalt-900' : r.eligible === false ? 'border-rose-400 bg-rose-50 dark:bg-rose-950' : 'border-slate-200 dark:border-line'}`}>
         <div className="flex items-center flex-wrap gap-2">
@@ -202,9 +256,16 @@ const DOACIVTCard = ({ defaults = {} }) => {
 // ----------------------------------------------------------------------
 const EVTEligibilityCard = ({ defaults = {} }) => {
   const [branch, setBranch] = useState('anterior');
-  const [ant, setAnt] = useState({ aspectsScore: defaults.aspects || '', timeFromLKWh: defaults.hoursFromLKWh || '', nihss: defaults.nihss || '', preMRS: defaults.preMRS || '0', age: defaults.age || '', massEffect: false });
-  const [m2, setM2] = useState({ segment: 'M2-proximal-dominant', dominant: true, hoursFromLKWh: '', nihss: '', preMRS: '0', aspectsScore: '', ctpMismatch: false });
-  const [bas, setBas] = useState({ nihss: '', hoursFromLKWh: '', preMRS: '0', pcAspects: '', disabling: true, irAgreement: false });
+  const [ant, setAnt] = useState({ aspectsScore: defaults.aspects || '', timeFromLKWh: defaults.hoursFromLKWh || '', nihss: defaults.nihss || '', preMRS: defaults.preMRS ?? '', age: defaults.age ?? '', massEffect: null, coreVolume: '' });
+  const [m2, setM2] = useState({ segment: '', dominant: true, hoursFromLKWh: '', nihss: '', preMRS: '', aspectsScore: '', ctpMismatch: false, age: defaults.age ?? '' });
+  const [bas, setBas] = useState({ nihss: '', hoursFromLKWh: '', preMRS: '', pcAspects: '', age: defaults.age ?? '' });
+
+  useEffect(() => {
+    const age = defaults.age ?? '';
+    setAnt((prev) => prev.age === age ? prev : { ...prev, age });
+    setM2((prev) => prev.age === age ? prev : { ...prev, age });
+    setBas((prev) => prev.age === age ? prev : { ...prev, age });
+  }, [defaults.age]);
 
   const rAnt = useMemo(() => evaluateEVT_Anterior(ant), [ant]);
   const rM2 = useMemo(() => evaluateEVT_M2(m2), [m2]);
@@ -216,7 +277,7 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
     <div className="p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
       <div className="flex items-center justify-between mb-2">
         <h4 className="font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
-          <span className="inline-block px-2 py-0.5 bg-cobalt-700 text-white text-xs rounded">EX</span>
+          <span className="inline-block px-2 py-0.5 bg-cobalt-700 text-white text-xs rounded">INST</span>
           EVT Eligibility
         </h4>
         <div className="flex gap-1 flex-wrap">
@@ -236,15 +297,23 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
             <label><span className="block text-slate-600 dark:text-ink-2">NIHSS</span><input type="number" value={ant.nihss} onChange={(e) => setAnt({ ...ant, nihss: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Pre-stroke mRS</span>
               <select value={ant.preMRS} onChange={(e) => setAnt({ ...ant, preMRS: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
-                {['0', '1', '2', '3', '4'].map((x) => <option key={x} value={x}>{x}</option>)}
+                <option value="">Not assessed</option>
+                {['0', '1', '2', '3', '4', '5', '6'].map((x) => <option key={x} value={x}>{x}</option>)}
               </select>
             </label>
             <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={ant.age} onChange={(e) => setAnt({ ...ant, age: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={ant.massEffect} onChange={(e) => setAnt({ ...ant, massEffect: e.target.checked })} />Significant mass effect</label>
+            <label><span className="block text-slate-600 dark:text-ink-2">CTP core (mL)</span><input type="number" value={ant.coreVolume} onChange={(e) => setAnt({ ...ant, coreVolume: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">Significant mass effect</span>
+              <select value={ant.massEffect === null ? '' : ant.massEffect ? 'present' : 'absent'} onChange={(e) => setAnt({ ...ant, massEffect: e.target.value === '' ? null : e.target.value === 'present' })} className="w-full px-2 py-1 border rounded text-sm">
+                <option value="">Not assessed</option>
+                <option value="absent">Absent</option>
+                <option value="present">Present</option>
+              </select>
+            </label>
           </div>
           <div className={`p-2 rounded border-2 ${colorByEligible(rAnt.eligible)}`}>
             <div className="flex items-center flex-wrap gap-2">
-              <strong className="text-sm">{rAnt.eligible === true ? 'EVT RECOMMENDED' : rAnt.eligible === 'consider' ? 'CONSIDER EVT' : rAnt.eligible === false ? 'EVT NOT indicated at these parameters' : 'Awaiting input'}</strong>
+              <strong className="text-sm">{rAnt.eligible === true ? 'EVT' : rAnt.eligible === 'consider' ? 'EVT' : rAnt.eligible === 'pending' ? 'PENDING REQUIRED GATE' : rAnt.eligible === false ? 'NO INSTITUTIONAL EVT TIER' : 'Awaiting input / no institutional tier'}</strong>
               <CorChip cor={rAnt.cor} /><LoeChip loe={rAnt.loe} />
               {rAnt.window && <span className="px-1.5 py-0.5 text-xs bg-cobalt-100 text-cobalt-900 rounded dark:bg-cobalt-900 dark:text-cobalt-300">{rAnt.window}</span>}
             </div>
@@ -259,10 +328,10 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
             <label className="md:col-span-2">
               <span className="block text-slate-600 dark:text-ink-2">Segment</span>
               <select value={m2.segment} onChange={(e) => setM2({ ...m2, segment: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
+                <option value="">Not assessed</option>
                 <option value="M2-proximal-dominant">M2 proximal dominant (≤1 cm from bifurcation, ≥50% MCA)</option>
                 <option value="M2-codominant">M2 codominant</option>
                 <option value="M2-nondominant">M2 nondominant</option>
-                <option value="M3">M3 distal MCA</option>
                 <option value="ACA">ACA</option>
                 <option value="PCA">PCA</option>
               </select>
@@ -271,15 +340,17 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
             <label><span className="block text-slate-600 dark:text-ink-2">NIHSS</span><input type="number" value={m2.nihss} onChange={(e) => setM2({ ...m2, nihss: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Pre-mRS</span>
               <select value={m2.preMRS} onChange={(e) => setM2({ ...m2, preMRS: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
-                {['0', '1', '2', '3', '4'].map((x) => <option key={x} value={x}>{x}</option>)}
+                <option value="">Not assessed</option>
+                {['0', '1', '2', '3', '4', '5', '6'].map((x) => <option key={x} value={x}>{x}</option>)}
               </select>
             </label>
             <label><span className="block text-slate-600 dark:text-ink-2">ASPECTS</span><input type="number" value={m2.aspectsScore} onChange={(e) => setM2({ ...m2, aspectsScore: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={m2.age} onChange={(e) => setM2({ ...m2, age: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={m2.ctpMismatch} onChange={(e) => setM2({ ...m2, ctpMismatch: e.target.checked })} />CTP hypoperfusion–hypodensity mismatch present (required beyond 6h)</label>
           </div>
           <div className={`p-2 rounded border-2 ${colorByEligible(rM2.eligible)}`}>
             <div className="flex items-center flex-wrap gap-2">
-              <strong className="text-sm">{rM2.eligible === true ? 'EVT recommended' : rM2.eligible === 'consider' ? 'CONSIDER EVT' : rM2.eligible === false ? 'EVT NOT recommended' : '—'}</strong>
+              <strong className="text-sm">{rM2.eligible === true || rM2.eligible === 'consider' ? 'EVT' : rM2.eligible === 'pending' ? 'NO RECOMMENDATION / PENDING GATE' : rM2.eligible === false ? 'NO EVT' : '—'}</strong>
               <CorChip cor={rM2.cor} /><LoeChip loe={rM2.loe} />
             </div>
             <p className="text-xs mt-1">{rM2.reason}</p>
@@ -295,31 +366,29 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
             <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={bas.hoursFromLKWh} onChange={(e) => setBas({ ...bas, hoursFromLKWh: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Pre-mRS</span>
               <select value={bas.preMRS} onChange={(e) => setBas({ ...bas, preMRS: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
-                {['0', '1', '2', '3', '4'].map((x) => <option key={x} value={x}>{x}</option>)}
+                <option value="">Not assessed</option>
+                {['0', '1', '2', '3', '4', '5', '6'].map((x) => <option key={x} value={x}>{x}</option>)}
               </select>
             </label>
             <label><span className="block text-slate-600 dark:text-ink-2">PC-ASPECTS</span><input type="number" value={bas.pcAspects} onChange={(e) => setBas({ ...bas, pcAspects: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label className="flex items-center gap-1"><input type="checkbox" checked={bas.disabling} onChange={(e) => setBas({ ...bas, disabling: e.target.checked })} />Disabling deficits</label>
-            <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={bas.dualSpecialtyAgreement} onChange={(e) => setBas({ ...bas, dualSpecialtyAgreement: e.target.checked })} />Dual-specialty agreement (neurointerventional + stroke attending; example pathway for NIHSS 6-9)</label>
+            <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={bas.age} onChange={(e) => setBas({ ...bas, age: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
           </div>
           <div className={`p-2 rounded border-2 ${colorByEligible(rBas.eligible)}`}>
             <div className="flex items-center flex-wrap gap-2">
               <strong className="text-sm">
-                {rBas.eligible === true ? 'EVT RECOMMENDED (Basilar)'
-                  : rBas.eligible === 'consider' ? 'CONSIDER EVT (Basilar — example pathway)'
-                  : rBas.eligible === 'pending' ? 'Pending dual-specialty agreement (example pathway)'
-                  : rBas.eligible === false ? 'Basilar EVT not indicated' : '—'}
+                {rBas.eligible === true ? 'EVT (Basilar)'
+                  : rBas.eligible === 'consider' ? 'EVT EFFECTIVENESS NOT WELL ESTABLISHED'
+                  : rBas.eligible === 'pending' ? 'PENDING REQUIRED GATE'
+                  : rBas.eligible === false ? 'NO INSTITUTIONAL BASILAR TIER' : '—'}
               </strong>
               <CorChip cor={rBas.cor} /><LoeChip loe={rBas.loe} />
             </div>
             <p className="text-xs mt-1">{rBas.reason}</p>
-            {rBas.institutionalRequirement && <p className="text-xs mt-1 text-cobalt-800 dark:text-cobalt-300"><strong>Example institutional requirement:</strong> {rBas.institutionalRequirement}</p>}
+            {rBas.institutionalRequirement && <p className="text-xs mt-1 text-cobalt-800 dark:text-cobalt-300"><strong>Institutional requirement:</strong> {rBas.institutionalRequirement}</p>}
           </div>
         </>
       )}
-      <div className="text-[10px] text-slate-500 italic mt-2 dark:text-mute">
-        Generalizability is limited for: {GENERALIZABILITY_LIMITATIONS.join('; ')}.
-      </div>
+      <div className="text-[10px] text-slate-500 italic mt-2 dark:text-mute">Outputs are limited to the accepted institutional EVT flowchart tiers shown above.</div>
     </div>
   );
 };
@@ -330,13 +399,13 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
 const BPProtocolCard = () => (
   <div className="min-w-0 p-3 rounded-lg border border-rose-300 bg-white dark:bg-card dark:border-rose-800">
     <h4 className="font-bold text-rose-900 mb-2 flex items-center gap-2 dark:text-rose-300">
-      <span className="inline-block px-2 py-0.5 bg-rose-700 text-white text-xs rounded">EX</span>
+      <span className="inline-block px-2 py-0.5 bg-rose-700 text-white text-xs rounded">INST</span>
       Blood Pressure Management
     </h4>
     <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: blood pressure management targets">
       <table className="w-full text-xs">
         <thead className="bg-rose-50 dark:bg-rose-950">
-          <tr><th className="px-2 py-1 text-left">Scenario</th><th className="px-2 py-1 text-left">Target</th><th className="px-2 py-1 text-left">COR / LOE</th><th className="px-2 py-1 text-left">Example protocol</th></tr>
+          <tr><th className="px-2 py-1 text-left">Scenario</th><th className="px-2 py-1 text-left">Target</th><th className="px-2 py-1 text-left">COR / LOE</th><th className="px-2 py-1 text-left">Institutional protocol</th></tr>
         </thead>
         <tbody>
           {Object.entries(INSTITUTIONAL_BP_PROTOCOLS).map(([key, p]) => {
@@ -362,7 +431,7 @@ const BPProtocolCard = () => (
 const ContraindicationsCard = () => (
   <div className="p-3 rounded-lg border border-crit-300 bg-white dark:border-crit-800 dark:bg-card">
     <h4 className="font-bold text-crit-900 mb-2 flex items-center gap-2 dark:text-crit-300">
-      <span className="inline-block px-2 py-0.5 bg-crit-700 text-white text-xs rounded">EX</span>
+      <span className="inline-block px-2 py-0.5 bg-crit-700 text-white text-xs rounded">INST</span>
       IVT Contraindications
     </h4>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
@@ -391,6 +460,14 @@ const ContraindicationsCard = () => (
         </ul>
       </section>
     </div>
+    <div className="mt-3 rounded border border-warn-300 bg-warn-50 p-2 dark:border-warn-800 dark:bg-warn-950">
+      <h5 className="font-bold text-warn-900 mb-1 dark:text-warn-300">Unresolved institutional source conflicts — no rule selected</h5>
+      <ul className="space-y-1 text-xs">
+        {IVT_UNRESOLVED_SOURCE_CONFLICTS.map((c, i) => (
+          <li key={i}><strong>{c.label}</strong><div className="text-slate-600 text-[11px] dark:text-ink-2">{c.detail}</div></li>
+        ))}
+      </ul>
+    </div>
   </div>
 );
 
@@ -398,30 +475,40 @@ const ContraindicationsCard = () => (
 // Safe Pause card
 // ----------------------------------------------------------------------
 const SafePauseCard = ({ defaults = {} }) => {
-  const [st, setSt] = useState({ consentType: defaults.consentType || 'informed', bp: defaults.bp || '', contraindications: 'reviewed' });
+  const [st, setSt] = useState({ consentType: defaults.consentType || '', bp: defaults.bp || '', contraindications: 'not reviewed' });
+  const issues = getSafePauseIssues(st);
+  const complete = issues.length === 0;
   const text = getSafePauseText(st);
   return (
     <div className="p-3 rounded-lg border border-ok-300 bg-white dark:border-ok-800 dark:bg-card">
       <h4 className="font-bold text-ok-900 mb-2 flex items-center gap-2 dark:text-ok-300">
-        <span className="inline-block px-2 py-0.5 bg-ok-700 text-white text-xs rounded">EX</span>
+        <span className="inline-block px-2 py-0.5 bg-ok-700 text-white text-xs rounded">INST</span>
         Safety Pause (pre-thrombolytic)
       </h4>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs mb-2">
         <label>
           <span className="block text-slate-600 dark:text-ink-2">Consent type</span>
           <select value={st.consentType} onChange={(e) => setSt({ ...st, consentType: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
-            <option>informed</option>
-            <option>presumed (unable to provide, no surrogate)</option>
-            <option>surrogate</option>
-            <option>declined</option>
+            <option value="">Not confirmed</option>
+            <option value="informed">informed</option>
+            <option value="presumed (unable to provide, no surrogate)">presumed (unable to provide, no surrogate)</option>
+            <option value="surrogate">surrogate</option>
+            <option value="declined">declined</option>
           </select>
         </label>
         <label><span className="block text-slate-600 dark:text-ink-2">BP at attestation</span><input type="text" value={st.bp} onChange={(e) => setSt({ ...st, bp: e.target.value })} placeholder="e.g. 178/96" className="w-full px-2 py-1 border rounded text-sm" /></label>
+        <label>
+          <span className="block text-slate-600 dark:text-ink-2">Contraindications</span>
+          <select value={st.contraindications} onChange={(e) => setSt({ ...st, contraindications: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
+            <option value="not reviewed">Not reviewed</option>
+            <option value="reviewed">Absolute and relative contraindications reviewed</option>
+          </select>
+        </label>
       </div>
       <textarea readOnly aria-label="Safe Pause attestation text (read-only, copyable)" value={text} rows={7} className="w-full px-2 py-1 border rounded text-[11px] font-mono bg-slate-50 dark:bg-paper-2" />
       <div className="flex gap-2 mt-1">
-        <button type="button" onClick={() => { try { navigator.clipboard.writeText(text); } catch (_) {} }} className="px-2 py-1 bg-ok-600 hover:bg-ok-700 text-white text-xs rounded">Copy for communication platform</button>
-        <span className="text-[10px] text-slate-500 self-center dark:text-mute">Attestation tag: <strong>{SAFE_PAUSE_ATTESTATION}</strong></span>
+        <button type="button" disabled={!complete} onClick={() => { try { navigator.clipboard.writeText(text); } catch (_) {} }} className="px-2 py-1 bg-ok-600 hover:bg-ok-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white text-xs rounded">Copy completed safety pause</button>
+        <span className="text-[10px] text-slate-500 self-center dark:text-mute">Attestation placeholder: <strong>{SAFE_PAUSE_ATTESTATION}</strong></span>
       </div>
     </div>
   );
@@ -433,34 +520,7 @@ const SafePauseCard = ({ defaults = {} }) => {
 const CorLoeKeyCard = () => (
   <div className="min-w-0 p-3 rounded-lg border border-slate-300 bg-white dark:border-strong dark:bg-card">
     <h4 className="font-bold text-slate-900 mb-2 dark:text-ink">Class of Recommendation / Level of Evidence</h4>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-      <section className="min-w-0">
-        <h5 className="font-semibold text-slate-800 mb-1 dark:text-ink">Class of Recommendation</h5>
-        <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: Class of Recommendation key">
-        <table className="w-full">
-          <tbody>
-            <tr className="bg-ok-50 dark:bg-ok-950"><td className="px-2 py-1 font-bold">Class 1 (Strong)</td><td className="px-2 py-1">Benefit &gt;&gt;&gt; Risk</td><td className="px-2 py-1">Is recommended</td></tr>
-            <tr className="bg-yellow-50 dark:bg-yellow-950"><td className="px-2 py-1 font-bold">Class 2a (Moderate)</td><td className="px-2 py-1">Benefit &gt;&gt; Risk</td><td className="px-2 py-1">Is reasonable</td></tr>
-            <tr className="bg-orange-50 dark:bg-orange-950"><td className="px-2 py-1 font-bold">Class 2b (Weak)</td><td className="px-2 py-1">Benefit ≥ Risk</td><td className="px-2 py-1">May be considered</td></tr>
-            <tr className="bg-rose-50 dark:bg-rose-950"><td className="px-2 py-1 font-bold">Class 3: No Benefit</td><td className="px-2 py-1">Benefit = Risk</td><td className="px-2 py-1">Not recommended</td></tr>
-            <tr className="bg-crit-100 dark:bg-crit-950"><td className="px-2 py-1 font-bold">Class 3: Harm</td><td className="px-2 py-1">Risk &gt; Benefit</td><td className="px-2 py-1">Avoid (harmful)</td></tr>
-          </tbody>
-        </table>
-        </div>
-      </section>
-      <section className="min-w-0">
-        <h5 className="font-semibold text-slate-800 mb-1 dark:text-ink">Level of Evidence</h5>
-        <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: Level of Evidence key">
-        <table className="w-full">
-          <tbody>
-            {Object.entries(COR_LOE_KEY.loe).map(([k, v]) => (
-              <tr key={k} className="border-b"><td className="px-2 py-1 font-bold">Level {k}</td><td className="px-2 py-1">{v}</td></tr>
-            ))}
-          </tbody>
-        </table>
-        </div>
-      </section>
-    </div>
+    <p className="text-xs text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
   </div>
 );
 
@@ -472,8 +532,8 @@ export const PocketCards = ({ defaults = {} }) => {
     <div className="flex flex-col gap-3 [&>*]:min-w-0 [&>*]:max-w-full" role="region" aria-label="Protocol cards">
       <div className="px-3 py-2 bg-gradient-to-r from-cobalt-900 to-cobalt-800 text-white rounded-lg flex items-center justify-between">
         <div>
-          <h3 className="font-bold text-sm">Protocol Cards — Example Institutional Patterns</h3>
-          <p className="text-xs opacity-90">Illustrative decision-support cards based on current published evidence. Not endorsed by any named institution.</p>
+          <h3 className="font-bold text-sm">Protocol Cards — Institutional Adult Pathways</h3>
+          <p className="text-xs opacity-90">Public-safe decision support limited to the accepted institutional source set.</p>
         </div>
         <span className="text-[10px] bg-white/20 dark:bg-slate-900/20 rounded px-2 py-0.5">v2</span>
       </div>

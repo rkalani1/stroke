@@ -15,7 +15,7 @@ describe('management-guidance', () => {
   });
 
   describe('AIS_SOURCE_LINKS', () => {
-    it('should be an array of objects with label and href', () => {
+    it('exposes public-safe source labels without private source links', () => {
       expect(Array.isArray(AIS_SOURCE_LINKS)).toBe(true);
       expect(AIS_SOURCE_LINKS.length).toBeGreaterThan(0);
 
@@ -23,8 +23,8 @@ describe('management-guidance', () => {
         expect(typeof link).toBe('object');
         expect(link).not.toBeNull();
         expect(typeof link.label).toBe('string');
-        expect(typeof link.href).toBe('string');
-        expect(link.href.startsWith('http')).toBe(true);
+        expect(link.label.trim().length).toBeGreaterThan(0);
+        expect(link).not.toHaveProperty('href');
       }
     });
   });

@@ -23,11 +23,15 @@ import {
   AIS_COMMAND_CENTER_CARDS,
   AIS_SOURCE_LINKS
 } from '../../src/management-guidance.js';
-import { INSTITUTIONAL_BP_PROTOCOLS } from '../../src/institutional-protocols.js';
+import {
+  INSTITUTIONAL_BP_PROTOCOLS,
+  evaluateEVT_Anterior
+} from '../../src/institutional-protocols.js';
 import { parseFrontmatter, VALIDATORS } from '../../content/schema.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..', '..');
+const deploymentStateIt = process.env.STROKE_VERIFY_DEPLOYMENT_STATE === '1' ? it : it.skip;
 
 describe('Tier 3: Cross-Feature Combinations (Pairwise Interactions)', () => {
 
@@ -40,7 +44,7 @@ describe('Tier 3: Cross-Feature Combinations (Pairwise Interactions)', () => {
     expect(instBP).toBeDefined();
     expect(instBP.target).toContain('185/110');
     expect(aisBPRec.classOfRec).toBe('I');
-    expect(instBP.cor).toBe('1');
+    expect(instBP.protocol).toContain('Labetalol 10 mg IV');
   });
 
   // 2. F1 x F2: AIS 2026 Guidelines & SVIN 2025 Large-Core EVT
@@ -63,22 +67,49 @@ describe('Tier 3: Cross-Feature Combinations (Pairwise Interactions)', () => {
   });
 
   // 4. F2 x F4: SVIN 2025 Large-Core & Decision Tree Logic
-  it('F2xF4: SVIN 2025 large-core thresholds integrate with SELECT2/TENSION decision tree logic in command center', () => {
+  it('F2xF4: Guideline large-core evidence stays separate from the institutional 71-100 mL hold', () => {
     const evtCard = AIS_COMMAND_CENTER_CARDS.find(c => c.id === 'ais-evt-selection');
     expect(evtCard).toBeDefined();
     const pathwayLabels = evtCard.pathway.map(p => p.label).join(' ');
     expect(pathwayLabels).toContain('ASPECTS 3-5');
-    expect(pathwayLabels).toContain('50-100 mL');
+    expect(pathwayLabels).toContain('CTP core <=70 mL');
+    expect(pathwayLabels).toContain('CTP core 71-100 mL');
+    const heldCoreRow = evtCard.pathway.find(p => p.label.includes('CTP core 71-100 mL'));
+    expect(heldCoreRow.decision).toContain('Pending protocol-owner adjudication');
+    expect(heldCoreRow.cor).toBe('');
+    expect(heldCoreRow.loe).toBe('');
+
+    const atSeventy = evaluateEVT_Anterior({
+      aspectsScore: 1,
+      timeFromLKWh: 4,
+      nihss: 12,
+      preMRS: 1,
+      age: 70,
+      massEffect: false,
+      coreVolume: 70
+    });
+    const aboveSeventy = evaluateEVT_Anterior({
+      aspectsScore: 1,
+      timeFromLKWh: 4,
+      nihss: 12,
+      preMRS: 1,
+      age: 70,
+      massEffect: false,
+      coreVolume: 71
+    });
+    expect(atSeventy.eligible).toBe('consider');
+    expect(aboveSeventy.eligible).toBe('pending');
+    expect(aboveSeventy.reason).toContain('pending protocol-owner adjudication');
   });
 
-  // 5. F4 x F5: Large-Core Decision Trees & Post-EVT Blood Pressure Harm Guard
-  it('F4xF5: Large-core EVT decision pathways incorporate intensive BP lowering harm thresholds (<140 mmHg)', () => {
-    const sbp140Harm = INSTITUTIONAL_BP_PROTOCOLS.sbpLT140EVT;
-    expect(sbp140Harm).toBeDefined();
-    expect(sbp140Harm.cor).toContain('3 (Harm)');
-    expect(sbp140Harm.rationale).toContain('ENCHANTED2-MT');
-    expect(sbp140Harm.rationale).toContain('OPTIMAL-BP');
-    expect(sbp140Harm.rationale).toContain('BEST-II');
+  // 5. F4 x F5: Large-Core Decision Trees & Post-EVT Blood Pressure Guardrail
+  it('F4xF5: EVT pathways use the folder-backed post-EVT SBP 140-180 guardrail', () => {
+    const postEVT = INSTITUTIONAL_BP_PROTOCOLS.afterEVT24h;
+    expect(postEVT).toBeDefined();
+    expect(postEVT.target).toBe('SBP 140-180');
+    expect(postEVT.appliesWhen).toBe('Documented successful recanalization (mTICI >=2b)');
+    expect(postEVT.protocol).toBe('After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180.');
+    expect(Object.keys(INSTITUTIONAL_BP_PROTOCOLS)).toEqual(['beforeIVT', 'afterIVT24h', 'afterEVT24h']);
   });
 
   // 6. F1 x F6: Adult AIS Guidelines & Pediatric Reperfusion Pathway Contrast
@@ -174,11 +205,11 @@ describe('Tier 3: Cross-Feature Combinations (Pairwise Interactions)', () => {
   });
 
   // 16. F5 x F16: Blood Pressure Guardrails & Playwright Protocol Snapshot Lock
-  it('F5xF16: Blood pressure guardrails and harm thresholds are locked into ischemic protocol baseline snapshot', () => {
+  it('F5xF16: Folder-backed blood pressure guardrails are locked into the ischemic protocol baseline snapshot', () => {
     const ischemic = fs.readFileSync(path.join(ROOT, 'tests/snapshots/example-protocols/ischemic.txt'), 'utf8');
     expect(ischemic).toContain('<185/110');
     expect(ischemic).toContain('<180/105');
-    expect(ischemic).toContain('TNK 0.25 mg/kg');
+    expect(ischemic).toContain('SBP 140-180');
   });
 
   // 17. F16 x F17: Protocol Snapshots & Institutional / PHI Leak Guard
@@ -206,7 +237,7 @@ describe('Tier 3: Cross-Feature Combinations (Pairwise Interactions)', () => {
   });
 
   // 19. F18 x F19: Production Build & Git Deployment Target Verification
-  it('F18xF19: Production build output matches repository status tracking main branch', () => {
+  deploymentStateIt('F18xF19: Production build output matches repository status tracking main branch', () => {
     const branchRes = spawnSync('git', ['rev-parse', '--abbrev-ref', 'HEAD'], { cwd: ROOT, encoding: 'utf8' });
     expect(branchRes.status).toBe(0);
     expect(branchRes.stdout.trim()).toBe('main');

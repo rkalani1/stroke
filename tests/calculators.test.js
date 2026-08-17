@@ -71,8 +71,8 @@ describe('calculateGCS', () => {
     expect(calculateGCS({ eye: '1', verbal: '1', motor: '1' })).toBe(3);
   });
 
-  it('returns 0 when nothing entered', () => {
-    expect(calculateGCS({})).toBe(0);
+  it('returns null when nothing entered', () => {
+    expect(calculateGCS({})).toBeNull();
   });
 
   it('returns null for partial entry', () => {
@@ -86,14 +86,20 @@ describe('calculateGCS', () => {
 
 describe('calculateICHScore', () => {
   it('GCS 3-4 scores 2', () => {
-    expect(calculateICHScore({ gcs: 'gcs34' })).toBe(2);
+    expect(calculateICHScore({ gcs: 'gcs34', criteriaReviewed: true })).toBe(2);
   });
   it('GCS 5-12 scores 1', () => {
-    expect(calculateICHScore({ gcs: 'gcs512' })).toBe(1);
+    expect(calculateICHScore({ gcs: 'gcs512', criteriaReviewed: true })).toBe(1);
   });
   it('aggregates all positive factors (max = 6)', () => {
-    const items = { gcs: 'gcs34', age80: true, volume30: true, ivh: true, infratentorial: true };
+    const items = { gcs: 'gcs34', age80: true, volume30: true, ivh: true, infratentorial: true, criteriaReviewed: true };
     expect(calculateICHScore(items)).toBe(6);
+  });
+  it('returns null until the GCS tier and binary-criteria review are explicit', () => {
+    expect(calculateICHScore({})).toBeNull();
+    expect(calculateICHScore({ gcs: 'gcs1315' })).toBeNull();
+    expect(calculateICHScore({ criteriaReviewed: true })).toBeNull();
+    expect(calculateICHScore({ gcs: 'gcs1315', criteriaReviewed: true })).toBe(0);
   });
 });
 
@@ -241,20 +247,89 @@ describe('calculateAlteplaseDose', () => {
 });
 
 describe('calculatePCCDose', () => {
-  it('INR <1.3 returns null iuPerKg', () => {
+  it.each([0, -1, Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, 'not-an-inr'])(
+    'rejects a supplied nonpositive or nonfinite INR (%p)',
+    (inr) => {
+      const r = calculatePCCDose(80, inr);
+      expect(r.ahaDose).toBeNull();
+      expect(r.fixedDose).toBe(false);
+      expect(r.recommendation).toBe('invalid-inr');
+      expect(r.inrTierNote).toMatch(/finite INR greater than 0/i);
+      expect(r.vitaminK).toBeNull();
+    },
+  );
+  it('keeps an omitted warfarin INR pending rather than treating it as invalid', () => {
+    const r = calculatePCCDose(80, null);
+    expect(r.ahaDose).toBeNull();
+    expect(r.recommendation).toBe('needs-inr');
+  });
+  it('INR <1.3 returns no institutional PCC recommendation', () => {
     const r = calculatePCCDose(80, 1.1);
     expect(r.iuPerKg).toBeNull();
     expect(r.ahaDose).toBeNull();
+    expect(r.recommendation).toBe('no-institutional-pcc-recommendation');
+    expect(r.vitaminK).toMatch(/10 mg IV/);
   });
-  it('INR 2-3.9 → 25 IU/kg', () => {
-    const r = calculatePCCDose(80, 2.5);
-    expect(r.iuPerKg).toBe(25);
-    expect(r.ahaDose).toBe(2000);
+  it('uses the fixed 2,000-unit dose at the source-listed INR boundaries', () => {
+    const tiers = [
+      [1.3, 'consider-case-by-case'],
+      [1.6, 'recommended'],
+      [2, 'recommended'],
+      [8, 'recommended']
+    ];
+    for (const [inr, recommendation] of tiers) {
+      const r = calculatePCCDose(80, inr);
+      expect(r.iuPerKg).toBeNull();
+      expect(r.ahaDose).toBe(2000);
+      expect(r.fixedDose).toBe(true);
+      expect(r.recommendation).toBe(recommendation);
+    }
   });
-  it('INR >6 → 50 IU/kg, capped at 5000', () => {
-    const r = calculatePCCDose(150, 8);
-    expect(r.iuPerKg).toBe(50);
-    expect(r.ahaDose).toBe(5000);
+  it('does not vary the warfarin dose by weight', () => {
+    const lowWeight = calculatePCCDose(40, 5);
+    const highWeight = calculatePCCDose(150, 5);
+    expect(lowWeight.iuPerKg).toBeNull();
+    expect(highWeight.iuPerKg).toBeNull();
+    expect(lowWeight.ahaDose).toBe(2000);
+    expect(highWeight.ahaDose).toBe(2000);
+  });
+  it('holds factor-Xa PCC until the Direct Xa and contraindication gates are explicit', () => {
+    const missingBoth = calculatePCCDose(70, null, 'fxa-ich');
+    expect(missingBoth.ahaDose).toBeNull();
+    expect(missingBoth.fixedDose).toBe(false);
+    expect(missingBoth.recommendation).toBe('pending-required-gates');
+    expect(missingBoth.missing).toHaveLength(2);
+    const missingContraindicationReview = calculatePCCDose(70, null, 'fxa-ich', { directXaElevated: true });
+    expect(missingContraindicationReview.ahaDose).toBeNull();
+    expect(missingContraindicationReview.missing.join(' ')).toMatch(/not contraindicated/i);
+    const complete = calculatePCCDose(70, null, 'fxa-ich', { directXaElevated: true, pccContraindicated: false });
+    expect(complete.iuPerKg).toBeNull();
+    expect(complete.ahaDose).toBe(2000);
+    expect(complete.recommendation).toBe('give-fixed-dose');
+    expect(complete.andexanetAvailable).toBe(false);
+  });
+  it('holds dabigatran fallback PCC until idarucizumab unavailability and contraindication review are explicit', () => {
+    const incomplete = calculatePCCDose(70, null, 'dabigatran-fallback', { idarucizumabAvailable: false });
+    expect(incomplete.ahaDose).toBeNull();
+    expect(incomplete.fixedDose).toBe(false);
+    expect(incomplete.recommendation).toBe('pending-required-gates');
+    expect(incomplete.inrTierNote).not.toMatch(/give\s+4F-PCC\s+2000/i);
+    const contraindicated = calculatePCCDose(70, null, 'dabigatran-fallback', {
+      idarucizumabAvailable: false,
+      pccContraindicated: true
+    });
+    expect(contraindicated.ahaDose).toBeNull();
+    expect(contraindicated.fixedDose).toBe(false);
+    expect(contraindicated.recommendation).toBe('pending-required-gates');
+    expect(contraindicated.inrTierNote).not.toMatch(/give\s+4F-PCC\s+2000/i);
+    const complete = calculatePCCDose(70, null, 'dabigatran-fallback', {
+      idarucizumabAvailable: false,
+      pccContraindicated: false
+    });
+    expect(complete.iuPerKg).toBeNull();
+    expect(complete.ahaDose).toBe(2000);
+    expect(complete.fixedDose).toBe(true);
+    expect(complete.recommendation).toBe('give-fixed-dose-fallback');
   });
 });
 
@@ -306,25 +381,27 @@ describe('calculateEnoxaparinDose', () => {
 });
 
 describe('calculateAndexanetDose', () => {
-  it('apixaban ≤5mg → low-dose', () => {
-    const r = calculateAndexanetDose('apixaban', 2, 5);
-    expect(r.regimen).toBe('low-dose');
-  });
-  it('apixaban >5mg <8h → high-dose', () => {
-    const r = calculateAndexanetDose('apixaban', 2, 10);
-    expect(r.regimen).toBe('high-dose');
-  });
-  it('rivaroxaban >10mg <8h → high-dose', () => {
-    const r = calculateAndexanetDose('rivaroxaban', 2, 20);
-    expect(r.regimen).toBe('high-dose');
-  });
-  it('any DOAC ≥8h → low-dose', () => {
-    expect(calculateAndexanetDose('apixaban', 10, 10).regimen).toBe('low-dose');
-    expect(calculateAndexanetDose('rivaroxaban', 10, 20).regimen).toBe('low-dose');
-  });
-  it('unknown DOAC → N/A', () => {
-    const r = calculateAndexanetDose('dabigatran', 2, 150);
-    expect(r.regimen).toBe('N/A');
+  it('returns no actionable andexanet regimen for any retained input values', () => {
+    const inputs = [
+      ['apixaban', 2, 5],
+      ['apixaban', 2, 10],
+      ['rivaroxaban', 2, 20],
+      ['rivaroxaban', 10, 20],
+      ['dabigatran', 2, 150]
+    ];
+    for (const input of inputs) {
+      const r = calculateAndexanetDose(...input);
+      expect(r.regimen).toBe('unavailable');
+      expect(r.actionable).toBe(false);
+      expect(r.unavailable).toBe(true);
+      expect(r.bolus).toBe('');
+      expect(r.infusion).toBe('');
+      expect(r.total).toBe('');
+      expect(r.doseWarning).toMatch(/not available/i);
+      expect(r.pccAlternative).toMatch(/Direct Xa Inhibitor screen.*elevated/i);
+      expect(r.pccAlternative).toMatch(/no PCC contraindication/i);
+      expect(r.pccAlternative).toMatch(/2000 units IV/i);
+    }
   });
 });
 
