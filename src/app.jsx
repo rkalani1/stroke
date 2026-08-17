@@ -2977,13 +2977,13 @@ Clinician Name`;
             PROT1: {
               title: 'Protamine (UFH)',
               classOfRec: 'Class IIa',
-              dosing: '1 mg per 100 units UFH given in last 2-3h (max 50 mg/dose), slow IV over 10 min. Recheck anti-Xa; if >0.1 → additional 0.5 mg per 100 units (max cumulative 50 mg). (COR 2a/C)',
+              dosing: 'Protamine 25 mg IV immediately. Recheck anti-Xa after infusion; if >0.1 → additional protamine 10 mg (max cumulative dose 55 mg). (COR 2a/C)',
               note: 'Check anti-Xa level. If platelets <100K, send HIT antibodies and consult Hematology if positive.'
             },
             PROT2: {
               title: 'Protamine (LMWH)',
               classOfRec: 'Class IIb',
-              dosing: 'Last dose <8h: Protamine 1 mg per 1 mg enoxaparin (max 50 mg). 8-12h: 0.5 mg per 1 mg enoxaparin (max 50 mg). >12h: likely unnecessary — check anti-Xa. (COR 2b/C)',
+              dosing: 'Last dose <8h: Protamine 50 mg IV. Last dose 8-24h: Protamine 25 mg IV. Last dose >24h: no reversal indicated. (COR 2b/C)',
               note: 'Protamine only partially reverses LMWH (~60% anti-Xa neutralization). Second dose may be considered if ongoing bleeding.'
             },
             NICARDIPINE: {
@@ -3588,7 +3588,7 @@ Clinician Name`;
               name: 'Dabigatran (Pradaxa)',
               class: 'Direct Thrombin Inhibitor',
               halfLife: '12-17 hours',
-              halfLifeNote: 'Significantly prolonged in renal impairment (up to 28h if CrCl <30)',
+              halfLifeNote: 'Prolonged in renal impairment (up to 34h in severe renal impairment)',
               thrombolysisThreshold: '48 hours since last dose',
               thrombolysisNote: 'Consider dTT or ECT if <48h - thrombolysis may be given if dTT/ECT normal or aPTT <40s',
               ichReversal: {
@@ -4244,7 +4244,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Spontaneous ICH 2022',
               reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
-              medications: ['Vitamin K 10 mg IV over 20 min', '4F-PCC (Kcentra) 25-50 IU/kg based on INR per AHA/ASA 2022 (max 5000 IU)'],
+              medications: ['Vitamin K 10 mg IV', '4F-PCC (Kcentra) 25-50 IU/kg based on INR per AHA/ASA 2022 (max 5000 IU)'],
               conditions: (data) => {
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
@@ -13636,7 +13636,7 @@ Clinician Name`;
                 if (!isNaN(inrVal)) {
                   if (inrVal >= 2.0) inrTier = `INR ${inrVal.toFixed(1)} ≥2.0 → 4F-PCC recommended (COR 1/B)`;
                   else if (inrVal >= 1.6) inrTier = `INR ${inrVal.toFixed(1)} (1.6-1.9) → 4F-PCC recommended (COR 2b/C)`;
-                  else if (inrVal >= 1.3) inrTier = `INR ${inrVal.toFixed(1)} (1.3-1.5) → 4F-PCC 25 IU/kg may be considered (COR 2b/C): recommend if ICH expanding, volume >30 mL, or high-risk location`;
+                  else if (inrVal >= 1.3) inrTier = `INR ${inrVal.toFixed(1)} (1.3-1.5) → consider 4F-PCC on a case-by-case basis (COR 2b/C)`;
                   else inrTier = `INR ${inrVal.toFixed(1)} (<1.3) → PCC likely not needed; give Vitamin K`;
                 }
                 const pccRef = calculatePCCDose(telestrokeNote.weight, inr);
@@ -13673,17 +13673,17 @@ Clinician Name`;
                 reversalOrders.push(
                   'STOP heparin infusion immediately',
                   'Assessment: Anti-Xa level, aPTT',
-                  'Protamine dosing: 1 mg per 100 units UFH infused in the PRECEDING 2-3 hours (max 50 mg/dose); if >3h since last dose, reduce to 0.5 mg/100 units — e.g., 1500 units/hr x 2h = 3000 units → protamine 30 mg IV over 10 min (COR 2a/C)',
+                  'Protamine 25 mg IV immediately (COR 2a/C)',
                   'Recheck anti-Xa after infusion',
-                  'If anti-Xa >0.1 → additional protamine 0.5 mg per 100 units, max cumulative 50 mg',
+                  'If anti-Xa >0.1 → additional protamine 10 mg (max cumulative dose 55 mg)',
                   'If platelets <100K: send HIT antibodies, consult Hematology if positive'
                 );
               } else if (onLMWH) {
                 reversalOrders.push(
                   'Assessment: clinically significant hemorrhage (COR 2b/C)',
-                  'Last dose <8h: Protamine 1 mg per 1 mg enoxaparin (max 50 mg)',
-                  'Last dose 8-12h: Protamine 0.5 mg per 1 mg enoxaparin (max 50 mg)',
-                  'Last dose >12h: likely unnecessary — check anti-Xa',
+                  'Last dose <8h: Protamine 50 mg IV',
+                  'Last dose 8-24h: Protamine 25 mg IV',
+                  'Last dose >24h: no reversal indicated',
                   'Note: protamine only partially reverses LMWH (~60% anti-Xa neutralization)'
                 );
               } else if (onFondaparinux) {
@@ -13691,8 +13691,7 @@ Clinician Name`;
                   'Assessment: STAT anti-Xa level (calibrated for fondaparinux)',
                   'NO SPECIFIC REVERSAL AGENT for fondaparinux (t½ 17-21 hours)',
                   'Supportive care + time is mainstay (drug is 100% renally cleared)',
-                  '4F-PCC 50 IU/kg may partially correct coagulopathy — not reliably studied, consider as rescue therapy',
-                  'rFVIIa (NovoSeven) 90 mcg/kg — off-label, consider only for life-threatening hemorrhage after Hematology consultation',
+                  'STOP the agent and obtain a STAT hematology attending consult — no specific antidote exists for fondaparinux',
                   'If severe renal failure (CrCl <30): clearance significantly prolonged; consider dialysis consultation (fondaparinux ~40% renally cleared)',
                   'Protamine does NOT reverse fondaparinux',
                   'Consult Hematology for persistent hemorrhage despite supportive measures'
@@ -13701,7 +13700,7 @@ Clinician Name`;
               // Additional blood product thresholds
               reversalOrders.push(
                 '--- Additional Products (check labs) ---',
-                'If fibrinogen <200 mg/dL → 2 pools cryoprecipitate (10 individual units)',
+                'If fibrinogen <125 mg/dL → 2 units cryoprecipitate (1 unit = 5 pre-pooled cryoprecipitates); post-thrombolytic ICH threshold is fibrinogen <200 mg/dL',
                 'If platelets <50K → 2 units platelets; 50-100K → 1 unit platelets',
                 'Antiplatelet agents: discontinue; platelet transfusion NOT recommended (PATCH, COR 3/B harm)'
               );
@@ -20911,7 +20910,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               tnkRec = { eligible: false, reason: 'Set LKW time to evaluate', confidence: 'low' };
                             } else if (nihss <= 5 && !telestrokeNote.disablingDeficit) {
                               tnkRec = { eligible: false, reason: `NIHSS ${nihss} with non-disabling symptoms — IVT not recommended (Class III)`, confidence: 'medium' };
-                            } else if (hoursFromLKW < 4.5) {
+                            } else if (hoursFromLKW <= 4.5) {
                               if (nihss >= 4 || telestrokeNote.nihssDetails || telestrokeNote.disablingDeficit) {
                                 tnkRec = { eligible: true, reason: `Within 4.5h window, NIHSS ${nihss}`, confidence: 'high' };
                               }
@@ -28378,7 +28377,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="p-4 pt-0 space-y-2">
                               <div className="flex gap-2 items-start">
                                 <span className="shrink-0 w-6 h-6 rounded-full bg-crit-600 text-white text-xs flex items-center justify-center font-bold">1</span>
-                                <p className="text-sm">Order <strong>STAT coagulation panel</strong> (PT/INR, platelets, fibrinogen, PTT, TT)</p>
+                                <p className="text-sm">Order <strong>STAT coagulation panel</strong> (PT/INR, PTT, thrombin time (TT), fibrinogen, CBC, platelets, and a direct Xa inhibitor screen)</p>
                               </div>
                               <div className="flex gap-2 items-start">
                                 <span className="shrink-0 w-6 h-6 rounded-full bg-crit-600 text-white text-xs flex items-center justify-center font-bold">2</span>
@@ -28387,6 +28386,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="flex gap-2 items-start">
                                 <span className="shrink-0 w-6 h-6 rounded-full bg-crit-600 text-white text-xs flex items-center justify-center font-bold">3</span>
                                 <p className="text-sm">Order <strong>Type & Screen</strong></p>
+                              </div>
+                              <div className="flex gap-2 items-start">
+                                <span className="shrink-0 w-6 h-6 rounded-full bg-crit-600 text-white text-xs flex items-center justify-center font-bold">4</span>
+                                <p className="text-sm">If <strong>crash craniotomy</strong> is being considered → request <strong>2 units emergency-release RBCs</strong> (place both prepare and transfuse orders)</p>
+                              </div>
+                              <div className="flex gap-2 items-start">
+                                <span className="shrink-0 w-6 h-6 rounded-full bg-crit-600 text-white text-xs flex items-center justify-center font-bold">5</span>
+                                <p className="text-sm">If <strong>prolonged PTT is the only abnormality</strong> on the STAT panel → immediately consult the <strong>hematology attending</strong></p>
                               </div>
                             </div>
                           </details>
@@ -28451,14 +28458,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-sm font-semibold text-crit-800 mb-1 dark:text-crit-300">INR ≥ 2.0 (COR I/B-R):</p>
                                 <p className="text-sm">Give <button onClick={() => setProtocolModal(protocolDetailMap.PCC)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">4F-PCC (Kcentra) 25-50 IU/kg based on INR</button></p>
                                 <ul className="text-sm mt-2 space-y-1 ml-4">
-                                  <li>• Check PT/INR at <strong>15-30 min</strong>, <strong>6h</strong>, and <strong>24h</strong> after PCC</li>
-                                  <li>• If INR &gt;1.5 at 15-30 min → <strong>consult hematology</strong> for additional PCC</li>
+                                  <li>• Check PT/INR at <strong>30 min</strong>, then <strong>every 6h for 24h</strong> after PCC</li>
+                                  <li>• If INR &gt;1.5 after infusion → <strong>page hematology</strong> and consider an additional <strong>500 units PCC</strong> or <strong>2-4 units plasma (FFP)</strong></li>
                                   <li>• If INR &gt;1.5 at 24h → repeat vitamin K 10 mg IV over 30 min</li>
                                 </ul>
                               </div>
 
+                              <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
+                                <p className="text-sm font-semibold text-warn-800 mb-1 dark:text-warn-300">INR 1.6-1.9 (COR IIb/C):</p>
+                                <p className="text-sm">4F-PCC recommended</p>
+                              </div>
+
                               <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
-                                <p className="text-sm font-semibold text-slate-700 mb-1 dark:text-ink-2">INR 1.3-1.5:</p>
+                                <p className="text-sm font-semibold text-slate-700 mb-1 dark:text-ink-2">INR 1.3-1.5 (COR IIb/C):</p>
                                 <p className="text-sm text-slate-600 dark:text-ink-2">Low evidence — consider PCC on a case-by-case basis</p>
                               </div>
 
@@ -28472,12 +28484,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
 
                               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 dark:bg-yellow-950 dark:border-yellow-800">
+                                <p className="text-xs font-semibold text-yellow-800 mb-1 dark:text-yellow-300">Absolute Contraindications to PCC:</p>
+                                <ul className="text-xs space-y-0.5 text-yellow-900 mb-2 dark:text-yellow-300">
+                                  <li>• Disseminated intravascular coagulation (DIC)</li>
+                                  <li>• Heparin-induced thrombocytopenia (HIT)</li>
+                                </ul>
                                 <p className="text-xs font-semibold text-yellow-800 mb-1 dark:text-yellow-300">Relative Contraindications to PCC/FFP:</p>
                                 <ul className="text-xs space-y-0.5 text-yellow-900 dark:text-yellow-300">
                                   <li>• Thrombotic event in past 6 weeks</li>
                                   <li>• Prothrombotic condition</li>
                                   <li>• Major surgery in past 6 weeks</li>
-                                  <li>• IPH not considered survivable</li>
+                                  <li>• Mechanical circulatory support (involve cardiology)</li>
                                 </ul>
                               </div>
                             </div>
@@ -28534,12 +28551,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
 
                               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 dark:bg-yellow-950 dark:border-yellow-800">
+                                <p className="text-xs font-semibold text-yellow-800 mb-1 dark:text-yellow-300">Absolute Contraindications to PCC:</p>
+                                <ul className="text-xs space-y-0.5 text-yellow-900 mb-2 dark:text-yellow-300">
+                                  <li>• Disseminated intravascular coagulation (DIC)</li>
+                                  <li>• Heparin-induced thrombocytopenia (HIT)</li>
+                                </ul>
                                 <p className="text-xs font-semibold text-yellow-800 mb-1 dark:text-yellow-300">Relative Contraindications to PCC:</p>
                                 <ul className="text-xs space-y-0.5 text-yellow-900 dark:text-yellow-300">
                                   <li>• Thrombotic event in past 6 weeks</li>
                                   <li>• Prothrombotic condition</li>
                                   <li>• Major surgery in past 6 weeks</li>
-                                  <li>• IPH not considered survivable</li>
+                                  <li>• Mechanical circulatory support (involve cardiology)</li>
                                 </ul>
                               </div>
                             </div>
@@ -28866,11 +28888,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <ul className="text-sm space-y-1">
                             <li><strong>Immediate:</strong> Vitamin K 10 mg IV for all warfarin patients.</li>
                             <li><strong>INR ≥2.0 (COR I/B-R):</strong> 4F-PCC (Kcentra) 25-50 IU/kg based on INR (max 5000 IU).</li>
-                            <li><strong>INR 1.6-1.9 (COR IIb/C):</strong> PCC may be considered on case-by-case basis.</li>
-                            <li><strong>Check INR:</strong> at 15-30 min and 6h after PCC.</li>
-                            <li><strong>INR &gt;1.5 after PCC:</strong> consult hematology for additional PCC.</li>
+                            <li><strong>INR 1.6-1.9 (COR IIb/C):</strong> 4F-PCC recommended.</li>
+                            <li><strong>INR 1.3-1.5 (COR IIb/C):</strong> consider 4F-PCC on a case-by-case basis.</li>
+                            <li><strong>Check INR:</strong> at 30 min, then every 6h for 24h after PCC.</li>
+                            <li><strong>INR &gt;1.5 after PCC:</strong> page hematology and consider an additional 500 units PCC or 2-4 units plasma (FFP).</li>
                             <li><strong>INR &gt;1.5 at 24h:</strong> repeat vitamin K 10 mg IV over 30 min.</li>
-                            <li><strong>FFP pathway (if PCC unavailable):</strong> FFP 10-15 mL/kg IV → recheck INR → if &gt;1.5 administer additional FFP → if still &gt;1.5 consult hematology.</li>
+                            <li><strong>FFP pathway (if PCC unavailable):</strong> 4 units emergency-release plasma immediately and request an additional 4 units (ideal plasma dose 15 mL/kg; each unit is 250-300 mL, so some patients need additional units) → recheck INR → if &gt;1.5 administer 4 more units → if still &gt;1.5 consult hematology. Consider concurrent furosemide if history of CHF.</li>
                           </ul>
                         </div>
 
@@ -28909,20 +28932,26 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-white p-4 rounded border mb-4 dark:bg-card">
                           <h4 className="font-semibold text-cobalt-700 mb-3 dark:text-cobalt-300">Heparins</h4>
                           <ul className="text-sm space-y-1">
-                            <li><strong>UFH:</strong> IV protamine is reasonable.</li>
-                            <li><strong>LMWH:</strong> IV protamine may be considered.</li>
+                            <li><strong>UFH (COR 2a/C):</strong> assess anti-Xa. Protamine 25 mg IV immediately; recheck anti-Xa after infusion and, if &gt;0.1, give an additional 10 mg protamine (max cumulative dose 55 mg).</li>
+                            <li><strong>UFH — HIT screen:</strong> if platelets &lt;100 K/µL, send heparin-induced platelet antibodies; if positive, consult hematology.</li>
+                            <li><strong>LMWH (COR 2b/C):</strong> last dose &lt;8h → protamine 50 mg IV; last dose 8-24h → protamine 25 mg IV; last dose &gt;24h → no reversal indicated.</li>
                           </ul>
                         </div>
 
                         {/* Relative Contraindications */}
 
                         <div className="bg-white p-4 rounded border mb-4 dark:bg-card">
+                          <h4 className="font-semibold text-slate-700 mb-3 dark:text-ink-2">Absolute contraindications to PCC:</h4>
+                          <ul className="text-sm space-y-1 mb-3">
+                            <li>• Disseminated intravascular coagulation (DIC)</li>
+                            <li>• Heparin-induced thrombocytopenia (HIT)</li>
+                          </ul>
                           <h4 className="font-semibold text-slate-700 mb-3 dark:text-ink-2">Relative contraindications to PCC/FFP:</h4>
                           <ul className="text-sm space-y-1">
                             <li>• History of major thrombosis/thromboembolism ≤6 weeks</li>
                             <li>• Major surgery ≤6 weeks</li>
                             <li>• Known prothrombotic disorder</li>
-                            <li>• IPH not considered survivable</li>
+                            <li>• Mechanical circulatory support (involve cardiology)</li>
                           </ul>
                         </div>
                       </div>
@@ -28931,8 +28960,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h3 className="text-lg font-semibold text-crit-700 mb-4 dark:text-crit-300">Antiplatelet-Associated ICH</h3>
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <ul className="text-sm space-y-1">
-                              <li>Aspirin with emergent neurosurgery: platelet transfusion might be considered.</li>
-                              <li>Aspirin without planned surgery: platelet transfusions are potentially harmful and should not be given.</li>
+                              <li>Discontinue antiplatelet agent(s). Platelet transfusion is <strong>NOT routinely recommended</strong> (COR 3/B — harm demonstrated in the PATCH trial).</li>
+                              <li>Aspirin with emergent neurosurgery: platelet transfusion might be considered (AHA/ASA 2022 only).</li>
                               <li>Desmopressin 0.3 mcg/kg IV once may be considered; benefit uncertain.</li>
                             </ul>
                           </div>

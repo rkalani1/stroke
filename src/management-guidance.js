@@ -347,7 +347,7 @@ export const AIS_COMMAND_CENTER_CARDS = [
       'Reaching for tenecteplase as a co-equal pediatric lytic: the guideline references alteplase for children; TNK use is adult-derived extrapolation. Verify any agent and dose with pediatric pharmacy/ICU.',
       'Treating pediatric thrombolysis as standard care — it is not FDA-approved and the evidence base is limited (e.g., the TIPS trial stopped early for low enrollment).',
       'Assuming infants and toddlers are categorically excluded from EVT: the 2026 guideline offers a IIb pathway for LVO down to 28 days, distinct from the >=6y IIa pathway.',
-      'Overlooking mineralizing lenticulostriate vasculopathy (basal-ganglia stroke after minor head trauma with basal-ganglia calcifications) — not thrombolysis-responsive and carries basal-ganglia hemorrhage risk.'
+      'Overlooking mineralizing lenticulostriate vasculopathy: consider in ages 6 months to 2 years with basal ganglia stroke after minor head injury and with basal ganglia calcifications (punctate hyperdensities, unilateral or bilateral) on head CT — not thrombolysis-responsive and carries a risk of basal ganglia hemorrhage.'
     ],
     teachingPearl:
       'Pediatric acute reperfusion mirrors the adult framework, but the evidence and approvals do not: confirm true arterial ischemic stroke, engage pediatric stroke expertise, and verify every agent and dose locally. Note the pediatric EVT evidence (B-NR) is stronger than the lytic evidence (C-LD).',

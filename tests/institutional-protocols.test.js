@@ -38,7 +38,9 @@ describe('IVT_ABSOLUTE_CONTRAINDICATIONS', () => {
   it('includes critical absolute contraindications', () => {
     const labels = IVT_ABSOLUTE_CONTRAINDICATIONS.map((item) => item.label);
     expect(labels).toContain('CT with hemorrhage');
-    expect(labels).toContain('Neurosurgery <14 days');
+    // Renamed from 'Neurosurgery <14 days': the dedicated inclusion/exclusion criteria sheet
+    // scopes this to intracranial OR intraspinal surgery and sets 60 days, not 14.
+    expect(labels).toContain('Intracranial or intraspinal surgery <60 days');
     expect(labels).toContain('Severe coagulopathy');
   });
 });

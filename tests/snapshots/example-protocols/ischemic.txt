@@ -510,7 +510,7 @@ Pitfalls
 Reaching for tenecteplase as a co-equal pediatric lytic: the guideline references alteplase for children; TNK use is adult-derived extrapolation. Verify any agent and dose with pediatric pharmacy/ICU.
 Treating pediatric thrombolysis as standard care — it is not FDA-approved and the evidence base is limited (e.g., the TIPS trial stopped early for low enrollment).
 Assuming infants and toddlers are categorically excluded from EVT: the 2026 guideline offers a IIb pathway for LVO down to 28 days, distinct from the >=6y IIa pathway.
-Overlooking mineralizing lenticulostriate vasculopathy (basal-ganglia stroke after minor head trauma with basal-ganglia calcifications) — not thrombolysis-responsive and carries basal-ganglia hemorrhage risk.
+Overlooking mineralizing lenticulostriate vasculopathy: consider in ages 6 months to 2 years with basal ganglia stroke after minor head injury and with basal ganglia calcifications (punctate hyperdensities, unilateral or bilateral) on head CT — not thrombolysis-responsive and carries a risk of basal ganglia hemorrhage.
 Teaching pearl
 Pediatric acute reperfusion mirrors the adult framework, but the evidence and approvals do not: confirm true arterial ischemic stroke, engage pediatric stroke expertise, and verify every agent and dose locally. Note the pediatric EVT evidence (B-NR) is stronger than the lytic evidence (C-LD).
 Search the evidence (PubMed)
@@ -1248,47 +1248,49 @@ Symptoms or history suggestive of SAH
 Absolute exclusion even when the head CT is unremarkable.
 Active internal bleeding
 Absolute exclusion.
+SBP >185 or DBP >110 mmHg on repeated measures
+Hypertension above these values on repeated measures prior to starting the thrombolytic; treat and re-check before proceeding.
 Intra-axial intracranial neoplasm
 Absolute exclusion (extra-axial tumours are handled separately).
-Neurosurgery <14 days
-Potentially harmful; should not be administered.
+Intracranial or intraspinal surgery <60 days
+Intracranial or intraspinal surgery within the past 60 days; potentially harmful. The condensed 6/2026 telestroke consult guide abbreviates this to <14 days; the dedicated inclusion/exclusion criteria sheet states 60 days and is used here as the more restrictive value.
 Infective endocarditis
 Should not be administered.
 Severe coagulopathy
-Plt <100K, INR >1.7, aPTT >40s, PT >15s.
+Plt <100K, INR >1.7, aPTT >40s, PT >15s. In patients without a history of thrombocytopenia the thrombolytic can be started before the platelet count returns, but should be discontinued if the platelet count returns <100,000/mm3.
 Aortic arch dissection
 Potentially harmful; should not be administered.
 Unruptured, unsecured large intracranial aneurysm (>10 mm)
 Absolute exclusion; small or already-secured aneurysms are handled under benefit-greater.
-Moderate-severe TBI <14 days
-GCS <10 or hemorrhage/contusion/skull fracture.
-Amyloid immunotherapy / ARIA
-ICH risk unknown; IV thrombolysis should be avoided.
+Severe head trauma <90 days
+History of severe head trauma within the previous 90 days. The condensed 6/2026 telestroke consult guide abbreviates this to <14 days; the dedicated inclusion/exclusion criteria sheet states 90 days and is used here as the more restrictive value.
 Relative (individualize)
+Anti-amyloid therapy (e.g., lecanemab) — ARIA risk
+Not recommended; confirm the decision with the on-call stroke attending and prepare for possible MRI.
 Pre-existing disability/frailty
 Treatment on individual basis.
 DOAC exposure <48h
-Potential efficacy supported by observational studies; see DOAC pathway.
-Prior ischemic stroke <3 months
-Weigh timing/size against IVT benefit.
+Current criteria (rev 6/2026): EXCLUDE if the last dose was within 24h and no anti-Xa panel is available. Between 24h and 48h thrombolysis may be considered with consent. See the DOAC pathway.
+Prior ischemic stroke <90 days
+Weigh timing/size against thrombolytic benefit. Note: the current local criteria list prior stroke within 90 days under BOTH the absolute and the relative exclusion headings — treat as a hard stop unless the treating team explicitly individualises.
 Prior ICH
 Amyloid angiopathy = higher risk. Modifiable causes (HTN) may have greater net benefit.
 Major non-CNS trauma (14d-3mo)
 Surgical consultation; consider involved areas.
 Major surgery or trauma <14 days
 Consider surgical area and bleeding risk. Local criteria use a 14-day boundary.
-GI/GU bleeding <21 days
-GI/GU consultation.
-Arterial/dural puncture <7 days
+Dural puncture <7 days
 May be considered in individual cases.
 Intracranial vascular malformations
 Safety unknown; unruptured and untreated.
 >10 cerebral microbleeds
 Relative exclusion in the current local eligibility criteria.
+Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use
+May be a false positive due to lupus anticoagulant; consider the thrombolytic if able to reliably confirm the patient is not taking a direct thrombin inhibitor or factor Xa inhibitor.
 Intracranial arterial dissection
 Safety unknown.
-Recent STEMI <3 months
-Cardiology consult; hemopericardium risk.
+Acute or recent MI <3 months
+Depending on type of MI; lower-level evidence supports thrombolytic use in these settings. Cardiology consult; hemopericardium risk.
 Acute pericarditis
 May be reasonable. Emergent cardiology consult.
 Left atrial or ventricular thrombus
@@ -1297,7 +1299,7 @@ Pregnancy / post-partum
 Obstetric consultation; benefits vs uterine bleeding risk.
 Systemic active malignancy
 Oncology consultation; consider type, stage, complications.
-Neurosurgery 14 days-3 months
+Intracranial or intraspinal surgery 60 days-3 months
 Individual basis; neurosurgical consultation recommended.
 Benefit > Risk · Consider IVT
 Extracranial cervical dissection

@@ -251,8 +251,9 @@ export const evaluateIVT = ({
       eligible: false,
       recommendation: 'IVT NOT recommended',
       cor: '3 (No Benefit)',
-      loe: 'B',
+      loe: 'B-R',
       reason: 'Non-disabling deficits. Disabling = impairs ADLs (bathing, ambulating, toileting, hygiene, eating) or return-to-work.',
+      nextStep: 'Consider early DAPT.',
       decisions
     };
   }
@@ -284,6 +285,9 @@ export const evaluateIVT = ({
   if (Number.isFinite(hrs)) {
     if (hrs <= 4.5) {
       decisions.push({ step: 'time', msg: `${hrs}h from LKW — standard 0-4.5h window` });
+      if (hrs > 3) {
+        warnings.push('3-4.5h window: eligibility criteria are the same as at earlier time periods, with these additional cautionary criteria — baseline NIHSS >25; age >80; history of BOTH diabetes mellitus and prior stroke; oral anticoagulant use; evidence of ischemic injury involving >1/3 of the MCA territory.');
+      }
       return {
         eligible: true,
         recommendation: 'TNK recommended — standard window',
@@ -604,34 +608,35 @@ export const IVT_ABSOLUTE_CONTRAINDICATIONS = [
   { label: 'Acute spinal cord injury <90 days', detail: 'Listed as an absolute exclusion in the current local eligibility criteria.' },
   { label: 'Symptoms or history suggestive of SAH', detail: 'Absolute exclusion even when the head CT is unremarkable.' },
   { label: 'Active internal bleeding', detail: 'Absolute exclusion.' },
+  { label: 'SBP >185 or DBP >110 mmHg on repeated measures', detail: 'Hypertension above these values on repeated measures prior to starting the thrombolytic; treat and re-check before proceeding.' },
   { label: 'Intra-axial intracranial neoplasm', detail: 'Absolute exclusion (extra-axial tumours are handled separately).' },
-  { label: 'Neurosurgery <14 days', detail: 'Potentially harmful; should not be administered.' },
+  { label: 'Intracranial or intraspinal surgery <60 days', detail: 'Intracranial or intraspinal surgery within the past 60 days; potentially harmful. The condensed 6/2026 telestroke consult guide abbreviates this to <14 days; the dedicated inclusion/exclusion criteria sheet states 60 days and is used here as the more restrictive value.' },
   { label: 'Infective endocarditis', detail: 'Should not be administered.' },
-  { label: 'Severe coagulopathy', detail: 'Plt <100K, INR >1.7, aPTT >40s, PT >15s.' },
+  { label: 'Severe coagulopathy', detail: 'Plt <100K, INR >1.7, aPTT >40s, PT >15s. In patients without a history of thrombocytopenia the thrombolytic can be started before the platelet count returns, but should be discontinued if the platelet count returns <100,000/mm3.' },
   { label: 'Aortic arch dissection', detail: 'Potentially harmful; should not be administered.' },
   { label: 'Unruptured, unsecured large intracranial aneurysm (>10 mm)', detail: 'Absolute exclusion; small or already-secured aneurysms are handled under benefit-greater.' },
-  { label: 'Moderate-severe TBI <14 days', detail: 'GCS <10 or hemorrhage/contusion/skull fracture.' },
-  { label: 'Amyloid immunotherapy / ARIA', detail: 'ICH risk unknown; IV thrombolysis should be avoided.' }
+  { label: 'Severe head trauma <90 days', detail: 'History of severe head trauma within the previous 90 days. The condensed 6/2026 telestroke consult guide abbreviates this to <14 days; the dedicated inclusion/exclusion criteria sheet states 90 days and is used here as the more restrictive value.' },
 ];
 
 export const IVT_RELATIVE_CONTRAINDICATIONS = [
+  { label: 'Anti-amyloid therapy (e.g., lecanemab) — ARIA risk', detail: 'Not recommended; confirm the decision with the on-call stroke attending and prepare for possible MRI.' },
   { label: 'Pre-existing disability/frailty', detail: 'Treatment on individual basis.' },
-  { label: 'DOAC exposure <48h', detail: 'Potential efficacy supported by observational studies; see DOAC pathway.' },
-  { label: 'Prior ischemic stroke <3 months', detail: 'Weigh timing/size against IVT benefit.' },
+  { label: 'DOAC exposure <48h', detail: 'Current criteria (rev 6/2026): EXCLUDE if the last dose was within 24h and no anti-Xa panel is available. Between 24h and 48h thrombolysis may be considered with consent. See the DOAC pathway.' },
+  { label: 'Prior ischemic stroke <90 days', detail: 'Weigh timing/size against thrombolytic benefit. Note: the current local criteria list prior stroke within 90 days under BOTH the absolute and the relative exclusion headings — treat as a hard stop unless the treating team explicitly individualises.' },
   { label: 'Prior ICH', detail: 'Amyloid angiopathy = higher risk. Modifiable causes (HTN) may have greater net benefit.' },
   { label: 'Major non-CNS trauma (14d-3mo)', detail: 'Surgical consultation; consider involved areas.' },
   { label: 'Major surgery or trauma <14 days', detail: 'Consider surgical area and bleeding risk. Local criteria use a 14-day boundary.' },
-  { label: 'GI/GU bleeding <21 days', detail: 'GI/GU consultation.' },
-  { label: 'Arterial/dural puncture <7 days', detail: 'May be considered in individual cases.' },
+  { label: 'Dural puncture <7 days', detail: 'May be considered in individual cases.' },
   { label: 'Intracranial vascular malformations', detail: 'Safety unknown; unruptured and untreated.' },
   { label: '>10 cerebral microbleeds', detail: 'Relative exclusion in the current local eligibility criteria.' },
+  { label: 'Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use', detail: 'May be a false positive due to lupus anticoagulant; consider the thrombolytic if able to reliably confirm the patient is not taking a direct thrombin inhibitor or factor Xa inhibitor.' },
   { label: 'Intracranial arterial dissection', detail: 'Safety unknown.' },
-  { label: 'Recent STEMI <3 months', detail: 'Cardiology consult; hemopericardium risk.' },
+  { label: 'Acute or recent MI <3 months', detail: 'Depending on type of MI; lower-level evidence supports thrombolytic use in these settings. Cardiology consult; hemopericardium risk.' },
   { label: 'Acute pericarditis', detail: 'May be reasonable. Emergent cardiology consult.' },
   { label: 'Left atrial or ventricular thrombus', detail: 'May be reasonable if major AIS. Cardiology consult.' },
   { label: 'Pregnancy / post-partum', detail: 'Obstetric consultation; benefits vs uterine bleeding risk.' },
   { label: 'Systemic active malignancy', detail: 'Oncology consultation; consider type, stage, complications.' },
-  { label: 'Neurosurgery 14 days-3 months', detail: 'Individual basis; neurosurgical consultation recommended.' }
+  { label: 'Intracranial or intraspinal surgery 60 days-3 months', detail: 'Individual basis; neurosurgical consultation recommended.' }
 ];
 
 export const IVT_BENEFIT_GREATER_CONSIDER = [
