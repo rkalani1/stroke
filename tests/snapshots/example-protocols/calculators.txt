@@ -11,36 +11,13 @@ TIA
 CVT
 Calculators
 PHQ-9 Depression Screen (post-stroke)
-PHQ-9 Depression Screen
-Over the past 2 weeks, how often have you been bothered by:
-Question
-Not at all (0)
-Several days (1)
-More than half (2)
-Nearly every day (3)
-Little interest or pleasure in doing things
-Feeling down, depressed, or hopeless
-Trouble falling/staying asleep, or sleeping too much
-Feeling tired or having little energy
-Poor appetite or overeating
-Feeling bad about yourself / failure
-Trouble concentrating
-Moving/speaking slowly or being fidgety/restless
-Thoughts of self-harm or being better off dead
-Total:
-0
-none
-No treatment needed; monitor.
-Kroenke JGIM 2001;16:606-13
+No institutional protocol document is on file for post-stroke depression screening. See Guidelines & References for the current society guidance.
 Quick Dosing Reference
 TNK (Tenecteplase)
 0.25 mg/kg IV bolus (max 25 mg)
 Click to copy
 Alteplase (tPA)
 0.9 mg/kg IV (max 90 mg): 10% bolus, 90% over 60 min
-Click to copy
-Nimodipine (SAH)
-60 mg PO/NG q4h x 21 days. If hypotension: 30 mg q2h.
 Click to copy
 PCC / Kcentra
 2000 units IV immediately (fixed dose, not weight-based). If INR >1.5 after infusion, page hematology and consider an additional 500 units.
@@ -50,12 +27,6 @@ Idarucizumab
 Click to copy
 FFP (if no PCC)
 15 mL/kg IV (4 units emergency-release plasma immediately; request an additional 4 units). Goal INR <1.5.
-Click to copy
-Labetalol IV
-10-20 mg IV q10-20min (max 300 mg). Alt: nicardipine 5 mg/h, titrate q5min by 2.5 mg/h (max 15).
-Click to copy
-Levetiracetam
-1000-1500 mg IV load, then 500-1000 mg IV/PO q12h. For acute seizures.
 Click to copy
 Patient snapshot
 Age:
@@ -93,8 +64,6 @@ Use the NIHSS panel in the Encounter tab for full item-by-item scoring.
 Clinical significance:
 NIHSS ≤3: Consider DAPT (CHANCE/POINT criteria)
 NIHSS ≥6: Likely LVO — consider EVT evaluation
-NIHSS ≥8: CATALYST moderate severity — DOAC start day 3-5
-NIHSS >15: CATALYST severe — DOAC start day 6-14
 NIHSS Scoring Pitfalls
 1a (LOC):
 Do NOT score sedation/intubation as decreased LOC. Score best response. If patient requires stimulation only because of intubation/sedation, score 0.
@@ -165,38 +134,7 @@ C-EO:
 Expert opinion/consensus
 Modified Fisher Scale
 Vasospasm Risk
-Predicts risk of symptomatic vasospasm after SAH based on CT appearance.
-Grade
-0
-:
-No SAH or IVH
-Vasospasm risk:
-~0%
-Grade
-1
-:
-Thin SAH, no IVH
-Vasospasm risk:
-~24%
-Grade
-2
-:
-Thin SAH with IVH
-Vasospasm risk:
-~33%
-Grade
-3
-:
-Thick SAH, no IVH
-Vasospasm risk:
-~33%
-Grade
-4
-:
-Thick SAH with IVH
-Vasospasm risk:
-~40%
-Frontera et al., Neurosurgery 2006. Thin = <1mm, Thick = ≥1mm.
+No institutional protocol document is on file for vasospasm risk grading. See Guidelines & References for the current society guidance.
 Glasgow Coma Scale (GCS)
 Score:
 0
@@ -278,7 +216,7 @@ Illustrative comfort-care-excluded cohort (unvalidated)
 — de-identified, provenance-unverified figures shown only to teach the
 self-fulfilling-prophecy effect of early care limitation
 . NOT validated or institutional data; do not use for individual prognostication. When aggressive care is sustained, observed mortality falls well below the Hemphill estimates that were derived from cohorts with high rates of early DNR/withdrawal.
-Standard column: Hemphill et al., Stroke 2001. AHA/ASA 2022 ICH guideline recommends postponing new DNR orders until at least the second full hospital day (Class IIa).
+Standard column: Hemphill et al., Stroke 2001.
 Glasgow Coma Scale:
 GCS 3-4
 (
@@ -311,7 +249,6 @@ Intraventricular hemorrhage (+1)
 Infratentorial origin (+1)
 FUNC Score (ICH Functional Outcome)
 Prognosis
-Predicts functional independence (GOS ≥4) at 90 days after ICH. Range 0-11. Higher = better prognosis. (Rost et al., Stroke 2008)
 ICH Volume
 <30 mL: +4 | 30-59 mL: +2 | ≥60 mL: +0
 Enter ICH volume above
@@ -345,9 +282,8 @@ FUNC Score:
 4
 /11
 (partial — enter missing values)
-Poor (<50% chance of functional independence)
 Important:
-FUNC Score should NOT be used alone for withdrawal-of-care decisions. Early aggressive care limitations (self-fulfilling prophecy) contribute to poor outcomes. AHA/ASA recommends postponing DNR orders for at least 24h after ICH onset.
+FUNC Score should NOT be used alone for withdrawal-of-care decisions. Early aggressive care limitations (self-fulfilling prophecy) contribute to poor outcomes.
 Modified Rankin Scale (mRS)
 Score:
 Not Selected
@@ -367,10 +303,6 @@ Unable to walk without assistance and unable to attend to own bodily needs witho
 5 - Severe disability
 Bedridden, incontinent, and requires constant nursing care and attention
 6 - Dead
-EVT Trial Eligibility by Premorbid mRS:
-mRS 0-1: MR CLEAN, ESCAPE, EXTEND-IA, SWIFT PRIME, REVASCAT, DAWN, DEFUSE 3
-mRS 0-2: EXTEND, ECASS III (IVT), HERMES meta-analysis
-mRS 0-3: SELECT2 (large core), ANGEL-ASPECT
 ABCD² Score
 Score:
 0
@@ -469,16 +401,6 @@ D
 rugs (antiplatelet agents, NSAIDs) (+1)
 D
 (cont.) Alcohol use (≥8 drinks/week) (+1)
-Annual Bleeding Risk
-Score 0:
-1.13% per year
-Score 1:
-1.02% per year
-Score 2:
-1.88% per year
-Score ≥3:
-3.74% per year (high risk)
-High risk (≥3) indicates need for more frequent monitoring and caution with anticoagulation, but should not automatically exclude from treatment.
 ROPE Score and PASCAL Classification
 Score:
 0
@@ -491,46 +413,6 @@ Nonsmoker (+1)
 Cortical infarct (+1)
 Age (years)
 18-29: +5, 30-39: +4, 40-49: +3, 50-59: +2, 60-69: +1, ≥70: 0
-PFO-attributable fraction
-Score 0-3:
-0-23%
-Score 4:
-38%
-Score 5:
-34%
-Score 6:
-62%
-Score 7:
-72%
-Score 8:
-84%
-Score 9-10:
-88%
-2-Year Recurrent Stroke/TIA Risk
-Score 0-3:
-20%
-Score 4:
-12%
-Score 5:
-15%
-Score 6:
-8%
-Score 7:
-6%
-Score 8:
-6%
-Score 9-10:
-2%
-PASCAL Classification (Kent et al., JAHA 2020)
-Definite PFO-related stroke (closure strongly recommended):
-RoPE ≥7 + high-risk PFO (large shunt or atrial septal aneurysm)
-Probable PFO-related stroke (closure reasonable):
-• RoPE ≥7 + low-risk PFO (small shunt, no ASA)
-• RoPE <7 + high-risk PFO (large shunt or ASA)
-Possible PFO-related stroke (closure uncertain benefit):
-RoPE <7 + low-risk PFO, no clear alternative stroke etiology
-Unlikely PFO-related stroke (closure not recommended):
-Clear alternative stroke etiology identified (AF, LAA, etc.), regardless of PFO features
 RCVS² Score
 Score:
 0
@@ -541,14 +423,6 @@ Intracranial carotid artery involvement (-2)
 Vasoconstrictive trigger exposure (+3)
 Female sex (+1)
 Subarachnoid hemorrhage on imaging (+1)
-RCVS Probability
-Score <2:
-Low probability of RCVS
-Score 2-4:
-Intermediate probability
-Score ≥5:
-High probability of RCVS
-RCVS² score helps distinguish RCVS from other causes of thunderclap headache. Consider vascular imaging and repeat imaging in 2-4 weeks if high suspicion.
 Hunt and Hess / WFNS Scale (SAH Grading)
 H&H:
 Not Selected
@@ -581,10 +455,6 @@ Open PREVENT Calculator →
 PHASES Score (Aneurysm Rupture Risk)
 Score:
 0
-—
-0.4%
-5-yr risk
-Predicts 5-year absolute risk of rupture for unruptured intracranial aneurysms. Useful for counseling in stroke prevention clinic.
 Population
 North American / European (0 pts)
 Japanese (+3 pts)
@@ -598,13 +468,6 @@ Aneurysm site
 ICA (0 pts)
 MCA (+2 pts)
 ACA / Pcomm / Posterior circulation (+4 pts)
-PHASES Score:
-0
-—
-Very low
-5-year absolute rupture risk:
-0.4%
-Copy
 Greving JP et al.
 Lancet Neurol
 2014;13(1):59-66. PHASES: Population, Hypertension, Age, Size, Earlier SAH, Site.
@@ -641,7 +504,7 @@ Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × Cr)
 Enoxaparin Weight-Based Dosing
 Weight (kg)
 CrCl (mL/min)
-Treatment: 1 mg/kg SC BID (standard) or 1.5 mg/kg SC daily (alternative). CrCl <30: 1 mg/kg SC daily. Prophylaxis: 40 mg SC daily (30 mg if CrCl <30). Check anti-Xa for extremes of weight.
+No institutional protocol document is on file for enoxaparin dosing. See Guidelines & References for the current society guidance.
 ASPECTS Score (Interactive)
 Score:
 10
@@ -714,14 +577,13 @@ Enter patient weight in the encounter section to calculate dose.
 Thrombolysis Risk Scores (SPAN-100, DRAGON, SEDAN)
 sICH Risk Assessment
 SPAN-100 Index
-Age + NIHSS ≥ 100 predicts higher symptomatic ICH risk and lower chance of good outcome after IV thrombolysis.
 Age (
 ?
 ) + NIHSS (
 ?
 ) =
 ?
-NEGATIVE — Lower Risk
+NEGATIVE
 SEDAN Score (sICH Risk Post-Thrombolysis)
 Sugar + Early infarct signs + Dense artery + Age + NIHSS
 •
@@ -737,8 +599,6 @@ NIHSS <10 (0)
 SEDAN:
 0
 /6
-Estimated sICH risk:
-~1%
 mTICI Reperfusion Score (Post-EVT)
 Modified Treatment in Cerebral Ischemia. Select the grade that best describes post-procedure reperfusion.
 mTICI
@@ -766,7 +626,6 @@ mTICI
 Complete perfusion
 Full antegrade flow, normal filling speed
 DRAGON Score (IVT Outcome Prediction)
-Predicts 3-month outcome after IV thrombolysis. Auto-calculated from patient data where available.
 Dense artery sign or early infarct on NCCT
 +1-2
 manual
@@ -789,5 +648,4 @@ DRAGON:
 0
 (auto-components)
 Good
-Good outcome likely (mRS 0-2)
 Note: D (dense artery/early infarct) and O (onset time) must be assessed manually. Add +1-2 for D and +1 for O if applicable.

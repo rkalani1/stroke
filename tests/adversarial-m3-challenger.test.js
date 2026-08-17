@@ -212,6 +212,10 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);
         expect(fs.existsSync(file), `Snapshot file for ${subtab} must exist`).toBe(true);
         const content = fs.readFileSync(file, 'utf8');
+        // Protocols carries institutional content only. A topic with no Stroke Center source
+        // document legitimately renders just its header plus the institutional notice, so the
+        // substantiality floor applies only to topics that DO have folder-backed content.
+        if (content.includes('No institutional protocol document is on file')) continue;
         const lineCount = content.split('\n').filter(Boolean).length;
         expect(lineCount, `${subtab} must have > 20 lines`).toBeGreaterThan(20);
       }
@@ -223,12 +227,12 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // and stopping the infusion is conditional on alteplase). See the git diff of
       // tests/snapshots/example-protocols/ for the approved wording.
       const baselineCounts = {
-        ich: 620,
-        ischemic: 1470,
-        sah: 239,
-        tia: 202,
-        cvt: 120,
-        calculators: 793
+        ich: 550,
+        ischemic: 1103,
+        sah: 30,
+        tia: 72,
+        cvt: 14,
+        calculators: 651
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);

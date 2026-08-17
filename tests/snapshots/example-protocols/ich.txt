@@ -139,7 +139,7 @@ Treat fever and hyperglycemia, monitor sodium/osmolality when indicated, and pre
 IIa
 Promptly screen for neurosurgical escalation in cerebellar decline, hydrocephalus, mass effect, or selected lobar large ICH.
 Evidence
-ENRICH (2024): Early MIS for selected lobar ICH in the 30-80 mL trial range improved outcomes vs medical management (mRS shift OR 0.74). STICH II: Open craniotomy for lobar ICH did not show clear benefit. Cerebellar hemorrhage with posterior-fossa mass effect, usually with obstructive hydrocephalus and/or brainstem compression: urgent suboccipital decompression screen.
+ENRICH (2024): Early MIS for selected lobar ICH in the 30-80 mL trial range improved outcomes vs medical management. Cerebellar hemorrhage with posterior-fossa mass effect, usually with obstructive hydrocephalus and/or brainstem compression: urgent suboccipital decompression screen.
 Conservative default: stabilize, control BP, reverse anticoagulation, and escalate ICU/surgical pathways before lower-priority tasks.
 Warfarin Reversal Guide
 Immediate — All Warfarin Patients:
@@ -253,17 +253,6 @@ NO — No intracranial blood:
 NOT
 restart lytic
 • Consider other causes: extending infarct, seizure, hypoxia, hypercarbia, hypoglycemia, electrolyte abnormalities
-ECASS Hemorrhagic Transformation Classification:
-HI-1 (Asymptomatic)
-Small petechiae along infarct margin
-HI-2 (Asymptomatic)
-Confluent petechiae within infarct, no mass effect
-PH-1 (Usually asymptomatic)
-Blood clot ≤30% of infarct, mild mass effect
-PH-2 (Often symptomatic)
-Blood clot >30% of infarct with significant mass effect → neurosurgery consult
-sICH definition:
-any hemorrhagic transformation + NIHSS increase ≥4 points from baseline (ECASS-II/SITS-MOST). PH-2 accounts for most sICH.
 Follow-up & Management:
 • Target SBP around 140 mmHg for confirmed sICH; avoid <130
 • Target fibrinogen >200 mg/dL (repeat cryo if low)
@@ -271,8 +260,6 @@ Follow-up & Management:
 • Repeat hemorrhage panel STAT, then q30 min x2, then q4h until normal
 • Neuro checks q15 min x 2h → q30 min x 6h → q1h x 16h; notify provider for new deficits or GCS drop ≥2 points
 • Repeat NCCT at 6h and 24h to assess stability
-• PH-2 with mass effect → urgent neurosurgery evaluation
-• Hold all antithrombotics until hemorrhage stable ≥24h
 • Update family — document goals of care discussion
 Angioedema Management
 Post-thrombolytic orolingual angioedema
@@ -310,12 +297,11 @@ Telestroke rapid actions (phone or video)
 Confirm anticoagulant/antiplatelet use and initiate reversal.
 Use smooth BP control; target SBP 140, maintain 130-150 when appropriate, and avoid <130 per ATACH-2. Use IV nicardipine infusion (or IV labetalol) for titration.
 Screen for early Neurosurgery + stroke-service evaluation triggers: non-traumatic IPH ≥15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, ED attending discretion, or clinician concern.
-Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.
+Plan repeat imaging and close neuro checks.
 Telephone: confirm NIHSS and exam details with the bedside team.
 Inpatient priorities
 Continue anticoagulant reversal, monitor for hematoma expansion, and maintain smooth BP control around SBP 140 when appropriate.
 Evaluate IVH/hydrocephalus for EVD and monitor for neurologic decline.
-Manage seizures, avoid prophylaxis without seizures, and use EEG when indicated.
 Implement supportive care bundle, early rehab, and structured goals-of-care discussions.
 ICH protocol details
 Minimally Invasive Evacuation (MIE)
@@ -323,7 +309,7 @@ Surgical Selection
 June 2026 operational MIE screen: lobar IPH 30-80 mL, NIHSS >5, GCS 5-14, age 18-80, and no underlying lesion.
 General guideline evidence supports selected minimally invasive evacuation for supratentorial ICH, especially for mortality; older/general guideline framing kept broad functional-outcome benefit uncertain.
 ENRICH supports selected lobar 30-80 mL patients; use the June 2026 screen below and confirm neurosurgery/local-protocol activation.
-MIS may be reasonable over conventional craniotomy in eligible patients; do not generalize outside the June 2026 screen.
+Do not generalize outside the June 2026 screen.
 June 2026 MIE Screen (ENRICH-Based)
 • Spontaneous
 lobar
@@ -405,7 +391,6 @@ Antiplatelet-Associated ICH
 Discontinue antiplatelet agent(s). Platelet transfusion is
 NOT routinely recommended
 (COR 3/B — harm demonstrated in the PATCH trial).
-Aspirin with emergent neurosurgery: platelet transfusion might be considered (AHA/ASA 2022 only).
 Desmopressin 0.3 mcg/kg IV once may be considered; benefit uncertain.
 Hematoma Expansion Prevention
 Blood Pressure Target
@@ -433,82 +418,27 @@ Expansion Risk Factors
 • Anticoagulant use
 • Time from onset <3 hours
 • Large initial volume (>30 mL)
-• Irregular hematoma shape
-• Blend sign on NCCT
 IVH & Hydrocephalus Management
 EVD Indications
 ICH or IVH with hydrocephalus causing decreased consciousness: EVD recommended to reduce mortality.
 Large IVH with impaired consciousness: EVD preferred over medical management alone.
 IVH-Specific Management
-GCS >3 with primary IVH or IVH extension from supratentorial ICH <30 mL requiring EVD: EVD + thrombolytic is reasonable to reduce mortality.
-Functional outcome benefit from EVD + thrombolytic is uncertain.
-Neuroendoscopic evacuation + EVD benefit is uncertain.
+No institutional protocol document is on file for IVH-specific management. See Guidelines & References for the current society guidance.
 ICH Disposition & Goals of Care
 Surgical Indications
 Cerebellar ICH with mass effect
 : urgent Neurosurgery evaluation for suboccipital decompression; obstructive hydrocephalus and/or brainstem compression commonly increase urgency and may require EVD.
-Supratentorial ICH:
-routine craniotomy for outcome benefit is uncertain.
 Deteriorating supratentorial ICH:
 craniotomy may be considered as a lifesaving measure.
 Goals-of-Care Guidance
-No preexisting limits:
-aggressive care and postpone new DNAR/withdrawal until at least the second full facility day.
-Do not limit other medical/surgical interventions solely due to DNAR unless explicitly specified.
-Early palliative care for symptom management and shared decision making.
+No institutional protocol document is on file for goals-of-care guidance after ICH. See Guidelines & References for the current society guidance.
 Seizure Management in ICH
-Treat clinical seizures with antiseizure medication.
-Treat electrographic seizures in impaired consciousness.
-Continuous EEG (24 hours) is reasonable for unexplained abnormal or fluctuating mental status.
-No prophylactic antiseizure medication in patients without seizures.
+No institutional protocol document is on file for seizure management in ICH. See Guidelines & References for the current society guidance.
 Anticoagulation Restart After ICH
-When and how to restart anticoagulation in patients with AF who had an ICH. Individualize based on ICH location, etiology, and stroke risk.
-Deep ICH (Favorable for Restart)
-• Lower rebleed risk (~2%/yr) vs lobar
-• Restart DOAC at
-4-8 weeks
-(AHA 2022)
-• Consider earlier (2-4 wks) if high CHA₂DS₂-VASc (≥6) and stable imaging
-• Prefer apixaban or edoxaban (lower ICH rates)
-Lobar ICH (Higher Rebleed Risk)
-• Often CAA-associated — rebleed ~7-10%/yr
-• Delay restart to
-≥8 weeks
-or consider alternatives
-•
-LAA closure (Watchman)
-: reasonable if CHA₂DS₂-VASc ≥3 + high rebleed risk (STROKE-CLOSE)
-• If restarting, use lowest effective DOAC dose
-Key Evidence
-•
-SoSTART (2021):
-OAC restart associated with lower recurrent stroke without excess ICH (observational)
-•
-APACHE-AF (2021):
-Apixaban vs no anticoagulation — underpowered, trend favoring restart
-•
-PRESTIGE-AF (2024):
-DOAC restart reduced ischemic events without significant increase in ICH
-•
-STROKE-CLOSE (2024):
-LAA closure (Watchman) showed lower composite endpoint vs DOAC in ICH patients with AF (HR 0.61). Particularly beneficial for lobar ICH with high rebleed risk.
-•
-DOAC preferred over warfarin
-for restart (lower ICH risk: 0.3-0.5%/yr vs 1%/yr)
-Do NOT Restart If
-• Multiple lobar ICH or severe CAA burden on MRI
-• Ongoing hematoma expansion
-• Uncontrolled hypertension
-• Patient/family preference against restart
+No institutional protocol document is on file for anticoagulation restart after ICH. See Guidelines & References for the current society guidance.
 ICH Supportive Care Bundle
 Standard Orders
 NPO until dysphagia screen passed.
-IPC starting day of diagnosis for VTE prophylaxis.
-Low-dose UFH/LMWH can be useful to reduce PE risk.
-Initiate UFH/LMWH at 24-48h if hematoma stable.
-Graduated compression stockings alone are not beneficial.
-Glucose target 140-180 (no intensive insulin).
-Acetaminophen for temp >38 C.
 HOB 30 degrees.
 Monitoring
 • Neuro checks q1h x 24h, then q2h

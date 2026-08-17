@@ -873,9 +873,10 @@ async function auditView(browser, target, viewport) {
       }
 
       const persistentDeficitCheckbox = page.getByRole('checkbox', { name: /Persistent deficit/i }).first();
-      if ((await persistentDeficitCheckbox.count()) === 0) {
+      const tiaWidgetPresent = (await persistentDeficitCheckbox.count()) > 0;
+      if (!tiaWidgetPresent && !(await institutionalNoticeShown(page))) {
         addIssue(issues, 'missing-tia-risk-input', { field: 'Persistent deficit' });
-      } else {
+      } else if (tiaWidgetPresent) {
         await persistentDeficitCheckbox.check();
         await page.waitForTimeout(150);
         if ((await page.getByText(/Admit \/ high-acuity observation/i).count()) === 0) {
@@ -894,7 +895,9 @@ async function auditView(browser, target, viewport) {
 
       const cvtSpecialSummary = page.locator('summary:has-text("CVT in Special Populations")').first();
       if ((await cvtSpecialSummary.count()) === 0) {
-        addIssue(issues, 'missing-cvt-special-populations-section');
+        if (!(await institutionalNoticeShown(page))) {
+          addIssue(issues, 'missing-cvt-special-populations-section');
+        }
       } else {
         await cvtSpecialSummary.scrollIntoViewIfNeeded();
         await cvtSpecialSummary.click();
@@ -1103,6 +1106,15 @@ async function auditView(browser, target, viewport) {
     notes,
     screenshot: path.relative(process.cwd(), screenshotPath)
   };
+}
+
+
+// Protocols carries institutional content only. A topic with no Stroke Center source document
+// renders just its header plus a "no institutional protocol document is on file" notice, and has
+// no clinical widgets to check. Detect that state so these assertions describe reality instead of
+// flagging an intentional absence as a defect.
+async function institutionalNoticeShown(page) {
+  return (await page.locator('text=/No institutional protocol document is on file/i').count()) > 0;
 }
 
 async function main() {

@@ -14,7 +14,6 @@ import {
   calculateHASBLEDScore,
   calculateRCVS2Score,
   calculatePHASESScore,
-  getPHASESRisk,
   calculateICHVolume,
   isJune2026MieLobarLocationText,
   calculateEnoxaparinDose,
@@ -33,7 +32,6 @@ import {
   PatientCensus,
   ClinicWorkflow,
   WardsWorkflow,
-  PHQ9Screen,
   PublicDemoConsentModal
 } from './components.jsx';
 import {
@@ -28435,7 +28433,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-slate-700 dark:text-ink-2">Promptly screen for neurosurgical escalation in cerebellar decline, hydrocephalus, mass effect, or selected lobar large ICH.</p>
                                 <details className="mt-1">
                                   <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-700 dark:text-mute dark:hover:text-ink">Evidence</summary>
-                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">ENRICH (2024): Early MIS for selected lobar ICH in the 30-80 mL trial range improved outcomes vs medical management (mRS shift OR 0.74). STICH II: Open craniotomy for lobar ICH did not show clear benefit. Cerebellar hemorrhage with posterior-fossa mass effect, usually with obstructive hydrocephalus and/or brainstem compression: urgent suboccipital decompression screen.</p>
+                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">ENRICH (2024): Early MIS for selected lobar ICH in the 30-80 mL trial range improved outcomes vs medical management. Cerebellar hemorrhage with posterior-fossa mass effect, usually with obstructive hydrocephalus and/or brainstem compression: urgent suboccipital decompression screen.</p>
                                 </details>
                               </div>
                             </div>
@@ -28644,28 +28642,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                               </div>
 
-                              <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <p className="text-xs font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">ECASS Hemorrhagic Transformation Classification:</p>
-                                <div className="grid grid-cols-2 gap-2 text-xs">
-                                  <div className="bg-white p-2 rounded border dark:bg-card">
-                                    <p className="font-semibold text-ok-700 dark:text-ok-300">HI-1 (Asymptomatic)</p>
-                                    <p>Small petechiae along infarct margin</p>
-                                  </div>
-                                  <div className="bg-white p-2 rounded border dark:bg-card">
-                                    <p className="font-semibold text-ok-700 dark:text-ok-300">HI-2 (Asymptomatic)</p>
-                                    <p>Confluent petechiae within infarct, no mass effect</p>
-                                  </div>
-                                  <div className="bg-white p-2 rounded border dark:bg-card">
-                                    <p className="font-semibold text-warn-700 dark:text-warn-300">PH-1 (Usually asymptomatic)</p>
-                                    <p>Blood clot ≤30% of infarct, mild mass effect</p>
-                                  </div>
-                                  <div className="bg-white p-2 rounded border dark:bg-card">
-                                    <p className="font-semibold text-crit-700 dark:text-crit-300">PH-2 (Often symptomatic)</p>
-                                    <p>Blood clot &gt;30% of infarct with significant mass effect → neurosurgery consult</p>
-                                  </div>
-                                </div>
-                                <p className="text-xs text-cobalt-700 mt-2 dark:text-cobalt-300"><strong>sICH definition:</strong> any hemorrhagic transformation + NIHSS increase ≥4 points from baseline (ECASS-II/SITS-MOST). PH-2 accounts for most sICH.</p>
-                              </div>
+
 
                               <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
                                 <p className="text-xs font-semibold text-slate-700 mb-1 dark:text-ink-2">Follow-up & Management:</p>
@@ -28676,8 +28653,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <li>• Repeat hemorrhage panel STAT, then q30 min x2, then q4h until normal</li>
                                   <li>• Neuro checks q15 min x 2h → q30 min x 6h → q1h x 16h; notify provider for new deficits or GCS drop ≥2 points</li>
                                   <li>• Repeat NCCT at 6h and 24h to assess stability</li>
-                                  <li>• PH-2 with mass effect → urgent neurosurgery evaluation</li>
-                                  <li>• Hold all antithrombotics until hemorrhage stable ≥24h</li>
+
                                   <li>• Update family — document goals of care discussion</li>
                                 </ul>
                               </div>
@@ -28798,7 +28774,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li>Confirm anticoagulant/antiplatelet use and initiate reversal.</li>
                                 <li>Use smooth BP control; target SBP 140, maintain 130-150 when appropriate, and avoid &lt;130 per ATACH-2. Use IV nicardipine infusion (or IV labetalol) for titration.</li>
                                 <li>Screen for early Neurosurgery + stroke-service evaluation triggers: non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, ED attending discretion, or clinician concern.</li>
-                                <li>Plan repeat imaging and close neuro checks; avoid new DNAR/withdrawal within first 24h if no preexisting limits.</li>
+                                <li>Plan repeat imaging and close neuro checks.</li>
                               </ul>
                               <p className="text-xs text-slate-500 mt-2 dark:text-mute">
                                 {consultationType === 'telephone'
@@ -28815,7 +28791,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                                 <li>Continue anticoagulant reversal, monitor for hematoma expansion, and maintain smooth BP control around SBP 140 when appropriate.</li>
                                 <li>Evaluate IVH/hydrocephalus for EVD and monitor for neurologic decline.</li>
-                                <li>Manage seizures, avoid prophylaxis without seizures, and use EEG when indicated.</li>
+
                                 <li>Implement supportive care bundle, early rehab, and structured goals-of-care discussions.</li>
                               </ul>
                             </div>
@@ -28834,7 +28810,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <li>June 2026 operational MIE screen: lobar IPH 30-80 mL, NIHSS &gt;5, GCS 5-14, age 18-80, and no underlying lesion.</li>
                             <li>General guideline evidence supports selected minimally invasive evacuation for supratentorial ICH, especially for mortality; older/general guideline framing kept broad functional-outcome benefit uncertain.</li>
                             <li>ENRICH supports selected lobar 30-80 mL patients; use the June 2026 screen below and confirm neurosurgery/local-protocol activation.</li>
-                            <li>MIS may be reasonable over conventional craniotomy in eligible patients; do not generalize outside the June 2026 screen.</li>
+                            <li>Do not generalize outside the June 2026 screen.</li>
                           </ul>
                         </div>
 
@@ -28961,7 +28937,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <ul className="text-sm space-y-1">
                               <li>Discontinue antiplatelet agent(s). Platelet transfusion is <strong>NOT routinely recommended</strong> (COR 3/B — harm demonstrated in the PATCH trial).</li>
-                              <li>Aspirin with emergent neurosurgery: platelet transfusion might be considered (AHA/ASA 2022 only).</li>
                               <li>Desmopressin 0.3 mcg/kg IV once may be considered; benefit uncertain.</li>
                             </ul>
                           </div>
@@ -28992,8 +28967,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <li>• Anticoagulant use</li>
                               <li>• Time from onset &lt;3 hours</li>
                               <li>• Large initial volume (&gt;30 mL)</li>
-                              <li>• Irregular hematoma shape</li>
-                              <li>• Blend sign on NCCT</li>
+
                             </ul>
                           </div>
                         </div>
@@ -29011,11 +28985,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">IVH-Specific Management</h4>
-                            <ul className="text-sm space-y-1">
-                              <li>GCS &gt;3 with primary IVH or IVH extension from supratentorial ICH &lt;30 mL requiring EVD: EVD + thrombolytic is reasonable to reduce mortality.</li>
-                              <li>Functional outcome benefit from EVD + thrombolytic is uncertain.</li>
-                              <li>Neuroendoscopic evacuation + EVD benefit is uncertain.</li>
-                            </ul>
+                            <p className="text-sm text-slate-600 dark:text-ink-2">No institutional protocol document is on file for IVH-specific management. See Guidelines &amp; References for the current society guidance.</p>
                           </div>
                         </div>
                       </div>
@@ -29027,17 +28997,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h4 className="font-semibold text-cobalt-600 mb-2 dark:text-cobalt-300">Surgical Indications</h4>
                             <ul className="text-sm space-y-1">
                               <li><strong>Cerebellar ICH with mass effect</strong>: urgent Neurosurgery evaluation for suboccipital decompression; obstructive hydrocephalus and/or brainstem compression commonly increase urgency and may require EVD.</li>
-                              <li><strong>Supratentorial ICH:</strong> routine craniotomy for outcome benefit is uncertain.</li>
                               <li><strong>Deteriorating supratentorial ICH:</strong> craniotomy may be considered as a lifesaving measure.</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-cobalt-600 mb-2 dark:text-cobalt-300">Goals-of-Care Guidance</h4>
-                            <ul className="text-sm space-y-1">
-                              <li><strong>No preexisting limits:</strong> aggressive care and postpone new DNAR/withdrawal until at least the second full facility day.</li>
-                              <li>Do not limit other medical/surgical interventions solely due to DNAR unless explicitly specified.</li>
-                              <li>Early palliative care for symptom management and shared decision making.</li>
-                            </ul>
+                            <p className="text-sm text-slate-600 dark:text-ink-2">No institutional protocol document is on file for goals-of-care guidance after ICH. See Guidelines &amp; References for the current society guidance.</p>
                           </div>
                         </div>
                       </div>
@@ -29045,58 +29010,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-crit-700 mb-4 dark:text-crit-300">Seizure Management in ICH</h3>
                         <div className="bg-white p-4 rounded border dark:bg-card">
-                          <ul className="text-sm space-y-1">
-                            <li>Treat clinical seizures with antiseizure medication.</li>
-                            <li>Treat electrographic seizures in impaired consciousness.</li>
-                            <li>Continuous EEG (24 hours) is reasonable for unexplained abnormal or fluctuating mental status.</li>
-                            <li>No prophylactic antiseizure medication in patients without seizures.</li>
-                          </ul>
+                          <p className="text-sm text-slate-600 dark:text-ink-2">No institutional protocol document is on file for seizure management in ICH. See Guidelines &amp; References for the current society guidance.</p>
                         </div>
                       </div>
 
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-crit-700 mb-4 dark:text-crit-300">Anticoagulation Restart After ICH</h3>
-                        <div className="bg-white p-4 rounded border space-y-3 dark:bg-card">
-                          <p className="text-xs text-slate-600 dark:text-ink-2">When and how to restart anticoagulation in patients with AF who had an ICH. Individualize based on ICH location, etiology, and stroke risk.</p>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <div className="bg-ok-50 border border-ok-200 rounded-lg p-3 dark:bg-ok-950 dark:border-ok-800">
-                              <h4 className="font-semibold text-ok-800 text-sm mb-2 dark:text-ok-300">Deep ICH (Favorable for Restart)</h4>
-                              <ul className="text-xs text-slate-700 space-y-1 dark:text-ink-2">
-                                <li>&#x2022; Lower rebleed risk (~2%/yr) vs lobar</li>
-                                <li>&#x2022; Restart DOAC at <strong>4-8 weeks</strong> (AHA 2022)</li>
-                                <li>&#x2022; Consider earlier (2-4 wks) if high CHA₂DS₂-VASc (&ge;6) and stable imaging</li>
-                                <li>&#x2022; Prefer apixaban or edoxaban (lower ICH rates)</li>
-                              </ul>
-                            </div>
-                            <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
-                              <h4 className="font-semibold text-warn-800 text-sm mb-2 dark:text-warn-300">Lobar ICH (Higher Rebleed Risk)</h4>
-                              <ul className="text-xs text-slate-700 space-y-1 dark:text-ink-2">
-                                <li>&#x2022; Often CAA-associated &mdash; rebleed ~7-10%/yr</li>
-                                <li>&#x2022; Delay restart to <strong>&ge;8 weeks</strong> or consider alternatives</li>
-                                <li>&#x2022; <strong>LAA closure (Watchman)</strong>: reasonable if CHA₂DS₂-VASc &ge;3 + high rebleed risk (STROKE-CLOSE)</li>
-                                <li>&#x2022; If restarting, use lowest effective DOAC dose</li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                            <h4 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Key Evidence</h4>
-                            <ul className="text-xs text-slate-700 space-y-1 dark:text-ink-2">
-                              <li>&#x2022; <strong>SoSTART (2021):</strong> OAC restart associated with lower recurrent stroke without excess ICH (observational)</li>
-                              <li>&#x2022; <strong>APACHE-AF (2021):</strong> Apixaban vs no anticoagulation &mdash; underpowered, trend favoring restart</li>
-                              <li>&#x2022; <strong>PRESTIGE-AF (2024):</strong> DOAC restart reduced ischemic events without significant increase in ICH</li>
-                              <li>&#x2022; <strong>STROKE-CLOSE (2024):</strong> LAA closure (Watchman) showed lower composite endpoint vs DOAC in ICH patients with AF (HR 0.61). Particularly beneficial for lobar ICH with high rebleed risk.</li>
-                              <li>&#x2022; <strong>DOAC preferred over warfarin</strong> for restart (lower ICH risk: 0.3-0.5%/yr vs 1%/yr)</li>
-                            </ul>
-                          </div>
-                          <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                            <h4 className="font-semibold text-crit-800 text-sm mb-2 dark:text-crit-300">Do NOT Restart If</h4>
-                            <ul className="text-xs text-slate-700 space-y-1 dark:text-ink-2">
-                              <li>&#x2022; Multiple lobar ICH or severe CAA burden on MRI</li>
-                              <li>&#x2022; Ongoing hematoma expansion</li>
-                              <li>&#x2022; Uncontrolled hypertension</li>
-                              <li>&#x2022; Patient/family preference against restart</li>
-                            </ul>
-                          </div>
+                        <div className="bg-white p-4 rounded border dark:bg-card">
+                          <p className="text-sm text-slate-600 dark:text-ink-2">No institutional protocol document is on file for anticoagulation restart after ICH. See Guidelines &amp; References for the current society guidance.</p>
                         </div>
                       </div>
 
@@ -29107,12 +29028,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h4 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">Standard Orders</h4>
                             <ul className="text-sm space-y-1">
                               <li>NPO until dysphagia screen passed.</li>
-                              <li>IPC starting day of diagnosis for VTE prophylaxis.</li>
-                              <li>Low-dose UFH/LMWH can be useful to reduce PE risk.</li>
-                              <li>Initiate UFH/LMWH at 24-48h if hematoma stable.</li>
-                              <li>Graduated compression stockings alone are not beneficial.</li>
-                              <li>Glucose target 140-180 (no intensive insulin).</li>
-                              <li>Acetaminophen for temp &gt;38 C.</li>
                               <li>HOB 30 degrees.</li>
                             </ul>
                           </div>
@@ -29938,38 +29853,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             );
                           })()}
-                          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <div className="bg-slate-50 p-3 rounded border dark:bg-paper-2">
-                              <p className="text-sm text-slate-700 mb-2 dark:text-ink-2">CATALYST meta-analysis (ELAN, OPTIMAS, TIMING, START) supports early DOAC initiation as safe and non-inferior to delayed initiation.</p>
-                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3 text-xs">
-                                <div className="bg-ok-50 p-2 rounded border border-ok-200 text-center dark:bg-ok-950 dark:border-ok-800">
-                                  <p className="font-bold text-ok-700 uppercase dark:text-ok-300">Minor</p>
-                                  <p className="text-slate-600 dark:text-ink-2">NIHSS &lt;8</p>
-                                  <p className="text-sm font-bold text-ok-800 mt-1 dark:text-ok-300">Within 48h</p>
-                                </div>
-                                <div className="bg-warn-50 p-2 rounded border border-warn-200 text-center dark:bg-warn-950 dark:border-warn-800">
-                                  <p className="font-bold text-warn-700 uppercase dark:text-warn-300">Moderate</p>
-                                  <p className="text-slate-600 dark:text-ink-2">NIHSS 8-15</p>
-                                  <p className="text-sm font-bold text-warn-800 mt-1 dark:text-warn-300">Day 3-5</p>
-                                </div>
-                                <div className="bg-crit-50 p-2 rounded border border-crit-200 text-center dark:bg-crit-950 dark:border-crit-800">
-                                  <p className="font-bold text-crit-700 uppercase dark:text-crit-300">Severe</p>
-                                  <p className="text-slate-600 dark:text-ink-2">NIHSS &gt;15</p>
-                                  <p className="text-sm font-bold text-crit-800 mt-1 dark:text-crit-300">Day 6-14</p>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="bg-slate-50 p-3 rounded border dark:bg-paper-2">
-                              <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Preferred DOACs</h3>
-                              <ul className="text-sm space-y-1">
-                                <li>• <strong>Apixaban</strong> 5 mg BID (2.5 mg if age ≥80, weight ≤60 kg, or Cr ≥1.5)</li>
-                                <li>• <strong>Rivaroxaban</strong> 20 mg daily (15 mg if CrCl 15-50)</li>
-                                <li>• <strong>Dabigatran</strong> 150 mg BID (75 mg BID if CrCl 15-30 mL/min)</li>
-                                <li className="text-slate-500 italic text-xs mt-1 dark:text-mute">DOAC preferred over warfarin (Class I, LOE A) — AHA/ASA 2021</li>
-                              </ul>
-                            </div>
-                          </div>
-                          <p className="text-xs text-slate-500 mt-2 italic dark:text-mute">Fischer U et al. Lancet Neurol. 2025. Reassess imaging before DOAC start if concern for hemorrhagic transformation.</p>
                           </div>
                         </details>
 
@@ -30036,7 +29919,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="bg-white p-3 rounded border dark:bg-card">
                               <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">BP Goals</h3>
                               <ul className="text-sm space-y-1">
-                                <li><strong>Ischemic stroke:</strong> SBP &lt;220, DBP &lt;120</li>
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
                                 <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105</li>
                                 <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105</li>
@@ -30047,114 +29929,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Quick Reference</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>First-line:</strong> Labetalol IV push OR Nicardipine drip</li>
-                                <li><strong>Second-line:</strong> Clevidipine or Hydralazine</li>
-                                <li className="text-warn-700 dark:text-warn-300"><strong>Avoid:</strong> Sublingual nifedipine (unpredictable drops), nitroprusside (raises ICP)</li>
                               </ul>
                             </div>
                           </div>
 
-                          <details className="bg-white border border-cobalt-200 rounded-lg mb-4 dark:bg-card dark:border-cobalt-700">
-                            <summary className="p-3 text-sm font-semibold text-cobalt-800 cursor-pointer flex items-center gap-2 dark:text-cobalt-300">
-                              <i aria-hidden="true" data-lucide="chevron-right" className="w-3.5 h-3.5"></i>
-                              IV Antihypertensive Titration Protocols
-                            </summary>
-                            <div className="px-3 pb-3 space-y-3">
-                              <div className="bg-cobalt-50 border border-cobalt-100 rounded-lg p-3 dark:bg-cobalt-900">
-                                <h4 className="font-bold text-cobalt-800 mb-2 dark:text-cobalt-300">Labetalol IV Push Protocol</h4>
-                                <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: Labetalol IV push protocol">
-                                  <table className="w-full text-sm border-collapse">
-                                    <thead>
-                                      <tr className="bg-cobalt-100 dark:bg-cobalt-900">
-                                        <th scope="col" className="border border-cobalt-200 px-2 py-1 text-left dark:border-cobalt-700">Step</th>
-                                        <th scope="col" className="border border-cobalt-200 px-2 py-1 text-left dark:border-cobalt-700">Dose</th>
-                                        <th scope="col" className="border border-cobalt-200 px-2 py-1 text-left dark:border-cobalt-700">Timing</th>
-                                        <th scope="col" className="border border-cobalt-200 px-2 py-1 text-left dark:border-cobalt-700">Cumulative</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">1</td><td className="border border-cobalt-200 px-2 py-1 font-semibold dark:border-cobalt-700">10 mg IV over 1-2 min</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">Time 0</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">10 mg</td></tr>
-                                      <tr><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">2</td><td className="border border-cobalt-200 px-2 py-1 font-semibold dark:border-cobalt-700">20 mg IV</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">+10 min</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">30 mg</td></tr>
-                                      <tr><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">3</td><td className="border border-cobalt-200 px-2 py-1 font-semibold dark:border-cobalt-700">40 mg IV</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">+10 min</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">70 mg</td></tr>
-                                      <tr><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">4</td><td className="border border-cobalt-200 px-2 py-1 font-semibold dark:border-cobalt-700">80 mg IV</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">+10 min</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">150 mg</td></tr>
-                                      <tr><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">5</td><td className="border border-cobalt-200 px-2 py-1 font-semibold dark:border-cobalt-700">80 mg IV</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">+10 min</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">230 mg</td></tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-                                <ul className="text-xs text-slate-600 mt-2 space-y-0.5 dark:text-ink-2">
-                                  <li>• Max cumulative dose: 300 mg in 24 hours</li>
-                                  <li>• Onset: 2-5 min | Peak: 5-15 min | Duration: 2-4 hours</li>
-                                  <li>• Hold if HR &lt;60 or SBP &lt;100</li>
-                                  <li className="text-crit-600 dark:text-crit-300">• Contraindicated: asthma/severe COPD, 2nd/3rd degree AV block, decompensated HF, HR &lt;60</li>
-                                </ul>
-                              </div>
-
-                              <div className="bg-cobalt-50 border border-cobalt-100 rounded-lg p-3 dark:bg-cobalt-900">
-                                <h4 className="font-bold text-cobalt-800 mb-2 dark:text-cobalt-300">Nicardipine IV Drip Protocol</h4>
-                                <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: Nicardipine IV drip protocol">
-                                  <table className="w-full text-sm border-collapse">
-                                    <thead>
-                                      <tr className="bg-cobalt-100 dark:bg-cobalt-900">
-                                        <th scope="col" className="border border-cobalt-200 px-2 py-1 text-left dark:border-cobalt-700">Step</th>
-                                        <th scope="col" className="border border-cobalt-200 px-2 py-1 text-left dark:border-cobalt-700">Rate</th>
-                                        <th scope="col" className="border border-cobalt-200 px-2 py-1 text-left dark:border-cobalt-700">Instructions</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">Start</td><td className="border border-cobalt-200 px-2 py-1 font-semibold dark:border-cobalt-700">5 mg/hr</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">Check BP q5 min</td></tr>
-                                      <tr><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">Titrate up</td><td className="border border-cobalt-200 px-2 py-1 font-semibold dark:border-cobalt-700">+2.5 mg/hr</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">q5-15 min until target</td></tr>
-                                      <tr><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">Max</td><td className="border border-cobalt-200 px-2 py-1 font-semibold dark:border-cobalt-700">15 mg/hr</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">Call MD if not at goal</td></tr>
-                                      <tr><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">At goal</td><td className="border border-cobalt-200 px-2 py-1 font-semibold dark:border-cobalt-700">Decrease by 3 mg/hr</td><td className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">q30 min, maintain lowest effective rate</td></tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-                                <ul className="text-xs text-slate-600 mt-2 space-y-0.5 dark:text-ink-2">
-                                  <li>• Onset: 5-15 min | Duration: continuous while infusing</li>
-                                  <li>• Preferred for: sustained BP control, patients needing precise titration</li>
-                                  <li>• Standard dilution: 25 mg/250 mL NS (0.1 mg/mL) or 50 mg/250 mL (0.2 mg/mL)</li>
-                                  <li>• Transition to PO antihypertensive 1h before stopping drip</li>
-                                </ul>
-                              </div>
-
-                              <div className="bg-warn-50 border border-warn-100 rounded-lg p-3 dark:bg-warn-950">
-                                <h4 className="font-bold text-warn-800 mb-2 dark:text-warn-300">Clevidipine IV Drip Protocol</h4>
-                                <ul className="text-sm space-y-1">
-                                  <li>• Start: <strong>1-2 mg/hr</strong></li>
-                                  <li>• Titrate: <strong>Double the rate q90 seconds</strong> until near goal</li>
-                                  <li>• Fine-tune: increase by &lt;double as goal is approached</li>
-                                  <li>• Max: <strong>32 mg/hr</strong> (max 1000 mL/24h due to lipid load)</li>
-                                  <li>• Onset: 2-4 min | Duration: 5-15 min after stopping</li>
-                                </ul>
-                                <p className="text-xs text-slate-600 mt-1 dark:text-ink-2">Advantage: ultra-short acting, no renal/hepatic adjustment needed. Contains soy/egg lecithin — check allergies.</p>
-                              </div>
-
-                              <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
-                                <h4 className="font-bold text-slate-700 mb-2 dark:text-ink-2">Hydralazine (Rescue)</h4>
-                                <ul className="text-sm space-y-1">
-                                  <li>• <strong>10-20 mg IV q20-30 min PRN</strong> (max 40 mg/dose)</li>
-                                  <li>• Onset: 10-20 min | Duration: 1-4 hours</li>
-                                  <li>• Less predictable response — use as adjunct when labetalol/nicardipine insufficient</li>
-                                  <li className="text-crit-600 dark:text-crit-300">• Avoid in aortic dissection (reflex tachycardia)</li>
-                                </ul>
-                              </div>
-                            </div>
-                          </details>
                           </div>
                         </details>
 
                         <details id="isch-nbo" className="bg-sky-50 border border-sky-200 rounded-lg dark:bg-sky-950 dark:border-sky-800">
                           <summary className="cursor-pointer p-4 font-semibold text-sky-800 hover:bg-sky-100/50 rounded-t-lg flex items-center justify-between dark:text-sky-300 dark:hover:bg-sky-900">
-                            <h2 className="text-lg font-semibold text-sky-800 dark:text-sky-300">Normobaric Oxygen (NBO) Before EVT <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></h2>
+                            <h2 className="text-lg font-semibold text-sky-800 dark:text-sky-300">Normobaric Oxygen (NBO) Before EVT</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          <p className="text-sm text-slate-700 mb-2 dark:text-ink-2">
-                            In AIS within 6h with anterior LVO, NIHSS 10-20, and ASPECTS ≥6, NBO is reasonable before EVT.
-                          </p>
-                          <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
-                            <li>• 100% O₂ at 10 L/min via non-rebreather for 4 hours (or FiO₂ 1.0 if intubated)</li>
-                            <li>• <strong>Class IIb, LOE B-R</strong> (2026 AHA/ASA)</li>
-                            <li>• Evidence: PROOF-ICL trial — NBO showed improved 90-day functional outcomes (mRS 0-2: 50% vs 38%)</li>
-                            <li className="text-warn-700 dark:text-warn-300">• Do NOT apply supplemental O₂ to non-hypoxic AIS patients without LVO (Class III: No Benefit)</li>
-                          </ul>
+                          <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for normobaric oxygen before thrombectomy. See Guidelines &amp; References for the current society guidance.</p>
                           </div>
                         </details>
 
@@ -30257,35 +30044,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             ECASS Hemorrhagic Transformation Classification
                           </summary>
                           <div className="px-4 pb-4 space-y-3">
-                            <p className="text-xs text-slate-600 dark:text-ink-2">ECASS classification determines severity and guides anticoagulation restart decisions. Obtain CT 24h post-TNK or if neurological decline.</p>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                              <div className="bg-ok-50 border border-ok-200 rounded-lg p-3 dark:bg-ok-950 dark:border-ok-800">
-                                <h3 className="font-bold text-ok-800 text-sm mb-1 dark:text-ok-300">HI-1 (Hemorrhagic Infarction Type 1)</h3>
-                                <p className="text-xs text-slate-700 dark:text-ink-2">Small petechiae along the margins of the infarct</p>
-                                <p className="text-xs text-ok-700 mt-1 font-medium dark:text-ok-300">Clinical impact: Benign. No change in management. May restart anticoagulation per schedule.</p>
-                              </div>
-                              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 dark:bg-yellow-950 dark:border-yellow-800">
-                                <h3 className="font-bold text-yellow-800 text-sm mb-1 dark:text-yellow-300">HI-2 (Hemorrhagic Infarction Type 2)</h3>
-                                <p className="text-xs text-slate-700 dark:text-ink-2">Confluent petechiae within the infarcted area, no mass effect</p>
-                                <p className="text-xs text-yellow-700 mt-1 font-medium dark:text-yellow-300">Clinical impact: Usually benign. Monitor closely. May delay anticoagulation restart by a few days.</p>
-                              </div>
-                              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 dark:bg-orange-950 dark:border-orange-800">
-                                <h3 className="font-bold text-orange-800 text-sm mb-1 dark:text-orange-300">PH-1 (Parenchymal Hematoma Type 1)</h3>
-                                <p className="text-xs text-slate-700 dark:text-ink-2">Blood clot ≤30% of infarcted area, with mild mass effect</p>
-                                <p className="text-xs text-orange-700 mt-1 font-medium dark:text-orange-300">Clinical impact: Moderate. Hold anticoagulation/antiplatelets. Repeat imaging in 24-48h. Consider cautious restart after 1-2 weeks if stable.</p>
-                              </div>
-                              <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                <h3 className="font-bold text-crit-800 text-sm mb-1 dark:text-crit-300">PH-2 (Parenchymal Hematoma Type 2)</h3>
-                                <p className="text-xs text-slate-700 dark:text-ink-2">Blood clot &gt;30% of infarcted area, with significant mass effect (or remote hemorrhage)</p>
-                                <p className="text-xs text-crit-700 mt-1 font-medium dark:text-crit-300">Clinical impact: SEVERE. Symptomatic sICH. Associated with neurological deterioration and increased mortality. Hold all antithrombotics. Neurosurgery consult. Delay anticoagulation ≥4 weeks.</p>
-                              </div>
-                            </div>
-                            <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-2 dark:bg-cobalt-900 dark:border-cobalt-700">
-                              <p className="text-xs text-cobalt-800 dark:text-cobalt-300"><strong>sICH (Symptomatic ICH) definition:</strong> PH-2 with NIHSS increase ≥4 points within 36h of treatment (ECASS II/III definition). Occurs in 2-7% of IV thrombolysis patients.</p>
-                            </div>
-                            <div className="bg-slate-50 border border-line rounded-lg p-2 dark:bg-paper-2">
-                              <p className="text-xs text-slate-700 dark:text-ink-2"><strong>Anticoagulation restart after HT:</strong> HI-1/HI-2 → per standard DOAC timing (see AF section above). PH-1 → delay 7-14 days, repeat imaging first. PH-2 → delay ≥4 weeks, multidisciplinary discussion, consider LAA closure (Watchman) if high rebleed risk.</p>
-                            </div>
+                            <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for hemorrhagic transformation classification. See Guidelines &amp; References for the current society guidance.</p>
                           </div>
                         </details>
 
@@ -30330,8 +30089,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Minor Stroke / High-Risk TIA</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>DAPT x 21 days:</strong></li>
-                                <li>• ASA 325 mg load → 81 mg daily</li>
-                                <li>• Clopidogrel 300 mg load → 75 mg daily</li>
                                 <li>• Start within 24h (NIHSS ≤3 or ABCD2 ≥4)</li>
                                 <li>• Then single antiplatelet after 21 days</li>
                               </ul>
@@ -30348,9 +30105,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Moderate-Severe Stroke (no lysis)</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Single antiplatelet:</strong></li>
-                                <li>• ASA 325 mg load within 24-48h of onset, then 81 mg daily</li>
                                 <li>• If post-TNK: delay ASA 24 hours</li>
-                                <li>• If AF: transition to DOAC per CATALYST timing</li>
                               </ul>
                             </div>
                           </div>
@@ -30359,30 +30114,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         <details id="isch-statin" className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-100/50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
-                            <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Statin Initiation <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></h2>
+                            <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Statin Initiation</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">High-Intensity Statin (LDL &lt;70)</h3>
-                              <ul className="text-sm space-y-1">
-                                <li>• <strong>Atorvastatin 80 mg</strong> daily (preferred)</li>
-                                <li>• <strong>Rosuvastatin 20-40 mg</strong> daily</li>
-                                <li>• Start during inpatient stay</li>
-                                <li>• Add ezetimibe 10 mg if LDL not at goal</li>
-                                <li>• Consider PCSK9i if still above target</li>
-                              </ul>
-                            </div>
-                            <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h3 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Special Considerations</h3>
-                              <ul className="text-sm space-y-1">
-                                <li>• sICAS (70-99%): high-intensity statin + LDL &lt;70</li>
-                                <li>• Lobar ICH on a statin: SATURN trial (continue vs stop statin) enrolling — consider referral</li>
-                                <li>• Check LFTs at baseline, recheck 4-12 weeks</li>
-                                <li>• Do not discontinue statin for mild transaminase elevation (&lt;3x ULN)</li>
-                              </ul>
-                            </div>
-                          </div>
+                          <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for statin initiation. See Guidelines &amp; References for the current society guidance.</p>
                           </div>
                         </details>
 
@@ -30416,97 +30151,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </ul>
                             </div>
                           </div>
-                          {/* Large-core trial outcome matrix for goals-of-care counseling */}
-                          <details className="mt-3">
-                            <summary className="cursor-pointer text-sm font-semibold text-cobalt-800 hover:text-cobalt-600 dark:text-cobalt-300 dark:hover:text-cobalt-300">Trial Outcome Data for Goals-of-Care Counseling</summary>
-                            <div className="mt-2 overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: large-core trial outcome data">
-                              <table className="w-full text-xs border-collapse">
-                                <thead>
-                                  <tr className="bg-cobalt-100 dark:bg-cobalt-900">
-                                    <th className="border border-cobalt-200 px-2 py-1 text-left dark:border-cobalt-700">Trial</th>
-                                    <th className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">Window</th>
-                                    <th className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">ASPECTS</th>
-                                    <th className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">Primary endpoint</th>
-                                    <th className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">mRS 0-2 (EVT vs ctrl)</th>
-                                    <th className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">NNT mRS 0-2</th>
-                                    <th className="border border-cobalt-200 px-2 py-1 dark:border-cobalt-700">sICH (EVT vs ctrl)</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr className="bg-white dark:bg-card">
-                                    <td className="border border-cobalt-200 px-2 py-1 font-medium dark:border-cobalt-700">SELECT2</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">0-24h</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">3-5</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">mRS 0-4 shift</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">20.3% vs 7.0%</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">~7.5</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">0.6% vs 1.1%</td>
-                                  </tr>
-                                  <tr className="bg-cobalt-50/50 dark:bg-cobalt-900/50">
-                                    <td className="border border-cobalt-200 px-2 py-1 font-medium dark:border-cobalt-700">ANGEL-ASPECT</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">0-24h</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">3-5</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">mRS 0-3 shift</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">30.0% vs 11.6%</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">~5.4</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">6.1% vs 2.7%</td>
-                                  </tr>
-                                  <tr className="bg-white dark:bg-card">
-                                    <td className="border border-cobalt-200 px-2 py-1 font-medium dark:border-cobalt-700">RESCUE-Japan LIMIT</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">0-6h</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">3-5</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">mRS 0-3</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">14.0% vs 7.8%</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">~16</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">9.0% vs 4.5%</td>
-                                  </tr>
-                                  <tr className="bg-cobalt-50/50 dark:bg-cobalt-900/50">
-                                    <td className="border border-cobalt-200 px-2 py-1 font-medium dark:border-cobalt-700">TENSION</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">0-12h</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">3-5</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">mRS 0-6 shift</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">16.8% vs 8.4%</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">~12</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">5.9% vs 4.3%</td>
-                                  </tr>
-                                  <tr className="bg-white dark:bg-card">
-                                    <td className="border border-cobalt-200 px-2 py-1 font-medium dark:border-cobalt-700">LASTE</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">0-6.5h</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">0-5</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">mRS 0-3 shift</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">~14% vs ~6%</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">~13</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center dark:border-cobalt-700">9.6% vs 1.7%</td>
-                                  </tr>
-                                  <tr className="bg-slate-100 dark:bg-paper-2">
-                                    <td className="border border-cobalt-200 px-2 py-1 font-medium italic dark:border-cobalt-700">DAWN (pooled)</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center italic dark:border-cobalt-700">6-24h</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center italic dark:border-cobalt-700">&ge;6</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center italic dark:border-cobalt-700">mRS-weighted</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center italic dark:border-cobalt-700">49% vs 13%</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center italic dark:border-cobalt-700">~2.8</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center italic dark:border-cobalt-700">6% vs 3%</td>
-                                  </tr>
-                                  <tr className="bg-slate-100 dark:bg-paper-2">
-                                    <td className="border border-cobalt-200 px-2 py-1 font-medium italic dark:border-cobalt-700">DEFUSE-3</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center italic dark:border-cobalt-700">6-16h</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center italic dark:border-cobalt-700">&ge;6</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center italic dark:border-cobalt-700">mRS 0-2</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center italic dark:border-cobalt-700">45% vs 17%</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center italic dark:border-cobalt-700">~3.6</td>
-                                    <td className="border border-cobalt-200 px-2 py-1 text-center italic dark:border-cobalt-700">7% vs 4%</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                              {/* C3-3 — this caption sits inside the cobalt-50/50 (teal) wash
-                                  table region; slate-500 on that wash is 4.07:1 (fails AA).
-                                  slate-600 clears 4.5:1 on the wash and still passes on white. */}
-                              <p className="text-xs text-slate-600 mt-1 italic dark:text-mute">NNT values calculated from published primary/key-secondary outcomes; primary endpoints differed by trial (shift vs. dichotomized mRS). Large-core NNTs for mRS 0-2 are larger (less favorable) than standard-core NNTs — ~5-16 vs ~2.8-3.6 — but absolute benefit remains clinically meaningful. RESCUE-Japan LIMIT&apos;s primary endpoint was mRS 0-3 (NNT 5.5); its mRS 0-2 NNT of ~16 reflects the heavier-deficit population enrolled.</p>
-                              <div className="bg-warn-50 border border-warn-200 rounded p-2 mt-2 dark:bg-warn-950 dark:border-warn-800">
-                                <p className="text-xs text-warn-800 dark:text-warn-300"><strong>Goals-of-care counseling framing (evidence-based):</strong> &ldquo;For large-core stroke patients meeting trial criteria, EVT roughly doubles the chance of independent recovery (mRS 0-2) compared with medical management alone, but most patients still have moderate-to-severe disability or death regardless of treatment. Symptomatic hemorrhage risk is modestly higher with EVT in most trials (LASTE notably had ~10% sICH). Pre-stroke independence (mRS 0-1) is required by all trial protocols and is critical to replicated benefit.&rdquo;</p>
-                              </div>
-                            </div>
-                          </details>
                           </div>
                         </details>
 
@@ -30518,52 +30162,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-3 rounded border dark:bg-card">
                             <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Post-Procedure Care</h3>
                             <ul className="text-sm space-y-1">
-                              <li>• Groin check q15 min x 4, q30 min x 4, then q1h</li>
-                              <li>• Bed rest per protocol (typically 2-6h)</li>
                               <li>• Follow-up imaging: CT/CTA at 24h or if neuro change</li>
-                              <li>• Antiplatelet: ASA 325 mg load within 24h if no hemorrhagic conversion, then 81 mg daily</li>
-                              <li>• Neuro checks q1h x 24h minimum</li>
                             </ul>
                             <p className="text-xs text-slate-600 mt-2 dark:text-mute">Use the BP Management section and Nursing Flowsheet Generator for targets and monitoring cadence.</p>
                           </div>
-                          <details className="mt-3 bg-white border border-crit-200 rounded-lg dark:bg-card dark:border-crit-800">
-                            <summary className="cursor-pointer p-3 text-sm font-semibold text-crit-800 hover:bg-crit-50 rounded-lg dark:text-crit-300">
-                              Groin Complication Recognition
-                            </summary>
-                            <div className="p-3 pt-0 space-y-2">
-                              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
-                                <div className="bg-crit-50 p-2 rounded border border-crit-100 dark:bg-crit-950">
-                                  <h4 className="font-semibold text-crit-800 mb-1 dark:text-crit-300">Expanding Hematoma</h4>
-                                  <ul className="text-slate-700 space-y-0.5 dark:text-ink-2">
-                                    <li>- Firm, expanding groin mass</li>
-                                    <li>- Pain disproportionate to exam</li>
-                                    <li>- Apply direct pressure 20 min</li>
-                                    <li>- Call IR if not controlled</li>
-                                  </ul>
-                                </div>
-                                <div className="bg-warn-50 p-2 rounded border border-warn-100 dark:bg-warn-950">
-                                  <h4 className="font-semibold text-warn-800 mb-1 dark:text-warn-300">Pseudoaneurysm</h4>
-                                  <ul className="text-slate-700 space-y-0.5 dark:text-ink-2">
-                                    <li>- Pulsatile mass + bruit</li>
-                                    <li>- Confirm with duplex US</li>
-                                    <li>- Thrombin injection or surgery</li>
-                                    <li>- Avoid anticoag until resolved</li>
-                                  </ul>
-                                </div>
-                                <div className="bg-cobalt-50 p-2 rounded border border-cobalt-100 dark:bg-cobalt-900">
-                                  <h4 className="font-semibold text-cobalt-800 mb-1 dark:text-cobalt-300">Retroperitoneal Bleed</h4>
-                                  <ul className="text-slate-700 space-y-0.5 dark:text-ink-2">
-                                    <li>- Back/flank/abdominal pain</li>
-                                    <li>- Unexplained tachycardia/hypotension</li>
-                                    <li>- Dropping hemoglobin</li>
-                                    <li>- CT abdomen/pelvis with contrast</li>
-                                    <li>- STAT call IR + vascular surgery</li>
-                                  </ul>
-                                </div>
-                              </div>
-                              <p className="text-xs text-crit-700 font-medium dark:text-crit-300">Call interventional radiology STAT if: expanding hematoma despite 20 min pressure, hemodynamic instability, or suspected retroperitoneal bleed.</p>
-                            </div>
-                          </details>
                           </div>
                         </details>
 
@@ -30575,11 +30177,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-3 rounded border dark:bg-card">
                             <p className="text-sm text-crit-700 font-semibold mb-2 dark:text-crit-300">Routine EVT for isolated MeVO (M2/M3/distal) is not supported by current RCT evidence</p>
                             <ul className="text-sm space-y-1">
-                              <li>• <strong>ESCAPE-MeVO:</strong> EVT did not improve outcomes vs medical therapy for isolated MeVO</li>
-                              <li>• <strong>DISTAL:</strong> No benefit AND <span className="text-crit-700 font-semibold dark:text-crit-300">increased mortality</span> with EVT (13.3% vs 8.4%, aHR 1.82); higher sICH (5.4% vs 2.2%)</li>
-                              <li>• <strong>DISCOUNT:</strong> Negative for M2 thrombectomy</li>
                               <li>• Current default is medical management, with EVT reserved for highly selected anatomy and multidisciplinary agreement</li>
-                              <li>• Favor trial enrollment when possible (e.g., STEP-EVT adaptive platform)</li>
                             </ul>
                             <p className="text-xs text-slate-600 mt-2 italic dark:text-mute">Note: LVO (ICA-T, M1, basilar) EVT remains recommended. This applies only to isolated medium/distal vessel occlusions.</p>
                           </div>
@@ -30646,27 +30244,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h2 className="text-lg font-semibold text-orange-800 dark:text-orange-300">Intracranial Atherosclerotic Disease (ICAD)</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h3 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">Symptomatic ICAD (70-99% stenosis)</h3>
-                              <ul className="text-sm space-y-1">
-                                <li>• DAPT x 90 days (ASA + clopidogrel)</li>
-                                <li>• High-intensity statin (LDL &lt;70)</li>
-                                <li>• SBP &lt;140 mmHg</li>
-                                <li>• <strong>NO intracranial stenting</strong> (SAMMPRIS: stenting worse than medical therapy; CASSISS: no benefit even with experienced operators — 8.0% vs 7.2%, HR 1.10, 95% CI 0.52–2.35, P=.82)</li>
-                                <li className="text-slate-600 italic text-xs mt-1 dark:text-mute">Class III for stenting — Harm per SAMMPRIS/VISSIT; no benefit per CASSISS</li>
-                              </ul>
-                            </div>
-                            <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h3 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">Moderate ICAD (50-69%)</h3>
-                              <ul className="text-sm space-y-1">
-                                <li>• Single antiplatelet preferred</li>
-                                <li>• Aggressive risk factor management</li>
-                                <li>• Consider DAPT if recent symptomatic event</li>
-                                <li>• Serial vascular imaging (MRA or CTA q6-12mo)</li>
-                              </ul>
-                            </div>
-                          </div>
+                          <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for intracranial atherosclerotic disease. See Guidelines &amp; References for the current society guidance.</p>
                           </div>
                         </details>
 
@@ -30681,10 +30259,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <h3 className="font-semibold text-crit-700 mb-2 dark:text-crit-300">Basilar Artery Occlusion (BAO)</h3>
                                 <ul className="text-sm space-y-1">
                                   <li><strong>Clinical presentation:</strong> Coma, quadriplegia, locked-in syndrome, bilateral cranial nerve palsies, vertigo, dysarthria, ataxia</li>
-                                  <li><strong>EVT evidence (0-24h):</strong></li>
-                                  <li className="ml-3">ATTENTION trial: EVT + medical vs medical alone — significant benefit (mRS 0-3: 46% vs 23%)</li>
-                                  <li className="ml-3">BAOCHE trial: EVT benefit in 6-24h window with favorable imaging</li>
-                                  <li className="ml-3">BASICS trial: Neutral — but underpowered, slow enrollment</li>
                                   <li><strong>Current recommendation:</strong> EVT recommended for BAO 0-24h with PC-ASPECTS ≥6, NIHSS ≥10 (Class I, LOE A); NIHSS 6-9 may be considered (Class 2b, LOE B-R)</li>
                                   <li><strong>IV thrombolysis:</strong> Give TNK if within 4.5h and no contraindications, even if planning EVT (bridging therapy)</li>
                                 </ul>
@@ -30698,56 +30272,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <li className="ml-3">Left/Right PCA territory (1 each)</li>
                                   <li className="ml-3">Midbrain (2)</li>
                                   <li className="ml-3">Pons (2)</li>
-                                  <li><strong>PC-ASPECTS ≥8:</strong> Good EVT candidate</li>
-                                  <li><strong>PC-ASPECTS 6-7:</strong> Consider EVT on case-by-case basis</li>
-                                  <li><strong>PC-ASPECTS &lt;6:</strong> Poor prognosis, EVT benefit uncertain</li>
                                 </ul>
                               </div>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Cerebellar Stroke</h3>
-                                <ul className="text-sm space-y-1">
-                                  <li><strong>Key danger:</strong> Posterior fossa edema → brainstem compression → rapid deterioration</li>
-                                  <li><strong>Monitor:</strong> Neuro checks q1h, repeat CT if any decline</li>
-                                  <li><strong>Neurosurgery consult early</strong> for infarcts &gt;1/3 cerebellar hemisphere</li>
-                                  <li><strong>Suboccipital decompressive craniectomy:</strong> Lifesaving if brainstem compression (Class I, LOE C-LD)</li>
-                                  <li><strong>EVD:</strong> If obstructive hydrocephalus. Do NOT rely on EVD alone if mass effect present — decompress.</li>
-                                  <li className="text-warn-700 dark:text-warn-300">Osmotic therapy (mannitol/HTS) is temporizing only — NOT definitive</li>
-                                </ul>
-                              </div>
-                              <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Wallenberg Syndrome (Lateral Medullary)</h3>
-                                <ul className="text-sm space-y-1">
-                                  <li><strong>Vessel:</strong> PICA or vertebral artery</li>
-                                  <li><strong>Classic findings:</strong></li>
-                                  <li className="ml-3">Ipsilateral: facial pain/numbness, Horner syndrome, cerebellar ataxia, vocal cord paralysis</li>
-                                  <li className="ml-3">Contralateral: body pain/temperature loss</li>
-                                  <li><strong>Dysphagia:</strong> Major concern — aspiration risk is HIGH. Early SLP eval essential.</li>
-                                  <li><strong>Prognosis:</strong> Generally good for motor recovery. Dysphagia and neuropathic pain may be prolonged.</li>
-                                  <li><strong>Workup:</strong> MRI DWI (CT often negative), CTA/MRA vertebral arteries, evaluate for vertebral dissection</li>
-                                </ul>
-                              </div>
-                            </div>
-                            {/* Cannot-Miss Posterior Circulation Patterns */}
-                            <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 mt-4 dark:bg-crit-950 dark:border-crit-800">
-                              <h3 className="font-semibold text-crit-800 mb-2 dark:text-crit-300">Cannot-Miss Posterior Circulation Patterns</h3>
-                              <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">High-yield pattern recognition for ED triage. If any pattern is present, obtain emergent CTA head/neck and consult stroke neurology.</p>
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <ul className="text-sm space-y-1.5">
-                                  <li><strong className="text-crit-700 dark:text-crit-300">Acute vertigo + ANY neuro sign</strong> = posterior fossa until proven otherwise (PICA, AICA, or vertebral occlusion)</li>
-                                  <li><strong className="text-crit-700 dark:text-crit-300">Bilateral motor/sensory symptoms</strong> = basilar artery occlusion until proven otherwise</li>
-                                  <li><strong className="text-crit-700 dark:text-crit-300">Horner + ipsilateral facial numbness</strong> = vertebral/PICA (Wallenberg) — CT often negative, MRI DWI required</li>
-                                  <li><strong className="text-crit-700 dark:text-crit-300">Acute dysarthria + ataxia</strong> without cortical signs = lateral pontine or cerebellar stroke</li>
-                                </ul>
-                                <ul className="text-sm space-y-1.5">
-                                  <li><strong className="text-crit-700 dark:text-crit-300">Sudden bilateral vision loss ± confusion</strong> = top-of-basilar (bilateral PCA + thalamic + midbrain) — may present as "AMS" or "confusion" without obvious motor deficits</li>
-                                  <li><strong className="text-crit-700 dark:text-crit-300">Acute vertigo + hearing loss</strong> = AICA syndrome (not just labyrinthitis). Check: ipsilateral facial weakness, cerebellar ataxia, Horner</li>
-                                  <li><strong className="text-crit-700 dark:text-crit-300">Acute nausea/vomiting only</strong> = can be sole presentation of medullary or cerebellar stroke. Apply HINTS if vestibular component</li>
-                                  <li><strong className="text-crit-700 dark:text-crit-300">Fluctuating/waxing-waning deficits</strong> = basilar artery stenosis with flow-dependent ischemia — high risk of complete occlusion</li>
-                                </ul>
-                              </div>
-                              <p className="text-xs text-slate-600 mt-2 italic dark:text-ink-2">NIHSS underscores posterior circulation strokes. A "low NIHSS" does NOT exclude significant posterior fossa pathology.</p>
                             </div>
                           </div>
                           </div>
@@ -30758,84 +30284,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h2 className="text-lg font-semibold text-pink-800 dark:text-pink-300">Cervical Artery Dissection (CAD)</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          <div className="space-y-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h3 className="font-semibold text-pink-700 mb-2 dark:text-pink-300">Diagnosis</h3>
-                                <ul className="text-sm space-y-1">
-                                  <li><strong>Classic triad (carotid):</strong> ipsilateral neck pain/headache, partial Horner syndrome, cerebral ischemia</li>
-                                  <li><strong>Vertebral:</strong> occipital/posterior neck pain, lateral medullary or cerebellar infarct</li>
-                                  <li><strong>Imaging:</strong></li>
-                                  <li className="ml-3">CTA neck: intimal flap, vessel irregularity, string sign, occlusion</li>
-                                  <li className="ml-3">MRI/MRA neck with fat-sat: intramural hematoma (crescent sign)</li>
-                                  <li className="ml-3">Conventional angiography: gold standard (rarely needed)</li>
-                                  <li><strong>Risk factors:</strong> Recent trauma/chiropractic manipulation, connective tissue disorders (FMD, Ehlers-Danlos IV, Marfan), recent infection</li>
-                                </ul>
-                              </div>
-                              <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h3 className="font-semibold text-pink-700 mb-2 dark:text-pink-300">Antithrombotic Management</h3>
-                                <ul className="text-sm space-y-1">
-                                  <li><strong>CADISS trial:</strong> Antiplatelet vs anticoagulation — NO significant difference in stroke recurrence or death</li>
-                                  <li><strong>Either approach acceptable</strong> (Class IIa, LOE B-R)</li>
-                                  <li><strong>Antiplatelet preferred if:</strong></li>
-                                  <li className="ml-3">Large completed infarct (hemorrhagic transformation risk)</li>
-                                  <li className="ml-3">Intracranial extension of dissection</li>
-                                  <li className="ml-3">Pseudoaneurysm (debatable)</li>
-                                  <li><strong>Anticoagulation preferred if:</strong></li>
-                                  <li className="ml-3">Free-floating thrombus</li>
-                                  <li className="ml-3">Recurrent ischemic events on antiplatelet therapy</li>
-                                  <li className="ml-3">High-grade stenosis with hemodynamic compromise</li>
-                                  <li><strong>Duration:</strong> 3-6 months, then reassess with follow-up imaging</li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h3 className="font-semibold text-pink-700 mb-2 dark:text-pink-300">Follow-Up Imaging</h3>
-                                <ul className="text-sm space-y-1">
-                                  <li>• CTA or MRA neck at 3-6 months to assess healing</li>
-                                  <li>• Most dissections heal within 3-6 months</li>
-                                  <li>• If recanalized → can consider stopping anticoagulation/simplifying antiplatelet</li>
-                                  <li>• If persistent stenosis/occlusion → continue antithrombotic, repeat imaging at 12 months</li>
-                                  <li>• Pseudoaneurysm: low risk of thromboembolic events; usually managed conservatively</li>
-                                </ul>
-                              </div>
-                              <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h3 className="font-semibold text-pink-700 mb-2 dark:text-pink-300">Special Populations</h3>
-                                <ul className="text-sm space-y-1">
-                                  <li><strong>Fibromuscular dysplasia (FMD):</strong> Screen all cervical/cerebral vessels (multivessel disease common). Screen renal arteries.</li>
-                                  <li><strong>Connective tissue disorders:</strong> Genetic testing if recurrent dissection, family history, or phenotypic features. Vascular EDS (type IV) = high mortality risk.</li>
-                                  <li><strong>Young stroke (&lt;50):</strong> Dissection accounts for ~15-25% of ischemic strokes. Always consider in the workup.</li>
-                                  <li><strong>Thrombolysis:</strong> TNK is NOT contraindicated in suspected dissection if within treatment window. Treat the stroke first.</li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 mt-3 dark:bg-crit-950 dark:border-crit-800">
-                              <h3 className="font-semibold text-crit-800 text-sm mb-2 dark:text-crit-300">Intracranial vs Extracranial Vertebral Artery Dissection</h3>
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div className="text-xs space-y-1">
-                                  <p className="font-semibold text-slate-700 dark:text-ink-2">Extracranial VA dissection:</p>
-                                  <ul className="space-y-0.5">
-                                    <li>• Most common at V3 segment (atlas loop)</li>
-                                    <li>• Usually causes ischemia (embolism to posterior circulation)</li>
-                                    <li>• Antiplatelet or anticoagulation per CADISS (either acceptable)</li>
-                                    <li>• SAH risk is very low</li>
-                                    <li>• Good prognosis; most heal within 3-6 months</li>
-                                  </ul>
-                                </div>
-                                <div className="text-xs space-y-1">
-                                  <p className="font-semibold text-crit-700 dark:text-crit-300">Intracranial VA dissection:</p>
-                                  <ul className="space-y-0.5">
-                                    <li>• <strong className="text-crit-700 dark:text-crit-300">Risk of SAH</strong> (intradural = no adventitial protection)</li>
-                                    <li>• If SAH present: anticoagulation is CONTRAINDICATED</li>
-                                    <li>• Urgent neurosurgical/neurointerventional consultation</li>
-                                    <li>• May extend into basilar artery → catastrophic occlusion risk</li>
-                                    <li>• Consider flow diverter or parent vessel sacrifice if recurrent SAH</li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                          <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for cervical artery dissection. See Guidelines &amp; References for the current society guidance.</p>
                           </div>
                         </details>
 
@@ -30844,27 +30293,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h2 className="text-lg font-semibold text-yellow-800 dark:text-yellow-300">Seizure Prophylaxis in Ischemic Stroke</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h3 className="font-semibold text-yellow-700 mb-2 dark:text-yellow-300">AHA/ASA Recommendations</h3>
-                              <ul className="text-sm space-y-1">
-                                <li>• Routine prophylactic AEDs are <strong>NOT recommended</strong> (Class III: No Benefit, LOE A)</li>
-                                <li>• Treat acute symptomatic seizures with standard AEDs</li>
-                                <li>• Post-stroke epilepsy risk: ~5-10% in ischemic stroke</li>
-                                <li>• Higher risk with cortical involvement, hemorrhagic transformation, severe stroke</li>
-                              </ul>
-                            </div>
-                            <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h3 className="font-semibold text-yellow-700 mb-2 dark:text-yellow-300">When to Treat</h3>
-                              <ul className="text-sm space-y-1">
-                                <li>• Witnessed clinical seizure or confirmed EEG seizure activity</li>
-                                <li>• First-line: <strong>Levetiracetam</strong> 1000-1500 mg IV load, then 500-1000 mg BID</li>
-                                <li>• Alternative: Lacosamide 200 mg IV load, then 100-200 mg BID</li>
-                                <li>• Avoid phenytoin if thrombolytics given (drug interaction, hypotension risk)</li>
-                                <li>• Consider cEEG monitoring if persistent altered mental status out of proportion to infarct size</li>
-                              </ul>
-                            </div>
-                          </div>
+                          <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for seizure prophylaxis. See Guidelines &amp; References for the current society guidance.</p>
                           </div>
                         </details>
                           </div>
@@ -30899,17 +30328,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* SAH Quick Summary */}
                         <div className="bg-white border-l-4 border-l-purple-600 border border-line rounded-lg p-4 dark:bg-card">
                           <h2 className="text-lg font-bold text-cobalt-900 mb-1 dark:text-cobalt-300">Subarachnoid Hemorrhage Management</h2>
-                          <p className="text-sm text-slate-600 dark:text-ink-2">2023 AHA/ASA Guidelines for Management of Aneurysmal SAH</p>
+                          <p className="text-sm text-slate-600 dark:text-ink-2">Institution-sourced steps only. Society guidance lives under Guidelines &amp; References.</p>
                         </div>
 
                         {/* Key Principles */}
                         <div className="border-l-4 border-cobalt-400 bg-slate-50 px-3 py-2 text-sm space-y-1 dark:bg-paper-2">
                           <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide dark:text-ink">Key Principles</p>
-                          <ul className="list-disc pl-4 text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
-                            <li>Nimodipine 60 mg PO/NG q4h for 21 days — only proven agent to reduce DCI <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></li>
-                            <li>Secure aneurysm within 24 hours when feasible (coil or clip) <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></li>
-                            <li>Maintain euvolemia — avoid prophylactic hypervolemia (triple-H) <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['III']}`}>III</span></li>
-                          </ul>
+                          <p className="text-xs text-slate-700 dark:text-ink-2">No institutional protocol document is on file for subarachnoid hemorrhage. See Guidelines &amp; References for the current society guidance.</p>
                         </div>
 
                         {/* Acute SAH Protocol */}
@@ -30921,16 +30346,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="p-4 pt-0">
                           <div className="space-y-2">
                             {[
-                              { step: 'Secure airway', detail: 'Intubate if GCS ≤8; elevate HOB 30°', urgent: true },
-                              { step: 'BP control: SBP <160 mmHg', detail: 'Nicardipine 5-15 mg/h IV or labetalol IV (pre-aneurysm securing). Class I, LOE B-NR', urgent: true },
+                              { step: 'BP control', detail: 'The institutional acute stroke algorithm directs BP control for SAH but does not specify a target, agent, or dose. See Guidelines & References for the current society guidance.', urgent: true },
                               { step: 'Reverse coagulopathy', detail: 'Screen for anticoagulant/antiplatelet exposure and reverse before the aneurysm is secured — use the coagulopathy-reversal pathway', urgent: true },
-                              { step: 'Start Nimodipine 60 mg PO/NG q4h', detail: 'Begin within 96h of onset; continue 21 days. Class I, LOE A for DCI prevention. Only calcium channel blocker with proven benefit', urgent: true },
-                              { step: 'Neurosurgery/Neurointerventional consult', detail: 'For aneurysm securing strategy (clip vs coil) — target within 24h', urgent: true },
-                              { step: 'Document Hunt-Hess grade', detail: 'Record the admission Hunt-Hess grade with the consult (Hunt & Hess / WFNS calculators are under Calculators)', urgent: true },
-                              { step: 'Analgesia for headache', detail: 'Acetaminophen 1g IV/PO q6h. Avoid NSAIDs. Cautious opioids if severe', urgent: false },
-                              { step: 'Seizure prophylaxis (if indicated)', detail: 'Short-term (3-7d) levetiracetam 500-1000mg BID. Not routine for all patients', urgent: false },
-                              { step: 'EVD placement', detail: 'If acute hydrocephalus or GCS ≤8 with IVH. Open at 15-20 cmH₂O', urgent: false },
-                              { step: 'Labs: CBC, BMP, Coags, Type & Screen, Troponin, Mg²⁺', detail: 'Repeat BMP q6h initially for Na⁺ monitoring', urgent: false }
+                              { step: 'Neurosurgery consult', detail: 'Consult neurosurgery and admit to neurocritical care, per the institutional acute stroke algorithm.', urgent: true },
+                              { step: 'Document Hunt-Hess grade', detail: 'Record the admission Hunt-Hess grade with the consult (Hunt & Hess / WFNS calculators are under Calculators)', urgent: true }
                             ].map((item, i) => (
                               <div key={i} className={`flex items-start gap-3 p-2 rounded ${item.urgent ? 'bg-cobalt-50 dark:bg-cobalt-900' : 'bg-slate-50 dark:bg-paper-2'}`}>
                                 <span className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${item.urgent ? 'bg-cobalt-600 text-white' : 'bg-slate-300 text-slate-700 dark:text-ink-2'}`}>{i + 1}</span>
@@ -30941,250 +30360,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             ))}
                           </div>
-                          </div>
-                        </details>
-
-                        {/* Fisher Grade & Vasospasm Risk */}
-                        <details className="bg-white border border-line rounded-lg dark:bg-card">
-                          <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-t-lg flex items-center gap-2 dark:text-ink dark:hover:bg-paper-2">
-                            <span className="w-6 h-6 rounded-full bg-cobalt-600 text-white text-xs flex items-center justify-center font-bold">2</span>
-                            Fisher Grade — Vasospasm Risk Prediction
-                          </summary>
-                          <div className="p-4 pt-0">
-                          <div className="space-y-2">
-                            {[
-                              { grade: '1', ct: 'No blood detected', risk: '~0%', active: 'bg-ok-600 text-white border-ok-600', badge: 'text-ok-700 bg-ok-50 dark:text-ok-300 dark:bg-ok-950' },
-                              { grade: '2', ct: 'Diffuse thin SAH (<1 mm thick)', risk: '~20%', active: 'bg-warn-600 text-white border-warn-600', badge: 'text-warn-700 bg-warn-50 dark:text-warn-300 dark:bg-warn-950' },
-                              { grade: '3', ct: 'Localized clot or thick layer (>1 mm)', risk: '~33%', active: 'bg-crit-600 text-white border-crit-600', badge: 'text-crit-700 bg-crit-50 dark:text-crit-300 dark:bg-crit-950' },
-                              { grade: '4', ct: 'Intraventricular or intracerebral blood ± diffuse SAH', risk: '~25%', active: 'bg-orange-600 text-white dark:bg-orange-700 border-orange-600', badge: 'text-orange-700 bg-orange-50 dark:text-orange-300 dark:bg-orange-950' }
-                            ].map(f => {
-                              const isSelected = telestrokeNote.fisherGrade === f.grade;
-                              return (
-                              <button key={f.grade} type="button"
-                                className={`w-full text-left p-3 rounded-lg border transition-colors ${isSelected ? f.active : 'bg-white border-slate-200 hover:bg-slate-50 dark:bg-card dark:border-line dark:hover:bg-paper-2'}`}
-                                onClick={() => setTelestrokeNote(prev => ({...prev, fisherGrade: f.grade}))}
-                              >
-                                <div className="flex justify-between items-center">
-                                  <div>
-                                    <span className="font-semibold">Grade {f.grade}</span>
-                                    <span className={`block text-sm ${isSelected ? 'opacity-80' : 'text-slate-600 dark:text-ink-2'}`}>{f.ct}</span>
-                                  </div>
-                                  <span className={`text-sm font-bold px-2 py-0.5 rounded ${isSelected ? 'bg-white/20 dark:bg-slate-900/20' : f.badge}`}>
-                                    Spasm risk: {f.risk}
-                                  </span>
-                                </div>
-                              </button>
-                              );
-                            })}
-                          </div>
-                          {telestrokeNote.fisherGrade === '3' && (
-                            <div className="mt-3 p-2 bg-crit-50 border border-crit-200 rounded text-sm text-crit-800 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300">
-                              <strong>Highest vasospasm risk.</strong> Initiate daily TCD monitoring days 3-14. Consider CTP if clinical decline.
-                            </div>
-                          )}
-                          </div>
-                        </details>
-
-                        {/* Modified Fisher Scale */}
-                        <details className="bg-white border border-line rounded-lg dark:bg-card">
-                          <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-2 dark:text-ink dark:hover:bg-paper-2">
-                            <span className="w-6 h-6 rounded-full bg-cobalt-600 text-white text-xs flex items-center justify-center font-bold">+</span>
-                            Modified Fisher Scale (Better Vasospasm Prediction)
-                          </summary>
-                          <div className="px-4 pb-4">
-                            <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">Frontera et al., 2006. More predictive of symptomatic vasospasm than original Fisher grade.</p>
-                            <div className="space-y-1.5">
-                              {[
-                                { grade: '0', ct: 'No SAH or IVH', risk: 'Minimal' },
-                                { grade: '1', ct: 'Thin SAH, no IVH', risk: '24%' },
-                                { grade: '2', ct: 'Thin SAH with IVH', risk: '33%' },
-                                { grade: '3', ct: 'Thick SAH, no IVH', risk: '33%' },
-                                { grade: '4', ct: 'Thick SAH with IVH', risk: '40%' }
-                              ].map(f => (
-                                <div key={f.grade} className="flex justify-between items-center p-2 rounded bg-slate-50 text-sm dark:bg-paper-2">
-                                  <div><span className="font-mono font-bold mr-2">mF {f.grade}</span><span className="text-slate-600 dark:text-ink-2">{f.ct}</span></div>
-                                  <span className="text-xs font-semibold text-cobalt-700 dark:text-cobalt-300">Spasm: {f.risk}</span>
-                                </div>
-                              ))}
-                            </div>
-                            <p className="text-xs text-slate-600 mt-2 dark:text-mute">Thick = &gt;1mm layer. IVH = intraventricular hemorrhage present bilaterally.</p>
-                          </div>
-                        </details>
-
-                        {/* Vasospasm Monitoring & DCI */}
-                        <details className="bg-white border border-line rounded-lg dark:bg-card">
-                          <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-t-lg flex items-center gap-2 dark:text-ink dark:hover:bg-paper-2">
-                            <span className="w-6 h-6 rounded-full bg-cobalt-600 text-white text-xs flex items-center justify-center font-bold">3</span>
-                            Vasospasm Monitoring & DCI Management
-                          </summary>
-                          <div className="p-4 pt-0">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-cobalt-50 rounded-lg p-3 dark:bg-cobalt-900">
-                              <h4 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Monitoring Protocol</h4>
-                              <ul className="space-y-1.5 text-sm text-slate-700 dark:text-ink-2">
-                                <li className="flex items-start gap-2"><span className="text-cobalt-600 font-bold dark:text-cobalt-300">&#x2022;</span> Daily TCD: Days 3-14 (peak vasospasm window)</li>
-                                <li className="flex items-start gap-2"><span className="text-cobalt-600 font-bold dark:text-cobalt-300">&#x2022;</span> MCA velocity &gt;120 cm/s = mild spasm</li>
-                                <li className="flex items-start gap-2"><span className="text-cobalt-600 font-bold dark:text-cobalt-300">&#x2022;</span> MCA velocity &gt;200 cm/s or Lindegaard ratio &gt;6 = severe</li>
-                                <li className="flex items-start gap-2"><span className="text-cobalt-600 font-bold dark:text-cobalt-300">&#x2022;</span> Neuro checks q1h for first 14 days</li>
-                                <li className="flex items-start gap-2"><span className="text-cobalt-600 font-bold dark:text-cobalt-300">&#x2022;</span> CTP if new deficit or rising TCD velocities</li>
-                              </ul>
-                            </div>
-                            <div className="bg-crit-50 rounded-lg p-3 dark:bg-crit-950">
-                              <h4 className="font-semibold text-crit-800 text-sm mb-2 dark:text-crit-300">DCI Treatment Escalation</h4>
-                              <div className="space-y-2 text-sm text-slate-700 dark:text-ink-2">
-                                <div className="flex items-start gap-2">
-                                  <span className="bg-crit-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0">1</span>
-                                  <span><strong>Euvolemia + induced hypertension:</strong> Phenylephrine or norepinephrine to raise MAP 20-25% above baseline</span>
-                                </div>
-                                <div className="flex items-start gap-2">
-                                  <span className="bg-crit-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0">2</span>
-                                  <span><strong>No improvement:</strong> Endovascular rescue — intra-arterial verapamil/nicardipine</span>
-                                </div>
-                                <div className="flex items-start gap-2">
-                                  <span className="bg-crit-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0">3</span>
-                                  <span><strong>Refractory:</strong> Balloon angioplasty for proximal vasospasm</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          </div>
-                        </details>
-
-                        {/* Electrolyte Management */}
-                        <details className="bg-white border border-line rounded-lg dark:bg-card">
-                          <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-t-lg flex items-center gap-2 dark:text-ink dark:hover:bg-paper-2">
-                            <span className="w-6 h-6 rounded-full bg-cobalt-600 text-white text-xs flex items-center justify-center font-bold">4</span>
-                            Electrolyte Monitoring — CSW vs SIADH
-                          </summary>
-                          <div className="p-4 pt-0">
-                          <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: cerebral salt wasting versus SIADH differential">
-                            <table className="w-full text-sm border-collapse">
-                              <thead>
-                                <tr className="bg-slate-100 dark:bg-paper-2">
-                                  <th scope="col" className="border border-line px-3 py-2 text-left font-semibold">Feature</th>
-                                  <th scope="col" className="border border-line px-3 py-2 text-left font-semibold text-warn-700 dark:text-warn-300">Cerebral Salt Wasting</th>
-                                  <th scope="col" className="border border-line px-3 py-2 text-left font-semibold text-cobalt-700 dark:text-cobalt-300">SIADH</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {[
-                                  ['Volume status', 'Hypovolemic (dehydrated)', 'Euvolemic / mildly hypervolemic'],
-                                  ['Urine output', 'High (polyuria)', 'Low / normal'],
-                                  ['Serum Na⁺', 'Low (<135)', 'Low (<135)'],
-                                  ['Urine Na⁺', 'High (>40 mEq/L)', 'High (>40 mEq/L)'],
-                                  ['Urine osmolality', 'High', 'Inappropriately high'],
-                                  ['CVP / volume markers', 'Low (hemoconcentration)', 'Normal / elevated'],
-                                  ['Treatment', 'NS or hypertonic saline + fludrocortisone 0.1-0.2 mg BID', 'Fluid restriction ± salt tabs ± conivaptan/tolvaptan'],
-                                  ['Key differentiator', 'Volume depletion + high urine output', 'Euvolemia + concentrated urine']
-                                ].map((row, i) => (
-                                  <tr key={i} className={i % 2 === 0 ? '' : 'bg-slate-50 dark:bg-paper-2'}>
-                                    <td className="border border-line px-3 py-1.5 font-medium">{row[0]}</td>
-                                    <td className="border border-line px-3 py-1.5">{row[1]}</td>
-                                    <td className="border border-line px-3 py-1.5">{row[2]}</td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                          <p className="text-xs text-slate-600 mt-2 dark:text-mute">Monitor Na⁺ q4-6h. Correct hyponatremia slowly (max 8-10 mEq/L per 24h). CSW is more common in SAH than SIADH.</p>
-                          </div>
-                        </details>
-
-                        {/* Rebleeding Risk */}
-                        <details className="bg-white border border-line rounded-lg dark:bg-card">
-                          <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-t-lg flex items-center gap-2 dark:text-ink dark:hover:bg-paper-2">
-                            <span className="w-6 h-6 rounded-full bg-cobalt-600 text-white text-xs flex items-center justify-center font-bold">5</span>
-                            Rebleeding Risk & Aneurysm Securing
-                          </summary>
-                          <div className="p-4 pt-0">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-crit-50 rounded-lg p-3 dark:bg-crit-950">
-                              <h4 className="font-semibold text-crit-800 text-sm mb-2 dark:text-crit-300">Rebleeding Risk Timeline</h4>
-                              <div className="space-y-1 text-sm">
-                                <div className="flex justify-between"><span>First 6 hours</span><span className="font-bold text-crit-700 dark:text-crit-300">~15% (peak risk)</span></div>
-                                <div className="w-full bg-crit-200 rounded-full h-3"><div className="bg-crit-600 h-3 rounded-full" style={{width: '100%'}}></div></div>
-                                <div className="flex justify-between mt-2"><span>6-24 hours</span><span className="font-bold text-orange-800 dark:text-orange-300">~5-10%</span></div>
-                                <div className="w-full bg-orange-200 rounded-full h-3"><div className="bg-orange-500 h-3 rounded-full" style={{width: '60%'}}></div></div>
-                                <div className="flex justify-between mt-2"><span>Day 2-14</span><span className="font-bold text-warn-700 dark:text-warn-300">~1-2%/day</span></div>
-                                <div className="w-full bg-warn-200 rounded-full h-3"><div className="bg-warn-500 h-3 rounded-full" style={{width: '25%'}}></div></div>
-                                <div className="flex justify-between mt-2"><span>After 14 days</span><span className="font-bold text-ok-700 dark:text-ok-300">~0.5%/day declining</span></div>
-                                <div className="w-full bg-ok-200 rounded-full h-3"><div className="bg-ok-500 h-3 rounded-full" style={{width: '10%'}}></div></div>
-                              </div>
-                            </div>
-                            <div className="space-y-3">
-                              <div className="bg-cobalt-50 rounded-lg p-3 dark:bg-cobalt-900">
-                                <h4 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Securing Strategy</h4>
-                                <ul className="space-y-1 text-sm text-slate-700 dark:text-ink-2">
-                                  <li><strong>Coiling (endovascular):</strong> Preferred for posterior circulation, elderly, poor-grade, basilar tip. Class I.</li>
-                                  <li><strong>Clipping (surgical):</strong> Consider for MCA, large/wide-necked aneurysms, concurrent hematoma needing evacuation.</li>
-                                  <li><strong>Timeline:</strong> Secure within 24h of presentation (Class I, LOE B-NR).</li>
-                                </ul>
-                              </div>
-                              <div className="bg-warn-50 rounded-lg p-3 dark:bg-warn-950">
-                                <h4 className="font-semibold text-warn-800 text-sm mb-2 dark:text-warn-300">Risk Factors for Rebleeding</h4>
-                                <ul className="space-y-1 text-sm text-slate-700 dark:text-ink-2">
-                                  <li>&#x2022; Unsecured aneurysm (most important)</li>
-                                  <li>&#x2022; Poor clinical grade (H&H 4-5)</li>
-                                  <li>&#x2022; Systolic BP &gt;160 mmHg</li>
-                                  <li>&#x2022; Large aneurysm size (&gt;10 mm)</li>
-                                  <li>&#x2022; Posterior circulation location</li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          </div>
-                        </details>
-
-                        {/* Post-Securing BP Targets */}
-                        <details className="bg-white border border-line rounded-lg dark:bg-card">
-                          <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-t-lg flex items-center gap-2 dark:text-ink dark:hover:bg-paper-2">
-                            <span className="w-6 h-6 rounded-full bg-cobalt-600 text-white text-xs flex items-center justify-center font-bold">6</span>
-                            BP Targets by Phase
-                          </summary>
-                          <div className="p-4 pt-0">
-                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            {[
-                              { phase: 'Pre-Securing', target: 'SBP <160', detail: 'Until aneurysm clipped/coiled', bg: 'bg-crit-50 border-crit-200 dark:bg-crit-950 dark:border-crit-800', text: 'text-crit-700 dark:text-crit-300' },
-                              { phase: 'Post-Securing', target: 'SBP <180', detail: 'First 24-72h after securing', bg: 'bg-warn-50 border-warn-200 dark:bg-warn-950 dark:border-warn-800', text: 'text-warn-700 dark:text-warn-300' },
-                              { phase: 'DCI Treatment', target: 'Induced HTN', detail: 'MAP +20-25% above baseline', bg: 'bg-cobalt-50 border-cobalt-200 dark:bg-cobalt-900 dark:border-cobalt-700', text: 'text-cobalt-700 dark:text-cobalt-300' }
-                            ].map(bp => (
-                              <div key={bp.phase} className={`${bp.bg} border rounded-lg p-3 text-center`}>
-                                <div className="text-xs text-slate-600 mb-1 dark:text-ink-2">{bp.phase}</div>
-                                <div className={`text-xl font-bold ${bp.text}`}>{bp.target}</div>
-                                <div className="text-xs text-slate-600 mt-1 dark:text-mute">{bp.detail}</div>
-                              </div>
-                            ))}
-                          </div>
-                          </div>
-                        </details>
-
-                        {/* SAH Supportive Care Bundle */}
-                        <details className="bg-white border border-line rounded-lg dark:bg-card">
-                          <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-lg dark:text-ink dark:hover:bg-paper-2">
-                            SAH ICU Supportive Care Bundle
-                          </summary>
-                          <div className="px-4 pb-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                              {[
-                                { cat: 'Cardiac', items: ['Troponin + ECG on admission (SAH can cause stress cardiomyopathy)', 'Continuous telemetry', 'Echo if troponin elevated or hemodynamic instability'] },
-                                { cat: 'DVT Prevention', items: ['SCDs immediately', 'UFH 5000u SC q8-12h after aneurysm secured', 'LMWH if no EVD and aneurysm secured'] },
-                                { cat: 'Glycemic Control', items: ['Target glucose 140-180 mg/dL', 'Insulin drip if persistent hyperglycemia', 'Avoid hypoglycemia (<70 mg/dL)'] },
-                                { cat: 'Fever Management', items: ['Target normothermia (<38°C)', 'Acetaminophen 1g q6h scheduled', 'Cooling device if refractory', 'Workup: blood/urine cultures, CXR'] },
-                                { cat: 'Nutrition', items: ['NPO until swallow evaluation', 'Dobhoff if intubated >48h or failed swallow', 'Early enteral nutrition preferred'] },
-                                { cat: 'Positioning', items: ['HOB 30°', 'Quiet, low-stimulation environment', 'Stool softeners (avoid Valsalva)', 'Activity restrictions until aneurysm secured'] }
-                              ].map(section => (
-                                <div key={section.cat} className="bg-slate-50 rounded-lg p-3 dark:bg-paper-2">
-                                  <h4 className="font-semibold text-slate-800 text-sm mb-1 dark:text-ink">{section.cat}</h4>
-                                  <ul className="space-y-0.5">
-                                    {section.items.map((item, i) => (
-                                      <li key={i} className="text-xs text-slate-600 flex items-start gap-1 dark:text-ink-2">
-                                        <span className="text-cobalt-400 mt-0.5">&#x2022;</span> {item}
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              ))}
-                            </div>
                           </div>
                         </details>
                       </div>
@@ -31200,68 +30375,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <p className="text-sm text-slate-600 dark:text-ink-2">Urgent evaluation and risk reduction for transient ischemic attack</p>
                         </div>
 
-                        {/* TIA disposition framing */}
-                        <div className="bg-orange-50 border border-orange-300 rounded-lg p-3 dark:bg-orange-950 dark:border-orange-800">
-                          <p className="text-sm text-orange-900 font-semibold dark:text-orange-300">Disposition is risk-stratified: admit/observe high-risk TIAs, and use rapid outpatient pathways only when same-day workup plus reliable 24-48h stroke follow-up are guaranteed. Do not use ABCD2 alone.</p>
-                        </div>
-
                         <details className="bg-white border border-orange-200 rounded-lg dark:bg-card dark:border-orange-800">
                           <summary className="cursor-pointer p-4 font-bold text-orange-900 hover:bg-orange-50 rounded-t-lg flex items-center justify-between dark:text-orange-300 dark:hover:bg-orange-950">
                             <h3 className="font-bold text-orange-900 dark:text-orange-300">TIA Disposition Engine</h3>
                           </summary>
-                          <div className="p-4 pt-0 space-y-3">
-                          <p className="text-xs text-slate-600 dark:text-ink-2">ABCD2 + imaging/etiology reliability overlay (AHA TIA ED 2023 aligned). This card is used to drive disposition decisions, not ABCD2 alone.</p>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
-                            {[
-                              { key: 'dwiPositive', label: 'DWI-positive lesion (tissue-based stroke risk)' },
-                              { key: 'crescendoOrRecurrent', label: 'Crescendo/recurrent TIA in 24h' },
-                              { key: 'symptomaticCarotidSevere', label: 'Symptomatic severe carotid stenosis' },
-                              { key: 'suspectedCardioembolism', label: 'Suspected cardioembolic source / new AF concern' },
-                              { key: 'persistentDeficit', label: 'Persistent deficit (not fully resolved)' },
-                              { key: 'sameDayWorkupComplete', label: 'Same-day ED workup completed' },
-                              { key: 'reliableFollowUp48h', label: 'Reliable stroke follow-up in 24-48h secured' }
-                            ].map(item => (
-                              <label key={item.key} className="flex items-start gap-2 cursor-pointer p-2 rounded border border-line bg-slate-50 dark:bg-paper-2">
-                                <input
-                                  type="checkbox"
-                                  checked={!!(telestrokeNote.tiaDisposition || {})[item.key]}
-                                  onChange={(e) => {
-                                    const checked = e.target.checked;
-                                    setTelestrokeNote(prev => ({
-                                      ...prev,
-                                      tiaDisposition: { ...(prev.tiaDisposition || {}), [item.key]: checked }
-                                    }));
-                                  }}
-                                  className="mt-0.5 rounded border-orange-300 text-orange-600 dark:border-orange-800 dark:text-orange-300"
-                                />
-                                <span className="text-xs text-slate-700 dark:text-ink-2">{item.label}</span>
-                              </label>
-                            ))}
-                          </div>
-                          <div className={`rounded-lg border px-3 py-2 text-sm ${
-                            tiaDispositionDecision.tier === 'high'
-                              ? 'bg-crit-50 border-crit-300 text-crit-900 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300'
-                              : tiaDispositionDecision.tier === 'moderate'
-                                ? 'bg-warn-50 border-warn-300 text-warn-900 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300'
-                                : 'bg-ok-50 border-ok-300 text-ok-900 dark:bg-ok-950 dark:border-ok-800 dark:text-ok-300'
-                          }`}>
-                            <p className="font-semibold">
-                              ABCD2: {calculateABCD2Score(abcd2Items)} | Recommendation: {tiaDispositionDecision.label}
-                            </p>
-                            <p className="text-xs mt-1">{tiaDispositionDecision.detail}</p>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setTelestrokeNote(prev => ({
-                                ...prev,
-                                disposition: tiaDispositionDecision.label
-                              }));
-                            }}
-                            className="px-3 py-1.5 rounded-lg bg-orange-700 text-white dark:bg-orange-700 text-xs font-semibold hover:bg-orange-800"
-                          >
-                            Apply disposition to encounter
-                          </button>
+                          <div className="p-4 pt-0">
+                            <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for TIA disposition. See Guidelines &amp; References for the current society guidance.</p>
                           </div>
                         </details>
 
@@ -31281,7 +30400,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <th scope="col" className="border border-line px-3 py-2 text-left">2-Day Stroke Risk</th>
                                   <th scope="col" className="border border-line px-3 py-2 text-left">7-Day</th>
                                   <th scope="col" className="border border-line px-3 py-2 text-left">90-Day</th>
-                                  <th scope="col" className="border border-line px-3 py-2 text-left">Action</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -31291,7 +30409,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <td className="border border-line px-3 py-1.5">1.0%</td>
                                   <td className="border border-line px-3 py-1.5">1.2%</td>
                                   <td className="border border-line px-3 py-1.5">3.1%</td>
-                                  <td className="border border-line px-3 py-1.5 text-xs">Rapid TIA pathway or observation only if complete ED workup + guaranteed follow-up; otherwise admit</td>
                                 </tr>
                                 <tr className="bg-warn-50 dark:bg-warn-950">
                                   <td className="border border-line px-3 py-1.5 font-mono font-bold">4-5</td>
@@ -31299,7 +30416,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <td className="border border-line px-3 py-1.5">4.1%</td>
                                   <td className="border border-line px-3 py-1.5">5.9%</td>
                                   <td className="border border-line px-3 py-1.5">9.8%</td>
-                                  <td className="border border-line px-3 py-1.5 text-xs">24h observation or admission for expedited workup + DAPT when indicated</td>
                                 </tr>
                                 <tr className="bg-crit-50 dark:bg-crit-950">
                                   <td className="border border-line px-3 py-1.5 font-mono font-bold">6-7</td>
@@ -31307,7 +30423,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <td className="border border-line px-3 py-1.5">8.1%</td>
                                   <td className="border border-line px-3 py-1.5">11.7%</td>
                                   <td className="border border-line px-3 py-1.5">17.8%</td>
-                                  <td className="border border-line px-3 py-1.5 text-xs">Admit for STAT workup + vascular imaging + immediate prevention plan</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -31323,24 +30438,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             Urgent Imaging Protocol
                           </summary>
                           <div className="p-4 pt-0">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-cobalt-50 rounded-lg p-3 dark:bg-cobalt-900">
-                              <h4 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Brain Imaging</h4>
-                              <ul className="space-y-1.5 text-sm text-slate-700 dark:text-ink-2">
-                                <li className="flex items-start gap-2"><span className="text-cobalt-600 font-bold dark:text-cobalt-300">1.</span> <strong>MRI DWI</strong> (preferred) — 80% sensitivity for acute ischemia. Obtain within 24h.</li>
-                                <li className="flex items-start gap-2"><span className="text-cobalt-600 font-bold dark:text-cobalt-300">2.</span> <strong>CT Head</strong> — if MRI unavailable. Low sensitivity for TIA but rules out hemorrhage.</li>
-                                <li className="flex items-start gap-2"><span className="text-cobalt-600 font-bold dark:text-cobalt-300">3.</span> <strong>DWI-positive TIA</strong> = higher stroke risk. Consider as minor stroke.</li>
-                              </ul>
-                            </div>
-                            <div className="bg-warn-50 rounded-lg p-3 dark:bg-warn-950">
-                              <h4 className="font-semibold text-warn-800 text-sm mb-2 dark:text-warn-300">Vascular Imaging</h4>
-                              <ul className="space-y-1.5 text-sm text-slate-700 dark:text-ink-2">
-                                <li className="flex items-start gap-2"><span className="text-warn-700 font-bold dark:text-warn-300">1.</span> <strong>CTA Head & Neck</strong> (preferred) or MRA — Obtain STAT</li>
-                                <li className="flex items-start gap-2"><span className="text-warn-700 font-bold dark:text-warn-300">2.</span> <strong>Carotid duplex</strong> — if anterior circulation TIA + CTA not done</li>
-                                <li className="flex items-start gap-2"><span className="text-warn-700 font-bold dark:text-warn-300">3.</span> <strong>Intracranial vessel imaging</strong> — CTA or MRA for ICAD evaluation</li>
-                              </ul>
-                            </div>
-                          </div>
+                            <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for TIA imaging. See Guidelines &amp; References for the current society guidance.</p>
                           </div>
                         </details>
 
@@ -31352,29 +30450,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </summary>
                           <div className="p-4 pt-0">
                           <div className="space-y-3">
-                            <div className="bg-ok-50 border border-ok-200 rounded-lg p-3 dark:bg-ok-950 dark:border-ok-800">
-                              <h4 className="font-semibold text-ok-800 text-sm mb-2 dark:text-ok-300">High-Risk TIA or Minor Stroke (NIHSS ≤3) — CHANCE/POINT Protocol</h4>
-                              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
-                                <div className="bg-white rounded p-2 border border-ok-100 dark:bg-card">
-                                  <div className="font-semibold text-slate-800 dark:text-ink">Day 1 (Loading)</div>
-                                  <div className="text-slate-600 dark:text-ink-2">ASA 325 mg + Clopidogrel 300 mg</div>
-                                </div>
-                                <div className="bg-white rounded p-2 border border-ok-100 dark:bg-card">
-                                  <div className="font-semibold text-slate-800 dark:text-ink">Days 2-21</div>
-                                  <div className="text-slate-600 dark:text-ink-2">ASA 81 mg + Clopidogrel 75 mg daily</div>
-                                </div>
-                                <div className="bg-white rounded p-2 border border-ok-100 dark:bg-card">
-                                  <div className="font-semibold text-slate-800 dark:text-ink">Day 22+</div>
-                                  <div className="text-slate-600 dark:text-ink-2">Mono antiplatelet (ASA 81 or Clop 75)</div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 text-sm dark:bg-warn-950 dark:border-warn-800">
-                              <strong className="text-warn-800 dark:text-warn-300">CYP2C19 Testing:</strong> Order CYP2C19 genotyping. Poor metabolizers (*2/*2, *2/*3, *3/*3) have reduced clopidogrel efficacy — switch to ticagrelor 90mg BID.
-                            </div>
-                            <div className="bg-slate-50 border border-line rounded-lg p-3 text-sm text-slate-700 dark:bg-paper-2 dark:text-ink-2">
-                              <strong>If AF identified:</strong> Switch from DAPT to anticoagulation (DOAC preferred). Do NOT combine long-term DAPT + anticoagulation.
-                            </div>
                             <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
                               <h4 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Phenotype-Based DAPT Quick Matrix</h4>
                               <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: phenotype-based DAPT quick matrix">
@@ -31394,29 +30469,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">21 days, then single antiplatelet</td>
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">CHANCE, POINT &mdash; CHANCE enrolled &le;24h (21-day DAPT); POINT enrolled &le;12h (trial DAPT duration was 90 days)</td>
                                     </tr>
-                                    <tr className="bg-white/60 dark:bg-overlay">
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">CYP2C19 loss-of-function carrier</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">ASA + ticagrelor (then ticagrelor monotherapy)</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">21 days DAPT</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">CHANCE-2</td>
-                                    </tr>
                                     <tr className="bg-white/80 dark:bg-cobalt-900">
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">Non-cardioembolic minor stroke (NIHSS &le;3) or high-risk TIA (ABCD2 &ge;4) without high bleed risk</td>
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">ASA + ticagrelor</td>
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">30 days</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">THALES (enrolled &le;24h); AIS 2026 Class IIb framing</td>
+                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">THALES (enrolled &le;24h)</td>
                                     </tr>
                                     <tr className="bg-white/60 dark:bg-overlay">
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">Atherosclerotic minor stroke (NIHSS &le;5) or high-risk TIA (ABCD2 &ge;4) enrolled within 72h</td>
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">ASA + clopidogrel</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">21 days DAPT then clopidogrel through day 90</td>
+                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">21 days DAPT</td>
                                       <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">INSPIRES</td>
-                                    </tr>
-                                    <tr className="bg-white/80 dark:bg-cobalt-900">
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">Severe symptomatic intracranial stenosis (70-99%)</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">ASA + clopidogrel with intensive risk-factor control</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">Up to 90 days</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">SAMMPRIS paradigm</td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -31435,24 +30498,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             Etiologic Workup Checklist
                           </summary>
                           <div className="p-4 pt-0">
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                            {[
-                              { cat: 'Cardiac', items: ['12-Lead ECG', 'Continuous telemetry (≥24h)', 'TTE with bubble study', 'Extended cardiac monitoring (14-30 day) if no AF on telemetry'], bg: 'bg-crit-50 dark:bg-crit-950', heading: 'text-crit-800 dark:text-crit-300', bullet: 'text-crit-400' },
-                              { cat: 'Vascular', items: ['CTA Head & Neck (or MRA)', 'Carotid duplex if anterior TIA', 'Vessel wall MRI if ICAD suspected', 'Aortic arch imaging if embolism suspected'], bg: 'bg-cobalt-50 dark:bg-cobalt-900', heading: 'text-cobalt-800 dark:text-cobalt-300', bullet: 'text-cobalt-400' },
-                              { cat: 'Laboratory', items: ['CBC, BMP, HbA1c', 'Fasting lipid panel', 'TSH', 'ESR/CRP if vasculitis suspected', 'Hypercoagulable panel if age <50 or cryptogenic'], bg: 'bg-ok-50 dark:bg-ok-950', heading: 'text-ok-800 dark:text-ok-300', bullet: 'text-ok-400' }
-                            ].map(section => (
-                              <div key={section.cat} className={`${section.bg} rounded-lg p-3`}>
-                                <h4 className={`font-semibold ${section.heading} text-sm mb-2`}>{section.cat}</h4>
-                                <ul className="space-y-1">
-                                  {section.items.map((item, i) => (
-                                    <li key={i} className="text-xs text-slate-700 flex items-start gap-1 dark:text-ink-2">
-                                      <span className={`${section.bullet} mt-0.5`}>&#x2022;</span> {item}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ))}
-                          </div>
+                            <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for TIA etiologic workup. See Guidelines &amp; References for the current society guidance.</p>
                           </div>
                         </details>
 
@@ -31463,22 +30509,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             Carotid Stenosis Management
                           </summary>
                           <div className="p-4 pt-0">
-                          <div className="space-y-2">
-                            {[
-                              { stenosis: '70-99% Symptomatic', action: 'CEA within 2 weeks (Class I, LOE A)', detail: 'CAS reasonable alternative if high surgical risk. Best outcomes if revascularization within 14 days.', rowBg: 'bg-crit-50 border-crit-200 dark:bg-crit-950 dark:border-crit-800', badge: 'text-crit-700 bg-crit-100 dark:text-crit-300 dark:bg-crit-950' },
-                              { stenosis: '50-69% Symptomatic', action: 'Individualize — CEA may be considered', detail: 'Benefit greatest in males, age >75, recent symptoms. Consider patient comorbidities.', rowBg: 'bg-warn-50 border-warn-200 dark:bg-warn-950 dark:border-warn-800', badge: 'text-warn-700 bg-warn-100 dark:text-warn-300 dark:bg-warn-950' },
-                              { stenosis: '<50% Symptomatic', action: 'Medical management only', detail: 'DAPT + high-intensity statin + BP control. Revascularization NOT recommended.', rowBg: 'bg-ok-50 border-ok-200 dark:bg-ok-950 dark:border-ok-800', badge: 'text-ok-700 bg-ok-100 dark:text-ok-300 dark:bg-ok-950' },
-                              { stenosis: 'Near-occlusion / string sign', action: 'Medical management preferred', detail: 'Revascularization benefit uncertain. Aggressive medical therapy.', rowBg: 'bg-slate-50 border-slate-200 dark:bg-paper-2 dark:border-line', badge: 'text-slate-700 bg-slate-100 dark:text-ink-2 dark:bg-paper-2' }
-                            ].map(row => (
-                              <div key={row.stenosis} className={`flex items-start gap-3 p-3 rounded-lg border ${row.rowBg}`}>
-                                <div className={`shrink-0 px-2 py-1 rounded text-xs font-bold ${row.badge}`}>{row.stenosis}</div>
-                                <div>
-                                  <div className="text-sm font-semibold text-slate-800 dark:text-ink">{row.action}</div>
-                                  <div className="text-xs text-slate-600 dark:text-ink-2">{row.detail}</div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
+                            <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for carotid stenosis management. See Guidelines &amp; References for the current society guidance.</p>
                           </div>
                         </details>
 
@@ -31488,23 +30519,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             Secondary Prevention — Complete Checklist
                           </summary>
                           <div className="px-4 pb-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                              {[
-                                { cat: 'Antithrombotic', items: ['DAPT x21d then mono antiplatelet (if no AF)', 'DOAC if AF confirmed (apixaban/rivaroxaban preferred)', 'CYP2C19 genotyping for clopidogrel efficacy'] },
-                                { cat: 'Lipid Management', items: ['High-intensity statin: Atorvastatin 80mg or Rosuvastatin 20-40mg', 'LDL target <70 mg/dL', 'Add ezetimibe 10mg if not at goal', 'PCSK9i if refractory (evolocumab, alirocumab)'] },
-                                { cat: 'Blood Pressure', items: ['Target <130/80 mmHg (Class I)', 'Initiate/optimize after 24-48h post-event', 'Preferred: ACE-I/ARB + thiazide or CCB', 'Home BP monitoring'] },
-                                { cat: 'Diabetes & Lifestyle', items: ['HbA1c target <7%', 'GLP-1 RA (semaglutide/liraglutide) — CV benefit', 'Smoking cessation (varenicline/NRT)', 'Mediterranean diet', 'Exercise: 150 min/week moderate intensity'] }
-                              ].map(section => (
-                                <div key={section.cat} className="bg-slate-50 rounded-lg p-3 dark:bg-paper-2">
-                                  <h4 className="font-semibold text-slate-800 text-sm mb-1 dark:text-ink">{section.cat}</h4>
-                                  <ul className="space-y-0.5">
-                                    {section.items.map((item, i) => (
-                                      <li key={i} className="text-xs text-slate-600 dark:text-ink-2">&#x2022; {item}</li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              ))}
-                            </div>
+                            <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for secondary prevention. See Guidelines &amp; References for the current society guidance.</p>
                           </div>
                         </details>
                       </div>
@@ -31519,345 +30534,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h2 className="text-xl font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
                                                         Cerebral Venous Thrombosis (CVT) Management
                           </h2>
-                          <p className="text-sm text-slate-600 mt-1 dark:text-ink-2">AHA/ASA 2024 Guidelines — CSBP 2024</p>
+                          <p className="text-sm text-slate-600 mt-1 dark:text-ink-2">No institutional protocol document is on file for cerebral venous thrombosis. See Guidelines &amp; References for the current society guidance.</p>
                         </div>
 
-                        {/* CVT Treatment Checklist */}
-                        <details className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                          <summary className="cursor-pointer p-4 font-bold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex items-center gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                            Acute Management Checklist
-                          </summary>
-                          <div className="p-4 pt-0">
-                          <div className="space-y-2">
-                            <label className="flex items-start gap-2 cursor-pointer p-2 rounded-lg hover:bg-cobalt-50 dark:hover:bg-cobalt-900">
-                              <input type="checkbox" checked={!!telestrokeNote.cvtAnticoagStarted}
-                                onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, cvtAnticoagStarted: c})); }}
-                                className="mt-0.5 rounded border-cobalt-300 text-cobalt-600 dark:border-cobalt-700 dark:text-cobalt-300" />
-                              <div>
-                                <span className="text-sm font-medium text-slate-800 dark:text-ink">Anticoagulation initiated</span>
-                                <span className="block text-xs text-slate-600 dark:text-mute">LMWH or UFH, even with hemorrhagic infarction (Class I, LOE B-NR)</span>
-                              </div>
-                            </label>
-                            {telestrokeNote.cvtAnticoagStarted && (
-                              <div className="ml-8 mb-2">
-                                <select aria-label="Anticoagulation agent" value={telestrokeNote.cvtAnticoagType || ''}
-                                  onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, cvtAnticoagType: v})); }}
-                                  className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm dark:border-strong">
-                                  <option value="">-- Select agent --</option>
-                                  <option value="enoxaparin">Enoxaparin 1 mg/kg SC q12h</option>
-                                  <option value="ufh">UFH weight-based (aPTT 60-80s)</option>
-                                  <option value="other">Other</option>
-                                </select>
-                              </div>
-                            )}
-                            <label className="flex items-start gap-2 cursor-pointer p-2 rounded-lg hover:bg-cobalt-50 dark:hover:bg-cobalt-900">
-                              <input type="checkbox" checked={!!telestrokeNote.cvtIcpManaged}
-                                onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, cvtIcpManaged: c})); }}
-                                className="mt-0.5 rounded border-cobalt-300 text-cobalt-600 dark:border-cobalt-700 dark:text-cobalt-300" />
-                              <div>
-                                <span className="text-sm font-medium text-slate-800 dark:text-ink">ICP assessment/management</span>
-                                <span className="block text-xs text-slate-600 dark:text-mute">HOB 30°, acetazolamide if needed, LP drainage for visual impairment</span>
-                              </div>
-                            </label>
-                            <label className="flex items-start gap-2 cursor-pointer p-2 rounded-lg hover:bg-cobalt-50 dark:hover:bg-cobalt-900">
-                              <input type="checkbox" checked={!!telestrokeNote.cvtSeizureManaged}
-                                onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, cvtSeizureManaged: c})); }}
-                                className="mt-0.5 rounded border-cobalt-300 text-cobalt-600 dark:border-cobalt-700 dark:text-cobalt-300" />
-                              <div>
-                                <span className="text-sm font-medium text-slate-800 dark:text-ink">Seizure management addressed</span>
-                                <span className="block text-xs text-slate-600 dark:text-mute">Treat acute seizures with levetiracetam; routine prophylaxis NOT recommended (AHA/ASA). EEG if supratentorial lesion with altered consciousness.</span>
-                              </div>
-                            </label>
-                            <label className="flex items-start gap-2 cursor-pointer p-2 rounded-lg hover:bg-cobalt-50 dark:hover:bg-cobalt-900">
-                              <input type="checkbox" checked={!!telestrokeNote.cvtHematologyConsulted}
-                                onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, cvtHematologyConsulted: c})); }}
-                                className="mt-0.5 rounded border-cobalt-300 text-cobalt-600 dark:border-cobalt-700 dark:text-cobalt-300" />
-                              <div>
-                                <span className="text-sm font-medium text-slate-800 dark:text-ink">Hematology consult / thrombophilia workup</span>
-                                <span className="block text-xs text-slate-600 dark:text-mute">Factor V Leiden, prothrombin mutation, protein C/S, APLA</span>
-                              </div>
-                            </label>
-                          </div>
-                          </div>
-                        </details>
 
-                        {/* CVT Treatment Timeline */}
-                        <details className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                          <summary className="cursor-pointer p-4 font-bold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex items-center gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                            <i aria-hidden="true" data-lucide="clock" className="w-5 h-5"></i>
-                            Treatment Timeline &amp; Escalation
-                          </summary>
-                          <div className="p-4 pt-0">
-                          <div className="relative">
-                            {/* Timeline strip */}
-                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
-                              <div className="bg-cobalt-50 border-l-4 border-l-indigo-500 p-2 rounded-r dark:bg-cobalt-900">
-                                <p className="font-bold text-cobalt-800 uppercase dark:text-cobalt-300">Acute (Day 0-14)</p>
-                                <ul className="text-slate-700 mt-1 space-y-0.5 dark:text-ink-2">
-                                  <li>&bull; Therapeutic LMWH or UFH</li>
-                                  <li>&bull; Even with hemorrhagic infarction (Class I)</li>
-                                  <li>&bull; ICP management if needed</li>
-                                  <li>&bull; Seizure treatment (not prophylaxis)</li>
-                                </ul>
-                              </div>
-                              <div className="bg-cobalt-50 border-l-4 border-l-indigo-400 p-2 rounded-r dark:bg-cobalt-900">
-                                <p className="font-bold text-cobalt-700 uppercase dark:text-cobalt-300">Subacute (Week 2-4)</p>
-                                <ul className="text-slate-700 mt-1 space-y-0.5 dark:text-ink-2">
-                                  <li>&bull; Transition to warfarin (INR 2-3) or DOAC</li>
-                                  <li>&bull; DOAC reasonable if no APS (Class IIb, ACTION-CVT)</li>
-                                  <li>&bull; Repeat imaging (MRV) at 3-6 months</li>
-                                </ul>
-                              </div>
-                              <div className="bg-cobalt-50 border-l-4 border-l-indigo-300 p-2 rounded-r dark:bg-cobalt-900">
-                                <p className="font-bold text-cobalt-700 uppercase dark:text-cobalt-300">Duration (3-12 mo)</p>
-                                <ul className="text-slate-700 mt-1 space-y-0.5 dark:text-ink-2">
-                                  <li>&bull; Provoked + resolved: 3-6 months</li>
-                                  <li>&bull; Unprovoked: 6-12 months</li>
-                                  <li>&bull; Recurrent VTE or severe thrombophilia: indefinite</li>
-                                  <li>&bull; APS confirmed: warfarin (not DOAC)</li>
-                                </ul>
-                              </div>
-                              <div className="bg-crit-50 border-l-4 border-l-red-500 p-2 rounded-r dark:bg-crit-950">
-                                <p className="font-bold text-crit-700 uppercase dark:text-crit-300">Escalation Triggers</p>
-                                <ul className="text-slate-700 mt-1 space-y-0.5 dark:text-ink-2">
-                                  <li>&bull; Worsening despite anticoag &rarr; EVT consultation</li>
-                                  <li>&bull; Severe ICP with visual loss &rarr; LP / shunt</li>
-                                  <li>&bull; Herniation risk &rarr; decompressive craniectomy</li>
-                                  <li>&bull; Refractory seizures &rarr; continuous EEG</li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <p className="text-xs text-slate-600 mt-2 italic dark:text-mute">Saposnik G et al. Stroke 2024. AHA/ASA CVT Scientific Statement. ACTION-CVT: Yaghi S et al. Stroke 2022;53:728-738. PMID: 35143325.</p>
-                          </div>
-                        </details>
 
-                        {/* CVT Risk Factors */}
-                        <details className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                          <summary className="cursor-pointer p-4 font-bold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex items-center gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                            Risk Factor Assessment
-                          </summary>
-                          <div className="p-4 pt-0">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                            <div className="bg-cobalt-50 p-3 rounded-lg dark:bg-cobalt-900">
-                              <h4 className="font-semibold text-cobalt-800 mb-1 dark:text-cobalt-300">Prothrombotic</h4>
-                              <ul className="text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
-                                <li>• Factor V Leiden mutation</li>
-                                <li>• Prothrombin G20210A</li>
-                                <li>• Protein C/S deficiency</li>
-                                <li>• Antithrombin III deficiency</li>
-                                <li>• Antiphospholipid syndrome</li>
-                                <li>• Hyperhomocysteinemia</li>
-                              </ul>
-                            </div>
-                            <div className="bg-cobalt-50 p-3 rounded-lg dark:bg-cobalt-900">
-                              <h4 className="font-semibold text-cobalt-800 mb-1 dark:text-cobalt-300">Acquired</h4>
-                              <ul className="text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
-                                <li>• OCP / hormonal therapy</li>
-                                <li>• Pregnancy / puerperium</li>
-                                <li>• Malignancy</li>
-                                <li>• Infection (mastoiditis, sinusitis)</li>
-                                <li>• IBD / nephrotic syndrome</li>
-                                <li>• Dehydration / recent surgery</li>
-                              </ul>
-                            </div>
-                          </div>
-                          </div>
-                        </details>
 
-                        {/* CVT Imaging */}
-                        <details className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                          <summary className="cursor-pointer p-4 font-bold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex items-center gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                            Diagnostic Imaging
-                          </summary>
-                          <div className="p-4 pt-0">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                            <div className="bg-white border border-line p-3 rounded-lg dark:bg-card">
-                              <h4 className="font-semibold text-slate-800 mb-1 dark:text-ink">First-line</h4>
-                              <ul className="text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
-                                <li>• <strong>MRI + MRV</strong> (preferred)</li>
-                                <li>• CT venography if MRI unavailable</li>
-                                <li>• Non-contrast CT: cord sign, dense triangle sign, hemorrhagic venous infarct</li>
-                              </ul>
-                            </div>
-                            <div className="bg-white border border-line p-3 rounded-lg dark:bg-card">
-                              <h4 className="font-semibold text-slate-800 mb-1 dark:text-ink">Follow-up</h4>
-                              <ul className="text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
-                                <li>• Repeat MRV at 3-6 months</li>
-                                <li>• Assess for recanalization</li>
-                                <li>• Guide duration of anticoagulation</li>
-                              </ul>
-                            </div>
-                          </div>
-                          </div>
-                        </details>
 
-                        {/* Endovascular Therapy */}
-                        <details className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                          <summary className="cursor-pointer p-4 font-bold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex items-center gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                            Endovascular Therapy Consideration
-                          </summary>
-                          <div className="p-4 pt-0">
-                          <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 text-sm dark:bg-warn-950 dark:border-warn-800">
-                            <p className="text-warn-800 font-medium mb-1 dark:text-warn-300">Consider EVT if clinical deterioration despite adequate anticoagulation:</p>
-                            <ul className="text-xs text-warn-700 space-y-0.5 dark:text-warn-300">
-                              <li>• Mechanical thrombectomy ± local thrombolysis</li>
-                              <li>• Class IIb recommendation (LOE C-LD)</li>
-                              <li>• Contact interventional neuroradiology early</li>
-                              <li>• Decompressive craniectomy if impending herniation (Class IIa)</li>
-                            </ul>
-                          </div>
-                          </div>
-                        </details>
 
-                        {/* Long-term Management */}
-                        <details className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                          <summary className="cursor-pointer p-4 font-bold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex items-center gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                            Long-term Anticoagulation
-                          </summary>
-                          <div className="p-4 pt-0">
-                          <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: long-term anticoagulation scenarios">
-                            <table className="w-full text-sm border-collapse">
-                              <thead>
-                                <tr className="bg-cobalt-50 dark:bg-cobalt-900">
-                                  <th scope="col" className="border border-cobalt-200 px-3 py-2 text-left text-cobalt-800 dark:border-cobalt-700 dark:text-cobalt-300">Scenario</th>
-                                  <th scope="col" className="border border-cobalt-200 px-3 py-2 text-left text-cobalt-800 dark:border-cobalt-700 dark:text-cobalt-300">Duration</th>
-                                  <th scope="col" className="border border-cobalt-200 px-3 py-2 text-left text-cobalt-800 dark:border-cobalt-700 dark:text-cobalt-300">Agent</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td className="border border-cobalt-100 px-3 py-2 text-xs">Provoked (OCP, pregnancy, infection)</td>
-                                  <td className="border border-cobalt-100 px-3 py-2 text-xs font-medium">3-6 months</td>
-                                  <td className="border border-cobalt-100 px-3 py-2 text-xs">VKA (INR 2-3) preferred</td>
-                                </tr>
-                                <tr className="bg-slate-50 dark:bg-paper-2">
-                                  <td className="border border-cobalt-100 px-3 py-2 text-xs">Unprovoked / mild thrombophilia</td>
-                                  <td className="border border-cobalt-100 px-3 py-2 text-xs font-medium">6-12 months</td>
-                                  <td className="border border-cobalt-100 px-3 py-2 text-xs">VKA; DOAC may be considered (ACTION-CVT)</td>
-                                </tr>
-                                <tr>
-                                  <td className="border border-cobalt-100 px-3 py-2 text-xs">Recurrent VTE or severe thrombophilia</td>
-                                  <td className="border border-cobalt-100 px-3 py-2 text-xs font-medium">Indefinite</td>
-                                  <td className="border border-cobalt-100 px-3 py-2 text-xs">VKA (INR 2-3)</td>
-                                </tr>
-                                <tr className="bg-slate-50 dark:bg-paper-2">
-                                  <td className="border border-cobalt-100 px-3 py-2 text-xs">APS confirmed</td>
-                                  <td className="border border-cobalt-100 px-3 py-2 text-xs font-medium">Indefinite</td>
-                                  <td className="border border-cobalt-100 px-3 py-2 text-xs">VKA only (DOACs contraindicated)</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <p className="text-xs text-slate-600 mt-2 italic dark:text-mute">Reassess imaging (MRV) at 3-6 months to guide anticoag duration. Fischer U et al. Lancet Neurol. 2025.</p>
-                          </div>
-                        </details>
 
-                        {/* Special Populations */}
-                        <details className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                          <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                            <span>CVT in Special Populations</span>
-                            <i aria-hidden="true" data-lucide="chevron-down" className="w-4 h-4"></i>
-                          </summary>
-                          <div className="p-4 pt-0 space-y-3 text-sm">
-                            <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                              <h4 className="font-semibold text-cobalt-900 mb-2 dark:text-cobalt-300">Special-Population Flags</h4>
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                {[
-                                  {
-                                    key: 'pregnancyPostpartum',
-                                    label: 'Pregnancy / postpartum',
-                                    detail: 'Prefer LMWH/UFH. Avoid DOACs during pregnancy and breastfeeding.'
-                                  },
-                                  {
-                                    key: 'apsConfirmed',
-                                    label: 'APS confirmed',
-                                    detail: 'Use warfarin (INR 2-3) for long-term therapy; avoid DOACs.'
-                                  },
-                                  {
-                                    key: 'activeCancer',
-                                    label: 'Active cancer',
-                                    detail: 'Coordinate with hematology/oncology for agent interactions and procedures.'
-                                  },
-                                  {
-                                    key: 'severeThrombophilia',
-                                    label: 'Severe thrombophilia',
-                                    detail: 'High recurrence profile; extended/indefinite anticoagulation often needed.'
-                                  }
-                                ].map((item) => (
-                                  <label key={item.key} className="flex items-start gap-2 cursor-pointer rounded-lg border border-cobalt-100 bg-white p-2 dark:bg-card">
-                                    <input
-                                      type="checkbox"
-                                      checked={!!(telestrokeNote.cvtSpecialPopulation || {})[item.key]}
-                                      onChange={(e) => {
-                                        const checked = e.target.checked;
-                                        setTelestrokeNote((prev) => ({
-                                          ...prev,
-                                          cvtSpecialPopulation: { ...(prev.cvtSpecialPopulation || {}), [item.key]: checked }
-                                        }));
-                                      }}
-                                      className="mt-0.5 rounded border-cobalt-300 text-cobalt-600 dark:border-cobalt-700 dark:text-cobalt-300"
-                                    />
-                                    <div>
-                                      <span className="text-xs font-semibold text-slate-800 dark:text-ink">{item.label}</span>
-                                      <span className="block text-xs text-slate-600 dark:text-mute">{item.detail}</span>
-                                    </div>
-                                  </label>
-                                ))}
-                              </div>
-                              <div className={`mt-3 rounded-lg border p-2 text-xs ${
-                                cvtSpecialPopulationPlan.riskTier === 'high'
-                                  ? 'bg-crit-50 border-crit-200 text-crit-800 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300'
-                                  : cvtSpecialPopulationPlan.riskTier === 'moderate'
-                                    ? 'bg-warn-50 border-warn-200 text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300'
-                                    : 'bg-ok-50 border-ok-200 text-ok-800 dark:bg-ok-950 dark:border-ok-800 dark:text-ok-300'
-                              }`}>
-                                <p className="font-semibold">
-                                  {cvtSpecialPopulationPlan.riskTier === 'high'
-                                    ? 'High-complexity CVT profile'
-                                    : cvtSpecialPopulationPlan.riskTier === 'moderate'
-                                      ? 'Moderate-complexity CVT profile'
-                                      : 'Standard CVT profile'}
-                                </p>
-                                <p className="mt-0.5">Acute agent: {cvtSpecialPopulationPlan.acuteAgent}</p>
-                                <p>Long-term plan: {cvtSpecialPopulationPlan.longTerm}</p>
-                                <p>Duration target: {cvtSpecialPopulationPlan.duration}</p>
-                                {cvtSpecialPopulationPlan.recommendations.length > 0 && (
-                                  <ul className="mt-1 space-y-0.5">
-                                    {cvtSpecialPopulationPlan.recommendations.map((item, index) => (
-                                      <li key={`${item}-${index}`}>&bull; {item}</li>
-                                    ))}
-                                  </ul>
-                                )}
-                                {cvtSpecialPopulationPlan.cautions.length > 0 && (
-                                  <div className="mt-1 font-medium">
-                                    {cvtSpecialPopulationPlan.cautions.map((item, index) => (
-                                      <p key={`${item}-${index}`}>Caution: {item}</p>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            <div className="bg-pink-50 border border-pink-200 rounded-lg p-3 dark:bg-pink-950 dark:border-pink-800">
-                              <h4 className="font-semibold text-pink-800 mb-1 dark:text-pink-300">Pregnancy / Postpartum</h4>
-                              <ul className="text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
-                                <li>• LMWH throughout pregnancy (UFH also acceptable)</li>
-                                <li>• Warfarin contraindicated in 1st trimester, acceptable postpartum</li>
-                                <li>• DOACs contraindicated in pregnancy/breastfeeding</li>
-                                <li>• Future pregnancy not contraindicated, but prophylactic LMWH recommended</li>
-                              </ul>
-                            </div>
-                            <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
-                              <h4 className="font-semibold text-slate-800 mb-1 dark:text-ink">Pediatric CVT</h4>
-                              <ul className="text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
-                                <li>• Anticoagulation recommended (LMWH or UFH)</li>
-                                <li>• Treat underlying infection aggressively</li>
-                                <li>• 3-6 months anticoagulation typical</li>
-                                <li>• Thrombophilia workup recommended</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </details>
+
+
+
+
+
+
+
                       </div>
                     )}
                     {/* End of CVT Management Content */}
@@ -31876,7 +30568,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* PHQ-9 depression screen (clinic) */}
                     <details className="rounded border border-line bg-white p-0 dark:bg-card">
                       <summary className="cursor-pointer p-3 font-semibold text-slate-900 dark:text-ink">PHQ-9 Depression Screen (post-stroke)</summary>
-                      <div className="p-3 pt-0"><PHQ9Screen /></div>
+                      <div className="p-3 pt-0"><p className="text-xs text-slate-600 dark:text-ink-2">No institutional protocol document is on file for post-stroke depression screening. See Guidelines &amp; References for the current society guidance.</p></div>
                     </details>
                     {/* Quick Dosing Reference */}
                     <details className="bg-caution-soft border border-line border-l-[3px] border-l-caution rounded-md p-3">
@@ -31887,12 +30579,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {[
                           { label: 'TNK (Tenecteplase)', dose: `0.25 mg/kg IV bolus (max 25 mg)${telestrokeNote.weight ? ` → ${Math.min(25, Math.round(parseFloat(telestrokeNote.weight) * 0.25 * 2) / 2)} mg` : ''}`, color: 'emerald' },
                           { label: 'Alteplase (tPA)', dose: `0.9 mg/kg IV (max 90 mg): 10% bolus, 90% over 60 min${telestrokeNote.weight ? ` → ${Math.min(90, Math.round(parseFloat(telestrokeNote.weight) * 0.9 * 10) / 10)} mg` : ''}`, color: 'blue' },
-                          { label: 'Nimodipine (SAH)', dose: '60 mg PO/NG q4h x 21 days. If hypotension: 30 mg q2h.', color: 'purple' },
                           { label: 'PCC / Kcentra', dose: '2000 units IV immediately (fixed dose, not weight-based). If INR >1.5 after infusion, page hematology and consider an additional 500 units.', color: 'red' },
                           { label: 'Idarucizumab', dose: '5 g IV (two 2.5 g vials) over 5-10 min. For dabigatran reversal.', color: 'rose' },
                           { label: 'FFP (if no PCC)', dose: `15 mL/kg IV (4 units emergency-release plasma immediately; request an additional 4 units). Goal INR <1.5.${telestrokeNote.weight ? ` → ${Math.round(parseFloat(telestrokeNote.weight) * 15)} mL (~${Math.round(parseFloat(telestrokeNote.weight) * 15 / 250)} units)` : ''}`, color: 'amber' },
-                          { label: 'Labetalol IV', dose: '10-20 mg IV q10-20min (max 300 mg). Alt: nicardipine 5 mg/h, titrate q5min by 2.5 mg/h (max 15).', color: 'slate' },
-                          { label: 'Levetiracetam', dose: '1000-1500 mg IV load, then 500-1000 mg IV/PO q12h. For acute seizures.', color: 'indigo' }
                         ].map(item => {
                           // Each entry: container (border + hover, incl. dark variants)
                           // kept separate from the label text color (light + dark) so
@@ -32112,8 +30801,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <p><strong>Clinical significance:</strong></p>
                           <p>NIHSS ≤3: Consider DAPT (CHANCE/POINT criteria)</p>
                           <p>NIHSS ≥6: Likely LVO — consider EVT evaluation</p>
-                          <p>NIHSS ≥8: CATALYST moderate severity — DOAC start day 3-5</p>
-                          <p>NIHSS &gt;15: CATALYST severe — DOAC start day 6-14</p>
                         </div>
                         <details className="mt-3 bg-warn-50 border border-warn-200 rounded-lg dark:bg-warn-950 dark:border-warn-800">
                           <summary className="cursor-pointer p-2 text-xs font-semibold text-warn-800 hover:bg-warn-100 rounded-lg dark:text-warn-300 dark:hover:bg-warn-900">NIHSS Scoring Pitfalls</summary>
@@ -32190,22 +30877,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Vasospasm Risk</span>
                       </summary>
                       <div className="p-4">
-                        <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Predicts risk of symptomatic vasospasm after SAH based on CT appearance.</p>
-                        <div className="space-y-1.5">
-                          {[
-                            {grade: 0, desc: 'No SAH or IVH', risk: '~0%', color: 'bg-ok-50 border-ok-200 dark:bg-ok-950 dark:border-ok-800'},
-                            {grade: 1, desc: 'Thin SAH, no IVH', risk: '~24%', color: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-950 dark:border-yellow-800'},
-                            {grade: 2, desc: 'Thin SAH with IVH', risk: '~33%', color: 'bg-warn-50 border-warn-200 dark:bg-warn-950 dark:border-warn-800'},
-                            {grade: 3, desc: 'Thick SAH, no IVH', risk: '~33%', color: 'bg-orange-50 border-orange-200 dark:bg-orange-950 dark:border-orange-800'},
-                            {grade: 4, desc: 'Thick SAH with IVH', risk: '~40%', color: 'bg-crit-50 border-crit-200 dark:bg-crit-950 dark:border-crit-800'},
-                          ].map(item => (
-                            <div key={item.grade} className={`flex items-center justify-between p-2 rounded border text-sm ${item.color}`}>
-                              <span><strong>Grade {item.grade}:</strong> {item.desc}</span>
-                              <span className="font-semibold text-xs">Vasospasm risk: {item.risk}</span>
-                            </div>
-                          ))}
-                        </div>
-                        <p className="text-xs text-slate-600 mt-2 italic dark:text-mute">Frontera et al., Neurosurgery 2006. Thin = &lt;1mm, Thick = ≥1mm.</p>
+                        <p className="text-xs text-slate-600 dark:text-ink-2">No institutional protocol document is on file for vasospasm risk grading. See Guidelines &amp; References for the current society guidance.</p>
                       </div>
                     </details>
 
@@ -32357,7 +31029,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <span className="font-semibold text-warn-700 dark:text-warn-300">Illustrative comfort-care-excluded cohort (unvalidated)</span> — de-identified, provenance-unverified figures shown only to teach the <span className="italic">self-fulfilling-prophecy effect of early care limitation</span>. NOT validated or institutional data; do not use for individual prognostication. When aggressive care is sustained, observed mortality falls well below the Hemphill estimates that were derived from cohorts with high rates of early DNR/withdrawal.
                               </p>
                               <p className="mt-1 text-slate-600 dark:text-mute">
-                                Standard column: Hemphill et al., Stroke 2001. AHA/ASA 2022 ICH guideline recommends postponing new DNR orders until at least the second full hospital day (Class IIa).
+                                Standard column: Hemphill et al., Stroke 2001.
                               </p>
                             </div>
                           </details>
@@ -32551,7 +31223,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <span className="text-sm font-normal text-rose-700 dark:text-rose-300">Prognosis</span>
                       </summary>
                       <div className="p-4">
-                        <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Predicts functional independence (GOS ≥4) at 90 days after ICH. Range 0-11. Higher = better prognosis. (Rost et al., Stroke 2008)</p>
                         {(() => {
                           const funcItems = {
                             volume: ichVolumeParams.a && ichVolumeParams.b && ichVolumeParams.thicknessMm && ichVolumeParams.numSlices
@@ -32635,10 +31306,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                               <div className={`border rounded-lg p-3 ${funcOutcome.color}`}>
                                 <p className="text-sm font-bold">FUNC Score: {score}/11 {!hasAll && '(partial — enter missing values)'}</p>
-                                <p className="text-xs mt-1">{funcOutcome.label}</p>
                               </div>
                               <div className="bg-warn-50 border border-warn-200 rounded p-2 text-xs text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
-                                <strong>Important:</strong> FUNC Score should NOT be used alone for withdrawal-of-care decisions. Early aggressive care limitations (self-fulfilling prophecy) contribute to poor outcomes. AHA/ASA recommends postponing DNR orders for at least 24h after ICH onset.
+                                <strong>Important:</strong> FUNC Score should NOT be used alone for withdrawal-of-care decisions. Early aggressive care limitations (self-fulfilling prophecy) contribute to poor outcomes.
                               </div>
                             </div>
                           );
@@ -32706,14 +31376,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </p>
                         </div>
                       )}
-                      <div className="mt-3 p-2 bg-slate-50 rounded border border-line dark:bg-paper-2">
-                        <p className="text-xs font-semibold text-slate-600 mb-1 dark:text-ink-2">EVT Trial Eligibility by Premorbid mRS:</p>
-                        <div className="text-xs text-slate-600 space-y-0.5 dark:text-mute">
-                          <p>mRS 0-1: MR CLEAN, ESCAPE, EXTEND-IA, SWIFT PRIME, REVASCAT, DAWN, DEFUSE 3</p>
-                          <p>mRS 0-2: EXTEND, ECASS III (IVT), HERMES meta-analysis</p>
-                          <p>mRS 0-3: SELECT2 (large core), ANGEL-ASPECT</p>
-                        </div>
-                      </div>
                       </div>
                     </details>
 
@@ -33057,16 +31719,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </label>
                         </div>
 
-                        <div className="bg-white p-3 rounded border dark:bg-card" aria-live="polite" aria-atomic="true">
-                          <h4 className="font-semibold text-pink-700 mb-2 dark:text-pink-300">Annual Bleeding Risk</h4>
-                          <div className="text-sm space-y-1">
-                            <p className={calculateHASBLEDScore(hasbledItems) === 0 ? "font-bold text-pink-600 dark:text-pink-300" : ""}><strong>Score 0:</strong> 1.13% per year</p>
-                            <p className={calculateHASBLEDScore(hasbledItems) === 1 ? "font-bold text-pink-600 dark:text-pink-300" : ""}><strong>Score 1:</strong> 1.02% per year</p>
-                            <p className={calculateHASBLEDScore(hasbledItems) === 2 ? "font-bold text-pink-600 dark:text-pink-300" : ""}><strong>Score 2:</strong> 1.88% per year</p>
-                            <p className={calculateHASBLEDScore(hasbledItems) >= 3 ? "font-bold text-pink-600 dark:text-pink-300" : ""}><strong>Score ≥3:</strong> 3.74% per year (high risk)</p>
-                          </div>
-                          <p className="text-xs text-slate-600 mt-2 italic dark:text-ink-2">High risk (≥3) indicates need for more frequent monitoring and caution with anticoagulation, but should not automatically exclude from treatment.</p>
-                        </div>
                       </div>
                     </details>
 
@@ -33156,63 +31808,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-white p-3 rounded border dark:bg-card" aria-live="polite" aria-atomic="true">
-                          <h4 className="font-semibold mb-2">PFO-attributable fraction</h4>
-                          <div className="text-sm">
-                            <p className={calculateROPEScore(ropeItems) <= 3 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 0-3:</strong> 0-23%</p>
-                            <p className={calculateROPEScore(ropeItems) === 4 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 4:</strong> 38%</p>
-                            <p className={calculateROPEScore(ropeItems) === 5 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 5:</strong> 34%</p>
-                            <p className={calculateROPEScore(ropeItems) === 6 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 6:</strong> 62%</p>
-                            <p className={calculateROPEScore(ropeItems) === 7 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 7:</strong> 72%</p>
-                            <p className={calculateROPEScore(ropeItems) === 8 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 8:</strong> 84%</p>
-                            <p className={calculateROPEScore(ropeItems) >= 9 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 9-10:</strong> 88%</p>
-                          </div>
-                        </div>
-                        <div className="bg-white p-3 rounded border dark:bg-card">
-                          <h4 className="font-semibold mb-2">2-Year Recurrent Stroke/TIA Risk</h4>
-                          <div className="text-sm">
-                            <p className={calculateROPEScore(ropeItems) <= 3 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 0-3:</strong> 20%</p>
-                            <p className={calculateROPEScore(ropeItems) === 4 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 4:</strong> 12%</p>
-                            <p className={calculateROPEScore(ropeItems) === 5 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 5:</strong> 15%</p>
-                            <p className={calculateROPEScore(ropeItems) === 6 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 6:</strong> 8%</p>
-                            <p className={calculateROPEScore(ropeItems) === 7 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 7:</strong> 6%</p>
-                            <p className={calculateROPEScore(ropeItems) === 8 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 8:</strong> 6%</p>
-                            <p className={calculateROPEScore(ropeItems) >= 9 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 9-10:</strong> 2%</p>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-
-                    {/* PASCAL Classification */}
-                    <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-4 dark:bg-cobalt-900 dark:border-cobalt-700">
-                      <h3 className="text-lg font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">PASCAL Classification (Kent et al., JAHA 2020)</h3>
-
-                      <div className="space-y-4">
-                        <div className="bg-white p-3 rounded border border-ok-300 dark:bg-card dark:border-ok-800">
-                          <h4 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Definite PFO-related stroke (closure strongly recommended):</h4>
-                          <p className="text-sm">RoPE ≥7 + high-risk PFO (large shunt or atrial septal aneurysm)</p>
-                        </div>
-
-                        <div className="bg-white p-3 rounded border dark:bg-card">
-                          <h4 className="font-semibold text-ok-600 mb-2 dark:text-ok-300">Probable PFO-related stroke (closure reasonable):</h4>
-                          <ul className="text-sm space-y-1">
-                            <li>• RoPE ≥7 + low-risk PFO (small shunt, no ASA)</li>
-                            <li>• RoPE &lt;7 + high-risk PFO (large shunt or ASA)</li>
-                          </ul>
-                        </div>
-
-                        <div className="bg-white p-3 rounded border dark:bg-card">
-                          <h4 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Possible PFO-related stroke (closure uncertain benefit):</h4>
-                          <p className="text-sm">RoPE &lt;7 + low-risk PFO, no clear alternative stroke etiology</p>
-                        </div>
-
-                        <div className="bg-white p-3 rounded border dark:bg-card">
-                          <h4 className="font-semibold text-crit-700 mb-2 dark:text-crit-300">Unlikely PFO-related stroke (closure not recommended):</h4>
-                          <p className="text-sm">Clear alternative stroke etiology identified (AF, LAA, etc.), regardless of PFO features</p>
-                        </div>
-                      </div>
-                      </div>
                     </details>
 
 
@@ -33283,15 +31879,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </label>
                         </div>
 
-                        <div className="bg-white p-3 rounded border dark:bg-card">
-                          <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">RCVS Probability</h4>
-                          <div className="text-sm space-y-1">
-                            <p className={calculateRCVS2Score(rcvs2Items) < 2 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score &lt;2:</strong> Low probability of RCVS</p>
-                            <p className={calculateRCVS2Score(rcvs2Items) >= 2 && calculateRCVS2Score(rcvs2Items) <= 4 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score 2-4:</strong> Intermediate probability</p>
-                            <p className={calculateRCVS2Score(rcvs2Items) >= 5 ? "font-bold text-cobalt-600 dark:text-cobalt-300" : ""}><strong>Score ≥5:</strong> High probability of RCVS</p>
-                          </div>
-                          <p className="text-xs text-slate-600 mt-2 italic dark:text-ink-2">RCVS² score helps distinguish RCVS from other causes of thunderclap headache. Consider vascular imaging and repeat imaging in 2-4 weeks if high suspicion.</p>
-                        </div>
                       </div>
                     </details>
 
@@ -33373,10 +31960,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-phases" style={{ order: getCalculatorOrder('phases', 75) }} className="bg-teal-50 border border-teal-200 rounded-lg dark:bg-teal-950 dark:border-teal-800">
                       <summary className="cursor-pointer p-3 font-semibold text-teal-800 hover:bg-teal-100 rounded-lg flex items-center justify-between dark:text-teal-300">
                         <span>PHASES Score (Aneurysm Rupture Risk)</span>
-                        <span className="text-sm font-normal text-teal-700 dark:text-teal-300">Score: {calculatePHASESScore(phasesItems)} — {getPHASESRisk(calculatePHASESScore(phasesItems)).risk} 5-yr risk</span>
+                        <span className="text-sm font-normal text-teal-700 dark:text-teal-300">Score: {calculatePHASESScore(phasesItems)}</span>
                       </summary>
                       <div className="p-4">
-                        <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Predicts 5-year absolute risk of rupture for unruptured intracranial aneurysms. Useful for counseling in stroke prevention clinic.</p>
                         <div className="space-y-3">
                           <div>
                             <label htmlFor="select-phases-population" className="block text-sm font-medium text-slate-700 mb-1 dark:text-ink-2">Population</label>
@@ -33426,21 +32012,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </select>
                           </div>
                         </div>
-                        {(() => {
-                          const score = calculatePHASESScore(phasesItems);
-                          const { risk, level } = getPHASESRisk(score);
-                          const colorClass = score <= 4 ? 'bg-ok-100 border-ok-300 text-ok-800 dark:bg-ok-950 dark:border-ok-800 dark:text-ok-300'
-                            : score <= 8 ? 'bg-warn-100 border-warn-300 text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300'
-                            : 'bg-crit-100 border-crit-300 text-crit-800 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300';
-                          return (
-                            <div className={`mt-3 p-3 rounded-lg border ${colorClass}`} aria-live="polite" aria-atomic="true">
-                              <p className="font-bold">PHASES Score: {score} — {level}</p>
-                              <p className="text-sm">5-year absolute rupture risk: <strong>{risk}</strong></p>
-                              <button onClick={() => copyToClipboard(`PHASES Score: ${score}, 5-year rupture risk: ${risk} (${level})`, 'PHASES Score')}
-                                className="mt-1 px-2 py-1 bg-white text-slate-700 border border-slate-300 rounded text-xs hover:bg-slate-50 dark:bg-card dark:text-ink-2 dark:border-strong" aria-label="Copy PHASES score to clipboard">Copy</button>
-                            </div>
-                          );
-                        })()}
                         <div className="mt-2 text-xs text-slate-600 dark:text-mute">
                           <p>Greving JP et al. <em>Lancet Neurol</em> 2014;13(1):59-66. PHASES: Population, Hypertension, Age, Size, Earlier SAH, Site.</p>
                           <p className="mt-1">Note: PHASES score should be one factor in the treatment decision. Consider patient life expectancy, aneurysm morphology, family history, and patient preference.</p>
@@ -33700,7 +32271,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           );
                         })()}
-                        <p className="text-xs text-slate-600 mt-2 dark:text-mute">Treatment: 1 mg/kg SC BID (standard) or 1.5 mg/kg SC daily (alternative). CrCl &lt;30: 1 mg/kg SC daily. Prophylaxis: 40 mg SC daily (30 mg if CrCl &lt;30). Check anti-Xa for extremes of weight.</p>
+                        <p className="text-xs text-slate-600 mt-2 dark:text-mute">No institutional protocol document is on file for enoxaparin dosing. See Guidelines &amp; References for the current society guidance.</p>
                       </div>
                     </details>
 
@@ -33869,7 +32440,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* SPAN-100 */}
                         <div className="bg-white rounded-lg p-3 border border-line dark:bg-card">
                           <h5 className="font-semibold text-sm text-slate-800 mb-2 dark:text-ink">SPAN-100 Index</h5>
-                          <p className="text-xs text-slate-700 mb-2 dark:text-ink-2">Age + NIHSS ≥ 100 predicts higher symptomatic ICH risk and lower chance of good outcome after IV thrombolysis.</p>
                           {(() => {
                             const age = parseInt(telestrokeNote.age, 10) || 0;
                             const nihss = parseInt(telestrokeNote.nihss || nihssScore, 10) || 0;
@@ -33882,7 +32452,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     Age ({age || '?'}) + NIHSS ({nihss || '?'}) = {age && nihss ? span : '?'}
                                   </span>
                                   <span className={`px-2 py-1 rounded text-xs font-bold ${positive ? 'bg-crit-600 text-white' : 'bg-ok-600 text-white'}`}>
-                                    {positive ? 'POSITIVE — Higher sICH Risk' : 'NEGATIVE — Lower Risk'}
+                                    {positive ? 'POSITIVE' : 'NEGATIVE'}
                                   </span>
                                 </div>
                               </div>
@@ -33911,7 +32481,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             else items.push('Age ≤75 (0)');
                             if (nihss >= 10) { sedanScore += 1; items.push('NIHSS ≥10 (+1)'); }
                             else items.push('NIHSS <10 (0)');
-                            const risk = sedanScore === 0 ? '~1%' : sedanScore === 1 ? '~3%' : sedanScore === 2 ? '~5%' : sedanScore === 3 ? '~9%' : sedanScore === 4 ? '~16%' : '~28%+';
                             return (
                               <div>
                                 <div className="space-y-1 mb-2">
@@ -33923,7 +32492,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 <div className={`p-2 rounded ${sedanScore >= 3 ? 'bg-crit-50 border border-crit-200 dark:bg-crit-950 dark:border-crit-800' : 'bg-warn-50 border border-warn-200 dark:bg-warn-950 dark:border-warn-800'}`} aria-live="polite" aria-atomic="true">
                                   <span className="font-bold text-sm">SEDAN: {sedanScore}/6</span>
-                                  <span className="ml-2 text-xs text-slate-600 dark:text-ink-2">Estimated sICH risk: {risk}</span>
                                 </div>
                               </div>
                             );
@@ -33996,7 +32564,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <i aria-hidden="true" data-lucide="chevron-down" className="w-4 h-4"></i>
                       </summary>
                       <div className="p-4">
-                        <p className="text-xs text-slate-600 mb-3 dark:text-mute">Predicts 3-month outcome after IV thrombolysis. Auto-calculated from patient data where available.</p>
                         {(() => {
                           const age = parseInt(telestrokeNote.age, 10) || 0;
                           const nihss = parseInt(telestrokeNote.nihss || nihssScore, 10) || 0;
@@ -34056,7 +32623,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     {score <= 3 ? 'Good' : score <= 5 ? 'Intermediate' : 'Poor'}
                                   </span>
                                 </div>
-                                <p className={`text-xs text-${prognosis.color}-700 mt-1`}>{prognosis.text}</p>
                               </div>
                               <p className="text-xs text-slate-600 dark:text-mute">Note: D (dense artery/early infarct) and O (onset time) must be assessed manually. Add +1-2 for D and +1 for O if applicable.</p>
                             </div>
