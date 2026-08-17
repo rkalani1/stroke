@@ -146,10 +146,9 @@ describe('Milestone 2 Adversarial Verification & Stress Harness', () => {
       }
 
       // Inventory count, not a safety assertion — it moves whenever Protocols cards are added
-      // or removed. 180 -> 162 after removing Protocols content with no Stroke Center folder
-      // source, then 162 -> 161 after removing the Protocols Order Bundles scaffold.
+      // or removed. It is 145 after removing the approved empty/source-status Protocols cards.
       // The safety assertion is openDetails === 0, immediately below.
-      expect(totalDetails).toBe(161);
+      expect(totalDetails).toBe(145);
       expect(openDetails).toBe(0);
 
       const indexHtml = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');

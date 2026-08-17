@@ -64,22 +64,24 @@ describe('Navigation Reorganization and Consolidation (R1, R2)', () => {
     expect(mobileResearchIdx).toBeGreaterThan(mobileTrialsIdx);
   });
 
-  it('R2: Consolidated Guidelines & References has guidelines, references, and education subtabs', () => {
+  it('R2: Consolidated Guidelines & References has guidelines, references, calculators, and education subtabs', () => {
     // Check RESEARCH_SUBTABS definition
-    expect(scope.RESEARCH_SUBTABS).toEqual(['guidelines', 'references', 'education']);
+    expect(scope.RESEARCH_SUBTABS).toEqual(['guidelines', 'references', 'calculators', 'education']);
 
     // Check subtab template string inside activeTab === 'research'
     expect(appJsxContent).toContain('id={`research-tab-${tab.id}`}');
     expect(appJsxContent).toContain('id="research-tabpanel-guidelines"');
     expect(appJsxContent).toContain('id="research-tabpanel-references"');
+    expect(appJsxContent).toContain('id="research-tabpanel-calculators"');
     expect(appJsxContent).toContain('id="research-tabpanel-education"');
     expect(appJsxContent).toContain('{ id: \'guidelines\', name: "Guidelines" }');
     expect(appJsxContent).toContain('{ id: \'references\', name: "Reference Library" }');
+    expect(appJsxContent).toContain('{ id: \'calculators\', name: "Calculators" }');
     expect(appJsxContent).toContain('{ id: \'education\', name: "Educational Resources" }');
   });
 
-  it('R2: Protocols sub-tabs are limited to ICH, ischemic, and calculators', () => {
-    expect(scope.MANAGEMENT_SUBTABS).toEqual(['ich', 'ischemic', 'calculators']);
+  it('R2: Protocols sub-tabs are limited to ICH and Ischemic/TIA', () => {
+    expect(scope.MANAGEMENT_SUBTABS).toEqual(['ich', 'ischemic']);
     expect(appJsxContent).toContain('const subTabs = MANAGEMENT_SUBTABS;');
   });
 
@@ -90,6 +92,7 @@ describe('Navigation Reorganization and Consolidation (R1, R2)', () => {
     expect(scope.parseHashRoute('#/research')).toEqual({ tab: 'research', sub: null });
     expect(scope.parseHashRoute('#/research/guidelines')).toEqual({ tab: 'research', sub: 'guidelines' });
     expect(scope.parseHashRoute('#/research/references')).toEqual({ tab: 'research', sub: 'references' });
+    expect(scope.parseHashRoute('#/research/calculators')).toEqual({ tab: 'research', sub: 'calculators' });
     expect(scope.parseHashRoute('#/research/education')).toEqual({ tab: 'research', sub: 'education', educationSub: null });
     expect(scope.parseHashRoute('#/research/education/icu')).toEqual({ tab: 'research', sub: 'education', educationSub: 'icu' });
 
@@ -99,6 +102,8 @@ describe('Navigation Reorganization and Consolidation (R1, R2)', () => {
     expect(scope.parseHashRoute('#/curriculum/nursing')).toEqual({ tab: 'research', sub: 'education', educationSub: 'nursing' });
     expect(scope.parseHashRoute('#/simulators')).toEqual({ tab: 'research', sub: 'education', educationSub: 'simulators' });
     expect(scope.parseHashRoute('#/protocols/references')).toEqual({ tab: 'research', sub: 'references' });
+    expect(scope.parseHashRoute('#/protocols/calculators')).toEqual({ tab: 'research', sub: 'calculators' });
+    expect(scope.parseHashRoute('#/calculators')).toEqual({ tab: 'research', sub: 'calculators' });
     expect(scope.parseHashRoute('#/protocols/education/icu')).toEqual({ tab: 'research', sub: 'education', educationSub: 'icu' });
     expect(scope.parseHashRoute('#/management/education/icu')).toEqual({ tab: 'research', sub: 'education', educationSub: 'icu' });
     expect(scope.parseHashRoute('#/protocols/sah')).toEqual({ tab: 'protocols', sub: 'ich' });
@@ -112,6 +117,7 @@ describe('Navigation Reorganization and Consolidation (R1, R2)', () => {
     expect(scope.buildHashRoute('trials')).toBe('#/trials');
     expect(scope.buildHashRoute('research', 'guidelines')).toBe('#/research/guidelines');
     expect(scope.buildHashRoute('research', 'references')).toBe('#/research/references');
+    expect(scope.buildHashRoute('research', 'calculators')).toBe('#/research/calculators');
     expect(scope.buildHashRoute('research', 'education')).toBe('#/research/education');
     expect(scope.buildHashRoute('research', 'education', 'icu')).toBe('#/research/education/icu');
     expect(scope.buildHashRoute('education', 'onboarding')).toBe('#/research/education/onboarding');

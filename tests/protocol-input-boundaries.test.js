@@ -228,7 +228,7 @@ describe('Protocols input-boundary contracts', () => {
     });
 
     it('requires complete NIHSS, GCS, ICH, ABCD2, and CHA inputs before exposing copy actions', () => {
-      const nihssCard = sourceBetween(appSource, '{/* NIHSS Summary Card */}', '{/* COR/LOE Legend */}');
+      const nihssCard = sourceBetween(appSource, '{/* NIHSS Summary Card */}', '{/* Glasgow Coma Scale */}');
       const gcsCard = sourceBetween(appSource, '{/* Glasgow Coma Scale */}', '{/* ICH Score */}');
       const ichCard = sourceBetween(appSource, '{/* ICH Score */}', '{/* FUNC Score */}');
       const abcd2Card = sourceBetween(appSource, '{/* ABCD2 */}', '{/* CHADS2-VASC */}');
@@ -407,25 +407,17 @@ describe('Protocols input-boundary contracts', () => {
       expect(drawerSource).not.toMatch(/ICH prognosis|SAH severity|Bleeding risk|PFO attribution|Vasoconstriction/);
     });
 
-    it('does not apply or copy the post-EVT SBP range without documented mTICI >=2b', () => {
+    it('keeps the post-EVT SBP helper fail-closed while omitting the Protocols guardrail box', () => {
       const guidanceSource = sourceBetween(
         appSource,
         'function getPostEvtBpGuidance(note)',
         'function buildContraindicationTrace(note)',
       );
-      const panelSource = sourceBetween(
-        appSource,
-        '<h3 className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">Post-EVT BP Guardrail</h3>',
-        '<summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg',
-      );
-
       expect(guidanceSource).toContain('const sourceTargetApplies = isSuccessfulEvtReperfusion(grade)');
       expect(guidanceSource).toContain("status: grade ? 'not-qualified' : 'unknown-grade'");
       expect(guidanceSource).toContain("if (!isSuccessfulEvtReperfusion(grade)) return ''");
-      expect(panelSource).toContain('disabled={!postEvtBpGuidance.sourceTargetApplies}');
-      expect(panelSource).toContain('Requires documented mTICI ≥2b');
+      expect(appSource).not.toContain('Post-EVT BP Guardrail');
       expect(appSource).not.toContain('reperfusionStatus');
-      expect(panelSource).toContain("value={telestrokeNote.ticiScore || ''}");
       expect(managementGuidanceSource).toContain('After documented successful EVT recanalization (mTICI >=2b)');
       expect(managementGuidanceSource).toContain("label: 'Post-EVT with documented mTICI >=2b'");
       expect(appSource).toContain('<strong>After documented successful thrombectomy recanalization (mTICI ≥2b):</strong> SBP 140-180');

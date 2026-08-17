@@ -39,8 +39,8 @@ export const AIS_COMMAND_CENTER_CARDS = [
     ],
     calculators: [
       { label: 'TNK dose from weight', tab: 'encounter', anchor: 'treatment-decision' },
-      { label: 'Alteplase calculator', tab: 'management', subTab: 'calculators', anchor: 'calc-alteplase' },
-      { label: 'NIHSS', tab: 'management', subTab: 'calculators', anchor: 'calc-nihss' }
+      { label: 'Alteplase calculator', tab: 'research', subTab: 'calculators', anchor: 'calc-alteplase' },
+      { label: 'NIHSS', tab: 'research', subTab: 'calculators', anchor: 'calc-nihss' }
     ],
     pitfalls: [],
     teachingPearl: '',
@@ -71,8 +71,8 @@ export const AIS_COMMAND_CENTER_CARDS = [
       { label: 'Missing imaging, mRS, or EVT-candidacy gate', decision: 'Do not return an affirmative extended-window result', cor: '', loe: '' }
     ],
     calculators: [
-      { label: 'ASPECTS', tab: 'management', subTab: 'calculators', anchor: 'calc-aspects' },
-      { label: 'NIHSS', tab: 'management', subTab: 'calculators', anchor: 'calc-nihss' }
+      { label: 'ASPECTS', tab: 'research', subTab: 'calculators', anchor: 'calc-aspects' },
+      { label: 'NIHSS', tab: 'research', subTab: 'calculators', anchor: 'calc-nihss' }
     ],
     pitfalls: [],
     teachingPearl: '',
@@ -109,8 +109,8 @@ export const AIS_COMMAND_CENTER_CARDS = [
     ],
     calculators: [
       { label: 'EVT builder', tab: 'management', subTab: 'ischemic', anchor: 'isch-evt' },
-      { label: 'ASPECTS', tab: 'management', subTab: 'calculators', anchor: 'calc-aspects' },
-      { label: 'PC-ASPECTS', tab: 'management', subTab: 'calculators', anchor: 'calc-pc-aspects' }
+      { label: 'ASPECTS', tab: 'research', subTab: 'calculators', anchor: 'calc-aspects' },
+      { label: 'PC-ASPECTS', tab: 'research', subTab: 'calculators', anchor: 'calc-pc-aspects' }
     ],
     pitfalls: [],
     teachingPearl: '',
@@ -228,7 +228,7 @@ export const AIS_COMMAND_CENTER_CARDS = [
       { label: 'Thrombolysis decision complete', decision: 'Address thrombectomy and transfer next', cor: 'Workflow', loe: 'Institutional' }
     ],
     calculators: [
-      { label: 'NIHSS', tab: 'management', subTab: 'calculators', anchor: 'calc-nihss' },
+      { label: 'NIHSS', tab: 'research', subTab: 'calculators', anchor: 'calc-nihss' },
       { label: 'TNK dose from weight', tab: 'encounter', anchor: 'treatment-decision' }
     ],
     pitfalls: [],
@@ -264,8 +264,8 @@ export const AIS_COMMAND_CENTER_CARDS = [
       { label: 'Moyamoya / focal cerebral arteriopathy / mineralizing lenticulostriate vasculopathy', decision: 'Generally not reperfusion targets (non-thromboembolic) — high caution', cor: 'III', loe: 'C-LD' }
     ],
     calculators: [
-      { label: 'NIHSS / PedNIHSS', tab: 'management', subTab: 'calculators', anchor: 'calc-nihss' },
-      { label: 'Alteplase calculator', tab: 'management', subTab: 'calculators', anchor: 'calc-alteplase' }
+      { label: 'NIHSS / PedNIHSS', tab: 'research', subTab: 'calculators', anchor: 'calc-nihss' },
+      { label: 'Alteplase calculator', tab: 'research', subTab: 'calculators', anchor: 'calc-alteplase' }
     ],
     pitfalls: [
       'Reaching for tenecteplase as a co-equal pediatric lytic: the guideline references alteplase for children; TNK use is adult-derived extrapolation. Verify any agent and dose with pediatric pharmacy/ICU.',

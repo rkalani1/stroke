@@ -8,18 +8,15 @@ import {
   getSafePauseIssues,
   getSafePauseText,
   evaluateIVT,
-  evaluateDOAC_IVT,
   evaluateEVT_Anterior,
   evaluateEVT_M2,
   evaluateEVT_Basilar,
   EXTENDED_WINDOW_IVT_DISCUSSION,
   IVT_ABSOLUTE_CONTRAINDICATIONS,
   IVT_RELATIVE_CONTRAINDICATIONS,
-  IVT_BENEFIT_GREATER_CONSIDER,
-  IVT_UNRESOLVED_SOURCE_CONFLICTS
+  IVT_BENEFIT_GREATER_CONSIDER
 } from './institutional-protocols.js';
 
-const NO_INSTITUTIONAL_PROTOCOL_NOTICE = 'No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.';
 
 const CorChip = ({ cor }) => {
   if (!cor) return null;
@@ -158,7 +155,7 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
           </div>
         </div>
       )}
-      <div className={`p-3 rounded border-2 ${colorByEligible(result.eligible)}`}>
+      {result.eligible !== null && result.eligible !== 'pending' && <div className={`p-3 rounded border-2 ${colorByEligible(result.eligible)}`}>
         <div className="flex items-center flex-wrap gap-2 mb-1">
           <strong className="text-sm">{result.recommendation || 'Awaiting input'}</strong>
           <CorChip cor={result.cor} /><LoeChip loe={result.loe} />
@@ -173,7 +170,7 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
             {result.warnings.map((w, i) => <li key={i}>{w}</li>)}
           </ul>
         )}
-      </div>
+      </div>}
       {(state.wakeUpOrUnknownOnset || parseFloat(state.hoursFromLKW) > 4.5) && result.eligible === 'consider' && (
         <details className="mt-2">
           <summary className="cursor-pointer text-xs font-semibold text-cobalt-900 dark:text-cobalt-300">Read-aloud patient discussion script (extended-window IVT)</summary>
@@ -181,72 +178,6 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
           <button type="button" onClick={() => { try { navigator.clipboard.writeText(EXTENDED_WINDOW_IVT_DISCUSSION); } catch (_) {} }} className="mt-1 px-2 py-1 bg-cobalt-100 hover:bg-cobalt-200 text-cobalt-900 text-xs rounded dark:bg-cobalt-900 dark:hover:bg-cobalt-800 dark:text-cobalt-300">Copy</button>
         </details>
       )}
-    </div>
-  );
-};
-
-// ----------------------------------------------------------------------
-// DOAC-Exposed IVT Pathway interactive card
-// ----------------------------------------------------------------------
-const DOACIVTCard = ({ defaults = {} }) => {
-  const [state, setState] = useState({
-    hoursSinceLastDose: defaults.hoursSinceLastDose || '',
-    antiXaUndetectable: defaults.antiXaUndetectable === true,
-    renalFunctionNormal: defaults.renalFunctionNormal !== false,
-    disablingDeficit: defaults.disablingDeficit !== false,
-    endovascularCandidate: defaults.endovascularCandidate === true,
-    site: defaults.site || 'hub'
-  });
-  const set = (k, v) => setState((s) => ({ ...s, [k]: v }));
-  const r = useMemo(() => evaluateDOAC_IVT(state), [state]);
-  return (
-    <div className="p-3 rounded-lg border border-orange-300 bg-white dark:bg-card dark:border-orange-800">
-      <h4 className="font-bold text-orange-900 mb-2 flex items-center gap-2 dark:text-orange-300">
-        <span className="inline-block px-2 py-0.5 bg-orange-700 text-white text-xs rounded">INST</span>
-        DOAC-Exposed AIS Patient — Unresolved Institutional Rule
-      </h4>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs mb-3">
-        <label>
-          <span className="block text-slate-600 dark:text-ink-2">Site</span>
-          <select value={state.site} onChange={(e) => set('site', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
-            <option value="hub">Anti-Xa-based source branch</option>
-            <option value="spoke">Time-based source branch</option>
-            <option value="telestroke">Telestroke source branch</option>
-          </select>
-        </label>
-        <label>
-          <span className="block text-slate-600 dark:text-ink-2">Hours since last DOAC dose</span>
-          <input type="number" value={state.hoursSinceLastDose} onChange={(e) => set('hoursSinceLastDose', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" />
-        </label>
-        {state.site === 'hub' ? (
-          <label className="flex items-center gap-1 md:col-span-1">
-            <input type="checkbox" checked={state.antiXaUndetectable} onChange={(e) => set('antiXaUndetectable', e.target.checked)} />
-            <span>Anti-Xa <strong>UNDETECTABLE</strong></span>
-          </label>
-        ) : (
-          <label className="flex items-center gap-1">
-            <input type="checkbox" checked={state.renalFunctionNormal} onChange={(e) => set('renalFunctionNormal', e.target.checked)} />Normal renal function
-          </label>
-        )}
-        <label className="flex items-center gap-1"><input type="checkbox" checked={state.disablingDeficit} onChange={(e) => set('disablingDeficit', e.target.checked)} />Disabling stroke deficits</label>
-        <label className="flex items-center gap-1"><input type="checkbox" checked={state.endovascularCandidate} onChange={(e) => set('endovascularCandidate', e.target.checked)} />EVT candidate (documentation only; not a categorical IVT bypass)</label>
-      </div>
-      <div className={`p-2 rounded border-2 ${r.eligible === true ? 'border-ok-400 bg-ok-50 dark:bg-ok-950' : r.eligible === 'consider' ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-950' : r.eligible === 'preferred-other' ? 'border-cobalt-400 bg-cobalt-50 dark:bg-cobalt-900' : r.eligible === false ? 'border-rose-400 bg-rose-50 dark:bg-rose-950' : 'border-slate-200 dark:border-line'}`}>
-        <div className="flex items-center flex-wrap gap-2">
-          <strong className="text-sm">{r.pathway ? r.pathway.toUpperCase() : 'Pathway'}</strong>
-          <CorChip cor={r.cor} /><LoeChip loe={r.loe} />
-        </div>
-        {r.reason && <p className="text-xs mt-1">{r.reason}</p>}
-        {r.rationale && <p className="text-xs text-slate-700 mt-1 italic dark:text-ink-2">{r.rationale}</p>}
-        {Array.isArray(r.requirements) && r.requirements.length > 0 && (
-          <ul className="list-disc list-inside text-xs mt-1">{r.requirements.map((x, i) => <li key={i}>{x}</li>)}</ul>
-        )}
-        {Array.isArray(r.missing) && r.missing.length > 0 && (
-          <p className="text-xs text-rose-800 mt-1 dark:text-rose-300"><strong>Missing:</strong> {r.missing.join('; ')}</p>
-        )}
-        {r.requirement && <p className="text-xs text-cobalt-900 mt-1 dark:text-cobalt-300"><strong>Requirement:</strong> {r.requirement}</p>}
-        {r.documentation && <p className="text-xs text-slate-600 mt-1 dark:text-ink-2"><strong>Documentation:</strong> {r.documentation}</p>}
-      </div>
     </div>
   );
 };
@@ -311,14 +242,14 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
               </select>
             </label>
           </div>
-          <div className={`p-2 rounded border-2 ${colorByEligible(rAnt.eligible)}`}>
+          {(rAnt.eligible === true || rAnt.eligible === 'consider') && <div className={`p-2 rounded border-2 ${colorByEligible(rAnt.eligible)}`}>
             <div className="flex items-center flex-wrap gap-2">
-              <strong className="text-sm">{rAnt.eligible === true ? 'EVT' : rAnt.eligible === 'consider' ? 'EVT' : rAnt.eligible === 'pending' ? 'PENDING REQUIRED GATE' : rAnt.eligible === false ? 'NO INSTITUTIONAL EVT TIER' : 'Awaiting input / no institutional tier'}</strong>
+              <strong className="text-sm">EVT</strong>
               <CorChip cor={rAnt.cor} /><LoeChip loe={rAnt.loe} />
               {rAnt.window && <span className="px-1.5 py-0.5 text-xs bg-cobalt-100 text-cobalt-900 rounded dark:bg-cobalt-900 dark:text-cobalt-300">{rAnt.window}</span>}
             </div>
             <p className="text-xs mt-1">{rAnt.reason}</p>
-          </div>
+          </div>}
         </>
       )}
 
@@ -348,14 +279,14 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
             <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={m2.age} onChange={(e) => setM2({ ...m2, age: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={m2.ctpMismatch} onChange={(e) => setM2({ ...m2, ctpMismatch: e.target.checked })} />CTP hypoperfusion–hypodensity mismatch present (required beyond 6h)</label>
           </div>
-          <div className={`p-2 rounded border-2 ${colorByEligible(rM2.eligible)}`}>
+          {(rM2.eligible === true || rM2.eligible === 'consider' || rM2.eligible === false) && <div className={`p-2 rounded border-2 ${colorByEligible(rM2.eligible)}`}>
             <div className="flex items-center flex-wrap gap-2">
-              <strong className="text-sm">{rM2.eligible === true || rM2.eligible === 'consider' ? 'EVT' : rM2.eligible === 'pending' ? 'NO RECOMMENDATION / PENDING GATE' : rM2.eligible === false ? 'NO EVT' : '—'}</strong>
+              <strong className="text-sm">{rM2.eligible === true || rM2.eligible === 'consider' ? 'EVT' : 'NO EVT'}</strong>
               <CorChip cor={rM2.cor} /><LoeChip loe={rM2.loe} />
             </div>
             <p className="text-xs mt-1">{rM2.reason}</p>
             {rM2.requirement && <p className="text-xs text-cobalt-900 mt-1 dark:text-cobalt-300"><strong>Requirement:</strong> {rM2.requirement}</p>}
-          </div>
+          </div>}
         </>
       )}
 
@@ -373,22 +304,19 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
             <label><span className="block text-slate-600 dark:text-ink-2">PC-ASPECTS</span><input type="number" value={bas.pcAspects} onChange={(e) => setBas({ ...bas, pcAspects: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={bas.age} onChange={(e) => setBas({ ...bas, age: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
           </div>
-          <div className={`p-2 rounded border-2 ${colorByEligible(rBas.eligible)}`}>
+          {(rBas.eligible === true || rBas.eligible === 'consider') && <div className={`p-2 rounded border-2 ${colorByEligible(rBas.eligible)}`}>
             <div className="flex items-center flex-wrap gap-2">
               <strong className="text-sm">
                 {rBas.eligible === true ? 'EVT (Basilar)'
-                  : rBas.eligible === 'consider' ? 'EVT EFFECTIVENESS NOT WELL ESTABLISHED'
-                  : rBas.eligible === 'pending' ? 'PENDING REQUIRED GATE'
-                  : rBas.eligible === false ? 'NO INSTITUTIONAL BASILAR TIER' : '—'}
+                  : 'EVT EFFECTIVENESS NOT WELL ESTABLISHED'}
               </strong>
               <CorChip cor={rBas.cor} /><LoeChip loe={rBas.loe} />
             </div>
             <p className="text-xs mt-1">{rBas.reason}</p>
             {rBas.institutionalRequirement && <p className="text-xs mt-1 text-cobalt-800 dark:text-cobalt-300"><strong>Institutional requirement:</strong> {rBas.institutionalRequirement}</p>}
-          </div>
+          </div>}
         </>
       )}
-      <div className="text-[10px] text-slate-500 italic mt-2 dark:text-mute">Outputs are limited to the accepted institutional EVT flowchart tiers shown above.</div>
     </div>
   );
 };
@@ -460,14 +388,6 @@ const ContraindicationsCard = () => (
         </ul>
       </section>
     </div>
-    <div className="mt-3 rounded border border-warn-300 bg-warn-50 p-2 dark:border-warn-800 dark:bg-warn-950">
-      <h5 className="font-bold text-warn-900 mb-1 dark:text-warn-300">Unresolved institutional source conflicts — no rule selected</h5>
-      <ul className="space-y-1 text-xs">
-        {IVT_UNRESOLVED_SOURCE_CONFLICTS.map((c, i) => (
-          <li key={i}><strong>{c.label}</strong><div className="text-slate-600 text-[11px] dark:text-ink-2">{c.detail}</div></li>
-        ))}
-      </ul>
-    </div>
   </div>
 );
 
@@ -515,16 +435,6 @@ const SafePauseCard = ({ defaults = {} }) => {
 };
 
 // ----------------------------------------------------------------------
-// COR/LOE reference card
-// ----------------------------------------------------------------------
-const CorLoeKeyCard = () => (
-  <div className="min-w-0 p-3 rounded-lg border border-slate-300 bg-white dark:border-strong dark:bg-card">
-    <h4 className="font-bold text-slate-900 mb-2 dark:text-ink">Class of Recommendation / Level of Evidence</h4>
-    <p className="text-xs text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
-  </div>
-);
-
-// ----------------------------------------------------------------------
 // Main PocketCards container
 // ----------------------------------------------------------------------
 export const PocketCards = ({ defaults = {} }) => {
@@ -539,11 +449,9 @@ export const PocketCards = ({ defaults = {} }) => {
       </div>
       <IVTEligibilityCard defaults={defaults} />
       <ContraindicationsCard />
-      <DOACIVTCard defaults={defaults} />
       <EVTEligibilityCard defaults={defaults} />
       <BPProtocolCard />
       <SafePauseCard defaults={defaults} />
-      <CorLoeKeyCard />
     </div>
   );
 };
