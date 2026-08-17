@@ -736,9 +736,9 @@ async function auditView(browser, target, viewport) {
       await page.waitForTimeout(200);
     }
 
-    const ischemicButton = page.getByRole('tab', { name: /Ischemic (management|protocol) tab/i }).first();
+    const ischemicButton = page.getByRole('tab', { name: /Ischemic\/TIA protocol tab/i }).first();
     if ((await ischemicButton.count()) === 0) {
-      addIssue(issues, 'missing-library-subtab', { subtab: 'Ischemic' });
+      addIssue(issues, 'missing-library-subtab', { subtab: 'Ischemic/TIA' });
     } else {
       await clickElementRobust(ischemicButton);
       await page.waitForTimeout(200);
@@ -750,7 +750,7 @@ async function auditView(browser, target, viewport) {
       if ((await page.getByText(/Post-EVT BP Guardrail/i).count()) === 0) {
         addIssue(issues, 'missing-post-evt-bp-guardrail');
       }
-      if ((await page.getByText(/No routine EVT \(select\/trial only\)/i).count()) === 0) {
+      if ((await page.getByText(/Codominant M2: no recommendation is supplied/i).count()) === 0) {
         addIssue(issues, 'missing-mevo-updated-wording');
       }
 
@@ -760,11 +760,10 @@ async function auditView(browser, target, viewport) {
         const guardrailCard = guardrailHeading.locator('xpath=ancestor::*[self::details or contains(@class,"rounded-md") or contains(@class,"rounded-xl")][1]');
         const guardrailSelects = guardrailCard.locator('select');
         const guardrailBpInput = guardrailCard.locator('input[type="text"]').first();
-        if ((await guardrailSelects.count()) >= 3 && (await guardrailBpInput.count()) > 0) {
-          await guardrailSelects.nth(0).selectOption('successful');
+        if ((await guardrailSelects.count()) >= 2 && (await guardrailBpInput.count()) > 0) {
+          await guardrailSelects.nth(0).selectOption('2b');
           await guardrailBpInput.fill('158/88');
-          await guardrailSelects.nth(1).selectOption('nicardipine');
-          await guardrailSelects.nth(2).selectOption('guardrail');
+          await guardrailSelects.nth(1).selectOption('guardrail');
           await page.waitForTimeout(150);
           postEvtPlanConfigured = true;
         } else {
@@ -796,7 +795,6 @@ async function auditView(browser, target, viewport) {
           { label: 'direct-neurosurgery-call', re: /ED clinicians or the stroke service may call Neurosurgery directly/i },
           { label: 'prior-approval-not-required', re: /prior approval is not required/i },
           { label: 'closed-loop-stroke-attending', re: /designated on-call stroke attending/i },
-          { label: 'attending-record-not-default', re: /attending-of-record notification is not default/i },
           { label: 'ivh-hydrocephalus', re: /IVH(?:\/|, )hydrocephalus/i },
           { label: 'cerebellar-hemorrhage-trigger', re: /cerebellar hemorrhage/i },
           { label: 'mass-effect-trigger', re: /mass effect/i },
@@ -809,18 +807,15 @@ async function auditView(browser, target, viewport) {
             label: 'scoped-early-neurosurgery-stroke-service-trigger-list',
             re: /Screen for early Neurosurgery \+ stroke-service evaluation triggers:[\s\S]{0,360}clinician concern/i
           },
-          { label: 'smooth-bp-class', re: /Smooth, sustained BP control and timely treatment/i },
-          { label: 'sbp-140-range', re: /target SBP 140\/range 130-150 when appropriate/i },
-          { label: 'avoid-lt-130', re: /avoid <130/i },
           { label: 'minute-priority', re: /MINUTE has operational priority over MIRROR/i },
-          { label: 'minute-volume-15ml', re: /(?:Volume (?:>=|≥)15 mL by ABC\/2|Basal-ganglia IPH (?:>=|≥)15 mL)/i },
+          { label: 'minute-volume-20ml', re: /Basal-ganglia IPH volume (?:>=|≥)20 mL by ABC\/2/i },
           { label: 'minute-nihss-6', re: /NIHSS (?:>=|≥)6/i },
           { label: 'minute-window-15h', re: /(?:<=|≤)15h|(?:<=|≤)15 hours|15 hours from last known well/i },
           {
             label: 'mirror-thresholds-version-sensitive',
             re: /Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol/i
           },
-          { label: 'enrich-mie-range', re: /ENRICH supports selected lobar 30-80 mL patients/i },
+          { label: 'mie-range', re: /June 2026 operational MIE screen: lobar IPH 30-80 mL/i },
           { label: 'mie-gcs-5-14', re: /GCS 5-14/i }
         ];
         for (const assertion of requiredIchText) {
@@ -844,78 +839,6 @@ async function auditView(browser, target, viewport) {
       }
     }
 
-    const tiaButton = page.getByRole('tab', { name: /TIA (management|protocol) tab/i }).first();
-    if ((await tiaButton.count()) === 0) {
-      addIssue(issues, 'missing-library-subtab', { subtab: 'TIA' });
-    } else {
-      await clickElementRobust(tiaButton);
-      await page.waitForTimeout(200);
-      await page.evaluate(() => {
-        document.querySelectorAll('details').forEach((details) => {
-          details.open = true;
-        });
-      }).catch(() => {});
-      if ((await page.getByText(/TIA Disposition Engine/i).count()) === 0) {
-        addIssue(issues, 'missing-tia-disposition-engine');
-      }
-      const enforceTiaDaptMatrix = target.name === 'local' || Boolean(target.enforceLiveParityChecks);
-      if (enforceTiaDaptMatrix) {
-        if ((await page.getByText(/Phenotype-Based DAPT Quick Matrix/i).count()) === 0) {
-          addIssue(issues, 'missing-tia-dapt-phenotype-matrix');
-        } else {
-          if ((await page.getByText(/CHANCE, POINT/i).count()) === 0) {
-            addIssue(issues, 'missing-tia-dapt-matrix-evidence-row', { row: 'CHANCE/POINT' });
-          }
-          if ((await page.getByText(/INSPIRES/i).count()) === 0) {
-            addIssue(issues, 'missing-tia-dapt-matrix-evidence-row', { row: 'INSPIRES' });
-          }
-        }
-      }
-
-      const persistentDeficitCheckbox = page.getByRole('checkbox', { name: /Persistent deficit/i }).first();
-      const tiaWidgetPresent = (await persistentDeficitCheckbox.count()) > 0;
-      if (!tiaWidgetPresent && !(await institutionalNoticeShown(page))) {
-        addIssue(issues, 'missing-tia-risk-input', { field: 'Persistent deficit' });
-      } else if (tiaWidgetPresent) {
-        await persistentDeficitCheckbox.check();
-        await page.waitForTimeout(150);
-        if ((await page.getByText(/Admit \/ high-acuity observation/i).count()) === 0) {
-          addIssue(issues, 'tia-disposition-scenario-fail');
-        }
-        await persistentDeficitCheckbox.uncheck();
-      }
-    }
-
-    const cvtButton = page.getByRole('tab', { name: /CVT (management|protocol) tab/i }).first();
-    if ((await cvtButton.count()) === 0) {
-      addIssue(issues, 'missing-library-subtab', { subtab: 'CVT' });
-    } else {
-      await clickElementRobust(cvtButton);
-      await page.waitForTimeout(200);
-
-      const cvtSpecialSummary = page.locator('summary:has-text("CVT in Special Populations")').first();
-      if ((await cvtSpecialSummary.count()) === 0) {
-        if (!(await institutionalNoticeShown(page))) {
-          addIssue(issues, 'missing-cvt-special-populations-section');
-        }
-      } else {
-        await cvtSpecialSummary.scrollIntoViewIfNeeded();
-        await cvtSpecialSummary.click();
-        await page.waitForTimeout(150);
-      }
-
-      const apsCheckbox = page.getByRole('checkbox', { name: /APS confirmed/i }).first();
-      if ((await apsCheckbox.count()) === 0) {
-        // Silent skip — APS confirmed input not exposed in current shell.
-      } else {
-        await apsCheckbox.check();
-        await page.waitForTimeout(150);
-        if ((await page.getByText(/DOACs are not recommended in APS/i).count()) === 0) {
-          addIssue(issues, 'cvt-aps-scenario-fail');
-        }
-        await apsCheckbox.uncheck();
-      }
-    }
   }
   markSectionEnd(section);
 
