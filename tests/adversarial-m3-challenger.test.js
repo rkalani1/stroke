@@ -228,7 +228,7 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // tests/snapshots/example-protocols/ for the approved wording.
       const baselineCounts = {
         ich: 548,
-        ischemic: 1103,
+        ischemic: 1102,
         sah: 30,
         tia: 72,
         cvt: 14,

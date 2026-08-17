@@ -21,7 +21,7 @@ IIb
 III harm
 Immediate anticoagulant reversal — do not wait for labs if clinical suspicion
 I
-Early Neurosurgery + stroke-service evaluation for non-traumatic IPH ≥15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, vascular lesion concern, multicompartmental hemorrhage, ED attending discretion, or clinician concern
+Early Neurosurgery + stroke-service evaluation for non-traumatic IPH ≥15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, vascular lesion concern, multicompartmental hemorrhage, ED attending discretion, or clinician concern
 IIa
 Initial Non-Traumatic IPH Evaluation
 Initial non-traumatic IPH evaluation
@@ -294,7 +294,7 @@ For confirmed non-traumatic IPH, auto-flags volume ≥15 mL for early Neurosurge
 Telestroke rapid actions (phone or video)
 Confirm anticoagulant/antiplatelet use and initiate reversal.
 Use smooth BP control; target SBP 140, maintain 130-150 when appropriate, and avoid <130 per ATACH-2. Use IV nicardipine infusion (or IV labetalol) for titration.
-Screen for early Neurosurgery + stroke-service evaluation triggers: non-traumatic IPH ≥15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, ED attending discretion, or clinician concern.
+Screen for early Neurosurgery + stroke-service evaluation triggers: non-traumatic IPH ≥15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, multicompartmental hemorrhage, ED attending discretion, or clinician concern.
 Plan repeat imaging and close neuro checks.
 Telephone: confirm NIHSS and exam details with the bedside team.
 Inpatient priorities

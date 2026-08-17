@@ -168,7 +168,6 @@ export const AIS_COMMAND_CENTER_CARDS = [
       'Pre-IVT: lower BP to <185/110. Post-IVT: maintain <180/105 for at least 24h.',
       'Post-EVT: maintain <=180/105 for 24h; after successful anterior LVO reperfusion, do not target SBP <140 for 72h unless another indication exists.',
       'HOPE-BP (ESOC 2026, conference-reported): reperfusion-guided targets improved 90-day mRS 0-2, but use only as attending-directed/protocolized care until peer-reviewed publication and guideline review.',
-      'Glucose: treat hypoglycemia <60 mg/dL; treat persistent hyperglycemia toward 140-180 mg/dL; do not target 80-130 mg/dL with IV insulin.',
       'Oxygen: give supplemental oxygen for hypoxia to maintain SpO2 >94%; avoid routine oxygen in nonhypoxic AIS unless selected pre-EVT NBO pathway applies.'
     ],
     pathway: [
