@@ -221,7 +221,7 @@ Obtain a brief status update with last known well, NIHSS, antithrombotics, blood
 Include a history of atrial fibrillation or deep vein thrombosis in the minimum thrombolysis dataset.
 When thrombolysis first appears possible, ask the remote team to prepare the medication while eligibility is completed.
 Before administration, review the dataset, confirm risk-benefit discussion and consent, confirm the last BP is below 185/110, and confirm provider agreement.
-Address thrombectomy next using time, large-vessel occlusion, ASPECTS, goals of care, and transfer feasibility.
+Address thrombectomy next using time from last known well (about 20 hours or less at the referring site, so transfer still allows treatment within 24 hours), large-vessel occlusion on CTA, ASPECTS, goals of care, and transfer feasibility.
 Decision pathway
 Scenario
 Decision
@@ -471,9 +471,13 @@ CT Result Branch
 Intracranial blood on CT:
 confirm the CT result with the ordering provider and administer 2 units of cryoprecipitate over 10-30 minutes
 Before TXA:
-confirm post-CT cryoprecipitate administration with the RN; after both confirmations, give tranexamic acid 1,000 mg IV over 10 minutes
+verbally confirm with the RN that administration is post-CT; after both confirmations, give tranexamic acid 1,000 mg IV over 10 minutes
 Then:
 repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal; contact the Stroke/Neurology attending, consult Neurosurgery if needed, and update the family again
+No intracranial blood on CT:
+do
+NOT
+restart the lytic; consider other causes — extending infarct, seizure, hypoxia, hypercarbia, hypoglycemia, or electrolyte abnormalities
 No ICH on CT while empiric cryoprecipitate is infusing:
 stop cryoprecipitate and do not restart the thrombolytic
 Monitoring and Escalation
@@ -733,7 +737,10 @@ BP at attestation
 Contraindications
 Not reviewed
 Absolute and relative contraindications reviewed
-SAFE PAUSE NOT READY — DO NOT ATTEST: (1) Consent is absent or declined. (2) BP is absent or malformed; enter systolic/diastolic. (3) Absolute and relative contraindications have not been marked reviewed. Attestation unavailable until every required item is complete.
+Provider agreement
+Not confirmed
+All providers agree with the thrombolytic decision
+SAFE PAUSE NOT READY — DO NOT ATTEST: (1) Consent is absent or declined. (2) BP is absent or malformed; enter systolic/diastolic. (3) Absolute and relative contraindications have not been marked reviewed. (4) Provider agreement with the thrombolytic decision has not been confirmed. Attestation unavailable until every required item is complete.
 Copy completed safety pause
 Attestation placeholder:
 [APPROVED LOCAL ATTESTATION REQUIRED]

@@ -2606,16 +2606,13 @@ Clinician Name`;
             const { a, b, thicknessMm, numSlices } = ichVolumeParams;
             const rawValues = [a, b, thicknessMm, numSlices];
             const parsedValues = rawValues.map(value => parseFloat(value));
-            const hasAnyVolumeInput = rawValues.some(value => String(value ?? '').trim() !== '');
             const hasValidVolumeInputs = parsedValues.every(value => Number.isFinite(value) && value > 0);
             if (!hasValidVolumeInputs) {
-              if (hasAnyVolumeInput) {
-                setIchScoreItems(prev => (
-                  prev.volume30 || prev.criteriaReviewed === true
-                    ? { ...prev, volume30: false, criteriaReviewed: false }
-                    : prev
-                ));
-              }
+              setIchScoreItems(prev => (
+                prev.volume30 || prev.criteriaReviewed === true
+                  ? { ...prev, volume30: false, criteriaReviewed: false }
+                  : prev
+              ));
               return;
             }
             const [aV, bV, tV, nV] = parsedValues;
@@ -2640,11 +2637,15 @@ Clinician Name`;
             const cCm = (tVal / 10) * nVal;
             const vol = (aVal * bVal * cCm) / 2;
             if (Number.isNaN(vol) || vol <= 0) return null;
+            const oversized = aVal > 15 || bVal > 15 || cCm > 15 || vol > 500;
             return {
               value: vol,
               display: vol.toFixed(1),
               exceeds15: vol >= 15,
-              exceeds30: vol >= 30
+              exceeds30: vol >= 30,
+              unitWarning: oversized
+                ? '⚠ Inputs look unusually large — confirm dimensions are in CENTIMETERS (not mm). Verify before acting on the volume threshold.'
+                : null
             };
           }, [ichVolumeParams]);
           const [abcd2Items, setAbcd2Items] = useState(loadFromStorage('abcd2Items', {
@@ -2926,6 +2927,18 @@ Clinician Name`;
             'pregnancy': { label: 'Pregnancy/Postpartum stroke', systolic: 160, diastolic: 110 },
             'preeclampsia': { label: 'Preeclampsia/Eclampsia', systolic: 140, diastolic: 90 }
           };
+          // Range-style phases (e.g. post-EVT) express a band, not an upper bound. Format from
+          // whichever shape the phase actually carries so generated text can never read "undefined".
+          const formatBpPhaseTarget = (phase) => {
+            if (!phase) return null;
+            if (Number.isFinite(phase.systolicLow) && Number.isFinite(phase.systolicHigh)) {
+              return `SBP ${phase.systolicLow}-${phase.systolicHigh}`;
+            }
+            if (Number.isFinite(phase.systolic) && Number.isFinite(phase.diastolic)) {
+              return `<${phase.systolic}/${phase.diastolic}`;
+            }
+            return null;
+          };
           const ischemicBpPhaseKeys = ['pre-tnk', 'post-tnk', 'post-evt'];
           const currentBpPhase = ischemicBpPhaseKeys.includes(telestrokeNote.bpPhase) ? telestrokeNote.bpPhase : 'pre-tnk';
           const currentBpTarget = bpPhaseTargets[currentBpPhase] || bpPhaseTargets['pre-tnk'];
@@ -2946,7 +2959,7 @@ Clinician Name`;
           const protocolDetailMap = useMemo(() => ({
             PCC: {
               title: '4F-PCC (Kcentra)',
-              dosing: 'PCC (Kcentra) 2000 units IV — infuse immediately. Fixed dose, not weight- or INR-tiered. If PT/INR >1.5 after the infusion, page hematology and consider an additional 500 units of PCC or 2-4 units of plasma (FFP).',
+              dosing: 'PCC (Kcentra) 2000 units IV — infuse immediately. Fixed dose, not weight- or INR-tiered.',
               note: 'Give vitamin K 10 mg IV immediately. Check PT/INR at exactly 30 minutes, then every 6 hours for 24 hours. If INR >1.5 after the infusion, page hematology and consider PCC 500 units or plasma 2-4 units. If INR >1.5 at 24 hours, repeat vitamin K 10 mg IV.'
             },
             PCC_DOAC: {
@@ -2957,7 +2970,7 @@ Clinician Name`;
             VITK: {
               title: 'Vitamin K',
               dosing: '10 mg IV — give immediately for all warfarin patients.',
-              note: 'Repeat 10 mg IV over 30 min if INR >1.5 at 24h post-PCC.'
+              note: 'Repeat 10 mg IV over 30 min if INR >1.5 at 24 h after PCC or plasma.'
             },
             IDA: {
               title: 'Idarucizumab (Praxbind)',
@@ -2971,7 +2984,7 @@ Clinician Name`;
             },
             CHARCOAL: {
               title: 'Activated Charcoal',
-              dosing: 'Administer if DOAC ingestion <2 hours ago.',
+              dosing: 'One dose orally if DOAC ingestion <2 hours ago.',
               note: 'Use for dabigatran, rivaroxaban, apixaban, or edoxaban.'
             },
             CRYO: {
@@ -2982,7 +2995,7 @@ Clinician Name`;
             TXA: {
               title: 'Tranexamic Acid (TXA)',
               dosing: 'Tranexamic acid 1000 mg IV over 10 min STAT',
-              note: 'For post-thrombolytic ICH: confirm intracranial blood on CT with the ordering provider, then confirm post-CT cryoprecipitate administration with the RN before giving TXA.'
+              note: 'For post-thrombolytic ICH: confirm intracranial blood on CT with the ordering provider, then verbally confirm with the RN that administration is post-CT before giving TXA.'
             },
             METHYLPRED: {
               title: 'Methylprednisolone',
@@ -6990,13 +7003,13 @@ fever_management: {
             if (!Number.isNaN(platelets) && platelets < 100) blockers.push(`Platelets ${platelets}K < 100K`);
             if (!Number.isNaN(ptt) && ptt > 40) blockers.push(`aPTT ${ptt}s > 40s`);
             if (!Number.isNaN(glucose) && glucose < 50) blockers.push(`Glucose ${glucose} mg/dL < 50`);
-            if (bp && (bp.systolic > 185 || bp.diastolic > 110)) cautions.push(`BP ${bp.systolic}/${bp.diastolic} above pre-lysis threshold`);
+            if (bp && (bp.systolic >= 185 || bp.diastolic >= 110)) cautions.push(`BP ${bp.systolic}/${bp.diastolic} at or above the pre-lysis threshold; the safety pause requires strictly below 185/110`);
 
             if (!Number.isNaN(inr) && inr <= 1.7) negatives.push(`INR ${inr.toFixed(1)} ≤ 1.7`);
             if (!Number.isNaN(platelets) && platelets >= 100) negatives.push(`Platelets ${Math.round(platelets)}K ≥ 100K`);
             if (!Number.isNaN(ptt) && ptt <= 40) negatives.push(`aPTT ${ptt.toFixed(1)}s ≤ 40s`);
             if (!Number.isNaN(glucose) && glucose >= 50) negatives.push(`Glucose ${Math.round(glucose)} mg/dL ≥ 50`);
-            if (bp && bp.systolic <= 185 && bp.diastolic <= 110) negatives.push(`BP ${bp.systolic}/${bp.diastolic} within pre-lysis threshold`);
+            if (bp && bp.systolic < 185 && bp.diastolic < 110) negatives.push(`BP ${bp.systolic}/${bp.diastolic} below the pre-lysis threshold of 185/110`);
             if (/no[^.\n]*(hemorrhage|haemorrhage|bleed|sah)/i.test(ctText)) negatives.push('No intracranial hemorrhage reported on CT');
 
             if (!anticoagType || anticoagType === 'none' || anticoagType === 'unknown') {
@@ -9720,7 +9733,7 @@ fever_management: {
                 note += `- ${dtnParts.join(' | ')}\n`;
               }
               const transferBp = bpPhaseTargets[telestrokeNote.bpPhase];
-              if (transferBp) note += `- BP target: <${transferBp.systolic}/${transferBp.diastolic} (${transferBp.label})\n`;
+              if (transferBp && formatBpPhaseTarget(transferBp)) note += `- BP target: ${formatBpPhaseTarget(transferBp)} (${transferBp.label})\n`;
               // DOAC timing protocol
               {
                 const doac = telestrokeNote.doacTiming || {};
@@ -10460,7 +10473,7 @@ fever_management: {
               }
               // BP target
               const signoutBpPhase = bpPhaseTargets[telestrokeNote.bpPhase];
-              if (signoutBpPhase) note += `- BP target: <${signoutBpPhase.systolic}/${signoutBpPhase.diastolic} (${signoutBpPhase.label})\n`;
+              if (signoutBpPhase && formatBpPhaseTarget(signoutBpPhase)) note += `- BP target: ${formatBpPhaseTarget(signoutBpPhase)} (${signoutBpPhase.label})\n`;
               const sp = telestrokeNote.secondaryPrevention || {};
               if (sp.antiplateletRegimen) {
                 let soApLine = `- Antithrombotic: ${AP_LABELS_SHORT[sp.antiplateletRegimen] || sp.antiplateletRegimen}`;
@@ -10587,7 +10600,7 @@ fever_management: {
                 if (progressBpPlan) note += `- Post-EVT BP plan: ${progressBpPlan}\n`;
               }
               const procBp = bpPhaseTargets['post-evt'];
-              note += `- BP target: SBP <${procBp.systolic}/${procBp.diastolic} for 24h; avoid SBP <140 (Class III: Harm per BEST-II/ENCHANTED2)\n`;
+              note += `- BP target: ${formatBpPhaseTarget(procBp)} for 24h after documented successful recanalization (mTICI >=2b)\n`;
               note += `- Neurovascular checks q15min x 2h, then q30min x 4h\n`;
               note += `- Groin site checks q15min x 4h\n`;
               note += `- Hold antiplatelets/anticoagulants x 24h\n`;
@@ -10770,7 +10783,7 @@ fever_management: {
               if (telestrokeNote.sickleCellDisease) note += `   - SICKLE CELL DISEASE\n`;
               if (telestrokeNote.infectiveEndocarditis) note += `   - INFECTIVE ENDOCARDITIS\n`;
               const progBp = bpPhaseTargets[telestrokeNote.bpPhase];
-              note += `   - BP goal: ${progBp ? `<${progBp.systolic}/${progBp.diastolic} (${progBp.label})` : '___'}\n`;
+              note += `   - BP goal: ${progBp && formatBpPhaseTarget(progBp) ? `${formatBpPhaseTarget(progBp)} (${progBp.label})` : '___'}\n`;
               {
                 const prVte = telestrokeNote.vteProphylaxis || {};
                 const prVteItems = [];
@@ -11860,7 +11873,7 @@ fever_management: {
             // Add BP target for continuity
             const consultBp = bpPhaseTargets[telestrokeNote.bpPhase];
             if (consultBp) {
-              note += `\nBP target: <${consultBp.systolic}/${consultBp.diastolic} (${consultBp.label})\n`;
+              note += `\nBP target: ${formatBpPhaseTarget(consultBp)} (${consultBp.label})\n`;
             }
 
             // Add DTN metrics if TNK was administered
@@ -12618,6 +12631,7 @@ fever_management: {
               if (inputs.timeWindow && inputs.timeWindow !== 'auto') return inputs.timeWindow;
               if (telestrokeNote.lkwUnknown) return 'unknown';
               if (!timeFromLKW) return 'unknown';
+              if (timeFromLKW.futureWarning) return 'unknown';
               if (timeFromLKW.total <= 6) return '0-6';
               if (timeFromLKW.total <= 24) return '6-24';
               return '>24';
@@ -28286,7 +28300,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="border-l-4 border-crit-400 bg-slate-50 px-3 py-2 text-sm space-y-1 dark:bg-paper-2">
                             <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide dark:text-ink">Key Principles</p>
                             <ul className="list-disc pl-4 text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
-                              <li>Presenting SBP 150-219: target 140 and maintain 130-150. Presenting SBP &ge;220: reduce about 20%, never more than 25%, in the first hour, then target 140-160. Presenting SBP &lt;150: do not actively lower to 140.</li>
+                              <li>Presenting SBP 150-219: target 140 and maintain 130-150. Presenting SBP &ge;220: reduce about 20%, never more than 25%, in the first hour, then gradually reduce to 140-160. Presenting SBP &lt;150: do not actively lower to 140.</li>
                               <li>Start BP treatment as soon as possible, ideally within 2 hours of onset, and reach the selected target about 1 hour after treatment begins.</li>
                               <li>Obtain rapid agent-specific assessment using INR, thrombin time, direct-Xa or anti-Xa testing, and last-dose timing; follow the applicable reversal gate below.</li>
                               <li>Use the source-defined Neurosurgery, hydrocephalus, mass-effect, MIE, and research screens below; do not infer an operative pathway from location, volume, or GCS alone.</li>
@@ -28374,7 +28388,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                               <div className="flex gap-2 items-start">
                                 <span className="shrink-0 w-6 h-6 rounded-full bg-crit-600 text-white text-xs flex items-center justify-center font-bold">4</span>
-                                <p className="text-sm">If <strong>crash craniotomy</strong> is being considered → request <strong>2 units emergency-release RBCs</strong> (place both prepare and transfuse orders)</p>
+                                <p className="text-sm">If <strong>surgery</strong> is being considered → contact the transfusion service and request <strong>2 units cross-matched RBCs</strong> (turnaround varies, and is longer without a current type &amp; screen or with red-cell antibodies). If <strong>crash craniotomy</strong> is being considered → request <strong>2 units emergency-release RBCs</strong> (place both prepare and transfuse orders)</p>
                               </div>
                               <div className="flex gap-2 items-start">
                                 <span className="shrink-0 w-6 h-6 rounded-full bg-crit-600 text-white text-xs flex items-center justify-center font-bold">5</span>
@@ -28397,7 +28411,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                               <div className="bg-white border border-crit-200 rounded-lg p-2 dark:bg-card dark:border-crit-800">
                                 <p className="font-semibold text-crit-800 dark:text-crit-300">2. Blood Pressure Strategy</p>
-                                <p className="text-slate-700 dark:text-ink-2">Use the presenting-SBP branches: 150-219 → target 140 and maintain 130-150; &ge;220 → reduce about 20% but never more than 25% in the first hour, then target 140-160; &lt;150 → do not actively lower to 140.</p>
+                                <p className="text-slate-700 dark:text-ink-2">Use the presenting-SBP branches: 150-219 → target 140 and maintain 130-150; &ge;220 → reduce about 20% but never more than 25% in the first hour, then gradually reduce to 140-160; &lt;150 → do not actively lower to 140.</p>
                               </div>
                               <div className="bg-white border border-crit-200 rounded-lg p-2 dark:bg-card dark:border-crit-800">
                                 <p className="font-semibold text-crit-800 dark:text-crit-300">3. Agent-Specific Reversal</p>
@@ -28590,7 +28604,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <p className="text-xs font-semibold text-crit-700 mb-1 dark:text-crit-300">YES — Blood confirmed:</p>
                                     <ol className="text-sm space-y-1 ml-4 list-decimal">
                                       <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">2 units of cryoprecipitate</button> over 10-30 minutes, or continue if already started</li>
-                                      <li>Confirm intracranial blood on CT with the ordering provider, then confirm post-CT cryoprecipitate administration with the RN; after both confirmations, give <button onClick={() => setProtocolModal(protocolDetailMap.TXA)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">tranexamic acid 1000 mg IV over 10 minutes</button></li>
+                                      <li>Confirm intracranial blood on CT with the ordering provider, then verbally confirm with the RN that administration is post-CT; after both confirmations, give <button onClick={() => setProtocolModal(protocolDetailMap.TXA)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">tranexamic acid 1000 mg IV over 10 minutes</button></li>
                                       <li>Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal</li>
                                       <li>Call Stroke/Neuro attending</li>
                                       <li>Consult Neurosurgery if needed</li>
@@ -28635,7 +28649,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="space-y-2">
                                   <div className="flex gap-2 items-start">
                                     <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">1</span>
-                                    <p className="text-sm"><strong>Maintain airway</strong> — may not need intubation if limited to anterior tongue/lips; fiberoptic intubation preferred if needed</p>
+                                    <p className="text-sm"><strong>Maintain airway</strong> — intubation may not be necessary if edema is limited to the anterior tongue and lips. Edema involving the larynx, palate, floor of mouth, or oropharynx with rapid progression within 30 minutes poses higher risk of requiring intubation. Awake fiberoptic intubation is optimal.</p>
                                   </div>
                                   <div className="flex gap-2 items-start">
                                     <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">2</span>
@@ -28722,7 +28736,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <p className="text-xs text-slate-500 mt-3 dark:text-mute">
                               For confirmed non-traumatic IPH, volume ≥15 mL prompts early Neurosurgery + stroke-service evaluation. A 30-80 mL lobar volume is only one component of the complete MIE screen and is not a standalone prognostic rule.
                             </p>
-                            {ichVolumeEstimate?.exceeds15 && (
+                            {ichVolumeEstimate?.unitWarning && (
+                              <p className="text-xs font-semibold text-crit-800 bg-crit-50 border border-crit-200 rounded-md p-2 mt-2 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300">
+                                {ichVolumeEstimate.unitWarning}
+                              </p>
+                            )}
+                            {ichVolumeEstimate?.exceeds15 && !ichVolumeEstimate.unitWarning && (
                               <p className="text-xs font-semibold text-warn-800 bg-warn-50 border border-warn-200 rounded-md p-2 mt-2 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
                                 Confirmed non-traumatic IPH volume ≥15 mL by ABC/2 meets the June 2026 early Neurosurgery + stroke-service evaluation threshold.
                               </p>
@@ -28736,7 +28755,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="p-4 pt-0">
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                                 <li>Confirm antithrombotic agent, last-dose timing, duration, indication, relevant renal/hepatic comorbidity or interactions, and the applicable INR, thrombin-time, direct-Xa, or anti-Xa gate before reversal.</li>
-                                <li>Use the presenting-SBP branches: 150-219 → target 140 and maintain 130-150; &ge;220 → reduce about 20% but never more than 25% in the first hour, then 140-160; &lt;150 → do not actively lower to 140. Use IV nicardipine or IV labetalol.</li>
+                                <li>Use the presenting-SBP branches: 150-219 → target 140 and maintain 130-150; &ge;220 → reduce about 20% but never more than 25% in the first hour, then gradually reduce to 140-160; &lt;150 → do not actively lower to 140. Use IV nicardipine or IV labetalol. Spontaneous ICH only — not for vascular-malformation hemorrhage or post-operative neurosurgical cases.</li>
                                 <li>Screen for early Neurosurgery + stroke-service evaluation triggers: non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, life-threatening mass effect, neurologic decline, multicompartmental hemorrhage, ED attending discretion, or clinician concern.</li>
                                 <li>Plan repeat imaging and close neuro checks.</li>
                               </ul>
@@ -28780,7 +28799,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-3 rounded border dark:bg-card">
                             <h4 className="font-semibold text-ok-600 mb-2 dark:text-ok-300">June 2026 Institutional MIE Screen</h4>
                             <ul className="text-sm space-y-1">
-                              <li>• Spontaneous <strong>lobar</strong> IPH — no underlying lesion (tumor/AVM)</li>
+                              <li>• Spontaneous <strong>lobar</strong> IPH — no underlying lesion</li>
                               <li>• ICH volume 30-80 cc</li>
                               <li>• Age 18-80 years</li>
                               <li>• NIHSS &gt;5</li>
@@ -28825,7 +28844,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <li><strong>Check INR:</strong> at 30 min, then every 6h for 24h after PCC.</li>
                             <li><strong>INR &gt;1.5 after PCC:</strong> page hematology and consider an additional 500 units PCC or 2-4 units plasma (FFP).</li>
                             <li><strong>INR &gt;1.5 at 24h:</strong> repeat vitamin K 10 mg IV over 30 min.</li>
-                            <li><strong>FFP pathway (if PCC unavailable or contraindicated):</strong> 4 units emergency-release plasma immediately and request an additional 4 units (ideal plasma dose 15 mL/kg; each unit is 250-300 mL, so some patients need additional units) → recheck INR → if &gt;1.5 administer 4 more units → if still &gt;1.5 consult hematology. Consider concurrent furosemide if history of CHF.</li>
+                            <li><strong>FFP pathway (if PCC unavailable or contraindicated):</strong> 4 units emergency-release plasma immediately and request an additional 4 units (ideal plasma dose 15 mL/kg; each unit is 250-300 mL, so some patients need additional units) → recheck INR → if &gt;1.5 administer 4 more units → if still &gt;1.5 consult hematology. If INR is &gt;1.5 at 24 hours, repeat vitamin K 10 mg IV over 30 min. Consider concurrent furosemide if history of CHF.</li>
                           </ul>
                         </div>
 
@@ -28836,6 +28855,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="mb-3">
                             <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">Dabigatran (Direct Thrombin Inhibitor) — COR/LOE 2a/B:</p>
                             <ul className="text-sm space-y-1">
+                              <li><strong>Assessment:</strong> thrombin time (TT) — a normal TT excludes significant dabigatran effect; reverse if TT is prolonged or not readily available.</li>
                               <li><strong>Idarucizumab (Praxbind):</strong> 5 g IV — two 2.5 g doses, ≤15 min apart, each over 5-10 min.</li>
                               <li><strong>If unavailable:</strong> 4F-PCC 2000 units IV.</li>
                               <li><strong>Activated charcoal:</strong> if ingestion &lt;2 hours.</li>
@@ -28846,6 +28866,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div>
                             <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors) — COR/LOE 2b/B:</p>
                             <ul className="text-sm space-y-1">
+                              <li><strong>Assessment:</strong> Direct Xa Inhibitor screen — a normal screen excludes significant anticoagulant effect. For edoxaban the screen is not a calibrated drug-specific assay, so interpret it together with last-dose timing and renal function.</li>
                               <li><strong>Andexanet alfa:</strong> not available on the local formulary.</li>
                               <li><strong>4F-PCC:</strong> 2000 units IV — give if Direct Xa Inhibitor screen elevated and no contraindications.</li>
                               <li><strong>Activated charcoal:</strong> if ingestion &lt;2 hours.</li>
@@ -28857,9 +28878,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-white p-4 rounded border mb-4 dark:bg-card">
                           <h4 className="font-semibold text-cobalt-700 mb-3 dark:text-cobalt-300">Heparins</h4>
                           <ul className="text-sm space-y-1">
-                            <li><strong>UFH (COR 2a/C):</strong> assess anti-Xa. Protamine 25 mg IV immediately; recheck anti-Xa after infusion and, if &gt;0.1, give an additional 10 mg protamine (max cumulative dose 55 mg).</li>
+                            <li><strong>Treatment-dose UFH (COR 2a/C):</strong> assess anti-Xa. Protamine 25 mg IV immediately; recheck anti-Xa after infusion and, if &gt;0.1, give an additional 10 mg protamine (max cumulative dose 55 mg).</li>
                             <li><strong>UFH — HIT screen:</strong> if platelets &lt;100 K/µL, send heparin-induced platelet antibodies; if positive, consult hematology.</li>
-                            <li><strong>LMWH (COR 2b/C):</strong> last dose &lt;8h → protamine 50 mg IV; last dose 8-24h → protamine 25 mg IV; last dose &gt;24h → no reversal indicated.</li>
+                            <li><strong>Treatment-dose LMWH — enoxaparin, dalteparin, or tinzaparin (COR 2b/C):</strong> last dose &lt;8h → protamine 50 mg IV; last dose 8-24h → protamine 25 mg IV; last dose &gt;24h → no reversal indicated.</li>
                           </ul>
                         </div>
 
@@ -28875,7 +28896,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="bg-white p-4 rounded border mb-4 dark:bg-card">
                           <h4 className="font-semibold text-cobalt-700 mb-3 dark:text-cobalt-300">Common Reversal Monitoring</h4>
                           <ul className="text-sm space-y-1">
-                            <li>Laboratory testing: baseline, 15-30 minutes after reversal, 6 hours, and 24 hours.</li>
+                            <li>Laboratory testing: baseline emergency stroke panel; repeat the STAT panel 15-30 minutes after reversal including the agent-specific assay (PT/INR for warfarin, thrombin time for dabigatran, anti-Xa for factor-Xa inhibitors); PT/INR and CBC at 6 hours; PT/INR, CBC and fibrinogen at 24 hours.</li>
                             <li>CT head: baseline, 6 hours or sooner for clinical deterioration, and 24 hours.</li>
                             <li>Neurologic checks every hour for 24 hours; blood pressure per the ICH protocol; monitor for thrombotic complications.</li>
                           </ul>
@@ -28931,7 +28952,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <p className="text-xs text-slate-500 mb-2 dark:text-mute">Spontaneous ICH only. Not for hemorrhage from a vascular malformation or for post-operative neurosurgical cases.</p>
                             <ul className="text-sm space-y-1">
                               <li><strong>Presenting SBP 150-219:</strong> target 140 and maintain 130-150.</li>
-                              <li><strong>Presenting SBP ≥220:</strong> reduce by about 20%, never more than 25%, in the first hour; then target 140-160.</li>
+                              <li><strong>Presenting SBP ≥220:</strong> reduce by about 20%, never more than 25%, in the first hour; then gradually reduce to 140-160, and after at least 6 hours with a repeat head CT transition to the 130-150 target.</li>
                               <li><strong>Presenting SBP &lt;150:</strong> do not actively lower to 140.</li>
                               <li><strong>Timing:</strong> start as soon as possible, ideally within 2 hours of onset, and reach the selected target about 1 hour after treatment begins.</li>
                               <li><strong>Process:</strong> use smooth, sustained control and avoid peaks or variability.</li>
@@ -29763,8 +29784,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h3 className="font-semibold mb-2">CT Result Branch</h3>
                               <ul className="text-sm space-y-1">
                                 <li><strong>Intracranial blood on CT:</strong> confirm the CT result with the ordering provider and administer 2 units of cryoprecipitate over 10-30 minutes</li>
-                                <li><strong>Before TXA:</strong> confirm post-CT cryoprecipitate administration with the RN; after both confirmations, give tranexamic acid 1,000 mg IV over 10 minutes</li>
+                                <li><strong>Before TXA:</strong> verbally confirm with the RN that administration is post-CT; after both confirmations, give tranexamic acid 1,000 mg IV over 10 minutes</li>
                                 <li><strong>Then:</strong> repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal; contact the Stroke/Neurology attending, consult Neurosurgery if needed, and update the family again</li>
+                                <li><strong>No intracranial blood on CT:</strong> do <strong>NOT</strong> restart the lytic; consider other causes — extending infarct, seizure, hypoxia, hypercarbia, hypoglycemia, or electrolyte abnormalities</li>
                                 <li><strong>No ICH on CT while empiric cryoprecipitate is infusing:</strong> stop cryoprecipitate and do not restart the thrombolytic</li>
                               </ul>
                             </div>

@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "completed-trials",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.19.3",
+    "appVersion": "6.19.4",
     "checksum": "sha256:802ebd783efce05cbe116834de721411",
     "count": 113,
     "source": "Evidence atlas completed-trials bundle",

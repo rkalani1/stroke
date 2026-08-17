@@ -1,4 +1,9 @@
 import { describe, it, expect } from 'vitest';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 import {
   evaluateIVT,
   evaluateDOAC_IVT,
@@ -587,21 +592,30 @@ describe('evaluateEVT_Basilar', () => {
 
 describe('Safe Pause attestation', () => {
   it('includes the attestation only when every required gate is complete', () => {
-    const t = getSafePauseText({ consentType: 'informed', bp: '170/90', contraindications: 'reviewed' });
+    // 2026-08-17: provider agreement is a fourth required pause item, listed in the accepted
+    // safety-pause source alongside consent and the BP confirmation.
+    const t = getSafePauseText({ consentType: 'informed', bp: '170/90', contraindications: 'reviewed', providerAgreement: 'confirmed' });
     expect(t).toContain(SAFE_PAUSE_ATTESTATION);
     expect(t).toContain('170/90');
+    expect(t).toContain('all providers agree with the thrombolytic decision');
+  });
+  it('fails closed when provider agreement is not confirmed', () => {
+    const base = { consentType: 'informed', bp: '170/90', contraindications: 'reviewed' };
+    expect(getSafePauseIssues(base)).toContain('Provider agreement with the thrombolytic decision has not been confirmed.');
+    expect(getSafePauseText(base)).toMatch(/NOT READY — DO NOT ATTEST/);
+    expect(getSafePauseText({ ...base, providerAgreement: 'confirmed' })).toContain(SAFE_PAUSE_ATTESTATION);
   });
   it('fails closed for incomplete review, missing consent, malformed BP, or threshold BP', () => {
     const cases = [
-      { consentType: 'informed', bp: '170/90' },
-      { consentType: '', bp: '170/90', contraindications: 'reviewed' },
-      { consentType: 'declined', bp: '170/90', contraindications: 'reviewed' },
-      { consentType: 'informed', bp: 'not-a-bp', contraindications: 'reviewed' },
-      { consentType: 'informed', bp: '00/00', contraindications: 'reviewed' },
-      { consentType: 'informed', bp: '90/100', contraindications: 'reviewed' },
-      { consentType: 'informed', bp: '100/100', contraindications: 'reviewed' },
-      { consentType: 'informed', bp: '185/109', contraindications: 'reviewed' },
-      { consentType: 'informed', bp: '184/110', contraindications: 'reviewed' }
+      { consentType: 'informed', bp: '170/90', providerAgreement: 'confirmed' },
+      { consentType: '', bp: '170/90', contraindications: 'reviewed', providerAgreement: 'confirmed' },
+      { consentType: 'declined', bp: '170/90', contraindications: 'reviewed', providerAgreement: 'confirmed' },
+      { consentType: 'informed', bp: 'not-a-bp', contraindications: 'reviewed', providerAgreement: 'confirmed' },
+      { consentType: 'informed', bp: '00/00', contraindications: 'reviewed', providerAgreement: 'confirmed' },
+      { consentType: 'informed', bp: '90/100', contraindications: 'reviewed', providerAgreement: 'confirmed' },
+      { consentType: 'informed', bp: '100/100', contraindications: 'reviewed', providerAgreement: 'confirmed' },
+      { consentType: 'informed', bp: '185/109', contraindications: 'reviewed', providerAgreement: 'confirmed' },
+      { consentType: 'informed', bp: '184/110', contraindications: 'reviewed', providerAgreement: 'confirmed' }
     ];
     for (const input of cases) {
       const text = getSafePauseText(input);
@@ -609,8 +623,8 @@ describe('Safe Pause attestation', () => {
       expect(text).not.toContain(`Attestation: ${SAFE_PAUSE_ATTESTATION}`);
       expect(getSafePauseIssues(input).length).toBeGreaterThan(0);
     }
-    expect(getSafePauseText({ consentType: 'informed', bp: '184/109', contraindications: 'reviewed' })).toContain(SAFE_PAUSE_ATTESTATION);
-    expect(getSafePauseText({ consentType: 'informed', bp: '90/50', contraindications: 'reviewed' })).toContain(SAFE_PAUSE_ATTESTATION);
+    expect(getSafePauseText({ consentType: 'informed', bp: '184/109', contraindications: 'reviewed', providerAgreement: 'confirmed' })).toContain(SAFE_PAUSE_ATTESTATION);
+    expect(getSafePauseText({ consentType: 'informed', bp: '90/50', contraindications: 'reviewed', providerAgreement: 'confirmed' })).toContain(SAFE_PAUSE_ATTESTATION);
   });
 });
 
@@ -899,5 +913,87 @@ describe('2026-08-17 Protocols source-consistency audit', () => {
   it('renders the flowchart generalizability limits rather than holding them as dead data', () => {
     expect(GENERALIZABILITY_LIMITATIONS).toContain('Age >80');
     expect(GENERALIZABILITY_LIMITATIONS).toContain('Life expectancy <6 months');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 2026-08-17 second pass — findings confirmed by the audit but left unimplemented
+// in v6.19.3. Each pin below is the corrective contract.
+// ---------------------------------------------------------------------------
+describe('2026-08-17 audit — second-pass corrections', () => {
+  const app = fs.readFileSync(path.join(ROOT, 'src/app.jsx'), 'utf8');
+  const cards = fs.readFileSync(path.join(ROOT, 'src/pocket-cards.jsx'), 'utf8');
+
+  it('treats 185/110 as at-threshold, not cleared, in the contraindication trace', () => {
+    // p9 requires BP strictly below 185/110, which getSafePauseIssues already enforced.
+    // The trace previously cleared an exactly-185/110 reading as "within threshold".
+    expect(app).toMatch(/bp\.systolic >= 185 \|\| bp\.diastolic >= 110/);
+    expect(app).toMatch(/bp\.systolic < 185 && bp\.diastolic < 110/);
+    expect(app).not.toMatch(/bp\.systolic <= 185 && bp\.diastolic <= 110/);
+  });
+
+  it('renders every IVT and anterior-EVT hold state instead of showing nothing', () => {
+    // Both cards previously rendered null for fail-closed holds, so the clinician saw
+    // silence where a "do not proceed" reason belonged.
+    expect(cards).not.toMatch(/result\.eligible !== null && result\.eligible !== 'pending'/);
+    expect(cards).toMatch(/\{result\.eligible !== null &&/);
+    expect(cards).toMatch(/\{rAnt\.eligible !== null &&/);
+    expect(cards).not.toMatch(/\(rAnt\.eligible === true \|\| rAnt\.eligible === 'consider'\) &&/);
+  });
+
+  it('fails closed on a future-dated last-known-well reference time', () => {
+    expect(app).toMatch(/if \(timeFromLKW\.futureWarning\) return 'unknown';/);
+  });
+
+  it('never emits an undefined blood-pressure target in generated text', () => {
+    expect(app).toMatch(/const formatBpPhaseTarget = \(phase\) =>/);
+    // No consumer may interpolate .systolic/.diastolic off a phase object directly:
+    // the post-EVT phase carries systolicLow/systolicHigh and would print "undefined".
+    expect(app).not.toMatch(/BP target: <\$\{[A-Za-z]+\.systolic\}\/\$\{[A-Za-z]+\.diastolic\}/);
+    expect(app).not.toMatch(/SBP <\$\{procBp\.systolic\}/);
+  });
+
+  it('guards the Protocols ABC/2 widget against millimetre-scale unit errors', () => {
+    expect(app).toMatch(/unitWarning: oversized/);
+    // An implausible volume must not assert the >=15 mL Neurosurgery threshold.
+    expect(app).toMatch(/ichVolumeEstimate\?\.exceeds15 && !ichVolumeEstimate\.unitWarning/);
+  });
+
+  it('requires provider agreement as a fourth safety-pause gate', () => {
+    const base = { consentType: 'informed', bp: '170/90', contraindications: 'reviewed' };
+    expect(getSafePauseIssues(base)).toHaveLength(1);
+    expect(getSafePauseIssues({ ...base, providerAgreement: 'confirmed' })).toHaveLength(0);
+    expect(getSafePauseText({ ...base, providerAgreement: 'confirmed' }))
+      .toContain('all providers agree with the thrombolytic decision');
+  });
+
+  it('scopes the heparin reversal regimens to treatment-dose exposure', () => {
+    expect(app).toMatch(/Treatment-dose UFH \(COR 2a\/C\)/);
+    expect(app).toMatch(/Treatment-dose LMWH — enoxaparin, dalteparin, or tinzaparin \(COR 2b\/C\)/);
+  });
+
+  it('carries the source assay gate for each DOAC class', () => {
+    expect(app).toMatch(/thrombin time \(TT\) — a normal TT excludes significant dabigatran effect/);
+    expect(app).toMatch(/For edoxaban the screen is not a calibrated drug-specific assay/);
+  });
+
+  it('applies the 24-hour vitamin K repeat to the plasma pathway as well as PCC', () => {
+    expect(app).toMatch(/If INR is &gt;1\.5 at 24 hours, repeat vitamin K 10 mg IV over 30 min\./);
+    expect(app).toMatch(/at 24 h after PCC or plasma/);
+  });
+
+  it('keeps the ICH BP rate qualifier and scope exclusion on every restatement', () => {
+    // The source constrains the RATE of the second step and scopes the whole algorithm
+    // to spontaneous ICH; both were present on only some of the four restatements.
+    expect(app.match(/gradually reduce to 140-160/g) || []).toHaveLength(4);
+    expect(app).toMatch(/Spontaneous ICH only — not for vascular-malformation hemorrhage or post-operative neurosurgical cases/);
+  });
+
+  it('drops the unsourced MIE lesion parenthetical', () => {
+    expect(app).not.toMatch(/no underlying lesion \(tumor\/AVM\)/);
+  });
+
+  it('renders the general no-ICH endpoint on the Ischemic tab, not only the ICH tab', () => {
+    expect(app).toMatch(/No intracranial blood on CT:<\/strong> do <strong>NOT<\/strong> restart the lytic/);
   });
 });

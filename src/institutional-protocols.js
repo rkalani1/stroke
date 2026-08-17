@@ -153,7 +153,7 @@ const parseRequiredAge = (value) => {
   return Number(normalized);
 };
 
-export const getSafePauseIssues = ({ consentType = '', bp = '', contraindications = '' } = {}) => {
+export const getSafePauseIssues = ({ consentType = '', bp = '', contraindications = '', providerAgreement = '' } = {}) => {
   const issues = [];
   const consent = String(consentType || '').trim().toLowerCase();
   if (!consent || consent === 'declined') issues.push('Consent is absent or declined.');
@@ -172,11 +172,17 @@ export const getSafePauseIssues = ({ consentType = '', bp = '', contraindication
   if (String(contraindications || '').trim().toLowerCase() !== 'reviewed') {
     issues.push('Absolute and relative contraindications have not been marked reviewed.');
   }
+
+  // The accepted safety-pause source lists provider agreement as a required pause item
+  // alongside consent and the BP confirmation; it is not implied by the other two.
+  if (String(providerAgreement || '').trim().toLowerCase() !== 'confirmed') {
+    issues.push('Provider agreement with the thrombolytic decision has not been confirmed.');
+  }
   return issues;
 };
 
-export const getSafePauseText = ({ consentType = '', bp = '', contraindications = '' } = {}) => {
-  const issues = getSafePauseIssues({ consentType, bp, contraindications });
+export const getSafePauseText = ({ consentType = '', bp = '', contraindications = '', providerAgreement = '' } = {}) => {
+  const issues = getSafePauseIssues({ consentType, bp, contraindications, providerAgreement });
   if (issues.length > 0) {
     return `SAFE PAUSE NOT READY — DO NOT ATTEST:
 ${issues.map((issue, index) => `(${index + 1}) ${issue}`).join('\n')}
@@ -188,7 +194,7 @@ Attestation unavailable until every required item is complete.`;
 (3) Absolute & relative contraindications ${contraindications}.
 (4) Dose confirmed (weight-based TNK 0.25 mg/kg, max 25 mg).
 (5) Pause performed FACE-TO-FACE with the RN or anesthesia provider who will administer the drug.
-(6) Pause confirmed by neurology, the ED clinician, and the primary RN.
+(6) Pause confirmed by neurology, the ED clinician, and the primary RN; all providers agree with the thrombolytic decision.
 (7) Safety pause documented using the approved local workflow.
 Attestation: ${SAFE_PAUSE_ATTESTATION}`;
 };
@@ -262,6 +268,7 @@ export const evaluateIVT = ({
   }
 
   if (ichOnCT !== false) return { eligible: null, recommendation: 'Confirm CT excludes intracranial hemorrhage', decisions, warnings };
+
 
   if (Number.isFinite(glc) && (glc < 50 || glc > 400)) {
     if (glucoseCorrectedDeficitPersists !== true) {

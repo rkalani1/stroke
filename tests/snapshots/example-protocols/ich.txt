@@ -9,7 +9,7 @@ Ischemic/TIA
 ICH Management
 Algorithmic workflow
 Key Principles
-Presenting SBP 150-219: target 140 and maintain 130-150. Presenting SBP ≥220: reduce about 20%, never more than 25%, in the first hour, then target 140-160. Presenting SBP <150: do not actively lower to 140.
+Presenting SBP 150-219: target 140 and maintain 130-150. Presenting SBP ≥220: reduce about 20%, never more than 25%, in the first hour, then gradually reduce to 140-160. Presenting SBP <150: do not actively lower to 140.
 Start BP treatment as soon as possible, ideally within 2 hours of onset, and reach the selected target about 1 hour after treatment begins.
 Obtain rapid agent-specific assessment using INR, thrombin time, direct-Xa or anti-Xa testing, and last-dose timing; follow the applicable reversal gate below.
 Use the source-defined Neurosurgery, hydrocephalus, mass-effect, MIE, and research screens below; do not infer an operative pathway from location, volume, or GCS alone.
@@ -96,6 +96,10 @@ Order
 Type & Screen
 4
 If
+surgery
+is being considered → contact the transfusion service and request
+2 units cross-matched RBCs
+(turnaround varies, and is longer without a current type & screen or with red-cell antibodies). If
 crash craniotomy
 is being considered → request
 2 units emergency-release RBCs
@@ -110,7 +114,7 @@ Institutional rapid workflow
 1. Airway and Neuro ICU Escalation
 Escalate airway and ICU-level monitoring early when exam worsens or airway protection is uncertain.
 2. Blood Pressure Strategy
-Use the presenting-SBP branches: 150-219 → target 140 and maintain 130-150; ≥220 → reduce about 20% but never more than 25% in the first hour, then target 140-160; <150 → do not actively lower to 140.
+Use the presenting-SBP branches: 150-219 → target 140 and maintain 130-150; ≥220 → reduce about 20% but never more than 25% in the first hour, then gradually reduce to 140-160; <150 → do not actively lower to 140.
 3. Agent-Specific Reversal
 Confirm the applicable INR, thrombin-time, direct-Xa, anti-Xa, and last-dose timing gate, then use the institutional agent-specific pathway below.
 4. Surgery and Research Screens
@@ -217,7 +221,7 @@ YES — Blood confirmed:
 Give
 2 units of cryoprecipitate
 over 10-30 minutes, or continue if already started
-Confirm intracranial blood on CT with the ordering provider, then confirm post-CT cryoprecipitate administration with the RN; after both confirmations, give
+Confirm intracranial blood on CT with the ordering provider, then verbally confirm with the RN that administration is post-CT; after both confirmations, give
 tranexamic acid 1000 mg IV over 10 minutes
 Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal
 Call Stroke/Neuro attending
@@ -239,7 +243,7 @@ Angioedema Management
 Post-thrombolytic orolingual angioedema
 1
 Maintain airway
-— may not need intubation if limited to anterior tongue/lips; fiberoptic intubation preferred if needed
+— intubation may not be necessary if edema is limited to the anterior tongue and lips. Edema involving the larynx, palate, floor of mouth, or oropharynx with rapid progression within 30 minutes poses higher risk of requiring intubation. Awake fiberoptic intubation is optimal.
 2
 Hold ACE inhibitors
 — stop the thrombolytic infusion
@@ -268,7 +272,7 @@ Slices w/ ICH
 For confirmed non-traumatic IPH, volume ≥15 mL prompts early Neurosurgery + stroke-service evaluation. A 30-80 mL lobar volume is only one component of the complete MIE screen and is not a standalone prognostic rule.
 Telestroke rapid actions (phone or video)
 Confirm antithrombotic agent, last-dose timing, duration, indication, relevant renal/hepatic comorbidity or interactions, and the applicable INR, thrombin-time, direct-Xa, or anti-Xa gate before reversal.
-Use the presenting-SBP branches: 150-219 → target 140 and maintain 130-150; ≥220 → reduce about 20% but never more than 25% in the first hour, then 140-160; <150 → do not actively lower to 140. Use IV nicardipine or IV labetalol.
+Use the presenting-SBP branches: 150-219 → target 140 and maintain 130-150; ≥220 → reduce about 20% but never more than 25% in the first hour, then gradually reduce to 140-160; <150 → do not actively lower to 140. Use IV nicardipine or IV labetalol. Spontaneous ICH only — not for vascular-malformation hemorrhage or post-operative neurosurgical cases.
 Screen for early Neurosurgery + stroke-service evaluation triggers: non-traumatic IPH ≥15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, life-threatening mass effect, neurologic decline, multicompartmental hemorrhage, ED attending discretion, or clinician concern.
 Plan repeat imaging and close neuro checks.
 Telephone: confirm NIHSS and exam details with the bedside team.
@@ -285,7 +289,7 @@ Do not infer eligibility, outcome, or prognosis from volume, GCS, location, or a
 June 2026 Institutional MIE Screen
 • Spontaneous
 lobar
-IPH — no underlying lesion (tumor/AVM)
+IPH — no underlying lesion
 • ICH volume 30-80 cc
 • Age 18-80 years
 • NIHSS >5
@@ -318,9 +322,11 @@ page hematology and consider an additional 500 units PCC or 2-4 units plasma (FF
 INR >1.5 at 24h:
 repeat vitamin K 10 mg IV over 30 min.
 FFP pathway (if PCC unavailable or contraindicated):
-4 units emergency-release plasma immediately and request an additional 4 units (ideal plasma dose 15 mL/kg; each unit is 250-300 mL, so some patients need additional units) → recheck INR → if >1.5 administer 4 more units → if still >1.5 consult hematology. Consider concurrent furosemide if history of CHF.
+4 units emergency-release plasma immediately and request an additional 4 units (ideal plasma dose 15 mL/kg; each unit is 250-300 mL, so some patients need additional units) → recheck INR → if >1.5 administer 4 more units → if still >1.5 consult hematology. If INR is >1.5 at 24 hours, repeat vitamin K 10 mg IV over 30 min. Consider concurrent furosemide if history of CHF.
 Direct Oral Anticoagulants (DOACs)
 Dabigatran (Direct Thrombin Inhibitor) — COR/LOE 2a/B:
+Assessment:
+thrombin time (TT) — a normal TT excludes significant dabigatran effect; reverse if TT is prolonged or not readily available.
 Idarucizumab (Praxbind):
 5 g IV — two 2.5 g doses, ≤15 min apart, each over 5-10 min.
 If unavailable:
@@ -330,6 +336,8 @@ if ingestion <2 hours.
 Dialysis:
 ~65% removed (t½ = 14h, longer in renal impairment).
 Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors) — COR/LOE 2b/B:
+Assessment:
+Direct Xa Inhibitor screen — a normal screen excludes significant anticoagulant effect. For edoxaban the screen is not a calibrated drug-specific assay, so interpret it together with last-dose timing and renal function.
 Andexanet alfa:
 not available on the local formulary.
 4F-PCC:
@@ -339,18 +347,18 @@ if ingestion <2 hours.
 Unresolved dialysis conflict:
 the reversal section says to consider emergent dialysis in renal failure, while the same document's pharmacokinetic table labels these agents not dialyzable. No dialysis action is selected pending owner adjudication.
 Heparins
-UFH (COR 2a/C):
+Treatment-dose UFH (COR 2a/C):
 assess anti-Xa. Protamine 25 mg IV immediately; recheck anti-Xa after infusion and, if >0.1, give an additional 10 mg protamine (max cumulative dose 55 mg).
 UFH — HIT screen:
 if platelets <100 K/µL, send heparin-induced platelet antibodies; if positive, consult hematology.
-LMWH (COR 2b/C):
+Treatment-dose LMWH — enoxaparin, dalteparin, or tinzaparin (COR 2b/C):
 last dose <8h → protamine 50 mg IV; last dose 8-24h → protamine 25 mg IV; last dose >24h → no reversal indicated.
 Fondaparinux and Parenteral Direct Thrombin Inhibitors
 Stop fondaparinux, bivalirudin, or argatroban and obtain STAT hematology-attending consultation.
 No specific antidote is available for these agents.
 For bivalirudin or argatroban, repeat the DTI level at 60 minutes after stopping; if it remains prolonged, consult the hematology attending.
 Common Reversal Monitoring
-Laboratory testing: baseline, 15-30 minutes after reversal, 6 hours, and 24 hours.
+Laboratory testing: baseline emergency stroke panel; repeat the STAT panel 15-30 minutes after reversal including the agent-specific assay (PT/INR for warfarin, thrombin time for dabigatran, anti-Xa for factor-Xa inhibitors); PT/INR and CBC at 6 hours; PT/INR, CBC and fibrinogen at 24 hours.
 CT head: baseline, 6 hours or sooner for clinical deterioration, and 24 hours.
 Neurologic checks every hour for 24 hours; blood pressure per the ICH protocol; monitor for thrombotic complications.
 Blood-Product Replacement Thresholds
@@ -384,7 +392,7 @@ Spontaneous ICH only. Not for hemorrhage from a vascular malformation or for pos
 Presenting SBP 150-219:
 target 140 and maintain 130-150.
 Presenting SBP ≥220:
-reduce by about 20%, never more than 25%, in the first hour; then target 140-160.
+reduce by about 20%, never more than 25%, in the first hour; then gradually reduce to 140-160, and after at least 6 hours with a repeat head CT transition to the 130-150 target.
 Presenting SBP <150:
 do not actively lower to 140.
 Timing:
@@ -422,12 +430,12 @@ Monitoring
 Vitamin K
 Dosing
 10 mg IV — give immediately for all warfarin patients.
-Repeat 10 mg IV over 30 min if INR >1.5 at 24h post-PCC.
+Repeat 10 mg IV over 30 min if INR >1.5 at 24 h after PCC or plasma.
 Press Esc or click outside to close
 --- modal via "4F-PCC (Kcentra) 2000 units IV" ---
 4F-PCC (Kcentra)
 Dosing
-PCC (Kcentra) 2000 units IV — infuse immediately. Fixed dose, not weight- or INR-tiered. If PT/INR >1.5 after the infusion, page hematology and consider an additional 500 units of PCC or 2-4 units of plasma (FFP).
+PCC (Kcentra) 2000 units IV — infuse immediately. Fixed dose, not weight- or INR-tiered.
 Give vitamin K 10 mg IV immediately. Check PT/INR at exactly 30 minutes, then every 6 hours for 24 hours. If INR >1.5 after the infusion, page hematology and consider PCC 500 units or plasma 2-4 units. If INR >1.5 at 24 hours, repeat vitamin K 10 mg IV.
 Press Esc or click outside to close
 --- modal via "4 units emergency-release plasma" ---
@@ -439,7 +447,7 @@ Press Esc or click outside to close
 --- modal via "activated charcoal" ---
 Activated Charcoal
 Dosing
-Administer if DOAC ingestion <2 hours ago.
+One dose orally if DOAC ingestion <2 hours ago.
 Use for dabigatran, rivaroxaban, apixaban, or edoxaban.
 Press Esc or click outside to close
 --- modal via "idarucizumab (Praxbind) 5 g IV" ---
@@ -457,7 +465,7 @@ Press Esc or click outside to close
 --- modal via "activated charcoal" ---
 Activated Charcoal
 Dosing
-Administer if DOAC ingestion <2 hours ago.
+One dose orally if DOAC ingestion <2 hours ago.
 Use for dabigatran, rivaroxaban, apixaban, or edoxaban.
 Press Esc or click outside to close
 --- modal via "4F-PCC 2000 units IV" ---
@@ -482,7 +490,7 @@ Press Esc or click outside to close
 Tranexamic Acid (TXA)
 Dosing
 Tranexamic acid 1000 mg IV over 10 min STAT
-For post-thrombolytic ICH: confirm intracranial blood on CT with the ordering provider, then confirm post-CT cryoprecipitate administration with the RN before giving TXA.
+For post-thrombolytic ICH: confirm intracranial blood on CT with the ordering provider, then verbally confirm with the RN that administration is post-CT before giving TXA.
 Press Esc or click outside to close
 --- modal via "Methylprednisolone 125 mg IV" ---
 Methylprednisolone
