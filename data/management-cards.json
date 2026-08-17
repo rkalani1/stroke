@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "management-cards",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.18.1",
+    "appVersion": "6.18.2",
     "checksum": "sha256:f5642213dc12b7bbd8da624411a81dae",
     "count": 3,
     "source": "Management-card reference bundle",

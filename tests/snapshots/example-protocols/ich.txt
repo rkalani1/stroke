@@ -47,7 +47,7 @@ Whichever service calls Neurosurgery closes the loop with the designated on-call
 •
 Separate attending-of-record notification is not default unless that expectation is explicitly requested, especially overnight.
 •
-Consult earlier at any size for IVH, hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, concerning pupillometry trend/asymmetry, multicompartmental hemorrhage, vascular lesion concern, ED attending discretion, or clinician concern.
+Consult earlier at any size for IVH, hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, multicompartmental hemorrhage, vascular lesion concern, ED attending discretion, or clinician concern.
 CTA/MRA branch
 •
 If CTA/MRA shows an underlying vascular lesion or anomaly, the Neurosurgery/neurointerventional pathway leads admission or operative/interventional planning with neurocritical care or ICU support.
@@ -56,8 +56,6 @@ If there is no vascular lesion and no surgical pathway, the stroke service leads
 Monitoring adjuncts
 •
 Use close serial neurologic exams and repeat imaging when the exam changes.
-•
-Use pupillometry where available as an adjunct for patients at risk of hydrocephalus, herniation, or neurologic deterioration.
 Surgery Screens
 CSF diversion
 IVH or IPH with developing/symptomatic hydrocephalus; Decreased consciousness or obstructive physiology
@@ -391,7 +389,7 @@ Antiplatelet-Associated ICH
 Discontinue antiplatelet agent(s). Platelet transfusion is
 NOT routinely recommended
 (COR 3/B — harm demonstrated in the PATCH trial).
-Desmopressin 0.3 mcg/kg IV once may be considered; benefit uncertain.
+Desmopressin 0.3 mcg/kg IV once may be considered; efficacy uncertain for antiplatelet-associated hemorrhage (COR/LOE 2b / C).
 Hematoma Expansion Prevention
 Blood Pressure Target
 Spontaneous ICH only. Not for hemorrhage from a vascular malformation or for post-operative neurosurgical cases.

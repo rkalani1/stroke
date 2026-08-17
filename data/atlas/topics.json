@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "topics",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.18.1",
+    "appVersion": "6.18.2",
     "checksum": "sha256:cc57430cea73d2ebd7d2220d324fd24e",
     "count": 50,
     "source": "Evidence atlas topics bundle",

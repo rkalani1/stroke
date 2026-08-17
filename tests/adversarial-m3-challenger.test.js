@@ -227,7 +227,7 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // and stopping the infusion is conditional on alteplase). See the git diff of
       // tests/snapshots/example-protocols/ for the approved wording.
       const baselineCounts = {
-        ich: 550,
+        ich: 548,
         ischemic: 1103,
         sah: 30,
         tia: 72,

@@ -409,7 +409,7 @@ describe('ICH initial evaluation algorithm', () => {
     expect(text).toMatch(/attending-of-record notification is not default/i);
   });
 
-  it('captures requested trigger variants and pupillometry readiness', () => {
+  it('captures requested trigger variants (pupillometry removed — no folder source)', () => {
     const edNode = alg.decisionNodes.find((node) => node.title === 'ED diagnosis or arrival');
     const monitoringNode = alg.decisionNodes.find((node) => node.title === 'Monitoring adjuncts');
     expect(edNode).toBeTruthy();
@@ -418,10 +418,12 @@ describe('ICH initial evaluation algorithm', () => {
     const edText = edNode.items.join(' ');
     expect(edText).toMatch(/IVH/);
     expect(edText).toMatch(/hydrocephalus/);
-    expect(edText).toMatch(/pupillometry trend\/asymmetry/);
+    // Pupillometry was removed 2026-08-16: no Stroke Center folder document mentions it, and
+    // Protocols carries institutional content only. Its absence is asserted so it cannot return.
+    expect(edText).not.toMatch(/pupillometry/i);
     expect(edText).toMatch(/multicompartmental hemorrhage/);
     expect(edText).toMatch(/ED attending discretion/);
-    expect(monitoringNode.items.join(' ')).toMatch(/pupillometry/i);
+    expect(monitoringNode.items.join(' ')).not.toMatch(/pupillometry/i);
   });
 
   it('keeps decompression criteria limited to life-threatening mass effect', () => {

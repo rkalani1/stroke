@@ -4792,25 +4792,7 @@ Clinician Name`;
                 return !!cat && cat !== 'mimic';
               }
             },
-            glycemic_management: {
-              id: 'glycemic_management',
-              category: 'Glycemic',
-              title: 'Glycemic management (Class III: Harm for intensive insulin)',
-              recommendation: 'Target glucose 140-180 mg/dL. Do NOT use IV insulin to target 80-130 mg/dL (Class III: Harm). Treat hypoglycemia <60 mg/dL emergently.',
-              detail: 'SHINE trial demonstrated no benefit and increased hypoglycemia with intensive glucose control (80-130). Subcutaneous insulin sliding scale preferred for mild hyperglycemia.',
-              classOfRec: 'III',
-              levelOfEvidence: 'A',
-              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
-              conditions: (data) => {
-                const glucoseRaw = data.telestrokeNote?.glucose;
-                const glucose = parseInt(glucoseRaw, 10);
-                const cat = data.telestrokeNote?.diagnosisCategory;
-                const isStroke = !!cat && cat !== 'mimic';
-                return isStroke && !isNaN(glucose) && glucose > 0 && (glucose > 180 || glucose < 60);
-              }
-            },
-            fever_management: {
+fever_management: {
               id: 'fever_management',
               category: 'Supportive Care',
               title: 'Fever management',
@@ -5414,24 +5396,7 @@ Clinician Name`;
             // ---------------------------------------------------------------
             // HYPERGLYCEMIA (2026 UPDATE)
             // ---------------------------------------------------------------
-            hyperglycemia_acute: {
-              id: 'hyperglycemia_acute',
-              category: 'Supportive Care',
-              title: 'Hyperglycemia management in acute stroke (2026 update)',
-              recommendation: 'Target glucose 140-180 mg/dL. Initiate insulin when glucose persistently >180 mg/dL. Intensive glucose lowering to 80-130 mg/dL with IV insulin is Class III (Harm).',
-              detail: 'Intensive glycemic control (80-130 mg/dL) caused symptomatic hypoglycemia in 1-in-9 patients and is explicitly recommended against. Protocol: critically ill/post-TNK patients: start IV insulin infusion with q1h glucose checks; transition to basal-bolus SC when stabilized. Sliding-scale SC insulin for less acute. Avoid glucose <70 mg/dL (neuronal injury risk). ADA 2026 aligned: 100-180 mg/dL for non-critically ill inpatient patients.',
-              classOfRec: 'III',
-              levelOfEvidence: 'A',
-              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Prabhakaran S et al. Stroke. 2026; ADA Standards of Care 2026.',
-              caveats: 'Class III: Harm applies to the intensive target of 80-130 mg/dL, NOT to treating hyperglycemia above 180.',
-              conditions: (data) => {
-                const glucose = parseFloat(data.telestrokeNote?.glucose) || 0;
-                return glucose > 180;
-              }
-            },
-
-            // ---------------------------------------------------------------
+// ---------------------------------------------------------------
             // SEIZURE MANAGEMENT (UPDATED 2025)
             // ---------------------------------------------------------------
             seizure_acute_stroke: {
@@ -24732,18 +24697,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-xs text-slate-500 mt-1 dark:text-mute">AVERT: Very early mobilization (&lt;24h) is harmful (Class III). Graduated approach starting 24-48h preferred. Short, frequent sessions better than prolonged single sessions.</p>
                               </div>
 
-                              {/* Hyperglycemia Management */}
-                              <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
-                                <h3 className="font-semibold text-warn-800 mb-2 dark:text-warn-300">Acute Hyperglycemia Management</h3>
-                                <div className="text-sm text-slate-700 space-y-1 dark:text-ink-2">
-                                  <p><strong>Target glucose: 140-180 mg/dL</strong> (Class I, LOE A)</p>
-                                  <p className="text-crit-700 font-semibold dark:text-crit-300">Intensive glucose control (80-130 mg/dL) is CLASS III: HARM</p>
-                                  <p>• Treat glucose &gt;180 mg/dL with insulin</p>
-                                  <p>• Avoid hypoglycemia (&lt;60 mg/dL) — associated with worse outcomes</p>
-                                  <p>• Continuous glucose monitoring may be considered</p>
-                                  <p className="text-xs text-slate-500 italic dark:text-mute">SHINE trial, AHA/ASA 2019 + 2026 update</p>
-                                </div>
-                              </div>
 
                               {/* DOAC Timing Algorithm (Interactive) */}
                               {getPathwayForDiagnosis(telestrokeNote.diagnosis) === 'ischemic' && (
@@ -28937,7 +28890,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <ul className="text-sm space-y-1">
                               <li>Discontinue antiplatelet agent(s). Platelet transfusion is <strong>NOT routinely recommended</strong> (COR 3/B — harm demonstrated in the PATCH trial).</li>
-                              <li>Desmopressin 0.3 mcg/kg IV once may be considered; benefit uncertain.</li>
+                              <li>Desmopressin 0.3 mcg/kg IV once may be considered; efficacy uncertain for antiplatelet-associated hemorrhage (COR/LOE 2b / C).</li>
                             </ul>
                           </div>
                         </div>
