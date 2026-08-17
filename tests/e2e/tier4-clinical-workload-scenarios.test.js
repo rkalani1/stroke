@@ -23,7 +23,12 @@ import {
   AIS_COMMAND_CENTER_CARDS,
   AIS_SOURCE_LINKS
 } from '../../src/management-guidance.js';
-import { INSTITUTIONAL_BP_PROTOCOLS } from '../../src/institutional-protocols.js';
+import {
+  INSTITUTIONAL_BP_PROTOCOLS,
+  evaluateDOAC_IVT,
+  evaluateEVT_Anterior,
+  evaluateIVT
+} from '../../src/institutional-protocols.js';
 import { parseFrontmatter, VALIDATORS } from '../../content/schema.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -49,39 +54,69 @@ describe('Tier 4: Real-World Clinical Workload Application Scenarios', () => {
         mismatchVolumeMl: 48,
         mismatchRatio: 1.77
       },
+      massEffect: false,
       bloodPressure: { sbp: 172, dbp: 96 }
     };
 
-    it('S1.1: Evaluates extended window large-core EVT eligibility under SVIN 2025 / SELECT2 criteria', () => {
-      const svinData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/svin-large-core-2025.json'), 'utf8'));
-      const extendedRec = svinData.recommendations.find(r => r.section.includes('6-24') && r.classOfRec === 'I');
-      expect(extendedRec).toBeDefined();
-      expect(patientEncounter.aspectsScore >= 3 && patientEncounter.aspectsScore <= 5).toBe(true);
-      expect(patientEncounter.hoursFromLKW >= 6 && patientEncounter.hoursFromLKW <= 24).toBe(true);
-      expect(patientEncounter.premorbidMRS <= 1).toBe(true);
-      expect(patientEncounter.age >= 18 && patientEncounter.age <= 80).toBe(true);
+    it('S1.1: Evaluates the complete institutional 6-24h ASPECTS 3-5 EVT tier', () => {
+      const result = evaluateEVT_Anterior({
+        aspectsScore: patientEncounter.aspectsScore,
+        timeFromLKWh: patientEncounter.hoursFromLKW,
+        nihss: patientEncounter.nihss,
+        preMRS: patientEncounter.premorbidMRS,
+        age: patientEncounter.age,
+        massEffect: patientEncounter.massEffect,
+        coreVolume: patientEncounter.ctpResults.coreVolumeMl
+      });
+      expect(result.eligible).toBe(true);
+      expect(result.window).toBe('6-24h large core');
+      expect(result.cor).toBe('1');
+      expect(result.loe).toBe('A');
     });
 
-    it('S1.2: Confirms standard IV thrombolysis is contraindicated due to time window >4.5h', () => {
-      const isEligibleStandardIVT = (hours) => hours <= 4.5;
-      expect(isEligibleStandardIVT(patientEncounter.hoursFromLKW)).toBe(false);
+    it('S1.2: Holds late-window IVT when CTP and EVT-candidacy gates are not satisfied', () => {
+      const result = evaluateIVT({
+        ichOnCT: false,
+        disablingDeficit: true,
+        hoursFromLKW: patientEncounter.hoursFromLKW,
+        glucose: 110,
+        weight: 80,
+        age: patientEncounter.age,
+        preMRS: patientEncounter.premorbidMRS,
+        evtStatus: 'candidate',
+        consentObtained: true,
+        bpSystolic: patientEncounter.bloodPressure.sbp,
+        bpDiastolic: patientEncounter.bloodPressure.dbp,
+        contraindicationsReviewed: true,
+        imagingPathway: {
+          ctpCoreMl: patientEncounter.ctpResults.coreVolumeMl,
+          ctpRatio: patientEncounter.ctpResults.mismatchRatio,
+          ctpMismatchVolMl: patientEncounter.ctpResults.mismatchVolumeMl
+        }
+      });
+      expect(result.eligible).toBe('pending');
+      expect(result.recommendation).toBe('Late-window IVT gates incomplete');
+      expect(result.reason).toContain('core <50 mL');
+      expect(result.reason).toContain('EVT status');
     });
 
-    it('S1.3: Verifies command center EVT decision tree pathway recommends EVT for large core', () => {
+    it('S1.3: Verifies the command-center card preserves the exact 6-24h ASPECTS 3-5 row grade', () => {
       const evtCard = AIS_COMMAND_CENTER_CARDS.find(c => c.id === 'ais-evt-selection');
       expect(evtCard).toBeDefined();
-      const largeCoreStep = evtCard.pathway.find(p => /Large core ASPECTS 3-5/i.test(p.label));
+      const largeCoreStep = evtCard.pathway.find(p => p.label.includes('6-24h, ASPECTS 3-5'));
       expect(largeCoreStep).toBeDefined();
       expect(largeCoreStep.cor).toBe('I');
-      expect(largeCoreStep.decision).toContain('EVT recommended');
+      expect(largeCoreStep.loe).toBe('A');
+      expect(largeCoreStep.decision).toBe('EVT');
     });
 
-    it('S1.4: Enforces post-EVT BP floor of 140 mmHg (Class III: Harm for intensive lowering <140)', () => {
-      const sbpHarm = INSTITUTIONAL_BP_PROTOCOLS.sbpLT140EVT;
-      expect(sbpHarm).toBeDefined();
-      expect(sbpHarm.cor).toContain('3 (Harm)');
+    it('S1.4: Applies the source-listed post-EVT SBP range only after the printed mTICI qualifier', () => {
       const postEVTTarget = INSTITUTIONAL_BP_PROTOCOLS.afterEVT24h;
-      expect(postEVTTarget.protocol).toContain('preserve SBP floor of 140');
+      expect(postEVTTarget.target).toBe('SBP 140-180');
+      expect(postEVTTarget.appliesWhen).toBe('Documented successful recanalization (mTICI >=2b)');
+      expect(postEVTTarget.protocol).toBe('After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180.');
+      expect(postEVTTarget.cor).toBeUndefined();
+      expect(postEVTTarget.loe).toBeUndefined();
     });
 
     it('S1.5: Evidence Atlas completed trials contain pooled meta-analysis and RCT evidence for large core', () => {
@@ -112,9 +147,17 @@ describe('Tier 4: Real-World Clinical Workload Application Scenarios', () => {
       bloodPressure: { sbp: 158, dbp: 88 }
     };
 
-    it('S2.1: Disqualifies IV thrombolysis due to therapeutic DOAC ingestion within 48h and elevated anti-Xa', () => {
-      const isIVTExcludedByDOAC = (lastDoseHours, antiXa) => lastDoseHours < 48 && antiXa > 50;
-      expect(isIVTExcludedByDOAC(patientEncounter.lastDOACDoseHoursAgo, patientEncounter.antiXaLevelNgMl)).toBe(true);
+    it('S2.1: Holds DOAC-exposed IVT because accepted institutional timing and assay sources conflict', () => {
+      const result = evaluateDOAC_IVT({
+        hoursSinceLastDose: patientEncounter.lastDOACDoseHoursAgo,
+        antiXaUndetectable: false,
+        renalFunctionNormal: true,
+        disablingDeficit: true,
+        endovascularCandidate: false
+      });
+      expect(result.eligible).toBe('pending');
+      expect(result.pathway).toBe('unresolved-source-conflict');
+      expect(result.reason).toContain('No affirmative or negative IVT eligibility result');
     });
 
     it('S2.2: Evaluates CATALYST 2025 and ELAN early DOAC restart timeline for mild-to-moderate stroke', () => {
@@ -213,19 +256,20 @@ describe('Tier 4: Real-World Clinical Workload Application Scenarios', () => {
       bloodPressure: { sbp: 210, dbp: 115 }
     };
 
-    it('S4.1: Targets smooth acute SBP reduction to 130-140 mmHg within 1-2 hours', () => {
-      const ichProt = INSTITUTIONAL_BP_PROTOCOLS.ichAcute;
-      const ichGuideline = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/ich-2022.json'), 'utf8'));
-      const targetRec = ichGuideline.recommendations.find(r => r.classOfRec === 'IIb' && /target of 140/i.test(r.text));
-      expect(targetRec).toBeDefined();
-      expect(targetRec.text).toContain('130-150 mm Hg range');
+    it('S4.1: Uses the folder-backed presenting-SBP branches for spontaneous ICH', () => {
+      const ichSnapshot = fs.readFileSync(path.join(ROOT, 'tests/snapshots/example-protocols/ich.txt'), 'utf8');
+      expect(ichSnapshot).toContain('Presenting SBP 150-219:');
+      expect(ichSnapshot).toContain('target 140 and maintain 130-150');
+      expect(ichSnapshot).toContain('Presenting SBP ≥220:');
+      expect(ichSnapshot).toContain('never more than 25%, in the first hour');
+      expect(ichSnapshot).toContain('Presenting SBP <150:');
+      expect(ichSnapshot).toContain('do not actively lower to 140');
     });
 
-    it('S4.2: Enforces harm threshold warning against aggressive SBP lowering <130 mmHg (Class III: Harm)', () => {
-      const ichGuideline = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/ich-2022.json'), 'utf8'));
-      const harmRec = ichGuideline.recommendations.find(r => r.classOfRec === 'III' && /<130\s*mm\s*Hg/i.test(r.text));
-      expect(harmRec).toBeDefined();
-      expect(harmRec.text).toContain('potentially harmful');
+    it('S4.2: Preserves the institutional lower-bound wording without adding a global harm grade', () => {
+      const ichSnapshot = fs.readFileSync(path.join(ROOT, 'tests/snapshots/example-protocols/ich.txt'), 'utf8');
+      expect(ichSnapshot).toContain('avoid iatrogenic SBP <130 during the first 24 hours');
+      expect(ichSnapshot).toContain('Spontaneous autoregulation below 130 is acceptable without symptomatic hypotension');
     });
 
     it('S4.3: Identifies ABC/2 hematoma volume >= 15 mL prompts early Neurosurgery consultation', () => {
@@ -234,11 +278,12 @@ describe('Tier 4: Real-World Clinical Workload Application Scenarios', () => {
       expect(patientEncounter.ichVolumeMl >= 15).toBe(true);
     });
 
-    it('S4.4: Verifies acute reversal agents (4F-PCC, Idarucizumab, Andexanet) exist in ICH protocol', () => {
+    it('S4.4: Verifies factor-specific reversal and the institutional andexanet-unavailable boundary', () => {
       const ichSnapshot = fs.readFileSync(path.join(ROOT, 'tests/snapshots/example-protocols/ich.txt'), 'utf8');
       expect(ichSnapshot).toContain('4F-PCC (Kcentra)');
       expect(ichSnapshot).toContain('Idarucizumab (Praxbind)');
-      expect(ichSnapshot).toContain('andexanet alfa');
+      expect(ichSnapshot).toContain('Andexanet alfa is not available on the local formulary');
+      expect(ichSnapshot).toContain('4F-PCC 2000 units IV');
     });
 
     it('S4.5: Verifies educational module herniation-icp.md covers ICP management', () => {

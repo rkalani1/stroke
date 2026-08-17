@@ -152,7 +152,7 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.smallVessel} onChange={(e) => set('smallVessel', e.target.checked)} />Small vessel</label>
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.posteriorCirc} onChange={(e) => set('posteriorCirc', e.target.checked)} />Posterior circulation</label>
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.contrastAllergy} onChange={(e) => set('contrastAllergy', e.target.checked)} />Contrast allergy</label>
-            {parseFloat(state.hoursFromLKW) > 9 && parseFloat(state.hoursFromLKW) <= 24 && (
+            {parseFloat(state.hoursFromLKW) >= 9 && parseFloat(state.hoursFromLKW) <= 24 && (
               <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={state.consentObtained} onChange={(e) => set('consentObtained', e.target.checked)} />Consent obtained for the 9-24-hour window</label>
             )}
           </div>

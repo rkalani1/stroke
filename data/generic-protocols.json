@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "generic-protocols",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.18.3",
-    "checksum": "sha256:854e4ea85c2c3e6a0e10ec6d66a5c0f1",
+    "appVersion": "6.19.0",
+    "checksum": "sha256:f787357e75e7004f4d17ddde5d7bb309",
     "count": 3,
     "source": "Public protocol reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -14,8 +14,7 @@
       "beforeIVT": {
         "scenario": "Before IVT",
         "target": "BP <185/110",
-        "protocol": "Labetalol 10 mg IV, repeat q15 min; escalate to 20 mg, then 40 mg, then 60 mg (max single bolus). Max 300 mg in 2h.",
-        "alternatives": "Nicardipine 5 mg/hr IV, titrate by 2.5 mg/hr q5 min (max 15 mg/hr)."
+        "protocol": "Labetalol 10 mg IV, repeat q15 min; escalate to 20 mg, then 40 mg, then 60 mg (max single bolus). Max 300 mg in 2h."
       },
       "afterIVT24h": {
         "scenario": "After IVT (24h)",
@@ -24,8 +23,9 @@
       },
       "afterEVT24h": {
         "scenario": "After EVT (24h)",
+        "appliesWhen": "Documented successful recanalization (mTICI >=2b)",
         "target": "SBP 140-180",
-        "protocol": "Maintain SBP in the source-listed range of 140-180."
+        "protocol": "After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180."
       }
     },
     "ichInitialEvaluation": {
@@ -122,6 +122,7 @@
           "criteria": [
             "Selected spontaneous supratentorial IPH being considered for minimally invasive evacuation",
             "Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol before use",
+            "The latest criteria would loosen the prior screen; do not apply a revised executable screen until protocol-owner sign-off",
             "No underlying vascular lesion",
             "Potential MIS timing within 24 hours of last known well or qualifying wake-up hemorrhage window"
           ],

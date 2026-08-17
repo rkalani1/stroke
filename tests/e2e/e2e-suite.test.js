@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..', '..');
+const countDeclaredTests = (content) => (content.match(/\b(?:it|deploymentStateIt)\(/g) || []).length;
 
 describe('Master E2E Suite Aggregator & Quality Invariants', () => {
   const e2eDir = path.join(ROOT, 'tests/e2e');
@@ -23,8 +24,7 @@ describe('Master E2E Suite Aggregator & Quality Invariants', () => {
 
   it('Tier 1 contains at least 95 test cases covering Features 1-19', () => {
     const content = fs.readFileSync(path.join(e2eDir, 'tier1-feature-coverage.test.js'), 'utf8');
-    const matches = content.match(/\bit\(/g) || [];
-    expect(matches.length).toBeGreaterThanOrEqual(95);
+    expect(countDeclaredTests(content)).toBeGreaterThanOrEqual(95);
     for (let f = 1; f <= 19; f++) {
       expect(content).toContain(`Feature ${f}:`);
     }
@@ -32,8 +32,7 @@ describe('Master E2E Suite Aggregator & Quality Invariants', () => {
 
   it('Tier 2 contains at least 95 boundary & corner test cases covering Features 1-19', () => {
     const content = fs.readFileSync(path.join(e2eDir, 'tier2-boundary-corners.test.js'), 'utf8');
-    const matches = content.match(/\bit\(/g) || [];
-    expect(matches.length).toBeGreaterThanOrEqual(95);
+    expect(countDeclaredTests(content)).toBeGreaterThanOrEqual(95);
     for (let f = 1; f <= 19; f++) {
       expect(content).toContain(`Feature ${f} Boundary & Corner Cases`);
     }
@@ -41,14 +40,12 @@ describe('Master E2E Suite Aggregator & Quality Invariants', () => {
 
   it('Tier 3 contains at least 19 cross-feature combination test cases', () => {
     const content = fs.readFileSync(path.join(e2eDir, 'tier3-cross-feature-combinations.test.js'), 'utf8');
-    const matches = content.match(/\bit\(/g) || [];
-    expect(matches.length).toBeGreaterThanOrEqual(19);
+    expect(countDeclaredTests(content)).toBeGreaterThanOrEqual(19);
   });
 
   it('Tier 4 contains at least 5 complete real-world clinical workload application scenarios', () => {
     const content = fs.readFileSync(path.join(e2eDir, 'tier4-clinical-workload-scenarios.test.js'), 'utf8');
-    const matches = content.match(/\bit\(/g) || [];
-    expect(matches.length).toBeGreaterThanOrEqual(20);
+    expect(countDeclaredTests(content)).toBeGreaterThanOrEqual(20);
     for (let s = 1; s <= 5; s++) {
       expect(content).toContain(`Scenario ${s}:`);
     }
@@ -58,8 +55,7 @@ describe('Master E2E Suite Aggregator & Quality Invariants', () => {
     let totalTests = 0;
     for (const f of files) {
       const content = fs.readFileSync(path.join(e2eDir, f), 'utf8');
-      const matches = content.match(/\bit\(/g) || [];
-      totalTests += matches.length;
+      totalTests += countDeclaredTests(content);
     }
     expect(totalTests).toBeGreaterThanOrEqual(214);
     expect(totalTests).toBe(236);

@@ -4,7 +4,7 @@
 //
 // Tests:
 // 1. Clinical Decision Tree Invariants (Large-Core EVT, Basilar, MeVO, Late Window IVT)
-// 2. Blood Pressure Guardrails & Harm Warning Stress Fuzzing (Post-EVT <140 harm, ICH <130 harm)
+// 2. Folder-Backed Blood Pressure Guardrail Stress Fuzzing
 // 3. CATALYST DOAC Timing Resumption & Stratification Invariants (Lancet 2025, N=5467)
 // 4. Pediatric Stroke Reperfusion Rule Hardening & Boundary Fuzzing (28d-18y, EVT >=6y vs <6y, Alteplase, TNK caution)
 // 5. Combinatorial Patient Profile Invariant Fuzzer (10,000+ synthetic random and edge-case profiles)
@@ -31,8 +31,16 @@ import {
 } from '../../src/management-guidance.js';
 import {
   INSTITUTIONAL_BP_PROTOCOLS,
-  ICH_INITIAL_EVALUATION_ALGORITHM
+  ICH_INITIAL_EVALUATION_ALGORITHM,
+  evaluateEVT_Anterior,
+  evaluateEVT_Basilar,
+  evaluateEVT_M2,
+  evaluateIVT
 } from '../../src/institutional-protocols.js';
+import {
+  calculateAndexanetDose,
+  calculatePCCDose
+} from '../../src/calculators.js';
 import { resolveField, knownFields } from '../../src/evidence/matcher-engine.js';
 import { parseFrontmatter, VALIDATORS } from '../../content/schema.mjs';
 
@@ -45,128 +53,199 @@ describe('Tier 5: Adversarial Coverage Hardening & Clinical Invariants', () => {
   // 1. Clinical Decision Trees & Large-Core EVT Invariants
   // =========================================================================
   describe('1. Clinical Decision Tree & Large-Core EVT Invariants', () => {
-    const aisData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/ais-2026.json'), 'utf8'));
-    const svinData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/svin-large-core-2025.json'), 'utf8'));
     const evtCard = AIS_COMMAND_CENTER_CARDS.find(c => c.id === 'ais-evt-selection');
     const lateIvtCard = AIS_COMMAND_CENTER_CARDS.find(c => c.id === 'ais-ivt-extended');
     const mevoCard = AIS_COMMAND_CENTER_CARDS.find(c => c.id === 'ais-mevo');
 
-    it('Invariant 1.1: ASPECTS 3-5 in 0-6h and 6-24h triggers Class I / Level A EVT recommendation across guidelines and command center', () => {
-      // Guideline check
-      const svinEarly = svinData.recommendations.find(r => r.section.includes('0-6') && r.text.includes('0-5'));
-      expect(svinEarly).toBeDefined();
-      expect(svinEarly.classOfRec).toBe('I');
-      expect(svinEarly.levelOfEvidence).toBe('A');
-
-      const svinLate = svinData.recommendations.find(r => r.section.includes('6-24') && r.text.includes('3-5'));
-      expect(svinLate).toBeDefined();
-      expect(svinLate.classOfRec).toBe('I');
-      expect(svinLate.levelOfEvidence).toBe('A');
-
-      // Command center card check
+    it('Invariant 1.1: ASPECTS 3-5 EVT returns Class I / Level A only after the source-listed branch gates are complete', () => {
       expect(evtCard).toBeDefined();
-      const largeCorePathway = evtCard.pathway.find(p => p.label.includes('ASPECTS 3-5') || p.label.includes('50-100 mL'));
-      expect(largeCorePathway).toBeDefined();
-      expect(largeCorePathway.cor).toBe('I');
-      expect(largeCorePathway.loe).toBe('A');
+      const earlyRow = evtCard.pathway.find(p => p.label.includes('0-6h, ASPECTS 3-5'));
+      const lateRow = evtCard.pathway.find(p => p.label.includes('6-24h, ASPECTS 3-5'));
+      expect(earlyRow).toMatchObject({ decision: 'EVT', cor: 'I', loe: 'A' });
+      expect(lateRow).toMatchObject({ decision: 'EVT', cor: 'I', loe: 'A' });
+
+      const earlyComplete = evaluateEVT_Anterior({
+        aspectsScore: 4,
+        timeFromLKWh: 4,
+        nihss: 12,
+        preMRS: 1,
+        age: 82,
+        massEffect: false
+      });
+      const earlyMissingMassEffect = evaluateEVT_Anterior({
+        aspectsScore: 4,
+        timeFromLKWh: 4,
+        nihss: 12,
+        preMRS: 1,
+        age: 82
+      });
+      const lateComplete = evaluateEVT_Anterior({
+        aspectsScore: 4,
+        timeFromLKWh: 18,
+        nihss: 12,
+        preMRS: 1,
+        age: 70,
+        massEffect: false
+      });
+      expect(earlyComplete).toMatchObject({ eligible: true, cor: '1', loe: 'A' });
+      expect(earlyMissingMassEffect.eligible).toBe('pending');
+      expect(lateComplete).toMatchObject({ eligible: true, cor: '1', loe: 'A' });
     });
 
-    it('Invariant 1.2: ASPECTS 0-2 is strictly differentiated as Class IIa/IIb selective benefit, never unqualified Class I', () => {
-      const svinAspects02 = svinData.recommendations.find(r => r.section.includes('6-24') && r.text.includes('0-2'));
-      expect(svinAspects02).toBeDefined();
-      expect(svinAspects02.classOfRec).toBe('IIb'); // Class IIb uncertain benefit in extended window
-
+    it('Invariant 1.2: ASPECTS 0-2 is Class IIa only at the unambiguous <=70 mL boundary; 71-100 mL remains pending', () => {
       const early02Pathway = evtCard.pathway.find(p => p.label.includes('ASPECTS 0-2'));
       expect(early02Pathway).toBeDefined();
-      expect(early02Pathway.cor).toBe('IIa'); // Selected EVT is reasonable in early window
-      expect(early02Pathway.decision).toContain('Selected EVT is reasonable');
-      expect(early02Pathway.cor).not.toBe('I'); // Must NOT be unqualified Class I
+      expect(early02Pathway).toMatchObject({ decision: 'EVT', cor: 'IIa', loe: 'B-R' });
+
+      const atSeventy = evaluateEVT_Anterior({
+        aspectsScore: 1,
+        timeFromLKWh: 4,
+        nihss: 12,
+        preMRS: 1,
+        age: 70,
+        massEffect: false,
+        coreVolume: 70
+      });
+      const aboveSeventy = evaluateEVT_Anterior({
+        aspectsScore: 1,
+        timeFromLKWh: 4,
+        nihss: 12,
+        preMRS: 1,
+        age: 70,
+        massEffect: false,
+        coreVolume: 71
+      });
+      expect(atSeventy).toMatchObject({ eligible: 'consider', cor: '2a', loe: 'B-R' });
+      expect(aboveSeventy.eligible).toBe('pending');
+      expect(aboveSeventy.reason).toContain('71-100 mL');
+      expect(aboveSeventy.cor).toBeUndefined();
     });
 
-    it('Invariant 1.3: Posterior circulation basilar occlusion within 24h requires NIHSS >=10, PC-ASPECTS >=6, and mRS 0-1 for Class I recommendation', () => {
+    it('Invariant 1.3: Basilar Class I requires <=24h, NIHSS >=10, PC-ASPECTS >=6, and pre-stroke mRS 0-1', () => {
       const basilarPathway = evtCard.pathway.find(p => p.label.toLowerCase().includes('basilar'));
       expect(basilarPathway).toBeDefined();
       expect(basilarPathway.label).toContain('NIHSS >=10');
       expect(basilarPathway.label).toContain('PC-ASPECTS >=6');
-      expect(basilarPathway.label).toContain('mRS 0-1');
       expect(basilarPathway.cor).toBe('I');
-      // Folder authority: the EVT Eligibility Flowchart (June 2026) grades basilar occlusion
-      // <=24h with PC-ASPECTS >=6 and NIHSS >=10 as COR 1 / LOE A. The app previously carried
-      // LOE B-R here and "Class IIa" on the posterior-circulation card — internally inconsistent
-      // and matching neither. COR I is unchanged; only the evidence level is corrected.
       expect(basilarPathway.loe).toBe('A');
-      expect(basilarPathway.decision).toContain('within 24h');
+
+      const complete = evaluateEVT_Basilar({ nihss: 10, hoursFromLKWh: 24, preMRS: 1, pcAspects: 6, age: 70 });
+      const mrsTooHigh = evaluateEVT_Basilar({ nihss: 10, hoursFromLKWh: 24, preMRS: 2, pcAspects: 6, age: 70 });
+      const intermediateNihss = evaluateEVT_Basilar({ nihss: 9, hoursFromLKWh: 24, preMRS: 1, pcAspects: 6, age: 70 });
+      expect(complete).toMatchObject({ eligible: true, cor: '1', loe: 'A' });
+      expect(mrsTooHigh.eligible).toBe(false);
+      expect(intermediateNihss).toMatchObject({ eligible: 'consider', cor: '2b', loe: 'B-R' });
     });
 
-    it('Invariant 1.4: Routine EVT for MeVO / Distal occlusions (M3, M4, ACA, PCA) is designated Class III: Harm / No Benefit', () => {
+    it('Invariant 1.4: M2/distal branches distinguish source-listed no-benefit rows from M3 and codominant gaps', () => {
       expect(mevoCard).toBeDefined();
-      expect(mevoCard.classOfRecommendation).toBe('III');
-      expect(mevoCard.levelOfEvidence).toBe('A');
+      expect(mevoCard.classOfRecommendation).toBe('');
+      expect(mevoCard.levelOfEvidence).toBe('');
 
-      const distalPathway = mevoCard.pathway.find(p => p.label.includes('Nondominant M2') || p.label.includes('M3/M4'));
-      expect(distalPathway).toBeDefined();
-      expect(distalPathway.cor).toBe('III');
-      expect(distalPathway.loe).toBe('A');
-      expect(distalPathway.decision).toContain('Routine EVT not recommended');
+      const distalPathway = mevoCard.pathway.find(p => p.label === 'Nondominant M2, ACA, or PCA');
+      expect(distalPathway).toMatchObject({ decision: 'No EVT', cor: 'III: No Benefit', loe: 'A' });
 
       const dominantM2Pathway = mevoCard.pathway.find(p => p.label.includes('Dominant proximal M2'));
       expect(dominantM2Pathway).toBeDefined();
       expect(dominantM2Pathway.cor).toBe('IIa');
+
+      expect(evaluateEVT_M2({ segment: 'M2-nondominant', age: 65 })).toMatchObject({ eligible: false, cor: '3 (No Benefit)', loe: 'A' });
+      expect(evaluateEVT_M2({ segment: 'ACA', age: 65 })).toMatchObject({ eligible: false, cor: '3 (No Benefit)', loe: 'A' });
+      expect(evaluateEVT_M2({ segment: 'PCA', age: 65 })).toMatchObject({ eligible: false, cor: '3 (No Benefit)', loe: 'A' });
+      expect(evaluateEVT_M2({ segment: 'M3', age: 65 })).toMatchObject({ eligible: null });
+      expect(evaluateEVT_M2({ segment: 'M2-codominant', age: 65 })).toMatchObject({ eligible: 'pending', cor: '—' });
     });
 
-    it('Invariant 1.5: Extended-window IVT (4.5-24h) requires tissue mismatch selection and warns of sICH risk', () => {
+    it('Invariant 1.5: Extended-window IVT keeps grades branch-specific and fails closed on every required gate', () => {
       expect(lateIvtCard).toBeDefined();
-      expect(lateIvtCard.classOfRecommendation).toBe('IIa');
-      expect(lateIvtCard.levelOfEvidence).toBe('B-R');
+      expect(lateIvtCard.classOfRecommendation).toBe('');
+      expect(lateIvtCard.levelOfEvidence).toBe('');
       expect(lateIvtCard.summary).toContain('mismatch');
-      expect(lateIvtCard.summary).toContain('higher sICH risk');
-      expect(lateIvtCard.pitfalls.some(p => p.includes('sICH tradeoff'))).toBe(true);
+      const knownWindowRow = lateIvtCard.pathway.find(p => p.label.includes('Known 4.5-9h'));
+      const wakeUpRow = lateIvtCard.pathway.find(p => p.label.includes('Wake-up or unknown onset'));
+      const lateRow = lateIvtCard.pathway.find(p => p.label.includes('9-24h'));
+      expect(knownWindowRow).toMatchObject({ decision: 'Consider TNK', cor: 'IIa', loe: 'B-R' });
+      expect(wakeUpRow).toMatchObject({ decision: 'Consider TNK', cor: 'IIa', loe: 'B-R' });
+      expect(lateRow.cor).toBe('');
+      expect(lateRow.loe).toBe('');
+
+      const missingLateGates = evaluateIVT({
+        ichOnCT: false,
+        disablingDeficit: true,
+        hoursFromLKW: 12,
+        glucose: 100,
+        weight: 80,
+        age: 70,
+        preMRS: 1,
+        evtStatus: 'candidate',
+        consentObtained: false,
+        bpSystolic: 170,
+        bpDiastolic: 90,
+        contraindicationsReviewed: true,
+        imagingPathway: { ctpCoreMl: 30, ctpRatio: 1.8, ctpMismatchVolMl: 20 }
+      });
+      expect(missingLateGates.eligible).toBe('pending');
+      expect(missingLateGates.reason).toContain('EVT status');
+      expect(missingLateGates.reason).toContain('consent');
+
+      const completeLateBranch = evaluateIVT({
+        ichOnCT: false,
+        disablingDeficit: true,
+        hoursFromLKW: 12,
+        glucose: 100,
+        weight: 80,
+        age: 70,
+        preMRS: 1,
+        evtStatus: 'not-candidate',
+        consentObtained: true,
+        bpSystolic: 170,
+        bpDiastolic: 90,
+        contraindicationsReviewed: true,
+        imagingPathway: { ctpCoreMl: 30, ctpRatio: 1.8, ctpMismatchVolMl: 20 }
+      });
+      expect(completeLateBranch.eligible).toBe('consider');
+      expect(completeLateBranch.cor).toBeUndefined();
+      expect(completeLateBranch.loe).toBeUndefined();
     });
   });
 
   // =========================================================================
-  // 2. Blood Pressure Guardrails & Harm Warning Stress Fuzzing
+  // 2. Folder-Backed Blood Pressure Guardrail Stress Fuzzing
   // =========================================================================
-  describe('2. Blood Pressure Guardrails & Harm Warning Stress Fuzzing', () => {
+  describe('2. Folder-Backed Blood Pressure Guardrail Stress Fuzzing', () => {
     const bpProtocols = INSTITUTIONAL_BP_PROTOCOLS;
 
-    it('Invariant 2.1: Post-EVT SBP < 140 mmHg is Class III (Harm) with Level A evidence across 4 landmark RCTs', () => {
-      const evtHarm = bpProtocols.sbpLT140EVT;
-      expect(evtHarm).toBeDefined();
-      expect(evtHarm.cor).toBe('3 (Harm)');
-      expect(evtHarm.loe).toContain('A');
-      expect(evtHarm.rationale).toContain('ENCHANTED2-MT');
-      expect(evtHarm.rationale).toContain('OPTIMAL-BP');
-      expect(evtHarm.rationale).toContain('BP-TARGET');
-      expect(evtHarm.rationale).toContain('BEST-II');
-      expect(evtHarm.rationale).toContain('maintain SBP floor of 140');
+    it('Invariant 2.1: Post-EVT Protocols exposes only the source-listed SBP 140-180 range', () => {
+      const postEVT = bpProtocols.afterEVT24h;
+      expect(postEVT).toEqual({
+        scenario: 'After EVT (24h)',
+        appliesWhen: 'Documented successful recanalization (mTICI >=2b)',
+        target: 'SBP 140-180',
+        protocol: 'After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180.'
+      });
     });
 
-    it('Invariant 2.2: Acute ICH SBP < 130 mmHg is Class III (Harm) / contraindicated per ATACH-2 and AHA/ASA guidelines', () => {
-      const ichAvoidLowRec = recommendations.find(r => r.id === 'rec-ich-bp-avoid-low');
-      expect(ichAvoidLowRec).toBeDefined();
-      expect(ichAvoidLowRec.classOfRecommendation).toBe('III-harm');
-      expect(ichAvoidLowRec.levelOfEvidence).toBe('B-R');
-      expect(ichAvoidLowRec.text).toContain('Avoid acute SBP <130 mmHg');
-      expect(ichAvoidLowRec.caveats.some(c => c.includes('Class III-harm'))).toBe(true);
+    it('Invariant 2.2: ICH lower-bound text preserves the institutional autoregulation exception without a global grade', () => {
+      const ichSnapshot = fs.readFileSync(path.join(ROOT, 'tests/snapshots/example-protocols/ich.txt'), 'utf8');
+      expect(ichSnapshot).toContain('avoid iatrogenic SBP <130 during the first 24 hours');
+      expect(ichSnapshot).toContain('Spontaneous autoregulation below 130 is acceptable without symptomatic hypotension');
     });
 
-    it('Invariant 2.3: Permissive hypertension target in non-reperfusion stroke is maintained up to 220/120 mmHg', () => {
-      const noReperf = bpProtocols.noReperfusion;
-      expect(noReperf).toBeDefined();
-      expect(noReperf.target).toContain('220/120');
-      expect(noReperf.cor).toContain('3 (No Benefit)');
-      expect(noReperf.loe).toBe('A');
+    it('Invariant 2.3: Unsupported non-reperfusion and literature harm branches are absent from Protocols', () => {
+      expect(Object.keys(bpProtocols)).toEqual(['beforeIVT', 'afterIVT24h', 'afterEVT24h']);
+      expect(bpProtocols.noReperfusion).toBeUndefined();
+      expect(bpProtocols.sbpLT140EVT).toBeUndefined();
+      expect(bpProtocols.sbpLT140IVT).toBeUndefined();
     });
 
-    it('Invariant 2.4: IV Antihypertensive ceilings enforce Labetalol <= 300mg, Nicardipine <= 15mg/hr, Clevidipine <= 32mg/hr', () => {
+    it('Invariant 2.4: IV antihypertensive text includes only the source-listed labetalol sequence', () => {
       const ivtBP = bpProtocols.beforeIVT;
       expect(ivtBP.protocol).toContain('Max 300 mg in 2h');
-      expect(ivtBP.alternatives).toContain('max 15 mg/hr');
-      expect(ivtBP.alternatives).toContain('max 32 mg/hr');
+      expect(ivtBP).not.toHaveProperty('alternatives');
+      expect(ivtBP.protocol).not.toMatch(/Nicardipine|Clevidipine/i);
     });
 
-    it('Invariant 2.5: High-throughput BP classifier fuzzing (10,000 synthetic SBP/DBP pairs) satisfies safety invariants', () => {
+    it('Invariant 2.5: High-throughput BP classifier fuzzing preserves the three institutional thresholds', () => {
       let seed = 123456789;
       function nextRand() {
         seed = (seed * 1103515245 + 12345) & 0x7fffffff;
@@ -185,21 +264,10 @@ describe('Tier 5: Adversarial Coverage Hardening & Clinical Invariants', () => {
           return { inTarget, requiresTreatment, safe: true };
         }
         if (scenario === 'post-evt-successful') {
-          const isHarmfulLow = sbp < 140;
-          const isHarmfulHigh = sbp > 180 || dbp > 105;
-          const inTarget = sbp >= 140 && sbp <= 180 && dbp <= 105;
-          return { isHarmfulLow, isHarmfulHigh, inTarget, safe: true };
-        }
-        if (scenario === 'acute-ich') {
-          const isHarmfulLow = sbp < 130;
-          const inTarget = sbp >= 130 && sbp <= 150;
-          const isElevated = sbp > 150;
-          return { isHarmfulLow, inTarget, isElevated, safe: true };
-        }
-        if (scenario === 'non-reperfusion') {
-          const permissive = sbp < 220 && dbp < 120;
-          const emergencyLowering = sbp >= 220 || dbp >= 120;
-          return { permissive, emergencyLowering, safe: true };
+          const belowRange = sbp < 140;
+          const aboveRange = sbp > 180;
+          const inTarget = sbp >= 140 && sbp <= 180;
+          return { belowRange, aboveRange, inTarget, safe: true };
         }
         return { safe: false };
       }
@@ -235,40 +303,19 @@ describe('Tier 5: Adversarial Coverage Hardening & Clinical Invariants', () => {
         const postEVT = evaluateBPClinicalSafety('post-evt-successful', sbp, dbp);
         expect(postEVT.safe).toBe(true);
         if (sbp < 140) {
-          expect(postEVT.isHarmfulLow).toBe(true);
+          expect(postEVT.belowRange).toBe(true);
           expect(postEVT.inTarget).toBe(false);
-        } else if (sbp > 180 || dbp > 105) {
-          expect(postEVT.isHarmfulHigh).toBe(true);
+        } else if (sbp > 180) {
+          expect(postEVT.aboveRange).toBe(true);
           expect(postEVT.inTarget).toBe(false);
         } else {
           expect(postEVT.inTarget).toBe(true);
         }
 
-        // 4. Acute ICH
-        const acuteICH = evaluateBPClinicalSafety('acute-ich', sbp, dbp);
-        expect(acuteICH.safe).toBe(true);
-        if (sbp < 130) {
-          expect(acuteICH.isHarmfulLow).toBe(true);
-          expect(acuteICH.inTarget).toBe(false);
-        } else if (sbp >= 130 && sbp <= 150) {
-          expect(acuteICH.inTarget).toBe(true);
-          expect(acuteICH.isHarmfulLow).toBe(false);
-        }
-
-        // 5. Non-reperfusion
-        const nonReperf = evaluateBPClinicalSafety('non-reperfusion', sbp, dbp);
-        expect(nonReperf.safe).toBe(true);
-        if (sbp < 220 && dbp < 120) {
-          expect(nonReperf.permissive).toBe(true);
-          expect(nonReperf.emergencyLowering).toBe(false);
-        } else {
-          expect(nonReperf.emergencyLowering).toBe(true);
-        }
-
-        totalEvaluations += 5;
+        totalEvaluations += 3;
       }
 
-      expect(totalEvaluations).toBe(10000);
+      expect(totalEvaluations).toBe(6000);
     });
   });
 
@@ -534,7 +581,6 @@ describe('Tier 5: Adversarial Coverage Hardening & Clinical Invariants', () => {
       }
 
       const vessels = ['ICA', 'M1', 'M2-dominant', 'M2-nondominant', 'M3', 'M4', 'ACA', 'PCA', 'Basilar', 'None'];
-      const strokeTypes = ['ischemic', 'ich', 'sah', 'tia'];
       const htOptions = [null, 'HI1', 'HI2', 'PH1', 'PH2', 'sICH'];
       const anticoagOptions = [null, 'apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban', 'warfarin', 'heparin'];
 
@@ -550,52 +596,74 @@ describe('Tier 5: Adversarial Coverage Hardening & Clinical Invariants', () => {
           sbp: Math.floor(nextRand() * 260) + 40, // 40 to 300
           dbp: Math.floor(nextRand() * 180) + 20, // 20 to 200
           vessel: vessels[Math.floor(nextRand() * vessels.length)],
-          strokeType: strokeTypes[Math.floor(nextRand() * strokeTypes.length)],
           ht: htOptions[Math.floor(nextRand() * htOptions.length)],
           anticoag: anticoagOptions[Math.floor(nextRand() * anticoagOptions.length)],
           hoursSinceAnticoag: nextRand() * 72
         };
 
-        // SAFETY INVARIANT 1: Post-EVT SBP < 140 is ALWAYS a Harm condition
-        if (patient.sbp < 140) {
-          const postEVTAssessment = { isHarmfulPostEVT: true, cor: 'III-harm' };
-          expect(postEVTAssessment.isHarmfulPostEVT).toBe(true);
+        // SAFETY INVARIANT 1: Post-EVT is represented as a range, without an invented harm grade.
+        const postEVTInRange = patient.sbp >= 140 && patient.sbp <= 180;
+        if (patient.sbp < 140 || patient.sbp > 180) {
+          expect(postEVTInRange).toBe(false);
         }
 
-        // SAFETY INVARIANT 2: Acute ICH SBP < 130 is ALWAYS a Harm condition
-        if (patient.strokeType === 'ich' && patient.sbp < 130) {
-          const ichAssessment = { isHarmfulICH: true, cor: 'III-harm' };
-          expect(ichAssessment.isHarmfulICH).toBe(true);
+        // SAFETY INVARIANT 2: Nondominant M2/ACA/PCA have a source-listed no-benefit row;
+        // M3/M4 do not inherit that row and remain non-affirmative.
+        if (['M2-nondominant', 'ACA', 'PCA'].includes(patient.vessel)) {
+          const distal = evaluateEVT_M2({ segment: patient.vessel, age: 65 });
+          expect(distal).toMatchObject({ eligible: false, cor: '3 (No Benefit)', loe: 'A' });
+        }
+        if (['M3', 'M4'].includes(patient.vessel)) {
+          const unsupportedDistal = evaluateEVT_M2({ segment: patient.vessel, age: 65 });
+          expect(unsupportedDistal.eligible).toBe(null);
         }
 
-        // SAFETY INVARIANT 3: Distal/nondominant MeVO (M3, M4, ACA, PCA) is NEVER routine Class I EVT
-        if (['M2-nondominant', 'M3', 'M4', 'ACA', 'PCA'].includes(patient.vessel)) {
-          const mevoRoutineEVT = false;
-          expect(mevoRoutineEVT).toBe(false);
+        // SAFETY INVARIANT 3: Pre-IVT BP at/above either boundary or with an
+        // inverted/equal systolic-diastolic relationship fails closed.
+        const ivtAtBP = evaluateIVT({
+          ichOnCT: false,
+          disablingDeficit: true,
+          hoursFromLKW: 2,
+          glucose: 100,
+          weight: 80,
+          age: 70,
+          bpSystolic: patient.sbp,
+          bpDiastolic: patient.dbp,
+          contraindicationsReviewed: true
+        });
+        if (patient.sbp >= 185 || patient.dbp >= 110 || patient.sbp <= patient.dbp) {
+          expect(ivtAtBP.eligible).toBe('pending');
+          expect(ivtAtBP.recommendation).toBe('Final IVT safety gates incomplete');
+        } else {
+          expect(ivtAtBP.eligible).toBe(true);
         }
 
-        // SAFETY INVARIANT 4: Pre-IVT BP >= 185/110 MUST block IVT until lowered
-        if (patient.sbp >= 185 || patient.dbp >= 110) {
-          const ivtBlockedByBP = true;
-          expect(ivtBlockedByBP).toBe(true);
-        }
-
-        // SAFETY INVARIANT 5: Pediatric Tenecteplase is NEVER endorsed
+        // SAFETY INVARIANT 4: Pediatric Tenecteplase is NEVER endorsed
         if (patient.age < 18) {
           const tnkEndorsedPediatric = false;
           expect(tnkEndorsedPediatric).toBe(false);
         }
 
-        // SAFETY INVARIANT 6: Severe hemorrhagic transformation (PH2/sICH) ALWAYS blocks early DOAC start
+        // SAFETY INVARIANT 5: Severe hemorrhagic transformation (PH2/sICH) blocks early DOAC start.
         if (patient.ht === 'PH2' || patient.ht === 'sICH') {
           const earlyDoacAllowed = false;
           expect(earlyDoacAllowed).toBe(false);
         }
 
-        // SAFETY INVARIANT 7: ASPECTS > 10 or < 0 are invalid integer bounds and must be normalized
-        const normalizedAspects = Math.max(0, Math.min(10, patient.aspectsScore));
-        expect(normalizedAspects).toBeGreaterThanOrEqual(0);
-        expect(normalizedAspects).toBeLessThanOrEqual(10);
+        // SAFETY INVARIANT 6: Invalid ASPECTS fails closed instead of being silently normalized.
+        const aspectsResult = evaluateEVT_Anterior({
+          aspectsScore: patient.aspectsScore,
+          timeFromLKWh: 4,
+          nihss: 12,
+          preMRS: 1,
+          age: 70,
+          massEffect: false,
+          coreVolume: 70
+        });
+        if (patient.aspectsScore < 0 || patient.aspectsScore > 10) {
+          expect(aspectsResult.eligible).toBe(null);
+          expect(aspectsResult.reason).toContain('ASPECTS must be between 0 and 10');
+        }
 
         validatedCombinations++;
       }
@@ -622,95 +690,76 @@ describe('Tier 5: Adversarial Coverage Hardening & Clinical Invariants', () => {
       }
     });
 
-    it('Invariant 5.3: Acute Anticoagulation Reversal Invariants across Warfarin, DOACs, and Heparins', () => {
-      function evaluateReversalProtocol(anticoag, inr, lastDoseHours, indication) {
-        if (anticoag === 'warfarin') {
-          if (inr > 1.4) {
-            return { agent: '4F-PCC + Vitamin K 10mg IV', cor: 'I', loe: 'B-R', targetINR: '<1.4' };
-          }
-          return { agent: 'none', cor: 'none' };
-        }
-        if (anticoag === 'apixaban' || anticoag === 'rivaroxaban') {
-          if (lastDoseHours <= 15) {
-            return { primaryAgent: 'Andexanet alfa', alternativeAgent: '4F-PCC', cor: 'IIa', loe: 'B-R' };
-          }
-          return { primaryAgent: '4F-PCC', cor: 'IIb', loe: 'C-EO' };
-        }
-        if (anticoag === 'dabigatran') {
-          return { primaryAgent: 'Idarucizumab 5g IV', cor: 'I', loe: 'B-NR' };
-        }
-        if (anticoag === 'heparin') {
-          return { primaryAgent: 'Protamine sulfate', cor: 'I', loe: 'C-EO' };
-        }
-        return { agent: 'none' };
-      }
+    it('Invariant 5.3: Institutional PCC pathways use fixed 2000-unit dosing and fail closed on agent-specific gates', () => {
+      const andex = calculateAndexanetDose('apixaban', 6, 5);
+      expect(andex).toMatchObject({ regimen: 'unavailable', unavailable: true, actionable: false });
+      expect(andex.pccAlternative).toContain('4F-PCC 2000 units IV');
 
-      // Warfarin
-      expect(evaluateReversalProtocol('warfarin', 2.8, 4, 'ich').cor).toBe('I');
-      expect(evaluateReversalProtocol('warfarin', 1.2, 4, 'ich').cor).toBe('none');
+      const fxaIncomplete = calculatePCCDose(80, null, 'fxa-ich');
+      expect(fxaIncomplete.recommendation).toBe('pending-required-gates');
+      expect(fxaIncomplete.ahaDose).toBe(null);
+      const fxaComplete = calculatePCCDose(80, null, 'fxa-ich', {
+        directXaElevated: true,
+        pccContraindicated: false
+      });
+      expect(fxaComplete).toMatchObject({ recommendation: 'give-fixed-dose', ahaDose: 2000, fixedDose: true, andexanetAvailable: false });
 
-      // FXa inhibitors
-      expect(evaluateReversalProtocol('apixaban', 1.0, 6, 'ich').primaryAgent).toBe('Andexanet alfa');
-      expect(evaluateReversalProtocol('rivaroxaban', 1.0, 12, 'ich').primaryAgent).toBe('Andexanet alfa');
+      const dabigatranIncomplete = calculatePCCDose(80, null, 'dabigatran-fallback', {
+        idarucizumabAvailable: true,
+        pccContraindicated: false
+      });
+      expect(dabigatranIncomplete.recommendation).toBe('pending-required-gates');
+      const dabigatranFallback = calculatePCCDose(80, null, 'dabigatran-fallback', {
+        idarucizumabAvailable: false,
+        pccContraindicated: false
+      });
+      expect(dabigatranFallback).toMatchObject({ recommendation: 'give-fixed-dose-fallback', ahaDose: 2000, fixedDose: true });
 
-      // Dabigatran
-      expect(evaluateReversalProtocol('dabigatran', 1.0, 2, 'ich').primaryAgent).toBe('Idarucizumab 5g IV');
+      expect(calculatePCCDose(40, 2.8)).toMatchObject({ recommendation: 'recommended', ahaDose: 2000, fixedDose: true });
+      expect(calculatePCCDose(150, 2.8)).toMatchObject({ recommendation: 'recommended', ahaDose: 2000, fixedDose: true });
     });
 
-    it('Invariant 5.4: Advanced Perfusion Mismatch & Core Volume Decision Fuzzer (2,500 cases)', () => {
+    it('Invariant 5.4: ASPECTS 0-2 core-volume boundary fuzzer holds 71-100 mL pending (2,500 cases)', () => {
       let seed = 777888999;
       function nextRand() {
         seed = (seed * 1103515245 + 12345) & 0x7fffffff;
         return seed / 0x7fffffff;
       }
 
-      function evaluateMismatchEligibility(coreVolMl, hypoperfusionVolMl, lkwHours) {
-        const mismatchVol = Math.max(0, hypoperfusionVolMl - coreVolMl);
-        const mismatchRatio = coreVolMl > 0 ? hypoperfusionVolMl / coreVolMl : (hypoperfusionVolMl > 0 ? 10.0 : 1.0);
-
-        const meetsDefuse3 = lkwHours >= 6.0 && lkwHours <= 16.0 && coreVolMl < 70 && mismatchVol >= 15 && mismatchRatio >= 1.8;
-        const meetsDawn = lkwHours >= 6.0 && lkwHours <= 24.0 && coreVolMl < 31; // simplified age/NIHSS core tier
-        const meetsSelect2LargeCore = lkwHours <= 24.0 && coreVolMl >= 50 && coreVolMl <= 100;
-
-        return { mismatchVol, mismatchRatio, meetsDefuse3, meetsDawn, meetsSelect2LargeCore };
-      }
-
       for (let i = 0; i < 2500; i++) {
-        const core = nextRand() * 150; // 0 to 150 mL
-        const hypoperf = nextRand() * 200; // 0 to 200 mL
-        const lkw = nextRand() * 30; // 0 to 30 hours
+        const core = Math.round(nextRand() * 1200) / 10;
+        const result = evaluateEVT_Anterior({
+          aspectsScore: 1,
+          timeFromLKWh: 4,
+          nihss: 12,
+          preMRS: 1,
+          age: 70,
+          massEffect: false,
+          coreVolume: core
+        });
 
-        const evalResult = evaluateMismatchEligibility(core, hypoperf, lkw);
-        if (evalResult.meetsDefuse3) {
-          expect(evalResult.mismatchVol).toBeGreaterThanOrEqual(15);
-          expect(evalResult.mismatchRatio).toBeGreaterThanOrEqual(1.8);
-          expect(core).toBeLessThan(70);
-          expect(lkw).toBeGreaterThanOrEqual(6.0);
-          expect(lkw).toBeLessThanOrEqual(16.0);
-        }
-        if (evalResult.meetsSelect2LargeCore) {
-          expect(core).toBeGreaterThanOrEqual(50);
-          expect(core).toBeLessThanOrEqual(100);
-          expect(lkw).toBeLessThanOrEqual(24.0);
+        if (core <= 70) {
+          expect(result).toMatchObject({ eligible: 'consider', cor: '2a', loe: 'B-R' });
+        } else if (core <= 100) {
+          expect(result.eligible).toBe('pending');
+          expect(result.reason).toContain('71-100 mL');
+          expect(result.cor).toBeUndefined();
+        } else {
+          expect(result.eligible).toBe(false);
         }
       }
     });
 
-    it('Invariant 5.5: Cross-Protocol BP Harm Invariant Matrix verifies safety assertions across all 6 clinical subtabs', () => {
+    it('Invariant 5.5: Cross-Protocol BP matrix contains exactly the three folder-backed ischemic scenarios', () => {
       const allBPProtocols = INSTITUTIONAL_BP_PROTOCOLS;
-
-      // Verify all essential scenario keys exist
-      const requiredKeys = ['beforeIVT', 'afterIVT24h', 'afterEVT24h', 'sbpLT140IVT', 'sbpLT140EVT', 'noReperfusion'];
-      for (const k of requiredKeys) {
-        expect(allBPProtocols[k]).toBeDefined();
-        expect(allBPProtocols[k].cor).toBeDefined();
-        expect(allBPProtocols[k].loe).toBeDefined();
+      expect(Object.keys(allBPProtocols)).toEqual(['beforeIVT', 'afterIVT24h', 'afterEVT24h']);
+      expect(allBPProtocols.beforeIVT.target).toBe('BP <185/110');
+      expect(allBPProtocols.afterIVT24h.target).toBe('BP <180/105');
+      expect(allBPProtocols.afterEVT24h.target).toBe('SBP 140-180');
+      for (const protocol of Object.values(allBPProtocols)) {
+        expect(protocol.cor).toBeUndefined();
+        expect(protocol.loe).toBeUndefined();
       }
-
-      // Check specific harm tags
-      expect(allBPProtocols.sbpLT140EVT.cor).toContain('3 (Harm)');
-      expect(allBPProtocols.sbpLT140IVT.cor).toContain('3 (No Benefit)');
-      expect(allBPProtocols.noReperfusion.cor).toContain('3 (No Benefit)');
     });
   });
 });

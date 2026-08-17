@@ -39,6 +39,19 @@ jobs:
           printf '%s' "$PRIVATE_DENYLIST_JSON" > scripts/leak-guard-denylist.local.json
           STROKE_LEAK_GUARD_REQUIRE_PRIVATE=1 npm run check:leak-guard
 
+      - name: Verify main deployment repository state
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          STROKE_VERIFY_DEPLOYMENT_STATE: '1'
+        run: >-
+          npx vitest run
+          tests/e2e/tier1-feature-coverage.test.js
+          tests/e2e/tier2-boundary-corners.test.js
+          tests/e2e/tier3-cross-feature-combinations.test.js
+          tests/adversarial-m4-challenger.test.js
+          --testNamePattern
+          'F19-T1\.[12]:|F19-T2\.5:|F18xF19:|verifies working tree is completely clean|verifies current branch is main and tracks origin/main|verifies git log commit message and author metadata'
+
       # test:unit includes adversarial-tier5-hardening, which shells out to
       # scripts/snapshot-example-protocols.mjs and therefore needs a browser.
       # Without these steps that test fails on every run with "Executable
@@ -74,6 +87,28 @@ jobs:
             output/diagnostics/
             test-output/
           if-no-files-found: ignore
+
+  mcp-smoke:
+    name: MCP smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: mcp/package-lock.json
+
+      - name: Install MCP dependencies
+        run: npm ci --prefix mcp
+
+      - name: Run MCP smoke
+        run: npm run test:mcp
 
   build-and-smoke:
     runs-on: ubuntu-latest

@@ -83,11 +83,26 @@ function publicSourceLabel(source) {
 }
 
 const writes = [];
+const stalePaths = [];
+
+export async function generatedFileIsCurrent(abs, expected) {
+  try {
+    return await fs.readFile(abs, 'utf8') === expected;
+  } catch (error) {
+    if (error?.code === 'ENOENT') return false;
+    throw error;
+  }
+}
+
 function write(rel, content) {
   const abs = path.join(ROOT, rel);
   const str = typeof content === 'string' ? content : JSON.stringify(content, null, 2) + '\n';
   if (checkOnly) {
-    console.log(`(check) would write ${rel} (${str.length} bytes)`);
+    writes.push(
+      generatedFileIsCurrent(abs, str).then((current) => {
+        if (!current) stalePaths.push(rel);
+      }),
+    );
     return;
   }
   writes.push(
@@ -150,6 +165,7 @@ async function main() {
       safePauseAttestation: ip.SAFE_PAUSE_ATTESTATION,
     }));
   } catch (e) {
+    if (checkOnly) throw e;
     console.warn(`! skipped generic-protocols (${e.message})`);
   }
 
@@ -274,10 +290,18 @@ async function main() {
   ].join('\n'));
 
   await Promise.all(writes);
+  if (checkOnly && stalePaths.length > 0) {
+    process.stderr.write(`${stalePaths.sort().join('\n')}\n`);
+    process.exitCode = 1;
+    return;
+  }
   console.log(`agent-assets: ${checkOnly ? 'check OK' : `wrote ${endpoints.length + gfiles.length + 6} files`} (v${APP_VERSION}, schema ${SCHEMA_VERSION}).`);
 }
 
-main().catch((e) => {
-  console.error('agent-assets generation failed:', e);
-  process.exit(1);
-});
+const invokedPath = process.argv[1] ? pathToFileURL(path.resolve(process.argv[1])).href : '';
+if (import.meta.url === invokedPath) {
+  main().catch((e) => {
+    console.error('agent-assets generation failed:', e);
+    process.exit(1);
+  });
+}

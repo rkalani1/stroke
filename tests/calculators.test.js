@@ -247,6 +247,22 @@ describe('calculateAlteplaseDose', () => {
 });
 
 describe('calculatePCCDose', () => {
+  it.each([0, -1, Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, 'not-an-inr'])(
+    'rejects a supplied nonpositive or nonfinite INR (%p)',
+    (inr) => {
+      const r = calculatePCCDose(80, inr);
+      expect(r.ahaDose).toBeNull();
+      expect(r.fixedDose).toBe(false);
+      expect(r.recommendation).toBe('invalid-inr');
+      expect(r.inrTierNote).toMatch(/finite INR greater than 0/i);
+      expect(r.vitaminK).toBeNull();
+    },
+  );
+  it('keeps an omitted warfarin INR pending rather than treating it as invalid', () => {
+    const r = calculatePCCDose(80, null);
+    expect(r.ahaDose).toBeNull();
+    expect(r.recommendation).toBe('needs-inr');
+  });
   it('INR <1.3 returns no institutional PCC recommendation', () => {
     const r = calculatePCCDose(80, 1.1);
     expect(r.iuPerKg).toBeNull();
@@ -280,6 +296,7 @@ describe('calculatePCCDose', () => {
   it('holds factor-Xa PCC until the Direct Xa and contraindication gates are explicit', () => {
     const missingBoth = calculatePCCDose(70, null, 'fxa-ich');
     expect(missingBoth.ahaDose).toBeNull();
+    expect(missingBoth.fixedDose).toBe(false);
     expect(missingBoth.recommendation).toBe('pending-required-gates');
     expect(missingBoth.missing).toHaveLength(2);
     const missingContraindicationReview = calculatePCCDose(70, null, 'fxa-ich', { directXaElevated: true });
@@ -294,13 +311,24 @@ describe('calculatePCCDose', () => {
   it('holds dabigatran fallback PCC until idarucizumab unavailability and contraindication review are explicit', () => {
     const incomplete = calculatePCCDose(70, null, 'dabigatran-fallback', { idarucizumabAvailable: false });
     expect(incomplete.ahaDose).toBeNull();
+    expect(incomplete.fixedDose).toBe(false);
     expect(incomplete.recommendation).toBe('pending-required-gates');
+    expect(incomplete.inrTierNote).not.toMatch(/give\s+4F-PCC\s+2000/i);
+    const contraindicated = calculatePCCDose(70, null, 'dabigatran-fallback', {
+      idarucizumabAvailable: false,
+      pccContraindicated: true
+    });
+    expect(contraindicated.ahaDose).toBeNull();
+    expect(contraindicated.fixedDose).toBe(false);
+    expect(contraindicated.recommendation).toBe('pending-required-gates');
+    expect(contraindicated.inrTierNote).not.toMatch(/give\s+4F-PCC\s+2000/i);
     const complete = calculatePCCDose(70, null, 'dabigatran-fallback', {
       idarucizumabAvailable: false,
       pccContraindicated: false
     });
     expect(complete.iuPerKg).toBeNull();
     expect(complete.ahaDose).toBe(2000);
+    expect(complete.fixedDose).toBe(true);
     expect(complete.recommendation).toBe('give-fixed-dose-fallback');
   });
 });

@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "management-cards",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.18.3",
-    "checksum": "sha256:33cc0294aa43d4721cef77eb2e174b00",
+    "appVersion": "6.19.0",
+    "checksum": "sha256:1ebcad1bf49aceebda816873f4fcf2f7",
     "count": 3,
     "source": "Management-card reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -197,10 +197,16 @@
             "loe": "A"
           },
           {
-            "label": "ICA/proximal M1, 0-6h, ASPECTS 0-2, age <80, no significant mass effect, CTP core <=70-100 mL",
+            "label": "ICA/proximal M1, 0-6h, ASPECTS 0-2, age <80, no significant mass effect, CTP core <=70 mL",
             "decision": "EVT",
             "cor": "IIa",
             "loe": "B-R"
+          },
+          {
+            "label": "Same branch with CTP core 71-100 mL",
+            "decision": "Pending protocol-owner adjudication; the source prints <=70-100 mL without one executable cutoff",
+            "cor": "",
+            "loe": ""
           },
           {
             "label": "ICA/proximal M1, 6-24h, ASPECTS 6-10",
@@ -265,7 +271,7 @@
         "actions": [
           "Before IVT, lower blood pressure to below 185/110 mmHg.",
           "After IVT, maintain blood pressure below 180/105 mmHg for 24 hours.",
-          "After EVT, use an SBP guardrail of 140-180 mmHg."
+          "After documented successful EVT recanalization (mTICI >=2b), use an SBP guardrail of 140-180 mmHg."
         ],
         "pathway": [
           {
@@ -281,7 +287,7 @@
             "loe": ""
           },
           {
-            "label": "Post-EVT",
+            "label": "Post-EVT with documented mTICI >=2b",
             "decision": "Maintain SBP 140-180",
             "cor": "",
             "loe": ""

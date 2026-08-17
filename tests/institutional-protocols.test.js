@@ -9,6 +9,7 @@ import {
   getSafePauseIssues,
   ICH_INITIAL_EVALUATION_ALGORITHM,
   INSTITUTIONAL_BP_PROTOCOLS,
+  isSuccessfulEvtReperfusion,
   SAFE_PAUSE_ATTESTATION,
   IVT_UNRESOLVED_SOURCE_CONFLICTS,
   IVT_ABSOLUTE_CONTRAINDICATIONS,
@@ -41,7 +42,8 @@ describe('IVT_ABSOLUTE_CONTRAINDICATIONS', () => {
     const labels = IVT_ABSOLUTE_CONTRAINDICATIONS.map((item) => item.label);
     expect(labels).toContain('CT with hemorrhage');
     expect(labels).toContain('Severe coagulopathy');
-    expect(labels).not.toContain('Intracranial or intraspinal surgery <60 days');
+    expect(labels).toContain('Intracranial or intraspinal surgery <60 days');
+    expect(labels).toContain('Severe head trauma <90 days');
   });
 });
 
@@ -142,13 +144,16 @@ describe('IVT contraindication lists match the current local eligibility criteri
     expect(abs()).toMatch(/Active internal bleeding/i);
     expect(abs()).toMatch(/Intra-axial intracranial neoplasm/i);
   });
-  it('keeps the supported acute spinal cord injury window without selecting a conflicted head-trauma window', () => {
+  it('keeps the supported spinal-cord rule and conservative conflicted trauma/surgery holds', () => {
     expect(abs()).toMatch(/Acute spinal cord injury <90 days/);
     expect(abs()).not.toMatch(/Acute intracranial injury <14 days/);
-    expect(abs()).not.toMatch(/Severe head trauma <(14|90) days/);
+    expect(abs()).toMatch(/Severe head trauma <90 days/);
+    expect(abs()).toMatch(/Intracranial or intraspinal surgery <60 days/);
+    expect(abs()).not.toMatch(/Severe head trauma <14 days/);
   });
-  it('relative list carries >10 cerebral microbleeds', () => {
+  it('relative list carries >10 cerebral microbleeds and the conservative prior-stroke counsel', () => {
     expect(rel()).toMatch(/>10 cerebral microbleeds/);
+    expect(rel()).toMatch(/Prior ischemic stroke <90 days/);
   });
   it('limits the supported 14-day entry to extracranial surgery or trauma', () => {
     expect(rel()).toMatch(/Major extracranial surgery or trauma <14 days/);
@@ -157,7 +162,7 @@ describe('IVT contraindication lists match the current local eligibility criteri
 });
 
 describe('IVT unresolved source conflicts', () => {
-  it('publishes all three held conflicts without selecting an executable rule', () => {
+  it('publishes all three held conflicts while preserving the instructed conservative safeguards', () => {
     expect(IVT_UNRESOLVED_SOURCE_CONFLICTS.map((item) => item.key)).toEqual([
       'doac-factor-xa',
       'head-trauma-neurosurgery',
@@ -167,7 +172,9 @@ describe('IVT unresolved source conflicts', () => {
     expect(text).toMatch(/<48 hours vs >24 to <48 hours/);
     expect(text).toMatch(/14 vs 90\/60 days/);
     expect(text).toMatch(/absolute vs relative tier/);
-    expect(text).toMatch(/No (rule|time window|tier) is selected/g);
+    expect(text).toMatch(/No rule is selected pending protocol-owner adjudication/);
+    expect(text.match(/released conservative/g)).toHaveLength(2);
+    expect(text.match(/does not resolve/g)).toHaveLength(2);
   });
 });
 
@@ -251,7 +258,10 @@ describe('evaluateIVT', () => {
     expect(evaluateIVT({ ...standard, contraindicationsReviewed: false }).eligible).toBe('pending');
     expect(evaluateIVT({ ...standard, bpSystolic: 185 }).eligible).toBe('pending');
     expect(evaluateIVT({ ...standard, bpDiastolic: 110 }).eligible).toBe('pending');
+    expect(evaluateIVT({ ...standard, bpSystolic: 90, bpDiastolic: 100 }).eligible).toBe('pending');
+    expect(evaluateIVT({ ...standard, bpSystolic: 100, bpDiastolic: 100 }).eligible).toBe('pending');
     expect(evaluateIVT({ ...standard, bpSystolic: 184, bpDiastolic: 109 }).eligible).toBe(true);
+    expect(evaluateIVT({ ...standard, bpSystolic: 90, bpDiastolic: 50 }).eligible).toBe(true);
   });
   it('requires mismatch imaging and the extended-window gates for 4.5-9h', () => {
     const r = evaluateIVT(extended);
@@ -262,6 +272,21 @@ describe('evaluateIVT', () => {
     const r = evaluateIVT({ ...extended, imagingPathway: { mriDwiFlairMismatch: true } });
     expect(r.eligible).toBe('consider');
     expect(r.cor).toBe('2a');
+  });
+  it('rejects negative CTP core volumes in both numeric extended-window branches', () => {
+    const negativeCore = { ctpCoreMl: -1, ctpRatio: 1.8, ctpMismatchVolMl: 30 };
+    const fourPointFiveToNine = evaluateIVT({ ...extended, imagingPathway: negativeCore });
+    const nineToTwentyFour = evaluateIVT({
+      ...extended,
+      hoursFromLKW: 12,
+      consentObtained: true,
+      imagingPathway: negativeCore
+    });
+
+    expect(fourPointFiveToNine.eligible).toBe('pending');
+    expect(nineToTwentyFour.eligible).toBe('pending');
+    expect(fourPointFiveToNine.reason).toMatch(/CTP|mismatch/i);
+    expect(nineToTwentyFour.reason).toMatch(/CTP/i);
   });
   it('routes wake-up or unknown onset only through the MRI mismatch branch', () => {
     const wakeUp = {
@@ -324,6 +349,22 @@ describe('evaluateIVT', () => {
     expect(noConsent.eligible).toBe('pending');
     expect(noConsent.reason).toMatch(/consent/i);
   });
+  it('routes exactly 9h through the consent-gated CTP branch', () => {
+    const atNine = {
+      ...extended,
+      hoursFromLKW: 9,
+      imagingPathway: { ctpCoreMl: 20, ctpRatio: 1.8, ctpMismatchVolMl: 30 }
+    };
+    const noConsent = evaluateIVT(atNine);
+    expect(noConsent.eligible).toBe('pending');
+    expect(noConsent.reason).toMatch(/consent/i);
+
+    const consented = evaluateIVT({ ...atNine, consentObtained: true });
+    expect(consented.eligible).toBe('consider');
+    expect(consented.recommendation).toMatch(/late window \(9-24h\)/i);
+    expect(consented.cor).toBeUndefined();
+    expect(consented.loe).toBeUndefined();
+  });
   it('holds extreme glucose before any non-disabling or affirmative result', () => {
     const pending = evaluateIVT({ ...standard, glucose: 45, disablingDeficit: false });
     expect(pending.eligible).toBe('pending');
@@ -357,17 +398,19 @@ describe('evaluateDOAC_IVT', () => {
 });
 
 describe('evaluateEVT_Anterior', () => {
+  const evaluateAdultAnterior = (inputs) => evaluateEVT_Anterior({ age: 65, ...inputs });
+
   it('0-6h standard criteria (ASPECTS ≥6, mRS ≤1)', () => {
-    const r = evaluateEVT_Anterior({ aspectsScore: 8, timeFromLKWh: 3, nihss: 12, preMRS: 0 });
+    const r = evaluateAdultAnterior({ aspectsScore: 8, timeFromLKWh: 3, nihss: 12, preMRS: 0 });
     expect(r.eligible).toBe(true);
     expect(r.cor).toBe('1');
   });
   it('0-6h large core (ASPECTS 3-5) still Class 1 if no mass effect', () => {
-    const r = evaluateEVT_Anterior({ aspectsScore: 4, timeFromLKWh: 3, nihss: 12, preMRS: 0, massEffect: false });
+    const r = evaluateAdultAnterior({ aspectsScore: 4, timeFromLKWh: 3, nihss: 12, preMRS: 0, massEffect: false });
     expect(r.eligible).toBe(true);
   });
   it('0-6h very-large core (ASPECTS 0-2) is consider only at the unambiguous ≤70 mL boundary', () => {
-    const r = evaluateEVT_Anterior({
+    const r = evaluateAdultAnterior({
       aspectsScore: 2,
       timeFromLKWh: 2,
       nihss: 15,
@@ -381,7 +424,7 @@ describe('evaluateEVT_Anterior', () => {
   });
   it('holds the ambiguous 71-100 mL core range for owner adjudication', () => {
     for (const coreVolume of [71, 100]) {
-      const r = evaluateEVT_Anterior({
+      const r = evaluateAdultAnterior({
         aspectsScore: 2,
         timeFromLKWh: 2,
         nihss: 15,
@@ -396,17 +439,17 @@ describe('evaluateEVT_Anterior', () => {
   });
   it('fails closed when very-large-core age, mass effect, or volume is unassessed', () => {
     const base = { aspectsScore: 2, timeFromLKWh: 2, nihss: 15, preMRS: 0 };
-    expect(evaluateEVT_Anterior({ ...base, massEffect: false, coreVolume: 60 }).eligible).toBe('pending');
-    expect(evaluateEVT_Anterior({ ...base, age: 65, coreVolume: 60 }).eligible).toBe('pending');
-    expect(evaluateEVT_Anterior({ ...base, age: 65, massEffect: false }).eligible).toBe('pending');
+    expect(evaluateEVT_Anterior({ ...base, massEffect: false, coreVolume: 60 }).eligible).toBeNull();
+    expect(evaluateAdultAnterior({ ...base, coreVolume: 60 }).eligible).toBe('pending');
+    expect(evaluateAdultAnterior({ ...base, massEffect: false }).eligible).toBe('pending');
   });
   it('pre-mRS 2 is consider at 2a, B-NR', () => {
-    const r = evaluateEVT_Anterior({ aspectsScore: 8, timeFromLKWh: 3, nihss: 10, preMRS: 2 });
+    const r = evaluateAdultAnterior({ aspectsScore: 8, timeFromLKWh: 3, nihss: 10, preMRS: 2 });
     expect(r.eligible).toBe('consider');
     expect(r.cor).toBe('2a');
   });
   it('6-24h with age <80 and ASPECTS ≥6 is recommended', () => {
-    const r = evaluateEVT_Anterior({ aspectsScore: 8, timeFromLKWh: 12, nihss: 10, preMRS: 0, age: 65 });
+    const r = evaluateAdultAnterior({ aspectsScore: 8, timeFromLKWh: 12, nihss: 10, preMRS: 0 });
     expect(r.eligible).toBe(true);
     expect(r.cor).toBe('1');
   });
@@ -414,108 +457,130 @@ describe('evaluateEVT_Anterior', () => {
   // COR 1 / LOE A with no age or mass-effect qualifier — the age ceiling belongs only to
   // the large-core tiers. Guards against re-introducing the old over-restriction.
   it('6-24h ASPECTS ≥6 carries no age ceiling', () => {
-    const r = evaluateEVT_Anterior({ aspectsScore: 8, timeFromLKWh: 12, nihss: 10, preMRS: 0, age: 88 });
+    const r = evaluateAdultAnterior({ aspectsScore: 8, timeFromLKWh: 12, nihss: 10, preMRS: 0, age: 88 });
     expect(r.eligible).toBe(true);
     expect(r.cor).toBe('1');
   });
   it('6-24h ASPECTS ≥6 does not require absence of mass effect', () => {
-    const r = evaluateEVT_Anterior({ aspectsScore: 7, timeFromLKWh: 9, nihss: 14, preMRS: 1, age: 70, massEffect: true });
+    const r = evaluateAdultAnterior({ aspectsScore: 7, timeFromLKWh: 9, nihss: 14, preMRS: 1, age: 70, massEffect: true });
     expect(r.eligible).toBe(true);
     expect(r.cor).toBe('1');
   });
   it('6-24h large core (ASPECTS 3-5) needs age <80 and no mass effect', () => {
-    const ok = evaluateEVT_Anterior({ aspectsScore: 4, timeFromLKWh: 10, nihss: 16, preMRS: 0, age: 62, massEffect: false });
+    const ok = evaluateAdultAnterior({ aspectsScore: 4, timeFromLKWh: 10, nihss: 16, preMRS: 0, age: 62, massEffect: false });
     expect(ok.eligible).toBe(true);
     expect(ok.cor).toBe('1');
-    expect(evaluateEVT_Anterior({ aspectsScore: 4, timeFromLKWh: 10, nihss: 16, preMRS: 0, age: 84, massEffect: false }).eligible).toBe(false);
-    expect(evaluateEVT_Anterior({ aspectsScore: 4, timeFromLKWh: 10, nihss: 16, preMRS: 0, age: 62, massEffect: true }).eligible).toBe(false);
+    expect(evaluateAdultAnterior({ aspectsScore: 4, timeFromLKWh: 10, nihss: 16, preMRS: 0, age: 84, massEffect: false }).eligible).toBe(false);
+    expect(evaluateAdultAnterior({ aspectsScore: 4, timeFromLKWh: 10, nihss: 16, preMRS: 0, age: 62, massEffect: true }).eligible).toBe(false);
   });
   it('rejects missing or invalid critical inputs without an affirmative result', () => {
     const base = { aspectsScore: 8, timeFromLKWh: 3, nihss: 12, preMRS: 0 };
-    expect(evaluateEVT_Anterior({ ...base, aspectsScore: undefined }).eligible).toBeNull();
-    expect(evaluateEVT_Anterior({ ...base, timeFromLKWh: -1 }).eligible).toBeNull();
-    expect(evaluateEVT_Anterior({ ...base, nihss: 43 }).eligible).toBeNull();
-    expect(evaluateEVT_Anterior({ ...base, preMRS: 7 }).eligible).toBeNull();
-    expect(evaluateEVT_Anterior({ ...base, age: 12 }).eligible).toBeNull();
-    expect(evaluateEVT_Anterior({ ...base, coreVolume: -1 }).eligible).toBeNull();
+    expect(evaluateAdultAnterior({ ...base, aspectsScore: undefined }).eligible).toBeNull();
+    expect(evaluateAdultAnterior({ ...base, timeFromLKWh: -1 }).eligible).toBeNull();
+    expect(evaluateAdultAnterior({ ...base, nihss: 43 }).eligible).toBeNull();
+    expect(evaluateAdultAnterior({ ...base, preMRS: 7 }).eligible).toBeNull();
+    expect(evaluateAdultAnterior({ ...base, age: 12 }).eligible).toBeNull();
+    expect(evaluateAdultAnterior({ ...base, coreVolume: -1 }).eligible).toBeNull();
+  });
+
+  it.each([undefined, '', ' ', Number.NaN, '65 years'])('requires an explicit valid adult age (%p)', (age) => {
+    const result = evaluateEVT_Anterior({ aspectsScore: 8, timeFromLKWh: 3, nihss: 12, preMRS: 0, age });
+    expect(result.eligible).toBeNull();
+    expect(result.reason).toMatch(/enter adult age/i);
   });
 });
 
 describe('evaluateEVT_M2', () => {
+  const evaluateAdultM2 = (inputs) => evaluateEVT_M2({ age: 65, ...inputs });
+
   it('dominant proximal M2 within 6h is consider (Class 2a)', () => {
-    const r = evaluateEVT_M2({ segment: 'M2-proximal-dominant', dominant: true, hoursFromLKWh: 4, nihss: 10, preMRS: 0, aspectsScore: 8 });
+    const r = evaluateAdultM2({ segment: 'M2-proximal-dominant', dominant: true, hoursFromLKWh: 4, nihss: 10, preMRS: 0, aspectsScore: 8 });
     expect(r.eligible).toBe('consider');
     expect(r.cor).toBe('2a');
   });
   it('non-dominant M2 NOT recommended', () => {
-    const r = evaluateEVT_M2({ segment: 'M2-nondominant' });
+    const r = evaluateAdultM2({ segment: 'M2-nondominant' });
     expect(r.eligible).toBe(false);
     expect(r.cor).toMatch(/3/);
   });
   it('leaves M3 unassigned while the source explicitly does not recommend ACA/PCA', () => {
-    const m3 = evaluateEVT_M2({ segment: 'M3' });
+    const m3 = evaluateAdultM2({ segment: 'M3' });
     expect(m3.eligible).toBeNull();
     expect(m3.reason).toMatch(/not assigned/i);
-    expect(evaluateEVT_M2({ segment: 'ACA' }).eligible).toBe(false);
-    expect(evaluateEVT_M2({ segment: 'PCA' }).eligible).toBe(false);
+    expect(evaluateAdultM2({ segment: 'ACA' }).eligible).toBe(false);
+    expect(evaluateAdultM2({ segment: 'PCA' }).eligible).toBe(false);
   });
   // Source adds a 6-24h dominant-M2 tier gated on CTP hypoperfusion-hypodensity mismatch.
   it('dominant M2 at 6-24h requires CTP mismatch', () => {
     const base = { segment: 'M2-proximal-dominant', dominant: true, hoursFromLKWh: 11, nihss: 9, preMRS: 0, aspectsScore: 7 };
-    expect(evaluateEVT_M2({ ...base, ctpMismatch: true }).eligible).toBe('consider');
-    expect(evaluateEVT_M2({ ...base, ctpMismatch: true }).cor).toBe('2a');
-    expect(evaluateEVT_M2({ ...base }).eligible).toBe('pending');
+    expect(evaluateAdultM2({ ...base, ctpMismatch: true }).eligible).toBe('consider');
+    expect(evaluateAdultM2({ ...base, ctpMismatch: true }).cor).toBe('2a');
+    expect(evaluateAdultM2({ ...base }).eligible).toBe('pending');
   });
   // Codominant M2 (90-100 mL tissue at risk) sits between dominant and non-dominant and
   // is NOT assigned COR 3 by the source; it must not be reported as "no benefit".
   it('codominant M2 is indeterminate, not COR 3', () => {
-    const r = evaluateEVT_M2({ segment: 'M2-codominant' });
+    const r = evaluateAdultM2({ segment: 'M2-codominant' });
     expect(r.eligible).toBe('pending');
     expect(r.cor).not.toMatch(/3/);
   });
   it('fails closed on missing or out-of-range dominant-M2 inputs', () => {
     const base = { segment: 'M2-proximal-dominant', dominant: true, hoursFromLKWh: 4, nihss: 10, preMRS: 0, aspectsScore: 8 };
-    expect(evaluateEVT_M2({ ...base, hoursFromLKWh: undefined }).eligible).toBeNull();
-    expect(evaluateEVT_M2({ ...base, hoursFromLKWh: -1 }).eligible).toBeNull();
-    expect(evaluateEVT_M2({ ...base, nihss: 43 }).eligible).toBeNull();
-    expect(evaluateEVT_M2({ ...base, preMRS: 7 }).eligible).toBeNull();
-    expect(evaluateEVT_M2({ ...base, aspectsScore: 11 }).eligible).toBeNull();
+    expect(evaluateAdultM2({ ...base, hoursFromLKWh: undefined }).eligible).toBeNull();
+    expect(evaluateAdultM2({ ...base, hoursFromLKWh: -1 }).eligible).toBeNull();
+    expect(evaluateAdultM2({ ...base, nihss: 43 }).eligible).toBeNull();
+    expect(evaluateAdultM2({ ...base, preMRS: 7 }).eligible).toBeNull();
+    expect(evaluateAdultM2({ ...base, aspectsScore: 11 }).eligible).toBeNull();
   });
   it('never applies the adult M2 algorithm to a known pediatric age', () => {
-    const r = evaluateEVT_M2({ segment: 'M2-proximal-dominant', dominant: true, hoursFromLKWh: 1, nihss: 6, preMRS: 0, aspectsScore: 6, age: 10 });
+    const r = evaluateAdultM2({ segment: 'M2-proximal-dominant', dominant: true, hoursFromLKWh: 1, nihss: 6, preMRS: 0, aspectsScore: 6, age: 10 });
     expect(r.eligible).toBeNull();
     expect(r.reason).toMatch(/adult EVT algorithm does not apply below age 18/i);
+  });
+
+  it.each([undefined, '', ' ', Number.NaN, '65 years'])('requires an explicit valid adult age (%p)', (age) => {
+    const result = evaluateEVT_M2({ segment: 'M2-proximal-dominant', dominant: true, hoursFromLKWh: 4, nihss: 10, preMRS: 0, aspectsScore: 8, age });
+    expect(result.eligible).toBeNull();
+    expect(result.reason).toMatch(/enter adult age/i);
   });
 });
 
 describe('evaluateEVT_Basilar', () => {
+  const evaluateAdultBasilar = (inputs) => evaluateEVT_Basilar({ age: 65, ...inputs });
+
   it('NIHSS ≥10 with pre-mRS 0-1, PC-ASPECTS ≥6 is Class 1', () => {
-    const r = evaluateEVT_Basilar({ nihss: 15, hoursFromLKWh: 10, preMRS: 0, pcAspects: 8 });
+    const r = evaluateAdultBasilar({ nihss: 15, hoursFromLKWh: 10, preMRS: 0, pcAspects: 8 });
     expect(r.eligible).toBe(true);
     expect(r.cor).toBe('1');
   });
   it('NIHSS 6-9 is consider using only the source-listed gates', () => {
-    const r = evaluateEVT_Basilar({ nihss: 7, hoursFromLKWh: 10, preMRS: 0, pcAspects: 7 });
+    const r = evaluateAdultBasilar({ nihss: 7, hoursFromLKWh: 10, preMRS: 0, pcAspects: 7 });
     expect(r.eligible).toBe('consider');
     expect(r.cor).toBe('2b');
     expect(r.loe).toBe('B-R');
   });
   it('rejects beyond 24h', () => {
-    const r = evaluateEVT_Basilar({ nihss: 15, hoursFromLKWh: 30, preMRS: 0, pcAspects: 8 });
+    const r = evaluateAdultBasilar({ nihss: 15, hoursFromLKWh: 30, preMRS: 0, pcAspects: 8 });
     expect(r.eligible).toBe(false);
   });
   it('fails closed on missing, negative, or out-of-range inputs', () => {
     const base = { nihss: 15, hoursFromLKWh: 10, preMRS: 0, pcAspects: 8 };
-    expect(evaluateEVT_Basilar({ ...base, pcAspects: undefined }).eligible).toBeNull();
-    expect(evaluateEVT_Basilar({ ...base, hoursFromLKWh: -1 }).eligible).toBeNull();
-    expect(evaluateEVT_Basilar({ ...base, nihss: 43 }).eligible).toBeNull();
-    expect(evaluateEVT_Basilar({ ...base, preMRS: 7 }).eligible).toBeNull();
-    expect(evaluateEVT_Basilar({ ...base, pcAspects: 11 }).eligible).toBeNull();
+    expect(evaluateAdultBasilar({ ...base, pcAspects: undefined }).eligible).toBeNull();
+    expect(evaluateAdultBasilar({ ...base, hoursFromLKWh: -1 }).eligible).toBeNull();
+    expect(evaluateAdultBasilar({ ...base, nihss: 43 }).eligible).toBeNull();
+    expect(evaluateAdultBasilar({ ...base, preMRS: 7 }).eligible).toBeNull();
+    expect(evaluateAdultBasilar({ ...base, pcAspects: 11 }).eligible).toBeNull();
   });
   it('never applies the adult basilar algorithm to a known pediatric age', () => {
-    const r = evaluateEVT_Basilar({ nihss: 10, hoursFromLKWh: 1, preMRS: 0, pcAspects: 6, age: 10 });
+    const r = evaluateAdultBasilar({ nihss: 10, hoursFromLKWh: 1, preMRS: 0, pcAspects: 6, age: 10 });
     expect(r.eligible).toBeNull();
     expect(r.reason).toMatch(/adult EVT algorithm does not apply below age 18/i);
+  });
+
+  it.each([undefined, '', ' ', Number.NaN, '65 years'])('requires an explicit valid adult age (%p)', (age) => {
+    const result = evaluateEVT_Basilar({ nihss: 15, hoursFromLKWh: 10, preMRS: 0, pcAspects: 8, age });
+    expect(result.eligible).toBeNull();
+    expect(result.reason).toMatch(/enter adult age/i);
   });
 });
 
@@ -531,6 +596,9 @@ describe('Safe Pause attestation', () => {
       { consentType: '', bp: '170/90', contraindications: 'reviewed' },
       { consentType: 'declined', bp: '170/90', contraindications: 'reviewed' },
       { consentType: 'informed', bp: 'not-a-bp', contraindications: 'reviewed' },
+      { consentType: 'informed', bp: '00/00', contraindications: 'reviewed' },
+      { consentType: 'informed', bp: '90/100', contraindications: 'reviewed' },
+      { consentType: 'informed', bp: '100/100', contraindications: 'reviewed' },
       { consentType: 'informed', bp: '185/109', contraindications: 'reviewed' },
       { consentType: 'informed', bp: '184/110', contraindications: 'reviewed' }
     ];
@@ -541,6 +609,7 @@ describe('Safe Pause attestation', () => {
       expect(getSafePauseIssues(input).length).toBeGreaterThan(0);
     }
     expect(getSafePauseText({ consentType: 'informed', bp: '184/109', contraindications: 'reviewed' })).toContain(SAFE_PAUSE_ATTESTATION);
+    expect(getSafePauseText({ consentType: 'informed', bp: '90/50', contraindications: 'reviewed' })).toContain(SAFE_PAUSE_ATTESTATION);
   });
 });
 
@@ -550,7 +619,18 @@ describe('institutional BP protocols present', () => {
     expect(INSTITUTIONAL_BP_PROTOCOLS.beforeIVT.target).toBe('BP <185/110');
     expect(INSTITUTIONAL_BP_PROTOCOLS.afterIVT24h.target).toBe('BP <180/105');
     expect(INSTITUTIONAL_BP_PROTOCOLS.afterEVT24h.target).toBe('SBP 140-180');
+    expect(INSTITUTIONAL_BP_PROTOCOLS.afterEVT24h.appliesWhen).toContain('mTICI >=2b');
+    expect(INSTITUTIONAL_BP_PROTOCOLS.afterEVT24h.protocol).toContain('mTICI >=2b');
     expect(JSON.stringify(INSTITUTIONAL_BP_PROTOCOLS)).not.toMatch(/ENCHANTED2-MT|OPTIMAL-BP|BP-TARGET|BEST-II/);
+  });
+
+  it('applies the post-EVT source target only to documented successful recanalization', () => {
+    for (const grade of [undefined, '', '0', '1', '2a', 'garbage']) {
+      expect(isSuccessfulEvtReperfusion(grade)).toBe(false);
+    }
+    for (const grade of ['2b', '2c', '3', ' 2B ']) {
+      expect(isSuccessfulEvtReperfusion(grade)).toBe(true);
+    }
   });
 });
 

@@ -78,9 +78,9 @@ describe('Navigation Reorganization and Consolidation (R1, R2)', () => {
     expect(appJsxContent).toContain('{ id: \'education\', name: "Educational Resources" }');
   });
 
-  it('R2: Protocols sub-tabs only contain actual clinical protocol tabs (no defunct references tab)', () => {
-    expect(scope.MANAGEMENT_SUBTABS).toEqual(['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators']);
-    expect(appJsxContent).toContain("const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];");
+  it('R2: Protocols sub-tabs are limited to ICH, ischemic, and calculators', () => {
+    expect(scope.MANAGEMENT_SUBTABS).toEqual(['ich', 'ischemic', 'calculators']);
+    expect(appJsxContent).toContain('const subTabs = MANAGEMENT_SUBTABS;');
   });
 
   it('R2: Dynamic hash routing and backwards compatibility for legacy paths', () => {
@@ -101,6 +101,9 @@ describe('Navigation Reorganization and Consolidation (R1, R2)', () => {
     expect(scope.parseHashRoute('#/protocols/references')).toEqual({ tab: 'research', sub: 'references' });
     expect(scope.parseHashRoute('#/protocols/education/icu')).toEqual({ tab: 'research', sub: 'education', educationSub: 'icu' });
     expect(scope.parseHashRoute('#/management/education/icu')).toEqual({ tab: 'research', sub: 'education', educationSub: 'icu' });
+    expect(scope.parseHashRoute('#/protocols/sah')).toEqual({ tab: 'protocols', sub: 'ich' });
+    expect(scope.parseHashRoute('#/protocols/tia')).toEqual({ tab: 'protocols', sub: 'ischemic' });
+    expect(scope.parseHashRoute('#/protocols/cvt')).toEqual({ tab: 'protocols', sub: 'ischemic' });
     expect(scope.parseHashRoute('#/guidelines')).toEqual({ tab: 'research', sub: 'guidelines' });
     expect(scope.parseHashRoute('#/references')).toEqual({ tab: 'research', sub: 'references' });
 

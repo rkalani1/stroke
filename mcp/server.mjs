@@ -61,18 +61,28 @@ server.registerTool('calc_alteplase_dose',
   async ({ weightKg }) => ok({ tool: 'calc_alteplase_dose', result: calculateAlteplaseDose(weightKg) }));
 
 server.registerTool('calc_pcc_dose',
-  { title: '4F-PCC dose', description: '4-factor PCC dose. Warfarin pathway is INR-stratified; FXa-inhibitor ICH uses fixed 50 IU/kg.', inputSchema: {
-      weightKg: z.number().positive(),
-      inr: z.number().optional().describe('INR (warfarin pathway only)'),
-      indication: z.enum(['warfarin', 'fxa-ich', 'fxa-no-andexanet']).default('warfarin'),
+  { title: '4F-PCC pathway', description: 'Institutional 4F-PCC pathways use a fixed 2,000-unit dose when the source-listed indication gates are met; weight never changes the dose.', inputSchema: {
+      weightKg: z.number().positive().max(350).optional().describe('Optional weight in kg; retained for compatibility and does not change the fixed dose'),
+      inr: z.number().positive().finite().optional().describe('Finite INR greater than 0 (warfarin pathway only)'),
+      indication: z.enum(['warfarin', 'fxa-ich', 'fxa-no-andexanet', 'dabigatran-fallback']).default('warfarin'),
+      directXaElevated: z.boolean().optional().describe('FXa pathway: explicitly confirmed elevated Direct Xa Inhibitor screen'),
+      pccContraindicated: z.boolean().optional().describe('FXa or dabigatran fallback: explicit PCC contraindication status'),
+      idarucizumabAvailable: z.boolean().optional().describe('Dabigatran fallback: explicit idarucizumab availability status'),
     } },
-  async ({ weightKg, inr, indication }) => ok({ tool: 'calc_pcc_dose', result: calculatePCCDose(weightKg, inr, indication) }));
+  async ({ weightKg, inr, indication, directXaElevated, pccContraindicated, idarucizumabAvailable }) => ok({
+    tool: 'calc_pcc_dose',
+    result: calculatePCCDose(weightKg, inr, indication, {
+      directXaElevated,
+      pccContraindicated,
+      idarucizumabAvailable,
+    }),
+  }));
 
 server.registerTool('calc_andexanet_dose',
-  { title: 'Andexanet alfa dose', description: 'Andexanet alfa dosing for FXa-inhibitor reversal.', inputSchema: {
-      doacType: z.enum(['apixaban', 'rivaroxaban', 'edoxaban', 'other']),
-      lastDoseHours: z.number().nonnegative().describe('Hours since last DOAC dose'),
-      doacDoseMg: z.number().positive().describe('Last DOAC dose in mg'),
+  { title: 'Andexanet alfa availability', description: 'Returns the institutional non-actionable status: andexanet alfa is unavailable and no dose is supplied.', inputSchema: {
+      doacType: z.enum(['apixaban', 'rivaroxaban', 'edoxaban', 'other']).optional(),
+      lastDoseHours: z.number().nonnegative().optional().describe('Optional compatibility input; no andexanet dose is generated'),
+      doacDoseMg: z.number().positive().optional().describe('Optional compatibility input; no andexanet dose is generated'),
       thrombosisRisk: z.enum(['low', 'moderate', 'high']).default('moderate'),
     } },
   async ({ doacType, lastDoseHours, doacDoseMg, thrombosisRisk }) => ok({ tool: 'calc_andexanet_dose', result: calculateAndexanetDose(doacType, lastDoseHours, doacDoseMg, thrombosisRisk) }));

@@ -1,6 +1,6 @@
 {
   "name": "stroke",
-  "version": "6.18.3",
+  "version": "6.19.0",
   "description": "A client-side clinical decision support toolkit for stroke management with encounter workflows, calculators, protocols, trials, and evidence references.",
   "main": "service-worker.js",
   "scripts": {
@@ -64,6 +64,7 @@
     "build": "npm run evidence:whats-new && npm run agent:assets && npm run content:bundle && npm run build:css && npm run build:js",
     "build:prod": "npm run build && npm run build:compress",
     "test:unit": "vitest run",
+    "test:mcp": "npm --prefix mcp run smoke",
     "test:protocol": "vitest run tests/protocol-currency-guards.test.js tests/public-demo-labels.test.js tests/no-institutional-identifiers.test.js tests/leak-guard.test.js tests/lighthouse-workflow.test.js tests/service-worker.test.js tests/navigation-reorganization.test.js",
     "test:protocol-snapshot": "node ./scripts/snapshot-example-protocols.mjs",
     "test:protocol-snapshot:update": "node ./scripts/snapshot-example-protocols.mjs --update",

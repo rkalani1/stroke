@@ -421,6 +421,24 @@ export const calculatePCCDose = (weightKg, inrVal, indication = 'warfarin', gate
     : null;
   const inr = parseFloat(inrVal);
   const fixedDose = 2000;
+  const hasInrInput = inrVal !== undefined
+    && inrVal !== null
+    && !(typeof inrVal === 'string' && inrVal.trim() === '');
+
+  if (hasInrInput && (!Number.isFinite(inr) || inr <= 0)) {
+    return {
+      ahaDose: null,
+      iuPerKg: null,
+      weight,
+      inrTierNote: 'Enter a finite INR greater than 0 before applying an institutional PCC pathway.',
+      indication,
+      fixedDose: false,
+      recommendation: 'invalid-inr',
+      vitaminK: null,
+      monitoring: null,
+      rescue: null
+    };
+  }
 
   // Factor-Xa inhibitor ICH pathway — fixed dose, contingent on an elevated screen.
   if (indication === 'fxa-ich' || indication === 'fxa-no-andexanet') {
@@ -431,7 +449,7 @@ export const calculatePCCDose = (weightKg, inrVal, indication = 'warfarin', gate
       weight,
       inrTierNote: 'If the Direct Xa Inhibitor screen is elevated and there is no PCC contraindication, give 4F-PCC 2000 units IV. Andexanet alfa is not available through the institution.',
       indication,
-      fixedDose: true,
+      fixedDose: gateComplete,
       recommendation: gateComplete ? 'give-fixed-dose' : 'pending-required-gates',
       requiresElevatedDirectXaScreen: true,
       requiresPccContraindicationReview: true,
@@ -450,9 +468,11 @@ export const calculatePCCDose = (weightKg, inrVal, indication = 'warfarin', gate
       ahaDose: gateComplete ? fixedDose : null,
       iuPerKg: null,
       weight,
-      inrTierNote: 'If idarucizumab is unavailable, give 4F-PCC 2000 units IV.',
+      inrTierNote: gateComplete
+        ? 'Idarucizumab is unavailable and PCC is not contraindicated; give 4F-PCC 2000 units IV.'
+        : 'No PCC dose is returned until idarucizumab is confirmed unavailable and PCC is explicitly confirmed not contraindicated.',
       indication,
-      fixedDose: true,
+      fixedDose: gateComplete,
       recommendation: gateComplete ? 'give-fixed-dose-fallback' : 'pending-required-gates',
       missing: [
         ...(gate.idarucizumabAvailable === false ? [] : ['confirmation that idarucizumab is unavailable']),

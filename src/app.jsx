@@ -45,6 +45,13 @@ import {
   runEncounterOutput as runGatedEncounterOutput
 } from './encounter-output-gate.js';
 import { PocketCards } from './pocket-cards.jsx';
+import {
+  cloneAspectsRegionState,
+  getDefaultFuncItems,
+  isValidAspectsScore,
+  normalizeAspectsScore,
+  normalizeFuncItems,
+} from './case-state.js';
 import { LandmarkTrialsCard } from './teaching.jsx';
 import Education, { EVDInfographic, ICPInfographic } from './education.jsx';
 /* v7 design primitives — single accent (cobalt), one alarm (crit), one alert (warn).
@@ -115,7 +122,11 @@ import {
   AI_PROVIDERS,
   getAIConfiguration
 } from './calculators-extended.js';
-import { getLocalInstitutionalContent, ICH_INITIAL_EVALUATION_ALGORITHM } from './institutional-protocols.js';
+import {
+  getLocalInstitutionalContent,
+  ICH_INITIAL_EVALUATION_ALGORITHM,
+  isSuccessfulEvtReperfusion,
+} from './institutional-protocols.js';
 // v7 theme controller — the SINGLE source of truth for theme pref + DOM state.
 // Replaces the legacy in-component darkMode boolean. theme.js owns the
 // `data-theme` attribute, the `dark` class, and the stroke.v7.theme storage key.
@@ -355,6 +366,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           'gcsItems',
           'mrsScore',
           'ichScoreItems',
+          'funcItems',
           'abcd2Items',
           'chads2vascItems',
           'ropeItems',
@@ -1154,7 +1166,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           ...(API_PROVIDER_META[value] || {})
         }));
 
-        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
+        const MANAGEMENT_SUBTABS = ['ich', 'ischemic', 'calculators'];
 
         const RESEARCH_SUBTABS = ['guidelines', 'references', 'education'];
 
@@ -1177,7 +1189,10 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           // Removed sub-tabs — redirect persisted user state to a sensible neighbor.
           clinic: 'ischemic',
           wards: 'ischemic',
-          'pocket-cards': 'ischemic'
+          'pocket-cards': 'ischemic',
+          sah: 'ich',
+          tia: 'ischemic',
+          cvt: 'ischemic'
         };
 
         const normalizeManagementSubTab = (value) => {
@@ -1669,8 +1684,6 @@ Clinician Name`;
             evtTechnique: '',
             reperfusionTime: '',
             postEvtBP: {
-              reperfusionStatus: '',
-              infusionAgent: '',
               targetStrategy: '',
               notes: ''
             },
@@ -2327,7 +2340,7 @@ Clinician Name`;
 
           const [patientData, setPatientData] = useState(loadFromStorage('patientData', {}));
           const [nihssScore, setNihssScore] = useState(loadFromStorage('nihssScore', 0));
-          const [aspectsScore, setAspectsScore] = useState(loadFromStorage('aspectsScore', ''));
+          const [aspectsScore, setAspectsScore] = useState(() => normalizeAspectsScore(loadFromStorage('aspectsScore', '')));
 
           const [searchQuery, setSearchQuery] = useState('');
           const [copiedText, setCopiedText] = useState('');
@@ -2390,6 +2403,7 @@ Clinician Name`;
           // Each patient in shift has: id, summary, timestamp, formState snapshot
           const [shiftPatients, setShiftPatients] = useState(loadFromStorage('shiftPatients', []));
           const [currentPatientId, setCurrentPatientId] = useState(loadFromStorage('currentPatientId', null));
+          const [pocketCardsCaseEpoch, setPocketCardsCaseEpoch] = useState(0);
 
 
           // Collapsible Timer Sidebar state (default: expanded on desktop, collapsed on mobile)
@@ -2581,29 +2595,36 @@ Clinician Name`;
             infratentorial: false,
             criteriaReviewed: false
           }));
-          const [funcItems, setFuncItems] = useState(loadFromStorage('funcItems', {
-            location: '',
-            preCogImpairment: false
-          }));
+          const [funcItems, setFuncItems] = useState(() => normalizeFuncItems(loadFromStorage('funcItems', getDefaultFuncItems())));
           const [ichVolumeParams, setIchVolumeParams] = useState(loadFromStorage('ichVolumeParams', { a: '', b: '', thicknessMm: '', numSlices: '' }));
 
           useEffect(() => {
             const { a, b, thicknessMm, numSlices } = ichVolumeParams;
-            if (a && b && thicknessMm && numSlices) {
-              const aV = parseFloat(a), bV = parseFloat(b), tV = parseFloat(thicknessMm), nV = parseFloat(numSlices);
-              if ([aV, bV, tV, nV].some(v => isNaN(v) || v <= 0)) return;
-              const cCm = (tV / 10) * nV;
-              const vol = (aV * bV * cCm) / 2;
-              if (!isNaN(vol) && vol > 0) {
-                setIchScoreItems(prev => {
-                  const isHigh = vol >= 30;
-                  if (prev.volume30 !== isHigh) {
-                    return { ...prev, volume30: isHigh, criteriaReviewed: false };
-                  }
-                  return prev;
-                });
+            const rawValues = [a, b, thicknessMm, numSlices];
+            const parsedValues = rawValues.map(value => parseFloat(value));
+            const hasAnyVolumeInput = rawValues.some(value => String(value ?? '').trim() !== '');
+            const hasValidVolumeInputs = parsedValues.every(value => Number.isFinite(value) && value > 0);
+            if (!hasValidVolumeInputs) {
+              if (hasAnyVolumeInput) {
+                setIchScoreItems(prev => (
+                  prev.volume30 || prev.criteriaReviewed === true
+                    ? { ...prev, volume30: false, criteriaReviewed: false }
+                    : prev
+                ));
               }
+              return;
             }
+            const [aV, bV, tV, nV] = parsedValues;
+            const cCm = (tV / 10) * nV;
+            const vol = (aV * bV * cCm) / 2;
+            if (!Number.isFinite(vol) || vol <= 0) return;
+            setIchScoreItems(prev => {
+              const isHigh = vol >= 30;
+              if (prev.volume30 !== isHigh) {
+                return { ...prev, volume30: isHigh, criteriaReviewed: false };
+              }
+              return prev;
+            });
           }, [ichVolumeParams]);
           const ichVolumeEstimate = useMemo(() => {
             const { a, b, thicknessMm, numSlices } = ichVolumeParams;
@@ -2742,7 +2763,7 @@ Clinician Name`;
             return merged;
           });
           const protocolDosingWeightKg = Number.parseFloat(telestrokeNote.weight);
-          const hasValidProtocolDosingWeight = Number.isFinite(protocolDosingWeightKg) && protocolDosingWeightKg > 0;
+          const hasValidProtocolDosingWeight = Number.isFinite(protocolDosingWeightKg) && protocolDosingWeightKg > 0 && protocolDosingWeightKg <= 350;
 
           const [autoSyncCalculators, setAutoSyncCalculators] = useState(loadFromStorage('autoSyncCalculators', true));
           const [calculatorFilter, setCalculatorFilter] = useState('');
@@ -2905,10 +2926,14 @@ Clinician Name`;
           const currentBpPhase = ischemicBpPhaseKeys.includes(telestrokeNote.bpPhase) ? telestrokeNote.bpPhase : 'pre-tnk';
           const currentBpTarget = bpPhaseTargets[currentBpPhase] || bpPhaseTargets['pre-tnk'];
           const currentBpReading = parseBloodPressure(telestrokeNote.bpProtocolCheck);
+          const documentedPostEvtGrade = telestrokeNote.ticiScore || '';
+          const postEvtSourceTargetApplies = isSuccessfulEvtReperfusion(documentedPostEvtGrade);
           const bpWithinTarget = currentBpReading
-            ? currentBpPhase === 'post-evt'
+            ? currentBpPhase === 'post-evt' && postEvtSourceTargetApplies
               ? currentBpReading.systolic >= currentBpTarget.systolicLow && currentBpReading.systolic <= currentBpTarget.systolicHigh
-              : currentBpReading.systolic < currentBpTarget.systolic && currentBpReading.diastolic < currentBpTarget.diastolic
+              : currentBpPhase === 'post-evt'
+                ? null
+                : currentBpReading.systolic < currentBpTarget.systolic && currentBpReading.diastolic < currentBpTarget.diastolic
             : null;
           const wakeUpDecision = getWakeUpEligibilityForNote(telestrokeNote);
           const tiaDispositionDecision = getTiaDispositionRecommendation(telestrokeNote, calculateABCD2Score(abcd2Items));
@@ -2920,7 +2945,7 @@ Clinician Name`;
             PCC: {
               title: '4F-PCC (Kcentra)',
               dosing: 'PCC (Kcentra) 2000 units IV — infuse immediately. Fixed dose, not weight- or INR-tiered. If PT/INR >1.5 after the infusion, page hematology and consider an additional 500 units of PCC or 2-4 units of plasma (FFP).',
-              note: 'Give simultaneously with vitamin K 10 mg IV. Check PT/INR at exactly 30 minutes, then every 6 hours for 24 hours. If INR >1.5 after the infusion, page hematology and consider PCC 500 units or plasma 2-4 units. If INR >1.5 at 24 hours, repeat vitamin K 10 mg IV.'
+              note: 'Give vitamin K 10 mg IV immediately. Check PT/INR at exactly 30 minutes, then every 6 hours for 24 hours. If INR >1.5 after the infusion, page hematology and consider PCC 500 units or plasma 2-4 units. If INR >1.5 at 24 hours, repeat vitamin K 10 mg IV.'
             },
             PCC_DOAC: {
               title: '4F-PCC for DOAC Reversal',
@@ -3643,7 +3668,7 @@ Clinician Name`;
               thrombolysisThreshold: 'INR ≤1.7',
               thrombolysisNote: 'Contraindicated if INR >1.7, PT >15s, or aPTT >40s',
               ichReversal: {
-                primary: 'Vitamin K 10 mg IV plus 4-Factor PCC (Kcentra) 2000 units IV, given immediately and concurrently when the INR branch indicates PCC',
+                primary: 'Give Vitamin K 10 mg IV immediately. When the INR branch indicates 4-Factor PCC (Kcentra), give 2000 units IV immediately.',
                 pccDosing: 'Fixed PCC dose: 2000 units IV; not weight- or INR-tiered',
                 alternative: 'If PCC is unavailable or contraindicated: 4 units emergency-release plasma immediately, request 4 more, ideal total dose 15 mL/kg',
                 note: 'Repeat PT/INR at exactly 30 minutes, then every 6 hours for 24 hours.'
@@ -4689,7 +4714,7 @@ Clinician Name`;
               category: 'Acute',
               title: 'Neurosurgery consultation communication',
               recommendation: 'For non-traumatic IPH >=15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, vascular lesion concern, multicompartmental hemorrhage, ED attending discretion, or clinician concern, ED clinicians or the stroke service may consult Neurosurgery directly. Prior approval before the consult call is not required; close the loop with the designated on-call stroke attending and other involved service.',
-              detail: 'Suggested protocol: (1) ED clinicians or the stroke service can make the direct Neurosurgery call when a trigger is present. (2) The caller immediately closes the loop with the designated on-call stroke attending and other involved service, then documents the shared plan. (3) Separate attending-of-record notification is not default unless explicitly requested, especially overnight. (4) If surgery is recommended, stop for a bedside safety pause and confirm agreement across Neurosurgery, the stroke service, and the ICU team before any surgical action. (5) Do not present operative procedures to families as finalized until the cross-team plan is explicit.',
+              detail: 'Suggested protocol: (1) ED clinicians or the stroke service can make the direct Neurosurgery call when a trigger is present. (2) The caller immediately closes the loop with the designated on-call stroke attending and other involved service, then documents the shared plan. (3) If surgery is recommended, stop for a bedside safety pause and confirm agreement across Neurosurgery, the stroke service, and the ICU team before any surgical action. (4) Do not present operative procedures to families as finalized until the cross-team plan is explicit.',
               classOfRec: 'N/A',
               levelOfEvidence: 'N/A',
               guideline: 'Suggested Protocol',
@@ -6908,6 +6933,17 @@ fever_management: {
 
           function getPostEvtBpGuidance(note) {
             const bp = parseBloodPressure(note?.bpPostEVT);
+            const grade = note?.ticiScore || '';
+            const sourceTargetApplies = isSuccessfulEvtReperfusion(grade);
+            if (!sourceTargetApplies) {
+              return {
+                target: null,
+                bp,
+                grade,
+                sourceTargetApplies,
+                status: grade ? 'not-qualified' : 'unknown-grade'
+              };
+            }
             const target = { low: 140, high: 180, label: 'SBP 140-180' };
             const status = !bp
               ? 'unknown'
@@ -6916,23 +6952,17 @@ fever_management: {
               : bp.systolic > target.high
                   ? 'too-high'
                   : 'in-range';
-            return { target, bp, status };
+            return { target, bp, grade, sourceTargetApplies, status };
           }
 
           function getPostEvtBpPlanSummary(note) {
             const postEvt = note?.postEvtBP || {};
-            const infusionLabels = {
-              nicardipine: 'Nicardipine drip',
-              labetalol: 'Intermittent labetalol',
-              none: 'No IV infusion'
-            };
+            const grade = note?.ticiScore || '';
+            if (!isSuccessfulEvtReperfusion(grade)) return '';
             const targetLabels = {
-              guardrail: 'SBP 140-180'
+              guardrail: `SBP 140-180 after documented mTICI ${grade}`
             };
             const parts = [];
-            if (postEvt.infusionAgent && infusionLabels[postEvt.infusionAgent]) {
-              parts.push(`Agent: ${infusionLabels[postEvt.infusionAgent]}`);
-            }
             if (postEvt.targetStrategy && targetLabels[postEvt.targetStrategy]) {
               parts.push(`Target: ${targetLabels[postEvt.targetStrategy]}`);
             }
@@ -7540,10 +7570,13 @@ fever_management: {
                 strokeCodeForm: { ...strokeCodeForm },
                 lkwTime: lkwTime ? lkwTime.toISOString() : null,
                 nihssScore,
-                aspectsScore,
+                aspectsScore: normalizeAspectsScore(aspectsScore),
+                aspectsRegionState: cloneAspectsRegionState(aspectsRegionState) || getDefaultAspectsRegionState(),
                 mrsScore,
                 gcsItems: { ...gcsItems },
                 ichScoreItems: { ...ichScoreItems },
+                ichVolumeParams: { ...ichVolumeParams },
+                funcItems: normalizeFuncItems(funcItems),
                 abcd2Items: { ...abcd2Items },
                 chads2vascItems: { ...chads2vascItems },
                 ropeItems: { ...ropeItems },
@@ -7596,10 +7629,13 @@ fever_management: {
             setStrokeCodeForm(formState.strokeCodeForm);
             setLkwTime(safeParseDt(formState.lkwTime));
             setNihssScore(formState.nihssScore);
-            setAspectsScore(formState.aspectsScore);
+            setAspectsScore(normalizeAspectsScore(formState.aspectsScore));
+            setAspectsRegionState(cloneAspectsRegionState(formState.aspectsRegionState) || getDefaultAspectsRegionState());
             setMrsScore(formState.mrsScore);
             setGcsItems(formState.gcsItems || { eye: '', verbal: '', motor: '' });
             if (formState.ichScoreItems) setIchScoreItems(formState.ichScoreItems);
+            setIchVolumeParams(formState.ichVolumeParams || { a: '', b: '', thicknessMm: '', numSlices: '' });
+            setFuncItems(normalizeFuncItems(formState.funcItems));
             if (formState.abcd2Items) setAbcd2Items(formState.abcd2Items);
             if (formState.chads2vascItems) setChads2vascItems(formState.chads2vascItems);
             if (formState.ropeItems) setRopeItems(formState.ropeItems);
@@ -7613,6 +7649,7 @@ fever_management: {
             if (formState.currentStep !== undefined) setCurrentStep(formState.currentStep);
             if (formState.completedSteps) setCompletedSteps(formState.completedSteps);
             setCurrentPatientId(patientId);
+            setPocketCardsCaseEpoch((epoch) => epoch + 1);
 
           };
 
@@ -7667,7 +7704,7 @@ fever_management: {
               CT_RESULTS: telestrokeNote.ctResults || '',
               CTA_RESULTS: telestrokeNote.ctaResults || '',
               CTP_RESULTS: telestrokeNote.ctpResults || '',
-              ASPECTS: aspectsScore !== 10 ? aspectsScore : '',
+              ASPECTS: isValidAspectsScore(aspectsScore) ? aspectsScore : '',
               TNK_STATUS: telestrokeNote.tnkRecommended ? (telestrokeNote.tnkAdminTime ? `Given at ${telestrokeNote.tnkAdminTime}` : 'Recommended') : 'Not given',
               EVT_STATUS: telestrokeNote.evtRecommended ? 'Recommended' : 'Not recommended',
               DISPOSITION: telestrokeNote.disposition || '',
@@ -8115,7 +8152,7 @@ fever_management: {
             setAppData(getDefaultAppData());
             setPatientData({});
             setNihssScore(0);
-            setAspectsScore(10);
+            setAspectsScore('');
             setLkwTime(null);
             setStrokeCodeForm(getDefaultStrokeCodeForm());
             setAspectsRegionState(getDefaultAspectsRegionState());
@@ -8123,6 +8160,8 @@ fever_management: {
             setGcsItems({ eye: '', verbal: '', motor: '' });
             setMrsScore('');
             setIchScoreItems({ gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false, lobar: false, preCogImpairment: false });
+            setIchVolumeParams({ a: '', b: '', thicknessMm: '', numSlices: '' });
+            setFuncItems(getDefaultFuncItems());
             setAbcd2Items({ age60: false, bp: false, unilateralWeakness: false, speechDisturbance: false, duration: '', diabetes: false });
             setChads2vascItems({ chf: false, hypertension: false, age75: false, diabetes: false, strokeTia: false, vascular: false, age65: false, female: false });
             setRopeItems({ noHypertension: false, noDiabetes: false, noStrokeTia: false, nonsmoker: false, cortical: false, age: '' });
@@ -8168,6 +8207,7 @@ fever_management: {
             setAutoSyncCalculators(true);
             setIchVolumeParams({ a: '', b: '', thicknessMm: '', numSlices: '' });
             setWeightUnit('kg');
+            setPocketCardsCaseEpoch((epoch) => epoch + 1);
           };
 
           const navigateTo = (tab, options = {}) => {
@@ -8912,7 +8952,7 @@ fever_management: {
                   gcsItems,
                   ichScoreItems,
                   ichVolumeParams,
-                  aspectsScore,
+                  aspectsScore: normalizeAspectsScore(aspectsScore),
                   aspectsRegionState,
                   pcAspectsRegions,
                   mrsScore,
@@ -9365,7 +9405,7 @@ fever_management: {
             const ctResults = telestrokeNote.ctResults || "[CT findings]";
             const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
             const ctpResults = telestrokeNote.ctpResults || "N/A";
-            const aspectsStr = (aspectsScore != null && aspectsScore < 10) ? ` ASPECTS: ${aspectsScore}.` : "";
+            const aspectsStr = (isValidAspectsScore(aspectsScore) && aspectsScore < 10) ? ` ASPECTS: ${aspectsScore}.` : "";
             const vesselArr = telestrokeNote.vesselOcclusion || [];
             const vesselStr = vesselArr.length > 0 && !vesselArr.includes('None')
               ? ` Vessel occlusion: ${vesselArr.join(', ')}.` : "";
@@ -9527,7 +9567,7 @@ fever_management: {
               note += `\n`;
               note += `Imaging:\n`;
               note += `- CT Head: ${telestrokeNote.ctResults || '___'}`;
-              if (aspectsScore != null && aspectsScore < 10) note += ` (ASPECTS ${aspectsScore}/10)`;
+              if (isValidAspectsScore(aspectsScore) && aspectsScore < 10) note += ` (ASPECTS ${aspectsScore}/10)`;
               const pcAspectsArr = calculatePCAspects(pcAspectsRegions);
               const pcAspectsObj = (() => { const r = telestrokeNote.pcAspectsRegions || {}; return 10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0)); })();
               const pcAspectsVal = pcAspectsArr < 10 ? pcAspectsArr : pcAspectsObj;
@@ -10074,7 +10114,7 @@ fever_management: {
               imagingLine += `; CTA ${telestrokeNote.ctaResults || '___'}`;
               const signoutVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
               if (signoutVessels.length > 0) imagingLine += ` (${signoutVessels.join(', ')})`;
-              if (aspectsScore != null) imagingLine += ` | ASPECTS ${aspectsScore}/10`;
+              if (isValidAspectsScore(aspectsScore)) imagingLine += ` | ASPECTS ${aspectsScore}/10`;
               const soPcAspectsArr = calculatePCAspects(pcAspectsRegions);
               const soPcAspectsObj = (() => { const r = telestrokeNote.pcAspectsRegions || {}; return 10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0)); })();
               const soPcAspects = soPcAspectsArr < 10 ? soPcAspectsArr : soPcAspectsObj;
@@ -10468,7 +10508,7 @@ fever_management: {
                 if (procVitals.length > 0) note += `Vitals: ${procVitals.join(', ')}\n`;
               }
               if (telestrokeNote.premorbidMRS != null) note += `Pre-morbid mRS: ${telestrokeNote.premorbidMRS}\n`;
-              note += `ASPECTS: ${aspectsScore != null ? aspectsScore + '/10' : 'N/A'}\n`;
+              note += `ASPECTS: ${isValidAspectsScore(aspectsScore) ? aspectsScore + '/10' : 'N/A'}\n`;
               note += `CT Head: ${telestrokeNote.ctResults || '___'}`;
               if (telestrokeNote.earlyInfarctSigns) note += ' (early infarct signs)';
               if (telestrokeNote.denseArterySign) note += ' (hyperdense artery sign)';
@@ -10592,7 +10632,7 @@ fever_management: {
                 if (pnVessels.length > 0) ctaLine += ` (${pnVessels.join(', ')})`;
                 note += ctaLine + '\n';
               }
-              if (aspectsScore != null) note += `- ASPECTS: ${aspectsScore}/10\n`;
+              if (isValidAspectsScore(aspectsScore)) note += `- ASPECTS: ${aspectsScore}/10\n`;
               {
                 const pnPcA = (() => { const r = telestrokeNote.pcAspectsRegions || {}; return 10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0)); })();
                 if (pnPcA >= 0 && pnPcA < 10) note += `- PC-ASPECTS: ${pnPcA}/10\n`;
@@ -11098,7 +11138,7 @@ fever_management: {
               if (telestrokeNote.earlyInfarctSigns) note += ' (early infarct signs)';
               if (telestrokeNote.denseArterySign) note += ' (hyperdense artery sign)';
               note += '\n';
-              if (aspectsScore !== null && aspectsScore !== undefined) note += `- ASPECTS: ${aspectsScore}/10\n`;
+              if (isValidAspectsScore(aspectsScore)) note += `- ASPECTS: ${aspectsScore}/10\n`;
               {
                 const dischPcA = (() => { const r = telestrokeNote.pcAspectsRegions || {}; return 10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0)); })();
                 if (dischPcA >= 0 && dischPcA < 10) note += `- PC-ASPECTS: ${dischPcA}/10\n`;
@@ -11722,7 +11762,7 @@ fever_management: {
             note = note.replace(/{pt}/g, telestrokeNote.pt ? `, PT ${telestrokeNote.pt}s` : '');
             note = note.replace(/{affectedSide}/g, telestrokeNote.affectedSide ? ` | Affected: ${telestrokeNote.affectedSide}` : '');
             note = note.replace(/{premorbidMRS}/g, telestrokeNote.premorbidMRS != null && telestrokeNote.premorbidMRS !== '' ? ` | Pre-mRS: ${telestrokeNote.premorbidMRS}` : '');
-            const aspectsStr = aspectsScore != null ? `ASPECTS ${aspectsScore}/10` : '';
+            const aspectsStr = isValidAspectsScore(aspectsScore) ? `ASPECTS ${aspectsScore}/10` : '';
             note = note.replace(/{aspects}/g, aspectsStr);
             const vesselStr = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ');
             note = note.replace(/{vesselOcclusion}/g, vesselStr ? `Occlusion: ${vesselStr}` : '');
@@ -11891,7 +11931,7 @@ fever_management: {
               } else if (telestrokeNote.lkwTime) {
                 note += `- LKW: ${formatTime(telestrokeNote.lkwTime)}\n`;
               }
-              if (aspectsScore != null) note += `- ASPECTS: ${aspectsScore}/10\n`;
+              if (isValidAspectsScore(aspectsScore)) note += `- ASPECTS: ${aspectsScore}/10\n`;
               const evtCtp = telestrokeNote.ctpStructured || {};
               if (evtCtp.coreVolume) {
                 let ctpLine = `- CTP: Core ${evtCtp.coreVolume} mL`;
@@ -12418,7 +12458,7 @@ fever_management: {
             if (vessels.length > 0 && !vessels.includes('None')) {
               imagingLine += ` Vessel occlusion: ${vessels.join(', ')}.`;
             }
-            if (aspectsScore != null && aspectsScore < 10) {
+            if (isValidAspectsScore(aspectsScore) && aspectsScore < 10) {
               imagingLine += ` ASPECTS ${aspectsScore}/10.`;
             }
             sentences.push(imagingLine);
@@ -12547,7 +12587,8 @@ fever_management: {
             const mrs = inputs.mrs;
             const nihss = parseInt(inputs.nihss, 10);
             const pcAspects = inputs.pcAspects;
-            const age = parseFloat(inputs.age);
+            const rawAge = String(inputs.age ?? '').trim();
+            const age = /^(?:\d+(?:\.\d*)?|\.\d+)$/.test(rawAge) ? Number(rawAge) : Number.NaN;
             const coreInput = parseFloat(inputs.coreVolume);
             const coreVolume = Number.isNaN(coreInput) ? null : coreInput;
             const noMassEffect = inputs.massEffect === 'none';
@@ -12564,6 +12605,24 @@ fever_management: {
 
             const window = resolveWindow();
             const result = { classOfRec: '—', label: 'No institutional EVT tier', color: 'slate', rationale: [] };
+
+            if (!Number.isFinite(age)) {
+              return {
+                ...result,
+                label: 'Enter adult age',
+                color: 'amber',
+                rationale: ['A valid adult age is required before this adult EVT evaluator can return a vessel-specific result.']
+              };
+            }
+
+            if (age < 18) {
+              return {
+                ...result,
+                label: 'Adult EVT algorithm does not apply',
+                color: 'amber',
+                rationale: ['Age is under 18. Use the separately governed pediatric pathway; this adult evaluator cannot return a vessel-specific result.']
+              };
+            }
 
             if (!occlusion) {
               return { ...result, label: 'Select occlusion', color: 'amber' };
@@ -12696,17 +12755,31 @@ fever_management: {
               const rawAge = String(patient.age ?? '').trim();
               const age = Number(rawAge);
               const hasValidAge = rawAge !== '' && Number.isFinite(age) && age >= 0;
-              const isFemale = patient.sex === 'F';
+              const rawSex = String(patient.sex ?? '').trim();
+              const hasKnownSex = rawSex === 'F' || rawSex === 'M';
+              const isFemale = rawSex === 'F';
               const age60 = hasValidAge && age >= 60;
               const age65 = hasValidAge && age >= 65 && age < 75;
               const age75 = hasValidAge && age >= 75;
               const age80 = hasValidAge && age >= 80;
-              setAbcd2Items(prev => (prev.age60 === age60 ? prev : { ...prev, age60, criteriaReviewed: false }));
-              setIchScoreItems(prev => (prev.age80 === age80 ? prev : { ...prev, age80, criteriaReviewed: false }));
+              setAbcd2Items(prev => {
+                const invalidateReview = prev.syncedAge !== rawAge || prev.age60 !== age60 || !hasValidAge;
+                const criteriaReviewed = invalidateReview ? false : prev.criteriaReviewed;
+                if (prev.age60 === age60 && prev.syncedAge === rawAge && prev.criteriaReviewed === criteriaReviewed) return prev;
+                return { ...prev, age60, syncedAge: rawAge, criteriaReviewed };
+              });
+              setIchScoreItems(prev => {
+                const invalidateReview = prev.syncedAge !== rawAge || prev.age80 !== age80 || !hasValidAge;
+                const criteriaReviewed = invalidateReview ? false : prev.criteriaReviewed;
+                if (prev.age80 === age80 && prev.syncedAge === rawAge && prev.criteriaReviewed === criteriaReviewed) return prev;
+                return { ...prev, age80, syncedAge: rawAge, criteriaReviewed };
+              });
               setHasbledItems(prev => (prev.elderly === (hasValidAge && age >= 65) ? prev : { ...prev, elderly: hasValidAge && age >= 65 }));
               setChads2vascItems(prev => {
-                if (prev.age75 === age75 && prev.age65 === age65 && prev.female === isFemale) return prev;
-                return { ...prev, age75, age65, female: isFemale, criteriaReviewed: false };
+                const invalidateReview = prev.syncedAge !== rawAge || prev.syncedSex !== rawSex || prev.age75 !== age75 || prev.age65 !== age65 || prev.female !== isFemale || !hasValidAge || !hasKnownSex;
+                const criteriaReviewed = invalidateReview ? false : prev.criteriaReviewed;
+                if (prev.age75 === age75 && prev.age65 === age65 && prev.female === isFemale && prev.syncedAge === rawAge && prev.syncedSex === rawSex && prev.criteriaReviewed === criteriaReviewed) return prev;
+                return { ...prev, age75, age65, female: isFemale, syncedAge: rawAge, syncedSex: rawSex, criteriaReviewed };
               });
               const ropeAge = hasValidAge ? String(age) : '';
               setRopeItems(prev => (prev.age === ropeAge ? prev : { ...prev, age: ropeAge }));
@@ -12714,7 +12787,13 @@ fever_management: {
               // Sync standalone GCS → ICH Score GCS component
               const gcsTotal = calculateGCS(gcsItems);
               const gcsCategory = gcsTotal === null ? '' : gcsTotal <= 4 ? 'gcs34' : gcsTotal <= 12 ? 'gcs512' : 'gcs1315';
-              setIchScoreItems(prev => (prev.gcs === gcsCategory ? prev : { ...prev, gcs: gcsCategory, criteriaReviewed: false }));
+              const gcsSignature = [gcsItems.eye, gcsItems.verbal, gcsItems.motor].map((value) => String(value ?? '')).join('|');
+              setIchScoreItems(prev => {
+                const invalidateReview = prev.syncedGcsSignature !== gcsSignature || prev.gcs !== gcsCategory;
+                const criteriaReviewed = invalidateReview ? false : prev.criteriaReviewed;
+                if (prev.gcs === gcsCategory && prev.syncedGcsSignature === gcsSignature && prev.criteriaReviewed === criteriaReviewed) return prev;
+                return { ...prev, gcs: gcsCategory, syncedGcsSignature: gcsSignature, criteriaReviewed };
+              });
 
               // Sync calculator inputs from encounter once and keep them aligned
               setTelestrokeNote((prev) => {
@@ -13270,11 +13349,11 @@ fever_management: {
             }
 
             // EVT recommended but ASPECTS not documented
-            if (n.evtRecommended && n.diagnosisCategory === 'ischemic' && (aspectsScore == null || isNaN(aspectsScore)) && !n.aspects) {
+            if (n.evtRecommended && n.diagnosisCategory === 'ischemic' && !isValidAspectsScore(aspectsScore) && !n.aspects) {
               warnings.push({ id: 'evt-no-aspects', severity: 'error', msg: 'EVT recommended but ASPECTS score not documented — ASPECTS is required to determine EVT eligibility per HERMES/MR CLEAN criteria. Document ASPECTS before transfer.' });
             }
             // EVT recommended but ASPECTS < 6 — outside standard eligibility
-            if (n.evtRecommended && aspectsScore != null && aspectsScore < 6) {
+            if (n.evtRecommended && isValidAspectsScore(aspectsScore) && aspectsScore < 6) {
               warnings.push({ id: 'evt-low-aspects', severity: 'error', msg: `EVT recommended but ASPECTS ${aspectsScore} (<6) — outside standard eligibility criteria (HERMES, MR CLEAN). Consider SELECT2/ANGEL-ASPECT criteria (ASPECTS 3-5 for mRS 0-1 patients with anterior LVO). Document rationale.` });
             }
 
@@ -14052,11 +14131,7 @@ fever_management: {
             });
 
             if (category === 'ich') setManagementSubTab('ich');
-            else if (category === 'sah') setManagementSubTab('sah');
-            else if (category === 'tia') setManagementSubTab('tia');
             else if (category === 'ischemic') setManagementSubTab('ischemic');
-            else if (category === 'cvt') setManagementSubTab('cvt');
-            else setManagementSubTab('ischemic');
           };
 
           const jumpToNextRequiredEncounterField = () => {
@@ -14070,7 +14145,7 @@ fever_management: {
             const data = {
               telestrokeNote,
               nihssScore,
-              aspectsScore,
+              aspectsScore: isValidAspectsScore(aspectsScore) ? aspectsScore : null,
               gcsScore: calculateGCS(gcsItems),
               timeFromLKW: timeFrom,
               ichScore: typeof calculateICHScore === 'function' ? calculateICHScore(ichScoreItems) : 0
@@ -14568,10 +14643,7 @@ fever_management: {
                       return next;
                     });
                     if (mapping.category === 'ich') setManagementSubTab('ich');
-                    else if (mapping.category === 'sah') setManagementSubTab('sah');
-                    else if (mapping.category === 'tia') setManagementSubTab('tia');
                     else if (mapping.category === 'ischemic') setManagementSubTab('ischemic');
-                    else if (mapping.category === 'cvt') setManagementSubTab('cvt');
                     navigateTo('encounter', { clearSearch: true });
                     setTimeout(() => scrollToSection('treatment-decision'), 100);
                   }
@@ -14711,14 +14783,11 @@ fever_management: {
             const openPathwayCommand = lowerQuery.match(/^(?:open pathway|pathway)$/i);
             if (openPathwayCommand) {
               const pathway = telestrokeNote.diagnosisCategory || getPathwayForDiagnosis(telestrokeNote.diagnosis || '');
-              const pathwaySubTab = ['ischemic', 'ich', 'sah', 'tia', 'cvt'].includes(pathway) ? pathway : null;
+              const pathwaySubTab = ['ischemic', 'ich'].includes(pathway) ? pathway : null;
               if (pathwaySubTab) {
                 const pathwayLabelMap = {
                   ischemic: 'Ischemic pathway',
-                  ich: 'Hemorrhagic ICH pathway',
-                  sah: 'SAH pathway',
-                  tia: 'TIA prevention pathway',
-                  cvt: 'CVT pathway'
+                  ich: 'Hemorrhagic ICH pathway'
                 };
                 results.push({
                   type: 'Command',
@@ -14945,9 +15014,6 @@ fever_management: {
               { name: 'RCVS² Score', keywords: ['rcvs', 'rcvs2', 'vasoconstriction', 'thunderclap', 'headache'], tab: 'management', subTab: 'calculators' },
               { name: 'PHASES Score (Aneurysm)', keywords: ['phases', 'aneurysm', 'rupture', 'unruptured', 'uia'], tab: 'management', subTab: 'calculators' },
               { name: 'Blood Pressure Management', keywords: ['bp', 'blood pressure', 'labetalol', 'nicardipine'], tab: 'management', subTab: 'ischemic' },
-              { name: 'SAH Management', keywords: ['sah', 'subarachnoid', 'aneurysm', 'nimodipine', 'vasospasm'], tab: 'management', subTab: 'sah' },
-              { name: 'TIA Management', keywords: ['tia', 'transient ischemic', 'abcd2', 'dual antiplatelet'], tab: 'management', subTab: 'tia' },
-              { name: 'CVT Management', keywords: ['cvt', 'cerebral venous', 'sinus thrombosis', 'venous'], tab: 'management', subTab: 'cvt' },
               { name: 'Seizure Management', keywords: ['seizure', 'epilepsy', 'levetiracetam', 'keppra', 'prophylaxis'], tab: 'management', subTab: 'ischemic' },
               { name: 'Dysphagia Screening', keywords: ['dysphagia', 'swallow', 'swallowing', 'aspiration', 'npo'], tab: 'encounter' },
               { name: 'Contraindication Checklist', keywords: ['contraindication', 'exclusion', 'tnk', 'thrombolysis', 'checklist'], tab: 'encounter' },
@@ -15103,10 +15169,11 @@ fever_management: {
             patientData: { ...patientData },
             lkwTime: lkwTime ? lkwTime.toISOString() : null,
             nihssScore,
-            aspectsScore,
+            aspectsScore: normalizeAspectsScore(aspectsScore),
             mrsScore,
             gcsItems: { ...gcsItems },
             ichScoreItems: { ...ichScoreItems },
+            funcItems: normalizeFuncItems(funcItems),
             abcd2Items: { ...abcd2Items },
             chads2vascItems: { ...chads2vascItems },
             ropeItems: { ...ropeItems },
@@ -15180,10 +15247,11 @@ fever_management: {
             setPatientData(snapshot.patientData || {});
             setLkwTime(safeParseDt(snapshot.lkwTime));
             setNihssScore(snapshot.nihssScore || 0);
-            setAspectsScore(Number.isFinite(snapshot.aspectsScore) ? snapshot.aspectsScore : 10);
+            setAspectsScore(normalizeAspectsScore(snapshot.aspectsScore));
             setMrsScore(snapshot.mrsScore || '');
             setGcsItems(snapshot.gcsItems || { eye: '', verbal: '', motor: '' });
             setIchScoreItems(snapshot.ichScoreItems || { gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false, lobar: false, preCogImpairment: false });
+            setFuncItems(normalizeFuncItems(snapshot.funcItems));
             setAbcd2Items(snapshot.abcd2Items || { age60: false, bp: false, unilateralWeakness: false, speechDisturbance: false, duration: '', diabetes: false });
             setChads2vascItems(snapshot.chads2vascItems || { chf: false, hypertension: false, age75: false, diabetes: false, strokeTia: false, vascular: false, age65: false, female: false });
             setRopeItems(snapshot.ropeItems || { noHypertension: false, noDiabetes: false, noStrokeTia: false, nonsmoker: false, cortical: false, age: '' });
@@ -15221,6 +15289,7 @@ fever_management: {
               tnkConsentDiscussed: note.tnkConsentDiscussed,
               tnkAdminTime: note.tnkAdminTime
             };
+            setPocketCardsCaseEpoch((epoch) => epoch + 1);
           };
 
           const resetCaseState = () => {
@@ -15233,7 +15302,7 @@ fever_management: {
 
             setPatientData({});
             setNihssScore(0);
-            setAspectsScore(10);
+            setAspectsScore('');
             setLkwTime(null);
             setStrokeCodeForm(getDefaultStrokeCodeForm());
             setAspectsRegionState(getDefaultAspectsRegionState());
@@ -15241,6 +15310,7 @@ fever_management: {
             setGcsItems({ eye: '', verbal: '', motor: '' });
             setMrsScore('');
             setIchScoreItems({ gcs: '', age80: false, volume30: false, ivh: false, infratentorial: false, lobar: false, preCogImpairment: false });
+            setFuncItems(getDefaultFuncItems());
             setAbcd2Items({ age60: false, bp: false, unilateralWeakness: false, speechDisturbance: false, duration: '', diabetes: false });
             setChads2vascItems({ chf: false, hypertension: false, age75: false, diabetes: false, strokeTia: false, vascular: false, age65: false, female: false });
             setRopeItems({ noHypertension: false, noDiabetes: false, noStrokeTia: false, nonsmoker: false, cortical: false, age: '' });
@@ -15274,8 +15344,9 @@ fever_management: {
             setCurrentPatientId(null);
             setAutoSyncCalculators(true);
             decisionStateRef.current = { tnkRecommended: false, evtRecommended: false, transferAccepted: false, tnkContraindicationReviewed: false, tnkConsentDiscussed: false, tnkAdminTime: null };
+            setPocketCardsCaseEpoch((epoch) => epoch + 1);
 
-            const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems',
+            const keysToRemove = ['patientData', 'nihssScore', 'aspectsScore', 'gcsItems', 'mrsScore', 'ichScoreItems', 'funcItems',
                                   'abcd2Items', 'chads2vascItems', 'ropeItems', 'huntHessGrade', 'wfnsGrade',
                                   'hasbledItems', 'rcvs2Items', 'phasesItems', 'strokeCodeForm', 'lkwTime',
                                   'currentStep', 'completedSteps', 'aspectsRegionState', 'pcAspectsRegions',
@@ -15555,10 +15626,11 @@ fever_management: {
           // Consolidated calculator state persistence
           useEffect(() => {
             debouncedSave('nihssScore', nihssScore);
-            debouncedSave('aspectsScore', aspectsScore);
+            debouncedSave('aspectsScore', normalizeAspectsScore(aspectsScore));
             debouncedSave('gcsItems', gcsItems);
             debouncedSave('mrsScore', mrsScore);
             debouncedSave('ichScoreItems', ichScoreItems);
+            debouncedSave('funcItems', funcItems);
             debouncedSave('ichVolumeParams', ichVolumeParams);
             debouncedSave('abcd2Items', abcd2Items);
             debouncedSave('chads2vascItems', chads2vascItems);
@@ -15573,7 +15645,7 @@ fever_management: {
             debouncedSave('doacProtocol', doacProtocol);
             debouncedSave('noteTemplate', noteTemplate);
             debouncedSave('weightUnit', weightUnit);
-          }, [nihssScore, aspectsScore, gcsItems, mrsScore, ichScoreItems, ichVolumeParams, abcd2Items,
+          }, [nihssScore, aspectsScore, gcsItems, mrsScore, ichScoreItems, funcItems, ichVolumeParams, abcd2Items,
               chads2vascItems, ropeItems, huntHessGrade, wfnsGrade, hasbledItems,
               rcvs2Items, phasesItems, autoSyncCalculators, evtDecisionInputs, doacProtocol, noteTemplate, weightUnit]);
 
@@ -15800,11 +15872,13 @@ fever_management: {
           }, [nihssScore]);
 
           useEffect(() => {
-            if (aspectsScore !== null && aspectsScore !== undefined) {
+            if (isValidAspectsScore(aspectsScore)) {
               setStrokeCodeForm(prev => ({
                 ...prev,
                 aspects: aspectsScore.toString()
               }));
+            } else {
+              setStrokeCodeForm(prev => prev.aspects === '' ? prev : ({ ...prev, aspects: '' }));
             }
           }, [aspectsScore]);
 
@@ -15998,7 +16072,7 @@ fever_management: {
             const evaluationData = {
               telestrokeNote,
               strokeCodeForm,
-              aspectsScore,
+              aspectsScore: isValidAspectsScore(aspectsScore) ? aspectsScore : null,
               nihssScore,
               mrsScore,
               gcsScore: calculateGCS(gcsItems),
@@ -16505,7 +16579,7 @@ IMAGING:
 - Head CT: ${telestrokeNote.ctResults || 'pending'}
 - CTA Head/Neck: ${telestrokeNote.ctaResults || 'pending'}
 - CTP: ${telestrokeNote.ctpResults || 'pending'}
-- ASPECTS: ${aspectsScore != null ? aspectsScore : '__'}
+- ASPECTS: ${isValidAspectsScore(aspectsScore) ? aspectsScore : '__'}
 
 ASSESSMENT: ${telestrokeNote.diagnosis || 'Acute ischemic stroke'}, NIHSS ${nihssDisplay}
 ${telestrokeNote.tnkRecommended ? `\nTNK: Recommended` : '\nTNK: Not Recommended'}
@@ -17673,7 +17747,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         elapsedStatus: elapsedStatusForStrip,
                         elapsedMin: elapsedMinForStrip,
                         nihss: telestrokeNote.nihss || (nihssScore > 0 ? nihssScore : '—'),
-                        aspects: Number.isFinite(aspectsScore) ? aspectsScore : '—',
+                        aspects: isValidAspectsScore(aspectsScore) ? aspectsScore : '—',
                         anticoag: (telestrokeNote.anticoagBridging || {}).doacType || 'None',
                         lkwUnknown: false
                       };
@@ -19075,7 +19149,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 id="input-aspects"
                                 type="number"
                                 value={aspectsScore}
-                                onChange={(e) => { const v = parseInt(e.target.value, 10); setAspectsScore(Number.isFinite(v) ? Math.max(0, Math.min(10, v)) : 0); }}
+                                onChange={(e) => setAspectsScore(normalizeAspectsScore(e.target.value))}
                                 min="0"
                                 max="10"
                                 step="1"
@@ -19193,7 +19267,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             })()}
                           </div>
                           {/* ASPECTS Interpretation */}
-                          {aspectsScore > 0 && (
+                          {isValidAspectsScore(aspectsScore) && (
                             <div className={`mt-2 rounded-lg border px-3 py-1.5 text-xs font-medium ${
                               aspectsScore >= 7 ? 'bg-ok-50 border-ok-200 text-ok-800 dark:bg-ok-950 dark:border-ok-800 dark:text-ok-300' :
                               aspectsScore >= 5 ? 'bg-warn-50 border-warn-200 text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300' :
@@ -20625,7 +20699,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 mb-3 dark:bg-cobalt-900 dark:border-cobalt-700">
                               <div className="flex items-center justify-between mb-2">
                                 <label className="text-sm font-medium text-cobalt-800 dark:text-cobalt-300">ASPECTS Score</label>
-                                <span className="text-2xl font-bold text-cobalt-600 dark:text-cobalt-300">{aspectsScore}/10</span>
+                                <span className="text-2xl font-bold text-cobalt-600 dark:text-cobalt-300">
+                                  {isValidAspectsScore(aspectsScore) ? `${aspectsScore}/10` : 'Not assessed'}
+                                </span>
                               </div>
 
                               {/* Quick ASPECTS Buttons */}
@@ -20657,17 +20733,23 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
 
                               {/* ASPECTS Interpretation */}
-                              <div className={`p-2 rounded-lg text-center text-xs font-medium ${
-                                aspectsScore >= 7 ? 'bg-ok-100 text-ok-800 dark:bg-ok-900 dark:text-ok-300' :
-                                aspectsScore >= 6 ? 'bg-warn-100 text-warn-800 dark:bg-warn-900 dark:text-warn-300' :
-                                aspectsScore >= 3 ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300' :
-                                'bg-crit-100 text-crit-800 dark:bg-crit-950 dark:text-crit-300'
-                              }`}>
-                                {aspectsScore >= 7 ? `ASPECTS ${aspectsScore} = Favorable for EVT (most trials)` :
-                                 aspectsScore === 6 ? `ASPECTS 6 = Standard EVT candidate; late window if perfusion mismatch or good collaterals` :
-                                 aspectsScore >= 3 ? `ASPECTS ${aspectsScore} = Large core — EVT recommended in many patients (SVIN 2025); consider age/mRS and higher sICH risk` :
-                                 `ASPECTS ${aspectsScore} = Very large core (0-2). Early window EVT may be reasonable in select patients without significant mass effect; 6-24h benefit uncertain — discuss goals of care`}
-                              </div>
+                              {isValidAspectsScore(aspectsScore) ? (
+                                <div className={`p-2 rounded-lg text-center text-xs font-medium ${
+                                  aspectsScore >= 7 ? 'bg-ok-100 text-ok-800 dark:bg-ok-900 dark:text-ok-300' :
+                                  aspectsScore >= 6 ? 'bg-warn-100 text-warn-800 dark:bg-warn-900 dark:text-warn-300' :
+                                  aspectsScore >= 3 ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300' :
+                                  'bg-crit-100 text-crit-800 dark:bg-crit-950 dark:text-crit-300'
+                                }`}>
+                                  {aspectsScore >= 7 ? `ASPECTS ${aspectsScore} = Favorable for EVT (most trials)` :
+                                   aspectsScore === 6 ? `ASPECTS 6 = Standard EVT candidate; late window if perfusion mismatch or good collaterals` :
+                                   aspectsScore >= 3 ? `ASPECTS ${aspectsScore} = Large core — EVT recommended in many patients (SVIN 2025); consider age/mRS and higher sICH risk` :
+                                   `ASPECTS ${aspectsScore} = Very large core (0-2). Early window EVT may be reasonable in select patients without significant mass effect; 6-24h benefit uncertain — discuss goals of care`}
+                                </div>
+                              ) : (
+                                <div className="rounded-lg border border-warn-200 bg-warn-50 p-2 text-center text-xs font-medium text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                                  ASPECTS not assessed
+                                </div>
+                              )}
                             </div>
 
                             {/* ASPECTS Calculator (Collapsible) */}
@@ -20677,7 +20759,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </summary>
                               <div className="p-4">
                                 <div className="text-center mb-3">
-                                  <span className="text-3xl font-bold text-cobalt-600 dark:text-cobalt-300">ASPECTS: {aspectsScore}</span>
+                                  <span className="text-3xl font-bold text-cobalt-600 dark:text-cobalt-300">
+                                    {isValidAspectsScore(aspectsScore) ? `ASPECTS: ${aspectsScore}` : 'ASPECTS: Not assessed'}
+                                  </span>
                                 </div>
                                 <div className="space-y-2">
                                   {aspectsRegionState.map((region) => (
@@ -20848,7 +20932,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             const timeFromLKW = calculateTimeFromLKW();
                             const hoursFromLKW = timeFromLKW ? timeFromLKW.total : null;
                             const nihss = parseInt(telestrokeNote.nihss, 10) || nihssScore || 0;
-                            const aspects = aspectsScore;
+                            const aspects = isValidAspectsScore(aspectsScore) ? aspectsScore : null;
                             const age = parseInt(telestrokeNote.age, 10) || 0;
                             const contraindications = detectContraindications({ telestrokeNote });
                             const criticalContraindications = contraindications.filter(c => c.severity === 'critical');
@@ -21901,7 +21985,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 <button onClick={() => {
                                   const cdLkw = telestrokeNote.lkwUnknown ? 'Unknown (wake-up/unwitnessed)' + (telestrokeNote.discoveryTime ? ` — discovery ${telestrokeNote.discoveryTime}` : '') : telestrokeNote.lkwTime ? formatTime(telestrokeNote.lkwTime) : '***';
-                                  const cdAspects = aspectsScore != null ? `${aspectsScore}/10` : null;
+                                  const cdAspects = isValidAspectsScore(aspectsScore) ? `${aspectsScore}/10` : null;
                                   const cdCtp = telestrokeNote.ctpStructured || {};
                                   let cdCtpStr = '';
                                   if (cdCtp.coreVolume) {
@@ -22063,7 +22147,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="space-y-2">
                                   <label htmlFor="input-tici-score" className="text-sm font-medium text-orange-800 dark:text-orange-300">tICI Score:</label>
                                   <select id="input-tici-score" value={telestrokeNote.ticiScore || ''}
-                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ticiScore: v})); }}
+                                    onChange={(e) => {
+                                      const v = e.target.value;
+                                      setTelestrokeNote(prev => ({
+                                        ...prev,
+                                        ticiScore: v,
+                                        postEvtBP: {
+                                          ...(prev.postEvtBP || {}),
+                                          targetStrategy: isSuccessfulEvtReperfusion(v) ? (prev.postEvtBP || {}).targetStrategy : ''
+                                        }
+                                      }));
+                                    }}
                                     className="w-full px-3 py-2 border border-orange-300 rounded-lg text-sm dark:border-orange-800">
                                     <option value="">-- Select tICI grade --</option>
                                     <option value="0">0 — No perfusion</option>
@@ -26612,7 +26706,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               if (nihss >= 20) sichRisk++;
                               if (glucose > 400) sichRisk++;
                               if ((telestrokeNote.pmh || '').toLowerCase().includes('diabet')) sichRisk++;
-                              if (aspectsScore != null && aspectsScore <= 4) sichRisk++;
+                              if (isValidAspectsScore(aspectsScore) && aspectsScore <= 4) sichRisk++;
                               const label = sichRisk >= 3 ? 'High' : sichRisk >= 1 ? 'Moderate' : 'Low';
                               const color = sichRisk >= 3 ? 'bg-crit-50 border-crit-300 text-crit-800 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300' : sichRisk >= 1 ? 'bg-warn-50 border-warn-300 text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300' : 'bg-ok-50 border-ok-300 text-ok-800 dark:bg-ok-950 dark:border-ok-800 dark:text-ok-300';
                               return (
@@ -26723,7 +26817,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (ct) note += `Head CT: ${ct}\n`;
                                 if (cta) note += `CTA Head/Neck: ${cta}\n`;
                                 if (telestrokeNote.ctpResults) note += `CTP: ${telestrokeNote.ctpResults}\n`;
-                                if (aspectsScore != null) note += `ASPECTS: ${aspectsScore}\n`;
+                                if (isValidAspectsScore(aspectsScore)) note += `ASPECTS: ${aspectsScore}\n`;
                                 note += '\n';
 
                                 // Assessment
@@ -28081,8 +28175,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         underneath. */}
                     {(() => {
                       const subTabLabels = {
-                        ich: 'ICH', ischemic: 'Ischemic', sah: 'SAH', tia: 'TIA', cvt: 'CVT',
-                        calculators: 'Calculators'
+                        ich: 'ICH', ischemic: 'Ischemic/TIA', calculators: 'Calculators'
                       };
                       const activeLabel = subTabLabels[managementSubTab] || managementSubTab;
                       return (
@@ -28097,7 +28190,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       );
                     })()}
                     <div className="bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-9 z-30 dark:bg-card " role="tablist" aria-label="Protocols & Algorithms sub-sections" onKeyDown={(e) => {
-                      const subTabs = ['ich', 'ischemic', 'sah', 'tia', 'cvt', 'calculators'];
+                      const subTabs = MANAGEMENT_SUBTABS;
                       const ci = subTabs.indexOf(managementSubTab);
                       let ni;
                       if (e.key === 'ArrowRight') { e.preventDefault(); ni = (ci + 1) % subTabs.length; }
@@ -28125,10 +28218,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         // the protocols section. v7 styling is applied via the SubTabs-equivalent
                         // pill/segmented bar tokens encoded in the className below.
                         { id: 'ich', label: 'ICH' },
-                        { id: 'ischemic', label: 'Ischemic' },
-                        { id: 'sah', label: 'SAH' },
-                        { id: 'tia', label: 'TIA' },
-                        { id: 'cvt', label: 'CVT' },
+                        { id: 'ischemic', label: 'Ischemic/TIA' },
                         { id: 'calculators', label: 'Calculators' }
                       ].map((tab) => {
                         const isActive = managementSubTab === tab.id;
@@ -28323,7 +28413,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="p-4 space-y-3">
                               <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
                                 <p className="text-sm font-semibold text-warn-800 mb-1 dark:text-warn-300">Immediate — All Warfarin Patients:</p>
-                                <p className="text-sm">Give <button onClick={() => setProtocolModal(protocolDetailMap.VITK)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Vitamin K 10 mg IV</button> immediately; when PCC is indicated by the INR branch below, give it concurrently.</p>
+                                <p className="text-sm">Give <button onClick={() => setProtocolModal(protocolDetailMap.VITK)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Vitamin K 10 mg IV</button> immediately. When PCC is indicated by the INR branch below, give it immediately.</p>
                               </div>
 
                               <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
@@ -28517,7 +28607,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-xs font-semibold text-slate-700 mb-1 dark:text-ink-2">Follow-up & Management:</p>
                                 <ul className="text-xs space-y-0.5 text-slate-600 dark:text-ink-2">
                                   <li>• Notify the provider for SBP &gt;180, DBP &gt;90, a new neurologic deficit, or a GCS decrease of at least 2 points</li>
-                                  <li>• Use fibrinogen &lt;200 mg/dL as the action threshold; if expressed as an endpoint, use fibrinogen &ge;200 mg/dL</li>
+                                  <li>• Use fibrinogen &lt;200 mg/dL as the action threshold</li>
                                   <li>• If labs abnormal or uncontrolled bleeding → consult Hematology</li>
                                   <li>• Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal</li>
                                   <li>• Neuro checks q15 min x 2h → q30 min x 6h → q1h x 16h; notify provider for new deficits or GCS drop ≥2 points</li>
@@ -28723,7 +28813,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h4 className="font-semibold text-cobalt-700 mb-3 dark:text-cobalt-300">Warfarin</h4>
                           <ul className="text-sm space-y-1">
                             <li><strong>Immediate:</strong> Vitamin K 10 mg IV for all warfarin patients.</li>
-                            <li><strong>INR ≥2.0 (COR/LOE 1/B):</strong> 4F-PCC (Kcentra) 2000 units IV immediately, concurrently with vitamin K.</li>
+                            <li><strong>INR ≥2.0 (COR/LOE 1/B):</strong> 4F-PCC (Kcentra) 2000 units IV immediately. Vitamin K 10 mg IV is also given immediately.</li>
                             <li><strong>INR 1.6-1.9 (COR/LOE 2b/C):</strong> 4F-PCC 2000 units IV recommended.</li>
                             <li><strong>INR 1.3-1.5 (COR/LOE 2b/C):</strong> consider 4F-PCC 2000 units IV case by case.</li>
                             <li><strong>Check INR:</strong> at 30 min, then every 6h for 24h after PCC.</li>
@@ -29198,7 +29288,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <ul className="list-disc pl-4 text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
                             <li>For IV thrombolysis, establish a disabling deficit, time from last known well, noncontrast CT findings, blood pressure, glucose, and the source-listed exclusions.</li>
                             <li>For EVT, apply the institutional vessel, time, ASPECTS or PC-ASPECTS, NIHSS, baseline mRS, and low-ASPECTS qualifiers shown below.</li>
-                            <li>After EVT, maintain the institutional SBP guardrail of 140-180 mmHg.</li>
+                            <li>After documented successful EVT recanalization (mTICI ≥2b), maintain the institutional SBP guardrail of 140-180 mmHg.</li>
                           </ul>
                         </div>
                         <details id="isch-evt" className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
@@ -29221,7 +29311,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <li>ASPECTS 6-10, mRS 2: EVT, COR IIa / LOE B-NR.</li>
                                     <li>ASPECTS 6-10, mRS 3-4: EVT, COR IIb / LOE B-NR.</li>
                                     <li>ASPECTS 3-5 with no significant mass effect: EVT, COR I / LOE A.</li>
-                                    <li>ASPECTS 0-2, age &lt;80, no significant mass effect, and CTP core ≤70-100 mL: EVT, COR IIa / LOE B-R.</li>
+                                    <li>ASPECTS 0-2, age &lt;80, no significant mass effect, and CTP core ≤70 mL: EVT, COR IIa / LOE B-R.</li>
+                                    <li>Same branch with CTP core 71-100 mL: pending protocol-owner adjudication; the source prints ≤70-100 mL without one executable cutoff.</li>
                                   </ul>
                                 </div>
                                 <div>
@@ -29295,15 +29386,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <h3 className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">Post-EVT BP Guardrail</h3>
                             </summary>
                             <div className="p-4 pt-0 space-y-2">
-                            <div className="grid grid-cols-1 md:grid-cols-4 gap-2 text-sm">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
                               <div>
                                 <label htmlFor="postevt-reperfusion-status" className="block text-xs text-slate-500 mb-1 dark:text-mute">Documented mTICI grade</label>
                                 <select
                                   id="postevt-reperfusion-status"
-                                  value={(telestrokeNote.postEvtBP || {}).reperfusionStatus || ''}
+                                  value={telestrokeNote.ticiScore || ''}
                                   onChange={(e) => {
                                     const v = e.target.value;
-                                    setTelestrokeNote(prev => ({ ...prev, postEvtBP: { ...(prev.postEvtBP || {}), reperfusionStatus: v } }));
+                                    setTelestrokeNote(prev => ({
+                                      ...prev,
+                                      ticiScore: v,
+                                      postEvtBP: {
+                                        ...(prev.postEvtBP || {}),
+                                        targetStrategy: isSuccessfulEvtReperfusion(v) ? (prev.postEvtBP || {}).targetStrategy : ''
+                                      }
+                                    }));
                                   }}
                                   className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm dark:border-strong"
                                 >
@@ -29326,23 +29424,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 />
                               </div>
                               <div>
-                                <label htmlFor="postevt-infusion-agent" className="block text-xs text-slate-500 mb-1 dark:text-mute">Infusion agent</label>
-                                <select
-                                  id="postevt-infusion-agent"
-                                  value={(telestrokeNote.postEvtBP || {}).infusionAgent || ''}
-                                  onChange={(e) => {
-                                    const v = e.target.value;
-                                    setTelestrokeNote(prev => ({ ...prev, postEvtBP: { ...(prev.postEvtBP || {}), infusionAgent: v } }));
-                                  }}
-                                  className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm dark:border-strong"
-                                >
-                                  <option value="">Select</option>
-                                  <option value="nicardipine">Nicardipine drip</option>
-                                  <option value="labetalol">Intermittent labetalol</option>
-                                  <option value="none">No IV infusion</option>
-                                </select>
-                              </div>
-                              <div>
                                 <label htmlFor="postevt-target-strategy" className="block text-xs text-slate-500 mb-1 dark:text-mute">Target strategy</label>
                                 <select
                                   id="postevt-target-strategy"
@@ -29351,9 +29432,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     const v = e.target.value;
                                     setTelestrokeNote(prev => ({ ...prev, postEvtBP: { ...(prev.postEvtBP || {}), targetStrategy: v } }));
                                   }}
+                                  disabled={!postEvtBpGuidance.sourceTargetApplies}
                                   className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm dark:border-strong"
                                 >
-                                  <option value="">Select</option>
+                                  <option value="">{postEvtBpGuidance.sourceTargetApplies ? 'Select' : 'Requires documented mTICI ≥2b'}</option>
                                   <option value="guardrail">Institutional SBP 140-180</option>
                                 </select>
                               </div>
@@ -29367,12 +29449,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     ? 'bg-ok-50 border-ok-300 text-ok-800 dark:bg-ok-950 dark:border-ok-800 dark:text-ok-300'
                                     : 'bg-slate-50 border-slate-200 text-slate-700 dark:bg-paper-2 dark:border-line dark:text-ink-2'
                             }`}>
-                              <p className="font-semibold">Target: {postEvtBpGuidance.target.label}</p>
+                              <p className="font-semibold">Target: {postEvtBpGuidance.target?.label || 'Not applied'}</p>
                               <p>
                                 {postEvtBpGuidance.status === 'too-low' && 'Current SBP is below the institutional 140 mmHg floor.'}
                                 {postEvtBpGuidance.status === 'too-high' && 'Current SBP is above the institutional 180 mmHg ceiling.'}
                                 {postEvtBpGuidance.status === 'in-range' && 'Current SBP is within the institutional guardrail.'}
                                 {postEvtBpGuidance.status === 'unknown' && 'Enter the post-EVT BP to compare it with the institutional guardrail.'}
+                                {postEvtBpGuidance.status === 'unknown-grade' && 'Document successful recanalization (mTICI ≥2b) before applying the source-listed SBP 140-180 target.'}
+                                {postEvtBpGuidance.status === 'not-qualified' && `The source-listed SBP 140-180 target is not applied to documented mTICI ${postEvtBpGuidance.grade}.`}
                               </p>
                             </div>
                             </div>
@@ -29711,7 +29795,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-xs uppercase tracking-wide text-cobalt-600 dark:text-cobalt-300">Target</p>
                                 <p className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">
                                   {currentBpPhase === 'post-evt'
-                                    ? `SBP ${currentBpTarget.systolicLow}-${currentBpTarget.systolicHigh}`
+                                    ? postEvtSourceTargetApplies
+                                      ? `SBP ${currentBpTarget.systolicLow}-${currentBpTarget.systolicHigh} (mTICI ≥2b)`
+                                      : 'Requires documented mTICI ≥2b'
                                     : `BP <${currentBpTarget.systolic}/${currentBpTarget.diastolic}`}
                                 </p>
                               </div>
@@ -29729,7 +29815,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className={`rounded-lg p-2 border ${bpWithinTarget === null ? 'bg-slate-50 border-slate-200 dark:bg-paper-2 dark:border-line' : bpWithinTarget ? 'bg-ok-50 border-ok-200 dark:bg-ok-950 dark:border-ok-800' : 'bg-crit-50 border-crit-200 dark:bg-crit-950 dark:border-crit-800'}`}>
                                 <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-mute">Status</p>
                                 <p className="text-sm font-semibold">
-                                  {bpWithinTarget === null ? 'Enter BP to check' : bpWithinTarget ? 'Within target' : 'Outside target'}
+                                  {currentBpPhase === 'post-evt' && !postEvtSourceTargetApplies
+                                    ? 'Source target not active'
+                                    : bpWithinTarget === null
+                                      ? 'Enter BP to check'
+                                      : bpWithinTarget
+                                        ? 'Within target'
+                                        : 'Outside target'}
                                 </p>
                                 {bpWithinTarget === false && (
                                   <p className="text-xs text-crit-600 mt-1 dark:text-crit-300">The entered value does not meet the selected institutional threshold.</p>
@@ -29744,13 +29836,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <ul className="text-sm space-y-1">
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
                                 <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105</li>
-                                <li><strong>After thrombectomy:</strong> SBP 140-180</li>
+                                <li><strong>After documented successful thrombectomy recanalization (mTICI ≥2b):</strong> SBP 140-180</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
                               <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Quick Reference</h3>
                               <ul className="text-sm space-y-1">
-                                <li><strong>First-line:</strong> Labetalol IV push OR Nicardipine drip</li>
+                                <li><strong>Before IVT:</strong> Labetalol IV push per the source-listed sequence</li>
                               </ul>
                             </div>
                           </div>
@@ -29923,7 +30015,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <ul className="text-sm space-y-1">
                                 <li>• ICA or proximal M1 occlusion, NIHSS ≥6; baseline mRS 0-1 unless another tier is stated</li>
                                 <li>• ASPECTS 3-5 with no significant mass effect: EVT, COR I / LOE A</li>
-                                <li>• ASPECTS 0-2, age &lt;80, no significant mass effect, CTP core ≤70-100 mL: EVT, COR IIa / LOE B-R</li>
+                                <li>• ASPECTS 0-2, age &lt;80, no significant mass effect, CTP core ≤70 mL: EVT, COR IIa / LOE B-R</li>
+                                <li>• Same branch with CTP core 71-100 mL: pending protocol-owner adjudication; the source prints ≤70-100 mL without one executable cutoff</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
@@ -29948,7 +30041,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <ul className="text-sm space-y-1">
                               <li>• Follow-up brain CT or MRI at 24 hours ±6 hours</li>
                             </ul>
-                            <p className="text-xs text-slate-600 mt-2 dark:text-mute">Use the BP Management section for the institutional SBP 140-180 guardrail. The current source set does not supply a post-EVT nursing cadence.</p>
+                            <p className="text-xs text-slate-600 mt-2 dark:text-mute">After documented successful recanalization (mTICI ≥2b), use the BP Management section for the institutional SBP 140-180 guardrail. The current source set does not supply a post-EVT nursing cadence.</p>
                           </div>
                           </div>
                         </details>
@@ -30059,7 +30152,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Pocket Cards — interactive IVT/EVT/BP/contraindication decision aids
                             (formerly its own sub-tab; folded into Ischemic since the cards
                             are AIS-acute-phase decision support). */}
-                        <PocketCards defaults={{
+                        <PocketCards key={`case-${pocketCardsCaseEpoch}`} defaults={{
                           hoursFromLKW: (() => {
                             try {
                               if (telestrokeNote.lkwUnknown === true) return '';
@@ -30638,7 +30731,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {[{v:'gcs34',l:'GCS 3-4',p:'+2 points'},{v:'gcs512',l:'GCS 5-12',p:'+1 point'},{v:'gcs1315',l:'GCS 13-15',p:'0 points'}].map(o => (
                             <button key={o.v} type="button" role="radio" aria-checked={ichScoreItems.gcs === o.v} aria-label={`Glasgow Coma Scale: ${o.l} (${o.p})`}
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${ichScoreItems.gcs === o.v ? 'bg-crit-700 text-white border-crit-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100 dark:bg-card dark:border-line dark:hover:bg-paper-2 dark:active:bg-paper-2'}`}
-                              onClick={() => setIchScoreItems(prev => ({...prev, gcs: o.v}))} onKeyDown={handleRadioKeyDown}
+                              onClick={() => setIchScoreItems(prev => ({...prev, gcs: o.v, criteriaReviewed: false}))} onKeyDown={handleRadioKeyDown}
                             >
                               {o.l} <span className={ichScoreItems.gcs === o.v ? 'text-white' : 'text-slate-600 dark:text-mute'}>({o.p})</span>
                             </button>
@@ -31907,7 +32000,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <button
                                 key={grade}
                                 type="button"
-                                onClick={() => setTelestrokeNote(prev => ({ ...prev, ticiScore: isSelected ? '' : grade }))}
+                                onClick={() => {
+                                  const nextGrade = isSelected ? '' : grade;
+                                  setTelestrokeNote(prev => ({
+                                    ...prev,
+                                    ticiScore: nextGrade,
+                                    postEvtBP: {
+                                      ...(prev.postEvtBP || {}),
+                                      targetStrategy: isSuccessfulEvtReperfusion(nextGrade) ? (prev.postEvtBP || {}).targetStrategy : ''
+                                    }
+                                  }));
+                                }}
                                 className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${isSelected ? 'bg-ok-600 text-white border-ok-600' : 'bg-white border-line hover:bg-slate-50 dark:bg-card dark:hover:bg-paper-2'}`}
                               >
                                 <div className="flex items-center justify-between">
@@ -34395,8 +34498,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       {[
                         { label: 'NIHSS', desc: 'Stroke severity', action: () => { setCalcDrawerOpen(false); navigateTo('encounter'); setEncounterPhase('phase-triage'); setTimeout(() => scrollToSection('nihss-section'), 100); }},
                         { label: 'ASPECTS', desc: 'Ischemic changes', action: () => { setCalcDrawerOpen(false); navigateTo('encounter'); setEncounterPhase('phase-triage'); }},
-                        { label: 'ICH Score', desc: 'ICH prognosis', action: () => { setCalcDrawerOpen(false); navigateTo('protocols', { subTab: 'calculators' }); }},
-                        { label: 'Hunt & Hess', desc: 'SAH severity', action: () => { setCalcDrawerOpen(false); navigateTo('protocols', { subTab: 'calculators' }); }}
+                        { label: 'ICH Score', desc: 'Pocket-card score', action: () => { setCalcDrawerOpen(false); navigateTo('protocols', { subTab: 'calculators' }); }},
+                        { label: 'Hunt & Hess', desc: 'Inputs retained', action: () => { setCalcDrawerOpen(false); navigateTo('protocols', { subTab: 'calculators' }); }}
                       ].map(c => (
                         <button key={c.label} onClick={c.action} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-line rounded-lg hover:bg-cobalt-50 hover:border-cobalt-200 focus:ring-2 focus:ring-cobalt-500 text-left dark:bg-paper-2 dark:hover:bg-cobalt-900">
                           <div><div className="font-medium text-sm text-slate-900 dark:text-ink">{c.label}</div><div className="text-xs text-slate-500 dark:text-mute">{c.desc}</div></div>
@@ -34409,9 +34512,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       {[
                         { label: 'ABCD\u00B2', desc: 'TIA stroke risk' },
                         { label: 'CHA\u2082DS\u2082-VASc', desc: 'AF stroke risk' },
-                        { label: 'HAS-BLED', desc: 'Bleeding risk' },
-                        { label: 'ROPE', desc: 'PFO attribution' },
-                        { label: 'RCVS\u00B2', desc: 'Vasoconstriction' }
+                        { label: 'HAS-BLED', desc: 'Inputs retained' },
+                        { label: 'ROPE', desc: 'Inputs retained' },
+                        { label: 'RCVS\u00B2', desc: 'Inputs retained' }
                       ].map(c => (
                         <button key={c.label} onClick={() => { setCalcDrawerOpen(false); navigateTo('protocols', { subTab: 'calculators' }); }} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-line rounded-lg hover:bg-cobalt-50 hover:border-cobalt-200 focus:ring-2 focus:ring-cobalt-500 text-left dark:bg-paper-2 dark:hover:bg-cobalt-900">
                           <div><div className="font-medium text-sm text-slate-900 dark:text-ink">{c.label}</div><div className="text-xs text-slate-500 dark:text-mute">{c.desc}</div></div>

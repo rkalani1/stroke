@@ -219,6 +219,7 @@ describe('CRITICAL — clinical correctness probes', () => {
     const incomplete = calculatePCCDose(70, null, 'fxa-ich');
     expect(incomplete.iuPerKg).toBeNull();
     expect(incomplete.ahaDose).toBeNull();
+    expect(incomplete.fixedDose).toBe(false);
     expect(incomplete.recommendation).toBe('pending-required-gates');
     const complete = calculatePCCDose(70, null, 'fxa-ich', {
       directXaElevated: true,

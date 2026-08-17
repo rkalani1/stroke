@@ -100,7 +100,8 @@ export const AIS_COMMAND_CENTER_CARDS = [
       { label: 'ICA/proximal M1, 0-6h, ASPECTS 6-10, mRS 2', decision: 'EVT', cor: 'IIa', loe: 'B-NR' },
       { label: 'ICA/proximal M1, 0-6h, ASPECTS 6-10, mRS 3-4', decision: 'EVT', cor: 'IIb', loe: 'B-NR' },
       { label: 'ICA/proximal M1, 0-6h, ASPECTS 3-5, no significant mass effect', decision: 'EVT', cor: 'I', loe: 'A' },
-      { label: 'ICA/proximal M1, 0-6h, ASPECTS 0-2, age <80, no significant mass effect, CTP core <=70-100 mL', decision: 'EVT', cor: 'IIa', loe: 'B-R' },
+      { label: 'ICA/proximal M1, 0-6h, ASPECTS 0-2, age <80, no significant mass effect, CTP core <=70 mL', decision: 'EVT', cor: 'IIa', loe: 'B-R' },
+      { label: 'Same branch with CTP core 71-100 mL', decision: 'Pending protocol-owner adjudication; the source prints <=70-100 mL without one executable cutoff', cor: '', loe: '' },
       { label: 'ICA/proximal M1, 6-24h, ASPECTS 6-10', decision: 'EVT', cor: 'I', loe: 'A' },
       { label: 'ICA/proximal M1, 6-24h, ASPECTS 3-5, age <80, no significant mass effect', decision: 'EVT', cor: 'I', loe: 'A' },
       { label: 'Basilar <=24h, PC-ASPECTS >=6, NIHSS >=10', decision: 'EVT', cor: 'I', loe: 'A' },
@@ -129,12 +130,12 @@ export const AIS_COMMAND_CENTER_CARDS = [
     actions: [
       'Before IVT, lower blood pressure to below 185/110 mmHg.',
       'After IVT, maintain blood pressure below 180/105 mmHg for 24 hours.',
-      'After EVT, use an SBP guardrail of 140-180 mmHg.'
+      'After documented successful EVT recanalization (mTICI >=2b), use an SBP guardrail of 140-180 mmHg.'
     ],
     pathway: [
       { label: 'Pre-IVT BP >=185/110', decision: 'Lower below 185/110 before treatment', cor: '', loe: '' },
       { label: 'Post-IVT', decision: 'Maintain <180/105 for 24 hours', cor: '', loe: '' },
-      { label: 'Post-EVT', decision: 'Maintain SBP 140-180', cor: '', loe: '' }
+      { label: 'Post-EVT with documented mTICI >=2b', decision: 'Maintain SBP 140-180', cor: '', loe: '' }
     ],
     calculators: [
       { label: 'Post-EVT BP', tab: 'management', subTab: 'ischemic', anchor: 'isch-bp' }

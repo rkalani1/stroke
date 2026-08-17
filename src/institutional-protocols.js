@@ -12,8 +12,7 @@ export const INSTITUTIONAL_BP_PROTOCOLS = {
   beforeIVT: {
     scenario: 'Before IVT',
     target: 'BP <185/110',
-    protocol: 'Labetalol 10 mg IV, repeat q15 min; escalate to 20 mg, then 40 mg, then 60 mg (max single bolus). Max 300 mg in 2h.',
-    alternatives: 'Nicardipine 5 mg/hr IV, titrate by 2.5 mg/hr q5 min (max 15 mg/hr).'
+    protocol: 'Labetalol 10 mg IV, repeat q15 min; escalate to 20 mg, then 40 mg, then 60 mg (max single bolus). Max 300 mg in 2h.'
   },
   afterIVT24h: {
     scenario: 'After IVT (24h)',
@@ -22,10 +21,15 @@ export const INSTITUTIONAL_BP_PROTOCOLS = {
   },
   afterEVT24h: {
     scenario: 'After EVT (24h)',
+    appliesWhen: 'Documented successful recanalization (mTICI >=2b)',
     target: 'SBP 140-180',
-    protocol: 'Maintain SBP in the source-listed range of 140-180.'
+    protocol: 'After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180.'
   }
 };
+
+export function isSuccessfulEvtReperfusion(grade) {
+  return ['2b', '2c', '3'].includes(String(grade ?? '').trim().toLowerCase());
+}
 
 // =====================================================================
 // Initial non-traumatic IPH evaluation — public-safe workflow translation
@@ -109,6 +113,7 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
       criteria: [
         'Selected spontaneous supratentorial IPH being considered for minimally invasive evacuation',
         'Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol before use',
+        'The latest criteria would loosen the prior screen; do not apply a revised executable screen until protocol-owner sign-off',
         'No underlying vascular lesion',
         'Potential MIS timing within 24 hours of last known well or qualifying wake-up hemorrhage window'
       ],
@@ -140,6 +145,14 @@ const parseAttestationBP = (bp) => {
   return { systolic: Number(match[1]), diastolic: Number(match[2]) };
 };
 
+const parseRequiredAge = (value) => {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : Number.NaN;
+  if (typeof value !== 'string') return Number.NaN;
+  const normalized = value.trim();
+  if (!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(normalized)) return Number.NaN;
+  return Number(normalized);
+};
+
 export const getSafePauseIssues = ({ consentType = '', bp = '', contraindications = '' } = {}) => {
   const issues = [];
   const consent = String(consentType || '').trim().toLowerCase();
@@ -148,6 +161,10 @@ export const getSafePauseIssues = ({ consentType = '', bp = '', contraindication
   const parsedBP = parseAttestationBP(bp);
   if (!parsedBP) {
     issues.push('BP is absent or malformed; enter systolic/diastolic.');
+  } else if (parsedBP.systolic <= 0 || parsedBP.diastolic <= 0) {
+    issues.push('BP must contain positive systolic and diastolic values.');
+  } else if (parsedBP.systolic <= parsedBP.diastolic) {
+    issues.push('Systolic BP must be greater than diastolic BP.');
   } else if (!(parsedBP.systolic < 185 && parsedBP.diastolic < 110)) {
     issues.push('BP must be strictly below 185/110 before thrombolytic administration.');
   }
@@ -210,6 +227,8 @@ export const evaluateIVT = ({
     const issues = [];
     if (!Number.isFinite(sbp) || !Number.isFinite(dbp) || sbp <= 0 || dbp <= 0) {
       issues.push('enter the current systolic and diastolic blood pressure');
+    } else if (sbp <= dbp) {
+      issues.push('confirm systolic BP is greater than diastolic BP');
     } else if (!(sbp < 185 && dbp < 110)) {
       issues.push('confirm both BP values are strictly below 185/110');
     }
@@ -331,13 +350,13 @@ export const evaluateIVT = ({
   const core = parseFloat(ctpCoreMl);
   const ratio = parseFloat(ctpRatio);
   const mismatchVol = parseFloat(ctpMismatchVolMl);
-  const fullCTPCriteriaMet = Number.isFinite(core) && core < 50 && Number.isFinite(ratio) && ratio >= 1.2 && Number.isFinite(mismatchVol) && mismatchVol >= 10;
+  const fullCTPCriteriaMet = Number.isFinite(core) && core >= 0 && core < 50 && Number.isFinite(ratio) && ratio >= 1.2 && Number.isFinite(mismatchVol) && mismatchVol >= 10;
   const preferMRI = smallVessel || posteriorCirc || contrastAllergy;
   const extendedGates = [];
   if (!Number.isFinite(mrs) || mrs > 1) extendedGates.push('baseline mRS must be entered and be ≤1');
   if (!['not-candidate', 'not_candidate', 'candidate-infeasible', 'evt-infeasible', 'evt_infeasible'].includes(evtStatus)) extendedGates.push('EVT status must confirm not an EVT candidate or the narrow EVT-infeasible status');
   const isWakeUpOrUnknown = wakeUpOrUnknownOnset === true && !Number.isFinite(hrs);
-  const isFourPointFiveToNine = Number.isFinite(hrs) && hrs > 4.5 && hrs <= 9;
+  const isFourPointFiveToNine = Number.isFinite(hrs) && hrs > 4.5 && hrs < 9;
 
   if (isWakeUpOrUnknown || isFourPointFiveToNine) {
     const qualifyingMismatch = isWakeUpOrUnknown ? mriDwiFlairMismatch === true : mriDwiFlairMismatch === true || fullCTPCriteriaMet;
@@ -370,7 +389,7 @@ export const evaluateIVT = ({
     };
   }
 
-  if (Number.isFinite(hrs) && hrs > 9 && hrs <= 24) {
+  if (Number.isFinite(hrs) && hrs >= 9 && hrs <= 24) {
     const lateGates = consentObtained === true ? extendedGates : [...extendedGates, 'consent must be obtained'];
     if (!fullCTPCriteriaMet || lateGates.length > 0) {
       return {
@@ -435,15 +454,16 @@ export const evaluateEVT_Anterior = ({ aspectsScore, timeFromLKWh, nihss, preMRS
   const hrs = parseFloat(timeFromLKWh);
   const n = parseFloat(nihss);
   const mrs = parseFloat(preMRS);
-  const a = parseFloat(age);
+  const a = parseRequiredAge(age);
   const core = parseFloat(coreVolume);
 
+  if (!Number.isFinite(a)) return { eligible: null, reason: 'Enter adult age before evaluating EVT.' };
+  if (a < 18) return { eligible: null, reason: 'Adult EVT algorithm does not apply below age 18.' };
   if (![asp, hrs, n, mrs].every(Number.isFinite)) return { eligible: null, reason: 'Need ASPECTS, LKW hours, NIHSS, and pre-stroke mRS.' };
   if (asp < 0 || asp > 10) return { eligible: null, reason: 'ASPECTS must be between 0 and 10.' };
   if (n < 0 || n > 42) return { eligible: null, reason: 'NIHSS must be between 0 and 42.' };
   if (mrs < 0 || mrs > 6) return { eligible: null, reason: 'Pre-stroke mRS must be between 0 and 6.' };
   if (hrs < 0) return { eligible: null, reason: 'Enter a valid non-negative LKW interval.' };
-  if (Number.isFinite(a) && a < 18) return { eligible: null, reason: 'Adult EVT algorithm does not apply below age 18.' };
   if (Number.isFinite(core) && core < 0) return { eligible: null, reason: 'Core volume must be non-negative.' };
   if (n < 6) return { eligible: false, reason: 'NIHSS <6 does not meet the source-listed anterior-circulation flowchart gate.', cor: '—' };
   if (hrs > 24) return { eligible: false, reason: 'Beyond the source-listed 24-hour anterior-circulation window.', cor: '—' };
@@ -456,7 +476,7 @@ export const evaluateEVT_Anterior = ({ aspectsScore, timeFromLKWh, nihss, preMRS
       if (massEffect === null || massEffect === undefined) return { eligible: 'pending', window: '0-6h', reason: 'ASPECTS 3-5 requires explicit confirmation that significant mass effect is absent.' };
       if (massEffect === false) return { eligible: true, window: '0-6h', reason: 'ASPECTS 3-5 with no significant mass effect.', cor: '1', loe: 'A' };
     }
-    if (asp >= 0 && asp <= 2 && mrs <= 1 && massEffect === false && Number.isFinite(a) && a < 80 && Number.isFinite(core) && core <= 70) {
+    if (asp >= 0 && asp <= 2 && mrs <= 1 && massEffect === false && a < 80 && Number.isFinite(core) && core <= 70) {
       return {
         eligible: 'consider',
         window: '0-6h expanded',
@@ -465,10 +485,10 @@ export const evaluateEVT_Anterior = ({ aspectsScore, timeFromLKWh, nihss, preMRS
         loe: 'B-R'
       };
     }
-    if (asp >= 0 && asp <= 2 && mrs <= 1 && massEffect === false && Number.isFinite(a) && a < 80 && Number.isFinite(core) && core > 70 && core <= 100) {
+    if (asp >= 0 && asp <= 2 && mrs <= 1 && massEffect === false && a < 80 && Number.isFinite(core) && core > 70 && core <= 100) {
       return { eligible: 'pending', window: '0-6h expanded', reason: 'The institutional flowchart prints a core range of ≤70-100 mL without an executable threshold for 71-100 mL. No eligibility result is selected pending protocol-owner adjudication.' };
     }
-    if (asp <= 2 && mrs <= 1 && (!Number.isFinite(a) || massEffect === null || massEffect === undefined || !Number.isFinite(core))) {
+    if (asp <= 2 && mrs <= 1 && (massEffect === null || massEffect === undefined || !Number.isFinite(core))) {
       return { eligible: 'pending', window: '0-6h', reason: 'ASPECTS 0-2 requires age <80, explicit absence of significant mass effect, and an entered core volume within the source-listed ≤70-100 mL range.' };
     }
   }
@@ -478,7 +498,7 @@ export const evaluateEVT_Anterior = ({ aspectsScore, timeFromLKWh, nihss, preMRS
       return { eligible: true, window: '6-24h', reason: 'ASPECTS 6-10 and pre-stroke mRS 0-1.', cor: '1', loe: 'A' };
     }
     if (asp >= 3 && asp <= 5 && mrs <= 1) {
-      if (!Number.isFinite(a) || massEffect === null || massEffect === undefined) {
+      if (massEffect === null || massEffect === undefined) {
         return { eligible: 'pending', window: '6-24h large core', reason: 'ASPECTS 3-5 in the 6-24-hour window requires age and explicit assessment of significant mass effect.' };
       }
       if (a < 80 && massEffect === false) {
@@ -496,8 +516,9 @@ export const evaluateEVT_M2 = ({ segment, dominant, hoursFromLKWh, nihss, preMRS
   const n = parseFloat(nihss);
   const mrs = parseFloat(preMRS);
   const asp = parseFloat(aspectsScore);
-  const a = parseFloat(age);
-  if (Number.isFinite(a) && a < 18) return { eligible: null, reason: 'Adult EVT algorithm does not apply below age 18.' };
+  const a = parseRequiredAge(age);
+  if (!Number.isFinite(a)) return { eligible: null, reason: 'Enter adult age before evaluating EVT.' };
+  if (a < 18) return { eligible: null, reason: 'Adult EVT algorithm does not apply below age 18.' };
   if (segment === 'M2-proximal-dominant' && dominant === true) {
     if (![hrs, n, mrs, asp].every(Number.isFinite)) return { eligible: null, reason: 'Need LKW hours, NIHSS, pre-stroke mRS, and ASPECTS.' };
     if (hrs < 0) return { eligible: null, reason: 'Enter a valid non-negative LKW interval.' };
@@ -559,10 +580,11 @@ export const evaluateEVT_Basilar = ({ nihss, hoursFromLKWh, preMRS, pcAspects, a
   const hrs = parseFloat(hoursFromLKWh);
   const mrs = parseFloat(preMRS);
   const pc = parseFloat(pcAspects);
-  const a = parseFloat(age);
+  const a = parseRequiredAge(age);
   void disabling;
   void dualSpecialtyAgreement;
-  if (Number.isFinite(a) && a < 18) return { eligible: null, reason: 'Adult EVT algorithm does not apply below age 18.' };
+  if (!Number.isFinite(a)) return { eligible: null, reason: 'Enter adult age before evaluating EVT.' };
+  if (a < 18) return { eligible: null, reason: 'Adult EVT algorithm does not apply below age 18.' };
   if (![n, hrs, mrs, pc].every(Number.isFinite)) return { eligible: null, reason: 'Need NIHSS, LKW hours, pre-stroke mRS, and PC-ASPECTS.' };
   if (hrs < 0) return { eligible: null, reason: 'Enter a valid non-negative LKW interval.' };
   if (n < 0 || n > 42) return { eligible: null, reason: 'NIHSS must be between 0 and 42.' };
@@ -625,12 +647,12 @@ export const IVT_UNRESOLVED_SOURCE_CONFLICTS = [
   {
     key: 'head-trauma-neurosurgery',
     label: 'Severe head trauma and intracranial/intraspinal surgery windows (14 vs 90/60 days)',
-    detail: 'Accepted institutional sources list a 14-day window versus 90 days for severe head trauma and 60 days for intracranial/intraspinal surgery. No time window is selected pending protocol-owner adjudication.'
+    detail: 'Accepted institutional sources list a 14-day window versus 90 days for severe head trauma and 60 days for intracranial/intraspinal surgery. Pending protocol-owner adjudication, the released conservative 90-day and 60-day safety holds remain displayed; this interim safeguard does not resolve the source conflict.'
   },
   {
     key: 'prior-stroke-tier',
     label: 'Prior ischemic stroke within 90 days (absolute vs relative tier)',
-    detail: 'One accepted source places prior ischemic stroke within 90 days under exclusions. Another places the same scenario under both exclusion and relative-exclusion headings. No tier is selected pending protocol-owner adjudication.'
+    detail: 'One accepted source places prior ischemic stroke within 90 days under exclusions. Another places the same scenario under both exclusion and relative-exclusion headings. Pending protocol-owner adjudication, the released conservative hard-stop counsel remains displayed; this interim safeguard does not resolve the source tier.'
   }
 ];
 
@@ -643,6 +665,7 @@ export const IVT_ABSOLUTE_CONTRAINDICATIONS = [
   { label: 'Glucose <50 or >400 mg/dL until corrected and reassessed', detail: 'Correct the glucose first. Do not proceed unless a disabling deficit persists on the glucose-corrected examination.' },
   { label: 'SBP >185 or DBP >110 mmHg on repeated measures', detail: 'Hypertension above these values on repeated measures prior to starting the thrombolytic; treat and re-check before proceeding.' },
   { label: 'Intra-axial intracranial neoplasm', detail: 'Absolute exclusion (extra-axial tumours are handled separately).' },
+  { label: 'Intracranial or intraspinal surgery <60 days', detail: 'Interim conservative safety hold from the dedicated criteria source. The current workflow prints <14 days; keep the discrepancy visible pending protocol-owner adjudication.' },
   { label: 'Infective endocarditis', detail: 'Should not be administered.' },
   { label: 'Severe coagulopathy', detail: 'Plt <100K, INR >1.7, aPTT >40s, PT >15s. In patients without a history of thrombocytopenia the thrombolytic can be started before the platelet count returns, but should be discontinued if the platelet count returns <100,000/mm3.' },
   { label: 'Treatment-dose heparin or LMWH within 24 hours', detail: 'Treatment-dose unfractionated heparin or low-molecular-weight heparin within the previous 24 hours is an exclusion.' },
@@ -651,11 +674,13 @@ export const IVT_ABSOLUTE_CONTRAINDICATIONS = [
   { label: 'Arterial puncture at non-compressible site <7 days', detail: 'Arterial puncture at a non-compressible site within the previous 7 days is an absolute exclusion.' },
   { label: 'Aortic arch dissection', detail: 'Potentially harmful; should not be administered.' },
   { label: 'Unruptured, unsecured large intracranial aneurysm (>10 mm)', detail: 'Absolute exclusion; small or already-secured aneurysms are handled under benefit-greater.' },
+  { label: 'Severe head trauma <90 days', detail: 'Interim conservative safety hold from the dedicated criteria source. The current workflow prints <14 days; keep the discrepancy visible pending protocol-owner adjudication.' },
 ];
 
 export const IVT_RELATIVE_CONTRAINDICATIONS = [
   { label: 'Anti-amyloid therapy (e.g., lecanemab) — ARIA risk', detail: 'Not recommended; confirm the decision with the on-call stroke attending and prepare for possible MRI.' },
   { label: 'Pre-existing disability/frailty', detail: 'Treatment on individual basis.' },
+  { label: 'Prior ischemic stroke <90 days', detail: 'Interim conservative hard-stop counsel. The current workflow lists this under both exclusion and relative-exclusion headings; keep the ambiguity visible pending protocol-owner adjudication.' },
   { label: 'Prior ICH', detail: 'Amyloid angiopathy = higher risk. Modifiable causes (HTN) may have greater net benefit.' },
   { label: 'Major extracranial surgery or trauma <14 days', detail: 'This entry is limited to major extracranial surgery or trauma. Consider the involved site and bleeding risk; it does not resolve the separate intracranial/intraspinal surgery and severe-head-trauma source conflict.' },
   { label: 'Intracranial vascular malformations', detail: 'Safety unknown; unruptured and untreated.' },
