@@ -225,11 +225,12 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // 2026-08-16: ich 578->579, ischemic 1448->1450->1460->1468 from the reviewed clinical
       // correction to the orolingual-angioedema step (holding ACE inhibitors now leads,
       // and stopping the infusion is conditional on alteplase). See the git diff of
-      // tests/snapshots/example-protocols/ for the approved wording.
+      // tests/snapshots/example-protocols/ for the approved wording. Each snapshot then
+      // dropped two lines when the shared Protocols Order Bundles scaffold was removed.
       const baselineCounts = {
-        ich: 522,
-        ischemic: 825,
-        calculators: 462
+        ich: 520,
+        ischemic: 823,
+        calculators: 460
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);
