@@ -1,7 +1,7 @@
 {
   "_meta": {
     "name": "stroke",
-    "appVersion": "6.19.1",
+    "appVersion": "6.19.2",
     "schemaVersion": "1.0.0",
     "baseUrl": "https://rkalani1.github.io/stroke",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -45,9 +45,9 @@
       "url": "https://rkalani1.github.io/stroke/#/protocols/ich"
     },
     {
-      "route": "#/protocols/calculators",
+      "route": "#/research/calculators",
       "label": "Calculators",
-      "url": "https://rkalani1.github.io/stroke/#/protocols/calculators"
+      "url": "https://rkalani1.github.io/stroke/#/research/calculators"
     },
     {
       "route": "#/research",

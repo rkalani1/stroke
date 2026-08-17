@@ -6,7 +6,6 @@ Protocols & Algorithms
 Ischemic/TIA
 ICH
 Ischemic/TIA
-Calculators
 Acute ischemic stroke
 Acute Stroke Pathways
 Adult cards reproduce accepted institutional protocol material only. Pediatric content remains unchanged pending separate clinical authorization.
@@ -365,28 +364,6 @@ Reasonable
 May be considered / Uncertain
 Not recommended
 Individualized decision
-Post-EVT BP Guardrail
-Documented mTICI grade
-Not documented
-mTICI
-0
-mTICI
-1
-mTICI
-2a
-mTICI
-2b
-mTICI
-2c
-mTICI
-3
-Current BP
-Target strategy
-Requires documented mTICI ≥2b
-Institutional SBP 140-180
-Target:
-Not applied
-Document successful recanalization (mTICI ≥2b) before applying the source-listed SBP 140-180 target.
 Ischemic protocol details
 EVT Eligibility Builder
 Institutional adult EVT flowchart. Pediatric criteria remain separate and unchanged.
@@ -444,13 +421,6 @@ Pediatric Reperfusion (28 days–18 years)
 • IV thrombolysis may be considered within 4.5h in select children at experienced centers (Class IIb).
 • EVT for LVO is reasonable for age ≥6 years (Class IIa).
 • EVT may be considered for age 28 days–6 years with experienced neurointerventionalist (Class IIb).
-AF Anticoagulation Timing
-The current institutional source set does not supply an AF/DOAC start-timing protocol.
-NIHSS
-Onset (LKW)
-Protocol
-No institutional timing protocol
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 Blood Pressure Management
 Phase-aware BP target
 Toggles update the target and highlight current BP status.
@@ -473,13 +443,6 @@ SBP 140-180
 Quick Reference
 Before IVT:
 Labetalol IV push per the source-listed sequence
-Normobaric Oxygen (NBO) Before EVT
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
-Nursing Flowsheet Generator
-The input is retained for documentation; no institutional post-EVT cadence is supplied.
-Use current time
-Groin puncture time
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 Stroke-Specific Nursing Swallow Screen
 Only a competency-validated registered nurse performs this stroke-specific screen.
 Check whether GCS is <13 or whether lower-facial, tongue, or palatal asymmetry/weakness is present.
@@ -507,8 +470,6 @@ Monitoring and Escalation
 • Neurologic checks and vital signs every 15 minutes for 2 hours, every 30 minutes for 6 hours, then every hour for 16 hours
 • Notify the provider for SBP >180, DBP >90, a new neurologic deficit, or a GCS decrease of at least 2 points
 • Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal; if abnormalities persist or bleeding remains uncontrolled, consult the Hematology attending
-ECASS Hemorrhagic Transformation Classification
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 Orolingual Angioedema Protocol
 Airway Assessment and Plan
 Maintain airway
@@ -533,10 +494,6 @@ Icatibant:
 Supportive care
 Restricted alternative, not part of the active adult sequence:
 C1 esterase inhibitor may be used for pregnancy, pediatric patients, or icatibant intolerance under the institutional restriction.
-Antiplatelet Loading Protocol
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
-Statin Initiation
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 Large Core EVT Selection
 Early Window (0-6h)
 • ICA or proximal M1 occlusion, NIHSS ≥6; baseline mRS 0-1 unless another tier is stated
@@ -586,17 +543,11 @@ Limited Hyperacute Stroke MRI
 • Obtain DWI/ADC, T2-FLAIR, and T2*/SWI on the first available scanner, regardless of magnet strength
 • Do not add sequences or studies during the code-stroke MRI
 • Complete the MRI safety checklist with the patient when possible; otherwise obtain STAT screening films
-Intracranial Atherosclerotic Disease (ICAD)
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 Posterior Circulation Stroke
 Basilar Artery Occlusion
 • Within 24 hours, PC-ASPECTS ≥6, NIHSS ≥10: EVT, COR I / LOE A
 • Within 24 hours, PC-ASPECTS ≥6, NIHSS 6-9: EVT effectiveness is not well established, COR IIb / LOE B-R
 • For an otherwise eligible patient within 4.5 hours, TNK may be started before or on the way to thrombectomy
-Cervical Artery Dissection (CAD)
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
-Seizure Prophylaxis in Ischemic Stroke
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 Protocol Cards — Institutional Adult Pathways
 Public-safe decision support limited to the accepted institutional source set.
 v2
@@ -632,7 +583,6 @@ EVT candidate; EVT within 24h feasible
 EVT candidate; EVT within 24h not feasible
 CRAO (central retinal artery occlusion)
 Absolute and relative contraindications reviewed
-Enter adult age before evaluating IVT
 INST
 IVT Contraindications
 Absolute
@@ -722,28 +672,6 @@ Stroke mimic uncertainty
 Risk of harm with IVT is low; benefit likely outweighs risk.
 Moya-moya disease
 No increased ICH risk; benefit likely outweighs risk.
-Unresolved institutional source conflicts — no rule selected
-DOAC / factor-Xa timing and assay pathway (<48 hours vs >24 to <48 hours with consent)
-One accepted source excludes factor-Xa exposure within 48 hours. Another excludes exposure within 24 hours when anti-Xa testing is unavailable and permits consideration after 24 but before 48 hours with consent. No rule is selected pending protocol-owner adjudication.
-Severe head trauma and intracranial/intraspinal surgery windows (14 vs 90/60 days)
-Accepted institutional sources list a 14-day window versus 90 days for severe head trauma and 60 days for intracranial/intraspinal surgery. Pending protocol-owner adjudication, the released conservative 90-day and 60-day safety holds remain displayed; this interim safeguard does not resolve the source conflict.
-Prior ischemic stroke within 90 days (absolute vs relative tier)
-One accepted source places prior ischemic stroke within 90 days under exclusions. Another places the same scenario under both exclusion and relative-exclusion headings. Pending protocol-owner adjudication, the released conservative hard-stop counsel remains displayed; this interim safeguard does not resolve the source tier.
-INST
-DOAC-Exposed AIS Patient — Unresolved Institutional Rule
-Site
-Anti-Xa-based source branch
-Time-based source branch
-Telestroke source branch
-Hours since last DOAC dose
-Anti-Xa
-UNDETECTABLE
-Disabling stroke deficits
-EVT candidate (documentation only; not a categorical IVT bypass)
-UNRESOLVED-SOURCE-CONFLICT
-The accepted institutional sources conflict on DOAC/factor-Xa timing and assay handling. No affirmative or negative IVT eligibility result is available until the protocol owner adjudicates the source conflict.
-Requirement:
-Do not use EVT candidacy as a categorical IVT bypass. Evaluate EVT independently while this IVT question remains unresolved.
 INST
 EVT Eligibility
 Anterior LVO
@@ -767,9 +695,6 @@ Significant mass effect
 Not assessed
 Absent
 Present
-Awaiting input / no institutional tier
-Enter adult age before evaluating EVT.
-Outputs are limited to the accepted institutional EVT flowchart tiers shown above.
 INST
 Blood Pressure Management
 Scenario
@@ -801,8 +726,6 @@ SAFE PAUSE NOT READY — DO NOT ATTEST: (1) Consent is absent or declined. (2) B
 Copy completed safety pause
 Attestation placeholder:
 [APPROVED LOCAL ATTESTATION REQUIRED]
-Class of Recommendation / Level of Evidence
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 --- modal via "Hydrocortisone 200 mg IV" ---
 Hydrocortisone
 Dosing

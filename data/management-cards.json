@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "management-cards",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.19.1",
-    "checksum": "sha256:1ebcad1bf49aceebda816873f4fcf2f7",
+    "appVersion": "6.19.2",
+    "checksum": "sha256:ce3f1236e0001c48c07fac6c36b07ade",
     "count": 3,
     "source": "Management-card reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -77,13 +77,13 @@
           },
           {
             "label": "Alteplase calculator",
-            "tab": "management",
+            "tab": "research",
             "subTab": "calculators",
             "anchor": "calc-alteplase"
           },
           {
             "label": "NIHSS",
-            "tab": "management",
+            "tab": "research",
             "subTab": "calculators",
             "anchor": "calc-nihss"
           }
@@ -139,13 +139,13 @@
         "calculators": [
           {
             "label": "ASPECTS",
-            "tab": "management",
+            "tab": "research",
             "subTab": "calculators",
             "anchor": "calc-aspects"
           },
           {
             "label": "NIHSS",
-            "tab": "management",
+            "tab": "research",
             "subTab": "calculators",
             "anchor": "calc-nihss"
           }
@@ -242,13 +242,13 @@
           },
           {
             "label": "ASPECTS",
-            "tab": "management",
+            "tab": "research",
             "subTab": "calculators",
             "anchor": "calc-aspects"
           },
           {
             "label": "PC-ASPECTS",
-            "tab": "management",
+            "tab": "research",
             "subTab": "calculators",
             "anchor": "calc-pc-aspects"
           }
@@ -461,7 +461,7 @@
         "calculators": [
           {
             "label": "NIHSS",
-            "tab": "management",
+            "tab": "research",
             "subTab": "calculators",
             "anchor": "calc-nihss"
           },
@@ -525,13 +525,13 @@
         "calculators": [
           {
             "label": "NIHSS / PedNIHSS",
-            "tab": "management",
+            "tab": "research",
             "subTab": "calculators",
             "anchor": "calc-nihss"
           },
           {
             "label": "Alteplase calculator",
-            "tab": "management",
+            "tab": "research",
             "subTab": "calculators",
             "anchor": "calc-alteplase"
           }

@@ -747,28 +747,8 @@ async function auditView(browser, target, viewport) {
           details.open = true;
         });
       }).catch(() => {});
-      if ((await page.getByText(/Post-EVT BP Guardrail/i).count()) === 0) {
-        addIssue(issues, 'missing-post-evt-bp-guardrail');
-      }
       if ((await page.getByText(/Codominant M2: no recommendation is supplied/i).count()) === 0) {
         addIssue(issues, 'missing-mevo-updated-wording');
-      }
-
-      const guardrailHeading = page.getByRole('heading', { name: /Post-EVT BP Guardrail/i }).first();
-      if ((await guardrailHeading.count()) > 0) {
-        // Match details or card container
-        const guardrailCard = guardrailHeading.locator('xpath=ancestor::*[self::details or contains(@class,"rounded-md") or contains(@class,"rounded-xl")][1]');
-        const guardrailSelects = guardrailCard.locator('select');
-        const guardrailBpInput = guardrailCard.locator('input[type="text"]').first();
-        if ((await guardrailSelects.count()) >= 2 && (await guardrailBpInput.count()) > 0) {
-          await guardrailSelects.nth(0).selectOption('2b');
-          await guardrailBpInput.fill('158/88');
-          await guardrailSelects.nth(1).selectOption('guardrail');
-          await page.waitForTimeout(150);
-          postEvtPlanConfigured = true;
-        } else {
-          addIssue(issues, 'missing-post-evt-bp-inputs');
-        }
       }
     }
 

@@ -1,7 +1,7 @@
 // Example Protocols content lock.
 //
-// The Protocols tab (#/protocols/ich|ischemic|calculators)
-// carries a HARD constraint: its clinical text, values, thresholds, algorithms,
+// The Protocols tabs plus the relocated Guidelines & References calculators
+// carry a HARD constraint on their clinical text, values, thresholds, algorithms,
 // and wording must not change during refactoring. This script renders the built
 // app (app.js at repo root — the same artifact GitHub Pages serves), extracts
 // every visible text node under #tabpanel-protocols for each subtab, and
@@ -102,11 +102,11 @@ async function waitForHttp(url, timeoutMs = 20000) {
 // per node. Accordion/details content that is mounted-but-hidden is included
 // (the lock covers wording, not visibility). aria-expanded toggles are clicked
 // open first so lazily-mounted disclosure content is captured too.
-async function extractPanelText(page) {
+async function extractPanelText(page, panelSelector) {
   // Best-effort expansion of collapsed disclosures inside the panel only.
   for (let pass = 0; pass < 5; pass += 1) {
-    const expanded = await page.evaluate(() => {
-      const panel = document.querySelector('#tabpanel-protocols');
+    const expanded = await page.evaluate((selector) => {
+      const panel = document.querySelector(selector);
       if (!panel) return 0;
       let clicks = 0;
       for (const el of panel.querySelectorAll('[aria-expanded="false"]')) {
@@ -119,13 +119,13 @@ async function extractPanelText(page) {
         clicks += 1;
       }
       return clicks;
-    });
+    }, panelSelector);
     if (!expanded) break;
     await page.waitForTimeout(200);
   }
 
-  return page.evaluate(() => {
-    const panel = document.querySelector('#tabpanel-protocols');
+  return page.evaluate((selector) => {
+    const panel = document.querySelector(selector);
     if (!panel) return null;
     const walker = document.createTreeWalker(panel, NodeFilter.SHOW_TEXT);
     const lines = [];
@@ -135,23 +135,23 @@ async function extractPanelText(page) {
       if (normalized) lines.push(normalized);
     }
     return lines;
-  });
+  }, panelSelector);
 }
 
 // Drug/agent detail modals (protocolDetailMap) mount only on click. Their
 // triggers are the underlined inline buttons inside the panel. Click each,
 // capture the dialog text, Escape, continue. Buttons that open no dialog are
 // skipped. Deterministic DOM order keeps the corpus stable.
-async function extractModalTexts(page) {
-  const count = await page.evaluate(() => {
-    const panel = document.querySelector('#tabpanel-protocols');
+async function extractModalTexts(page, panelSelector) {
+  const count = await page.evaluate((selector) => {
+    const panel = document.querySelector(selector);
     if (!panel) return 0;
     const triggers = [...panel.querySelectorAll('button')].filter((b) =>
       (b.className || '').includes('underline')
     );
     triggers.forEach((b, i) => b.setAttribute('data-snapshot-trigger', String(i)));
     return triggers.length;
-  });
+  }, panelSelector);
 
   const sections = [];
   for (let i = 0; i < count; i += 1) {
@@ -190,25 +190,21 @@ async function captureSubtab(browser, subtab) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
   try {
-    await page.goto(`${BASE_URL}#/protocols/${subtab}`, { waitUntil: 'load' });
-    await page.waitForSelector('#tabpanel-protocols', { timeout: 15000 });
+    const isCalculator = subtab === 'calculators';
+    const route = isCalculator ? '#/research/calculators' : `#/protocols/${subtab}`;
+    const panelSelector = isCalculator ? '#research-tabpanel-calculators' : '#tabpanel-protocols';
+    await page.goto(`${BASE_URL}${route}`, { waitUntil: 'load' });
+    await page.waitForSelector(panelSelector, { timeout: 15000 });
     // Direct hash deep-loads resolve the subtab on mount; give React a beat to settle.
     await page.waitForTimeout(600);
-    const lines = await extractPanelText(page);
-    if (!lines) throw new Error(`#tabpanel-protocols not found for subtab "${subtab}"`);
-    // A subtab may be legitimately minimal: Protocols carries institutional content only, so a
-    // topic with no Stroke Center source document renders just its header plus the
-    // "no institutional protocol document is on file" notice. That is a valid capture, not a
-    // broken one. Anything else that is this short still means extraction or routing failed.
-    const intentionallyMinimal = lines.some((l) =>
-      /No institutional protocol document is on file/i.test(l)
-    );
-    if (lines.length < 20 && !intentionallyMinimal) {
+    const lines = await extractPanelText(page, panelSelector);
+    if (!lines) throw new Error(`${panelSelector} not found for subtab "${subtab}"`);
+    if (lines.length < 20) {
       throw new Error(
         `Suspiciously little content for subtab "${subtab}" (${lines.length} text nodes) — extraction or routing is broken; refusing to treat this as a valid capture.`
       );
     }
-    const modalSections = await extractModalTexts(page);
+    const modalSections = await extractModalTexts(page, panelSelector);
     return [...lines, ...modalSections].join('\n') + '\n';
   } finally {
     await context.close();

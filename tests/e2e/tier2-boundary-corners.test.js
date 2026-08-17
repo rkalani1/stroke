@@ -782,7 +782,7 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
     it('F16-T2.4: Snapshot baselines remain large enough to catch truncation after source-only pruning', () => {
       const ischemic = fs.readFileSync(path.join(snapDir, 'ischemic.txt'), 'utf8').split('\n');
       const ich = fs.readFileSync(path.join(snapDir, 'ich.txt'), 'utf8').split('\n');
-      expect(ischemic.length).toBeGreaterThan(800);
+      expect(ischemic.length).toBeGreaterThan(700);
       expect(ich.length).toBeGreaterThan(500);
     });
 

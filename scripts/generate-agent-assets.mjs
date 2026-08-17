@@ -126,7 +126,7 @@ const ROUTES = [
   { route: '#/protocols', label: 'Example protocols (not local policy)' },
   { route: '#/protocols/ischemic', label: 'Example acute ischemic stroke pathways' },
   { route: '#/protocols/ich', label: 'Intracerebral hemorrhage' },
-  { route: '#/protocols/calculators', label: 'Calculators' },
+  { route: '#/research/calculators', label: 'Calculators' },
   { route: '#/research', label: 'Evidence atlas / guidelines' },
   { route: '#/trials', label: 'Trial screener / matrix' },
   { route: '#/education', label: 'Education hub' },

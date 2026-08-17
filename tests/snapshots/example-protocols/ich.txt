@@ -6,7 +6,6 @@ Protocols & Algorithms
 ICH
 ICH
 Ischemic/TIA
-Calculators
 ICH Management
 Algorithmic workflow
 Key Principles
@@ -114,11 +113,8 @@ Escalate airway and ICU-level monitoring early when exam worsens or airway prote
 Use the presenting-SBP branches: 150-219 → target 140 and maintain 130-150; ≥220 → reduce about 20% but never more than 25% in the first hour, then target 140-160; <150 → do not actively lower to 140.
 3. Agent-Specific Reversal
 Confirm the applicable INR, thrombin-time, direct-Xa, anti-Xa, and last-dose timing gate, then use the institutional agent-specific pathway below.
-4. Additional Supportive Care
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
-5. Surgery and Research Screens
+4. Surgery and Research Screens
 Symptomatic hydrocephalus → urgent EVD evaluation. Cerebellar mass effect, usually with obstructive hydrocephalus and/or brainstem compression → urgent suboccipital decompression evaluation, with EVD as indicated. Use the complete MIE, MINUTE, or other source-defined screen; do not gate on a single value.
-Follow the applicable institutional branch below and document the selected pathway.
 Warfarin Reversal Guide
 Immediate — All Warfarin Patients:
 Give
@@ -393,26 +389,16 @@ Renal/ICP considerations:
 use caution with aggressive lowering in moderate-severe renal dysfunction and maintain CPP >60 mmHg when ICP is elevated.
 Agents named by the institutional source:
 IV nicardipine or IV labetalol; no doses are supplied.
-Expansion Risk Factors
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 IVH & Hydrocephalus Management
 EVD Indications
 Symptomatic hydrocephalus: urgent EVD evaluation.
 Cerebellar mass effect, usually with obstructive hydrocephalus and/or brainstem compression: urgent suboccipital decompression evaluation, with EVD as indicated.
-IVH-Specific Management
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 ICH Disposition & Goals of Care
 Surgical Indications
 Cerebellar ICH with mass effect
 : urgent Neurosurgery evaluation for suboccipital decompression; obstructive hydrocephalus and/or brainstem compression commonly increase urgency and may require EVD.
 Life-threatening mass effect:
 evaluate for decompression; Neurosurgery leads the operative approach.
-Goals-of-Care Guidance
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
-Seizure Management in ICH
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
-Anticoagulation Restart After ICH
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 ICH Supportive Care Bundle
 Standard Orders
 Use generic head-of-bed elevation.

@@ -1,14 +1,3 @@
-No diagnosis set.
-Set a working diagnosis on the Encounter tab to activate pathway-specific management recommendations and auto-populate relevant protocols.
-Set diagnosis
-Protocols & Algorithms
-›
-Calculators
-ICH
-Ischemic/TIA
-Calculators
-PHQ-9 Depression Screen (post-stroke)
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 Quick Dosing Reference
 TNK (Tenecteplase)
 0.25 mg/kg IV bolus (max 25 mg)
@@ -52,14 +41,6 @@ Incomplete:
 complete every NIHSS item in the Encounter tab before using or copying the score.
 Use the NIHSS panel in the Encounter tab for full item-by-item scoring.
 The institutional acute-stroke algorithm requires NIHSS documentation but does not supply scoring definitions or interpretation.
-NIHSS Scoring Pitfalls
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
-NIHSS Exam Technique Guide (for telestroke coaching)
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
-COR/LOE Reference Legend
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
-Modified Fisher Scale
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 Glasgow Coma Scale (GCS)
 Score:
 Incomplete
@@ -157,7 +138,6 @@ Required review:
 I assessed age, hematoma volume, intraventricular hemorrhage, and infratentorial origin. Unchecked criteria are absent.
 FUNC Score
 Inputs retained
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 ICH Volume
 Enter ICH volume in the source-backed ABC/2 calculator above.
 Age
@@ -265,7 +245,6 @@ Score 9:
 12.2%
 HAS-BLED Score
 Inputs retained
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 H
 ypertension
 A
@@ -291,10 +270,8 @@ No history of stroke or TIA
 Nonsmoker
 Cortical infarct
 Age (years)
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 RCVS² Score
 Inputs retained
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 Recurrent thunderclap headaches
 Intracranial carotid artery involvement
 Vasoconstrictive trigger exposure
@@ -318,11 +295,8 @@ Grade 2
 Grade 3
 Grade 4
 Grade 5
-PREVENT 10-year ASCVD Risk Estimate
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 PHASES Score
 Inputs retained
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 Population
 North American / European
 Japanese
@@ -351,7 +325,6 @@ Hours since last DOAC dose
 DOAC dose (mg per dose)
 Institutional pathway:
 Andexanet alfa is unavailable. For apixaban-, rivaroxaban-, or edoxaban-associated ICH, give 4-factor PCC 2,000 units IV only when the Direct Xa Inhibitor screen is elevated and PCC has no contraindication; otherwise this card returns no actionable dose.
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 Creatinine Clearance (Cockcroft-Gault)
 Age
 Weight (kg)
@@ -361,11 +334,9 @@ Male
 Female
 Serum Cr (mg/dL)
 Height (cm) — for obesity-adjusted CrCl
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 Enoxaparin Weight-Based Dosing
 Weight (kg)
 CrCl (mL/min)
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 ASPECTS Score (Interactive)
 Score:
 Incomplete
@@ -436,13 +407,11 @@ Alteplase (tPA) Dosing Calculator
 Enter patient weight in the encounter section to calculate dose.
 SPAN-100, DRAGON, and SEDAN
 Inputs retained
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 SPAN-100 Index
 Input labels: Age; NIHSS.
 SEDAN Score
 Input labels: Sugar (glucose); early infarct signs; dense artery sign; age; NIHSS.
 mTICI Reperfusion Score (Post-EVT)
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 mTICI
 0
 mTICI
@@ -456,5 +425,4 @@ mTICI
 mTICI
 3
 DRAGON Score
-No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.
 Input labels: Dense artery sign or early infarct on NCCT; pre-stroke mRS; age; glucose; onset to treatment; NIHSS.
