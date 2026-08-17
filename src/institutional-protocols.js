@@ -1,100 +1,29 @@
-// Example institutional stroke protocols based on current published evidence.
-// These are illustrative protocol patterns derived from peer-reviewed trials
-// and guideline statements; they are NOT endorsed by any named institution and
-// must be adapted to local policy before clinical use. Do not rely on this
-// module as the sole source of truth for any patient encounter.
-//
-// EVIDENCE AUDIT: Last comprehensive review 2026-05-31; IVT/EVT eligibility and
-// BP-target content re-verified 2026-07-03 against the 2026 acute-stroke algorithm,
-// IVT/EVT eligibility, and telestroke source updates (no clinical changes required).
-// 2026-07-06: re-verified against the newest institution-neutral source translations
-// (June-30 telestroke workflow + pediatric framework) and the AHA/ASA 2026 AIS
-// guideline (Stroke; DOI 10.1161/STR.0000000000000513, PMID 41582814, PubMed-
-// verified). Extended-window IVT remains framed as emerging (not routine to 24h);
-// TNK 0.25 mg/kg max 25 mg; BP <185/110 pre-IVT and <180/105 post-IVT/EVT; no
-// routine SBP <140 after successful EVT. No clinical changes required.
-// 2026-08-16: reconciled against the current finalized local clinical source set
-// (July-2026 acute stroke algorithm Rev 7/2026; EVT eligibility flowchart June 2026;
-// pocket cards 7.14.2026 + the 7/17 p20 replacement page; 8/2026 IVT and EVT
-// information forms). Clinical changes made this pass:
-//   - EVT 6-24h anterior: removed the age<80 / no-mass-effect gate from the ASPECTS>=6
-//     tier. The source routes ASPECTS 6-10 straight to COR 1 / LOE A; the age ceiling
-//     belongs only to the large-core tiers (SELECT2 / ANGEL-ASPECT / LASTE enrolled <=80,
-//     whereas DAWN enrolled to 90). The app had been more restrictive than the source.
-//   - EVT 6-24h anterior: added the missing large-core tier (ASPECTS 3-5, age <80,
-//     no significant mass effect -> COR 1 / LOE A).
-//   - EVT M2: added the 6-24h dominant-M2 tier gated on CTP hypoperfusion-hypodensity
-//     mismatch (COR 2a / LOE B-NR); previously only <=6h was modelled.
-//   - EVT M2: codominant M2 no longer reported as COR 3 "no benefit". The source assigns
-//     COR 3 only to non-dominant M2 / ACA / PCA; codominant (90-100 mL tissue at risk)
-//     carries no recommendation and is now returned as indeterminate.
-//   - Orolingual angioedema: "Discontinue IV alteplase" replaced with "Hold ACE
-//     inhibitors - stop the thrombolytic infusion if alteplase is the agent being
-//     administered". Per the 7/17 p20 replacement page; tenecteplase is a single bolus,
-//     so the old unconditional instruction was not actionable in a TNK-first service.
-// Recorded evidence gaps (NOT filled by inference): no local CVT source exists, and no
-// current finalized local SAH protocol exists - both remain guideline-derived.
-// Reviewed against:
-// — AHA/ASA AIS 2026 Guidelines
-// — AHA/ASA ICH 2022 (Greenberg)
-// — AHA/ASA aSAH 2023
-// — AHA/ASA CVT 2024
-// — AHA/ASA Secondary Prevention 2021 (Kleindorfer)
-// — ESC AF 2024 (van Gelder — CHA₂DS₂-VA, drops sex)
-// — Key trials: NINDS, ECASS III, WAKE-UP, EXTEND, AcT, TRACE-2, TIMELESS,
-//   TWIST, MR CLEAN, DAWN, DEFUSE-3, SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT,
-//   TENSION, LASTE, BAOCHE, ATTENTION, INTERACT2, ATACH-2, INTERACT3, MISTIE III,
-//   ENRICH, ANNEXA-I, CHANCE, POINT, THALES, CHANCE-2, SPARCL, TST, ARCADIA,
-//   NAVIGATE-ESUS, RE-SPECT ESUS, CLOSE/RESPECT/REDUCE, CADISS, TREAT-CAD,
-//   CREST/CREST-2, CAPRIE, MATCH, SPS3, COMPASS, RESTART, ELAN, OPTIMAS,
-//   ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II, AVERT, FOCUS, AFFINITY, SAVE.
+// Public-safe translation of the current accepted institutional stroke sources.
+// Adult Protocols content in this module is limited to that source set. Literature
+// and society guidance are not used as substitute protocol authority. Operational
+// identifiers, contact details, platform tokens, and source file names are omitted.
+// This educational implementation is not a substitute for the approved source or
+// patient-specific clinical judgment.
 
 // =====================================================================
-// Example blood pressure protocols (based on current AHA/ASA evidence)
+// Adult blood-pressure protocols in the accepted institutional source set
 // =====================================================================
 export const INSTITUTIONAL_BP_PROTOCOLS = {
   beforeIVT: {
     scenario: 'Before IVT',
     target: 'BP <185/110',
-    cor: '1',
-    loe: 'B-NR',
     protocol: 'Labetalol 10 mg IV, repeat q15 min; escalate to 20 mg, then 40 mg, then 60 mg (max single bolus). Max 300 mg in 2h.',
-    alternatives: 'Nicardipine 5 mg/hr IV, titrate by 2.5 mg/hr q5 min (max 15 mg/hr). Clevidipine 1-2 mg/hr, double q90 sec (max 32 mg/hr).'
+    alternatives: 'Nicardipine 5 mg/hr IV, titrate by 2.5 mg/hr q5 min (max 15 mg/hr).'
   },
   afterIVT24h: {
     scenario: 'After IVT (24h)',
     target: 'BP <180/105',
-    cor: '1',
-    loe: 'B-R',
-    protocol: 'Monitor q15 min × 2h → q30 min × 6h → q1h until 24h. Treat if SBP >180 or DBP >105.'
+    protocol: 'Monitor q15 min × 2h → q30 min × 6h → q1h × 16h; maintain BP below 180/105 for 24 hours.'
   },
   afterEVT24h: {
     scenario: 'After EVT (24h)',
-    target: 'BP <180/105',
-    cor: '2a',
-    loe: 'B-NR',
-    protocol: 'For successful recanalization (mTICI ≥2b) maintain SBP in range 140-180 (preserve SBP floor of 140).'
-  },
-  sbpLT140IVT: {
-    scenario: 'SBP <140 after IVT',
-    status: 'Not recommended',
-    cor: '3 (No Benefit)',
-    loe: 'B-R',
-    rationale: 'No functional improvement vs <180 target (ENCHANTED2-MT context).'
-  },
-  sbpLT140EVT: {
-    scenario: 'SBP <140 after EVT (×72h)',
-    status: 'Likely harmful / Class III (Harm)',
-    cor: '3 (Harm)',
-    loe: 'A (4 RCTs negative/harm)',
-    rationale: 'Formal Class III (Potential Harm) COR in AHA/ASA 2026 Guidelines. Lowering SBP below 140 mm Hg after successful endovascular therapy is associated with increased risk of death or disability. ENCHANTED2-MT (Lancet 2022, n=821) worse mRS shift with <120 × 72h; OPTIMAL-BP (JAMA 2023, n=306) worse mRS 0-2 with <140; BP-TARGET (Lancet Neurol 2021, n=324) neutral/trend harm with 100-129; BEST-II (JAMA 2023) futility for lower targets. Practical implication: maintain SBP floor of 140 (typically 140-180 target) for ≥72h post-successful EVT.'
-  },
-  noReperfusion: {
-    scenario: 'Ischemic stroke (no reperfusion therapy)',
-    target: 'Permissive until SBP ≥220/120',
-    cor: '3 (No Benefit)',
-    loe: 'A',
-    rationale: 'No benefit to initiating antihypertensive treatment if BP <220/120 without comorbid indication.'
+    target: 'SBP 140-180',
+    protocol: 'Maintain SBP in the source-listed range of 140-180.'
   }
 };
 
@@ -122,7 +51,6 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
         'Measure hematoma volume using ABC/2 and treat >=15 mL as the early Neurosurgery + stroke-service evaluation threshold.',
         'ED clinicians or the stroke service may consult Neurosurgery directly; prior approval is not required.',
         'Whichever service calls Neurosurgery closes the loop with the designated on-call stroke attending and other involved service so the plan is shared and documented.',
-        'Separate attending-of-record notification is not default unless that expectation is explicitly requested, especially overnight.',
         'Consult earlier at any size for IVH, hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, multicompartmental hemorrhage, vascular lesion concern, ED attending discretion, or clinician concern.'
       ]
     },
@@ -136,7 +64,7 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
     {
       title: 'Monitoring adjuncts',
       items: [
-        'Use close serial neurologic exams and repeat imaging when the exam changes.',
+        'Use close serial neurologic exams and repeat imaging when the exam changes.'
       ]
     }
   ],
@@ -168,7 +96,7 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
       criteria: [
         'Age 18-80',
         'Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH',
-        'Volume >=15 mL by ABC/2, or close enough to prompt screening',
+        'Basal-ganglia IPH volume >=20 mL by ABC/2',
         'NIHSS >=6',
         'CTA/MRA without vascular lesion',
         'Arrival/evaluation <=15 hours since last known well',
@@ -202,23 +130,54 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
 };
 
 // =====================================================================
-// Example pre-thrombolytic safety-pause attestation
+// Pre-thrombolytic safety pause — public-safe translation
 // =====================================================================
-export const SAFE_PAUSE_ATTESTATION = '#STROKESAFEPAUSE';
-export const getSafePauseText = ({ consentType = 'informed', bp = '', contraindications = 'reviewed' }) => {
+export const SAFE_PAUSE_ATTESTATION = '[APPROVED LOCAL ATTESTATION REQUIRED]';
+
+const parseAttestationBP = (bp) => {
+  const match = String(bp || '').trim().match(/^(\d{2,3})\s*\/\s*(\d{2,3})$/);
+  if (!match) return null;
+  return { systolic: Number(match[1]), diastolic: Number(match[2]) };
+};
+
+export const getSafePauseIssues = ({ consentType = '', bp = '', contraindications = '' } = {}) => {
+  const issues = [];
+  const consent = String(consentType || '').trim().toLowerCase();
+  if (!consent || consent === 'declined') issues.push('Consent is absent or declined.');
+
+  const parsedBP = parseAttestationBP(bp);
+  if (!parsedBP) {
+    issues.push('BP is absent or malformed; enter systolic/diastolic.');
+  } else if (!(parsedBP.systolic < 185 && parsedBP.diastolic < 110)) {
+    issues.push('BP must be strictly below 185/110 before thrombolytic administration.');
+  }
+
+  if (String(contraindications || '').trim().toLowerCase() !== 'reviewed') {
+    issues.push('Absolute and relative contraindications have not been marked reviewed.');
+  }
+  return issues;
+};
+
+export const getSafePauseText = ({ consentType = '', bp = '', contraindications = '' } = {}) => {
+  const issues = getSafePauseIssues({ consentType, bp, contraindications });
+  if (issues.length > 0) {
+    return `SAFE PAUSE NOT READY — DO NOT ATTEST:
+${issues.map((issue, index) => `(${index + 1}) ${issue}`).join('\n')}
+Attestation unavailable until every required item is complete.`;
+  }
   return `SAFE PAUSE BEFORE THROMBOLYTIC ADMINISTRATION:
 (1) Consent confirmed (${consentType}).
-(2) BP confirmed ${bp || '<185/110'}.
+(2) BP confirmed ${bp}; both values are strictly below 185/110.
 (3) Absolute & relative contraindications ${contraindications}.
-(4) Dose confirmed (weight-based, max 25 mg TNK / 90 mg alteplase).
+(4) Dose confirmed (weight-based TNK 0.25 mg/kg, max 25 mg).
 (5) Pause performed FACE-TO-FACE with the RN or anesthesia provider who will administer the drug.
 (6) Pause confirmed by neurology, the ED clinician, and the primary RN.
-(7) Safety-pause documented in communication platform.
+(7) Safety pause documented using the approved local workflow.
 Attestation: ${SAFE_PAUSE_ATTESTATION}`;
 };
 
 // =====================================================================
-// IVT eligibility — example institutional algorithm
+// Adult IVT eligibility — accepted institutional algorithm
 // =====================================================================
 export const evaluateIVT = ({
   ichOnCT,
@@ -228,23 +187,76 @@ export const evaluateIVT = ({
   weight,
   imagingPathway = {},
   crao,
-  age
+  age,
+  glucoseCorrectedDeficitPersists,
+  preMRS,
+  evtStatus,
+  consentObtained,
+  wakeUpOrUnknownOnset = false,
+  bpSystolic,
+  bpDiastolic,
+  contraindicationsReviewed
 }) => {
-  const hrs = parseFloat(hoursFromLKW);
+  const hrs = wakeUpOrUnknownOnset === true ? Number.NaN : parseFloat(hoursFromLKW);
   const glc = parseFloat(glucose);
   const wt = parseFloat(weight);
+  const yrs = parseFloat(age);
+  const mrs = parseFloat(preMRS);
+  const sbp = parseFloat(bpSystolic);
+  const dbp = parseFloat(bpDiastolic);
   const decisions = [];
   const warnings = [];
+  const finalSafetyHold = () => {
+    const issues = [];
+    if (!Number.isFinite(sbp) || !Number.isFinite(dbp) || sbp <= 0 || dbp <= 0) {
+      issues.push('enter the current systolic and diastolic blood pressure');
+    } else if (!(sbp < 185 && dbp < 110)) {
+      issues.push('confirm both BP values are strictly below 185/110');
+    }
+    if (contraindicationsReviewed !== true) {
+      issues.push('confirm the absolute and relative contraindications were reviewed');
+    }
+    if (issues.length === 0) return null;
+    return {
+      eligible: 'pending',
+      recommendation: 'Final IVT safety gates incomplete',
+      reason: `${issues.join('; ')}. Complete the approved local safety pause before an affirmative treatment result.`,
+      decisions,
+      warnings
+    };
+  };
 
-  // `age` was previously destructured but never read, while the calculator rendered an
-  // Age input — the card implied age was being evaluated when it was not. Source
-  // inclusion criterion is age >=18, off-label from age 2 via the pediatric pathway.
-  const yrs = parseFloat(age);
-  if (Number.isFinite(yrs) && yrs < 18) {
-    warnings.push('Age <18 — adult inclusion/exclusion criteria do not apply directly. Thrombolysis may be considered off-label from age 2; use the pediatric stroke pathway.');
+  if (ichOnCT === true) return { eligible: false, recommendation: 'IVT not recommended', reason: 'Intracranial hemorrhage on imaging', decisions, warnings };
+
+  if (!Number.isFinite(yrs)) {
+    return { eligible: null, recommendation: 'Enter adult age before evaluating IVT', decisions, warnings };
+  }
+  if (yrs < 18) {
+    warnings.push('Age is under 18; use the separately governed pediatric pathway.');
+    return {
+      eligible: null,
+      recommendation: 'Adult IVT algorithm does not apply',
+      reason: 'Age is under 18. Use the separately governed pediatric pathway; this adult evaluator cannot return an affirmative result.',
+      decisions,
+      warnings
+    };
   }
 
-  if (ichOnCT === true) return { eligible: false, recommendation: 'IVT not recommended', cor: '3 (Harm)', reason: 'Intracranial hemorrhage on imaging', decisions };
+  if (ichOnCT !== false) return { eligible: null, recommendation: 'Confirm CT excludes intracranial hemorrhage', decisions, warnings };
+
+  if (Number.isFinite(glc) && (glc < 50 || glc > 400)) {
+    if (glucoseCorrectedDeficitPersists !== true) {
+      return {
+        eligible: 'pending',
+        recommendation: 'Correct glucose and reassess before IVT decision',
+        reason: `Glucose ${glc} mg/dL is outside 50-400 mg/dL. An affirmative result requires explicit confirmation that the deficit persists after correction.`,
+        decisions,
+        warnings
+      };
+    }
+    warnings.push(`Glucose ${glc} mg/dL was corrected; persistent deficit was explicitly confirmed.`);
+  }
+
   if (disablingDeficit === false) {
     return {
       eligible: false,
@@ -252,13 +264,14 @@ export const evaluateIVT = ({
       cor: '3 (No Benefit)',
       loe: 'B-R',
       reason: 'Non-disabling deficits. Disabling = impairs ADLs (bathing, ambulating, toileting, hygiene, eating) or return-to-work.',
-      nextStep: 'Consider early DAPT.',
-      decisions
+      decisions,
+      warnings
     };
   }
+  if (disablingDeficit !== true) return { eligible: null, recommendation: 'Confirm whether the deficit is disabling', decisions, warnings };
 
-  if (Number.isFinite(glc) && (glc < 50 || glc > 400)) {
-    warnings.push(`Glucose ${glc} mg/dL — correct first, then re-assess whether deficit persists on glucose-corrected exam.`);
+  if (!Number.isFinite(glc)) {
+    return { eligible: null, recommendation: 'Enter glucose before evaluating IVT', decisions, warnings };
   }
 
   // CRAO is evaluated BEFORE the time-window block. Every branch of that block returns,
@@ -266,103 +279,132 @@ export const evaluateIVT = ({
   // 2h fell through to the standard-window COR 1 / LOE A recommendation and never saw
   // the shared-decision framing the source requires.
   if (crao) {
-    const withinWindow = !Number.isFinite(hrs) || hrs <= 4.5;
+    if (!Number.isFinite(hrs)) {
+      return { eligible: 'pending', recommendation: 'Enter LKW time before the CRAO shared-decision evaluation', decisions, warnings };
+    }
+    if (hrs < 0) {
+      return { eligible: null, recommendation: 'Enter a valid non-negative LKW interval', decisions, warnings };
+    }
+    const withinWindow = hrs <= 4.5;
+    if (withinWindow) {
+      const hold = finalSafetyHold();
+      if (hold) return hold;
+    }
+    if (withinWindow && (!Number.isFinite(wt) || wt <= 0)) {
+      return { eligible: 'pending', recommendation: 'Enter a positive weight before an IVT treatment result', decisions, warnings };
+    }
     return {
       eligible: withinWindow ? 'consider' : false,
       recommendation: withinWindow
         ? 'CRAO — consider IVT in select cases with informed consent and shared decision-making.'
         : 'CRAO beyond 4.5h — IVT not supported; the shared-decision pathway applies within 4.5h only.',
-      cor: '—',
-      loe: 'C-LD',
-      // Source states this flatly; do not soften to "does not strongly support".
-      rationale: 'Trial evidence does not support efficacy; physiologic rationale and observational data only; use within 4.5h only.',
+      rationale: 'The institutional source states that trial evidence does not support efficacy. Use shared decision-making within 4.5 hours.',
       decisions,
       warnings
     };
   }
 
-  if (Number.isFinite(hrs)) {
-    if (hrs <= 4.5) {
-      decisions.push({ step: 'time', msg: `${hrs}h from LKW — standard 0-4.5h window` });
-      if (hrs > 3) {
-        warnings.push('3-4.5h window: eligibility criteria are the same as at earlier time periods, with these additional cautionary criteria — baseline NIHSS >25; age >80; history of BOTH diabetes mellitus and prior stroke; oral anticoagulant use; evidence of ischemic injury involving >1/3 of the MCA territory.');
-      }
-      return {
-        eligible: true,
-        recommendation: 'TNK recommended — standard window',
-        agent: 'Tenecteplase 0.25 mg/kg IV bolus (max 25 mg)',
-        dose: Number.isFinite(wt) ? Math.min(25, Math.round(wt * 0.25 * 2) / 2) : null,
-        cor: '1',
-        loe: 'A',
-        warnings,
-        decisions,
-        nextStep: 'Complete SAFE PAUSE; confirm BP <185/110; review contraindications; obtain consent.',
-        alternativeAgent: 'Alteplase 0.9 mg/kg (10% bolus, 90% over 60 min; max 90 mg) — consider if TNK unavailable.'
-      };
+  if (Number.isFinite(hrs) && hrs < 0) {
+    return { eligible: null, recommendation: 'Enter a valid non-negative LKW interval', decisions, warnings };
+  }
+  if (Number.isFinite(hrs) && hrs <= 4.5) {
+    const hold = finalSafetyHold();
+    if (hold) return hold;
+    if (!Number.isFinite(wt) || wt <= 0) {
+      return { eligible: 'pending', recommendation: 'Enter a positive weight before an IVT treatment result', decisions, warnings };
     }
-    const { mismatchPresent, ctpCoreMl, ctpRatio, ctpMismatchVolMl, smallVessel, posteriorCirc, contrastAllergy } = imagingPathway;
-    const core = parseFloat(ctpCoreMl);
-    const ratio = parseFloat(ctpRatio);
-    const mismatchVol = parseFloat(ctpMismatchVolMl);
-    const imagingCriteriaMet =
-      mismatchPresent === true ||
-      ((Number.isFinite(core) && core < 50) && (Number.isFinite(ratio) && ratio >= 1.2) && (Number.isFinite(mismatchVol) && mismatchVol >= 10));
-    const preferMRI = smallVessel || posteriorCirc || contrastAllergy;
-    if (hrs > 4.5 && hrs <= 9) {
-      if (!imagingCriteriaMet) {
-        return {
-          eligible: false,
-          recommendation: 'Imaging criteria not met for extended-window IVT',
-          cor: '—',
-          reason: 'Requires CTP core <50 mL, ratio ≥1.2, mismatch vol ≥10 mL; or MRI DWI/FLAIR mismatch.',
-          decisions,
-          warnings,
-          imagingGuidance: preferMRI ? 'Prefer MRI if small vessel, posterior circulation, or contrast allergy.' : 'CTP acceptable; MRI alternative.'
-        };
-      }
-      return {
-        eligible: 'consider',
-        recommendation: 'Consider TNK — extended window (4.5-9h or wake-up with DWI-FLAIR mismatch)',
-        agent: 'Tenecteplase 0.25 mg/kg IV bolus (max 25 mg)',
-        dose: Number.isFinite(wt) ? Math.min(25, Math.round(wt * 0.25 * 2) / 2) : null,
-        cor: '2a',
-        loe: 'B-R',
-        warnings,
-        decisions,
-        nextStep: 'Confirm baseline mRS ≤1, imaging criteria, and that the patient is NOT an EVT candidate (IVT may be considered in select patients with LVO if EVT within 24h is not feasible — e.g., transport delay, patient declines EVT). Informed consent recommended; SAFE PAUSE attestation.',
-        imagingGuidance: preferMRI ? 'Prefer MRI (small vessel / posterior / contrast allergy).' : null
-      };
-    }
-    if (hrs > 9 && hrs <= 24) {
-      if (!imagingCriteriaMet) {
-        return {
-          eligible: false,
-          recommendation: 'Imaging criteria not met for 9-24h IVT',
-          decisions,
-          warnings
-        };
-      }
-      return {
-        eligible: 'consider',
-        recommendation: 'Consider TNK — late window (9-24h) with CTP-selected mismatch',
-        agent: 'Tenecteplase 0.25 mg/kg IV bolus (max 25 mg)',
-        dose: Number.isFinite(wt) ? Math.min(25, Math.round(wt * 0.25 * 2) / 2) : null,
-        warnings,
-        decisions,
-        nextStep: 'Consent required for the 9-24h window; the source algorithm states CONSIDER TNK / consent required and assigns no COR or LOE grade to this branch. Confirm baseline mRS ≤1 and that the patient is NOT an EVT candidate; discuss ~9-11% absolute benefit in 0-disability outcome and ~3% sICH risk.'
-      };
-    }
-    return { eligible: false, recommendation: 'Beyond 24h window — IVT not indicated', decisions, warnings };
+    decisions.push({ step: 'time', msg: `${hrs}h from LKW — standard 0-4.5h window` });
+    return {
+      eligible: true,
+      recommendation: 'TNK recommended — standard window',
+      agent: 'Tenecteplase 0.25 mg/kg IV bolus (max 25 mg)',
+      dose: Number.isFinite(wt) ? Math.min(25, Math.round(wt * 0.25 * 2) / 2) : null,
+      cor: '1',
+      loe: 'A',
+      warnings,
+      decisions,
+      nextStep: 'Complete the approved local safety pause; confirm BP is strictly below 185/110 and contraindications were reviewed.'
+    };
   }
 
+  const { mriDwiFlairMismatch, ctpCoreMl, ctpRatio, ctpMismatchVolMl, smallVessel, posteriorCirc, contrastAllergy } = imagingPathway;
+  const core = parseFloat(ctpCoreMl);
+  const ratio = parseFloat(ctpRatio);
+  const mismatchVol = parseFloat(ctpMismatchVolMl);
+  const fullCTPCriteriaMet = Number.isFinite(core) && core < 50 && Number.isFinite(ratio) && ratio >= 1.2 && Number.isFinite(mismatchVol) && mismatchVol >= 10;
+  const preferMRI = smallVessel || posteriorCirc || contrastAllergy;
+  const extendedGates = [];
+  if (!Number.isFinite(mrs) || mrs > 1) extendedGates.push('baseline mRS must be entered and be ≤1');
+  if (!['not-candidate', 'not_candidate', 'candidate-infeasible', 'evt-infeasible', 'evt_infeasible'].includes(evtStatus)) extendedGates.push('EVT status must confirm not an EVT candidate or the narrow EVT-infeasible status');
+  const isWakeUpOrUnknown = wakeUpOrUnknownOnset === true && !Number.isFinite(hrs);
+  const isFourPointFiveToNine = Number.isFinite(hrs) && hrs > 4.5 && hrs <= 9;
+
+  if (isWakeUpOrUnknown || isFourPointFiveToNine) {
+    const qualifyingMismatch = isWakeUpOrUnknown ? mriDwiFlairMismatch === true : mriDwiFlairMismatch === true || fullCTPCriteriaMet;
+    if (!qualifyingMismatch || extendedGates.length > 0) {
+      return {
+        eligible: 'pending',
+        recommendation: 'Extended-window IVT gates incomplete',
+        reason: [...(!qualifyingMismatch ? [isWakeUpOrUnknown ? 'Wake-up/unknown-onset treatment requires explicit MRI DWI-FLAIR mismatch in this institutional branch.' : 'Requires explicit MRI DWI-FLAIR mismatch or all CTP criteria: core <50 mL, ratio ≥1.2, mismatch volume ≥10 mL.'] : []), ...extendedGates].join(' '),
+        decisions,
+        warnings,
+        imagingGuidance: isWakeUpOrUnknown ? 'Use the limited hyperacute MRI pathway.' : preferMRI ? 'Prefer MRI if small vessel, posterior circulation, or contrast allergy.' : 'CTP acceptable; MRI alternative.'
+      };
+    }
+    const hold = finalSafetyHold();
+    if (hold) return hold;
+    if (!Number.isFinite(wt) || wt <= 0) {
+      return { eligible: 'pending', recommendation: 'Enter a positive weight before an IVT treatment result', decisions, warnings };
+    }
+    return {
+      eligible: 'consider',
+      recommendation: `Consider TNK — ${isWakeUpOrUnknown ? 'wake-up/unknown-onset' : '4.5-9-hour'} window with qualifying mismatch imaging`,
+      agent: 'Tenecteplase 0.25 mg/kg IV bolus (max 25 mg)',
+      dose: Number.isFinite(wt) ? Math.min(25, Math.round(wt * 0.25 * 2) / 2) : null,
+      cor: '2a',
+      loe: 'B-R',
+      warnings,
+      decisions,
+      nextStep: 'Complete the approved local safety pause.',
+      imagingGuidance: preferMRI ? 'Prefer MRI (small vessel / posterior / contrast allergy).' : null
+    };
+  }
+
+  if (Number.isFinite(hrs) && hrs > 9 && hrs <= 24) {
+    const lateGates = consentObtained === true ? extendedGates : [...extendedGates, 'consent must be obtained'];
+    if (!fullCTPCriteriaMet || lateGates.length > 0) {
+      return {
+        eligible: 'pending',
+        recommendation: 'Late-window IVT gates incomplete',
+        reason: [...(!fullCTPCriteriaMet ? ['Requires all CTP criteria: core <50 mL, ratio ≥1.2, mismatch volume ≥10 mL. MRI mismatch alone is not sufficient for this branch.'] : []), ...lateGates].join(' '),
+        decisions,
+        warnings
+      };
+    }
+    const hold = finalSafetyHold();
+    if (hold) return hold;
+    if (!Number.isFinite(wt) || wt <= 0) {
+      return { eligible: 'pending', recommendation: 'Enter a positive weight before an IVT treatment result', decisions, warnings };
+    }
+    return {
+      eligible: 'consider',
+      recommendation: 'Consider TNK — late window (9-24h) with CTP-selected mismatch',
+      agent: 'Tenecteplase 0.25 mg/kg IV bolus (max 25 mg)',
+      dose: Number.isFinite(wt) ? Math.min(25, Math.round(wt * 0.25 * 2) / 2) : null,
+      warnings,
+      decisions,
+      nextStep: 'Complete the approved local safety pause; this source branch assigns no COR or LOE grade.'
+    };
+  }
+
+  if (Number.isFinite(hrs)) return { eligible: false, recommendation: 'Beyond 24h window — IVT not indicated', decisions, warnings };
+  if (wakeUpOrUnknownOnset === true) return { eligible: 'pending', recommendation: 'Complete mismatch-imaging selection for wake-up/unknown-onset IVT', decisions, warnings };
   return { eligible: null, recommendation: 'Enter LKW time to evaluate window', decisions, warnings };
 };
 
 // =====================================================================
-// DOAC-exposed IVT pathway — two example site patterns
+// DOAC-exposed IVT pathway — unresolved institutional-source conflict
 // =====================================================================
-// Primary hub pattern: requires anti-Xa UNDETECTABLE + attending attestation
-// Spoke / tele-consult pattern: requires normal renal function + last dose ≥24h + note documentation
 export const evaluateDOAC_IVT = ({
   hoursSinceLastDose,
   antiXaUndetectable,
@@ -371,129 +413,103 @@ export const evaluateDOAC_IVT = ({
   endovascularCandidate,
   site
 }) => {
-  const hrs = parseFloat(hoursSinceLastDose);
-  if (disablingDeficit === false) {
-    return { eligible: false, reason: 'Non-disabling deficit — IVT not recommended regardless of DOAC status.' };
-  }
-  if (endovascularCandidate) {
-    return {
-      eligible: 'preferred-other',
-      reason: 'Endovascular candidate — bypass IVT; proceed directly to EVT.',
-      rationale: 'DOAC exposure increases sICH risk with IVT; EVT is preferred if eligible.'
-    };
-  }
-  if (Number.isFinite(hrs) && hrs > 48) {
-    return {
-      eligible: true,
-      pathway: 'standard',
-      reason: 'DOAC exposure >48h — standard IVT eligibility applies (DOAC considered cleared).',
-      cor: '—',
-      loe: 'observational'
-    };
-  }
-
-  if (site === 'hub') {
-    if (antiXaUndetectable === true) {
-      return {
-        eligible: 'consider',
-        pathway: 'hub-anti-Xa-undetectable',
-        requirement: 'anti-Xa UNDETECTABLE',
-        documentation: 'Attending attestation recommended in note.',
-        cor: '2b',
-        loe: 'C-LD (observational only; no RCT)',
-        rationale: 'Primary-hub example pathway: undetectable anti-Xa suggests cleared anticoagulant effect.'
-      };
-    }
-    return {
-      eligible: false,
-      pathway: 'hub-pending-lab',
-      requirement: 'anti-Xa level required before IVT — order STAT',
-      reason: 'Primary-hub pathway requires anti-Xa undetectable; if detectable or unavailable, IVT not recommended.'
-    };
-  }
-  // Treat 'telestroke' as a synonym of 'spoke' — the UI option exists in
-  // pocket-cards.jsx (DOACIVTCard) but the function previously had no branch
-  // for it, silently falling through to the "select site" default. Both
-  // patterns share the same time-based DOAC-clearance pathway.
-  if (site === 'spoke' || site === 'telestroke') {
-    const renalOk = renalFunctionNormal === true;
-    const lastDoseOk = Number.isFinite(hrs) && hrs >= 24;
-    if (renalOk && lastDoseOk) {
-      return {
-        eligible: 'consider',
-        pathway: 'spoke',
-        requirements: ['Normal renal function', `Last DOAC dose ≥24h ago (${hrs}h reported)`],
-        documentation: 'Document criteria in consult note.',
-        cor: '2b',
-        loe: 'C-LD (observational only)',
-        rationale: 'Spoke / tele-consult example pathway (no STAT anti-Xa available): time-based surrogate for DOAC clearance.'
-      };
-    }
-    return {
-      eligible: false,
-      pathway: 'spoke-criteria-unmet',
-      missing: [!renalOk ? 'Abnormal renal function' : null, !lastDoseOk ? `Last dose <24h ago${Number.isFinite(hrs) ? ` (${hrs}h)` : ''}` : null].filter(Boolean),
-      reason: 'Spoke pathway requires both normal renal function AND last DOAC dose ≥24h.'
-    };
-  }
-  return { eligible: null, reason: 'Select site pattern (hub vs spoke) to evaluate.' };
+  void hoursSinceLastDose;
+  void antiXaUndetectable;
+  void renalFunctionNormal;
+  void disablingDeficit;
+  void endovascularCandidate;
+  void site;
+  return {
+    eligible: 'pending',
+    pathway: 'unresolved-source-conflict',
+    reason: 'The accepted institutional sources conflict on DOAC/factor-Xa timing and assay handling. No affirmative or negative IVT eligibility result is available until the protocol owner adjudicates the source conflict.',
+    requirement: 'Do not use EVT candidacy as a categorical IVT bypass. Evaluate EVT independently while this IVT question remains unresolved.'
+  };
 };
 
 // =====================================================================
-// EVT eligibility — example institutional matrix
+// Adult EVT eligibility — accepted institutional flowchart
 // =====================================================================
-export const evaluateEVT_Anterior = ({ aspectsScore, timeFromLKWh, nihss, preMRS, age, massEffect }) => {
+export const evaluateEVT_Anterior = ({ aspectsScore, timeFromLKWh, nihss, preMRS, age, massEffect, coreVolume }) => {
   const asp = parseFloat(aspectsScore);
   const hrs = parseFloat(timeFromLKWh);
   const n = parseFloat(nihss);
   const mrs = parseFloat(preMRS);
   const a = parseFloat(age);
+  const core = parseFloat(coreVolume);
 
-  if (![asp, hrs, n].every(Number.isFinite)) return { eligible: null, reason: 'Need ASPECTS, LKW hours, and NIHSS.' };
-  if (n < 6) return { eligible: false, reason: 'NIHSS <6 — EVT not routinely recommended (may consider for disabling deficit).', cor: '—' };
-  if (hrs > 24) return { eligible: false, reason: 'Beyond 24h window — EVT not indicated outside select research protocols.', cor: '—' };
+  if (![asp, hrs, n, mrs].every(Number.isFinite)) return { eligible: null, reason: 'Need ASPECTS, LKW hours, NIHSS, and pre-stroke mRS.' };
+  if (asp < 0 || asp > 10) return { eligible: null, reason: 'ASPECTS must be between 0 and 10.' };
+  if (n < 0 || n > 42) return { eligible: null, reason: 'NIHSS must be between 0 and 42.' };
+  if (mrs < 0 || mrs > 6) return { eligible: null, reason: 'Pre-stroke mRS must be between 0 and 6.' };
+  if (hrs < 0) return { eligible: null, reason: 'Enter a valid non-negative LKW interval.' };
+  if (Number.isFinite(a) && a < 18) return { eligible: null, reason: 'Adult EVT algorithm does not apply below age 18.' };
+  if (Number.isFinite(core) && core < 0) return { eligible: null, reason: 'Core volume must be non-negative.' };
+  if (n < 6) return { eligible: false, reason: 'NIHSS <6 does not meet the source-listed anterior-circulation flowchart gate.', cor: '—' };
+  if (hrs > 24) return { eligible: false, reason: 'Beyond the source-listed 24-hour anterior-circulation window.', cor: '—' };
 
   if (hrs <= 6) {
-    if (asp >= 6 && mrs <= 1) return { eligible: true, window: '0-6h', reason: 'Standard EVT criteria met.', cor: '1', loe: 'A' };
-    if (asp >= 3 && asp <= 5 && mrs <= 1 && !massEffect) return { eligible: true, window: '0-6h', reason: 'Large-core early-window EVT — no significant mass effect.', cor: '1', loe: 'A' };
-    if (asp >= 0 && asp <= 2 && mrs <= 1 && !massEffect && Number.isFinite(a) && a < 80) {
+    if (asp >= 6 && asp <= 10 && mrs <= 1) return { eligible: true, window: '0-6h', reason: 'ASPECTS 6-10 and pre-stroke mRS 0-1.', cor: '1', loe: 'A' };
+    if (asp >= 6 && asp <= 10 && mrs === 2) return { eligible: 'consider', window: '0-6h', reason: 'ASPECTS 6-10 and pre-stroke mRS 2.', cor: '2a', loe: 'B-NR' };
+    if (asp >= 6 && asp <= 10 && (mrs === 3 || mrs === 4)) return { eligible: 'consider', window: '0-6h', reason: 'ASPECTS 6-10 and pre-stroke mRS 3-4.', cor: '2b', loe: 'B-NR' };
+    if (asp >= 3 && asp <= 5 && mrs <= 1) {
+      if (massEffect === null || massEffect === undefined) return { eligible: 'pending', window: '0-6h', reason: 'ASPECTS 3-5 requires explicit confirmation that significant mass effect is absent.' };
+      if (massEffect === false) return { eligible: true, window: '0-6h', reason: 'ASPECTS 3-5 with no significant mass effect.', cor: '1', loe: 'A' };
+    }
+    if (asp >= 0 && asp <= 2 && mrs <= 1 && massEffect === false && Number.isFinite(a) && a < 80 && Number.isFinite(core) && core <= 70) {
       return {
         eligible: 'consider',
         window: '0-6h expanded',
-        reason: 'Very-large-core expansion (ASPECTS 0-2) — age <80, no mass effect; requires CTP core ≤70-100 mL or MR selection.',
+        reason: 'ASPECTS 0-2 with age <80, no significant mass effect, and core volume at or below the unambiguous 70 mL boundary printed in the source.',
         cor: '2a',
         loe: 'B-R'
       };
     }
-    if (asp >= 6 && mrs === 2) return { eligible: 'consider', window: '0-6h mild pre-existing disability', reason: 'mRS 2 pre-stroke — mild disability.', cor: '2a', loe: 'B-NR' };
-    if (asp >= 6 && (mrs === 3 || mrs === 4)) return { eligible: 'consider', window: '0-6h moderate pre-existing disability', reason: 'mRS 3-4 pre-stroke — individualize per goals of care.', cor: '2b', loe: 'B-NR' };
+    if (asp >= 0 && asp <= 2 && mrs <= 1 && massEffect === false && Number.isFinite(a) && a < 80 && Number.isFinite(core) && core > 70 && core <= 100) {
+      return { eligible: 'pending', window: '0-6h expanded', reason: 'The institutional flowchart prints a core range of ≤70-100 mL without an executable threshold for 71-100 mL. No eligibility result is selected pending protocol-owner adjudication.' };
+    }
+    if (asp <= 2 && mrs <= 1 && (!Number.isFinite(a) || massEffect === null || massEffect === undefined || !Number.isFinite(core))) {
+      return { eligible: 'pending', window: '0-6h', reason: 'ASPECTS 0-2 requires age <80, explicit absence of significant mass effect, and an entered core volume within the source-listed ≤70-100 mL range.' };
+    }
   }
 
   if (hrs > 6 && hrs <= 24) {
-    if (asp >= 6 && mrs <= 1) {
-      return { eligible: true, window: '6-24h', reason: 'Late-window EVT — ASPECTS ≥6; DAWN/DEFUSE-3 selection. No age ceiling applies at this ASPECTS tier.', cor: '1', loe: 'A' };
+    if (asp >= 6 && asp <= 10 && mrs <= 1) {
+      return { eligible: true, window: '6-24h', reason: 'ASPECTS 6-10 and pre-stroke mRS 0-1.', cor: '1', loe: 'A' };
     }
-    if (asp >= 3 && asp <= 5 && mrs <= 1 && Number.isFinite(a) && a < 80 && !massEffect) {
-      return { eligible: true, window: '6-24h large core', reason: 'Late-window large-core EVT — ASPECTS 3-5, age <80, no significant mass effect.', cor: '1', loe: 'A' };
+    if (asp >= 3 && asp <= 5 && mrs <= 1) {
+      if (!Number.isFinite(a) || massEffect === null || massEffect === undefined) {
+        return { eligible: 'pending', window: '6-24h large core', reason: 'ASPECTS 3-5 in the 6-24-hour window requires age and explicit assessment of significant mass effect.' };
+      }
+      if (a < 80 && massEffect === false) {
+        return { eligible: true, window: '6-24h large core', reason: 'ASPECTS 3-5, age <80, and no significant mass effect.', cor: '1', loe: 'A' };
+      }
     }
-    return { eligible: false, window: '6-24h', reason: 'Does not meet 6-24h standard criteria.', cor: '—' };
+    return { eligible: false, window: '6-24h', reason: 'Does not meet a source-listed 6-24-hour anterior-circulation tier.', cor: '—' };
   }
 
   return { eligible: false, reason: 'No matching eligibility tier at entered parameters.', cor: '—' };
 };
 
-export const evaluateEVT_M2 = ({ segment, dominant, hoursFromLKWh, nihss, preMRS, aspectsScore, ctpMismatch }) => {
+export const evaluateEVT_M2 = ({ segment, dominant, hoursFromLKWh, nihss, preMRS, aspectsScore, ctpMismatch, age }) => {
   const hrs = parseFloat(hoursFromLKWh);
   const n = parseFloat(nihss);
   const mrs = parseFloat(preMRS);
   const asp = parseFloat(aspectsScore);
+  const a = parseFloat(age);
+  if (Number.isFinite(a) && a < 18) return { eligible: null, reason: 'Adult EVT algorithm does not apply below age 18.' };
   if (segment === 'M2-proximal-dominant' && dominant === true) {
+    if (![hrs, n, mrs, asp].every(Number.isFinite)) return { eligible: null, reason: 'Need LKW hours, NIHSS, pre-stroke mRS, and ASPECTS.' };
+    if (hrs < 0) return { eligible: null, reason: 'Enter a valid non-negative LKW interval.' };
+    if (n < 0 || n > 42) return { eligible: null, reason: 'NIHSS must be between 0 and 42.' };
+    if (mrs < 0 || mrs > 6) return { eligible: null, reason: 'Pre-stroke mRS must be between 0 and 6.' };
+    if (asp < 0 || asp > 10) return { eligible: null, reason: 'ASPECTS must be between 0 and 10.' };
     const coreMet = n >= 6 && mrs <= 1 && asp >= 6;
     if (hrs <= 6 && coreMet) {
       return {
         eligible: 'consider',
         window: '0-6h',
-        reason: 'Dominant proximal M2 (proximal segment, ≤1 cm from bifurcation, ≥50% MCA territory supply) within 6h.',
+        reason: 'Dominant proximal M2 within 6 hours with ASPECTS ≥6, NIHSS ≥6, and pre-stroke mRS 0-1.',
         cor: '2a',
         loe: 'B-NR'
       };
@@ -519,30 +535,39 @@ export const evaluateEVT_M2 = ({ segment, dominant, hoursFromLKWh, nihss, preMRS
     }
     return { eligible: false, reason: 'Dominant M2 criteria not all met (need ≤24h, NIHSS ≥6, mRS ≤1, ASPECTS ≥6; beyond 6h also requires CTP mismatch).' };
   }
-  if (['M2-nondominant', 'M3', 'ACA', 'PCA'].includes(segment)) {
+  if (['M2-nondominant', 'ACA', 'PCA'].includes(segment)) {
     return {
       eligible: false,
       cor: '3 (No Benefit)',
       loe: 'A',
-      reason: `EVT is NOT recommended for ${segment}. Covers non-dominant M2 and distal vessel occlusions (M3, ACA, PCA).`
+      reason: `EVT is not recommended for ${segment} in the current institutional flowchart.`
     };
   }
   if (segment === 'M2-codominant') {
     return {
       eligible: 'pending',
       cor: '—',
-      reason: 'Codominant M2 (tissue at risk 90-100 mL) carries no recommendation in the current eligibility algorithm — it falls between dominant (>100 mL) and non-dominant (<90 mL). Individualize; the COR 3 "no benefit" assignment does not apply here.'
+      reason: 'Codominant M2 carries no recommendation in the current institutional eligibility flowchart.'
     };
   }
+  if (segment === 'M3') return { eligible: null, reason: 'M3 is not assigned a recommendation in the current institutional flowchart.' };
   return { eligible: null, reason: 'Select segment to evaluate.' };
 };
 
-export const evaluateEVT_Basilar = ({ nihss, hoursFromLKWh, preMRS, pcAspects, disabling, dualSpecialtyAgreement }) => {
+export const evaluateEVT_Basilar = ({ nihss, hoursFromLKWh, preMRS, pcAspects, age, disabling, dualSpecialtyAgreement }) => {
   const n = parseFloat(nihss);
   const hrs = parseFloat(hoursFromLKWh);
   const mrs = parseFloat(preMRS);
   const pc = parseFloat(pcAspects);
-  if (!Number.isFinite(n) || !Number.isFinite(hrs)) return { eligible: null, reason: 'Need NIHSS and LKW hours.' };
+  const a = parseFloat(age);
+  void disabling;
+  void dualSpecialtyAgreement;
+  if (Number.isFinite(a) && a < 18) return { eligible: null, reason: 'Adult EVT algorithm does not apply below age 18.' };
+  if (![n, hrs, mrs, pc].every(Number.isFinite)) return { eligible: null, reason: 'Need NIHSS, LKW hours, pre-stroke mRS, and PC-ASPECTS.' };
+  if (hrs < 0) return { eligible: null, reason: 'Enter a valid non-negative LKW interval.' };
+  if (n < 0 || n > 42) return { eligible: null, reason: 'NIHSS must be between 0 and 42.' };
+  if (mrs < 0 || mrs > 6) return { eligible: null, reason: 'Pre-stroke mRS must be between 0 and 6.' };
+  if (pc < 0 || pc > 10) return { eligible: null, reason: 'PC-ASPECTS must be between 0 and 10.' };
   if (hrs > 24) return { eligible: false, reason: 'Beyond 24h basilar window.' };
   if (n >= 10 && mrs <= 1 && pc >= 6) {
     return {
@@ -553,18 +578,9 @@ export const evaluateEVT_Basilar = ({ nihss, hoursFromLKWh, preMRS, pcAspects, d
     };
   }
   if (n >= 6 && n <= 9 && mrs <= 1 && pc >= 6) {
-    if (disabling && dualSpecialtyAgreement) {
-      return {
-        eligible: 'consider',
-        reason: 'Basilar NIHSS 6-9 — example institutional pathway: disabling deficits + dual-specialty agreement (neurointerventional + stroke attending) required.',
-        cor: '2b',
-        loe: 'B-R',
-        institutionalRequirement: 'Disabling deficits + dual-specialty (IR + stroke) concordance'
-      };
-    }
     return {
-      eligible: 'pending',
-      reason: 'Basilar NIHSS 6-9 — effectiveness not well established; example institutional pathway requires disabling deficits + dual-specialty agreement.',
+      eligible: 'consider',
+      reason: 'Basilar artery occlusion within 24 hours with NIHSS 6-9, pre-stroke mRS 0-1, and PC-ASPECTS ≥6.',
       cor: '2b',
       loe: 'B-R'
     };
@@ -600,42 +616,58 @@ export const COR_LOE_KEY = {
 // =====================================================================
 // Contraindication lists (absolute, relative, benefit-greater)
 // =====================================================================
+export const IVT_UNRESOLVED_SOURCE_CONFLICTS = [
+  {
+    key: 'doac-factor-xa',
+    label: 'DOAC / factor-Xa timing and assay pathway (<48 hours vs >24 to <48 hours with consent)',
+    detail: 'One accepted source excludes factor-Xa exposure within 48 hours. Another excludes exposure within 24 hours when anti-Xa testing is unavailable and permits consideration after 24 but before 48 hours with consent. No rule is selected pending protocol-owner adjudication.'
+  },
+  {
+    key: 'head-trauma-neurosurgery',
+    label: 'Severe head trauma and intracranial/intraspinal surgery windows (14 vs 90/60 days)',
+    detail: 'Accepted institutional sources list a 14-day window versus 90 days for severe head trauma and 60 days for intracranial/intraspinal surgery. No time window is selected pending protocol-owner adjudication.'
+  },
+  {
+    key: 'prior-stroke-tier',
+    label: 'Prior ischemic stroke within 90 days (absolute vs relative tier)',
+    detail: 'One accepted source places prior ischemic stroke within 90 days under exclusions. Another places the same scenario under both exclusion and relative-exclusion headings. No tier is selected pending protocol-owner adjudication.'
+  }
+];
+
 export const IVT_ABSOLUTE_CONTRAINDICATIONS = [
   { label: 'CT with hemorrhage', detail: 'Acute intracranial hemorrhage on imaging.' },
   { label: 'CT with extensive hypodensity', detail: 'Clear hypodensity responsible for symptoms.' },
-  { label: 'Acute intracranial injury <14 days', detail: 'Likely contraindicated.' },
   { label: 'Acute spinal cord injury <90 days', detail: 'Listed as an absolute exclusion in the current local eligibility criteria.' },
   { label: 'Symptoms or history suggestive of SAH', detail: 'Absolute exclusion even when the head CT is unremarkable.' },
   { label: 'Active internal bleeding', detail: 'Absolute exclusion.' },
+  { label: 'Glucose <50 or >400 mg/dL until corrected and reassessed', detail: 'Correct the glucose first. Do not proceed unless a disabling deficit persists on the glucose-corrected examination.' },
   { label: 'SBP >185 or DBP >110 mmHg on repeated measures', detail: 'Hypertension above these values on repeated measures prior to starting the thrombolytic; treat and re-check before proceeding.' },
   { label: 'Intra-axial intracranial neoplasm', detail: 'Absolute exclusion (extra-axial tumours are handled separately).' },
-  { label: 'Intracranial or intraspinal surgery <60 days', detail: 'Intracranial or intraspinal surgery within the past 60 days; potentially harmful. The condensed 6/2026 telestroke consult guide abbreviates this to <14 days; the dedicated inclusion/exclusion criteria sheet states 60 days and is used here as the more restrictive value.' },
   { label: 'Infective endocarditis', detail: 'Should not be administered.' },
   { label: 'Severe coagulopathy', detail: 'Plt <100K, INR >1.7, aPTT >40s, PT >15s. In patients without a history of thrombocytopenia the thrombolytic can be started before the platelet count returns, but should be discontinued if the platelet count returns <100,000/mm3.' },
+  { label: 'Treatment-dose heparin or LMWH within 24 hours', detail: 'Treatment-dose unfractionated heparin or low-molecular-weight heparin within the previous 24 hours is an exclusion.' },
+  { label: 'Recent GI/GU hemorrhage within 21 days', detail: 'Listed as an exclusion in the current local eligibility criteria.' },
+  { label: 'Known or suspected direct thrombin inhibitor exposure unless thrombin time is confirmed normal', detail: 'Treat the exposure as an exclusion when thrombin time is abnormal, missing, or unavailable. A confirmed normal thrombin time is the sole source-listed escape; do not infer drug clearance from PT/INR or aPTT alone.' },
+  { label: 'Arterial puncture at non-compressible site <7 days', detail: 'Arterial puncture at a non-compressible site within the previous 7 days is an absolute exclusion.' },
   { label: 'Aortic arch dissection', detail: 'Potentially harmful; should not be administered.' },
   { label: 'Unruptured, unsecured large intracranial aneurysm (>10 mm)', detail: 'Absolute exclusion; small or already-secured aneurysms are handled under benefit-greater.' },
-  { label: 'Severe head trauma <90 days', detail: 'History of severe head trauma within the previous 90 days. The condensed 6/2026 telestroke consult guide abbreviates this to <14 days; the dedicated inclusion/exclusion criteria sheet states 90 days and is used here as the more restrictive value.' },
 ];
 
 export const IVT_RELATIVE_CONTRAINDICATIONS = [
   { label: 'Anti-amyloid therapy (e.g., lecanemab) — ARIA risk', detail: 'Not recommended; confirm the decision with the on-call stroke attending and prepare for possible MRI.' },
   { label: 'Pre-existing disability/frailty', detail: 'Treatment on individual basis.' },
-  { label: 'DOAC exposure <48h', detail: 'Current criteria (rev 6/2026): EXCLUDE if the last dose was within 24h and no anti-Xa panel is available. Between 24h and 48h thrombolysis may be considered with consent. See the DOAC pathway.' },
-  { label: 'Prior ischemic stroke <90 days', detail: 'Weigh timing/size against thrombolytic benefit. Note: the current local criteria list prior stroke within 90 days under BOTH the absolute and the relative exclusion headings — treat as a hard stop unless the treating team explicitly individualises.' },
   { label: 'Prior ICH', detail: 'Amyloid angiopathy = higher risk. Modifiable causes (HTN) may have greater net benefit.' },
-  { label: 'Major non-CNS trauma (14d-3mo)', detail: 'Surgical consultation; consider involved areas.' },
-  { label: 'Major surgery or trauma <14 days', detail: 'Consider surgical area and bleeding risk. Local criteria use a 14-day boundary.' },
-  { label: 'Arterial puncture at non-compressible site <7 days', detail: 'The dedicated inclusion/exclusion criteria sheet lists this as an absolute exclusion ("Arterial puncture at non-compressible site in the last 7 days"); the condensed 6/2026 telestroke consult guide lists arterial puncture within 7 days as relative. The dedicated criteria sheet is used here as the more restrictive source — treat as a hard stop unless the treating team explicitly individualises.' },
+  { label: 'Major extracranial surgery or trauma <14 days', detail: 'This entry is limited to major extracranial surgery or trauma. Consider the involved site and bleeding risk; it does not resolve the separate intracranial/intraspinal surgery and severe-head-trauma source conflict.' },
   { label: 'Intracranial vascular malformations', detail: 'Safety unknown; unruptured and untreated.' },
   { label: '>10 cerebral microbleeds', detail: 'Relative exclusion in the current local eligibility criteria.' },
-  { label: 'Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use', detail: 'May be a false positive due to lupus anticoagulant; consider the thrombolytic if able to reliably confirm the patient is not taking a direct thrombin inhibitor or factor Xa inhibitor.' },
+  { label: 'Direct thrombin inhibitor with normal thrombin time', detail: 'A normal thrombin time may support further review in a known direct-thrombin-inhibitor exposure; confirm the approved laboratory pathway before any treatment decision.' },
+  { label: 'Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use', detail: 'May be a false positive due to lupus anticoagulant. Reliably exclude direct-thrombin-inhibitor or factor-Xa-inhibitor use before proceeding; the factor-Xa pathway remains unresolved.' },
   { label: 'Intracranial arterial dissection', detail: 'Safety unknown.' },
   { label: 'Acute or recent MI <3 months', detail: 'Depending on type of MI; lower-level evidence supports thrombolytic use in these settings. Cardiology consult; hemopericardium risk.' },
   { label: 'Acute pericarditis', detail: 'May be reasonable. Emergent cardiology consult.' },
   { label: 'Left atrial or ventricular thrombus', detail: 'May be reasonable if major AIS. Cardiology consult.' },
   { label: 'Pregnancy / post-partum', detail: 'Obstetric consultation; benefits vs uterine bleeding risk.' },
-  { label: 'Systemic active malignancy', detail: 'Oncology consultation; consider type, stage, complications.' },
-  { label: 'Intracranial or intraspinal surgery 60 days-3 months', detail: 'Individual basis; neurosurgical consultation recommended.' }
+  { label: 'Systemic active malignancy', detail: 'Oncology consultation; consider type, stage, complications.' }
 ];
 
 export const IVT_BENEFIT_GREATER_CONSIDER = [

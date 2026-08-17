@@ -89,12 +89,11 @@ export const calculatePCAspects = (regions) => {
 };
 
 export const calculateGCS = (items) => {
-  if (!items || typeof items !== 'object') return 0;
+  if (!items || typeof items !== 'object') return null;
   const rawEye = parseInt(items.eye || 0, 10) || 0;
   const rawVerbal = parseInt(items.verbal || 0, 10) || 0;
   const rawMotor = parseInt(items.motor || 0, 10) || 0;
-  if (rawEye === 0 && rawVerbal === 0 && rawMotor === 0) return 0;
-  if ((rawEye === 0 || rawVerbal === 0 || rawMotor === 0) && (rawEye !== 0 || rawVerbal !== 0 || rawMotor !== 0)) return null;
+  if (rawEye === 0 || rawVerbal === 0 || rawMotor === 0) return null;
   const eye = Math.min(4, Math.max(1, rawEye));
   const verbal = Math.min(5, Math.max(1, rawVerbal));
   const motor = Math.min(6, Math.max(1, rawMotor));
@@ -102,7 +101,9 @@ export const calculateGCS = (items) => {
 };
 
 export const calculateICHScore = (items) => {
-  if (!items || typeof items !== 'object') return 0;
+  if (!items || typeof items !== 'object') return null;
+  if (!['gcs34', 'gcs512', 'gcs1315'].includes(items.gcs)) return null;
+  if (items.criteriaReviewed !== true) return null;
   let score = 0;
   if (items.gcs === 'gcs34') score += 2;
   else if (items.gcs === 'gcs512') score += 1;
@@ -326,58 +327,32 @@ export const calculateEnoxaparinDose = (weightKg, crCl) => {
   };
 };
 
-// FXa inhibitor ICH reversal — andexanet alfa per FDA label + ANNEXA-I context.
-// ANNEXA-I (Connolly NEJM 2024;390:1745-55, PMID 38749032) showed superior hemostatic efficacy
-// vs usual care (≈80% 4F-PCC) BUT with a thrombotic-event signal: 10.3% vs 5.6% (absolute +4.7%);
-// ischemic stroke specifically 6.5% vs 1.5%. Mortality numerically higher (NS).
-// Many institutions retain 4F-PCC 50 U/kg (fixed) as alternative when andexanet is unavailable,
-// contraindicated, or the patient is at elevated thrombotic risk. Always re-verify your facility
-// pathway and ensure 4F-PCC is stocked as backup.
-//
-// Inputs:
-//   doacType         — string ('apixaban', 'rivaroxaban', 'edoxaban', 'betrixaban')
-//   lastDoseHours    — hours since last DOAC dose
-//   doacDoseMg       — dose strength of last DOAC tablet (mg)
-//   thrombosisRisk   — 'high' | 'moderate' | 'low' (default 'moderate'); affects warning verbosity.
+// Andexanet is not available through the institution, so Protocols must not emit
+// a low- or high-dose regimen from these inputs. Keep the export and legacy result
+// keys stable for API consumers while returning a non-actionable result. The local
+// factor-Xa pathway is screen-gated and uses a fixed PCC dose; it is not weight-based.
 export const calculateAndexanetDose = (doacType, lastDoseHours, doacDoseMg, thrombosisRisk = 'moderate') => {
-  const hours = Math.max(0, parseFloat(lastDoseHours) || 0);
-  const doseMg = Math.max(0, parseFloat(doacDoseMg) || 0);
-  const t = (doacType || '').toLowerCase();
-  const isApixaban = t.includes('apixaban');
-  const isRivaroxaban = t.includes('rivaroxaban');
-  const isEdoxaban = t.includes('edoxaban');
+  const unavailableNotice = 'Andexanet alfa is not available through the institution; no andexanet dose is provided.';
+  const institutionalPathway = 'For rivaroxaban, apixaban, or edoxaban-associated ICH, obtain a Direct Xa Inhibitor screen. If the screen is elevated and there is no PCC contraindication, the institutional pathway uses 4F-PCC 2000 units IV.';
 
-  const ANNEXA_I_NOTE = 'ANNEXA-I (NEJM 2024, PMID 38749032): andexanet improved hemostatic efficacy (67% vs 53%) but signaled excess thrombotic events (10.3% vs 5.6%, ischemic stroke 6.5% vs 1.5%). Confirm institutional pathway.';
-  const PCC_ALT = '4F-PCC alternative when andexanet unavailable / contraindicated / high thrombosis risk: 50 U/kg fixed-dose IV (Class 2b, AHA/ASA 2022 ICH; many centers prefer this since ANNEXA-I).';
-  const buildResult = (base, contextWarn) => {
-    const thrombosisWarn = thrombosisRisk === 'high'
-      ? '⚠️ HIGH thrombotic risk (recent VTE/MI/stroke <14d, mechanical valve, active cancer, severe atherosclerosis): strongly consider 4F-PCC 50 U/kg INSTEAD of andexanet given ANNEXA-I excess ischemic stroke (6.5% vs 1.5%).'
-      : thrombosisRisk === 'low'
-        ? null
-        : '⚠️ ANNEXA-I thrombotic signal: monitor for VTE/MI/ischemic stroke; restart anticoagulation (when safe) per ICH/AF restart pathway.';
-    const merged = [contextWarn, thrombosisWarn].filter(Boolean).join(' | ');
-    return { ...base, doseWarning: merged || null, annexaINote: ANNEXA_I_NOTE, pccAlternative: PCC_ALT };
+  return {
+    regimen: 'unavailable',
+    bolus: '',
+    infusion: '',
+    total: '',
+    doseWarning: unavailableNotice,
+    annexaINote: unavailableNotice,
+    pccAlternative: institutionalPathway,
+    unavailable: true,
+    actionable: false,
+    requiresElevatedDirectXaScreen: true,
+    inputsRetainedForDocumentation: {
+      doacType: doacType || '',
+      lastDoseHours: lastDoseHours ?? '',
+      doacDoseMg: doacDoseMg ?? '',
+      thrombosisRisk
+    }
   };
-
-  const lowDose = { regimen: 'low-dose', bolus: '400 mg IV over 15-30 min', infusion: '4 mg/min x 120 min (480 mg)', total: '880 mg' };
-  const highDose = { regimen: 'high-dose', bolus: '800 mg IV over 15-30 min', infusion: '8 mg/min x 120 min (960 mg)', total: '1760 mg' };
-
-  if (isApixaban) {
-    if (hours >= 8) return buildResult(lowDose, 'Last dose ≥8h ago — low-dose regimen per FDA label.');
-    if (doseMg > 0 && doseMg <= 5) return buildResult(lowDose, 'Apixaban dose ≤5 mg (per FDA label) — low-dose.');
-    if (doseMg > 5) return buildResult(highDose, 'Apixaban >5 mg and last dose <8h — high-dose.');
-    return buildResult(lowDose, 'DOAC dose not entered. Standard apixaban (5 mg BID) → low-dose. If patient was on 10 mg BID and last dose <8h, use high-dose. Enter DOAC dose to confirm.');
-  }
-  if (isRivaroxaban) {
-    if (hours >= 8) return buildResult(lowDose, 'Last dose ≥8h ago — low-dose regimen per FDA label.');
-    if (doseMg > 0 && doseMg <= 10) return buildResult(lowDose, 'Rivaroxaban ≤10 mg (per FDA label) — low-dose.');
-    if (doseMg > 10) return buildResult(highDose, 'Rivaroxaban >10 mg and last dose <8h — high-dose.');
-    return buildResult(highDose, 'DOAC dose not entered. Common rivaroxaban dose (20 mg daily) → high-dose. If patient was on ≤10 mg, use low-dose. Enter DOAC dose to confirm.');
-  }
-  if (isEdoxaban) {
-    return buildResult(highDose, 'Edoxaban: andexanet not FDA-approved for edoxaban reversal. 4F-PCC 50 U/kg is the preferred reversal agent (off-label for andexanet).');
-  }
-  return { regimen: 'N/A', bolus: 'Not applicable for this DOAC', infusion: '', total: '', doseWarning: 'andexanet alfa is FDA-approved for apixaban and rivaroxaban only. For dabigatran, use idarucizumab (Praxbind 5 g IV). For edoxaban or other Xa-inhibitors, use 4F-PCC 50 U/kg.', annexaINote: ANNEXA_I_NOTE, pccAlternative: PCC_ALT };
 };
 
 export const calculateCrCl = (age, weight, sex, creatinine, heightCm) => {
@@ -434,51 +409,93 @@ export const calculateTNKDose = (weightKg) => {
   };
 };
 
-// 4F-PCC dosing — supports both warfarin reversal (INR-stratified per AHA/ASA 2022 ICH)
-// and FXa-inhibitor ICH reversal (fixed 50 U/kg per ANNEXA-I-era practice).
-// Inputs:
-//   weightKg — patient weight in kg
-//   inrVal   — INR (optional; only used for warfarin pathway)
-//   indication — 'warfarin' (default) | 'fxa-ich' | 'fxa-no-andexanet' — selects pathway
-// Reference doses:
-//   - Warfarin: AHA/ASA 2022 ICH (Greenberg, Stroke 2022) — INR-stratified.
-//   - FXa-ICH: many centers use 50 U/kg fixed when andexanet unavailable / contraindicated;
-//     AHA/ASA 2022 ICH lists PCC as Class 2b for FXa reversal. Post-ANNEXA-I, PCC remains
-//     widely used given thrombosis signal and cost. ESO 2024 acknowledges PCC alternative.
-export const calculatePCCDose = (weightKg, inrVal, indication = 'warfarin') => {
-  const weight = parseFloat(weightKg);
+// Institutional 4F-PCC pathways use a fixed 2000-unit dose. `weightKg` remains in
+// the signature and returned object for compatibility, but never changes the dose.
+// For factor-Xa inhibitors, this result is conditional on an elevated Direct Xa
+// Inhibitor screen and absence of PCC contraindications. This helper intentionally
+// makes no statement about factor-Xa dialysis because accepted sources conflict.
+export const calculatePCCDose = (weightKg, inrVal, indication = 'warfarin', gate = {}) => {
+  const parsedWeight = parseFloat(weightKg);
+  const weight = Number.isFinite(parsedWeight) && parsedWeight > 0 && parsedWeight <= 350
+    ? parsedWeight
+    : null;
   const inr = parseFloat(inrVal);
-  if (isNaN(weight) || weight <= 0 || weight > 350) return null;
+  const fixedDose = 2000;
 
-  // FXa-inhibitor ICH pathway — fixed 50 U/kg
+  // Factor-Xa inhibitor ICH pathway — fixed dose, contingent on an elevated screen.
   if (indication === 'fxa-ich' || indication === 'fxa-no-andexanet') {
-    const fxaDose = Math.min(Math.round(weight * 50), 5000);
+    const gateComplete = gate.directXaElevated === true && gate.pccContraindicated === false;
     return {
-      ahaDose: fxaDose,
-      iuPerKg: 50,
+      ahaDose: gateComplete ? fixedDose : null,
+      iuPerKg: null,
       weight,
-      inrTierNote: indication === 'fxa-no-andexanet'
-        ? '4F-PCC 50 IU/kg fixed (max 5000) — FXa-inhibitor ICH when andexanet unavailable / contraindicated / high thrombosis risk. Class 2b AHA/ASA 2022 ICH; widely used post-ANNEXA-I (NEJM 2024, PMID 38749032).'
-        : '4F-PCC 50 IU/kg fixed (max 5000) for FXa-inhibitor ICH (apixaban/rivaroxaban/edoxaban). Pair with hemostasis monitoring; restart AC per AF/ICH restart pathway.',
-      indication
+      inrTierNote: 'If the Direct Xa Inhibitor screen is elevated and there is no PCC contraindication, give 4F-PCC 2000 units IV. Andexanet alfa is not available through the institution.',
+      indication,
+      fixedDose: true,
+      recommendation: gateComplete ? 'give-fixed-dose' : 'pending-required-gates',
+      requiresElevatedDirectXaScreen: true,
+      requiresPccContraindicationReview: true,
+      missing: [
+        ...(gate.directXaElevated === true ? [] : ['elevated Direct Xa Inhibitor screen']),
+        ...(gate.pccContraindicated === false ? [] : ['explicit confirmation that PCC is not contraindicated'])
+      ],
+      andexanetAvailable: false
     };
   }
 
-  // Warfarin pathway — INR-stratified
-  let iuPerKg = null;
-  let inrTierNote = '';
-  if (!isNaN(inr)) {
-    if (inr < 1.3) { iuPerKg = null; inrTierNote = 'INR <1.3 — PCC likely not needed; give Vitamin K 10 mg IV'; }
-    else if (inr < 2) { iuPerKg = 25; inrTierNote = 'INR 1.3-1.9 — consider 4F-PCC 25 IU/kg (COR 2b/C)'; }
-    else if (inr < 4) { iuPerKg = 25; inrTierNote = 'INR 2.0-3.9 — 4F-PCC 25 IU/kg (COR 1/B)'; }
-    else if (inr <= 6) { iuPerKg = 35; inrTierNote = 'INR 4.0-6.0 — 4F-PCC 35 IU/kg (COR 1/B)'; }
-    else { iuPerKg = 50; inrTierNote = 'INR >6 — 4F-PCC 50 IU/kg (COR 1/B)'; }
+  // Dabigatran fallback is supported only when idarucizumab is unavailable.
+  if (indication === 'dabigatran-fallback') {
+    const gateComplete = gate.idarucizumabAvailable === false && gate.pccContraindicated === false;
+    return {
+      ahaDose: gateComplete ? fixedDose : null,
+      iuPerKg: null,
+      weight,
+      inrTierNote: 'If idarucizumab is unavailable, give 4F-PCC 2000 units IV.',
+      indication,
+      fixedDose: true,
+      recommendation: gateComplete ? 'give-fixed-dose-fallback' : 'pending-required-gates',
+      missing: [
+        ...(gate.idarucizumabAvailable === false ? [] : ['confirmation that idarucizumab is unavailable']),
+        ...(gate.pccContraindicated === false ? [] : ['explicit confirmation that PCC is not contraindicated'])
+      ]
+    };
   }
-  // Kcentra label doses by weight up to but not exceeding 100 kg, giving
-  // per-tier maxima of 2500 (25 U/kg), 3500 (35 U/kg), 5000 (50 U/kg). A flat
-  // 5000 cap over-doses the 25/35 U/kg tiers for patients >100 kg.
-  const ahaDose = iuPerKg ? Math.round(Math.min(weight, 100) * iuPerKg) : null;
-  return { ahaDose, iuPerKg, weight, inrTierNote, indication: 'warfarin' };
+
+  // Warfarin pathway — INR determines recommendation strength, never the dose.
+  let ahaDose = null;
+  let inrTierNote = 'Enter or verify INR before applying the institutional warfarin PCC tier.';
+  let recommendation = 'needs-inr';
+  if (!Number.isNaN(inr)) {
+    if (inr < 1.3) {
+      inrTierNote = 'INR <1.3 — no institutional PCC recommendation is printed for this tier; give vitamin K 10 mg IV.';
+      recommendation = 'no-institutional-pcc-recommendation';
+    } else if (inr < 1.6) {
+      ahaDose = fixedDose;
+      inrTierNote = 'INR 1.3-1.5 — consider 4F-PCC case-by-case (COR 2b/C). If selected, give 2000 units IV immediately.';
+      recommendation = 'consider-case-by-case';
+    } else if (inr < 2) {
+      ahaDose = fixedDose;
+      inrTierNote = 'INR 1.6-1.9 — 4F-PCC recommended (COR 2b/C); give 2000 units IV immediately.';
+      recommendation = 'recommended';
+    } else {
+      ahaDose = fixedDose;
+      inrTierNote = 'INR ≥2.0 — 4F-PCC recommended (COR 1/B); give 2000 units IV immediately.';
+      recommendation = 'recommended';
+    }
+  }
+
+  return {
+    ahaDose,
+    iuPerKg: null,
+    weight,
+    inrTierNote,
+    indication: 'warfarin',
+    fixedDose: true,
+    recommendation,
+    vitaminK: 'Give vitamin K 10 mg IV immediately.',
+    monitoring: 'Repeat PT/INR at 30 minutes and every 6 hours for 24 hours after PCC infusion.',
+    rescue: 'If PT/INR is >1.5 after infusion, page hematology and consider 500 additional units of PCC or 2-4 units of plasma (FFP).'
+  };
 };
 
 export const calculateAlteplaseDose = (weightKg) => {

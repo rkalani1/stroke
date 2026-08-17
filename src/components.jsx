@@ -215,7 +215,7 @@ export const NeurocheckTimer = ({ tpaGivenIso }) => {
   const schedule = useMemo(() => computeNeurocheckSchedule(tpaGivenIso), [tpaGivenIso]);
   if (!schedule) return null;
   const nextCheck = schedule.checks.find((c) => c.at.getTime() > now);
-  const completedChecks = schedule.checks.filter((c) => c.at.getTime() <= now).length;
+  const elapsedChecks = schedule.checks.filter((c) => c.at.getTime() <= now).length;
   const totalChecks = schedule.checks.length;
   const remainingToNextMs = nextCheck ? nextCheck.at.getTime() - now : 0;
   const format = (ms) => {
@@ -228,7 +228,7 @@ export const NeurocheckTimer = ({ tpaGivenIso }) => {
     <div className="p-3 rounded border border-ok-300 bg-ok-50 text-sm dark:border-ok-800 dark:bg-ok-950" role="region" aria-label="Post-tPA neurocheck schedule">
       <div className="flex items-center justify-between mb-2">
         <h4 className="font-semibold text-ok-900 dark:text-ok-300">Post-tPA Neurochecks (q15×2h → q30×6h → q1h×16h)</h4>
-        <span className="text-xs text-ok-700 font-mono dark:text-ok-300">{completedChecks} / {totalChecks} done</span>
+        <span className="text-xs text-ok-700 font-mono dark:text-ok-300">{elapsedChecks} / {totalChecks} scheduled times elapsed</span>
       </div>
       {nextCheck ? (
         <div className="grid grid-cols-2 gap-2">
@@ -244,7 +244,7 @@ export const NeurocheckTimer = ({ tpaGivenIso }) => {
           </div>
         </div>
       ) : (
-        <div className="text-sm text-ok-800 font-semibold dark:text-ok-300">24-hour post-tPA monitoring complete.</div>
+        <div className="text-sm text-ok-800 font-semibold dark:text-ok-300">The 24-hour post-tPA monitoring window has ended; verify documentation before marking monitoring complete.</div>
       )}
       {remainingToNextMs > 0 && remainingToNextMs < 60000 && (
         <div className="mt-2 p-2 bg-warn-100 border border-warn-400 rounded text-xs text-warn-900 font-semibold dark:bg-warn-900 dark:text-warn-300">
@@ -1091,4 +1091,3 @@ export const VisualAssetFigure = ({
     </figure>
   );
 };
-

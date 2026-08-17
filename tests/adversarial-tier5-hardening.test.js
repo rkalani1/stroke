@@ -614,7 +614,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
     // Dynamic import calculators
     it('verifies GCS calculator bounds, partial inputs, and clamp behavior', async () => {
       const { calculateGCS } = await import('../src/calculators.js');
-      expect(calculateGCS({})).toBe(0);
+      expect(calculateGCS({})).toBeNull();
       expect(calculateGCS({ eye: 4, verbal: 5, motor: 6 })).toBe(15);
       expect(calculateGCS({ eye: 1, verbal: 1, motor: 1 })).toBe(3);
       // Partial inputs -> null
@@ -727,4 +727,3 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
   });
 
 });
-

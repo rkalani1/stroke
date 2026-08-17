@@ -3,80 +3,70 @@
     "endpoint": "management-cards",
     "schemaVersion": "1.0.0",
     "appVersion": "6.18.3",
-    "checksum": "sha256:b8e85c4f3be34a6634ec8a15e396ceee",
+    "checksum": "sha256:33cc0294aa43d4721cef77eb2e174b00",
     "count": 3,
     "source": "Management-card reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
   },
   "data": {
-    "lastReviewed": "2026-07-03",
+    "lastReviewed": "2026-08-16",
     "sourceLinks": [
       {
-        "label": "2026 AHA/ASA AIS Guideline",
-        "href": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513"
+        "label": "Acute-stroke workflow"
       },
       {
-        "label": "AHA 2026 AIS Hub",
-        "href": "https://professional.heart.org/en/science-news/2026-guideline-for-the-early-management-of-patients-with-acute-ischemic-stroke"
+        "label": "IVT eligibility decision algorithm"
       },
       {
-        "label": "OPTION 2026",
-        "href": "https://doi.org/10.1001/jama.2026.0210"
+        "label": "EVT eligibility flowchart"
       },
       {
-        "label": "HOPE-BP ESOC 2026",
-        "href": "https://neuronewsinternational.com/reperfusion-guided-bp-management-strategy-hope-esoc-2026/"
+        "label": "Stroke pocket card"
       },
       {
-        "label": "RAISE reteplase",
-        "href": "https://doi.org/10.1056/NEJMoa2400314"
+        "label": "Post-thrombolytic hemorrhage algorithm"
+      },
+      {
+        "label": "Telestroke workflow"
       }
     ],
     "cards": [
       {
         "id": "ais-ivt-early",
         "title": "0-4.5h IV Thrombolysis",
-        "shortLabel": "TNK / alteplase",
-        "urgency": "First decision after hemorrhage excluded",
+        "shortLabel": "Institutional IVT pathway",
+        "urgency": "Make the thrombolysis decision as soon as the minimum dataset is available",
         "classOfRecommendation": "I",
         "levelOfEvidence": "A",
-        "lastReviewed": "2026-07-03",
-        "recommendationId": "rec-ais-ivt-within-45h",
-        "evidenceQuery": "tenecteplase alteplase 4.5 h",
+        "lastReviewed": "2026-08-16",
         "anchor": "isch-evt",
-        "summary": "If adult AIS has a disabling deficit and no exclusion, give IVT as fast as safely possible. Tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg are both Class I/A in the 2026 AHA/ASA guideline.",
+        "sourceNote": "IVT eligibility decision algorithm and accepted telestroke workflow.",
+        "summary": "For an adult with suspected ischemic stroke, establish a disabling deficit, time from last known well, noncontrast CT findings, blood pressure, glucose, and the source-listed contraindications before treatment.",
         "actions": [
-          "Do not wait for CTA, CTP, MRI, ECG, troponin, or routine labs when there is no clinical suspicion of an abnormal result.",
-          "Check glucose before IVT; correct severe hypo- or hyperglycemia, then treat if a disabling deficit persists.",
-          "Lower BP to <185/110 before IVT and maintain <180/105 for at least 24h after treatment.",
-          "Use TNK 0.25 mg/kg only; do not use the 0.4 mg/kg stroke dose.",
-          "Do not add routine argatroban, eptifibatide, or other adjunctive antithrombotics to IVT outside a protocol/trial."
+          "Confirm last known well, NIHSS or enough examination to establish disability, blood pressure, point-of-care glucose, antithrombotic exposure, and contraindications.",
+          "Review noncontrast head CT for hemorrhage and extensive hypodensity.",
+          "If glucose is below 50 mg/dL or above 400 mg/dL, correct it first and reassess; proceed only if the disabling deficit persists.",
+          "Use tenecteplase 0.25 mg/kg IV push, maximum 25 mg, when the institutional TNK pathway is selected. Alteplase 0.9 mg/kg IV (maximum 90 mg; 10% bolus, remainder over 60 minutes) is the supported alternative regimen."
         ],
         "pathway": [
           {
             "label": "Disabling deficit, <=4.5h, no exclusion",
-            "decision": "Give TNK 0.25 mg/kg IV bolus or alteplase 0.9 mg/kg",
+            "decision": "TNK recommended",
             "cor": "I",
             "loe": "A"
           },
           {
-            "label": "Mild but disabling symptom",
-            "decision": "Treat; NIHSS alone should not block IVT",
-            "cor": "I",
-            "loe": "A"
-          },
-          {
-            "label": "Non-disabling minor deficit",
-            "decision": "Usually no IVT; start antiplatelet pathway if no lytic",
-            "cor": "III",
+            "label": "Non-disabling deficit",
+            "decision": "IV thrombolysis not recommended",
+            "cor": "III: No Benefit",
             "loe": "B-R"
           },
           {
-            "label": "TNK 0.4 mg/kg",
-            "decision": "Do not use for AIS",
-            "cor": "III",
-            "loe": "A"
+            "label": "Glucose <50 or >400 mg/dL",
+            "decision": "Correct first; reassess the deficit before an eligibility verdict",
+            "cor": "I",
+            "loe": ""
           }
         ],
         "calculators": [
@@ -98,66 +88,55 @@
             "anchor": "calc-nihss"
           }
         ],
-        "pitfalls": [
-          "Treating \"low NIHSS\" as a reason to withhold IVT despite aphasia, hemianopia, severe neglect, dominant-hand weakness, gait-precluding ataxia, or disabling visual loss.",
-          "Getting perfusion imaging before lysis in an otherwise eligible <=4.5h patient.",
-          "Using a TNK STEMI-style 0.5 mg/kg dose or the older 0.4 mg/kg stroke dose.",
-          "Treating RAISE as permission to substitute reteplase into routine US telestroke practice; the 2026 guideline notes benefit but also limited generalizability."
-        ],
-        "teachingPearl": "The 2026 shift is practical: TNK 0.25 mg/kg is no longer just an alternative; the guideline lists TNK or alteplase as recommended Class I/A options within 4.5h.",
-        "changedSinceLastGuideline": "Expanded TNK endorsement within 4.5h; stronger emphasis that extra imaging should not delay IVT in otherwise eligible patients. RAISE makes reteplase an evidence-watch item, not a default protocol agent."
+        "pitfalls": [],
+        "teachingPearl": "",
+        "changedSinceLastGuideline": ""
       },
       {
         "id": "ais-ivt-extended",
         "title": "Wake-Up and 4.5-24h IVT",
-        "shortLabel": "Mismatch-selected lysis",
-        "urgency": "Use only with tissue selection and expert review",
-        "classOfRecommendation": "IIa",
-        "levelOfEvidence": "B-R",
-        "lastReviewed": "2026-07-03",
-        "recommendationId": "rec-late-window-ivt",
-        "evidenceQuery": "extended-window IV thrombolysis OPTION HOPE TRACE-III",
+        "shortLabel": "Advanced-imaging selection",
+        "urgency": "Require the complete institutional extended-window gates",
+        "classOfRecommendation": "",
+        "levelOfEvidence": "",
+        "lastReviewed": "2026-08-16",
         "anchor": "isch-evt",
-        "summary": "Late IVT is not a clock-only decision. Use MRI DWI-FLAIR mismatch, automated perfusion mismatch, or carefully selected no-EVT 4.5-24h pathways; counsel explicitly about higher sICH risk.",
+        "sourceNote": "IVT eligibility decision algorithm.",
+        "summary": "For a known 4.5-9-hour interval, the institutional pathway accepts MRI DWI-FLAIR mismatch or the full numeric CTP mismatch criteria. Wake-up or unknown-onset treatment requires MRI DWI-FLAIR mismatch. Every extended branch also requires baseline mRS <=1 and a determination that the patient is not an EVT candidate, subject to the pathway’s narrow EVT-infeasibility exception.",
         "actions": [
-          "Unknown onset: if within 4.5h of symptom recognition and MRI DWI lesion is <1/3 MCA territory without marked FLAIR change, IVT can be beneficial.",
-          "4.5-9h or wake-up within 9h from sleep midpoint: automated perfusion mismatch makes IVT reasonable.",
-          "4.5-24h LVO: prioritize EVT; consider IVT only if EVT cannot be provided or will be materially delayed.",
-          "4.5-24h non-LVO with salvageable tissue: OPTION 2026 and HOPE 2025 support benefit but with higher sICH; use expert/shared decision-making."
+          "For a known 4.5-9-hour interval, require either an explicit MRI DWI-FLAIR mismatch or CTP core <50 mL, mismatch ratio >=1.2, and mismatch volume >=10 mL.",
+          "For wake-up or unknown onset, require explicit MRI DWI-FLAIR mismatch; do not substitute the CTP branch.",
+          "Confirm baseline mRS <=1.",
+          "Confirm the patient is not an EVT candidate; IVT may be considered for selected LVO only when EVT within 24 hours is not feasible.",
+          "Obtain consent for the 9-24-hour time window."
         ],
         "pathway": [
           {
-            "label": "Wake-up, MRI DWI+/FLAIR-negative",
-            "decision": "IVT can be beneficial",
+            "label": "Known 4.5-9h with qualifying MRI or CTP selection",
+            "decision": "Consider TNK",
             "cor": "IIa",
             "loe": "B-R"
           },
           {
-            "label": "4.5-9h or wake-up <=9h, perfusion mismatch",
-            "decision": "IVT may be reasonable",
+            "label": "Wake-up or unknown onset with qualifying MRI DWI-FLAIR mismatch",
+            "decision": "Consider TNK",
             "cor": "IIa",
             "loe": "B-R"
           },
           {
-            "label": "4.5-24h LVO, EVT unavailable/delayed",
-            "decision": "Expert-directed IVT may be beneficial",
-            "cor": "IIb",
-            "loe": "B-R"
+            "label": "9-24h with qualifying CTP selection",
+            "decision": "Consider TNK; consent required",
+            "cor": "",
+            "loe": ""
           },
           {
-            "label": "4.5-24h non-LVO, salvageable tissue",
-            "decision": "Post-guideline trial-supported option; document risk/benefit",
-            "cor": "IIb",
-            "loe": "B-R"
+            "label": "Missing imaging, mRS, or EVT-candidacy gate",
+            "decision": "Do not return an affirmative extended-window result",
+            "cor": "",
+            "loe": ""
           }
         ],
         "calculators": [
-          {
-            "label": "Late-window IVT calculator",
-            "tab": "management",
-            "subTab": "calculators",
-            "anchor": "calc-risk-scores"
-          },
           {
             "label": "ASPECTS",
             "tab": "management",
@@ -165,62 +144,87 @@
             "anchor": "calc-aspects"
           },
           {
-            "label": "Evidence Atlas",
-            "tab": "trials",
-            "view": "atlas",
-            "query": "OPTION HOPE TRACE-III TIMELESS"
+            "label": "NIHSS",
+            "tab": "management",
+            "subTab": "calculators",
+            "anchor": "calc-nihss"
           }
         ],
-        "pitfalls": [
-          "Using NCCT alone to justify 4.5-24h thrombolysis.",
-          "Giving late IVT to an LVO patient while slowing transfer for EVT.",
-          "Ignoring the sICH tradeoff: OPTION and HOPE were positive but both increased symptomatic ICH."
-        ],
-        "teachingPearl": "Late-window IVT asks whether there is still salvageable brain and whether EVT is the better reperfusion tool. It is not simply \"TNK up to 24h.\"",
-        "changedSinceLastGuideline": "The 2026 guideline incorporates WAKE-UP, EXTEND, TRACE-III, TIMELESS, and related mismatch trials; OPTION 2026 adds newer non-LVO TNK data after the guideline literature lock."
+        "pitfalls": [],
+        "teachingPearl": "",
+        "changedSinceLastGuideline": ""
       },
       {
         "id": "ais-evt-selection",
         "title": "EVT Selection",
-        "shortLabel": "LVO / large core / basilar",
-        "urgency": "Activate transfer while lysis is being decided",
-        "classOfRecommendation": "I",
-        "levelOfEvidence": "A",
-        "lastReviewed": "2026-07-03",
-        "recommendationId": "rec-evt-large-core",
-        "evidenceQuery": "EVT large core basilar DAWN DEFUSE-3 SELECT2",
+        "shortLabel": "Institutional EVT flowchart",
+        "urgency": "Apply the exact vessel, time, ASPECTS, and clinical tier",
+        "classOfRecommendation": "",
+        "levelOfEvidence": "",
+        "lastReviewed": "2026-08-16",
         "anchor": "isch-evt",
-        "summary": "Large core and late-window status are no longer automatic EVT exclusions. Use vessel, time, premorbid mRS, ASPECTS/core, salvageable tissue, and local EVT speed.",
+        "sourceNote": "EVT eligibility flowchart.",
+        "summary": "The institutional flowchart separates anterior ICA/proximal-M1 LVO, dominant proximal M2, nondominant M2/ACA/PCA, and basilar-artery branches. Recommendations assume baseline mRS 0-1 unless another tier is stated.",
         "actions": [
-          "Anterior ICA/M1 LVO: activate EVT pathway immediately; do not wait for TNK response.",
-          "0-6h: ASPECTS 3-10 with premorbid mRS 0-1 is guideline-supported; selected ASPECTS 0-2 patients may still benefit if no major mass effect.",
-          "6-24h: treat DAWN/DEFUSE-3-eligible LVO and selected large-core patients with salvageable profile.",
-          "Basilar occlusion: EVT within 24h is recommended when baseline mRS 0-1, NIHSS >=10, and PC-ASPECTS >=6."
+          "Apply the anterior-LVO NIHSS >=6 gate before evaluating the time and ASPECTS tier.",
+          "For low ASPECTS, apply every listed age, mass-effect, and core qualifier.",
+          "For M2/distal disease, establish branch dominance and time window before assigning a recommendation.",
+          "For basilar occlusion, require time <=24 hours and PC-ASPECTS >=6 before applying the NIHSS tier."
         ],
         "pathway": [
           {
-            "label": "ICA/M1, ASPECTS 3-10, mRS 0-1",
-            "decision": "EVT recommended",
+            "label": "ICA/proximal M1, 0-6h, ASPECTS 6-10, mRS 0-1",
+            "decision": "EVT",
             "cor": "I",
             "loe": "A"
           },
           {
-            "label": "Large core ASPECTS 3-5 or core 50-100 mL",
-            "decision": "EVT recommended if otherwise eligible",
+            "label": "ICA/proximal M1, 0-6h, ASPECTS 6-10, mRS 2",
+            "decision": "EVT",
+            "cor": "IIa",
+            "loe": "B-NR"
+          },
+          {
+            "label": "ICA/proximal M1, 0-6h, ASPECTS 6-10, mRS 3-4",
+            "decision": "EVT",
+            "cor": "IIb",
+            "loe": "B-NR"
+          },
+          {
+            "label": "ICA/proximal M1, 0-6h, ASPECTS 3-5, no significant mass effect",
+            "decision": "EVT",
             "cor": "I",
             "loe": "A"
           },
           {
-            "label": "ASPECTS 0-2, age <80, NIHSS >=6, mRS 0-1, no mass effect",
-            "decision": "Selected EVT is reasonable",
+            "label": "ICA/proximal M1, 0-6h, ASPECTS 0-2, age <80, no significant mass effect, CTP core <=70-100 mL",
+            "decision": "EVT",
             "cor": "IIa",
             "loe": "B-R"
           },
           {
-            "label": "Basilar, NIHSS >=10, PC-ASPECTS >=6, mRS 0-1",
-            "decision": "EVT recommended within 24h",
+            "label": "ICA/proximal M1, 6-24h, ASPECTS 6-10",
+            "decision": "EVT",
             "cor": "I",
             "loe": "A"
+          },
+          {
+            "label": "ICA/proximal M1, 6-24h, ASPECTS 3-5, age <80, no significant mass effect",
+            "decision": "EVT",
+            "cor": "I",
+            "loe": "A"
+          },
+          {
+            "label": "Basilar <=24h, PC-ASPECTS >=6, NIHSS >=10",
+            "decision": "EVT",
+            "cor": "I",
+            "loe": "A"
+          },
+          {
+            "label": "Basilar <=24h, PC-ASPECTS >=6, NIHSS 6-9",
+            "decision": "EVT; effectiveness not well established",
+            "cor": "IIb",
+            "loe": "B-R"
           }
         ],
         "calculators": [
@@ -241,76 +245,46 @@
             "tab": "management",
             "subTab": "calculators",
             "anchor": "calc-pc-aspects"
-          },
-          {
-            "label": "mTICI",
-            "tab": "management",
-            "subTab": "calculators",
-            "anchor": "calc-tici"
           }
         ],
-        "pitfalls": [
-          "Excluding large-core patients reflexively because \"ASPECTS is low.\"",
-          "Letting a reassuring low NIHSS mask dominant-hemisphere or posterior-circulation disability.",
-          "Failing to start transfer before all perfusion details are finalized."
-        ],
-        "teachingPearl": "Modern EVT selection has moved from \"small core only\" to \"will reperfusion still change this person's outcome?\"",
-        "changedSinceLastGuideline": "Large-core EVT and posterior-circulation EVT moved into stronger guideline territory; dominant proximal M2 is separated from nondominant/distal occlusions."
+        "pitfalls": [],
+        "teachingPearl": "",
+        "changedSinceLastGuideline": ""
       },
       {
         "id": "ais-physiology",
         "title": "Physiology Guardrails",
-        "shortLabel": "BP / glucose / oxygen",
-        "urgency": "Prevents treatment-caused harm",
-        "classOfRecommendation": "I",
-        "levelOfEvidence": "B-R",
-        "lastReviewed": "2026-07-03",
-        "recommendationId": "rec-ais-bp-targets",
-        "evidenceQuery": "blood pressure glucose oxygen 2026 AIS guideline",
+        "shortLabel": "Institutional BP thresholds",
+        "urgency": "Use the treatment-phase target shown in the institutional pocket card",
+        "classOfRecommendation": "",
+        "levelOfEvidence": "",
+        "lastReviewed": "2026-08-16",
         "anchor": "isch-bp",
-        "summary": "Treat physiology that blocks reperfusion or causes harm, but avoid aggressive normalization that worsens ischemia or adds hypoglycemia risk.",
+        "sourceNote": "Stroke pocket card.",
+        "summary": "The accepted institutional source supplies blood-pressure thresholds for pre-IVT, post-IVT, and post-EVT care; it does not supply a Protocols glucose, oxygen, or conference-evidence pathway.",
         "actions": [
-          "Pre-IVT: lower BP to <185/110. Post-IVT: maintain <180/105 for at least 24h.",
-          "Post-EVT: maintain <=180/105 for 24h; after successful anterior LVO reperfusion, do not target SBP <140 for 72h unless another indication exists.",
-          "HOPE-BP (ESOC 2026, conference-reported): reperfusion-guided targets improved 90-day mRS 0-2, but use only as attending-directed/protocolized care until peer-reviewed publication and guideline review.",
-          "Oxygen: give supplemental oxygen for hypoxia to maintain SpO2 >94%; avoid routine oxygen in nonhypoxic AIS unless selected pre-EVT NBO pathway applies."
+          "Before IVT, lower blood pressure to below 185/110 mmHg.",
+          "After IVT, maintain blood pressure below 180/105 mmHg for 24 hours.",
+          "After EVT, use an SBP guardrail of 140-180 mmHg."
         ],
         "pathway": [
           {
-            "label": "BP >185/110 and IVT otherwise eligible",
-            "decision": "Lower before IVT",
-            "cor": "I",
-            "loe": "B-NR"
+            "label": "Pre-IVT BP >=185/110",
+            "decision": "Lower below 185/110 before treatment",
+            "cor": "",
+            "loe": ""
           },
           {
-            "label": "Post-IVT BP",
-            "decision": "Maintain <180/105 for >=24h",
-            "cor": "I",
-            "loe": "B-R"
+            "label": "Post-IVT",
+            "decision": "Maintain <180/105 for 24 hours",
+            "cor": "",
+            "loe": ""
           },
           {
-            "label": "Successful EVT, anterior LVO",
-            "decision": "Avoid SBP <140 target for 72h",
-            "cor": "III",
-            "loe": "A"
-          },
-          {
-            "label": "HOPE-BP protocol context",
-            "decision": "mTICI 2b: 140-160; mTICI 2c-3: 100-140; conference-only and not guideline-changing",
-            "cor": "Evidence watch",
-            "loe": "Low"
-          },
-          {
-            "label": "Persistent hyperglycemia",
-            "decision": "Treat toward 140-180, avoid hypoglycemia",
-            "cor": "IIa",
-            "loe": "C-LD"
-          },
-          {
-            "label": "NBO before EVT, selected anterior LVO",
-            "decision": "May be reasonable; not routine oxygen for everyone",
-            "cor": "IIb",
-            "loe": "B-R"
+            "label": "Post-EVT",
+            "decision": "Maintain SBP 140-180",
+            "cor": "",
+            "loe": ""
           }
         ],
         "calculators": [
@@ -319,68 +293,55 @@
             "tab": "management",
             "subTab": "ischemic",
             "anchor": "isch-bp"
-          },
-          {
-            "label": "mTICI",
-            "tab": "management",
-            "subTab": "calculators",
-            "anchor": "calc-tici"
           }
         ],
-        "pitfalls": [
-          "Driving SBP below 140 after successful EVT because \"lower is safer.\"",
-          "Applying HOPE-BP to incomplete reperfusion, posterior circulation, or non-protocol settings; the conference report enrolled successful anterior-circulation LVO thrombectomy patients.",
-          "Using intensive insulin targets that increase severe hypoglycemia without improving outcome.",
-          "Putting every nonhypoxic stroke patient on oxygen."
-        ],
-        "teachingPearl": "In acute ischemic stroke, normal numbers are not always physiologic. Preserve penumbral perfusion while meeting safety thresholds.",
-        "changedSinceLastGuideline": "The 2026 guideline adds explicit harm/no-benefit recommendations against intensive BP and glucose targets after newer RCTs. HOPE-BP is a May 2026 signal for future individualized post-EVT targets, not a replacement for the guideline guardrail."
+        "pitfalls": [],
+        "teachingPearl": "",
+        "changedSinceLastGuideline": ""
       },
       {
         "id": "ais-mevo",
-        "title": "MeVO / Distal Occlusion",
-        "shortLabel": "Trial-first exceptions",
-        "urgency": "Avoid routine procedural harm",
-        "classOfRecommendation": "III",
-        "levelOfEvidence": "A",
-        "lastReviewed": "2026-07-03",
-        "recommendationId": "rec-ais-mevo-no-routine-evt",
-        "evidenceQuery": "MeVO distal vessel occlusion EVT ESCAPE-MeVO DISTAL DISCOUNT",
+        "title": "M2 / Distal Occlusion",
+        "shortLabel": "Dominant and nondominant branches",
+        "urgency": "Do not combine branches the flowchart keeps separate",
+        "classOfRecommendation": "",
+        "levelOfEvidence": "",
+        "lastReviewed": "2026-08-16",
         "anchor": "isch-mevo",
-        "summary": "Dominant proximal M2 is a selective exception. Routine EVT for nondominant M2, distal MCA, ACA, or PCA occlusions is not recommended to improve functional outcomes.",
+        "sourceNote": "EVT eligibility flowchart.",
+        "summary": "A dominant proximal M2 has separate early and late EVT tiers. The no-benefit branch applies to nondominant M2, ACA, and PCA. The accepted flowchart supplies no recommendation for codominant M2.",
         "actions": [
-          "Dominant proximal M2 within 6h, NIHSS >=6, ASPECTS >=6, mRS 0-1: EVT is reasonable but benefit is uncertain.",
-          "Nondominant/codominant M2, distal MCA, ACA, or PCA: default to medical management and trial enrollment.",
-          "Treat disabling deficits with IVT if eligible; do not substitute routine distal EVT for thrombolysis.",
-          "Escalate only for exceptional anatomy, severe disabling deficit, low procedural risk, and consensus with the neurointerventionalist."
+          "Define dominant proximal M2 as an M2 branch <=1 cm from the MCA bifurcation that supplies >=50% of MCA territory.",
+          "For 6-24 hours, require the flowchart’s CTP hypoperfusion-hypodensity mismatch in addition to ASPECTS and NIHSS.",
+          "Do not infer a codominant-M2 recommendation from the nondominant branch."
         ],
         "pathway": [
           {
-            "label": "Dominant proximal M2, high disability, favorable imaging",
-            "decision": "EVT reasonable; benefit uncertain",
+            "label": "Dominant proximal M2, 0-6h, ASPECTS >=6, NIHSS >=6",
+            "decision": "EVT",
             "cor": "IIa",
             "loe": "B-NR"
           },
           {
-            "label": "Nondominant M2, M3/M4, ACA, PCA",
-            "decision": "Routine EVT not recommended",
-            "cor": "III",
+            "label": "Dominant proximal M2, 6-24h, ASPECTS >=6, NIHSS >=6, CTP mismatch present",
+            "decision": "EVT",
+            "cor": "IIa",
+            "loe": "B-NR"
+          },
+          {
+            "label": "Nondominant M2, ACA, or PCA",
+            "decision": "No EVT",
+            "cor": "III: No Benefit",
             "loe": "A"
           },
           {
-            "label": "Active trial available",
-            "decision": "Prefer trial enrollment over ad hoc EVT",
-            "cor": "Statement",
-            "loe": "C-EO"
+            "label": "Codominant M2",
+            "decision": "No institutional recommendation is supplied",
+            "cor": "",
+            "loe": ""
           }
         ],
         "calculators": [
-          {
-            "label": "STEP-EVT trial matcher",
-            "tab": "trials",
-            "view": "active",
-            "query": "STEP"
-          },
           {
             "label": "EVT builder",
             "tab": "management",
@@ -388,50 +349,58 @@
             "anchor": "isch-evt"
           }
         ],
-        "pitfalls": [
-          "Conflating dominant proximal M2 with all distal occlusions.",
-          "Anchoring on the angiogram instead of clinical disability and procedural risk.",
-          "Treating neutral MeVO RCTs as \"no distal EVT ever\" rather than \"no routine EVT.\""
-        ],
-        "teachingPearl": "MeVO is where anatomy, deficit eloquence, and procedural risk matter most. The safest default is medical therapy plus trial enrollment.",
-        "changedSinceLastGuideline": "2025 MeVO RCTs and 2026 AHA/ASA recommendations moved routine distal EVT from enthusiasm to restraint."
+        "pitfalls": [],
+        "teachingPearl": "",
+        "changedSinceLastGuideline": ""
       },
       {
         "id": "ais-complications",
         "title": "Post-Treatment Complications",
-        "shortLabel": "sICH / angioedema / antithrombotics",
-        "urgency": "Have rescue orders ready before drug goes in",
-        "classOfRecommendation": "I",
-        "levelOfEvidence": "B-NR",
-        "lastReviewed": "2026-07-03",
-        "recommendationId": "rec-ais-post-ivt-complications",
-        "evidenceQuery": "post thrombolysis angioedema hemorrhage protocol AIS",
+        "shortLabel": "Suspected post-thrombolytic ICH",
+        "urgency": "Start the institutional hemorrhage algorithm immediately when suspected",
+        "classOfRecommendation": "",
+        "levelOfEvidence": "",
+        "lastReviewed": "2026-08-16",
         "anchor": "isch-postlytic",
-        "summary": "The lytic decision is incomplete until the team has a rescue plan for neurological worsening, post-lytic ICH, angioedema, and antithrombotic timing.",
+        "sourceNote": "Post-thrombolytic hemorrhage algorithm and reversal order set.",
+        "summary": "The institutional algorithm separates the initial suspected-hemorrhage actions, the delayed-CT cryoprecipitate branch, CT-confirmed tranexamic acid, and subsequent laboratory and consultation steps.",
         "actions": [
-          "If severe headache, acute hypertension, nausea/vomiting, or worsening exam occurs: stop alteplase infusion if running, obtain emergent CT, and activate reversal protocol.",
-          "For suspected post-lytic sICH: hold antithrombotics, send CBC/PT/INR/aPTT/fibrinogen/type-screen, give cryoprecipitate targeting fibrinogen >200 mg/dL, and involve neurosurgery/ICU.",
-          "Monitor for orolingual angioedema, especially with ACE inhibitor use and insular/anterior circulation stroke; prepare airway early.",
-          "No antiplatelet or anticoagulant for 24h after IVT until follow-up imaging excludes hemorrhage."
+          "Suspect intracranial hemorrhage with sudden neurologic deterioration, new headache, acute hypertension, nausea, or vomiting; stop the thrombolytic if still running and begin the STAT CT, laboratory, and reversal workflow.",
+          "Order 2 units of cryoprecipitate immediately (1 unit = 5 prepooled cryoprecipitates). If CT results are expected to take more than 30 minutes, empirically administer 2 units only when fibrinogen is below 200 mg/dL.",
+          "Confirm intracranial blood on CT with the ordering provider, then confirm post-CT cryoprecipitate administration with the RN before tranexamic acid; after both confirmations, give tranexamic acid 1,000 mg IV over 10 minutes.",
+          "Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal; call the Stroke/Neurology attending, consult Neurosurgery if needed, update the family, and obtain Hematology-attending input if abnormalities persist or bleeding remains uncontrolled.",
+          "Avoid anticoagulants and antiplatelet agents for 24 hours after TNK."
         ],
         "pathway": [
           {
-            "label": "Post-IVT neurological worsening",
-            "decision": "Emergency CT + labs + reversal pathway",
-            "cor": "I",
-            "loe": "B-NR"
+            "label": "CT not delayed",
+            "decision": "Wait for CT result before the treatment branch",
+            "cor": "",
+            "loe": ""
+          },
+          {
+            "label": "CT delayed >30 min and fibrinogen <200 mg/dL",
+            "decision": "Empirically administer 2 units cryoprecipitate over 10-30 min",
+            "cor": "",
+            "loe": ""
+          },
+          {
+            "label": "Intracranial blood confirmed on CT",
+            "decision": "Confirm CT with the ordering provider. If cryoprecipitate was not already given, give 2 units over 10-30 min; if given empirically, verbally confirm post-CT administration with the RN. Then give TXA 1,000 mg IV over 10 min",
+            "cor": "",
+            "loe": ""
+          },
+          {
+            "label": "Empiric cryoprecipitate running and CT shows no ICH",
+            "decision": "Stop the cryoprecipitate infusion; do not restart the lytic",
+            "cor": "",
+            "loe": ""
           },
           {
             "label": "Orolingual angioedema",
-            "decision": "Airway-first protocol; steroids/H1/H2, epinephrine if progressing",
+            "decision": "Airway-first sequence; methylprednisolone, diphenhydramine, and famotidine; epinephrine if worsening; then icatibant",
             "cor": "IIb",
             "loe": "C-EO"
-          },
-          {
-            "label": "Antithrombotic restart after IVT",
-            "decision": "Hold 24h and image first",
-            "cor": "I",
-            "loe": "B-NR"
           }
         ],
         "calculators": [
@@ -440,71 +409,47 @@
             "tab": "management",
             "subTab": "ischemic",
             "anchor": "isch-postlytic"
-          },
-          {
-            "label": "Angioedema protocol",
-            "tab": "management",
-            "subTab": "ischemic",
-            "anchor": "isch-angioedema"
-          },
-          {
-            "label": "SEDAN/DRAGON",
-            "tab": "management",
-            "subTab": "calculators",
-            "anchor": "calc-risk-scores"
           }
         ],
-        "pitfalls": [
-          "Calling a worsening exam \"expected evolution\" after IVT without immediate imaging.",
-          "Waiting for fibrinogen before giving cryoprecipitate in a clinically severe bleed.",
-          "Treating tongue swelling with medications while delaying airway planning."
-        ],
-        "teachingPearl": "Good thrombolysis workflow is not just door-to-needle. It is door-to-needle with a rehearsed rescue pathway.",
-        "changedSinceLastGuideline": "The 2026 guideline emphasizes readiness for emergent bleeding and angioedema complications as part of safe IVT administration."
+        "pitfalls": [],
+        "teachingPearl": "",
+        "changedSinceLastGuideline": ""
       },
       {
         "id": "ais-telestroke-sequence",
         "title": "Telestroke Decision Sequence",
-        "shortLabel": "Lyse first, then thrombectomy/transfer",
-        "urgency": "Generic decision-support principle — verify against local protocol",
+        "shortLabel": "Accepted telestroke workflow",
+        "urgency": "Make the thrombolysis decision first, then address thrombectomy and transfer",
         "classOfRecommendation": "Workflow",
-        "levelOfEvidence": "Consensus",
-        "lastReviewed": "2026-07-03",
-        "recommendationId": "rec-telestroke-sequence",
-        "evidenceQuery": "telestroke workflow thrombolysis decision acute ischemic stroke",
+        "levelOfEvidence": "Institutional",
+        "lastReviewed": "2026-08-16",
         "anchor": "isch-evt",
-        "summary": "In remote/telestroke assessment, make the time-critical thrombolysis decision first, then work the thrombectomy and transfer logistics. This is a generic decision-support sequence, not any institution's workflow or transfer policy; confirm every step against your approved local protocol.",
+        "sourceNote": "Accepted telestroke workflow; operational names, contacts, and platform details are intentionally omitted.",
+        "summary": "The accepted telestroke workflow prioritizes the thrombolysis decision, preparation when treatment first appears possible, a minimum decision dataset, a treatment time-out, and then thrombectomy and transfer decisions.",
         "actions": [
-          "Assemble the minimal urgent dataset before the lytic decision: confirmed last-known-well, a disabling deficit (NIHSS or enough exam to show disability), glucose that is not a mimic emergency, CT excluding hemorrhage, BP below threshold or actively controlled, and an anticoagulant/contraindication review.",
-          "Do not delay noncontrast CT/CTA for administrative or video-connection setup.",
-          "If thrombolysis is likely, have the local team prepare/mix the medication while final eligibility is confirmed.",
-          "Run a safety pause before the bolus: confirm diagnosis/disabling deficit, imaging, window or advanced-imaging selection, BP <185/110, glucose, anticoagulants/coags when relevant, contraindications, a risk-benefit discussion when feasible, and team agreement.",
-          "Address thrombectomy next: LVO on CTA/MRA, treatable within 24h, ASPECTS/core/clinical criteria, goals of care, and transfer feasibility."
+          "Obtain a brief status update with last known well, NIHSS, antithrombotics, blood pressure, glucose, and obvious contraindications.",
+          "When thrombolysis first appears possible, ask the remote team to prepare the medication while eligibility is completed.",
+          "Before administration, review the dataset, confirm risk-benefit discussion and consent, confirm the last BP is below 185/110, and confirm provider agreement.",
+          "Address thrombectomy next using time, large-vessel occlusion, ASPECTS, goals of care, and transfer feasibility."
         ],
         "pathway": [
           {
-            "label": "Time-critical reperfusion",
-            "decision": "Decide IV thrombolysis first; do not wait on EVT/transfer logistics",
+            "label": "Minimum thrombolysis dataset complete",
+            "decision": "Make the thrombolysis decision as soon as possible",
             "cor": "Workflow",
-            "loe": "Consensus"
+            "loe": "Institutional"
           },
           {
-            "label": "Imaging",
-            "decision": "Do not delay noncontrast CT/CTA for setup",
+            "label": "Medication ready",
+            "decision": "Perform the brief treatment time-out before administration",
             "cor": "Workflow",
-            "loe": "Consensus"
+            "loe": "Institutional"
           },
           {
-            "label": "Before bolus",
-            "decision": "Safety pause: dataset + BP <185/110 + team agreement",
+            "label": "Thrombolysis decision complete",
+            "decision": "Address thrombectomy and transfer next",
             "cor": "Workflow",
-            "loe": "Consensus"
-          },
-          {
-            "label": "After the lytic decision",
-            "decision": "Sequence thrombectomy candidacy and transfer",
-            "cor": "Workflow",
-            "loe": "Consensus"
+            "loe": "Institutional"
           }
         ],
         "calculators": [
@@ -520,13 +465,9 @@
             "anchor": "treatment-decision"
           }
         ],
-        "pitfalls": [
-          "Letting video or administrative setup delay CT/CTA or the thrombolysis decision.",
-          "Sequencing transfer logistics ahead of an otherwise-eligible thrombolysis decision.",
-          "Skipping the pre-bolus safety pause under time pressure."
-        ],
-        "teachingPearl": "Telestroke is a sequence, not a parallel checklist: the thrombolysis decision is the most time-critical step and should not wait on thrombectomy or transfer logistics.",
-        "changedSinceLastGuideline": "Reflects 2026 telestroke workflow consensus emphasizing a thrombolysis-first decision sequence and a structured pre-bolus safety pause. This card is an educational principle only — not local workflow, staffing, or transfer policy."
+        "pitfalls": [],
+        "teachingPearl": "",
+        "changedSinceLastGuideline": ""
       },
       {
         "id": "ais-pediatric",

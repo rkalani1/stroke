@@ -256,6 +256,8 @@ import {
   ACTIVE_STATUS_LABELS
 } from './evidence/index.js';
 
+const NO_INSTITUTIONAL_PROTOCOL_NOTICE = 'No institutional protocol document is on file for this topic. See Guidelines & References for the current society guidance.';
+
 // Optimized lookup map for evidenceRecommendations
 // We use a lazy initialization getter to avoid TDZ issues and ensure it evaluates when needed
 let _evidenceRecommendationsMap = null;
@@ -1459,6 +1461,7 @@ Clinician Name`;
             bpPreTNKTime: '',
             bpPhase: 'pre-tnk',
             bpPostEVT: '',
+            bpProtocolCheck: '',
             glucose: '',
             creatinine: '',
             height: '',
@@ -1656,7 +1659,9 @@ Clinician Name`;
             },
             // ASPECTS regions
             aspectsRegions: { C: false, L: false, IC: false, I: false, M1: false, M2: false, M3: false, M4: false, M5: false, M6: false },
+            aspectsAssessed: false,
             pcAspectsRegions: { pons: false, midbrain: false, cerebL: false, cerebR: false, pcaL: false, pcaR: false, thalL: false, thalR: false },
+            pcAspectsAssessed: false,
             ticiScore: '',
             evtAccessSite: '',
             evtDevice: '',
@@ -2322,7 +2327,7 @@ Clinician Name`;
 
           const [patientData, setPatientData] = useState(loadFromStorage('patientData', {}));
           const [nihssScore, setNihssScore] = useState(loadFromStorage('nihssScore', 0));
-          const [aspectsScore, setAspectsScore] = useState(loadFromStorage('aspectsScore', 10));
+          const [aspectsScore, setAspectsScore] = useState(loadFromStorage('aspectsScore', ''));
 
           const [searchQuery, setSearchQuery] = useState('');
           const [copiedText, setCopiedText] = useState('');
@@ -2574,8 +2579,11 @@ Clinician Name`;
             volume30: false,
             ivh: false,
             infratentorial: false,
-            lobar: false, // FUNC Score: lobar vs deep supratentorial
-            preCogImpairment: false // FUNC Score: pre-ICH cognitive impairment
+            criteriaReviewed: false
+          }));
+          const [funcItems, setFuncItems] = useState(loadFromStorage('funcItems', {
+            location: '',
+            preCogImpairment: false
           }));
           const [ichVolumeParams, setIchVolumeParams] = useState(loadFromStorage('ichVolumeParams', { a: '', b: '', thicknessMm: '', numSlices: '' }));
 
@@ -2590,7 +2598,7 @@ Clinician Name`;
                 setIchScoreItems(prev => {
                   const isHigh = vol >= 30;
                   if (prev.volume30 !== isHigh) {
-                    return { ...prev, volume30: isHigh };
+                    return { ...prev, volume30: isHigh, criteriaReviewed: false };
                   }
                   return prev;
                 });
@@ -2620,7 +2628,8 @@ Clinician Name`;
             unilateralWeakness: false,
             speechDisturbance: false,
             duration: '', // Changed to single field for mutual exclusivity
-            diabetes: false
+            diabetes: false,
+            criteriaReviewed: false
           }));
           const [chads2vascItems, setChads2vascItems] = useState(loadFromStorage('chads2vascItems', {
             chf: false,
@@ -2630,8 +2639,11 @@ Clinician Name`;
             strokeTia: false,
             vascular: false,
             age65: false,
-            female: false
+            female: false,
+            criteriaReviewed: false
           }));
+          const abcd2Complete = abcd2Items.criteriaReviewed === true && ['duration60', 'duration10', 'durationUnder10'].includes(abcd2Items.duration);
+          const chads2VascComplete = chads2vascItems.criteriaReviewed === true;
           const [ropeItems, setRopeItems] = useState(loadFromStorage('ropeItems', {
             noHypertension: false,
             noDiabetes: false,
@@ -2729,21 +2741,26 @@ Clinician Name`;
             }
             return merged;
           });
+          const protocolDosingWeightKg = Number.parseFloat(telestrokeNote.weight);
+          const hasValidProtocolDosingWeight = Number.isFinite(protocolDosingWeightKg) && protocolDosingWeightKg > 0;
 
           const [autoSyncCalculators, setAutoSyncCalculators] = useState(loadFromStorage('autoSyncCalculators', true));
           const [calculatorFilter, setCalculatorFilter] = useState('');
           const [evtDecisionInputs, setEvtDecisionInputs] = useState(() => {
             const defaults = {
               population: 'adult',
-              occlusion: 'lvo',
+              occlusion: '',
               timeWindow: 'auto',
-              aspects: '6-10',
-              mrs: '0-1',
+              aspects: '',
+              mrs: '',
               nihss: '',
-              pcAspects: '>=6',
+              pcAspects: '',
+              age: '',
+              massEffect: '',
               coreVolume: '',
               mismatchRatio: '',
               mismatchVolume: '',
+              ctpMismatch: false,
               disablingDeficit: false
             };
             const saved = loadFromStorage('evtDecisionInputs', {});
@@ -2824,10 +2841,10 @@ Clinician Name`;
           }, [telestrokeNote.diagnosisCategory, telestrokeNote.diagnosis]);
 
           const calculatorPriorityMap = {
-            ich: ['ich-score', 'func', 'gcs', 'mrs', 'hasbled', 'crcl'],
-            ischemic: ['abcd2', 'mrs', 'chads2vasc', 'hasbled', 'rope', 'crcl'],
-            sah: ['hunt-hess', 'mod-fisher', 'gcs', 'crcl'],
-            tia: ['abcd2', 'chads2vasc', 'hasbled', 'crcl'],
+            ich: ['ich-score', 'gcs', 'mrs'],
+            ischemic: ['mrs'],
+            sah: ['hunt-hess', 'gcs'],
+            tia: ['abcd2', 'chads2vasc'],
             other: []
           };
           const calculatorLabelMap = {
@@ -2874,7 +2891,7 @@ Clinician Name`;
           const bpPhaseTargets = {
             'pre-tnk': { label: 'Pre-lysis', systolic: 185, diastolic: 110 },
             'post-tnk': { label: 'Post-TNK', systolic: 180, diastolic: 105 },
-            'post-evt': { label: 'Post-EVT (SBP <180 per AHA/ASA 2019; avoid <140 through ≥72h — ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II showed harm/no benefit)', systolic: 180, diastolic: 105, systolicLow: 140, systolicHigh: 180 },
+            'post-evt': { label: 'Post-EVT', systolicLow: 140, systolicHigh: 180 },
             'no-lytics': { label: 'No lytics/No EVT', systolic: 220, diastolic: 120 },
             'ich': { label: 'ICH (smooth control; target SBP 140, range 130-150 when appropriate; avoid <130 Class 3:Harm)', systolic: 140, diastolic: 90, systolicLow: 130, systolicHigh: 150 },
             'sah': { label: 'SAH (pre-securing, target <160)', systolic: 160, diastolic: 100 },
@@ -2884,11 +2901,14 @@ Clinician Name`;
             'pregnancy': { label: 'Pregnancy/Postpartum stroke', systolic: 160, diastolic: 110 },
             'preeclampsia': { label: 'Preeclampsia/Eclampsia', systolic: 140, diastolic: 90 }
           };
-          const currentBpPhase = telestrokeNote.bpPhase || 'pre-tnk';
+          const ischemicBpPhaseKeys = ['pre-tnk', 'post-tnk', 'post-evt'];
+          const currentBpPhase = ischemicBpPhaseKeys.includes(telestrokeNote.bpPhase) ? telestrokeNote.bpPhase : 'pre-tnk';
           const currentBpTarget = bpPhaseTargets[currentBpPhase] || bpPhaseTargets['pre-tnk'];
-          const currentBpReading = parseBloodPressure(telestrokeNote.bpPostEVT || telestrokeNote.bpPreTNK || telestrokeNote.presentingBP);
+          const currentBpReading = parseBloodPressure(telestrokeNote.bpProtocolCheck);
           const bpWithinTarget = currentBpReading
-            ? currentBpReading.systolic <= currentBpTarget.systolic && currentBpReading.diastolic <= currentBpTarget.diastolic
+            ? currentBpPhase === 'post-evt'
+              ? currentBpReading.systolic >= currentBpTarget.systolicLow && currentBpReading.systolic <= currentBpTarget.systolicHigh
+              : currentBpReading.systolic < currentBpTarget.systolic && currentBpReading.diastolic < currentBpTarget.diastolic
             : null;
           const wakeUpDecision = getWakeUpEligibilityForNote(telestrokeNote);
           const tiaDispositionDecision = getTiaDispositionRecommendation(telestrokeNote, calculateABCD2Score(abcd2Items));
@@ -2900,12 +2920,12 @@ Clinician Name`;
             PCC: {
               title: '4F-PCC (Kcentra)',
               dosing: 'PCC (Kcentra) 2000 units IV — infuse immediately. Fixed dose, not weight- or INR-tiered. If PT/INR >1.5 after the infusion, page hematology and consider an additional 500 units of PCC or 2-4 units of plasma (FFP).',
-              note: 'Give simultaneously with vitamin K 10 mg IV. Check PT/INR at 15-30 min, 6h, and 24h after PCC. If INR >1.5 at 15-30 min → consult hematology for additional PCC. If INR >1.5 at 24h → repeat vitamin K 10 mg IV over 30 min.'
+              note: 'Give simultaneously with vitamin K 10 mg IV. Check PT/INR at exactly 30 minutes, then every 6 hours for 24 hours. If INR >1.5 after the infusion, page hematology and consider PCC 500 units or plasma 2-4 units. If INR >1.5 at 24 hours, repeat vitamin K 10 mg IV.'
             },
             PCC_DOAC: {
               title: '4F-PCC for DOAC Reversal',
               dosing: 'PCC (Kcentra) 2000 units IV. Consider ONLY if no contraindications.',
-              note: 'For dabigatran: use only if idarucizumab unavailable. For rivaroxaban/apixaban: consider if Direct Xa Inhibitor screen elevated. AHA/ASA 2022 lists andexanet alfa as Class IIa for Xa inhibitor reversal when available.'
+              note: 'For dabigatran, use only if idarucizumab is unavailable. For rivaroxaban, apixaban, or edoxaban, use only when the Direct Xa Inhibitor screen is elevated. Andexanet alfa is unavailable in the institutional pathway.'
             },
             VITK: {
               title: 'Vitamin K',
@@ -2919,28 +2939,33 @@ Clinician Name`;
             },
             FFP: {
               title: 'Fresh Frozen Plasma (FFP)',
-              dosing: 'FFP 10-15 mL/kg IV. Check INR after infusion; if still >1.5, administer additional FFP and consult hematology.',
-              note: 'Use ONLY if PCC unavailable. FFP is slower, less effective, and requires more volume than PCC (AHA/ASA 2022).'
+              dosing: 'If PCC is unavailable or contraindicated, prepare and transfuse 4 units emergency-release plasma immediately and request 4 additional units. The ideal plasma dose is 15 mL/kg; each unit is 250-300 mL.',
+              note: 'Repeat the STAT emergency stroke panel after the infusion and INR every 6 hours for 24 hours. If INR remains >1.5, administer 4 more units of plasma and consult the hematology attending.'
             },
             CHARCOAL: {
               title: 'Activated Charcoal',
               dosing: 'Administer if DOAC ingestion <2 hours ago.',
-              note: 'Most effective when given early. Use for dabigatran, rivaroxaban, or apixaban.'
+              note: 'Use for dabigatran, rivaroxaban, apixaban, or edoxaban.'
             },
             CRYO: {
               title: 'Cryoprecipitate',
-              dosing: '2 pools cryoprecipitate IV over 10-30 min (takes ~15-20 min to prepare). 1 pool = 5 pre-pooled units; 1-2 pools raises plasma fibrinogen by 50-100 mg/dL in a 50-100 kg patient.',
-              note: 'For post-thrombolytic ICH when fibrinogen <200 mg/dL. Repeat fibrinogen and coagulation panel after administration.'
+              dosing: '2 units of cryoprecipitate IV over 10-30 minutes.',
+              note: 'Follow the CT-result and delayed-CT branches in the institutional post-thrombolytic hemorrhage algorithm.'
             },
             TXA: {
               title: 'Tranexamic Acid (TXA)',
               dosing: 'Tranexamic acid 1000 mg IV over 10 min STAT',
-              note: 'For post-thrombolytic ICH after cryoprecipitate. Give when intracranial blood confirmed on CT.'
+              note: 'For post-thrombolytic ICH: confirm intracranial blood on CT with the ordering provider, then confirm post-CT cryoprecipitate administration with the RN before giving TXA.'
             },
             METHYLPRED: {
               title: 'Methylprednisolone',
               dosing: '125 mg IV (for angioedema).',
-              note: 'Part of angioedema management protocol. For contrast allergy premedication: 40 mg IV.'
+              note: 'Part of the institutional orolingual-angioedema sequence.'
+            },
+            METHYLPRED_CONTRAST: {
+              title: 'Methylprednisolone — Contrast Premedication',
+              dosing: '40 mg IV immediately before the contrast study.',
+              note: 'Use as the institutional alternative to hydrocortisone 200 mg IV, together with diphenhydramine 50 mg IV.'
             },
             DIPHEN: {
               title: 'Diphenhydramine',
@@ -2950,12 +2975,12 @@ Clinician Name`;
             EPI: {
               title: 'Epinephrine',
               dosing: 'Epinephrine (0.1%, 1 mg/mL) 0.3 mL subcutaneously. Nebulized for upper airway edema: 0.5 mL of the same 0.1% solution.',
-              note: 'For worsening angioedema. Give if symptoms progress despite methylprednisolone, diphenhydramine, and famotidine. If the presentation is frank anaphylaxis rather than isolated orolingual angioedema, treat it as anaphylaxis.'
+              note: 'Give when the edema further increases.'
             },
             ICATIBANT: {
               title: 'Icatibant',
               dosing: '30 mg subcutaneously, once (1 dose).',
-              note: 'Bradykinin B2 receptor antagonist. Standard step in the post-thrombolytic orolingual angioedema sequence, after airway management, methylprednisolone, diphenhydramine, and famotidine — not restricted to refractory or ACE-inhibitor-related cases.'
+              note: 'Standard step in the post-thrombolytic orolingual angioedema sequence. Attending approval is required; document the approving attending at the point of care.'
             },
             BERINERT: {
               title: 'C1 Esterase Inhibitor (Berinert)',
@@ -2965,12 +2990,12 @@ Clinician Name`;
             HYDROCORT: {
               title: 'Hydrocortisone',
               dosing: '200 mg IV (OR Methylprednisolone 40 mg IV).',
-              note: 'Emergency contrast allergy premedication for suspected LVO requiring CTA/CTP: Give Hydrocortisone 200mg IV OR Methylprednisolone 40mg + Diphenhydramine 50mg IV immediately prior to contrast. Obtain informed consent and document. Excludes known contrast-related anaphylaxis (cardiovascular collapse). Per ACR guidelines, premedication in emergencies may be given as a single dose immediately before contrast (ACR Manual on Contrast Media 2024).'
+              note: 'Institutional contrast-allergy premedication for suspected LVO. Give immediately before the contrast study with diphenhydramine 50 mg IV. Excludes known contrast-related anaphylaxis.'
             },
             FAMOTIDINE: {
               title: 'Famotidine',
               dosing: 'Famotidine 20 mg IV.',
-              note: 'H2 antihistamine given with an H1 blocker (e.g., diphenhydramine) for thrombolysis-associated orolingual angioedema. Use the H2 agent on your local formulary.'
+              note: 'Give with diphenhydramine as part of the institutional orolingual-angioedema sequence.'
             },
             PROT1: {
               title: 'Protamine (UFH)',
@@ -2982,7 +3007,7 @@ Clinician Name`;
               title: 'Protamine (LMWH)',
               classOfRec: 'Class IIb',
               dosing: 'Last dose <8h: Protamine 50 mg IV. Last dose 8-24h: Protamine 25 mg IV. Last dose >24h: no reversal indicated. (COR 2b/C)',
-              note: 'Protamine only partially reverses LMWH (~60% anti-Xa neutralization). Second dose may be considered if ongoing bleeding.'
+              note: 'Use the institutional last-dose timing tiers shown above.'
             },
             NICARDIPINE: {
               title: 'Nicardipine (Cardene)',
@@ -3559,12 +3584,12 @@ Clinician Name`;
               class: 'Direct Factor Xa Inhibitor',
               halfLife: '8-12 hours',
               halfLifeNote: 'Prolonged in renal impairment',
-              thrombolysisThreshold: '48 hours since last dose',
-              thrombolysisNote: 'Consider anti-Xa level if <48h - thrombolysis may be given if anti-Xa <30 ng/mL',
+              thrombolysisThreshold: 'Unresolved institutional 24-48 hour source conflict',
+              thrombolysisNote: 'One source excludes DOAC use within 24 hours without an anti-Xa panel and describes a consent pathway from 24-48 hours; another makes factor-Xa exposure within 48 hours an absolute exclusion. No tier is selected pending owner adjudication.',
               ichReversal: {
-                primary: '4-Factor PCC (Kcentra) 25-50 IU/kg based on INR (max 5000 IU) per AHA/ASA 2022',
-                alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Use agent-specific reversal: andexanet alfa is reasonable when available (Class IIa, AHA/ASA 2022); 4F-PCC is an alternative when andexanet is unavailable or contraindicated. AHA/ASA 2022 lists andexanet as Class IIa; ANNEXA-I 2024 supports improved hemostatic efficacy with thrombotic-risk monitoring. Discuss with Hematology if bleeding remains uncontrolled.'
+                primary: 'If the Direct Xa Inhibitor screen is elevated, give 4-Factor PCC (Kcentra) 2000 units IV',
+                alternative: '',
+                note: 'Andexanet alfa is unavailable in the institutional pathway. The source contains an unresolved dialysis conflict, so no factor-Xa dialysis action is selected.'
               },
               monitoring: 'Anti-Xa level (calibrated for apixaban)'
             },
@@ -3573,12 +3598,12 @@ Clinician Name`;
               class: 'Direct Factor Xa Inhibitor',
               halfLife: '5-9 hours (young), 11-13 hours (elderly)',
               halfLifeNote: 'Prolonged in renal impairment',
-              thrombolysisThreshold: '48 hours since last dose',
-              thrombolysisNote: 'Consider anti-Xa level if <48h - thrombolysis may be given if anti-Xa <30 ng/mL',
+              thrombolysisThreshold: 'Unresolved institutional 24-48 hour source conflict',
+              thrombolysisNote: 'One source excludes DOAC use within 24 hours without an anti-Xa panel and describes a consent pathway from 24-48 hours; another makes factor-Xa exposure within 48 hours an absolute exclusion. No tier is selected pending owner adjudication.',
               ichReversal: {
-                primary: '4-Factor PCC (Kcentra) 25-50 IU/kg based on INR (max 5000 IU) per AHA/ASA 2022',
-                alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Use agent-specific reversal: andexanet alfa is reasonable when available (Class IIa, AHA/ASA 2022); 4F-PCC is an alternative when andexanet is unavailable or contraindicated. AHA/ASA 2022 lists andexanet as Class IIa; ANNEXA-I 2024 supports improved hemostatic efficacy with thrombotic-risk monitoring. Discuss with Hematology if bleeding remains uncontrolled.'
+                primary: 'If the Direct Xa Inhibitor screen is elevated, give 4-Factor PCC (Kcentra) 2000 units IV',
+                alternative: '',
+                note: 'Andexanet alfa is unavailable in the institutional pathway. The source contains an unresolved dialysis conflict, so no factor-Xa dialysis action is selected.'
               },
               monitoring: 'Anti-Xa level (calibrated for rivaroxaban)'
             },
@@ -3591,8 +3616,8 @@ Clinician Name`;
               thrombolysisNote: 'Consider dTT or ECT if <48h - thrombolysis may be given if dTT/ECT normal or aPTT <40s',
               ichReversal: {
                 primary: 'Idarucizumab (Praxbind) 5g IV (2 x 2.5g vials)',
-                alternative: '4-Factor PCC (Kcentra) 50 IU/kg if idarucizumab unavailable',
-                note: 'Idarucizumab is the ONLY FDA-approved specific reversal agent for dabigatran'
+                alternative: '4-Factor PCC (Kcentra) 2000 units IV only if idarucizumab is unavailable',
+                note: 'Use the thrombin-time assessment gate in the institutional pathway.'
               },
               monitoring: 'dTT (dilute thrombin time), ECT, or aPTT (less reliable)'
             },
@@ -3601,12 +3626,12 @@ Clinician Name`;
               class: 'Direct Factor Xa Inhibitor',
               halfLife: '10-14 hours',
               halfLifeNote: 'Prolonged in low body weight (<60kg) and renal impairment',
-              thrombolysisThreshold: '48 hours since last dose',
-              thrombolysisNote: 'No calibrated specific assay widely available; Direct Xa Inhibitor screen may help exclude presence',
+              thrombolysisThreshold: 'Unresolved institutional 24-48 hour source conflict',
+              thrombolysisNote: 'One source excludes DOAC use within 24 hours without an anti-Xa panel and describes a consent pathway from 24-48 hours; another makes factor-Xa exposure within 48 hours an absolute exclusion. No tier is selected pending owner adjudication.',
               ichReversal: {
-                primary: '4-Factor PCC (Kcentra) 25-50 IU/kg based on INR (max 5000 IU) per AHA/ASA 2022',
-                alternative: 'Activated PCC (FEIBA) 50 IU/kg if 4F-PCC unavailable',
-                note: 'Andexanet alfa is NOT indicated for edoxaban reversal. 4F-PCC is the primary reversal agent. Consider PCC if no contraindications and Direct Xa Inhibitor screen elevated.'
+                primary: 'If the Direct Xa Inhibitor screen is elevated, give 4-Factor PCC (Kcentra) 2000 units IV',
+                alternative: '',
+                note: 'Andexanet alfa is unavailable in the institutional pathway. The source contains an unresolved dialysis conflict, so no factor-Xa dialysis action is selected.'
               },
               monitoring: 'Direct Xa Inhibitor screen (not widely calibrated for edoxaban)'
             },
@@ -3618,10 +3643,10 @@ Clinician Name`;
               thrombolysisThreshold: 'INR ≤1.7',
               thrombolysisNote: 'Contraindicated if INR >1.7, PT >15s, or aPTT >40s',
               ichReversal: {
-                primary: 'Vitamin K 10mg IV + 4-Factor PCC (Kcentra) based on INR and weight',
-                pccDosing: 'INR 2-4: 25 IU/kg; INR 4-6: 35 IU/kg; INR >6: 50 IU/kg (max 5000 IU)',
-                alternative: 'FFP 10-15 mL/kg if PCC unavailable (less effective, volume overload risk)',
-                note: 'Vitamin K should always be given for sustained reversal'
+                primary: 'Vitamin K 10 mg IV plus 4-Factor PCC (Kcentra) 2000 units IV, given immediately and concurrently when the INR branch indicates PCC',
+                pccDosing: 'Fixed PCC dose: 2000 units IV; not weight- or INR-tiered',
+                alternative: 'If PCC is unavailable or contraindicated: 4 units emergency-release plasma immediately, request 4 more, ideal total dose 15 mL/kg',
+                note: 'Repeat PT/INR at exactly 30 minutes, then every 6 hours for 24 hours.'
               },
               monitoring: 'INR, PT'
             },
@@ -3633,9 +3658,9 @@ Clinician Name`;
               thrombolysisThreshold: 'aPTT must be ≤40s (normal) at time of administration',
               thrombolysisNote: 'UFH clearance is rapid (t½ 1-2h) but thrombolysis eligibility is aPTT-based, not time-based. Check aPTT; if >40s, wait and recheck.',
               ichReversal: {
-                primary: 'Protamine sulfate 1mg per 100 units UFH (last 2-3 hours)',
-                maxDose: 'Max 50mg protamine per dose',
-                note: 'Protamine has rapid onset; re-dose if continued bleeding'
+                primary: 'Protamine 25 mg IV immediately; recheck anti-Xa after infusion and give 10 mg more if anti-Xa remains >0.1',
+                maxDose: 'Maximum cumulative protamine dose 55 mg',
+                note: 'Use the institutional anti-Xa assessment gate.'
               },
               monitoring: 'aPTT, anti-Xa level'
             },
@@ -3647,8 +3672,8 @@ Clinician Name`;
               thrombolysisThreshold: '24 hours since last therapeutic dose',
               thrombolysisNote: 'Contraindicated within 24h of therapeutic dose; prophylactic dosing may be acceptable',
               ichReversal: {
-                primary: 'Protamine: <8h since dose → 1mg per 1mg enoxaparin; 8-12h → 0.5mg per 1mg; >12h → likely unnecessary (check anti-Xa). Max single dose 50mg. May repeat 0.5mg/mg if bleeding persists.',
-                note: 'Protamine only partially reverses LMWH (~60% anti-Xa activity neutralized). Anti-Xa level guides additional dosing.'
+                primary: 'Last dose <8 hours: protamine 50 mg IV; 8-24 hours: protamine 25 mg IV; >24 hours: no reversal indicated.',
+                note: 'Use the institutional last-dose timing tiers.'
               },
               monitoring: 'Anti-Xa level (preferred), aPTT (unreliable)'
             },
@@ -3660,9 +3685,9 @@ Clinician Name`;
               thrombolysisThreshold: '48 hours since last dose (long half-life)',
               thrombolysisNote: 'No specific reversal agent. Check anti-Xa level; thrombolysis may be considered if anti-Xa undetectable.',
               ichReversal: {
-                primary: 'Recombinant Factor VIIa (rFVIIa) 90 mcg/kg IV — limited evidence',
-                alternative: '4-Factor PCC 50 IU/kg may partially correct, but not reliably studied for fondaparinux',
-                note: 'No specific reversal agent exists. Protamine is INEFFECTIVE. rFVIIa has been used off-label. Consider Hematology consult. Supportive care and time (long half-life) are primary strategy.'
+                primary: 'Stop fondaparinux and obtain STAT hematology-attending consultation',
+                alternative: '',
+                note: 'No specific antidote is available. The institutional source does not authorize rFVIIa, PCC, or dialysis for this branch.'
               },
               monitoring: 'Anti-Xa level (calibrated for fondaparinux)'
             }
@@ -6882,44 +6907,29 @@ fever_management: {
           }
 
           function getPostEvtBpGuidance(note) {
-            const postEvt = note?.postEvtBP || {};
-            const tici = (note?.ticiScore || '').toLowerCase();
-            const autoReperfused = tici.includes('2b') || tici.includes('2c') || tici.includes('3');
-            const reperfused = postEvt.reperfusionStatus
-              ? postEvt.reperfusionStatus === 'successful'
-              : autoReperfused;
-            const bp = parseBloodPressure(note?.bpPostEVT || note?.presentingBP);
-            const target = reperfused ? { low: 140, high: 180, label: 'SBP 140-180 (avoid <140)' } : { low: 140, high: 180, label: 'SBP 140-180' };
+            const bp = parseBloodPressure(note?.bpPostEVT);
+            const target = { low: 140, high: 180, label: 'SBP 140-180' };
             const status = !bp
               ? 'unknown'
               : bp.systolic < target.low
                 ? 'too-low'
-              : bp.systolic > target.high || bp.diastolic > 105
+              : bp.systolic > target.high
                   ? 'too-high'
                   : 'in-range';
-            return { reperfused, target, bp, status };
+            return { target, bp, status };
           }
 
           function getPostEvtBpPlanSummary(note) {
             const postEvt = note?.postEvtBP || {};
             const infusionLabels = {
               nicardipine: 'Nicardipine drip',
-              clevidipine: 'Clevidipine drip',
               labetalol: 'Intermittent labetalol',
               none: 'No IV infusion'
             };
             const targetLabels = {
-              standard: 'SBP <180/105',
-              guardrail: 'SBP 130-180 guardrail'
-            };
-            const reperfusionLabels = {
-              successful: 'Successful reperfusion (mTICI 2b-3)',
-              partial: 'Partial/none reperfusion (<2b)'
+              guardrail: 'SBP 140-180'
             };
             const parts = [];
-            if (postEvt.reperfusionStatus && reperfusionLabels[postEvt.reperfusionStatus]) {
-              parts.push(reperfusionLabels[postEvt.reperfusionStatus]);
-            }
             if (postEvt.infusionAgent && infusionLabels[postEvt.infusionAgent]) {
               parts.push(`Agent: ${infusionLabels[postEvt.infusionAgent]}`);
             }
@@ -8152,7 +8162,7 @@ fever_management: {
             setPathwayCollapsed(true);
             setGuidelineRecsExpanded(false);
             setDeidWarnings({});
-            setEvtDecisionInputs({ population: 'adult', occlusion: 'lvo', timeWindow: 'auto', aspects: '6-10', mrs: '0-1', nihss: '', pcAspects: '>=6' });
+            setEvtDecisionInputs({ population: 'adult', occlusion: '', timeWindow: 'auto', aspects: '', mrs: '', nihss: '', pcAspects: '', age: '', massEffect: '', coreVolume: '', mismatchRatio: '', mismatchVolume: '', ctpMismatch: false, disablingDeficit: false });
             setDoacProtocol('catalyst');
             setNursingFlowsheetChecks({});
             setAutoSyncCalculators(true);
@@ -8681,7 +8691,7 @@ fever_management: {
               'alias', 'age', 'sex', 'weight', 'height', 'nihss', 'vesselOcclusion', 'diagnosisCategory',
               'toastClassification', 'secondaryPrevention',
               'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
-              'presentingBP', 'heartRate', 'spO2', 'temperature', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT',
+              'presentingBP', 'heartRate', 'spO2', 'temperature', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT', 'bpProtocolCheck',
               'glucose', 'plateletCount', 'inr', 'pt', 'ptt', 'creatinine', 'disablingDeficit',
               'tnkRecommended', 'evtRecommended', 'tnkContraindicationChecklist',
               'tnkContraindicationReviewed', 'tnkContraindicationReviewTime', 'tnkConsentDiscussed',
@@ -12537,22 +12547,15 @@ fever_management: {
             const mrs = inputs.mrs;
             const nihss = parseInt(inputs.nihss, 10);
             const pcAspects = inputs.pcAspects;
-            const fallbackPerfusion = getPerfusionMetrics(telestrokeNote);
+            const age = parseFloat(inputs.age);
             const coreInput = parseFloat(inputs.coreVolume);
-            const ratioInput = parseFloat(inputs.mismatchRatio);
-            const mismatchVolInput = parseFloat(inputs.mismatchVolume);
-            const coreVolume = Number.isNaN(coreInput) ? fallbackPerfusion.coreVolume : coreInput;
-            const mismatchRatio = Number.isNaN(ratioInput) ? fallbackPerfusion.mismatchRatio : ratioInput;
-            const mismatchVolume = Number.isNaN(mismatchVolInput) ? fallbackPerfusion.mismatchVolume : mismatchVolInput;
-            const hasPerfusion = coreVolume !== null || mismatchRatio !== null || mismatchVolume !== null;
-            const perfusionSupport = coreVolume !== null && coreVolume <= 100 && mismatchRatio !== null && mismatchRatio >= 1.2 &&
-              (mismatchVolume === null || mismatchVolume >= 10);
-            const perfusionStrongSupport = coreVolume !== null && coreVolume <= 70 && mismatchRatio !== null && mismatchRatio >= 1.8 &&
-              mismatchVolume !== null && mismatchVolume >= 15;
-            const disablingDeficit = Boolean(inputs.disablingDeficit);
+            const coreVolume = Number.isNaN(coreInput) ? null : coreInput;
+            const noMassEffect = inputs.massEffect === 'none';
+            const ctpMismatch = inputs.ctpMismatch === true;
 
             const resolveWindow = () => {
               if (inputs.timeWindow && inputs.timeWindow !== 'auto') return inputs.timeWindow;
+              if (telestrokeNote.lkwUnknown) return 'unknown';
               if (!timeFromLKW) return 'unknown';
               if (timeFromLKW.total <= 6) return '0-6';
               if (timeFromLKW.total <= 24) return '6-24';
@@ -12560,57 +12563,59 @@ fever_management: {
             };
 
             const window = resolveWindow();
-            const result = { classOfRec: 'IDD', label: 'Insufficient data', color: 'slate', rationale: [] };
+            const result = { classOfRec: '—', label: 'No institutional EVT tier', color: 'slate', rationale: [] };
 
+            if (!occlusion) {
+              return { ...result, label: 'Select occlusion', color: 'amber' };
+            }
             if (window === 'unknown') {
               return { ...result, label: 'Set LKW or select time window', color: 'amber' };
             }
 
-            if (occlusion === 'mvo-nondominant') {
-              if (window === '0-6' || window === '6-24') {
-                if (disablingDeficit || (!Number.isNaN(nihss) && nihss >= 8) || perfusionSupport) {
-                  return {
-                    classOfRec: 'IIb',
-                    label: 'No routine EVT; selective cases only',
-                    color: 'amber',
-                    rationale: ['Isolated non-dominant MeVO/DVO has no routine EVT benefit in 2025 RCTs; consider only for disabling deficits or trial-context selection']
-                  };
+            if (['mvo-nondominant', 'aca', 'pca'].includes(occlusion)) {
+              return {
+                classOfRec: 'III: No Benefit / A',
+                label: 'No EVT',
+                color: 'rose',
+                rationale: ['The institutional flowchart assigns no EVT to nondominant M2, ACA, and PCA occlusions.']
+              };
+            }
+
+            if (occlusion === 'mvo-codominant') {
+              return { ...result, rationale: ['The institutional flowchart supplies no recommendation for codominant M2.'] };
+            }
+
+            if (occlusion === 'mvo-dominant') {
+              if (Number.isNaN(nihss) || nihss < 0 || nihss > 42) {
+                return { ...result, label: 'Enter valid NIHSS', color: 'amber', rationale: ['NIHSS must be between 0 and 42.'] };
+              }
+              if (mrs !== '0-1' || aspects !== '6-10' || Number.isNaN(nihss) || nihss < 6) {
+                return { ...result, rationale: ['Dominant proximal M2 requires baseline mRS 0-1, ASPECTS ≥6, and NIHSS ≥6.'] };
+              }
+              if (window === '0-6') {
+                return { classOfRec: 'IIa / B-NR', label: 'EVT', color: 'emerald', rationale: ['Dominant proximal M2 within 0-6 hours.'] };
+              }
+              if (window === '6-24') {
+                if (!ctpMismatch) {
+                  return { classOfRec: 'Pending', label: 'Confirm CTP mismatch', color: 'amber', rationale: ['The 6-24-hour dominant-M2 tier also requires CTP hypoperfusion-hypodensity mismatch.'] };
                 }
-                return {
-                  classOfRec: 'III (No routine benefit)',
-                  label: 'No routine EVT',
-                  color: 'rose',
-                  rationale: ['Isolated non-dominant MeVO/DVO: optimize medical therapy and reserve EVT for exceptional selective cases']
-                };
+                return { classOfRec: 'IIa / B-NR', label: 'EVT', color: 'emerald', rationale: ['Dominant proximal M2 at 6-24 hours with the required CTP hypoperfusion-hypodensity mismatch confirmed.'] };
               }
               return result;
             }
 
-              if (occlusion === 'mvo-dominant') {
-                if (window === '0-6' && mrs === '0-1' && !Number.isNaN(nihss) && nihss >= 6 && (aspects === '6-10' || !aspects)) {
-                  return { classOfRec: 'IIa', label: 'EVT reasonable (dominant M2)', color: 'emerald', rationale: ['Dominant proximal M2 within 6h, mRS 0-1, NIHSS ≥6 (AHA/ASA 2026 COR IIa, LOE B-NR)'] };
-                }
-                if ((window === '0-6' || window === '6-24') && mrs === '0-1') {
-                  if (disablingDeficit || (!Number.isNaN(nihss) && nihss >= 8) || perfusionSupport) {
-                    return { classOfRec: 'IIb', label: 'EVT may be considered (select cases)', color: 'amber', rationale: ['Dominant/proximal M2 with disabling deficit or favorable perfusion profile'] };
-                  }
-                  return { classOfRec: 'IIb', label: 'Selective only; no routine EVT', color: 'amber', rationale: ['Dominant M2 without disabling deficit has uncertain net benefit — prioritize individualized review'] };
-                }
-                return result;
-              }
-
             if (occlusion === 'basilar') {
+              if (Number.isNaN(nihss) || nihss < 0 || nihss > 42) {
+                return { ...result, label: 'Enter valid NIHSS', color: 'amber', rationale: ['NIHSS must be between 0 and 42.'] };
+              }
               if ((window === '0-6' || window === '6-24') && pcAspects === '>=6') {
                 if (mrs === '0-1' && !Number.isNaN(nihss)) {
                   if (nihss >= 10) {
-                    return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['Basilar, PC-ASPECTS ≥6, NIHSS ≥10, mRS 0-1'] };
+                    return { classOfRec: 'I / A', label: 'EVT', color: 'emerald', rationale: ['Basilar occlusion within 24 hours, PC-ASPECTS ≥6, NIHSS ≥10, baseline mRS 0-1.'] };
                   }
                   if (nihss >= 6) {
-                    return { classOfRec: 'IIb', label: 'EVT may be considered', color: 'amber', rationale: ['Basilar, PC-ASPECTS ≥6, NIHSS 6-9, mRS 0-1'] };
+                    return { classOfRec: 'IIb / B-R', label: 'EVT effectiveness not well established', color: 'amber', rationale: ['Basilar occlusion within 24 hours, PC-ASPECTS ≥6, NIHSS 6-9, baseline mRS 0-1.'] };
                   }
-                }
-                if (mrs !== '0-1') {
-                  return { classOfRec: 'IDD', label: 'Uncertain benefit', color: 'slate', rationale: ['mRS ≥2'] };
                 }
               }
               return result;
@@ -12618,53 +12623,37 @@ fever_management: {
 
             if (occlusion === 'lvo') {
               if (window === '>24') return result;
+              if (Number.isNaN(nihss)) return { ...result, label: 'Enter NIHSS', color: 'amber', rationale: ['The institutional anterior-LVO pathway requires NIHSS ≥6.'] };
+              if (nihss < 0 || nihss > 42) return { ...result, label: 'Enter valid NIHSS', color: 'amber', rationale: ['NIHSS must be between 0 and 42.'] };
+              if (nihss < 6) return { ...result, rationale: ['The entered NIHSS does not meet the institutional NIHSS ≥6 gate.'] };
 
               if (window === '0-6') {
                 if (aspects === '6-10') {
-                  if (mrs === '0-1') return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 6-10, mRS 0-1'] };
-                  if (mrs === '2') return { classOfRec: 'IIa', label: 'EVT reasonable', color: 'emerald', rationale: ['ASPECTS 6-10, pre-stroke mRS 2 (mild disability)'] };
-                  if (mrs === '3-4') return { classOfRec: 'IIb', label: 'EVT may be considered', color: 'amber', rationale: ['ASPECTS 6-10, mRS 3-4'] };
+                  if (mrs === '0-1') return { classOfRec: 'I / A', label: 'EVT', color: 'emerald', rationale: ['0-6 hours, ASPECTS 6-10, baseline mRS 0-1.'] };
+                  if (mrs === '2') return { classOfRec: 'IIa / B-NR', label: 'EVT', color: 'emerald', rationale: ['0-6 hours, ASPECTS 6-10, baseline mRS 2.'] };
+                  if (mrs === '3-4') return { classOfRec: 'IIb / B-NR', label: 'EVT', color: 'amber', rationale: ['0-6 hours, ASPECTS 6-10, baseline mRS 3-4.'] };
                   return result;
                 }
                 if (aspects === '3-5') {
-                  if (mrs === '0-1' && !isNaN(nihss) && nihss >= 6 && perfusionSupport) {
-                    return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: [`ASPECTS 3-5 with favorable perfusion (core ${coreVolume} mL, mismatch ratio ${mismatchRatio?.toFixed?.(1) || mismatchRatio})`] };
-                  }
-                  if (mrs === '0-1' && !isNaN(nihss) && nihss >= 6 && !hasPerfusion) {
-                    return { classOfRec: 'IIa', label: 'EVT reasonable; add perfusion confirmation', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1, NIHSS ≥6; obtain CTP core/mismatch when available to refine risk'] };
-                  }
-                  if (mrs === '0-1' && (isNaN(nihss) || nihss === 0)) return { classOfRec: 'IDD', label: 'Enter NIHSS to evaluate', color: 'amber', rationale: ['ASPECTS 3-5, mRS 0-1 — NIHSS ≥6 required for Class I recommendation'] };
-                  if (mrs === '0-1' && nihss < 6) return { classOfRec: 'IIb', label: 'EVT may be considered', color: 'amber', rationale: ['ASPECTS 3-5, mRS 0-1, but NIHSS <6 — weaker evidence for large-core EVT with low NIHSS'] };
+                  if (mrs === '0-1' && noMassEffect) return { classOfRec: 'I / A', label: 'EVT', color: 'emerald', rationale: ['0-6 hours, ASPECTS 3-5, no significant mass effect.'] };
+                  if (inputs.massEffect === '') return { classOfRec: 'Pending', label: 'Confirm mass-effect status', color: 'amber', rationale: ['The ASPECTS 3-5 tier requires no significant mass effect.'] };
                   return result;
                 }
                 if (aspects === '0-2') {
-                  if (mrs === '0-1' && perfusionStrongSupport) {
-                    return { classOfRec: 'IIb', label: 'EVT may be considered (very select cases)', color: 'amber', rationale: ['ASPECTS 0-2 with strong perfusion selection (core ≤70 mL + mismatch support)'] };
-                  }
-                  if (mrs === '0-1' && hasPerfusion && !perfusionStrongSupport) {
-                    return { classOfRec: 'IDD', label: 'Benefit uncertain; individualized review', color: 'slate', rationale: ['Very large core profile without favorable mismatch support'] };
-                  }
-                  if (mrs === '0-1') return { classOfRec: 'IDD', label: 'Obtain perfusion before decision', color: 'amber', rationale: ['ASPECTS 0-2 requires strict perfusion-based selection and shared decision-making'] };
-                  return result;
+                  const commonGates = mrs === '0-1' && Number.isFinite(age) && age >= 18 && age < 80 && noMassEffect && coreVolume !== null && coreVolume >= 0;
+                  if (commonGates && coreVolume <= 70) return { classOfRec: 'IIa / B-R', label: 'EVT', color: 'amber', rationale: [`0-6 hours, ASPECTS 0-2, age ${age}, no significant mass effect, and CTP core ${coreVolume} mL at or below the unambiguous 70 mL boundary printed in the source.`] };
+                  if (commonGates && coreVolume <= 100) return { classOfRec: 'Pending', label: 'Owner adjudication required', color: 'amber', rationale: ['The institutional flowchart prints a core range of ≤70-100 mL without an executable threshold for 71-100 mL. No eligibility result is selected.'] };
+                  return { classOfRec: 'Pending', label: 'Complete low-ASPECTS qualifiers', color: 'amber', rationale: ['This tier requires baseline mRS 0-1, age <80, no significant mass effect, and the source-listed CTP core threshold of ≤70-100 mL.'] };
                 }
               }
 
               if (window === '6-24') {
-                // Use encounter NIHSS for late-window check (DAWN requires ≥10, DEFUSE-3 requires ≥6)
-                const lateNihss = !isNaN(nihss) && nihss > 0 ? nihss : parseInt(telestrokeNote.nihss || nihssScore, 10) || 0;
                 if (aspects === '6-10' && mrs === '0-1') {
-                  if (lateNihss >= 6) return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: [`ASPECTS 6-10, mRS 0-1, NIHSS ${lateNihss} ≥6 (DAWN/DEFUSE-3)`] };
-                  if (lateNihss > 0 && lateNihss < 6) return { classOfRec: 'IIb', label: 'EVT may be considered (low NIHSS)', color: 'amber', rationale: [`Late window, ASPECTS 6-10, mRS 0-1, but NIHSS ${lateNihss} <6 — outside DAWN/DEFUSE-3 enrollment criteria`] };
-                  return { classOfRec: 'IDD', label: 'Enter NIHSS', color: 'amber', rationale: ['ASPECTS 6-10, mRS 0-1 — NIHSS ≥6 required for late-window Class I (DAWN/DEFUSE-3)'] };
+                  return { classOfRec: 'I / A', label: 'EVT', color: 'emerald', rationale: ['6-24 hours, ASPECTS 6-10, baseline mRS 0-1.'] };
                 }
                 if (aspects === '3-5' && mrs === '0-1') {
-                  if (perfusionSupport) return { classOfRec: 'I', label: 'EVT recommended', color: 'emerald', rationale: ['ASPECTS 3-5, mRS 0-1, perfusion-selected large-core criteria met'] };
-                  if (hasPerfusion) return { classOfRec: 'IIb', label: 'EVT may be considered', color: 'amber', rationale: ['ASPECTS 3-5 late window with suboptimal perfusion profile — benefit less certain'] };
-                  return { classOfRec: 'IIb', label: 'Obtain CTP before final decision', color: 'amber', rationale: ['Late-window large-core decisions should be perfusion-guided'] };
-                }
-                if (aspects === '0-2') {
-                  if (perfusionStrongSupport) return { classOfRec: 'IIb', label: 'EVT may be considered (very select)', color: 'amber', rationale: ['ASPECTS 0-2 late window only with strong mismatch profile and expert review'] };
-                  return { classOfRec: 'IDD', label: 'EVT benefit unclear', color: 'slate', rationale: ['ASPECTS 0-2 in late window has uncertain benefit without highly favorable perfusion'] };
+                  if (Number.isFinite(age) && age < 80 && noMassEffect) return { classOfRec: 'I / A', label: 'EVT', color: 'emerald', rationale: [`6-24 hours, ASPECTS 3-5, age ${age}, no significant mass effect.`] };
+                  return { classOfRec: 'Pending', label: 'Complete large-core qualifiers', color: 'amber', rationale: ['This tier requires age <80 and no significant mass effect.'] };
                 }
                 return result;
               }
@@ -12704,27 +12693,28 @@ fever_management: {
             const patient = useGlobalPatient();
             useEffect(() => {
               if (!autoSyncCalculators || !patient) return;
-              const age = parseInt(patient.age, 10);
+              const rawAge = String(patient.age ?? '').trim();
+              const age = Number(rawAge);
+              const hasValidAge = rawAge !== '' && Number.isFinite(age) && age >= 0;
               const isFemale = patient.sex === 'F';
-              if (!Number.isNaN(age)) {
-                setAbcd2Items(prev => (prev.age60 === (age >= 60) ? prev : { ...prev, age60: age >= 60 }));
-                setIchScoreItems(prev => (prev.age80 === (age >= 80) ? prev : { ...prev, age80: age >= 80 }));
-                setHasbledItems(prev => (prev.elderly === (age >= 65) ? prev : { ...prev, elderly: age >= 65 }));
-                setChads2vascItems(prev => {
-                  const age75 = age >= 75;
-                  const age65 = age >= 65 && age < 75;
-                  if (prev.age75 === age75 && prev.age65 === age65 && prev.female === isFemale) return prev;
-                  return { ...prev, age75, age65, female: isFemale };
-                });
-                setRopeItems(prev => (prev.age === String(age) ? prev : { ...prev, age: String(age) }));
-              }
+              const age60 = hasValidAge && age >= 60;
+              const age65 = hasValidAge && age >= 65 && age < 75;
+              const age75 = hasValidAge && age >= 75;
+              const age80 = hasValidAge && age >= 80;
+              setAbcd2Items(prev => (prev.age60 === age60 ? prev : { ...prev, age60, criteriaReviewed: false }));
+              setIchScoreItems(prev => (prev.age80 === age80 ? prev : { ...prev, age80, criteriaReviewed: false }));
+              setHasbledItems(prev => (prev.elderly === (hasValidAge && age >= 65) ? prev : { ...prev, elderly: hasValidAge && age >= 65 }));
+              setChads2vascItems(prev => {
+                if (prev.age75 === age75 && prev.age65 === age65 && prev.female === isFemale) return prev;
+                return { ...prev, age75, age65, female: isFemale, criteriaReviewed: false };
+              });
+              const ropeAge = hasValidAge ? String(age) : '';
+              setRopeItems(prev => (prev.age === ropeAge ? prev : { ...prev, age: ropeAge }));
               setRcvs2Items(prev => (prev.female === isFemale ? prev : { ...prev, female: isFemale }));
               // Sync standalone GCS → ICH Score GCS component
               const gcsTotal = calculateGCS(gcsItems);
-              if (gcsTotal > 0) {
-                const gcsCategory = gcsTotal <= 4 ? 'gcs34' : gcsTotal <= 12 ? 'gcs512' : '';
-                setIchScoreItems(prev => (prev.gcs === gcsCategory ? prev : { ...prev, gcs: gcsCategory }));
-              }
+              const gcsCategory = gcsTotal === null ? '' : gcsTotal <= 4 ? 'gcs34' : gcsTotal <= 12 ? 'gcs512' : 'gcs1315';
+              setIchScoreItems(prev => (prev.gcs === gcsCategory ? prev : { ...prev, gcs: gcsCategory, criteriaReviewed: false }));
 
               // Sync calculator inputs from encounter once and keep them aligned
               setTelestrokeNote((prev) => {
@@ -15212,7 +15202,7 @@ fever_management: {
               : getDefaultPcAspectsRegions());
             setConsultationType(snapshot.consultationType || settings.defaultConsultationType || 'telephone');
             setCurrentPatientId(snapshot.currentPatientId || null);
-            setEvtDecisionInputs(snapshot.evtDecisionInputs || { population: 'adult', occlusion: 'lvo', timeWindow: 'auto', aspects: '6-10', mrs: '0-1', nihss: '', pcAspects: '>=6' });
+            setEvtDecisionInputs(snapshot.evtDecisionInputs || { population: 'adult', occlusion: '', timeWindow: 'auto', aspects: '', mrs: '', nihss: '', pcAspects: '', age: '', massEffect: '', coreVolume: '', mismatchRatio: '', mismatchVolume: '', ctpMismatch: false, disablingDeficit: false });
             setDoacProtocol(snapshot.doacProtocol || 'catalyst');
             setNursingFlowsheetChecks(snapshot.nursingFlowsheetChecks || {});
             setWeightUnit(snapshot.weightUnit || 'kg');
@@ -15263,7 +15253,7 @@ fever_management: {
             setCompletedSteps([]);
             setConsultationType(settings.defaultConsultationType || 'telephone');
             setTelestrokeNote(getDefaultTelestrokeNote());
-            setEvtDecisionInputs({ population: 'adult', occlusion: 'lvo', timeWindow: 'auto', aspects: '6-10', mrs: '0-1', nihss: '', pcAspects: '>=6' });
+            setEvtDecisionInputs({ population: 'adult', occlusion: '', timeWindow: 'auto', aspects: '', mrs: '', nihss: '', pcAspects: '', age: '', massEffect: '', coreVolume: '', mismatchRatio: '', mismatchVolume: '', ctpMismatch: false, disablingDeficit: false });
             setDoacProtocol('catalyst');
             setNursingFlowsheetChecks({});
             setWeightUnit('kg');
@@ -15744,12 +15734,13 @@ fever_management: {
             }
           }, [telestrokeNote.tnkAdminTime]);
 
-          // Auto-switch BP phase to post-EVT when EVT recommended (without TNK)
+          // Auto-switch only after an EVT procedure result is documented, never from
+          // a recommendation alone.
           useEffect(() => {
-            if (telestrokeNote.evtRecommended && !telestrokeNote.tnkRecommended) {
+            if (telestrokeNote.evtRecommended && !telestrokeNote.tnkRecommended && (telestrokeNote.reperfusionTime || telestrokeNote.ticiScore)) {
               setTelestrokeNote(prev => prev.bpPhase === 'pre-tnk' ? { ...prev, bpPhase: 'post-evt' } : prev);
             }
-          }, [telestrokeNote.evtRecommended, telestrokeNote.tnkRecommended]);
+          }, [telestrokeNote.evtRecommended, telestrokeNote.tnkRecommended, telestrokeNote.reperfusionTime, telestrokeNote.ticiScore]);
 
           useEffect(() => {
             debouncedSave('telestrokeTemplate', editableTemplate);
@@ -28039,14 +28030,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {telestrokeNote.glucose && <span className="text-slate-600 dark:text-ink-2">Gluc: {telestrokeNote.glucose}</span>}
                           {telestrokeNote.inr && <span className="text-slate-600 dark:text-ink-2">INR: {telestrokeNote.inr}</span>}
                           {telestrokeNote.plateletCount && <span className="text-slate-600 dark:text-ink-2">Plt: {telestrokeNote.plateletCount}K</span>}
-                          {telestrokeNote.tnkRecommended !== undefined && (
-                            <span className={`font-semibold ${telestrokeNote.tnkRecommended ? 'text-ok-700 dark:text-ok-300' : 'text-slate-600 dark:text-mute'}`}>
-                              TNK: {telestrokeNote.tnkRecommended ? 'Yes' : 'No'}
+                          {telestrokeNote.tnkRecommended === true && (
+                            <span className="font-semibold text-ok-700 dark:text-ok-300">
+                              TNK: Yes
                             </span>
                           )}
-                          {telestrokeNote.evtRecommended !== undefined && (
-                            <span className={`font-semibold ${telestrokeNote.evtRecommended ? 'text-cobalt-700 dark:text-cobalt-300' : 'text-slate-600 dark:text-mute'}`}>
-                              EVT: {telestrokeNote.evtRecommended ? 'Yes' : 'No'}
+                          {telestrokeNote.evtRecommended === true && (
+                            <span className="font-semibold text-cobalt-700 dark:text-cobalt-300">
+                              EVT: Yes
                             </span>
                           )}
                         </div>
@@ -28173,72 +28164,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       })}
                     </div>
 
-                    {/* Order Bundle Quick Copy */}
-                    {(() => {
-                      const bundles = getOrderBundles();
-                      if (bundles.length === 0) return null;
-                      const colorMap = {
-                        red: 'bg-crit-50 border-crit-200 text-crit-900 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300',
-                        orange: 'bg-orange-50 border-orange-200 text-orange-900 dark:bg-orange-950 dark:border-orange-800 dark:text-orange-300',
-                        teal: 'bg-cobalt-50 border-cobalt-200 text-cobalt-900 dark:bg-cobalt-900 dark:border-cobalt-700 dark:text-cobalt-300',
-                        blue: 'bg-cobalt-50 border-cobalt-200 text-cobalt-900 dark:bg-cobalt-900 dark:border-cobalt-700 dark:text-cobalt-300',
-                        purple: 'bg-cobalt-50 border-cobalt-200 text-cobalt-900 dark:bg-cobalt-900 dark:border-cobalt-700 dark:text-cobalt-300',
-                        pink: 'bg-pink-50 border-pink-200 text-pink-900 dark:bg-pink-950 dark:border-pink-800 dark:text-pink-300',
-                        indigo: 'bg-cobalt-50 border-cobalt-200 text-cobalt-900 dark:bg-cobalt-900 dark:border-cobalt-700 dark:text-cobalt-300',
-                        amber: 'bg-warn-50 border-warn-200 text-warn-900 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300',
-                        yellow: 'bg-yellow-50 border-yellow-200 text-yellow-900 dark:bg-yellow-950 dark:border-yellow-800 dark:text-yellow-300'
-                      };
-                      const btnColorMap = {
-                        red: 'bg-crit-600 hover:bg-crit-700',
-                        orange: 'bg-orange-700 hover:bg-orange-800',
-                        teal: 'bg-cobalt-600 hover:bg-cobalt-700',
-                        blue: 'bg-cobalt-600 hover:bg-cobalt-700',
-                        purple: 'bg-cobalt-600 hover:bg-cobalt-700',
-                        pink: 'bg-pink-600 hover:bg-pink-700',
-                        indigo: 'bg-cobalt-600 hover:bg-cobalt-700',
-                        amber: 'bg-warn-600 hover:bg-warn-700',
-                        yellow: 'bg-yellow-700 hover:bg-yellow-800'
-                      };
-                      return (
-                        <details className="bg-white border-2 border-ok-300 rounded-md dark:bg-card dark:border-ok-800">
-                          <summary className="cursor-pointer p-3 font-semibold text-ok-900 flex items-center justify-between border-b border-ok-200 dark:text-ok-300 dark:border-ok-800">
-                            <span className="flex items-center gap-2">
-                                                            Order Bundles — Quick Copy ({bundles.length})
-                            </span>
-                            <span className="text-xs text-ok-600 font-normal dark:text-ok-300">Patient-specific, copy to clipboard</span>
-                          </summary>
-                          <div className="p-3 grid grid-cols-1 md:grid-cols-2 gap-3">
-                            {bundles.map(b => (
-                              <div key={b.id} className={`border rounded-lg p-3 ${colorMap[b.color] || 'bg-slate-50 border-slate-200 text-slate-900 dark:bg-paper-2 dark:border-line dark:text-ink'}`}>
-                                <div className="flex items-center justify-between mb-2">
-                                  <span className="font-semibold text-sm flex items-center gap-1.5">
-                                    <i aria-hidden="true" data-lucide={b.icon} className="w-4 h-4"></i>
-                                    {b.label}
-                                  </span>
-                                  <button
-                                    onClick={() => {
-                                      const text = b.label + '\n' + b.orders.map(o => '- ' + o).join('\n');
-                                      copyToClipboard(text, 'bundle-' + b.id);
-                                    }}
-                                    className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-white rounded-lg transition-colors ${copiedText === 'bundle-' + b.id ? 'bg-ok-600' : (btnColorMap[b.color] || 'bg-slate-600 hover:bg-slate-700')}`}
-                                  >
-                                    <i aria-hidden="true" data-lucide={copiedText === 'bundle-' + b.id ? 'check' : 'copy'} className="w-3 h-3"></i>
-                                    {copiedText === 'bundle-' + b.id ? 'Copied!' : 'Copy'}
-                                  </button>
-                                </div>
-                                <ul className="space-y-0.5">
-                                  {b.orders.map((o, i) => (
-                                    <li key={i} className="text-xs flex gap-1.5">
-                                      {o.startsWith('  ') ? <span className="ml-4">{o.trim()}</span> : <><span className="shrink-0">•</span><span>{o}</span></>}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ))}
-                          </div>
-                        </details>
-                      );
-                    })()}
+                    {/* Order-bundle scaffold retained without the legacy literature-driven orders. */}
+                    <details className="bg-white border-2 border-slate-300 rounded-md dark:bg-card dark:border-strong">
+                      <summary className="cursor-pointer p-3 font-semibold text-slate-900 border-b border-slate-200 dark:text-ink dark:border-line">
+                        Order Bundles — Quick Copy
+                      </summary>
+                      <p className="p-3 text-xs text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
+                    </details>
 
                     {/* ICH Content */}
                     {managementSubTab === 'ich' && (
@@ -28253,9 +28185,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="border-l-4 border-crit-400 bg-slate-50 px-3 py-2 text-sm space-y-1 dark:bg-paper-2">
                             <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide dark:text-ink">Key Principles</p>
                             <ul className="list-disc pl-4 text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
-                              <li>Smooth, sustained BP control and timely treatment <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span>; target SBP 140/range 130-150 when appropriate <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['IIb']}`}>IIb</span>; avoid &lt;130 <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['III-harm']}`}>III harm</span></li>
-                              <li>Immediate anticoagulant reversal — do not wait for labs if clinical suspicion <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></li>
-                              <li>Early Neurosurgery + stroke-service evaluation for non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, mass effect, neurologic decline, vascular lesion concern, multicompartmental hemorrhage, ED attending discretion, or clinician concern <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></li>
+                              <li>Presenting SBP 150-219: target 140 and maintain 130-150. Presenting SBP &ge;220: reduce about 20%, never more than 25%, in the first hour, then target 140-160. Presenting SBP &lt;150: do not actively lower to 140.</li>
+                              <li>Start BP treatment as soon as possible, ideally within 2 hours of onset, and reach the selected target about 1 hour after treatment begins.</li>
+                              <li>Obtain rapid agent-specific assessment using INR, thrombin time, direct-Xa or anti-Xa testing, and last-dose timing; follow the applicable reversal gate below.</li>
+                              <li>Use the source-defined Neurosurgery, hydrocephalus, mass-effect, MIE, and research screens below; do not infer an operative pathway from location, volume, or GCS alone.</li>
                             </ul>
                           </div>
                           <details className="bg-white border border-crit-300 border-l-4 border-l-crit-600 rounded-md dark:bg-card dark:border-crit-800">
@@ -28353,7 +28286,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <details className="bg-crit-100 border border-crit-300 rounded-md dark:bg-crit-950 dark:border-crit-800 ">
                             <summary className="cursor-pointer p-4 font-semibold text-crit-800 hover:bg-crit-200/50 rounded-t-md flex items-center justify-between gap-2 flex-wrap text-xs uppercase tracking-wide dark:text-crit-300 dark:hover:bg-crit-900">
                               <span>ICH First-Hour Critical Bundle</span>
-                              <span className="text-[11px] text-crit-700 font-medium normal-case dark:text-crit-300">AHA/ASA 2022 + INTERACT3 + ENRICH (rapid workflow card)</span>
+                              <span className="text-[11px] text-crit-700 font-medium normal-case dark:text-crit-300">Institutional rapid workflow</span>
                             </summary>
                             <div className="p-4 pt-0">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
@@ -28362,35 +28295,23 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-slate-700 dark:text-ink-2">Escalate airway and ICU-level monitoring early when exam worsens or airway protection is uncertain.</p>
                               </div>
                               <div className="bg-white border border-crit-200 rounded-lg p-2 dark:bg-card dark:border-crit-800">
-                                <p className="font-semibold text-crit-800 dark:text-crit-300">2. Blood Pressure Strategy <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></p>
-                                <p className="text-slate-700 dark:text-ink-2">Use smooth, sustained BP control and timely treatment; target SBP 140 with range 130-150 when appropriate, and avoid acute SBP &lt;130.</p>
-                                <details className="mt-1">
-                                  <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-700 dark:text-mute dark:hover:text-ink">Evidence</summary>
-                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">AHA/ASA 2022: smooth, sustained BP control and timely treatment are Class IIa; for mild-moderate ICH with SBP 150-220, target 140 (range 130-150) is Class IIb; acute SBP &lt;130 is Class III harm. INTERACT3 tested a care bundle, not BP alone.</p>
-                                </details>
+                                <p className="font-semibold text-crit-800 dark:text-crit-300">2. Blood Pressure Strategy</p>
+                                <p className="text-slate-700 dark:text-ink-2">Use the presenting-SBP branches: 150-219 → target 140 and maintain 130-150; &ge;220 → reduce about 20% but never more than 25% in the first hour, then target 140-160; &lt;150 → do not actively lower to 140.</p>
                               </div>
                               <div className="bg-white border border-crit-200 rounded-lg p-2 dark:bg-card dark:border-crit-800">
-                                <p className="font-semibold text-crit-800 dark:text-crit-300">3. Immediate Anticoag Reversal <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></p>
-                                <p className="text-slate-700 dark:text-ink-2">If anticoagulant exposure is possible, initiate agent-specific reversal without delay using the pathways below.</p>
-                                <details className="mt-1">
-                                  <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-700 dark:text-mute dark:hover:text-ink">Evidence</summary>
-                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">AHA/ASA 2022: Class I for VKA reversal with IV vitamin K + 4-factor PCC. Class IIa for idarucizumab (dabigatran). Andexanet alfa (Xa inhibitors) considered but institutional protocols may prefer PCC.</p>
-                                </details>
+                                <p className="font-semibold text-crit-800 dark:text-crit-300">3. Agent-Specific Reversal</p>
+                                <p className="text-slate-700 dark:text-ink-2">Confirm the applicable INR, thrombin-time, direct-Xa, anti-Xa, and last-dose timing gate, then use the institutional agent-specific pathway below.</p>
                               </div>
                               <div className="bg-white border border-crit-200 rounded-lg p-2 dark:bg-card dark:border-crit-800">
-                                <p className="font-semibold text-crit-800 dark:text-crit-300">4. Core Support Bundle</p>
-                                <p className="text-slate-700 dark:text-ink-2">Treat fever and hyperglycemia, monitor sodium/osmolality when indicated, and prevent secondary injury.</p>
+                                <p className="font-semibold text-crit-800 dark:text-crit-300">4. Additional Supportive Care</p>
+                                <p className="text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                               </div>
                               <div className="bg-white border border-crit-200 rounded-lg p-2 md:col-span-2 dark:bg-card dark:border-crit-800">
-                                <p className="font-semibold text-crit-800 dark:text-crit-300">5. Early Surgery Screen <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></p>
-                                <p className="text-slate-700 dark:text-ink-2">Promptly screen for neurosurgical escalation in cerebellar decline, hydrocephalus, mass effect, or selected lobar large ICH.</p>
-                                <details className="mt-1">
-                                  <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-700 dark:text-mute dark:hover:text-ink">Evidence</summary>
-                                  <p className="text-xs text-slate-600 mt-1 pl-2 border-l-2 border-slate-200 dark:text-ink-2 dark:border-line">ENRICH (2024): Early MIS for selected lobar ICH in the 30-80 mL trial range improved outcomes vs medical management. Cerebellar hemorrhage with posterior-fossa mass effect, usually with obstructive hydrocephalus and/or brainstem compression: urgent suboccipital decompression screen.</p>
-                                </details>
+                                <p className="font-semibold text-crit-800 dark:text-crit-300">5. Surgery and Research Screens</p>
+                                <p className="text-slate-700 dark:text-ink-2">Symptomatic hydrocephalus → urgent EVD evaluation. Cerebellar mass effect, usually with obstructive hydrocephalus and/or brainstem compression → urgent suboccipital decompression evaluation, with EVD as indicated. Use the complete MIE, MINUTE, or other source-defined screen; do not gate on a single value.</p>
                               </div>
                             </div>
-                            <p className="text-xs text-crit-700 mt-2 dark:text-crit-300">Conservative default: stabilize, control BP, reverse anticoagulation, and escalate ICU/surgical pathways before lower-priority tasks.</p>
+                            <p className="text-xs text-crit-700 mt-2 dark:text-crit-300">Follow the applicable institutional branch below and document the selected pathway.</p>
                             </div>
                           </details>
 
@@ -28402,11 +28323,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="p-4 space-y-3">
                               <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
                                 <p className="text-sm font-semibold text-warn-800 mb-1 dark:text-warn-300">Immediate — All Warfarin Patients:</p>
-                                <p className="text-sm">Give <button onClick={() => setProtocolModal(protocolDetailMap.VITK)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Vitamin K 10 mg IV</button> immediately</p>
+                                <p className="text-sm">Give <button onClick={() => setProtocolModal(protocolDetailMap.VITK)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Vitamin K 10 mg IV</button> immediately; when PCC is indicated by the INR branch below, give it concurrently.</p>
                               </div>
 
                               <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                <p className="text-sm font-semibold text-crit-800 mb-1 dark:text-crit-300">INR ≥ 2.0 (COR I/B-R):</p>
+                                <p className="text-sm font-semibold text-crit-800 mb-1 dark:text-crit-300">INR ≥ 2.0 (COR/LOE 1/B):</p>
                                 <p className="text-sm">Give <button onClick={() => setProtocolModal(protocolDetailMap.PCC)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">4F-PCC (Kcentra) 2000 units IV</button></p>
                                 <ul className="text-sm mt-2 space-y-1 ml-4">
                                   <li>• Check PT/INR at <strong>30 min</strong>, then <strong>every 6h for 24h</strong> after PCC</li>
@@ -28417,20 +28338,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
                                 <p className="text-sm font-semibold text-warn-800 mb-1 dark:text-warn-300">INR 1.6-1.9 (COR IIb/C):</p>
-                                <p className="text-sm">4F-PCC recommended</p>
+                                <p className="text-sm">4F-PCC 2000 units IV recommended</p>
                               </div>
 
                               <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
                                 <p className="text-sm font-semibold text-slate-700 mb-1 dark:text-ink-2">INR 1.3-1.5 (COR IIb/C):</p>
-                                <p className="text-sm text-slate-600 dark:text-ink-2">Low evidence — consider PCC on a case-by-case basis</p>
+                                <p className="text-sm text-slate-600 dark:text-ink-2">Consider 4F-PCC 2000 units IV on a case-by-case basis</p>
                               </div>
 
                               <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 dark:bg-orange-950 dark:border-orange-800">
-                                <p className="text-sm font-semibold text-orange-800 mb-1 dark:text-orange-300">FFP Pathway (if PCC unavailable):</p>
+                                <p className="text-sm font-semibold text-orange-800 mb-1 dark:text-orange-300">FFP Pathway (if PCC unavailable or contraindicated):</p>
                                 <ol className="text-sm space-y-1 ml-4 list-decimal">
-                                  <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.FFP)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">4 units emergency-release FFP</button></li>
-                                  <li>Check INR → if &gt;1.5 give 4 more type-specific units</li>
-                                  <li>If still &gt;1.5 → consult hematology</li>
+                                  <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.FFP)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">4 units emergency-release plasma</button> immediately and request 4 additional units; ideal dose is 15 mL/kg</li>
+                                  <li>Repeat the STAT emergency stroke panel after infusion and INR every 6 hours for 24 hours</li>
+                                  <li>If INR remains &gt;1.5, administer 4 more units and consult the hematology attending</li>
                                 </ol>
                               </div>
 
@@ -28447,6 +28368,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <li>• Major surgery in past 6 weeks</li>
                                   <li>• Mechanical circulatory support (involve cardiology)</li>
                                 </ul>
+                                <p className="text-xs text-yellow-900 mt-2 dark:text-yellow-300">Discuss any relative contraindication with the stroke service before proceeding.</p>
                               </div>
                             </div>
                           </details>
@@ -28480,7 +28402,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               {/* Factor Xa Inhibitors */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <p className="text-sm font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Rivaroxaban / Apixaban (Factor Xa Inhibitors)</p>
+                                <p className="text-sm font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors)</p>
                                 <p className="text-xs text-cobalt-600 mb-2 dark:text-cobalt-300">Reverse if Direct Xa Inhibitor screen elevated</p>
                                 <ul className="text-sm space-y-1.5">
                                   <li className="flex gap-2">
@@ -28492,13 +28414,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <span>Andexanet alfa is not available on the local formulary; give <button onClick={() => setProtocolModal(protocolDetailMap.PCC_DOAC)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">4F-PCC 2000 units IV</button></span>
                                   </li>
                                 </ul>
-                                <p className="text-xs text-cobalt-600 mt-2 dark:text-cobalt-300">NOT dialyzable (rivaroxaban t½ = 9h, apixaban t½ = 12h)</p>
-                              </div>
-
-                              {/* Edoxaban */}
-                              <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
-                                <p className="text-sm font-semibold text-slate-700 mb-1 dark:text-ink-2">Edoxaban</p>
-                                <p className="text-sm text-slate-600 dark:text-ink-2">Direct Xa Inhibitor screen excludes presence; no calibrated specific assays available. t½ = 10-14h, NOT dialyzable.</p>
+                                <p className="text-xs text-cobalt-600 mt-2 dark:text-cobalt-300"><strong>Unresolved institutional conflict:</strong> the reversal section says to consider emergent dialysis in renal failure, while the same document's pharmacokinetic table labels these agents not dialyzable. No dialysis action is selected pending owner adjudication.</p>
                               </div>
 
                               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 dark:bg-yellow-950 dark:border-yellow-800">
@@ -28548,7 +28464,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 <div className="flex gap-2 items-start">
                                   <span className="shrink-0 w-6 h-6 rounded-full bg-crit-700 text-white text-xs flex items-center justify-center font-bold">3</span>
-                                  <p className="text-sm">Contact <strong>blood bank/transfusion services</strong>; order <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">cryoprecipitate</button> (fibrinogen &lt;200 mg/dL)</p>
+                                  <p className="text-sm">Contact <strong>blood bank/transfusion services</strong>; immediately order <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">2 units of cryoprecipitate</button> (1 unit = 5 prepooled cryoprecipitates)</p>
                                 </div>
                                 <div className="flex gap-2 items-start">
                                   <span className="shrink-0 w-6 h-6 rounded-full bg-crit-700 text-white text-xs flex items-center justify-center font-bold">4</span>
@@ -28562,7 +28478,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                   <div className="bg-white border border-warn-300 rounded p-2 dark:bg-card dark:border-warn-800">
                                     <p className="text-xs font-semibold text-warn-700 mb-1 dark:text-warn-300">YES — CT delayed:</p>
-                                    <p className="text-sm">Empirically administer 2 pools Cryo if fibrinogen &lt;200</p>
+                                    <p className="text-sm">If fibrinogen is &lt;200 mg/dL, empirically administer the 2 units of cryoprecipitate over 10-30 minutes</p>
                                   </div>
                                   <div className="bg-white border border-warn-300 rounded p-2 dark:bg-card dark:border-warn-800">
                                     <p className="text-xs font-semibold text-warn-700 mb-1 dark:text-warn-300">NO — CT available:</p>
@@ -28577,11 +28493,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <div className="bg-white border border-crit-300 rounded p-2 dark:bg-card dark:border-crit-800">
                                     <p className="text-xs font-semibold text-crit-700 mb-1 dark:text-crit-300">YES — Blood confirmed:</p>
                                     <ol className="text-sm space-y-1 ml-4 list-decimal">
-                                      <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">2 pools Cryo</button> over 10-30 min (or continue if already started)</li>
-                                      <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.TXA)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Tranexamic acid 1000 mg IV over 10 min STAT</button></li>
-                                      <li>Repeat hemorrhage panel</li>
+                                      <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">2 units of cryoprecipitate</button> over 10-30 minutes, or continue if already started</li>
+                                      <li>Confirm intracranial blood on CT with the ordering provider, then confirm post-CT cryoprecipitate administration with the RN; after both confirmations, give <button onClick={() => setProtocolModal(protocolDetailMap.TXA)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">tranexamic acid 1000 mg IV over 10 minutes</button></li>
+                                      <li>Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal</li>
                                       <li>Call Stroke/Neuro attending</li>
-                                      <li>Consult neurosurgery</li>
+                                      <li>Consult Neurosurgery if needed</li>
                                     </ol>
                                     <p className="text-xs text-crit-600 mt-1 italic dark:text-crit-300">If Cryo already started + infusing and CT shows NO ICH → STOP infusion</p>
                                   </div>
@@ -28600,14 +28516,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
                                 <p className="text-xs font-semibold text-slate-700 mb-1 dark:text-ink-2">Follow-up & Management:</p>
                                 <ul className="text-xs space-y-0.5 text-slate-600 dark:text-ink-2">
-                                  <li>• Target SBP around 140 mmHg for confirmed sICH; avoid &lt;130</li>
-                                  <li>• Target fibrinogen &gt;200 mg/dL (repeat cryo if low)</li>
+                                  <li>• Notify the provider for SBP &gt;180, DBP &gt;90, a new neurologic deficit, or a GCS decrease of at least 2 points</li>
+                                  <li>• Use fibrinogen &lt;200 mg/dL as the action threshold; if expressed as an endpoint, use fibrinogen &ge;200 mg/dL</li>
                                   <li>• If labs abnormal or uncontrolled bleeding → consult Hematology</li>
-                                  <li>• Repeat hemorrhage panel STAT, then q30 min x2, then q4h until normal</li>
+                                  <li>• Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal</li>
                                   <li>• Neuro checks q15 min x 2h → q30 min x 6h → q1h x 16h; notify provider for new deficits or GCS drop ≥2 points</li>
-                                  <li>• Repeat NCCT at 6h and 24h to assess stability</li>
-
-                                  <li>• Update family — document goals of care discussion</li>
+                                  <li>• Update the family</li>
                                 </ul>
                               </div>
                             </div>
@@ -28647,12 +28561,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
 
                               <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
-                                <p className="text-sm font-semibold text-crit-800 mb-1 dark:text-crit-300">If worsening:</p>
+                                <p className="text-sm font-semibold text-crit-800 mb-1 dark:text-crit-300">Complete the institutional sequence:</p>
                                 <ul className="text-sm space-y-1">
-                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.EPI)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Epinephrine (0.1%) 0.3 mL SC</button> or 0.5 mL by nebulizer</li>
-                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.ICATIBANT)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Icatibant</button> (bradykinin B2 antagonist)</li>
-                                  <li>• <button onClick={() => setProtocolModal(protocolDetailMap.BERINERT)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">C1 esterase inhibitor (Berinert) 20 IU/kg</button> — slow IV push at 4 mL/min; restricted to pregnant or pediatric patients, or those intolerant to icatibant</li>
+                                  <li>• If edema further increases: <button onClick={() => setProtocolModal(protocolDetailMap.EPI)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">epinephrine (0.1%) 0.3 mL SC</button> or 0.5 mL by nebulizer</li>
+                                  <li>• Next standard step: <button onClick={() => setProtocolModal(protocolDetailMap.ICATIBANT)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">icatibant 30 mg SC once</button>; attending approval is required</li>
+                                  <li>• End with supportive care</li>
                                 </ul>
+                                <p className="text-xs text-crit-700 mt-2 dark:text-crit-300"><strong>Restricted alternative, not part of the active adult sequence:</strong> C1 esterase inhibitor may be used for pregnancy, pediatric patients, or icatibant intolerance under the institutional restriction.</p>
                               </div>
                             </div>
                           </details>
@@ -28709,7 +28624,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             </div>
                             <p className="text-xs text-slate-500 mt-3 dark:text-mute">
-                              For confirmed non-traumatic IPH, auto-flags volume ≥15 mL for early Neurosurgery + stroke-service evaluation; ≥30 mL remains the MIE/prognostic screen tier when other criteria fit.
+                              For confirmed non-traumatic IPH, volume ≥15 mL prompts early Neurosurgery + stroke-service evaluation. A 30-80 mL lobar volume is only one component of the complete MIE screen and is not a standalone prognostic rule.
                             </p>
                             {ichVolumeEstimate?.exceeds15 && (
                               <p className="text-xs font-semibold text-warn-800 bg-warn-50 border border-warn-200 rounded-md p-2 mt-2 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
@@ -28724,9 +28639,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </summary>
                             <div className="p-4 pt-0">
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
-                                <li>Confirm anticoagulant/antiplatelet use and initiate reversal.</li>
-                                <li>Use smooth BP control; target SBP 140, maintain 130-150 when appropriate, and avoid &lt;130 per ATACH-2. Use IV nicardipine infusion (or IV labetalol) for titration.</li>
-                                <li>Screen for early Neurosurgery + stroke-service evaluation triggers: non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, mass effect, neurologic decline, multicompartmental hemorrhage, ED attending discretion, or clinician concern.</li>
+                                <li>Confirm antithrombotic agent, last-dose timing, duration, indication, relevant renal/hepatic comorbidity or interactions, and the applicable INR, thrombin-time, direct-Xa, or anti-Xa gate before reversal.</li>
+                                <li>Use the presenting-SBP branches: 150-219 → target 140 and maintain 130-150; &ge;220 → reduce about 20% but never more than 25% in the first hour, then 140-160; &lt;150 → do not actively lower to 140. Use IV nicardipine or IV labetalol.</li>
+                                <li>Screen for early Neurosurgery + stroke-service evaluation triggers: non-traumatic IPH &ge;15 mL by ABC/2, IVH/hydrocephalus, cerebellar hemorrhage, vascular lesion concern, life-threatening mass effect, neurologic decline, multicompartmental hemorrhage, ED attending discretion, or clinician concern.</li>
                                 <li>Plan repeat imaging and close neuro checks.</li>
                               </ul>
                               <p className="text-xs text-slate-500 mt-2 dark:text-mute">
@@ -28742,10 +28657,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </summary>
                             <div className="p-4 pt-0">
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
-                                <li>Continue anticoagulant reversal, monitor for hematoma expansion, and maintain smooth BP control around SBP 140 when appropriate.</li>
-                                <li>Evaluate IVH/hydrocephalus for EVD and monitor for neurologic decline.</li>
-
-                                <li>Implement supportive care bundle, early rehab, and structured goals-of-care discussions.</li>
+                                <li>Continue the applicable agent-specific reversal and common reversal monitoring pathway.</li>
+                                <li>Evaluate symptomatic hydrocephalus for urgent EVD and cerebellar mass effect for urgent suboccipital decompression evaluation, with EVD as indicated.</li>
+                                <li>Use generic head-of-bed elevation and the admitting ICU team's workflow; no fixed angle or broader rehabilitation/goals-of-care bundle is supplied by the institutional ICH sources.</li>
                               </ul>
                             </div>
                           </details>
@@ -28761,15 +28675,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h4 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Surgical Selection</h4>
                           <ul className="text-sm space-y-1">
                             <li>June 2026 operational MIE screen: lobar IPH 30-80 mL, NIHSS &gt;5, GCS 5-14, age 18-80, and no underlying lesion.</li>
-                            <li>General guideline evidence supports selected minimally invasive evacuation for supratentorial ICH, especially for mortality; older/general guideline framing kept broad functional-outcome benefit uncertain.</li>
-                            <li>ENRICH supports selected lobar 30-80 mL patients; use the June 2026 screen below and confirm neurosurgery/local-protocol activation.</li>
-                            <li>Do not generalize outside the June 2026 screen.</li>
+                            <li>Use the complete conjunctive screen below and confirm the current institutional pathway with Neurosurgery.</li>
+                            <li>Do not infer eligibility, outcome, or prognosis from volume, GCS, location, or another single criterion.</li>
                           </ul>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div className="bg-white p-3 rounded border dark:bg-card">
-                            <h4 className="font-semibold text-ok-600 mb-2 dark:text-ok-300">June 2026 MIE Screen (ENRICH-Based)</h4>
+                            <h4 className="font-semibold text-ok-600 mb-2 dark:text-ok-300">June 2026 Institutional MIE Screen</h4>
                             <ul className="text-sm space-y-1">
                               <li>• Spontaneous <strong>lobar</strong> IPH — no underlying lesion (tumor/AVM)</li>
                               <li>• ICH volume 30-80 cc</li>
@@ -28781,17 +28694,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
 
                           <div className="bg-white p-3 rounded border dark:bg-card">
-                            <h4 className="font-semibold text-crit-600 mb-2 dark:text-crit-300">ENRICH MIE Exclusion</h4>
-                            <ul className="text-sm space-y-1">
-                              <li>• Coagulopathy</li>
-                              <li>• IVH &gt;50% either lateral ventricle</li>
-                              <li>• Thalamic or infratentorial ICH</li>
-                              <li>• Underlying structural lesion (tumor, AVM)</li>
-                            </ul>
+                            <h4 className="font-semibold text-crit-600 mb-2 dark:text-crit-300">Pathway Boundary</h4>
+                            <p className="text-sm">The accepted institutional source supplies only the complete screen shown here, including absence of an underlying vascular lesion. It does not publish the broader literature-derived exclusion list.</p>
                             <div className="mt-3 bg-cobalt-50 border border-cobalt-200 rounded p-2 dark:bg-cobalt-900 dark:border-cobalt-700">
                               <p className="text-xs font-semibold text-cobalt-800 dark:text-cobalt-300">For MIE candidates:</p>
-                              <p className="text-xs text-cobalt-700 dark:text-cobalt-300">Consult neurosurgery per local protocol for trial enrollment or institutional MIE pathway.</p>
-                              <p className="text-xs text-cobalt-700 italic dark:text-cobalt-300">Keep patient NPO until final decision made.</p>
+                              <p className="text-xs text-cobalt-700 dark:text-cobalt-300">Use the approved current pathway and confirm the operative approach with Neurosurgery.</p>
                             </div>
                           </div>
                         </div>
@@ -28816,13 +28723,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h4 className="font-semibold text-cobalt-700 mb-3 dark:text-cobalt-300">Warfarin</h4>
                           <ul className="text-sm space-y-1">
                             <li><strong>Immediate:</strong> Vitamin K 10 mg IV for all warfarin patients.</li>
-                            <li><strong>INR ≥2.0 (COR I/B-R):</strong> 4F-PCC (Kcentra) 2000 units IV immediately.</li>
-                            <li><strong>INR 1.6-1.9 (COR IIb/C):</strong> 4F-PCC recommended.</li>
-                            <li><strong>INR 1.3-1.5 (COR IIb/C):</strong> consider 4F-PCC on a case-by-case basis.</li>
+                            <li><strong>INR ≥2.0 (COR/LOE 1/B):</strong> 4F-PCC (Kcentra) 2000 units IV immediately, concurrently with vitamin K.</li>
+                            <li><strong>INR 1.6-1.9 (COR/LOE 2b/C):</strong> 4F-PCC 2000 units IV recommended.</li>
+                            <li><strong>INR 1.3-1.5 (COR/LOE 2b/C):</strong> consider 4F-PCC 2000 units IV case by case.</li>
                             <li><strong>Check INR:</strong> at 30 min, then every 6h for 24h after PCC.</li>
                             <li><strong>INR &gt;1.5 after PCC:</strong> page hematology and consider an additional 500 units PCC or 2-4 units plasma (FFP).</li>
                             <li><strong>INR &gt;1.5 at 24h:</strong> repeat vitamin K 10 mg IV over 30 min.</li>
-                            <li><strong>FFP pathway (if PCC unavailable):</strong> 4 units emergency-release plasma immediately and request an additional 4 units (ideal plasma dose 15 mL/kg; each unit is 250-300 mL, so some patients need additional units) → recheck INR → if &gt;1.5 administer 4 more units → if still &gt;1.5 consult hematology. Consider concurrent furosemide if history of CHF.</li>
+                            <li><strong>FFP pathway (if PCC unavailable or contraindicated):</strong> 4 units emergency-release plasma immediately and request an additional 4 units (ideal plasma dose 15 mL/kg; each unit is 250-300 mL, so some patients need additional units) → recheck INR → if &gt;1.5 administer 4 more units → if still &gt;1.5 consult hematology. Consider concurrent furosemide if history of CHF.</li>
                           </ul>
                         </div>
 
@@ -28841,19 +28748,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
 
                           <div>
-                            <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">Rivaroxaban / Apixaban (Factor Xa Inhibitors):</p>
+                            <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors):</p>
                             <ul className="text-sm space-y-1">
-                              <li><strong>Andexanet alfa:</strong> AHA/ASA 2022 Class IIa, but not available on the local formulary — use 4F-PCC.</li>
+                              <li><strong>Andexanet alfa:</strong> not available on the local formulary.</li>
                               <li><strong>4F-PCC:</strong> 2000 units IV — give if Direct Xa Inhibitor screen elevated and no contraindications.</li>
                               <li><strong>Activated charcoal:</strong> if ingestion &lt;2 hours.</li>
-                              <li><strong>NOT dialyzable</strong> (rivaroxaban t½ = 9h, apixaban t½ = 12h).</li>
-                            </ul>
-                          </div>
-
-                          <div className="mt-3">
-                            <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">Edoxaban:</p>
-                            <ul className="text-sm space-y-1">
-                              <li>Direct Xa Inhibitor screen excludes presence; no calibrated specific assays. t½ = 10-14h, NOT dialyzable.</li>
+                              <li><strong>Unresolved dialysis conflict:</strong> the reversal section says to consider emergent dialysis in renal failure, while the same document's pharmacokinetic table labels these agents not dialyzable. No dialysis action is selected pending owner adjudication.</li>
                             </ul>
                           </div>
                         </div>
@@ -28864,6 +28764,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <li><strong>UFH (COR 2a/C):</strong> assess anti-Xa. Protamine 25 mg IV immediately; recheck anti-Xa after infusion and, if &gt;0.1, give an additional 10 mg protamine (max cumulative dose 55 mg).</li>
                             <li><strong>UFH — HIT screen:</strong> if platelets &lt;100 K/µL, send heparin-induced platelet antibodies; if positive, consult hematology.</li>
                             <li><strong>LMWH (COR 2b/C):</strong> last dose &lt;8h → protamine 50 mg IV; last dose 8-24h → protamine 25 mg IV; last dose &gt;24h → no reversal indicated.</li>
+                          </ul>
+                        </div>
+
+                        <div className="bg-white p-4 rounded border mb-4 dark:bg-card">
+                          <h4 className="font-semibold text-cobalt-700 mb-3 dark:text-cobalt-300">Fondaparinux and Parenteral Direct Thrombin Inhibitors</h4>
+                          <ul className="text-sm space-y-1">
+                            <li>Stop fondaparinux, bivalirudin, or argatroban and obtain STAT hematology-attending consultation.</li>
+                            <li>No specific antidote is available for these agents.</li>
+                            <li>For bivalirudin or argatroban, repeat the DTI level at 60 minutes after stopping; if it remains prolonged, consult the hematology attending.</li>
+                          </ul>
+                        </div>
+
+                        <div className="bg-white p-4 rounded border mb-4 dark:bg-card">
+                          <h4 className="font-semibold text-cobalt-700 mb-3 dark:text-cobalt-300">Common Reversal Monitoring</h4>
+                          <ul className="text-sm space-y-1">
+                            <li>Laboratory testing: baseline, 15-30 minutes after reversal, 6 hours, and 24 hours.</li>
+                            <li>CT head: baseline, 6 hours or sooner for clinical deterioration, and 24 hours.</li>
+                            <li>Neurologic checks every hour for 24 hours; blood pressure per the ICH protocol; monitor for thrombotic complications.</li>
                           </ul>
                         </div>
 
@@ -28882,15 +28800,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <li>• Known prothrombotic disorder</li>
                             <li>• Mechanical circulatory support (involve cardiology)</li>
                           </ul>
+                          <p className="text-xs text-slate-600 mt-2 dark:text-ink-2">Discuss relative contraindications with the stroke service before proceeding.</p>
                         </div>
                       </div>
 
                         <div className="mb-6">
                           <h3 className="text-lg font-semibold text-crit-700 mb-4 dark:text-crit-300">Antiplatelet-Associated ICH</h3>
                           <div className="bg-white p-4 rounded border dark:bg-card">
-                            <ul className="text-sm space-y-1">
-                              <li>Discontinue antiplatelet agent(s). Platelet transfusion is <strong>NOT routinely recommended</strong> (COR 3/B — harm demonstrated in the PATCH trial).</li>
-                              <li>Desmopressin 0.3 mcg/kg IV once may be considered; efficacy uncertain for antiplatelet-associated hemorrhage (COR/LOE 2b / C).</li>
+                          <ul className="text-sm space-y-1">
+                            <li>Discontinue antiplatelet agent(s). Platelet transfusion is <strong>NOT routinely recommended</strong>.</li>
+                            <li>Desmopressin efficacy is uncertain for antiplatelet-associated hemorrhage; the institutional source does not provide a dose.</li>
                             </ul>
                           </div>
                         </div>
@@ -28902,26 +28821,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h4 className="font-semibold text-crit-600 mb-2 dark:text-crit-300">Blood Pressure Target</h4>
                             <p className="text-xs text-slate-500 mb-2 dark:text-mute">Spontaneous ICH only. Not for hemorrhage from a vascular malformation or for post-operative neurosurgical cases.</p>
                             <ul className="text-sm space-y-1">
-                              <li><strong>Target:</strong> SBP 140 mmHg, maintain 130-150 when appropriate, with timely smooth control. Avoid iatrogenic reduction of SBP &lt;130 mmHg in the initial 24 hours (ATACH-2).</li>
-                              <li><strong>Smooth control:</strong> avoid peaks and variability.</li>
-                              <li><strong>Below target:</strong> if the patient autoregulates to SBP &lt;130 with no indicators of symptomatic hypotension, it is acceptable to be below target. Do NOT initiate vasopressors unless discussed and approved by both the stroke attending and the neurocritical care attending.</li>
-                              <li><strong>Large/severe ICH or surgical decompression:</strong> individualize targets; consider an initial higher goal of SBP 160-180.</li>
-                              <li><strong>Reassessment:</strong> if a higher target of SBP 160-180 is initially selected, reassess after ~6 hours (after time for gradual BP reduction or after repeat head CT).</li>
-                              <li><strong>Renal dysfunction:</strong> for patients with moderate-severe renal dysfunction, use caution with aggressive BP lowering.</li>
-                              <li><strong>Perfusion floor:</strong> maintain CPP &gt;60 mmHg, especially with elevated ICP.</li>
-                              <li><strong>SBP ≥220:</strong> Safety of intensive lowering is uncertain (Class IIb, LOE C-EO, AHA 2022). Reasonable to target modest reduction (SBP 140-160) using continuous IV infusion with close monitoring. Reduce SBP by ~20% (not &gt;25%) in the first hour, then gradually reduce to SBP 140-160 mmHg. Consider starting nicardipine at a lower rate (2.5-5 mg/hr) and titrating slowly.</li>
-                              <li><strong>Agent:</strong> IV nicardipine infusion (or IV labetalol) for titration.</li>
+                              <li><strong>Presenting SBP 150-219:</strong> target 140 and maintain 130-150.</li>
+                              <li><strong>Presenting SBP ≥220:</strong> reduce by about 20%, never more than 25%, in the first hour; then target 140-160.</li>
+                              <li><strong>Presenting SBP &lt;150:</strong> do not actively lower to 140.</li>
+                              <li><strong>Timing:</strong> start as soon as possible, ideally within 2 hours of onset, and reach the selected target about 1 hour after treatment begins.</li>
+                              <li><strong>Process:</strong> use smooth, sustained control and avoid peaks or variability.</li>
+                              <li><strong>Lower boundary:</strong> avoid iatrogenic SBP &lt;130 during the first 24 hours. Spontaneous autoregulation below 130 is acceptable without symptomatic hypotension; vasopressors require agreement from the stroke and neurocritical-care attendings.</li>
+                              <li><strong>Large/severe ICH or decompression:</strong> individualize and consider an initial SBP 160-180, reassessing after about 6 hours or repeat CT.</li>
+                              <li><strong>Renal/ICP considerations:</strong> use caution with aggressive lowering in moderate-severe renal dysfunction and maintain CPP &gt;60 mmHg when ICP is elevated.</li>
+                              <li><strong>Agents named by the institutional source:</strong> IV nicardipine or IV labetalol; no doses are supplied.</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-crit-600 mb-2 dark:text-crit-300">Expansion Risk Factors</h4>
-                            <ul className="text-sm space-y-1">
-                              <li>• Spot sign on CTA</li>
-                              <li>• Anticoagulant use</li>
-                              <li>• Time from onset &lt;3 hours</li>
-                              <li>• Large initial volume (&gt;30 mL)</li>
-
-                            </ul>
+                            <p className="text-sm text-slate-600 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </div>
                       </div>
@@ -28932,13 +28845,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">EVD Indications</h4>
                             <ul className="text-sm space-y-1">
-                              <li>ICH or IVH with hydrocephalus causing decreased consciousness: EVD recommended to reduce mortality.</li>
-                              <li>Large IVH with impaired consciousness: EVD preferred over medical management alone.</li>
+                              <li>Symptomatic hydrocephalus: urgent EVD evaluation.</li>
+                              <li>Cerebellar mass effect, usually with obstructive hydrocephalus and/or brainstem compression: urgent suboccipital decompression evaluation, with EVD as indicated.</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">IVH-Specific Management</h4>
-                            <p className="text-sm text-slate-600 dark:text-ink-2">No institutional protocol document is on file for IVH-specific management. See Guidelines &amp; References for the current society guidance.</p>
+                            <p className="text-sm text-slate-600 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </div>
                       </div>
@@ -28950,12 +28863,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h4 className="font-semibold text-cobalt-600 mb-2 dark:text-cobalt-300">Surgical Indications</h4>
                             <ul className="text-sm space-y-1">
                               <li><strong>Cerebellar ICH with mass effect</strong>: urgent Neurosurgery evaluation for suboccipital decompression; obstructive hydrocephalus and/or brainstem compression commonly increase urgency and may require EVD.</li>
-                              <li><strong>Deteriorating supratentorial ICH:</strong> craniotomy may be considered as a lifesaving measure.</li>
+                              <li><strong>Life-threatening mass effect:</strong> evaluate for decompression; Neurosurgery leads the operative approach.</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-cobalt-600 mb-2 dark:text-cobalt-300">Goals-of-Care Guidance</h4>
-                            <p className="text-sm text-slate-600 dark:text-ink-2">No institutional protocol document is on file for goals-of-care guidance after ICH. See Guidelines &amp; References for the current society guidance.</p>
+                            <p className="text-sm text-slate-600 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </div>
                       </div>
@@ -28963,14 +28876,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-crit-700 mb-4 dark:text-crit-300">Seizure Management in ICH</h3>
                         <div className="bg-white p-4 rounded border dark:bg-card">
-                          <p className="text-sm text-slate-600 dark:text-ink-2">No institutional protocol document is on file for seizure management in ICH. See Guidelines &amp; References for the current society guidance.</p>
+                          <p className="text-sm text-slate-600 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                         </div>
                       </div>
 
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-crit-700 mb-4 dark:text-crit-300">Anticoagulation Restart After ICH</h3>
                         <div className="bg-white p-4 rounded border dark:bg-card">
-                          <p className="text-sm text-slate-600 dark:text-ink-2">No institutional protocol document is on file for anticoagulation restart after ICH. See Guidelines &amp; References for the current society guidance.</p>
+                          <p className="text-sm text-slate-600 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                         </div>
                       </div>
 
@@ -28980,18 +28893,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">Standard Orders</h4>
                             <ul className="text-sm space-y-1">
-                              <li>NPO until dysphagia screen passed.</li>
-                              <li>HOB 30 degrees.</li>
+                              <li>Use generic head-of-bed elevation.</li>
+                              <li>Follow the admitting ICU team's workflow.</li>
                             </ul>
                           </div>
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">Monitoring</h4>
                             <ul className="text-sm space-y-1">
-                              <li>• Neuro checks q1h x 24h, then q2h</li>
-                              <li>• Continuous telemetry</li>
-                              <li>• Repeat CT at 6h or with any neurological change</li>
-                              <li>• Daily CBC, BMP, coags if on reversal</li>
-                              <li>• Early PT/OT/SLP once medically stable</li>
+                              <li>• For anticoagulant reversal: neurologic checks every hour for 24 hours</li>
+                              <li>• For anticoagulant reversal: CT at baseline, 6 hours or sooner for deterioration, and 24 hours</li>
+                              <li>• For anticoagulant reversal: labs at baseline, 15-30 minutes, 6 hours, and 24 hours</li>
+                              <li>• Blood pressure per the institutional ICH branches; monitor for thrombotic complications</li>
                             </ul>
                           </div>
                         </div>
@@ -29059,7 +28971,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div>
                               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-cobalt-600 dark:text-cobalt-300">Acute ischemic stroke</p>
                               <h2 id="acute-stroke-pathways-heading" className="text-lg font-semibold text-slate-900 dark:text-ink">Acute Stroke Pathways</h2>
-                              <p className="text-xs text-slate-600 mt-0.5 font-normal dark:text-ink-2">Evidence-bound decisions for the acute ischemic stroke pathway — reperfusion, telestroke sequencing, and pediatric considerations. Each card is COR/LOE-graded against the 2026 AHA/ASA AIS guideline where applicable.</p>
+                              <p className="text-xs text-slate-600 mt-0.5 font-normal dark:text-ink-2">Adult cards reproduce accepted institutional protocol material only. Pediatric content remains unchanged pending separate clinical authorization.</p>
                             </div>
                           </summary>
                           <div className="p-4 pt-0 space-y-3">
@@ -29085,8 +28997,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         <p className="text-xs text-slate-500 dark:text-mute">{card.shortLabel}</p>
                                       </div>
                                       <div className="flex items-center gap-1 shrink-0">
-                                        <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${corClass}`} title={`Class of Recommendation ${card.classOfRecommendation}`}>COR {card.classOfRecommendation}</span>
-                                        <span className="inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 border border-line dark:bg-paper-2 dark:text-ink-2" title={`Level of Evidence ${card.levelOfEvidence}`}>LOE {card.levelOfEvidence}</span>
+                                        {card.classOfRecommendation ? <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${corClass}`} title={`Class of Recommendation ${card.classOfRecommendation}`}>COR {card.classOfRecommendation}</span> : null}
+                                        {card.levelOfEvidence ? <span className="inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 border border-line dark:bg-paper-2 dark:text-ink-2" title={`Level of Evidence ${card.levelOfEvidence}`}>LOE {card.levelOfEvidence}</span> : null}
                                       </div>
                                     </div>
                                     {card.changedSinceLastGuideline ? (
@@ -29134,8 +29046,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                 <td className="px-1 py-1.5 text-slate-700 font-medium dark:text-ink-2">{row.label}</td>
                                                 <td className="px-1 py-1.5 text-slate-600 dark:text-ink-2">{row.decision}</td>
                                                 <td className="px-1 py-1.5 whitespace-nowrap">
-                                                  <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS[row.cor] || 'bg-slate-500 text-white'}`}>{row.cor}</span>
-                                                  <span className="text-[10px] text-slate-500 ml-1 dark:text-mute">{row.loe}</span>
+                                                  {row.cor ? <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS[row.cor] || 'bg-slate-500 text-white'}`}>{row.cor}</span> : null}
+                                                  {row.loe ? <span className="text-[10px] text-slate-500 ml-1 dark:text-mute">{row.loe}</span> : null}
                                                 </td>
                                               </tr>
                                             ))}
@@ -29186,7 +29098,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   ) : null}
 
                                   {/* Evidence link: atlas drawer if resolvable, else PubMed fallback */}
-                                  {hasEvidenceDrawer ? (
+                                  {card.id === 'ais-pediatric' && hasEvidenceDrawer ? (
                                     <details className="border border-cobalt-200 bg-white rounded dark:border-cobalt-700 dark:bg-card">
                                       <summary className="cursor-pointer px-2 py-1 text-xs font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded flex items-center gap-1.5 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
                                         <i aria-hidden="true" data-lucide="link" className="w-3 h-3"></i>
@@ -29218,11 +29130,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         ) : null}
                                       </div>
                                     </details>
-                                  ) : pubmedUrl ? (
+                                  ) : card.id === 'ais-pediatric' && pubmedUrl ? (
                                     <a href={pubmedUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-medium text-link-600 dark:text-link-400 hover:text-link-700 hover:underline">
                                       <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
                                       Search the evidence (PubMed)
                                     </a>
+                                  ) : card.sourceNote ? (
+                                    <details className="border border-cobalt-200 bg-white rounded dark:border-cobalt-700 dark:bg-card">
+                                      <summary className="cursor-pointer px-2 py-1 text-xs font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded dark:text-cobalt-300 dark:hover:bg-cobalt-900">Institutional source basis</summary>
+                                      <p className="px-2 pb-2 pt-1 text-xs text-slate-700 dark:text-ink-2">{card.sourceNote}</p>
+                                    </details>
                                   ) : null}
                                 </article>
                               );
@@ -29231,13 +29148,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           {/* Footer — last reviewed + source links */}
                           <div className="text-xs text-slate-500 border-t border-line pt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 dark:text-mute">
-                            <span>Last reviewed {AIS_COMMAND_CENTER_LAST_REVIEWED} · Sources:</span>
+                            <span>Adult cards last reviewed {AIS_COMMAND_CENTER_LAST_REVIEWED} · Public-safe adult institutional source labels:</span>
                             {AIS_SOURCE_LINKS.map((src, i) => (
                               <span key={i} className="inline-flex items-center">
-                                <a href={src.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-link-600 dark:text-link-400 hover:text-link-700 hover:underline">
-                                  <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
-                                  {src.label}
-                                </a>
+                                <span className="inline-flex items-center gap-0.5 text-slate-600 dark:text-ink-2">{src.label}</span>
                                 {i < AIS_SOURCE_LINKS.length - 1 ? <span className="text-slate-300" aria-hidden="true">·</span> : null}
                               </span>
                             ))}
@@ -29256,6 +29170,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               ['isch-af', 'AF/DOAC Timing'],
                               ['isch-bp', 'BP Management'],
                               ['isch-nbo', 'NBO'],
+                              ['isch-swallow', 'Swallow Screen'],
                               ['isch-postlytic', 'Post-Lytic ICH'],
                               ['isch-ht', 'HT Classification'],
                               ['isch-angioedema', 'Angioedema'],
@@ -29281,9 +29196,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="border-l-4 border-cobalt-400 bg-slate-50 px-3 py-2 text-sm space-y-1 dark:bg-paper-2">
                           <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide dark:text-ink">Key Principles</p>
                           <ul className="list-disc pl-4 text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
-                            <li>IV alteplase/tenecteplase within 4.5 hours remains the standard of care <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></li>
-                            <li>EVT for LVO within 24 hours with favorable imaging (DAWN/DEFUSE 3 criteria) <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></li>
-                            <li>Do NOT target SBP &lt;140 post-EVT — maintain &lt;180/105 (ENCHANTED2/MT) <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${GUIDELINE_CLASS_COLORS['III']}`}>III</span></li>
+                            <li>For IV thrombolysis, establish a disabling deficit, time from last known well, noncontrast CT findings, blood pressure, glucose, and the source-listed exclusions.</li>
+                            <li>For EVT, apply the institutional vessel, time, ASPECTS or PC-ASPECTS, NIHSS, baseline mRS, and low-ASPECTS qualifiers shown below.</li>
+                            <li>After EVT, maintain the institutional SBP guardrail of 140-180 mmHg.</li>
                           </ul>
                         </div>
                         <details id="isch-evt" className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
@@ -29295,114 +29210,45 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {/* Adult EVT Flowchart */}
                           <div className="space-y-3 mb-4">
                             <p className="text-xs font-semibold uppercase tracking-wide text-cobalt-700 dark:text-cobalt-300">Adult AIS — EVT Eligibility</p>
-
-                            {/* LVO */}
                             <div className="bg-white rounded-md border-l-4 border-cobalt-600 p-3 dark:bg-card ">
-                              <p className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">LVO (ICA-T / M1) <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></p>
-                              <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">NIHSS ≥6 unless otherwise specified</p>
-
-                              {/* 0-6h */}
-                              <div className="ml-2 mb-3 pl-3 border-l-2 border-cobalt-200 dark:border-cobalt-700">
-                                <p className="text-xs font-bold text-cobalt-600 mb-1.5 dark:text-cobalt-300">0 – 6 hours</p>
-                                <div className="space-y-1.5 text-xs">
-                                  <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700 dark:text-ink-2">ASPECTS 3-10, mRS 0-1</span>
-                                    <span className="text-slate-500 dark:text-mute">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-ok-600 text-white font-semibold">Recommended</span>
-                                  </div>
-                                  <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700 dark:text-ink-2">ASPECTS 6-10, mRS 2</span>
-                                    <span className="text-slate-500 dark:text-mute">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-ok-100 text-ok-800 font-semibold border border-ok-300 dark:bg-ok-900 dark:text-ok-300 dark:border-ok-800">Reasonable</span>
-                                  </div>
-                                  <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700 dark:text-ink-2">ASPECTS 6-10, mRS 3-4</span>
-                                    <span className="text-slate-500 dark:text-mute">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-warn-100 text-warn-800 font-semibold border border-warn-300 dark:bg-warn-900 dark:text-warn-300 dark:border-warn-800">May be considered</span>
-                                  </div>
-                                  <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700 dark:text-ink-2">ASPECTS 0-2, mRS 0-1 — consider CTP core ≤70-100cc</span>
-                                    <span className="text-slate-500 dark:text-mute">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-warn-100 text-warn-800 font-semibold border border-warn-300 dark:bg-warn-900 dark:text-warn-300 dark:border-warn-800">Very select cases</span>
-                                  </div>
+                              <p className="font-semibold text-cobalt-800 text-sm dark:text-cobalt-300">Anterior ICA / proximal M1 LVO</p>
+                              <p className="text-xs text-slate-600 mt-1 dark:text-ink-2">NIHSS ≥6. Baseline mRS 0-1 is assumed unless another tier is stated.</p>
+                              <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-700 dark:text-ink-2">
+                                <div>
+                                  <p className="font-bold text-cobalt-600 dark:text-cobalt-300">0-6 hours</p>
+                                  <ul className="list-disc pl-4 mt-1 space-y-1">
+                                    <li>ASPECTS 6-10, mRS 0-1: EVT, COR I / LOE A.</li>
+                                    <li>ASPECTS 6-10, mRS 2: EVT, COR IIa / LOE B-NR.</li>
+                                    <li>ASPECTS 6-10, mRS 3-4: EVT, COR IIb / LOE B-NR.</li>
+                                    <li>ASPECTS 3-5 with no significant mass effect: EVT, COR I / LOE A.</li>
+                                    <li>ASPECTS 0-2, age &lt;80, no significant mass effect, and CTP core ≤70-100 mL: EVT, COR IIa / LOE B-R.</li>
+                                  </ul>
                                 </div>
-                              </div>
-
-                              {/* 6-24h */}
-                              <div className="ml-2 mb-3 pl-3 border-l-2 border-cobalt-200 dark:border-cobalt-700">
-                                <p className="text-xs font-bold text-cobalt-600 mb-1.5 dark:text-cobalt-300">6 – 24 hours</p>
-                                <div className="space-y-1.5 text-xs">
-                                  <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700 dark:text-ink-2">ASPECTS 6-10, mRS 0-1</span>
-                                    <span className="text-slate-500 dark:text-mute">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-ok-600 text-white font-semibold">Recommended</span>
-                                  </div>
-                                  <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700 dark:text-ink-2">ASPECTS 3-5, mRS 0-1 — consider CTP core ≤100cc + mismatch</span>
-                                    <span className="text-slate-500 dark:text-mute">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-ok-600 text-white font-semibold">Recommended</span>
-                                  </div>
-                                  <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700 dark:text-ink-2">ASPECTS 0-2</span>
-                                    <span className="text-slate-500 dark:text-mute">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold border border-slate-300 dark:bg-paper-2 dark:text-ink-2 dark:border-strong">Benefit unclear</span>
-                                  </div>
-                                </div>
-                              </div>
-
-                              {/* >24h */}
-                              <div className="ml-2 pl-3 border-l-2 border-slate-200 dark:border-line">
-                                <p className="text-xs font-bold text-slate-500 mb-1.5 dark:text-mute">&gt;24 hours</p>
-                                <div className="text-xs flex items-center gap-1.5">
-                                  <span className="text-slate-500 dark:text-mute">Any</span>
-                                  <span className="text-slate-500 dark:text-mute">→</span>
-                                  <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold border border-slate-300 dark:bg-paper-2 dark:text-ink-2 dark:border-strong">Individualized</span>
+                                <div>
+                                  <p className="font-bold text-cobalt-600 dark:text-cobalt-300">6-24 hours</p>
+                                  <ul className="list-disc pl-4 mt-1 space-y-1">
+                                    <li>ASPECTS 6-10: EVT, COR I / LOE A.</li>
+                                    <li>ASPECTS 3-5, age &lt;80, and no significant mass effect: EVT, COR I / LOE A.</li>
+                                  </ul>
+                                  <p className="mt-2 text-slate-500 dark:text-mute">The institutional flowchart supplies no adult anterior-circulation tier beyond 24 hours.</p>
                                 </div>
                               </div>
                             </div>
-
-                            {/* Basilar */}
                             <div className="bg-white rounded-md border-l-4 border-cobalt-500 p-3 dark:bg-card ">
                               <p className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Basilar Artery</p>
-                              <div className="ml-2 pl-3 border-l-2 border-cobalt-200 dark:border-cobalt-700">
-                                <p className="text-xs font-bold text-cobalt-600 mb-1.5 dark:text-cobalt-300">0 – 24 hours &bull; PC-ASPECTS ≥6</p>
-                                <div className="space-y-1.5 text-xs">
-                                  <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700 dark:text-ink-2">mRS 0-1, NIHSS ≥10</span>
-                                    <span className="text-slate-500 dark:text-mute">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-ok-600 text-white font-semibold">Recommended</span>
-                                  </div>
-                                  <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700 dark:text-ink-2">NIHSS 6-9</span>
-                                    <span className="text-slate-500 dark:text-mute">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-warn-100 text-warn-800 font-semibold border border-warn-300 dark:bg-warn-900 dark:text-warn-300 dark:border-warn-800">May be considered</span>
-                                  </div>
-                                  <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-500 dark:text-mute">mRS 2+</span>
-                                    <span className="text-slate-500 dark:text-mute">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold border border-slate-300 dark:bg-paper-2 dark:text-ink-2 dark:border-strong">Individualized</span>
-                                  </div>
-                                </div>
-                              </div>
+                              <ul className="list-disc pl-4 text-xs text-slate-700 space-y-1 dark:text-ink-2">
+                                <li>Within 24 hours, PC-ASPECTS ≥6, NIHSS ≥10: EVT, COR I / LOE A.</li>
+                                <li>Within 24 hours, PC-ASPECTS ≥6, NIHSS 6-9: EVT effectiveness is not well established, COR IIb / LOE B-R.</li>
+                              </ul>
                             </div>
-
-                            {/* M2 / MeVO */}
                             <div className="bg-white rounded-md border-l-4 border-slate-400 p-3 dark:bg-card ">
                               <p className="font-semibold text-slate-800 text-sm mb-2 dark:text-ink">M2 / Distal Vessels</p>
-                              <div className="ml-2 pl-3 border-l-2 border-slate-200 dark:border-line">
-                                <div className="space-y-1.5 text-xs">
-                                  <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700 dark:text-ink-2">Proximal/dominant M2 ≤1cm of bifurcation, salvageable tissue, LKW ≤24h</span>
-                                    <span className="text-slate-500 dark:text-mute">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-ok-100 text-ok-800 font-semibold border border-ok-300 dark:bg-ok-900 dark:text-ok-300 dark:border-ok-800">Reasonable (select cases)</span>
-                                  </div>
-                                  <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-slate-700 dark:text-ink-2">M2-M4 MCA, ACA, PCA occlusions</span>
-                                    <span className="text-slate-500 dark:text-mute">→</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-warn-100 text-warn-800 font-semibold border border-warn-300 dark:bg-warn-900 dark:text-warn-300 dark:border-warn-800">No routine EVT (select/trial only)</span>
-                                  </div>
-                                </div>
-                              </div>
+                              <ul className="list-disc pl-4 text-xs text-slate-700 space-y-1 dark:text-ink-2">
+                                <li>Dominant proximal M2 (≤1 cm from the bifurcation and supplying ≥50% of MCA territory), 0-6 hours, ASPECTS ≥6, NIHSS ≥6: EVT, COR IIa / LOE B-NR.</li>
+                                <li>The same dominant-M2 criteria at 6-24 hours also require CTP hypoperfusion-hypodensity mismatch: EVT, COR IIa / LOE B-NR.</li>
+                                <li>Nondominant M2, ACA, or PCA: no EVT, COR III: No Benefit / LOE A.</li>
+                                <li>Codominant M2: the institutional flowchart supplies no recommendation.</li>
+                              </ul>
                             </div>
                           </div>
 
@@ -29451,7 +29297,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="p-4 pt-0 space-y-2">
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-2 text-sm">
                               <div>
-                                <label htmlFor="postevt-reperfusion-status" className="block text-xs text-slate-500 mb-1 dark:text-mute">Reperfusion status</label>
+                                <label htmlFor="postevt-reperfusion-status" className="block text-xs text-slate-500 mb-1 dark:text-mute">Documented mTICI grade</label>
                                 <select
                                   id="postevt-reperfusion-status"
                                   value={(telestrokeNote.postEvtBP || {}).reperfusionStatus || ''}
@@ -29461,9 +29307,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   }}
                                   className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm dark:border-strong"
                                 >
-                                  <option value="">Auto from TICI</option>
-                                  <option value="successful">Successful (mTICI 2b-3)</option>
-                                  <option value="partial">Partial/none (&lt;2b)</option>
+                                  <option value="">Not documented</option>
+                                  {['0', '1', '2a', '2b', '2c', '3'].map((grade) => <option key={grade} value={grade}>mTICI {grade}</option>)}
                                 </select>
                               </div>
                               <div>
@@ -29493,7 +29338,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 >
                                   <option value="">Select</option>
                                   <option value="nicardipine">Nicardipine drip</option>
-                                  <option value="clevidipine">Clevidipine drip</option>
                                   <option value="labetalol">Intermittent labetalol</option>
                                   <option value="none">No IV infusion</option>
                                 </select>
@@ -29509,9 +29353,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   }}
                                   className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm dark:border-strong"
                                 >
-                                  <option value="">Guideline default</option>
-                                  <option value="standard">SBP &lt;180/105</option>
-                                  <option value="guardrail">SBP 140-180 guardrail</option>
+                                  <option value="">Select</option>
+                                  <option value="guardrail">Institutional SBP 140-180</option>
                                 </select>
                               </div>
                             </div>
@@ -29526,10 +29369,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             }`}>
                               <p className="font-semibold">Target: {postEvtBpGuidance.target.label}</p>
                               <p>
-                                {postEvtBpGuidance.status === 'too-low' && 'Current BP is below recommended floor. Avoid intensive lowering (<130) after EVT due to harm signal.'}
-                                {postEvtBpGuidance.status === 'too-high' && 'Current BP is above target. Titrate antihypertensive infusion and recheck frequently.'}
-                                {postEvtBpGuidance.status === 'in-range' && 'Current BP is within target guardrail.'}
-                                {postEvtBpGuidance.status === 'unknown' && 'Enter post-EVT BP to activate automated guardrails.'}
+                                {postEvtBpGuidance.status === 'too-low' && 'Current SBP is below the institutional 140 mmHg floor.'}
+                                {postEvtBpGuidance.status === 'too-high' && 'Current SBP is above the institutional 180 mmHg ceiling.'}
+                                {postEvtBpGuidance.status === 'in-range' && 'Current SBP is within the institutional guardrail.'}
+                                {postEvtBpGuidance.status === 'unknown' && 'Enter the post-EVT BP to compare it with the institutional guardrail.'}
                               </p>
                             </div>
                             </div>
@@ -29542,7 +29385,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex flex-col md:flex-row md:items-center md:justify-between gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
                             <div>
                               <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">EVT Eligibility Builder</h2>
-                              <p className="text-xs text-slate-500 font-normal dark:text-mute">Guideline-aligned decision support (adult algorithm). Pediatric criteria kept separate.</p>
+                              <p className="text-xs text-slate-500 font-normal dark:text-mute">Institutional adult EVT flowchart. Pediatric criteria remain separate and unchanged.</p>
                             </div>
                             <span className="text-xs text-slate-500 font-normal dark:text-mute">
                               Auto time: {calculateTimeFromLKW() ? `${calculateTimeFromLKW().hours}h ${calculateTimeFromLKW().minutes}m` : 'Set LKW'}
@@ -29558,9 +29401,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, occlusion: e.target.value }))}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
                               >
-                                <option value="lvo">LVO (ICA-T / M1)</option>
+                                <option value="">Not assessed</option>
+                                <option value="lvo">LVO (ICA / proximal M1)</option>
                                 <option value="mvo-dominant">MVO (dominant M2)</option>
-                                <option value="mvo-nondominant">MVO non-dominant M2 or DVO</option>
+                                <option value="mvo-codominant">MVO (codominant M2)</option>
+                                <option value="mvo-nondominant">MVO (nondominant M2)</option>
+                                <option value="aca">ACA</option>
+                                <option value="pca">PCA</option>
                                 <option value="basilar">Basilar artery</option>
                               </select>
                             </div>
@@ -29586,6 +29433,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, aspects: e.target.value }))}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
                               >
+                                <option value="">Not assessed</option>
                                 <option value="6-10">6-10</option>
                                 <option value="3-5">3-5</option>
                                 <option value="0-2">0-2</option>
@@ -29599,14 +29447,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, mrs: e.target.value }))}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
                               >
+                                <option value="">Not assessed</option>
                                 <option value="0-1">0-1</option>
                                 <option value="2">2</option>
                                 <option value="3-4">3-4</option>
-                                <option value=">=2">≥2</option>
+                                <option value="5-6">5-6 (no source tier)</option>
                               </select>
                             </div>
                             <div>
-                              <label htmlFor="evt-nihss-basilar" className="block text-xs text-slate-500 mb-1 dark:text-mute">NIHSS (Basilar)</label>
+                              <label htmlFor="evt-nihss-basilar" className="block text-xs text-slate-500 mb-1 dark:text-mute">NIHSS</label>
                               <input
                                 id="evt-nihss-basilar"
                                 type="number"
@@ -29624,8 +29473,35 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, pcAspects: e.target.value }))}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
                               >
+                                <option value="">Not assessed</option>
                                 <option value=">=6">≥6</option>
                                 <option value="<6">&lt;6</option>
+                              </select>
+                            </div>
+                            <div>
+                              <label htmlFor="evt-age" className="block text-xs text-slate-500 mb-1 dark:text-mute">Age</label>
+                              <input
+                                id="evt-age"
+                                type="number"
+                                min="18"
+                                max="120"
+                                value={evtDecisionInputs.age}
+                                onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, age: e.target.value }))}
+                                className="w-full px-2 py-2 border border-line rounded-lg"
+                                placeholder="Required for selected low-ASPECTS tiers"
+                              />
+                            </div>
+                            <div>
+                              <label htmlFor="evt-mass-effect" className="block text-xs text-slate-500 mb-1 dark:text-mute">Significant mass effect</label>
+                              <select
+                                id="evt-mass-effect"
+                                value={evtDecisionInputs.massEffect}
+                                onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, massEffect: e.target.value }))}
+                                className="w-full px-2 py-2 border border-line rounded-lg"
+                              >
+                                <option value="">Not assessed</option>
+                                <option value="none">Absent</option>
+                                <option value="present">Present</option>
                               </select>
                             </div>
                             <div>
@@ -29675,7 +29551,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, disablingDeficit: e.target.checked }))}
                                 className="rounded border-slate-300 text-cobalt-600 dark:border-strong dark:text-cobalt-300"
                               />
-                              Disabling deficit present (supports selective MeVO EVT)
+                              Disabling deficit present (documentation; not an institutional EVT-tier substitute)
+                            </label>
+                            <label className="flex items-center gap-2 text-xs text-slate-700 mt-5 dark:text-ink-2">
+                              <input
+                                type="checkbox"
+                                checked={!!evtDecisionInputs.ctpMismatch}
+                                onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, ctpMismatch: e.target.checked }))}
+                                className="rounded border-slate-300 text-cobalt-600 dark:border-strong dark:text-cobalt-300"
+                              />
+                              CTP hypoperfusion-hypodensity mismatch confirmed (late dominant M2)
                             </label>
                           </div>
                           <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -29694,7 +29579,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             >
                               Pull from Encounter CTP
                             </button>
-                            <span className="text-xs text-slate-500 dark:text-mute">Perfusion fields are optional but strongly recommended for large-core and MeVO decisions.</span>
+                            <span className="text-xs text-slate-500 dark:text-mute">CTP core is used only for the source-listed early ASPECTS 0-2 tier. Mismatch ratio and volume remain documentation inputs; they do not create an EVT tier in the institutional flowchart.</span>
                           </div>
                           {(() => {
                             const result = getEvtEligibilityRecommendation(evtDecisionInputs, calculateTimeFromLKW());
@@ -29747,8 +29632,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <details id="isch-af" className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex flex-col md:flex-row md:items-center md:justify-between gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
                             <div>
-                              <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">AF Anticoagulation Timing (CATALYST)</h2>
-                              <p className="text-xs text-slate-500 font-normal dark:text-mute">Computes earliest start date based on NIHSS severity and protocol selection.</p>
+                              <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">AF Anticoagulation Timing</h2>
+                              <p className="text-xs text-slate-500 font-normal dark:text-mute">The current institutional source set does not supply an AF/DOAC start-timing protocol.</p>
                             </div>
                           </summary>
                           <div className="p-4 pt-0">
@@ -29777,41 +29662,21 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <label htmlFor="af-doac-protocol" className="block text-xs text-slate-500 mb-1 dark:text-mute">Protocol</label>
                               <select
                                 id="af-doac-protocol"
-                                value={doacProtocol}
-                                onChange={(e) => setDoacProtocol(e.target.value)}
+                                value=""
+                                disabled
                                 className="w-full px-2 py-2 border border-line rounded-lg"
                               >
-                                {Object.entries(DOAC_PROTOCOLS).map(([key, rule]) => (
-                                  <option key={key} value={key}>{rule.label}</option>
-                                ))}
+                                <option value="">No institutional timing protocol</option>
                               </select>
                             </div>
                           </div>
-                          {(() => {
-                            const onsetDate = lkwDateForWindow && lkwTimeForWindow ? (() => { const dt = new Date(`${lkwDateForWindow}T${lkwTimeForWindow}`); return Number.isNaN(dt.getTime()) ? null : dt; })() : null;
-                            const result = calculateDOACStart(telestrokeNote.nihss || nihssScore, onsetDate, doacProtocol);
-                            if (!result) {
-                              return (
-                                <div className="mt-3 text-xs text-slate-500 dark:text-mute">
-                                  Enter NIHSS and LKW to calculate the earliest DOAC start date.
-                                </div>
-                              );
-                            }
-                            return (
-                              <div className="mt-3 bg-ok-50 border border-ok-200 rounded-lg p-3 text-sm dark:bg-ok-950 dark:border-ok-800">
-                                <p className="font-semibold text-ok-800 dark:text-ok-300">Earliest start: {result.startDate.toLocaleDateString()}</p>
-                                <p className="text-xs text-ok-700 mt-1 dark:text-ok-300">
-                                  Severity: {result.severity} • Wait {result.days} day(s) after onset.
-                                </p>
-                              </div>
-                            );
-                          })()}
+                          <p className="mt-3 text-xs text-slate-600 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
 
                         <details id="isch-bp" className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-100/50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
-                            <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Blood Pressure Management <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></h2>
+                            <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Blood Pressure Management</h2>
                           </summary>
                           <div className="p-4 pt-0">
 
@@ -29822,7 +29687,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="text-xs text-slate-500 dark:text-mute">Toggles update the target and highlight current BP status.</p>
                               </div>
                               <div className="flex flex-wrap gap-2">
-                                {Object.entries(bpPhaseTargets).map(([key, value]) => (
+                                {ischemicBpPhaseKeys.map((key) => {
+                                  const value = bpPhaseTargets[key];
+                                  return (
                                   <button
                                     key={key}
                                     type="button"
@@ -29835,34 +29702,37 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   >
                                     {value.label}
                                   </button>
-                                ))}
+                                  );
+                                })}
                               </div>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3 text-sm">
                               <div className="bg-cobalt-50 border border-cobalt-100 rounded-lg p-2 dark:bg-cobalt-900">
                                 <p className="text-xs uppercase tracking-wide text-cobalt-600 dark:text-cobalt-300">Target</p>
                                 <p className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">
-                                  SBP &lt; {currentBpTarget.systolic} / DBP &lt; {currentBpTarget.diastolic}
+                                  {currentBpPhase === 'post-evt'
+                                    ? `SBP ${currentBpTarget.systolicLow}-${currentBpTarget.systolicHigh}`
+                                    : `BP <${currentBpTarget.systolic}/${currentBpTarget.diastolic}`}
                                 </p>
                               </div>
                               <div className="bg-slate-50 border border-line rounded-lg p-2 dark:bg-paper-2">
                                 <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-mute">Current BP</p>
                                 <input
                                   type="text"
-                                  value={telestrokeNote.bpPostEVT || telestrokeNote.bpPreTNK || telestrokeNote.presentingBP || ''}
-                                  onChange={(e) => setTelestrokeNote(prev => ({ ...prev, bpPostEVT: e.target.value }))}
+                                  value={telestrokeNote.bpProtocolCheck || ''}
+                                  onChange={(e) => setTelestrokeNote(prev => ({ ...prev, bpProtocolCheck: e.target.value }))}
                                   className="w-full mt-1 px-2 py-1 border border-line rounded text-sm"
                                   placeholder="e.g. 172/98"
                                 />
-                                <p className="text-xs text-slate-500 mt-1 dark:text-mute">Uses Post-EVT, then Pre-TNK, then Presenting BP.</p>
+                                <p className="text-xs text-slate-500 mt-1 dark:text-mute">Compared only with the selected ischemic treatment phase.</p>
                               </div>
                               <div className={`rounded-lg p-2 border ${bpWithinTarget === null ? 'bg-slate-50 border-slate-200 dark:bg-paper-2 dark:border-line' : bpWithinTarget ? 'bg-ok-50 border-ok-200 dark:bg-ok-950 dark:border-ok-800' : 'bg-crit-50 border-crit-200 dark:bg-crit-950 dark:border-crit-800'}`}>
                                 <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-mute">Status</p>
                                 <p className="text-sm font-semibold">
-                                  {bpWithinTarget === null ? 'Enter BP to check' : bpWithinTarget ? 'Within target' : 'Above target'}
+                                  {bpWithinTarget === null ? 'Enter BP to check' : bpWithinTarget ? 'Within target' : 'Outside target'}
                                 </p>
                                 {bpWithinTarget === false && (
-                                  <p className="text-xs text-crit-600 mt-1 dark:text-crit-300">Consider IV antihypertensive titration.</p>
+                                  <p className="text-xs text-crit-600 mt-1 dark:text-crit-300">The entered value does not meet the selected institutional threshold.</p>
                                 )}
                               </div>
                             </div>
@@ -29874,8 +29744,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <ul className="text-sm space-y-1">
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
                                 <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105</li>
-                                <li><strong>After thrombectomy:</strong> SBP &lt;180, DBP &lt;105</li>
-                                <li><strong>IPH:</strong> target SBP 140, range 130-150 when appropriate; no specific DBP target</li>
+                                <li><strong>After thrombectomy:</strong> SBP 140-180</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
@@ -29894,7 +29763,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h2 className="text-lg font-semibold text-sky-800 dark:text-sky-300">Normobaric Oxygen (NBO) Before EVT</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for normobaric oxygen before thrombectomy. See Guidelines &amp; References for the current society guidance.</p>
+                          <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
 
@@ -29902,7 +29771,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex flex-col md:flex-row md:items-center md:justify-between gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
                             <div>
                               <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Nursing Flowsheet Generator</h2>
-                              <p className="text-xs text-slate-500 font-normal dark:text-mute">Auto-generates q15m ×4, then q30m ×4 checks from groin puncture.</p>
+                              <p className="text-xs text-slate-500 font-normal dark:text-mute">The input is retained for documentation; no institutional post-EVT cadence is supplied.</p>
                             </div>
                             <button
                               type="button"
@@ -29925,41 +29794,25 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               />
                             </div>
                             <div className="md:col-span-2">
-                              {(() => {
-                                const schedule = buildNursingFlowsheet(telestrokeNote.punctureTime);
-                                if (schedule.length === 0) {
-                                  return <p className="text-xs text-slate-500 mt-2 dark:text-mute">Enter puncture time to generate schedule.</p>;
-                                }
-                                return (
-                                  <div className="space-y-2">
-                                    <div className="flex flex-wrap gap-2">
-                                      {schedule.map((item) => (
-                                        <label key={item.time} className="flex items-center gap-2 text-xs bg-slate-50 border border-line rounded-lg px-2 py-1 dark:bg-paper-2">
-                                          <input
-                                            type="checkbox"
-                                            checked={!!nursingFlowsheetChecks[item.time]}
-                                            onChange={(e) => setNursingFlowsheetChecks(prev => ({ ...prev, [item.time]: e.target.checked }))}
-                                          />
-                                          <span>{item.time}</span>
-                                          <span className="text-xs text-slate-500 dark:text-mute">{item.label}</span>
-                                        </label>
-                                      ))}
-                                    </div>
-                                    <button
-                                      type="button"
-                                      onClick={() => {
-                                        const lines = schedule.map(item => `${item.time} (${item.label})`);
-                                        copyPlainText(`Post-EVT checks:\\n${lines.join('\\n')}`);
-                                      }}
-                                      className="text-xs font-semibold text-cobalt-700 hover:text-cobalt-900 dark:text-cobalt-300"
-                                    >
-                                      Copy schedule
-                                    </button>
-                                  </div>
-                                );
-                              })()}
+                              <p className="text-xs text-slate-600 mt-2 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                             </div>
                           </div>
+                          </div>
+                        </details>
+
+                        <details id="isch-swallow" className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
+                          <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-900">
+                            <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Stroke-Specific Nursing Swallow Screen</h2>
+                          </summary>
+                          <div className="p-4 pt-0 space-y-3 text-sm text-slate-700 dark:text-ink-2">
+                            <p>Only a competency-validated registered nurse performs this stroke-specific screen.</p>
+                            <ol className="list-decimal pl-5 space-y-1">
+                              <li>Check whether GCS is &lt;13 or whether lower-facial, tongue, or palatal asymmetry/weakness is present.</li>
+                              <li>If any answer is yes: stop the screen, document failure, keep the patient NPO including medications, request Speech-Language Pathology evaluation, and notify the treating team.</li>
+                              <li>If all answers are no: administer 3 ounces of water in sequential drinks and observe for throat clearing, cough, or voice-quality change immediately and for 1 minute.</li>
+                              <li>If any water-step sign occurs: document failure, keep NPO including medications, request Speech-Language Pathology evaluation, and notify the treating team. Otherwise document pass and use the appropriate diet/medication pathway.</li>
+                            </ol>
+                            <p className="text-xs text-slate-600 dark:text-mute">A repeat RN screen within 24 hours after thrombolysis and/or thrombectomy requires significant neurologic improvement (NIHSS ≤5; no facial droop, tongue/palatal asymmetry, or airway concern), an authorized attending request, documented rationale, and team notification. Do not repeat the RN screen after an SLP evaluation has already been completed.</p>
                           </div>
                         </details>
 
@@ -29975,19 +29828,28 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <ol className="text-sm space-y-1 list-decimal list-inside">
                                 <li>Stop thrombolytic if still running</li>
                                 <li>STAT non-contrast CT head + STAT blood draw (PT/INR, platelets, fibrinogen, PTT, TT, D-dimers, CBC, Type &amp; Cross)</li>
-                                <li>Contact blood bank/transfusion services; order 2 pools cryoprecipitate</li>
-                                <li>Notify patient's family</li>
+                                <li>Contact blood bank/transfusion services and order 2 units of cryoprecipitate (1 unit = 5 prepooled cryoprecipitates)</li>
+                                <li>Notify the patient’s family of the change in status</li>
+                                <li>If CT will be delayed &gt;30 minutes and fibrinogen is &lt;200 mg/dL, empirically administer the 2 units over 10-30 minutes</li>
                               </ol>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h3 className="font-semibold mb-2">Reversal (if blood on CT)</h3>
+                              <h3 className="font-semibold mb-2">CT Result Branch</h3>
                               <ul className="text-sm space-y-1">
-                                <li><strong>Cryoprecipitate:</strong> 2 pools IV over 10-30 min (empirically if CT delayed &gt;30 min and fibrinogen &lt;200)</li>
-                                <li><strong>TXA:</strong> Tranexamic acid 1000 mg IV over 10 min STAT</li>
-                                <li><strong>Repeat hemorrhage panel</strong></li>
-                                <li><strong>Consult neurosurgery</strong></li>
+                                <li><strong>Intracranial blood on CT:</strong> confirm the CT result with the ordering provider and administer 2 units of cryoprecipitate over 10-30 minutes</li>
+                                <li><strong>Before TXA:</strong> confirm post-CT cryoprecipitate administration with the RN; after both confirmations, give tranexamic acid 1,000 mg IV over 10 minutes</li>
+                                <li><strong>Then:</strong> repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal; contact the Stroke/Neurology attending, consult Neurosurgery if needed, and update the family again</li>
+                                <li><strong>No ICH on CT while empiric cryoprecipitate is infusing:</strong> stop cryoprecipitate and do not restart the thrombolytic</li>
                               </ul>
                             </div>
+                          </div>
+                          <div className="mt-3 bg-white p-3 rounded border dark:bg-card">
+                            <h3 className="font-semibold mb-2">Monitoring and Escalation</h3>
+                            <ul className="text-sm space-y-1">
+                              <li>• Neurologic checks and vital signs every 15 minutes for 2 hours, every 30 minutes for 6 hours, then every hour for 16 hours</li>
+                              <li>• Notify the provider for SBP &gt;180, DBP &gt;90, a new neurologic deficit, or a GCS decrease of at least 2 points</li>
+                              <li>• Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal; if abnormalities persist or bleeding remains uncontrolled, consult the Hematology attending</li>
+                            </ul>
                           </div>
                           </div>
                         </details>
@@ -29997,7 +29859,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             ECASS Hemorrhagic Transformation Classification
                           </summary>
                           <div className="px-4 pb-4 space-y-3">
-                            <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for hemorrhagic transformation classification. See Guidelines &amp; References for the current society guidance.</p>
+                            <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
 
@@ -30008,25 +29870,25 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="p-4 pt-0">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h3 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Risk Factors</h3>
+                              <h3 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Airway Assessment and Plan</h3>
                               <ul className="text-sm space-y-1">
-                                <li>• ACE inhibitor use</li>
-                                <li>• Insular cortex involvement</li>
-                                <li>• Frontal operculum stroke</li>
+                                <li><strong>Maintain airway</strong> — intubation may not be necessary if edema is limited to the anterior tongue and lips.</li>
+                                <li>Edema involving the larynx, palate, floor of mouth, or oropharynx with rapid progression within 30 minutes poses higher risk of requiring intubation.</li>
+                                <li>Awake fiberoptic intubation is optimal. Nasal-tracheal intubation may be required but poses epistaxis risk after IV thrombolysis; cricothyroidotomy is rarely needed and is also problematic after IV thrombolysis.</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h3 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Treatment</h3>
+                              <h3 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Medication and Supportive Care</h3>
                               <ul className="text-sm space-y-1">
-                                <li><strong>Maintain airway</strong> — intubation may not be necessary if edema is limited to the anterior tongue and lips; edema involving the larynx, palate, floor of mouth, or oropharynx with rapid progression (within 30 min) poses higher risk of requiring intubation. Awake fiberoptic intubation is optimal; nasal-tracheal intubation may be required but poses risk of epistaxis after IV TNK, and cricothyroidotomy is rarely needed and also problematic after IV TNK.</li>
                                 <li><strong>Hold ACE inhibitors</strong> — stop the thrombolytic infusion <em>if alteplase is the agent being administered</em>; tenecteplase is a single bolus, so there is no infusion to stop</li>
                                 <li><strong>Methylprednisolone:</strong> 125 mg IV</li>
                                 <li><strong>Diphenhydramine:</strong> 50 mg IV</li>
-                                <li><strong>Famotidine:</strong> 20 mg IV (H2 blocker)</li>
-                                <li><strong>If worsening: Epinephrine</strong> (0.1%) 0.3 mL subcutaneously or 0.5 mL by nebulizer</li>
-                                <li><strong>Icatibant</strong> (bradykinin B2 antagonist)</li>
-                                <li><strong>C1 esterase inhibitor (Berinert):</strong> 20 IU/kg IV by slow IV push at 4 mL/min — restricted to pregnant or pediatric patients, or those intolerant to icatibant</li>
+                                <li><strong>Famotidine:</strong> 20 mg IV</li>
+                                <li><strong>If edema further increases: Epinephrine</strong> (0.1%) 0.3 mL subcutaneously or 0.5 mL by nebulizer</li>
+                                <li><strong>Icatibant:</strong> 30 mg SC once; attending approval is required</li>
+                                <li><strong>Supportive care</strong></li>
                               </ul>
+                              <p className="text-xs text-warn-700 mt-2 dark:text-warn-300"><strong>Restricted alternative, not part of the active adult sequence:</strong> C1 esterase inhibitor may be used for pregnancy, pediatric patients, or icatibant intolerance under the institutional restriction.</p>
                             </div>
                           </div>
                           </div>
@@ -30034,34 +29896,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         <details id="isch-antiplatelet" className="bg-ok-50 border border-ok-200 rounded-lg dark:bg-ok-950 dark:border-ok-800">
                           <summary className="cursor-pointer p-4 font-semibold text-ok-800 hover:bg-ok-100/50 rounded-t-lg flex items-center justify-between dark:text-ok-300 dark:hover:bg-ok-900">
-                            <h2 className="text-lg font-semibold text-ok-800 dark:text-ok-300">Antiplatelet Loading Protocol <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['I']}`}>I</span></h2>
+                            <h2 className="text-lg font-semibold text-ok-800 dark:text-ok-300">Antiplatelet Loading Protocol</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Minor Stroke / High-Risk TIA</h3>
-                              <ul className="text-sm space-y-1">
-                                <li><strong>DAPT x 21 days:</strong></li>
-                                <li>• Start within 24h (NIHSS ≤3 or ABCD2 ≥4)</li>
-                                <li>• Then single antiplatelet after 21 days</li>
-                              </ul>
-                            </div>
-                            <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">NIHSS 4-5 or 24-72h Window</h3>
-                              <ul className="text-sm space-y-1">
-                                <li><strong>DAPT is reasonable:</strong></li>
-                                <li>• Start within 24-72h if NIHSS 4-5 or delayed presentation</li>
-                                <li>• DAPT x 21 days → then single antiplatelet</li>
-                              </ul>
-                            </div>
-                            <div className="bg-white p-3 rounded border dark:bg-card">
-                              <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Moderate-Severe Stroke (no lysis)</h3>
-                              <ul className="text-sm space-y-1">
-                                <li><strong>Single antiplatelet:</strong></li>
-                                <li>• If post-TNK: delay ASA 24 hours</li>
-                              </ul>
-                            </div>
-                          </div>
+                          <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
 
@@ -30070,7 +29908,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Statin Initiation</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for statin initiation. See Guidelines &amp; References for the current society guidance.</p>
+                          <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
 
@@ -30079,28 +29917,21 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Large Core EVT Selection</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          <div className="bg-white border border-cobalt-300 rounded-lg p-3 mb-3 dark:bg-card dark:border-cobalt-700">
-                            <p className="text-sm font-semibold text-cobalt-900 mb-1 dark:text-cobalt-300">Evidence Highlight (Conservative Interpretation)</p>
-                            <p className="text-sm text-slate-700 dark:text-ink-2">Large core should not be an automatic exclusion. SELECT2, ANGEL-ASPECT, RESCUE-Japan LIMIT, TENSION, and SVIN 2025 support EVT in many ASPECTS 3-5 patients when clinical and imaging context is favorable.</p>
-                            <p className="text-xs text-cobalt-700 mt-1 dark:text-cobalt-300">Default rule: do not exclude solely for large core; confirm neurointerventional review and document individualized risk (including higher sICH risk at lower ASPECTS).</p>
-                          </div>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="bg-white p-3 rounded border dark:bg-card">
                               <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Early Window (0-6h)</h3>
                               <ul className="text-sm space-y-1">
-                                <li>• ASPECTS 3-5: EVT recommended</li>
-                                <li>• ASPECTS 0-2: EVT reasonable in select patients without mass effect (age &lt;80)</li>
-                                <li>• ICA/M1 occlusion; pre-stroke mRS 0-1; age 18-80; NIHSS ≥6</li>
-                                <li>• Higher sICH risk; discuss goals of care</li>
+                                <li>• ICA or proximal M1 occlusion, NIHSS ≥6; baseline mRS 0-1 unless another tier is stated</li>
+                                <li>• ASPECTS 3-5 with no significant mass effect: EVT, COR I / LOE A</li>
+                                <li>• ASPECTS 0-2, age &lt;80, no significant mass effect, CTP core ≤70-100 mL: EVT, COR IIa / LOE B-R</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
                               <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Late Window (6-24h)</h3>
                               <ul className="text-sm space-y-1">
-                                <li>• ASPECTS 3-5: EVT recommended</li>
-                                <li>• ASPECTS 0-2: Benefit uncertain</li>
-                                <li>• CTP core 50-100 mL supports EVT</li>
-                                <li>• Eligibility is not limited to strict DAWN/DEFUSE mismatch criteria</li>
+                                <li>• ICA or proximal M1 occlusion, NIHSS ≥6, baseline mRS 0-1</li>
+                                <li>• ASPECTS 3-5, age &lt;80, and no significant mass effect: EVT, COR I / LOE A</li>
+                                <li>• The institutional flowchart supplies no 6-24-hour ASPECTS 0-2 tier</li>
                               </ul>
                             </div>
                           </div>
@@ -30109,15 +29940,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         <details id="isch-postevt" className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-100/50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
-                            <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Post-EVT Management <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ml-1 align-middle ${GUIDELINE_CLASS_COLORS['IIa']}`}>IIa</span></h2>
+                            <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Post-EVT Management</h2>
                           </summary>
                           <div className="p-4 pt-0">
                           <div className="bg-white p-3 rounded border dark:bg-card">
                             <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Post-Procedure Care</h3>
                             <ul className="text-sm space-y-1">
-                              <li>• Follow-up imaging: CT/CTA at 24h or if neuro change</li>
+                              <li>• Follow-up brain CT or MRI at 24 hours ±6 hours</li>
                             </ul>
-                            <p className="text-xs text-slate-600 mt-2 dark:text-mute">Use the BP Management section and Nursing Flowsheet Generator for targets and monitoring cadence.</p>
+                            <p className="text-xs text-slate-600 mt-2 dark:text-mute">Use the BP Management section for the institutional SBP 140-180 guardrail. The current source set does not supply a post-EVT nursing cadence.</p>
                           </div>
                           </div>
                         </details>
@@ -30128,11 +29959,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </summary>
                           <div className="p-4 pt-0">
                           <div className="bg-white p-3 rounded border dark:bg-card">
-                            <p className="text-sm text-crit-700 font-semibold mb-2 dark:text-crit-300">Routine EVT for isolated MeVO (M2/M3/distal) is not supported by current RCT evidence</p>
+                            <p className="text-sm font-semibold mb-2 text-slate-800 dark:text-ink">Institutional M2 / distal-vessel branches</p>
                             <ul className="text-sm space-y-1">
-                              <li>• Current default is medical management, with EVT reserved for highly selected anatomy and multidisciplinary agreement</li>
+                              <li>• Dominant proximal M2, 0-6 hours, ASPECTS ≥6, NIHSS ≥6: EVT, COR IIa / LOE B-NR</li>
+                              <li>• Dominant proximal M2, 6-24 hours, ASPECTS ≥6, NIHSS ≥6, and CTP hypoperfusion-hypodensity mismatch: EVT, COR IIa / LOE B-NR</li>
+                              <li>• Nondominant M2, ACA, or PCA: no EVT, COR III: No Benefit / LOE A</li>
+                              <li>• Codominant M2: no recommendation is supplied</li>
                             </ul>
-                            <p className="text-xs text-slate-600 mt-2 italic dark:text-mute">Note: LVO (ICA-T, M1, basilar) EVT remains recommended. This applies only to isolated medium/distal vessel occlusions.</p>
                           </div>
                           </div>
                         </details>
@@ -30142,30 +29975,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h2 className="text-lg font-semibold text-teal-800 dark:text-teal-300">Contrast Allergy + Suspected LVO Protocol</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          {/* Renal Safety Prompt for Contrast */}
-                          {(() => {
-                            const cr = parseFloat(telestrokeNote.creatinine);
-                            const age = parseInt(telestrokeNote.age, 10);
-                            const wt = parseFloat(telestrokeNote.weight);
-                            const sex = telestrokeNote.sex;
-                            let crcl = null;
-                            if (!isNaN(cr) && cr > 0 && !isNaN(age) && age > 0 && !isNaN(wt) && wt > 0 && sex) {
-                              crcl = Math.round(((140 - age) * wt * (sex === 'Female' ? 0.85 : 1)) / (72 * cr));
-                            }
-                            const severe = (!isNaN(cr) && cr > 3) || (crcl !== null && crcl < 30);
-                            const moderate = crcl !== null && crcl >= 30 && crcl < 60;
-                            if (severe) return (
-                              <div role="alert" className="bg-crit-50 border border-crit-300 rounded-lg p-2 mb-3 text-xs text-crit-800 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300">
-                                <strong>Renal Safety Alert (CrCl {crcl !== null ? crcl + ' mL/min' : 'unknown'}{!isNaN(cr) ? ', Cr ' + cr : ''}):</strong> Contrast nephropathy risk is HIGH. Hydrate with NS, minimize contrast volume, monitor Cr at 24-48h post-contrast. Coordinate with Radiology &amp; Nephrology. Gadolinium MRA is an alternative for non-emergent vascular imaging.
-                              </div>
-                            );
-                            if (moderate) return (
-                              <div className="bg-warn-50 border border-warn-200 rounded-lg p-2 mb-3 text-xs text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
-                                <strong>Renal Caution (CrCl {crcl} mL/min):</strong> Moderate renal impairment. Pre-hydrate with NS if possible. Monitor Cr at 24-48h post-contrast.
-                              </div>
-                            );
-                            return null;
-                          })()}
                           <div className="bg-white p-3 rounded border mb-3 dark:bg-card">
                             <p className="text-sm font-semibold text-teal-700 mb-2 dark:text-teal-300">Eligibility:</p>
                             <ul className="text-sm space-y-1">
@@ -30185,8 +29994,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-3 rounded border dark:bg-card">
                             <p className="text-sm font-semibold text-teal-700 mb-2 dark:text-teal-300">Pre-medication (immediately prior to the contrast study):</p>
                             <ul className="text-sm space-y-1">
-                              <li>• <button onClick={() => setProtocolModal(protocolDetailMap.HYDROCORT)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Hydrocortisone 200 mg IV</button> <strong>OR</strong> <button onClick={() => setProtocolModal(protocolDetailMap.METHYLPRED)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Methylprednisolone 40 mg IV</button></li>
+                              <li>• <button onClick={() => setProtocolModal(protocolDetailMap.HYDROCORT)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Hydrocortisone 200 mg IV</button> <strong>OR</strong> <button onClick={() => setProtocolModal(protocolDetailMap.METHYLPRED_CONTRAST)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Methylprednisolone 40 mg IV</button></li>
                               <li>• <strong>PLUS</strong> <button onClick={() => setProtocolModal(protocolDetailMap.DIPHEN)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Diphenhydramine 50 mg IV</button></li>
+                            </ul>
+                          </div>
+                          <div className="bg-white p-3 rounded border dark:bg-card">
+                            <p className="text-sm font-semibold text-teal-700 mb-2 dark:text-teal-300">Limited Hyperacute Stroke MRI</p>
+                            <ul className="text-sm space-y-1">
+                              <li>• Use only for an acute emergent treatment decision: wake-up or unknown-LKW disabling suspected AIS, or suspected LVO with known severe contrast allergy</li>
+                              <li>• For the severe-contrast-allergy LVO branch, obtain TOF MRA</li>
+                              <li>• Obtain DWI/ADC, T2-FLAIR, and T2*/SWI on the first available scanner, regardless of magnet strength</li>
+                              <li>• Do not add sequences or studies during the code-stroke MRI</li>
+                              <li>• Complete the MRI safety checklist with the patient when possible; otherwise obtain STAT screening films</li>
                             </ul>
                           </div>
                           </div>
@@ -30197,7 +30016,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h2 className="text-lg font-semibold text-orange-800 dark:text-orange-300">Intracranial Atherosclerotic Disease (ICAD)</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for intracranial atherosclerotic disease. See Guidelines &amp; References for the current society guidance.</p>
+                          <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
 
@@ -30206,28 +30025,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Posterior Circulation Stroke</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          <div className="space-y-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h3 className="font-semibold text-crit-700 mb-2 dark:text-crit-300">Basilar Artery Occlusion (BAO)</h3>
-                                <ul className="text-sm space-y-1">
-                                  <li><strong>Clinical presentation:</strong> Coma, quadriplegia, locked-in syndrome, bilateral cranial nerve palsies, vertigo, dysarthria, ataxia</li>
-                                  <li><strong>Current recommendation:</strong> EVT recommended for BAO 0-24h with PC-ASPECTS ≥6, NIHSS ≥10 (Class I, LOE A); NIHSS 6-9 may be considered (Class 2b, LOE B-R)</li>
-                                  <li><strong>IV thrombolysis:</strong> Give TNK if within 4.5h and no contraindications, even if planning EVT (bridging therapy)</li>
-                                </ul>
-                              </div>
-                              <div className="bg-white p-3 rounded border dark:bg-card">
-                                <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">PC-ASPECTS Scoring</h3>
-                                <ul className="text-sm space-y-1">
-                                  <li><strong>10 points</strong> (normal), subtract points for each affected region:</li>
-                                  <li className="ml-3">Left/Right thalamus (1 each)</li>
-                                  <li className="ml-3">Left/Right cerebellum (1 each)</li>
-                                  <li className="ml-3">Left/Right PCA territory (1 each)</li>
-                                  <li className="ml-3">Midbrain (2)</li>
-                                  <li className="ml-3">Pons (2)</li>
-                                </ul>
-                              </div>
-                            </div>
+                          <div className="bg-white p-3 rounded border dark:bg-card">
+                            <h3 className="font-semibold text-crit-700 mb-2 dark:text-crit-300">Basilar Artery Occlusion</h3>
+                            <ul className="text-sm space-y-1">
+                              <li>• Within 24 hours, PC-ASPECTS ≥6, NIHSS ≥10: EVT, COR I / LOE A</li>
+                              <li>• Within 24 hours, PC-ASPECTS ≥6, NIHSS 6-9: EVT effectiveness is not well established, COR IIb / LOE B-R</li>
+                              <li>• For an otherwise eligible patient within 4.5 hours, TNK may be started before or on the way to thrombectomy</li>
+                            </ul>
                           </div>
                           </div>
                         </details>
@@ -30237,7 +30041,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h2 className="text-lg font-semibold text-pink-800 dark:text-pink-300">Cervical Artery Dissection (CAD)</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for cervical artery dissection. See Guidelines &amp; References for the current society guidance.</p>
+                          <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
 
@@ -30246,7 +30050,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h2 className="text-lg font-semibold text-yellow-800 dark:text-yellow-300">Seizure Prophylaxis in Ischemic Stroke</h2>
                           </summary>
                           <div className="p-4 pt-0">
-                          <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for seizure prophylaxis. See Guidelines &amp; References for the current society guidance.</p>
+                          <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
                           </div>
@@ -30258,6 +30062,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <PocketCards defaults={{
                           hoursFromLKW: (() => {
                             try {
+                              if (telestrokeNote.lkwUnknown === true) return '';
                               if (!telestrokeNote.lkwDate || !telestrokeNote.lkwTime) return '';
                               const lkw = new Date(`${telestrokeNote.lkwDate}T${telestrokeNote.lkwTime}:00`);
                               const hrs = (Date.now() - lkw.getTime()) / 3600000;
@@ -30269,7 +30074,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           age: telestrokeNote.age || '',
                           glucose: telestrokeNote.glucose || '',
                           aspects: telestrokeNote.aspects || '',
-                          preMRS: telestrokeNote.premorbidMRS || '0'
+                          preMRS: telestrokeNote.premorbidMRS || '',
+                          wakeUpOrUnknownOnset: telestrokeNote.lkwUnknown === true
                         }} />
                       </div>
                     )}
@@ -30287,22 +30093,23 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Key Principles */}
                         <div className="border-l-4 border-cobalt-400 bg-slate-50 px-3 py-2 text-sm space-y-1 dark:bg-paper-2">
                           <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide dark:text-ink">Key Principles</p>
-                          <p className="text-xs text-slate-700 dark:text-ink-2">No institutional protocol document is on file for subarachnoid hemorrhage. See Guidelines &amp; References for the current society guidance.</p>
+                          <p className="text-xs text-slate-700 dark:text-ink-2">The institutional acute-stroke algorithm supplies only the SAH steps listed below. It does not specify medication choices, doses, blood-pressure targets, or grading definitions.</p>
                         </div>
 
                         {/* Acute SAH Protocol */}
                         <details className="bg-white border border-line rounded-lg dark:bg-card">
                           <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-t-lg flex items-center gap-2 dark:text-ink dark:hover:bg-paper-2">
                             <span className="w-6 h-6 rounded-full bg-cobalt-600 text-white text-xs flex items-center justify-center font-bold">1</span>
-                            Immediate Actions (First 6 Hours)
+                            Institutional Acute-Algorithm Steps
                           </summary>
                           <div className="p-4 pt-0">
                           <div className="space-y-2">
                             {[
                               { step: 'BP control', detail: 'The institutional acute stroke algorithm directs BP control for SAH but does not specify a target, agent, or dose. See Guidelines & References for the current society guidance.', urgent: true },
-                              { step: 'Reverse coagulopathy', detail: 'Screen for anticoagulant/antiplatelet exposure and reverse before the aneurysm is secured — use the coagulopathy-reversal pathway', urgent: true },
-                              { step: 'Neurosurgery consult', detail: 'Consult neurosurgery and admit to neurocritical care, per the institutional acute stroke algorithm.', urgent: true },
-                              { step: 'Document Hunt-Hess grade', detail: 'Record the admission Hunt-Hess grade with the consult (Hunt & Hess / WFNS calculators are under Calculators)', urgent: true }
+                              { step: 'Reverse coagulopathy', detail: 'Reverse coagulopathy. The institutional acute-stroke algorithm does not add an agent, dose, or timing rule to this SAH step.', urgent: true },
+                              { step: 'Neurosurgery consult', detail: 'Consult Neurosurgery.', urgent: true },
+                              { step: 'Document Hunt-Hess score', detail: 'Document the Hunt-Hess score. The institutional algorithm does not provide grade definitions.', urgent: true },
+                              { step: 'Neurocritical care admission', detail: 'Admit to Neurocritical Care Service.', urgent: true }
                             ].map((item, i) => (
                               <div key={i} className={`flex items-start gap-3 p-2 rounded ${item.urgent ? 'bg-cobalt-50 dark:bg-cobalt-900' : 'bg-slate-50 dark:bg-paper-2'}`}>
                                 <span className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${item.urgent ? 'bg-cobalt-600 text-white' : 'bg-slate-300 text-slate-700 dark:text-ink-2'}`}>{i + 1}</span>
@@ -30325,7 +30132,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* TIA Header */}
                         <div className="bg-white border-l-4 border-l-orange-500 border border-line rounded-lg p-4 dark:bg-card">
                           <h2 className="text-lg font-bold text-orange-900 mb-1 dark:text-orange-300">TIA Management & Secondary Prevention</h2>
-                          <p className="text-sm text-slate-600 dark:text-ink-2">Urgent evaluation and risk reduction for transient ischemic attack</p>
+                          <p className="text-sm text-slate-600 dark:text-ink-2">Institution-sourced TIA material only. Society guidance lives under Guidelines &amp; References.</p>
                         </div>
 
                         <details className="bg-white border border-orange-200 rounded-lg dark:bg-card dark:border-orange-800">
@@ -30333,7 +30140,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h3 className="font-bold text-orange-900 dark:text-orange-300">TIA Disposition Engine</h3>
                           </summary>
                           <div className="p-4 pt-0">
-                            <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for TIA disposition. See Guidelines &amp; References for the current society guidance.</p>
+                            <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
 
@@ -30349,7 +30156,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <thead>
                                 <tr className="bg-slate-100 dark:bg-paper-2">
                                   <th scope="col" className="border border-line px-3 py-2 text-left">Score</th>
-                                  <th scope="col" className="border border-line px-3 py-2 text-left">Risk Level</th>
                                   <th scope="col" className="border border-line px-3 py-2 text-left">2-Day Stroke Risk</th>
                                   <th scope="col" className="border border-line px-3 py-2 text-left">7-Day</th>
                                   <th scope="col" className="border border-line px-3 py-2 text-left">90-Day</th>
@@ -30358,21 +30164,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <tbody>
                                 <tr className="bg-ok-50 dark:bg-ok-950">
                                   <td className="border border-line px-3 py-1.5 font-mono font-bold">0-3</td>
-                                  <td className="border border-line px-3 py-1.5"><span className="text-ok-700 font-semibold dark:text-ok-300">Low</span></td>
                                   <td className="border border-line px-3 py-1.5">1.0%</td>
                                   <td className="border border-line px-3 py-1.5">1.2%</td>
                                   <td className="border border-line px-3 py-1.5">3.1%</td>
                                 </tr>
                                 <tr className="bg-warn-50 dark:bg-warn-950">
                                   <td className="border border-line px-3 py-1.5 font-mono font-bold">4-5</td>
-                                  <td className="border border-line px-3 py-1.5"><span className="text-warn-700 font-semibold dark:text-warn-300">Moderate</span></td>
                                   <td className="border border-line px-3 py-1.5">4.1%</td>
                                   <td className="border border-line px-3 py-1.5">5.9%</td>
                                   <td className="border border-line px-3 py-1.5">9.8%</td>
                                 </tr>
                                 <tr className="bg-crit-50 dark:bg-crit-950">
                                   <td className="border border-line px-3 py-1.5 font-mono font-bold">6-7</td>
-                                  <td className="border border-line px-3 py-1.5"><span className="text-crit-700 font-semibold dark:text-crit-300">High</span></td>
                                   <td className="border border-line px-3 py-1.5">8.1%</td>
                                   <td className="border border-line px-3 py-1.5">11.7%</td>
                                   <td className="border border-line px-3 py-1.5">17.8%</td>
@@ -30380,7 +30183,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </tbody>
                             </table>
                           </div>
-                          <p className="text-xs text-slate-600 mt-2 dark:text-mute">ABCD2 is adjunctive only. Use vessel imaging, clinical trajectory, and local follow-up reliability to finalize disposition.</p>
                           </div>
                         </details>
 
@@ -30391,7 +30193,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             Urgent Imaging Protocol
                           </summary>
                           <div className="p-4 pt-0">
-                            <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for TIA imaging. See Guidelines &amp; References for the current society guidance.</p>
+                            <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
 
@@ -30399,48 +30201,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <details className="bg-white border border-line rounded-lg dark:bg-card">
                           <summary className="cursor-pointer p-4 font-bold text-slate-800 hover:bg-slate-50 rounded-t-lg flex items-center gap-2 dark:text-ink dark:hover:bg-paper-2">
                             <span className="w-6 h-6 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center font-bold">3</span>
-                            Antiplatelet Therapy — DAPT Protocol
+                            Antiplatelet Therapy
                           </summary>
                           <div className="p-4 pt-0">
-                          <div className="space-y-3">
-                            <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
-                              <h4 className="font-semibold text-cobalt-800 text-sm mb-2 dark:text-cobalt-300">Phenotype-Based DAPT Quick Matrix</h4>
-                              <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: phenotype-based DAPT quick matrix">
-                                <table className="w-full text-xs border-collapse">
-                                  <thead>
-                                    <tr className="bg-white dark:bg-card">
-                                      <th scope="col" className="border border-cobalt-200 px-2 py-1.5 text-left dark:border-cobalt-700">Phenotype</th>
-                                      <th scope="col" className="border border-cobalt-200 px-2 py-1.5 text-left dark:border-cobalt-700">Preferred regimen</th>
-                                      <th scope="col" className="border border-cobalt-200 px-2 py-1.5 text-left dark:border-cobalt-700">Duration</th>
-                                      <th scope="col" className="border border-cobalt-200 px-2 py-1.5 text-left dark:border-cobalt-700">Evidence anchor</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr className="bg-white/80 dark:bg-cobalt-900">
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">Minor stroke (NIHSS &le;3) or high-risk TIA (ABCD2 &ge;4)</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">ASA + clopidogrel</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">21 days, then single antiplatelet</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">CHANCE, POINT &mdash; CHANCE enrolled &le;24h (21-day DAPT); POINT enrolled &le;12h (trial DAPT duration was 90 days)</td>
-                                    </tr>
-                                    <tr className="bg-white/80 dark:bg-cobalt-900">
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">Non-cardioembolic minor stroke (NIHSS &le;3) or high-risk TIA (ABCD2 &ge;4) without high bleed risk</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">ASA + ticagrelor</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">30 days</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">THALES (enrolled &le;24h)</td>
-                                    </tr>
-                                    <tr className="bg-white/60 dark:bg-overlay">
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">Atherosclerotic minor stroke (NIHSS &le;5) or high-risk TIA (ABCD2 &ge;4) enrolled within 72h</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">ASA + clopidogrel</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">21 days DAPT</td>
-                                      <td className="border border-cobalt-200 px-2 py-1.5 dark:border-cobalt-700">INSPIRES</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <p className="text-xs text-cobalt-800 mt-2 dark:text-cobalt-300">Avoid prolonged DAPT beyond intended windows unless a specific vascular phenotype justifies it; de-escalate to monotherapy promptly.</p>
-                              <p className="text-xs text-cobalt-800 mt-2 dark:text-cobalt-300"><strong>Trial primary safety outcomes (bleeding):</strong> CHANCE moderate-severe bleeding HR 0.84 (0.30&ndash;2.31), 0.4% vs 0.3% &middot; POINT major hemorrhage HR 2.32 (1.10&ndash;4.87), 0.9% vs 0.4% &middot; THALES severe bleeding HR 3.99 (1.74&ndash;9.14), 0.5% vs 0.1% &middot; INSPIRES moderate-severe bleeding HR 2.08 (1.07&ndash;4.04), 0.9% vs 0.4%.</p>
-                            </div>
-                          </div>
+                          <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
 
@@ -30451,7 +30215,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             Etiologic Workup Checklist
                           </summary>
                           <div className="p-4 pt-0">
-                            <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for TIA etiologic workup. See Guidelines &amp; References for the current society guidance.</p>
+                            <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
 
@@ -30462,7 +30226,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             Carotid Stenosis Management
                           </summary>
                           <div className="p-4 pt-0">
-                            <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for carotid stenosis management. See Guidelines &amp; References for the current society guidance.</p>
+                            <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
 
@@ -30472,7 +30236,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             Secondary Prevention — Complete Checklist
                           </summary>
                           <div className="px-4 pb-4">
-                            <p className="text-sm text-slate-700 dark:text-ink-2">No institutional protocol document is on file for secondary prevention. See Guidelines &amp; References for the current society guidance.</p>
+                            <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                           </div>
                         </details>
                       </div>
@@ -30487,7 +30251,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h2 className="text-xl font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
                                                         Cerebral Venous Thrombosis (CVT) Management
                           </h2>
-                          <p className="text-sm text-slate-600 mt-1 dark:text-ink-2">No institutional protocol document is on file for cerebral venous thrombosis. See Guidelines &amp; References for the current society guidance.</p>
+                          <p className="text-sm text-slate-600 mt-1 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                         </div>
 
 
@@ -30512,16 +30276,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   <GlobalPatientContext.Provider value={patientContextValue}>
                   <div id="mgmt-tabpanel-calculators" role="tabpanel" aria-labelledby="mgmt-tab-calculators" className="flex flex-col gap-4">
 
-                    {/* Post-tPA neurocheck timer — shows only if TNK time recorded */}
-                    {(telestrokeNote.tnkAdminTime && telestrokeNote.lkwDate) && (
-                      <NeurocheckTimer tpaGivenIso={(() => {
-                        try { return new Date(`${telestrokeNote.lkwDate}T${telestrokeNote.tnkAdminTime}:00`).toISOString(); } catch (_) { return null; }
-                      })()} />
-                    )}
+                    {/* Post-tPA neurocheck timer requires the full administration datetime. */}
+                    {(() => {
+                      if (!telestrokeNote.dtnTnkAdministered) return null;
+                      const administeredAt = new Date(telestrokeNote.dtnTnkAdministered);
+                      if (Number.isNaN(administeredAt.getTime())) return null;
+                      return <NeurocheckTimer tpaGivenIso={administeredAt.toISOString()} />;
+                    })()}
                     {/* PHQ-9 depression screen (clinic) */}
                     <details className="rounded border border-line bg-white p-0 dark:bg-card">
                       <summary className="cursor-pointer p-3 font-semibold text-slate-900 dark:text-ink">PHQ-9 Depression Screen (post-stroke)</summary>
-                      <div className="p-3 pt-0"><p className="text-xs text-slate-600 dark:text-ink-2">No institutional protocol document is on file for post-stroke depression screening. See Guidelines &amp; References for the current society guidance.</p></div>
+                      <div className="p-3 pt-0"><p className="text-xs text-slate-600 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p></div>
                     </details>
                     {/* Quick Dosing Reference */}
                     <details className="bg-caution-soft border border-line border-l-[3px] border-l-caution rounded-md p-3">
@@ -30530,11 +30295,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </summary>
                       <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2">
                         {[
-                          { label: 'TNK (Tenecteplase)', dose: `0.25 mg/kg IV bolus (max 25 mg)${telestrokeNote.weight ? ` → ${Math.min(25, Math.round(parseFloat(telestrokeNote.weight) * 0.25 * 2) / 2)} mg` : ''}`, color: 'emerald' },
-                          { label: 'Alteplase (tPA)', dose: `0.9 mg/kg IV (max 90 mg): 10% bolus, 90% over 60 min${telestrokeNote.weight ? ` → ${Math.min(90, Math.round(parseFloat(telestrokeNote.weight) * 0.9 * 10) / 10)} mg` : ''}`, color: 'blue' },
+                          { label: 'TNK (Tenecteplase)', dose: `0.25 mg/kg IV bolus (max 25 mg)${hasValidProtocolDosingWeight ? ` → ${Math.min(25, Math.round(protocolDosingWeightKg * 0.25 * 2) / 2)} mg` : ''}`, color: 'emerald' },
+                          { label: 'Alteplase (tPA)', dose: `0.9 mg/kg IV (max 90 mg): 10% bolus, 90% over 60 min${hasValidProtocolDosingWeight ? ` → ${Math.min(90, Math.round(protocolDosingWeightKg * 0.9 * 10) / 10)} mg` : ''}`, color: 'blue' },
                           { label: 'PCC / Kcentra', dose: '2000 units IV immediately (fixed dose, not weight-based). If INR >1.5 after infusion, page hematology and consider an additional 500 units.', color: 'red' },
-                          { label: 'Idarucizumab', dose: '5 g IV (two 2.5 g vials) over 5-10 min. For dabigatran reversal.', color: 'rose' },
-                          { label: 'FFP (if no PCC)', dose: `15 mL/kg IV (4 units emergency-release plasma immediately; request an additional 4 units). Goal INR <1.5.${telestrokeNote.weight ? ` → ${Math.round(parseFloat(telestrokeNote.weight) * 15)} mL (~${Math.round(parseFloat(telestrokeNote.weight) * 15 / 250)} units)` : ''}`, color: 'amber' },
+                          { label: 'Idarucizumab', dose: 'Two 2.5 g IV doses, given no more than 15 minutes apart; infuse each dose over 5-10 minutes. For dabigatran reversal.', color: 'rose' },
+                          { label: 'FFP (if no PCC)', dose: `15 mL/kg IV (give 4 units emergency-release plasma immediately; if INR remains >1.5 after infusion, page Hematology and consider 4 additional units).${hasValidProtocolDosingWeight ? ` → ${Math.round(protocolDosingWeightKg * 15)} mL (~${Math.round(protocolDosingWeightKg * 15 / 250)} units)` : ''}`, color: 'amber' },
                         ].map(item => {
                           // Each entry: container (border + hover, incl. dark variants)
                           // kept separate from the label text color (light + dark) so
@@ -30641,7 +30406,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     )}
                     {/* ============================================ */}
                     {/* CALCULATOR TRIAL PROMPTS                     */}
-                    {/* Shows trial relevance after scoring          */}
+                    {/* Scaffold retained; no folder-backed output   */}
                     {/* ============================================ */}
                     {(nihssScore || telestrokeNote.age) && (
                       <div className="bg-reference-soft border border-line border-l-[3px] border-l-reference rounded-md p-4">
@@ -30655,66 +30420,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </span>
                           )}
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                          {/* NIHSS-based prompts */}
-                          {nihssScore !== null && nihssScore !== undefined && (
-                            <div className="bg-white rounded p-3 border dark:bg-card">
-                              <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">NIHSS = {nihssScore}</h3>
-                              <ul className="space-y-1 text-xs text-slate-700 dark:text-ink-2">
-                                {nihssScore >= 4 && (
-                                  <li className="text-ok-700 dark:text-ok-300">
-                                    <span className="inline-block w-2.5 h-2.5 rounded-full bg-ok-500 mr-1"></span> <strong>SISTER eligible</strong>: NIHSS ≥4 threshold met{nihssScore <= 5 ? ' (4-5 requires disabling deficit)' : ''}
-                                  </li>
-                                )}
-                                {nihssScore <= 5 && (
-                                  <li className="text-warn-700 dark:text-warn-300">
-                                    <span className="inline-block w-2.5 h-2.5 rounded-full bg-warn-500 mr-1"></span> <strong>STEP mild arm</strong>: Check for LVO (ICA/M1/basilar)
-                                  </li>
-                                )}
-                                {nihssScore > 8 && (
-                                  <li className="text-cobalt-700 dark:text-cobalt-300">
-                                    <i aria-hidden="true" data-lucide="circle" className="w-3 h-3 inline text-cobalt-500"></i> <strong>STEP MeVO arm</strong>: Check for M2/M3 occlusion
-                                  </li>
-                                )}
-                                {nihssScore < 4 && (
-                                  <li className="text-slate-600 dark:text-ink-2">
-                                    SISTER: NIHSS ≥4 required (current: {nihssScore})
-                                  </li>
-                                )}
-                              </ul>
-                            </div>
-                          )}
-                          {/* GCS-based prompts */}
-                          {(() => {
-                            const gcs = calculateGCS(gcsItems);
-                            if (gcs === 0) return null;
-                            return (
-                              <div className="bg-white rounded p-3 border dark:bg-card">
-                                <h3 className="font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">GCS = {gcs}</h3>
-                                <ul className="space-y-1 text-xs text-slate-700 dark:text-ink-2">
-                                  {gcs >= 5 && gcs <= 14 && (
-                                    <li className="text-cobalt-700 dark:text-cobalt-300">
-                                      <i aria-hidden="true" data-lucide="circle" className="w-3 h-3 inline text-cobalt-500"></i> <strong>ENRICH range</strong>: GCS 5-14 for MIE consideration
-                                    </li>
-                                  )}
-                                  {gcs > 14 && (
-                                    <li className="text-slate-600 dark:text-ink-2">
-                                      ENRICH: GCS 5-14 required (current: {gcs})
-                                    </li>
-                                  )}
-                                  {gcs < 5 && (
-                                    <li className="text-slate-600 dark:text-ink-2">
-                                      GCS too low for most trial eligibility
-                                    </li>
-                                  )}
-                                </ul>
-                              </div>
-                            );
-                          })()}
-                        </div>
-                        <p className="text-xs text-cobalt-600 mt-2 italic dark:text-cobalt-300">
-                          These are quick prompts only. Full eligibility requires complete patient assessment.
-                        </p>
+                        <p className="text-sm text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                       </div>
                     )}
 
@@ -30722,72 +30428,31 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-nihss" style={{ order: getCalculatorOrder('nihss', 5) }} className="bg-crit-50 border border-crit-200 rounded-lg dark:bg-crit-950 dark:border-crit-800">
                       <summary className="cursor-pointer p-3 font-semibold text-crit-800 hover:bg-crit-100 rounded-lg flex items-center justify-between dark:text-crit-300 dark:hover:bg-crit-900">
                         <span>NIHSS Score</span>
-                        <span className="text-sm font-normal text-crit-600 dark:text-crit-300">Score: {nihssScore}</span>
+                        <span className="text-sm font-normal text-crit-600 dark:text-crit-300">Score: {isNIHSSComplete() ? nihssScore : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-between items-center mb-3">
-                          <span className="text-xl font-bold text-crit-600 dark:text-crit-300">Score: {nihssScore}/42</span>
-                          <button
-                            onClick={() => copyToClipboard(`NIHSS: ${nihssScore}`, 'NIHSS Score')}
-                            className="p-1.5 hover:bg-crit-100 rounded transition-colors dark:hover:bg-crit-900"
-                            aria-label="Copy NIHSS score to clipboard"
-                          >
-                            <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-crit-600 dark:text-crit-300"></i>
-                          </button>
+                          <span className="text-xl font-bold text-crit-600 dark:text-crit-300">Score: {isNIHSSComplete() ? nihssScore : 'Incomplete'}</span>
+                          {isNIHSSComplete() && (
+                            <button
+                              onClick={() => copyToClipboard(`NIHSS: ${nihssScore}`, 'NIHSS Score')}
+                              className="p-1.5 hover:bg-crit-100 rounded transition-colors dark:hover:bg-crit-900"
+                              aria-label="Copy NIHSS score to clipboard"
+                            >
+                              <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-crit-600 dark:text-crit-300"></i>
+                            </button>
+                          )}
                         </div>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3 text-xs">
-                          <div className={`p-2 rounded border text-center ${nihssScore <= 4 ? 'bg-ok-100 border-ok-300 font-bold dark:bg-ok-900 dark:border-ok-800' : 'bg-white border-slate-200 dark:bg-card dark:border-line'}`}>
-                            <p className="font-semibold">0-4</p><p>Minor</p>
-                          </div>
-                          <div className={`p-2 rounded border text-center ${nihssScore >= 5 && nihssScore <= 15 ? 'bg-warn-100 border-warn-300 font-bold dark:bg-warn-900 dark:border-warn-800' : 'bg-white border-slate-200 dark:bg-card dark:border-line'}`}>
-                            <p className="font-semibold">5-15</p><p>Moderate</p>
-                          </div>
-                          <div className={`p-2 rounded border text-center ${nihssScore >= 16 && nihssScore <= 20 ? 'bg-orange-100 border-orange-300 font-bold dark:bg-orange-900 dark:border-orange-800' : 'bg-white border-slate-200 dark:bg-card dark:border-line'}`}>
-                            <p className="font-semibold">16-20</p><p>Mod-Severe</p>
-                          </div>
-                          <div className={`p-2 rounded border text-center ${nihssScore >= 21 ? 'bg-crit-100 border-crit-300 font-bold dark:bg-crit-950 dark:border-crit-800' : 'bg-white border-slate-200 dark:bg-card dark:border-line'}`}>
-                            <p className="font-semibold">21-42</p><p>Severe</p>
-                          </div>
-                        </div>
+                        {!isNIHSSComplete() && <p className="mb-2 rounded border border-warn-200 bg-warn-50 p-2 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300"><strong>Incomplete:</strong> complete every NIHSS item in the Encounter tab before using or copying the score.</p>}
                         <p className="text-xs text-slate-600 mb-2 dark:text-mute">Use the NIHSS panel in the Encounter tab for full item-by-item scoring.</p>
-                        <div className="text-xs text-slate-600 space-y-1 dark:text-ink-2">
-                          <p><strong>Clinical significance:</strong></p>
-                          <p>NIHSS ≤3: Consider DAPT (CHANCE/POINT criteria)</p>
-                          <p>NIHSS ≥6: Likely LVO — consider EVT evaluation</p>
-                        </div>
+                        <p className="text-xs text-slate-600 dark:text-ink-2">The institutional acute-stroke algorithm requires NIHSS documentation but does not supply scoring definitions or interpretation.</p>
                         <details className="mt-3 bg-warn-50 border border-warn-200 rounded-lg dark:bg-warn-950 dark:border-warn-800">
                           <summary className="cursor-pointer p-2 text-xs font-semibold text-warn-800 hover:bg-warn-100 rounded-lg dark:text-warn-300 dark:hover:bg-warn-900">NIHSS Scoring Pitfalls</summary>
-                          <div className="p-2 text-xs text-slate-700 space-y-1 dark:text-ink-2">
-                            <p><strong>1a (LOC):</strong> Do NOT score sedation/intubation as decreased LOC. Score best response. If patient requires stimulation only because of intubation/sedation, score 0.</p>
-                            <p><strong>3 (Visual):</strong> Must use finger counting or visual stimulus, NOT visual threat. Test each eye&apos;s temporal and nasal field.</p>
-                            <p><strong>5/6 (Motor):</strong> &quot;Drift&quot; = limb falls before 10s (arms) or 5s (legs). Amputation/fusion = 0, not UN. Test arms with palms down.</p>
-                            <p><strong>7 (Ataxia):</strong> Test ONLY if there is no weakness obscuring assessment. If limb is plegic, score 0 (not UN). Ataxia must be out of proportion to weakness.</p>
-                            <p><strong>9 (Language):</strong> Requires testing naming, reading, AND description — comprehension alone is insufficient. Use standardized picture card.</p>
-                            <p><strong>11 (Extinction):</strong> Must test BILATERAL SIMULTANEOUS visual AND tactile stimulation, not just unilateral.</p>
-                            <p><strong>Posterior circulation bias:</strong> Scale heavily weighted toward anterior/left MCA. Devastating posterior strokes (diplopia, vertigo, ataxia, dysphagia) may score 0-3. NIHSS 0 does NOT exclude stroke.</p>
-                            <p><strong>General rule:</strong> Score WORST performance during exam, not best. Do not coach the patient.</p>
-                          </div>
+                          <div className="p-2 text-xs text-slate-700 dark:text-ink-2"><p>{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p></div>
                         </details>
                         <details className="mt-3 bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-2 text-xs font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg dark:text-cobalt-300 dark:hover:bg-cobalt-800">NIHSS Exam Technique Guide (for telestroke coaching)</summary>
-                          <div className="p-2 text-xs text-slate-700 space-y-2 dark:text-ink-2">
-                            <p className="text-cobalt-700 font-semibold mb-1 dark:text-cobalt-300">Use this to coach spoke ED staff through each NIHSS item over video/phone.</p>
-                            <div className="space-y-1.5">
-                              <p><strong>1a. LOC:</strong> Observe alertness. If not alert, apply escalating stimuli: voice → loud voice → nail-bed pressure. Score response to each level. Do not attribute decreased LOC to sedation or intubation.</p>
-                              <p><strong>1b. LOC Questions:</strong> Ask: &quot;What month is it?&quot; and &quot;What is your age?&quot; Patient must answer both correctly (no partial credit). Intubated/dysarthric patients who approximate answers score 1. Do NOT accept pointing or gestures.</p>
-                              <p><strong>1c. LOC Commands:</strong> &quot;Open and close your eyes&quot; then &quot;Grip and release your non-paretic hand.&quot; If patient cannot use hands, substitute another one-step command. Score only first attempt. Demonstrate if there is a language barrier.</p>
-                              <p><strong>2. Best Gaze:</strong> Test horizontal eye movements only. Ask patient to look left and right, or track your finger. If patient cannot follow commands, use oculocephalic reflex (doll&apos;s eyes). Score only conjugate horizontal gaze deviation or gaze palsy.</p>
-                              <p><strong>3. Visual Fields:</strong> Test by finger counting or visual stimulus in all four quadrants. Patient fixates on your nose. Present 1-3 fingers in upper and lower temporal and nasal fields of each eye separately, or simultaneously if bilateral assessment needed. Do NOT use visual threat (finger poke) — it tests a different pathway. If one eye blind, test the other.</p>
-                              <p><strong>4. Facial Palsy:</strong> Ask patient to show teeth (or smile) AND raise eyebrows. Compare both sides. If patient cannot follow commands: observe symmetry of grimace to nail-bed pressure. Central palsy = lower face only; peripheral = upper and lower face.</p>
-                              <p><strong>5a/5b. Motor Arms:</strong> Position: arms extended 90° if sitting, 45° if supine, palms DOWN. Count aloud to 10. Score each arm separately. &quot;Drift&quot; = any downward movement before 10 seconds. If limb cannot be positioned against gravity due to pain/contracture, score best effort. Amputation/fusion = 0.</p>
-                              <p><strong>6a/6b. Motor Legs:</strong> Position: supine, each leg raised to 30° from bed. Count aloud to 5. Score each leg separately. &quot;Drift&quot; = leg falls to bed before 5 seconds. Test one leg at a time.</p>
-                              <p><strong>7. Limb Ataxia:</strong> Finger-nose-finger test (arms) and heel-shin test (legs). Patient must reach YOUR finger, not their own nose repeatedly. Test must be meaningful — do NOT test if limb is plegic (score 0) or if weakness obscures assessment. Ataxia must be OUT OF PROPORTION to weakness. Eyes open during testing.</p>
-                              <p><strong>8. Sensory:</strong> Use pinprick (broken tongue depressor or pin). Test face, arm, trunk, and leg bilaterally. Ask &quot;Does this feel sharp? Does it feel the same on both sides?&quot; If patient cannot report, score grimace asymmetry to noxious stimulus. Only stroke-related loss counts — pre-existing neuropathy = 0.</p>
-                              <p><strong>9. Best Language:</strong> Three required components: (1) Show cookie theft picture — patient describes the scene; (2) Naming card — patient names objects (feather, hammock, cactus); (3) Reading card — patient reads sentences aloud. Comprehension alone is NOT sufficient. If no cards available: ask patient to describe what happened, name objects in the room, read text on a clipboard. Mute/intubated who cannot write = score 3.</p>
-                              <p><strong>10. Dysarthria:</strong> Ask patient to read or repeat: &quot;You know how.&quot; &quot;Down to earth.&quot; &quot;I got home from work.&quot; &quot;Near the table in the dining room.&quot; &quot;They heard him speak on the radio last night.&quot; Score clarity. Intubated/mechanical barrier = UN. If patient has severe aphasia, score dysarthria from spontaneous speech.</p>
-                              <p><strong>11. Extinction/Inattention:</strong> Two simultaneous tests required: (1) VISUAL: Stand in front of patient, raise one finger on each side in peripheral fields simultaneously — ask &quot;Which side did you see?&quot; (2) TACTILE: With patient&apos;s eyes closed, touch both hands simultaneously — ask &quot;Where did I touch you?&quot; Both must be tested. Score only if one-sided extinction (perceives single stimuli but ignores one side during bilateral stimulation).</p>
-                            </div>
-                          </div>
+                          <div className="p-2 text-xs text-slate-700 dark:text-ink-2"><p>{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p></div>
                         </details>
                       </div>
                     </details>
@@ -30798,28 +30463,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <summary className="cursor-pointer font-semibold text-slate-700 hover:text-slate-900 dark:text-ink-2 dark:hover:text-ink">
                           COR/LOE Reference Legend
                         </summary>
-                        <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-3">
-                          <div>
-                            <p className="font-bold text-slate-700 mb-1 dark:text-ink-2">Class of Recommendation (COR)</p>
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-ok-600 text-white font-semibold text-xs">Class I</span><span>Strong benefit, should be performed</span></div>
-                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-ok-100 text-ok-800 font-semibold text-xs border border-ok-300 dark:bg-ok-900 dark:text-ok-300 dark:border-ok-800">Class IIa</span><span>Reasonable, benefit likely outweighs risk</span></div>
-                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-warn-100 text-warn-800 font-semibold text-xs border border-warn-300 dark:bg-warn-900 dark:text-warn-300 dark:border-warn-800">Class IIb</span><span>May be considered, benefit uncertain</span></div>
-                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-crit-100 text-crit-800 font-semibold text-xs border border-crit-300 dark:bg-crit-950 dark:text-crit-300 dark:border-crit-800">Class III: No Benefit</span><span>Not useful</span></div>
-                              <div className="flex items-center gap-2"><span className="px-2 py-0.5 rounded-full bg-crit-600 text-white font-semibold text-xs">Class III: Harm</span><span>Harmful, should NOT be performed</span></div>
-                            </div>
-                          </div>
-                          <div>
-                            <p className="font-bold text-slate-700 mb-1 dark:text-ink-2">Level of Evidence (LOE)</p>
-                            <div className="space-y-1">
-                              <p><strong>A:</strong> Multiple RCTs or meta-analyses</p>
-                              <p><strong>B-R:</strong> Randomized, moderate-quality evidence</p>
-                              <p><strong>B-NR:</strong> Non-randomized, well-designed studies</p>
-                              <p><strong>C-LD:</strong> Limited data, observational/registries</p>
-                              <p><strong>C-EO:</strong> Expert opinion/consensus</p>
-                            </div>
-                          </div>
-                        </div>
+                        <div className="mt-2"><p>{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p></div>
                       </details>
                     </div>
 
@@ -30827,10 +30471,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-mod-fisher" style={{ order: getCalculatorOrder('mod-fisher', 85) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                       <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                         <span>Modified Fisher Scale</span>
-                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Vasospasm Risk</span>
                       </summary>
                       <div className="p-4">
-                        <p className="text-xs text-slate-600 dark:text-ink-2">No institutional protocol document is on file for vasospasm risk grading. See Guidelines &amp; References for the current society guidance.</p>
+                        <p className="text-xs text-slate-600 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                       </div>
                     </details>
 
@@ -30846,14 +30489,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <span className="text-xl font-bold text-slate-600 dark:text-ink-2" aria-live="polite">Score: {calculateGCS(gcsItems) === null ? 'Incomplete' : calculateGCS(gcsItems)}</span>
                           <div className="text-xs text-slate-600 dark:text-mute">Range: 3-15</div>
                         </div>
-                        <button
-                          onClick={() => copyToClipboard(`GCS: ${calculateGCS(gcsItems)}`, 'GCS Score')}
-                          className="p-1.5 hover:bg-slate-100 rounded transition-colors dark:hover:bg-paper-2"
-                          aria-label="Copy GCS score to clipboard"
-                          title="Copy to clipboard"
-                        >
-                          <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-slate-600 dark:text-ink-2"></i>
-                        </button>
+                        {calculateGCS(gcsItems) !== null && (
+                          <button
+                            onClick={() => copyToClipboard(`GCS: ${calculateGCS(gcsItems)}`, 'GCS Score')}
+                            className="p-1.5 hover:bg-slate-100 rounded transition-colors dark:hover:bg-paper-2"
+                            aria-label="Copy GCS score to clipboard"
+                            title="Copy to clipboard"
+                          >
+                            <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-slate-600 dark:text-ink-2"></i>
+                          </button>
+                        )}
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
@@ -30895,11 +30540,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         const gcs = calculateGCS(gcsItems);
                         if (gcs === null) return React.createElement('div', { className: 'mt-3 border rounded-lg p-2 text-xs bg-warn-50 border-warn-200 text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300' }, React.createElement('span', { className: 'font-semibold' }, 'Incomplete: '), 'All three GCS components (Eye, Verbal, Motor) are required for a valid score.');
                         if (!gcs) return null;
-                        const label = gcs <= 8 ? 'Severe' : gcs <= 12 ? 'Moderate' : 'Mild';
-                        const tone = gcs <= 8 ? 'bg-crit-50 border-crit-200 text-crit-800 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300' : gcs <= 12 ? 'bg-warn-50 border-warn-200 text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300' : 'bg-ok-50 border-ok-200 text-ok-800 dark:bg-ok-950 dark:border-ok-800 dark:text-ok-300';
                         return (
-                          <div className={`mt-3 border rounded-lg p-2 text-xs ${tone}`}>
-                            <span className="font-semibold">Interpretation:</span> {label === 'Severe' ? 'SEVERE' : label === 'Moderate' ? 'MODERATE' : 'Mild'} brain injury (GCS {gcs}){gcs <= 8 ? ' — consider intubation for airway protection' : ''}
+                          <div className="mt-3 border rounded-lg p-2 text-xs bg-slate-50 border-line text-slate-700 dark:bg-paper-2 dark:text-ink-2">
+                            <span className="font-semibold">GCS {gcs}.</span> {NO_INSTITUTIONAL_PROTOCOL_NOTICE}
                           </div>
                         );
                       })()}
@@ -30910,80 +30553,80 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-ich-score" style={{ order: getCalculatorOrder('ich-score', 20) }} className="bg-crit-50 border border-crit-200 rounded-lg dark:bg-crit-950 dark:border-crit-800">
                       <summary className="cursor-pointer p-3 font-semibold text-crit-800 hover:bg-crit-100 rounded-lg flex items-center justify-between dark:text-crit-300 dark:hover:bg-crit-900">
                         <span>ICH Score</span>
-                        <span className="text-sm font-normal text-crit-600 dark:text-crit-300">Score: {calculateICHScore(ichScoreItems)}</span>
+                        <span className="text-sm font-normal text-crit-600 dark:text-crit-300">Score: {calculateICHScore(ichScoreItems) === null ? 'Incomplete' : calculateICHScore(ichScoreItems)}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
-                          <span className="text-xl font-bold text-crit-600 dark:text-crit-300">Score: {calculateICHScore(ichScoreItems)}</span>
-                        <button
-                          onClick={() => copyToClipboard(`ICH Score: ${calculateICHScore(ichScoreItems)}`, 'ICH Score')}
-                          className="p-1.5 hover:bg-crit-100 rounded transition-colors dark:hover:bg-crit-900"
-                          aria-label="Copy ICH score to clipboard"
-                          title="Copy to clipboard"
-                        >
-                          <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-crit-600 dark:text-crit-300"></i>
-                        </button>
+                          <span className="text-xl font-bold text-crit-600 dark:text-crit-300">Score: {calculateICHScore(ichScoreItems) === null ? 'Incomplete' : calculateICHScore(ichScoreItems)}</span>
+                        {calculateICHScore(ichScoreItems) !== null && (
+                          <button
+                            onClick={() => copyToClipboard(`ICH Score: ${calculateICHScore(ichScoreItems)}`, 'ICH Score')}
+                            className="p-1.5 hover:bg-crit-100 rounded transition-colors dark:hover:bg-crit-900"
+                            aria-label="Copy ICH score to clipboard"
+                            title="Copy to clipboard"
+                          >
+                            <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-crit-600 dark:text-crit-300"></i>
+                          </button>
+                        )}
                       </div>
 
                       {(() => {
                         const ichScore = calculateICHScore(ichScoreItems);
-                        const mortalityData = {0: '0%', 1: '13%', 2: '26%', 3: '72%', 4: '97%', 5: '100%', 6: '100%'};
-                        const mortality = mortalityData[Math.min(ichScore, 6)] || 'N/A';
-                        const label = ichScore >= 4 ? 'High mortality risk' : ichScore >= 2 ? 'Moderate risk' : 'Lower risk';
-                        const tone = ichScore >= 4 ? 'bg-crit-50 border-crit-200 text-crit-800 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300' : ichScore >= 2 ? 'bg-warn-50 border-warn-200 text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300' : 'bg-ok-50 border-ok-200 text-ok-800 dark:bg-ok-950 dark:border-ok-800 dark:text-ok-300';
+                        const cohortMortality = {0: '0.9%', 1: '0.7%', 2: '5.3%', 3: '15.3%', 4: '36.8%', 5: '60.0%'};
+                        if (ichScore === null) {
+                          return (
+                            <div className="mt-2 rounded-lg border border-warn-200 bg-warn-50 p-2 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300" aria-live="polite">
+                              <span className="font-semibold">Incomplete:</span> select a GCS tier and confirm that the age, volume, IVH, and location criteria were reviewed before using or copying the ICH Score.
+                            </div>
+                          );
+                        }
+                        const mortality = cohortMortality[ichScore];
                         return (
-                          <div className={`mt-2 border rounded-lg p-2 text-xs ${tone}`} aria-live="polite" aria-atomic="true">
-                            <span className="font-semibold">Interpretation:</span> {label} (ICH Score {ichScore})
-                            <span className="ml-2 font-semibold">30-day mortality: {mortality}</span>
-                            <p className="mt-1 text-slate-600 dark:text-mute">Hemphill et al., Stroke 2001; validated in multiple cohorts</p>
+                          <div className="mt-2 rounded-lg border border-line bg-white p-2 text-xs dark:bg-card" aria-live="polite" aria-atomic="true">
+                            <span className="font-semibold">ICH Score {ichScore}.</span>{' '}
+                            {mortality
+                              ? <>Comfort-care-excluded cohort (2005-2008) mortality: <span className="font-semibold">{mortality}</span>.</>
+                              : 'The institutional cohort table supplies no mortality value for score 6.'}
                           </div>
                         );
                       })()}
 
-                      {/* Standard-vs-cohort mortality comparison — teaches the self-fulfilling-prophecy effect of early care limitation */}
+                      {/* Institutional pocket-card cohort table */}
                       {(() => {
                         const ichScore = calculateICHScore(ichScoreItems);
                         const rows = [
-                          { s: 0, std: '0%', cohort: '0.9%' },
-                          { s: 1, std: '13%', cohort: '0.7%' },
-                          { s: 2, std: '26%', cohort: '5.3%' },
-                          { s: 3, std: '72%', cohort: '15.3%' },
-                          { s: 4, std: '97%', cohort: '36.8%' },
-                          { s: 5, std: '100%', cohort: '60.0%' },
-                          { s: 6, std: '100%', cohort: '100% (predicted)' },
+                          { s: 0, mortality: '0.9%' },
+                          { s: 1, mortality: '0.7%' },
+                          { s: 2, mortality: '5.3%' },
+                          { s: 3, mortality: '15.3%' },
+                          { s: 4, mortality: '36.8%' },
+                          { s: 5, mortality: '60.0%' },
                         ];
                         return (
                           <details className="mt-3 bg-card border border-line rounded-lg text-xs">
                             <summary className="cursor-pointer px-3 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg dark:text-ink-2 dark:hover:bg-paper-2">
-                              Standard vs comfort-care-excluded cohort — teaching comparison
+                              Comfort-care-excluded cohort (2005-2008)
                             </summary>
                             <div className="px-3 pb-3">
-                              <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: standard versus comfort-care-excluded cohort comparison">
+                              <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: comfort-care-excluded cohort mortality by ICH Score">
                                 <table className="w-full border-collapse text-xs">
                                   <thead>
                                     <tr className="text-left text-slate-600 border-b border-line dark:text-ink-2">
                                       <th scope="col" className="py-1 pr-2 font-semibold">ICH Score</th>
-                                      <th scope="col" className="py-1 px-2 font-semibold">Standard (Hemphill)</th>
-                                      <th scope="col" className="py-1 pl-2 font-semibold">Comfort-care-excluded cohort</th>
+                                      <th scope="col" className="py-1 pl-2 font-semibold">Mortality</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     {rows.map((r) => (
-                                      <tr key={r.s} className={`border-b border-line/60 ${r.s === Math.min(ichScore, 6) ? 'bg-cobalt-50 font-semibold dark:bg-cobalt-900' : ''}`}>
+                                      <tr key={r.s} className={`border-b border-line/60 ${r.s === ichScore ? 'bg-cobalt-50 font-semibold dark:bg-cobalt-900' : ''}`}>
                                         <td className="py-1 pr-2 tabular-nums">{r.s}</td>
-                                        <td className="py-1 px-2 tabular-nums text-crit-700 dark:text-crit-300">{r.std}</td>
-                                        <td className="py-1 pl-2 tabular-nums text-slate-700 dark:text-ink-2">{r.cohort}</td>
+                                        <td className="py-1 pl-2 tabular-nums text-slate-700 dark:text-ink-2">{r.mortality}</td>
                                       </tr>
                                     ))}
                                   </tbody>
                                 </table>
                               </div>
-                              <p className="mt-2 text-slate-600 dark:text-ink-2">
-                                <span className="font-semibold text-warn-700 dark:text-warn-300">Illustrative comfort-care-excluded cohort (unvalidated)</span> — de-identified, provenance-unverified figures shown only to teach the <span className="italic">self-fulfilling-prophecy effect of early care limitation</span>. NOT validated or institutional data; do not use for individual prognostication. When aggressive care is sustained, observed mortality falls well below the Hemphill estimates that were derived from cohorts with high rates of early DNR/withdrawal.
-                              </p>
-                              <p className="mt-1 text-slate-600 dark:text-mute">
-                                Standard column: Hemphill et al., Stroke 2001.
-                              </p>
+                              <p className="mt-2 text-slate-600 dark:text-ink-2">Values reproduced from the institutional pocket card. The table provides no score-6 value and no individual treatment rule.</p>
                             </div>
                           </details>
                         );
@@ -30992,7 +30635,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2 mt-2">
                         <div className="space-y-2">
                           <p className="font-semibold text-sm mb-1">Glasgow Coma Scale:</p>
-                          {[{v:'gcs34',l:'GCS 3-4',p:'+2 points'},{v:'gcs512',l:'GCS 5-12',p:'+1 point'},{v:'',l:'GCS 13-15',p:'0 points'}].map(o => (
+                          {[{v:'gcs34',l:'GCS 3-4',p:'+2 points'},{v:'gcs512',l:'GCS 5-12',p:'+1 point'},{v:'gcs1315',l:'GCS 13-15',p:'0 points'}].map(o => (
                             <button key={o.v} type="button" role="radio" aria-checked={ichScoreItems.gcs === o.v} aria-label={`Glasgow Coma Scale: ${o.l} (${o.p})`}
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors ${ichScoreItems.gcs === o.v ? 'bg-crit-700 text-white border-crit-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100 dark:bg-card dark:border-line dark:hover:bg-paper-2 dark:active:bg-paper-2'}`}
                               onClick={() => setIchScoreItems(prev => ({...prev, gcs: o.v}))} onKeyDown={handleRadioKeyDown}
@@ -31006,7 +30649,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-crit-600 dark:text-crit-300"
                               checked={ichScoreItems.age80}
-                              onChange={(e) => setIchScoreItems(prev => ({...prev, age80: e.target.checked}))}
+                              onChange={(e) => setIchScoreItems(prev => ({...prev, age80: e.target.checked, criteriaReviewed: false}))}
                             />
                             <span className="text-sm">Age ≥80 (+1)</span>
                           </label>
@@ -31100,14 +30743,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <span className="text-xs font-medium text-slate-600 dark:text-ink-2">Calculated Volume</span>
                                 <div className="flex items-baseline gap-1">
                                   <span className="text-2xl font-bold text-cobalt-700 dark:text-cobalt-300">
-                                    {(() => {
-                                      const _a = parseFloat(ichVolumeParams.a), _b = parseFloat(ichVolumeParams.b);
-                                      const _t = parseFloat(ichVolumeParams.thicknessMm), _n = parseFloat(ichVolumeParams.numSlices);
-                                      if ([_a, _b, _t, _n].some(v => Number.isNaN(v) || v <= 0)) return '0.0';
-                                      return ((_a * _b * (_t / 10 * _n)) / 2).toFixed(1);
-                                    })()}
+                                    {ichVolumeEstimate ? ichVolumeEstimate.display : 'Incomplete'}
                                   </span>
-                                  <span className="text-sm font-medium text-cobalt-700 dark:text-cobalt-300">cc</span>
+                                  {ichVolumeEstimate && <span className="text-sm font-medium text-cobalt-700 dark:text-cobalt-300">cc</span>}
                                 </div>
                             </div>
                           </div>
@@ -31125,7 +30763,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 type="checkbox" 
                                 className="sr-only"
                                 checked={ichScoreItems.volume30}
-                                onChange={(e) => setIchScoreItems(prev => ({...prev, volume30: e.target.checked}))}
+                                onChange={(e) => setIchScoreItems(prev => ({...prev, volume30: e.target.checked, criteriaReviewed: false}))}
                               />
                               <span className={`text-sm ${ichScoreItems.volume30 ? 'font-medium text-slate-900 dark:text-ink' : 'text-slate-600 dark:text-ink-2'}`}>ICH volume ≥30 cc (+1)</span>
                             </label>
@@ -31142,7 +30780,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 type="checkbox" 
                                 className="sr-only"
                                 checked={ichScoreItems.ivh}
-                                onChange={(e) => setIchScoreItems(prev => ({...prev, ivh: e.target.checked}))}
+                                onChange={(e) => setIchScoreItems(prev => ({...prev, ivh: e.target.checked, criteriaReviewed: false}))}
                               />
                               <span className={`text-sm ${ichScoreItems.ivh ? 'font-medium text-slate-900 dark:text-ink' : 'text-slate-600 dark:text-ink-2'}`}>Intraventricular hemorrhage (+1)</span>
                             </label>
@@ -31159,12 +30797,23 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 type="checkbox" 
                                 className="sr-only"
                                 checked={ichScoreItems.infratentorial}
-                                onChange={(e) => setIchScoreItems(prev => ({...prev, infratentorial: e.target.checked}))}
+                                onChange={(e) => setIchScoreItems(prev => ({...prev, infratentorial: e.target.checked, criteriaReviewed: false}))}
                               />
                               <span className={`text-sm ${ichScoreItems.infratentorial ? 'font-medium text-slate-900 dark:text-ink' : 'text-slate-600 dark:text-ink-2'}`}>Infratentorial origin (+1)</span>
                             </label>
                           </div>
                         </div>
+                        <label className="mt-3 flex items-start gap-2 rounded-lg border border-crit-200 bg-white p-3 text-sm dark:border-crit-800 dark:bg-card">
+                          <input
+                            type="checkbox"
+                            className="mt-0.5 text-crit-600 dark:text-crit-300"
+                            checked={ichScoreItems.criteriaReviewed === true}
+                            onChange={(e) => setIchScoreItems(prev => ({ ...prev, criteriaReviewed: e.target.checked }))}
+                          />
+                          <span>
+                            <span className="font-semibold">Required review:</span> I assessed age, hematoma volume, intraventricular hemorrhage, and infratentorial origin. Unchecked criteria are absent.
+                          </span>
+                        </label>
                       </div>
                       </div>
                     </details>
@@ -31172,100 +30821,55 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* FUNC Score */}
                     <details id="calc-func" style={{ order: getCalculatorOrder('func', 22) }} className="bg-rose-50 border border-rose-200 rounded-lg dark:bg-rose-950 dark:border-rose-800">
                       <summary className="cursor-pointer p-3 font-semibold text-rose-800 hover:bg-rose-100 rounded-lg flex items-center justify-between dark:text-rose-300">
-                        <span>FUNC Score (ICH Functional Outcome)</span>
-                        <span className="text-sm font-normal text-rose-700 dark:text-rose-300">Prognosis</span>
+                        <span>FUNC Score</span>
+                        <span className="text-sm font-normal text-rose-700 dark:text-rose-300">Inputs retained</span>
                       </summary>
-                      <div className="p-4">
-                        {(() => {
-                          const funcItems = {
-                            volume: ichVolumeParams.a && ichVolumeParams.b && ichVolumeParams.thicknessMm && ichVolumeParams.numSlices
-                              ? (() => {
-                                  const cCm = parseFloat(ichVolumeParams.thicknessMm) / 10 * parseFloat(ichVolumeParams.numSlices);
-                                  const vol = (parseFloat(ichVolumeParams.a) * parseFloat(ichVolumeParams.b) * cCm) / 2;
-                                  return isNaN(vol) || vol <= 0 ? null : vol < 30 ? 4 : vol < 60 ? 2 : vol < 100 ? 1 : 0;
-                                })()
-                              : null,
-                            age: telestrokeNote.age ? (parseInt(telestrokeNote.age, 10) < 70 ? 2 : parseInt(telestrokeNote.age, 10) <= 79 ? 1 : 0) : null,
-                            location: ichScoreItems.infratentorial ? 0 : ichScoreItems.lobar ? 2 : 1,
-                            gcs: ichScoreItems.gcs === 'gcs34' ? 0 : ichScoreItems.gcs === 'gcs512' ? 1 : 2,
-                            cognitive: ichScoreItems.preCogImpairment ? 0 : 1,
-                          };
-                          const known = Object.values(funcItems).filter(v => v !== null);
-                          const score = known.reduce((a, b) => a + b, 0);
-                          const hasAll = !Object.values(funcItems).includes(null);
-                          const funcOutcome = score >= 8 ? {label: 'Good (≥80% chance of functional independence)', color: 'bg-ok-50 border-ok-200 text-ok-800 dark:bg-ok-950 dark:border-ok-800 dark:text-ok-300'}
-                            : score >= 5 ? {label: 'Moderate (50-80% chance)', color: 'bg-warn-50 border-warn-200 text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300'}
-                            : {label: 'Poor (<50% chance of functional independence)', color: 'bg-crit-50 border-crit-200 text-crit-800 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300'};
-                          return (
-                            <div className="space-y-3">
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                <div className="bg-white border rounded p-2 dark:bg-card">
-                                  <p className="font-semibold text-rose-700 dark:text-rose-300">ICH Volume</p>
-                                  <p className="text-xs text-slate-600 dark:text-ink-2">&lt;30 mL: +4 | 30-59 mL: +2 | ≥60 mL: +0</p>
-                                  <p className="text-xs mt-1 font-medium">{funcItems.volume !== null ? `Current: +${funcItems.volume} (from ABC/2)` : 'Enter ICH volume above'}</p>
-                                </div>
-                                <div className="bg-white border rounded p-2 dark:bg-card">
-                                  <p className="font-semibold text-rose-700 dark:text-rose-300">Age</p>
-                                  <p className="text-xs text-slate-600 dark:text-ink-2">&lt;70: +2 | 70-79: +1 | ≥80: +0</p>
-                                  <p className="text-xs mt-1 font-medium">{funcItems.age !== null ? `Current: +${funcItems.age} (age ${telestrokeNote.age})` : 'Enter age in encounter'}</p>
-                                </div>
-                                <div className="bg-white border rounded p-2 dark:bg-card">
-                                  <p className="font-semibold text-rose-700 dark:text-rose-300">ICH Location</p>
-                                  <p className="text-xs text-slate-600 dark:text-ink-2">Lobar: +2 | Deep: +1 | Infratentorial: +0</p>
-                                  <div className="flex gap-2 mt-1">
-                                    {[
-                                      { val: 'lobar', label: 'Lobar', pts: 2 },
-                                      { val: 'deep', label: 'Deep', pts: 1 },
-                                      { val: 'infratentorial', label: 'Infratentorial', pts: 0 }
-                                    ].map(loc => (
-                                      <label key={loc.val} className={`flex items-center gap-1 text-xs px-2 py-1 rounded cursor-pointer border ${
-                                        (loc.val === 'infratentorial' && ichScoreItems.infratentorial) ||
-                                        (loc.val === 'lobar' && !ichScoreItems.infratentorial && ichScoreItems.lobar) ||
-                                        (loc.val === 'deep' && !ichScoreItems.infratentorial && !ichScoreItems.lobar)
-                                          ? 'bg-rose-100 border-rose-400 font-semibold dark:bg-rose-900' : 'bg-white border-slate-200 dark:bg-card dark:border-line'
-                                      }`}>
-                                        <input type="radio" name="func-location" className="sr-only"
-                                          checked={
-                                            (loc.val === 'infratentorial' && ichScoreItems.infratentorial) ||
-                                            (loc.val === 'lobar' && !ichScoreItems.infratentorial && ichScoreItems.lobar) ||
-                                            (loc.val === 'deep' && !ichScoreItems.infratentorial && !ichScoreItems.lobar)
-                                          }
-                                          onChange={() => setIchScoreItems(prev => ({...prev,
-                                            infratentorial: loc.val === 'infratentorial',
-                                            lobar: loc.val === 'lobar'
-                                          }))}
-                                        />
-                                        {loc.label} (+{loc.pts})
-                                      </label>
-                                    ))}
-                                  </div>
-                                </div>
-                                <div className="bg-white border rounded p-2 dark:bg-card">
-                                  <p className="font-semibold text-rose-700 dark:text-rose-300">GCS Score</p>
-                                  <p className="text-xs text-slate-600 dark:text-ink-2">≥9: +2 | 5-8: +1 | 3-4: +0</p>
-                                  <p className="text-xs mt-1 font-medium">Current: +{funcItems.gcs}</p>
-                                </div>
-                                <div className="bg-white border rounded p-2 dark:bg-card">
-                                  <p className="font-semibold text-rose-700 dark:text-rose-300">Pre-ICH Cognitive Status</p>
-                                  <p className="text-xs text-slate-600 dark:text-ink-2">No impairment: +1 | Pre-ICH dementia: +0</p>
-                                  <label className="flex items-center gap-2 mt-1 text-xs cursor-pointer">
-                                    <input type="checkbox" checked={ichScoreItems.preCogImpairment || false}
-                                      onChange={(e) => setIchScoreItems(prev => ({...prev, preCogImpairment: e.target.checked}))}
-                                      className="w-4 h-4 text-rose-600 dark:text-rose-300" />
-                                    Pre-ICH cognitive impairment
-                                  </label>
-                                  <p className="text-xs mt-1 font-medium">Current: +{funcItems.cognitive}</p>
-                                </div>
-                              </div>
-                              <div className={`border rounded-lg p-3 ${funcOutcome.color}`}>
-                                <p className="text-sm font-bold">FUNC Score: {score}/11 {!hasAll && '(partial — enter missing values)'}</p>
-                              </div>
-                              <div className="bg-warn-50 border border-warn-200 rounded p-2 text-xs text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
-                                <strong>Important:</strong> FUNC Score should NOT be used alone for withdrawal-of-care decisions. Early aggressive care limitations (self-fulfilling prophecy) contribute to poor outcomes.
-                              </div>
+                      <div className="p-4 space-y-3">
+                        <p className="text-xs text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                          <div className="bg-white border rounded p-2 dark:bg-card">
+                            <p className="font-semibold text-rose-700 dark:text-rose-300">ICH Volume</p>
+                            <p className="text-xs text-slate-600 dark:text-ink-2">Enter ICH volume in the source-backed ABC/2 calculator above.</p>
+                          </div>
+                          <div className="bg-white border rounded p-2 dark:bg-card">
+                            <p className="font-semibold text-rose-700 dark:text-rose-300">Age</p>
+                            <p className="text-xs text-slate-600 dark:text-ink-2">{telestrokeNote.age ? `Current encounter age: ${telestrokeNote.age}` : 'Enter age in the encounter.'}</p>
+                          </div>
+                          <div className="bg-white border rounded p-2 dark:bg-card">
+                            <p className="font-semibold text-rose-700 dark:text-rose-300">ICH Location</p>
+                            <div className="flex flex-wrap gap-2 mt-1">
+                              {[
+                                { val: 'lobar', label: 'Lobar' },
+                                { val: 'deep', label: 'Deep' },
+                                { val: 'infratentorial', label: 'Infratentorial' }
+                              ].map(loc => (
+                                <label key={loc.val} className={`flex items-center gap-1 text-xs px-2 py-1 rounded cursor-pointer border ${
+                                  funcItems.location === loc.val
+                                    ? 'bg-rose-100 border-rose-400 font-semibold dark:bg-rose-900' : 'bg-white border-slate-200 dark:bg-card dark:border-line'
+                                }`}>
+                                  <input type="radio" name="func-location" className="sr-only"
+                                    checked={funcItems.location === loc.val}
+                                    onChange={() => setFuncItems(prev => ({ ...prev, location: loc.val }))}
+                                  />
+                                  {loc.label}
+                                </label>
+                              ))}
                             </div>
-                          );
-                        })()}
+                          </div>
+                          <div className="bg-white border rounded p-2 dark:bg-card">
+                            <p className="font-semibold text-rose-700 dark:text-rose-300">GCS Score</p>
+                            <p className="text-xs text-slate-600 dark:text-ink-2">Use the source-backed GCS controls above.</p>
+                          </div>
+                          <div className="bg-white border rounded p-2 dark:bg-card">
+                            <p className="font-semibold text-rose-700 dark:text-rose-300">Pre-ICH Cognitive Status</p>
+                            <label className="flex items-center gap-2 mt-1 text-xs cursor-pointer">
+                              <input type="checkbox" checked={funcItems.preCogImpairment}
+                                onChange={(e) => setFuncItems(prev => ({ ...prev, preCogImpairment: e.target.checked }))}
+                                className="w-4 h-4 text-rose-600 dark:text-rose-300" />
+                              Pre-ICH cognitive impairment
+                            </label>
+                          </div>
+                        </div>
                       </div>
                     </details>
 
@@ -31297,12 +30901,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                       <div className="space-y-2">
                         {[
-                          {v:'0',title:'0 - No symptoms',desc:'Completely recovered; no residual symptoms'},
-                          {v:'1',title:'1 - No significant disability',desc:'Able to carry out all usual duties and activities despite some symptoms'},
-                          {v:'2',title:'2 - Slight disability',desc:'Unable to carry out all previous activities but able to look after own affairs without assistance'},
-                          {v:'3',title:'3 - Moderate disability',desc:'Requires some help, but able to walk without assistance'},
-                          {v:'4',title:'4 - Moderately severe disability',desc:'Unable to walk without assistance and unable to attend to own bodily needs without assistance'},
-                          {v:'5',title:'5 - Severe disability',desc:'Bedridden, incontinent, and requires constant nursing care and attention'},
+                          {v:'0',title:'0 - No symptoms',desc:''},
+                          {v:'1',title:'1 - No significant disability',desc:''},
+                          {v:'2',title:'2 - Slight disability; independent',desc:''},
+                          {v:'3',title:'3 - Moderate disability; walks unaided',desc:''},
+                          {v:'4',title:'4 - Moderately severe disability; needs assistance',desc:''},
+                          {v:'5',title:'5 - Severe disability; bedridden',desc:''},
                           {v:'6',title:'6 - Dead',desc:''}
                         ].map(o => (
                           <button key={o.v} type="button" role="radio" aria-checked={mrsScore === o.v} aria-label={`Modified Rankin Scale: ${o.title}${o.desc ? ', ' + o.desc : ''}`}
@@ -31318,15 +30922,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       {mrsScore && (
                         <div className="mt-4 p-3 bg-cobalt-50 rounded-lg border border-cobalt-200 dark:bg-cobalt-900 dark:border-cobalt-700">
                           <p className="text-sm font-semibold text-cobalt-900 mb-1 dark:text-cobalt-300">Clinical Interpretation:</p>
-                          <p className="text-sm text-cobalt-800 dark:text-cobalt-300">
-                            {mrsScore === '0' && 'Excellent outcome - Complete recovery with no residual deficits'}
-                            {mrsScore === '1' && 'Good outcome - Minor symptoms that do not interfere with lifestyle'}
-                            {mrsScore === '2' && 'Fair outcome - Some restriction in lifestyle but retains capacity for independent living'}
-                            {mrsScore === '3' && 'Moderate outcome - Significant lifestyle restriction; requires some assistance'}
-                            {mrsScore === '4' && 'Moderately severe outcome - Clearly dependent; requires assistance with basic activities'}
-                            {mrsScore === '5' && 'Severe outcome - Totally dependent; requires constant care'}
-                            {mrsScore === '6' && 'Death'}
-                          </p>
+                          <p className="text-sm text-cobalt-800 dark:text-cobalt-300">The institutional EVT flowchart supplies the selected category definition above; it does not add an outcome label.</p>
                         </div>
                       )}
                       </div>
@@ -31336,31 +30932,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-abcd2" style={{ order: getCalculatorOrder('abcd2', 40) }} className="bg-orange-50 border border-orange-200 rounded-lg dark:bg-orange-950 dark:border-orange-800">
                       <summary className="cursor-pointer p-3 font-semibold text-orange-800 hover:bg-orange-100 rounded-lg flex items-center justify-between dark:text-orange-300">
                         <span>ABCD² Score</span>
-                        <span className="text-sm font-normal text-orange-700 dark:text-orange-300">Score: {calculateABCD2Score(abcd2Items)}</span>
+                        <span className="text-sm font-normal text-orange-700 dark:text-orange-300">Score: {abcd2Complete ? calculateABCD2Score(abcd2Items) : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
-                          <span className="text-xl font-bold text-orange-700 dark:text-orange-300">Score: {calculateABCD2Score(abcd2Items)}</span>
-                        <button
-                          onClick={() => copyToClipboard(`ABCD² Score: ${calculateABCD2Score(abcd2Items)}`, 'ABCD² Score')}
-                          className="p-1.5 hover:bg-orange-100 rounded transition-colors"
-                          aria-label="Copy ABCD² score to clipboard"
-                          title="Copy to clipboard"
-                        >
-                          <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-orange-600 dark:text-orange-300"></i>
-                        </button>
+                          <span className="text-xl font-bold text-orange-700 dark:text-orange-300">Score: {abcd2Complete ? calculateABCD2Score(abcd2Items) : 'Incomplete'}</span>
+                        {abcd2Complete && (
+                          <button
+                            onClick={() => copyToClipboard(`ABCD² Score: ${calculateABCD2Score(abcd2Items)}`, 'ABCD² Score')}
+                            className="p-1.5 hover:bg-orange-100 rounded transition-colors"
+                            aria-label="Copy ABCD² score to clipboard"
+                            title="Copy to clipboard"
+                          >
+                            <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-orange-600 dark:text-orange-300"></i>
+                          </button>
+                        )}
                       </div>
-
-                      {(() => {
-                        const abcd2 = calculateABCD2Score(abcd2Items);
-                        const label = abcd2 >= 6 ? 'High risk' : abcd2 >= 4 ? 'Moderate risk' : 'Lower risk';
-                        const tone = abcd2 >= 6 ? 'bg-crit-50 border-crit-200 text-crit-800 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300' : abcd2 >= 4 ? 'bg-warn-50 border-warn-200 text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300' : 'bg-ok-50 border-ok-200 text-ok-800 dark:bg-ok-950 dark:border-ok-800 dark:text-ok-300';
-                        return (
-                          <div className={`mt-2 border rounded-lg p-2 text-xs ${tone}`}>
-                            <span className="font-semibold">Interpretation:</span> {label} 2-day stroke risk (ABCD² {abcd2})
-                          </div>
-                        );
-                      })()}
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
                         <div className="space-y-2">
@@ -31369,7 +30956,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-orange-600 dark:text-orange-300"
                               checked={abcd2Items.age60}
-                              onChange={(e) => setAbcd2Items(prev => ({...prev, age60: e.target.checked}))}
+                              onChange={(e) => setAbcd2Items(prev => ({...prev, age60: e.target.checked, criteriaReviewed: false}))}
                             />
                             <span className="text-sm">Age ≥60 (+1)</span>
                           </label>
@@ -31378,7 +30965,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-orange-600 dark:text-orange-300"
                               checked={abcd2Items.bp}
-                              onChange={(e) => setAbcd2Items(prev => ({...prev, bp: e.target.checked}))}
+                              onChange={(e) => setAbcd2Items(prev => ({...prev, bp: e.target.checked, criteriaReviewed: false}))}
                             />
                             <span className="text-sm">BP: SBP≥140 or DBP≥90 (+1)</span>
                           </label>
@@ -31387,7 +30974,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox" 
                               className="text-orange-600 dark:text-orange-300"
                               checked={abcd2Items.unilateralWeakness}
-                              onChange={(e) => setAbcd2Items(prev => ({...prev, unilateralWeakness: e.target.checked, speechDisturbance: e.target.checked ? false : prev.speechDisturbance}))}
+                              onChange={(e) => setAbcd2Items(prev => ({...prev, unilateralWeakness: e.target.checked, speechDisturbance: e.target.checked ? false : prev.speechDisturbance, criteriaReviewed: false}))}
                             />
                             <span className="text-sm">Unilateral weakness (+2)</span>
                           </label>
@@ -31398,32 +30985,43 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="checkbox"
                               className="text-orange-600 dark:text-orange-300"
                               checked={abcd2Items.speechDisturbance}
-                              onChange={(e) => setAbcd2Items(prev => ({...prev, speechDisturbance: e.target.checked, unilateralWeakness: e.target.checked ? false : prev.unilateralWeakness}))}
+                              onChange={(e) => setAbcd2Items(prev => ({...prev, speechDisturbance: e.target.checked, unilateralWeakness: e.target.checked ? false : prev.unilateralWeakness, criteriaReviewed: false}))}
                               disabled={abcd2Items.unilateralWeakness}
                             />
                             <span className={`text-sm ${abcd2Items.unilateralWeakness ? 'text-slate-600 line-through dark:text-mute' : ''}`}>Speech disturbance w/o weakness (+1)</span>
                           </label>
                           <p className="font-semibold text-sm mt-3 mb-1">Symptom Duration:</p>
-                          {[{v:'duration60',l:'\u226560 minutes',p:'+2 points'},{v:'duration10',l:'10-59 minutes',p:'+1 point'},{v:'',l:'<10 minutes',p:'0 points'}].map(o => (
-                            <button key={o.v || 'none'} type="button" role="radio" aria-checked={abcd2Items.duration === o.v} aria-label={`Symptom Duration: ${o.l} (${o.p})`}
+                          {[{v:'duration60',l:'>60 minutes',p:'+2 points'},{v:'duration10',l:'10-59 minutes',p:'+1 point'},{v:'durationUnder10',l:'<10 minutes',p:'0 points'},{v:'durationExactly60',l:'Exactly 60 minutes',p:'source does not assign a score'}].map(o => (
+                            <button key={o.v} type="button" role="radio" aria-checked={abcd2Items.duration === o.v} aria-label={`Symptom Duration: ${o.l} (${o.p})`}
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors mb-1 ${abcd2Items.duration === o.v ? 'bg-orange-700 text-white dark:bg-orange-700 border-orange-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100 dark:bg-card dark:border-line dark:hover:bg-paper-2 dark:active:bg-paper-2'}`}
-                              onClick={() => setAbcd2Items(prev => ({...prev, duration: o.v}))} onKeyDown={handleRadioKeyDown}
+                              onClick={() => setAbcd2Items(prev => ({...prev, duration: o.v, criteriaReviewed: false}))} onKeyDown={handleRadioKeyDown}
                             >
                               {o.l} <span className={abcd2Items.duration === o.v ? 'text-white' : 'text-slate-600 dark:text-mute'}>({o.p})</span>
                             </button>
                           ))}
+                          {abcd2Items.duration === 'durationExactly60' && (
+                            <p className="rounded border border-warn-200 bg-warn-50 p-2 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                              The institutional source lists &gt;60 minutes and 10-59 minutes but does not assign exactly 60 minutes. Do not infer a score pending owner adjudication.
+                            </p>
+                          )}
                           <hr className="my-3" />
                           <label className="flex items-center space-x-2">
                             <input
                               type="checkbox"
                               className="text-orange-600 dark:text-orange-300"
                               checked={abcd2Items.diabetes}
-                              onChange={(e) => setAbcd2Items(prev => ({...prev, diabetes: e.target.checked}))}
+                              onChange={(e) => setAbcd2Items(prev => ({...prev, diabetes: e.target.checked, criteriaReviewed: false}))}
                             />
                             <span className="text-sm">Diabetes mellitus (+1)</span>
                           </label>
                         </div>
                       </div>
+
+                      <label className="mb-3 flex items-start gap-2 rounded-lg border border-orange-200 bg-white p-3 text-xs dark:border-orange-800 dark:bg-card">
+                        <input type="checkbox" className="mt-0.5" checked={abcd2Items.criteriaReviewed === true} onChange={(e) => setAbcd2Items(prev => ({ ...prev, criteriaReviewed: e.target.checked }))} />
+                        <span><strong>Required review:</strong> age, blood pressure, clinical features, duration, and diabetes were assessed; unchecked binary criteria are absent.</span>
+                      </label>
+                      {!abcd2Complete && <p className="mb-3 rounded border border-warn-200 bg-warn-50 p-2 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300"><strong>Incomplete:</strong> select a duration and confirm every ABCD² criterion before using or copying the score.</p>}
 
                       <div className="bg-white p-3 rounded border dark:bg-card">
                         <h4 className="font-semibold mb-2">2-Day, 7-Day, and 90-Day Stroke Risk</h4>
@@ -31455,19 +31053,21 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-chads2vasc" style={{ order: getCalculatorOrder('chads2vasc', 50) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                       <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                         <span>CHA₂DS₂-VASc Score</span>
-                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Score: {calculateCHADS2VascScore(chads2vascItems)}</span>
+                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Score: {chads2VascComplete ? calculateCHADS2VascScore(chads2vascItems) : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
-                          <span className="text-xl font-bold text-cobalt-600 dark:text-cobalt-300">Score: {calculateCHADS2VascScore(chads2vascItems)}</span>
-                        <button
-                          onClick={() => copyToClipboard(`CHADS₂-VASc: ${calculateCHADS2VascScore(chads2vascItems)}`, 'CHADS₂-VASc Score')}
-                          className="p-1.5 hover:bg-cobalt-100 rounded transition-colors dark:hover:bg-cobalt-800"
-                          aria-label="Copy CHADS₂-VASc score to clipboard"
-                          title="Copy to clipboard"
-                        >
-                          <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-cobalt-600 dark:text-cobalt-300"></i>
-                        </button>
+                          <span className="text-xl font-bold text-cobalt-600 dark:text-cobalt-300">Score: {chads2VascComplete ? calculateCHADS2VascScore(chads2vascItems) : 'Incomplete'}</span>
+                        {chads2VascComplete && (
+                          <button
+                            onClick={() => copyToClipboard(`CHADS₂-VASc: ${calculateCHADS2VascScore(chads2vascItems)}`, 'CHADS₂-VASc Score')}
+                            className="p-1.5 hover:bg-cobalt-100 rounded transition-colors dark:hover:bg-cobalt-800"
+                            aria-label="Copy CHADS₂-VASc score to clipboard"
+                            title="Copy to clipboard"
+                          >
+                            <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-cobalt-600 dark:text-cobalt-300"></i>
+                          </button>
+                        )}
                       </div>
 
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-2">
@@ -31476,7 +31076,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-cobalt-600 dark:text-cobalt-300"
                             checked={chads2vascItems.age65}
-                            onChange={(e) => setChads2vascItems(prev => ({...prev, age65: e.target.checked, age75: e.target.checked ? false : prev.age75}))}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, age65: e.target.checked, age75: e.target.checked ? false : prev.age75, criteriaReviewed: false}))}
                           />
                           <span className="text-sm">Age 65-74 (+1)</span>
                         </label>
@@ -31485,7 +31085,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox"
                             className="text-cobalt-600 dark:text-cobalt-300"
                             checked={chads2vascItems.age75}
-                            onChange={(e) => setChads2vascItems(prev => ({...prev, age75: e.target.checked, age65: e.target.checked ? false : prev.age65}))}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, age75: e.target.checked, age65: e.target.checked ? false : prev.age65, criteriaReviewed: false}))}
                           />
                           <span className="text-sm">Age ≥75 (+2)</span>
                         </label>
@@ -31494,7 +31094,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-cobalt-600 dark:text-cobalt-300"
                             checked={chads2vascItems.chf}
-                            onChange={(e) => setChads2vascItems(prev => ({...prev, chf: e.target.checked}))}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, chf: e.target.checked, criteriaReviewed: false}))}
                           />
                           <span className="text-sm">CHF (+1)</span>
                         </label>
@@ -31503,7 +31103,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-cobalt-600 dark:text-cobalt-300"
                             checked={chads2vascItems.hypertension}
-                            onChange={(e) => setChads2vascItems(prev => ({...prev, hypertension: e.target.checked}))}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, hypertension: e.target.checked, criteriaReviewed: false}))}
                           />
                           <span className="text-sm">Hypertension (+1)</span>
                         </label>
@@ -31512,7 +31112,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-cobalt-600 dark:text-cobalt-300"
                             checked={chads2vascItems.diabetes}
-                            onChange={(e) => setChads2vascItems(prev => ({...prev, diabetes: e.target.checked}))}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, diabetes: e.target.checked, criteriaReviewed: false}))}
                           />
                           <span className="text-sm">Diabetes (+1)</span>
                         </label>
@@ -31521,7 +31121,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-cobalt-600 dark:text-cobalt-300"
                             checked={chads2vascItems.strokeTia}
-                            onChange={(e) => setChads2vascItems(prev => ({...prev, strokeTia: e.target.checked}))}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, strokeTia: e.target.checked, criteriaReviewed: false}))}
                           />
                           <span className="text-sm">Stroke/TIA (+2)</span>
                         </label>
@@ -31530,7 +31130,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-cobalt-600 dark:text-cobalt-300"
                             checked={chads2vascItems.vascular}
-                            onChange={(e) => setChads2vascItems(prev => ({...prev, vascular: e.target.checked}))}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, vascular: e.target.checked, criteriaReviewed: false}))}
                           />
                           <span className="text-sm">Vascular disease (+1)</span>
                         </label>
@@ -31539,17 +31139,33 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             type="checkbox" 
                             className="text-cobalt-600 dark:text-cobalt-300"
                             checked={chads2vascItems.female}
-                            onChange={(e) => setChads2vascItems(prev => ({...prev, female: e.target.checked}))}
+                            onChange={(e) => setChads2vascItems(prev => ({...prev, female: e.target.checked, criteriaReviewed: false}))}
                           />
                           <span className="text-sm">Female sex (+1)</span>
                         </label>
                       </div>
+
+                      <label className="mb-3 flex items-start gap-2 rounded-lg border border-cobalt-200 bg-white p-3 text-sm dark:border-cobalt-800 dark:bg-card">
+                        <input
+                          type="checkbox"
+                          className="mt-0.5 text-cobalt-600 dark:text-cobalt-300"
+                          checked={chads2vascItems.criteriaReviewed === true}
+                          onChange={(e) => setChads2vascItems(prev => ({ ...prev, criteriaReviewed: e.target.checked }))}
+                        />
+                        <span>
+                          <span className="font-semibold">Required review:</span> I assessed every CHA₂DS₂-VASc criterion. Unchecked criteria are absent.
+                        </span>
+                      </label>
+                      {!chads2VascComplete && (
+                        <p className="mb-3 rounded border border-warn-200 bg-warn-50 p-2 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
+                          <strong>Incomplete:</strong> review all criteria before using or copying the score.
+                        </p>
+                      )}
                       
                       <div className="bg-white p-3 rounded border dark:bg-card">
-                        <h4 className="font-semibold mb-2">Annual Stroke/TE Risk (Friberg et al., JACC 2012)</h4>
+                        <h4 className="font-semibold mb-2">Stroke Risk per Year</h4>
                         <div className="grid grid-cols-3 gap-4 text-sm">
                           <div>
-                            <p><strong>Score 0:</strong> 0.2%</p>
                             <p><strong>Score 1:</strong> 0.6%</p>
                             <p><strong>Score 2:</strong> 2.2%</p>
                           </div>
@@ -31573,20 +31189,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-hasbled" style={{ order: getCalculatorOrder('hasbled', 60) }} className="bg-pink-50 border border-pink-200 rounded-lg dark:bg-pink-950 dark:border-pink-800">
                       <summary className="cursor-pointer p-3 font-semibold text-pink-800 hover:bg-pink-100 rounded-lg flex items-center justify-between dark:text-pink-300">
                         <span>HAS-BLED Score</span>
-                        <span className="text-sm font-normal text-pink-700 dark:text-pink-300">Score: {calculateHASBLEDScore(hasbledItems)}</span>
+                        <span className="text-sm font-normal text-pink-700 dark:text-pink-300">Inputs retained</span>
                       </summary>
                       <div className="p-4">
-                        <div className="flex justify-end items-center gap-2 mb-3">
-                          <span className="text-xl font-bold text-pink-600 dark:text-pink-300">Score: {calculateHASBLEDScore(hasbledItems)}</span>
-                          <button
-                            onClick={() => copyToClipboard(`HAS-BLED: ${calculateHASBLEDScore(hasbledItems)}`, 'HAS-BLED Score')}
-                            className="p-1.5 hover:bg-pink-100 rounded transition-colors"
-                            aria-label="Copy HAS-BLED score to clipboard"
-                            title="Copy to clipboard"
-                          >
-                            <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-pink-600 dark:text-pink-300"></i>
-                          </button>
-                        </div>
+                        <p className="mb-3 text-xs text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
 
                         <div className="space-y-2 mb-4">
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
@@ -31596,7 +31202,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.hypertension}
                               onChange={(e) => setHasbledItems(prev => ({...prev, hypertension: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>H</strong>ypertension (uncontrolled SBP &gt;160) (+1)</span>
+                            <span className="text-sm"><strong>H</strong>ypertension</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31605,7 +31211,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.renalDisease}
                               onChange={(e) => setHasbledItems(prev => ({...prev, renalDisease: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>A</strong>bnormal renal function (dialysis, transplant, Cr &gt;2.6) (+1)</span>
+                            <span className="text-sm"><strong>A</strong>bnormal renal function</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31614,7 +31220,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.liverDisease}
                               onChange={(e) => setHasbledItems(prev => ({...prev, liverDisease: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>A</strong>bnormal liver function (cirrhosis, bilirubin &gt;2x, AST/ALT &gt;3x) (+1)</span>
+                            <span className="text-sm"><strong>A</strong>bnormal liver function</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31623,7 +31229,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.stroke}
                               onChange={(e) => setHasbledItems(prev => ({...prev, stroke: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>S</strong>troke history (+1)</span>
+                            <span className="text-sm"><strong>S</strong>troke history</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31632,7 +31238,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.bleeding}
                               onChange={(e) => setHasbledItems(prev => ({...prev, bleeding: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>B</strong>leeding history or predisposition (+1)</span>
+                            <span className="text-sm"><strong>B</strong>leeding history or predisposition</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31641,7 +31247,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.labileINR}
                               onChange={(e) => setHasbledItems(prev => ({...prev, labileINR: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>L</strong>abile INR (TTR &lt;60%) (+1)</span>
+                            <span className="text-sm"><strong>L</strong>abile INR</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31650,7 +31256,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.elderly}
                               onChange={(e) => setHasbledItems(prev => ({...prev, elderly: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>E</strong>lderly (age ≥65) (+1)</span>
+                            <span className="text-sm"><strong>E</strong>lderly</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31659,7 +31265,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.drugs}
                               onChange={(e) => setHasbledItems(prev => ({...prev, drugs: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>D</strong>rugs (antiplatelet agents, NSAIDs) (+1)</span>
+                            <span className="text-sm"><strong>D</strong>rugs (antiplatelet agents, NSAIDs)</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31668,7 +31274,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.alcohol}
                               onChange={(e) => setHasbledItems(prev => ({...prev, alcohol: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>D</strong> (cont.) Alcohol use (≥8 drinks/week) (+1)</span>
+                            <span className="text-sm"><strong>D</strong> (cont.) Alcohol use</span>
                           </label>
                         </div>
 
@@ -31679,21 +31285,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-rope" style={{ order: getCalculatorOrder('rope', 70) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                       <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                         <span>ROPE Score and PASCAL Classification</span>
-                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Score: {calculateROPEScore(ropeItems)}</span>
                       </summary>
                       <div className="p-4">
-                        <div className="flex justify-end items-center gap-2 mb-3">
-                          <span className="text-xl font-bold text-cobalt-600 dark:text-cobalt-300">Score: {calculateROPEScore(ropeItems)}</span>
-                        <button
-                          onClick={() => copyToClipboard(`ROPE Score: ${calculateROPEScore(ropeItems)}`, 'ROPE Score')}
-                          className="p-1.5 hover:bg-cobalt-100 rounded transition-colors dark:hover:bg-cobalt-800"
-                          aria-label="Copy ROPE score to clipboard"
-                          title="Copy to clipboard"
-                        >
-                          <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-cobalt-600 dark:text-cobalt-300"></i>
-                        </button>
-                      </div>
-
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
                         <div className="space-y-2">
                           <label className="flex items-center space-x-2">
@@ -31703,7 +31296,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={ropeItems.noHypertension}
                               onChange={(e) => setRopeItems(prev => ({...prev, noHypertension: e.target.checked}))}
                             />
-                            <span className="text-sm">No history of hypertension (+1)</span>
+                            <span className="text-sm">No history of hypertension</span>
                           </label>
                           <label className="flex items-center space-x-2">
                             <input 
@@ -31712,7 +31305,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={ropeItems.noDiabetes}
                               onChange={(e) => setRopeItems(prev => ({...prev, noDiabetes: e.target.checked}))}
                             />
-                            <span className="text-sm">No history of diabetes (+1)</span>
+                            <span className="text-sm">No history of diabetes</span>
                           </label>
                           <label className="flex items-center space-x-2">
                             <input 
@@ -31721,7 +31314,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={ropeItems.noStrokeTia}
                               onChange={(e) => setRopeItems(prev => ({...prev, noStrokeTia: e.target.checked}))}
                             />
-                            <span className="text-sm">No history of stroke or TIA (+1)</span>
+                            <span className="text-sm">No history of stroke or TIA</span>
                           </label>
                         </div>
                         <div className="space-y-2">
@@ -31732,7 +31325,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={ropeItems.nonsmoker}
                               onChange={(e) => setRopeItems(prev => ({...prev, nonsmoker: e.target.checked}))}
                             />
-                            <span className="text-sm">Nonsmoker (+1)</span>
+                            <span className="text-sm">Nonsmoker</span>
                           </label>
                           <label className="flex items-center space-x-2">
                             <input 
@@ -31741,7 +31334,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={ropeItems.cortical}
                               onChange={(e) => setRopeItems(prev => ({...prev, cortical: e.target.checked}))}
                             />
-                            <span className="text-sm">Cortical infarct (+1)</span>
+                            <span className="text-sm">Cortical infarct</span>
                           </label>
                           <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1 dark:text-ink-2">Age (years)</label>
@@ -31754,13 +31347,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               min="18"
                               max="100"
                             />
-                            <div className="text-xs text-slate-600 mt-1 dark:text-mute">
-                              18-29: +5, 30-39: +4, 40-49: +3, 50-59: +2, 60-69: +1, ≥70: 0
-                            </div>
                           </div>
                         </div>
                       </div>
-                      
+
+                      <p className="mt-3 text-xs text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                     </div>
                     </details>
 
@@ -31769,20 +31360,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-rcvs2" style={{ order: getCalculatorOrder('rcvs2', 90) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                       <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                         <span>RCVS² Score</span>
-                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Score: {calculateRCVS2Score(rcvs2Items)}</span>
+                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Inputs retained</span>
                       </summary>
                       <div className="p-4">
-                        <div className="flex justify-end items-center gap-2 mb-3">
-                          <span className="text-xl font-bold text-cobalt-600 dark:text-cobalt-300">Score: {calculateRCVS2Score(rcvs2Items)}</span>
-                          <button
-                            onClick={() => copyToClipboard(`RCVS² Score: ${calculateRCVS2Score(rcvs2Items)}`, 'RCVS² Score')}
-                            className="p-1.5 hover:bg-cobalt-100 rounded transition-colors dark:hover:bg-cobalt-800"
-                            aria-label="Copy RCVS² score to clipboard"
-                            title="Copy to clipboard"
-                          >
-                            <i aria-hidden="true" data-lucide="copy" className="w-4 h-4 text-cobalt-600 dark:text-cobalt-300"></i>
-                          </button>
-                        </div>
+                        <p className="mb-3 text-xs text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
 
                         <div className="space-y-2 mb-4">
                           <label className="flex items-center space-x-2 p-2 hover:bg-cobalt-50 rounded cursor-pointer dark:hover:bg-cobalt-900">
@@ -31792,7 +31373,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={rcvs2Items.recurrentTCH}
                               onChange={(e) => setRcvs2Items(prev => ({...prev, recurrentTCH: e.target.checked}))}
                             />
-                            <span className="text-sm">Recurrent thunderclap headaches (+5)</span>
+                            <span className="text-sm">Recurrent thunderclap headaches</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-cobalt-50 rounded cursor-pointer dark:hover:bg-cobalt-900">
                             <input
@@ -31801,7 +31382,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={rcvs2Items.carotidInvolvement}
                               onChange={(e) => setRcvs2Items(prev => ({...prev, carotidInvolvement: e.target.checked}))}
                             />
-                            <span className="text-sm">Intracranial carotid artery involvement (-2)</span>
+                            <span className="text-sm">Intracranial carotid artery involvement</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-cobalt-50 rounded cursor-pointer dark:hover:bg-cobalt-900">
                             <input
@@ -31810,7 +31391,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={rcvs2Items.vasoconstrictiveTrigger}
                               onChange={(e) => setRcvs2Items(prev => ({...prev, vasoconstrictiveTrigger: e.target.checked}))}
                             />
-                            <span className="text-sm">Vasoconstrictive trigger exposure (+3)</span>
+                            <span className="text-sm">Vasoconstrictive trigger exposure</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-cobalt-50 rounded cursor-pointer dark:hover:bg-cobalt-900">
                             <input
@@ -31819,7 +31400,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={rcvs2Items.female}
                               onChange={(e) => setRcvs2Items(prev => ({...prev, female: e.target.checked}))}
                             />
-                            <span className="text-sm">Female sex (+1)</span>
+                            <span className="text-sm">Female sex</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-cobalt-50 rounded cursor-pointer dark:hover:bg-cobalt-900">
                             <input
@@ -31828,7 +31409,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={rcvs2Items.sah}
                               onChange={(e) => setRcvs2Items(prev => ({...prev, sah: e.target.checked}))}
                             />
-                            <span className="text-sm">Subarachnoid hemorrhage on imaging (+1)</span>
+                            <span className="text-sm">Subarachnoid hemorrhage on imaging</span>
                           </label>
                         </div>
 
@@ -31842,24 +31423,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <span className="text-sm font-normal text-warn-700 dark:text-warn-300">H&H: {huntHessGrade || 'Not Selected'} | WFNS: {wfnsGrade || 'Not Selected'}</span>
                       </summary>
                       <div className="p-4">
+                        <p className="mb-3 text-xs text-slate-700 dark:text-ink-2">The institutional acute-stroke algorithm requires Hunt-Hess documentation but does not supply Hunt-Hess grade definitions or a WFNS scale.</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {/* Hunt and Hess Scale */}
                           <div className="space-y-3">
                             <h4 className="text-base font-semibold text-warn-800 mb-2 dark:text-warn-300">Hunt and Hess Scale</h4>
                             <div className="space-y-2">
                               {[
-                                {v:'1',title:'Grade 1',desc:'Asymptomatic or mild headache'},
-                                {v:'2',title:'Grade 2',desc:'Moderate-severe headache, nuchal rigidity, no deficit (except CN palsy)'},
-                                {v:'3',title:'Grade 3',desc:'Drowsiness, confusion, or mild focal deficit'},
-                                {v:'4',title:'Grade 4',desc:'Stupor, moderate-severe hemiparesis'},
-                                {v:'5',title:'Grade 5',desc:'Deep coma, decerebrate rigidity, moribund'}
+                                {v:'1',title:'Grade 1'},
+                                {v:'2',title:'Grade 2'},
+                                {v:'3',title:'Grade 3'},
+                                {v:'4',title:'Grade 4'},
+                                {v:'5',title:'Grade 5'}
                               ].map(o => (
-                                <button key={o.v} type="button" role="radio" aria-checked={huntHessGrade === o.v} aria-label={`Hunt-Hess ${o.title}: ${o.desc}`}
+                                <button key={o.v} type="button" role="radio" aria-checked={huntHessGrade === o.v} aria-label={`Hunt-Hess ${o.title}`}
                                   className={`w-full text-left p-3 rounded-lg border transition-colors ${huntHessGrade === o.v ? 'bg-warn-600 text-white border-warn-600' : 'bg-white border-warn-200 hover:bg-warn-50 active:bg-warn-100 dark:bg-card dark:border-warn-800'}`}
                                   onClick={() => setHuntHessGrade(o.v)} onKeyDown={handleRadioKeyDown}
                                 >
                                   <div className="font-semibold">{o.title}</div>
-                                  <div className={`text-sm ${huntHessGrade === o.v ? 'text-white' : 'text-slate-700 dark:text-ink-2'}`}>{o.desc}</div>
                                 </button>
                               ))}
                             </div>
@@ -31870,18 +31451,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h4 className="text-base font-semibold text-warn-800 mb-2 dark:text-warn-300">WFNS Scale</h4>
                             <div className="space-y-2">
                               {[
-                                {v:'1',title:'Grade 1',desc:'GCS 15, no motor deficit'},
-                                {v:'2',title:'Grade 2',desc:'GCS 13-14, no motor deficit'},
-                                {v:'3',title:'Grade 3',desc:'GCS 13-14, with motor deficit'},
-                                {v:'4',title:'Grade 4',desc:'GCS 7-12, with or without motor deficit'},
-                                {v:'5',title:'Grade 5',desc:'GCS 3-6, with or without motor deficit'}
+                                {v:'1',title:'Grade 1'},
+                                {v:'2',title:'Grade 2'},
+                                {v:'3',title:'Grade 3'},
+                                {v:'4',title:'Grade 4'},
+                                {v:'5',title:'Grade 5'}
                               ].map(o => (
-                                <button key={o.v} type="button" role="radio" aria-checked={wfnsGrade === o.v} aria-label={`WFNS ${o.title}: ${o.desc}`}
+                                <button key={o.v} type="button" role="radio" aria-checked={wfnsGrade === o.v} aria-label={`WFNS ${o.title}`}
                                   className={`w-full text-left p-3 rounded-lg border transition-colors ${wfnsGrade === o.v ? 'bg-warn-600 text-white border-warn-600' : 'bg-white border-warn-200 hover:bg-warn-50 active:bg-warn-100 dark:bg-card dark:border-warn-800'}`}
                                   onClick={() => setWfnsGrade(o.v)} onKeyDown={handleRadioKeyDown}
                                 >
                                   <div className="font-semibold">{o.title}</div>
-                                  <div className={`text-sm ${wfnsGrade === o.v ? 'text-white' : 'text-slate-700 dark:text-ink-2'}`}>{o.desc}</div>
                                 </button>
                               ))}
                             </div>
@@ -31896,48 +31476,40 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         PREVENT 10-year ASCVD Risk Estimate
                       </summary>
                       <div className="p-4">
-                        <div className="bg-white p-4 rounded border dark:bg-card">
-                        <a 
-                          href="https://professional.heart.org/en/guidelines-and-statements/prevent-calculator"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center px-4 py-2 bg-crit-600 text-white rounded-md hover:bg-crit-700 transition-colors text-sm font-medium"
-                        >
-                          Open PREVENT Calculator →
-                        </a>
-                        </div>
+                        <div className="bg-white p-4 rounded border text-xs text-slate-700 dark:bg-card dark:text-ink-2"><p>{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p></div>
                       </div>
                     </details>
 
-                    {/* PHASES Score — Unruptured Aneurysm Rupture Risk */}
+                    {/* PHASES Score */}
                     <details id="calc-phases" style={{ order: getCalculatorOrder('phases', 75) }} className="bg-teal-50 border border-teal-200 rounded-lg dark:bg-teal-950 dark:border-teal-800">
                       <summary className="cursor-pointer p-3 font-semibold text-teal-800 hover:bg-teal-100 rounded-lg flex items-center justify-between dark:text-teal-300">
-                        <span>PHASES Score (Aneurysm Rupture Risk)</span>
-                        <span className="text-sm font-normal text-teal-700 dark:text-teal-300">Score: {calculatePHASESScore(phasesItems)}</span>
+                        <span>PHASES Score</span>
+                        <span className="text-sm font-normal text-teal-700 dark:text-teal-300">Inputs retained</span>
                       </summary>
                       <div className="p-4">
+                        <p className="mb-3 text-xs text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                         <div className="space-y-3">
                           <div>
                             <label htmlFor="select-phases-population" className="block text-sm font-medium text-slate-700 mb-1 dark:text-ink-2">Population</label>
                             <select id="select-phases-population" value={phasesItems.population}
                               onChange={(e) => setPhasesItems(prev => ({...prev, population: e.target.value}))}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong">
-                              <option value="north_american">North American / European (0 pts)</option>
-                              <option value="japanese">Japanese (+3 pts)</option>
-                              <option value="finnish">Finnish (+5 pts)</option>
+                              <option value="north_american">North American / European</option>
+                              <option value="japanese">Japanese</option>
+                              <option value="finnish">Finnish</option>
                             </select>
                           </div>
                           <label className="flex items-center space-x-2">
                             <input type="checkbox" className="text-teal-600 dark:text-teal-300"
                               checked={phasesItems.hypertension}
                               onChange={(e) => setPhasesItems(prev => ({...prev, hypertension: e.target.checked}))} />
-                            <span className="text-sm">History of hypertension (+1)</span>
+                            <span className="text-sm">History of hypertension</span>
                           </label>
                           <label className="flex items-center space-x-2">
                             <input type="checkbox" className="text-teal-600 dark:text-teal-300"
                               checked={phasesItems.age70}
                               onChange={(e) => setPhasesItems(prev => ({...prev, age70: e.target.checked}))} />
-                            <span className="text-sm">Age ≥70 years (+1)</span>
+                            <span className="text-sm">Age ≥70 years</span>
                           </label>
                           <div>
                             <label htmlFor="input-phases-size" className="block text-sm font-medium text-slate-700 mb-1 dark:text-ink-2">Aneurysm size (mm)</label>
@@ -31946,28 +31518,23 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               value={phasesItems.size}
                               onChange={(e) => setPhasesItems(prev => ({...prev, size: e.target.value}))}
                               placeholder="Largest diameter in mm" />
-                            <div className="text-xs text-slate-600 mt-1 dark:text-mute">&lt;7mm: 0 pts | 7-9.9mm: +3 | 10-19.9mm: +6 | ≥20mm: +10</div>
                           </div>
                           <label className="flex items-center space-x-2">
                             <input type="checkbox" className="text-teal-600 dark:text-teal-300"
                               checked={phasesItems.earlierSAH}
                               onChange={(e) => setPhasesItems(prev => ({...prev, earlierSAH: e.target.checked}))} />
-                            <span className="text-sm">Earlier SAH from a different aneurysm (+1)</span>
+                            <span className="text-sm">Earlier SAH from a different aneurysm</span>
                           </label>
                           <div>
                             <label htmlFor="input-phases-site" className="block text-sm font-medium text-slate-700 mb-1 dark:text-ink-2">Aneurysm site</label>
                             <select id="input-phases-site" value={phasesItems.site}
                               onChange={(e) => setPhasesItems(prev => ({...prev, site: e.target.value}))}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong">
-                              <option value="ica">ICA (0 pts)</option>
-                              <option value="mca">MCA (+2 pts)</option>
-                              <option value="aca_pcomm_posterior">ACA / Pcomm / Posterior circulation (+4 pts)</option>
+                              <option value="ica">ICA</option>
+                              <option value="mca">MCA</option>
+                              <option value="aca_pcomm_posterior">ACA / Pcomm / Posterior circulation</option>
                             </select>
                           </div>
-                        </div>
-                        <div className="mt-2 text-xs text-slate-600 dark:text-mute">
-                          <p>Greving JP et al. <em>Lancet Neurol</em> 2014;13(1):59-66. PHASES: Population, Hypertension, Age, Size, Earlier SAH, Site.</p>
-                          <p className="mt-1">Note: PHASES score should be one factor in the treatment decision. Consider patient life expectancy, aneurysm morphology, family history, and patient preference.</p>
                         </div>
                       </div>
                     </details>
@@ -32008,14 +31575,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               : <p className="text-xs text-slate-600 italic dark:text-mute">Enter A, B, and C measurements from CT to calculate ICH volume.</p>;
                           }
                           return (
-                            <div className={`p-3 rounded-lg border ${result.isLarge ? 'bg-crit-100 border-crit-300 dark:bg-crit-950 dark:border-crit-800' : result.isDualConsult ? 'bg-warn-100 border-warn-300 dark:bg-warn-950 dark:border-warn-800' : 'bg-ok-100 border-ok-300 dark:bg-ok-900 dark:border-ok-800'}`}>
+                            <div className="p-3 rounded-lg border border-line bg-white dark:bg-card">
                               <p className="text-lg font-bold">Volume: {result.volume} mL</p>
-                              <p className="text-sm text-slate-700 dark:text-ink-2">
-                                {result.volume >= 60 ? 'Very large hematoma — poor prognosis, consider GOC discussion' :
-                                 result.volume >= 30 ? 'Large hematoma (30-80 mL) — may qualify for ENRICH MIE' :
-                                 result.volume >= 15 ? 'If confirmed non-traumatic IPH: meets ≥15 mL early Neurosurgery + stroke-service evaluation threshold' :
-                                 'Small hematoma'}
-                              </p>
                               <button onClick={() => copyToClipboard(`ICH Volume (ABC/2): ${result.volume} mL`, 'ICH Volume')}
                                 className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300 dark:bg-overlay dark:hover:bg-overlay" aria-label="Copy ICH volume to clipboard">Copy</button>
                             </div>
@@ -32028,7 +31589,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* Andexanet Alfa Dosing Calculator */}
                     <details id="calc-andexanet" style={{ order: getCalculatorOrder('andexanet', 36) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                       <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
-                        <span>Andexanet Alfa (Andexxa) Dosing</span>
+                        <span>Andexanet Alfa (unavailable; dosing disabled)</span>
                       </summary>
                       <div className="p-4">
                         <div className="grid grid-cols-2 gap-3 mb-3">
@@ -32040,7 +31601,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <option value="">Select DOAC</option>
                               <option value="apixaban">Apixaban (Eliquis)</option>
                               <option value="rivaroxaban">Rivaroxaban (Xarelto)</option>
-                              <option value="other">Other (not indicated for andexanet)</option>
+                              <option value="other">Other</option>
                             </select>
                           </div>
                           <div>
@@ -32056,33 +31617,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, andexanetCalc: {...(prev.andexanetCalc || {}), doacDoseMg: v}})); }}
                             className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" placeholder="e.g. 5 for apixaban 5mg BID" />
                         </div>
-                        {(() => {
-                          const result = calculateAndexanetDose(
-                            (telestrokeNote.andexanetCalc || {}).doacType,
-                            (telestrokeNote.andexanetCalc || {}).lastDoseHours,
-                            (telestrokeNote.andexanetCalc || {}).doacDoseMg
-                          );
-                          if (result.regimen === 'N/A') return (
-                            <p className="text-sm text-slate-600 dark:text-mute">Select apixaban or rivaroxaban. Andexanet not indicated for dabigatran (use idarucizumab) or edoxaban.</p>
-                          );
-                          return (
-                            <div className={`p-3 rounded-lg border ${result.regimen === 'high-dose' ? 'bg-crit-100 border-crit-300 dark:bg-crit-950 dark:border-crit-800' : 'bg-ok-100 border-ok-300 dark:bg-ok-900 dark:border-ok-800'}`}>
-                              <p className="text-sm font-bold uppercase">{result.regimen} regimen</p>
-                              <p className="text-sm">Bolus: {result.bolus}</p>
-                              <p className="text-sm">Infusion: {result.infusion}</p>
-                              <p className="text-sm font-semibold">Total: {result.total}</p>
-                              {result.doseWarning && (
-                                <p className="text-xs text-warn-700 mt-1 bg-warn-50 border border-warn-200 rounded p-1 dark:text-warn-300 dark:bg-warn-950 dark:border-warn-800">{result.doseWarning}</p>
-                              )}
-                              <button onClick={() => copyToClipboard(`Andexanet ${result.regimen}: Bolus ${result.bolus}, Infusion ${result.infusion}, Total ${result.total}`, 'Andexanet Dose')}
-                                className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300 dark:bg-overlay dark:hover:bg-overlay" aria-label="Copy andexanet dose to clipboard">Copy</button>
-                            </div>
-                          );
-                        })()}
                         <div className="mt-2 p-2 bg-warn-50 border border-warn-200 rounded text-xs text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
-                          <strong>Practice note:</strong> Local protocol reverses factor Xa inhibitor-associated ICH with 4-factor PCC 2000 units IV; andexanet alfa is not available on formulary, so this calculator is reference-only. Andexanet carries COR/LOE 2a / B with 82% hemostatic effectiveness. Monitor closely for thrombotic complications after any reversal strategy.
+                          <strong>Institutional pathway:</strong> Andexanet alfa is unavailable. For apixaban-, rivaroxaban-, or edoxaban-associated ICH, give 4-factor PCC 2,000 units IV only when the Direct Xa Inhibitor screen is elevated and PCC has no contraindication; otherwise this card returns no actionable dose.
                         </div>
-                        <p className="text-xs text-slate-600 mt-1 dark:text-mute">ANNEXA-4 trial. Low-dose if last DOAC &ge;8h ago (or apixaban &le;5mg). High-dose if last dose &lt;8h ago (or rivaroxaban &gt;10mg, apixaban &gt;5mg). Monitor for thrombotic events post-reversal.</p>
+                        <p className="text-xs text-slate-600 mt-1 dark:text-mute">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                       </div>
                     </details>
 
@@ -32131,55 +31669,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, crclCalc: {...(prev.crclCalc || {}), height: v}})); }}
                             className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" placeholder="cm (optional — enables BMI/AdjBW calculation)" />
                         </div>
-                        {(() => {
-                          const result = calculateCrCl(
-                            (telestrokeNote.crclCalc || {}).age || telestrokeNote.age,
-                            (telestrokeNote.crclCalc || {}).weight || telestrokeNote.weight,
-                            (telestrokeNote.crclCalc || {}).sex || telestrokeNote.sex,
-                            (telestrokeNote.crclCalc || {}).cr || telestrokeNote.creatinine,
-                            (telestrokeNote.crclCalc || {}).height || telestrokeNote.height
-                          );
-                          if (!result) return <p className="text-xs text-slate-600 italic dark:text-mute">Enter age, weight, sex, and creatinine to calculate.</p>;
-                          const colorClass = result.isLow ? 'bg-crit-100 border-crit-300 dark:bg-crit-950 dark:border-crit-800' : result.isBorderline ? 'bg-warn-100 border-warn-300 dark:bg-warn-950 dark:border-warn-800' : 'bg-ok-100 border-ok-300 dark:bg-ok-950 dark:border-ok-800';
-                          return (
-                            <div className={`p-3 rounded-lg border ${colorClass}`}>
-                              <p className="text-lg font-bold">CrCl: {result.value} mL/min</p>
-                              {result.adjBwValue && <p className="text-sm font-bold text-warn-800 dark:text-warn-300">Adjusted Body Weight CrCl: {result.adjBwValue} mL/min (BMI {result.bmi})</p>}
-                              <p className="text-sm font-medium">{result.label}</p>
-                              {result.obesityWarning && <p className="text-xs mt-1 text-warn-700 font-medium dark:text-warn-300">{result.obesityWarning}</p>}
-                              <div className="mt-2 text-xs space-y-1">
-                                {result.renalCategory === 'severe-dialysis' && <p className="text-crit-700 font-semibold dark:text-crit-300">Avoid DOACs. Consider warfarin or consult nephrology.</p>}
-                                {result.renalCategory === 'severe' && (
-                                  <div className="text-crit-700 dark:text-crit-300">
-                                    <p><strong>Apixaban:</strong> 5mg BID (2.5mg BID if also age ≥80 or wt ≤60kg). Apixaban is the only DOAC with data in ESRD.</p>
-                                    <p><strong>Rivaroxaban:</strong> 15mg daily (avoid if CrCl &lt;15).</p>
-                                    <p><strong>Dabigatran:</strong> 75mg BID (avoid if CrCl &lt;15). Idarucizumab available for reversal.</p>
-                                    <p><strong>Edoxaban:</strong> 30mg daily (avoid if CrCl &lt;15).</p>
-                                    <p><strong>Enoxaparin:</strong> 1 mg/kg SC <strong>daily</strong> (not BID). Check anti-Xa levels.</p>
-                                  </div>
-                                )}
-                                {result.renalCategory === 'moderate' && (
-                                  <div className="text-warn-700 dark:text-warn-300">
-                                    <p><strong>Apixaban:</strong> Standard 5mg BID (2.5mg BID if 2 of 3: age ≥80, wt ≤60kg, Cr ≥1.5).</p>
-                                    <p><strong>Rivaroxaban:</strong> 15mg daily for AF (20mg if CrCl &gt;50).</p>
-                                    <p><strong>Dabigatran:</strong> 150mg BID (standard). 75mg BID if CrCl 15-30 mL/min per FDA. Contraindicated if CrCl &lt;15.</p>
-                                    <p><strong>Edoxaban:</strong> 30mg daily.</p>
-                                    <p><strong>Enoxaparin:</strong> Standard dosing; monitor anti-Xa if prolonged use.</p>
-                                  </div>
-                                )}
-                                {(result.renalCategory === 'mild' || result.renalCategory === 'normal') && (
-                                  <p className="text-ok-700 dark:text-ok-300">Standard DOAC and enoxaparin dosing. No renal adjustment needed. {result.renalCategory === 'normal' && 'Note: Edoxaban 60mg — avoid if CrCl >95 (reduced efficacy, ENGAGE AF).'}</p>
-                                )}
-                              </div>
-                              {result.obesityWarning && (
-                                <p className="text-warn-700 text-xs mt-1 bg-warn-50 p-1 rounded border border-warn-200 dark:text-warn-300 dark:bg-warn-950 dark:border-warn-800">{result.obesityWarning}</p>
-                              )}
-                              <button onClick={() => copyToClipboard(`CrCl (Cockcroft-Gault): ${result.value} mL/min — ${result.label}`, 'CrCl')}
-                                className="mt-2 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300 dark:bg-overlay dark:hover:bg-overlay" aria-label="Copy CrCl to clipboard">Copy</button>
-                            </div>
-                          );
-                        })()}
-                        <p className="text-xs text-slate-600 mt-2 dark:text-mute">Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × Cr). Uses actual body weight. For obesity, consider adjusted body weight or cystatin C-based eGFR.</p>
+                        <p className="text-xs text-slate-600 mt-2 dark:text-mute">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                       </div>
                     </details>
 
@@ -32201,30 +31691,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           <div>
                             <label className="text-xs text-slate-600 dark:text-ink-2">CrCl (mL/min)</label>
-                            <input type="number" min="5" max="200" value={(telestrokeNote.enoxCalc || {}).crCl || (() => { const c = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height); return c ? c.value : ''; })() || ''}
+                            <input type="number" min="5" max="200" value={(telestrokeNote.enoxCalc || {}).crCl || ''}
                               onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, enoxCalc: {...(prev.enoxCalc || {}), crCl: v}})); }}
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" placeholder="mL/min (auto from demographics)" />
                           </div>
                         </div>
-                        {(() => {
-                          const autoCrCl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
-                          const result = calculateEnoxaparinDose(
-                            (telestrokeNote.enoxCalc || {}).weightKg || telestrokeNote.weight,
-                            (telestrokeNote.enoxCalc || {}).crCl || (autoCrCl ? autoCrCl.value : '')
-                          );
-                          if (!result) return null;
-                          return (
-                            <div className={`p-3 rounded-lg border ${result.isRenalAdjusted ? 'bg-warn-100 border-warn-300 dark:bg-warn-900 dark:border-warn-800' : 'bg-ok-100 border-ok-300 dark:bg-ok-900 dark:border-ok-800'}`}>
-                              <p className="text-sm font-bold">{result.note}</p>
-                              {!result.isRenalAdjusted && <p className="text-sm text-slate-600 mt-0.5 dark:text-ink-2">{result.dailyTreatmentNote}</p>}
-                              <p className="text-sm font-semibold text-teal-800 mt-1 dark:text-teal-300">{result.prophylaxisNote}</p>
-                              {result.isRenalAdjusted && <p className="text-xs text-warn-700 dark:text-warn-300">Renal dose adjustment applied (CrCl &lt;30 mL/min)</p>}
-                              <button onClick={() => copyToClipboard(`${result.note}\n${result.dailyTreatmentNote}\n${result.prophylaxisNote}`, 'Enoxaparin Dose')}
-                                className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300 dark:bg-overlay dark:hover:bg-overlay" aria-label="Copy enoxaparin dose to clipboard">Copy</button>
-                            </div>
-                          );
-                        })()}
-                        <p className="text-xs text-slate-600 mt-2 dark:text-mute">No institutional protocol document is on file for enoxaparin dosing. See Guidelines &amp; References for the current society guidance.</p>
+                        <p className="text-xs text-slate-600 mt-2 dark:text-mute">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                       </div>
                     </details>
 
@@ -32232,7 +31704,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-aspects" style={{ order: getCalculatorOrder('aspects', 15) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                       <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                         <span>ASPECTS Score (Interactive)</span>
-                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Score: {10 - Object.values(typeof aspectsRegions !== 'undefined' ? aspectsRegions : {}).filter(Boolean).length}/10</span>
+                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Score: {telestrokeNote.aspectsAssessed === true ? `${10 - Object.values(telestrokeNote.aspectsRegions || {}).filter(Boolean).length}/10` : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Click regions with <strong>early ischemic changes</strong> on CT. ASPECTS = 10 minus number of affected regions.</p>
@@ -32241,13 +31713,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             { id: 'C', label: 'C', desc: 'Caudate' },
                             { id: 'L', label: 'L', desc: 'Lentiform' },
                             { id: 'IC', label: 'IC', desc: 'Internal Capsule' },
-                            { id: 'I', label: 'I', desc: 'Insular Ribbon' },
-                            { id: 'M1', label: 'M1', desc: 'Anterior MCA' },
-                            { id: 'M2', label: 'M2', desc: 'MCA lateral to insular ribbon' },
-                            { id: 'M3', label: 'M3', desc: 'Posterior MCA' },
-                            { id: 'M4', label: 'M4', desc: 'Anterior MCA above M1' },
-                            { id: 'M5', label: 'M5', desc: 'Lateral MCA above M2' },
-                            { id: 'M6', label: 'M6', desc: 'Posterior MCA above M3' }
+                            { id: 'I', label: 'I', desc: 'Insula' },
+                            { id: 'M1', label: 'M1', desc: 'M1' },
+                            { id: 'M2', label: 'M2', desc: 'M2' },
+                            { id: 'M3', label: 'M3', desc: 'M3' },
+                            { id: 'M4', label: 'M4', desc: 'M4' },
+                            { id: 'M5', label: 'M5', desc: 'M5' },
+                            { id: 'M6', label: 'M6', desc: 'M6' }
                           ].map(region => {
                             const isAffected = !!(telestrokeNote.aspectsRegions || {})[region.id];
                             return (
@@ -32257,10 +31729,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   const rid = region.id, toggled = !isAffected;
                                   setTelestrokeNote(prev => {
                                     const newRegions = {...(prev.aspectsRegions || {}), [rid]: toggled};
-                                    const score = 10 - Object.values(newRegions).filter(Boolean).length;
-                                    if (typeof setAspectsScore === 'function') setAspectsScore(score);
-                                    return {...prev, aspectsRegions: newRegions};
+                                    return {...prev, aspectsRegions: newRegions, aspectsAssessed: false};
                                   });
+                                  if (typeof setAspectsScore === 'function') setAspectsScore('');
                                   // Sync to calculator drawer state (array format: checked=true means normal)
                                   setAspectsRegionState(prev => prev.map(r => r.id === rid ? {...r, checked: !toggled} : r));
                                 }}
@@ -32272,26 +31743,37 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             );
                           })}
                         </div>
+                        <label className="mb-3 flex items-start gap-2 rounded-lg border border-cobalt-200 bg-white p-3 text-xs dark:border-cobalt-700 dark:bg-card">
+                          <input
+                            type="checkbox"
+                            className="mt-0.5"
+                            checked={telestrokeNote.aspectsAssessed === true}
+                            onChange={(e) => {
+                              const assessed = e.target.checked;
+                              const score = 10 - Object.values(telestrokeNote.aspectsRegions || {}).filter(Boolean).length;
+                              setTelestrokeNote(prev => ({ ...prev, aspectsAssessed: assessed }));
+                              if (typeof setAspectsScore === 'function') setAspectsScore(assessed ? score : '');
+                            }}
+                          />
+                          <span><strong>Required review:</strong> all 10 ASPECTS regions were assessed; unmarked regions are normal.</span>
+                        </label>
                         {(() => {
                           const score = 10 - Object.values(telestrokeNote.aspectsRegions || {}).filter(Boolean).length;
-                          const colorMap = score >= 6 ? { bg: 'bg-ok-50 border-ok-200 dark:bg-ok-950 dark:border-ok-800', text: 'text-ok-700 dark:text-ok-300' } : score >= 3 ? { bg: 'bg-warn-50 border-warn-200 dark:bg-warn-950 dark:border-warn-800', text: 'text-warn-700 dark:text-warn-300' } : { bg: 'bg-crit-50 border-crit-200 dark:bg-crit-950 dark:border-crit-800', text: 'text-crit-700 dark:text-crit-300' };
+                          if (telestrokeNote.aspectsAssessed !== true) {
+                            return <div className="p-3 rounded-lg border border-warn-200 bg-warn-50 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300"><strong>Incomplete:</strong> confirm that every ASPECTS region was reviewed before using the score.</div>;
+                          }
                           return (
-                            <div className={`p-3 rounded-lg border ${colorMap.bg}`} aria-live="polite" aria-atomic="true">
+                            <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
                               <div className="flex items-center justify-between">
-                                <span className={`text-2xl font-bold ${colorMap.text}`}>ASPECTS: {score}</span>
-                                <span className={`text-sm font-semibold ${colorMap.text}`}>
-                                  {score >= 6 ? 'Favorable for EVT' : score >= 3 ? 'Large core — EVT may be considered' : 'Very large core — EVT uncertain'}
-                                </span>
+                                <span className="text-2xl font-bold text-cobalt-700 dark:text-cobalt-300">ASPECTS: {score}</span>
                               </div>
                               <div className="mt-1 text-xs text-slate-600 dark:text-ink-2">
-                                {score >= 6 ? 'ASPECTS 6-10: Standard EVT candidacy (Class I for LVO 0-6h)' :
-                                 score >= 3 ? 'ASPECTS 3-5: EVT recommended for select patients (mRS 0-1, 0-6h)' :
-                                 'ASPECTS 0-2: EVT may be reasonable in select patients (ICA/M1, mRS 0-1)'}
+                                Apply the complete institutional EVT eligibility flowchart; ASPECTS alone does not determine eligibility.
                               </div>
                             </div>
                           );
                         })()}
-                        <button type="button" onClick={() => { setTelestrokeNote(prev => ({...prev, aspectsRegions: {}})); if (typeof setAspectsScore === 'function') setAspectsScore(10); setAspectsRegionState(getDefaultAspectsRegionState()); }}
+                        <button type="button" onClick={() => { setTelestrokeNote(prev => ({...prev, aspectsRegions: {}, aspectsAssessed: false})); if (typeof setAspectsScore === 'function') setAspectsScore(''); setAspectsRegionState(getDefaultAspectsRegionState()); }}
                           className="mt-2 text-xs text-slate-600 hover:text-slate-700 underline dark:text-mute dark:hover:text-ink">Reset all regions</button>
                       </div>
                     </details>
@@ -32300,18 +31782,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-pc-aspects" style={{ order: getCalculatorOrder('pc-aspects', 16) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                       <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                         <span>PC-ASPECTS (Posterior Circulation)</span>
-                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Score: {(() => { const r = telestrokeNote.pcAspectsRegions || {}; return 10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0)); })()}/10</span>
+                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Score: {telestrokeNote.pcAspectsAssessed === true ? (() => { const r = telestrokeNote.pcAspectsRegions || {}; return `${10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0))}/10`; })() : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
-                        <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Click regions with early ischemic changes. Used for basilar artery EVT eligibility (≥6 favors intervention).</p>
+                        <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Click regions with early ischemic changes. PC-ASPECTS starts at 10; pons and midbrain deduct 2 points each, and each other listed region deducts 1 point.</p>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-3">
                           {[
                             { id: 'pons', label: 'Pons', pts: 2 },
                             { id: 'midbrain', label: 'Midbrain', pts: 2 },
                             { id: 'cerebL', label: 'Cerebellum L', pts: 1 },
                             { id: 'cerebR', label: 'Cerebellum R', pts: 1 },
-                            { id: 'pcaL', label: 'PCA L', pts: 1 },
-                            { id: 'pcaR', label: 'PCA R', pts: 1 },
+                            { id: 'pcaL', label: 'Occipital L', pts: 1 },
+                            { id: 'pcaR', label: 'Occipital R', pts: 1 },
                             { id: 'thalL', label: 'Thalamus L', pts: 1 },
                             { id: 'thalR', label: 'Thalamus R', pts: 1 }
                           ].map(region => {
@@ -32319,7 +31801,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             return (
                               <button key={region.id} type="button"
                                 className={`flex flex-col items-center p-2 rounded-lg border-2 transition-colors ${isAffected ? 'bg-crit-600 text-white border-crit-600' : 'bg-white border-slate-200 hover:bg-cobalt-50 dark:bg-card dark:border-line dark:hover:bg-cobalt-900'}`}
-                                onClick={() => { const rid = region.id, toggled = !isAffected; setTelestrokeNote(prev => ({...prev, pcAspectsRegions: {...(prev.pcAspectsRegions || {}), [rid]: toggled}})); }}
+                                onClick={() => { const rid = region.id, toggled = !isAffected; setTelestrokeNote(prev => ({...prev, pcAspectsRegions: {...(prev.pcAspectsRegions || {}), [rid]: toggled}, pcAspectsAssessed: false})); }}
                               >
                                 <span className="font-bold text-xs">{region.label}</span>
                                 <span className={`text-[10px] ${isAffected ? 'text-white' : 'text-slate-600 dark:text-mute'}`}>{region.pts}pt{region.pts > 1 ? 's' : ''}</span>
@@ -32327,16 +31809,21 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             );
                           })}
                         </div>
+                        <label className="mb-3 flex items-start gap-2 rounded-lg border border-cobalt-200 bg-white p-3 text-xs dark:border-cobalt-700 dark:bg-card">
+                          <input type="checkbox" className="mt-0.5" checked={telestrokeNote.pcAspectsAssessed === true} onChange={(e) => setTelestrokeNote(prev => ({ ...prev, pcAspectsAssessed: e.target.checked }))} />
+                          <span><strong>Required review:</strong> all listed PC-ASPECTS regions were assessed; unmarked regions are normal.</span>
+                        </label>
                         {(() => {
                           const r = telestrokeNote.pcAspectsRegions || {};
                           const deducted = (r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0);
                           const score = 10 - deducted;
+                          if (telestrokeNote.pcAspectsAssessed !== true) {
+                            return <div className="p-3 rounded-lg border border-warn-200 bg-warn-50 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300"><strong>Incomplete:</strong> confirm that every PC-ASPECTS region was reviewed before using the score.</div>;
+                          }
                           return (
-                            <div className={`p-3 rounded-lg ${score >= 6 ? 'bg-ok-50 border border-ok-200 dark:bg-ok-950 dark:border-ok-800' : 'bg-crit-50 border border-crit-200 dark:bg-crit-950 dark:border-crit-800'}`} aria-live="polite" aria-atomic="true">
-                              <span className={`text-2xl font-bold ${score >= 6 ? 'text-ok-700 dark:text-ok-300' : 'text-crit-700 dark:text-crit-300'}`}>PC-ASPECTS: {score}</span>
-                              <span className={`ml-2 text-sm ${score >= 6 ? 'text-ok-600 dark:text-ok-300' : 'text-crit-600 dark:text-crit-300'}`}>
-                                {score >= 6 ? 'Favorable for basilar EVT (ATTENTION/BAOCHE trials)' : 'Poor prognosis — EVT benefit uncertain'}
-                              </span>
+                            <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
+                              <span className="text-2xl font-bold text-cobalt-700 dark:text-cobalt-300">PC-ASPECTS: {score}</span>
+                              <p className="mt-1 text-xs text-slate-600 dark:text-ink-2">The institutional EVT flowchart lists PC-ASPECTS ≥6 as one basilar-artery criterion; apply the full flowchart criteria.</p>
                             </div>
                           );
                         })()}
@@ -32383,72 +31870,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     </details>
 
-                    {/* SPAN-100 / DRAGON / sICH Risk */}
+                    {/* SPAN-100 / DRAGON / SEDAN */}
                     <details id="calc-risk-scores" style={{ order: getCalculatorOrder('risk-scores', 25) }} className="bg-warn-50 border border-warn-200 rounded-lg dark:bg-warn-950 dark:border-warn-800">
                       <summary className="cursor-pointer p-3 font-semibold text-warn-800 hover:bg-warn-100 rounded-lg flex items-center justify-between dark:text-warn-300 dark:hover:bg-warn-900">
-                        <span>Thrombolysis Risk Scores (SPAN-100, DRAGON, SEDAN)</span>
-                        <span className="text-sm font-normal text-warn-700 dark:text-warn-300">sICH Risk Assessment</span>
+                        <span>SPAN-100, DRAGON, and SEDAN</span>
+                        <span className="text-sm font-normal text-warn-700 dark:text-warn-300">Inputs retained</span>
                       </summary>
                       <div className="p-4 space-y-4">
+                        <p className="text-xs text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                         {/* SPAN-100 */}
                         <div className="bg-white rounded-lg p-3 border border-line dark:bg-card">
                           <h5 className="font-semibold text-sm text-slate-800 mb-2 dark:text-ink">SPAN-100 Index</h5>
-                          {(() => {
-                            const age = parseInt(telestrokeNote.age, 10) || 0;
-                            const nihss = parseInt(telestrokeNote.nihss || nihssScore, 10) || 0;
-                            const span = age + nihss;
-                            const positive = span >= 100;
-                            return (
-                              <div className={`p-3 rounded-lg ${positive ? 'bg-crit-50 border border-crit-200 dark:bg-crit-950 dark:border-crit-800' : 'bg-ok-50 border border-ok-200 dark:bg-ok-950 dark:border-ok-800'}`} aria-live="polite" aria-atomic="true">
-                                <div className="flex items-center justify-between">
-                                  <span className={`text-xl font-bold ${positive ? 'text-crit-700 dark:text-crit-300' : 'text-ok-700 dark:text-ok-300'}`}>
-                                    Age ({age || '?'}) + NIHSS ({nihss || '?'}) = {age && nihss ? span : '?'}
-                                  </span>
-                                  <span className={`px-2 py-1 rounded text-xs font-bold ${positive ? 'bg-crit-600 text-white' : 'bg-ok-600 text-white'}`}>
-                                    {positive ? 'POSITIVE' : 'NEGATIVE'}
-                                  </span>
-                                </div>
-                              </div>
-                            );
-                          })()}
+                          <p className="text-xs text-slate-600 dark:text-ink-2">Input labels: Age; NIHSS.</p>
                         </div>
 
                         {/* SEDAN Score */}
                         <div className="bg-white rounded-lg p-3 border border-line dark:bg-card">
-                          <h5 className="font-semibold text-sm text-slate-800 mb-2 dark:text-ink">SEDAN Score (sICH Risk Post-Thrombolysis)</h5>
-                          <p className="text-xs text-slate-600 mb-2 dark:text-mute">Sugar + Early infarct signs + Dense artery + Age + NIHSS</p>
-                          {(() => {
-                            const glucose = parseInt(telestrokeNote.glucose, 10) || 0;
-                            const nihss = parseInt(telestrokeNote.nihss || nihssScore, 10) || 0;
-                            const age = parseInt(telestrokeNote.age, 10) || 0;
-                            let sedanScore = 0;
-                            const items = [];
-                            if (glucose > 144 && glucose <= 216) { sedanScore += 1; items.push('Glucose 145-216 (+1)'); }
-                            else if (glucose > 216) { sedanScore += 2; items.push('Glucose >216 (+2)'); }
-                            else items.push('Glucose ≤144 (0)');
-                            if (telestrokeNote.earlyInfarctSigns) { sedanScore += 1; items.push('Early infarct signs on CT (+1) ✓'); }
-                            else items.push('Early infarct signs on CT (0) — set in Treatment Decision section');
-                            if (telestrokeNote.denseArterySign) { sedanScore += 1; items.push('Dense artery sign (+1) ✓'); }
-                            else items.push('Dense artery sign (0) — set in Treatment Decision section');
-                            if (age > 75) { sedanScore += 1; items.push('Age >75 (+1)'); }
-                            else items.push('Age ≤75 (0)');
-                            if (nihss >= 10) { sedanScore += 1; items.push('NIHSS ≥10 (+1)'); }
-                            else items.push('NIHSS <10 (0)');
-                            return (
-                              <div>
-                                <div className="space-y-1 mb-2">
-                                  {items.map((item, i) => (
-                                    <div key={i} className="text-xs text-slate-600 flex items-center gap-2 dark:text-ink-2">
-                                      <span className="text-warn-500">&#x2022;</span> {item}
-                                    </div>
-                                  ))}
-                                </div>
-                                <div className={`p-2 rounded ${sedanScore >= 3 ? 'bg-crit-50 border border-crit-200 dark:bg-crit-950 dark:border-crit-800' : 'bg-warn-50 border border-warn-200 dark:bg-warn-950 dark:border-warn-800'}`} aria-live="polite" aria-atomic="true">
-                                  <span className="font-bold text-sm">SEDAN: {sedanScore}/6</span>
-                                </div>
-                              </div>
-                            );
-                          })()}
+                          <h5 className="font-semibold text-sm text-slate-800 mb-2 dark:text-ink">SEDAN Score</h5>
+                          <p className="text-xs text-slate-600 dark:text-ink-2">Input labels: Sugar (glucose); early infarct signs; dense artery sign; age; NIHSS.</p>
                         </div>
                       </div>
                     </details>
@@ -32460,51 +31899,28 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <i aria-hidden="true" data-lucide="chevron-down" className="w-4 h-4"></i>
                       </summary>
                       <div className="p-4 space-y-2">
-                        <p className="text-xs text-slate-600 mb-3 dark:text-mute">Modified Treatment in Cerebral Ischemia. Select the grade that best describes post-procedure reperfusion.</p>
+                        <p className="text-xs text-slate-600 mb-3 dark:text-mute">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
                         <div className="space-y-2">
-                          {[
-                            { grade: '0', label: 'No perfusion', desc: 'No antegrade flow beyond occlusion', color: 'red' },
-                            { grade: '1', label: 'Minimal perfusion', desc: 'Antegrade flow past occlusion, no distal filling', color: 'red' },
-                            { grade: '2a', label: 'Partial (< 50%)', desc: 'Antegrade flow fills <50% of downstream territory', color: 'amber' },
-                            { grade: '2b', label: 'Substantial (50-99%)', desc: 'Antegrade flow fills 50-99% of downstream territory', color: 'emerald' },
-                            { grade: '2c', label: 'Near-complete', desc: 'Near-complete perfusion with slow flow or few small distal emboli', color: 'emerald' },
-                            { grade: '3', label: 'Complete perfusion', desc: 'Full antegrade flow, normal filling speed', color: 'emerald' }
-                          ].map(({ grade, label, desc, color }) => {
+                          {['0', '1', '2a', '2b', '2c', '3'].map((grade) => {
                             const isSelected = telestrokeNote.ticiScore === grade;
-                            const colorMap = {
-                              red: isSelected ? 'bg-crit-600 text-white border-crit-600' : 'bg-white border-crit-200 hover:bg-crit-50 dark:bg-card dark:border-crit-800',
-                              amber: isSelected ? 'bg-warn-600 text-white border-warn-600' : 'bg-white border-warn-200 hover:bg-warn-50 dark:bg-card dark:border-warn-800',
-                              emerald: isSelected ? 'bg-ok-600 text-white border-ok-600' : 'bg-white border-ok-200 hover:bg-ok-50 dark:bg-card dark:border-ok-800'
-                            };
                             return (
                               <button
                                 key={grade}
                                 type="button"
                                 onClick={() => setTelestrokeNote(prev => ({ ...prev, ticiScore: isSelected ? '' : grade }))}
-                                className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${colorMap[color]}`}
+                                className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${isSelected ? 'bg-ok-600 text-white border-ok-600' : 'bg-white border-line hover:bg-slate-50 dark:bg-card dark:hover:bg-paper-2'}`}
                               >
                                 <div className="flex items-center justify-between">
-                                  <div>
-                                    <span className="font-bold text-sm">mTICI {grade}</span>
-                                    <span className="ml-2 text-sm">{label}</span>
-                                  </div>
+                                  <span className="font-bold text-sm">mTICI {grade}</span>
                                   {isSelected && <i aria-hidden="true" data-lucide="check" className="w-5 h-5"></i>}
                                 </div>
-                                <p className={`text-xs mt-0.5 ${isSelected ? 'opacity-80' : 'text-slate-600 dark:text-mute'}`}>{desc}</p>
                               </button>
                             );
                           })}
                         </div>
                         {telestrokeNote.ticiScore && (
-                          <div className={`mt-3 p-3 rounded-lg text-sm ${
-                            ['2b', '2c', '3'].includes(telestrokeNote.ticiScore)
-                              ? 'bg-ok-100 border border-ok-300 text-ok-800 dark:bg-ok-900 dark:border-ok-800 dark:text-ok-300'
-                              : 'bg-warn-100 border border-warn-300 text-warn-800 dark:bg-warn-900 dark:border-warn-800 dark:text-warn-300'
-                          }`}>
-                            <strong>mTICI {telestrokeNote.ticiScore}:</strong>{' '}
-                            {['2b', '2c', '3'].includes(telestrokeNote.ticiScore)
-                              ? 'Successful reperfusion — associated with better functional outcomes.'
-                              : 'Incomplete reperfusion — consider further attempts or adjunctive measures.'}
+                          <div className="mt-3 rounded-lg border border-line bg-white p-3 text-sm dark:bg-card">
+                            <strong>Selected grade: mTICI {telestrokeNote.ticiScore}</strong>
                           </div>
                         )}
                       </div>
@@ -32513,74 +31929,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* DRAGON Score */}
                     <details id="calc-dragon" style={{ order: getCalculatorOrder('dragon', 26) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                       <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
-                        <span>DRAGON Score (IVT Outcome Prediction)</span>
+                        <span>DRAGON Score</span>
                         <i aria-hidden="true" data-lucide="chevron-down" className="w-4 h-4"></i>
                       </summary>
                       <div className="p-4">
-                        {(() => {
-                          const age = parseInt(telestrokeNote.age, 10) || 0;
-                          const nihss = parseInt(telestrokeNote.nihss || nihssScore, 10) || 0;
-                          const glucose = parseFloat(telestrokeNote.glucose) || 0;
-                          const glucoseMmol = glucose > 30 ? glucose / 18.0 : glucose;
-
-                          let score = 0;
-                          const items = [];
-
-                          // D - Dense cerebral artery / early infarct (manual)
-                          items.push({ label: 'Dense artery sign or early infarct on NCCT', value: '?', points: '+1-2', auto: false });
-
-                          // R - mRS > 1 pre-stroke
-                          const mrs = parseInt(telestrokeNote.premorbidMRS, 10);
-                          if (!isNaN(mrs) && mrs > 1) { score += 1; items.push({ label: `Pre-stroke mRS > 1 (mRS=${mrs})`, value: 'Yes', points: '+1', auto: true }); }
-                          else items.push({ label: 'Pre-stroke mRS > 1', value: isNaN(mrs) ? '?' : 'No', points: mrs > 1 ? '+1' : '+0', auto: !isNaN(mrs) });
-
-                          // A - Age
-                          if (age >= 80) { score += 2; items.push({ label: `Age ≥80 (${age})`, value: 'Yes', points: '+2', auto: true }); }
-                          else if (age >= 65) { score += 1; items.push({ label: `Age 65-79 (${age})`, value: 'Yes', points: '+1', auto: true }); }
-                          else items.push({ label: `Age <65 (${age || '?'})`, value: age ? 'No' : '?', points: '+0', auto: !!age });
-
-                          // G - Glucose
-                          if (glucoseMmol > 8 || glucose > 144) { score += 1; items.push({ label: `Glucose >8 mmol/L (${glucose} mg/dL)`, value: 'Yes', points: '+1', auto: true }); }
-                          else items.push({ label: `Glucose ≤8 mmol/L (${glucose || '?'})`, value: glucose ? 'No' : '?', points: '+0', auto: !!glucose });
-
-                          // O - Onset to treatment (manual)
-                          items.push({ label: 'Onset to treatment >90 min', value: '?', points: '+1', auto: false });
-
-                          // N - NIHSS
-                          if (nihss > 15) { score += 3; items.push({ label: `NIHSS >15 (${nihss})`, value: 'Yes', points: '+3', auto: true }); }
-                          else if (nihss >= 10) { score += 2; items.push({ label: `NIHSS 10-15 (${nihss})`, value: 'Yes', points: '+2', auto: true }); }
-                          else if (nihss >= 5) { score += 1; items.push({ label: `NIHSS 5-9 (${nihss})`, value: 'Yes', points: '+1', auto: true }); }
-                          else items.push({ label: `NIHSS <5 (${nihss || '?'})`, value: nihss ? 'No' : '?', points: '+0', auto: !!nihss });
-
-                          const prognosis = score <= 3 ? { text: 'Good outcome likely (mRS 0-2)', bg: 'bg-ok-50 border-ok-200 dark:bg-ok-950 dark:border-ok-800', text2: 'text-ok-700 dark:text-ok-300', badge: 'bg-ok-600' }
-                            : score <= 5 ? { text: 'Intermediate prognosis', bg: 'bg-warn-50 border-warn-200 dark:bg-warn-950 dark:border-warn-800', text2: 'text-warn-700 dark:text-warn-300', badge: 'bg-warn-600' }
-                            : { text: 'Poor outcome likely (mRS 5-6 or miserable outcome)', bg: 'bg-crit-50 border-crit-200 dark:bg-crit-950 dark:border-crit-800', text2: 'text-crit-700 dark:text-crit-300', badge: 'bg-crit-600' };
-
-                          return (
-                            <div className="space-y-3">
-                              <div className="space-y-1">
-                                {items.map((item, i) => (
-                                  <div key={i} className={`flex items-center justify-between p-2 rounded text-xs ${item.auto ? 'bg-white border border-line dark:bg-card' : 'bg-slate-50 border border-dashed border-slate-300 dark:bg-paper-2 dark:border-strong'}`}>
-                                    <span className="text-slate-700 dark:text-ink-2">{item.label}</span>
-                                    <div className="flex items-center gap-2">
-                                      <span className={`font-mono text-xs ${item.auto ? 'text-cobalt-600 dark:text-cobalt-300' : 'text-slate-600 dark:text-mute'}`}>{item.points}</span>
-                                      {item.auto ? <span className="text-ok-600 text-xs dark:text-ok-300">auto</span> : <span className="text-slate-600 text-xs dark:text-mute">manual</span>}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                              <div className={`p-3 rounded-lg border ${prognosis.bg}`} aria-live="polite" aria-atomic="true">
-                                <div className="flex items-center justify-between">
-                                  <span className={`text-lg font-bold ${prognosis.text2}`}>DRAGON: {score} (auto-components)</span>
-                                  <span className={`text-xs px-2 py-1 rounded ${prognosis.badge} text-white font-bold`}>
-                                    {score <= 3 ? 'Good' : score <= 5 ? 'Intermediate' : 'Poor'}
-                                  </span>
-                                </div>
-                              </div>
-                              <p className="text-xs text-slate-600 dark:text-mute">Note: D (dense artery/early infarct) and O (onset time) must be assessed manually. Add +1-2 for D and +1 for O if applicable.</p>
-                            </div>
-                          );
-                        })()}
+                        <p className="mb-3 text-xs text-slate-700 dark:text-ink-2">{NO_INSTITUTIONAL_PROTOCOL_NOTICE}</p>
+                        <p className="text-xs text-slate-600 dark:text-ink-2">Input labels: Dense artery sign or early infarct on NCCT; pre-stroke mRS; age; glucose; onset to treatment; NIHSS.</p>
                       </div>
                     </details>
 
