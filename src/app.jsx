@@ -32712,8 +32712,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <V7DeviceFrame
                           src="https://rkalani1.github.io/stroke-eligibility-tables-embed/"
                           title="Stroke Trial Eligibility Tables"
-                          breadcrumb="Trials Screener · Eligibility Tables"
-                          poweredBy="stroke-eligibility-tables-embed"
                           openHref="https://rkalani1.github.io/stroke-eligibility-tables-embed/"
                           sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms"
                         />
