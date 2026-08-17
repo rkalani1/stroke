@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "generic-protocols",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.19.2",
-    "checksum": "sha256:f787357e75e7004f4d17ddde5d7bb309",
+    "appVersion": "6.19.3",
+    "checksum": "sha256:9ef1eb3adc0054158ac211e72be809e6",
     "count": 3,
     "source": "Public protocol reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -19,13 +19,13 @@
       "afterIVT24h": {
         "scenario": "After IVT (24h)",
         "target": "BP <180/105",
-        "protocol": "Monitor q15 min × 2h → q30 min × 6h → q1h × 16h; maintain BP below 180/105 for 24 hours."
+        "protocol": "Monitor q15 min × 2h → q30 min × 6h → q1h × 16h; treat if SBP >180 or DBP >105; maintain BP below 180/105 for 24 hours."
       },
       "afterEVT24h": {
         "scenario": "After EVT (24h)",
         "appliesWhen": "Documented successful recanalization (mTICI >=2b)",
         "target": "SBP 140-180",
-        "protocol": "After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180."
+        "protocol": "After documented successful recanalization (mTICI >=2b), maintain SBP in the source-listed range of 140-180, and below 180/105."
       }
     },
     "ichInitialEvaluation": {
@@ -70,8 +70,7 @@
         {
           "title": "CSF diversion",
           "criteria": [
-            "IVH or IPH with developing/symptomatic hydrocephalus",
-            "Decreased consciousness or obstructive physiology"
+            "IVH or IPH with developing/symptomatic hydrocephalus"
           ],
           "action": "Evaluate urgently for EVD."
         },
@@ -112,7 +111,7 @@
             "Basal-ganglia IPH volume >=20 mL by ABC/2",
             "NIHSS >=6",
             "CTA/MRA without vascular lesion",
-            "Arrival/evaluation <=15 hours since last known well",
+            "Arrival <=15 hours since last known well",
             "No clear standard-of-care surgical indication"
           ],
           "action": "MINUTE has operational priority over MIRROR when both are possible. Notify the approved trial pathway using current study materials; do not publish or infer internal contact details."

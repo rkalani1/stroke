@@ -46,7 +46,7 @@ Monitoring adjuncts
 Use close serial neurologic exams and repeat imaging when the exam changes.
 Surgery Screens
 CSF diversion
-IVH or IPH with developing/symptomatic hydrocephalus; Decreased consciousness or obstructive physiology
+IVH or IPH with developing/symptomatic hydrocephalus
 .
 Evaluate urgently for EVD.
 Decompression
@@ -63,7 +63,7 @@ Lobar IPH 30-80 mL; Age 18-80; NIHSS >5; GCS 5-14; No underlying vascular lesion
 Screen for the approved ENRICH-based standard-of-care pathway.
 Trial and Registry Screens
 MINUTE screen
-Age 18-80; Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH; Basal-ganglia IPH volume >=20 mL by ABC/2; NIHSS >=6; CTA/MRA without vascular lesion; Arrival/evaluation <=15 hours since last known well; No clear standard-of-care surgical indication
+Age 18-80; Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH; Basal-ganglia IPH volume >=20 mL by ABC/2; NIHSS >=6; CTA/MRA without vascular lesion; Arrival <=15 hours since last known well; No clear standard-of-care surgical indication
 .
 MINUTE has operational priority over MIRROR when both are possible. Notify the approved trial pathway using current study materials; do not publish or infer internal contact details.
 MIRROR registry screen
@@ -243,8 +243,7 @@ Maintain airway
 2
 Hold ACE inhibitors
 — stop the thrombolytic infusion
-if alteplase is the agent being administered
-; tenecteplase is a single bolus, so there is no infusion to stop
+if alteplase is being administered
 3
 Methylprednisolone 125 mg IV
 4
@@ -321,7 +320,7 @@ repeat vitamin K 10 mg IV over 30 min.
 FFP pathway (if PCC unavailable or contraindicated):
 4 units emergency-release plasma immediately and request an additional 4 units (ideal plasma dose 15 mL/kg; each unit is 250-300 mL, so some patients need additional units) → recheck INR → if >1.5 administer 4 more units → if still >1.5 consult hematology. Consider concurrent furosemide if history of CHF.
 Direct Oral Anticoagulants (DOACs)
-Dabigatran (Direct Thrombin Inhibitor):
+Dabigatran (Direct Thrombin Inhibitor) — COR/LOE 2a/B:
 Idarucizumab (Praxbind):
 5 g IV — two 2.5 g doses, ≤15 min apart, each over 5-10 min.
 If unavailable:
@@ -330,7 +329,7 @@ Activated charcoal:
 if ingestion <2 hours.
 Dialysis:
 ~65% removed (t½ = 14h, longer in renal impairment).
-Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors):
+Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors) — COR/LOE 2b/B:
 Andexanet alfa:
 not available on the local formulary.
 4F-PCC:
@@ -354,11 +353,22 @@ Common Reversal Monitoring
 Laboratory testing: baseline, 15-30 minutes after reversal, 6 hours, and 24 hours.
 CT head: baseline, 6 hours or sooner for clinical deterioration, and 24 hours.
 Neurologic checks every hour for 24 hours; blood pressure per the ICH protocol; monitor for thrombotic complications.
+Blood-Product Replacement Thresholds
+Request these products, if not already ordered under a pathway above, based on the STAT results and assuming an average-sized adult.
+Fibrinogen <125 mg/dL:
+prepare and transfuse 2 units of cryoprecipitate (1 unit = 5 pre-pooled cryoprecipitates).
+Platelets <50 K/µL:
+prepare and transfuse 2 units of platelets.
+Platelets 50-100 K/µL:
+prepare and transfuse 1 unit of platelets.
+INR >1.5:
+use the 4F-PCC or plasma pathway above.
+These thrombocytopenia thresholds are distinct from antiplatelet-associated hemorrhage, where routine platelet transfusion is not recommended.
 Absolute contraindications to PCC:
 • Disseminated intravascular coagulation (DIC)
 • Heparin-induced thrombocytopenia (HIT)
 Relative contraindications to PCC/FFP:
-• History of major thrombosis/thromboembolism ≤6 weeks
+• Thrombotic event <6 weeks
 • Major surgery ≤6 weeks
 • Known prothrombotic disorder
 • Mechanical circulatory support (involve cardiology)
@@ -366,8 +376,8 @@ Discuss relative contraindications with the stroke service before proceeding.
 Antiplatelet-Associated ICH
 Discontinue antiplatelet agent(s). Platelet transfusion is
 NOT routinely recommended
-.
-Desmopressin efficacy is uncertain for antiplatelet-associated hemorrhage; the institutional source does not provide a dose.
+(COR/LOE 3/B).
+Desmopressin efficacy is uncertain for antiplatelet-associated hemorrhage (COR/LOE 2b/C); the institutional source does not provide a dose.
 Hematoma Expansion Prevention
 Blood Pressure Target
 Spontaneous ICH only. Not for hemorrhage from a vascular malformation or for post-operative neurosurgical cases.
@@ -386,7 +396,7 @@ avoid iatrogenic SBP <130 during the first 24 hours. Spontaneous autoregulation 
 Large/severe ICH or decompression:
 individualize and consider an initial SBP 160-180, reassessing after about 6 hours or repeat CT.
 Renal/ICP considerations:
-use caution with aggressive lowering in moderate-severe renal dysfunction and maintain CPP >60 mmHg when ICP is elevated.
+use caution with aggressive lowering in moderate-severe renal dysfunction and maintain CPP >60 mmHg, especially with elevated ICP.
 Agents named by the institutional source:
 IV nicardipine or IV labetalol; no doses are supplied.
 IVH & Hydrocephalus Management

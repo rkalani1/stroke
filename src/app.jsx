@@ -124,6 +124,7 @@ import {
 } from './calculators-extended.js';
 import {
   getLocalInstitutionalContent,
+  GENERALIZABILITY_LIMITATIONS,
   ICH_INITIAL_EVALUATION_ALGORITHM,
   isSuccessfulEvtReperfusion,
 } from './institutional-protocols.js';
@@ -5434,7 +5435,7 @@ fever_management: {
               category: 'Complications',
               title: 'Post-thrombolysis orolingual angioedema',
               recommendation: 'Monitor for orolingual angioedema after TNK, especially in patients on ACE inhibitors. Occurs in 1-5% of tPA/TNK recipients, typically within 2 hours. Immediate airway assessment is critical.',
-              detail: 'Stepwise management: 1) Maintain airway — intubation may not be necessary if edema is limited to the anterior tongue and lips; edema involving the larynx, palate, floor of mouth, or oropharynx with rapid progression (within 30 min) poses higher risk of requiring intubation; awake fiberoptic intubation is optimal. 2) Hold ACE inhibitors — stop the thrombolytic infusion if alteplase is the agent being administered (tenecteplase is a single bolus, so there is no infusion to stop). 3) Methylprednisolone 125 mg IV + Diphenhydramine 50 mg IV + Famotidine 20 mg IV. 4) If there is further increase in angioedema: Epinephrine (0.1%) 0.3 mL subcutaneously or 0.5 mL by nebulizer. 5) Icatibant 30 mg subcutaneously, once (1 dose). Risk factors: ACE inhibitor use (5x risk), anterior circulation infarcts involving insular cortex.',
+              detail: 'Stepwise management: 1) Maintain airway — intubation may not be necessary if edema is limited to the anterior tongue and lips; edema involving the larynx, palate, floor of mouth, or oropharynx with rapid progression (within 30 min) poses higher risk of requiring intubation; awake fiberoptic intubation is optimal. 2) Hold ACE inhibitors — stop the thrombolytic infusion if alteplase is being administered. 3) Methylprednisolone 125 mg IV + Diphenhydramine 50 mg IV + Famotidine 20 mg IV. 4) If there is further increase in angioedema: Epinephrine (0.1%) 0.3 mL subcutaneously or 0.5 mL by nebulizer. 5) Icatibant 30 mg subcutaneously, once (1 dose). Risk factors: ACE inhibitor use (5x risk), anterior circulation infarcts involving insular cortex.',
               classOfRec: 'IIb',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -28638,7 +28639,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </div>
                                   <div className="flex gap-2 items-start">
                                     <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">2</span>
-                                    <p className="text-sm"><strong>Hold ACE inhibitors</strong> — stop the thrombolytic infusion <em>if alteplase is the agent being administered</em>; tenecteplase is a single bolus, so there is no infusion to stop</p>
+                                    <p className="text-sm"><strong>Hold ACE inhibitors</strong> — stop the thrombolytic infusion <em>if alteplase is being administered</em></p>
                                   </div>
                                   <div className="flex gap-2 items-start">
                                     <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">3</span>
@@ -28833,7 +28834,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h4 className="font-semibold text-cobalt-700 mb-3 dark:text-cobalt-300">Direct Oral Anticoagulants (DOACs)</h4>
 
                           <div className="mb-3">
-                            <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">Dabigatran (Direct Thrombin Inhibitor):</p>
+                            <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">Dabigatran (Direct Thrombin Inhibitor) — COR/LOE 2a/B:</p>
                             <ul className="text-sm space-y-1">
                               <li><strong>Idarucizumab (Praxbind):</strong> 5 g IV — two 2.5 g doses, ≤15 min apart, each over 5-10 min.</li>
                               <li><strong>If unavailable:</strong> 4F-PCC 2000 units IV.</li>
@@ -28843,7 +28844,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
 
                           <div>
-                            <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors):</p>
+                            <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors) — COR/LOE 2b/B:</p>
                             <ul className="text-sm space-y-1">
                               <li><strong>Andexanet alfa:</strong> not available on the local formulary.</li>
                               <li><strong>4F-PCC:</strong> 2000 units IV — give if Direct Xa Inhibitor screen elevated and no contraindications.</li>
@@ -28880,6 +28881,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </ul>
                         </div>
 
+                        {/* Blood-product replacement thresholds — institutional reversal protocol */}
+                        <div className="bg-white p-4 rounded border mb-4 dark:bg-card">
+                          <h4 className="font-semibold text-cobalt-700 mb-3 dark:text-cobalt-300">Blood-Product Replacement Thresholds</h4>
+                          <p className="text-xs text-cobalt-600 mb-2 dark:text-cobalt-300">Request these products, if not already ordered under a pathway above, based on the STAT results and assuming an average-sized adult.</p>
+                          <ul className="text-sm space-y-1">
+                            <li><strong>Fibrinogen &lt;125 mg/dL:</strong> prepare and transfuse 2 units of cryoprecipitate (1 unit = 5 pre-pooled cryoprecipitates).</li>
+                            <li><strong>Platelets &lt;50 K/µL:</strong> prepare and transfuse 2 units of platelets.</li>
+                            <li><strong>Platelets 50-100 K/µL:</strong> prepare and transfuse 1 unit of platelets.</li>
+                            <li><strong>INR &gt;1.5:</strong> use the 4F-PCC or plasma pathway above.</li>
+                          </ul>
+                          <p className="text-xs text-cobalt-600 mt-2 dark:text-cobalt-300">These thrombocytopenia thresholds are distinct from antiplatelet-associated hemorrhage, where routine platelet transfusion is not recommended.</p>
+                        </div>
+
                         {/* Relative Contraindications */}
 
                         <div className="bg-white p-4 rounded border mb-4 dark:bg-card">
@@ -28890,7 +28904,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </ul>
                           <h4 className="font-semibold text-slate-700 mb-3 dark:text-ink-2">Relative contraindications to PCC/FFP:</h4>
                           <ul className="text-sm space-y-1">
-                            <li>• History of major thrombosis/thromboembolism ≤6 weeks</li>
+                            <li>• Thrombotic event &lt;6 weeks</li>
                             <li>• Major surgery ≤6 weeks</li>
                             <li>• Known prothrombotic disorder</li>
                             <li>• Mechanical circulatory support (involve cardiology)</li>
@@ -28903,8 +28917,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <h3 className="text-lg font-semibold text-crit-700 mb-4 dark:text-crit-300">Antiplatelet-Associated ICH</h3>
                           <div className="bg-white p-4 rounded border dark:bg-card">
                           <ul className="text-sm space-y-1">
-                            <li>Discontinue antiplatelet agent(s). Platelet transfusion is <strong>NOT routinely recommended</strong>.</li>
-                            <li>Desmopressin efficacy is uncertain for antiplatelet-associated hemorrhage; the institutional source does not provide a dose.</li>
+                            <li>Discontinue antiplatelet agent(s). Platelet transfusion is <strong>NOT routinely recommended</strong> (COR/LOE 3/B).</li>
+                            <li>Desmopressin efficacy is uncertain for antiplatelet-associated hemorrhage (COR/LOE 2b/C); the institutional source does not provide a dose.</li>
                             </ul>
                           </div>
                         </div>
@@ -28923,7 +28937,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <li><strong>Process:</strong> use smooth, sustained control and avoid peaks or variability.</li>
                               <li><strong>Lower boundary:</strong> avoid iatrogenic SBP &lt;130 during the first 24 hours. Spontaneous autoregulation below 130 is acceptable without symptomatic hypotension; vasopressors require agreement from the stroke and neurocritical-care attendings.</li>
                               <li><strong>Large/severe ICH or decompression:</strong> individualize and consider an initial SBP 160-180, reassessing after about 6 hours or repeat CT.</li>
-                              <li><strong>Renal/ICP considerations:</strong> use caution with aggressive lowering in moderate-severe renal dysfunction and maintain CPP &gt;60 mmHg when ICP is elevated.</li>
+                              <li><strong>Renal/ICP considerations:</strong> use caution with aggressive lowering in moderate-severe renal dysfunction and maintain CPP &gt;60 mmHg, especially with elevated ICP.</li>
                               <li><strong>Agents named by the institutional source:</strong> IV nicardipine or IV labetalol; no doses are supplied.</li>
                             </ul>
                           </div>
@@ -29320,6 +29334,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li>Codominant M2: the institutional flowchart supplies no recommendation.</li>
                               </ul>
                             </div>
+                            <div className="bg-white rounded-md border-l-4 border-amber-500 p-3 dark:bg-card ">
+                              <p className="font-semibold text-slate-800 text-sm mb-2 dark:text-ink">Generalizability limited for</p>
+                              <ul className="list-disc pl-4 text-xs text-slate-700 space-y-1 dark:text-ink-2">
+                                {GENERALIZABILITY_LIMITATIONS.map((limitation, i) => (
+                                  <li key={i}>{limitation}</li>
+                                ))}
+                              </ul>
+                              <p className="text-xs text-slate-600 mt-2 dark:text-ink-2">The institutional flowchart prints these as limits on how far its recommendations generalize; they are not separate exclusion criteria.</p>
+                            </div>
                           </div>
 
                           {/* Pediatric EVT Flowchart */}
@@ -29715,7 +29738,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <li>If all answers are no: administer 3 ounces of water in sequential drinks and observe for throat clearing, cough, or voice-quality change immediately and for 1 minute.</li>
                               <li>If any water-step sign occurs: document failure, keep NPO including medications, request Speech-Language Pathology evaluation, and notify the treating team. Otherwise document pass and use the appropriate diet/medication pathway.</li>
                             </ol>
-                            <p className="text-xs text-slate-600 dark:text-mute">A repeat RN screen within 24 hours after thrombolysis and/or thrombectomy requires significant neurologic improvement (NIHSS ≤5; no facial droop, tongue/palatal asymmetry, or airway concern), an authorized attending request, documented rationale, and team notification. Do not repeat the RN screen after an SLP evaluation has already been completed.</p>
+                            <p className="text-xs text-slate-600 dark:text-mute">A repeat RN screen within 24 hours after thrombolysis and/or thrombectomy requires significant neurologic improvement (NIHSS ≤5; no facial droop, tongue/palatal asymmetry, or airway concern), an authorized attending request, documented rationale, and team notification. Do not repeat the RN screen after an SLP evaluation has already been completed. If the patient’s clinical condition subsequently worsens, reconsider the need for further assessment.</p>
                           </div>
                         </details>
 
@@ -29774,7 +29797,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="bg-white p-3 rounded border dark:bg-card">
                               <h3 className="font-semibold text-warn-700 mb-2 dark:text-warn-300">Medication and Supportive Care</h3>
                               <ul className="text-sm space-y-1">
-                                <li><strong>Hold ACE inhibitors</strong> — stop the thrombolytic infusion <em>if alteplase is the agent being administered</em>; tenecteplase is a single bolus, so there is no infusion to stop</li>
+                                <li><strong>Hold ACE inhibitors</strong> — stop the thrombolytic infusion <em>if alteplase is being administered</em></li>
                                 <li><strong>Methylprednisolone:</strong> 125 mg IV</li>
                                 <li><strong>Diphenhydramine:</strong> 50 mg IV</li>
                                 <li><strong>Famotidine:</strong> 20 mg IV</li>
@@ -29823,7 +29846,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="bg-white p-3 rounded border dark:bg-card">
                             <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Post-Procedure Care</h3>
                             <ul className="text-sm space-y-1">
-                              <li>• Follow-up brain CT or MRI at 24 hours ±6 hours</li>
+                              <li>• Admit to the Neuro ICU for 24 hours after EVT; attend the post-thrombectomy huddle on admission for handoff with the ICU and anesthesiology teams</li>
+                              <li>• During the procedure, the institutional BP goal is SBP &gt;140 mmHg (neuroanesthesia responsible)</li>
+                              <li>• Follow-up brain CT or MRI at 24 hours ±6 hours; confirm dual-energy CT timing with the on-call stroke clinician</li>
                             </ul>
                             <p className="text-xs text-slate-600 mt-2 dark:text-mute">After documented successful recanalization (mTICI ≥2b), use the BP Management section for the institutional SBP 140-180 guardrail. The current source set does not supply a post-EVT nursing cadence.</p>
                           </div>
