@@ -17511,40 +17511,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* ===== v7 PATIENT STRIP (mobile) — sticky chip row above v6 strip during transition.
                          Phase 5 IA overhaul will remove the v6 strip below and promote Incomplete /
                          Safety-critical banners into PatientStrip as chip-links. ============== */}
-                    {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) ? (() => {
-                      const lkwIsoForStrip = (() => {
-                        const d = telestrokeNote.lkwDate, t = telestrokeNote.lkwTime;
-                        if (!d || !t) return null;
-                        try { return new Date(`${d}T${t}:00`).toISOString(); } catch (_) { return null; }
-                      })();
-                      const elapsedMinForStrip = lkwIsoForStrip
-                        ? Math.max(0, Math.floor((Date.now() - new Date(lkwIsoForStrip).getTime()) / 60000))
-                        : 0;
-                      const elapsedStatusForStrip = windowStatus?.color === 'red'
-                        ? 'crit'
-                        : windowStatus?.color === 'amber'
-                          ? 'warn'
-                          : 'none';
-                      const v7Patient = {
-                        age: telestrokeNote.age || '—',
-                        sex: telestrokeNote.sex || '—',
-                        lkw: telestrokeNote.lkwTime || '—',
-                        elapsed: lkwElapsed || '—',
-                        elapsedStatus: elapsedStatusForStrip,
-                        elapsedMin: elapsedMinForStrip,
-                        nihss: telestrokeNote.nihss || (nihssScore > 0 ? nihssScore : '—'),
-                        aspects: Number.isFinite(aspectsScore) ? aspectsScore : '—',
-                        anticoag: (telestrokeNote.anticoagBridging || {}).doacType || 'None',
-                        lkwUnknown: false
-                      };
-                      return (
-                        <V7PatientStripMobile
-                          patient={v7Patient}
-                          completion={undefined /* Phase 5 promotes Incomplete + Safety-critical banners here */}
-                          onJump={undefined}
-                        />
-                      );
-                    })() : null}
+                    <MobilePatientStrip
+                      telestrokeNote={telestrokeNote}
+                      nihssScore={nihssScore}
+                      windowStatus={windowStatus}
+                      lkwElapsed={lkwElapsed}
+                      aspectsScore={aspectsScore}
+                    />
 
                     {/* ===== PATIENT SUMMARY STRIP ===== */}
                     {/* v6 inline strip — kept during transition; Phase 5 removes it. */}
