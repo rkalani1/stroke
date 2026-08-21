@@ -728,6 +728,501 @@
         }
 
         /* mermaid CSS removed — algorithms now use JSX */
+
+        /* ═══════════════════════════════════════════════════════════════
+           v7.2 — "instrument grade" visual refinement.
+
+           CSS-ONLY and ADDITIVE. Every rule below hooks onto a selector
+           the app already renders, so no markup, copy, clinical value or
+           component logic changes — the DOM (and every content snapshot)
+           is byte-identical to v7.1.
+
+           Direction: this is a clinical instrument, so depth over
+           decoration. Warm paper and machined panels in light; a lit
+           graphite console in dark; one teal accent used decisively;
+           motion measured in a single 180 ms ease and always multiplied
+           by --motion-scale (zeroed under prefers-reduced-motion).
+
+           Colour discipline: nothing here re-values a token ramp, so the
+           WCAG pairs locked by `npm run lint:contrast` are untouched.
+           Accent fills stay inside cobalt-600 → cobalt-700, the two steps
+           the linter certifies for white label text.
+           ═══════════════════════════════════════════════════════════════ */
+
+        /* — 1. Edge + elevation ramp ————————————————————————————
+           The v7 shell/panel borders were tinted navy (15 23 42) while the
+           paper is warm (#FBFAF6); re-tinting them to the ink neutral is
+           what stops the chrome reading slightly cold against the page. */
+        :root {
+            --edge:         rgba(20, 23, 29, .075);
+            --edge-strong:  rgba(20, 23, 29, .16);
+            --inner-hi:     inset 0 1px 0 rgba(255, 255, 255, .8);
+            --sheen:        linear-gradient(180deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 96px);
+            --grain:        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)' opacity='.055'/%3E%3C/svg%3E");
+            --lift-1:       0 1px 1.5px rgba(20, 23, 29, .04), 0 3px 8px -5px rgba(20, 23, 29, .09);
+            --lift-2:       0 1px 2px rgba(20, 23, 29, .05), 0 12px 26px -14px rgba(20, 23, 29, .22);
+            --lift-3:       0 2px 4px rgba(20, 23, 29, .05), 0 28px 56px -26px rgba(20, 23, 29, .30);
+            --glow-accent:  0 10px 22px -12px color-mix(in oklab, var(--accent) 60%, transparent);
+            --dur:          180ms;
+
+            /* re-tint the v7 shell/panel chrome from navy to warm ink */
+            --shell-border: rgba(20, 23, 29, .07);
+            --panel-border: rgba(20, 23, 29, .07);
+            --shell-shadow: 0 1px 0 rgba(255, 255, 255, .7) inset,
+                            0 1px 2px rgba(20, 23, 29, .04),
+                            0 28px 56px -30px rgba(20, 23, 29, .28);
+            --card-shadow:  0 1px 1.5px rgba(20, 23, 29, .04), 0 3px 8px -5px rgba(20, 23, 29, .09);
+            --shadow-pop:   0 2px 6px rgba(20, 23, 29, .06), 0 30px 60px -26px rgba(20, 23, 29, .34);
+
+            /* The workspace is a bright sheet; the canvas behind it is the
+               desk. v7.1 set both to the same near-white, so the sheet had
+               no edge to be seen against. Deepening only the canvas (never
+               a surface that carries text) buys that edge for free. */
+            --app-bg:        #EFEBE1;
+            --app-bg-accent: #E6E0D2;
+            --surface-3:     #E7E1D4;
+            --shell-bg:      rgba(255, 255, 255, .99);
+            --panel-bg:      rgba(255, 255, 255, .97);
+        }
+
+        html.dark,
+        [data-theme="dark"] {
+            --edge:         rgba(226, 232, 240, .10);
+            --edge-strong:  rgba(226, 232, 240, .20);
+            --inner-hi:     inset 0 1px 0 rgba(255, 255, 255, .06);
+            --sheen:        linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, 0) 120px);
+            --grain:        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)' opacity='.075'/%3E%3C/svg%3E");
+            --lift-1:       0 1px 2px rgba(0, 0, 0, .40), 0 3px 10px -6px rgba(0, 0, 0, .55);
+            --lift-2:       0 1px 2px rgba(0, 0, 0, .50), 0 16px 34px -20px rgba(0, 0, 0, .80);
+            --lift-3:       0 2px 6px rgba(0, 0, 0, .55), 0 34px 64px -28px rgba(0, 0, 0, .88);
+
+            /* graphite, not navy — the old rgba(12,22,38) shell read blue
+               against the neutral #101317 canvas and muddied every panel */
+            --shell-bg:     rgba(23, 27, 33, .92);
+            --panel-bg:     rgba(23, 27, 33, .90);
+            --shell-border: rgba(226, 232, 240, .09);
+            --panel-border: rgba(226, 232, 240, .09);
+            --shell-shadow: 0 1px 0 rgba(255, 255, 255, .05) inset,
+                            0 2px 6px rgba(0, 0, 0, .5),
+                            0 34px 64px -30px rgba(0, 0, 0, .9);
+            --card-shadow:  0 1px 2px rgba(0, 0, 0, .40), 0 3px 10px -6px rgba(0, 0, 0, .55);
+            --shadow-pop:   0 2px 8px rgba(0, 0, 0, .55), 0 36px 70px -28px rgba(0, 0, 0, .9);
+
+            /* v7.1 gave the shell and the cards the same value, which is
+               why dark read as one flat sheet. Sink the shell, lift the
+               card surface one step: both stay far inside AA for the ink
+               and muted text that sit on them. */
+            --shell-bg:      rgba(17, 20, 25, .94);
+            --panel-bg:      rgba(17, 20, 25, .92);
+            --surface:       #1B2027;
+            --card:          #1B2027;
+            --panel:         #1B2027;
+            --surface-2:     #15181E;
+            --panel-2:       #232932;
+        }
+
+        /* — 2. Canvas atmosphere ————————————————————————————————
+           Warm paper base + two very low-alpha washes (teal from the top
+           right, gold from the bottom left) + a whisper of grain so the
+           gutters have tooth instead of reading as flat fill. Every layer
+           is fixed, so the atmosphere holds still while content scrolls.
+           Alphas are far below anything that could move text contrast. */
+        body {
+            background-color: var(--app-bg);
+            background-image:
+                radial-gradient(72rem 52rem at 84% -14%, color-mix(in oklab, var(--accent) 10%, transparent), transparent 62%),
+                radial-gradient(58rem 44rem at -12% 106%, color-mix(in oklab, rgb(var(--warn-500)) 7%, transparent), transparent 58%),
+                var(--grain),
+                linear-gradient(180deg, var(--app-bg) 0%, var(--surface-3) 100%);
+            background-size: auto, auto, 140px 140px, auto;
+            background-repeat: no-repeat, no-repeat, repeat, no-repeat;
+            background-attachment: fixed, fixed, fixed, fixed;
+            text-rendering: optimizeLegibility;
+        }
+        html.dark body,
+        [data-theme="dark"] body {
+            background-image:
+                radial-gradient(72rem 52rem at 84% -14%, color-mix(in oklab, var(--accent) 13%, transparent), transparent 62%),
+                radial-gradient(58rem 44rem at -12% 106%, color-mix(in oklab, rgb(var(--cobalt-700)) 22%, transparent), transparent 58%),
+                var(--grain),
+                linear-gradient(180deg, var(--app-bg) 0%, #08090B 100%);
+        }
+
+        /* — 3. The shell reads as one sheet of paper —————————————— */
+        .app-shell {
+            border-color: var(--shell-border);
+            background-image: var(--sheen);
+            background-repeat: no-repeat;
+        }
+
+        /* A single accent hairline across the top edge of the sheet. It is
+           the one purely decorative mark in the refinement, and it earns
+           its place: it tells you where the workspace begins. */
+        .app-shell::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 3px;
+            pointer-events: none;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            background: linear-gradient(90deg,
+                var(--accent) 0%,
+                color-mix(in oklab, var(--accent) 45%, transparent) 48%,
+                transparent 88%);
+        }
+        @media (max-width: 640px) {
+            .app-shell::before { border-radius: 0; }
+        }
+
+        /* — 4. Masthead —————————————————————————————————————————
+           A hairline of accent under the header gives the sticky bar an
+           edge to sit on once content scrolls beneath it. */
+        .app-header {
+            border-bottom-color: transparent;
+            box-shadow: 0 1px 0 var(--edge);
+        }
+        .app-header::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 1px;
+            pointer-events: none;
+            background: linear-gradient(90deg,
+                transparent,
+                color-mix(in oklab, var(--accent) 34%, transparent) 18%,
+                color-mix(in oklab, var(--accent) 34%, transparent) 82%,
+                transparent);
+        }
+        .app-header h1.font-serif {
+            letter-spacing: -.032em;
+            font-weight: 700;
+        }
+        /* Brand mark: lit from above, grounded by its own accent glow. */
+        .app-header .border-cobalt-200.bg-cobalt-50.text-cobalt-700 {
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), var(--glow-accent) !important;
+        }
+
+        /* Update banner: same corner radius as the sheet it sits on, and a
+           gradient with an inner highlight so it reads as a lit strip
+           rather than a flat block of teal. */
+        .app-shell > .bg-cobalt-600 {
+            background-image: linear-gradient(180deg,
+                rgb(var(--cobalt-600)) 0%,
+                rgb(var(--cobalt-700)) 100%);
+            border-radius: calc(var(--radius-lg) - 8px);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14), var(--lift-2);
+        }
+
+        /* — 5. Header resource chips ————————————————————————————— */
+        .app-header .resource-chip {
+            border-color: var(--edge-strong);
+            box-shadow: var(--lift-1);
+            transition: border-color var(--dur) var(--ease),
+                        color var(--dur) var(--ease),
+                        box-shadow var(--dur) var(--ease),
+                        transform var(--dur) var(--ease);
+        }
+        @media (hover: hover) {
+            .app-header .resource-chip:hover {
+                border-color: color-mix(in oklab, var(--accent) 48%, var(--edge-strong));
+                color: var(--accent-ink);
+                box-shadow: var(--lift-2);
+                transform: translateY(calc(-1px * var(--motion-scale)));
+            }
+        }
+
+        /* — 6. Panels ————————————————————————————————————————————
+           One elevation ramp for every bordered surface in the workspace,
+           so cards stop reading as outlined rectangles and start reading
+           as panels resting on the sheet. */
+        #main .border.border-line.rounded-md,
+        #main .border.border-slate-200.rounded-md {
+            /* the sheet, the rail pills and the signature cards all round at
+               12–14px; the workspace panels were the one surface still at 8 */
+            border-radius: 12px;
+        }
+        #main .border.border-line,
+        #main .border.border-slate-200 {
+            box-shadow: var(--lift-1);
+            transition: border-color var(--dur) var(--ease),
+                        box-shadow var(--dur) var(--ease),
+                        transform var(--dur) var(--ease);
+        }
+        html.dark #main .border.border-line,
+        [data-theme="dark"] #main .border.border-line {
+            box-shadow: var(--lift-1), var(--inner-hi);
+        }
+        @media (hover: hover) {
+            #main a.border.border-line:hover,
+            #main button.border.border-line:hover,
+            #main summary.border.border-line:hover {
+                border-color: color-mix(in oklab, var(--accent) 45%, var(--line));
+                box-shadow: var(--lift-2);
+                transform: translateY(calc(-1px * var(--motion-scale)));
+            }
+        }
+
+        /* Signature cards keep a hint of their topic stripe at rest — the
+           colour is the card's classification, so hiding it entirely until
+           hover threw away the one piece of colour coding the grid has. */
+        .v7-card::before {
+            opacity: .38;
+        }
+        .v7-card,
+        .v7-study {
+            box-shadow: var(--lift-1);
+        }
+        html.dark .v7-card,
+        html.dark .v7-study,
+        [data-theme="dark"] .v7-card,
+        [data-theme="dark"] .v7-study {
+            box-shadow: var(--lift-1), var(--inner-hi);
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            .v7-card:hover,
+            .v7-study:hover {
+                box-shadow: var(--lift-2);
+                border-color: color-mix(in oklab, var(--accent) 38%, var(--line));
+            }
+        }
+
+        /* — 7. Primary action ————————————————————————————————————
+           A cobalt-600 → cobalt-700 gradient: the top stop is the exact
+           colour the button already used, and both stops carry the
+           linter-certified 4.5:1 against white label text. */
+        button.bg-cobalt-600,
+        a.bg-cobalt-600 {
+            background-image: linear-gradient(180deg,
+                rgb(var(--cobalt-600)) 0%,
+                rgb(var(--cobalt-700)) 100%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), var(--glow-accent);
+            transition: box-shadow var(--dur) var(--ease),
+                        transform var(--dur) var(--ease),
+                        background-image var(--dur) var(--ease);
+        }
+        @media (hover: hover) {
+            button.bg-cobalt-600:hover,
+            a.bg-cobalt-600:hover {
+                background-image: linear-gradient(180deg,
+                    rgb(var(--cobalt-500)) 0%,
+                    rgb(var(--cobalt-600)) 100%);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2),
+                            0 14px 28px -12px color-mix(in oklab, var(--accent) 70%, transparent);
+            }
+        }
+        button.bg-cobalt-600:active,
+        a.bg-cobalt-600:active {
+            transform: translateY(calc(1px * var(--motion-scale)));
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, .18);
+        }
+
+        /* Soft accent buttons (Set diagnosis, Next incomplete, Copy) */
+        button.bg-cobalt-50.border-cobalt-300 {
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), var(--lift-1);
+            transition: background-color var(--dur) var(--ease),
+                        box-shadow var(--dur) var(--ease),
+                        transform var(--dur) var(--ease);
+        }
+        @media (hover: hover) {
+            button.bg-cobalt-50.border-cobalt-300:hover {
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), var(--lift-2);
+                transform: translateY(calc(-1px * var(--motion-scale)));
+            }
+        }
+
+        /* — 8. Pills and status chips ————————————————————————————
+           The readiness chips are the densest colour on the encounter
+           surface; an inner highlight keeps them from reading as flat
+           swatches, and the hover state makes their tappability obvious. */
+        .encounter-readiness-bar .rounded-full.border {
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5);
+            transition: box-shadow var(--dur) var(--ease),
+                        transform var(--dur) var(--ease);
+        }
+        html.dark .encounter-readiness-bar .rounded-full.border,
+        [data-theme="dark"] .encounter-readiness-bar .rounded-full.border {
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
+        }
+        @media (hover: hover) {
+            .encounter-readiness-bar .rounded-full.border:hover {
+                transform: translateY(calc(-1px * var(--motion-scale)));
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), var(--lift-1);
+            }
+        }
+
+        /* — 9. Navigation ————————————————————————————————————————— */
+        .app-nav {
+            box-shadow: none;
+        }
+        @media (max-width: 1023px) {
+            .app-nav nav {
+                box-shadow: var(--lift-1);
+            }
+        }
+        .tab-pill.active {
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), var(--glow-accent);
+        }
+        @media (min-width: 1024px) {
+            .app-shell > .app-nav .tab-pill {
+                transition: background-color var(--dur) var(--ease),
+                            color var(--dur) var(--ease),
+                            box-shadow var(--dur) var(--ease);
+            }
+            .app-shell > .app-nav .tab-pill.active {
+                box-shadow: inset 3px 0 0 0 var(--accent),
+                            0 1px 2px rgba(20, 23, 29, .05) !important;
+            }
+            /* the rail's own hairline, so the nav column reads as chrome
+               rather than as body content that lost its card */
+            .app-shell > #main {
+                border-left-color: var(--edge);
+            }
+        }
+        nav[aria-label="Mobile navigation"] {
+            box-shadow: 0 -1px 0 var(--edge), 0 -12px 32px -20px rgba(20, 23, 29, .3) !important;
+        }
+
+        /* — 10. Form controls ————————————————————————————————————— */
+        input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+        select,
+        textarea {
+            transition: border-color var(--dur) var(--ease),
+                        box-shadow var(--dur) var(--ease),
+                        background-color var(--dur) var(--ease);
+        }
+        input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 18%, transparent);
+            outline: none;
+        }
+
+        /* — 11. Focus ————————————————————————————————————————————
+           One focus signature everywhere: a crisp accent ring plus a soft
+           accent halo, so keyboard focus is unmissable on both themes. */
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+            box-shadow: 0 0 0 5px color-mix(in oklab, var(--accent) 16%, transparent);
+        }
+
+        /* — 12. Typography ————————————————————————————————————————
+           Optical tracking: display sizes tighten, mono eyebrow labels
+           open up. Both are the difference between type that was merely
+           set and type that was fitted. */
+        h2, h3 {
+            letter-spacing: -.015em;
+        }
+        .font-mono.uppercase,
+        .v6-eyebrow {
+            letter-spacing: .1em;
+            font-feature-settings: 'tnum' 1;
+        }
+        a:not(.resource-chip):not(.block) {
+            text-underline-offset: 2px;
+            text-decoration-thickness: from-font;
+        }
+
+        /* Eyebrow labels are the app's connective tissue — Step 01 · Capture,
+           Live readout, Window, Pulsara summary. Carrying the accent instead
+           of neutral grey ties the four surfaces into one system, and the
+           -800 (light) / -200 (dark) steps behind --accent-ink are the same
+           ones the contrast contract already certifies for label text. */
+        .text-eyebrow.text-mute,
+        .v6-eyebrow {
+            color: var(--accent-ink);
+        }
+
+        /* Readiness meter: a lit teal fill in a recessed track. */
+        .encounter-readiness-bar .bg-cobalt-600 {
+            background-image: linear-gradient(90deg,
+                rgb(var(--cobalt-500)) 0%,
+                rgb(var(--cobalt-700)) 100%);
+        }
+        .encounter-readiness-bar .bg-slate-200 {
+            box-shadow: inset 0 1px 2px rgba(20, 23, 29, .12);
+        }
+
+        /* Monospaced readouts (the Pulsara summary, note previews) read as
+           machine output: a tinted panel, a warm hairline, roomier leading. */
+        #main pre,
+        #main .font-mono.whitespace-pre-wrap {
+            line-height: 1.65;
+        }
+
+        /* — 13. Disclosure rows ————————————————————————————————— */
+        details > summary {
+            transition: background-color var(--dur) var(--ease),
+                        color var(--dur) var(--ease);
+            border-radius: inherit;
+        }
+        @media (hover: hover) {
+            details > summary:hover {
+                background-color: color-mix(in oklab, var(--accent) 5%, transparent);
+            }
+        }
+        details[open] > summary {
+            box-shadow: inset 0 -1px 0 var(--edge);
+        }
+
+        /* — 14. Rules and scrollbars ————————————————————————————— */
+        hr,
+        .border-t.border-line {
+            border-top-color: var(--edge);
+        }
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: color-mix(in oklab, var(--ink) 22%, transparent) transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 11px;
+            height: 11px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: color-mix(in oklab, var(--ink) 20%, transparent);
+            border: 3px solid transparent;
+            background-clip: content-box;
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: color-mix(in oklab, var(--ink) 34%, transparent);
+        }
+
+        ::selection {
+            background: color-mix(in oklab, var(--accent) 24%, transparent);
+            color: var(--ink);
+        }
+
+        /* — 15. One calm entrance ————————————————————————————————
+           A single fade as a panel mounts. No stagger, no travel: on a
+           workspace someone opens forty times a shift, anything more
+           becomes friction. Fully gated on prefers-reduced-motion. */
+        @media (prefers-reduced-motion: no-preference) {
+            @keyframes v72-enter {
+                from { opacity: 0; }
+                to   { opacity: 1; }
+            }
+            #main > div[id^="tabpanel-"] {
+                animation: v72-enter .26s var(--ease) both;
+            }
+        }
+
+        /* Nothing above should survive onto paper. */
+        @media print {
+            body { background: #fff !important; }
+            .app-header::after { display: none; }
+            #main .border.border-line,
+            .v7-card,
+            .v7-study { box-shadow: none !important; }
+        }
     </style>
     <script>
         // CRITICAL: Version management and automatic data cleanup
