@@ -1,7 +1,7 @@
 // src/evidence/screenerTrials.js
 //
 // Native port of the standalone stroke-trials-screener `trials` array.
-// 16 synthetic, public-clean trial objects used by the bedside Trial Screener
+// 14 synthetic, public-clean trial objects used by the bedside Trial Screener
 // (src/components/TrialScreener.jsx) and the dual-eval engine
 // (src/evidence/screener-eval.js).
 //

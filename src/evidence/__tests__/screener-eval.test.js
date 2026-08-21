@@ -21,17 +21,19 @@ const trialByAcronym = (acr) => screenerTrials.find((t) => t.acronym === acr);
 
 describe('screenerTrials — data integrity & compliance', () => {
   // NOTE: the brief described "16 trial objects", but the canonical source
-  // (stroke-trials-screener/index.html) contains exactly 15 — every acronym
-  // the brief enumerated (10 net-new + 5 overlap) is present and ported
+  // (stroke-trials-screener/index.html) contained exactly 15. One acute
+  // ischemic study has since been withdrawn from the local portfolio (the
+  // site is no longer participating), leaving 14 — every remaining acronym
+  // the brief enumerated (9 net-new + 5 overlap) is present and ported
   // verbatim. We assert the real source count.
-  it('ports all 15 source trials', () => {
-    expect(screenerTrials.length).toBe(15);
+  it('ports all 14 source trials', () => {
+    expect(screenerTrials.length).toBe(14);
   });
 
   it('includes the net-new and overlap acronyms', () => {
     const acronyms = screenerTrials.map((t) => t.acronym);
     [
-      'SISTER', 'STEP', 'TESTED', 'VERIFY', 'ASPIRE', 'SATURN', // overlap
+      'STEP', 'TESTED', 'VERIFY', 'ASPIRE', 'SATURN', // overlap
       'MINUTE', 'CLARITY', 'INTERCEPT', 'ESUS', 'MOCHA',
       'CAPPRICORN-1', 'SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2' // net-new
     ].forEach((acr) => expect(acronyms).toContain(acr));
@@ -103,76 +105,79 @@ describe('evaluateTrialEligibility — placeholder / soon handling', () => {
 });
 
 describe('evaluateAll — bucketing on representative patients', () => {
-  // PATIENT A — a fully-qualified SISTER candidate.
-  // Ischemic, anterior circulation, 12h onset, NIHSS 8, ASPECTS 8, mRS 0,
-  // no SISTER exclusions checked. Because every encoded trial is `first_pass`
-  // (sourceCompletenessStatus !== 'complete'), the engine intentionally never
-  // returns a green "eligible" verdict — fully-qualified candidates surface in
-  // the `pending` (🟡 Possible) bucket carrying a registry-confirmation field.
-  it('buckets a SISTER-qualified patient into the pending candidate list', () => {
+  // PATIENT A — a fully-qualified SCOUTS-3 candidate.
+  // Ischemic, 12h onset, age 65, inpatient rehab placement confirmed,
+  // English-speaking, no SCOUTS-3 exclusions checked. Because every encoded
+  // trial is `first_pass` (sourceCompletenessStatus !== 'complete'), the engine
+  // intentionally never returns a green "eligible" verdict — fully-qualified
+  // candidates surface in the `pending` (🟡 Possible) bucket carrying a
+  // registry-confirmation field.
+  it('buckets a SCOUTS-3-qualified patient into the pending candidate list', () => {
     const state = createInitialScreenerState();
     state.classification = 'ischemic';
     state.onsetVal = 12;
     state.onsetUnit = 'hours';
     state.age = 65;
     state.nihss = 8;
-    state.aspects = 8;
     state.preMrs = 0;
-    state.anteriorCirculation = true;
+    state.rehab = true;
+    state.language = true;
 
     const res = evaluateAll(state);
     expect(res.ready).toBe(true);
     // Compliance contract: no first-pass trial is ever returned as eligible.
     expect(res.eligible.length).toBe(0);
     const pendingAcr = res.pending.map((i) => i.trial.acronym);
-    expect(pendingAcr).toContain('SISTER');
-    // SISTER must not appear in the excluded bucket.
-    expect(res.excluded.map((i) => i.trial.acronym)).not.toContain('SISTER');
-    const sister = res.pending.find((i) => i.trial.acronym === 'SISTER');
-    expect(sister.matchedCriteria.length).toBeGreaterThan(0);
-    // The registry-confirmation gate is present.
-    expect(sister.pendingFields).toContain('Full registry/protocol confirmation');
+    expect(pendingAcr).toContain('SCOUTS-3');
+    // SCOUTS-3 must not appear in the excluded bucket.
+    expect(res.excluded.map((i) => i.trial.acronym)).not.toContain('SCOUTS-3');
+    const scouts = res.pending.find((i) => i.trial.acronym === 'SCOUTS-3');
+    expect(scouts.matchedCriteria.length).toBeGreaterThan(0);
+    // Every hard criterion is met, so the registry gate is the only thing left.
+    expect(scouts.pendingFields).toEqual(['Full registry/protocol confirmation']);
   });
 
-  // PATIENT B — hard-excluded from SISTER (onset too early, < 4.5h).
-  it('excludes SISTER for a patient outside its onset window', () => {
+  // PATIENT B — hard-excluded from SCOUTS-3 (onset too late, > 30d).
+  it('excludes SCOUTS-3 for a patient outside its onset window', () => {
     const state = createInitialScreenerState();
     state.classification = 'ischemic';
-    state.onsetVal = 2; // < 4.5h
-    state.onsetUnit = 'hours';
+    state.onsetVal = 60; // > 30d
+    state.onsetUnit = 'days';
     state.age = 65;
     state.nihss = 8;
-    state.aspects = 8;
     state.preMrs = 0;
-    state.anteriorCirculation = true;
+    state.rehab = true;
+    state.language = true;
 
     const res = evaluateAll(state);
     const excludedAcr = res.excluded.map((i) => i.trial.acronym);
-    expect(excludedAcr).toContain('SISTER');
-    const sister = res.excluded.find((i) => i.trial.acronym === 'SISTER');
-    expect(sister.exclusionReasons.join(' ')).toMatch(/4\.5-24h/);
+    expect(excludedAcr).toContain('SCOUTS-3');
+    const scouts = res.excluded.find((i) => i.trial.acronym === 'SCOUTS-3');
+    expect(scouts.exclusionReasons.join(' ')).toMatch(/> 30 days ago/);
     // And it is NOT eligible.
-    expect(res.eligible.map((i) => i.trial.acronym)).not.toContain('SISTER');
+    expect(res.eligible.map((i) => i.trial.acronym)).not.toContain('SCOUTS-3');
   });
 
   // PATIENT C — pending inputs. Ischemic at 12h with only classification +
-  // onset set: SISTER cannot be confirmed eligible (NIHSS/ASPECTS/anterior
-  // circ unselected) so it lands in pending, not eligible nor excluded.
-  it('buckets a SISTER candidate with missing inputs into pending', () => {
+  // onset set: SCOUTS-3 cannot be confirmed eligible (age / rehab placement /
+  // language unselected) so it lands in pending, not eligible nor excluded.
+  it('buckets a SCOUTS-3 candidate with missing inputs into pending', () => {
     const state = createInitialScreenerState();
     state.classification = 'ischemic';
     state.onsetVal = 12;
     state.onsetUnit = 'hours';
-    // age/nihss/aspects/anteriorCirculation deliberately left 'unselected'
+    // age/rehab/language deliberately left 'unselected'
 
     const res = evaluateAll(state);
     const pendingAcr = res.pending.map((i) => i.trial.acronym);
-    expect(pendingAcr).toContain('SISTER');
-    const sister = res.pending.find((i) => i.trial.acronym === 'SISTER');
-    expect(sister.pendingFields.length).toBeGreaterThan(0);
+    expect(pendingAcr).toContain('SCOUTS-3');
+    const scouts = res.pending.find((i) => i.trial.acronym === 'SCOUTS-3');
+    expect(scouts.pendingFields).toEqual(
+      expect.arrayContaining(['Age', 'Rehab unit placement', 'Language spoken'])
+    );
     // Not double-counted.
-    expect(res.eligible.map((i) => i.trial.acronym)).not.toContain('SISTER');
-    expect(res.excluded.map((i) => i.trial.acronym)).not.toContain('SISTER');
+    expect(res.eligible.map((i) => i.trial.acronym)).not.toContain('SCOUTS-3');
+    expect(res.excluded.map((i) => i.trial.acronym)).not.toContain('SCOUTS-3');
   });
 
   it('returns ready=false and empty buckets when classification is unselected', () => {

@@ -3,7 +3,7 @@
     "endpoint": "completed-trials",
     "schemaVersion": "1.0.0",
     "appVersion": "6.19.4",
-    "checksum": "sha256:802ebd783efce05cbe116834de721411",
+    "checksum": "sha256:97cbb002f5d1673eeb64f4c08095d6f2",
     "count": 113,
     "source": "Evidence atlas completed-trials bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -237,9 +237,7 @@
       "citationIds": [
         "cit-wake-up-2018"
       ],
-      "relatedActiveTrialIds": [
-        "sister"
-      ],
+      "relatedActiveTrialIds": [],
       "practiceImpact": "Foundational evidence for imaging-selected thrombolysis in wake-up / unknown onset stroke.",
       "lastReviewed": "2026-04-25",
       "promotedDate": "2026-04-25",
@@ -291,9 +289,7 @@
       "citationIds": [
         "cit-extend-2019"
       ],
-      "relatedActiveTrialIds": [
-        "sister"
-      ],
+      "relatedActiveTrialIds": [],
       "practiceImpact": "Supports perfusion-mismatch IVT in 4.5-9 h window when EVT not indicated.",
       "lastReviewed": "2026-04-25",
       "promotedDate": "2026-04-25",
@@ -342,9 +338,7 @@
       "citationIds": [
         "cit-epithet-2008"
       ],
-      "relatedActiveTrialIds": [
-        "sister"
-      ],
+      "relatedActiveTrialIds": [],
       "practiceImpact": "Conceptual basis for later mismatch-based late-window trials.",
       "lastReviewed": "2026-04-25",
       "promotedDate": "2026-04-25",
@@ -393,9 +387,7 @@
       "citationIds": [
         "cit-ecass4-2018"
       ],
-      "relatedActiveTrialIds": [
-        "sister"
-      ],
+      "relatedActiveTrialIds": [],
       "practiceImpact": "Adds to the late-window mismatch evidence base; not independently practice-changing.",
       "lastReviewed": "2026-04-25",
       "promotedDate": "2026-04-25",
@@ -451,9 +443,7 @@
       "citationIds": [
         "cit-timeless-2024"
       ],
-      "relatedActiveTrialIds": [
-        "sister"
-      ],
+      "relatedActiveTrialIds": [],
       "practiceImpact": "Cautionary: late-window TNK alone (with EVT permitted) did not meet its primary endpoint.",
       "lastReviewed": "2026-04-25",
       "promotedDate": "2026-04-25",
@@ -503,9 +493,7 @@
       "citationIds": [
         "cit-twist-2023"
       ],
-      "relatedActiveTrialIds": [
-        "sister"
-      ],
+      "relatedActiveTrialIds": [],
       "practiceImpact": "Late-window thrombolysis without advanced imaging is not supported.",
       "lastReviewed": "2026-04-25",
       "promotedDate": "2026-04-25",
@@ -556,16 +544,14 @@
         "other": ""
       },
       "imagingCriteria": "CTP mismatch / penumbra",
-      "applicabilityNotes": "Pure EVT-ineligible population — directly supports the SISTER niche.",
+      "applicabilityNotes": "Pure EVT-ineligible population — supports late-window IV thrombolysis where EVT is not an option.",
       "limitations": "Single-region (China); needs replication.",
       "certainty": "moderate",
       "evidenceType": "rct",
       "citationIds": [
         "cit-trace-iii-2024"
       ],
-      "relatedActiveTrialIds": [
-        "sister"
-      ],
+      "relatedActiveTrialIds": [],
       "practiceImpact": "Strongest evidence to date for late-window TNK in EVT-ineligible LVO.",
       "lastReviewed": "2026-04-25",
       "promotedDate": "2026-04-25",

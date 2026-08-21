@@ -134,49 +134,27 @@ describe('matcher engine — operators', () => {
 });
 
 describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
-  it('SISTER: empty form → needs_info, all 8 unknown', () => {
-    const r = evaluateActiveTrial(getActiveTrial('sister'), {});
+  it('RHAPSODY: empty form → needs_info, all 5 unknown', () => {
+    const r = evaluateActiveTrial(getActiveTrial('rhapsody'), {});
     expect(r.status).toBe('needs_info');
-    expect(r.counts.unknown).toBe(8);
+    expect(r.counts.unknown).toBe(5);
   });
 
-  it('SISTER: full form (eligible) → status eligible', () => {
-    const data = {
-      telestrokeNote: {
-        age: '65',
-        nihss: '12',
-        premorbidMRS: '1',
-        tnkRecommended: false,
-        evtRecommended: false,
-        ctpResults: 'mismatch on CTP',
-        vesselOcclusion: ['M1']
-      },
-      aspectsScore: 8,
-      hoursFromLKW: 8,
-      nihssScore: 12
-    };
-    const r = evaluateActiveTrial(getActiveTrial('sister'), data);
-    expect(r.status).toBe('eligible');
-    expect(r.counts.met).toBe(8);
-  });
-
-  it('SISTER: form with TNK already given → not_eligible (noTNK fails)', () => {
+  it('RHAPSODY: full form (eligible) → status eligible', () => {
     const data = {
       telestrokeNote: {
         age: '65',
         nihss: '12',
         premorbidMRS: '1',
         tnkRecommended: true,
-        evtRecommended: false,
-        ctpResults: 'mismatch',
-        vesselOcclusion: ['M1']
+        evtRecommended: false
       },
-      aspectsScore: 8,
       hoursFromLKW: 8,
       nihssScore: 12
     };
-    const r = evaluateActiveTrial(getActiveTrial('sister'), data);
-    expect(r.status).toBe('not_eligible');
+    const r = evaluateActiveTrial(getActiveTrial('rhapsody'), data);
+    expect(r.status).toBe('eligible');
+    expect(r.counts.met).toBe(5);
   });
 
   it('STEP-EVT: MeVO patient (M2 occlusion, NIHSS 8, age 50, mRS 1) → eligible', () => {
@@ -299,33 +277,22 @@ describe('matcher engine — exclusions', () => {
     expect(evaluateCriterion({ field: 'lastDOACType', operator: 'truthy', value: true }, {})).toBe('not_met');
   });
 
-  it('SISTER: priorStroke90d=true triggers exclusion → not_eligible', () => {
+  it('CAPTIVA: onAnticoag=true triggers exclusion → not_eligible', () => {
     const data = {
-      telestrokeNote: { age: '65', nihss: '12', premorbidMRS: '1', tnkRecommended: false, evtRecommended: false, ctpResults: 'mismatch', vesselOcclusion: ['M1'] },
-      aspectsScore: 8, hoursFromLKW: 8, nihssScore: 12,
-      priorStroke90d: true
+      telestrokeNote: { age: '60', diagnosisCategory: 'tia', ctaResults: 'severe MCA stenosis suggestive of intracranial atherosclerosis', premorbidMRS: '1' },
+      onAnticoag: true
     };
-    const r = evaluateActiveTrial(getActiveTrial('sister'), data);
-    expect(r.status).toBe('not_eligible');
-    expect(r.exclusions.some((x) => x.id === 'priorStroke90d')).toBe(true);
-  });
-
-  it('SISTER: lastDOACType=apixaban triggers onAnticoag exclusion via truthy', () => {
-    const data = {
-      telestrokeNote: { age: '65', nihss: '12', premorbidMRS: '1', tnkRecommended: false, evtRecommended: false, ctpResults: 'mismatch', vesselOcclusion: ['M1'], lastDOACType: 'apixaban' },
-      aspectsScore: 8, hoursFromLKW: 8, nihssScore: 12
-    };
-    const r = evaluateActiveTrial(getActiveTrial('sister'), data);
+    const r = evaluateActiveTrial(getActiveTrial('captiva'), data);
     expect(r.status).toBe('not_eligible');
     expect(r.exclusions.some((x) => x.id === 'onAnticoag')).toBe(true);
   });
 
-  it('SISTER: undefined exclusion fields → no triggers (eligible patient stays eligible)', () => {
+  it('STEP-EVT: undefined exclusion fields → no triggers (eligible patient stays eligible)', () => {
     const data = {
-      telestrokeNote: { age: '65', nihss: '12', premorbidMRS: '1', tnkRecommended: false, evtRecommended: false, ctpResults: 'mismatch', vesselOcclusion: ['M1'] },
-      aspectsScore: 8, hoursFromLKW: 8, nihssScore: 12
+      telestrokeNote: { age: '50', nihss: '8', premorbidMRS: '1', vesselOcclusion: ['M2'] },
+      hoursFromLKW: 6, nihssScore: 8
     };
-    const r = evaluateActiveTrial(getActiveTrial('sister'), data);
+    const r = evaluateActiveTrial(getActiveTrial('step-evt'), data);
     expect(r.status).toBe('eligible');
     expect(r.exclusions).toEqual([]);
   });
@@ -341,14 +308,14 @@ describe('matcher engine — exclusions', () => {
     expect(r.exclusions.some((x) => x.id === 'pregnancy')).toBe(true);
   });
 
-  it('every active trial has matcherExclusions populated (16 across 10 active trials)', () => {
+  it('every active trial has matcherExclusions populated (13 across 9 active trials)', () => {
     let total = 0;
     for (const t of activeTrials) {
       total += (t.matcherExclusions || []).length;
     }
     expect(total).toBeGreaterThan(0);
     // Trial-level matcherExclusions total across the active atlas.
-    expect(total).toBe(16);
+    expect(total).toBe(13);
   });
 });
 

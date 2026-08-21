@@ -21,9 +21,6 @@ export const ONSET_PRESETS = [
 ];
 
 export const EXCLUSION_ITEMS = [
-  { id: 'exThrombolysis', label: 'Prior Thrombolysis (tPA/TNK) for index stroke', classifications: ['ischemic'], trials: ['SISTER'] },
-  { id: 'exEvt', label: 'Prior EVT with clot engagement', classifications: ['ischemic'], trials: ['SISTER'] },
-  { id: 'exStroke90d', label: 'Known stroke in prior 90 days', classifications: ['ischemic'], trials: ['SISTER'] },
   { id: 'exMultipleTerritories', label: 'Acute occlusions in multiple vascular territories', classifications: ['ischemic'], trials: ['STEP'] },
   { id: 'exTandem', label: 'Tandem occlusions (cervical + intracranial)', classifications: ['ischemic'], trials: ['STEP'] },
   { id: 'exTerminalIllness', label: 'Terminal illness or life expectancy < 2y', classifications: ['ischemic', 'ich'], trials: ['TESTED', 'SATURN'] },
@@ -66,7 +63,7 @@ export const EXCLUSION_ITEMS = [
 ];
 
 const ALL_EXCLUSION_IDS = [
-  'exThrombolysis', 'exEvt', 'exStroke90d', 'exMultipleTerritories', 'exTandem',
+  'exMultipleTerritories', 'exTandem',
   'exTerminalIllness', 'exSecondaryIch', 'exMidbrain', 'exMassiveIvh',
   'exAbsentBrainstem', 'exEvdEvacuation', 'exPriorIch12m',
   'exClearAnticoagulationIndication', 'exClearAntiplateletIndication',

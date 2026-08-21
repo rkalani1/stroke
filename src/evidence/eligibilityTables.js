@@ -40,25 +40,6 @@ const UNVERIFIED_SUMMARY =
 // ── Trial definitions, keyed by acronym so the same trial can appear in multiple
 //    phase tables without duplicating its summary/eligibility/exclusions text. ──
 const TRIALS = {
-  SISTER: {
-    acronym: 'SISTER',
-    nct: 'NCT05948566',
-    status: 'enrolling',
-    href: CTGOV('NCT05948566'),
-    summary:
-      'A Phase-2, prospective, randomized, placebo-controlled, blinded, dose-finding trial determining the safety and preliminary efficacy of TS23 (a monoclonal antibody against alpha-2-antiplasmin) in acute ischemic stroke.',
-    eligibility: [
-      'Anterior circulation acute ischemic stroke',
-      'Within 4.5–24 hours of onset',
-      'NIHSS ≥ 4',
-      'ASPECTS ≥ 6 on CT or ≥ 7 on MRI, with favorable perfusion mismatch/core profile'
-    ],
-    exclusions: [
-      'Received thrombolysis or EVT with clot engagement',
-      'Known stroke in past 90 days',
-      'Pre-stroke mRS > 2'
-    ]
-  },
   STEP: {
     acronym: 'STEP',
     nct: 'NCT06289985',
@@ -342,7 +323,7 @@ export const eligibilityTables = [
     category: 'ischemic',
     phase: 'acute',
     title: 'Ischemic Stroke — Acute (Onset ≤ 24 Hours)',
-    trials: [TRIALS.SISTER, TRIALS.STEP]
+    trials: [TRIALS.STEP]
   },
   {
     id: 'ischemic-inpatient',

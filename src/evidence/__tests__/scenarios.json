@@ -20,30 +20,6 @@
     }
   },
   {
-    "name": "SISTER eligible — late-window non-LVO with mismatch",
-    "data": {
-      "telestrokeNote": {
-        "age": "65",
-        "nihss": "12",
-        "premorbidMRS": "1",
-        "tnkRecommended": false,
-        "evtRecommended": false,
-        "ctpResults": "CTP shows mismatch with penumbra >50 cc",
-        "vesselOcclusion": [
-          "M2"
-        ]
-      },
-      "strokeCodeForm": {
-        "age": "",
-        "nihss": ""
-      },
-      "aspectsScore": 8,
-      "nihssScore": 12,
-      "mrsScore": 0,
-      "hoursFromLKW": 8
-    }
-  },
-  {
     "name": "STEP-EVT MeVO",
     "data": {
       "telestrokeNote": {
@@ -240,69 +216,6 @@
       "nihssScore": 5,
       "mrsScore": 0,
       "hoursFromLKW": 3
-    }
-  },
-  {
-    "name": "SISTER eligible BUT prior stroke <90 days",
-    "data": {
-      "telestrokeNote": {
-        "age": "65",
-        "nihss": "12",
-        "premorbidMRS": "1",
-        "tnkRecommended": false,
-        "evtRecommended": false,
-        "ctpResults": "mismatch on CTP",
-        "vesselOcclusion": [
-          "M2"
-        ]
-      },
-      "aspectsScore": 8,
-      "nihssScore": 12,
-      "mrsScore": 0,
-      "hoursFromLKW": 8,
-      "priorStroke90d": true
-    }
-  },
-  {
-    "name": "SISTER eligible BUT prior intracranial hemorrhage",
-    "data": {
-      "telestrokeNote": {
-        "age": "65",
-        "nihss": "12",
-        "premorbidMRS": "1",
-        "tnkRecommended": false,
-        "evtRecommended": false,
-        "ctpResults": "mismatch",
-        "vesselOcclusion": [
-          "M2"
-        ]
-      },
-      "aspectsScore": 8,
-      "nihssScore": 12,
-      "mrsScore": 0,
-      "hoursFromLKW": 8,
-      "priorICH": true
-    }
-  },
-  {
-    "name": "SISTER eligible BUT on apixaban (lastDOACType truthy)",
-    "data": {
-      "telestrokeNote": {
-        "age": "65",
-        "nihss": "12",
-        "premorbidMRS": "1",
-        "tnkRecommended": false,
-        "evtRecommended": false,
-        "ctpResults": "mismatch",
-        "vesselOcclusion": [
-          "M2"
-        ],
-        "lastDOACType": "apixaban"
-      },
-      "aspectsScore": 8,
-      "nihssScore": 12,
-      "mrsScore": 0,
-      "hoursFromLKW": 8
     }
   },
   {

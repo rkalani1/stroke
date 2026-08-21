@@ -17,67 +17,6 @@ const lr = '2026-04-25';
 
 export const activeTrials = [
   makeActiveTrial({
-    id: 'sister',
-    shortName: 'SISTER',
-    fullName: 'Stroke Late Window Reperfusion with TS23 (Trial)',
-    nctId: 'NCT05948566',
-    phase: 'Phase 2',
-    status: 'recruiting',
-    topic: 'extended-window-ivt',
-    briefDescription: 'TS23 (monoclonal antibody to α2-antiplasmin) for late thrombolysis in acute ischemic stroke patients presenting 4.5-24 h from last known well, with mismatch profile, who are NOT receiving TNK or EVT.',
-    rationale: 'Tests whether late-window IV-only reperfusion can extend benefit to patients ineligible for EVT and outside the standard IVT window. Builds on signal from EXTEND/TIMELESS while focusing on the EVT-ineligible niche.',
-    inclusionCriteria: [
-      'Age ≥18 y',
-      'Anterior-circulation AIS, NIHSS ≥4 (4-5 must be disabling)',
-      '4.5-24 h from LKW',
-      'ASPECTS ≥6 on CT (or ≥7 on MRI)',
-      'CTP/PWI mismatch ratio >1.2, mismatch volume >10 mL, core <70 mL',
-      'Pre-stroke mRS ≤2'
-    ],
-    exclusionCriteria: [
-      'Receiving TNK or EVT',
-      'Prior stroke <90 days',
-      'Prior intracranial hemorrhage',
-      'On anticoagulation with active drug effect'
-    ],
-    matcherCriteria: [
-      { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
-      // SISTER inclusion: NIHSS ≥4 with disabling deficit OR NIHSS ≥6.
-      // The derived `nihssDisabling` field collapses the two-branch logic so the matcher
-      // can honor the trial's published inclusion (previously gated only NIHSS ≥6).
-      { field: 'nihssDisabling', operator: '==', value: true, label: 'NIHSS ≥6, or NIHSS 4-5 with disabling deficit' },
-      { field: 'hoursFromLKW', operator: 'between', value: [4.5, 24], label: '4.5-24 h from LKW' },
-      { field: 'tnkRecommended', operator: '==', value: false, label: 'No IV thrombolysis' },
-      { field: 'evtRecommended', operator: '==', value: false, label: 'No EVT planned' },
-      { field: 'aspectsScore', operator: '>=', value: 6, label: 'ASPECTS ≥6' },
-      { field: 'premorbidMRS', operator: '<=', value: 2, label: 'Pre-stroke mRS ≤2' },
-      { field: 'ctpResults', operator: 'present', value: ['mismatch', 'penumbra', 'salvageable'], label: 'CTP mismatch profile' }
-    ],
-    matcherExclusions: [
-      { id: 'priorStroke90d', field: 'priorStroke90d', operator: '==', value: true, label: 'Prior stroke <90 days' },
-      { id: 'priorICH', field: 'priorICH', operator: '==', value: true, label: 'Prior intracranial hemorrhage' },
-      { id: 'onAnticoag', field: 'lastDOACType', operator: 'truthy', value: true, label: 'On anticoagulation (active drug effect)' },
-    ],
-    relatedCompletedTrialIds: ['extend', 'wake-up', 'timeless', 'trace-iii', 'twist'],
-    link: 'https://clinicaltrials.gov/study/NCT05948566',
-    lastReviewed: lr,
-    verificationStatus: 'verified-clinicaltrials-gov',
-    category: 'ischemic',
-    keyTakeaways: [
-      "Tests whether IV thrombolysis benefits patients 4.5-24h from LKW who are NOT candidates for EVT",
-      "Requires perfusion mismatch on CTP — target is the \"TIMELESS-ineligible\" population",
-      "If positive, could expand treatment to patients who currently receive no acute reperfusion therapy"
-    ],
-    lookingFor: [
-      "Anterior circulation stroke",
-      "Late presenter (4.5-24h from LKW)",
-      "NOT getting TNK or EVT",
-      "Has salvageable tissue on CTP (mismatch profile)"
-    ],
-    legacyMatcherKey: 'SISTER'
-  }),
-
-  makeActiveTrial({
     id: 'step-evt',
     shortName: 'STEP-EVT',
     fullName: 'Stroke Therapy for Endovascular treatment Platform — Mild and MeVO',

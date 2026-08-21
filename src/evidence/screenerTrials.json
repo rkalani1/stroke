@@ -1,57 +1,5 @@
 [
   {
-    "acronym": "SISTER",
-    "exactFullStudyName": "Strategy for Improving Stroke Treatment Response",
-    "sourceHypothesisText": "A Phase-2, prospective, randomized, placebo-controlled, blinded, dose finding trial that aims to determine the safety and preliminary efficacy of TS23, a monoclonal antibody against the alpha-2 antiplasmin (a2-AP), in acute ischemic stroke.",
-    "status": "enrolling",
-    "sourceCompletenessStatus": "first_pass",
-    "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this public demo.",
-      "CT.gov also requires favorable perfusion mismatch/core imaging and study drug within 120 minutes of qualifying perfusion imaging."
-    ],
-    "timeCategory": "hyperacute",
-    "enrollmentWindowText": "4.5 – 24 hours",
-    "externalMetadata": {
-      "nct": "NCT05948566",
-      "registryUrl": "https://clinicaltrials.gov/study/NCT05948566",
-      "verificationDate": "2026-05-28"
-    },
-    "conciseBedsideSummary": "Evaluates TS23 mAb (anti-alpha-2-antiplasmin) in AIS presenting within 4.5-24h without thrombolysis or EVT clot engagement.",
-    "pathway": "Consult Stroke Research Coordinator / On-Call Stroke Fellow",
-    "noContactInfo": true,
-    "exactInclusionCriteria": [
-      "Anterior circulation acute ischemic stroke",
-      "Onset within 4.5-24 hours",
-      "NIHSS ≥ 4",
-      "ASPECTS 6 or more on CT or ASPECTS 7 or more on MRI",
-      "Favorable perfusion imaging mismatch/core profile"
-    ],
-    "exactExclusionCriteria": [
-      "Received thrombolysis",
-      "Received EVT with clot engagement",
-      "Known stroke in past 90 days",
-      "Pre stroke MRS > 2"
-    ],
-    "eligibility": {
-      "criteria": [
-        { "field": "classification", "operator": "==", "value": "ischemic", "error": "Requires Ischemic Stroke", "matchedLabel": "Ischemic Stroke classification selected" },
-        { "field": "anteriorCirculation", "operator": "==", "value": true, "error": "Requires anterior circulation stroke", "matchedLabel": "Anterior circulation confirmed", "pendingLabel": "Confirm stroke is in the anterior circulation (anterior circulation stroke is required)" },
-        { "field": "onsetHours", "operator": "between", "value": [4.5, 24], "error": "LKW-to-treatment window not 4.5-24h", "matchedLabel": "LKW-to-treatment in 4.5-24h window" },
-        { "field": "nihss", "operator": ">=", "value": 4, "error": "NIHSS < 4", "matchedLabel": "NIHSS is {value} (meets ≥ 4)" },
-        { "field": "aspects", "operator": ">=", "value": 6, "error": "CT ASPECTS < 6", "matchedLabel": "ASPECTS is {value} (meets ≥ 6)" },
-        { "field": "preMrs", "operator": "<=", "value": 2, "error": "Pre-stroke mRS > 2", "matchedLabel": "Pre-stroke mRS is {value} (meets ≤ 2)" }
-      ],
-      "exclusions": [
-        { "field": "exThrombolysis", "operator": "==", "value": true, "error": "Excludes prior thrombolysis", "pendingLabel": "Confirm no prior thrombolysis administered" },
-        { "field": "exEvt", "operator": "==", "value": true, "error": "Excludes prior EVT clot engagement", "pendingLabel": "Confirm no prior EVT with clot engagement" },
-        { "field": "exStroke90d", "operator": "==", "value": true, "error": "Excludes stroke in past 90 days", "pendingLabel": "Confirm no stroke in the past 90 days" }
-      ],
-      "manualPending": [
-        "Confirm favorable CT/MR perfusion mismatch/core profile"
-      ]
-    }
-  },
-  {
     "acronym": "STEP",
     "exactFullStudyName": "StrokeNet Thrombectomy Endovascular Platform",
     "sourceHypothesisText": "STEP is a Randomized, Multifactorial, Adaptive, Registry-leveraged, Platform trial that seeks to optimize the care of patients with acute ischemic stroke (AIS) due to large or medium vessel occlusions (LVOs and MVOs). The currently open domain looks to expand indication for EVT.",

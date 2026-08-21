@@ -35,7 +35,7 @@ describe('eligibilityTables — structure & integrity', () => {
   it('has the expected trial count per table', () => {
     const counts = Object.fromEntries(eligibilityTables.map((t) => [`${t.category}-${t.phase}`, t.trials.length]));
     expect(counts).toEqual({
-      'ischemic-acute': 2,
+      'ischemic-acute': 1,
       'ischemic-inpatient': 7,
       'ischemic-outpatient': 6,
       'ich-acute': 2,
