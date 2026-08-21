@@ -52,7 +52,6 @@ const fieldResolvers = {
   // Exclusion-only fields. The legacy default evaluator was
   // `data[field] === true`, so all of these resolve as top-level
   // booleans on the data envelope.
-  priorStroke90d: (d) => d?.priorStroke90d,
   priorICH: (d) => d?.priorICH,
   pregnancy: (d) => d?.pregnancy,
   hemorrhage: (d) => d?.hemorrhage,

@@ -45,7 +45,6 @@ trial via `relatedCompletedTrialIds`. Visually distinct (indigo on slate vs
 the matcher card's emerald/amber) so the boundary is unmistakable.
 
 Examples wired in this sprint:
-- SISTER → EXTEND, WAKE-UP, TIMELESS, TRACE-III, TWIST
 - TESTED → SELECT2, ANGEL-ASPECT, RESCUE-Japan-LIMIT, TENSION
 - CAPTIVA → CHANCE, POINT, THALES
 - SATURN → INTERACT3, ENRICH
