@@ -3,10 +3,6 @@
 // Regenerate via: node /tmp/gen-snapshot.mjs.
 export const EXPECTED_SNAPSHOT = {
   "empty form": {
-    "sister": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -33,48 +29,6 @@ export const EXPECTED_SNAPSHOT = {
     },
     "rhapsody": {
       "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "aspire": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    }
-  },
-  "SISTER eligible — late-window non-LVO with mismatch": {
-    "sister": {
-      "status": "eligible",
-      "exclusionsCount": 0
-    },
-    "step-evt": {
-      "status": "eligible",
-      "exclusionsCount": 0
-    },
-    "picasso": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "tested": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "verify": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "most": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "captiva": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "rhapsody": {
-      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -87,10 +41,6 @@ export const EXPECTED_SNAPSHOT = {
     }
   },
   "STEP-EVT MeVO": {
-    "sister": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "eligible",
       "exclusionsCount": 0
@@ -129,10 +79,6 @@ export const EXPECTED_SNAPSHOT = {
     }
   },
   "STEP-EVT low-NIHSS LVO": {
-    "sister": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "eligible",
       "exclusionsCount": 0
@@ -171,10 +117,6 @@ export const EXPECTED_SNAPSHOT = {
     }
   },
   "TESTED — pre-existing disability LVO": {
-    "sister": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "not_eligible",
       "exclusionsCount": 0
@@ -213,10 +155,6 @@ export const EXPECTED_SNAPSHOT = {
     }
   },
   "PICASSO — tandem": {
-    "sister": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "not_eligible",
       "exclusionsCount": 0
@@ -255,10 +193,6 @@ export const EXPECTED_SNAPSHOT = {
     }
   },
   "boundary — NIHSS = 6": {
-    "sister": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "not_eligible",
       "exclusionsCount": 0
@@ -297,10 +231,6 @@ export const EXPECTED_SNAPSHOT = {
     }
   },
   "late >24 h": {
-    "sister": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "not_eligible",
       "exclusionsCount": 0
@@ -339,10 +269,6 @@ export const EXPECTED_SNAPSHOT = {
     }
   },
   "ICH lobar on statin": {
-    "sister": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -381,10 +307,6 @@ export const EXPECTED_SNAPSHOT = {
     }
   },
   "ICH + AF (ASPIRE)": {
-    "sister": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -423,10 +345,6 @@ export const EXPECTED_SNAPSHOT = {
     }
   },
   "TIA + ICAS (CAPTIVA)": {
-    "sister": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -465,10 +383,6 @@ export const EXPECTED_SNAPSHOT = {
     }
   },
   "pediatric (age 12)": {
-    "sister": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "not_eligible",
       "exclusionsCount": 0
@@ -503,140 +417,10 @@ export const EXPECTED_SNAPSHOT = {
     },
     "aspire": {
       "status": "not_eligible",
-      "exclusionsCount": 0
-    }
-  },
-  "SISTER eligible BUT prior stroke <90 days": {
-    "sister": {
-      "status": "not_eligible",
-      "exclusionsCount": 1
-    },
-    "step-evt": {
-      "status": "eligible",
-      "exclusionsCount": 0
-    },
-    "picasso": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "tested": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "verify": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "most": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "captiva": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "rhapsody": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "aspire": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    }
-  },
-  "SISTER eligible BUT prior intracranial hemorrhage": {
-    "sister": {
-      "status": "not_eligible",
-      "exclusionsCount": 1
-    },
-    "step-evt": {
-      "status": "eligible",
-      "exclusionsCount": 0
-    },
-    "picasso": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "tested": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "verify": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "most": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "captiva": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "rhapsody": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "aspire": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    }
-  },
-  "SISTER eligible BUT on apixaban (lastDOACType truthy)": {
-    "sister": {
-      "status": "not_eligible",
-      "exclusionsCount": 1
-    },
-    "step-evt": {
-      "status": "eligible",
-      "exclusionsCount": 0
-    },
-    "picasso": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "tested": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "verify": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "most": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "captiva": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "rhapsody": {
-      "status": "not_eligible",
-      "exclusionsCount": 0
-    },
-    "saturn": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
-    "aspire": {
-      "status": "needs_info",
       "exclusionsCount": 0
     }
   },
   "STEP-EVT eligible BUT pregnant": {
-    "sister": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "not_eligible",
       "exclusionsCount": 1
@@ -675,10 +459,6 @@ export const EXPECTED_SNAPSHOT = {
     }
   },
   "STEP-EVT eligible BUT hemorrhage on imaging": {
-    "sister": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "not_eligible",
       "exclusionsCount": 1
@@ -717,10 +497,6 @@ export const EXPECTED_SNAPSHOT = {
     }
   },
   "ASPIRE eligible BUT mechanical valve": {
-    "sister": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "needs_info",
       "exclusionsCount": 0
@@ -759,10 +535,6 @@ export const EXPECTED_SNAPSHOT = {
     }
   },
   "CAPTIVA eligible BUT cardioembolic": {
-    "sister": {
-      "status": "needs_info",
-      "exclusionsCount": 0
-    },
     "step-evt": {
       "status": "needs_info",
       "exclusionsCount": 0

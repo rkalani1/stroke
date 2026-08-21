@@ -52,7 +52,6 @@ const fieldResolvers = {
   // Exclusion-only fields. The legacy default evaluator was
   // `data[field] === true`, so all of these resolve as top-level
   // booleans on the data envelope.
-  priorStroke90d: (d) => d?.priorStroke90d,
   priorICH: (d) => d?.priorICH,
   pregnancy: (d) => d?.pregnancy,
   hemorrhage: (d) => d?.hemorrhage,
@@ -63,8 +62,8 @@ const fieldResolvers = {
   cardioembolic: (d) => d?.cardioembolic,
   onAnticoag: (d) => d?.onAnticoag,
   recentMI: (d) => d?.recentMI,
-  // SISTER's onAnticoag (custom legacy evaluator) checks
-  // !!data.telestrokeNote?.lastDOACType (truthy on a string).
+  // Supports anticoagulation exclusions expressed as a `truthy` check on
+  // !!data.telestrokeNote?.lastDOACType (truthy on a non-empty string).
   lastDOACType: (d) => d?.telestrokeNote?.lastDOACType,
   // 'reperfusion' is a derived predicate: true if the encounter notes
   // recorded EITHER tnkRecommended OR evtRecommended. Derived fields are
@@ -80,7 +79,7 @@ const fieldResolvers = {
     if (tnk === undefined && evt === undefined) return null;
     return tnk === true || evt === true;
   },
-  // 'nihssDisabling' is SISTER-specific: matches NIHSS ≥6, or NIHSS 4-5 paired
+  // 'nihssDisabling' matches NIHSS ≥6, or NIHSS 4-5 paired
   // with a recorded disabling-deficit flag. Returns null (unknown) when neither
   // NIHSS nor the disabling flag is recorded so trials surface as needs_info on
   // a fresh form rather than silently not_eligible.
@@ -155,7 +154,7 @@ const operators = {
   '==': (resolved, value) => {
     if (typeof value === 'boolean') {
       // Boolean equality must distinguish "field absent" (null) from
-      // "field is the other boolean" (false). E.g., SISTER's noTNK
+      // "field is the other boolean" (false). E.g., a "no thrombolysis"
       // criterion needs tnkRecommended === false (a recorded decision
       // *not* to give TNK) and unknown when tnkRecommended is undefined.
       if (resolved === undefined || resolved === null) return null;
@@ -185,8 +184,8 @@ const operators = {
     if (resolved === undefined || resolved === null || resolved === '') return null;
     return value.includes(resolved);
   },
-  // 'truthy' — JS-truthy match. Used for exclusion criteria like
-  // SISTER's onAnticoag which fires on !!data.telestrokeNote?.lastDOACType
+  // 'truthy' — JS-truthy match. Used for exclusion criteria such as an
+  // on-anticoagulation flag firing on !!data.telestrokeNote?.lastDOACType
   // (a non-empty string is truthy; undefined / null / '' are falsy).
   // For exclusion semantics: returns true when resolved is truthy,
   // false when resolved is undefined / null / '' / 0 / false.
@@ -298,7 +297,7 @@ export function evaluateActiveTrial(activeTrial, data) {
 
 /**
  * Drop-in replacement for the legacy evaluateAllTrials. Returns a map
- * keyed by the legacy matcher key (e.g. 'SISTER', 'STEP') so the UI
+ * keyed by the legacy matcher key (e.g. 'STEP', 'TESTED') so the UI
  * code that consumes it doesn't need to change.
  *
  * Output shape per trial mirrors evaluateTrialEligibility's: trialId,

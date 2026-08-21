@@ -83,24 +83,24 @@ describe('matcher field-binding helpers', () => {
 
   // ===== The Phase 7 regression cases =====
   describe('Phase 7 regression: Age and pre-stroke mRS must not be flagged missing when populated', () => {
-    it('SISTER age criterion: telestrokeNote.age = "55" → met (not unknown)', () => {
+    it('STEP-EVT age criterion: telestrokeNote.age = "55" → met (not unknown)', () => {
       const data = { telestrokeNote: { age: '55', premorbidMRS: '1' }, strokeCodeForm: { age: '' } };
-      // Mirrors the SISTER criterion's evaluator: trialGte(ageOf(data), 18)
+      // Mirrors the STEP-EVT criterion's evaluator: trialGte(ageOf(data), 18)
       expect(trialGte(ageOf(data), 18)).toBe(true);
     });
-    it('SISTER age criterion: empty form → unknown (null), NOT not_met', () => {
+    it('STEP-EVT age criterion: empty form → unknown (null), NOT not_met', () => {
       const data = { telestrokeNote: { age: '', premorbidMRS: '' }, strokeCodeForm: { age: '' } };
       expect(trialGte(ageOf(data), 18)).toBeNull();
     });
-    it('SISTER pre-stroke mRS criterion: premorbidMRS = "0" → met', () => {
+    it('STEP-EVT pre-stroke mRS criterion: premorbidMRS = "0" → met', () => {
       const data = { telestrokeNote: { age: '55', premorbidMRS: '0' } };
       expect(trialLte(premorbidOf(data), 2)).toBe(true);
     });
-    it('SISTER pre-stroke mRS criterion: premorbidMRS = "3" → not_met (false), not unknown', () => {
+    it('STEP-EVT pre-stroke mRS criterion: premorbidMRS = "3" → not_met (false), not unknown', () => {
       const data = { telestrokeNote: { age: '55', premorbidMRS: '3' } };
       expect(trialLte(premorbidOf(data), 2)).toBe(false);
     });
-    it('SISTER pre-stroke mRS criterion: premorbidMRS = "" → unknown', () => {
+    it('STEP-EVT pre-stroke mRS criterion: premorbidMRS = "" → unknown', () => {
       const data = { telestrokeNote: { age: '55', premorbidMRS: '' } };
       expect(trialLte(premorbidOf(data), 2)).toBeNull();
     });

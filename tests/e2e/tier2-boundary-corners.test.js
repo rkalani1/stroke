@@ -668,7 +668,7 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
   // =========================================================================
   describe('Feature 14 Boundary & Corner Cases', () => {
     it('F14-T2.1: Matcher engine field resolver handles missing patient data with graceful fallback', () => {
-      expect(activeTrials.length).toBe(10);
+      expect(activeTrials.length).toBe(9);
       for (const trial of activeTrials) {
         expect(Array.isArray(trial.matcherCriteria)).toBe(true);
         expect(trial.matcherCriteria.length).toBeGreaterThan(0);
@@ -700,7 +700,7 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
       }
     });
 
-    it('F14-T2.5: Declarative criteria coverage: all 50 criteria and 16 exclusions resolve to defined resolver functions', () => {
+    it('F14-T2.5: Declarative criteria coverage: all 42 criteria and 13 exclusions resolve to defined resolver functions', () => {
       const res = spawnSync('node', [path.join(ROOT, 'scripts/evidence-validate.mjs'), '--json'], { cwd: ROOT, encoding: 'utf8' });
       expect(res.status).toBe(0);
       const json = JSON.parse(res.stdout);

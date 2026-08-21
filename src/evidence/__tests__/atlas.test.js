@@ -24,8 +24,9 @@ import {
 
 describe('Evidence Atlas — data layer', () => {
   it('seeds the active trials', () => {
+    // Floor, not an exact count: the registry is expected to grow. 9 is the
+    // current roster, so this still fails if a seeded trial goes missing.
     expect(activeTrials.length).toBeGreaterThanOrEqual(9);
-    expect(getActiveTrial('sister')).toBeTruthy();
     expect(getActiveTrial('step-evt')).toBeTruthy();
     expect(getActiveTrial('aspire')).toBeTruthy();
   });
@@ -47,7 +48,7 @@ describe('Evidence Atlas — data layer', () => {
   });
 
   it('every legacy matcher key resolves to an active trial', () => {
-    for (const key of ['SISTER', 'STEP', 'PICASSO', 'TESTED', 'VERIFY', 'MOST', 'CAPTIVA', 'RHAPSODY', 'SATURN', 'ASPIRE']) {
+    for (const key of ['STEP', 'PICASSO', 'TESTED', 'VERIFY', 'MOST', 'CAPTIVA', 'RHAPSODY', 'SATURN', 'ASPIRE']) {
       expect(getActiveTrialByLegacyKey(key), `legacy key ${key}`).toBeTruthy();
     }
   });
@@ -116,8 +117,8 @@ describe('Evidence Atlas — query helpers', () => {
   });
 
   it('filterActiveTrials filters by topic and search', () => {
-    const ext = filterActiveTrials({ topic: 'extended-window-ivt' });
-    expect(ext.some((t) => t.id === 'sister')).toBe(true);
+    const late = filterActiveTrials({ topic: 'evt-late-window' });
+    expect(late.some((t) => t.id === 'tested')).toBe(true);
     expect(filterActiveTrials({ query: 'tandem' }).some((t) => t.id === 'picasso')).toBe(true);
   });
 
@@ -127,14 +128,14 @@ describe('Evidence Atlas — query helpers', () => {
     expect(got[0].id).toBe('wake-up');
   });
 
-  it('SISTER active trial surfaces extended-window IVT context', () => {
-    const sister = getActiveTrial('sister');
-    expect(sister).toBeTruthy();
-    const ctx = resolveCompletedTrials(sister.relatedCompletedTrialIds);
+  it('TESTED active trial surfaces late-window EVT context', () => {
+    const tested = getActiveTrial('tested');
+    expect(tested).toBeTruthy();
+    const ctx = resolveCompletedTrials(tested.relatedCompletedTrialIds);
     const ids = ctx.map((c) => c.id);
-    expect(ids).toContain('extend');
-    expect(ids).toContain('timeless');
-    expect(ids).toContain('trace-iii');
+    expect(ids).toContain('select2');
+    expect(ids).toContain('angel-aspect');
+    expect(ids).toContain('tension');
   });
 
   it('resolveClaimsWithCitations expands claim → citation chain', () => {

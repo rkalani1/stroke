@@ -360,7 +360,7 @@ function StudyDatabase({ onOpenDetails }) {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="e.g. SISTER, EVT, NCT05948566"
+          placeholder="e.g. STEP, EVT, NCT06289985"
           className="w-full h-11 px-3 text-base bg-white text-slate-900 placeholder:text-slate-500 border border-slate-200 rounded-md focus:outline-none focus:border-cobalt-500 focus:ring-2 focus:ring-cobalt-500/40"
         />
       </label>

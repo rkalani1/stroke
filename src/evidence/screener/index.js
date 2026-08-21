@@ -1,4 +1,3 @@
-import { SISTER } from './sister.js';
 import { STEP } from './step.js';
 import { TESTED } from './tested.js';
 import { MINUTE } from './minute.js';
@@ -14,7 +13,6 @@ import { MR_PICS } from './mr_pics.js';
 import { TELE_REHAB_2 } from './tele_rehab_2.js';
 
 export const screenerTrials = [
-  SISTER,
   STEP,
   TESTED,
   MINUTE,

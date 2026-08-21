@@ -3109,63 +3109,6 @@ Clinician Name`;
                         title: "Acute Trials",
                         trials: [
                             {
-                                name: "SISTER Trial",
-                                nct: "NCT05948566",
-                                phase: "Phase 2",
-                                status: "",
-                                description: "TS23 (monoclonal antibody to α2-antiplasmin) for late thrombolysis in acute ischemic stroke patients presenting 4.5-24 hours from last known well",
-                                inclusion: [
-                                    "Age ≥18 years",
-                                    "Suspected anterior circulation acute ischemic stroke",
-                                    "NIH Stroke Scale score ≥4 prior to randomization (participant must have a clearly disabling deficit if NIHSS is 4-5)",
-                                    "Time from last known well: 4.5-24 hours",
-                                    "Favorable baseline neuroimaging consisting of ALL of the following:",
-                                    "• ASPECTS ≥6 on CT (or ASPECTS ≥7 on MRI)",
-                                    "• Favorable perfusion imaging on CTP/MR-PWI consisting of ALL:",
-                                    "  - Mismatch ratio of penumbra:core >1.2",
-                                    "  - Mismatch volume >10 cc",
-                                    "  - Ischemic core volume <70 cc",
-                                    "Able to receive assigned study drug within 4.5 to 24 hours of stroke onset or last known well",
-                                    "Informed consent obtained from participant or legally authorized representative",
-                                    "Study drug administration encouraged within 90 minutes after qualifying perfusion image (allowed up to 120 minutes)"
-                                ],
-                                exclusion: [
-                                    "Received endovascular treatment with clot engagement (patients with groin puncture but no clot engagement due to spontaneous distal migration are permitted)",
-                                    "Received or planned to receive intravenous thrombolysis",
-                                    "Pre-stroke modified Rankin score >2",
-                                    "Previous treatment with TS23 or known previous allergy to antibody therapy",
-                                    "Known pregnancy, breastfeeding, or plan to breastfeed within 3 months of receiving TS23",
-                                    "Positive urine or serum pregnancy test for women of childbearing potential",
-                                    "Known previous stroke in the past 90 days",
-                                    "Known previous intracranial hemorrhage, intracranial neoplasm, subarachnoid hemorrhage, or arteriovenous malformation",
-                                    "Known active diagnosis of intracranial neoplasm",
-                                    "Clinical presentation suggestive of subarachnoid hemorrhage (even if initial CT scan was normal)",
-                                    "Surgery or biopsy of parenchymal organ in the past 30 days",
-                                    "Known trauma with internal injuries or persistent ulcerative wounds in the past 30 days",
-                                    "Severe head trauma in the past 90 days",
-                                    "Persistent systolic blood pressure >180mmHg or diastolic blood pressure >105mmHg despite best medical management",
-                                    "Serious systemic hemorrhage in the past 30 days",
-                                    "Hereditary or acquired hemorrhagic diathesis or coagulation factor deficiency",
-                                    "Use of dual antiplatelet agents within 48 hours prior to stroke symptom onset",
-                                    "International normalized ratio (INR) >1.7 or partial thromboplastin time (PTT) > 2x upper limit of normal",
-                                    "Use of direct thrombin inhibitors or direct factor Xa inhibitors within past 48 hours unless aPTT, INR, platelet count, ecarin clotting time (ECT), thrombin time (TT), or appropriate factor Xa activity assays are normal",
-                                    "Glucose <50 mg/dL or >400 mg/dL",
-                                    "Platelets <100,000/µL",
-                                    "Known severe renal failure with creatinine >3 mg/dL or glomerular filtration rate <30 mL/min",
-                                    "Severe contrast allergy that cannot be managed medically",
-                                    "Suspected cerebral vasculitis based on medical history and CTA/MRA",
-                                    "Suspected intracranial dissection based on medical history and CTA/MRA",
-                                    "Intracranial stenosis related to atherosclerosis proximal to intracranial thrombus",
-                                    "Intracranial stent in place proximal to the intracranial occlusion",
-                                    "Acute myocardial infarction in past 7 days",
-                                    "Major surgery (requiring intubation or transfusion) in past 30 days",
-                                    "Suspicion of aortic dissection on history, examination, or imaging",
-                                    "Presumed septic embolus; suspicion of bacterial endocarditis",
-                                    "Life expectancy <90 days",
-                                    "Currently participating in another investigational drug or device study"
-                                ]
-                            },
-                            {
                                 name: "STEP-EVT Trial",
                                 nct: "NCT06289985",
                                 phase: "Adaptive Platform",
@@ -21400,7 +21343,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="mt-3 text-sm">
                                   <div className="font-medium text-slate-700 mb-1 dark:text-ink-2">Active Ischemic Stroke Trials:</div>
                                   <ul className="text-slate-600 space-y-0.5 ml-4 dark:text-ink-2">
-                                    <li>• <strong>SISTER</strong> – Late thrombolysis (4.5-24h), no TNK/EVT</li>
                                     <li>• <strong>STEP-EVT</strong> – Mild LVO or medium/distal vessel occlusions</li>
                                     <li>• <strong>PICASSO</strong> – Tandem lesion (carotid + intracranial LVO)</li>
                                     <li>• <strong>TESTED</strong> – EVT in pre-existing disability (mRS 3-4)</li>

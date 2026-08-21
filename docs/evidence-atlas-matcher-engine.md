@@ -36,8 +36,8 @@ encounter-form data changes), the engine and the legacy evaluator both
 run. Disagreements appear as `console.warn` entries:
 
 ```
-[matcher-engine] SISTER (SISTER): 1 disagreement(s)
-  [{ kind: 'criterion', criterion: 'noTNK', engineStatus: 'unknown', legacyStatus: 'not_met' }]
+[matcher-engine] STEP-EVT (STEP): 1 disagreement(s)
+  [{ kind: 'criterion', criterion: 'domainMatch', engineStatus: 'unknown', legacyStatus: 'not_met' }]
 ```
 
 If they fully agree:

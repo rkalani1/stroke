@@ -194,13 +194,13 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
   // =========================================================================
   describe('2. Matcher Engine & Field Resolvers / Operators Stress Testing', () => {
 
-    it('verifies 100% field and operator coverage across all 10 active trials with 0 gaps', () => {
+    it('verifies 100% field and operator coverage across all 9 active trials with 0 gaps', () => {
       const report = coverageReport(activeTrials);
-      expect(report.total).toBe(50);
-      expect(report.covered).toBe(50);
+      expect(report.total).toBe(42);
+      expect(report.covered).toBe(42);
       expect(report.percent).toBe(100);
-      expect(report.exclusionsTotal).toBe(16);
-      expect(report.exclusionsCovered).toBe(16);
+      expect(report.exclusionsTotal).toBe(13);
+      expect(report.exclusionsCovered).toBe(13);
       expect(report.exclusionsPercent).toBe(100);
       expect(report.gaps).toEqual([]);
     });
@@ -287,60 +287,59 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
     });
 
     it('stress tests evaluateActiveTrial exclusion precedence and status transitions', () => {
-      // Pick a real active trial: SISTER (NCT05948566)
-      const sisterTrial = activeTrials.find(t => t.id === 'sister' || t.legacyMatcherKey === 'SISTER');
-      expect(sisterTrial).toBeDefined();
+      // Pick a real active trial: STEP-EVT (NCT06289985)
+      const stepEvtTrial = activeTrials.find(t => t.id === 'step-evt' || t.legacyMatcherKey === 'STEP');
+      expect(stepEvtTrial).toBeDefined();
 
       // Case 1: Fresh empty patient envelope -> status should be needs_info (since required fields are unknown)
-      const r1 = evaluateActiveTrial(sisterTrial, {});
+      const r1 = evaluateActiveTrial(stepEvtTrial, {});
       expect(r1.status).toBe('needs_info');
       expect(r1.counts.unknown).toBeGreaterThan(0);
 
-      // Case 2: Patient matching all inclusion criteria
-      const perfectSisterPatient = {
+      // Case 2: Patient matching all inclusion criteria (MeVO domain:
+      // M2 occlusion with NIHSS >=8, age >=18, mRS <=2, within 24 h)
+      const perfectStepEvtPatient = {
         telestrokeNote: {
           age: 65,
           nihss: 12,
           premorbidMRS: 0,
-          vesselOcclusion: ['ICA'],
-          tnkRecommended: false,
-          evtRecommended: false,
-          disablingDeficit: true,
-          ctpResults: 'penumbra mismatch present'
+          vesselOcclusion: ['M2'],
+          disablingDeficit: true
         },
         aspectsScore: 8,
         hoursFromLKW: 6.0,
-        priorStroke90d: false,
-        priorICH: false
+        pregnancy: false,
+        hemorrhage: false,
+        seizures: false
       };
-      const r2 = evaluateActiveTrial(sisterTrial, perfectSisterPatient);
+      const r2 = evaluateActiveTrial(stepEvtTrial, perfectStepEvtPatient);
       expect(r2.status).toBe('eligible');
       expect(r2.counts.not_met).toBe(0);
 
-      // Case 3: Exclusion triggered (e.g. priorICH: true) -> must force not_eligible
-      const excludedSisterPatient = {
-        ...perfectSisterPatient,
-        priorICH: true
+      // Case 3: Exclusion triggered (e.g. hemorrhage: true) -> must force not_eligible
+      const excludedStepEvtPatient = {
+        ...perfectStepEvtPatient,
+        hemorrhage: true
       };
-      const r3 = evaluateActiveTrial(sisterTrial, excludedSisterPatient);
+      const r3 = evaluateActiveTrial(stepEvtTrial, excludedStepEvtPatient);
       expect(r3.status).toBe('not_eligible');
       expect(r3.exclusions.length).toBeGreaterThan(0);
-      expect(r3.exclusions.some(x => x.field === 'priorICH' && x.triggered)).toBe(true);
+      expect(r3.exclusions.some(x => x.field === 'hemorrhage' && x.triggered)).toBe(true);
 
       // Case 4: Inclusion failed (e.g. age 17 < 18) -> not_eligible
-      const underageSisterPatient = {
-        ...perfectSisterPatient,
+      const underageStepEvtPatient = {
+        ...perfectStepEvtPatient,
         telestrokeNote: {
-          ...perfectSisterPatient.telestrokeNote,
+          ...perfectStepEvtPatient.telestrokeNote,
           age: 17
         }
       };
-      const r4 = evaluateActiveTrial(sisterTrial, underageSisterPatient);
+      const r4 = evaluateActiveTrial(stepEvtTrial, underageStepEvtPatient);
       expect(r4.status).toBe('not_eligible');
       expect(r4.counts.not_met).toBeGreaterThan(0);
     });
 
-    it('verifies evaluateAllTrialsViaEngine processes all 10 active trials without errors', () => {
+    it('verifies evaluateAllTrialsViaEngine processes all 9 active trials without errors', () => {
       const patientEnvelope = {
         telestrokeNote: {
           age: 68,
@@ -358,7 +357,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       const result = evaluateAllTrialsViaEngine(activeTrials, patientEnvelope);
       expect(result).toBeDefined();
       const keys = Object.keys(result);
-      expect(keys.length).toBe(10);
+      expect(keys.length).toBe(9);
 
       for (const key of keys) {
         const trialResult = result[key];
@@ -707,8 +706,8 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         cwd: REPO_ROOT,
         encoding: 'utf8'
       });
-      expect(res).toContain('50/50 criteria (100%)');
-      expect(res).toContain('16/16 exclusions (100%)');
+      expect(res).toContain('42/42 criteria (100%)');
+      expect(res).toContain('13/13 exclusions (100%)');
       expect(res).toContain('Evidence Atlas validation passed');
     });
 

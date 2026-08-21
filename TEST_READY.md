@@ -84,7 +84,7 @@ npx vitest run tests/e2e
 - **Tier 2 (F11-T2.1 to F11-T2.5)**: Publication year bounds (1995-2026), 7-9 digit numeric PMID strings, valid DOI regex syntax (`^10\.\d{4,9}\/`), PubMed verification status across modern trials, standard author string formats.
 
 ### Feature 12: Content Bundling Pipeline (`content/bundle.json`)
-- **Tier 1 (F12-T1.1 to F12-T1.5)**: `scripts/build-content-bundle.mjs` builds single JSON bundle, `content/bundle.json` contains 11 guidelines, 71 trials, 32 education modules, 34 calculators, 18 references, `--check` mode validates 0 diff, SHA-256 integrity checksum.
+- **Tier 1 (F12-T1.1 to F12-T1.5)**: `scripts/build-content-bundle.mjs` builds single JSON bundle, `content/bundle.json` contains 11 guidelines, 113 trials, 32 education modules, 34 calculators, 18 references, `--check` mode validates 0 diff, SHA-256 integrity checksum.
 - **Tier 2 (F12-T2.1 to F2-T2.5)**: File size boundary (100 KB - 5 MB), deterministic top-level key ordering, empty array safety, bundler execution idempotency, SHA-256 checksum format verification (`^sha256:[a-f0-9]{32}$`).
 
 ### Feature 13: Content Schema & Currency Validator
@@ -92,7 +92,7 @@ npx vitest run tests/e2e
 - **Tier 2 (F13-T2.1 to F13-T2.5)**: Non-future review date boundaries, 18-month lookback window calculation, unknown schema field rejection, `--strict` currency flag support, structured JSON error/warning report formatting.
 
 ### Feature 14: Evidence Atlas & Matcher Engine Validator
-- **Tier 1 (F14-T1.1 to F14-T1.5)**: `src/evidence/index.js` export of trials, citations, recommendations, claims, and topics, `scripts/evidence-validate.mjs` execution, 50/50 criteria (100%) and 16/16 exclusions (100%) executable coverage, 10 active and 71 completed trials.
+- **Tier 1 (F14-T1.1 to F14-T1.5)**: `src/evidence/index.js` export of trials, citations, recommendations, claims, and topics, `scripts/evidence-validate.mjs` execution, 42/42 criteria (100%) and 13/13 exclusions (100%) executable coverage, 9 active and 113 completed trials.
 - **Tier 2 (F14-T2.1 to F14-T2.5)**: Missing field graceful fallback, positive sample size bounds (>100), exclusion evaluator validation, structured criteria fields and operators, 100% declarative criteria resolution.
 
 ### Feature 15: Static Citation & Inline Reference Sweeper Validators

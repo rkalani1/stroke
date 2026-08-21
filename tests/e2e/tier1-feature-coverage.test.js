@@ -650,15 +650,15 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(result.stdout).toContain('Evidence Atlas validation passed');
     });
 
-    it('F14-T1.2: Evidence Atlas contains exactly 10 active trials and 113 completed trials', () => {
-      expect(activeTrials.length).toBe(10);
+    it('F14-T1.2: Evidence Atlas contains exactly 9 active trials and 113 completed trials', () => {
+      expect(activeTrials.length).toBe(9);
       expect(completedTrials.length).toBe(113);
     });
 
-    it('F14-T1.3: Matcher engine coverage achieves 100% (50/50 criteria and 16/16 exclusions)', () => {
+    it('F14-T1.3: Matcher engine coverage achieves 100% (42/42 criteria and 13/13 exclusions)', () => {
       const result = spawnSync('node', [path.join(ROOT, 'scripts/evidence-validate.mjs')], { cwd: ROOT, encoding: 'utf8' });
-      expect(result.stdout).toContain('50/50 criteria (100%)');
-      expect(result.stdout).toContain('16/16 exclusions (100%)');
+      expect(result.stdout).toContain('42/42 criteria (100%)');
+      expect(result.stdout).toContain('13/13 exclusions (100%)');
     });
 
     it('F14-T1.4: Evidence index exports 87 citations and 11 guideline recommendations', () => {

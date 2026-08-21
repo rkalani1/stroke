@@ -124,7 +124,7 @@ export const completedTrials = [
     certainty: 'high',
     evidenceType: 'rct',
     citationIds: ['cit-wake-up-2018'],
-    relatedActiveTrialIds: ['sister'],
+    relatedActiveTrialIds: [],
     practiceImpact: 'Foundational evidence for imaging-selected thrombolysis in wake-up / unknown onset stroke.',
     lastReviewed: lr,
     verificationStatus: 'verified-pubmed'
@@ -147,7 +147,7 @@ export const completedTrials = [
     certainty: 'high',
     evidenceType: 'rct',
     citationIds: ['cit-extend-2019'],
-    relatedActiveTrialIds: ['sister'],
+    relatedActiveTrialIds: [],
     practiceImpact: 'Supports perfusion-mismatch IVT in 4.5-9 h window when EVT not indicated.',
     lastReviewed: lr,
     verificationStatus: 'verified-pubmed'
@@ -170,7 +170,7 @@ export const completedTrials = [
     certainty: 'moderate',
     evidenceType: 'rct',
     citationIds: ['cit-epithet-2008'],
-    relatedActiveTrialIds: ['sister'],
+    relatedActiveTrialIds: [],
     practiceImpact: 'Conceptual basis for later mismatch-based late-window trials.',
     lastReviewed: lr,
     verificationStatus: 'verified-pubmed'
@@ -193,7 +193,7 @@ export const completedTrials = [
     certainty: 'low',
     evidenceType: 'rct',
     citationIds: ['cit-ecass4-2018'],
-    relatedActiveTrialIds: ['sister'],
+    relatedActiveTrialIds: [],
     practiceImpact: 'Adds to the late-window mismatch evidence base; not independently practice-changing.',
     lastReviewed: lr,
     verificationStatus: 'verified-pubmed'
@@ -216,7 +216,7 @@ export const completedTrials = [
     certainty: 'moderate',
     evidenceType: 'rct',
     citationIds: ['cit-timeless-2024'],
-    relatedActiveTrialIds: ['sister'],
+    relatedActiveTrialIds: [],
     practiceImpact: 'Cautionary: late-window TNK alone (with EVT permitted) did not meet its primary endpoint.',
     lastReviewed: lr,
     verificationStatus: 'verified-pubmed'
@@ -239,7 +239,7 @@ export const completedTrials = [
     certainty: 'high',
     evidenceType: 'rct',
     citationIds: ['cit-twist-2023'],
-    relatedActiveTrialIds: ['sister'],
+    relatedActiveTrialIds: [],
     practiceImpact: 'Late-window thrombolysis without advanced imaging is not supported.',
     lastReviewed: lr,
     verificationStatus: 'verified-pubmed'
@@ -257,12 +257,12 @@ export const completedTrials = [
     secondaryEndpoints: [{ name: 'sICH', result: '3.0% (TNK) vs 0.8% (control)' }],
     safetyFindings: { sich: '3.0% vs 0.8%', mortality: 'Similar', other: '' },
     imagingCriteria: 'CTP mismatch / penumbra',
-    applicabilityNotes: 'Pure EVT-ineligible population — directly supports the SISTER niche.',
+    applicabilityNotes: 'Pure EVT-ineligible population — supports late-window IV thrombolysis where EVT is not an option.',
     limitations: 'Single-region (China); needs replication.',
     certainty: 'moderate',
     evidenceType: 'rct',
     citationIds: ['cit-trace-iii-2024'],
-    relatedActiveTrialIds: ['sister'],
+    relatedActiveTrialIds: [],
     practiceImpact: 'Strongest evidence to date for late-window TNK in EVT-ineligible LVO.',
     lastReviewed: lr,
     verificationStatus: 'verified-pubmed'
