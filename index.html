@@ -1066,6 +1066,21 @@
         .tab-pill.active {
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), var(--glow-accent);
         }
+        /* Dark mode gave the active pill the brightened cobalt-300 -> 500
+           accent under white label text — about 2.2:1, well under the 4.5:1
+           the contrast contract holds every other label to. Use the same
+           600 -> 700 fill the rest of the app's primary actions use in dark;
+           the accent still reads as the active state, the label becomes
+           legible. Light theme keeps the brighter accent, where white on
+           cobalt-500 -> 600 is already certified. */
+        html.dark .tab-pill.active,
+        [data-theme="dark"] .tab-pill.active {
+            background: linear-gradient(135deg,
+                rgb(var(--cobalt-600)) 0%,
+                rgb(var(--cobalt-700)) 110%);
+            color: #fff;
+        }
+
         @media (min-width: 1024px) {
             .app-shell > .app-nav .tab-pill {
                 transition: background-color var(--dur) var(--ease),
@@ -1094,6 +1109,20 @@
                         box-shadow var(--dur) var(--ease),
                         background-color var(--dur) var(--ease);
         }
+        /* Dark controls were filled with a navy rgba(15,23,42,.9) left over
+           from the pre-v7 palette; against the graphite surfaces above they
+           read as a different material. Match them to the recessed step. */
+        html.dark input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+        html.dark select,
+        html.dark textarea,
+        [data-theme="dark"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+        [data-theme="dark"] select,
+        [data-theme="dark"] textarea {
+            background-color: rgba(21, 24, 30, .92);
+            border-color: var(--edge-strong);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, .35);
+        }
+
         input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
         select:focus,
         textarea:focus {
