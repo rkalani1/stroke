@@ -14,6 +14,7 @@ import {
   calculateHASBLEDScore,
   calculateRCVS2Score,
   calculatePHASESScore,
+  getPHASESRisk,
   calculateICHVolume,
   isJune2026MieLobarLocationText,
   calculateEnoxaparinDose,
@@ -3881,9 +3882,30 @@ Clinician Name`;
             // darken the IIa fill in dark so the white label clears AA (9.1:1).
             IIa: 'bg-cobalt-500 text-white dark:bg-cobalt-700',
             IIb: 'bg-warn-700 text-white',
+            // III: Harm (crit red) is visually distinct from III: No Benefit
+            // (slate) — the two carry different clinical meaning.
             III: 'bg-crit-600 text-white',
             'III-harm': 'bg-crit-600 text-white',
+            'III-no-benefit': 'bg-slate-600 text-white',
+            'N/A': 'bg-slate-500 text-white',
             Statement: 'bg-slate-500 text-white'
+          };
+          // Normalizes free-form class strings ("III: No Benefit", "2a",
+          // "III/A", "N/A") onto a GUIDELINE_CLASS_COLORS key so composite or
+          // unlabeled classes never fall through to an unstyled badge.
+          const normalizeGuidelineClass = (cls) => {
+            const c = String(cls || '').trim();
+            if (!c || c.toUpperCase() === 'N/A') return 'N/A';
+            const lower = c.toLowerCase();
+            if (lower.includes('iii') || lower.startsWith('3')) {
+              if (lower.includes('harm')) return 'III-harm';
+              if (lower.includes('no benefit') || lower.includes('no-benefit')) return 'III-no-benefit';
+              return 'III';
+            }
+            if (lower.startsWith('iia') || lower.startsWith('2a')) return 'IIa';
+            if (lower.startsWith('iib') || lower.startsWith('2b')) return 'IIb';
+            if (lower.startsWith('i') || lower.startsWith('1')) return 'I';
+            return 'Statement';
           };
 
           // Documented-NIHSS resolver for rule conditions. Returns null when no
@@ -22455,13 +22477,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                     'bp_ich_target_range': 'rec-ich-bp-target',
                                                     'bp_ich_avoid_low': 'rec-ich-bp-avoid-low',
                                                     'reversal_warfarin': 'rec-ich-anticoag-reversal-warfarin',
-                                                    'reversal_doac_xa': 'rec-ich-anticoag-reversal-fxa',
-                                                    'tnk_dose': 'rec-tnk-first-line',
-                                                    'evt_window': 'rec-evt-late-window',
-                                                    'evt_large_core': 'rec-evt-large-core',
-                                                    'late_window_ivt': 'rec-late-window-ivt',
+                                                    'reversal_xa_inhibitor': 'rec-ich-anticoag-reversal-fxa',
+                                                    'tnk_standard': 'rec-tnk-first-line',
+                                                    'evt_late_window': 'rec-evt-late-window',
+                                                    'evt_standard': 'rec-evt-late-window',
+                                                    'evt_large_core_early': 'rec-evt-large-core',
+                                                    'tnk_late_window': 'rec-late-window-ivt',
+                                                    'tnk_extended_imaging': 'rec-late-window-ivt',
                                                     'dapt_minor_stroke': 'rec-dapt-minor-stroke',
-                                                    'af_anticoag_timing': 'rec-af-early-anticoag'
+                                                    'doac_timing_af': 'rec-af-early-anticoag'
                                                   };
                                                   const atlasRecId = MANAGEMENT_REC_TO_ATLAS_REC[rec.id];
                                                   if (!atlasRecId) return null;
@@ -30322,6 +30346,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {!isNIHSSComplete() && <p className="mb-2 rounded border border-warn-200 bg-warn-50 p-2 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300"><strong>Incomplete:</strong> complete every NIHSS item in the Encounter tab before using or copying the score.</p>}
                         <p className="text-xs text-slate-600 mb-2 dark:text-mute">Use the NIHSS panel in the Encounter tab for full item-by-item scoring.</p>
                         <p className="text-xs text-slate-600 dark:text-ink-2">The institutional acute-stroke algorithm requires NIHSS documentation but does not supply scoring definitions or interpretation.</p>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Brott T et al. Stroke 1989;20:864-70 (PMID 2749846).</p>
                       </div>
                     </details>
 
@@ -30389,6 +30414,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         if (gcs === null) return React.createElement('div', { className: 'mt-3 border rounded-lg p-2 text-xs bg-warn-50 border-warn-200 text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300' }, React.createElement('span', { className: 'font-semibold' }, 'Incomplete: '), 'All three GCS components (Eye, Verbal, Motor) are required for a valid score.');
                         return null;
                       })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Teasdale G, Jennett B. Lancet 1974;2:81-4 (PMID 4136544).</p>
                       </div>
                     </details>
 
@@ -30717,6 +30743,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </label>
                           </div>
                         </div>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Rost NS et al. Stroke 2008;39:2304-9 (FUNC score, PMID 18556582).</p>
                       </div>
                     </details>
 
@@ -30772,6 +30799,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <p className="text-sm text-cobalt-800 dark:text-cobalt-300">The institutional EVT flowchart supplies the selected category definition above; it does not add an outcome label.</p>
                         </div>
                       )}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Bruno A et al. Stroke 2010;41:1048-50 (simplified mRS questionnaire, PMID 20224060).</p>
                       </div>
                     </details>
 
@@ -30888,6 +30916,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
                       </div>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Johnston SC et al. Lancet 2007;369:283-92 (ABCD², PMID 17258668).</p>
                       </div>
                     </details>
 
@@ -31024,6 +31053,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
                       </div>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Lip GY et al. Chest 2010;137:263-72 (CHA₂DS₂-VASc, PMID 19762550).</p>
                       </div>
                     </details>
 
@@ -31118,7 +31148,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <span className="text-sm"><strong>D</strong> (cont.) Alcohol use — ≥8 drinks/week</span>
                           </label>
                         </div>
-
+                        {(() => {
+                          const score = calculateHASBLEDScore(hasbledItems);
+                          return (
+                            <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
+                              <p className="text-lg font-bold">HAS-BLED Score: {score}</p>
+                              <p className="text-xs text-slate-700 dark:text-ink-2">{score >= 3
+                                ? 'Score \u22653: elevated bleeding risk \u2014 address modifiable factors (uncontrolled BP, labile INR, antiplatelets/NSAIDs, alcohol) and review more frequently. A high score is NOT by itself a reason to withhold anticoagulation.'
+                                : 'Score 0-2: lower bleeding risk. Reassess when clinical factors change.'}</p>
+                            </div>
+                          );
+                        })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Pisters R et al. Chest 2010;138:1093-1100 (HAS-BLED, PMID 20299623).</p>
                       </div>
                     </details>
 
@@ -31189,10 +31230,45 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               max="100"
                             />
                           </div>
+                          <label className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              className="text-cobalt-600 dark:text-cobalt-300"
+                              checked={!!ropeItems.largeShunt}
+                              onChange={(e) => setRopeItems(prev => ({...prev, largeShunt: e.target.checked}))}
+                            />
+                            <span className="text-sm">Large right-to-left shunt (PASCAL)</span>
+                          </label>
+                          <label className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              className="text-cobalt-600 dark:text-cobalt-300"
+                              checked={!!ropeItems.atrialSeptalAneurysm}
+                              onChange={(e) => setRopeItems(prev => ({...prev, atrialSeptalAneurysm: e.target.checked}))}
+                            />
+                            <span className="text-sm">Atrial septal aneurysm (PASCAL)</span>
+                          </label>
                         </div>
                       </div>
-
-                    </div>
+                      {(() => {
+                        const ropeScore = calculateROPEScore(ropeItems);
+                        const ageEntered = Number.isFinite(parseInt(ropeItems.age, 10));
+                        if (!ageEntered) {
+                          return <p className="text-xs text-slate-600 italic dark:text-mute">Enter age to compute the RoPE score (age is the largest contributor).</p>;
+                        }
+                        const pascal = evaluatePASCAL({ ropeScore, largeShunt: !!ropeItems.largeShunt, atrialSeptalAneurysm: !!ropeItems.atrialSeptalAneurysm });
+                        return (
+                          <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
+                            <p className="text-lg font-bold">RoPE Score: {ropeScore} / 10</p>
+                            {pascal && (
+                              <p className="text-sm mt-1"><span className="font-semibold">PASCAL category: {pascal.category}.</span> {pascal.recommendation}</p>
+                            )}
+                            <p className="text-xs text-slate-600 mt-1 dark:text-mute">Higher RoPE = more likely the PFO is pathogenic. PASCAL combines RoPE \u22657 with high-risk morphology (large shunt or atrial septal aneurysm); closure benefit concentrates in the Probable category.</p>
+                          </div>
+                        );
+                      })()}
+                    <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Sources: Kent DM et al. Neurology 2013;81:619-25 (RoPE, PMID 23864310); Kent DM et al. JAMA 2021;326:2277-86 (PASCAL, PMID 34905030).</p>
+                      </div>
                     </details>
 
 
@@ -31251,7 +31327,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <span className="text-sm">Subarachnoid hemorrhage on imaging</span>
                           </label>
                         </div>
-
+                        {(() => {
+                          const score = calculateRCVS2Score(rcvs2Items);
+                          return (
+                            <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
+                              <p className="text-lg font-bold">RCVS\u00b2 Score: {score}</p>
+                              <p className="text-xs text-slate-700 dark:text-ink-2">{score >= 5
+                                ? 'Score \u22655: RCVS highly likely (sensitivity 90%, specificity 99% in the derivation cohort).'
+                                : score >= 3
+                                  ? 'Score 3-4: indeterminate \u2014 further evaluation (vessel-wall imaging, CSF, repeat vascular imaging) to distinguish RCVS from vasculitis or other arteriopathy.'
+                                  : 'Score \u22642: RCVS unlikely (85% sensitivity, 100% specificity for exclusion) \u2014 evaluate for alternative arteriopathies (e.g., primary angiitis of the CNS).'}</p>
+                            </div>
+                          );
+                        })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Rocha EA et al. Neurology 2019;92:e639-e647 (RCVS², PMID 30635475).</p>
                       </div>
                     </details>
 
@@ -31306,6 +31395,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           </div>
                         </div>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Sources: Hunt WE, Hess RM. J Neurosurg 1968;28:14-20 (PMID 5635959); WFNS Committee report, J Neurosurg 1988;68:985-6 (PMID 3131498).</p>
                       </div>
                     </details>
 
@@ -31364,6 +31454,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </select>
                           </div>
                         </div>
+                        {(() => {
+                          const score = calculatePHASESScore(phasesItems);
+                          const risk = getPHASESRisk(score);
+                          const sizeEntered = Number.isFinite(parseFloat(phasesItems.size));
+                          if (!sizeEntered) {
+                            return <p className="text-xs text-slate-600 italic mt-2 dark:text-mute">Enter aneurysm size to compute the PHASES score.</p>;
+                          }
+                          return (
+                            <div className="p-3 mt-2 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
+                              <p className="text-lg font-bold">PHASES Score: {score}</p>
+                              <p className="text-sm">5-year rupture risk: <span className="font-semibold">{risk.risk}</span> ({risk.level})</p>
+                              <p className="text-xs text-slate-600 mt-1 dark:text-mute">Population-level estimate from pooled prospective cohorts \u2014 individualize with aneurysm morphology, growth, family history, and life expectancy.</p>
+                            </div>
+                          );
+                        })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Greving JP et al. Lancet Neurol 2014;13:59-66 (PHASES, PMID 24290159).</p>
                       </div>
                     </details>
 
@@ -31411,6 +31517,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           );
                         })()}
                         <p className="text-xs text-slate-600 mt-2 dark:text-mute">ABC/2 method: A = largest diameter, B = perpendicular diameter on same slice, C = number of slices with ICH x slice thickness.</p>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Kothari RU et al. Stroke 1996;27:1304-5 (ABC/2, PMID 8711791).</p>
                       </div>
                     </details>
 
@@ -31496,6 +31603,23 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, crclCalc: {...(prev.crclCalc || {}), height: v}})); }}
                             className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" placeholder="cm (optional — enables BMI/AdjBW calculation)" />
                         </div>
+                        {(() => {
+                          const cc = telestrokeNote.crclCalc || {};
+                          const result = calculateCrCl(cc.age || telestrokeNote.age, cc.weight || telestrokeNote.weight, cc.sex || telestrokeNote.sex, cc.cr || telestrokeNote.creatinine, cc.height || telestrokeNote.height);
+                          if (!result) {
+                            return <p className="text-xs text-slate-600 italic dark:text-mute">Enter age, weight, sex, and serum creatinine to calculate CrCl.</p>;
+                          }
+                          return (
+                            <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
+                              <p className="text-lg font-bold">CrCl: {result.value} mL/min — {result.label}</p>
+                              {result.obesityWarning && <p className="text-xs text-warn-700 dark:text-warn-300">{result.obesityWarning}</p>}
+                              <p className="text-xs text-slate-700 mt-1 dark:text-ink-2">{result.value < 30 ? 'CrCl <30: renally dose-adjust anticoagulants (enoxaparin 30 mg prophylaxis; DOAC adjustments per label).' : result.value < 50 ? 'CrCl 30-49: check DOAC-specific renal adjustments (dabigatran, edoxaban, rivaroxaban).' : 'No routine renal dose adjustment at this clearance for most stroke-relevant agents.'}</p>
+                              <button onClick={() => copyToClipboard(`CrCl (Cockcroft-Gault): ${result.value} mL/min (${result.label})`, 'CrCl')}
+                                className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300 dark:bg-overlay dark:hover:bg-overlay" aria-label="Copy CrCl to clipboard">Copy</button>
+                            </div>
+                          );
+                        })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Cockcroft DW, Gault MH. Nephron 1976;16:31-41 (PMID 1244564).</p>
                       </div>
                     </details>
 
@@ -31522,6 +31646,23 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" placeholder="mL/min (auto from demographics)" />
                           </div>
                         </div>
+                        {(() => {
+                          const ec = telestrokeNote.enoxCalc || {};
+                          const autoCrcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
+                          const result = calculateEnoxaparinDose(ec.weightKg || telestrokeNote.weight, ec.crCl || (autoCrcl ? autoCrcl.value : ''));
+                          if (!result) {
+                            return <p className="text-xs text-slate-600 italic dark:text-mute">Enter weight (and CrCl when available) to calculate enoxaparin dosing.</p>;
+                          }
+                          return (
+                            <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
+                              <p className="text-sm font-semibold">{result.prophylaxisNote}</p>
+                              <p className="text-sm mt-1">{result.note}</p>
+                              <p className="text-xs text-slate-600 mt-1 dark:text-mute">{result.dailyTreatmentNote}</p>
+                              <p className="text-xs text-slate-600 mt-1 dark:text-mute">Timing in stroke: post-lytic \u226524h with hemorrhage-free imaging; post-ICH 24-48h with stable imaging; anti-Xa monitoring for BMI &gt;40 or CrCl &lt;30.</p>
+                            </div>
+                          );
+                        })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Sherman DG et al. Lancet 2007;369:1347-55 (PREVAIL, PMID 17448820).</p>
                       </div>
                     </details>
 
@@ -31600,6 +31741,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         })()}
                         <button type="button" onClick={() => { setTelestrokeNote(prev => ({...prev, aspectsRegions: {}, aspectsAssessed: false})); if (typeof setAspectsScore === 'function') setAspectsScore(''); setAspectsRegionState(getDefaultAspectsRegionState()); }}
                           className="mt-2 text-xs text-slate-600 hover:text-slate-700 underline dark:text-mute dark:hover:text-ink">Reset all regions</button>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Barber PA et al. Lancet 2000;355:1670-4 (ASPECTS, PMID 10905241).</p>
                       </div>
                     </details>
 
@@ -31692,6 +31834,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <p className="text-sm text-warn-700 dark:text-warn-300">Enter patient weight in the encounter section to calculate dose.</p>
                           );
                         })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: NINDS rt-PA Stroke Study Group. NEJM 1995;333:1581-7 (PMID 7477192).</p>
                       </div>
                     </details>
 
@@ -31756,6 +31899,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <strong>Selected grade: mTICI {telestrokeNote.ticiScore}</strong>
                           </div>
                         )}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Zaidat OO et al. Stroke 2013;44:2650-63 (mTICI consensus, PMID 23920012).</p>
                       </div>
                     </details>
 
