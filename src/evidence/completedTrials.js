@@ -500,10 +500,10 @@ export const completedTrials = [
     evidenceType: 'rct',
     citationIds: ['cit-theia-2023'],
     relatedActiveTrialIds: [],
-    practiceImpact: 'CRAO IVT is reasonable in selected centers; no strong RCT support yet.',
-    lastReviewed: '2026-07-18',
-    verificationStatus: 'unverified-source-limited',
-    verificationNotes: 'Numeric primary-endpoint precision left qualitative pending manual verification.'
+    practiceImpact: 'THEIA was neutral (adjusted OR 1.1, 95% CI 0.07-18.39, p=0.95; underpowered) — CRAO thrombolysis remains unproven; do not present it as evidence-supported outside trials.',
+    lastReviewed: '2026-08-22',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Primary endpoint numbers re-verified against PubMed 2026-08-22 (Lancet Neurol 2025;24(11):909-919, PMID 41109232): 19/29 (66%) vs 13/27 (48%), adjusted OR 1.1, p=0.95 — neutral.'
   }),
 
   // ------------------- ICH -------------------

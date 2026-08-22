@@ -870,9 +870,9 @@ export const dmvoEVTAdvisory = ({ occlusionLocation, nihss, deficitDisabling }) 
 // =====================================================================
 // MOST (Adeoye/Broderick NEJM 2024;391:810-20, PMID 39231343): Phase 3 RCT, n=514, AIS s/p IV lytic.
 // Argatroban or eptifibatide as adjunct vs placebo. STOPPED for futility — neither improved
-// outcome. MR CLEAN-MED (Lancet 2022, PMID 35202525) similarly showed periprocedural
+// outcome. MR CLEAN-MED (Lancet 2022, PMID 35240044) similarly showed periprocedural
 // heparin/aspirin during EVT increases sICH (stopped for harm).
-// NOTE: RESCUE BT2 (China, NEJM 2023;388:2025-36, PMID 37256974) showed tirofiban benefit in
+// NOTE: RESCUE-BT2 (China, NEJM 2023;388:2025-36, PMID 37256974) showed tirofiban benefit in
   // ischemic stroke WITHOUT large- or medium-vessel occlusion (mostly small atherosclerotic infarcts) who
 // were INELIGIBLE for lytic/EVT — different population; do NOT extrapolate to lytic-eligible.
 export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyticIneligible }) => {
@@ -881,7 +881,7 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
       recommend: 'No',
       drugs: ['argatroban', 'eptifibatide', 'tirofiban (post-lytic)', 'heparin'],
       rationale: 'MOST trial (Adeoye NEJM 2024, PMID 39231343) found NO benefit and possible harm from argatroban or eptifibatide added to IV lytic. Do not give adjunctive anticoagulants/antiplatelets in the first 24h post-lytic.',
-      source: 'Adeoye NEJM 2024;391:810-20 (MOST, PMID 39231343); MR CLEAN-MED Lancet 2022 (PMID 35202525)',
+      source: 'Adeoye NEJM 2024;391:810-20 (MOST, PMID 39231343); MR CLEAN-MED Lancet 2022 (PMID 35240044)',
       class: 'Class 3 (no benefit/possible harm)'
     };
   }
@@ -890,7 +890,7 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
       recommend: 'No (periprocedural heparin/aspirin)',
       drugs: ['heparin', 'aspirin (periprocedural)'],
       rationale: 'MR CLEAN-MED stopped for harm (sICH excess) when heparin or aspirin added periprocedurally. Avoid adjunctive antithrombotics during EVT.',
-      source: 'MR CLEAN-MED Lancet 2022 (PMID 35202525)',
+      source: 'MR CLEAN-MED Lancet 2022 (PMID 35240044)',
       class: 'Class 3'
     };
   }
@@ -898,8 +898,8 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
     return {
       recommend: 'Tirofiban may be considered',
       drugs: ['tirofiban'],
-      rationale: 'RESCUE BT2 (NEJM 2023) improved the primary endpoint of excellent outcome (mRS 0-1) at 90 days — 29.1% vs 22.2%, adjusted RR 1.26 (95% CI 1.04-1.53), p=0.02, though secondary endpoints were generally not consistent with the primary result — with tirofiban in non-cardioembolic AIS who could not receive IV lytic or EVT. Distinct population from MOST.',
-      source: 'RESCUE BT2 NEJM 2023 (PMID 37256974)',
+      rationale: 'RESCUE-BT2 (NEJM 2023) improved the primary endpoint of excellent outcome (mRS 0-1) at 90 days — 29.1% vs 22.2%, adjusted RR 1.26 (95% CI 1.04-1.53), p=0.02, though secondary endpoints were generally not consistent with the primary result — with tirofiban in non-cardioembolic AIS who could not receive IV lytic or EVT. Distinct population from MOST.',
+      source: 'RESCUE-BT2 NEJM 2023 (PMID 37256974)',
       class: 'Class 2b (selected non-cardioembolic, lytic/EVT-ineligible)'
     };
   }
@@ -1418,7 +1418,9 @@ export const getAIConfiguration = () => {
 // =====================================================================
 // Evaluates acute IV thrombolysis eligibility for Central Retinal Artery Occlusion.
 // AHA Statement 2021 (Mac Grory, Stroke 2021;52:e282-e294, PMID 33677974);
-// THEIA trial (Préterre et al., Lancet Neurol 2025;24:110-120, PMID 41109232).
+// THEIA trial (Préterre et al., Lancet Neurol 2025;24(11):909-919, PMID 41109232):
+// NEUTRAL — visual improvement 66% vs 48%, adjusted OR 1.1 (95% CI 0.07-18.39),
+// p=0.95; n=70, underpowered. Do not present THEIA as supporting CRAO lysis.
 export const evaluateCRAOTreatment = ({
   onsetHours,
   visualAcuity,
@@ -1473,8 +1475,8 @@ export const evaluateCRAOTreatment = ({
       ? 'Eligible for acute IV thrombolysis (TNK 0.25 mg/kg max 25 mg OR alteplase 0.9 mg/kg max 90 mg) within 4.5h of sudden painless monocular vision loss. Perform urgent ophthalmology / fundoscopy consult to confirm CRAO and rule out retinal hemorrhage prior to lytic infusion.'
       : `Ineligible for IV thrombolysis in CRAO: ${contraindications.join('; ')}.`,
     dosingInfo: 'IV Tenecteplase 0.25 mg/kg (max 25 mg) single IV bolus OR Alteplase 0.9 mg/kg (10% bolus, remainder over 60 min, max 90 mg).',
-    sources: 'AHA Scientific Statement (Mac Grory Stroke 2021, PMID 33677974); THEIA Trial (Préterre Lancet Neurol 2025, PMID 41109232)',
-    class: 'Class IIa (AHA 2021 statement & 2025 THEIA trial evidence)'
+    sources: 'AHA Scientific Statement (Mac Grory Stroke 2021, PMID 33677974); THEIA Trial (Préterre Lancet Neurol 2025;24:909-919, PMID 41109232 — NEUTRAL, underpowered)',
+    class: 'AHA 2021 statement frames CRAO IVT as an option in selected patients; the only completed RCT (THEIA 2025) was neutral — treat as unproven and individualized, ideally within a trial'
   };
 };
 

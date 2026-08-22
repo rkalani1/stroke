@@ -3742,18 +3742,18 @@ Clinician Name`;
             'Early Recognition and Intervention for Poststroke Spasticity': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000515',
             'Intracranial Atherosclerosis': 'https://www.aan.com/Guidelines/home/GuidelineDetail/1103',
             'CATALYST': 'https://doi.org/10.1016/S0140-6736(25)00439-8',
-            'TIMELESS': 'https://doi.org/10.1056/NEJMoa2412179',
-            'OPTION': 'https://doi.org/10.1001/jama.2025.22824',
-            'TRACE-III': 'https://doi.org/10.1056/NEJMoa2408389',
-            'HOPE': 'https://doi.org/10.1056/NEJMoa2504049',
-            'EXPECTS': 'https://doi.org/10.1056/NEJMoa2504158',
-            'CHABLIS-T II': 'https://doi.org/10.1016/S0140-6736(25)00145-7',
+            'TIMELESS': 'https://doi.org/10.1056/NEJMoa2310392',
+            'OPTION': 'https://doi.org/10.1001/jama.2026.0210',
+            'TRACE-III': 'https://doi.org/10.1056/NEJMoa2402980',
+            'HOPE': 'https://doi.org/10.1001/jama.2025.12063',
+            'EXPECTS': 'https://doi.org/10.1056/NEJMoa2413344',
+            'CHABLIS-T II': 'https://doi.org/10.1161/STROKEAHA.124.048375',
             'ANNEXA-I': 'https://doi.org/10.1056/NEJMoa2313040',
             'CREST-2': 'https://doi.org/10.1056/NEJMoa2508800',
             'ECST-2': 'https://doi.org/10.1016/S1474-4422(25)00107-3',
-            'SELECT': 'https://doi.org/10.1056/NEJMoa2305049',
+            'SELECT': 'https://doi.org/10.1056/NEJMoa2307563',
             'CHANCE-2': 'https://doi.org/10.1056/NEJMoa2111749',
-            'CONVINCE': 'https://doi.org/10.1016/S0140-6736(24)00663-8',
+            'CONVINCE': 'https://doi.org/10.1016/S0140-6736(24)00968-1',
             'ESCAPE-MeVO': 'https://doi.org/10.1056/NEJMoa2411668',
             'SVIN Large-Core EVT 2025': 'https://www.ahajournals.org/doi/10.1161/SVIN.124.001581',
             'ACC Expert Consensus': 'https://doi.org/10.1016/j.jacc.2024.03.389'
@@ -3974,7 +3974,7 @@ Clinician Name`;
               category: 'Blood Pressure',
               title: 'ICH BP control process',
               recommendation: 'For acute spontaneous ICH, use medication titration for continuous, smooth, sustained BP control and timely treatment when BP lowering is indicated (Class 2a).',
-              detail: 'AHA/ASA Spontaneous ICH 2022 (Greenberg): smooth, sustained BP control and timely treatment are Class 2a process recommendations. This is separate from the numeric SBP target/range recommendation below. Avoid abrupt large BP drops and avoid treating the number in isolation from neurologic status, hematoma severity, anticoagulation reversal, and neurosurgical planning. For large/severe ICH or surgical decompression candidates, safety and efficacy of intensive lowering are not well established. INTERACT3 (Lancet 2023) tested a care bundle - early BP lowering plus glucose, anticoagulation reversal, and fever management - so do not treat its result as BP-only class evidence. Institutional ICH BP protocol agent: nicardipine IV infusion (or IV labetalol). This protocol covers spontaneous ICH and does not apply to hemorrhage from a neurosurgical vascular malformation or to post-operative neurosurgical cases.',
+              detail: 'Ultra-early/prehospital nuance: INTERACT4 (NEJM 2024, PMID 38752650) showed BP lowering in the ambulance is DIAGNOSIS-DEPENDENT — benefit in hemorrhagic stroke (poor-outcome cOR 0.75) but harm in ischemic stroke (cOR 1.30); once ICH is confirmed on imaging, early intensive lowering is supported. AHA/ASA Spontaneous ICH 2022 (Greenberg): smooth, sustained BP control and timely treatment are Class 2a process recommendations. This is separate from the numeric SBP target/range recommendation below. Avoid abrupt large BP drops and avoid treating the number in isolation from neurologic status, hematoma severity, anticoagulation reversal, and neurosurgical planning. For large/severe ICH or surgical decompression candidates, safety and efficacy of intensive lowering are not well established. INTERACT3 (Lancet 2023) tested a care bundle - early BP lowering plus glucose, anticoagulation reversal, and fever management - so do not treat its result as BP-only class evidence. Institutional ICH BP protocol agent: nicardipine IV infusion (or IV labetalol). This protocol covers spontaneous ICH and does not apply to hemorrhage from a neurosurgical vascular malformation or to post-operative neurosurgical cases.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4147,15 +4147,15 @@ Clinician Name`;
             evt_large_core_early: {
               id: 'evt_large_core_early',
               category: 'EVT',
-              title: 'EVT for large core (ASPECTS 0-5, 0-24h)',
-              recommendation: 'EVT is recommended for anterior LVO within 0-24 hours when ASPECTS is 0-5 (ATLAS Trial 2026).',
-              detail: 'ATLAS Trial (2026) extended the large-core EVT window to 24 hours for all patients with ASPECTS ≤ 5. CTP core estimation is no longer strictly required for ASPECTS 0-2 in the late window. Discuss goals of care as sICH risk remains elevated with lower ASPECTS.',
-              classOfRec: 'I',
+              title: 'EVT for large core (ASPECTS 0-5, 0-24h) — ATLAS IPD meta-analysis',
+              recommendation: 'EVT benefits large-core anterior LVO (ASPECTS 0-5) up to 24 hours: the ATLAS individual-patient-data meta-analysis of six trials found better functional outcomes and LOWER mortality than medical management. Evidence is limited (wide CIs) for estimated core ≥150 mL presenting beyond 6 h.',
+              detail: 'ATLAS (Sarraj, Lancet 2026;407:2015-26, PMID 42107392) is a systematic review and individual-patient-data META-ANALYSIS — not a trial — pooling 1,886 patients from RESCUE-Japan LIMIT, ANGEL-ASPECT, SELECT2, TENSION, TESLA, and LASTE. mRS shift aGenOR 1.63 (95% CI 1.42-1.88, p<0.0001); 90-day mortality 31.1% vs 37.3% (aRR 0.82, 95% CI 0.70-0.97, p=0.022); sICH 1.1% vs 1.0% (no significant excess). Benefit was consistent across ASPECTS/core strata; the one attenuated stratum is estimated core ≥150 mL presenting BEYOND 6 h, where point estimates still favored EVT but wide CIs limit interpretation — core estimation remains most valuable in exactly that late-window/very-large-core decision. No AHA/ASA class has been issued for ATLAS itself (the 2026 guideline search closed before its publication); SVIN 2025 endorses large-core EVT.',
+              classOfRec: 'IIa',
               levelOfEvidence: 'A',
-              guideline: 'ATLAS Trial 2026 / SVIN 2025',
-              reference: 'ATLAS Investigators. 2026; Mokin M et al. Stroke Vasc Interv Neurol. 2025;5:e001581.',
-              caveats: 'Pre-stroke mRS 0-1 and age 18-80 generally expected. Higher sICH risk; discuss goals of care.',
-              sourceUrl: '',
+              guideline: 'ATLAS IPD meta-analysis (Lancet 2026); SVIN Large-Core EVT 2025; AHA/ASA 2026 (large-core recs predate ATLAS)',
+              reference: 'Sarraj A et al. Lancet 2026;407:2015-26 (ATLAS, PMID 42107392). DOI: 10.1016/S0140-6736(26)00876-7. Mokin M et al. Stroke Vasc Interv Neurol 2025;5:e001581 (SVIN, PMID 41573174).',
+              caveats: 'Pooled trials generally enrolled ages 18-85 with pre-stroke mRS 0-1 (LASTE allowed higher premorbid mRS; ANGEL-ASPECT capped at 80) — evidence above ~85 y is limited, matching the 18-85 gate in the large-core evaluator. Counsel on residual severe-disability outcomes.',
+              sourceUrl: 'https://doi.org/10.1016/S0140-6736(26)00876-7',
               conditions: (data) => {
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
@@ -4196,7 +4196,7 @@ Clinician Name`;
               category: 'Antithrombotic',
               title: 'DAPT for minor stroke/TIA — match duration to trial analog',
               recommendation: 'Dual antiplatelet therapy (aspirin + clopidogrel or ticagrelor) for minor ischemic stroke (NIHSS ≤5) or high-risk TIA (ABCD2 ≥4). Select DAPT duration by matching the patient to the closest trial analog.',
-              detail: 'Loading: ASA 325 mg + clopidogrel 300 mg, then ASA 81 mg + clopidogrel 75 mg. Choose duration by trial analog:\n• CHANCE (<24h onset, NIHSS ≤3): 21 days DAPT then clopidogrel mono\n• POINT (<12h, high-risk TIA/minor stroke): 21 days (90d arm had more major bleeding)\n• THALES (<24h, NIHSS ≤5): 30 days ticagrelor 90 mg BID + ASA (higher bleeding risk)\n• INSPIRES (<72h, atherosclerotic mechanism): 21d DAPT then clopidogrel mono through day 90\nAfter ~21-30 days, ischemic recurrence benefit decreases while major bleeding risk continues — favor shorter DAPT (21-30d) for most phenotypes. For CYP2C19 LOF carriers: ticagrelor 180 mg load + ASA, then ticagrelor 90 mg BID + ASA x 21d, followed by ticagrelor monotherapy (CHANCE-2, Class IIb).',
+              detail: 'Loading: ASA 325 mg + clopidogrel 300 mg, then ASA 81 mg + clopidogrel 75 mg. Choose duration by trial analog:\n• CHANCE (<24h onset, NIHSS ≤3): 21 days DAPT then clopidogrel mono\n• POINT (<12h, high-risk TIA/minor stroke): 21 days (90d arm had more major bleeding)\n• THALES (<24h, NIHSS ≤5): 30 days ticagrelor 90 mg BID + ASA (higher bleeding risk)\n• INSPIRES (<72h, atherosclerotic mechanism): 21d DAPT then clopidogrel mono through day 90\nAfter ~21-30 days, ischemic recurrence benefit decreases while major bleeding risk continues — favor shorter DAPT (21-30d) for most phenotypes. Do NOT thrombolyse minor NON-disabling stroke even with an intracranial occlusion: TEMPO-2 (Coutts, Lancet 2024, PMID 38768626) was stopped for futility with possible harm (90-day death 5% vs 1%, aHR 3.8) — DAPT is the evidence-based pathway. Post-IVT note: TAPIS (Lancet 2026, PMID 42114550) found early ticagrelor+ASA within 6h AFTER thrombolysis (NIHSS 4-10) improved mRS 0-1 (68.7% vs 62.0%) without sICH excess — emerging evidence, not yet in guidelines. For CYP2C19 LOF carriers: ticagrelor 180 mg load + ASA, then ticagrelor 90 mg BID + ASA x 21d, followed by ticagrelor monotherapy (CHANCE-2, Class IIb).',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -4234,10 +4234,10 @@ Clinician Name`;
               title: 'Symptomatic intracranial atherosclerosis (sICAS) DAPT',
               recommendation: 'DAPT (aspirin + clopidogrel) for 90 days for severe symptomatic intracranial stenosis (70-99%), then aspirin 325 mg monotherapy. Note: 90-day DAPT is convention from the SAMMPRIS medical arm protocol — SAMMPRIS is NOT a DAPT-duration trial.',
               detail: 'Do NOT offer intracranial stenting as initial treatment (Class III): SAMMPRIS 30-day stroke/death 14.7% vs 5.8% with medical therapy; CASSISS showed no benefit; pooled analysis (n=809) 30-day stroke/death higher with stenting (10.5% vs 4.2%, HR 2.62). Stenting is considered ONLY after >=2 recurrent events on maximal medical therapy at experienced centers (Class IIb, LOE C-LD). Add high-intensity statin (LDL <70; <55 if very-high-risk atherosclerotic) and BP control toward <130/80 once stable. SAMMPRIS used 90-day DAPT in BOTH treatment arms for standardization; it did NOT test 90d vs shorter DAPT duration. The 90-day convention is strongest for severe (70-99%) symptomatic ICAD — do not generalize broadly to other stroke phenotypes.',
-              classOfRec: 'I',
-              levelOfEvidence: 'B-R',
-              guideline: 'AAN Intracranial Atherosclerosis Practice Advisory 2022 (reaffirmed 2025)',
-              reference: 'AAN Practice Advisory 2022. Reaffirmed 2025.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Secondary Stroke Prevention 2021 (COR 2a for adding clopidogrel to ASA up to 90d in severe sICAS); AAN Practice Advisory 2022 concurs (AAN grades are not ACC/AHA COR)',
+              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467 (PMID 34024117); AAN Practice Advisory 2022.',
               medications: ['ASA 325 mg daily (after 90-day DAPT)', 'Clopidogrel 75 mg daily x 90 days', 'High-intensity statin'],
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
@@ -4521,7 +4521,7 @@ Clinician Name`;
               category: 'ICH',
               title: 'Minimally invasive ICH evacuation (MIE) screen',
               recommendation: 'Screen for MIE only when spontaneous lobar IPH 30-80cc, NIHSS >5, GCS 5-14, age 18-80, and no underlying vascular lesion are confirmed; otherwise use this as a criteria checklist and discuss with Neurosurgery.',
-              detail: 'This card does not infer MIE eligibility from ICH alone. Confirm lobar location, ABC/2 volume 30-80 mL, age, NIHSS, GCS, CTA/MRA without vascular lesion, and operative timing before presenting MIE as an option. Functional outcome benefit remains selection-dependent.',
+              detail: 'This card does not infer MIE eligibility from ICH alone. Confirm lobar location, ABC/2 volume 30-80 mL, age, NIHSS, GCS, CTA/MRA without vascular lesion, and operative timing before presenting MIE as an option. Functional outcome benefit remains selection-dependent: ENRICH (lobar subgroup) was positive, but MIND (Arthur, JAMA Neurol 2025;82:1113-21, PMID 40892424; Artemis device, 20-80 mL, stopped early at n=236) showed NO significant benefit (180-day mRS aOR 1.10, P=.35) — device/technique and selection matter.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4554,8 +4554,8 @@ Clinician Name`;
               id: 'transfer_evt',
               category: 'Disposition',
               title: 'Transfer for EVT evaluation',
-              recommendation: 'Transfer LVO patients to EVT-capable center immediately. Do NOT wait for clinical response to IV thrombolysis before initiating transfer.',
-              detail: 'Administer TNK at spoke site (if eligible) and initiate transfer simultaneously. Time-to-reperfusion is the critical metric.',
+              recommendation: 'Transfer LVO patients to EVT-capable center immediately. Do NOT wait for clinical response to IV thrombolysis before initiating transfer. Keep the head of bed at 0° while awaiting thrombectomy unless contraindicated (ZODIAC).',
+              detail: 'Administer TNK at spoke site (if eligible) and initiate transfer simultaneously. Time-to-reperfusion is the critical metric. HEAD POSITIONING pending EVT: ZODIAC (Alexandrov, JAMA Neurol 2025;82:905-914, PMID 40465238) — 0° head positioning before thrombectomy prevented pre-EVT neurologic worsening vs 30° (worsening ≥2 NIHSS: HR 34.4 favoring 0°; 3-month death 4.4% vs 21.7%; stopped early for efficacy). Use 0° unless active aspiration risk, vomiting, or ICP concern; return to 30° after reperfusion. The app\u2019s routine HOB 30° orders apply to POST-treatment care, not the pre-EVT wait.',
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -4635,11 +4635,11 @@ Clinician Name`;
             pfo_closure: {
               id: 'pfo_closure',
               category: 'Secondary Prevention',
-              title: 'PFO closure for cryptogenic stroke',
-              recommendation: 'PFO closure is recommended for patients age 18-60 with cryptogenic ischemic stroke and high-risk PFO features (atrial septal aneurysm, large shunt).',
-              detail: 'Based on CLOSE, RESPECT, REDUCE trials. Also antiplatelet therapy. Anticoagulation if concurrent DVT/PE.',
-              classOfRec: 'I',
-              levelOfEvidence: 'A',
+              title: 'PFO closure for nonlacunar stroke of undetermined cause',
+              recommendation: 'For patients 18-60 with a NONLACUNAR ischemic stroke of UNDETERMINED CAUSE despite thorough evaluation and a PFO with high-risk anatomic features (atrial septal aneurysm, large shunt), transcatheter closure + long-term antiplatelet therapy is reasonable (COR 2a, LOE B-R). Without high-risk features: COR 2b, LOE C-LD.',
+              detail: 'Verbatim gate from the 2021 AHA/ASA guideline: nonlacunar stroke, undetermined cause after thorough evaluation, age 18-60, PFO with high-risk anatomic features → closure with device + long-term antiplatelet over antiplatelet alone (2a/B-R); without high-risk anatomy the benefit is not well established (2b/C-LD). Based on CLOSE, RESPECT, REDUCE, DEFENSE-PFO. Use RoPE + PASCAL to estimate attributable probability. Anticoagulation instead if concurrent DVT/PE.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=48',
@@ -4739,8 +4739,8 @@ Clinician Name`;
               detail: 'ARCADIA (JAMA 2024): Apixaban 5mg BID vs aspirin 81mg daily in cryptogenic stroke with atrial cardiopathy (P-wave terminal force >5000 uV*ms, NT-proBNP >250, LA enlargement). HR 1.00 for recurrent stroke. Stopped for futility. P-wave abnormalities and elevated NT-proBNP do NOT justify empiric anticoagulation without confirmed AF.',
               classOfRec: 'III',
               levelOfEvidence: 'B-R',
-              guideline: 'AHA/ASA Secondary Prevention 2024 Update',
-              reference: 'Kamel H et al. JAMA. 2024;331(11):981-990. DOI: 10.1001/jama.2024.0840',
+              guideline: 'ARCADIA trial (JAMA 2024) — no AHA/ASA secondary-prevention update exists after 2021; the 2021 guideline already grades empiric anticoagulation for ESUS as III: No Benefit',
+              reference: 'Kamel H et al. JAMA. 2024;331:573-581 (ARCADIA, PMID 38324415).',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 if (cat !== 'ischemic' && cat !== 'tia') return false;
@@ -4755,13 +4755,13 @@ Clinician Name`;
             laao_after_ich: {
               id: 'laao_after_ich',
               category: 'ICH',
-              title: 'LAA closure after ICH with AF (STROKE-CLOSE)',
-              recommendation: 'LAA closure may be reasonable for ICH patients with AF who have high thromboembolic risk and high rebleeding risk, particularly lobar ICH with CAA features.',
-              detail: 'STROKE-CLOSE (Lancet 2024): Watchman FLX vs medical therapy in ICH patients with AF. Primary composite (stroke, SE, major bleed, CV death) HR 0.61 favoring LAA closure. Most benefit in lobar ICH. Consider outpatient referral for structural heart/EP evaluation. Limitations: open-label, moderate sample size.',
+              title: 'LAA occlusion after ICH with AF',
+              recommendation: 'LAA occlusion may be reasonable for ICH survivors with AF at high thromboembolic risk when long-term anticoagulation is judged too hazardous — particularly lobar ICH with CAA features (AHA/ASA 2022 ICH: Class 2b).',
+              detail: 'Rationale: PRESTIGE-AF showed DOACs after ICH nearly eliminate ischemic stroke (HR 0.05, 95% CI 0.01-0.36) but at the cost of markedly more recurrent ICH (HR 10.89, 90% CI 1.95-60.72; ~5.0 vs 0.8 events per 100 patient-years) — LAAO offers stroke prevention without chronic anticoagulant exposure. Consider outpatient structural heart/EP referral. NOTE: a previously cited dedicated RCT in ICH survivors ("STROKE-CLOSE, Lancet 2024, HR 0.61") could not be verified in PubMed or ClinicalTrials.gov during the 2026-08 evidence audit and has been removed; the LAAO evidence base in ICH survivors remains observational/extrapolated (PROTECT-AF/PREVAIL/ASAP populations).',
               classOfRec: 'IIb',
-              levelOfEvidence: 'B-R',
-              guideline: 'AHA/ASA Spontaneous ICH 2022 + STROKE-CLOSE 2024',
-              reference: 'STROKE-CLOSE: Nielsen TH et al. Lancet. 2024.',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361 (PMID 35579034); PRESTIGE-AF: Veltkamp R et al. Lancet 2025;405:927-936 (PMID 40023176).',
               conditions: (data) => {
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const afib = hasAFText(data.telestrokeNote?.ekgResults) || hasAFText(data.telestrokeNote?.pmh);
@@ -5276,11 +5276,11 @@ Clinician Name`;
               category: 'ICH Management',
               title: 'Anticoagulation resumption after ICH',
               recommendation: 'Anticoagulation resumption after ICH should be individualized based on ICH location, CHA\u2082DS\u2082-VASc score, and recurrent hemorrhage risk. Non-lobar ICH with high thromboembolic risk may benefit from DOAC reinitiation at 4-8 weeks.',
-              detail: 'PRESTIGE-AF (2025): DOACs dramatically reduced ischemic stroke (HR 0.05) but increased recurrent ICH (HR 10.89). ENRICH-AF halted lobar ICH enrollment due to excess recurrent hemorrhage. For non-lobar ICH with CHA\u2082DS\u2082-VASc \u22654, DOAC reinitiation is reasonable after shared decision-making at 4-8 weeks. For lobar ICH (possible CAA), consider LAAO or avoidance of anticoagulation. DOACs preferred over warfarin when anticoagulation is chosen.',
+              detail: 'PRESTIGE-AF (Lancet 2025;405:927-936, PMID 40023176; n=319, median follow-up 1.4 y): DOACs vs no anticoagulation after ICH — first ischemic stroke HR 0.05 (95% CI 0.01-0.36; 0.83 vs 8.60 per 100 patient-years) but recurrent-ICH non-inferiority NOT met: HR 10.89 (90% CI 1.95-60.72; ~5.0 vs 0.8 per 100 patient-years). ENRICH-AF (NCT03950076) excluded lobar ICH by protocol amendment during the trial; it is active-not-recruiting with primary completion 2026-05 and NO published results yet. For non-lobar ICH with high thromboembolic risk, DOAC reinitiation is reasonable after shared decision-making at ~4-8 weeks. For lobar ICH (possible CAA), consider LAAO or anticoagulation avoidance. DOACs preferred over warfarin when anticoagulation is chosen.',
               classOfRec: 'IIb',
               levelOfEvidence: 'B-R',
-              guideline: 'AHA/ASA Spontaneous ICH 2022 + PRESTIGE-AF/ENRICH-AF 2025',
-              reference: 'PRESTIGE-AF: Lancet 2025; SoSTART: Lancet Neurol 2021; APACHE-AF: Lancet Neurol 2021',
+              guideline: 'AHA/ASA Spontaneous ICH 2022; trial evidence: PRESTIGE-AF 2025 (no post-2021 AHA/ASA secondary-prevention update exists)',
+              reference: 'PRESTIGE-AF: Veltkamp R et al. Lancet 2025;405:927-936 (PMID 40023176); SoSTART: Lancet Neurol 2021; APACHE-AF: Lancet Neurol 2021',
               conditions: (data) => {
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
                 const hasAF = hasAFText(data.telestrokeNote?.pmh) || hasAFText(data.telestrokeNote?.ekgResults);
@@ -5296,7 +5296,7 @@ Clinician Name`;
               category: 'Carotid',
               title: 'Symptomatic carotid stenosis management',
               recommendation: 'For symptomatic carotid stenosis \u226550%, CEA within 2 weeks is recommended. Optimal medical management is the foundation for all patients.',
-              detail: 'CEA preferred if age >70 and suitable anatomy; CAS reasonable if high surgical risk. Symptomatic = stroke/TIA referable to the carotid territory within 6 months \u2014 confirm the stenosis is IPSILATERAL to the symptomatic territory; a stenosis contralateral to the event is managed as asymptomatic disease (see the CREST-2 card). CEA remains Class I for symptomatic stenosis \u226550%. NASCET endarterectomy NNTs: symptomatic 70\u201399% \u2192 NNT \u2248 6 (ARR \u224817% over 2 yr); symptomatic 50\u201369% \u2192 NNT \u2248 15 (ARR \u22486.5% over 5 yr). Benefit is greatest within 2 weeks of the event and diminishes with delay. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
+              detail: 'CEA preferred if age >70 and suitable anatomy; CAS reasonable if high surgical risk. Symptomatic = stroke/TIA referable to the carotid territory within 6 months \u2014 confirm the stenosis is IPSILATERAL to the symptomatic territory; a stenosis contralateral to the event is managed as asymptomatic disease (see the CREST-2 card). CEA for symptomatic 70\u201399% stenosis is Class I; for 50\u201369% stenosis CEA is Class IIa (reasonable, depending on patient-specific factors) \u2014 not Class I. NASCET endarterectomy NNTs: symptomatic 70\u201399% \u2192 NNT \u2248 6 (ARR \u224817% over 2 yr); symptomatic 50\u201369% \u2192 NNT \u2248 15 (ARR \u22486.5% over 5 yr). Benefit is greatest within 2 weeks of the event and diminishes with delay. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
@@ -5319,12 +5319,13 @@ Clinician Name`;
               id: 'carotid_asymptomatic',
               category: 'Carotid',
               title: 'Asymptomatic carotid stenosis (CREST-2)',
-              recommendation: 'For asymptomatic carotid stenosis \u226570%, intensive medical management alone is the primary approach. CEA is NOT superior to intensive medical management (CREST-2, 2025).',
-              detail: 'CREST-2 (NEJM 2025): CEA + intensive medical management did NOT significantly reduce stroke/death vs. intensive medical management alone. CAS + intensive medical management showed modest benefit (NNT=31 at 4 years) at high-volume centers with periprocedural risk <3%. Intensive medical management protocol: SBP <130, LDL <70 (add PCSK9i if needed), health coaching, smoking cessation. Annual duplex surveillance recommended.\n\nShared decision-making: consider high-risk plaque features that may identify higher-risk asymptomatic lesions warranting revascularization consideration: intraplaque hemorrhage (IPH) on MRI, ulcerated or echolucent plaque on ultrasound, juxtaluminal black area (JBA), or progressive stenosis despite optimal medical therapy. These features may modify the risk-benefit calculation despite the overall neutral CREST-2 CEA result.',
-              classOfRec: 'IIa',
-              levelOfEvidence: 'A',
-              guideline: 'CREST-2 (NEJM 2025); ECST-2 (Lancet Neurol 2025)',
-              reference: 'CREST-2: NEJM 2025; ECST-2: Lancet Neurology 2025',
+              recommendation: 'For asymptomatic high-grade (\u226570%) carotid stenosis, CREST-2 found: STENTING + intensive medical management SIGNIFICANTLY reduced the primary outcome vs medical management alone (2.8% vs 6.0%, P=0.02); CEA + intensive medical management did NOT (3.7% vs 5.3%, P=0.24). Shared decision-making between intensive medical management alone and stenting at experienced centers.',
+              detail: 'CREST-2 (Brott, NEJM 2026;394:219-31, published online 2025-11-21; PMID 41269206; NCT02089217): two parallel randomized trials in \u226570% asymptomatic stenosis, no ipsilateral event within 180 days. Primary outcome = any stroke or death within 44 days of randomization OR ipsilateral ischemic stroke thereafter to 4 years. Stenting trial (n=1245): 2.8% (CAS+IMM) vs 6.0% (IMM alone), P=0.02 — significant benefit, despite upfront periprocedural events (7 strokes + 1 death vs 0). Endarterectomy trial (n=1240): 3.7% (CEA+IMM) vs 5.3% (IMM alone), P=0.24 — no significant benefit. The two trials were separate randomizations; CAS and CEA were NOT compared head-to-head. Intensive medical management in all arms: SBP <130, LDL <70, coaching, smoking cessation. Shared decision-making: patient anatomy/operator experience, periprocedural risk tolerance, and high-risk plaque features (intraplaque hemorrhage on MRI, ulceration, echolucency, progression on maximal therapy) all modify the calculus.',
+              classOfRec: 'N/A',
+              levelOfEvidence: 'B-R',
+              guideline: 'CREST-2 (NEJM 2026) — awaiting formal guideline integration; ECST-2 (Lancet Neurol 2025)',
+              reference: 'CREST-2: Brott TG et al. NEJM 2026;394:219-31 (PMID 41269206). DOI: 10.1056/NEJMoa2508800. ECST-2: Lancet Neurology 2025.',
+              sourceUrl: 'https://doi.org/10.1056/NEJMoa2508800',
               conditions: (data) => {
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
                 const cm = data.telestrokeNote?.carotidManagement || {};
@@ -5503,12 +5504,12 @@ Clinician Name`;
               id: 'glp1ra_secondary_prevention',
               category: 'Secondary Prevention',
               title: 'GLP-1 RA for cardiovascular/stroke prevention',
-              recommendation: 'Semaglutide is recommended for stroke patients with T2DM and established ASCVD (Class I, LOE A). Consider for patients with BMI \u226527 + CVD even without diabetes (Class IIa).',
-              detail: 'SELECT (NEJM 2023, n=17,604): Semaglutide 2.4 mg weekly reduced MACE by 20% (HR 0.80, P<0.001) in overweight/obese patients with CVD but without diabetes. SUSTAIN-6: 39% reduction in nonfatal stroke (HR 0.61, P=0.04) in T2DM. SOUL (2025): 14% MACE reduction in T2DM, leading to EMA approval as first stroke management therapy. FDA approved March 2024 for MACE risk reduction in adults with overweight/obesity and established CVD. Benefit independent of baseline adiposity and weight loss.',
+              recommendation: 'GLP-1 receptor agonists (drug class) carry a Class 1 recommendation in the 2024 AHA/ASA PRIMARY prevention guideline for patients with diabetes (HbA1c \u22657%) and high CVD risk or established CVD — which includes secondary stroke prevention in that subgroup. For overweight/obesity + CVD without diabetes, benefit is trial-supported (SELECT) with FDA approval but no stroke-guideline class.',
+              detail: 'Scope matters: the Class 1 is a drug-CLASS recommendation from the 2024 AHA/ASA Primary Prevention of Stroke guideline, tied to diabetes with HbA1c \u22657% and elevated CVD risk/established CVD — it is not a blanket semaglutide-for-all-stroke-patients recommendation, and the 2021 secondary-prevention guideline predates the trials. Evidence: SELECT (NEJM 2023, n=17,604): semaglutide 2.4 mg weekly reduced MACE 20% (HR 0.80, P<0.001) in overweight/obese CVD patients without diabetes. SUSTAIN-6 (T2DM): nonfatal stroke HR 0.61. SOUL (2025): MACE reduction in T2DM. FDA approved March 2024 for MACE risk reduction in overweight/obesity + established CVD.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
-              guideline: 'AHA/ASA Secondary Prevention; SELECT (NEJM 2023); SOUL (2025)',
-              reference: 'SELECT: NEJM 2023. SUSTAIN-6: NEJM 2016. SOUL: 2025.',
+              guideline: 'AHA/ASA Primary Prevention of Stroke 2024 (Class 1 for GLP-1RA in diabetes HbA1c \u22657% + high CVD risk/established CVD, incl. secondary prevention)',
+              reference: 'AHA/ASA Primary Prevention 2024 (DOI: 10.1161/STR.0000000000000475). SELECT: NEJM 2023. SUSTAIN-6: NEJM 2016. SOUL: 2025.',
               conditions: (data) => {
                 const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
                 const cat = data.telestrokeNote?.diagnosisCategory;
@@ -5652,11 +5653,11 @@ Clinician Name`;
             mevo_evt_not_recommended: {
               id: 'mevo_evt_not_recommended',
               category: 'EVT',
-              title: 'MeVO/distal occlusion EVT: NOT recommended (Class III — No Benefit / Potential Harm)',
-              recommendation: 'EVT for nondominant/codominant M2, distal MCA, ACA, and PCA occlusions is NOT recommended (COR III, LOE A). ESCAPE-MeVO trial showed increased mortality with EVT (aHR 1.82). EXCEPTION: For dominant proximal M2 within 6h, mRS 0-1, NIHSS ≥6, ASPECTS ≥6, EVT is reasonable (COR IIa, LOE B-NR, AHA/ASA 2026).',
-              detail: 'Dominant proximal M2 within 6h: EVT is reasonable (Class IIa, LOE B-NR per AHA/ASA 2026) — benefits uncertain but reasonable to consider with favorable profile. Nondominant/codominant M2, M3-M4, ACA, PCA: EVT is NOT recommended (Class III, LOE A per AHA/ASA 2026). ESCAPE-MeVO (N=530): no functional improvement (ordinal mRS OR 0.90, NS) but showed increased 90-day mortality with EVT (13.3% vs 8.4%, aHR 1.82, 95% CI 1.06-3.12) and higher sICH (5.4% vs 2.2%). DISTAL (N=543): no functional benefit (adjusted common OR 0.82, NS) with 90-day mortality of 15.5% vs 14.0% (NS) and sICH of 5.9% vs 2.6%. DISCOUNT (2025): negative for M2 thrombectomy. This is a safety signal beyond neutral efficacy — Class III: Potential Harm (ESCAPE-MeVO). Flag eligible patients for clinical trial enrollment (for example STEP-EVT).',
+              title: 'MeVO/distal occlusion EVT: NOT recommended (Class III: No Benefit; safety signal in ESCAPE-MeVO)',
+              recommendation: 'EVT for nondominant/codominant M2, distal MCA, ACA, and PCA occlusions is NOT recommended (COR III: No Benefit, LOE A — DISTAL and ESCAPE-MeVO were neutral on their primary endpoints). ESCAPE-MeVO additionally showed a safety signal (90-day mortality aHR 1.82; sICH 5.4% vs 2.2%). EXCEPTION: for dominant proximal M2 within 6h, mRS 0-1, NIHSS ≥6, ASPECTS ≥6, EVT is reasonable (COR IIa, AHA/ASA 2026).',
+              detail: 'Dominant proximal M2 within 6h: EVT is reasonable (Class IIa, LOE B-NR per AHA/ASA 2026) — benefits uncertain but reasonable to consider with favorable profile. Nondominant/codominant M2, M3-M4, ACA, PCA: EVT is NOT recommended (Class III, LOE A per AHA/ASA 2026). ESCAPE-MeVO (N=530): no functional improvement (ordinal mRS OR 0.90, NS) but showed increased 90-day mortality with EVT (13.3% vs 8.4%, aHR 1.82, 95% CI 1.06-3.12) and higher sICH (5.4% vs 2.2%). DISTAL (N=543): no functional benefit (adjusted common OR 0.90, 95% CI 0.67-1.22, P=0.50) with sICH 5.9% vs 2.6%; 12-MONTH outcomes (Lancet Neurol 2026;25:571-80, PMID 42105785) remained neutral (aOR 0.81, 95% CI 0.59-1.12, p=0.20). DISCOUNT (2025): negative for M2 thrombectomy. The 2026 guideline grades routine distal/nondominant-M2 EVT as Class III: No Benefit (LOE A) — DISTAL and ESCAPE-MeVO were neutral, not formally harmful, on their primary endpoints; the ESCAPE-MeVO mortality/sICH excess is a safety signal on top of that. Flag eligible patients for clinical trial enrollment (for example STEP-EVT).',
               classOfRec: 'III',
-              levelOfEvidence: 'B-R',
+              levelOfEvidence: 'A',
               guideline: 'ESCAPE-MeVO (NEJM 2025); DISTAL (2025); DISCOUNT (2025)',
               reference: 'ESCAPE-MeVO: N Engl J Med. 2025. DOI: 10.1056/NEJMoa2411668. DISTAL and DISCOUNT: 2025 randomized MeVO/distal EVT trials.',
               caveats: 'Local protocol may permit consideration of proximal M2 EVT in highly select cases. Discuss with neurointerventionalist.',
@@ -5670,6 +5671,45 @@ Clinician Name`;
                   /^(m2|m3|m4|a2|a3|p2|p3)$/i.test(String(v).trim()) || /distal|mevo|medium vessel/i.test(String(v))
                 );
                 return hasMeVO && !hasLVO;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // ADJUNCTIVE INTRA-ARTERIAL LYTIC AFTER SUCCESSFUL EVT
+            // ---------------------------------------------------------------
+            ia_lytic_post_evt: {
+              id: 'ia_lytic_post_evt',
+              category: 'EVT',
+              title: 'Adjunctive intra-arterial lytic after successful EVT (CHOICE-2 / ANGEL-TNK) — investigational',
+              recommendation: 'After successful thrombectomy (eTICI 2b50-3), adjunctive intra-arterial alteplase improved excellent outcomes in CHOICE-2 but with HIGHER 90-day mortality — investigational; discuss with neurointervention, ideally within a protocol.',
+              detail: 'CHOICE-2 (Renú, JAMA 2026;335:1859-69, PMID 42096239; LVO population, n=440 randomized / 433 analyzed): IA alteplase 0.225 mg/kg after successful EVT improved mRS 0-1 at 90d (57.5% vs 42.5%, adjusted RD 15.0%, P=.002) BUT 90-day mortality was higher (12.1% vs 6.4%, adjusted RD 5.9%, P=.03) — the authors flag the mortality signal as needing further study. ANGEL-TNK (JAMA 2025;334:582-91, PMID 40616323) tested IA tenecteplase post-EVT. Bridging IV TNK BEFORE late-window EVT is separately NEGATIVE (TNK-PLUS, JAMA 2026, PMID 42099212: mRS 0-2 44.2% vs 43.2%, P=.89; ATTENTION-LATE basilar: 30.3% vs 30.5%, presented ISC 2026, publication pending). No guideline class exists for adjunctive IA lytic.',
+              classOfRec: 'N/A',
+              levelOfEvidence: 'B-R',
+              guideline: 'CHOICE-2 (JAMA 2026) — investigational; no guideline recommendation',
+              reference: 'CHOICE-2: Renú A et al. JAMA 2026;335:1859-1869 (PMID 42096239). ANGEL-TNK: JAMA 2025;334:582-591 (PMID 40616323).',
+              conditions: (data) => {
+                return isSuccessfulEvtReperfusion(data.telestrokeNote?.ticiScore || '');
+              }
+            },
+            // ---------------------------------------------------------------
+            // TIROFIBAN FOR STROKE WITHOUT OCCLUSION (LYTIC-INELIGIBLE)
+            // ---------------------------------------------------------------
+            tirofiban_no_occlusion: {
+              id: 'tirofiban_no_occlusion',
+              category: 'Antithrombotic',
+              title: 'IV tirofiban for non-cardioembolic stroke without large/medium-vessel occlusion',
+              recommendation: 'For non-cardioembolic ischemic stroke WITHOUT large/medium-vessel occlusion in patients ineligible for thrombolysis/EVT (or with poor response to TNK), IV tirofiban may be considered (RESCUE-BT2; INSTANT).',
+              detail: 'RESCUE-BT2 (NEJM 2023;388:2025-36, PMID 37256974; n=1177 China): tirofiban vs aspirin in AIS without large/medium-vessel occlusion, lytic/EVT-ineligible — mRS 0-1 at 90d 29.1% vs 22.2% (aRR 1.26, 95% CI 1.04-1.53, P=0.02); sICH 1.0% vs 0%. INSTANT (JAMA 2026;335:1949-58, PMID 42100960; n=359): IV tirofiban 4-24h after TNK in non-LVO/non-cardioembolic patients with inadequate response — mRS 0-1 63.8% vs 52.2% (RR 1.22, P=.03); sICH 0.9% vs 0. Distinct population from MOST (adjuncts WITH thrombolysis — futile, mortality signal) — do not extrapolate across populations. Post-EVT tirofiban after successful reperfusion: ATTRACTION (Lancet 2026, PMID 42341797) positive (mRS 0-2 49% vs 43%).',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'B-R',
+              guideline: 'RESCUE-BT2 (NEJM 2023); INSTANT (JAMA 2026) — not yet graded by AHA/ASA',
+              reference: 'RESCUE-BT2: NEJM 2023;388:2025-36 (PMID 37256974). INSTANT: JAMA 2026;335:1949-58 (PMID 42100960).',
+              conditions: (data) => {
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                if (cat !== 'ischemic') return false;
+                const vessels = data.telestrokeNote?.vesselOcclusion || [];
+                const noOcclusion = vessels.length === 0 || vessels.every(v => /^none$/i.test(String(v).trim()));
+                return noOcclusion && (data.telestrokeNote?.tnkAutoBlocked === true || data.telestrokeNote?.tnkRecommended === false);
               }
             },
 
@@ -5850,6 +5890,20 @@ Clinician Name`;
               }
             },
             // ICH SCORE DISCLAIMER
+            ich_rfviia_fastest: {
+              id: 'ich_rfviia_fastest',
+              category: 'ICH',
+              title: 'rFVIIa for hyperacute ICH: NOT recommended (FASTEST negative)',
+              recommendation: 'Do NOT give recombinant factor VIIa for spontaneous ICH: FASTEST (Lancet 2026) showed no functional benefit despite reduced hematoma growth, with more life-threatening thromboembolic events.',
+              detail: 'FASTEST (Broderick, Lancet 2026;407:773-83, PMID 41653933; n=626, rFVIIa 80 µg/kg within 2h of onset): primary 180-day mRS NEGATIVE (adjusted common OR 1.09, 95% CI 0.79-1.51, p=0.61; stopped for futility) despite less hematoma growth (ICH growth -3.7 mL at 24h); life-threatening thromboembolic events within 4 days <5% vs 1% (RR 3.41, 95% CI 1.14-10.15, p=0.020). Hemostatic priorities remain: anticoagulant reversal, BP control, and the INTERACT3 bundle.',
+              classOfRec: 'III',
+              levelOfEvidence: 'B-R',
+              guideline: 'FASTEST (Lancet 2026) — trial evidence; predates formal guideline grading',
+              reference: 'Broderick JP et al. Lancet 2026;407:773-783 (FASTEST, PMID 41653933).',
+              conditions: (data) => {
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
+              }
+            },
             ich_score_no_limit: {
               id: 'ich_score_no_limit',
               category: 'ICH',
@@ -5870,7 +5924,7 @@ Clinician Name`;
               category: 'Acute',
               title: 'Permissive hypertension in acute ischemic stroke',
               recommendation: 'In AIS WITHOUT reperfusion therapy: treating BP <220/120 in the first 24-48h does not improve outcomes (III: No Benefit, LOE A — the grade applies to early treatment, not to a named permissive strategy). Restart home antihypertensives at 24-72h if neurologically stable. Does NOT apply to thrombolysis/EVT candidates (they require BP ≤185/110).',
-              detail: 'Treatment of moderate hypertension in non-reperfused AIS worsens penumbral perfusion. The AHA/ASA grade is III: No Benefit for TREATING BP <220/120 early in non-reperfusion patients; permissive hypertension itself is not a separately graded recommendation. Exceptions requiring treatment: aortic dissection, acute MI, decompensated heart failure, hypertensive encephalopathy.',
+              detail: 'Treatment of moderate hypertension in non-reperfused AIS worsens penumbral perfusion — INTERACT4 (NEJM 2024) confirmed prehospital/pre-imaging BP lowering HARMED patients whose stroke proved ischemic (cOR 1.30) even as it helped ICH; do not lower BP aggressively before imaging. The AHA/ASA grade is III: No Benefit for TREATING BP <220/120 early in non-reperfusion patients; permissive hypertension itself is not a separately graded recommendation. Exceptions requiring treatment: aortic dissection, acute MI, decompensated heart failure, hypertensive encephalopathy.',
               classOfRec: 'III',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA 2019 AIS; CSBP Acute 2022',
@@ -5939,18 +5993,25 @@ Clinician Name`;
             oceanic_stroke_fxia: {
               id: 'oceanic_stroke_fxia',
               category: 'Secondary Prevention',
-              title: 'OCEANIC-STROKE: Factor XIa inhibition (Asundexian)',
-              recommendation: 'In patients with non-cardioembolic ischemic stroke or high-risk TIA, adding a Factor XIa inhibitor (e.g., asundexian) to standard antiplatelet therapy may be considered to reduce ischemic events.',
-              detail: 'OCEANIC-STROKE evaluates asundexian 50 mg daily vs placebo, on top of standard antiplatelet therapy, in patients with acute non-cardioembolic ischemic stroke or high-risk TIA (within 48h). Factor XIa inhibition aims to uncouple hemostasis from thrombosis, potentially reducing recurrent ischemic events without significantly increasing major bleeding.',
-              classOfRec: 'IIb',
+              title: 'OCEANIC-STROKE: Factor XIa inhibition (asundexian) — positive phase 3',
+              recommendation: 'In non-cardioembolic ischemic stroke or high-risk TIA with atherosclerosis features, asundexian 50 mg daily added to antiplatelet therapy reduced recurrent ischemic stroke without increasing major bleeding (OCEANIC-STROKE, NEJM 2026). Regulatory status and guideline grading pending — not yet standard of care.',
+              detail: 'OCEANIC-STROKE (Sharma, NEJM 2026;394:1467-79, PMID 41985132, DOI 10.1056/NEJMoa2513880): 12,327 patients with non-cardioembolic ischemic stroke or high-risk TIA within 72 h, enriched for atherosclerosis (nonlacunar infarct, atherosclerosis history, or plaque on imaging), randomized to asundexian 50 mg daily vs placebo on top of single/dual antiplatelet therapy. Ischemic stroke: 6.2% vs 8.4% (HR 0.74, 95% CI 0.65-0.84, P<0.001). Major bleeding: 1.9% vs 1.7% (HR 1.10, 95% CI 0.85-1.44 — no significant increase). CV death/MI/stroke composite also lower. Phase 2 trials (PACIFIC-Stroke, AXIOMATIC-SSP) were neutral on MRI composites; OCEANIC-STROKE is the first positive phase-3 factor-XIa outcome trial in stroke. No guideline class yet — discuss availability/approval status before prescribing.',
+              classOfRec: 'N/A',
               levelOfEvidence: 'B-R',
-              guideline: 'OCEANIC-STROKE',
-              reference: 'OCEANIC-STROKE Trial.',
+              guideline: 'OCEANIC-STROKE (NEJM 2026) — no guideline recommendation issued yet',
+              reference: 'Sharma M et al. NEJM 2026;394:1467-79 (OCEANIC-STROKE, PMID 41985132). DOI: 10.1056/NEJMoa2513880.',
+              sourceUrl: 'https://doi.org/10.1056/NEJMoa2513880',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
+                // Surfaces for the trial's actual population — non-cardioembolic
+                // stroke/TIA with an atherosclerotic mechanism — rather than only
+                // when an unreachable regimen value was pre-selected.
+                const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
+                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
                 const ap = (data.telestrokeNote?.secondaryPrevention?.antiplateletRegimen || '');
-                return isIschemic && ap === 'factor-xia-asundexian';
+                const atherosclerotic = toast.includes('athero') || cta.includes('atheroscler') || cta.includes('stenosis');
+                return isIschemic && (atherosclerotic || ap === 'factor-xia-asundexian');
               }
             },
             // DRUG INTERACTION: AED-DOAC
@@ -20858,7 +20919,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             } else if (!nihssKnown && !telestrokeNote.disablingDeficit) {
                               tnkRec = { eligible: false, reason: 'Document NIHSS (or a disabling deficit) to evaluate thrombolysis', confidence: 'low' };
                             } else if (nihssKnown && nihss <= 5 && !telestrokeNote.disablingDeficit) {
-                              tnkRec = { eligible: false, reason: `NIHSS ${nihss} with non-disabling symptoms — IVT not recommended (Class III)`, confidence: 'medium' };
+                              tnkRec = { eligible: false, reason: `NIHSS ${nihss} with non-disabling symptoms — IVT not recommended (Class III). TEMPO-2 (Lancet 2024): TNK in minor non-disabling stroke WITH occlusion showed no benefit and possible harm (death 5% vs 1%).`, confidence: 'medium' };
                             } else if (hoursFromLKW <= 4.5) {
                               if (nihss >= 4 || telestrokeNote.disablingDeficit) {
                                 tnkRec = { eligible: true, reason: `Within 4.5h window, NIHSS ${nihss}`, confidence: 'high' };
