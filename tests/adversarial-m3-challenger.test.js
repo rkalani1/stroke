@@ -227,10 +227,13 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // and stopping the infusion is conditional on alteplase). See the git diff of
       // tests/snapshots/example-protocols/ for the approved wording. Counts below reflect
       // the approved removal of source-status boxes and relocation of calculators.
+      // 2026-08-22: calculators 428->426 from the approved evidence-audit
+      // corrections (Hemphill ICH-score table, ABCD2 duration options,
+      // HAS-BLED published item definitions). ich/ischemic unchanged.
       const baselineCounts = {
         ich: 524,
         ischemic: 764,
-        calculators: 428
+        calculators: 426
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);

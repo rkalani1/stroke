@@ -15610,34 +15610,12 @@ Clinician Name`;
             const elevatedAPTT = !Number.isNaN(pttVal) && pttVal > 40;
             const lowGlucose = !Number.isNaN(glucVal) && glucVal < 50;
             const isICH = telestrokeNote.diagnosisCategory === 'ich' || telestrokeNote.diagnosisCategory === 'sah';
-            // DOAC clearance-aware auto-block: only block if <97% cleared
+            // Single canonical DOAC-recency model (CrCl-adjusted clearance) —
+            // shared with the contraindication-checklist auto-detection.
             const doacType = telestrokeNote.lastDOACType;
-            let recentDOAC = false;
-            let doacClearanceNote = '';
-            if (doacType && doacType !== 'warfarin' && doacType !== 'none') {
-              const lastDose = telestrokeNote.lastDOACDose ? new Date(telestrokeNote.lastDOACDose) : null;
-              if (lastDose && !Number.isNaN(lastDose.getTime())) {
-                const hoursSince = (Date.now() - lastDose.getTime()) / (1000 * 60 * 60);
-                if (hoursSince >= 0) {
-                  const crcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
-                  const crclVal = crcl ? crcl.value : null;
-                  const halfLifeMap = { apixaban: crclVal && crclVal < 30 ? 15 : 10, rivaroxaban: crclVal && crclVal < 30 ? 13 : 9, dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14, edoxaban: crclVal && crclVal < 30 ? 16 : 12 };
-                  const estHalfLife = halfLifeMap[doacType] || 12;
-                  const halfLives = hoursSince / estHalfLife;
-                  const clearancePct = Math.min(99.9, (1 - Math.pow(0.5, halfLives)) * 100);
-                  if (clearancePct < 97) {
-                    recentDOAC = true;
-                    doacClearanceNote = ` (~${clearancePct.toFixed(0)}% cleared)`;
-                  }
-                } else {
-                  recentDOAC = true; // future date = can't calculate, block to be safe
-                  doacClearanceNote = ' (dose time in future — verify)';
-                }
-              } else {
-                recentDOAC = true; // no dose time entered, block to be safe
-                doacClearanceNote = ' (last dose time unknown)';
-              }
-            }
+            const doacRecency = assessDOACRecency(telestrokeNote);
+            const recentDOAC = doacRecency.recent;
+            const doacClearanceNote = doacRecency.note;
             // Recent intracranial/intraspinal surgery auto-block. This is a
             // deliberately CONSERVATIVE hard block (institutional posture).
             // Major EXTRACRANIAL surgery is a relative contraindication
@@ -21492,14 +21470,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               const bpVal = telestrokeNote.presentingBP || '';
                               const bpMatchVal = bpVal.match(/(\d+)\s*\/\s*(\d+)/);
                               if (bpMatchVal && (parseInt(bpMatchVal[1], 10) > 185 || parseInt(bpMatchVal[2], 10) > 110)) autoDetected.severeUncontrolledHTN = true;
-                              // DOAC detection
+                              // DOAC detection — reads the SAME CrCl-adjusted
+                              // clearance model as the TNK auto-block, so the
+                              // checklist and the block can no longer disagree
+                              // about the same patient.
                               if (telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== '' && telestrokeNote.lastDOACType !== 'none' && telestrokeNote.lastDOACType !== 'warfarin' && telestrokeNote.lastDOACType !== 'heparin') {
-                                if (telestrokeNote.lastDOACDose) {
-                                  const doacDoseDate = new Date(telestrokeNote.lastDOACDose);
-                                  const hoursSinceDOAC = Number.isNaN(doacDoseDate.getTime()) ? NaN : (new Date() - doacDoseDate) / (1000 * 60 * 60);
-                                  if (!isNaN(hoursSinceDOAC) && hoursSinceDOAC < 48) autoDetected.recentDOAC = true;
-                                  else if (isNaN(hoursSinceDOAC)) autoDetected.recentDOAC = true; // assume recent if date unparseable
-                                } else { autoDetected.recentDOAC = true; }
+                                if (assessDOACRecency(telestrokeNote).recent) autoDetected.recentDOAC = true;
                               }
                               // Heparin detection
                               if (telestrokeNote.lastDOACType === 'heparin') {

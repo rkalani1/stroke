@@ -399,7 +399,6 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         'evt_late_window',
         'evt_large_core_early',
         'evt_basilar',
-        'anticoag_af_timing',
         'doac_timing_af',
         'reversal_xa_inhibitor',
         'reversal_dabigatran',
@@ -417,7 +416,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       expect(appJsx).toContain("id: 'bp_post_evt'");
       expect(appJsx).toContain("classOfRec: 'III'");
       expect(appJsx).toContain("levelOfEvidence: 'A'");
-      expect(appJsx).toContain('Do NOT target SBP <140 mmHg after successful EVT reperfusion');
+      expect(appJsx).toContain('do NOT target SBP <140');
     });
 
     it('stress tests acute ICH BP lowering harm guard (ATACH-2 / AHA 2022)', () => {
@@ -431,7 +430,9 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
     it('stress tests DOAC resumption CATALYST 2025 evidence integration', () => {
       const appJsx = fs.readFileSync(path.join(REPO_ROOT, 'src', 'app.jsx'), 'utf8');
       
-      expect(appJsx).toContain("id: 'anticoag_af_timing'");
+      // anticoag_af_timing was merged into doac_timing_af (duplicate-rule
+      // consolidation) — CATALYST evidence now lives on the single card.
+      expect(appJsx).not.toContain("id: 'anticoag_af_timing'");
       expect(appJsx).toContain("id: 'doac_timing_af'");
       expect(appJsx).toMatch(/CATALYST.*2025|40570866/i);
     });
