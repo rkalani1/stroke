@@ -23,6 +23,10 @@ import { useEffect, useRef } from 'react';
 const FOCUSABLE =
   'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
+// The dialog's own scroll container opts in with tabindex="0" so that a sheet
+// whose only control is Close (ESUS/MOCHA have no registry link) can still be
+// scrolled from the keyboard while body scroll is locked.
+
 /**
  * @param {object}  opts
  * @param {object}  opts.dialogRef        ref to the dialog element (the Tab trap boundary)
@@ -31,6 +35,13 @@ const FOCUSABLE =
  */
 export function useDialogChrome({ dialogRef, initialFocusRef, onClose }) {
   const previousActiveElementRef = useRef(null);
+
+  // Held in a ref rather than listed as a dependency: callers pass an inline
+  // arrow, so depending on it tore down and re-ran the whole effect on every
+  // unrelated parent re-render (the app re-renders on a 15-second clock),
+  // which restored focus behind the scrim and then forced it back to Close.
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (typeof document === 'undefined') return undefined;
@@ -57,7 +68,7 @@ export function useDialogChrome({ dialogRef, initialFocusRef, onClose }) {
 
     const onKey = (e) => {
       if (e.key === 'Escape') {
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (e.key !== 'Tab') return;
@@ -87,7 +98,9 @@ export function useDialogChrome({ dialogRef, initialFocusRef, onClose }) {
       const prev = previousActiveElementRef.current;
       if (prev && prev.isConnected && typeof prev.focus === 'function') prev.focus();
     };
-  }, [dialogRef, initialFocusRef, onClose]);
+    // Mount-once: see onCloseRef above. dialogRef/initialFocusRef are stable refs.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 }
 
 export default useDialogChrome;
