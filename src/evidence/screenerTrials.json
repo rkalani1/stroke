@@ -162,6 +162,9 @@
       "Midbrain extension/involvement",
       "Clear standard-of-care surgical indication"
     ],
+    "optimisticDefaults": {
+      "volume": "bg_large"
+    },
     "eligibility": {
       "criteria": [
         { "field": "classification", "operator": "==", "value": "ich", "error": "Requires ICH", "matchedLabel": "ICH classification selected" },

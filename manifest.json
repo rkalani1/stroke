@@ -37,10 +37,16 @@
       "description": "Stroke calculators (NIHSS, ASPECTS, ICH, ABCD2, HAS-BLED, ...)"
     },
     {
-      "name": "Trials",
-      "short_name": "Trials",
+      "name": "Trial screener",
+      "short_name": "Screener",
       "url": "./#/trials",
-      "description": "Active trials and Evidence Atlas"
+      "description": "Two-tap bedside trial screener"
+    },
+    {
+      "name": "Eligibility tables",
+      "short_name": "Tables",
+      "url": "./#/trials/tables",
+      "description": "Ischemic and hemorrhage eligibility reference tables"
     }
   ],
   "scope": "./",

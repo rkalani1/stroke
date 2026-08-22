@@ -1,16 +1,19 @@
 // src/components/EligibilityTables.jsx
 //
-// Native eligibility-tables reference view — replaces the standalone
-// stroke-eligibility-tables-embed iframe in the Trials tab. v7 styling/tokens
+// Native eligibility-tables reference view — no iframe. v7 styling/tokens
 // (single cobalt accent; warn/crit/ok/slate semantics). No institutional
 // identifiers, no institutional brand colors — the copy-as-HTML output uses v7
 // token hexes (teal #0C7C8C header, gold #B07D24 accent).
 //
-//   • Two top filters: Ischemic / ICH.
+//   • Two top filters: Ischemic / Hemorrhage.
 //   • Three collapsible phase sections per category (acute / inpatient /
-//     outpatient), each rendering its table:
-//        Study (acronym + NCT link + status badge) | Summary | Eligibility | Key Exclusions
-//   • Per-table "Copy as HTML" (inline-styled, v7 hexes) and "Copy as Markdown".
+//     outpatient).
+//   • ≥ lg: the four-column reference table
+//       Study | Hypothesis / Summary | Eligibility | Key Exclusions
+//     < lg (phone / tablet): the same rows as stacked cards, because a
+//     four-column table is unusable on a phone. Identical content either way.
+//   • Per-table "Copy as HTML" and "Copy as Markdown" — unchanged output, so
+//     the intranet paste target still receives the full table.
 //
 // `copyToClipboard` + `addToast` are passed in from app.jsx (shared helpers +
 // toast system) so the copy actions reuse one code path.
@@ -19,8 +22,7 @@ import React, { useMemo, useState, useCallback } from 'react';
 import {
   eligibilityTables,
   CATEGORY_LABELS,
-  PHASE_LABELS,
-  ELIGIBILITY_COMPLIANCE_NOTE
+  PHASE_LABELS
 } from '../evidence/eligibilityTables.js';
 
 const cx = (...p) => p.filter(Boolean).join(' ');
@@ -32,22 +34,89 @@ const HTML_GOLD = '#B07D24';
 
 const PHASE_ORDER = ['acute', 'inpatient', 'outpatient'];
 
+const SHORT_PHASE_LABELS = {
+  acute: 'Acute · onset ≤ 24 h',
+  inpatient: 'Inpatient · day 0–30',
+  outpatient: 'Outpatient · day 14–month 6'
+};
+
+/* ───────────────────────── icons ───────────────────────── */
+
+const Glyph = ({ children, size = 16, className, strokeWidth = 2.1 }) => (
+  <svg
+    aria-hidden="true"
+    focusable="false"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    {children}
+  </svg>
+);
+
+const IconVessel = (p) => (
+  <Glyph {...p} strokeWidth={1.9}>
+    <path d="M4 7c4 0 4 5 8 5s4-5 8-5" />
+    <path d="M4 16c4 0 4 3 8 3" />
+    <path d="m15 15 5 5" />
+    <path d="m20 15-5 5" />
+  </Glyph>
+);
+const IconDroplet = (p) => (
+  <Glyph {...p} strokeWidth={1.9}>
+    <path d="M12 3.5c3.6 4.2 6 7.2 6 10a6 6 0 0 1-12 0c0-2.8 2.4-5.8 6-10Z" />
+  </Glyph>
+);
+const IconCopy = (p) => (
+  <Glyph {...p}>
+    <rect x="9" y="9" width="12" height="12" rx="2" />
+    <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+  </Glyph>
+);
+const IconChevron = (p) => (
+  <Glyph {...p} strokeWidth={2.4}>
+    <path d="m9 6 6 6-6 6" />
+  </Glyph>
+);
+
+const CATEGORY_ICONS = { ischemic: IconVessel, ich: IconDroplet };
+const SHORT_CATEGORY_LABELS = { ischemic: 'Ischemic', ich: 'Hemorrhage' };
+
 /* ───────────────────────── status badge ───────────────────────── */
 
 function StatusBadge({ status }) {
   const map = {
-    enrolling: { cls: 'bg-ok-50 text-ok-800 border-ok-200', text: 'Enrolling' },
-    soon: { cls: 'bg-warn-50 text-warn-800 border-warn-200', text: 'Soon' },
-    unverified: { cls: 'bg-crit-50 text-crit-800 border-crit-200', text: 'Unverified' }
+    enrolling: {
+      dot: 'bg-ok-500',
+      cls: 'bg-ok-50 text-ok-800 border-ok-200 dark:bg-ok-950 dark:text-ok-200 dark:border-ok-800',
+      text: 'Enrolling'
+    },
+    soon: {
+      dot: 'bg-warn-500',
+      cls: 'bg-warn-50 text-warn-800 border-warn-200 dark:bg-warn-950 dark:text-warn-200 dark:border-warn-800',
+      text: 'Soon'
+    },
+    unverified: {
+      dot: 'bg-crit-500',
+      cls: 'bg-crit-50 text-crit-800 border-crit-200 dark:bg-crit-950 dark:text-crit-200 dark:border-crit-800',
+      text: 'Unverified'
+    }
   };
   const m = map[status] || map.unverified;
   return (
     <span
       className={cx(
-        'inline-flex items-center rounded-full border px-2 py-0.5 text-2xs font-semibold uppercase tracking-wide',
+        'inline-flex shrink-0 items-center gap-1.5 rounded-pill border px-2 py-1 text-2xs font-bold uppercase tracking-wide',
         m.cls
       )}
     >
+      <span aria-hidden="true" className={cx('h-1.5 w-1.5 rounded-pill', m.dot)} />
       {m.text}
     </span>
   );
@@ -139,9 +208,146 @@ function buildMarkdown(table) {
   return lines.join('\n');
 }
 
-/* ───────────────────────── table render ───────────────────────── */
+/* ───────────────────────── shared bits ───────────────────────── */
 
-function EligibilityTable({ table, copyToClipboard, addToast }) {
+function StudyLink({ trial, className }) {
+  if (!trial.href) return <span className={className}>{trial.acronym}</span>;
+  return (
+    <a
+      href={trial.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cx('text-link-600 underline hover:text-link-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 dark:text-cobalt-300', className)}
+    >
+      {trial.acronym} ↗
+    </a>
+  );
+}
+
+function CriteriaList({ items, tone }) {
+  const dot = tone === 'excl' ? 'bg-crit-700 dark:bg-crit-300' : 'bg-cobalt-500 dark:bg-cobalt-300';
+  return (
+    <ul className="space-y-1.5">
+      {items.map((e, i) => (
+        <li key={i} className="flex gap-2.5 text-xs leading-relaxed text-ink-2 lg:text-sm">
+          <span aria-hidden="true" className={cx('mt-[7px] h-1 w-1 shrink-0 rounded-pill', dot)} />
+          <span>{e}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/* ───────────────────────── phone cards ───────────────────────── */
+
+function TrialCards({ table }) {
+  return (
+    <ul className="divide-y divide-paper-2 lg:hidden">
+      {table.trials.map((t, i) => (
+        <li key={`${table.id}-card-${t.acronym}-${i}`} className="px-4 py-4">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h3 className="font-serif text-md font-bold tracking-tight">
+                <StudyLink trial={t} />
+              </h3>
+              {t.nct ? <p className="mt-1 font-mono text-2xs text-slate-500 dark:text-mute">{t.nct}</p> : null}
+            </div>
+            <StatusBadge status={t.status} />
+          </div>
+
+          <p className="mt-3 text-sm leading-relaxed text-ink-2">{t.summary}</p>
+
+          {t.unverified ? (
+            <p className="mt-2 text-2xs font-medium text-crit-800 dark:text-crit-200">
+              Unverified — no ClinicalTrials.gov record.
+            </p>
+          ) : null}
+
+          <div className="mt-4 space-y-4">
+            <div className="border-l-2 border-ok-200 pl-3 dark:border-ok-800">
+              <p className="font-mono text-2xs font-bold uppercase tracking-[0.09em] text-ok-700 dark:text-ok-300">Eligibility</p>
+              <div className="mt-2">
+                <CriteriaList items={t.eligibility} tone="elig" />
+              </div>
+            </div>
+            <div className="border-l-2 border-crit-200 pl-3 dark:border-crit-800">
+              <p className="font-mono text-2xs font-bold uppercase tracking-[0.09em] text-crit-700 dark:text-crit-300">Key exclusions</p>
+              <div className="mt-2">
+                <CriteriaList items={t.exclusions} tone="excl" />
+              </div>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/* ───────────────────────── desktop table ───────────────────────── */
+
+function TrialTable({ table }) {
+  return (
+    <div className="hidden overflow-x-auto lg:block">
+      <table className="w-full border-collapse text-left text-sm">
+        <caption className="sr-only">{table.title}</caption>
+        <thead>
+          <tr className="bg-cobalt-700 text-white dark:bg-cobalt-600">
+            <th scope="col" className="w-[18%] border-b-2 border-warn-500 px-4 py-3 text-2xs font-bold uppercase tracking-wide">
+              Study
+            </th>
+            <th scope="col" className="w-[30%] border-b-2 border-warn-500 px-4 py-3 text-2xs font-bold uppercase tracking-wide">
+              Hypothesis / Summary
+            </th>
+            <th scope="col" className="w-[28%] border-b-2 border-warn-500 px-4 py-3 text-2xs font-bold uppercase tracking-wide">
+              Eligibility
+            </th>
+            <th scope="col" className="w-[24%] border-b-2 border-warn-500 px-4 py-3 text-2xs font-bold uppercase tracking-wide">
+              Key Exclusions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {table.trials.map((t, i) => (
+            <tr
+              key={`${table.id}-${t.acronym}-${i}`}
+              className={cx('border-b border-line align-top', i % 2 === 1 && 'bg-paper-2')}
+            >
+              <td className="px-4 py-4 align-top">
+                <h3 className="font-serif text-md font-bold tracking-tight">
+                  <StudyLink trial={t} />
+                </h3>
+                {t.nct ? <div className="mt-1 font-mono text-2xs text-slate-500 dark:text-mute">{t.nct}</div> : null}
+                <div className="mt-2">
+                  <StatusBadge status={t.status} />
+                </div>
+                {t.unverified ? (
+                  <p className="mt-2 text-2xs font-medium text-crit-800 dark:text-crit-200">
+                    Unverified — no ClinicalTrials.gov record.
+                  </p>
+                ) : null}
+              </td>
+              <td className="px-4 py-4 align-top leading-relaxed text-ink-2">{t.summary}</td>
+              <td className="px-4 py-4 align-top">
+                <CriteriaList items={t.eligibility} tone="elig" />
+              </td>
+              <td className="px-4 py-4 align-top">
+                <CriteriaList items={t.exclusions} tone="excl" />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/* ───────────────────────── collapsible phase section ───────────────────── */
+
+function PhaseSection({ table, open, onToggle, copyToClipboard, addToast }) {
+  const panelId = `eligibility-panel-${table.id}`;
+  const btnId = `eligibility-btn-${table.id}`;
+  const trialCount = table.trials.length;
+
   const onCopyHtml = useCallback(() => {
     const text = buildHtml(table);
     if (copyToClipboard) copyToClipboard(text, `${table.title} (HTML)`);
@@ -155,130 +361,49 @@ function EligibilityTable({ table, copyToClipboard, addToast }) {
   }, [table, copyToClipboard, addToast]);
 
   return (
-    <div className="space-y-2">
-      <div className="flex flex-wrap items-center justify-end gap-2">
-        <button
-          type="button"
-          onClick={onCopyHtml}
-          className="h-8 px-3 text-xs font-semibold rounded-md border border-cobalt-200 bg-cobalt-50 text-cobalt-800 hover:bg-cobalt-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
-        >
-          Copy as HTML
-        </button>
-        <button
-          type="button"
-          onClick={onCopyMd}
-          className="h-8 px-3 text-xs font-semibold rounded-md border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
-        >
-          Copy as Markdown
-        </button>
-      </div>
-
-      <div className="overflow-x-auto rounded-md border border-slate-200">
-        <table className="w-full border-collapse text-sm text-left">
-          <thead>
-            <tr className="bg-cobalt-700 text-white">
-              <th scope="col" className="px-4 py-3 text-2xs font-bold uppercase tracking-wide border-b-2 border-warn-500 w-[18%]">
-                Study
-              </th>
-              <th scope="col" className="px-4 py-3 text-2xs font-bold uppercase tracking-wide border-b-2 border-warn-500 w-[30%]">
-                Hypothesis / Summary
-              </th>
-              <th scope="col" className="px-4 py-3 text-2xs font-bold uppercase tracking-wide border-b-2 border-warn-500 w-[28%]">
-                Eligibility
-              </th>
-              <th scope="col" className="px-4 py-3 text-2xs font-bold uppercase tracking-wide border-b-2 border-warn-500 w-[24%]">
-                Key Exclusions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {table.trials.map((t, i) => (
-              <tr
-                key={`${table.id}-${t.acronym}-${i}`}
-                className={cx('border-b border-slate-200 align-top', i % 2 === 1 && 'bg-slate-50')}
-              >
-                <td className="px-4 py-4 align-top">
-                  <div className="font-bold text-cobalt-700">
-                    {t.href ? (
-                      <a
-                        href={t.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-link-600 underline hover:text-link-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded"
-                      >
-                        {t.acronym} ↗
-                      </a>
-                    ) : (
-                      <span>{t.acronym}</span>
-                    )}
-                  </div>
-                  {t.nct ? (
-                    <div className="mt-1 font-mono text-2xs text-slate-500">{t.nct}</div>
-                  ) : null}
-                  <div className="mt-1.5">
-                    <StatusBadge status={t.status} />
-                  </div>
-                  {t.unverified ? (
-                    <p className="mt-1.5 text-2xs font-medium text-crit-800">
-                      Unverified — no ClinicalTrials.gov record.
-                    </p>
-                  ) : null}
-                </td>
-                <td className="px-4 py-4 align-top text-slate-700 leading-relaxed">{t.summary}</td>
-                <td className="px-4 py-4 align-top text-slate-700">
-                  <ul className="list-disc pl-4 space-y-1 leading-relaxed">
-                    {t.eligibility.map((e, j) => (
-                      <li key={j}>{e}</li>
-                    ))}
-                  </ul>
-                </td>
-                <td className="px-4 py-4 align-top text-slate-700">
-                  <ul className="list-disc pl-4 space-y-1 leading-relaxed">
-                    {t.exclusions.map((e, j) => (
-                      <li key={j}>{e}</li>
-                    ))}
-                  </ul>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
-
-/* ───────────────────────── collapsible phase section ───────────────────────── */
-
-function PhaseSection({ table, open, onToggle, copyToClipboard, addToast }) {
-  const panelId = `eligibility-panel-${table.id}`;
-  const btnId = `eligibility-btn-${table.id}`;
-  const trialCount = table.trials.length;
-  return (
-    <section className="rounded-md border border-slate-200 bg-white">
-      <h3>
+    <section className="overflow-hidden rounded-lg border border-line bg-card shadow-card">
+      <h3 className="font-serif">
         <button
           type="button"
           id={btnId}
           aria-expanded={open}
           aria-controls={panelId}
           onClick={onToggle}
-          className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 rounded-md"
+          className="flex min-h-[60px] w-full items-center justify-between gap-3 px-4 py-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cobalt-500"
         >
-          <span className="flex items-center gap-2">
-            <span className="font-semibold text-slate-900">{PHASE_LABELS[table.phase]}</span>
-            <span className="text-2xs font-mono text-slate-500">
+          <span className="flex min-w-0 flex-col">
+            <span className="text-md font-bold tracking-tight text-ink">{PHASE_LABELS[table.phase]}</span>
+            <span className="font-mono text-2xs text-slate-500 dark:text-mute">
               {trialCount} {trialCount === 1 ? 'study' : 'studies'}
             </span>
           </span>
-          <span aria-hidden="true" className="text-slate-500 text-sm">
-            {open ? '▾' : '▸'}
-          </span>
+          <IconChevron size={18} className={cx('shrink-0 text-mute transition-transform', open && 'rotate-90')} />
         </button>
       </h3>
+
       {open ? (
-        <div id={panelId} role="region" aria-labelledby={btnId} className="px-4 pb-4">
-          <EligibilityTable table={table} copyToClipboard={copyToClipboard} addToast={addToast} />
+        <div id={panelId} role="region" aria-labelledby={btnId} className="border-t border-paper-2">
+          <TrialCards table={table} />
+          <TrialTable table={table} />
+
+          <div className="flex flex-wrap gap-2 border-t border-line bg-paper-2 px-4 py-3">
+            <button
+              type="button"
+              onClick={onCopyHtml}
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-md border border-line bg-card px-3 text-xs font-bold text-ink-2 hover:bg-paper-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+            >
+              <IconCopy size={14} />
+              Copy as HTML
+            </button>
+            <button
+              type="button"
+              onClick={onCopyMd}
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-md border border-line bg-card px-3 text-xs font-bold text-ink-2 hover:bg-paper-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+            >
+              <IconCopy size={14} />
+              Copy as Markdown
+            </button>
+          </div>
         </div>
       ) : null}
     </section>
@@ -305,30 +430,38 @@ export function EligibilityTables({ copyToClipboard, addToast }) {
 
   return (
     <div className="space-y-4">
-
-
-      {/* Category filter */}
-      <div
-        className="inline-flex p-1 rounded-md bg-slate-100"
-        role="tablist"
-        aria-label="Stroke category filter"
-      >
-        {['ischemic', 'ich'].map((c) => (
-          <button
-            key={c}
-            type="button"
-            role="tab"
-            aria-selected={category === c}
-            onClick={() => setCategory(c)}
-            className={cx(
-              'h-9 px-4 text-sm font-semibold rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500',
-              category === c ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-            )}
-          >
-            {CATEGORY_LABELS[c]}
-          </button>
-        ))}
+      {/* Category filter — full-width segmented control on phone. */}
+      <div className="grid grid-cols-2 gap-2 sm:inline-grid sm:auto-cols-max sm:grid-flow-col" role="tablist" aria-label="Stroke category filter">
+        {['ischemic', 'ich'].map((c) => {
+          const active = category === c;
+          const Icon = CATEGORY_ICONS[c];
+          return (
+            <button
+              key={c}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              aria-label={CATEGORY_LABELS[c]}
+              onClick={() => setCategory(c)}
+              className={cx(
+                'inline-flex min-h-[48px] items-center justify-center gap-2 rounded-lg border px-4 text-sm font-bold transition-colors sm:px-6',
+                'focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 focus-visible:ring-offset-paper',
+                active
+                  ? 'border-cobalt-600 bg-cobalt-600 text-white shadow-card'
+                  : 'border-line bg-card text-ink-2 hover:border-cobalt-300 hover:bg-cobalt-50 dark:hover:bg-cobalt-900'
+              )}
+            >
+              <Icon size={17} />
+              <span aria-hidden="true" className="sm:hidden">{SHORT_CATEGORY_LABELS[c]}</span>
+              <span aria-hidden="true" className="hidden sm:inline">{CATEGORY_LABELS[c]}</span>
+            </button>
+          );
+        })}
       </div>
+
+      <p className="font-mono text-2xs uppercase tracking-[0.06em] text-mute">
+        {SHORT_PHASE_LABELS.acute} · {SHORT_PHASE_LABELS.inpatient} · {SHORT_PHASE_LABELS.outpatient}
+      </p>
 
       {/* Phase sections */}
       <div className="space-y-3">
