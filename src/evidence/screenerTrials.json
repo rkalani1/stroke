@@ -37,6 +37,7 @@
     "eligibility": {
       "criteria": [
         { "field": "classification", "operator": "==", "value": "ischemic", "error": "Requires Ischemic Stroke", "matchedLabel": "Ischemic Stroke classification selected" },
+        { "field": "onsetHours", "operator": "<=", "value": 24, "error": "Presentation > 24 hours after last known well", "matchedLabel": "Within the 24-hour presentation window" },
         { "field": "aspects", "operator": ">=", "value": 6, "error": "CT ASPECTS < 6 / MRI ASPECTS < 7", "matchedLabel": "ASPECTS is {value} (meets CT ≥ 6 threshold)" },
         { "field": "preMrs", "operator": "<=", "value": 2, "error": "Pre-stroke mRS > 2", "matchedLabel": "Pre-stroke mRS is {value} (meets ≤ 2)" },
         {
@@ -115,6 +116,7 @@
         { "field": "preMrs", "operator": "in", "value": [3, 4], "error": "Pre-stroke mRS must be exactly 3 or 4", "matchedLabel": "Pre-stroke mRS is {value}" },
         { "field": "nihss", "operator": ">=", "value": 6, "error": "NIHSS < 6", "matchedLabel": "NIHSS is {value} (meets ≥ 6)" },
         { "field": "aspects", "operator": ">=", "value": 3, "error": "CT ASPECTS < 3 / MRI ASPECTS < 4", "matchedLabel": "ASPECTS is {value} (meets CT ≥ 3 threshold)" },
+        { "field": "onsetHours", "operator": "<=", "value": 24, "error": "Presentation > 24 hours after last known well", "matchedLabel": "Within the 24-hour presentation window" },
         { "field": "presentedWithin24h", "operator": "==", "value": true, "error": "Did not present within 24h of onset", "matchedLabel": "Presented to study hospital within 24h of LKW", "pendingLabel": "Confirm patient arrived at the facility within 24 hours of stroke onset (presented within 24h)" }
       ],
       "exclusions": [
@@ -217,7 +219,7 @@
     ],
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "in", "value": ["ischemic", "tia"], "error": "Requires Ischemic Stroke or TIA", "matchedLabel": "Matches the CT.gov event-window criterion: stroke or TIA within 180 days", "pendingLabel": "Confirm event type is Ischemic Stroke or TIA" },
+        { "field": "classification", "operator": "in", "value": ["ischemic", "tia"], "error": "Requires Ischemic Stroke or TIA", "matchedLabel": "Ischemic stroke or TIA classification selected", "pendingLabel": "Confirm event type is Ischemic Stroke or TIA" },
         { "field": "onsetDays", "operator": "<=", "value": 180, "error": "Stroke/TIA occurred > 180 days ago", "matchedLabel": "Matches the CT.gov event-window criterion: stroke or TIA within 180 days" },
         { "field": "age", "operator": ">=", "value": 40, "error": "Age < 40", "matchedLabel": "Age is {value} (meets ≥ 40)" },
         { "field": "singleAntiplateletSoc", "operator": "==", "value": true, "error": "Requires standard-of-care single antiplatelet (Aspirin or Clopidogrel)", "matchedLabel": "Taking single antiplatelet (aspirin/clopidogrel)", "pendingLabel": "Confirm patient is on aspirin or clopidogrel, but not both" }
@@ -509,8 +511,8 @@
           "error": "Prior clinical ICH onset < 90 days before anticipated randomization",
           "matchedLabel": "No clinical ICH within 90 days identified in entered fields",
           "branches": [
-            { "criteria": [{ "field": "classification", "operator": "!=", "value": "ich" }] },
-            { "criteria": [{ "field": "onsetDays", "operator": ">=", "value": 90 }] }
+            { "label": "No intracerebral hemorrhage selected", "criteria": [{ "field": "classification", "operator": "!=", "value": "ich" }] },
+            { "label": "Prior ICH at least 90 days before anticipated randomization", "criteria": [{ "field": "onsetDays", "operator": ">=", "value": 90 }] }
           ]
         }
       ],

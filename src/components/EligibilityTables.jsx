@@ -22,7 +22,8 @@ import React, { useMemo, useState, useCallback } from 'react';
 import {
   eligibilityTables,
   CATEGORY_LABELS,
-  PHASE_LABELS
+  PHASE_LABELS,
+  ELIGIBILITY_COMPLIANCE_NOTE
 } from '../evidence/eligibilityTables.js';
 
 const cx = (...p) => p.filter(Boolean).join(' ');
@@ -134,6 +135,9 @@ const escHtml = (s) =>
 // Markdown table cells must not contain raw pipes / newlines.
 const escMd = (s) => String(s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
 
+const STATUS_TEXT = { enrolling: 'Enrolling', soon: 'Enrolling soon', unverified: 'Unverified' };
+const statusText = (trial) => STATUS_TEXT[trial.status] || STATUS_TEXT.unverified;
+
 function trialStudyText(trial) {
   const nct = trial.nct ? ` (${trial.nct})` : '';
   return `${trial.acronym}${nct}`;
@@ -158,6 +162,7 @@ function buildHtml(table) {
         <td style="padding: 16px; vertical-align: top;">
           <div style="font-weight: 700; font-size: 16px;">${studyLink}</div>
           ${t.nct ? `<div style="font-size: 12px; color: #64748B; margin-top: 4px;">${escHtml(t.nct)}</div>` : ''}
+          <div style="font-size: 12px; font-weight: 700; color: #475569; margin-top: 4px;">${escHtml(statusText(t))}</div>
         </td>
         <td style="padding: 16px; vertical-align: top; color: #334155; line-height: 1.4;">${escHtml(t.summary)}</td>
         <td style="padding: 16px; vertical-align: top; color: #334155;">
@@ -188,6 +193,7 @@ function buildHtml(table) {
 ${rows}
     </tbody>
   </table>
+  <p style="font-size: 12px; color: #64748B; margin: 8px 0 0; line-height: 1.5;">${escHtml(ELIGIBILITY_COMPLIANCE_NOTE)}</p>
 </div>`;
 }
 
@@ -198,12 +204,17 @@ function buildMarkdown(table) {
   lines.push('| Study | Hypothesis / Summary | Eligibility | Key Exclusions |');
   lines.push('| --- | --- | --- | --- |');
   for (const t of table.trials) {
-    const study = escMd(trialStudyText(t)) + (t.href ? ` ([CT.gov](${t.href}))` : '');
+    const study =
+      escMd(trialStudyText(t)) +
+      (t.href ? ` ([CT.gov](${t.href}))` : '') +
+      ` — ${escMd(statusText(t))}`;
     const summary = escMd(t.summary);
     const elig = t.eligibility.map((e) => `• ${escMd(e)}`).join('<br>');
     const excl = t.exclusions.map((e) => `• ${escMd(e)}`).join('<br>');
     lines.push(`| ${study} | ${summary} | ${elig} | ${excl} |`);
   }
+  lines.push('');
+  lines.push(`> ${escMd(ELIGIBILITY_COMPLIANCE_NOTE)}`);
   lines.push('');
   return lines.join('\n');
 }
@@ -248,7 +259,7 @@ function TrialCards({ table }) {
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <h3 className="font-serif text-md font-bold tracking-tight">
-                <StudyLink trial={t} />
+                <StudyLink trial={t} className="-my-2 inline-flex min-h-[44px] items-center" />
               </h3>
               {t.nct ? <p className="mt-1 font-mono text-2xs text-slate-500 dark:text-mute">{t.nct}</p> : null}
             </div>

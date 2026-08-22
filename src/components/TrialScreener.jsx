@@ -53,7 +53,10 @@ export const COMPLIANCE_BANNER =
 const CLASSIFICATIONS = [
   { id: 'ischemic', label: 'Ischemic', sub: 'stroke', onsetVal: 2 },
   { id: 'tia', label: 'TIA', sub: 'transient', onsetVal: 12 },
-  { id: 'ich', label: 'Hemorrhage', sub: 'ICH', onsetVal: 3 }
+  // onsetVal must equal an ONSET_PRESETS value in hours, otherwise OnsetPicker's
+  // exact-match test lights no pill and the screener runs on a window the user
+  // never chose. ICH stays hyperacute by default (MINUTE screens to 15 h).
+  { id: 'ich', label: 'Hemorrhage', sub: 'ICH', onsetVal: 2 }
 ];
 
 const CLASSIFICATION_LABELS = {
@@ -218,7 +221,12 @@ function TrialDetailsModal({ trial, onClose }) {
   // place would anchor to the (very tall) shell instead of the viewport.
   return createPortal(
     <>
-      <div className="fixed inset-0 z-[60] bg-slate-950/50" onClick={onClose} role="presentation" aria-hidden="true" />
+      <div
+        className="fixed inset-0 z-[60] bg-slate-950/50 dark:bg-black/70"
+        onClick={onClose}
+        role="presentation"
+        aria-hidden="true"
+      />
       {/* Bottom sheet on phone, centred dialog from sm up. */}
       <div
         ref={dialogRef}
@@ -227,7 +235,7 @@ function TrialDetailsModal({ trial, onClose }) {
         aria-labelledby="trial-modal-title"
         className="fixed inset-x-0 bottom-0 top-12 z-[61] flex flex-col overflow-hidden rounded-t-xl border border-line bg-card shadow-pop sm:inset-x-4 sm:top-1/2 sm:bottom-auto sm:mx-auto sm:max-h-[85vh] sm:max-w-2xl sm:-translate-y-1/2 sm:rounded-xl"
       >
-        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-line bg-card px-4 py-3 sm:px-5">
+        <div className="flex !flex-nowrap shrink-0 items-start justify-between gap-3 border-b border-line bg-card px-4 py-3 sm:px-5">
           <div className="min-w-0">
             <h2 id="trial-modal-title" className="font-serif text-lg font-bold tracking-tight text-ink">
               {trial.acronym}
@@ -241,7 +249,10 @@ function TrialDetailsModal({ trial, onClose }) {
               type="button"
               onClick={onClose}
               aria-label="Close trial details"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-md text-mute hover:bg-paper-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+              // !flex-none !min-w-0: index.html's mobile `.flex.gap-2 > button`
+              // rule sets flex:1 1 auto + min-width:70px, which stretched this
+              // 44px square control out of shape on every phone width.
+              className="inline-flex h-11 w-11 !flex-none !min-w-0 items-center justify-center rounded-md text-mute hover:bg-paper-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
             >
               <Glyph size={20} strokeWidth={2.2}>
                 <path d="M18 6 6 18" />
@@ -251,7 +262,12 @@ function TrialDetailsModal({ trial, onClose }) {
           </div>
         </div>
 
-        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain px-4 py-4 pb-10 sm:px-5">
+        <div
+          tabIndex={0}
+          role="region"
+          aria-label={`${trial.acronym} details`}
+          className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain px-4 py-4 pb-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cobalt-500 sm:px-5"
+        >
           <div>
             <p className="font-mono text-2xs font-semibold uppercase tracking-[0.1em] text-mute">Clinical hypothesis</p>
             <p className="mt-1 text-sm leading-relaxed text-ink-2">{trial.sourceHypothesisText || 'Not specified in source'}</p>
@@ -340,7 +356,9 @@ function ResultCard({ item, onOpenDetails, compact = false }) {
           <StatusBadge status={status} />
         </div>
         <p className="mt-1.5 text-xs leading-relaxed text-mute">
-          {exclusionReasons && exclusionReasons.length > 0 ? exclusionReasons[0] : trial.conciseBedsideSummary}
+          {exclusionReasons && exclusionReasons.length > 0
+            ? exclusionReasons.join(' · ')
+            : trial.conciseBedsideSummary}
         </p>
         <button
           type="button"
@@ -507,14 +525,17 @@ function OnsetPicker({ onsetVal, onsetUnit, onChange }) {
   );
 }
 
-function ExclusionRefiner({ items, checked, onToggle, onClear }) {
+function ExclusionRefiner({ items, checked, onToggle, onClear, summaryRef }) {
   // Counted off the authoritative map rather than `items`, so the badge and the
   // Clear control still appear if a checked exclusion is ever filtered out of
   // the visible rows.
   const activeCount = Object.values(checked || {}).filter(Boolean).length;
   return (
     <details className="group overflow-hidden rounded-lg border border-line bg-card">
-      <summary className="flex min-h-[52px] cursor-pointer select-none items-center justify-between gap-3 px-4 py-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cobalt-500">
+      <summary
+        ref={summaryRef}
+        className="flex !flex-nowrap min-h-[52px] cursor-pointer select-none items-center justify-between gap-3 px-4 py-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cobalt-500"
+      >
         <span className="flex min-w-0 flex-col">
           <span className="text-sm font-bold text-ink-2">Narrow by clinical exclusions</span>
           <span className="text-2xs text-mute">Optional · {items.length} relevant to the current list</span>
@@ -539,19 +560,21 @@ function ExclusionRefiner({ items, checked, onToggle, onClear }) {
               aria-checked={on}
               onClick={() => onToggle(item.id, !on)}
               className={cx(
-                'flex min-h-[44px] w-full items-center justify-between gap-3 rounded-md border px-3 py-2 text-left text-sm transition-colors',
+                'flex !flex-nowrap min-h-[44px] w-full items-center justify-between gap-3 rounded-md border px-3 py-2 text-left text-sm transition-colors',
                 'focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500',
                 on
                   ? 'border-crit-300 bg-crit-50 text-crit-800 dark:border-crit-700 dark:bg-crit-950 dark:text-crit-200'
                   : 'border-line bg-card text-ink-2 hover:bg-paper-2'
               )}
             >
-              <span className="leading-snug">{item.label}</span>
+              <span className="min-w-0 flex-1 leading-snug">{item.label}</span>
               <span
                 aria-hidden="true"
                 className={cx(
                   'inline-flex h-5 w-5 shrink-0 items-center justify-center rounded border',
-                  on ? 'border-crit-600 bg-crit-600 text-white' : 'border-slate-300 bg-card text-transparent dark:border-strong'
+                  on
+                    ? 'border-crit-600 bg-crit-600 text-white'
+                    : 'border-slate-400 bg-paper text-transparent dark:!border-slate-500'
                 )}
               >
                 <IconCheck size={11} />
@@ -587,7 +610,7 @@ function SectionRule({ title, count, tone = 'accent' }) {
       <span
         className={cx(
           'inline-flex h-6 min-w-[26px] items-center justify-center rounded-pill px-2 font-mono text-xs font-semibold text-white',
-          tone === 'accent' ? 'bg-cobalt-600 dark:bg-cobalt-500' : 'bg-warn-600'
+          tone === 'accent' ? 'bg-cobalt-600' : 'bg-warn-600'
         )}
       >
         {count}
@@ -699,7 +722,13 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
   const setExclusion = useCallback((id, val) => {
     setState((s) => ({ ...s, exclusions: { ...s.exclusions, [id]: val } }));
   }, []);
-  const clearExclusions = useCallback(() => setState((s) => ({ ...s, exclusions: {} })), []);
+  const refinerRef = useRef(null);
+  const clearExclusions = useCallback(() => {
+    setState((s) => ({ ...s, exclusions: {} }));
+    // The Clear button is only rendered while a flag is set, so activating it
+    // unmounts the focused element. Hand focus back to the disclosure summary.
+    requestAnimationFrame(() => refinerRef.current?.focus());
+  }, []);
 
   const results = useMemo(() => evaluateAll(state), [state]);
   const ready = results.ready;
@@ -745,7 +774,13 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
   return (
     <div className="space-y-5 lg:grid lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:items-start lg:gap-8 lg:space-y-0">
       {/* ── Steps ── */}
-      <div className="space-y-5 lg:sticky lg:top-24">
+      {/* Sticky only from lg. The offset tracks --app-header-h (published by
+          app.jsx's ResizeObserver) instead of a hardcoded lg:top-24, which sat
+          under the 107px sticky header and sliced the "01" heading in half. The
+          max-height keeps the column shorter than the viewport so a focused
+          exclusion row can always be scrolled into view. Both are lg:-scoped —
+          below lg the column is static and must not be clipped. */}
+      <div className="space-y-5 lg:sticky lg:top-[calc(var(--app-header-h,6.5rem)_+_0.75rem)] lg:max-h-[calc(100vh_-_var(--app-header-h,6.5rem)_-_1.75rem)] lg:overflow-y-auto lg:overscroll-contain lg:pr-1">
         <section>
           <StepHeading n="01">What are you screening?</StepHeading>
           <ClassificationPicker
@@ -768,6 +803,7 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
 
         {ready && (visibleExclusions.length > 0 || anyExclusionChecked) && (
           <ExclusionRefiner
+            summaryRef={refinerRef}
             items={visibleExclusions}
             checked={state.exclusions}
             onToggle={setExclusion}
@@ -854,7 +890,7 @@ export function StudyDatabase() {
               aria-pressed={active}
               onClick={() => setFilter(f.id)}
               className={cx(
-                'inline-flex min-h-[44px] items-center gap-1.5 rounded-pill border px-4 text-sm font-semibold transition-colors',
+                'inline-flex !flex-none min-h-[44px] items-center gap-1.5 rounded-pill border px-4 text-sm font-semibold transition-colors',
                 'focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500',
                 active
                   ? 'border-cobalt-600 bg-cobalt-600 text-white'
@@ -954,14 +990,10 @@ export function StudyDatabase() {
                   <button
                     type="button"
                     onClick={() => setModalTrial(trial)}
-                    aria-label={`Open full details for ${trial.acronym}`}
-                    className="inline-flex h-11 w-11 items-center justify-center rounded text-mute hover:text-ink-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+                    className="inline-flex min-h-[44px] items-center gap-1 rounded px-2 text-xs font-bold text-cobalt-700 hover:text-cobalt-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 dark:text-cobalt-300"
                   >
-                    <Glyph size={16} strokeWidth={2.1}>
-                      <path d="M15 3h6v6" />
-                      <path d="M10 14 21 3" />
-                      <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5" />
-                    </Glyph>
+                    Full details
+                    <IconChevron size={13} />
                   </button>
                 </div>
               </div>
