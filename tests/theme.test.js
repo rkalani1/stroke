@@ -232,10 +232,31 @@ describe('runV7Migration', () => {
       expect(documentMock.documentElement.classList.toggle).toHaveBeenCalledWith('dark', true);
     });
 
-    it('removes preference key when set to auto', () => {
+    it('persists auto explicitly instead of deleting the key', () => {
       globalThis.localStorage.setItem('stroke.v7.theme', 'dark');
       themeController.setThemePref('auto');
-      expect(globalThis.localStorage.getItem('stroke.v7.theme')).toBeNull();
+      expect(globalThis.localStorage.getItem('stroke.v7.theme')).toBe('auto');
+    });
+
+    it('keeps System reachable on public pages', () => {
+      // Regression: setThemePref('auto') used to delete the key, and
+      // getThemePref() reads an unset key on public Pages as 'light' — so
+      // choosing System snapped straight back to Light and the OS preference
+      // was never honored on the deployed site.
+      globalThis.window.location.hostname = 'rkalani1.github.io';
+      themeController.setThemePref('auto');
+      expect(themeController.getThemePref()).toBe('auto');
+    });
+
+    it('still defaults an unset public preference to light', () => {
+      globalThis.window.location.hostname = 'rkalani1.github.io';
+      globalThis.localStorage.removeItem('stroke.v7.theme');
+      expect(themeController.getThemePref()).toBe('light');
+    });
+
+    it('falls back to auto for an unrecognized preference value', () => {
+      themeController.setThemePref('chartreuse');
+      expect(globalThis.localStorage.getItem('stroke.v7.theme')).toBe('auto');
     });
   });
 
@@ -243,13 +264,13 @@ describe('runV7Migration', () => {
 
 
 
-    it('safely handles localStorage removeItem exceptions when setting to auto', () => {
-      const originalRemoveItem = globalThis.localStorage.removeItem;
-      globalThis.localStorage.removeItem = vi.fn(() => {
+    it('safely handles localStorage write exceptions when setting to auto', () => {
+      const originalSetItem = globalThis.localStorage.setItem;
+      globalThis.localStorage.setItem = vi.fn(() => {
         throw new Error('AccessDeniedError');
       });
       expect(() => themeController.setThemePref('auto')).not.toThrow();
-      globalThis.localStorage.removeItem = originalRemoveItem;
+      globalThis.localStorage.setItem = originalSetItem;
     });
 
   describe('applyTheme', () => {

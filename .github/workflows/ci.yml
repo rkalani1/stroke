@@ -187,6 +187,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Asset budget
+        # Hard gate on payload bytes. The Lighthouse workflow writes Performance
+        # as advisory (CDN/device sensitive), which let the bundle grow 52%
+        # between 2026-05 and 2026-08 unnoticed. Bytes are deterministic.
+        run: npm run check:asset-budget
+
       - name: Example Protocols content lock
         run: |
           mkdir -p output/diagnostics

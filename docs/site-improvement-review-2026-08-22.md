@@ -14,6 +14,38 @@ sprint can pick them up in priority order.
 
 ---
 
+## Status update — v6.23.0 (same day)
+
+Seven items below shipped. Two corrections to what this document originally
+said, both found while implementing:
+
+**Item 11 was understated — the search was broken, not just missing a count.**
+It did not filter at all; see that item for the measurement and the fix.
+
+**Item 3's projected win was too optimistic.** This document predicted
+"~3.7 s → well under 500 ms". The measured result is **24,961 → 1,611 DOM nodes
+(−94%)** and **~27% faster** to a settled route at 1×, 4×, and 6× CPU throttle
+(3,654 ms → 2,665 ms at 6×). The DOM cost is gone; what remains is parse and
+execute of the 3.6 MB bundle, which only route-level code splitting (item 4)
+will move. The prediction conflated the two.
+
+| Item | Status |
+|---|---|
+| 1 · first-visit update banner | **shipped** — verified in a real browser on a clean profile (silent) and against a planted older cache (still announces) |
+| 2 · System theme on public Pages | **shipped** — `'auto'` persisted explicitly; the unset-public default stays light |
+| 3 · lazy-mount accordions | **shipped** — see correction above |
+| 5 · precache trim | **shipped** — 9.26 MB → 4.68 MB (−49%). WebP conversion **deferred**: no encoder in the build environment, and re-encoding clinical infographics needs visual QA it should not skip |
+| 6 · CI byte budget | **shipped** — `npm run check:asset-budget` gates `app.js` gzip/raw, `tailwind.css`, and total precache |
+| 11 · search / result count | **shipped** as the search fix |
+| 12.1 · delete audit screenshots | **shipped** — 232 MB → 88.7 MB tracked (−62%) |
+| 4, 7, 8, 9, 10, 12.2–3, 13, 14, 15 | **open** — as written below |
+
+Guardrails held: `npm run test:protocol-snapshot` PASS (clinical wording
+unchanged), 1,683 unit tests pass, 0 axe violations across 8 routes × 2 themes
+× 3 viewports, 0 new sub-44 px touch targets, every validator green.
+
+---
+
 ## What is already strong
 
 These were verified, not assumed, and should be protected by any change below.
@@ -276,13 +308,27 @@ resolves correctly — but they are not documented in the README's "Deep links"
 section. For a teaching tool, "send the resident the MeVO card" is a headline
 feature that is currently undiscoverable.
 
-### 11. Filtering does not update the count
+### 11. The search does not filter at all — SHIPPED, and worse than first written
 
-Typing `tenecteplase` into the Guideline Library search correctly auto-expands the
-matching sections, but the header still reads **"862 recommendations"** and each
-dataset still shows its unfiltered count ("AIS 2026 — 195 recs"). There is no way
-to tell how many matches exist without scrolling the whole list. Show
-`N matching · 862 total`, and hide datasets with zero hits.
+> **Correction.** As first written this item said filtering worked and only the
+> count was stale. Direct measurement showed the search never filtered:
+> rendered recommendation cards stayed at 862 and outer accordions at 89 before
+> and after typing, while the open-accordion count went 0 → 397. The only
+> effect of searching was to expand every accordion and render the entire
+> catalog. What looked like a working search in a screenshot was the
+> thrombolytic section happening to sit at the top of the expanded list.
+
+`fuzzyScore` awards a point for each query character found in order anywhere in
+the target, so on ordinary prose it scores almost anything above zero — 12 to 17
+points for recommendations about stroke awareness, DVT prophylaxis, and
+depression screening against the query `tenecteplase`. The filter's predicate
+was `score > 0`, so everything passed.
+
+Fixed in v6.23.0 by separating the two concerns: `matchesTextQuery` requires
+every whitespace-separated token to appear as a substring of the recommendation
+text, section, or guideline title; `rankText` is unchanged and still orders
+whatever matches. The header count follows the filtered list, so it is correct
+as a consequence.
 
 ---
 
