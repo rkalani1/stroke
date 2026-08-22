@@ -103,14 +103,26 @@ describe('calculateESSEN', () => {
   });
 });
 
-describe('calculateSPI2', () => {
-  it('severe HTN contributes 1', () => {
-    expect(calculateSPI2({ age: 65, sbp: 190 }).score).toBe(1);
+describe('calculateSPI2 (Kernan Stroke 2000, PMID 10657422)', () => {
+  it('hypertension is 1 point (not 3)', () => {
+    expect(calculateSPI2({ hypertension: true }).score).toBe(1);
   });
-  it('high tier when score >=8', () => {
-    const r = calculateSPI2({ age: 72, hypertension: true, diabetes: true, priorStroke: true });
-    expect(r.score).toBe(11);
+  it('CHF is 3 points and index stroke (vs TIA) is 2 points', () => {
+    expect(calculateSPI2({ chf: true }).score).toBe(3);
+    expect(calculateSPI2({ indexEventStroke: true }).score).toBe(2);
+  });
+  it('maximum score is 15 with all 7 items', () => {
+    const r = calculateSPI2({ age: 72, hypertension: true, diabetes: true, priorStroke: true, chf: true, indexEventStroke: true, cad: true });
+    expect(r.score).toBe(15);
     expect(r.tier).toBe('high');
+    expect(r.riskGroup).toBe('III');
+    expect(r.twoYearRisk).toBe('31%');
+  });
+  it('risk group I is 0-3 with pooled 10% 2-year risk', () => {
+    const r = calculateSPI2({ age: 72, hypertension: true });
+    expect(r.score).toBe(3);
+    expect(r.riskGroup).toBe('I');
+    expect(r.twoYearRisk).toBe('10%');
   });
 });
 
@@ -121,8 +133,13 @@ describe('calculateBAT', () => {
   it('zero when nothing', () => {
     expect(calculateBAT({}).score).toBe(0);
   });
-  it('high risk at 3+', () => {
+  it('published dichotomization: score 2 is NOT high risk, score 3 is', () => {
+    // Morotti Stroke 2018 (PMID 29669875): BAT >=3 predicts expansion
+    // (sensitivity 0.50, specificity 0.89) — >=2 was never the threshold.
+    expect(calculateBAT({ blendSign: true, hypodensity: true }).score).toBe(3);
     expect(calculateBAT({ blendSign: true, hypodensity: true }).risk).toBe('high');
+    expect(calculateBAT({ hypodensity: true }).score).toBe(2);
+    expect(calculateBAT({ hypodensity: true }).risk).toBe('low');
   });
 });
 
@@ -135,6 +152,11 @@ describe('calculateVASOGRADE', () => {
   });
   it('yellow for WFNS 2 mFisher 3', () => {
     expect(calculateVASOGRADE({ wfns: 2, modifiedFisher: 3 }).grade).toBe('Yellow');
+  });
+  it('WFNS 3 + mFisher 1-2 is Unclassified in the source (not Yellow)', () => {
+    const r = calculateVASOGRADE({ wfns: 3, modifiedFisher: 1 });
+    expect(r.grade).toBe('Unclassified');
+    expect(calculateVASOGRADE({ wfns: 3, modifiedFisher: 3 }).grade).toBe('Yellow');
   });
 });
 
@@ -257,14 +279,26 @@ describe('calculateBRAIN / NinePoint / OgilvyCarter (regression guards)', () => 
   it('BRAIN with big volume and AC', () => {
     expect(calculateBRAIN({ volumeMl: 40, anticoagulated: true, ivh: true, onsetToCTHours: 1 }).score).toBeGreaterThan(0);
   });
-  it('NinePoint warfarin > NOAC', () => {
-    const w = calculateNinePoint({ warfarin: true });
-    const n = calculateNinePoint({ noac: true });
-    expect(w.score).toBeGreaterThan(n.score);
+  it('NinePoint follows Brouwers 2014 (JAMA Neurol, PMID 24366060)', () => {
+    // warfarin 2 + time-to-CT <=6h 2 + spot sign present 3 + volume >60 mL 2 = 9
+    const max = calculateNinePoint({ warfarin: true, onsetToCTHours: 3, spotSign: true, volumeMl: 80 });
+    expect(max.score).toBe(9);
+    expect(max.risk).toBe('high');
+    // spot sign unavailable (no baseline CTA) scores 1, absent scores 0
+    expect(calculateNinePoint({ spotSign: 'unavailable', onsetToCTHours: 12 }).score).toBe(1);
+    expect(calculateNinePoint({ spotSign: false, onsetToCTHours: 12 }).score).toBe(0);
+    // volume tiers: 30-60 = 1, >60 = 2
+    expect(calculateNinePoint({ spotSign: false, volumeMl: 45, onsetToCTHours: 12 }).score).toBe(1);
+    expect(calculateNinePoint({ spotSign: false, volumeMl: 61, onsetToCTHours: 12 }).score).toBe(2);
   });
-  it('OgilvyCarter caps at 5', () => {
-    const r = calculateOgilvyCarter({ age: 80, huntHess: 5, fisher: 4, size: 20, posteriorOrGiant: true });
+  it('OgilvyCarter caps at 5 and requires giant AND posterior for the 5th point', () => {
+    const r = calculateOgilvyCarter({ age: 80, huntHess: 5, fisher: 4, size: 30, giantPosterior: true });
     expect(r.score).toBe(5);
+    // giant-only (30 mm anterior) or posterior-only (12 mm) do NOT earn the combined point
+    expect(calculateOgilvyCarter({ age: 80, huntHess: 5, fisher: 4, size: 30, posteriorCirculation: false }).score).toBe(4);
+    expect(calculateOgilvyCarter({ age: 80, huntHess: 5, fisher: 4, size: 12, posteriorCirculation: true }).score).toBe(4);
+    // derived: >=25 mm + posterior flag earns it
+    expect(calculateOgilvyCarter({ age: 80, huntHess: 5, fisher: 4, size: 26, posteriorCirculation: true }).score).toBe(5);
   });
 });
 
@@ -359,7 +393,7 @@ describe('calculateSeLECTScore', () => {
       nihss: 2,
       corticalInvolvement: false,
       earlySeizure: false,
-      lvoArtery: false,
+      largeArteryAtherosclerosis: false,
       middleCerebralTerritory: false
     });
     expect(r.score).toBe(0);
@@ -368,16 +402,17 @@ describe('calculateSeLECTScore', () => {
     expect(r.riskTier).toBe('Low');
   });
 
-  it('calculates score 9 for maximum risk patient', () => {
+  it('calculates score 9 for maximum risk patient (published: 63% 1-yr / 83% 5-yr)', () => {
     const r = calculateSeLECTScore({
       nihss: 15,
       corticalInvolvement: true,
       earlySeizure: true,
-      lvoArtery: true,
+      largeArteryAtherosclerosis: true,
       middleCerebralTerritory: true
     });
     expect(r.score).toBe(9);
-    expect(r.fiveYearRisk).toBe('76.2%');
+    expect(r.oneYearRisk).toBe('63%');
+    expect(r.fiveYearRisk).toBe('83%');
     expect(r.riskTier).toBe('Very High');
     expect(r.recommendation).toMatch(/High risk/);
   });
@@ -387,7 +422,7 @@ describe('calculateSeLECTScore', () => {
       nihss: 5,
       corticalInvolvement: true,
       earlySeizure: false,
-      lvoArtery: false,
+      largeArteryAtherosclerosis: false,
       middleCerebralTerritory: true
     });
     // NIHSS 5 -> 1 pt; Cortical -> 2 pts; MCA -> 1 pt = Total 4
@@ -403,14 +438,17 @@ describe('calculateSeLECTScore', () => {
       nihss: '5',
       corticalInvolvement: 'true',
       earlySeizure: 1,
-      lvoArtery: 'TRUE',
+      largeArteryAtherosclerosis: 'TRUE',
       middleCerebralTerritory: 0
     });
-    const breakdownSum = r.breakdown.nihssPoints + r.breakdown.corticalPoints + r.breakdown.earlySeizurePoints + r.breakdown.lvoPoints + r.breakdown.mcaPoints;
+    const breakdownSum = r.breakdown.nihssPoints + r.breakdown.corticalPoints + r.breakdown.earlySeizurePoints + r.breakdown.largeArteryAtherosclerosisPoints + r.breakdown.mcaPoints;
     expect(r.score).toBe(breakdownSum);
     expect(r.breakdown.corticalPoints).toBe(2);
     expect(r.breakdown.earlySeizurePoints).toBe(3);
-    expect(r.breakdown.lvoPoints).toBe(1);
+    expect(r.breakdown.largeArteryAtherosclerosisPoints).toBe(1);
+  });
+  it('deprecated lvoArtery alias still maps to the large-artery item', () => {
+    expect(calculateSeLECTScore({ nihss: 2, lvoArtery: true }).breakdown.largeArteryAtherosclerosisPoints).toBe(1);
   });
 
   it('returns null if NIHSS is non-numeric', () => {
@@ -418,61 +456,45 @@ describe('calculateSeLECTScore', () => {
   });
 });
 
-describe('calculateEDEMAScore', () => {
-  it('calculates low risk for minor stroke without edema markers', () => {
+describe('calculateEDEMAScore (Ong Stroke 2017, PMID 28487333)', () => {
+  it('scores the published items: cistern 3, glucose >=150 2, no-reperfusion 1, shift tiers, no-prior-stroke 1', () => {
     const r = calculateEDEMAScore({
-      nihss: 15,
-      aspects: 9,
-      denseArterySign: false,
-      bloodGlucoseMgDl: 120,
-      massEffect: 'none',
-      historyHypertension: false
+      basalCisternEffacement: true,
+      glucoseMgDl: 180,
+      noReperfusionTherapy: true,
+      midlineShiftMm: 10,
+      noPreviousStroke: true
     });
-    // NIHSS 15 -> 1 pt; total = 1
-    expect(r.score).toBe(1);
-    expect(r.riskTier).toBe('Low');
-    expect(r.highRiskForMalignantEdema).toBe(false);
-  });
-
-  it('calculates high risk (>=6) and triggers neurosurgery recommendation', () => {
-    const r = calculateEDEMAScore({
-      nihss: 22,
-      aspects: 5,
-      denseArterySign: true,
-      bloodGlucoseMgDl: 200,
-      massEffect: 'midline-shift',
-      historyHypertension: true
-    });
-    // NIHSS 22 -> 2; ASPECTS <7 -> 2; Dense artery -> 1; Glucose >162 -> 1; Shift -> 2; HTN -> 1 = Total 9
-    expect(r.score).toBe(9);
-    expect(r.riskTier).toBe('High');
+    // 3 + 2 + 1 + 7 + 1 = 14 (maximum)
+    expect(r.score).toBe(14);
     expect(r.highRiskForMalignantEdema).toBe(true);
-    expect(r.recommendation).toMatch(/decompressive hemicraniectomy/);
+    expect(r.recommendation).toMatch(/hemicraniectomy/);
   });
 
-  it('handles negation in massEffect and applies Math.floor on numeric massEffect', () => {
-    const rNoShift = calculateEDEMAScore({ nihss: 15, massEffect: 'no shift' });
-    expect(rNoShift.breakdown.massEffectPoints).toBe(0);
-
-    const rWithoutShift = calculateEDEMAScore({ nihss: 15, massEffect: 'without midline shift' });
-    expect(rWithoutShift.breakdown.massEffectPoints).toBe(0);
-
-    const rNoEffacement = calculateEDEMAScore({ nihss: 15, massEffect: 'no effacement' });
-    expect(rNoEffacement.breakdown.massEffectPoints).toBe(0);
-
-    const rFloatMass = calculateEDEMAScore({ nihss: 15, massEffect: 1.9 });
-    expect(rFloatMass.breakdown.massEffectPoints).toBe(1);
+  it('midline shift tiers: 0=0, >0-3=1, 3-6=2, 6-9=4, >9=7', () => {
+    expect(calculateEDEMAScore({ midlineShiftMm: 0 }).breakdown.midlineShiftPoints).toBe(0);
+    expect(calculateEDEMAScore({ midlineShiftMm: 2 }).breakdown.midlineShiftPoints).toBe(1);
+    expect(calculateEDEMAScore({ midlineShiftMm: 4 }).breakdown.midlineShiftPoints).toBe(2);
+    expect(calculateEDEMAScore({ midlineShiftMm: 7 }).breakdown.midlineShiftPoints).toBe(4);
+    expect(calculateEDEMAScore({ midlineShiftMm: 12 }).breakdown.midlineShiftPoints).toBe(7);
   });
 
-  it('handles bloodGlucoseMmolL correctly', () => {
-    const r = calculateEDEMAScore({
-      nihss: 14,
-      bloodGlucoseMmolL: 10.5
-    });
-    expect(r.breakdown.glucosePoints).toBe(1);
+  it('glucose threshold is >=150 mg/dL (or >=8.3 mmol/L)', () => {
+    expect(calculateEDEMAScore({ midlineShiftMm: 0, glucoseMgDl: 150 }).breakdown.glucosePoints).toBe(2);
+    expect(calculateEDEMAScore({ midlineShiftMm: 0, glucoseMgDl: 149 }).breakdown.glucosePoints).toBe(0);
+    expect(calculateEDEMAScore({ midlineShiftMm: 0, glucoseMmolL: 10.5 }).breakdown.glucosePoints).toBe(2);
   });
 
-  it('returns null for non-numeric NIHSS', () => {
+  it('score >=7 is the published high-risk threshold (PPV 93%, specificity 99%)', () => {
+    const r = calculateEDEMAScore({ basalCisternEffacement: true, glucoseMgDl: 160, midlineShiftMm: 3, noPreviousStroke: false });
+    expect(r.score).toBe(7);
+    expect(r.highRiskForMalignantEdema).toBe(true);
+    const low = calculateEDEMAScore({ glucoseMgDl: 160, midlineShiftMm: 3, noPreviousStroke: false });
+    expect(low.score).toBe(4);
+    expect(low.highRiskForMalignantEdema).toBe(false);
+  });
+
+  it('returns null when midline shift is not assessed', () => {
     expect(calculateEDEMAScore({})).toBeNull();
   });
 });

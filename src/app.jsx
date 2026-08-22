@@ -811,16 +811,40 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           return `${yr}-${mo}-${dy}T${hr}:${mn}`;
         };
 
+        // Single canonical DOAC-recency model (CrCl-adjusted clearance). Both the
+        // TNK auto-block and the contraindication-checklist auto-detection read
+        // from this — previously a flat <48h check and this clearance model could
+        // flag and clear the same patient on one screen.
+        // JUDGMENT (documented in PR): an undocumented last-dose time remains a
+        // conservative block — unknown timing is treated as potentially recent.
+        const assessDOACRecency = (note) => {
+          const doacType = note?.lastDOACType;
+          if (!doacType || doacType === 'warfarin' || doacType === 'none') return { recent: false, note: '' };
+          const lastDose = note?.lastDOACDose ? new Date(note.lastDOACDose) : null;
+          if (!lastDose || Number.isNaN(lastDose.getTime())) {
+            return { recent: true, note: ' (last dose time unknown — conservative block)' };
+          }
+          const hoursSince = (Date.now() - lastDose.getTime()) / (1000 * 60 * 60);
+          if (hoursSince < 0) return { recent: true, note: ' (dose time in future — verify)' };
+          const crcl = calculateCrCl(note.age, note.weight, note.sex, note.creatinine, note.height);
+          const crclVal = crcl ? crcl.value : null;
+          const halfLifeMap = { apixaban: crclVal && crclVal < 30 ? 15 : 10, rivaroxaban: crclVal && crclVal < 30 ? 13 : 9, dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14, edoxaban: crclVal && crclVal < 30 ? 16 : 12 };
+          const estHalfLife = halfLifeMap[doacType] || 12;
+          const clearancePct = Math.min(99.9, (1 - Math.pow(0.5, hoursSince / estHalfLife)) * 100);
+          if (clearancePct < 97) return { recent: true, note: ` (~${clearancePct.toFixed(0)}% cleared)` };
+          return { recent: false, note: ` (~${clearancePct.toFixed(0)}% cleared)` };
+        };
+
         const getWindowStatusFromTime = (timeFromLKW) => {
           if (!timeFromLKW) return null;
           if (timeFromLKW.total <= 4.5) {
             return { color: 'green', message: 'Within IV thrombolysis window (≤4.5h)', urgent: false, eligible: 'tnk' };
           }
-          if (timeFromLKW.total < 6) {
-            return { color: 'orange', message: 'TNK window closed - EVT window (4.5-6h)', urgent: true, eligible: 'evt-early' };
+          if (timeFromLKW.total <= 9) {
+            return { color: 'orange', message: 'Standard TNK window closed — imaging-selected IVT possible to 9h (EXTEND); EVT window open', urgent: true, eligible: 'evt-early' };
           }
           if (timeFromLKW.total < 24) {
-            return { color: 'red', message: 'Late EVT window (6-24h - needs perfusion imaging)', urgent: true, eligible: 'evt-late' };
+            return { color: 'red', message: 'Late window (9-24h) — EVT with perfusion selection; imaging-selected IVT in select patients (TRACE-III/OPTION)', urgent: true, eligible: 'evt-late' };
           }
           return { color: 'gray', message: 'Beyond standard treatment window', urgent: false, eligible: 'none' };
         };
@@ -3862,6 +3886,20 @@ Clinician Name`;
             Statement: 'bg-slate-500 text-white'
           };
 
+          // Documented-NIHSS resolver for rule conditions. Returns null when no
+          // NIHSS has been documented — a blank NIHSS must never coerce to 0 and
+          // qualify a patient for minor-stroke (low-NIHSS) pathways.
+          const documentedNIHSS = (data) => {
+            const fromNote = parseInt(data?.telestrokeNote?.nihss, 10);
+            if (Number.isFinite(fromNote)) return fromNote;
+            return Number.isFinite(data?.nihssScore) ? data.nihssScore : null;
+          };
+          // Word-boundary AF matcher: bare substring 'af'/'fib' matched inside
+          // words like 'graft' and produced false AF-history hits.
+          const AF_TEXT_RE = /\ba[\s.-]?fib\b|\batrial\s+fib\w*|\bafib\b|\baf\b|atrial\s+flutter/i;
+          const hasAFText = (txt) => AF_TEXT_RE.test(String(txt || ''));
+          // Word-boundary CAD/MI matcher: 'mi' matched inside 'mild'.
+          const CAD_TEXT_RE = /\bcad\b|coronary|\bmi\b|myocardial\s+infarct\w*|\bstent\w*|\bcabg\b/i;
           const GUIDELINE_RECOMMENDATIONS = {
             // ---------------------------------------------------------------
             // BLOOD PRESSURE MANAGEMENT
@@ -3919,16 +3957,16 @@ Clinician Name`;
             bp_post_evt: {
               id: 'bp_post_evt',
               category: 'Blood Pressure',
-              title: 'Post-EVT BP management (Class III: Harm)',
-              recommendation: 'Do NOT target SBP <140 mmHg after successful EVT reperfusion. Maintain SBP <180/105.',
-              detail: 'ENCHANTED2/MT and OPTIMAL-BP trials demonstrated that intensive BP lowering (SBP <140) post-EVT was associated with worse functional outcomes (Class III: Harm). Standard target SBP <180/105 is recommended.',
+              title: 'Post-EVT BP management (intensive lowering: Class III: Harm)',
+              recommendation: 'After DOCUMENTED successful reperfusion (mTICI 2b-3): maintain SBP 140-180 mmHg for ≥24h and do NOT target SBP <140. Keep BP <180/105 if IV lytic was given.',
+              detail: 'ENCHANTED2/MT (Lancet 2022) showed harm and OPTIMAL-BP (JAMA 2023) was stopped early with worse outcomes for intensive lowering (SBP <120-140) after successful recanalization; BP-TARGET and BEST-II showed no benefit of lower targets. Canonical app scheme: mTICI 2b-3 documented → SBP 140-180 ≥24h (continue up to 72h per local protocol); mTICI not documented or unsuccessful → post-lytic <180/105 or pre-procedure ≤185/110. This card appears only once a reperfusion grade is documented.',
               classOfRec: 'III',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               caveats: 'Based on ENCHANTED2/MT (Lancet 2022) and OPTIMAL-BP (JAMA 2023). Applies to successful reperfusion (mTICI 2b-3).',
               conditions: (data) => {
-                return !!data.telestrokeNote?.evtRecommended;
+                return isSuccessfulEvtReperfusion(data.telestrokeNote?.ticiScore || '');
               }
             },
             bp_ich_acute: {
@@ -3982,18 +4020,19 @@ Clinician Name`;
               id: 'bp_ischemic_no_lysis',
               category: 'Blood Pressure',
               title: 'Ischemic stroke BP (no thrombolysis)',
-              recommendation: 'Permissive hypertension: treat only if BP >220/120 mmHg in first 24-48 hours. Lower by 15% in first 24 hours if treating.',
-              detail: 'For patients not receiving thrombolysis or EVT, aggressive BP lowering may worsen ischemic penumbra. After 24-48h, initiate oral antihypertensives to target <130/80 for secondary prevention.',
-              classOfRec: 'I',
+              recommendation: 'Treat only if BP >220/120 mmHg in first 24-48 hours (unless another indication such as aortic dissection, MI, or heart failure). Lower by ~15% in first 24 hours if treating. Starting/restarting antihypertensives early in stable patients is COR IIb.',
+              detail: 'For patients not receiving thrombolysis or EVT, aggressive BP lowering may worsen ischemic penumbra; treating BP <220/120 in the first 48-72h does not improve outcomes (III: No Benefit). Starting or restarting antihypertensive therapy within the first ~48h in neurologically stable patients is COR IIb. After 24-48h, initiate oral antihypertensives toward <130/80 for secondary prevention (2025 AHA/ACC hypertension guideline).',
+              classOfRec: 'IIb',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
-                const timeFrom = data.timeFromLKW;
-                const inWindow = timeFrom && timeFrom.total <= 4.5;
-                return isIschemic && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended && !inWindow;
+                // No time gate: early non-lysis patients previously got NO BP
+                // guidance at all inside 4.5h. Lysis/EVT candidates are excluded
+                // via the recommendation flags; their cards carry their targets.
+                return isIschemic && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
               }
             },
 
@@ -4077,7 +4116,7 @@ Clinician Name`;
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca/i.test(v)
+                  /^(ica|m1)$/i.test(String(v).trim())
                 );
                 return nihss >= 6 && timeFrom && timeFrom.total <= 6 && hasLVO;
               }
@@ -4099,7 +4138,7 @@ Clinician Name`;
                 const minNIHSS = age >= 80 ? 10 : 6; // DAWN: age ≥80 requires NIHSS ≥10
                 const timeFrom = data.timeFromLKW;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca/i.test(v)
+                  /^(ica|m1)$/i.test(String(v).trim())
                 );
                 const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 return nihss >= minNIHSS && timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && hasLVO && (aspects === null || aspects >= 6);
@@ -4122,7 +4161,7 @@ Clinician Name`;
                 const timeFrom = data.timeFromLKW;
                 const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca/i.test(v)
+                  /^(ica|m1)$/i.test(String(v).trim())
                 );
                 return nihss >= 6 && !!timeFrom && timeFrom.total <= 24 && aspects !== null && aspects <= 5 && hasLVO;
               }
@@ -4132,7 +4171,7 @@ Clinician Name`;
               category: 'EVT',
               title: 'EVT for basilar artery occlusion',
               recommendation: 'EVT is recommended for basilar artery occlusion within 24 hours of onset when NIHSS ≥10 and pc-ASPECTS ≥6 (COR I). For NIHSS 6-9 with pc-ASPECTS ≥6, EVT effectiveness is not well established (COR IIb).',
-              detail: 'Suggested protocol: Basilar EVT — LKW ≤24h, pc-ASPECTS ≥6. NIHSS ≥10: recommended (Class I, LOE A, ATTENTION/BAOCHE 2023). NIHSS 6-9: may be considered but effectiveness uncertain (Class IIb, LOE B-R, AHA/ASA 2026). Benefit demonstrated up to 24 hours with significant deficit.',
+              detail: 'Suggested protocol: Basilar EVT — LKW ≤24h, pc-ASPECTS ≥6. NIHSS ≥10: recommended (Class I, LOE A, ATTENTION/BAOCHE). NIHSS 6-9: may be considered but effectiveness uncertain (Class IIb, LOE B-R, AHA/ASA 2026). Trial evidence: BAOCHE (6-24h, N=217): mRS 0-3 46% vs 24% (RR 1.81). ATTENTION (0-12h, N=340): mRS 0-3 46% vs 23% (RR 2.06), lower mortality. BEST (N=131) and BASICS (N=300): underpowered/neutral with high crossover. Positive trials were predominantly Chinese populations with high ICAD rates — external validity considerations apply. Strongest benefit: younger age, NIHSS ≥10, proximal occlusion. Exclude extensive brainstem infarction on imaging.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -4143,7 +4182,9 @@ Clinician Name`;
                 const hasBasilar = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /basilar/i.test(v)
                 );
-                return hasBasilar && timeFrom && timeFrom.total <= 24 && nihss >= 10;
+                // NIHSS >=6 so the stated NIHSS 6-9 (COR IIb) branch is reachable;
+                // the card text distinguishes >=10 (COR I) from 6-9 (COR IIb).
+                return hasBasilar && timeFrom && timeFrom.total <= 24 && nihss >= 6;
               }
             },
 
@@ -4162,10 +4203,11 @@ Clinician Name`;
               reference: 'AIS 2026 Rec #12. CHANCE: Wang Y et al. NEJM 2013. POINT: Johnston SC et al. NEJM 2018. CHANCE-2: Wang Y et al. NEJM 2021.',
               medications: ['ASA 325 mg load then 81 mg daily', 'Clopidogrel 300 mg load then 75 mg daily x 21 days', 'Alt (CYP2C19 LOF): Ticagrelor 180 mg load then 90 mg BID + ASA x 21 days'],
               conditions: (data) => {
-                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
+                const nihss = documentedNIHSS(data);
                 const cat = data.telestrokeNote?.diagnosisCategory;
-                const isIschemic = cat === 'ischemic' || cat === 'tia';
-                return isIschemic && nihss <= 3 && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
+                // Ischemic-only: high-risk TIA has its own DAPT card (tia_dapt),
+                // so the two no longer render together for the same TIA patient.
+                return cat === 'ischemic' && nihss !== null && nihss <= 3 && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
               }
             },
             dapt_ticagrelor_nihss5: {
@@ -4186,35 +4228,12 @@ Clinician Name`;
                 return isIschemic && nihss >= 4 && nihss <= 5 && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
               }
             },
-            anticoag_af_timing: {
-              id: 'anticoag_af_timing',
-              category: 'Antithrombotic',
-              title: 'Early DOAC initiation in AF-related stroke',
-              recommendation: 'Initiate DOAC early after AF-related ischemic stroke based on infarct severity: minor stroke within 48 hours, moderate stroke day 3-5, severe/large stroke day 6-14.',
-              detail: 'Based on CATALYST meta-analysis (ELAN, OPTIMAS, TIMING, START pooled data). No increased risk of symptomatic ICH with early DOAC initiation vs delayed. Individual timing should consider hemorrhagic transformation on imaging. DOAC preferred over warfarin (Class I, LOE A). AHA/ASA 2026: In carefully selected milder severity AIS patients with AF, early oral anticoagulation is low risk and reasonable (COR IIa, LOE A).',
-              classOfRec: 'IIa',
-              levelOfEvidence: 'A',
-              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026 + CATALYST Meta-Analysis 2025',
-              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513; Fischer U et al. Lancet Neurol. 2025.',
-              medications: ['Apixaban 5 mg BID (preferred)', 'Rivaroxaban 20 mg daily', 'Dabigatran 150 mg BID'],
-              caveats: 'Timing categories per CATALYST: mild (NIHSS <8, small infarct) 48h; moderate (NIHSS 8-15) day 3-5; severe (NIHSS ≥16 or large infarct) day 6-14. Reassess imaging before starting if any concern for hemorrhagic transformation.',
-              conditions: (data) => {
-                const meds = (data.telestrokeNote?.medications || '').toLowerCase();
-                const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
-                const hasAF = pmh.includes('afib') || pmh.includes('atrial fib') || pmh.includes('a-fib') || pmh.includes('af ') ||
-                              meds.includes('apixaban') || meds.includes('rivaroxaban') || meds.includes('eliquis') || meds.includes('xarelto') ||
-                              meds.includes('warfarin') || meds.includes('coumadin') || meds.includes('dabigatran') || meds.includes('pradaxa');
-                const cat = data.telestrokeNote?.diagnosisCategory;
-                const isIschemic = cat === 'ischemic' || cat === 'tia';
-                return isIschemic && hasAF;
-              }
-            },
             sicas_dapt: {
               id: 'sicas_dapt',
               category: 'Antithrombotic',
               title: 'Symptomatic intracranial atherosclerosis (sICAS) DAPT',
               recommendation: 'DAPT (aspirin + clopidogrel) for 90 days for severe symptomatic intracranial stenosis (70-99%), then aspirin 325 mg monotherapy. Note: 90-day DAPT is convention from the SAMMPRIS medical arm protocol — SAMMPRIS is NOT a DAPT-duration trial.',
-              detail: 'Do NOT offer intracranial stenting as initial treatment (Class III). Add high-intensity statin with LDL target <70 mg/dL. SAMMPRIS used 90-day DAPT in BOTH treatment arms for standardization; it did NOT test 90d vs shorter DAPT duration. The 90-day convention is strongest for severe (70-99%) symptomatic ICAD — do not generalize broadly to other stroke phenotypes.',
+              detail: 'Do NOT offer intracranial stenting as initial treatment (Class III): SAMMPRIS 30-day stroke/death 14.7% vs 5.8% with medical therapy; CASSISS showed no benefit; pooled analysis (n=809) 30-day stroke/death higher with stenting (10.5% vs 4.2%, HR 2.62). Stenting is considered ONLY after >=2 recurrent events on maximal medical therapy at experienced centers (Class IIb, LOE C-LD). Add high-intensity statin (LDL <70; <55 if very-high-risk atherosclerotic) and BP control toward <130/80 once stable. SAMMPRIS used 90-day DAPT in BOTH treatment arms for standardization; it did NOT test 90d vs shorter DAPT duration. The 90-day convention is strongest for severe (70-99%) symptomatic ICAD — do not generalize broadly to other stroke phenotypes.',
               classOfRec: 'I',
               levelOfEvidence: 'B-R',
               guideline: 'AAN Intracranial Atherosclerosis Practice Advisory 2022 (reaffirmed 2025)',
@@ -4236,8 +4255,8 @@ Clinician Name`;
               id: 'statin_ischemic',
               category: 'Statin',
               title: 'High-intensity statin for ischemic stroke',
-              recommendation: 'Initiate high-intensity statin therapy (atorvastatin 40-80 mg or rosuvastatin 20-40 mg) with LDL target <70 mg/dL.',
-              detail: 'Add ezetimibe if LDL not at goal on max statin. Consider PCSK9 inhibitor if still not at goal. Start during inpatient stay.',
+              recommendation: 'Initiate high-intensity statin therapy (atorvastatin 40-80 mg or rosuvastatin 20-40 mg) with LDL target <70 mg/dL (all ischemic stroke/TIA). For documented ATHEROSCLEROTIC mechanism, the aggressive-LDL card applies (<55 mg/dL).',
+              detail: 'Patient selection for the two LDL targets: <70 mg/dL is the standard post-stroke target (TST); <55 mg/dL applies to very-high-risk atherosclerotic stroke (see the aggressive LDL card). Add ezetimibe if LDL not at goal on max statin. Consider PCSK9 inhibitor if still not at goal. Start during inpatient stay.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
@@ -4542,8 +4561,11 @@ Clinician Name`;
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
+                // Exact-token match: 'mca' substring matching used to fire this
+                // LVO-transfer card for "M2 MCA branch" free text, contradicting
+                // the MeVO no-benefit card on the same screen.
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca|basilar/i.test(v)
+                  /^(ica|m1|basilar)$/i.test(String(v).trim())
                 );
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 return hasLVO && nihss >= 6;
@@ -4600,29 +4622,16 @@ Clinician Name`;
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const age = parseInt(data.telestrokeNote?.age, 10) || 0;
                 const isIschemic = data.telestrokeNote?.diagnosisCategory === 'ischemic';
-                return isIschemic && nihss >= 15 && age > 0 && age <= 60;
+                // No upper age cap: the card itself explains age <60 (COR I) vs
+                // >60 (DESTINY-II, COR IIb + goals-of-care) — capping at 60 made
+                // the >60 guidance unreachable.
+                return isIschemic && nihss >= 15 && age >= 18;
               }
             },
 
             // ---------------------------------------------------------------
             // SECONDARY PREVENTION
             // ---------------------------------------------------------------
-            carotid_intervention: {
-              id: 'carotid_intervention',
-              category: 'Secondary Prevention',
-              title: 'Carotid intervention for symptomatic stenosis',
-              recommendation: 'Carotid endarterectomy (CEA) or stenting within 2 weeks for symptomatic carotid stenosis 70-99%. Consider for 50-69% based on patient factors.',
-              detail: 'CEA preferred if age >70 and suitable anatomy. CAS reasonable if high surgical risk. Benefit diminishes if delayed beyond 2 weeks.',
-              classOfRec: 'I',
-              levelOfEvidence: 'A',
-              guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
-              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
-              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=32',
-              conditions: (data) => {
-                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
-                return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('occlus'));
-              }
-            },
             pfo_closure: {
               id: 'pfo_closure',
               category: 'Secondary Prevention',
@@ -4692,11 +4701,9 @@ Clinician Name`;
               guideline: 'Suggested Protocol',
               reference: 'Initial non-traumatic IPH evaluation algorithm.',
               conditions: (data) => {
-                const cat = data.telestrokeNote?.diagnosisCategory;
-                const isICH = cat === 'ich';
-                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
-                const isLargeIschemic = cat === 'ischemic' && nihss >= 15;
-                return isICH || isLargeIschemic;
+                // This card's text is IPH-specific — it must not render for a
+                // large ischemic stroke (craniectomy guidance has its own card).
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
               }
             },
 
@@ -4714,7 +4721,10 @@ Clinician Name`;
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'SWIFT DIRECT (Lancet 2022), MR CLEAN NO IV (Lancet 2022), DIRECT-MT (Lancet 2020)',
               conditions: (data) => {
-                return !!data.telestrokeNote?.evtRecommended;
+                // Suppressed while the TNK auto-block is active: telling the
+                // clinician "do NOT withhold IVT" next to an active
+                // contraindication block was contradictory output.
+                return !!data.telestrokeNote?.evtRecommended && !data.telestrokeNote?.tnkAutoBlocked;
               }
             },
 
@@ -4754,8 +4764,7 @@ Clinician Name`;
               reference: 'STROKE-CLOSE: Nielsen TH et al. Lancet. 2024.',
               conditions: (data) => {
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
-                const afib = (data.telestrokeNote?.ekgResults || '').toLowerCase().includes('fib') ||
-                             (data.telestrokeNote?.ekgResults || '').toLowerCase().includes('af');
+                const afib = hasAFText(data.telestrokeNote?.ekgResults) || hasAFText(data.telestrokeNote?.pmh);
                 return isICH && afib;
               }
             },
@@ -4783,48 +4792,17 @@ Clinician Name`;
             // ---------------------------------------------------------------
             // SUPPORTIVE CARE
             // ---------------------------------------------------------------
-            dysphagia_screen: {
-              id: 'dysphagia_screen',
-              category: 'Supportive Care',
-              title: 'Dysphagia screening',
-              recommendation: 'Keep patient NPO until formal dysphagia screening is passed. Screen before any oral intake including medications.',
-              detail: 'Use validated bedside screening tool (e.g., Yale Swallow Protocol, 3-oz water test). SLP evaluation for failed screens. Aspiration pneumonia is a leading cause of post-stroke mortality.',
-              classOfRec: 'I',
-              levelOfEvidence: 'B-NR',
-              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
-              conditions: (data) => {
-                const cat = data.telestrokeNote?.diagnosisCategory;
-                return !!cat && cat !== 'mimic';
-              }
-            },
             vte_prophylaxis: {
               id: 'vte_prophylaxis',
               category: 'Supportive Care',
               title: 'VTE prophylaxis',
-              recommendation: 'IPC/SCDs on admission. Post-lytic: SQ heparin at 24h (after stable follow-up imaging). Post-ICH: SQ heparin at 48h (after stable repeat imaging). SCDs in the interim.',
-              detail: 'Suggested protocol: Post-thrombolysis — SQ heparin 24h after lytic administration, after follow-up CT shows no hemorrhage. Post-ICH — SQ heparin 48h after IPH onset, after stability CT. IPC/SCDs should be placed on admission for all immobile stroke patients and continued until pharmacologic prophylaxis initiated.',
+              recommendation: 'IPC on admission for all immobile stroke patients (Class I, LOE B-R — CLOTS-3); graduated compression stockings alone are NOT recommended (Class III). Pharmacologic prophylaxis in AIS: benefit not well established (Class IIb) — when used, start post-lytic at 24h and post-ICH at 24-48h, each after stable follow-up imaging.',
+              detail: 'Single consolidated VTE card. MECHANICAL: CLOTS-3 (Lancet 2013) — IPC reduced DVT 12.1%→8.5% (OR 0.65); continue until independently mobile; TED stockings alone showed no benefit (CLOTS-1). PHARMACOLOGIC: prophylactic heparin benefit in immobile AIS is not well established (AHA/ASA: Class IIb, LOE A); LMWH may be preferred over UFH (PREVAIL, Stroke 2007: enoxaparin 40 mg SC daily reduced VTE 16%→8.1%; Class IIb, LOE B-R). ICH: chemical prophylaxis at 24-48h with stable imaging is Class 2b, LOE B-R (AHA/ASA 2022 ICH). Timing protocol: post-thrombolysis wait 24h + hemorrhage-free CT; post-ICH 24-48h + stability CT; IPC in the interim. Duration 10-14 days or until mobile; anti-Xa monitoring (0.2-0.5 IU/mL) for BMI >40 or CrCl <30.',
               classOfRec: 'I',
               levelOfEvidence: 'B-R',
               guideline: 'AHA Systemic Complications of Acute Stroke 2024',
               reference: 'AHA Scientific Statement 2024. DOI: 10.1161/STR.0000000000000477',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000477#page=6',
-              conditions: (data) => {
-                const cat = data.telestrokeNote?.diagnosisCategory;
-                return !!cat && cat !== 'mimic';
-              }
-            },
-fever_management: {
-              id: 'fever_management',
-              category: 'Supportive Care',
-              title: 'Fever management',
-              recommendation: 'Treat fever (>38C) with acetaminophen and identify source. Maintain normothermia.',
-              detail: 'Fever worsens outcomes in stroke. Search for UTI, pneumonia, line infection. Induced hypothermia not recommended outside clinical trials.',
-              classOfRec: 'I',
-              levelOfEvidence: 'C-LD',
-              guideline: 'AHA Systemic Complications of Acute Stroke 2024',
-              reference: 'AHA Scientific Statement 2024. DOI: 10.1161/STR.0000000000000477',
-              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000477#page=4',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 return !!cat && cat !== 'mimic';
@@ -5137,7 +5115,15 @@ fever_management: {
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467.',
               medications: ['ASA 325 mg load then 81 mg daily', 'Clopidogrel 300 mg load then 75 mg daily x 21 days'],
               conditions: (data) => {
-                return data.telestrokeNote?.diagnosisCategory === 'tia';
+                if (data.telestrokeNote?.diagnosisCategory !== 'tia') return false;
+                // The card is explicitly for HIGH-RISK TIA (ABCD2 >=4 or DWI+) —
+                // gate on the documented ABCD2 (or a DWI-positive MRI mention)
+                // instead of firing for every TIA.
+                const abcd2 = Number.isFinite(data.abcd2Score) ? data.abcd2Score : null;
+                const imagingText = `${data.telestrokeNote?.ctResults || ''} ${data.telestrokeNote?.ctaResults || ''}`.toLowerCase();
+                const dwiPositive = data.telestrokeNote?.wakeUpStrokeWorkflow?.dwi?.positiveForLesion === true ||
+                  /dwi[^.]{0,30}(positive|restrict|lesion|infarct)|restricted diffusion/i.test(imagingText);
+                return (abcd2 !== null && abcd2 >= 4) || dwiPositive;
               }
             },
 
@@ -5253,7 +5239,7 @@ fever_management: {
               id: 'discharge_statin',
               category: 'Discharge',
               title: 'Discharge: High-intensity statin',
-              recommendation: 'Prescribe high-intensity statin at discharge with LDL target <70 mg/dL for ischemic stroke/TIA patients.',
+              recommendation: 'Prescribe high-intensity statin at discharge with LDL target <70 mg/dL for ischemic stroke/TIA patients (<55 mg/dL if documented atherosclerotic mechanism — see aggressive LDL card).',
               detail: 'Atorvastatin 80 mg or rosuvastatin 20-40 mg. Add ezetimibe if not at goal. Verify statin is on discharge medication list.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
@@ -5270,7 +5256,7 @@ fever_management: {
               category: 'Discharge',
               title: 'Discharge: BP optimization',
               recommendation: 'Initiate or optimize antihypertensive therapy at discharge targeting BP <130/80 for secondary stroke prevention.',
-              detail: 'ACE inhibitor or ARB + thiazide diuretic preferred. Initiate after 24-48 hours for ischemic stroke. Individualize timing for ICH (may start earlier). SBP <120 may be considered for selected patients (Class IIa, ESPRIT 2024). Use caution with bilateral severe carotid stenosis or orthostatic symptoms.',
+              detail: 'ACE inhibitor or ARB + thiazide diuretic preferred. Initiate after 24-48 hours for ischemic stroke. Individualize timing for ICH (may start earlier). The <130/80 goal for adults with hypertension — including secondary stroke prevention — is the 2025 AHA/ACC hypertension guideline target (DOI: 10.1161/HYP.0000000000000249). SBP <120 may be considered for selected patients (Class IIa, ESPRIT 2024). Use caution with bilateral severe carotid stenosis or orthostatic symptoms.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
@@ -5297,7 +5283,7 @@ fever_management: {
               reference: 'PRESTIGE-AF: Lancet 2025; SoSTART: Lancet Neurol 2021; APACHE-AF: Lancet Neurol 2021',
               conditions: (data) => {
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
-                const hasAF = (data.telestrokeNote?.pmh || '').toLowerCase().includes('fib') || (data.telestrokeNote?.pmh || '').toLowerCase().includes('af');
+                const hasAF = hasAFText(data.telestrokeNote?.pmh) || hasAFText(data.telestrokeNote?.ekgResults);
                 return isICH && hasAF;
               }
             },
@@ -5310,7 +5296,7 @@ fever_management: {
               category: 'Carotid',
               title: 'Symptomatic carotid stenosis management',
               recommendation: 'For symptomatic carotid stenosis \u226550%, CEA within 2 weeks is recommended. Optimal medical management is the foundation for all patients.',
-              detail: 'Symptomatic = stroke/TIA referable to the carotid territory within 6 months \u2014 confirm the stenosis is IPSILATERAL to the symptomatic territory; a stenosis contralateral to the event is managed as asymptomatic disease (see the CREST-2 card). CEA remains Class I for symptomatic stenosis \u226550%. NASCET endarterectomy NNTs: symptomatic 70\u201399% \u2192 NNT \u2248 6 (ARR \u224817% over 2 yr); symptomatic 50\u201369% \u2192 NNT \u2248 15 (ARR \u22486.5% over 5 yr). Benefit is greatest within 2 weeks of the event and diminishes with delay. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
+              detail: 'CEA preferred if age >70 and suitable anatomy; CAS reasonable if high surgical risk. Symptomatic = stroke/TIA referable to the carotid territory within 6 months \u2014 confirm the stenosis is IPSILATERAL to the symptomatic territory; a stenosis contralateral to the event is managed as asymptomatic disease (see the CREST-2 card). CEA remains Class I for symptomatic stenosis \u226550%. NASCET endarterectomy NNTs: symptomatic 70\u201399% \u2192 NNT \u2248 6 (ARR \u224817% over 2 yr); symptomatic 50\u201369% \u2192 NNT \u2248 15 (ARR \u22486.5% over 5 yr). Benefit is greatest within 2 weeks of the event and diminishes with delay. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
@@ -5383,15 +5369,16 @@ fever_management: {
               category: 'Antithrombotic',
               title: 'Early DOAC initiation in AF-related stroke (CATALYST)',
               recommendation: 'For AF-related ischemic stroke without large hemorrhagic transformation, DOAC initiation within 4 days reduces recurrent ischemic stroke vs. later initiation (\u22655 days).',
-              detail: 'CATALYST IPDMA (Lancet 2025, n=5,441): Early DOAC (≤4 days) reduced the primary composite (recurrent ischemic stroke, sICH, or unclassified stroke) by 30% (OR 0.70, P=0.039) without increasing sICH. Use imaging-defined infarct size, hemorrhagic transformation, thrombolysis/EVT course, and clinical stability to individualize timing. Practical heuristic for medically managed strokes: mild/small infarct ≤4 days, moderate infarct day 3-5, severe/large infarct or high-risk hemorrhagic transformation day 6-14. After IV TNK/tPA, avoid antithrombotics for the first 24h and obtain follow-up imaging before starting anticoagulation; extend delay when hemorrhage, large infarct, or clinical instability is present.',
+              detail: 'CATALYST IPDMA (Lancet 2025, n=5,441): Early DOAC (≤4 days) reduced the primary composite (recurrent ischemic stroke, sICH, or unclassified stroke) by 30% (OR 0.70, P=0.039) without increasing sICH. AHA/ASA 2026: in carefully selected milder-severity AIS with AF, early oral anticoagulation is low risk and reasonable (COR IIa, LOE A). Canonical app tiers (ELAN/OPTIMAS/CATALYST — the same scheme as the DOAC timing calculator): minor (NIHSS <8) ~day 1; moderate (8-15) ~day 3; severe (16-20) ~day 6; very severe (≥21) or extensive hemorrhagic transformation ~day 7+ with repeat imaging. After IV TNK/tPA, avoid antithrombotics for the first 24h and obtain follow-up imaging before starting anticoagulation; extend delay when hemorrhage, large infarct, or clinical instability is present. DOAC preferred over warfarin (Class I, LOE A).',
               classOfRec: 'IIa',
               levelOfEvidence: 'A',
               guideline: 'CATALYST IPDMA 2025',
-              reference: 'CATALYST: Lancet 2025. Pooled TIMING, ELAN, OPTIMAS, START.',
+              reference: 'CATALYST: Lancet 2025. Pooled TIMING, ELAN, OPTIMAS, START. AHA/ASA 2026: DOI 10.1161/STR.0000000000000513.',
+              medications: ['Apixaban 5 mg BID (preferred)', 'Rivaroxaban 20 mg daily', 'Dabigatran 150 mg BID', 'Edoxaban 60 mg daily'],
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
-                const hasAF = (data.telestrokeNote?.pmh || '').toLowerCase().includes('fib') || (data.telestrokeNote?.pmh || '').toLowerCase().includes('af');
+                const hasAF = hasAFText(data.telestrokeNote?.pmh) || hasAFText(data.telestrokeNote?.ekgResults);
                 return isIschemic && hasAF;
               }
             },
@@ -5459,7 +5446,7 @@ fever_management: {
               category: 'Supportive Care',
               title: 'Dysphagia screening (2026 AHA)',
               recommendation: 'All stroke patients must undergo bedside dysphagia screening before any oral intake. Failure should trigger instrumental assessment (FEES or VFSS) by SLP.',
-              detail: 'Validated bedside tools: Gugging Swallowing Screen (GUSS), Toronto Bedside Swallowing Screening Test (TOR-BSST), 3-oz Water Swallow Test. Instrumental assessment (FEES or videofluoroscopic swallowing study) recommended when resources allow, especially for silent aspiration detection. FEES can be performed at bedside (advantage for critically ill). Early nurse-led bedside screening reduces pneumonia rates. NPO until screen passed.',
+              detail: 'Keep NPO (including medications) until the screen is passed — aspiration pneumonia is a leading cause of post-stroke mortality. Validated bedside tools: Gugging Swallowing Screen (GUSS), Toronto Bedside Swallowing Screening Test (TOR-BSST), 3-oz Water Swallow Test. Instrumental assessment (FEES or videofluoroscopic swallowing study) recommended when resources allow, especially for silent aspiration detection. FEES can be performed at bedside (advantage for critically ill). Early nurse-led bedside screening reduces pneumonia rates. NPO until screen passed.',
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -5549,7 +5536,12 @@ fever_management: {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
-                return isIschemic && (toast.includes('athero') || toast === '' || toast.includes('undetermined'));
+                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
+                // LDL <55 is the very-high-risk (atherosclerotic) target — it must
+                // not fire for every patient whose TOAST is simply blank. The
+                // standard <70 rule covers non-atherosclerotic/unclassified stroke.
+                const atherosclerotic = toast.includes('athero') || cta.includes('atheroscler') || cta.includes('stenosis');
+                return isIschemic && atherosclerotic;
               }
             },
 
@@ -5569,8 +5561,8 @@ fever_management: {
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
-                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || 0;
-                return isIschemic && nihss <= 5;
+                const nihss = documentedNIHSS(data);
+                return isIschemic && nihss !== null && nihss <= 5;
               }
             },
 
@@ -5591,7 +5583,7 @@ fever_management: {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
-                const hasCAD = pmh.includes('cad') || pmh.includes('coronary') || pmh.includes('mi') || pmh.includes('stent') || pmh.includes('cabg');
+                const hasCAD = CAD_TEXT_RE.test(pmh);
                 return isIschemic && hasCAD;
               }
             },
@@ -5653,22 +5645,6 @@ fever_management: {
             // ---------------------------------------------------------------
             // INTRACRANIAL ATHEROSCLEROSIS (ICAD)
             // ---------------------------------------------------------------
-            icad_management: {
-              id: 'icad_management',
-              category: 'Antithrombotic',
-              title: 'Intracranial atherosclerotic disease (ICAD) management',
-              recommendation: 'Aggressive medical management is first-line for intracranial stenosis: DAPT + high-intensity statin + BP <140/90. Intracranial stenting is NOT recommended routinely (Class III: Harm).',
-              detail: 'SAMMPRIS: PTAS was inferior to aggressive medical management (30-day stroke/death 14.7% vs 5.8%). CASSISS: No benefit of stenting + medical therapy. Pooled analysis (n=809): 30-day stroke/death significantly higher with PTAS (10.5% vs 4.2%, HR 2.62). Medical protocol: DAPT (ASA + clopidogrel) \u00d7 90 days, then single antiplatelet. High-intensity statin (LDL <70). SBP <140/90. Stenting considered ONLY after \u22652 recurrent events on max medical therapy at experienced centers (Class IIb, LOE C).',
-              classOfRec: 'I',
-              levelOfEvidence: 'B-R',
-              guideline: '2022 AAN Intracranial Atherosclerosis',
-              reference: 'SAMMPRIS: NEJM 2011. CASSISS: JAMA 2022. Pooled IPD: 2025.',
-              conditions: (data) => {
-                const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
-                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
-                return toast.includes('large artery') || cta.includes('intracranial stenosis') || cta.includes('intracranial atheroscler');
-              }
-            },
 
             // ---------------------------------------------------------------
             // MEVO EVT (NOT RECOMMENDED)
@@ -5686,7 +5662,14 @@ fever_management: {
               caveats: 'Local protocol may permit consideration of proximal M2 EVT in highly select cases. Discuss with neurointerventionalist.',
               conditions: (data) => {
                 const vessels = data.telestrokeNote?.vesselOcclusion || [];
-                return vessels.some(v => /m2|m3|m4|distal|mevo|medium vessel/i.test(v));
+                // Fires only for ISOLATED medium/distal occlusion. A concurrent
+                // ICA/M1/basilar occlusion routes to the LVO transfer/EVT cards
+                // instead — both cards firing together was contradictory output.
+                const hasLVO = vessels.some(v => /^(ica|m1|basilar)$/i.test(String(v).trim()));
+                const hasMeVO = vessels.some(v =>
+                  /^(m2|m3|m4|a2|a3|p2|p3)$/i.test(String(v).trim()) || /distal|mevo|medium vessel/i.test(String(v))
+                );
+                return hasMeVO && !hasLVO;
               }
             },
 
@@ -5697,15 +5680,15 @@ fever_management: {
               id: 'bp_post_evt_drip',
               category: 'Blood Pressure',
               title: 'Post-EVT BP drip titration protocol',
-              recommendation: 'For post-EVT BP management, use nicardipine 5-15 mg/hr or clevidipine 1-2 mg/hr. Maintain SBP <180/105; avoid targeting SBP <140 (Class III: Harm).',
-              detail: 'Nicardipine: start 5 mg/hr, titrate by 2.5 mg/hr every 5-15 min (max 15 mg/hr). Clevidipine: start 1-2 mg/hr, double every 90 seconds initially (max 32 mg/hr). For successfully recanalized (mTICI 2b-3): maintain SBP <180, avoid SBP <140. For non-recanalized: SBP <180. ENCHANTED2/MT: SBP <120 was harmful. OPTIMAL-BP (JAMA 2023): intensive <140 showed no benefit. BP-TARGET: intensive 100-129 showed no benefit. BEST-II (JAMA 2023): SBP 100-129 vs 130-159 post-EVT — lower targets trended toward worse outcomes; maintain SBP floor ~130 post-EVT. Meta-analysis of 4 RCTs: intensive targets reduced functional independence by 23%.',
+              recommendation: 'For post-EVT BP titration after documented successful reperfusion (mTICI 2b-3): nicardipine 5-15 mg/hr or clevidipine 1-2 mg/hr to SBP 140-180; avoid targeting SBP <140 (intensive lowering: Class III: Harm).',
+              detail: 'Nicardipine: start 5 mg/hr, titrate by 2.5 mg/hr every 5-15 min (max 15 mg/hr). Clevidipine: start 1-2 mg/hr, double every 90 seconds initially (max 32 mg/hr). Canonical scheme — mTICI 2b-3 documented: SBP 140-180 for ≥24h, avoid SBP <140; non-recanalized or grade not documented: SBP <180/105 (post-lytic) or ≤185/110 (pre-procedure). ENCHANTED2/MT: SBP <120 was harmful. OPTIMAL-BP (JAMA 2023): stopped early, intensive <140 worse. BP-TARGET: intensive 100-129 showed no benefit. BEST-II (JAMA 2023): futility for lower targets. Meta-analysis of 4 RCTs: intensive targets reduced functional independence by 23%.',
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'ENCHANTED2/MT: Lancet 2022. OPTIMAL-BP: JAMA 2023. BP-TARGET: Lancet Neurol 2021.',
               medications: ['Nicardipine 5 mg/hr IV (titrate q5-15min, max 15)', 'Clevidipine 1-2 mg/hr IV'],
               conditions: (data) => {
-                return !!data.telestrokeNote?.evtRecommended;
+                return isSuccessfulEvtReperfusion(data.telestrokeNote?.ticiScore || '');
               }
             },
 
@@ -5803,42 +5786,12 @@ fever_management: {
               }
             },
             // VTE PROPHYLAXIS
-            vte_ipc_admission: {
-              id: 'vte_ipc_admission',
-              category: 'Acute',
-              title: 'IPC at admission for immobile stroke patients',
-              recommendation: 'Intermittent pneumatic compression (IPC) should be applied immediately at admission for all immobile AIS and ICH patients (Class I, LOE A). Graduated compression stockings alone are NOT effective (Class III).',
-              detail: 'CLOTS 3 trial: IPC reduced DVT from 12.1% to 8.5% (OR 0.65). TED hose alone showed no benefit (CLOTS 1). IPC should be continued until patient is independently mobile. Pharmacologic VTE prophylaxis added after 24-48h (post-thrombolysis: wait 24h + clear CT).',
-              classOfRec: 'I',
-              levelOfEvidence: 'A',
-              guideline: 'AHA/ASA 2019 AIS; AHA/ASA 2022 ICH; CLOTS 3',
-              reference: 'CLOTS 3: Lancet 2013.',
-              conditions: (data) => {
-                const cat = data.telestrokeNote?.diagnosisCategory;
-                return !!cat && cat !== 'mimic';
-              }
-            },
-            vte_enoxaparin_timing: {
-              id: 'vte_enoxaparin_timing',
-              category: 'Acute',
-              title: 'Enoxaparin preferred over UFH for VTE prophylaxis',
-              recommendation: 'Enoxaparin preferred over UFH for pharmacologic VTE prophylaxis. Post-lytic: start at 24h after stable imaging. Post-ICH: start at 48h after stable imaging. SCDs until then.',
-              detail: 'Suggested protocol: SQ heparin 24h after lytic, 48h after IPH. SCDs/IPC in the interim. PREVAIL trial: enoxaparin 40mg SC daily reduced VTE from 16% to 8.1% vs UFH. Duration: 10-14 days or until independently mobile. Anti-Xa monitoring (0.2-0.5 IU/mL) for BMI >40 or CrCl <30.',
-              classOfRec: 'I',
-              levelOfEvidence: 'A',
-              guideline: 'PREVAIL; AHA/ASA 2019; ACCP 9th Ed',
-              reference: 'PREVAIL: Stroke 2007.',
-              conditions: (data) => {
-                const cat = data.telestrokeNote?.diagnosisCategory;
-                return !!cat && cat !== 'mimic';
-              }
-            },
             // FEVER MANAGEMENT
             fever_management_protocol: {
               id: 'fever_management_protocol',
               category: 'Acute',
               title: 'Fever management in acute stroke',
-              recommendation: 'Target temperature 36.0-37.5C. Treat fever >37.5C within 1 hour. Acetaminophen is first-line; avoid NSAIDs in stroke (Class III). Implement FeSS bundle: Fever-Sugar-Swallowing.',
+              recommendation: 'Target normothermia (36.0-37.5C). Investigate and treat fever; nursing FeSS/QASC protocols treat >=37.5C within 1 hour, and AHA/ASA names >38C as the treatment trigger — both thresholds map to the same action: acetaminophen first-line, find the source. Avoid NSAIDs in stroke.',
               detail: 'Stepwise protocol: (1) Infection workup + treat, (2) Scheduled acetaminophen 650-1000mg q6h, (3) Surface cooling + counter-warming, (4) IV magnesium 2g bolus, (5) Buspirone 30mg q8h. Use BSAS (0-3) to guide anti-shivering therapy. QASC trial: FeSS bundle reduced death/dependency by 16%. Note: Prophylactic hypothermia (34-35°C) is NOT recommended for ischemic stroke (EuroHYP-1, Lancet Neurol 2019: neutral; Class III).',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
@@ -5916,37 +5869,21 @@ fever_management: {
               id: 'permissive_hypertension',
               category: 'Acute',
               title: 'Permissive hypertension in acute ischemic stroke',
-              recommendation: 'Do NOT treat BP <220/120 in acute ischemic stroke without reperfusion therapy, at least in first 24h (Class III, LOE A). Restart home antihypertensives at 24-72h if neurologically stable.',
-              detail: 'Treatment of moderate hypertension in non-reperfused AIS worsens penumbral perfusion. CSBP and AHA/ASA agree: permissive approach unless other organ damage (aortic dissection, MI, HF).',
+              recommendation: 'In AIS WITHOUT reperfusion therapy: treating BP <220/120 in the first 24-48h does not improve outcomes (III: No Benefit, LOE A — the grade applies to early treatment, not to a named permissive strategy). Restart home antihypertensives at 24-72h if neurologically stable. Does NOT apply to thrombolysis/EVT candidates (they require BP ≤185/110).',
+              detail: 'Treatment of moderate hypertension in non-reperfused AIS worsens penumbral perfusion. The AHA/ASA grade is III: No Benefit for TREATING BP <220/120 early in non-reperfusion patients; permissive hypertension itself is not a separately graded recommendation. Exceptions requiring treatment: aortic dissection, acute MI, decompensated heart failure, hypertensive encephalopathy.',
               classOfRec: 'III',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA 2019 AIS; CSBP Acute 2022',
               reference: 'AHA/ASA AIS Guidelines 2019.',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
-                return cat === 'ischemic' || cat === 'tia';
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
+                // Excluded for lysis/EVT candidates: their BP ceilings (185/110,
+                // 180/105) directly contradict a permissive framing.
+                return isIschemic && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
               }
             },
             // BASILAR ARTERY OCCLUSION EVT
-            basilar_evt_class1: {
-              id: 'basilar_evt_class1',
-              category: 'Acute',
-              title: 'Basilar artery occlusion EVT within 24h',
-              recommendation: 'EVT is recommended for basilar artery occlusion within 24h in patients with NIHSS >=10 and mild ischemic damage on imaging (Class I, LOE A).',
-              detail: 'Four RCTs with heterogeneous results:\n• BAOCHE (6-24h, China, N=217): POSITIVE — mRS 0-3 46% vs 24% (RR 1.81). Stopped early for superiority.\n• ATTENTION (0-12h, China, N=340): POSITIVE — mRS 0-3 46% vs 23% (RR 2.06). Lower mortality with EVT.\n• BEST (0-8h, international, N=131): NEGATIVE — ITT non-significant (underpowered, high crossover). As-treated analysis favored EVT.\n• BASICS (0-6h, 7 countries, N=300): NEUTRAL — underpowered (slow enrollment, high crossover).\nPositive trials (BAOCHE, ATTENTION) were predominantly Chinese populations with high rates of intracranial atherosclerotic disease. External validity considerations apply.\nSubgroups with strongest benefit: younger patients, higher NIHSS (≥10), more proximal basilar occlusion. Requires CT/CTA confirming basilar occlusion; exclude extensive brainstem infarction.',
-              classOfRec: 'I',
-              levelOfEvidence: 'A',
-              guideline: 'AHA/ASA 2026 AIS Guideline; ATTENTION; BAOCHE; BEST; BASICS',
-              reference: 'ATTENTION: NEJM 2022. BAOCHE: NEJM 2022. BEST: Lancet Neurol 2020. BASICS: Lancet 2021.',
-              conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
-                const hasBasilar = (data.telestrokeNote?.vesselOcclusion || []).some(v => /basilar/i.test(v)) || dx.includes('basilar') || cta.includes('basilar');
-                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
-                const timeFrom = data.timeFromLKW;
-                return hasBasilar && nihss >= 10 && timeFrom && timeFrom.total <= 24;
-              }
-            },
             // STATUS EPILEPTICUS PROTOCOL
             status_epilepticus_protocol: {
               id: 'status_epilepticus_protocol',
@@ -5994,7 +5931,7 @@ fever_management: {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const hx = (data.telestrokeNote?.pmh || '').toLowerCase();
-                const hasPolyvasc = hx.includes('cad') || hx.includes('coronary') || hx.includes('pad') || hx.includes('peripheral arterial') || hx.includes('mi') || hx.includes('cabg') || hx.includes('stent');
+                const hasPolyvasc = CAD_TEXT_RE.test(hx) || /\bpad\b|peripheral\s+arterial/i.test(hx);
                 return isIschemic && hasPolyvasc;
               }
             },
@@ -8862,7 +8799,7 @@ fever_management: {
             tnkRiskBenefit: `Thrombolysis (IV tenecteplase/alteplase) risk-benefit discussion — documentation:\nAfter confirming no evident contraindications, IV thrombolysis was recommended for acute ischemic stroke. The potential benefits (improved chance of recovery without disability, greatest when treated early), the potential risks (including a risk of symptomatic intracranial hemorrhage of up to ~4%, and rarely orolingual angioedema), and the alternatives to treatment (standard supportive stroke care without thrombolysis) were discussed with the referring provider and the patient/family prior to initiating treatment. The patient/family expressed understanding and treatment proceeded per shared decision-making.`,
             evtRiskBenefit: `Endovascular therapy (mechanical thrombectomy) risk-benefit discussion — documentation:\nGiven a large-vessel occlusion with disabling neurological deficits and no evident contraindications, mechanical thrombectomy was recommended and the patient will be transferred to a thrombectomy-capable comprehensive stroke center for evaluation. The potential benefits, the potential risks (including groin/access-site complications, vessel injury, and intracranial hemorrhage), and the alternatives to treatment were discussed with the referring provider and the patient/family; the neurointerventional team will obtain informed consent from the patient/family prior to the procedure.`,
             postTnk: `Post-IV thrombolysis (TNK/tPA) management:\n- Admit to ICU / monitored stroke unit\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h\n- No antiplatelet or anticoagulant agents for 24h after thrombolysis\n- Maintain BP <180/105 for 24h after thrombolysis\n- Non-contrast head CT at ~24h post-thrombolysis (sooner if any deterioration)\n- MRI brain with diffusion-weighted imaging when feasible\n- EKG and continuous telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention\n- Monitor for post-thrombolysis complications: symptomatic ICH and orolingual angioedema`,
-            postEvt: `Post-endovascular thrombectomy (EVT) management:\n- Admit to Neuro ICU for ≥24h\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h; monitor arterial access site and distal pulses\n- Blood pressure during the procedure: maintain SBP >140 mmHg (neuroanesthesia responsible)\n- Blood pressure after successful reperfusion: maintain SBP 140-180 mmHg for ≥72h; avoid SBP <140 (associated with harm — ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II); keep BP <180/105\n- Antithrombotic timing per the neurointerventional team, after 24h imaging excludes hemorrhage\n- Non-contrast head CT (or dual-energy CT if available) at ~24h; immediate CT if clinical deterioration or failed recanalization (mTICI 0-2a)\n- MRI brain with diffusion-weighted imaging when feasible; EKG and telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention`
+            postEvt: `Post-endovascular thrombectomy (EVT) management:\n- Admit to Neuro ICU for ≥24h\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h; monitor arterial access site and distal pulses\n- Blood pressure during the procedure: maintain SBP >140 mmHg (neuroanesthesia responsible)\n- Blood pressure after DOCUMENTED successful reperfusion (mTICI 2b-3): maintain SBP 140-180 mmHg for ≥24h (up to 72h per local protocol); avoid SBP <140 (harm in ENCHANTED2-MT and OPTIMAL-BP; no benefit of lower targets in BP-TARGET/BEST-II); keep BP <180/105 if IV lytic given\n- Antithrombotic timing per the neurointerventional team, after 24h imaging excludes hemorrhage\n- Non-contrast head CT (or dual-energy CT if available) at ~24h; immediate CT if clinical deterioration or failed recanalization (mTICI 0-2a)\n- MRI brain with diffusion-weighted imaging when feasible; EKG and telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention`
           };
 
           const copyToClipboard = (text, label) => {
@@ -13472,7 +13409,7 @@ fever_management: {
               const bpMatch = n.bpPostEVT.match(/(\d+)/);
               const sbp = bpMatch ? parseInt(bpMatch[1], 10) : NaN;
               if (!isNaN(sbp) && sbp < 140) {
-                warnings.push({ id: 'post-evt-bp-too-low', severity: 'error', msg: `Post-EVT SBP ${sbp} mmHg — SBP <140 after successful reperfusion is Class III: Harm (ENCHANTED2/MT, BEST-II JAMA 2023). SBP <130 associated with worse outcomes. Target SBP 140-180/105.` });
+                warnings.push({ id: 'post-evt-bp-too-low', severity: 'error', msg: `Post-EVT SBP ${sbp} mmHg — intensive lowering (SBP <140) after successful reperfusion is Class III: Harm (harm in ENCHANTED2/MT and OPTIMAL-BP; no benefit of lower targets in BP-TARGET/BEST-II). Target SBP 140-180.` });
               }
             }
 
@@ -14159,6 +14096,7 @@ fever_management: {
               aspectsScore: isValidAspectsScore(aspectsScore) ? aspectsScore : null,
               gcsScore: calculateGCS(gcsItems),
               timeFromLKW: timeFrom,
+              abcd2Score: abcd2Complete ? calculateABCD2Score(abcd2Items) : null,
               ichScore: typeof calculateICHScore === 'function' ? calculateICHScore(ichScoreItems) : 0
             };
             return Object.values(GUIDELINE_RECOMMENDATIONS).filter(rec => {
@@ -30440,7 +30378,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                       {(() => {
                         const ichScore = calculateICHScore(ichScoreItems);
-                        const cohortMortality = {0: '0.9%', 1: '0.7%', 2: '5.3%', 3: '15.3%', 4: '36.8%', 5: '60.0%'};
+                        // Hemphill JC et al. Stroke 2001;32:891-897 (PMID 11283388):
+                        // 30-day mortality by ICH Score in the UCSF derivation cohort.
+                        // No patient had a score of 6; given 100% mortality at 5,
+                        // score 6 is expected to approach 100%.
+                        const cohortMortality = {0: '0%', 1: '13%', 2: '26%', 3: '72%', 4: '97%', 5: '100%', 6: '~100% (not observed in cohort)'};
                         if (ichScore === null) {
                           return (
                             <div className="mt-2 rounded-lg border border-warn-200 bg-warn-50 p-2 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300" aria-live="polite">
@@ -30453,30 +30395,31 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="mt-2 rounded-lg border border-line bg-white p-2 text-xs dark:bg-card" aria-live="polite" aria-atomic="true">
                             <span className="font-semibold">ICH Score {ichScore}.</span>{' '}
                             {mortality
-                              ? <>Comfort-care-excluded cohort (2005-2008) mortality: <span className="font-semibold">{mortality}</span>.</>
-                              : 'The institutional cohort table supplies no mortality value for score 6.'}
+                              ? <>30-day mortality (Hemphill 2001, PMID 11283388): <span className="font-semibold">{mortality}</span>. Do not use the score to limit care — early DNR/withdrawal creates a self-fulfilling prophecy (AHA/ASA 2022 ICH, Class I).</>
+                              : 'No published mortality value for this score.'}
                           </div>
                         );
                       })()}
 
-                      {/* Institutional pocket-card cohort table */}
+                      {/* Hemphill 2001 30-day mortality table */}
                       {(() => {
                         const ichScore = calculateICHScore(ichScoreItems);
                         const rows = [
-                          { s: 0, mortality: '0.9%' },
-                          { s: 1, mortality: '0.7%' },
-                          { s: 2, mortality: '5.3%' },
-                          { s: 3, mortality: '15.3%' },
-                          { s: 4, mortality: '36.8%' },
-                          { s: 5, mortality: '60.0%' },
+                          { s: 0, mortality: '0%' },
+                          { s: 1, mortality: '13%' },
+                          { s: 2, mortality: '26%' },
+                          { s: 3, mortality: '72%' },
+                          { s: 4, mortality: '97%' },
+                          { s: 5, mortality: '100%' },
+                          { s: 6, mortality: 'Not observed (~100% expected)' },
                         ];
                         return (
                           <details className="mt-3 bg-card border border-line rounded-lg text-xs">
                             <summary className="cursor-pointer px-3 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg dark:text-ink-2 dark:hover:bg-paper-2">
-                              Comfort-care-excluded cohort (2005-2008)
+                              30-day mortality by ICH Score (Hemphill 2001)
                             </summary>
                             <div className="px-3 pb-3">
-                              <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: comfort-care-excluded cohort mortality by ICH Score">
+                              <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: 30-day mortality by ICH Score (Hemphill 2001)">
                                 <table className="w-full border-collapse text-xs">
                                   <thead>
                                     <tr className="text-left text-slate-600 border-b border-line dark:text-ink-2">
@@ -30494,7 +30437,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </tbody>
                                 </table>
                               </div>
-                              <p className="mt-2 text-slate-600 dark:text-ink-2">Values reproduced from the institutional pocket card. The table provides no score-6 value and no individual treatment rule.</p>
+                              <p className="mt-2 text-slate-600 dark:text-ink-2">Hemphill JC et al. The ICH Score. Stroke 2001;32:891-897 (PMID 11283388). UCSF derivation cohort; no patient scored 6. Prognostic only — the score must NOT be used to limit treatment or justify early DNR (self-fulfilling-prophecy risk; AHA/ASA 2022 ICH).</p>
                             </div>
                           </details>
                         );
@@ -30858,7 +30801,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <span className={`text-sm ${abcd2Items.unilateralWeakness ? 'text-slate-600 line-through dark:text-mute' : ''}`}>Speech disturbance w/o weakness (+1)</span>
                           </label>
                           <p className="font-semibold text-sm mt-3 mb-1">Symptom Duration:</p>
-                          {[{v:'duration60',l:'>60 minutes',p:'+2 points'},{v:'duration10',l:'10-59 minutes',p:'+1 point'},{v:'durationUnder10',l:'<10 minutes',p:'0 points'},{v:'durationExactly60',l:'Exactly 60 minutes',p:'source does not assign a score'}].map(o => (
+                          {[{v:'duration60',l:'\u226560 minutes',p:'+2 points'},{v:'duration10',l:'10-59 minutes',p:'+1 point'},{v:'durationUnder10',l:'<10 minutes',p:'0 points'}].map(o => (
                             <button key={o.v} type="button" role="radio" aria-checked={abcd2Items.duration === o.v} aria-label={`Symptom Duration: ${o.l} (${o.p})`}
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors mb-1 ${abcd2Items.duration === o.v ? 'bg-orange-700 text-white dark:bg-orange-700 border-orange-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100 dark:bg-card dark:border-line dark:hover:bg-paper-2 dark:active:bg-paper-2'}`}
                               onClick={() => setAbcd2Items(prev => ({...prev, duration: o.v, criteriaReviewed: false}))} onKeyDown={handleRadioKeyDown}
@@ -30866,11 +30809,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {o.l} <span className={abcd2Items.duration === o.v ? 'text-white' : 'text-slate-600 dark:text-mute'}>({o.p})</span>
                             </button>
                           ))}
-                          {abcd2Items.duration === 'durationExactly60' && (
-                            <p className="rounded border border-warn-200 bg-warn-50 p-2 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
-                              The institutional source lists &gt;60 minutes and 10-59 minutes but does not assign exactly 60 minutes. Do not infer a score pending owner adjudication.
-                            </p>
-                          )}
                           <hr className="my-3" />
                           <label className="flex items-center space-x-2">
                             <input
@@ -31068,7 +31006,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.hypertension}
                               onChange={(e) => setHasbledItems(prev => ({...prev, hypertension: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>H</strong>ypertension</span>
+                            <span className="text-sm"><strong>H</strong>ypertension — uncontrolled, SBP &gt;160 mmHg</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31077,7 +31015,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.renalDisease}
                               onChange={(e) => setHasbledItems(prev => ({...prev, renalDisease: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>A</strong>bnormal renal function</span>
+                            <span className="text-sm"><strong>A</strong>bnormal renal function — dialysis, transplant, or Cr ≥2.26 mg/dL (≥200 µmol/L)</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31086,7 +31024,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.liverDisease}
                               onChange={(e) => setHasbledItems(prev => ({...prev, liverDisease: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>A</strong>bnormal liver function</span>
+                            <span className="text-sm"><strong>A</strong>bnormal liver function — cirrhosis, or bilirubin &gt;2× ULN with AST/ALT/ALP &gt;3× ULN</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31113,7 +31051,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.labileINR}
                               onChange={(e) => setHasbledItems(prev => ({...prev, labileINR: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>L</strong>abile INR</span>
+                            <span className="text-sm"><strong>L</strong>abile INR — unstable/high INRs or time-in-therapeutic-range &lt;60% (warfarin patients)</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31122,7 +31060,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.elderly}
                               onChange={(e) => setHasbledItems(prev => ({...prev, elderly: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>E</strong>lderly</span>
+                            <span className="text-sm"><strong>E</strong>lderly — age &gt;65 years</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31140,7 +31078,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.alcohol}
                               onChange={(e) => setHasbledItems(prev => ({...prev, alcohol: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>D</strong> (cont.) Alcohol use</span>
+                            <span className="text-sm"><strong>D</strong> (cont.) Alcohol use — ≥8 drinks/week</span>
                           </label>
                         </div>
 
@@ -32235,7 +32173,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         HINTS Exam — Acute Vestibular Syndrome
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
-                        <p className="text-xs text-slate-600 dark:text-ink-2">For acute continuous vertigo with nystagmus, head-motion intolerance, nausea/vomiting, gait unsteadiness lasting &gt;24h. Sensitivity 96.8%, specificity 98.5% for central cause (Kattah et al., 2009).</p>
+                        <p className="text-xs text-slate-600 dark:text-ink-2">Prerequisites: continuous acute vestibular syndrome WITH nystagmus (head-motion intolerance, nausea/vomiting, gait unsteadiness, &gt;24h); NOT valid for episodic or positional vertigo. In this population the HINTS battery was 100% sensitive and 96% specific for stroke (Kattah et al., Stroke 2009, PMID 19762709).</p>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                           <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
                             <h2 className="font-bold text-cobalt-900 text-sm mb-1 dark:text-cobalt-300">H — Head Impulse</h2>

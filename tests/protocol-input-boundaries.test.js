@@ -219,15 +219,18 @@ describe('Protocols input-boundary contracts', () => {
   });
 
   describe('score completeness and copy suppression', () => {
-    it('keeps exactly 60 minutes non-affirmative pending protocol-owner adjudication', () => {
+    it('scores duration >=60 minutes as 2 points with no un-scoreable "exactly 60" option', () => {
+      // ABCD2 (Johnston Lancet 2007, PMID 17258668): duration >=60 min = 2,
+      // 10-59 min = 1, <10 min = 0. The former "Exactly 60 minutes" option had
+      // no published score and has been removed.
       const abcd2Card = sourceBetween(appSource, '{/* ABCD2 */}', '{/* CHADS2-VASC */}');
       const completionDefinition = appSource.match(/const abcd2Complete\s*=\s*([^;]+);/)?.[1] || '';
 
-      expect(calculateABCD2Score({ duration: 'durationExactly60' })).toBe(0);
+      expect(calculateABCD2Score({ duration: 'duration60' })).toBe(2);
       expect(completionDefinition).not.toContain('durationExactly60');
-      expect(abcd2Card).toContain("v:'durationExactly60'");
-      expect(abcd2Card).toMatch(/Exactly 60 minutes[\s\S]*source does not assign a score/);
-      expect(abcd2Card).toMatch(/Do not infer a score pending owner adjudication/);
+      expect(abcd2Card).not.toContain("durationExactly60");
+      expect(abcd2Card).not.toMatch(/Exactly 60 minutes/);
+      expect(abcd2Card).toContain('\\u226560 minutes');
     });
 
     it('requires complete NIHSS, GCS, ICH, ABCD2, and CHA inputs before exposing copy actions', () => {

@@ -363,7 +363,7 @@ describe('PFO — PASCAL category & NNT', () => {
 describe('INTERACT3 ICH bundle compliance', () => {
   it('full bundle compliant (warfarin patient)', () => {
     const r = ichCareBundleCheck({
-      sbpAt1h: 130, glucose: 6.5, isDiabetic: false, temp: 37.0,
+      sbpAt1h: 130, glucose: 6.5, glucoseUnit: 'mmol/L', isDiabetic: false, temp: 37.0,
       inr: 1.2, isOnWarfarin: true
     });
     expect(r.fullyCompliant).toBe(true);
@@ -371,7 +371,7 @@ describe('INTERACT3 ICH bundle compliance', () => {
   });
   it('partial compliance flags incomplete elements', () => {
     const r = ichCareBundleCheck({
-      sbpAt1h: 165, glucose: 11, isDiabetic: false, temp: 38.5
+      sbpAt1h: 165, glucose: 11, glucoseUnit: 'mmol/L', isDiabetic: false, temp: 38.5
     });
     expect(r.fullyCompliant).toBe(false);
   });
@@ -384,11 +384,19 @@ describe('Boston 2.0 CAA criteria', () => {
     });
     expect(r.category).toBe('Probable CAA');
   });
-  it('Boston 2.0 enhanced — lobar ICH + CSO-PVS', () => {
+  it('lobar ICH + CSO-PVS (1 hemorrhagic lesion + 1 white-matter feature) → Probable CAA', () => {
     const r = evaluateBostonCAA20({
       age: 75, lobarICH: true, csoPVSSevere: true
     });
-    expect(r.category).toBe('Probable CAA (Boston 2.0 enhanced)');
+    expect(r.category).toBe('Probable CAA');
+  });
+  it('two strictly lobar hemorrhagic lesions qualify as Probable CAA even without lobar ICH', () => {
+    const r = evaluateBostonCAA20({ age: 68, lobarHemorrhagicLesionCount: 2 });
+    expect(r.category).toBe('Probable CAA');
+  });
+  it('applies from age 50 (v2.0 gate), not 55', () => {
+    const r = evaluateBostonCAA20({ age: 52, lobarICH: true, corticalSiderosis: true });
+    expect(r.category).toBe('Probable CAA');
   });
 });
 

@@ -107,7 +107,7 @@ describe('Empirical Stress Testing — calculateSeLECTScore', () => {
       nihss: 0,
       corticalInvolvement: false,
       earlySeizure: false,
-      lvoArtery: false,
+      largeArteryAtherosclerosis: false,
       middleCerebralTerritory: false
     });
     expect(resMin.score).toBe(0);
@@ -115,17 +115,17 @@ describe('Empirical Stress Testing — calculateSeLECTScore', () => {
     expect(resMin.fiveYearRisk).toBe('1.3%');
     expect(resMin.riskTier).toBe('Low');
 
-    // Max score = 9
+    // Max score = 9 — published risks 63% at 1 y / 83% at 5 y (Galovic 2018)
     const resMax = calculateSeLECTScore({
       nihss: 15, // 2 pts
       corticalInvolvement: true, // 2 pts
       earlySeizure: true, // 3 pts
-      lvoArtery: true, // 1 pt
+      largeArteryAtherosclerosis: true, // 1 pt
       middleCerebralTerritory: true // 1 pt
     });
     expect(resMax.score).toBe(9);
-    expect(resMax.oneYearRisk).toBe('56.0%');
-    expect(resMax.fiveYearRisk).toBe('76.2%');
+    expect(resMax.oneYearRisk).toBe('63%');
+    expect(resMax.fiveYearRisk).toBe('83%');
     expect(resMax.riskTier).toBe('Very High');
   });
 
@@ -155,7 +155,7 @@ describe('Empirical Stress Testing — calculateSeLECTScore', () => {
       corticalInvolvement: "true", // 2 pts
       earlySeizure: "true" // 3 pts
     });
-    
+
     // Total score is 6 (1 + 2 + 3)
     expect(resStringTrue.score).toBe(6);
     expect(resStringTrue.breakdown.corticalPoints).toBe(2);
@@ -164,83 +164,68 @@ describe('Empirical Stress Testing — calculateSeLECTScore', () => {
     const breakdownSum = resStringTrue.breakdown.nihssPoints +
       resStringTrue.breakdown.corticalPoints +
       resStringTrue.breakdown.earlySeizurePoints +
-      resStringTrue.breakdown.lvoPoints +
+      resStringTrue.breakdown.largeArteryAtherosclerosisPoints +
       resStringTrue.breakdown.mcaPoints;
-    
+
     expect(breakdownSum).toBe(6);
     expect(resStringTrue.score).toBe(breakdownSum);
   });
 });
 
-describe('Empirical Stress Testing — calculateEDEMAScore', () => {
+describe('Empirical Stress Testing — calculateEDEMAScore (Ong Stroke 2017)', () => {
   test('Baseline minimum and maximum EDEMA score', () => {
     // Min score = 0
     const resMin = calculateEDEMAScore({
-      nihss: 5,
-      aspects: 10,
-      earlyInfarctSigns: false,
-      denseArterySign: false,
-      bloodGlucoseMgDl: 100,
-      massEffect: 0,
-      historyHypertension: false
+      basalCisternEffacement: false,
+      glucoseMgDl: 100,
+      noReperfusionTherapy: false,
+      midlineShiftMm: 0,
+      noPreviousStroke: false
     });
     expect(resMin.score).toBe(0);
     expect(resMin.riskTier).toBe('Low');
-    expect(resMin.estimatedSwellingRisk).toBe('<10%');
+    expect(resMin.highRiskForMalignantEdema).toBe(false);
 
-    // Max score = 9
+    // Max score = 14 (cistern 3 + glucose 2 + no-reperfusion 1 + shift>9 7 + no-prior 1)
     const resMax = calculateEDEMAScore({
-      nihss: 22, // 2 pts
-      aspects: 5, // 2 pts
-      denseArterySign: true, // 1 pt
-      bloodGlucoseMgDl: 200, // 1 pt
-      massEffect: 2, // 2 pts
-      historyHypertension: true // 1 pt
+      basalCisternEffacement: true,
+      glucoseMgDl: 200,
+      noReperfusionTherapy: true,
+      midlineShiftMm: 11,
+      noPreviousStroke: true
     });
-    expect(resMax.score).toBe(9);
+    expect(resMax.score).toBe(14);
     expect(resMax.riskTier).toBe('High');
-    expect(resMax.estimatedSwellingRisk).toBe('>60-80%');
+    expect(resMax.highRiskForMalignantEdema).toBe(true);
   });
 
-  test('NIHSS boundary conditions', () => {
-    expect(calculateEDEMAScore({ nihss: 11 }).breakdown.nihssPoints).toBe(0);
-    expect(calculateEDEMAScore({ nihss: 12 }).breakdown.nihssPoints).toBe(1);
-    expect(calculateEDEMAScore({ nihss: 19 }).breakdown.nihssPoints).toBe(1);
-    expect(calculateEDEMAScore({ nihss: 20 }).breakdown.nihssPoints).toBe(2);
+  test('Midline shift tier boundaries (published: 0 / >0-3 / 3-6 / 6-9 / >9)', () => {
+    expect(calculateEDEMAScore({ midlineShiftMm: 0 }).breakdown.midlineShiftPoints).toBe(0);
+    expect(calculateEDEMAScore({ midlineShiftMm: 0.5 }).breakdown.midlineShiftPoints).toBe(1);
+    expect(calculateEDEMAScore({ midlineShiftMm: 3 }).breakdown.midlineShiftPoints).toBe(2);
+    expect(calculateEDEMAScore({ midlineShiftMm: 6 }).breakdown.midlineShiftPoints).toBe(4);
+    expect(calculateEDEMAScore({ midlineShiftMm: 9 }).breakdown.midlineShiftPoints).toBe(4);
+    expect(calculateEDEMAScore({ midlineShiftMm: 9.1 }).breakdown.midlineShiftPoints).toBe(7);
   });
 
-  test('ASPECTS score boundary conditions', () => {
-    expect(calculateEDEMAScore({ nihss: 10, aspects: 7 }).breakdown.earlyInfarctPoints).toBe(0);
-    expect(calculateEDEMAScore({ nihss: 10, aspects: 6 }).breakdown.earlyInfarctPoints).toBe(2);
-    expect(calculateEDEMAScore({ nihss: 10, aspects: 0 }).breakdown.earlyInfarctPoints).toBe(2);
-    
-    // Negative aspects
-    expect(calculateEDEMAScore({ nihss: 10, aspects: -5 }).breakdown.earlyInfarctPoints).toBe(2);
+  test('Glucose boundary conditions: >=150 mg/dL (>=8.3 mmol/L) scores 2', () => {
+    expect(calculateEDEMAScore({ midlineShiftMm: 0, glucoseMgDl: 149.9 }).breakdown.glucosePoints).toBe(0);
+    expect(calculateEDEMAScore({ midlineShiftMm: 0, glucoseMgDl: 150 }).breakdown.glucosePoints).toBe(2);
+    expect(calculateEDEMAScore({ midlineShiftMm: 0, glucoseMmolL: 8.2 }).breakdown.glucosePoints).toBe(0);
+    expect(calculateEDEMAScore({ midlineShiftMm: 0, glucoseMmolL: 8.3 }).breakdown.glucosePoints).toBe(2);
   });
 
-  test('Blood Glucose boundary conditions (Mg/dL vs Mmol/L)', () => {
-    expect(calculateEDEMAScore({ nihss: 10, bloodGlucoseMgDl: 162 }).breakdown.glucosePoints).toBe(0);
-    expect(calculateEDEMAScore({ nihss: 10, bloodGlucoseMgDl: 162.1 }).breakdown.glucosePoints).toBe(1);
-    expect(calculateEDEMAScore({ nihss: 10, bloodGlucoseMmolL: 9.0 }).breakdown.glucosePoints).toBe(0);
-    expect(calculateEDEMAScore({ nihss: 10, bloodGlucoseMmolL: 9.1 }).breakdown.glucosePoints).toBe(1);
+  test('High-risk threshold is score >=7 (PPV 93%, specificity 99%)', () => {
+    const at7 = calculateEDEMAScore({ basalCisternEffacement: true, glucoseMgDl: 155, midlineShiftMm: 4 });
+    expect(at7.score).toBe(7);
+    expect(at7.highRiskForMalignantEdema).toBe(true);
+    const at6 = calculateEDEMAScore({ basalCisternEffacement: true, glucoseMgDl: 155, midlineShiftMm: 2 });
+    expect(at6.score).toBe(6);
+    expect(at6.highRiskForMalignantEdema).toBe(false);
   });
 
-  test('Remediated: Mass Effect string matching handles negated strings correctly', () => {
-    expect(calculateEDEMAScore({ nihss: 10, massEffect: 'midline shift' }).breakdown.massEffectPoints).toBe(2);
-    expect(calculateEDEMAScore({ nihss: 10, massEffect: 'sulcal effacement' }).breakdown.massEffectPoints).toBe(1);
-
-    const resNoShift = calculateEDEMAScore({ nihss: 10, massEffect: 'no shift' });
-    const resWithoutShift = calculateEDEMAScore({ nihss: 10, massEffect: 'without midline shift' });
-    const resNoEffacement = calculateEDEMAScore({ nihss: 10, massEffect: 'no effacement' });
-
-    expect(resNoShift.breakdown.massEffectPoints).toBe(0);
-    expect(resWithoutShift.breakdown.massEffectPoints).toBe(0);
-    expect(resNoEffacement.breakdown.massEffectPoints).toBe(0);
-  });
-
-  test('Remediated: Mass Effect numeric float handling applies Math.floor to integer points', () => {
-    const resFloat = calculateEDEMAScore({ nihss: 10, massEffect: 1.5 });
-    expect(resFloat.score).toBe(1);
-    expect(resFloat.breakdown.massEffectPoints).toBe(1);
+  test('Returns null when midline shift is not assessed', () => {
+    expect(calculateEDEMAScore({})).toBeNull();
+    expect(calculateEDEMAScore({ basalCisternEffacement: true })).toBeNull();
   });
 });
