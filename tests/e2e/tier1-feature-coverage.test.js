@@ -583,7 +583,7 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(trials).toBe(130);
       expect(education).toBeGreaterThanOrEqual(32);
       expect(calculators).toBe(34);
-      expect(references).toBe(18);
+      expect(references).toBe(28); // 18 + 9 quick-reference sheets + 1 parenthesized-path PDF (seed regex fix)
       expect(guidelines + trials + education + calculators + references).toBeGreaterThanOrEqual(166);
     });
 

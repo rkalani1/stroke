@@ -363,7 +363,7 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       expect(bundle.trials?.length).toBe(130);
       expect(bundle.education?.length).toBeGreaterThanOrEqual(32);
       expect(bundle.calculators?.length).toBe(34);
-      expect(bundle.references?.length).toBe(18);
+      expect(bundle.references?.length).toBe(28); // 18 + 9 quick-reference sheets + 1 parenthesized-path PDF (seed regex fix)
 
       const total = bundle.guidelines.length + bundle.trials.length + bundle.education.length + bundle.calculators.length + bundle.references.length;
       expect(total).toBeGreaterThanOrEqual(166);
@@ -381,7 +381,7 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       expect(json.counts.trials).toBe(130);
       expect(json.counts.education).toBeGreaterThanOrEqual(32);
       expect(json.counts.calculators).toBe(34);
-      expect(json.counts.references).toBe(18);
+      expect(json.counts.references).toBe(28); // 18 + 9 quick-reference sheets + 1 parenthesized-path PDF (seed regex fix)
     });
   });
 });

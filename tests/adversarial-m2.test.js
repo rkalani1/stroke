@@ -146,9 +146,12 @@ describe('Milestone 2 Adversarial Verification & Stress Harness', () => {
       }
 
       // Inventory count, not a safety assertion — it moves whenever Protocols cards are added
-      // or removed. It is 145 after removing the approved empty/source-status Protocols cards.
+      // or removed. It is 136 after P4-4 replaced the Reference Library's ten hand-copied
+      // <details> document sections with one registry-driven <details> template (and the
+      // Guideline Library's outer <details> became a plain section on its move to the
+      // Guidelines sub-tab).
       // The safety assertion is openDetails === 0, immediately below.
-      expect(totalDetails).toBe(145);
+      expect(totalDetails).toBe(136);
       expect(openDetails).toBe(0);
 
       const indexHtml = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');

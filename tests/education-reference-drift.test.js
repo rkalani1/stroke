@@ -54,8 +54,6 @@ const WHITELIST = new Set([
   'hints-simulator :: AHA/ASA Guideline',
   // Card covers CRYSTAL AF / STROKE-AF / ARCADIA; NOAH-AFNET 6 is discussed in the sibling device-detected-subclinical-af module instead.
   'cryptogenic-stroke-esus :: NOAH-AFNET 6 Trial',
-  // Prehospital BP trial kept as background reading; the card body covers in-hospital INTERACT-2/3 + ATACH-2, and INTERACT4 lives in prehospital-triage-systems.
-  'ich-blood-pressure :: INTERACT4 Trial',
   // Tranexamic-acid context reference; the card footer discusses FASTEST (rFVIIa) and never names TICH-2 or Sprigg.
   'ich-blood-pressure :: TICH-2 Trial',
 ]);

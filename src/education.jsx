@@ -364,13 +364,15 @@ const EDUCATION_MODULES = [
     id: 'toast-classification',
     title: 'TOAST Stroke Classification',
     purpose: 'Trial of Org 10172 in Acute Stroke Treatment (TOAST) diagnostic criteria for ischemic stroke etiology.',
-    actions: 'toast criteria etiology large artery lacune small vessel cardioembolic undetermined cryptogenic esus workup',
+    actions: 'toast criteria etiology large artery lacune small vessel cardioembolic undetermined cryptogenic esus workup factor xia inhibitor asundexian milvexian pacific-stroke axiomatic-ssp oceanic-stroke librexia-stroke',
     categories: ['pocket-card', 'printable'],
-    lastReviewed: '2026-07-13',
+    lastReviewed: '2026-08-22',
     references: [
       { label: 'Original Study', citation: 'Adams HP Jr, et al. TOAST. Stroke. 1993;24:35-41.', pmid: '7678184' },
       { label: 'AHA/ASA Guideline', citation: 'Kleindorfer DO, et al. 2021 Stroke Prevention. Stroke. 2021;52:e364-e467.', pmid: '34024117' },
-      { label: 'OCEANIC-STROKE Trial', citation: 'Sharma M, et al. Asundexian for Secondary Stroke Prevention. N Engl J Med. 2026;394(15):1467-1479.', pmid: '41985132' }
+      { label: 'OCEANIC-STROKE Trial', citation: 'Sharma M, et al. Asundexian for Secondary Stroke Prevention. N Engl J Med. 2026;394(15):1467-1479.', pmid: '41985132' },
+      { label: 'PACIFIC-Stroke Trial', citation: 'Shoamanesh A, et al. Factor XIa inhibition with asundexian after acute non-cardioembolic ischaemic stroke (PACIFIC-Stroke): a phase 2b trial. Lancet. 2022;400(10357):997-1007.', pmid: '36063821' },
+      { label: 'AXIOMATIC-SSP Trial', citation: 'Sharma M, et al. Safety and efficacy of factor XIa inhibition with milvexian for secondary stroke prevention (AXIOMATIC-SSP): a phase 2 dose-finding trial. Lancet Neurol. 2024;23(1):46-59.', pmid: '38101902' }
     ]
   },
   {
@@ -655,14 +657,15 @@ const EDUCATION_MODULES = [
   {
     id: 'anticoagulation-reversal',
     title: 'Anticoagulation Reversal in Acute Hemorrhage',
-    purpose: 'Agent-specific reversal for intracranial hemorrhage — 4F-PCC + vitamin K for warfarin, idarucizumab for dabigatran, andexanet alfa (or 4F-PCC) for factor Xa inhibitors — with the ANNEXA-I thrombotic caveat and parallel BP/neurosurgery steps.',
-    actions: 'anticoagulation reversal ich hemorrhage warfarin vka 4f-pcc pcc vitamin k dabigatran idarucizumab factor xa apixaban rivaroxaban edoxaban andexanet annexa-4 annexa-i reverse-ad patch platelet desmopressin bp control neurosurgery',
+    purpose: 'Agent-specific reversal for intracranial hemorrhage — 4F-PCC + vitamin K for warfarin, idarucizumab for dabigatran, andexanet alfa (with the actual ANNEXA-4 low/high-dose tiers, or 4F-PCC) for factor Xa inhibitors, and the distinct thrombolysis-associated sICH pathway (cryoprecipitate first-line + antifibrinolytic) — with the ANNEXA-I thrombotic caveat and parallel BP/neurosurgery steps.',
+    actions: 'anticoagulation reversal ich hemorrhage warfarin vka 4f-pcc pcc vitamin k dabigatran idarucizumab factor xa apixaban rivaroxaban edoxaban andexanet annexa-4 annexa-i reverse-ad low dose high dose 400 mg 800 mg patch platelet desmopressin thrombolysis alteplase tenecteplase sich fibrinolytic coagulopathy cryoprecipitate fibrinogen tranexamic acid aminocaproic yaghi bp control neurosurgery',
     categories: ['pocket-card', 'printable'],
-    lastReviewed: '2026-07-18',
+    lastReviewed: '2026-08-22',
     references: [
       { label: 'ANNEXA-4', citation: 'Connolly SJ, et al. Full Study Report of Andexanet Alfa for Bleeding Associated with Factor Xa Inhibitors. N Engl J Med. 2019;380(14):1326-1335.', pmid: '30730782' },
       { label: 'ANNEXA-I', citation: 'Connolly SJ, et al. Andexanet for Factor Xa Inhibitor–Associated Acute Intracerebral Hemorrhage. N Engl J Med. 2024;390(19):1745-1755.', pmid: '38749032' },
       { label: 'RE-VERSE AD', citation: 'Pollack CV, et al. Idarucizumab for Dabigatran Reversal — Full Cohort Analysis. N Engl J Med. 2017;377(5):431-441.', pmid: '28693366' },
+      { label: 'Thrombolysis-sICH Statement (AHA/ASA)', citation: 'Yaghi S, et al. Treatment and Outcome of Hemorrhagic Transformation After Intravenous Alteplase in Acute Ischemic Stroke: A Scientific Statement From the AHA/ASA. Stroke. 2017;48(12):e343-e361.', pmid: '29097489' },
       { label: 'AHA/ASA 2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
       { label: 'NCS/SCCM Reversal Guideline', citation: 'Frontera JA, et al. Guideline for Reversal of Antithrombotics in Intracranial Hemorrhage. Neurocrit Care. 2016;24(1):6-46.', pmid: '26714677' }
     ]
@@ -710,6 +713,24 @@ const EDUCATION_MODULES = [
       { label: 'ARCADIA Trial', citation: 'Kamel H, et al. Apixaban to Prevent Recurrence after Cryptogenic Stroke in Patients with Atrial Cardiopathy (ARCADIA). JAMA. 2024;331(7):573-581.', pmid: '38324415' },
       { label: 'NOAH-AFNET 6 Trial', citation: 'Kirchhof P, et al. Anticoagulation with Edoxaban in Patients with Atrial High-Rate Episodes (NOAH-AFNET 6). N Engl J Med. 2023;389(13):1167-1179.', pmid: '37622677' },
       { label: 'LOOP Study', citation: 'Svendsen JH, et al. Implantable loop recorder detection of atrial fibrillation to prevent stroke (The LOOP Study). Lancet. 2021;398(10310):1507-1516.', pmid: '34469766' }
+    ]
+  },
+  {
+    id: 'pfo-closure',
+    title: 'PFO Closure for Cryptogenic Stroke',
+    purpose: 'Who benefits from patent foramen ovale closure after a nonlacunar stroke of undetermined cause — the four randomized trials (CLOSE, RESPECT long-term, REDUCE, DEFENSE-PFO), candidate selection with the RoPE score and PASCAL classification, the closure-vs-antiplatelet-vs-anticoagulation decision per the 2021 AHA/ASA and 2024 ESO guidelines, and the device-associated atrial fibrillation trade-off.',
+    actions: 'pfo patent foramen ovale closure cryptogenic stroke esus paradoxical embolism close respect reduce defense-pfo rope score pascal classification atrial septal aneurysm large shunt right-to-left shunt antiplatelet anticoagulation device atrial fibrillation transcatheter occluder amplatzer gore cardioform age 18-60 nonlacunar undetermined cause aha asa 2021 eso 2024 tee bubble study',
+    categories: ['pocket-card', 'printable'],
+    lastReviewed: '2026-08-22',
+    references: [
+      { label: 'CLOSE Trial', citation: 'Mas JL, et al. Patent Foramen Ovale Closure or Anticoagulation vs. Antiplatelets after Stroke (CLOSE). N Engl J Med. 2017;377(11):1011-1021.', pmid: '28902593' },
+      { label: 'RESPECT Long-Term', citation: 'Saver JL, et al. Long-Term Outcomes of Patent Foramen Ovale Closure or Medical Therapy after Stroke (RESPECT). N Engl J Med. 2017;377(11):1022-1032.', pmid: '28902590' },
+      { label: 'REDUCE Trial', citation: 'Søndergaard L, et al. Patent Foramen Ovale Closure or Antiplatelet Therapy for Cryptogenic Stroke (REDUCE). N Engl J Med. 2017;377(11):1033-1042.', pmid: '28902580' },
+      { label: 'DEFENSE-PFO Trial', citation: 'Lee PH, et al. Cryptogenic Stroke and High-Risk Patent Foramen Ovale: The DEFENSE-PFO Trial. J Am Coll Cardiol. 2018;71(20):2335-2342.', pmid: '29544871' },
+      { label: 'RoPE Score', citation: 'Kent DM, et al. An index to identify stroke-related vs incidental patent foramen ovale in cryptogenic stroke (RoPE Study). Neurology. 2013;81(7):619-625.', pmid: '23864310' },
+      { label: 'PASCAL Classification', citation: 'Kent DM, et al. Heterogeneity of Treatment Effects in an Analysis of Pooled Individual Patient Data From Randomized Trials of Device Closure of Patent Foramen Ovale After Stroke (PASCAL). JAMA. 2021;326(22):2277-2286.', pmid: '34905030' },
+      { label: 'AHA/ASA 2021 Secondary Prevention', citation: 'Kleindorfer DO, et al. 2021 Guideline for the Prevention of Stroke in Patients With Stroke and TIA. Stroke. 2021;52:e364-e467.', pmid: '34024117' },
+      { label: 'ESO PFO Guideline 2024', citation: 'Caso V, et al. European Stroke Organisation (ESO) Guidelines on the diagnosis and management of patent foramen ovale (PFO) after stroke. Eur Stroke J. 2024;9(4):800-834.', pmid: '38752755' }
     ]
   },
   {
@@ -1498,6 +1519,8 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return <VesselWallMriView />;
     case 'cryptogenic-stroke-esus':
       return <CryptogenicStrokeEsusView />;
+    case 'pfo-closure':
+      return <PfoClosureView />;
     case 'cadasil-carasil':
       return <CadasilCarasilView />;
     case 'moyamoya-disease':
@@ -4226,12 +4249,15 @@ export function ToastClassificationCard() {
 
     <div style={{borderLeft: '4px solid var(--teal)', background: 'var(--teal-soft)', padding: '10px 14px', borderRadius: '6px', fontSize: '8.6pt', lineHeight: '1.45', color: 'var(--ink-soft)', marginBottom: '14px'}}>
       <strong style={{color: 'var(--teal-deep)', textTransform: 'uppercase', fontSize: '8.6pt', letterSpacing: '0.04em', display: 'block', marginBottom: '3px'}}>Why Subtype Matters — 2026 Secondary Prevention</strong>
-      Etiology drives prevention: <strong>cardioembolic</strong> &rarr; oral anticoagulation; <strong>non-cardioembolic</strong> (large-artery, small-vessel, or undetermined/ESUS) &rarr; antiplatelet therapy &plusmn; short-course DAPT. New for 2026: in non-cardioembolic stroke/high-risk TIA already on antiplatelets, adding the oral factor XIa inhibitor <strong>asundexian</strong> further reduced recurrent ischemic stroke without a significant excess of major bleeding (OCEANIC-STROKE, HR 0.74). ESUS trials (NAVIGATE-ESUS, RE-SPECT ESUS) found empiric DOAC anticoagulation no better than aspirin — so ESUS is treated with antiplatelets pending a defined source. See the DAPT and Aspirin Failure cards.
+      Etiology drives prevention: <strong>cardioembolic</strong> &rarr; oral anticoagulation; <strong>non-cardioembolic</strong> (large-artery, small-vessel, or undetermined/ESUS) &rarr; antiplatelet therapy &plusmn; short-course DAPT. ESUS trials (NAVIGATE-ESUS, RE-SPECT ESUS) found empiric DOAC anticoagulation no better than aspirin — so ESUS is treated with antiplatelets pending a defined source. See the DAPT and Aspirin Failure cards.
+      <br /><br />
+      <strong style={{color: 'var(--purple-deep)'}}>The factor XIa inhibitor class (new for 2026):</strong> these oral agents aim to uncouple antithrombotic efficacy from bleeding risk. Both phase-2 stroke trials were neutral — <strong>PACIFIC-Stroke</strong> (asundexian) and <strong>AXIOMATIC-SSP</strong> (milvexian, a covert-infarct-heavy composite). <strong>OCEANIC-STROKE</strong> (phase 3) was then the first positive trial of the class: adding oral <strong>asundexian</strong> to antiplatelet therapy in non-cardioembolic stroke/high-risk TIA cut recurrent ischemic stroke (HR 0.74) with no significant excess of major bleeding. The milvexian phase-3 <strong>LIBREXIA-STROKE</strong> is ongoing. Note the class does NOT replace guideline anticoagulation for AF (OCEANIC-AF stopped early for inferiority to apixaban).
     </div>
 
     <div className="ref-citation" style={{marginTop: '15px', padding: '10px 12px', fontSize: '8.8pt'}}>
       <strong>Original Study:</strong> Adams HP Jr, et al. TOAST. <em>Stroke</em>. 1993;24:35-41. <a href="https://pubmed.ncbi.nlm.nih.gov/7678184/" target="_blank">PMID: 7678184</a>.<br/>
-      <strong>AHA/ASA Guideline:</strong> Kleindorfer DO, et al. 2021 Stroke Prevention. <em>Stroke</em>. 2021;52:e364-e467. <a href="https://pubmed.ncbi.nlm.nih.gov/34024117/" target="_blank">PMID: 34024117</a>.
+      <strong>AHA/ASA Guideline:</strong> Kleindorfer DO, et al. 2021 Stroke Prevention. <em>Stroke</em>. 2021;52:e364-e467. <a href="https://pubmed.ncbi.nlm.nih.gov/34024117/" target="_blank">PMID: 34024117</a>.<br/>
+      <strong>Factor XIa class:</strong> OCEANIC-STROKE (Sharma M, et al. <em>N Engl J Med</em>. 2026;394:1467-1479. <a href="https://pubmed.ncbi.nlm.nih.gov/41985132/" target="_blank">PMID: 41985132</a>) &bull; PACIFIC-Stroke (Shoamanesh A, et al. <em>Lancet</em>. 2022;400:997-1007. <a href="https://pubmed.ncbi.nlm.nih.gov/36063821/" target="_blank">PMID: 36063821</a>) &bull; AXIOMATIC-SSP (Sharma M, et al. <em>Lancet Neurol</em>. 2024;23:46-59. <a href="https://pubmed.ncbi.nlm.nih.gov/38101902/" target="_blank">PMID: 38101902</a>).
     </div>
   </div>
 </div>
@@ -8120,6 +8146,9 @@ export function AnticoagulationReversalCard() {
                   </tr>
                 </tbody>
               </table>
+              <div style={{ marginTop: '6px', border: '1px solid var(--teal)', borderRadius: '6px', padding: '5px 8px', background: '#ffffff', fontSize: '7pt', lineHeight: '1.38', color: 'var(--ink-soft)' }}>
+                <strong style={{ color: 'var(--teal-deep)' }}>Andexanet alfa dosing (ANNEXA-4 protocol):</strong> <strong>Low dose</strong> = 400 mg IV bolus (~15 min) then 480 mg infusion over 2 h &mdash; for <strong>apixaban</strong> (any dose/timing) or <strong>rivaroxaban given &gt;7 h before</strong>. <strong>High dose</strong> = 800 mg IV bolus (~30 min) then 960 mg infusion over 2 h &mdash; for <strong>edoxaban, enoxaparin, or rivaroxaban given &le;7 h before</strong> (or unknown timing). Higher agent dose / more recent intake &rarr; high-dose tier.
+              </div>
             </CardSection>
 
             {/* §3 Parallel steps & BP targets (red) */}
@@ -8131,10 +8160,18 @@ export function AnticoagulationReversalCard() {
               </ul>
             </CardSection>
 
+            {/* §4 Thrombolysis-associated sICH — a different coagulopathy (amber) */}
+            <CardSection color="amber" title="4. Thrombolysis-Associated sICH (alteplase / tenecteplase)" style={{ marginBottom: '6px' }}>
+              <div style={{ fontSize: '7.5pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                This is a <strong>fibrinolytic coagulopathy, not an anticoagulant one</strong>: plasmin consumes fibrinogen and clotting factors, so fibrinogen falls and PT/aPTT rise. <strong>Stop the lytic infusion immediately</strong> and send STAT <strong>fibrinogen</strong>, PT/INR, aPTT, CBC/platelets, and type &amp; cross. <strong>First-line: cryoprecipitate</strong> to replete the consumed fibrinogen (it also supplies factor VIII, factor XIII, and von Willebrand factor); recheck fibrinogen and redose until it is corrected. <strong>Adjunct: an antifibrinolytic</strong> &mdash; tranexamic acid (or &epsilon;-aminocaproic acid). These measures rest on expert consensus and small series (the 2017 AHA/ASA scientific statement), not randomized trials. This app&rsquo;s ICH reversal protocol operationalizes cryoprecipitate + tranexamic acid with a fibrinogen action threshold.
+              </div>
+            </CardSection>
+
             <CardRefFooter style={{ fontSize: '7.2pt' }} refs={[
               { label: 'ANNEXA-4', cite: 'Connolly SJ et al. N Engl J Med. 2019;380(14):1326-1335.', pmid: '30730782' },
               { label: 'ANNEXA-I', cite: 'Connolly SJ et al. N Engl J Med. 2024;390(19):1745-1755.', pmid: '38749032' },
               { label: 'RE-VERSE AD', cite: 'Pollack CV et al. N Engl J Med. 2017;377(5):431-441.', pmid: '28693366' },
+              { label: 'Thrombolysis-sICH Statement (AHA/ASA)', cite: 'Yaghi S et al. Stroke. 2017;48(12):e343-e361.', pmid: '29097489' },
               { label: 'AHA/ASA 2022 ICH Guideline', cite: 'Greenberg SM et al. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
               { label: 'NCS/SCCM Reversal Guideline', cite: 'Frontera JA et al. Neurocrit Care. 2016;24(1):6-46.', pmid: '26714677' },
             ]} />
@@ -8729,7 +8766,180 @@ export function CryptogenicStrokeEsusCard() {
 }
 
 
+// =====================================================================
+// MODULE — PFO Closure for Cryptogenic Stroke
+// =====================================================================
+const PfoClosureView = () => (
+  <ScaledCardWrapper isLandscape={false}>
+    <BedsidePocketCardsStyles />
+    <PfoClosureCard />
+  </ScaledCardWrapper>
+);
 
+export function PfoClosureCard() {
+  const trials = [
+    { name: 'CLOSE', meta: 'NEJM 2017 • n=663', pop: 'ASA or large shunt; age 16–60', comp: 'Closure + antiplatelet vs antiplatelet alone', result: '0 vs 14 strokes — HR 0.03 (95% CI 0–0.26), P<0.001' },
+    { name: 'RESPECT (long-term)', meta: 'NEJM 2017 • n=980', pop: 'Any PFO; age 18–60; median 5.9 y', comp: 'Closure vs medical therapy', result: 'Recurrent ischemic stroke HR 0.55 (0.31–0.999), P=0.046' },
+    { name: 'REDUCE', meta: 'NEJM 2017 • n=664', pop: '81% moderate/large shunt', comp: 'Closure + antiplatelet vs antiplatelet alone', result: 'Clinical stroke 1.4% vs 5.4% — HR 0.23 (0.09–0.62), P=0.002' },
+    { name: 'DEFENSE-PFO', meta: 'JACC 2018 • n=120', pop: 'High-risk PFO (ASA, hypermobility, or ≥2 mm)', comp: 'Closure vs medical therapy', result: 'Primary endpoint 0% vs 12.9% (2 y), P=0.013' },
+  ];
+  return (
+    <div className="bedside-card-view screen-layout">
+      <div className="card-wrapper card-pfo-closure">
+        <div className="card-container" style={{ boxSizing: 'border-box', height: '1275px' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '4px', fontSize: '18pt' }}>PFO Closure for Cryptogenic Stroke</h1>
+            <p style={{ fontSize: '8.4pt', color: 'var(--ink-soft)', marginBottom: '8px', textAlign: 'center', fontWeight: '500' }}>
+              Paradoxical Embolism &bull; RoPE &amp; PASCAL Selection &bull; CLOSE / RESPECT / REDUCE / DEFENSE-PFO &bull; Device AF Trade-Off
+            </p>
+
+            {/* Hero SVG: paradoxical embolism, PASCAL benefit gradient, device AF trade-off */}
+            <div style={{ width: '100%', background: 'var(--fill-soft)', borderRadius: '8px', border: '1.5px solid var(--rule-soft)', overflow: 'hidden', boxSizing: 'border-box', marginBottom: '8px', padding: '6px' }}>
+              <svg viewBox="0 0 735 172" role="img" focusable="false" aria-label="Patent foramen ovale paradoxical embolism, PASCAL causal-likelihood benefit gradient, and device-associated atrial fibrillation trade-off" style={{ width: '100%', height: 'auto' }}>
+                {/* Panel A — paradoxical embolism through PFO */}
+                <text x="118" y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PARADOXICAL EMBOLISM</text>
+                {/* Right atrium */}
+                <path d="M 40 40 C 20 60 22 108 50 128 C 70 140 96 138 104 118 L 104 44 C 96 30 58 28 40 40 Z" fill="var(--purple-soft)" stroke="var(--purple)" strokeWidth="1.4" />
+                <text x="60" y="150" fill="var(--purple-deep)" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">RA (venous clot)</text>
+                {/* Left atrium */}
+                <path d="M 196 40 C 216 60 214 108 186 128 C 166 140 140 138 132 118 L 132 44 C 140 30 178 28 196 40 Z" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.4" />
+                <text x="176" y="150" fill="var(--red-deep)" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">LA &rarr; systemic</text>
+                {/* Interatrial septum with PFO flap/tunnel */}
+                <line x1="118" y1="46" x2="118" y2="82" stroke="var(--ink-mute)" strokeWidth="3" strokeLinecap="round" />
+                <line x1="118" y1="98" x2="118" y2="126" stroke="var(--ink-mute)" strokeWidth="3" strokeLinecap="round" />
+                <text x="118" y="40" fill="var(--ink-mute)" fontSize="4.8pt" fontFamily="IBM Plex Sans" textAnchor="middle">PFO tunnel</text>
+                {/* Venous clot crossing R to L */}
+                <circle cx="78" cy="90" r="7" fill="var(--purple-deep)" />
+                <path d="M 88 90 L 150 90" stroke="var(--red-deep)" strokeWidth="2" markerEnd="url(#pfo-arrow)" />
+                <circle cx="150" cy="90" r="7" fill="var(--red-deep)" />
+                <defs>
+                  <marker id="pfo-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="var(--red-deep)" /></marker>
+                </defs>
+                <text x="118" y="108" fill="var(--red-deep)" fontSize="4.6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">R&rarr;L shunt on Valsalva</text>
+
+                <line x1="238" y1="12" x2="238" y2="158" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel B — PASCAL causal-likelihood benefit gradient */}
+                <text x="360" y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PASCAL BENEFIT GRADIENT (closure vs medical)</text>
+                <text x="256" y="30" fill="var(--ink-mute)" fontSize="5pt" fontFamily="IBM Plex Sans" textAnchor="start">RoPE + high-risk anatomy (ASA / large shunt) &rarr;</text>
+                {/* Unlikely */}
+                <rect x="250" y="40" width="76" height="104" rx="5" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1.2" />
+                <text x="288" y="54" fill="var(--red-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">UNLIKELY</text>
+                <text x="288" y="92" fill="var(--red-deep)" fontSize="7.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">HR 1.14</text>
+                <text x="288" y="104" fill="var(--ink-soft)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">(0.53–2.46)</text>
+                <text x="288" y="126" fill="var(--ink-soft)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">2-y ARR −0.7%</text>
+                <text x="288" y="138" fill="var(--red-deep)" fontSize="4.6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">no benefit</text>
+                {/* Possible */}
+                <rect x="330" y="40" width="76" height="104" rx="5" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.2" />
+                <text x="368" y="54" fill="var(--amber-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">POSSIBLE</text>
+                <text x="368" y="92" fill="var(--amber-deep)" fontSize="7.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">HR 0.38</text>
+                <text x="368" y="104" fill="var(--ink-soft)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">(0.22–0.65)</text>
+                <text x="368" y="126" fill="var(--ink-soft)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">2-y ARR 2.1%</text>
+                {/* Probable */}
+                <rect x="410" y="40" width="76" height="104" rx="5" fill="var(--teal-soft)" stroke="var(--teal)" strokeWidth="1.2" />
+                <text x="448" y="54" fill="var(--teal-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PROBABLE</text>
+                <text x="448" y="92" fill="var(--teal-deep)" fontSize="7.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">HR 0.10</text>
+                <text x="448" y="104" fill="var(--ink-soft)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">(0.03–0.35)</text>
+                <text x="448" y="126" fill="var(--ink-soft)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">2-y ARR 2.1%</text>
+                <text x="448" y="138" fill="var(--teal-deep)" fontSize="4.6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">close</text>
+                <text x="368" y="156" fill="var(--ink-mute)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">PASCAL pooled IPD, 6 RCTs, n=3740</text>
+
+                <line x1="500" y1="12" x2="500" y2="158" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                {/* Panel C — device AF trade-off */}
+                <text x="618" y="13" fill="var(--ink-soft)" fontSize="6.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">DEVICE-ASSOCIATED AF</text>
+                <rect x="512" y="24" width="212" height="134" rx="6" fill="#ffffff" stroke="var(--rule-soft)" strokeWidth="1.2" />
+                {/* CLOSE bar pair */}
+                <text x="534" y="40" fill="var(--ink-soft)" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">CLOSE: 4.6% vs 0.9% (P=0.02)</text>
+                <rect x="534" y="44" width="120" height="9" rx="2" fill="var(--amber)" />
+                <rect x="534" y="44" width="24" height="9" rx="2" fill="var(--ink-mute)" opacity="0.5" />
+                {/* REDUCE bar */}
+                <text x="534" y="72" fill="var(--ink-soft)" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">REDUCE: 6.6% after closure</text>
+                <rect x="534" y="76" width="170" height="9" rx="2" fill="var(--amber-deep)" />
+                {/* PASCAL AF excess by group */}
+                <text x="534" y="104" fill="var(--ink-soft)" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">PASCAL device-AF excess (&gt;day 45):</text>
+                <text x="534" y="116" fill="var(--red-deep)" fontSize="4.8pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="start">unlikely +4.41% &bull; possible +1.53%</text>
+                <text x="534" y="126" fill="var(--teal-deep)" fontSize="4.8pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="start">probable +0.65%</text>
+                <text x="534" y="146" fill="var(--ink-mute)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="start">Mostly early / periprocedural &amp; often</text>
+                <text x="534" y="154" fill="var(--ink-mute)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="start">transient — counsel &amp; monitor.</text>
+              </svg>
+            </div>
+
+            {/* §1 The clinical question & who qualifies (purple) */}
+            <CardSection color="purple" title="1. The Clinical Question &amp; Who Qualifies">
+              <div style={{ fontSize: '7.7pt', lineHeight: '1.42', color: 'var(--ink-soft)' }}>
+                A PFO is present in about a quarter of adults, so most PFOs found after a stroke are <strong>incidental</strong>, not causal. The mechanism when it IS causal is <strong>paradoxical embolism</strong> — a venous clot crossing the right-to-left shunt (accentuated by Valsalva). Closure is considered only for a <strong>nonlacunar ischemic stroke of undetermined cause after a thorough evaluation</strong> (no &ge;50% relevant stenosis, no major cardioembolic source such as AF, no other defined cause) in a patient <strong>age 18&ndash;60</strong>. <strong>High-risk anatomy</strong> = an <strong>atrial septal aneurysm (ASA)</strong> or a <strong>large right-to-left shunt</strong>; confirm the PFO and grade the shunt on transesophageal echocardiography with an agitated-saline bubble study.
+              </div>
+            </CardSection>
+
+            {/* §2 Selecting candidates: RoPE & PASCAL (teal) */}
+            <CardSection color="teal" title="2. Selecting Candidates — RoPE Score &amp; PASCAL Classification">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '7.4pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <div>
+                  <strong style={{ color: 'var(--teal-deep)', fontSize: '7.8pt' }}>RoPE Score (Risk of Paradoxical Embolism)</strong>
+                  <br />&bull; 10-point index: points for <strong>younger age</strong> and a <strong>cortical infarct</strong>, and for the <strong>absence</strong> of hypertension, diabetes, smoking, and prior stroke/TIA.
+                  <br />&bull; A <strong>higher RoPE</strong> means the PFO is more likely stroke-related: PFO-attributable fraction rises from ~0% (score 0&ndash;3) to ~90% (score 9&ndash;10).
+                  <br />&bull; Paradox: high-RoPE patients also have the <strong>lowest</strong> recurrence on medical therapy (2-y recurrence ~20% in the lowest stratum vs ~2% in the highest).
+                </div>
+                <div style={{ borderLeft: '1.5px dashed var(--teal)', paddingLeft: '8px' }}>
+                  <strong style={{ color: 'var(--teal-deep)', fontSize: '7.8pt' }}>PASCAL Classification</strong>
+                  <br />&bull; Combines the <strong>RoPE score</strong> with <strong>high-risk anatomy</strong> (ASA or large shunt) to grade causal likelihood: <strong>unlikely / possible / probable</strong>.
+                  <br />&bull; In pooled data from all 6 RCTs (n=3740) the treatment effect tracks the class: closure HR <strong>1.14</strong> (unlikely), <strong>0.38</strong> (possible), <strong>0.10</strong> (probable).
+                  <br />&bull; Benefit is concentrated in <strong>possible/probable</strong>; the <strong>unlikely</strong> group gets no stroke reduction and the most device AF.
+                </div>
+              </div>
+            </CardSection>
+
+            {/* §3 The four randomized trials (red table) */}
+            <CardSection color="red" title="3. The Four Randomized Trials">
+              <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '6.8pt' }}>
+                <thead>
+                  <tr style={{ background: 'var(--red)' }}>
+                    <th style={{ width: '96px' }}>Trial</th>
+                    <th style={{ width: '150px' }}>Population</th>
+                    <th style={{ width: '150px' }}>Comparison</th>
+                    <th>Primary Result</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {trials.map((t) => (
+                    <tr key={t.name}>
+                      <td><strong>{t.name}</strong><br /><span style={{ fontSize: '5.8pt', color: 'var(--ink-mute)' }}>{t.meta}</span></td>
+                      <td>{t.pop}</td>
+                      <td>{t.comp}</td>
+                      <td>{t.result}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div style={{ fontSize: '7pt', lineHeight: '1.35', color: 'var(--ink-soft)', marginTop: '5px' }}>
+                All four favored closure in <strong>selected</strong> patients with high-risk anatomy or a large shunt. CLOSE also randomized an anticoagulation arm but was underpowered for the closure-vs-anticoagulation comparison.
+              </div>
+            </CardSection>
+
+            {/* §4 Closure vs antiplatelet vs anticoagulation + device AF (amber) */}
+            <CardSection color="amber" title="4. Closure vs Antiplatelet vs Anticoagulation &amp; the Device-AF Trade-Off" style={{ marginBottom: '6px' }}>
+              <div style={{ fontSize: '7.5pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
+                <strong>2021 AHA/ASA</strong>: for age 18&ndash;60 with a nonlacunar stroke of undetermined cause and a PFO with high-risk features, <strong>transcatheter closure + long-term antiplatelet</strong> is reasonable (<strong>COR 2a, LOE B-R</strong>); without high-risk features the benefit is not well established (<strong>COR 2b, LOE C-LD</strong>). The <strong>2024 ESO</strong> guideline concurs — high-quality evidence supports closure + antiplatelet in selected patients 18&ndash;60, using the <strong>PASCAL</strong> classification to select (those with both a large shunt AND an ASA benefit most), and <strong>suggests against long-term anticoagulation</strong> unless indicated for another reason. Choose <strong>anticoagulation instead of closure</strong> when there is a concurrent indication (e.g., DVT/PE with ongoing venous thromboembolism risk). <strong>Device-associated AF</strong> is the main trade-off (CLOSE 4.6% vs 0.9%; REDUCE 6.6% after closure) — it is mostly <strong>early/periprocedural and often transient</strong>, and per PASCAL the excess is largest in the "unlikely" group who least benefit; counsel patients and monitor after closure.
+              </div>
+            </CardSection>
+
+            <CardRefFooter style={{ fontSize: '6.6pt' }} refs={[
+              { label: 'CLOSE', cite: 'Mas JL et al. N Engl J Med. 2017;377(11):1011-1021.', pmid: '28902593' },
+              { label: 'RESPECT (long-term)', cite: 'Saver JL et al. N Engl J Med. 2017;377(11):1022-1032.', pmid: '28902590' },
+              { label: 'REDUCE', cite: 'Søndergaard L et al. N Engl J Med. 2017;377(11):1033-1042.', pmid: '28902580' },
+              { label: 'DEFENSE-PFO', cite: 'Lee PH et al. J Am Coll Cardiol. 2018;71(20):2335-2342.', pmid: '29544871' },
+              { label: 'RoPE Score', cite: 'Kent DM et al. Neurology. 2013;81(7):619-625.', pmid: '23864310' },
+              { label: 'PASCAL Classification', cite: 'Kent DM et al. JAMA. 2021;326(22):2277-2286.', pmid: '34905030' },
+              { label: 'AHA/ASA 2021 Secondary Prevention', cite: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467.', pmid: '34024117' },
+              { label: 'ESO PFO Guideline 2024', cite: 'Caso V et al. Eur Stroke J. 2024;9(4):800-834.', pmid: '38752755' },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 
 // =====================================================================
@@ -9761,6 +9971,7 @@ export function IchBloodPressureCard() {
                   <br />&bull; <strong>Primary Target (Class IIb, LOE B-R):</strong> SBP <strong>140 mmHg</strong>, maintained in the <strong>130–150 mmHg</strong> range, reached smoothly within <strong>1 hour</strong>. Scope: mild-to-moderate ICH presenting with SBP 150&ndash;220 mmHg. <span style={{ color: 'var(--red-deep)' }}>Lowering to SBP &lt;130 mmHg is Class III: Harm.</span>
                   <br />&bull; Maintain continuous SBP &lt;140 mmHg for at least the initial <strong>24 to 48 hours</strong>.
                   <br />&bull; Continuous arterial line monitoring is strongly recommended for smooth titration.
+                  <br />&bull; <strong style={{ color: 'var(--red-deep)' }}>Prehospital caveat:</strong> this target applies <strong>after CT confirms ICH</strong>. In undifferentiated suspected stroke, <strong>INTERACT4</strong> (NEJM 2024) found ambulance BP lowering <strong>helped hemorrhagic stroke (cOR 0.75)</strong> but <strong>harmed cerebral ischemia (cOR 1.30)</strong> &mdash; the prehospital answer is diagnosis-dependent, so do not lower BP before imaging.
                 </div>
 
                 <div style={{ border: '1.5px solid var(--red)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
@@ -9870,6 +10081,7 @@ export function IchBloodPressureCard() {
               { label: 'INTERACT-2', cite: 'Anderson CS et al. N Engl J Med. 2013;368(25):2355-2365.', pmid: '23713578' },
               { label: 'ATACH-2', cite: 'Qureshi AI et al. N Engl J Med. 2016;375(11):1033-1043.', pmid: '27276234' },
               { label: 'INTERACT3', cite: 'Ma L et al. Lancet. 2023;402(10395):27-40.', pmid: '37245517' },
+              { label: 'INTERACT4', cite: 'Li G et al. N Engl J Med. 2024;390(20):1862-1872.', pmid: '38752650' },
               { label: 'ENRICH Trial', cite: 'Pradilla G et al. N Engl J Med. 2024;390(14):1277-1289.', pmid: '38598795' },
               { label: 'TRIDENT Trial', cite: 'Anderson CS et al. N Engl J Med. 2026;394:1571-1582.', pmid: '42019018' },
               { label: 'FASTEST Trial', cite: 'Broderick JP et al. Lancet. 2026;407(10530):773-783.', pmid: '41653933' },
@@ -10053,6 +10265,7 @@ export function MetabolicStrokePreventionCard() {
                 <div style={{ border: '1.5px solid var(--purple)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--purple-deep)', fontSize: '7.6pt' }}>C &amp; D: Cholesterol &amp; Diabetes/Diet</strong>
                   <br />&bull; <strong>C (Cholesterol):</strong> Standard post-stroke target <strong>LDL &lt;70 mg/dL</strong> for atherosclerotic stroke/TIA (TST; PMID: 31738483); intensify to <strong>&lt;55 mg/dL</strong> for very-high-risk atherosclerotic disease (Atorvastatin 80 mg + Ezetimibe 10 mg &plusmn; Evolocumab / Alirocumab PCSK9i).
+                  <br />&bull; <strong>After lobar ICH the statin decision is unresolved</strong> (amyloid-angiopathy rebleed risk vs cardiovascular benefit). The ongoing <strong>SATURN</strong> trial (NCT03936361) randomizes statin continuation vs discontinuation after lobar ICH and tests whether APOE genotype should guide it &mdash; await results before generalizing.
                   <br />&bull; <strong>D (Diabetes/Diet):</strong> HbA1c &lt;7.0% using GLP-1 RA + SGLT2i. High-adherence Mediterranean diet (PREDIMED).
                 </div>
 

@@ -169,6 +169,7 @@ import ahaAfGuideline2023 from './guidelines/aha-af-guideline-2023.json';
 import ahaAggressiveLdlLowering2023 from './guidelines/aha-aggressive-ldl-lowering-2023.json';
 import ahaAntiamyloidImmunotherapy2024 from './guidelines/aha-antiamyloid-immunotherapy-2024.json';
 import ahaAtrialFibrillationOccurring2023 from './guidelines/aha-atrial-fibrillation-occurring-2023.json';
+import ahaBrainHealthLifeSpan2026 from './guidelines/aha-brain-health-life-span-2026.json';
 import ahaCadasil2023 from './guidelines/aha-cadasil-2023.json';
 import ahaCareAisEvtIcu2021 from './guidelines/aha-care-ais-evt-icu-2021.json';
 import ahaCareAisPosthyperacute2021 from './guidelines/aha-care-ais-posthyperacute-2021.json';
@@ -1405,6 +1406,144 @@ const AutoDetectedContraindicationsBanner = ({ autoAbsolute, autoRelative, autoC
 
   return null;
 };
+
+// ── Reference Library document registry (P4-4) ────────────────────────────
+// Single source of truth for the Reference Library sub-tab's document list
+// (previously ~900 lines of hand-copied JSX rows). Each section renders as a
+// collapsible card; `items` entries are either a document record or a
+// `{ group, docs }` subsection. Document fields:
+//   type         — 'pdf' | 'image' (repo-local `path`) or 'external-link' (`href`).
+//   year         — publication year, populated ONLY where it is verifiable from
+//                  the document's own title/filename (never guessed).
+//   supersededBy — id of a newer registered document that unambiguously
+//                  replaces this one. Deliberately unpopulated for now: no
+//                  registered pair is an unambiguous successor — left for
+//                  physician review (schema + rendering are wired).
+//   emailTitle   — mailto subject when it differs from the display title
+//                  (kept verbatim from the pre-registry JSX rows).
+//   linkLabel    — button label for external links ('Open Link' default).
+// tests/reference-registry.test.js validates this block (paths exist on disk,
+// years traceable to title/path, supersededBy ids resolve).
+const REFERENCE_LIBRARY_SECTIONS = [
+  {
+    id: 'aneurysms',
+    title: 'Aneurysms & Vascular Malformations',
+    matchTitle: 'Aneurysms & Vascular Malformations',
+    items: [
+      { id: 'aneurysms-unruptured-cerebral-aneurysms', title: 'Unruptured Cerebral Aneurysms', subtitle: 'PDF Document', type: 'pdf', path: 'documents/aneurysms/Unruptured Cerebral Aneurysms.pdf' }
+    ]
+  },
+  {
+    id: 'antiplatelet',
+    title: 'Antiplatelet Therapy',
+    matchTitle: 'Antiplatelet Therapy',
+    items: [
+      { id: 'antiplatelet-dapt-minor-stroke-tia-trials', title: 'DAPT Minor Stroke-TIA Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf' },
+      { id: 'antiplatelet-dapt-after-ischemic-stroke-tia', title: 'DAPT After Ischemic Stroke-TIA', subtitle: 'Infographic - Match Patient to Trial', type: 'image', icon: 'image', path: 'documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg' },
+      { id: 'antiplatelet-other-antithrombotics', title: 'Other Antithrombotics', subtitle: 'PDF Document — Cilostazol & Factor XIa Inhibition Trials', type: 'pdf', path: 'documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf' }
+    ]
+  },
+  {
+    id: 'csvd',
+    title: 'Cerebral Small Vessel Disease',
+    matchTitle: 'Cerebral Small Vessel Disease',
+    items: [
+      { id: 'csvd-lacunar-stroke', title: 'Lacunar Stroke', subtitle: 'PDF Document', type: 'pdf', path: 'documents/csvd/Lacunar Stroke 7.13.22.pdf', year: 2022 }
+    ]
+  },
+  {
+    id: 'ebm',
+    title: 'Critical Appraisal',
+    matchTitle: 'EBM',
+    items: [
+      { id: 'ebm-interpretation-of-clinical-trials', title: 'Interpretation of Clinical Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/ebm/Interpretation of Clinical Trials.pdf' },
+      { id: 'ebm-cebm-oxford-resources', title: 'CEBM Oxford Resources', subtitle: 'Centre for Evidence-Based Medicine - University of Oxford', type: 'external-link', href: 'https://www.cebm.ox.ac.uk/resources', linkLabel: 'Visit' }
+    ]
+  },
+  {
+    id: 'evt',
+    title: 'Endovascular Therapy',
+    matchTitle: 'EVT',
+    items: [
+      { id: 'evt-large-core-anterior-circulation-lvo-evt-trials', title: 'Large Core Anterior Circulation LVO EVT Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf' },
+      { id: 'evt-basilar-artery-occlusion-evt-trials', title: 'Basilar Artery Occlusion EVT Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/evt/Basilar Artery Occlusion EVT Trials.pdf' },
+      { id: 'evt-mevo-distal-vessel-occlusion-evt-trials', title: 'MeVO & Distal Vessel Occlusion EVT Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf' }
+    ]
+  },
+  {
+    id: 'risk-factors',
+    title: 'Risk Factors',
+    matchTitle: 'Risk Factors',
+    items: [
+      {
+        group: 'Atrial Fibrillation',
+        docs: [
+          { id: 'afib-ac-timing-after-af-related-stroke', title: 'Timing of Anticoagulation after AF-Related Stroke', subtitle: 'PDF Document', type: 'pdf', path: 'documents/afib/AC timing after AF-related Stroke.pdf', emailTitle: 'AC timing after AF-related Stroke' },
+          { id: 'afib-af-secondary-stroke-prevention-july-2024', title: 'Atrial Fibrillation & Secondary Stroke Prevention', subtitle: 'PDF Document', type: 'pdf', path: 'documents/afib/AF & secondary stroke prevention July 2024.pdf', emailTitle: 'AF & secondary stroke prevention July 2024', year: 2024 },
+          { id: 'afib-aha-af-guidelines-2023', title: '2023 AHA AFib Guidelines', subtitle: 'External Link - AHA Journals', type: 'external-link', href: 'https://www.ahajournals.org/doi/10.1161/CIR.0000000000001193', year: 2023 },
+          { id: 'afib-esc-af-guidelines-2024', title: '2024 ESC AFib Guidelines', subtitle: 'External Link - European Heart Journal', type: 'external-link', href: 'https://academic.oup.com/eurheartj/article/45/36/3314/7738779', year: 2024 },
+          { id: 'afib-afib-stroke-epi519', title: 'AFib Stroke EPI519', subtitle: 'PDF Document', type: 'pdf', path: 'documents/afib/AFib Stroke EPI519.pdf' }
+        ]
+      },
+      { id: 'epidemiology-diabetes-and-stroke', title: 'Diabetes and stroke', subtitle: 'PDF Document', type: 'pdf', path: 'documents/epidemiology/Diabetes and stroke.pdf' },
+      { id: 'epidemiology-lipids-and-cerebrovascular-disease', title: 'Lipids and Cerebrovascular Disease', subtitle: 'PDF Document', type: 'pdf', path: 'documents/epidemiology/Lipids and Cerebrovascular Disease.pdf' }
+    ]
+  },
+  {
+    id: 'thrombolytic',
+    title: 'Thrombolytic Therapy',
+    matchTitle: 'Thrombolytic Therapy',
+    items: [
+      { id: 'thrombolytic-therapy-ais-45-24h-rcts', title: 'Thrombolytic Therapy AIS 4.5-24h RCTs', subtitle: 'PDF Document', type: 'pdf', path: 'documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf' },
+      { id: 'thrombolytic-wake-up-trial', title: 'WAKE-UP Trial', subtitle: 'External Link - New England Journal of Medicine', type: 'external-link', href: 'https://www.nejm.org/doi/full/10.1056/NEJMoa1804355' }
+    ]
+  },
+  {
+    id: 'exam',
+    title: 'Exam',
+    matchTitle: 'Exam',
+    items: [
+      { id: 'exam-delirium-vs-aphasia', title: 'Differentiating Acute Confusional State (Delirium) from Aphasia', subtitle: 'PDF Document', type: 'pdf', path: 'documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf' },
+      { id: 'exam-coma-exam', title: 'Coma Exam', subtitle: 'PDF Document', type: 'pdf', path: 'documents/exam/coma exam.pdf', emailTitle: 'coma exam' }
+    ]
+  },
+  {
+    id: 'lad',
+    title: 'Large Artery Disease',
+    matchTitle: 'Large Artery Disease',
+    items: [
+      { id: 'lad-symptomatic-cervical-carotid-artery-stenosis', title: 'Symptomatic Cervical Carotid Artery Stenosis', subtitle: 'PDF Document', type: 'pdf', path: 'documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf' },
+      { id: 'lad-crest-2-trial-dec-2025', title: 'CREST-2 Trial (December 2025)', subtitle: 'PDF Document', type: 'pdf', path: 'documents/lad/CREST-2 Trial - Dec 2025.pdf', year: 2025 }
+    ]
+  },
+  {
+    // Previously rendered only from the Educational Resources modules
+    // (src/education.jsx pdfPath props) and absent from the reference
+    // registry. Registered here so the Reference Library lists every
+    // repo-served document (P4-4b). All files exist under documents/references/.
+    id: 'quickrefs',
+    title: 'Quick Reference Sheets',
+    matchTitle: 'Quick Reference Sheets',
+    anchorId: 'ref-quickrefs',
+    note: 'Generated in-repo quick reference sheets, also linked from the Educational Resources modules.',
+    items: [
+      { id: 'quickref-afib-doac-start-timing', title: 'AFib DOAC Start Timing', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/AFib DOAC Start Timing.pdf' },
+      { id: 'quickref-brain-death-guidelines', title: 'Brain Death Guidelines', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Brain Death Guidelines.pdf' },
+      { id: 'quickref-cervical-artery-dissection', title: 'Cervical Artery Dissection', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Cervical Artery Dissection.pdf' },
+      { id: 'quickref-dapt-guidelines', title: 'DAPT Guidelines', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/DAPT Guidelines.pdf' },
+      { id: 'quickref-external-ventricular-drain', title: 'External Ventricular Drain', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/External Ventricular Drain.pdf' },
+      { id: 'quickref-intracranial-hypertension-herniation', title: 'Intracranial Hypertension & Herniation', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Intracranial Hypertension & Herniation.pdf' },
+      { id: 'quickref-malignant-infarction', title: 'Malignant Infarction', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Malignant Infarction.pdf' },
+      { id: 'quickref-stroke-prognosis', title: 'Stroke Prognosis', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Stroke Prognosis.pdf' },
+      { id: 'quickref-toast-stroke-classification', title: 'TOAST Stroke Classification', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/TOAST Stroke Classification.pdf' }
+    ]
+  }
+];
+const REFERENCE_LIBRARY_DOCS = REFERENCE_LIBRARY_SECTIONS.flatMap((section) =>
+  section.items.flatMap((item) => (item.docs ? item.docs : [item]))
+);
+const REFERENCE_DOC_BY_ID = new Map(REFERENCE_LIBRARY_DOCS.map((doc) => [doc.id, doc]));
+// end REFERENCE_LIBRARY_SECTIONS
 
         const StrokeClinicalTool = () => {
           const defaultTelestrokeTemplate = `Reason for Consultation: Acute stroke evaluation — {chiefComplaint}
@@ -3806,6 +3945,11 @@ Clinician Name`;
             ahaAggressiveLdlLowering2023,
             ahaAntiamyloidImmunotherapy2024,
             ahaAtrialFibrillationOccurring2023,
+            // Registered late (P4-2): the dataset shipped in src/guidelines and
+            // the served data layer but was never added to this UI index,
+            // leaving the library at 88 datasets / 861 recs vs the canonical
+            // 89 / 862.
+            ahaBrainHealthLifeSpan2026,
             ahaCadasil2023,
             ahaCareAisEvtIcu2021,
             ahaCareAisPosthyperacute2021,
@@ -3868,6 +4012,18 @@ Clinician Name`;
           ];
           const GUIDELINE_LIBRARY_INDEX = GUIDELINE_LIBRARY.map((guideline) => ({
             ...guideline,
+            // Abstract-only stub marker, derived mechanically from the data
+            // shape: a dataset whose every recommendation is the single
+            // "Scope" abstract statement carries no graded recommendations of
+            // its own, so its search results must not read as guideline
+            // silence — the UI flags it "Summary only — see source".
+            summaryOnly: guideline.recommendations.length > 0 &&
+              guideline.recommendations.every((rec) => rec.section === 'Scope'),
+            // PubMed fallback for paywalled publisher links — projected only
+            // from the dataset's own pubmedUrl/pmid fields, never synthesized
+            // from anything else.
+            pubmedFallbackUrl: guideline.pubmedUrl ||
+              (guideline.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${guideline.pmid}/` : null),
             recommendations: guideline.recommendations.map((rec, index) => ({
               ...rec,
               id: rec.id || `${guideline.id}-${index + 1}`,
@@ -14242,6 +14398,80 @@ Clinician Name`;
             const filter = evidenceFilter.toLowerCase();
             if (sectionTitle.toLowerCase().includes(filter)) return true;
             return documentTitles.some(title => title.toLowerCase().includes(filter));
+          };
+
+          // One Reference Library document row, driven by the module-level
+          // REFERENCE_LIBRARY_SECTIONS registry (P4-4). Renders the optional
+          // year badge and "Superseded by …" chip when the registry carries
+          // those fields.
+          const renderReferenceDoc = (doc, inGroup = false) => {
+            const HeadingTag = inGroup ? 'h5' : 'h4';
+            const superseder = doc.supersededBy ? REFERENCE_DOC_BY_ID.get(doc.supersededBy) : null;
+            const isExternal = doc.type === 'external-link';
+            return (
+              <div key={doc.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
+                <div className="flex items-center gap-3 flex-1">
+                  {(doc.icon || isExternal) && (
+                    <i aria-hidden="true" data-lucide={doc.icon || 'external-link'} className={`w-6 h-6 ${doc.icon === 'image' ? 'text-ok-600 dark:text-ok-300' : 'text-cobalt-600 dark:text-cobalt-300'}`}></i>
+                  )}
+                  <div className="flex-1">
+                    <HeadingTag className="text-sm font-medium text-slate-900 dark:text-ink flex flex-wrap items-center gap-x-2 gap-y-1">
+                      <span>{doc.title}</span>
+                      {doc.year && (
+                        <span className="px-1.5 py-0.5 rounded border border-line bg-paper-2 font-mono text-[11px] font-normal text-mute">{doc.year}</span>
+                      )}
+                      {superseder && (
+                        <span className="px-1.5 py-0.5 rounded-full border border-warn-300 bg-warn-50 text-warn-800 text-[11px] font-semibold dark:border-warn-700 dark:bg-warn-950 dark:text-warn-300">
+                          Superseded by {superseder.title}
+                        </span>
+                      )}
+                    </HeadingTag>
+                    <p className="text-xs text-slate-600 dark:text-mute">{doc.subtitle}</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {isExternal ? (
+                    <a
+                      href={doc.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
+                    >
+                      <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
+                      {doc.linkLabel || 'Open Link'}
+                    </a>
+                  ) : (
+                    <>
+                      <a
+                        href={doc.path}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
+                      >
+                        <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
+                        View
+                      </a>
+                      <a
+                        href={doc.path}
+                        download
+                        className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
+                      >
+                        <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
+                        Download
+                      </a>
+                      <button
+                        onClick={() => emailDocument(doc.emailTitle || doc.title, doc.path)}
+                        className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                        title="Email this document"
+                      >
+                        <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
+                        Email
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
           };
 
           const fuzzyScore = (query, target) => {
@@ -32106,7 +32336,174 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {researchSubTab === 'guidelines' && (
                       <div id="research-tabpanel-guidelines" role="tabpanel" aria-labelledby="research-tab-guidelines" className="space-y-6">
-                        {/* ===== GUIDELINES ===== */}
+
+                    {/* ===== GUIDELINE LIBRARY (searchable COR/LOE catalog) =====
+                        Moved here from the Reference Library sub-tab (P4-2a) so
+                        the Guidelines tab carries the full recommendation
+                        catalog, not just external links. A compatibility
+                        pointer with the old ref-guidelines anchor remains in
+                        the Reference Library sub-tab. */}
+                    <section aria-labelledby="guideline-library-heading" className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
+                      <div className="p-4 flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                          <h2 id="guideline-library-heading" className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Guideline Library</h2>
+                          <p className="text-xs text-slate-600 font-normal dark:text-ink-2">Full COR/LOE recommendations with direct publisher PDF links.</p>
+                        </div>
+                        <span className="text-xs text-cobalt-700 font-medium dark:text-cobalt-300">{guidelineLibraryResultsCount} recommendations</span>
+                      </div>
+                      <div className="p-4 pt-0">
+
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="Search recommendations..."
+                            value={guidelineLibraryQuery}
+                            onChange={(e) => setGuidelineLibraryQuery(e.target.value)}
+                            className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
+                            aria-label="Search guideline recommendations"
+                          />
+                          <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-3 top-2.5 text-slate-500 dark:text-mute"></i>
+                        </div>
+                        <select
+                          value={guidelineLibraryGuideline}
+                          onChange={(e) => {
+                            setGuidelineLibraryGuideline(e.target.value);
+                            setGuidelineLibrarySection('');
+                          }}
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
+                          aria-label="Filter by guideline"
+                        >
+                          <option value="">All guidelines</option>
+                          {guidelineLibraryGuidelineOptions.map((option) => (
+                            <option key={option.id} value={option.id}>{option.label}</option>
+                          ))}
+                        </select>
+                        <select
+                          value={guidelineLibrarySection}
+                          onChange={(e) => setGuidelineLibrarySection(e.target.value)}
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
+                          aria-label="Filter by section"
+                        >
+                          <option value="">All sections</option>
+                          {guidelineLibrarySectionOptions.map((section) => (
+                            <option key={section} value={section}>{section}</option>
+                          ))}
+                        </select>
+                        <select
+                          value={guidelineLibraryClass}
+                          onChange={(e) => setGuidelineLibraryClass(e.target.value)}
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
+                          aria-label="Filter by class of recommendation"
+                        >
+                          <option value="">All classes</option>
+                          {guidelineLibraryClassOptions.map((item) => (
+                            <option key={item} value={item}>{item}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {filteredGuidelineLibrary.length === 0 ? (
+                        <p className="text-sm text-slate-600 mt-3 dark:text-ink-2">No recommendations match the current filters. <button type="button" onClick={() => { setGuidelineLibraryQuery(''); setGuidelineLibraryGuideline(''); setGuidelineLibrarySection(''); setGuidelineLibraryClass(''); }} className="text-cobalt-700 underline dark:text-cobalt-300">Clear filters</button>.</p>
+                      ) : (
+                        <div className="mt-4 space-y-3">
+                          {filteredGuidelineLibrary.map((guideline) => {
+                            const grouped = {};
+                            guideline.recommendations.forEach((rec) => {
+                              if (!grouped[rec.section]) grouped[rec.section] = [];
+                              grouped[rec.section].push(rec);
+                            });
+                            const shouldExpand = Boolean(guidelineLibraryQuery || guidelineLibraryGuideline || guidelineLibrarySection || guidelineLibraryClass);
+                            return (
+                              <details key={guideline.id} className="border border-cobalt-200 rounded-lg bg-cobalt-50/40 dark:bg-cobalt-900/40 dark:border-cobalt-700" open={shouldExpand}>
+                                <summary className="cursor-pointer p-3 font-semibold text-cobalt-900 hover:bg-cobalt-100 rounded-lg flex items-center justify-between gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-800">
+                                  <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                    <span>{guideline.shortTitle || guideline.title}</span>
+                                    {guideline.summaryOnly && (
+                                      <span className="px-1.5 py-0.5 rounded-full border border-warn-300 bg-warn-50 text-warn-800 text-[11px] font-semibold dark:border-warn-700 dark:bg-warn-950 dark:text-warn-300">Summary only — see source</span>
+                                    )}
+                                  </span>
+                                  <span className="text-xs text-cobalt-600 shrink-0 dark:text-cobalt-300">{guideline.recommendations.length} recs</span>
+                                </summary>
+                                <div className="p-3 pt-0 space-y-3">
+                                  {Object.entries(grouped).map(([section, recs]) => (
+                                    <details key={section} className="bg-white border border-cobalt-100 rounded-lg dark:bg-card" open={shouldExpand || guidelineLibrarySection === section}>
+                                      <summary className="cursor-pointer px-3 py-2 text-sm font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-900">
+                                        <span>{section}</span>
+                                        <span className="text-xs text-cobalt-500">{recs.length}</span>
+                                      </summary>
+                                      <div className="px-3 pb-3 space-y-2">
+                                        {recs.map((rec) => {
+                                          const recClass = rec.classOfRec || 'Statement';
+                                          const recLevel = rec.levelOfEvidence || 'Ungraded';
+                                          const quickActions = getGuidelineQuickActions(rec.text);
+                                          return (
+                                            <div key={rec.id} id={`gl-rec-${rec.id}`} className="border border-cobalt-100 rounded-lg p-2 bg-cobalt-50/50 dark:bg-cobalt-900/50">
+                                              <div className="flex items-start gap-2">
+                                                <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold shrink-0 ${GUIDELINE_CLASS_COLORS[recClass] || 'bg-slate-500 text-white'}`}>
+                                                  {recClass}/{recLevel}
+                                                </span>
+                                                <div className="flex-1 min-w-0">
+                                                  <p className="text-sm text-slate-800 dark:text-ink">{rec.text}</p>
+                                                  {rec.classNote && (
+                                                    <p className="text-xs italic text-slate-600 mt-1 dark:text-mute">Note: {rec.classNote}</p>
+                                                  )}
+                                                  <p className="text-xs text-slate-600 mt-1 dark:text-mute">
+                                                    {guideline.title}
+                                                    {rec.page ? ` · p. ${rec.page}` : ''}
+                                                  </p>
+                                                  <div className="flex flex-wrap items-center gap-2 mt-1 text-xs">
+                                                    {rec.sourceUrl && (
+                                                      <a href={rec.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-link-600 dark:text-link-400 hover:text-link-700 hover:underline font-medium">
+                                                        <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
+                                                        <span>Publisher</span>
+                                                      </a>
+                                                    )}
+                                                    {rec.pdfSourceUrl && (
+                                                      <a href={rec.pdfSourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-link-600 dark:text-link-400 hover:text-link-700 hover:underline font-medium">
+                                                        <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
+                                                        <span>PDF p.{rec.page}</span>
+                                                      </a>
+                                                    )}
+                                                    {guideline.pubmedFallbackUrl && (
+                                                      <a href={guideline.pubmedFallbackUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-link-600 dark:text-link-400 hover:text-link-700 hover:underline font-medium">
+                                                        <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
+                                                        <span>PubMed</span>
+                                                      </a>
+                                                    )}
+                                                  </div>
+                                                  {quickActions.length > 0 && (
+                                                    <div className="flex flex-wrap gap-1 mt-2">
+                                                      {quickActions.map((action) => (
+                                                        <button
+                                                          key={action.id}
+                                                          type="button"
+                                                          onClick={() => navigateTo(action.target.tab, { subTab: action.target.subTab })}
+                                                          className="px-3 py-1.5 text-xs font-semibold rounded-full border border-cobalt-200 text-cobalt-700 hover:bg-cobalt-100 min-h-[32px] dark:border-cobalt-700 dark:text-cobalt-300 dark:hover:bg-cobalt-800"
+                                                        >
+                                                          {action.label}
+                                                        </button>
+                                                      ))}
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              </div>
+                                            </div>
+                                          );
+                                        })}
+                                      </div>
+                                    </details>
+                                  ))}
+                                </div>
+                              </details>
+                            );
+                          })}
+                        </div>
+                      )}
+                      </div>
+                    </section>
+
+                        {/* ===== GUIDELINES (external link grid) ===== */}
                     <section aria-labelledby="research-guidelines-heading" className="space-y-4">
                       <header>
                         <p className="font-mono uppercase text-eyebrow text-mute mb-1">Reference</p>
@@ -32129,6 +32526,24 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="font-mono text-[11px] text-mute uppercase tracking-wide mt-1">{gl.shortTitle}</p>
                               ) : null}
                             </a>
+                            {(gl.summaryOnly || gl.pubmedFallbackUrl) && (
+                              <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                                {gl.summaryOnly && (
+                                  <span className="px-1.5 py-0.5 rounded-full border border-warn-300 bg-warn-50 text-warn-800 text-[11px] font-semibold dark:border-warn-700 dark:bg-warn-950 dark:text-warn-300">Summary only — see source</span>
+                                )}
+                                {gl.pubmedFallbackUrl && (
+                                  <a
+                                    href={gl.pubmedFallbackUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="font-semibold text-cobalt-700 hover:underline dark:text-cobalt-300"
+                                    aria-label={`Open ${gl.shortTitle || gl.title} on PubMed (opens in new tab)`}
+                                  >
+                                    PubMed
+                                  </a>
+                                )}
+                              </div>
+                            )}
                           </li>
                         ))}
                       </ul>
@@ -32259,11 +32674,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ['ref-prognosis', 'Prognosis'],
                         ...(isTraineeMode ? [['ref-pearls', 'Clinical Pearls'], ['ref-pitfalls', 'Pitfalls']] : []),
                         ['ref-imaging', 'Imaging F/U'],
+                        ['ref-code-stroke', 'Code Stroke'],
                         ['ref-mimics', 'Mimics DDx'],
                         ['ref-chameleons', 'Chameleons'],
                         ['ref-spinalcord', 'Spinal Cord'],
                         ['ref-ctp', 'CTP Guide'],
                         ['ref-orders', 'Admission Orders'],
+                        ['ref-quickrefs', 'Quick Ref PDFs'],
                         ['ref-guidelines', 'Guidelines'],
                       ].map(([id, label]) => (
                         <button key={id} onClick={() => { const el = document.getElementById(id); if (el) { if (el.tagName === 'DETAILS') el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}} className="px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-cobalt-100 text-slate-700 hover:text-cobalt-700 rounded-full border border-line hover:border-cobalt-300 transition-colors min-h-[36px] dark:bg-paper-2 dark:hover:bg-cobalt-800 dark:text-ink-2 dark:hover:text-cobalt-300">{label}</button>
@@ -33221,1047 +33638,53 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     </details>
 
-                    {/* Guideline Library */}
-                    <details id="ref-guidelines" className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex flex-wrap items-center justify-between gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                        <div>
-                          <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Guideline Library</h2>
-                          <p className="text-xs text-slate-600 font-normal dark:text-ink-2">Full COR/LOE recommendations with direct publisher PDF links.</p>
-                        </div>
-                        <span className="text-xs text-cobalt-700 font-medium dark:text-cobalt-300">{guidelineLibraryResultsCount} recommendations</span>
-                      </summary>
-                      <div className="p-4 pt-0">
-
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-                        <div className="relative">
-                          <input
-                            type="text"
-                            placeholder="Search recommendations..."
-                            value={guidelineLibraryQuery}
-                            onChange={(e) => setGuidelineLibraryQuery(e.target.value)}
-                            className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
-                            aria-label="Search guideline recommendations"
-                          />
-                          <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-3 top-2.5 text-slate-500 dark:text-mute"></i>
-                        </div>
-                        <select
-                          value={guidelineLibraryGuideline}
-                          onChange={(e) => {
-                            setGuidelineLibraryGuideline(e.target.value);
-                            setGuidelineLibrarySection('');
-                          }}
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
-                          aria-label="Filter by guideline"
-                        >
-                          <option value="">All guidelines</option>
-                          {guidelineLibraryGuidelineOptions.map((option) => (
-                            <option key={option.id} value={option.id}>{option.label}</option>
-                          ))}
-                        </select>
-                        <select
-                          value={guidelineLibrarySection}
-                          onChange={(e) => setGuidelineLibrarySection(e.target.value)}
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
-                          aria-label="Filter by section"
-                        >
-                          <option value="">All sections</option>
-                          {guidelineLibrarySectionOptions.map((section) => (
-                            <option key={section} value={section}>{section}</option>
-                          ))}
-                        </select>
-                        <select
-                          value={guidelineLibraryClass}
-                          onChange={(e) => setGuidelineLibraryClass(e.target.value)}
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
-                          aria-label="Filter by class of recommendation"
-                        >
-                          <option value="">All classes</option>
-                          {guidelineLibraryClassOptions.map((item) => (
-                            <option key={item} value={item}>{item}</option>
-                          ))}
-                        </select>
+                    {/* Guideline Library moved to the Guidelines sub-tab
+                        (P4-2a). This compatibility pointer keeps the
+                        ref-guidelines anchor (the TOC chip above and any older
+                        deep links) landing somewhere meaningful. */}
+                    <div id="ref-guidelines" className="bg-white border border-cobalt-200 rounded-lg p-4 flex flex-wrap items-center justify-between gap-3 dark:bg-card dark:border-cobalt-700">
+                      <div>
+                        <h2 className="text-base font-semibold text-cobalt-800 dark:text-cobalt-300">Guideline Library</h2>
+                        <p className="text-xs text-slate-600 dark:text-ink-2">Moved to the Guidelines sub-tab — the searchable COR/LOE recommendation catalog now lives there.</p>
                       </div>
+                      <button
+                        type="button"
+                        onClick={() => { setResearchSubTab('guidelines'); window.location.hash = '#/research/guidelines'; }}
+                        className="px-3 py-1.5 rounded-lg border border-cobalt-200 bg-cobalt-50 text-cobalt-700 text-xs font-semibold hover:bg-cobalt-100 min-h-[36px] dark:border-cobalt-700 dark:bg-cobalt-900 dark:text-cobalt-300 dark:hover:bg-cobalt-800"
+                      >Open Guidelines tab</button>
+                    </div>
 
-                      {filteredGuidelineLibrary.length === 0 ? (
-                        <p className="text-sm text-slate-600 mt-3 dark:text-ink-2">No recommendations match the current filters. <button type="button" onClick={() => { setGuidelineLibraryQuery(''); setGuidelineLibraryGuideline(''); setGuidelineLibrarySection(''); setGuidelineLibraryClass(''); }} className="text-cobalt-700 underline dark:text-cobalt-300">Clear filters</button>.</p>
-                      ) : (
-                        <div className="mt-4 space-y-3">
-                          {filteredGuidelineLibrary.map((guideline) => {
-                            const grouped = {};
-                            guideline.recommendations.forEach((rec) => {
-                              if (!grouped[rec.section]) grouped[rec.section] = [];
-                              grouped[rec.section].push(rec);
-                            });
-                            const shouldExpand = Boolean(guidelineLibraryQuery || guidelineLibraryGuideline || guidelineLibrarySection || guidelineLibraryClass);
-                            return (
-                              <details key={guideline.id} className="border border-cobalt-200 rounded-lg bg-cobalt-50/40 dark:bg-cobalt-900/40 dark:border-cobalt-700" open={shouldExpand}>
-                                <summary className="cursor-pointer p-3 font-semibold text-cobalt-900 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
-                                  <span>{guideline.shortTitle || guideline.title}</span>
-                                  <span className="text-xs text-cobalt-600 dark:text-cobalt-300">{guideline.recommendations.length} recs</span>
-                                </summary>
-                                <div className="p-3 pt-0 space-y-3">
-                                  {Object.entries(grouped).map(([section, recs]) => (
-                                    <details key={section} className="bg-white border border-cobalt-100 rounded-lg dark:bg-card" open={shouldExpand || guidelineLibrarySection === section}>
-                                      <summary className="cursor-pointer px-3 py-2 text-sm font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                                        <span>{section}</span>
-                                        <span className="text-xs text-cobalt-500">{recs.length}</span>
-                                      </summary>
-                                      <div className="px-3 pb-3 space-y-2">
-                                        {recs.map((rec) => {
-                                          const recClass = rec.classOfRec || 'Statement';
-                                          const recLevel = rec.levelOfEvidence || 'Ungraded';
-                                          const classLabel = rec.classNote ? `${recClass} (${rec.classNote})` : recClass;
-                                          const quickActions = getGuidelineQuickActions(rec.text);
-                                          return (
-                                            <div key={rec.id} className="border border-cobalt-100 rounded-lg p-2 bg-cobalt-50/50 dark:bg-cobalt-900/50">
-                                              <div className="flex items-start gap-2">
-                                                <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold shrink-0 ${GUIDELINE_CLASS_COLORS[recClass] || 'bg-slate-500 text-white'}`}>
-                                                  {classLabel}/{recLevel}
-                                                </span>
-                                                <div className="flex-1 min-w-0">
-                                                  <p className="text-sm text-slate-800 dark:text-ink">{rec.text}</p>
-                                                  <p className="text-xs text-slate-600 mt-1 dark:text-mute">
-                                                    {guideline.title}
-                                                    {rec.page ? ` · p. ${rec.page}` : ''}
-                                                  </p>
-                                                  <div className="flex flex-wrap items-center gap-2 mt-1 text-xs">
-                                                    {rec.sourceUrl && (
-                                                      <a href={rec.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-link-600 dark:text-link-400 hover:text-link-700 hover:underline font-medium">
-                                                        <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
-                                                        <span>Publisher</span>
-                                                      </a>
-                                                    )}
-                                                    {rec.pdfSourceUrl && (
-                                                      <a href={rec.pdfSourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-link-600 dark:text-link-400 hover:text-link-700 hover:underline font-medium">
-                                                        <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
-                                                        <span>PDF p.{rec.page}</span>
-                                                      </a>
-                                                    )}
-                                                  </div>
-                                                  {quickActions.length > 0 && (
-                                                    <div className="flex flex-wrap gap-1 mt-2">
-                                                      {quickActions.map((action) => (
-                                                        <button
-                                                          key={action.id}
-                                                          type="button"
-                                                          onClick={() => navigateTo(action.target.tab, { subTab: action.target.subTab })}
-                                                          className="px-3 py-1.5 text-xs font-semibold rounded-full border border-cobalt-200 text-cobalt-700 hover:bg-cobalt-100 min-h-[32px] dark:border-cobalt-700 dark:text-cobalt-300 dark:hover:bg-cobalt-800"
-                                                        >
-                                                          {action.label}
-                                                        </button>
-                                                      ))}
-                                                    </div>
-                                                  )}
-                                                </div>
-                                              </div>
-                                            </div>
-                                          );
-                                        })}
-                                      </div>
-                                    </details>
-                                  ))}
+                    {/* Reference document registry (P4-4): every document row
+                        below is projected from the module-level
+                        REFERENCE_LIBRARY_SECTIONS registry, which carries the
+                        optional year / supersededBy metadata. */}
+                    {REFERENCE_LIBRARY_SECTIONS.map((section) => {
+                      const sectionDocs = section.items.flatMap((item) => (item.docs ? item.docs : [item]));
+                      if (!evidenceSectionMatches(section.matchTitle || section.title, [section.title, ...sectionDocs.map((doc) => doc.title)])) return null;
+                      return (
+                        <details key={section.id} id={section.anchorId || undefined} className="bg-white border border-line rounded-lg dark:bg-card">
+                          <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
+                            <span>{section.title}</span>
+                            <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
+                          </summary>
+                          <div className="space-y-3 p-4 pt-0">
+                            {section.note && (
+                              <p className="text-xs text-slate-600 dark:text-mute">{section.note}</p>
+                            )}
+                            {section.items.map((item) => (
+                              item.docs ? (
+                                <div key={item.group} className="border-l-4 border-cobalt-500 pl-4">
+                                  <h4 className="text-base font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">{item.group}</h4>
+                                  <div className="space-y-3">
+                                    {item.docs.map((doc) => renderReferenceDoc(doc, true))}
+                                  </div>
                                 </div>
-                              </details>
-                            );
-                          })}
-                        </div>
-                      )}
-                      </div>
-                    </details>
-
-                    {/* Aneurysms & Vascular Malformations Section */}
-                    {evidenceSectionMatches('Aneurysms & Vascular Malformations', ['Unruptured Cerebral Aneurysms']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Aneurysms & Vascular Malformations</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Unruptured Cerebral Aneurysms */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h3 className="text-sm font-medium text-slate-900 dark:text-ink">Unruptured Cerebral Aneurysms</h3>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
+                              ) : renderReferenceDoc(item)
+                            ))}
                           </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/aneurysms/Unruptured Cerebral Aneurysms.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/aneurysms/Unruptured Cerebral Aneurysms.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Unruptured Cerebral Aneurysms', 'documents/aneurysms/Unruptured Cerebral Aneurysms.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* Antiplatelet Therapy Section */}
-                    {evidenceSectionMatches('Antiplatelet Therapy', ['DAPT Minor Stroke-TIA Trials', 'DAPT After Ischemic Stroke-TIA', 'Other Antithrombotics']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Antiplatelet Therapy</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - DAPT Minor Stroke-TIA Trials */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">DAPT Minor Stroke-TIA Trials</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('DAPT Minor Stroke-TIA Trials', 'documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                        {/* Document 2 - DAPT After Ischemic Stroke-TIA */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                            <i aria-hidden="true" data-lucide="image" className="w-6 h-6 text-ok-600 dark:text-ok-300"></i>
-                            <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">DAPT After Ischemic Stroke-TIA</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">Infographic - Match Patient to Trial</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('DAPT After Ischemic Stroke-TIA', 'documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                        {/* Document 3 - Other Antithrombotics */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Other Antithrombotics</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document — Cilostazol &amp; Factor XIa Inhibition Trials</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Other Antithrombotics', 'documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* Cerebral Small Vessel Disease Section */}
-                    {evidenceSectionMatches('Cerebral Small Vessel Disease', ['Lacunar Stroke']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Cerebral Small Vessel Disease</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Lacunar Stroke */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Lacunar Stroke</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/csvd/Lacunar Stroke 7.13.22.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/csvd/Lacunar Stroke 7.13.22.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Lacunar Stroke', 'documents/csvd/Lacunar Stroke 7.13.22.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* EBM Section */}
-                    {evidenceSectionMatches('EBM', ['Interpretation of Clinical Trials', 'CEBM Oxford Resources']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Critical Appraisal</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Interpretation of Clinical Trials */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Interpretation of Clinical Trials</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/ebm/Interpretation of Clinical Trials.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/ebm/Interpretation of Clinical Trials.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Interpretation of Clinical Trials', 'documents/ebm/Interpretation of Clinical Trials.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                        {/* External Link - CEBM Oxford Resources */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                            <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-cobalt-600 dark:text-cobalt-300"></i>
-                            <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">CEBM Oxford Resources</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">Centre for Evidence-Based Medicine - University of Oxford</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="https://www.cebm.ox.ac.uk/resources"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
-                              Visit
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* EVT Section */}
-                    {evidenceSectionMatches('EVT', ['Large Core Anterior Circulation LVO EVT Trials', 'Basilar Artery Occlusion EVT Trials', 'MeVO & Distal Vessel Occlusion EVT Trials']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Endovascular Therapy</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Large Core Anterior Circulation LVO EVT Trials */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Large Core Anterior Circulation LVO EVT Trials</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Large Core Anterior Circulation LVO EVT Trials', 'documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Document 2 - Basilar Artery Occlusion EVT Trials */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Basilar Artery Occlusion EVT Trials</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/evt/Basilar Artery Occlusion EVT Trials.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/evt/Basilar Artery Occlusion EVT Trials.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Basilar Artery Occlusion EVT Trials', 'documents/evt/Basilar Artery Occlusion EVT Trials.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Document 3 - MeVO & Distal Vessel Occlusion EVT Trials */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">MeVO & Distal Vessel Occlusion EVT Trials</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('MeVO & Distal Vessel Occlusion EVT Trials', 'documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* Risk Factors Section */}
-                    {evidenceSectionMatches('Risk Factors', ['Timing of Anticoagulation after AF-Related Stroke', 'Atrial Fibrillation & Secondary Stroke Prevention', 'AFib Stroke EPI519', 'Diabetes and stroke', 'Lipids and Cerebrovascular Disease']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Risk Factors</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-4 p-4 pt-0">
-
-                        {/* Atrial Fibrillation Subsection */}
-                        <div className="border-l-4 border-cobalt-500 pl-4">
-                          <h4 className="text-base font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">Atrial Fibrillation</h4>
-                          <div className="space-y-3">
-                            {/* Document 1 - Timing of Anticoagulation after AF-Related Stroke */}
-                            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                              <div className="flex items-center gap-3 flex-1">
-                                                                <div className="flex-1">
-                                  <h5 className="text-sm font-medium text-slate-900 dark:text-ink">Timing of Anticoagulation after AF-Related Stroke</h5>
-                                  <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                                </div>
-                              </div>
-                              <div className="flex flex-wrap gap-2">
-                                <a
-                                  href="documents/afib/AC timing after AF-related Stroke.pdf"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                                  View
-                                </a>
-                                <a
-                                  href="documents/afib/AC timing after AF-related Stroke.pdf"
-                                  download
-                                  className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                                  Download
-                                </a>
-                                <button
-                                  onClick={() => emailDocument('AC timing after AF-related Stroke', 'documents/afib/AC timing after AF-related Stroke.pdf')}
-                                  className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                                  title="Email this document"
-                                >
-                                  <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                                  Email
-                                </button>
-                              </div>
-                            </div>
-
-                            {/* Document 2 - Atrial Fibrillation & Secondary Stroke Prevention */}
-                            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                              <div className="flex items-center gap-3 flex-1">
-                                                                <div className="flex-1">
-                                  <h5 className="text-sm font-medium text-slate-900 dark:text-ink">Atrial Fibrillation & Secondary Stroke Prevention</h5>
-                                  <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                                </div>
-                              </div>
-                              <div className="flex flex-wrap gap-2">
-                                <a
-                                  href="documents/afib/AF & secondary stroke prevention July 2024.pdf"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                                  View
-                                </a>
-                                <a
-                                  href="documents/afib/AF & secondary stroke prevention July 2024.pdf"
-                                  download
-                                  className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                                  Download
-                                </a>
-                                <button
-                                  onClick={() => emailDocument('AF & secondary stroke prevention July 2024', 'documents/afib/AF & secondary stroke prevention July 2024.pdf')}
-                                  className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                                  title="Email this document"
-                                >
-                                  <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                                  Email
-                                </button>
-                              </div>
-                            </div>
-
-                            {/* Document 3 - 2023 AHA AFib Guidelines */}
-                            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                              <div className="flex items-center gap-3 flex-1">
-                                <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-cobalt-600 dark:text-cobalt-300"></i>
-                                <div className="flex-1">
-                                  <h5 className="text-sm font-medium text-slate-900 dark:text-ink">2023 AHA AFib Guidelines</h5>
-                                  <p className="text-xs text-slate-600 dark:text-mute">External Link - AHA Journals</p>
-                                </div>
-                              </div>
-                              <div className="flex flex-wrap gap-2">
-                                <a
-                                  href="https://www.ahajournals.org/doi/10.1161/CIR.0000000000001193"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
-                                  Open Link
-                                </a>
-                              </div>
-                            </div>
-
-                            {/* Document 4 - 2024 ESC AFib Guidelines */}
-                            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                              <div className="flex items-center gap-3 flex-1">
-                                <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-cobalt-600 dark:text-cobalt-300"></i>
-                                <div className="flex-1">
-                                  <h5 className="text-sm font-medium text-slate-900 dark:text-ink">2024 ESC AFib Guidelines</h5>
-                                  <p className="text-xs text-slate-600 dark:text-mute">External Link - European Heart Journal</p>
-                                </div>
-                              </div>
-                              <div className="flex flex-wrap gap-2">
-                                <a
-                                  href="https://academic.oup.com/eurheartj/article/45/36/3314/7738779"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
-                                  Open Link
-                                </a>
-                              </div>
-                            </div>
-
-                            {/* Document 5 - AFib Stroke EPI519 */}
-                            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                              <div className="flex items-center gap-3 flex-1">
-                                                                <div className="flex-1">
-                                  <h5 className="text-sm font-medium text-slate-900 dark:text-ink">AFib Stroke EPI519</h5>
-                                  <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                                </div>
-                              </div>
-                              <div className="flex flex-wrap gap-2">
-                                <a
-                                  href="documents/afib/AFib Stroke EPI519.pdf"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                                  View
-                                </a>
-                                <a
-                                  href="documents/afib/AFib Stroke EPI519.pdf"
-                                  download
-                                  className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                                  Download
-                                </a>
-                                <button
-                                  onClick={() => emailDocument('AFib Stroke EPI519', 'documents/afib/AFib Stroke EPI519.pdf')}
-                                  className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                                  title="Email this document"
-                                >
-                                  <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                                  Email
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Diabetes and stroke */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Diabetes and stroke</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/epidemiology/Diabetes and stroke.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/epidemiology/Diabetes and stroke.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Diabetes and stroke', 'documents/epidemiology/Diabetes and stroke.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Lipids and Cerebrovascular Disease */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Lipids and Cerebrovascular Disease</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/epidemiology/Lipids and Cerebrovascular Disease.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/epidemiology/Lipids and Cerebrovascular Disease.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Lipids and Cerebrovascular Disease', 'documents/epidemiology/Lipids and Cerebrovascular Disease.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* Thrombolytic Therapy Section */}
-                    {evidenceSectionMatches('Thrombolytic Therapy', ['Thrombolytic Therapy AIS 4.5-24h RCTs', 'WAKE-UP Trial']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Thrombolytic Therapy</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Thrombolytic Therapy AIS 4.5-24h RCTs */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Thrombolytic Therapy AIS 4.5-24h RCTs</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Thrombolytic Therapy AIS 4.5-24h RCTs', 'documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Document 2 - WAKE-UP Trial */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                            <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-cobalt-600 dark:text-cobalt-300"></i>
-                            <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">WAKE-UP Trial</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">External Link - New England Journal of Medicine</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="https://www.nejm.org/doi/full/10.1056/NEJMoa1804355"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
-                              Open Link
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* Exam Section */}
-                    {evidenceSectionMatches('Exam', ['Differentiating Acute Confusional State (Delirium) from Aphasia', 'Coma Exam']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Exam</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Differentiating Delirium from Aphasia */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Differentiating Acute Confusional State (Delirium) from Aphasia</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Differentiating Acute Confusional State (Delirium) from Aphasia', 'documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Document 2 - Coma Exam */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Coma Exam</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/exam/coma exam.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/exam/coma exam.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('coma exam', 'documents/exam/coma exam.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* Large Artery Disease Section */}
-                    {evidenceSectionMatches('Large Artery Disease', ['Symptomatic Cervical Carotid Artery Stenosis', 'CREST-2 Trial']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Large Artery Disease</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Symptomatic Cervical Carotid Artery Stenosis */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Symptomatic Cervical Carotid Artery Stenosis</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Symptomatic Cervical Carotid Artery Stenosis', 'documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                        {/* Document 2 - CREST-2 Trial */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">CREST-2 Trial (December 2025)</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/lad/CREST-2 Trial - Dec 2025.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/lad/CREST-2 Trial - Dec 2025.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('CREST-2 Trial (December 2025)', 'documents/lad/CREST-2 Trial - Dec 2025.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
+                        </details>
+                      );
+                    })}
                   </div>
                 )}
                 {/* End of References/Evidence Content */}
