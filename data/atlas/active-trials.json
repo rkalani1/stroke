@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "active-trials",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.19.4",
+    "appVersion": "6.20.0",
     "checksum": "sha256:fdef80ba5c5285adb9c631c562599de5",
     "count": 9,
     "source": "Evidence atlas active-trials bundle",

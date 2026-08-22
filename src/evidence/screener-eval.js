@@ -334,38 +334,61 @@ export function evaluateAll(state, trials = screenerTrials) {
   return { ready, params, timeCategory, ...buckets, briefingNote: ready ? buildBriefingNote(state, buckets) : '' };
 }
 
+const CLASSIFICATION_NOTE_LABELS = {
+  ischemic: 'Ischemic stroke',
+  tia: 'TIA',
+  ich: 'Hemorrhage (ICH)'
+};
+
+const ONSET_NOTE_LABELS = [
+  { maxHours: 4.5, label: '< 4.5 h from LKW' },
+  { maxHours: 24, label: '4.5 – 24 h from LKW' },
+  { maxHours: 24 * 7, label: '24 h – 7 d from LKW' },
+  { maxHours: 24 * 30, label: '7 – 30 d from LKW' },
+  { maxHours: 24 * 180, label: '30 – 180 d from LKW' }
+];
+
+function onsetNoteLabel(onsetHours) {
+  const band = ONSET_NOTE_LABELS.find((b) => onsetHours <= b.maxHours);
+  return band ? band.label : '> 6 months from LKW';
+}
+
+// Paste-ready referral note. Deliberately carries only what the screener was
+// actually told — classification and onset window — plus the matched studies
+// and their referral pathway. It never asserts bedside facts the user did not
+// enter (the v7.3 screener no longer collects them).
 export function buildBriefingNote(state, buckets) {
   const { eligible, pending, soon } = buckets;
-  const cls = (state.classification || 'unselected').toUpperCase();
+  const cls = CLASSIFICATION_NOTE_LABELS[state.classification] || String(state.classification || '').toUpperCase();
+  const onsetHours = onsetToHours(state.onsetVal, state.onsetUnit);
+
   let note = '=== STROKE SCREENER REFERRAL NOTE ===\n';
-  note += 'Classification: ' + cls + ' | Onset: ' + state.onsetVal + ' ' + state.onsetUnit + ' (LKW)\n';
-  note += 'Age: ' + state.age + ' | NIHSS: ' + state.nihss + ' | mRS: ' + state.preMrs + '\n';
+  note += 'Classification: ' + cls + '\n';
+  note += 'Onset window: ' + onsetNoteLabel(onsetHours) + '\n';
   note += '--------------------------------------------------\n';
 
-  if (eligible.length > 0) {
-    note += '🟢 REFERRAL CANDIDATES:\n';
-    eligible.forEach((item) => {
+  const candidates = [...eligible, ...pending];
+  if (candidates.length > 0) {
+    note += 'POSSIBLE CANDIDATES (' + candidates.length + '):\n';
+    candidates.forEach((item) => {
       note += ' - ' + item.trial.acronym + ' (' + (item.trial.externalMetadata.nct || 'No NCT') + ')\n';
       note += '   Pathway: ' + item.trial.pathway + '\n';
     });
   }
-  if (pending.length > 0) {
-    note += '🟡 POSSIBLE CANDIDATES (PENDING INPUTS):\n';
-    pending.forEach((item) => {
-      note += ' - ' + item.trial.acronym + ' (' + (item.trial.externalMetadata.nct || 'No NCT') + ')\n';
-      note += '   Pending fields: ' + item.pendingFields.join(', ') + '\n';
-    });
-  }
   if (soon.length > 0) {
-    note += '⏳ ENROLLING SOON / FUTURE MATCH:\n';
+    note += 'ENROLLING SOON / FUTURE MATCH (' + soon.length + '):\n';
     soon.forEach((item) => {
       note += ' - ' + item.trial.acronym + ' (' + (item.trial.externalMetadata.nct || 'No NCT') + ')\n';
       note += '   Pathway: ' + item.trial.pathway + '\n';
     });
   }
-  if (eligible.length === 0 && pending.length === 0 && soon.length === 0) {
-    note += '❌ No active study matches found for current patient parameters.\n';
+  if (candidates.length === 0 && soon.length === 0) {
+    note += 'No active study matches this classification and onset window.\n';
   }
+  note += '--------------------------------------------------\n';
+  note += 'First-pass ClinicalTrials.gov screen only. Confirm the full registry\n';
+  note += 'record, the approved local protocol, activation status and consent\n';
+  note += 'path before any clinical or recruitment action.\n';
   return note;
 }
 

@@ -79,9 +79,10 @@ import { HeroReadout as V7HeroReadout } from './design/hero-readout.jsx';
 import { DrugChip as V7DrugChip } from './design/drug-chip.jsx';
 import { PatientStripMobile as V7PatientStripMobile, PatientStripRail as V7PatientStripRail } from './design/patient-strip.jsx';
 import { TimeWindowRing } from './design/time-window-ring.jsx';
-import { DeviceFrame as V7DeviceFrame } from './design/device-frame.jsx';
-import { TrialScreener } from './components/TrialScreener.jsx';
+import { TrialScreener, StudyDatabase, COMPLIANCE_BANNER as TRIALS_COMPLIANCE_BANNER } from './components/TrialScreener.jsx';
+import { screenerTrials } from './evidence/screenerTrials.js';
 import { EligibilityTables } from './components/EligibilityTables.jsx';
+import { InstallAppButton } from './components/InstallAppButton.jsx';
 import {
 
   evaluateDAWN,
@@ -1211,6 +1212,16 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           return null;
         };
 
+        const TRIALS_VIEWS = ['screener', 'tables', 'database'];
+        const LEGACY_TRIALS_VIEWS = { active: 'screener', eligibility: 'tables', studies: 'database' };
+
+        const normalizeTrialsView = (value) => {
+          if (!value) return null;
+          const normalized = String(value).toLowerCase();
+          if (TRIALS_VIEWS.includes(normalized)) return normalized;
+          return LEGACY_TRIALS_VIEWS[normalized] || null;
+        };
+
         const VALID_TABS = [
           'encounter',
           'protocols',
@@ -1253,7 +1264,8 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
                 return { tab: 'research', sub: 'education', educationSub: parts[2] || null };
               }
               if (sub === 'trials') {
-                return { tab: 'trials' };
+                const nestedTrialsSub = normalizeTrialsView(parts[2]);
+                return nestedTrialsSub ? { tab: 'trials', sub: nestedTrialsSub } : { tab: 'trials' };
               }
               return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
             case 'settings':
@@ -1276,8 +1288,10 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               }
               return { tab: 'research', sub: normalizeResearchSubTab(sub) };
             case 'trials':
-            case 'trial':
-              return { tab: 'trials' };
+            case 'trial': {
+              const trialsSub = normalizeTrialsView(sub);
+              return trialsSub ? { tab: 'trials', sub: trialsSub } : { tab: 'trials' };
+            }
             case 'education':
             case 'curriculum':
             case 'curricula':
@@ -1302,8 +1316,10 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               const managementSub = normalizeManagementSubTab(sub);
               return managementSub ? `#/protocols/${managementSub}` : '#/protocols';
             }
-            case 'trials':
-              return '#/trials';
+            case 'trials': {
+              const trialsSub = normalizeTrialsView(sub);
+              return trialsSub && trialsSub !== 'screener' ? `#/trials/${trialsSub}` : '#/trials';
+            }
             case 'research': {
               const resSub = normalizeResearchSubTab(sub) || 'guidelines';
               if (resSub === 'education') {
@@ -2271,10 +2287,10 @@ Clinician Name`;
           // PWA install state. installPrompt holds the captured BeforeInstallPromptEvent
           // (Chrome / Edge / Android). isInstalled is true when the app is launched
           // from the home screen / app drawer (display-mode standalone OR iOS Safari's
-          // navigator.standalone). iosInstallTipVisible governs the one-time iOS hint.
+          // navigator.standalone). Both feed <InstallAppButton/>, the single
+          // Install App control in the Trials header.
           const [installPrompt, setInstallPrompt] = useState(null);
           const [isInstalled, setIsInstalled] = useState(false);
-          const [iosInstallTipVisible, setIosInstallTipVisible] = useState(false);
           // Keep the derived `isDark` in sync when the OS color-scheme changes while
           // the preference is 'auto'. theme.js's bindThemeListener (bound once in
           // bootstrap) re-applies the DOM; this only mirrors the result into React.
@@ -2709,21 +2725,19 @@ Clinician Name`;
           const [trialsCategory, setTrialsCategory] = useState('ischemic');
           const [trialsRecruitingOnly, setTrialsRecruitingOnly] = useState(false);
           const [trialSearchQuery, setTrialSearchQuery] = useState('');
-          // Trials sub-view: 'screener' (Bedside Screener iframe, default) or
-          // 'eligibility' (Eligibility Tables iframe). Persisted across sessions.
-          // Legacy 'active' value migrates to 'screener'.
-          const [trialsView, setTrialsView] = useState(() => {
-            const v = loadFromStorage('trialsView', 'screener');
-            return (v === 'screener' || v === 'eligibility') ? v : 'screener';
-          });
+          // Trials sub-view: 'screener' (two-tap bedside screener, default),
+          // 'tables' (eligibility reference tables) or 'database' (every study).
+          // Persisted across sessions. Legacy 'active' → 'screener' and
+          // 'eligibility' → 'tables'.
+          const [trialsView, setTrialsView] = useState(() =>
+            normalizeTrialsView(loadFromStorage('trialsView', 'screener')) || 'screener'
+          );
           const updateTrialsView = (next) => {
-            setTrialsView(next);
+            const view = normalizeTrialsView(next) || 'screener';
+            setTrialsView(view);
             if (PUBLIC_DEMO_MODE) return;
-            try { localStorage.setItem(STORAGE_PREFIX + 'trialsView', JSON.stringify(next)); } catch (e) {}
+            try { localStorage.setItem(STORAGE_PREFIX + 'trialsView', JSON.stringify(view)); } catch (e) {}
           };
-          // Per-iframe loaded flags (drive the loading skeleton)
-          const [screenerLoaded, setScreenerLoaded] = useState(false);
-          const [eligibilityLoaded, setEligibilityLoaded] = useState(false);
           const [atlasFilters, setAtlasFilters] = useState(loadFromStorage('atlasFilters', {
             topic: '', certainty: '', evidenceType: '', verificationStatus: '', query: ''
           }));
@@ -8219,6 +8233,9 @@ fever_management: {
               if (resSub !== 'education') {
                 setEducationSubTab(null);
               }
+            } else if (nextTab === 'trials') {
+              const trialsSub = normalizeTrialsView(subTab);
+              if (trialsSub) updateTrialsView(trialsSub);
             }
 
             setActiveTab(nextTab);
@@ -15527,19 +15544,12 @@ fever_management: {
             const onAppInstalled = () => {
               setInstallPrompt(null);
               setIsInstalled(true);
-              setIosInstallTipVisible(false);
             };
             window.addEventListener('beforeinstallprompt', onBeforeInstall);
             window.addEventListener('appinstalled', onAppInstalled);
-            // iOS Safari heuristic: no beforeinstallprompt available, not already
-            // standalone, dismissal flag not set.
-            try {
-              const ua = window.navigator.userAgent || '';
-              const isIos = /iphone|ipad|ipod/i.test(ua) && !/CriOS|FxiOS|EdgiOS/i.test(ua);
-              const dismissed = window.strokeAppStorage && window.strokeAppStorage.getStoredValue('iosInstallTipDismissed') === true;
-              const inStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (window.navigator && window.navigator.standalone === true);
-              if (isIos && !dismissed && !inStandalone) setIosInstallTipVisible(true);
-            } catch { /* ignore */ }
+            // iOS Safari never fires beforeinstallprompt, so installPrompt stays
+            // null there and <InstallAppButton/> falls back to its Add-to-Home-
+            // Screen sheet — no auto-shown banner, no dismissal flag to persist.
             return () => {
               window.removeEventListener('beforeinstallprompt', onBeforeInstall);
               window.removeEventListener('appinstalled', onAppInstalled);
@@ -15558,15 +15568,6 @@ fever_management: {
             } finally {
               setInstallPrompt(null);
             }
-          };
-
-          const dismissIosInstallTip = () => {
-            setIosInstallTipVisible(false);
-            try {
-              if (window.strokeAppStorage && window.strokeAppStorage.setStoredValue) {
-                window.strokeAppStorage.setStoredValue('iosInstallTipDismissed', true);
-              }
-            } catch { /* ignore */ }
           };
 
           // Click-outside handler for search dropdown
@@ -16367,6 +16368,8 @@ fever_management: {
                   } else {
                     setEducationSubTab(null);
                   }
+                } else if (parsed.tab === 'trials') {
+                  updateTrialsView(normalizeTrialsView(parsed.sub) || 'screener');
                 } else if (parsed.tab === 'education') {
                   setActiveTab('research');
                   setResearchSubTab('education');
@@ -16418,13 +16421,17 @@ fever_management: {
           // Keep hash in sync with the active view
           useEffect(() => {
             if (!routeReady) return;
-            const sub = activeTab === 'research' ? researchSubTab : managementSubTab;
+            const sub = activeTab === 'research'
+              ? researchSubTab
+              : activeTab === 'trials'
+              ? trialsView
+              : managementSubTab;
             const eduSub = (activeTab === 'research' && researchSubTab === 'education') ? educationSubTab : null;
             const nextHash = buildHashRoute(activeTab, sub, eduSub);
             if (window.location.hash !== nextHash) {
               window.location.hash = nextHash;
             }
-          }, [activeTab, routeReady, managementSubTab, educationSubTab, researchSubTab]);
+          }, [activeTab, routeReady, managementSubTab, educationSubTab, researchSubTab, trialsView]);
 
           // U3 — the header Resources menu is a native <details>; React re-renders
           // don't clear its `open` attribute, so it would otherwise stay pinned
@@ -16885,22 +16892,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     aria-label="Dismiss update notification"
                   >
                     Later
-                  </button>
-                </div>
-              )}
-
-              {/* iOS Add-to-Home-Screen tip (Safari only — beforeinstallprompt is unsupported on iOS) */}
-              {iosInstallTipVisible && !isInstalled && (
-                <div className="bg-cobalt-600 text-white px-4 py-2 text-sm font-medium flex flex-wrap items-center justify-center gap-3 no-print" role="status" aria-live="polite">
-                  <i aria-hidden="true" data-lucide="smartphone" className="w-4 h-4"></i>
-                  <span>Install Stroke: tap Share, then "Add to Home Screen".</span>
-                  <button
-                    type="button"
-                    onClick={dismissIosInstallTip}
-                    className="text-white/90 hover:text-white underline text-xs"
-                    aria-label="Dismiss install tip"
-                  >
-                    Got it
                   </button>
                 </div>
               )}
@@ -31763,75 +31754,91 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                 {/* ============================================ */}
                 {/* CLINICAL TRIALS TAB                          */}
+                {/* Native, mobile-first. Two-tap bedside screener,   */}
+                {/* eligibility reference tables, full study database. */}
                 {/* ============================================ */}
                 {activeTab === 'trials' && (
                   <ErrorBoundary>
-                  <div id="tabpanel-trials" role="tabpanel" aria-labelledby="tab-trials" className="space-y-6">
-                    {/* Header Section with Patient Summary —
-                        v6.0-03: demoted from blue→indigo→purple gradient to a
-                        quiet section header on paper. */}
-                    <header className="bg-card border border-line rounded-md p-6">
-                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                        <div>
-                          <p className="font-mono uppercase text-eyebrow text-mute mb-1">Reference</p>
-                          <h2 className="font-serif text-section text-ink flex items-center gap-3">
-                            Clinical Trials
-                          </h2>
-                          {trialsView === 'eligibility' && (
-                            <p className="font-sans text-body text-ink-2 mt-1 text-pretty">
-                              public-reference eligibility tables — copy-paste-ready reference for intranet pages
-                            </p>
-                          )}
-                        </div>
+                  <div id="tabpanel-trials" role="tabpanel" aria-labelledby="tab-trials" className="space-y-5">
+                    <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
+                      <div className="min-w-0">
+                        <p className="font-mono uppercase text-eyebrow text-mute mb-1">
+                          Bedside · {screenerTrials.length} studies
+                        </p>
+                        <h2 className="font-serif text-section text-ink">Clinical Trials</h2>
+                        <p className="font-sans text-body text-ink-2 mt-1 text-pretty max-w-prose">
+                          {trialsView === 'screener'
+                            ? 'Pick a classification and a time window — matching studies appear straight away. No other data entry.'
+                            : trialsView === 'tables'
+                            ? 'Reference eligibility tables for the ischemic and hemorrhage pathways, copy-paste-ready as HTML or Markdown.'
+                            : 'Every study in the screener, searchable by acronym, name or NCT, with the full criteria.'}
+                        </p>
                       </div>
+                      <InstallAppButton
+                        installPrompt={installPrompt}
+                        isInstalled={isInstalled}
+                        onInstall={triggerInstall}
+                        className="shrink-0"
+                      />
                     </header>
 
-                    {/* v7 SubTabs — replaces emerald/amber colored pill bar.
-                        Single accent (cobalt) for the active item; no per-tab
-                        colors. Caption baseline-aligned with the SubTabs row. */}
-                    <div className="flex flex-wrap items-center gap-3 -mt-2">
-                      <V7SubTabs
-                        ariaLabel="Trials sub-view"
-                        items={[
-                          { id: 'screener',    label: 'Bedside Screener' },
-                          { id: 'eligibility', label: 'Eligibility Tables' }
-                        ]}
-                        value={trialsView}
-                        onChange={updateTrialsView}
-                      />
-                      {trialsView === 'eligibility' && (
-                        <span className="text-xs text-slate-500 dark:text-slate-400 ml-auto hidden md:inline self-center">
-                          Static reference tables · ischemic &amp; ICH pathways
-                        </span>
-                      )}
+                    {/* Sub-view switch — full-width segmented control on phone,
+                        inline pill bar from sm up. Single cobalt accent. */}
+                    <div
+                      role="tablist"
+                      aria-label="Trials sub-view"
+                      className="grid grid-cols-3 gap-1 rounded-lg border border-line bg-paper-2 p-1 sm:inline-grid sm:auto-cols-max sm:grid-flow-col"
+                    >
+                      {[
+                        { id: 'screener', label: 'Screener' },
+                        { id: 'tables', label: 'Tables' },
+                        { id: 'database', label: 'Database' }
+                      ].map((item) => {
+                        const active = trialsView === item.id;
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            role="tab"
+                            aria-selected={active}
+                            aria-controls={`trials-${item.id}-panel`}
+                            onClick={() => updateTrialsView(item.id)}
+                            className={`inline-flex min-h-[44px] items-center justify-center rounded-md px-4 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cobalt-500 ${
+                              active
+                                ? 'bg-card text-ink shadow-card font-bold'
+                                : 'text-mute hover:text-ink-2'
+                            }`}
+                          >
+                            {item.label}
+                          </button>
+                        );
+                      })}
                     </div>
 
-                    {/* Sub-view: Bedside Screener (iframe embed) */}
+                    {/* Sub-view: two-tap bedside screener */}
                     {trialsView === 'screener' && (
-                      <div id="trials-screener-panel" className="space-y-3">
-                        <V7DeviceFrame
-                          src="https://rkalani1.github.io/stroke-trials-screener/"
-                          title="Stroke Bedside Trial Screener"
-                          openHref="https://rkalani1.github.io/stroke-trials-screener/"
-                          sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms"
-                        />
+                      <div id="trials-screener-panel" role="tabpanel" aria-label="Bedside screener">
+                        <TrialScreener copyToClipboard={copyToClipboard} addToast={addToast} />
                       </div>
                     )}
 
-                    {/* Sub-view: Eligibility Tables (iframe embed) */}
-                    {trialsView === 'eligibility' && (
-                      <div id="trials-eligibility-panel" className="space-y-3">
-                        <p className="font-mono uppercase text-2xs tracking-[0.06em] text-slate-500 dark:text-slate-400">
-                          public-reference reference tables · ischemic &amp; ICH pathways · copy-paste-ready HTML &amp; Markdown for intranet
-                        </p>
-                        <V7DeviceFrame
-                          src="https://rkalani1.github.io/stroke-eligibility-tables-embed/"
-                          title="Stroke Trial Eligibility Tables"
-                          openHref="https://rkalani1.github.io/stroke-eligibility-tables-embed/"
-                          sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms"
-                        />
+                    {/* Sub-view: eligibility reference tables */}
+                    {trialsView === 'tables' && (
+                      <div id="trials-tables-panel" role="tabpanel" aria-label="Eligibility tables">
+                        <EligibilityTables copyToClipboard={copyToClipboard} addToast={addToast} />
                       </div>
                     )}
+
+                    {/* Sub-view: full study database */}
+                    {trialsView === 'database' && (
+                      <div id="trials-database-panel" role="tabpanel" aria-label="Study database">
+                        <StudyDatabase />
+                      </div>
+                    )}
+
+                    <p className="rounded-md border-l-4 border-warn-600 bg-warn-50 px-3 py-2 text-2xs leading-relaxed text-warn-800 dark:border-warn-500 dark:bg-warn-950 dark:text-warn-200">
+                      {TRIALS_COMPLIANCE_BANNER}
+                    </p>
                   </div>
                   </ErrorBoundary>
                 )}

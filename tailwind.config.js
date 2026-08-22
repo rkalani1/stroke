@@ -16,6 +16,7 @@ module.exports = {
     './index.html',
     './src/app.jsx',
     './src/components.jsx',
+    './src/components/*.jsx',
     './src/primitives.jsx',
     './src/pocket-cards.jsx',
     './src/teaching.jsx',
