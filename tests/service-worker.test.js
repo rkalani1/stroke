@@ -29,7 +29,7 @@ function loadServiceWorker() {
     fetch: async () => ({ ok: true, clone: () => ({ ok: true }) }),
     caches: {
       open: async () => cacheStore,
-      keys: async () => ['stroke-cache-v6-19-3', 'stroke-cache-v6-20-0', 'stroke-cache-v6-21-0'],
+      keys: async () => ['stroke-cache-v6-19-3', 'stroke-cache-v6-20-1', 'stroke-cache-v6-21-0'],
       delete: async (key) => {
         deletedCaches.push(key);
         return true;
@@ -118,7 +118,7 @@ describe('service worker update lifecycle', () => {
     expect(worker.skipWaitingCount).toBe(1);
     expect(worker.claimCount).toBe(0);
     expect(worker.deletedCaches).toContain('stroke-cache-v6-19-3');
-    expect(worker.deletedCaches).toContain('stroke-cache-v6-20-0');
+    expect(worker.deletedCaches).toContain('stroke-cache-v6-20-1');
     expect(worker.deletedCaches).not.toContain('stroke-cache-v6-21-0');
     expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
     expect(worker.postedMessages).toContainEqual({ type: 'sw-update-ready', version: '6.21.0' });

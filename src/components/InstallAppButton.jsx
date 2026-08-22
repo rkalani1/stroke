@@ -62,11 +62,27 @@ const IconClose = (p) => (
   </Glyph>
 );
 
-const STEPS = [
-  <>Tap the <strong className="font-bold text-ink">Share</strong> button in the browser toolbar.</>,
+const IOS_STEPS = [
+  <>Tap the <strong className="font-bold text-ink">Share</strong> button in Safari's toolbar.</>,
   <>Scroll down and choose <strong className="font-bold text-ink">Add to Home Screen</strong>.</>,
   <>Tap <strong className="font-bold text-ink">Add</strong>. Stroke opens full-screen from the home screen.</>
 ];
+
+// Anything that is not iOS Safari has no Share-to-home-screen flow, so naming
+// one would send the reader looking for a button that is not there.
+const GENERIC_STEPS = [
+  <>Open your browser's menu (<strong className="font-bold text-ink">⋮</strong> or <strong className="font-bold text-ink">···</strong>).</>,
+  <>Choose <strong className="font-bold text-ink">Install app</strong> or <strong className="font-bold text-ink">Add to Home screen</strong>.</>,
+  <>Confirm. Stroke opens full-screen from the home screen.</>
+];
+
+const isIosSafari = () => {
+  if (typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent || '';
+  const iOS = /iphone|ipad|ipod/i.test(ua) ||
+    (/Macintosh/.test(ua) && typeof document !== 'undefined' && 'ontouchend' in document);
+  return iOS && !/CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua);
+};
 
 function AddToHomeScreenSheet({ onClose }) {
   const closeRef = useRef(null);
@@ -79,7 +95,12 @@ function AddToHomeScreenSheet({ onClose }) {
   // otherwise anchor to the shell's box rather than the viewport.
   return createPortal(
     <>
-      <div className="fixed inset-0 z-[70] bg-slate-950/50" onClick={onClose} role="presentation" aria-hidden="true" />
+      <div
+        className="fixed inset-0 z-[70] bg-slate-950/50 dark:bg-black/70"
+        onClick={onClose}
+        role="presentation"
+        aria-hidden="true"
+      />
       <div
         ref={dialogRef}
         role="dialog"
@@ -114,15 +135,15 @@ function AddToHomeScreenSheet({ onClose }) {
         </div>
 
         <ol className="mt-4 space-y-3">
-          {STEPS.map((step, i) => (
-            <li key={i} className="flex items-start gap-3">
+          {(isIosSafari() ? IOS_STEPS : GENERIC_STEPS).map((step, i) => (
+            <li key={i} className="flex !flex-nowrap items-start gap-3">
               <span
                 aria-hidden="true"
-                className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-pill bg-cobalt-600 font-mono text-2xs font-semibold text-white dark:bg-cobalt-500"
+                className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-pill bg-cobalt-600 font-mono text-2xs font-semibold text-white"
               >
                 {i + 1}
               </span>
-              <span className="text-sm leading-relaxed text-ink-2">{step}</span>
+              <span className="min-w-0 flex-1 text-sm leading-relaxed text-ink-2">{step}</span>
             </li>
           ))}
         </ol>
@@ -134,7 +155,7 @@ function AddToHomeScreenSheet({ onClose }) {
         <button
           type="button"
           onClick={onClose}
-          className="mt-4 inline-flex min-h-[48px] w-full items-center justify-center rounded-lg bg-cobalt-600 px-4 text-sm font-bold text-white hover:bg-cobalt-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 dark:bg-cobalt-500 dark:hover:bg-cobalt-600"
+          className="mt-4 inline-flex min-h-[48px] w-full items-center justify-center rounded-lg bg-cobalt-600 px-4 text-sm font-bold text-white hover:bg-cobalt-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 focus-visible:ring-offset-card dark:hover:bg-cobalt-700"
         >
           Got it
         </button>

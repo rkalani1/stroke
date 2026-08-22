@@ -15830,9 +15830,14 @@ Clinician Name`;
               const choice = await installPrompt.userChoice;
               if (choice && choice.outcome === 'accepted') {
                 setIsInstalled(true);
+                setInstallPrompt(null);
               }
+              // Dismissed: keep the captured event. Clearing it here made the
+              // Install App button fall back to the manual Add-to-Home-Screen
+              // sheet, so a Chrome/Android user who cancelled once was then
+              // shown instructions for a browser menu flow instead of simply
+              // being offered the native prompt again.
             } catch (e) {
-            } finally {
               setInstallPrompt(null);
             }
           };

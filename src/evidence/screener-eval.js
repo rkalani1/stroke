@@ -280,8 +280,12 @@ export function evaluateTrialEligibility(trial, p) {
   const matchedCriteria = [];
   trial.eligibility.criteria.forEach(c => {
     if (evaluateCriterion(c, p)) {
-      const label = c.operator === 'or' ? getActiveBranch(c, p)?.label : formatLabel(c.matchedLabel, p, c.field);
-      if (label) matchedCriteria.push(label);
+      const label = c.operator === 'or'
+        ? (getActiveBranch(c, p)?.label || formatLabel(c.matchedLabel, p, c.field))
+        : formatLabel(c.matchedLabel, p, c.field);
+      // De-duplicated: distinct criteria may share a matchedLabel, and the card
+      // rendering the identical bullet twice reads as a data error.
+      if (label && !matchedCriteria.includes(label)) matchedCriteria.push(label);
     }
   });
 
@@ -406,9 +410,15 @@ export function buildBriefingNote(state, buckets) {
   const cls = CLASSIFICATION_NOTE_LABELS[state.classification] || String(state.classification || '').toUpperCase();
   const onsetHours = onsetToHours(state.onsetVal, state.onsetUnit);
 
+  const screenedAt = onsetHours < 48
+    ? onsetHours.toFixed(1) + ' h'
+    : onsetHours < 24 * 60
+    ? (onsetHours / 24).toFixed(1) + ' d'
+    : (onsetHours / 24 / 30).toFixed(1) + ' mo';
+
   let note = '=== STROKE SCREENER REFERRAL NOTE ===\n';
   note += 'Classification: ' + cls + '\n';
-  note += 'Onset window: ' + onsetNoteLabel(onsetHours) + '\n';
+  note += 'Onset window: ' + onsetNoteLabel(onsetHours) + ' (screened at ' + screenedAt + ')\n';
   note += '--------------------------------------------------\n';
 
   const candidates = [...eligible, ...pending];

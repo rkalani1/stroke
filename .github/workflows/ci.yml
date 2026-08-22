@@ -268,6 +268,16 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps chromium
 
+      # This job probes the LIVE site, but it starts the moment main is pushed
+      # -- concurrently with the `pages build and deployment` run it measures.
+      # Without this gate it read a half-swapped deploy and failed on every main
+      # merge (functional issue, not latency: 7886 ms against a 50000 ms
+      # threshold). Reproduced identically on e9ae449 and 8a13c27; both passed
+      # on re-run after the deploy settled, with no code change.
+      - name: Wait for live Pages deployment
+        if: github.ref == 'refs/heads/main'
+        run: npm run qa:wait-for-live-pages
+
       - name: Run adaptive strict QA (local + live)
         run: |
           mkdir -p output/diagnostics
