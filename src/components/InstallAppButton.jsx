@@ -12,8 +12,9 @@
 // `beforeinstallprompt` fires once, early, so it has to be captured at the app
 // root rather than by this component.
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useDialogChrome } from './use-dialog-chrome.js';
 
 const cx = (...p) => p.filter(Boolean).join(' ');
 
@@ -69,15 +70,9 @@ const STEPS = [
 
 function AddToHomeScreenSheet({ onClose }) {
   const closeRef = useRef(null);
-
-  useEffect(() => {
-    closeRef.current?.focus();
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  const dialogRef = useRef(null);
+  // Escape + Tab trap + body scroll lock + focus restore (see use-dialog-chrome.js).
+  useDialogChrome({ dialogRef, initialFocusRef: closeRef, onClose });
 
   // Portalled to <body>: .app-shell carries a backdrop-filter, which makes it
   // the containing block for position:fixed descendants — the sheet would
@@ -86,6 +81,7 @@ function AddToHomeScreenSheet({ onClose }) {
     <>
       <div className="fixed inset-0 z-[70] bg-slate-950/50" onClick={onClose} role="presentation" aria-hidden="true" />
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="install-sheet-title"

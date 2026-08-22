@@ -29,8 +29,9 @@
 // `copyToClipboard` + `addToast` are passed in from app.jsx (the app's shared
 // helpers + toast system) so the briefing-note copy reuses one code path.
 
-import React, { useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import React, { useMemo, useState, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { useDialogChrome } from './use-dialog-chrome.js';
 import {
   screenerTrials
 } from '../evidence/screenerTrials.js';
@@ -206,14 +207,9 @@ const trialBadgeStatus = (trial) =>
 
 function TrialDetailsModal({ trial, onClose }) {
   const closeRef = useRef(null);
-  useEffect(() => {
-    closeRef.current?.focus();
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  const dialogRef = useRef(null);
+  // Escape + Tab trap + body scroll lock + focus restore (see use-dialog-chrome.js).
+  useDialogChrome({ dialogRef, initialFocusRef: closeRef, onClose });
 
   if (!trial) return null;
 
@@ -225,6 +221,7 @@ function TrialDetailsModal({ trial, onClose }) {
       <div className="fixed inset-0 z-[60] bg-slate-950/50" onClick={onClose} role="presentation" aria-hidden="true" />
       {/* Bottom sheet on phone, centred dialog from sm up. */}
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="trial-modal-title"
@@ -254,7 +251,7 @@ function TrialDetailsModal({ trial, onClose }) {
           </div>
         </div>
 
-        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-4 pb-10 sm:px-5">
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain px-4 py-4 pb-10 sm:px-5">
           <div>
             <p className="font-mono text-2xs font-semibold uppercase tracking-[0.1em] text-mute">Clinical hypothesis</p>
             <p className="mt-1 text-sm leading-relaxed text-ink-2">{trial.sourceHypothesisText || 'Not specified in source'}</p>
@@ -511,7 +508,10 @@ function OnsetPicker({ onsetVal, onsetUnit, onChange }) {
 }
 
 function ExclusionRefiner({ items, checked, onToggle, onClear }) {
-  const activeCount = items.filter((i) => checked[i.id]).length;
+  // Counted off the authoritative map rather than `items`, so the badge and the
+  // Clear control still appear if a checked exclusion is ever filtered out of
+  // the visible rows.
+  const activeCount = Object.values(checked || {}).filter(Boolean).length;
   return (
     <details className="group overflow-hidden rounded-lg border border-line bg-card">
       <summary className="flex min-h-[52px] cursor-pointer select-none items-center justify-between gap-3 px-4 py-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cobalt-500">
@@ -709,10 +709,16 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
   const onsetDays = onsetHours / 24;
   const onsetMonths = onsetDays / 30;
 
-  // Which trials are still potentially active — gates the optional exclusion rows.
+  // Which trials this classification + onset window could reach — gates which
+  // optional exclusion rows are worth showing.
+  //
+  // Deliberately evaluated with `exclusions: {}`. Ticking an exclusion is
+  // exactly what makes its trial inactive, so folding the user's own ticks in
+  // here made every row erase itself the instant it was checked, leaving the
+  // flag latched in state with no control left to untick it.
   const activeAcronyms = useMemo(() => {
     if (!ready) return [];
-    const p = buildScreenerParams(state);
+    const p = buildScreenerParams({ ...state, exclusions: {} });
     return screenerTrials.filter((t) => isTrialPotentiallyActive(t, p)).map((t) => t.acronym);
   }, [state, ready]);
 
@@ -728,6 +734,8 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
     else if (addToast) addToast('Clipboard helper unavailable', 'error');
   }, [copyToClipboard, addToast, results.briefingNote]);
 
+  const anyExclusionChecked = Object.values(state.exclusions || {}).some(Boolean);
+
   const candidateCount = results.eligible.length + results.pending.length;
   const excludedCount = results.excluded.length + results.closed.length + results.incomplete.length;
 
@@ -742,7 +750,9 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
           <StepHeading n="01">What are you screening?</StepHeading>
           <ClassificationPicker
             value={cls}
-            onChange={(opt) => set({ classification: opt.id, onsetVal: opt.onsetVal, onsetUnit: 'hours' })}
+            onChange={(opt) =>
+              set({ classification: opt.id, onsetVal: opt.onsetVal, onsetUnit: 'hours', exclusions: {} })
+            }
           />
         </section>
 
@@ -756,7 +766,7 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
           </section>
         )}
 
-        {ready && visibleExclusions.length > 0 && (
+        {ready && (visibleExclusions.length > 0 || anyExclusionChecked) && (
           <ExclusionRefiner
             items={visibleExclusions}
             checked={state.exclusions}
