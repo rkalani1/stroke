@@ -846,6 +846,10 @@
                 radial-gradient(58rem 44rem at -12% 106%, color-mix(in oklab, rgb(var(--cobalt-700)) 22%, transparent), transparent 58%),
                 var(--grain),
                 linear-gradient(180deg, var(--app-bg) 0%, #08090B 100%);
+            background-color: var(--app-bg);
+            background-size: auto, auto, 140px 140px, auto;
+            background-repeat: no-repeat, no-repeat, repeat, no-repeat;
+            background-attachment: fixed, fixed, fixed, fixed;
         }
 
         /* — 3. The shell reads as one sheet of paper —————————————— */
@@ -939,8 +943,8 @@
            One elevation ramp for every bordered surface in the workspace,
            so cards stop reading as outlined rectangles and start reading
            as panels resting on the sheet. */
-        #main .border.border-line.rounded-md,
-        #main .border.border-slate-200.rounded-md {
+        #main .border.border-line.rounded-md:not([class*="rounded-t-none"]):not([class*="rounded-b-none"]),
+        #main .border.border-slate-200.rounded-md:not([class*="rounded-t-none"]):not([class*="rounded-b-none"]) {
             /* the sheet, the rail pills and the signature cards all round at
                12–14px; the workspace panels were the one surface still at 8 */
             border-radius: 12px;
@@ -1014,6 +1018,17 @@
                             0 14px 28px -12px color-mix(in oklab, var(--accent) 70%, transparent);
             }
         }
+        @media (hover: hover) {
+            html.dark button.bg-cobalt-600:hover,
+            html.dark a.bg-cobalt-600:hover,
+            [data-theme="dark"] button.bg-cobalt-600:hover,
+            [data-theme="dark"] a.bg-cobalt-600:hover {
+                background-image: linear-gradient(180deg,
+                    rgb(var(--cobalt-600)) 0%,
+                    rgb(var(--cobalt-600)) 100%);
+            }
+        }
+
         button.bg-cobalt-600:active,
         a.bg-cobalt-600:active {
             transform: translateY(calc(1px * var(--motion-scale)));
@@ -1119,16 +1134,21 @@
         [data-theme="dark"] select,
         [data-theme="dark"] textarea {
             background-color: rgba(21, 24, 30, .92);
-            border-color: var(--edge-strong);
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, .35);
+            /* deliberately NOT setting border-color: at this specificity it would
+               outrank dark:border-warn-800 / dark:border-crit-800 and erase the
+               per-field semantic edges (the LKW field's amber cue among them). */
         }
 
+        /* NEVER suppress the outline here. The halo below is a box-shadow, and
+           box-shadow is contested ground — Tailwind's focus rings, the panel
+           elevation rules above and the dark retint all write it, so whichever
+           wins is not knowable from this rule alone. The outline is the half
+           that always survives, so it stays and the halo is additive. */
         input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
         select:focus,
         textarea:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 18%, transparent);
-            outline: none;
         }
 
         /* — 11. Focus ————————————————————————————————————————————
@@ -1168,7 +1188,7 @@
         }
 
         /* Readiness meter: a lit teal fill in a recessed track. */
-        .encounter-readiness-bar .bg-cobalt-600 {
+        .encounter-readiness-bar div.bg-cobalt-600 {
             background-image: linear-gradient(90deg,
                 rgb(var(--cobalt-500)) 0%,
                 rgb(var(--cobalt-700)) 100%);
@@ -1206,7 +1226,7 @@
         }
         * {
             scrollbar-width: thin;
-            scrollbar-color: color-mix(in oklab, var(--ink) 22%, transparent) transparent;
+            scrollbar-color: color-mix(in oklab, var(--ink) 38%, transparent) transparent;
         }
         ::-webkit-scrollbar {
             width: 11px;
@@ -1216,17 +1236,17 @@
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background-color: color-mix(in oklab, var(--ink) 20%, transparent);
+            background-color: color-mix(in oklab, var(--ink) 36%, transparent);
             border: 3px solid transparent;
             background-clip: content-box;
             border-radius: 999px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background-color: color-mix(in oklab, var(--ink) 34%, transparent);
+            background-color: color-mix(in oklab, var(--ink) 52%, transparent);
         }
 
         ::selection {
-            background: color-mix(in oklab, var(--accent) 24%, transparent);
+            background: color-mix(in oklab, var(--accent) 22%, var(--card));
             color: var(--ink);
         }
 
@@ -1240,7 +1260,7 @@
                 to   { opacity: 1; }
             }
             #main > div[id^="tabpanel-"] {
-                animation: v72-enter .26s var(--ease) both;
+                animation: v72-enter .26s var(--ease);
             }
         }
 
