@@ -298,6 +298,11 @@ import {
 
 const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]));
 
+// Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
+// together with package.json "version", index.html APP_VERSION (+ ?v= asset
+// queries), and service-worker.js APP_VERSION/CACHE_NAME.
+const APP_VERSION = '6.21.0';
+
 // P0 evidence-locked calculators exposed for browser-console QA testing and future UI wiring.
 // These are pure functions with PMID/DOI citations in their source; running e.g.
 //   window.strokeP0.evaluateLargeCoreEVT({ age: 72, nihss: 18, aspects: 4, timeFromLKWh: 8, premorbidMRS: 1 })
@@ -305,7 +310,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // TESLA/LASTE. Window attachment also prevents esbuild tree-shaking until UI wiring lands.
 if (typeof window !== 'undefined') {
   window.strokeP0 = {
-    version: '5.20.0',
+    version: APP_VERSION,
     evaluateLargeCoreEVT,
     recommendLateWindowLytic,
     recommendPostEVTBP,
@@ -409,8 +414,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           }
         };
         const PUBLIC_DEMO_MODE = getPublicDemoMode();
-        // Default contacts (editable in Settings > Contact Directory).
-        const DEFAULT_CONTACTS = [];
 
         const parseStoredValue = (raw) => {
           if (raw === null || raw === undefined) return null;
@@ -776,19 +779,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           wakeup: 'DWI-FLAIR mismatch suggests onset <4.5h; CTP mismatch allows treatment up to 9h from midpoint of sleep (WAKE-UP, EXTEND).'
         };
 
-        // ============================================
-        // CHANGELOG
-        // ============================================
-        const CHANGELOG = [
-          { version: '2.5', date: '2025-06', items: ['Updated ICH algorithms per AHA/ASA 2022 guidelines', 'Replaced EVT mermaid flowcharts with scannable tables', 'Added warfarin/DOAC reversal step-cards', 'Added post-thrombolytic ICH protocol', 'Added angioedema management', 'Added contrast allergy protocol', 'Added BP management quick reference'] },
-          { version: '2.6', date: '2025-07', items: ['Simplified encounter to Video Telestroke / Phone Consult', 'Removed inpatient/clinic contexts and quick/full mode toggle'] },
-          { version: '3.0', date: '2025-08', items: ['Toast notification system replacing inline alerts', 'Replaced all confirm/prompt dialogs with styled modals', 'Persistent timer visible across all tabs', 'Encounter templates for common presentations', 'Encounter history with shift handoff support', 'Focus mode for active encounters', 'Calculator drawer with inline scoring', 'Section completion indicators', 'Keyboard shortcuts (Ctrl+Shift+C, Ctrl+K, etc.)', 'Improved mobile touch targets', 'Visual timeline for stroke events', 'Auto-filtering trials by patient characteristics', 'References search and filtering', 'Error boundaries for graceful failure recovery', 'Service worker for offline support'] },
-          { version: '3.1', date: '2025-09', items: ['Added vital signs (HR, SpO2, Temp) to encounter and notes', 'Added EKG/Telemetry input fields', 'GCS score included in all note templates', 'Weight unit toggle (kg/lbs) with auto-conversion', 'Edoxaban added to anticoagulant system', 'aPTT auto-blocks TNK when >40s', 'Standardized platelet units (K/μL) throughout', 'Inline lab validation badges (glucose, INR, platelets, aPTT)', 'Andexanet alfa aligned to PCC-first protocol', 'Consent documentation in transfer notes', 'Fixed keyboard shortcut conflicts and section completion', 'Improved reset logic for new patients'] },
-          { version: '3.2', date: '2025-10', items: ['Notes now show consultation type (Telephone vs Video Telestroke)', 'BP phase target included in consultation, transfer, and signout notes', 'TOAST classification in transfer and discharge notes', 'Anticoagulation details with DOAC timing in consultation note', 'Transfer note shows weight, premorbid mRS, contrast allergy flag', 'Dysphagia screening and VTE prophylaxis in discharge note', 'Transfer note alerts for NPO status and contrast allergy', 'SAH + anticoagulation reversal warning', 'GCS ≤8 airway protection alert', 'Edoxaban CrCl >95 reduced efficacy warning', 'Hypoglycemia + TNK escalated to error severity', 'BP phase auto-reverts when diagnosis changes', 'Fixed INR/aPTT orphaned comma in lab line', 'Trial eligibility reset on new case'] },
-          { version: '3.3', date: '2025-11', items: ['CrCl calculator prioritized by diagnosis in calculator tab', 'Post-TNK neuro check schedule standardized (q15min×2h, q30min×6h, q1h×16h)', 'SAH seizure prophylaxis with specific indications in admission orders', 'Osmotic therapy data in discharge note (agent, Na+ target, osmolality)', 'Nutritional support and feeding route in discharge note', 'Falls risk screening in discharge note', 'Driving restrictions with commercial driver flag in discharge note', 'Clipboard fallback for insecure contexts (HTTP/dev builds)', 'Deep merge of stored data prevents crashes when new fields are added', 'All calculator copy buttons now have accessible labels', 'ICH Volume, Andexanet, and Enoxaparin calculators now sort by diagnosis priority'] },
-          { version: '3.4', date: '2026-02', items: ['SAH aneurysm characteristics (location, size, securing method) with posterior circulation and giant aneurysm alerts', 'SAH vasospasm/DCI monitoring protocol (TCD, neuro checks, sodium, induced HTN) with safety guard', 'ICH surgical decision support (cerebellar posterior-fossa mass effect/hydrocephalus, midline shift, deterioration) with neurosurgery urgency alert', 'Stroke vascular territory selector (MCA/ACA/PCA/basilar/vertebral/cerebellar/lacunar/watershed) with posterior circulation guidance', 'Stroke phenotype classifier (cortical-LVO, embolic, lacunar, posterior, dissection, watershed, cardioembolic)', 'Symptom trajectory tracking (stable/improving/fluctuating/worsening/resolved) with clinical alerts', 'Post-thrombolytic monitoring protocol checklist with sICH risk calculator (5 factors)', 'Family/surrogate communication log with auto-timestamp', 'All new fields integrated into consult, transfer, signout, progress, discharge, and Pulsara templates', 'Fixed GCS reference in ICH guideline conditions (seizure prophylaxis, MIE eligibility)', 'Fixed FUNC score GCS 13-15 returning null instead of 2 points', 'State cleanup on diagnosis category change includes nested objects'] }
-        ];
-
         const parseBloodPressure = (bpString) => {
           if (!bpString) return null;
           const match = bpString.match(/(\d{2,3})\s*\/\s*(\d{2,3})/);
@@ -1036,7 +1026,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             ttlHoursOverride: null,
             defaultConsultationType: 'telephone',
             workflowPersona: 'senior',
-            contacts: DEFAULT_CONTACTS,
           });
 
         const getDefaultAppData = () => ({
@@ -1192,9 +1181,20 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           ...(API_PROVIDER_META[value] || {})
         }));
 
+        // What's New feed items, newest first. Rendered verbatim from the
+        // build-time whats-new.json (see scripts/generate-whats-new.mjs);
+        // unverified items carry no pmid/doi/pubmedUrl and link to their
+        // briefing source instead — the renderer must never synthesize a
+        // PubMed link for them. Defined ABOVE the routing-slice start
+        // (MANAGEMENT_SUBTABS) so tests/navigation-reorganization.test.js can
+        // still evaluate the slice standalone.
+        const WHATS_NEW_ITEMS = Array.isArray(whatsNewData && whatsNewData.items)
+          ? [...whatsNewData.items].sort((a, b) => (b.year || 0) - (a.year || 0))
+          : [];
+
         const MANAGEMENT_SUBTABS = ['ich', 'ischemic'];
 
-        const RESEARCH_SUBTABS = ['guidelines', 'references', 'calculators', 'education'];
+        const RESEARCH_SUBTABS = ['guidelines', 'references', 'calculators', 'education', 'whatsnew'];
 
         // BYOK (bring-your-own-key) LLM providers offered in Settings → API
         // Configuration. One table drives the <select>, the key placeholder and
@@ -8455,11 +8455,6 @@ Clinician Name`;
               const next = current ? `${current}, ${medication}` : medication;
               return { ...prev, medications: next };
             });
-          };
-
-
-          const updateContacts = (contacts) => {
-            updateSettings({ contacts });
           };
 
 
@@ -16714,26 +16709,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const curatedResourceUrls = new Set(encounterQuickLinks.map((link) => link.url));
           const headerResourceChips = headerResourceLinks.filter((link) => curatedResourceUrls.has(link.url));
           const headerResourceOverflow = headerResourceLinks.filter((link) => !curatedResourceUrls.has(link.url));
-          const sanitizePhoneForTel = (value) => {
-            const raw = String(value || '').trim();
-            if (!raw) return '';
-            const plusPrefixed = raw.startsWith('+');
-            const digitsOnly = raw.replace(/\D/g, '');
-            if (!digitsOnly) return '';
-            if (plusPrefixed) return `+${digitsOnly}`;
-            if (digitsOnly.length === 10) return `+1${digitsOnly}`;
-            if (digitsOnly.length === 11 && digitsOnly.startsWith('1')) return `+${digitsOnly}`;
-            return `+${digitsOnly}`;
-          };
-          const configuredContacts = Array.isArray(settings.contacts) ? settings.contacts : [];
-          const hasConfiguredPhones = configuredContacts.some((contact) => String(contact?.phone || '').trim());
-          const contactsForEdit = (hasConfiguredPhones ? configuredContacts : DEFAULT_CONTACTS).map((contact, index) => ({
-            id: contact?.id || `contact-${index}`,
-            label: String(contact?.label || '').trim(),
-            phone: String(contact?.phone || '').trim(),
-            note: String(contact?.note || '').trim()
-          }));
-          const quickContacts = contactsForEdit.filter((contact) => contact.phone && contact.label);
           const ttlDisplayHours = appConfig.ttlHoursOverride || DEFAULT_TTL_HOURS;
           const showDocumentActions = !PUBLIC_DEMO_MODE;
           const isNarrowViewport = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
@@ -30231,7 +30206,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'guidelines', name: 'Guidelines' },
                         { id: 'references', name: 'Reference Library' },
                         { id: 'calculators', name: 'Calculators' },
-                        { id: 'education', name: 'Educational Resources' }
+                        { id: 'education', name: 'Educational Resources' },
+                        { id: 'whatsnew', name: "What's New" }
                       ].map((tab) => {
                         const active = researchSubTab === tab.id;
                         return (
@@ -32099,7 +32075,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'guidelines', name: "Guidelines" },
                         { id: 'references', name: "Reference Library" },
                         { id: 'calculators', name: "Calculators" },
-                        { id: 'education', name: "Educational Resources" }
+                        { id: 'education', name: "Educational Resources" },
+                        { id: 'whatsnew', name: "What's New" }
                       ].map((tab) => {
                         const active = researchSubTab === tab.id;
                         return (
@@ -32156,6 +32133,84 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ))}
                       </ul>
                     </section>
+                      </div>
+                    )}
+
+                    {/* What's New — curated evidence feed rendered verbatim from
+                        whats-new.json. Verified items link to PubMed/DOI; the
+                        unverified tier links only to its briefing source (never
+                        a synthesized PubMed link). */}
+                    {researchSubTab === 'whatsnew' && (
+                      <div id="research-tabpanel-whatsnew" role="tabpanel" aria-labelledby="research-tab-whatsnew" className="space-y-6">
+                        <section aria-labelledby="research-whatsnew-heading" className="space-y-4">
+                          <header>
+                            <p className="font-mono uppercase text-eyebrow text-mute mb-1">Curated evidence feed</p>
+                            <h2 id="research-whatsnew-heading" className="font-serif text-section text-ink">What&#8217;s New</h2>
+                          </header>
+                          <ul className="grid grid-cols-1 gap-3">
+                            {WHATS_NEW_ITEMS.map((item) => {
+                              const verified = item.verificationStatus === 'verified';
+                              const doiUrl = item.doi ? `https://doi.org/${item.doi}` : null;
+                              return (
+                                <li key={item.id} className="v7-card t-prevent">
+                                  <p className="font-sans text-body text-ink font-medium leading-snug text-pretty">
+                                    {item.fullName || item.shortName}
+                                  </p>
+                                  <p className="font-mono text-[11px] text-mute uppercase tracking-wide mt-1">
+                                    {[item.journal, item.year, item.topicLabel].filter(Boolean).join(' · ')}
+                                  </p>
+                                  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                                    {verified ? (
+                                      <span className="px-2 py-0.5 rounded-full border border-ok-200 bg-ok-50 text-ok-800 font-semibold dark:border-ok-800 dark:bg-ok-950 dark:text-ok-300">
+                                        Verified
+                                      </span>
+                                    ) : (
+                                      <span className="px-2 py-0.5 rounded-full border border-line bg-paper-2 text-mute font-semibold">
+                                        Not yet PubMed-indexed
+                                      </span>
+                                    )}
+                                    {verified && item.pubmedUrl && (
+                                      <a
+                                        href={item.pubmedUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-semibold text-cobalt-700 hover:underline dark:text-cobalt-300"
+                                        aria-label={`Open ${item.shortName || 'study'} on PubMed (opens in new tab)`}
+                                      >
+                                        PubMed{item.pmid ? ` ${item.pmid}` : ''}
+                                      </a>
+                                    )}
+                                    {verified && doiUrl && (
+                                      <a
+                                        href={doiUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-semibold text-cobalt-700 hover:underline dark:text-cobalt-300"
+                                        aria-label={`Open ${item.shortName || 'study'} DOI (opens in new tab)`}
+                                      >
+                                        DOI
+                                      </a>
+                                    )}
+                                    {!verified && item.sourceUrl && (
+                                      <a
+                                        href={item.sourceUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-semibold text-cobalt-700 hover:underline dark:text-cobalt-300"
+                                        aria-label={`Open source for ${item.shortName || 'study'} (opens in new tab)`}
+                                      >
+                                        Source
+                                      </a>
+                                    )}
+                                  </div>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                          {WHATS_NEW_ITEMS.length === 0 && (
+                            <p className="text-sm text-mute">No feed items available in this build.</p>
+                          )}
+                        </section>
                       </div>
                     )}
 
@@ -34235,7 +34290,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* ============================================ */}
                 {activeTab === 'settings' && (
                   <ErrorBoundary>
-                    <div id="tabpanel-settings" role="tabpanel" aria-labelledby="tab-settings" className="space-y-6">
+                    {/* Settings has no tab in the main tablist (it opens from the
+                        header menu), so label the panel directly instead of
+                        pointing aria-labelledby at a non-existent tab id. */}
+                    <div id="tabpanel-settings" role="tabpanel" aria-label="Settings" className="space-y-6">
                       <header className="bg-card border border-line rounded-md p-6">
                         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                           <div>
@@ -34337,6 +34395,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <button
                               type="button"
                               onClick={() => {
+                                // Cancel = discard unsaved draft edits (tempProvider/
+                                // tempKey) by restoring the last-saved values, then
+                                // leave Settings the same way Save does.
+                                setTempProvider(apiProvider);
+                                setTempKey(apiKey);
+                                setShowKey(false);
                                 navigateTo('encounter');
                               }}
                               className="px-4 py-2 text-sm font-semibold text-ink hover:bg-paper-2 active:bg-paper-3 border border-line rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-cobalt-500"

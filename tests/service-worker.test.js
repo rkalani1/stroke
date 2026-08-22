@@ -104,6 +104,9 @@ describe('service worker update lifecycle', () => {
     expect(indexSource).toContain(`app.js?v=${version}`);
     expect(indexSource).toContain(`tailwind.css?v=${version}`);
     expect(indexSource).toContain(`const APP_VERSION = '${version}'`);
+
+    const appSource = readFileSync(join(repoRoot, 'src', 'app.jsx'), 'utf8');
+    expect(appSource).toContain(`const APP_VERSION = '${version}'`);
   });
 
   it('stages updates without claiming clients during activate', async () => {

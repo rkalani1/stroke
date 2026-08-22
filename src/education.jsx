@@ -950,6 +950,18 @@ const EDUCATION_MODULES = [
   }
 ];
 
+// Deep-link keys that are category views rather than module ids. Deep-link
+// audiences map onto the module tags actually in use: modules carry a
+// 'quality' tag (not 'nursing'), so the nurse-education deep link filters the
+// dashboard to the Quality Metrics category.
+const CATEGORY_DEEP_LINKS = {
+  'pocket-cards': 'pocket-card',
+  'icu': 'icu',
+  'simulators': 'simulators',
+  'nursing': 'quality',
+  'onboarding': 'all'
+};
+
 // =====================================================================
 // MAIN EDUCATION MODULE EXPORT
 // =====================================================================
@@ -967,14 +979,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
 
   useEffect(() => {
     if (activeSubTab) {
-      const mapping = {
-        'pocket-cards': 'pocket-card',
-        'icu': 'icu',
-        'simulators': 'simulators',
-        'nursing': 'quality',
-        'onboarding': 'all'
-      };
-      const targetKey = mapping[activeSubTab];
+      const targetKey = CATEGORY_DEEP_LINKS[activeSubTab];
       if (targetKey) {
         setSelectedCategory(targetKey);
         onNavigate(null);
@@ -982,17 +987,16 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
     }
   }, [activeSubTab, onNavigate]);
 
+  // Only categories that actually match modules get a chip; dead chips
+  // ('epic', 'trials', 'needs-review') matched zero modules and were removed.
   const categories = [
     { key: "all", label: "All Modules" },
     { key: "simulators", label: "Interactive Simulators" },
     { key: "pocket-card", label: "Pocket Cards" },
     { key: "printable", label: "Printable / Infographics" },
     { key: "icu", label: "Neuro ICU / NCC" },
-    { key: "epic", label: "Epic & Notes" },
     { key: "quality", label: "Quality Metrics" },
     { key: "pediatrics", label: "Pediatrics" },
-    { key: "trials", label: "Clinical Trials" },
-    { key: "needs-review", label: "Needs Review (Placeholders)" },
   ];
 
   const filteredModules = useMemo(() => {
@@ -1000,12 +1004,8 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
       // Workflow-context filter: hide only modules the active context (from the
       // /content data layer) explicitly excludes. Empty/absent set hides nothing.
       if (contextHiddenIds && contextHiddenIds.has(m.id)) return false;
-      if (selectedCategory !== "all") {
-        if (selectedCategory === "needs-review") {
-          if (!m.placeholders || m.placeholders.length === 0) return false;
-        } else if (!m.categories.includes(selectedCategory)) {
-          return false;
-        }
+      if (selectedCategory !== "all" && !m.categories.includes(selectedCategory)) {
+        return false;
       }
       if (search.trim()) {
         const q = search.toLowerCase();
@@ -1016,6 +1016,15 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
       return true;
     });
   }, [selectedCategory, search, contextHiddenIds]);
+
+  // Unknown deep-link (a subTab that is neither a module id nor a category
+  // key): fall back to the dashboard with a visible note instead of silently
+  // showing an unexplained view.
+  const moduleNotFound = Boolean(
+    subTab &&
+    !CATEGORY_DEEP_LINKS[subTab] &&
+    !EDUCATION_MODULES.some(m => m.id === subTab)
+  );
 
   // Render individual full detail view
   if (subTab) {
@@ -1055,6 +1064,36 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
       <header className="bg-card border border-line rounded-lg p-6 space-y-2">
         <h1 className="font-serif text-2xl text-ink font-bold">Educational Resources</h1>
       </header>
+
+      {moduleNotFound && (
+        <div className="bg-card border border-line rounded-lg p-4">
+          <p className="text-sm text-ink-2">
+            Module <span className="font-mono">{subTab}</span> was not found — showing all modules instead.
+          </p>
+        </div>
+      )}
+
+      {/* Category filter chips */}
+      <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter education modules by category">
+        {categories.map((cat) => {
+          const active = selectedCategory === cat.key;
+          return (
+            <button
+              key={cat.key}
+              type="button"
+              aria-pressed={active}
+              onClick={() => setSelectedCategory(cat.key)}
+              className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors min-h-[36px] ${
+                active
+                  ? 'bg-cobalt-600 text-white border-cobalt-600 dark:bg-cobalt-500 dark:border-cobalt-500'
+                  : 'bg-slate-100 hover:bg-cobalt-100 text-slate-700 hover:text-cobalt-700 border-line hover:border-cobalt-300 dark:bg-paper-2 dark:hover:bg-cobalt-800 dark:text-ink-2 dark:hover:text-cobalt-300'
+              }`}
+            >
+              {cat.label}
+            </button>
+          );
+        })}
+      </div>
 
       {/* Modules Dashboard Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -1145,8 +1184,12 @@ const PdfActionBar = ({ title, subtitle, pdfPath, pdfName, iconColorClass = "tex
 
   const isHttp = window.location.protocol.startsWith('http');
   const buildVersion = '6.9.24';
-  
-  // Extract clean path and cache-busted path
+
+  // Extract clean path and cache-busted path. When no pdfPath is provided the
+  // module has no downloadable PDF on disk — render the header and card only,
+  // with no Preview/Download/Email actions (they would otherwise point at the
+  // app page itself and 404-shaped dead ends).
+  const hasPdf = Boolean(pdfPath);
   const cleanPath = pdfPath ? pdfPath.split('?')[0] : '';
   const resolvedPath = isHttp ? `${cleanPath}?v=${buildVersion}` : cleanPath;
 
@@ -1168,33 +1211,35 @@ const PdfActionBar = ({ title, subtitle, pdfPath, pdfName, iconColorClass = "tex
             <p className="text-xs text-slate-500 dark:text-slate-400">{subtitle}</p>
           </div>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setShowPdf(!showPdf)}
-            className="px-3.5 py-1.5 bg-cobalt-600 text-white rounded-lg text-xs font-semibold hover:bg-cobalt-700 transition-colors flex items-center gap-1.5"
-          >
-            <i aria-hidden="true" data-lucide="eye" className="w-3.5 h-3.5"></i>
-            {showPdf ? "Hide PDF Preview" : "Preview PDF"}
-          </button>
-          <a
-            href={resolvedPath}
-            download={pdfName}
-            className="px-3.5 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors flex items-center gap-1.5"
-          >
-            <i aria-hidden="true" data-lucide="download" className="w-3.5 h-3.5"></i>
-            Download
-          </a>
-          <button
-            onClick={emailDoc}
-            className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-800 transition-colors flex items-center gap-1.5"
-          >
-            <i aria-hidden="true" data-lucide="mail" className="w-3.5 h-3.5"></i>
-            Email
-          </button>
-        </div>
+        {hasPdf && (
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setShowPdf(!showPdf)}
+              className="px-3.5 py-1.5 bg-cobalt-600 text-white rounded-lg text-xs font-semibold hover:bg-cobalt-700 transition-colors flex items-center gap-1.5"
+            >
+              <i aria-hidden="true" data-lucide="eye" className="w-3.5 h-3.5"></i>
+              {showPdf ? "Hide PDF Preview" : "Preview PDF"}
+            </button>
+            <a
+              href={resolvedPath}
+              download={pdfName}
+              className="px-3.5 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors flex items-center gap-1.5"
+            >
+              <i aria-hidden="true" data-lucide="download" className="w-3.5 h-3.5"></i>
+              Download
+            </a>
+            <button
+              onClick={emailDoc}
+              className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-800 transition-colors flex items-center gap-1.5"
+            >
+              <i aria-hidden="true" data-lucide="mail" className="w-3.5 h-3.5"></i>
+              Email
+            </button>
+          </div>
+        )}
       </div>
 
-      {showPdf && (
+      {hasPdf && showPdf && (
         <div className="border border-slate-250 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
           <iframe
             src={resolvedPath}
@@ -1370,25 +1415,6 @@ const IcpManagementView = () => {
 // =====================================================================
 function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard, addToast) {
   switch (moduleId) {
-    case 'telestroke-map':
-      return (
-        <div className="flex flex-col items-center justify-center p-8 text-center space-y-4 border border-line rounded-lg bg-paper-2">
-          <i data-lucide="map" className="w-12 h-12 text-cobalt-600 dark:text-cobalt-400"></i>
-          <h3 className="font-serif text-lg font-bold text-ink">Telestroke Network Map</h3>
-          <p className="text-sm text-ink-2 max-w-md">
-            This external resource shows regional telestroke coverage and expansion map for service planning.
-          </p>
-          <a
-            href="https://rkalani1.github.io/telestroke-expansion-map/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-cobalt-600 text-white font-semibold rounded-md hover:bg-cobalt-700 transition-colors"
-          >
-            Open Map in New Tab
-            <i data-lucide="external-link" className="w-4 h-4"></i>
-          </a>
-        </div>
-      );
     case 'toast-classification':
       return <ToastClassificationView />;
     case 'dapt-regimens':
@@ -6516,8 +6542,6 @@ const FibromuscularDysplasiaView = () => {
   return (
     <PdfActionBar
       title="Fibromuscular Dysplasia & Stroke"
-      pdfPath="documents/references/Fibromuscular Dysplasia.pdf"
-      pdfName="Fibromuscular Dysplasia.pdf"
       iconColorClass="text-cobalt-600 dark:text-cobalt-400"
     >
       <ScaledCardWrapper isLandscape={false}>
@@ -6982,8 +7006,6 @@ const AntiepilepticDrugsView = () => {
     <PdfActionBar
       title="Antiepileptic Drugs &amp; Post-Stroke Seizures"
       subtitle="Antiseizure Medication (ASM) Selection &amp; Reference Card"
-      pdfPath="documents/references/Antiepileptic Drugs.pdf"
-      pdfName="Antiepileptic Drugs.pdf"
       iconColorClass="text-cobalt-600 dark:text-cobalt-400"
     >
       <ScaledCardWrapper isLandscape={false}>
@@ -8717,8 +8739,6 @@ export const CadasilCarasilView = () => {
   return (
     <PdfActionBar
       title="Genetic Small Vessel Vasculopathies (CADASIL, CARASIL, Fabry, MELAS, COL4A1)"
-      pdfPath="documents/references/CADASIL_CARASIL_Vasculopathies.pdf"
-      pdfName="CADASIL_CARASIL_Vasculopathies.pdf"
       iconColorClass="text-cobalt-600 dark:text-cobalt-400"
     >
       <ScaledCardWrapper isLandscape={false}>
@@ -8932,8 +8952,6 @@ export const MoyamoyaDiseaseView = () => {
   return (
     <PdfActionBar
       title="Moyamoya Disease & Moyamoya Syndrome: Medical & Surgical Revascularization"
-      pdfPath="documents/references/Moyamoya_Disease_Surgical_Revascularization.pdf"
-      pdfName="Moyamoya_Disease_Surgical_Revascularization.pdf"
       iconColorClass="text-teal-600 dark:text-teal-400"
     >
       <ScaledCardWrapper isLandscape={false}>
@@ -9187,8 +9205,6 @@ export const CancerAssociatedStrokeView = () => {
   return (
     <PdfActionBar
       title="Cancer-Associated Stroke, Hypercoagulability & Marantic Endocarditis (NBTE)"
-      pdfPath="documents/references/Cancer_Associated_Stroke_NBTE.pdf"
-      pdfName="Cancer_Associated_Stroke_NBTE.pdf"
       iconColorClass="text-crit-600 dark:text-crit-400"
     >
       <ScaledCardWrapper isLandscape={false}>
@@ -9399,8 +9415,6 @@ export const DmvoMevoManagementView = () => {
   return (
     <PdfActionBar
       title="Distal Medium Vessel Occlusions (DMVO / MeVO) Management"
-      pdfPath="documents/references/DMVO_MeVO_Management.pdf"
-      pdfName="DMVO_MeVO_Management.pdf"
       iconColorClass="text-cobalt-600 dark:text-cobalt-400"
     >
       <ScaledCardWrapper isLandscape={false}>
@@ -9632,8 +9646,6 @@ export const IchBloodPressureView = () => {
   return (
     <PdfActionBar
       title="Acute ICH Expansion Mitigation & Blood Pressure Management"
-      pdfPath="documents/references/ICH_Blood_Pressure_Expansion.pdf"
-      pdfName="ICH_Blood_Pressure_Expansion.pdf"
       iconColorClass="text-crit-600 dark:text-crit-400"
     >
       <ScaledCardWrapper isLandscape={false}>
@@ -9880,8 +9892,6 @@ export const MetabolicStrokePreventionView = () => {
   return (
     <PdfActionBar
       title="Metabolic & Vascular Risk Modulation in Stroke Prevention"
-      pdfPath="documents/references/Metabolic_Stroke_Prevention.pdf"
-      pdfName="Metabolic_Stroke_Prevention.pdf"
       iconColorClass="text-teal-600 dark:text-teal-400"
     >
       <ScaledCardWrapper isLandscape={false}>

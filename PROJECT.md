@@ -55,7 +55,7 @@ The Stroke Clinical Decision Support (CDS) application is a high-reliability, cl
 
 ### `content/education/*.md` ↔ `scripts/build-content-bundle.mjs` ↔ `content/bundle.json` ↔ `src/education.jsx`
 - Markdown files must contain valid YAML frontmatter:
-  `id: string, title: string, category: string, summary: string, readingTimeMinutes: number, keyTakeaways: string[], references: { title: string, citation: string, pmid?: string, doi?: string }[]`.
+  `id: string, title: string, category: string, summary: string, readingTimeMinutes: number, references: { title: string, citation: string, pmid?: string, doi?: string }[]`.
 - `src/education.jsx` maps `EDUCATION_MODULES` exactly to the 40 module IDs.
 
 ### Verification Tools ↔ CI/Pipeline
