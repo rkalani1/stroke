@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "citations",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.20.0",
+    "appVersion": "6.21.0",
     "checksum": "sha256:06e4864b7326cc834bb06db2148a166e",
     "count": 219,
     "source": "Evidence atlas citations bundle",
