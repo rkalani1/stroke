@@ -211,7 +211,10 @@ export function computeComplianceBadge(measuredICP, brainCompliance) {
 
 export function computeDripInterval({ trueMeanICP, evdHeight, transducerOffset, stopcockPosition, isKinked, isClotted, brainCompliance }) {
   // Driving pressure (mmHg) pushing CSF over the drip-chamber lip.
-  const drivingPressure = trueMeanICP - (evdHeight + transducerOffset) * CMH2O_TO_MMHG;
+  // transducerOffset is + when the system sits BELOW the tragus, so the
+  // drip-chamber lip is (evdHeight - transducerOffset) cmH₂O above the
+  // ventricle — a lowered system drains FASTER, not slower.
+  const drivingPressure = trueMeanICP - (evdHeight - transducerOffset) * CMH2O_TO_MMHG;
   const drips = stopcockPosition === 0 && !isKinked && !isClotted && brainCompliance !== 0 && drivingPressure > 0;
   if (!drips) return { drips: false, intervalMs: null, drivingPressure };
   const intervalMs = clamp(3000 - drivingPressure * 100, 400, 3000);
