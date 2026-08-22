@@ -580,7 +580,7 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       const json = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/bundle.json'), 'utf8'));
       const { guidelines, trials, education, calculators, references } = json._meta.counts;
       expect(guidelines).toBe(11);
-      expect(trials).toBe(130);
+      expect(trials).toBe(131);
       expect(education).toBeGreaterThanOrEqual(32);
       expect(calculators).toBe(34);
       expect(references).toBe(28); // 18 + 9 quick-reference sheets + 1 parenthesized-path PDF (seed regex fix)
@@ -650,9 +650,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(result.stdout).toContain('Evidence Atlas validation passed');
     });
 
-    it('F14-T1.2: Evidence Atlas contains exactly 9 active trials and 130 completed trials', () => {
+    it('F14-T1.2: Evidence Atlas contains exactly 9 active trials and 131 completed trials', () => {
       expect(activeTrials.length).toBe(9);
-      expect(completedTrials.length).toBe(130);
+      expect(completedTrials.length).toBe(131);
     });
 
     it('F14-T1.3: Matcher engine coverage achieves 100% (42/42 criteria and 14/14 exclusions)', () => {
@@ -886,9 +886,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.21.0', () => {
+    it('F19-T1.5: package.json version matches latest release v6.22.0', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.21.0');
+      expect(pkg.version).toBe('6.22.0');
     });
   });
 });

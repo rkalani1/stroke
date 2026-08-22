@@ -1,5 +1,30 @@
 # CHANGELOG
 
+## v6.22.0 — 2026-08-22 — remove the What's New feed
+
+- **Removed the What's New section entirely** (panel, Research subtab, routes,
+  `whats-new.json`, the generator/validator scripts, the
+  `data/clinical-intelligence/` briefing inputs, the service-worker precache
+  entry, the `whats_new` MCP tool, and the CI hooks). An audit of the feed
+  found 35 of 50 items linked only to a journal homepage rather than an
+  article, 23 of those had no PMID or DOI at all, two entries were not stroke
+  content, and the whole feed was 2-3 months stale with nothing in the
+  validation suite able to detect staleness. The Evidence Atlas and the
+  landmark-trials library cover the same need with verified citations, so the
+  feed was a second, weaker channel that required manual upkeep to stay
+  honest. The old `#/research/whats-new` routes now fall back to the
+  Guidelines tab instead of an empty panel.
+- **ORIENTAL-MeVO preserved before deletion, and the MeVO rule corrected.**
+  The feed's one item with no coverage elsewhere was ORIENTAL-MeVO (N Engl J
+  Med 2026;394:1894-1904, PMID 42127389): 563 patients with medium-vessel
+  occlusion and NIHSS >=6, 90-day functional independence 58.6% vs 46.6%
+  (adjusted rate ratio 1.24, 95% CI 1.07-1.44, P=0.004), sICH 4.7% vs 2.2%,
+  mortality 11.1% vs 10.2%. It is now an Evidence Atlas record. The
+  `mevo_evt_not_recommended` guideline card previously read as a blanket
+  Class III (No Benefit, LOE A); it now states that the 2026 guideline
+  grading predates this positive trial and must not be applied mechanically
+  to moderate-to-severe deficits. **Flagged for physician review.**
+
 ## v6.21.0 — 2026-08-22 — full-surface evidence audit (P0 safety → P5 content)
 
 - **P0 patient-safety:** EVT auto-recommendation engine rewritten (documented

@@ -9,7 +9,6 @@ exclude:
   - .remember/
   - android/
   - content/
-  - data/clinical-intelligence/
   - docs/
   - ios/
   - mcp/
@@ -35,4 +34,3 @@ exclude:
   - package.json
   - tailwind.config.js
   - vitest.config.js
-  - whats-new-source-gaps.md

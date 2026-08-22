@@ -64,9 +64,8 @@ describe('Navigation Reorganization and Consolidation (R1, R2)', () => {
     expect(mobileResearchIdx).toBeGreaterThan(mobileTrialsIdx);
   });
 
-  it('R2: Consolidated Guidelines & References has guidelines, references, calculators, education, and whatsnew subtabs', () => {
-    // Check RESEARCH_SUBTABS definition (P4-1 added the What's New feed panel)
-    expect(scope.RESEARCH_SUBTABS).toEqual(['guidelines', 'references', 'calculators', 'education', 'whatsnew']);
+  it('R2: Consolidated Guidelines & References has guidelines, references, calculators, and education subtabs', () => {
+    expect(scope.RESEARCH_SUBTABS).toEqual(['guidelines', 'references', 'calculators', 'education']);
 
     // Check subtab template string inside activeTab === 'research'
     expect(appJsxContent).toContain('id={`research-tab-${tab.id}`}');
@@ -74,7 +73,6 @@ describe('Navigation Reorganization and Consolidation (R1, R2)', () => {
     expect(appJsxContent).toContain('id="research-tabpanel-references"');
     expect(appJsxContent).toContain('id="research-tabpanel-calculators"');
     expect(appJsxContent).toContain('id="research-tabpanel-education"');
-    expect(appJsxContent).toContain('id="research-tabpanel-whatsnew"');
     expect(appJsxContent).toContain('{ id: \'guidelines\', name: "Guidelines" }');
     expect(appJsxContent).toContain('{ id: \'references\', name: "Reference Library" }');
     expect(appJsxContent).toContain('{ id: \'calculators\', name: "Calculators" }');
@@ -95,8 +93,6 @@ describe('Navigation Reorganization and Consolidation (R1, R2)', () => {
     expect(scope.parseHashRoute('#/research/references')).toEqual({ tab: 'research', sub: 'references' });
     expect(scope.parseHashRoute('#/research/calculators')).toEqual({ tab: 'research', sub: 'calculators' });
     expect(scope.parseHashRoute('#/research/education')).toEqual({ tab: 'research', sub: 'education', educationSub: null });
-    expect(scope.parseHashRoute('#/research/whatsnew')).toEqual({ tab: 'research', sub: 'whatsnew' });
-    expect(scope.parseHashRoute('#/research/whats-new')).toEqual({ tab: 'research', sub: 'whatsnew' });
     expect(scope.parseHashRoute('#/research/education/icu')).toEqual({ tab: 'research', sub: 'education', educationSub: 'icu' });
 
     // Legacy and alias routes
@@ -123,7 +119,6 @@ describe('Navigation Reorganization and Consolidation (R1, R2)', () => {
     expect(scope.buildHashRoute('research', 'calculators')).toBe('#/research/calculators');
     expect(scope.buildHashRoute('research', 'education')).toBe('#/research/education');
     expect(scope.buildHashRoute('research', 'education', 'icu')).toBe('#/research/education/icu');
-    expect(scope.buildHashRoute('research', 'whatsnew')).toBe('#/research/whatsnew');
     expect(scope.buildHashRoute('education', 'onboarding')).toBe('#/research/education/onboarding');
   });
 

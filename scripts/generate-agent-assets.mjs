@@ -12,7 +12,6 @@
 //   data/management-cards.json           — AIS command-center cards
 //   data/generic-protocols.json          — institution-neutral BP protocols
 //   data/guidelines/index.json + *.json  — guideline metadata + copies
-//   data/whats-new.json                  — copy of the served whats-new feed
 //   data/calculators-index.json          — calculator catalog
 //   llms.txt / llms-full.txt             — AI-crawler manifests
 //   robots.txt / sitemap.xml             — crawler guidance
@@ -191,8 +190,6 @@ async function main() {
   }
   write('data/guidelines/index.json', envelope('guidelines-index', publicSourceLabel('src/guidelines/'), gindex));
 
-  // ---- whats-new: the root /whats-new.json is already served; do not duplicate ----
-
   // ---- calculators index ----
   write('data/calculators-index.json', envelope('calculators', publicSourceLabel('src/calculators.js, src/calculators-extended.js'), CALCULATORS));
 
@@ -202,7 +199,7 @@ async function main() {
     'data/atlas/recommendations.json', 'data/atlas/citations.json',
     'data/atlas/claims.json', 'data/atlas/topics.json', 'data/atlas/labels.json',
     'data/management-cards.json', 'data/generic-protocols.json',
-    'data/guidelines/index.json', 'whats-new.json', 'data/calculators-index.json',
+    'data/guidelines/index.json', 'data/calculators-index.json',
   ];
   write('data/index.json', {
     _meta: {
@@ -233,7 +230,6 @@ async function main() {
     `- [Guidelines index](${BASE_URL}/data/guidelines/index.json)`,
     `- [Management cards](${BASE_URL}/data/management-cards.json)`,
     `- [Generic BP protocols](${BASE_URL}/data/generic-protocols.json)`,
-    `- [What's new feed](${BASE_URL}/whats-new.json)`,
     `- [Calculators index](${BASE_URL}/data/calculators-index.json)`,
     '',
     '## Addressable views (hash routes)',

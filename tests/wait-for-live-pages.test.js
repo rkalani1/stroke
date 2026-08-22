@@ -79,7 +79,6 @@ function collectArtifacts() {
     'offline.html',
     'app.js',
     'data/index.json',
-    'whats-new.json',
     'llms.txt',
     'llms-full.txt',
     'manifest.json',
@@ -198,12 +197,12 @@ describe('live Pages deploy-race guard (behaviour)', () => {
   });
 
   it('names the offending artifact when app.js is fresh but a data file lags', async () => {
-    overrides = new Map([['whats-new.json', '{"stale":true}\n']]);
+    overrides = new Map([['data/index.json', '{"stale":true}\n']]);
     const res = await runScript();
     expect(res.status).toBe(1);
     expect(res.stdout).toContain('Live Pages app.js matches checked-out commit.');
     expect(res.stderr).toContain(
-      'Timed out waiting for live Pages artifact to match this commit: whats-new.json'
+      'Timed out waiting for live Pages artifact to match this commit: data/index.json'
     );
   });
 

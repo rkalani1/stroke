@@ -1,7 +1,7 @@
 {
   "_meta": {
     "name": "stroke",
-    "appVersion": "6.21.0",
+    "appVersion": "6.22.0",
     "schemaVersion": "1.0.0",
     "baseUrl": "https://rkalani1.github.io/stroke",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -20,7 +20,6 @@
     "https://rkalani1.github.io/stroke/data/management-cards.json",
     "https://rkalani1.github.io/stroke/data/generic-protocols.json",
     "https://rkalani1.github.io/stroke/data/guidelines/index.json",
-    "https://rkalani1.github.io/stroke/whats-new.json",
     "https://rkalani1.github.io/stroke/data/calculators-index.json"
   ],
   "routes": [

@@ -46,7 +46,6 @@ const BASE_ARTIFACTS = [
   'offline.html',
   'app.js',
   'data/index.json',
-  'whats-new.json',
   'llms.txt',
   'llms-full.txt',
   'manifest.json',
