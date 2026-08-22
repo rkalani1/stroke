@@ -29,7 +29,20 @@
 
 export const CERTAINTY_VALUES = ['high', 'moderate', 'low', 'very-low'];
 export const EVIDENCE_TYPE_VALUES = ['rct', 'meta-analysis', 'observational', 'guideline', 'consensus'];
-export const ACTIVE_TRIAL_STATUS_VALUES = ['recruiting', 'active-not-recruiting', 'enrolling-by-invitation', 'completed-pending-results'];
+export const ACTIVE_TRIAL_STATUS_VALUES = [
+  'recruiting',
+  'active-not-recruiting',
+  'enrolling-by-invitation',
+  'completed-pending-results',
+  'completed',
+  'withdrawn',
+  'terminated',
+  'suspended'
+];
+// Only trials in these statuses may ever be surfaced by the eligibility
+// matcher or written into clinical notes. A completed/withdrawn/halted trial
+// must never render as "ELIGIBLE" for a live patient.
+export const MATCHABLE_TRIAL_STATUS_VALUES = ['recruiting', 'enrolling-by-invitation'];
 export const CLASS_VALUES = ['I', 'IIa', 'IIb', 'III-no-benefit', 'III-harm'];
 export const LOE_VALUES = ['A', 'B-R', 'B-NR', 'C-LD', 'C-EO'];
 export const SETTING_VALUES = ['inpatient', 'outpatient', 'pre-facility', 'all'];
@@ -127,13 +140,21 @@ export function makeCompletedTrial(input = {}) {
  * @returns {import('./types').ActiveTrial}
  */
 export function makeActiveTrial(input = {}) {
+  // An unknown status must fail loudly. The previous silent coercion to
+  // 'recruiting' turned MOST's status:'completed' into a recruiting trial
+  // and let the matcher print ELIGIBLE for a closed study.
+  if (!ACTIVE_TRIAL_STATUS_VALUES.includes(input.status)) {
+    throw new Error(
+      `makeActiveTrial: unknown status '${input.status}' for trial '${input.id || '<unset>'}' — must be one of: ${ACTIVE_TRIAL_STATUS_VALUES.join(', ')}`
+    );
+  }
   return {
     id: strOr(input.id),
     shortName: strOr(input.shortName),
     fullName: strOr(input.fullName),
     nctId: strOr(input.nctId),
     phase: strOr(input.phase),
-    status: ACTIVE_TRIAL_STATUS_VALUES.includes(input.status) ? input.status : 'recruiting',
+    status: input.status,
     topic: strOr(input.topic),
     briefDescription: strOr(input.briefDescription),
     rationale: strOr(input.rationale),

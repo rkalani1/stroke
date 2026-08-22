@@ -154,7 +154,7 @@ describe('Schema validators', () => {
   });
 
   it('rejects active trial without matcher criteria', () => {
-    const bad = schema.makeActiveTrial({ id: 'fake', shortName: 'X', fullName: 'X', topic: 't', lastReviewed: '2026-04-25', verificationStatus: 'verified-clinicaltrials-gov' });
+    const bad = schema.makeActiveTrial({ id: 'fake', shortName: 'X', fullName: 'X', topic: 't', status: 'recruiting', lastReviewed: '2026-04-25', verificationStatus: 'verified-clinicaltrials-gov' });
     const { errors } = schema.validateActiveTrial(bad);
     expect(errors.some((e) => /matcherCriteria/.test(e))).toBe(true);
   });

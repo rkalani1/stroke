@@ -24,6 +24,7 @@ import {
   nihssOf,
   premorbidOf
 } from './matcher-helpers.js';
+import { MATCHABLE_TRIAL_STATUS_VALUES } from './schema.js';
 
 // ---------- Field resolver ----------
 //
@@ -350,6 +351,10 @@ function legacyIdFor(activeTrialId, field) {
 export function evaluateAllTrialsViaEngine(activeTrialsList, data) {
   const out = {};
   for (const aTrial of activeTrialsList || []) {
+    // Status gate: a trial that is not actively enrolling (completed,
+    // withdrawn, terminated, suspended, active-not-recruiting) must never be
+    // matched against a live patient or written into a clinical note.
+    if (!MATCHABLE_TRIAL_STATUS_VALUES.includes(aTrial?.status)) continue;
     const eng = evaluateActiveTrial(aTrial, data);
     if (!eng) continue;
     const legacyKey = aTrial.legacyMatcherKey || aTrial.id;

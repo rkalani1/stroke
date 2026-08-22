@@ -357,7 +357,12 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       const result = evaluateAllTrialsViaEngine(activeTrials, patientEnvelope);
       expect(result).toBeDefined();
       const keys = Object.keys(result);
-      expect(keys.length).toBe(9);
+      // Only actively-enrolling trials are matchable — completed/withdrawn/
+      // halted records are status-gated out of the engine output so they can
+      // never surface as ELIGIBLE for a live patient.
+      const matchableCount = activeTrials.filter((t) => ['recruiting', 'enrolling-by-invitation'].includes(t.status)).length;
+      expect(keys.length).toBe(matchableCount);
+      expect(keys).not.toContain('MOST');
 
       for (const key of keys) {
         const trialResult = result[key];

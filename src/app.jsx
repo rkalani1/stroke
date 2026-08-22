@@ -771,7 +771,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           ich_bp: 'INTERACT3: Intensive BP lowering + bundle of care improves functional outcomes in ICH (Lancet 2023).',
           doac_timing: 'ELAN/OPTIMAS/CATALYST: early DOAC after AF-related stroke, ≤4 days reasonable across severities (OPTIMAS non-inferior across infarct sizes; CATALYST superior vs delay). Tiered default: minor (NIHSS <8) ~day 1; moderate (8-15) ~day 3; severe (16-20) ~day 6; very severe (≥21) or extensive hemorrhagic transformation ~day 7+ with repeat imaging.',
           aspects: 'ASPECTS 6-10: Standard EVT eligibility. ASPECTS 3-5: Consider EVT for mRS 0-1 patients with anterior LVO (SELECT2, ANGEL-ASPECT).',
-          pcc: 'Weight-based 4F-PCC (25-50 IU/kg by INR) for warfarin reversal in ICH (AHA/ASA 2022 COR I/B-R).',
+          pcc: 'Weight-based 4F-PCC (25-50 IU/kg by INR) for warfarin reversal in ICH (AHA/ASA 2022 COR I/B-R). Guideline weight-based dosing — the Example Protocols tab shows a fixed-dose institutional example (2000 units); the two schemes are not interchangeable.',
           wakeup: 'DWI-FLAIR mismatch suggests onset <4.5h; CTP mismatch allows treatment up to 9h from midpoint of sleep (WAKE-UP, EXTEND).'
         };
 
@@ -4258,7 +4258,7 @@ Clinician Name`;
               category: 'Reversal',
               title: 'Warfarin reversal in ICH',
               recommendation: 'Administer IV Vitamin K 10 mg + 4-factor PCC (KCentra) for ICH on warfarin. Target INR <1.5 within 4 hours.',
-              detail: '4F-PCC preferred over FFP for rapid INR correction; give vitamin K after PCC to prevent rebound INR. Recheck INR at 15-30 minutes and repeat PCC if needed.',
+              detail: '4F-PCC preferred over FFP for rapid INR correction; give vitamin K after PCC to prevent rebound INR. Recheck INR at 15-30 minutes and repeat PCC if needed. DOSING NOTE: this card shows guideline weight-based dosing (25-50 IU/kg by INR). The Example Protocols tab shows a separate fixed-dose institutional example (2000 units) — these are two different dosing schemes; follow one, never combine them.',
               classOfRec: 'I',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -5310,7 +5310,7 @@ fever_management: {
               category: 'Carotid',
               title: 'Symptomatic carotid stenosis management',
               recommendation: 'For symptomatic carotid stenosis \u226550%, CEA within 2 weeks is recommended. Optimal medical management is the foundation for all patients.',
-              detail: 'Symptomatic = stroke/TIA referable to the carotid territory within 6 months. CEA remains Class I for symptomatic stenosis \u226550%. NASCET endarterectomy NNTs: symptomatic 70\u201399% \u2192 NNT \u2248 6 (ARR \u224817% over 2 yr); symptomatic 50\u201369% \u2192 NNT \u2248 15 (ARR \u22486.5% over 5 yr). Benefit is greatest within 2 weeks of the event and diminishes with delay. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
+              detail: 'Symptomatic = stroke/TIA referable to the carotid territory within 6 months \u2014 confirm the stenosis is IPSILATERAL to the symptomatic territory; a stenosis contralateral to the event is managed as asymptomatic disease (see the CREST-2 card). CEA remains Class I for symptomatic stenosis \u226550%. NASCET endarterectomy NNTs: symptomatic 70\u201399% \u2192 NNT \u2248 6 (ARR \u224817% over 2 yr); symptomatic 50\u201369% \u2192 NNT \u2248 15 (ARR \u22486.5% over 5 yr). Benefit is greatest within 2 weeks of the event and diminishes with delay. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
@@ -5319,7 +5319,14 @@ fever_management: {
               conditions: (data) => {
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
                 const cm = data.telestrokeNote?.carotidManagement || {};
-                return cm.symptomatic && cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('occlusion'));
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const carotidDisease = cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('occlusion') || cta.includes('narrowing'));
+                // Symptomatic status is DERIVED from the encounter: an ischemic
+                // stroke/TIA presentation with carotid disease is treated as
+                // presumed-symptomatic (confirm laterality) — it must never
+                // default to the asymptomatic CREST-2 pathway just because the
+                // explicit checkbox was left unticked.
+                return carotidDisease && (cm.symptomatic === true || cat === 'ischemic' || cat === 'tia');
               }
             },
             carotid_asymptomatic: {
@@ -5335,7 +5342,14 @@ fever_management: {
               conditions: (data) => {
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
                 const cm = data.telestrokeNote?.carotidManagement || {};
-                return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('narrowing')) && !cm.symptomatic;
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                // Only fires when the encounter itself is NOT an ischemic
+                // stroke/TIA presentation (e.g., incidental stenosis found
+                // during an ICH workup) AND the symptomatic flag is not set.
+                // An ischemic/TIA encounter with carotid disease routes to the
+                // symptomatic card instead — see carotid_symptomatic.
+                const isIschemicEncounter = cat === 'ischemic' || cat === 'tia';
+                return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('narrowing')) && cm.symptomatic !== true && !isIschemicEncounter;
               }
             },
 
@@ -13043,7 +13057,10 @@ fever_management: {
             }
             const ptt = parseFloat(n.ptt);
             if (n.tnkRecommended && !isNaN(ptt) && ptt > 40) {
-              warnings.push({ id: 'tnk-ptt', severity: 'error', msg: `TNK recommended with aPTT ${ptt}s — aPTT >40s is a relative contraindication` });
+              warnings.push({ id: 'tnk-ptt', severity: 'error', msg: `TNK recommended with aPTT ${ptt}s — aPTT >40s contraindicates thrombolysis until anticoagulant effect is excluded (auto-block active)` });
+            }
+            if (n.tnkRecommended && n.tnkContraindicationChecklist?.recentMajorSurgery) {
+              warnings.push({ id: 'tnk-major-surgery', severity: 'error', msg: 'TNK recommended with recent major extracranial surgery/trauma — RELATIVE contraindication: careful risk-benefit assessment required; proceed only with documented justification.' });
             }
             // Lab-not-checked warnings when TNK recommended
             if (n.tnkRecommended && !n.inr) {
@@ -15683,8 +15700,12 @@ fever_management: {
                 doacClearanceNote = ' (last dose time unknown)';
               }
             }
-            // Recent surgery auto-block
-            const recentSurgery = !!(telestrokeNote.tnkContraindicationChecklist?.recentIntracranialSurgery || telestrokeNote.tnkContraindicationChecklist?.recentMajorSurgery);
+            // Recent intracranial/intraspinal surgery auto-block. This is a
+            // deliberately CONSERVATIVE hard block (institutional posture).
+            // Major EXTRACRANIAL surgery is a relative contraindication
+            // (careful risk-benefit, COR IIb) and does NOT auto-block — it
+            // raises an error-severity warning in the readiness checks instead.
+            const recentSurgery = !!telestrokeNote.tnkContraindicationChecklist?.recentIntracranialSurgery;
             const hasIE = !!telestrokeNote.infectiveEndocarditis;
             const shouldBlock = warfarinWithHighINR || warfarinWithHighPT || lowPlatelets || elevatedAPTT || lowGlucose || isICH || recentDOAC || hasIE || recentSurgery;
             if (shouldBlock) {
@@ -15702,10 +15723,7 @@ fever_management: {
                 reasons.push(`Recent ${doacName}${doacClearanceNote}${dttNote}`);
               }
               if (recentSurgery) {
-                const surgTypes = [];
-                if (telestrokeNote.tnkContraindicationChecklist?.recentIntracranialSurgery) surgTypes.push('intracranial/intraspinal');
-                if (telestrokeNote.tnkContraindicationChecklist?.recentMajorSurgery) surgTypes.push('major extracranial');
-                reasons.push(`Recent ${surgTypes.join(' & ')} surgery`);
+                reasons.push('Recent intracranial/intraspinal surgery (conservative hard block)');
               }
               const reasonStr = reasons.join('; ');
               setTelestrokeNote(prev => {
@@ -15715,7 +15733,7 @@ fever_management: {
             } else {
               setTelestrokeNote(prev => prev.tnkAutoBlocked ? { ...prev, tnkAutoBlocked: false, tnkAutoBlockReason: '' } : prev);
             }
-          }, [telestrokeNote.lastDOACType, telestrokeNote.lastDOACDose, telestrokeNote.inr, telestrokeNote.pt, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.glucose, telestrokeNote.diagnosisCategory, telestrokeNote.infectiveEndocarditis, telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.tnkContraindicationChecklist?.recentIntracranialSurgery, telestrokeNote.tnkContraindicationChecklist?.recentMajorSurgery]);
+          }, [telestrokeNote.lastDOACType, telestrokeNote.lastDOACDose, telestrokeNote.inr, telestrokeNote.pt, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.glucose, telestrokeNote.diagnosisCategory, telestrokeNote.infectiveEndocarditis, telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.tnkContraindicationChecklist?.recentIntracranialSurgery]);
 
           useEffect(() => {
             const prev = decisionStateRef.current;
@@ -20609,7 +20627,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 {(() => {
                                   const a = parseFloat(telestrokeNote.ptt);
-                                  if (a && a > 40) return <p id="aptt-error" role="alert" className="text-xs text-crit-700 font-medium mt-0.5 dark:text-crit-300">Elevated aPTT — TNK relative CI</p>;
+                                  if (a && a > 40) return <p id="aptt-error" role="alert" className="text-xs text-crit-700 font-medium mt-0.5 dark:text-crit-300">Elevated aPTT (>40s) — TNK auto-blocked until anticoagulant effect excluded</p>;
                                   return null;
                                 })()}
                               </div>
@@ -20899,11 +20917,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {(() => {
                             const timeFromLKW = calculateTimeFromLKW();
                             const hoursFromLKW = timeFromLKW ? timeFromLKW.total : null;
-                            const nihss = parseInt(telestrokeNote.nihss, 10) || nihssScore || 0;
+                            const nihssRaw = parseInt(telestrokeNote.nihss, 10);
+                            const nihssKnown = Number.isFinite(nihssRaw) || Number.isFinite(nihssScore);
+                            const nihss = Number.isFinite(nihssRaw) ? nihssRaw : (Number.isFinite(nihssScore) ? nihssScore : 0);
                             const aspects = isValidAspectsScore(aspectsScore) ? aspectsScore : null;
                             const age = parseInt(telestrokeNote.age, 10) || 0;
                             const contraindications = detectContraindications({ telestrokeNote });
                             const criticalContraindications = contraindications.filter(c => c.severity === 'critical');
+                            const occlusions = telestrokeNote.vesselOcclusion || [];
+                            const hasLVO = occlusions.some(v => ['ICA', 'M1', 'Basilar'].includes(v));
+                            const basilarOnly = occlusions.includes('Basilar') && !occlusions.some(v => ['ICA', 'M1'].includes(v));
+                            const hasMeVOOnly = !hasLVO && occlusions.some(v => ['M2', 'M3', 'M4', 'A1', 'A2', 'A3', 'P1', 'P2', 'P3'].includes(v));
+                            const wakeEval = getWakeUpEligibilityForNote(telestrokeNote);
 
                             // Determine TNK recommendation
                             let tnkRec = { eligible: false, reason: '', confidence: 'low' };
@@ -20914,43 +20939,67 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               tnkRec = { eligible: false, reason: 'Absolute contraindication(s) present', confidence: 'high' };
                             } else if (!hoursFromLKW) {
                               tnkRec = { eligible: false, reason: 'Set LKW time to evaluate', confidence: 'low' };
-                            } else if (nihss <= 5 && !telestrokeNote.disablingDeficit) {
+                            } else if (!nihssKnown && !telestrokeNote.disablingDeficit) {
+                              tnkRec = { eligible: false, reason: 'Document NIHSS (or a disabling deficit) to evaluate thrombolysis', confidence: 'low' };
+                            } else if (nihssKnown && nihss <= 5 && !telestrokeNote.disablingDeficit) {
                               tnkRec = { eligible: false, reason: `NIHSS ${nihss} with non-disabling symptoms — IVT not recommended (Class III)`, confidence: 'medium' };
                             } else if (hoursFromLKW <= 4.5) {
-                              if (nihss >= 4 || telestrokeNote.nihssDetails || telestrokeNote.disablingDeficit) {
+                              if (nihss >= 4 || telestrokeNote.disablingDeficit) {
                                 tnkRec = { eligible: true, reason: `Within 4.5h window, NIHSS ${nihss}`, confidence: 'high' };
                               }
                             } else if (hoursFromLKW > 4.5 && hoursFromLKW <= 9) {
-                              tnkRec = { eligible: true, reason: `Extended window (${hoursFromLKW.toFixed(1)}h) — consider IVT if CTP/MR perfusion mismatch or DWI/FLAIR mismatch`, confidence: 'medium' };
+                              if (wakeEval.extendEligible) {
+                                tnkRec = { eligible: true, reason: `Extended window (${hoursFromLKW.toFixed(1)}h) — documented perfusion criteria met (core ≤70 mL, mismatch ratio ≥1.2, mismatch volume ≥10 mL; EXTEND)`, confidence: 'medium' };
+                              } else {
+                                tnkRec = { eligible: false, reason: `Extended window (${hoursFromLKW.toFixed(1)}h) — IVT requires documented CTP/MR perfusion mismatch (EXTEND criteria) or DWI/FLAIR mismatch. Enter perfusion results in the wake-up/extended-window workflow to evaluate.`, confidence: 'low' };
+                              }
                             } else if (hoursFromLKW > 9 && hoursFromLKW <= 24) {
                               tnkRec = { eligible: false, reason: 'Late window (9-24h): benefit depends on LVO status and EVT plan. Non-LVO/MeVO with CTP mismatch (OPTION) or LVO without EVT (TRACE-III) may benefit. LVO+EVT bridging does NOT improve outcomes (TIMELESS). See late-window thrombolysis protocol.', confidence: 'medium' };
                             } else if (hoursFromLKW > 24) {
                               tnkRec = { eligible: false, reason: 'Outside all IVT windows (>24h)', confidence: 'high' };
                             }
 
-                            // EVT Logic
+                            // EVT Logic — requires a documented target occlusion; large-core
+                            // branches require a documented numeric ASPECTS (never inferred
+                            // from a blank score). Large-core eligibility defers to the
+                            // trial-criteria evaluator in calculators-extended.js.
+                            const largeCoreArgs = { age: telestrokeNote.age, nihss, aspects, coreMl: wakeEval.perfusion?.coreVolume, timeFromLKWh: hoursFromLKW, premorbidMRS: telestrokeNote.premorbidMRS };
                             if (!hoursFromLKW) {
                               evtRec = { eligible: false, reason: 'Set LKW time to evaluate', confidence: 'low' };
-                            } else if (nihss >= 6 && hoursFromLKW <= 24) {
-                              if (hoursFromLKW <= 6) {
-                                if (aspects >= 6) {
-                                  evtRec = { eligible: true, reason: `Early window, NIHSS ${nihss}, ASPECTS ${aspects}`, confidence: 'high' };
-                                } else if (aspects >= 0 && aspects <= 5) {
-                                  evtRec = { eligible: true, reason: `Early window large core (SVIN 2025): ASPECTS ${aspects}`, confidence: 'medium' };
-                                }
-                              } else if (hoursFromLKW > 6 && hoursFromLKW <= 24) {
-                                if (aspects >= 6) {
-                                  evtRec = { eligible: true, reason: `Late window eligible (DAWN/DEFUSE criteria likely met)`, confidence: 'medium' };
-                                } else if (aspects >= 3 && aspects <= 5) {
-                                  evtRec = { eligible: true, reason: `Late window large core (SVIN 2025): ASPECTS ${aspects}`, confidence: 'medium' };
-                                } else if (aspects <= 2) {
-                                  evtRec = { eligible: false, reason: `ASPECTS ${aspects} - late window benefit uncertain (SVIN IIb)`, confidence: 'medium' };
-                                }
-                              }
-                            } else if (nihss < 6) {
-                              evtRec = { eligible: false, reason: `NIHSS ${nihss} - consider if LVO present (STEP trial)`, confidence: 'medium' };
                             } else if (hoursFromLKW > 24) {
                               evtRec = { eligible: false, reason: 'Outside EVT window (>24h)', confidence: 'high' };
+                            } else if (occlusions.length === 0) {
+                              evtRec = { eligible: false, reason: 'No target vessel occlusion documented — EVT evaluation requires CTA/MRA vessel status. Select the occluded vessel(s) above to evaluate.', confidence: 'low' };
+                            } else if (hasMeVOOnly) {
+                              evtRec = { eligible: false, reason: 'Isolated medium/distal-vessel occlusion — routine EVT not supported (DISTAL, ESCAPE-MeVO 2025). Consider trial enrollment (STEP) or case-by-case neurointervention review for disabling deficits.', confidence: 'medium' };
+                            } else if (!hasLVO) {
+                              evtRec = { eligible: false, reason: 'No large-vessel occlusion (ICA/M1/basilar) documented — EVT not indicated without a target occlusion.', confidence: 'medium' };
+                            } else if (!nihssKnown) {
+                              evtRec = { eligible: false, reason: 'LVO documented — enter NIHSS to complete EVT evaluation.', confidence: 'low' };
+                            } else if (nihss < 6) {
+                              evtRec = { eligible: false, reason: `NIHSS ${nihss} with LVO — below standard EVT trial threshold (NIHSS ≥6). Consider STEP trial (low-NIHSS LVO domain) or individualized decision for disabling deficits.`, confidence: 'medium' };
+                            } else if (basilarOnly) {
+                              evtRec = { eligible: true, reason: `Basilar occlusion, NIHSS ${nihss}, ${hoursFromLKW.toFixed(1)}h — EVT supported to 24h (ATTENTION/BAOCHE); assess pc-ASPECTS and extent of brainstem infarct.`, confidence: 'medium' };
+                            } else if (aspects === null) {
+                              evtRec = { eligible: false, reason: `LVO within ${hoursFromLKW <= 6 ? '6h' : '24h'} — document ASPECTS to complete EVT evaluation (≥6 standard pathway; 0-5 large-core pathway).`, confidence: 'low' };
+                            } else if (hoursFromLKW <= 6) {
+                              if (aspects >= 6) {
+                                evtRec = { eligible: true, reason: `Early window, NIHSS ${nihss}, ASPECTS ${aspects}`, confidence: 'high' };
+                              } else {
+                                const lc = evaluateLargeCoreEVT(largeCoreArgs);
+                                evtRec = lc && lc.eligible
+                                  ? { eligible: true, reason: `Early window large core: ASPECTS ${aspects} — ${lc.bestMatch} trial criteria met (SVIN 2025 large-core pathway).`, confidence: 'medium' }
+                                  : { eligible: false, reason: `ASPECTS ${aspects} — large-core trial criteria not met.${lc && lc.rationale ? ` ${lc.rationale}` : ''}`, confidence: 'medium' };
+                              }
+                            } else {
+                              if (aspects >= 6) {
+                                evtRec = { eligible: true, reason: 'Late window eligible (DAWN/DEFUSE-3 criteria likely met — confirm with perfusion imaging)', confidence: 'medium' };
+                              } else {
+                                const lc = evaluateLargeCoreEVT(largeCoreArgs);
+                                evtRec = lc && lc.eligible
+                                  ? { eligible: true, reason: `Late window large core: ASPECTS ${aspects} — ${lc.bestMatch} trial criteria met (SVIN 2025 large-core pathway).`, confidence: 'medium' }
+                                  : { eligible: false, reason: `ASPECTS ${aspects} — late-window large-core trial criteria not met.${lc && lc.rationale ? ` ${lc.rationale}` : ''}`, confidence: 'medium' };
+                              }
                             }
 
                             // Only show if we have some data to work with
@@ -21463,13 +21512,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   { id: 'pregnancy', label: 'Pregnancy', note: 'consult OB/GYN; alteplase/TNK do not cross placenta' },
                                   { id: 'recentStroke', label: 'Ischemic stroke within 3 months', note: null },
                                   { id: 'recentHeadTrauma', label: 'Moderate-severe head trauma', note: '14 days–3 months' },
-                                  { id: 'recentIntracranialSurgery', label: 'Recent intracranial/intraspinal surgery', note: '14 days–3 months' },
-                                  { id: 'recentMajorSurgery', label: 'Non-CNS major surgery or trauma', note: '14 days–3 months' },
+                                  { id: 'recentIntracranialSurgery', label: 'Recent intracranial/intraspinal surgery', note: '14 days–3 months — auto-blocks TNK (conservative hard block)' },
+                                  { id: 'recentMajorSurgery', label: 'Non-CNS major surgery or trauma', note: '14 days–3 months — warning only (careful risk-benefit); does not auto-block' },
                                   { id: 'recentGIGUBleeding', label: 'Recent GI/urinary tract hemorrhage', note: '<21 days' },
                                   { id: 'recentArterialPuncture', label: 'Recent arterial puncture at non-compressible site', note: '<7 days' },
                                   { id: 'recentLumbarPuncture', label: 'Recent dural puncture', note: '<7 days' },
                                   { id: 'recentHeparin', label: 'Treatment-dose heparin/LMWH', note: 'check aPTT; must be ≤40s' },
-                                  { id: 'recentDOAC', label: 'Recent DOAC exposure', note: 'timing, renal function, and drug level dependent' },
+                                  { id: 'recentDOAC', label: 'Recent DOAC exposure', note: 'timing, renal function, and drug level dependent — auto-blocks until clearance criteria met' },
                                   { id: 'abnormalCoagUnknown', label: 'Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use', note: null },
                                   { id: 'acutePericarditis', label: 'Acute pericarditis', note: null },
                                   { id: 'unrupturedAneurysm10mm', label: 'Unruptured unsecured intracranial aneurysm >10mm', note: null },
@@ -21478,7 +21527,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   { id: 'cerebralMicrobleeds', label: 'Cerebral microbleeds >10 on prior MRI', note: 'uncertain sICH risk (COR IIb)' },
                                   { id: 'lecanemab', label: 'Lecanemab or other anti-amyloid therapy', note: 'ARIA risk' },
                                   { id: 'lowGlucose', label: 'Blood glucose <50 mg/dL', note: 'correct and reassess — auto-blocks TNK until corrected' },
-                                  { id: 'elevatedAPTT', label: 'aPTT >40 seconds', note: 'coagulopathy — confirm anticoagulant status' },
+                                  { id: 'elevatedAPTT', label: 'aPTT >40 seconds', note: 'auto-blocks TNK until anticoagulant effect excluded (conservative hard block)' },
                                   { id: 'severeRenalFailure', label: 'Severe renal failure (Cr >3 or CrCl <25)', note: 'increased bleeding risk' }
                                 ];
 
@@ -27202,10 +27251,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const eligibleTrials2 = trialResults2.filter(t => t.status === 'eligible');
                                 const needsInfoTrials2 = trialResults2.filter(t => t.status === 'needs_info');
                                 if (eligibleTrials2.length > 0 || needsInfoTrials2.length > 0) {
-                                  note += `\nCLINICAL TRIAL ELIGIBILITY:\n`;
+                                  note += `\nCLINICAL TRIAL SCREEN (first-pass, unverified — confirm full registry record, local activation, and consent path before any recruitment action):\n`;
                                   // Engine result already carries nct (copied from activeTrial.nctId).
                                   eligibleTrials2.forEach(t => {
-                                    note += `- ELIGIBLE: ${t.trialName} (${t.nct || ''}) — ${t.quickDescription}. Criteria met: ${t.metCount}/${t.criteria.length}.\n`;
+                                    note += `- TRIAL SCREEN (first-pass, unverified): ${t.trialName} (${t.nct || ''}) — ${t.quickDescription}. Criteria met: ${t.metCount}/${t.criteria.length}.\n`;
                                   });
                                   needsInfoTrials2.forEach(t => {
                                     const missing = t.criteria.filter(c => c.status === 'unknown').map(c => c.label).join(', ');
