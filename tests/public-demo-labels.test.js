@@ -77,7 +77,6 @@ describe('public demo labeling and agent disclaimers', () => {
       expect(content, `${relPath} leaks identity/institution content`).not.toMatch(IDENTITY);
     }
     expect(JSON.stringify(readJson('data/index.json'))).not.toMatch(IDENTITY);
-    expect(JSON.stringify(readJson('whats-new.json'))).not.toMatch(IDENTITY);
   });
 
   it('keeps public UI labels away from institutional-protocol framing', () => {
@@ -105,11 +104,9 @@ describe('public demo labeling and agent disclaimers', () => {
       'mcp/',
       'output/',
       'private/',
-      'data/clinical-intelligence/',
       'node_modules/',
       '.github/',
-      '.githooks/',
-      'whats-new-source-gaps.md'
+      '.githooks/'
     ];
 
     for (const path of excluded) {

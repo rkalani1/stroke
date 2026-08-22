@@ -1,10 +1,10 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:673988901e1f34a25afed62efac71072",
+    "checksum": "sha256:5bdb47bcd5b76a5f9dadb955eacec3f3",
     "counts": {
       "guidelines": 11,
-      "trials": 130,
+      "trials": 131,
       "education": 41,
       "calculators": 34,
       "references": 28
@@ -1289,6 +1289,23 @@
       ],
       "certainty": "high",
       "lastReviewed": "2026-05-30",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "oriental-mevo",
+      "name": "ORIENTAL-MeVO",
+      "fullName": "Endovascular Treatment of Medium-Vessel-Occlusion Strokes",
+      "category": "evt-mevo",
+      "population": "n=563, Median 71, NIHSS Median 10 (range 3-36); NIHSS >=6 required, <=24 h from onset",
+      "finding": "Benefit: 58.6% (280 patients) vs 46.6% (283 patients)",
+      "teachingPoint": "Supports considering thrombectomy for isolated medium vessel occlusion when the deficit is moderate-to-severe (NIHSS >=6), against a background of neutral trials in milder deficits. Individualize; do not read the older Class III grading as covering this population.",
+      "PMID": "42127389",
+      "year": 2026,
+      "citationIds": [
+        "cit-oriental-mevo-2026"
+      ],
+      "certainty": "moderate",
+      "lastReviewed": "2026-08-22",
       "provenance": "src/evidence/completedTrials.js"
     },
     {

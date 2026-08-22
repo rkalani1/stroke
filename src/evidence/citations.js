@@ -850,6 +850,19 @@ export const citations = [
     verificationNotes: 'Front Neurol is online-only; 1826373 is the article number, not a page range.'
   }),
   makeCitation({
+    id: 'cit-oriental-mevo-2026',
+    authors: 'Hu W et al.',
+    title: 'Endovascular Treatment of Medium-Vessel-Occlusion Strokes (ORIENTAL-MeVO)',
+    journal: 'N Engl J Med',
+    year: 2026,
+    volume: '394',
+    pages: '1894-1904',
+    pmid: '42127389',
+    doi: '10.1056/NEJMoa2514120',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/42127389/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
     id: 'cit-escape-mevo-2025',
     authors: 'Goyal M et al.',
     title: 'Endovascular Treatment for Medium Vessel Occlusion Stroke (ESCAPE-MeVO)',

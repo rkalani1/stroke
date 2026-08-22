@@ -242,10 +242,6 @@ import {
 import {
   getSearchIndex as getContentSearchIndex
 } from './content-context.js';
-// What's New feed — generated at build time (npm run evidence:whats-new) from the
-// verified-PubMed Evidence Atlas. esbuild inlines this JSON, so the Research &
-// Guidelines tab works fully offline.
-import whatsNewData from '../whats-new.json';
 // StrokeOps v6 Evidence Atlas — structured active/completed-trial data.
 // After the retirement sprint, the engine drives the matcher
 // unconditionally from the structured atlas. The legacy
@@ -302,7 +298,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.21.0';
+const APP_VERSION = '6.22.0';
 
 // P0 evidence-locked calculators exposed for browser-console QA testing and future UI wiring.
 // These are pure functions with PMID/DOI citations in their source; running e.g.
@@ -1182,20 +1178,9 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           ...(API_PROVIDER_META[value] || {})
         }));
 
-        // What's New feed items, newest first. Rendered verbatim from the
-        // build-time whats-new.json (see scripts/generate-whats-new.mjs);
-        // unverified items carry no pmid/doi/pubmedUrl and link to their
-        // briefing source instead — the renderer must never synthesize a
-        // PubMed link for them. Defined ABOVE the routing-slice start
-        // (MANAGEMENT_SUBTABS) so tests/navigation-reorganization.test.js can
-        // still evaluate the slice standalone.
-        const WHATS_NEW_ITEMS = Array.isArray(whatsNewData && whatsNewData.items)
-          ? [...whatsNewData.items].sort((a, b) => (b.year || 0) - (a.year || 0))
-          : [];
-
         const MANAGEMENT_SUBTABS = ['ich', 'ischemic'];
 
-        const RESEARCH_SUBTABS = ['guidelines', 'references', 'calculators', 'education', 'whatsnew'];
+        const RESEARCH_SUBTABS = ['guidelines', 'references', 'calculators', 'education'];
 
         // BYOK (bring-your-own-key) LLM providers offered in Settings → API
         // Configuration. One table drives the <select>, the key placeholder and
@@ -1234,7 +1219,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           if (!value) return null;
           const normalized = String(value).toLowerCase();
           if (RESEARCH_SUBTABS.includes(normalized)) return normalized;
-          if (normalized === 'whats-new' || normalized === "what's-new" || normalized === 'whatsnew') return 'whatsnew';
           return null;
         };
 
@@ -5831,14 +5815,14 @@ Clinician Name`;
             mevo_evt_not_recommended: {
               id: 'mevo_evt_not_recommended',
               category: 'EVT',
-              title: 'MeVO/distal occlusion EVT: NOT recommended (Class III: No Benefit; safety signal in ESCAPE-MeVO)',
-              recommendation: 'EVT for nondominant/codominant M2, distal MCA, ACA, and PCA occlusions is NOT recommended (COR III: No Benefit, LOE A — DISTAL and ESCAPE-MeVO were neutral on their primary endpoints). ESCAPE-MeVO additionally showed a safety signal (90-day mortality aHR 1.82; sICH 5.4% vs 2.2%). EXCEPTION: for dominant proximal M2 within 6h, mRS 0-1, NIHSS ≥6, ASPECTS ≥6, EVT is reasonable (COR IIa, AHA/ASA 2026).',
-              detail: 'Dominant proximal M2 within 6h: EVT is reasonable (Class IIa, LOE B-NR per AHA/ASA 2026) — benefits uncertain but reasonable to consider with favorable profile. Nondominant/codominant M2, M3-M4, ACA, PCA: EVT is NOT recommended (Class III, LOE A per AHA/ASA 2026). ESCAPE-MeVO (N=530): no functional improvement (ordinal mRS OR 0.90, NS) but showed increased 90-day mortality with EVT (13.3% vs 8.4%, aHR 1.82, 95% CI 1.06-3.12) and higher sICH (5.4% vs 2.2%). DISTAL (N=543): no functional benefit (adjusted common OR 0.90, 95% CI 0.67-1.22, P=0.50) with sICH 5.9% vs 2.6%; 12-MONTH outcomes (Lancet Neurol 2026;25:571-80, PMID 42105785) remained neutral (aOR 0.81, 95% CI 0.59-1.12, p=0.20). DISCOUNT (2025): negative for M2 thrombectomy. The 2026 guideline grades routine distal/nondominant-M2 EVT as Class III: No Benefit (LOE A) — DISTAL and ESCAPE-MeVO were neutral, not formally harmful, on their primary endpoints; the ESCAPE-MeVO mortality/sICH excess is a safety signal on top of that. Flag eligible patients for clinical trial enrollment (for example STEP-EVT).',
+              title: 'MeVO/distal occlusion EVT: evidence now CONFLICTING (2026 guideline Class III: No Benefit, vs positive ORIENTAL-MeVO in NIHSS >=6)',
+              recommendation: 'The 2026 AHA/ASA guideline grades EVT for nondominant/codominant M2, distal MCA, ACA, and PCA occlusions as NOT recommended (COR III: No Benefit, LOE A), based on the neutral DISTAL and ESCAPE-MeVO trials plus a safety signal in ESCAPE-MeVO (90-day mortality aHR 1.82; sICH 5.4% vs 2.2%). THAT GRADING PREDATES ORIENTAL-MeVO (NEJM 2026, PMID 42127389), a positive randomized trial restricted to NIHSS ≥6, in which thrombectomy improved 90-day functional independence (58.6% vs 46.6%; adjusted rate ratio 1.24, 95% CI 1.07-1.44; P=0.004) with more sICH (4.7% vs 2.2%) but no excess mortality (11.1% vs 10.2%). For a moderate-to-severe MeVO deficit, do NOT treat the Class III grading as settled — individualize and discuss with neurointervention. EXCEPTION unchanged: dominant proximal M2 within 6h, mRS 0-1, NIHSS ≥6, ASPECTS ≥6, EVT is reasonable (COR IIa, AHA/ASA 2026).',
+              detail: 'Dominant proximal M2 within 6h: EVT is reasonable (Class IIa, LOE B-NR per AHA/ASA 2026) — benefits uncertain but reasonable to consider with favorable profile. Nondominant/codominant M2, M3-M4, ACA, PCA: EVT is NOT recommended (Class III, LOE A per AHA/ASA 2026). ESCAPE-MeVO (N=530): no functional improvement (ordinal mRS OR 0.90, NS) but showed increased 90-day mortality with EVT (13.3% vs 8.4%, aHR 1.82, 95% CI 1.06-3.12) and higher sICH (5.4% vs 2.2%). DISTAL (N=543): no functional benefit (adjusted common OR 0.90, 95% CI 0.67-1.22, P=0.50) with sICH 5.9% vs 2.6%; 12-MONTH outcomes (Lancet Neurol 2026;25:571-80, PMID 42105785) remained neutral (aOR 0.81, 95% CI 0.59-1.12, p=0.20). DISCOUNT (2025): negative for M2 thrombectomy. The 2026 guideline grades routine distal/nondominant-M2 EVT as Class III: No Benefit (LOE A) — DISTAL and ESCAPE-MeVO were neutral, not formally harmful, on their primary endpoints; the ESCAPE-MeVO mortality/sICH excess is a safety signal on top of that. CONFLICTING LATER EVIDENCE: ORIENTAL-MeVO (N Engl J Med 2026;394:1894-1904, PMID 42127389; n=563 at 48 Chinese centres, MeVO with NIHSS ≥6 within 24h) was POSITIVE — 90-day functional independence 58.6% vs 46.6% (adjusted rate ratio 1.24, 95% CI 1.07-1.44, P=0.004), sICH 4.7% vs 2.2%, mortality 11.1% vs 10.2%. The likeliest reconciliation is the deficit threshold: ORIENTAL-MeVO required NIHSS ≥6 while the neutral trials enrolled milder deficits. This trial postdates the guideline, so the Class III grading has not been re-examined against it. Flag eligible patients for clinical trial enrollment (for example STEP-EVT).',
               classOfRec: 'III',
               levelOfEvidence: 'A',
-              guideline: 'ESCAPE-MeVO (NEJM 2025); DISTAL (2025); DISCOUNT (2025)',
-              reference: 'ESCAPE-MeVO: N Engl J Med. 2025. DOI: 10.1056/NEJMoa2411668. DISTAL and DISCOUNT: 2025 randomized MeVO/distal EVT trials.',
-              caveats: 'Local protocol may permit consideration of proximal M2 EVT in highly select cases. Discuss with neurointerventionalist.',
+              guideline: 'AHA/ASA 2026 (Class III, LOE A); ESCAPE-MeVO (NEJM 2025); DISTAL (2025); DISCOUNT (2025); ORIENTAL-MeVO (NEJM 2026, positive in NIHSS >=6)',
+              reference: 'ESCAPE-MeVO: N Engl J Med. 2025. DOI: 10.1056/NEJMoa2411668. DISTAL and DISCOUNT: 2025 randomized MeVO/distal EVT trials. ORIENTAL-MeVO: N Engl J Med. 2026;394:1894-1904. DOI: 10.1056/NEJMoa2514120 (PMID 42127389).',
+              caveats: 'Local protocol may permit consideration of proximal M2 EVT in highly select cases. Discuss with neurointerventionalist. For NIHSS ≥6 the Class III grading conflicts with ORIENTAL-MeVO and should not be applied mechanically — pending physician review of local policy.',
               conditions: (data) => {
                 const vessels = data.telestrokeNote?.vesselOcclusion || [];
                 // Fires only for ISOLATED medium/distal occlusion. A concurrent
@@ -30441,8 +30425,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'guidelines', name: 'Guidelines' },
                         { id: 'references', name: 'Reference Library' },
                         { id: 'calculators', name: 'Calculators' },
-                        { id: 'education', name: 'Educational Resources' },
-                        { id: 'whatsnew', name: "What's New" }
+                        { id: 'education', name: 'Educational Resources' }
                       ].map((tab) => {
                         const active = researchSubTab === tab.id;
                         return (
@@ -32310,8 +32293,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'guidelines', name: "Guidelines" },
                         { id: 'references', name: "Reference Library" },
                         { id: 'calculators', name: "Calculators" },
-                        { id: 'education', name: "Educational Resources" },
-                        { id: 'whatsnew', name: "What's New" }
+                        { id: 'education', name: "Educational Resources" }
                       ].map((tab) => {
                         const active = researchSubTab === tab.id;
                         return (
@@ -32553,84 +32535,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ))}
                       </ul>
                     </section>
-                      </div>
-                    )}
-
-                    {/* What's New — curated evidence feed rendered verbatim from
-                        whats-new.json. Verified items link to PubMed/DOI; the
-                        unverified tier links only to its briefing source (never
-                        a synthesized PubMed link). */}
-                    {researchSubTab === 'whatsnew' && (
-                      <div id="research-tabpanel-whatsnew" role="tabpanel" aria-labelledby="research-tab-whatsnew" className="space-y-6">
-                        <section aria-labelledby="research-whatsnew-heading" className="space-y-4">
-                          <header>
-                            <p className="font-mono uppercase text-eyebrow text-mute mb-1">Curated evidence feed</p>
-                            <h2 id="research-whatsnew-heading" className="font-serif text-section text-ink">What&#8217;s New</h2>
-                          </header>
-                          <ul className="grid grid-cols-1 gap-3">
-                            {WHATS_NEW_ITEMS.map((item) => {
-                              const verified = item.verificationStatus === 'verified';
-                              const doiUrl = item.doi ? `https://doi.org/${item.doi}` : null;
-                              return (
-                                <li key={item.id} className="v7-card t-prevent">
-                                  <p className="font-sans text-body text-ink font-medium leading-snug text-pretty">
-                                    {item.fullName || item.shortName}
-                                  </p>
-                                  <p className="font-mono text-[11px] text-mute uppercase tracking-wide mt-1">
-                                    {[item.journal, item.year, item.topicLabel].filter(Boolean).join(' · ')}
-                                  </p>
-                                  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-                                    {verified ? (
-                                      <span className="px-2 py-0.5 rounded-full border border-ok-200 bg-ok-50 text-ok-800 font-semibold dark:border-ok-800 dark:bg-ok-950 dark:text-ok-300">
-                                        Verified
-                                      </span>
-                                    ) : (
-                                      <span className="px-2 py-0.5 rounded-full border border-line bg-paper-2 text-mute font-semibold">
-                                        Not yet PubMed-indexed
-                                      </span>
-                                    )}
-                                    {verified && item.pubmedUrl && (
-                                      <a
-                                        href={item.pubmedUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="font-semibold text-cobalt-700 hover:underline dark:text-cobalt-300"
-                                        aria-label={`Open ${item.shortName || 'study'} on PubMed (opens in new tab)`}
-                                      >
-                                        PubMed{item.pmid ? ` ${item.pmid}` : ''}
-                                      </a>
-                                    )}
-                                    {verified && doiUrl && (
-                                      <a
-                                        href={doiUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="font-semibold text-cobalt-700 hover:underline dark:text-cobalt-300"
-                                        aria-label={`Open ${item.shortName || 'study'} DOI (opens in new tab)`}
-                                      >
-                                        DOI
-                                      </a>
-                                    )}
-                                    {!verified && item.sourceUrl && (
-                                      <a
-                                        href={item.sourceUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="font-semibold text-cobalt-700 hover:underline dark:text-cobalt-300"
-                                        aria-label={`Open source for ${item.shortName || 'study'} (opens in new tab)`}
-                                      >
-                                        Source
-                                      </a>
-                                    )}
-                                  </div>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                          {WHATS_NEW_ITEMS.length === 0 && (
-                            <p className="text-sm text-mute">No feed items available in this build.</p>
-                          )}
-                        </section>
                       </div>
                     )}
 

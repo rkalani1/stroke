@@ -92,7 +92,6 @@ jobs:
             npm run validate:citations
             npm run validate:inline-citations
             npm run evidence:validate
-            npm run validate:whats-new
             npm run validate:evidence-churn-profiles
             npm run validate:qa-latency-profiles
             npm run validate:evidence-promotion
@@ -110,7 +109,6 @@ jobs:
             'offline.html',
             'app.js',
             'data/index.json',
-            'whats-new.json',
             'llms.txt',
             'llms-full.txt',
             'manifest.json',

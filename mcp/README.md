@@ -30,7 +30,7 @@ explicit. `calc_andexanet_dose` is retained for compatibility but returns only
 the non-actionable unavailable status and no dose.
 
 **Atlas / data**: `list_calculators`, `search_trials`, `get_trial`,
-`list_guidelines`, `get_guideline`, `whats_new`, `generic_bp_protocols`.
+`list_guidelines`, `get_guideline`, `generic_bp_protocols`.
 
 ## Configure your agent
 

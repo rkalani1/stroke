@@ -31,7 +31,7 @@ import { evaluateDAWN, evaluateDEFUSE3 } from '../src/calculators-extended.js';
 
 const DISCLAIMER = 'Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.';
 
-// ── load served data (atlas / guidelines / whats-new) ────────────────────────
+// ── load served data (atlas / guidelines) ────────────────────────
 function loadJson(rel, fallback) {
   try {
     return JSON.parse(fs.readFileSync(new URL(rel, import.meta.url), 'utf8'));
@@ -44,7 +44,6 @@ const active = loadJson('../data/atlas/active-trials.json', { data: [] }).data;
 const guidelinesIndex = loadJson('../data/guidelines/index.json', { data: [] }).data;
 const calculatorsIndex = loadJson('../data/calculators-index.json', { data: [] }).data;
 const genericProtocols = loadJson('../data/generic-protocols.json', { data: {} }).data;
-const whatsNew = loadJson('../whats-new.json', { items: [] });
 
 const ok = (obj) => ({ content: [{ type: 'text', text: JSON.stringify({ ...obj, _disclaimer: DISCLAIMER }, null, 2) }] });
 const text = (t) => ({ content: [{ type: 'text', text: t }] });
@@ -158,17 +157,6 @@ server.registerTool('get_guideline',
   async ({ id }) => {
     const g = loadJson(`../data/guidelines/${id}.json`, null);
     return g ? ok({ id, guideline: g }) : text(`No guideline with id "${id}". Use list_guidelines for valid ids.`);
-  });
-
-server.registerTool('whats_new',
-  { title: "What's new", description: 'Recent practice-changing evidence feed.', inputSchema: {
-      verifiedOnly: z.boolean().default(true),
-      limit: z.number().int().positive().max(50).default(15),
-    } },
-  async ({ verifiedOnly, limit }) => {
-    let items = whatsNew.items || [];
-    if (verifiedOnly) items = items.filter((i) => i.verificationStatus === 'verified');
-    return ok({ count: items.length, items: items.slice(0, limit) });
   });
 
 server.registerTool('generic_bp_protocols',

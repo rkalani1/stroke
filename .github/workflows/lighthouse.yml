@@ -26,7 +26,6 @@ on:
       - 'data/**'
       - 'llms.txt'
       - 'llms-full.txt'
-      - 'whats-new.json'
       - 'robots.txt'
       - 'sitemap.xml'
       - 'src/**'
@@ -104,7 +103,6 @@ jobs:
             'offline.html',
             'app.js',
             'data/index.json',
-            'whats-new.json',
             'llms.txt',
             'llms-full.txt',
             'manifest.json',

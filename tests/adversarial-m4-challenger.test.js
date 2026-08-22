@@ -40,7 +40,6 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
         'index.html',
         'manifest.json',
         'service-worker.js',
-        'whats-new.json',
         'content/bundle.json'
       ];
       for (const target of targets) {

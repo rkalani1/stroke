@@ -29,7 +29,6 @@ describe('Lighthouse workflow deployment guard', () => {
       "- 'data/**'",
       "- 'llms.txt'",
       "- 'llms-full.txt'",
-      "- 'whats-new.json'",
       "- 'robots.txt'",
       "- 'sitemap.xml'",
       "- 'src/**'"
@@ -43,7 +42,6 @@ describe('Lighthouse workflow deployment guard', () => {
       'offline.html',
       'app.js',
       'data/index.json',
-      'whats-new.json',
       'llms.txt',
       'llms-full.txt',
       'manifest.json',
@@ -111,7 +109,6 @@ describe('CI leak-guard workflow enforcement', () => {
     expect(liveSmokeWorkflow).toContain('npm run validate:citations');
     expect(liveSmokeWorkflow).toContain('npm run validate:inline-citations');
     expect(liveSmokeWorkflow).toContain('npm run evidence:validate');
-    expect(liveSmokeWorkflow).toContain('npm run validate:whats-new');
     expect(liveSmokeWorkflow).toContain('npm run validate:automedbench-lite');
     expect(liveSmokeWorkflow).toContain('Run adaptive QA smoke (local + live)');
     expect(liveSmokeWorkflow).toContain('Verify live Pages artifact parity');

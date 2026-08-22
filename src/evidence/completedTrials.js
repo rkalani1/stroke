@@ -1311,6 +1311,50 @@ export const completedTrials = [
     verificationStatus: 'verified-pubmed'
   }),
   t({
+    id: 'oriental-mevo',
+    shortName: 'ORIENTAL-MeVO',
+    fullName: 'Endovascular Treatment of Medium-Vessel-Occlusion Strokes',
+    topic: 'evt-mevo',
+    diseaseArea: ['acute-ischemic-stroke', 'evt-mevo'],
+    population: {
+      n: 563,
+      ageRange: 'Median 71',
+      nihssRange: 'Median 10 (range 3-36); NIHSS >=6 required',
+      timeWindow: '<=24 h from onset',
+      keyInclusion: ['Medium vessel occlusion', 'NIHSS >=6 (moderate-to-severe deficit)', 'Presentation within 24 h of onset', '48 centres in China'],
+      keyExclusion: []
+    },
+    intervention: 'Endovascular thrombectomy + medical management',
+    comparator: 'Medical management alone',
+    primaryEndpoint: {
+      definition: 'Functional independence (mRS 0-2). Prespecified substitution after the proportional-odds assumption for the mRS shift was violated',
+      timepoint: '90 d',
+      result: 'Benefit: 58.6% (280 patients) vs 46.6% (283 patients)',
+      effectSize: 'Adjusted rate ratio 1.24',
+      confidenceInterval: '95% CI 1.07 to 1.44',
+      pValue: 'P=0.004'
+    },
+    secondaryEndpoints: [
+      { name: 'IV thrombolysis co-treatment', result: '36.6% of participants overall' }
+    ],
+    safetyFindings: {
+      sich: '4.7% vs 2.2%',
+      mortality: '11.1% vs 10.2% (no excess)',
+      other: 'Higher symptomatic intracranial haemorrhage with thrombectomy; no mortality signal, in contrast to ESCAPE-MeVO'
+    },
+    imagingCriteria: 'CTA/MRA-confirmed medium vessel occlusion',
+    applicabilityNotes: 'The first POSITIVE randomized trial of MeVO thrombectomy, and it conflicts with the neutral DISTAL / ESCAPE-MeVO / DISCOUNT trials that underpin the 2026 guideline Class III (No Benefit) grading. The most likely reconciler is the deficit threshold: ORIENTAL-MeVO required NIHSS >=6, whereas the neutral trials enrolled milder deficits. Published after the 2026 AIS guideline, so that guideline predates this evidence. Single-country (China), open-label with blinded outcome assessment.',
+    limitations: 'Open-label; conducted entirely in China; the prespecified mRS-shift primary analysis could not be used because the proportional-odds assumption was violated.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-oriental-mevo-2026'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Supports considering thrombectomy for isolated medium vessel occlusion when the deficit is moderate-to-severe (NIHSS >=6), against a background of neutral trials in milder deficits. Individualize; do not read the older Class III grading as covering this population.',
+    lastReviewed: '2026-08-22',
+    promotedDate: '2026-08-22',
+    verificationStatus: 'verified-pubmed'
+  }),
+  t({
     id: 'direct-angio',
     shortName: 'DIRECT ANGIO',
     fullName: 'Direct versus Conventional Transfer to Angiography Suite in Patients with Severe Acute Stroke Treated with Thrombectomy (France)',

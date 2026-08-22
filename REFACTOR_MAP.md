@@ -41,7 +41,6 @@ Routing lives in module-scope helpers `parseHashRoute` (app.jsx **1072–1123**)
 | `#/ich` | `{protocols, ich}` | parseHashRoute |
 | `#/calculators` | `{protocols, calculators}` | parseHashRoute |
 | `#/evidence`, `#/teaching`, `#/references` | `{research, references}` | parseHashRoute |
-| `#/research/{whats-new, what's-new, whatsnew}` | `{research, whatsnew}` | normalizeResearchSubTab |
 | `#/protocols/simulators` | `{education, simulators}` | parseHashRoute |
 | `#/protocols/references` | `{research, references}` | parseHashRoute (intercepts before normalizeManagementSubTab) |
 | `#/protocols/{protocols, clinic, wards, pocket-cards}` | `{protocols, ischemic}` | LEGACY_MANAGEMENT_TABS |
