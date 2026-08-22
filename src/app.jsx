@@ -14044,12 +14044,12 @@ Clinician Name`;
           const jumpToEncounterField = (fieldName) => {
             const fieldTargets = {
               Age: { phase: 'phase-triage', section: 'patient-info-section', focusIds: ['input-age', 'phone-input-age'] },
-              Weight: { phase: 'phase-triage', section: 'patient-info-section', focusIds: ['input-weight'] },
+              Weight: { phase: 'phase-triage', section: 'patient-info-section', focusIds: ['input-weight', 'video-input-weight'] },
               LKW: { phase: 'phase-triage', section: 'lkw-section', focusIds: ['lkw-time', 'lkw-date', 'discovery-date', 'discovery-time', 'phone-lkw-date', 'phone-lkw-time', 'phone-discovery-date', 'phone-discovery-time'] },
-              Diagnosis: { phase: 'phase-decision', section: 'treatment-decision', focusIds: ['input-diagnosis'] },
+              Diagnosis: { phase: 'phase-decision', section: 'treatment-decision', focusIds: ['input-diagnosis', 'video-input-diagnosis'] },
               NIHSS: { phase: 'phase-triage', section: 'nihss-section', focusIds: ['input-nihss', 'phone-input-nihss'] },
               'CT Head': { phase: 'phase-triage', section: 'imaging-section', focusIds: ['input-ct-results', 'phone-input-ct-results'] },
-              Disposition: { phase: 'phase-documentation', section: 'discharge-checklist-section', focusIds: ['input-disposition'] }
+              Disposition: { phase: 'phase-documentation', section: 'discharge-checklist-section', focusIds: ['input-disposition', 'video-input-disposition'] }
             };
             const target = fieldTargets[fieldName];
             if (!target) return;
@@ -14382,7 +14382,11 @@ Clinician Name`;
               return true;
             };
             const missing = trackedFields.filter((field) => !isFieldPresent(field.value));
-            const required = [];
+            // Hard gate (judgment, PR-documented): a generated encounter note
+            // without a Diagnosis or a time reference (LKW/discovery) is
+            // clinically misleading — those two block output. Everything else
+            // stays 'recommended' so progressive drafting still works.
+            const required = missing.filter((field) => field.name === 'Diagnosis' || field.name === 'LKW');
             const recommended = missing;
             const completedCount = trackedFields.length - missing.length;
             const readinessPercent = Math.round((completedCount / trackedFields.length) * 100);
@@ -20023,6 +20027,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </label>
                               <div className="flex items-center">
                                 <input
+                                  id="video-input-weight"
                                   type="number"
                                   value={telestrokeNote.weight}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, weight: v})); }}
@@ -20879,15 +20884,47 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               )}
                             </div>
 
-                            {/* CT Perfusion */}
+                            {/* CT Perfusion — structured inputs feed the extended-window
+                                perfusion auto-gate (getPerfusionMetrics), which free text
+                                never could */}
                             <div className="bg-slate-50 p-3 rounded border dark:bg-paper-2">
-                              <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">CT Perfusion</h3>
+                              <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">CT Perfusion (RAPID output)</h3>
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
+                                <div>
+                                  <label htmlFor="video-input-ctp-core" className="block text-xs text-slate-600 dark:text-ink-2">Core (mL)</label>
+                                  <input id="video-input-ctp-core" type="number" min="0" max="500" step="1"
+                                    value={(telestrokeNote.ctpStructured || {}).coreVolume || ''}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctpStructured: {...(prev.ctpStructured || {}), coreVolume: v}})); }}
+                                    placeholder="CBF<30%"
+                                    className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" />
+                                </div>
+                                <div>
+                                  <label htmlFor="video-input-ctp-penumbra" className="block text-xs text-slate-600 dark:text-ink-2">Penumbra (mL)</label>
+                                  <input id="video-input-ctp-penumbra" type="number" min="0" max="1500" step="1"
+                                    value={(telestrokeNote.ctpStructured || {}).penumbraVolume || ''}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctpStructured: {...(prev.ctpStructured || {}), penumbraVolume: v}})); }}
+                                    placeholder="Tmax>6s"
+                                    className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" />
+                                </div>
+                                <div>
+                                  <label htmlFor="video-input-ctp-mismatch" className="block text-xs text-slate-600 dark:text-ink-2">Mismatch Ratio</label>
+                                  <input id="video-input-ctp-mismatch" type="text" readOnly
+                                    value={(() => {
+                                      const c = parseFloat((telestrokeNote.ctpStructured || {}).coreVolume);
+                                      const pv = parseFloat((telestrokeNote.ctpStructured || {}).penumbraVolume);
+                                      if (!isNaN(c) && !isNaN(pv) && c > 0) { const r = pv / c; return isFinite(r) && r < 1000 ? r.toFixed(1) : '>999'; }
+                                      if (!isNaN(c) && c === 0 && !isNaN(pv) && pv > 0) return '∞';
+                                      return '';
+                                    })()}
+                                    className="w-full px-2 py-1 border border-line rounded text-sm bg-slate-50 text-center font-medium dark:bg-paper-2" />
+                                </div>
+                              </div>
                               <textarea
                                 aria-label="CT Perfusion results"
                                 value={telestrokeNote.ctpResults}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctpResults: v})); }}
-                                placeholder=""
-                                rows="3"
+                                placeholder="Additional CTP notes..."
+                                rows="2"
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
                               />
                             </div>
@@ -21169,7 +21206,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <label className="block text-sm font-medium text-slate-700 mb-2 dark:text-ink-2">Diagnosis</label>
 
                               {/* Diagnosis Category Selector */}
-                              <div className="flex flex-wrap gap-2 mb-2">
+                              <div id="video-input-diagnosis" tabIndex={-1} className="flex flex-wrap gap-2 mb-2">
                                 {[
                                   { value: 'ischemic', label: 'Ischemic Stroke or TIA', color: 'blue', icon: 'activity' },
                                   { value: 'ich', label: 'Intracranial Hemorrhage', color: 'red', icon: 'alert-triangle' },
@@ -21625,6 +21662,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               const updateChecklistItem = (id, value) => setTelestrokeNote(prev => ({...prev, tnkContraindicationChecklist: {...(prev.tnkContraindicationChecklist || {}), [id]: value}}));
 
+                              // Auto-detected items for prominent banner — declared BEFORE
+                              // clearAllAndProceed, which closes over autoAbsolute (was a
+                              // temporal-dead-zone hazard when declared below it).
+                              const autoDetectedItems = Object.keys(autoDetected);
+                              const autoAbsolute = absoluteContraindications.filter(c => autoDetected[c.id]);
+                              const autoRelative = relativeContraindications.filter(c => autoDetected[c.id]);
+                              const autoCautionary = cautionaryConditions.filter(c => autoDetected[c.id]);
+
                               const clearAllAndProceed = () => {
                                 // Block if auto-detected absolute contraindications exist (including IE, ICH/SAH, etc.)
                                 if (autoAbsolute.length > 0) {
@@ -21640,12 +21685,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   return {...prev, tnkContraindicationReviewed: true, tnkContraindicationReviewTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }), tnkRecommended: true};
                                 });
                               };
-
-                              // Auto-detected items for prominent banner
-                              const autoDetectedItems = Object.keys(autoDetected);
-                              const autoAbsolute = absoluteContraindications.filter(c => autoDetected[c.id]);
-                              const autoRelative = relativeContraindications.filter(c => autoDetected[c.id]);
-                              const autoCautionary = cautionaryConditions.filter(c => autoDetected[c.id]);
 
                               return (
                                 <>
@@ -26529,6 +26568,27 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Discharge Checklist - Show when recommendations or disposition is being addressed */}
                         {telestrokeNote.diagnosis && (
                           <div id="discharge-checklist-section" className="bg-white border border-ok-200 rounded-md p-4 dark:bg-card dark:border-ok-800 ">
+                            {/* Disposition — previously absent from the video branch, so
+                                readiness could never reach 100% and GWTG STK-5/6 checks and
+                                the note emitter had nothing to read */}
+                            <div className="mb-3">
+                              <label htmlFor="video-input-disposition" className="block text-xs text-slate-600 mb-1 dark:text-ink-2">Disposition</label>
+                              <select
+                                id="video-input-disposition"
+                                value={telestrokeNote.disposition || ''}
+                                onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, disposition: v})); }}
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
+                              >
+                                <option value="">-- Select --</option>
+                                <option value="Admit to Neuro ICU">Admit to Neuro ICU</option>
+                                <option value="Admit to Stroke Unit">Admit to Stroke Unit</option>
+                                <option value="Admit to Floor">Admit to Floor</option>
+                                <option value="Transfer to CSC">Transfer to Comprehensive Stroke Center</option>
+                                <option value="Transfer to PSC">Transfer to Primary Stroke Center</option>
+                                <option value="Observation">Observation</option>
+                                <option value="Discharge">Discharge</option>
+                              </select>
+                            </div>
                             <div className="flex items-center justify-between mb-3">
                               <h2 className="text-lg font-bold text-ok-900 flex items-center gap-2 dark:text-ok-300">
                                                                 Discharge Checklist
