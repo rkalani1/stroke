@@ -298,7 +298,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.22.0';
+const APP_VERSION = '6.23.0';
 
 // P0 evidence-locked calculators exposed for browser-console QA testing and future UI wiring.
 // These are pure functions with PMID/DOI citations in their source; running e.g.
@@ -325,6 +325,45 @@ if (typeof window !== 'undefined') {
     evaluateBostonCAA20
   };
 }
+
+/* ─── LazyDetails ──────────────────────────────────────────────────────
+   A <details> whose body is not constructed until the first time it opens,
+   and which stays mounted afterwards.
+
+   A closed <details> hides its children visually but the browser still builds
+   and retains every one of them. The Guideline Library renders 862
+   recommendations across ~89 collapsed accordions (397 <details> in total),
+   which cost ~25,000 DOM nodes and ~3.7 s of render on a low-end phone to
+   display a list of headers — roughly 97% of that DOM was never visible.
+   CSS cannot fix this; the body has to be gated in React.
+
+   `children` is a RENDER FUNCTION, not a node: passing elements directly
+   would still run every .map() and build the whole element tree on each
+   render, which is most of the cost. Calling it only once opened is what
+   makes the saving real.
+
+   `forceOpen` (an active filter) mounts immediately and keeps the existing
+   auto-expand-on-search behavior intact. `open` is passed exactly as the
+   plain <details open={…}> it replaces: React writes the attribute on mount
+   and on prop change, and leaves the user's own toggling alone in between. */
+const LazyDetails = ({ forceOpen = false, summary, className, summaryClassName, children }) => {
+  const [mounted, setMounted] = useState(forceOpen);
+  useEffect(() => {
+    if (forceOpen) setMounted(true);
+  }, [forceOpen]);
+  return (
+    <details
+      className={className}
+      open={forceOpen}
+      onToggle={(event) => {
+        if (event.currentTarget.open) setMounted(true);
+      }}
+    >
+      <summary className={summaryClassName}>{summary}</summary>
+      {mounted ? children() : null}
+    </details>
+  );
+};
 
 /* ─── v7 HeroReadout live-tick wrapper ─────────────────────────────────
    V7HeroReadout is a pure display — it accepts elapsedSec/tnkMinLeft/
@@ -14480,6 +14519,25 @@ Clinician Name`;
             return parts.reduce((sum, part) => sum + fuzzyScore(query, part), 0);
           };
 
+          // fuzzyScore/rankText are RANKING functions: they award a point for
+          // each query character found in order anywhere in the target, so on
+          // ordinary prose they return > 0 for almost any query. That is what
+          // you want for ordering results — and useless as a match predicate.
+          //
+          // The Guideline Library filter used `score > 0` as its predicate, so
+          // every one of the 862 recommendations passed: typing in the search
+          // box expanded all 397 accordions and showed the entire catalog
+          // instead of narrowing it, while the header kept reading "862
+          // recommendations". Matching is a separate question from ranking:
+          // every whitespace-separated token must appear as a substring of the
+          // searched fields. rankText still orders whatever matches.
+          const matchesTextQuery = (query, parts = []) => {
+            const tokens = String(query || '').toLowerCase().split(/\s+/).filter(Boolean);
+            if (!tokens.length) return true;
+            const haystack = parts.filter(Boolean).join(' ').toLowerCase();
+            return tokens.every((token) => haystack.includes(token));
+          };
+
           const guidelineQuickActions = [
             { id: 'tnk', label: 'TNK dosing', regex: /\b(tnk|tenecteplase)\b/i, target: { tab: 'encounter' } },
             { id: 'evt', label: 'EVT criteria', regex: /\b(evt|thrombectomy|endovascular)\b/i, target: { tab: 'protocols', subTab: 'ischemic' } },
@@ -14538,9 +14596,12 @@ Clinician Name`;
           const filteredGuidelineLibrary = useMemo(() => {
             const query = guidelineLibraryQuery.trim().toLowerCase();
             const classPriority = { I: 0, IIa: 1, IIb: 2, III: 3, Statement: 4 };
+            const recSearchFields = (rec, guideline) => (
+              [rec.text, rec.section, guideline.title, guideline.shortTitle || '']
+            );
             const getRecScore = (rec, guideline) => {
               if (!query) return 0;
-              return rankText(query, [rec.text, rec.section, guideline.title, guideline.shortTitle || '']);
+              return rankText(query, recSearchFields(rec, guideline));
             };
 
             return GUIDELINE_LIBRARY_INDEX
@@ -14552,7 +14613,7 @@ Clinician Name`;
                     if (guidelineLibrarySection && rec.section !== guidelineLibrarySection) return false;
                     const recClass = rec.classOfRec || 'Statement';
                     if (guidelineLibraryClass && recClass !== guidelineLibraryClass) return false;
-                    if (query && rec._score <= 0) return false;
+                    if (query && !matchesTextQuery(query, recSearchFields(rec, guideline))) return false;
                     return true;
                   })
                   .sort((a, b) => {
@@ -32402,23 +32463,39 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             });
                             const shouldExpand = Boolean(guidelineLibraryQuery || guidelineLibraryGuideline || guidelineLibrarySection || guidelineLibraryClass);
                             return (
-                              <details key={guideline.id} className="border border-cobalt-200 rounded-lg bg-cobalt-50/40 dark:bg-cobalt-900/40 dark:border-cobalt-700" open={shouldExpand}>
-                                <summary className="cursor-pointer p-3 font-semibold text-cobalt-900 hover:bg-cobalt-100 rounded-lg flex items-center justify-between gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-800">
-                                  <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                    <span>{guideline.shortTitle || guideline.title}</span>
-                                    {guideline.summaryOnly && (
-                                      <span className="px-1.5 py-0.5 rounded-full border border-warn-300 bg-warn-50 text-warn-800 text-[11px] font-semibold dark:border-warn-700 dark:bg-warn-950 dark:text-warn-300">Summary only — see source</span>
-                                    )}
-                                  </span>
-                                  <span className="text-xs text-cobalt-600 shrink-0 dark:text-cobalt-300">{guideline.recommendations.length} recs</span>
-                                </summary>
+                              <LazyDetails
+                                key={guideline.id}
+                                forceOpen={shouldExpand}
+                                className="border border-cobalt-200 rounded-lg bg-cobalt-50/40 dark:bg-cobalt-900/40 dark:border-cobalt-700"
+                                summaryClassName="cursor-pointer p-3 font-semibold text-cobalt-900 hover:bg-cobalt-100 rounded-lg flex items-center justify-between gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-800"
+                                summary={(
+                                  <>
+                                    <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                      <span>{guideline.shortTitle || guideline.title}</span>
+                                      {guideline.summaryOnly && (
+                                        <span className="px-1.5 py-0.5 rounded-full border border-warn-300 bg-warn-50 text-warn-800 text-[11px] font-semibold dark:border-warn-700 dark:bg-warn-950 dark:text-warn-300">Summary only — see source</span>
+                                      )}
+                                    </span>
+                                    <span className="text-xs text-cobalt-600 shrink-0 dark:text-cobalt-300">{guideline.recommendations.length} recs</span>
+                                  </>
+                                )}
+                              >
+                                {() => (
                                 <div className="p-3 pt-0 space-y-3">
                                   {Object.entries(grouped).map(([section, recs]) => (
-                                    <details key={section} className="bg-white border border-cobalt-100 rounded-lg dark:bg-card" open={shouldExpand || guidelineLibrarySection === section}>
-                                      <summary className="cursor-pointer px-3 py-2 text-sm font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                                        <span>{section}</span>
-                                        <span className="text-xs text-cobalt-500">{recs.length}</span>
-                                      </summary>
+                                    <LazyDetails
+                                      key={section}
+                                      forceOpen={shouldExpand || guidelineLibrarySection === section}
+                                      className="bg-white border border-cobalt-100 rounded-lg dark:bg-card"
+                                      summaryClassName="cursor-pointer px-3 py-2 text-sm font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-900"
+                                      summary={(
+                                        <>
+                                          <span>{section}</span>
+                                          <span className="text-xs text-cobalt-500">{recs.length}</span>
+                                        </>
+                                      )}
+                                    >
+                                      {() => (
                                       <div className="px-3 pb-3 space-y-2">
                                         {recs.map((rec) => {
                                           const recClass = rec.classOfRec || 'Statement';
@@ -32479,10 +32556,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           );
                                         })}
                                       </div>
-                                    </details>
+                                      )}
+                                    </LazyDetails>
                                   ))}
                                 </div>
-                              </details>
+                                )}
+                              </LazyDetails>
                             );
                           })}
                         </div>

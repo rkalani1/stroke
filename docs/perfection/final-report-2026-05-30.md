@@ -76,7 +76,7 @@ public-safety were CLEAN for the final ~6–9 consecutive cycles.
      the COR chip into the `rationale` field (no clinical content lost) **and** hardened `CorChip` to wrap
      (`break-words max-w-full`) so no future long value can clip — a class-level fix.
   - The convergence workflow correctly did **not** run Cycle 9 (gated on Cycle 8 being clean).
-- **Curated screenshot set captured:** 120 PNGs in `docs/perfection/screenshots/2026-05-30/` — 9 routes ×
+- **Curated screenshot set captured:** 120 PNGs — 9 routes ×
   both themes × 6 viewports (390/430/768/1024/1440/1920) + command-palette and More-menu open states, all
   device classes captured in parallel, zero failures.
 
@@ -185,3 +185,13 @@ and public-safety have each returned CLEAN for **4–7 consecutive cycles**. The
 **"all known safe/material/source-verifiable findings resolved; live-verified; one more clean confirmation
 cycle would formally close the stop criterion."** No medical claim is presented as certain that could not be
 source-verified; uncertain items are quarantined behind the verified/unverified partition.
+
+---
+
+> **Note (2026-08-22):** the 120 curated screenshots this report refers to were
+> removed from the repository. They were a point-in-time record of this audit,
+> weighed 143.7 MB — 62% of everything tracked — and were published verbatim by
+> GitHub Pages, where no user would ever open them. The audit's findings are the
+> durable artifact and are recorded above and in `audit-matrix-2026-05-30.md`.
+> `npm run test:protocol-snapshot` remains the mechanism that locks rendered
+> output against drift.

@@ -146,12 +146,17 @@ describe('Milestone 2 Adversarial Verification & Stress Harness', () => {
       }
 
       // Inventory count, not a safety assertion — it moves whenever Protocols cards are added
-      // or removed. It is 136 after P4-4 replaced the Reference Library's ten hand-copied
-      // <details> document sections with one registry-driven <details> template (and the
-      // Guideline Library's outer <details> became a plain section on its move to the
-      // Guidelines sub-tab).
+      // or removed. It is 139 after v6.23.0 moved the Guideline Library's two accordion
+      // levels onto <LazyDetails> (which mounts its body on first open — a closed <details>
+      // otherwise builds and retains all of its children, and that route was constructing
+      // 862 recommendations to show ~89 collapsed headers).
+      //
+      // Note the count is regex-sensitive rather than semantic: `<details\b([^>]*)>` lets
+      // [^>] match newlines, so a match that starts at a multi-line opening tag runs to the
+      // first '>' anywhere after it and swallows any <details> in between. Reformatting
+      // nearby JSX therefore moves this number without changing how many accordions exist.
       // The safety assertion is openDetails === 0, immediately below.
-      expect(totalDetails).toBe(136);
+      expect(totalDetails).toBe(139);
       expect(openDetails).toBe(0);
 
       const indexHtml = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');

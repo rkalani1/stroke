@@ -5,20 +5,33 @@
    - On install: self.skipWaiting() so the new SW reaches the 'waiting' state
      immediately (no manual SKIP_WAITING postMessage like v5).
    - On activate: do NOT call self.clients.claim() immediately. Instead,
-     broadcast {type:'sw-update-ready', version:'6.22.0'} to every open
+     broadcast {type:'sw-update-ready', version:'6.23.0'} to every open
      client. The app shows a non-blocking toast — clinicians mid-consult are
-     never auto-interrupted.
+     never auto-interrupted. The broadcast only fires on an UPGRADE (an
+     earlier stroke-cache-v* existed); a first install stays silent.
    - When a client messages {type:'CLAIM_AND_RELOAD'} or legacy
      {type:'SKIP_WAITING'}, the SW calls clients.claim() and asks the client
      to soft-reload.
 
-   Cache-name bumped to stroke-cache-v6-22-0. Old caches are cleared on activate.
+   Cache-name bumped to stroke-cache-v6-23-0. Old caches are cleared on activate.
 */
 
-const APP_VERSION = '6.22.0';
-const CACHE_NAME  = 'stroke-cache-v6-22-0';
+const APP_VERSION = '6.23.0';
+const CACHE_PREFIX = 'stroke-cache-v';
+const CACHE_NAME  = 'stroke-cache-v6-23-0';
 
 const CORE_ASSETS = [
+  // Install-time precache: the app shell and everything the app itself reads.
+  //
+  // Deliberately NOT here, because the fetch handler below already caches
+  // same-origin assets cache-first on first request:
+  //   - data/*.json — the machine-readable agent/llms.txt API. Nothing in
+  //     src/ ever fetches it (the app compiles its guideline JSON into the
+  //     bundle), so precaching it made every first-time visitor download
+  //     ~929 KB of a second copy of the guideline data they already had.
+  //   - the large infographic PNGs — ~3.6 MB, lazy-loaded at runtime and
+  //     opened by a minority of visitors. They cache on first view instead.
+  // Both stay fully available offline once actually visited.
   './',
   './index.html',
   './manifest.json',
@@ -28,37 +41,6 @@ const CORE_ASSETS = [
   './tailwind.css',
   './offline.html',
   './config.example.json',
-  './data/index.json',
-  './data/calculators-index.json',
-  './data/generic-protocols.json',
-  './data/management-cards.json',
-  './data/atlas/active-trials.json',
-  './data/atlas/citations.json',
-  './data/atlas/claims.json',
-  './data/atlas/completed-trials.json',
-  './data/atlas/labels.json',
-  './data/atlas/recommendations.json',
-  './data/atlas/topics.json',
-  './data/guidelines/index.json',
-  './data/guidelines/aha-brain-health-life-span-2026.json',
-  './data/guidelines/ais-2026.json',
-  './data/guidelines/cancer-stroke-2026.json',
-  './data/guidelines/cardiac-brain-health-2024.json',
-  './data/guidelines/cvt-2024.json',
-  './data/guidelines/ich-2022.json',
-  './data/guidelines/landmark-trials.json',
-  './data/guidelines/maternal-stroke-2026.json',
-  './data/guidelines/perioperative-stroke-2021.json',
-  './data/guidelines/poststroke-cognitive-2023.json',
-  './data/guidelines/poststroke-primary-care-2021.json',
-  './data/guidelines/poststroke-spasticity-2026.json',
-  './data/guidelines/premorbid-disability-2022.json',
-  './data/guidelines/primary-prevention-2024.json',
-  './data/guidelines/sah-2023.json',
-  './data/guidelines/secondary-prevention-2021.json',
-  './data/guidelines/svin-large-core-2025.json',
-  './data/guidelines/systemic-complications-2024.json',
-  './data/guidelines/tia-ed-2023.json',
   './assets/fonts/bricolage-400.woff2',
   './assets/fonts/bricolage-500.woff2',
   './assets/fonts/bricolage-600.woff2',
@@ -84,21 +66,13 @@ const CORE_ASSETS = [
   './assets/splash/splash-iphone-16-pro.png',
   './assets/splash/splash-iphone-16.png',
   './assets/splash/splash-iphone-8-7-6.png',
-  './assets/toast_classification_infographic.png',
   './assets/toast_classification_infographic.svg',
-  './assets/dapt_flowchart_timeline.png',
   './assets/dapt_flowchart_timeline.svg',
-  './assets/afib_timing_protocol.png',
   './assets/afib_timing_protocol.svg',
-  './assets/select_score_chart.png',
   './assets/select_score_chart.svg',
-  './assets/ischemic_core_penumbra_render.png',
   './assets/ischemic_core_penumbra_render.svg',
-  './assets/aspects_10_regions_render.png',
   './assets/aspects_10_regions_render.svg',
-  './assets/evt_lvo_occlusion_sites.png',
   './assets/evt_lvo_occlusion_sites.svg',
-  './assets/hematoma_expansion_render.png',
   './assets/hematoma_expansion_render.svg'
 ];
 
@@ -120,7 +94,22 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
+
+    // An earlier release's cache is the signal that this activate is an
+    // UPGRADE rather than a first install. Read it before the delete sweep.
+    // Without this check the first-ever visitor is told "a new version is
+    // ready" on the page they just opened — the update banner is the only
+    // channel that tells a clinician the evidence changed, so firing it
+    // spuriously trains them to dismiss it.
+    const isUpgrade = keys.some(k => k !== CACHE_NAME && k.startsWith(CACHE_PREFIX));
+
     await Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)));
+
+    if (!isUpgrade) {
+      // eslint-disable-next-line no-console
+      console.info(`[SW] v${APP_VERSION} installed (first run) — no update banner`);
+      return;
+    }
 
     // Broadcast the update — do NOT call clients.claim() here. Include
     // uncontrolled windows because an already-open page may still be under the

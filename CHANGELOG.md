@@ -1,5 +1,63 @@
 # CHANGELOG
 
+## v6.23.0 — 2026-08-22 — measured site review: search fix, DOM/precache reductions, byte budget
+
+Follow-on from `docs/site-improvement-review-2026-08-22.md`. Everything below
+was measured against the production assets before and after; no clinical
+wording changed and the `#/protocols/*` snapshot lock is untouched.
+
+- **Guideline Library search now actually filters.** `fuzzyScore` is a ranking
+  function — it awards a point for each query character found in order
+  anywhere in the target, so on ordinary prose it returns > 0 for almost any
+  query. The filter used `score > 0` as its match predicate, so **every one of
+  the 862 recommendations passed**: typing in the search box expanded all 397
+  accordions and rendered the entire catalog, while the header kept reading
+  "862 recommendations". Matching is now a separate predicate (`matchesTextQuery`
+  — every whitespace-separated token must appear as a substring of the
+  recommendation text, section, or guideline title); `rankText` still orders
+  whatever matches. Measured: "tenecteplase" 862 → 4 results, "blood pressure"
+  862 → 31, a nonsense query → 0 with the empty-state message. The result
+  count in the header is correct as a consequence.
+- **Guideline Library accordions mount their bodies on first open** (new
+  `LazyDetails`, `src/app.jsx`). A closed `<details>` still builds and retains
+  all its children, so the route constructed 862 recommendations to show ~89
+  collapsed headers. Measured on `#/research`: **24,961 → 1,611 DOM nodes
+  (−94%)**, 397 → 89 `<details>`, and **~27% faster** to a settled route at 1×,
+  4×, and 6× CPU throttle. Search auto-expansion and manual expansion both
+  still mount correctly. The remaining time is bundle parse/execute, which
+  needs route-level code splitting (deferred — review item 04).
+- **First-time visitors are no longer told the app has an update.** The
+  service-worker `activate` handler broadcast `sw-update-ready` on first
+  install as well as on upgrade, so a brand-new visitor saw "A new version of
+  Stroke is ready" on the page they had just opened. It now broadcasts only
+  when an earlier `stroke-cache-v*` existed. Verified in a real browser on a
+  clean profile (silent) and against a planted older cache (still announces).
+- **"System" is reachable again on the public deployment.** `setThemePref('auto')`
+  deleted the preference key, but on `*.github.io` an unset key resolves to
+  `light` — so choosing System snapped straight back to Light and the OS
+  dark-mode preference was never honored on the live site. `'auto'` is now
+  persisted explicitly. The unset-public default stays light.
+- **Install precache trimmed 9.26 MB → 4.68 MB (−49%).** Dropped the 31
+  `data/*.json` agent-API entries (nothing under `src/` fetches them — the app
+  compiles its guideline JSON into the bundle, so first-time visitors were
+  downloading a second copy of data they already had) and the 8 large
+  infographic PNGs (~3.6 MB, lazy-loaded and opened by a minority of
+  visitors). Both are still cached on first request by the existing cache-first
+  same-origin fetch path, so offline availability after a visit is unchanged.
+- **Asset budget gate added to CI** (`npm run check:asset-budget`,
+  `scripts/check-asset-budget.mjs`). The Lighthouse workflow gates
+  Accessibility and Best Practices at 90 but writes Performance as advisory,
+  which let the bundle grow from 2.5 MB / 691 KB gzip (2026-05-29) to
+  3.79 MB / 888 KB by v6.22.0 — 52% in three months — unnoticed. Bytes are
+  deterministic where a hosted Lighthouse score is not. Budgets are set just
+  above today's numbers to stop drift, not to demand an improvement.
+- **Repository: 232 MB → 88.7 MB tracked (−62%).** Removed
+  `docs/perfection/screenshots/` — 120 PNGs, 143.7 MB, a point-in-time record
+  of the 2026-05-30 audit that GitHub Pages published verbatim and no user
+  would ever open. The audit's findings remain in `final-report-2026-05-30.md`
+  and `audit-matrix-2026-05-30.md`, and `npm run test:protocol-snapshot`
+  remains the mechanism that locks rendered output against drift.
+
 ## v6.22.0 — 2026-08-22 — remove the What's New feed
 
 - **Removed the What's New section entirely** (panel, Research subtab, routes,

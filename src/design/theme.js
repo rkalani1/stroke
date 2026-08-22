@@ -67,13 +67,18 @@ export function getThemePref() {
   return stored || 'auto';
 }
 
-/* Persist preference. 'auto' deletes the key so OS pref wins. */
+/* Persist preference — including 'auto', which is written explicitly rather
+   than deleted.
+
+   Deleting the key used to make 'System' unreachable on public Pages: the
+   delete left the key unset, and getThemePref() reads unset-on-public as
+   'light', so choosing System silently snapped back to Light and the OS
+   dark-mode preference was never honored on the deployed site. Writing 'auto'
+   keeps "never chosen" (unset → light on public) and "chose System" as
+   distinct states, which is what the 3-way control needs. */
 export function setThemePref(value) {
-  if (value === 'auto') {
-    try { localStorage.removeItem(PREF_KEY); } catch { /* ignore */ }
-  } else {
-    safeSet(PREF_KEY, value);
-  }
+  const next = (value === 'light' || value === 'dark' || value === 'auto') ? value : 'auto';
+  safeSet(PREF_KEY, next);
   applyTheme();
 }
 

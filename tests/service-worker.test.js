@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
 const workerSource = readFileSync(join(repoRoot, 'service-worker.js'), 'utf8');
 
-function loadServiceWorker() {
+function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-cache-v6-22-0', 'stroke-cache-v6-23-0']) {
   const handlers = new Map();
   const deletedCaches = [];
   const postedMessages = [];
@@ -29,7 +29,7 @@ function loadServiceWorker() {
     fetch: async () => ({ ok: true, clone: () => ({ ok: true }) }),
     caches: {
       open: async () => cacheStore,
-      keys: async () => ['stroke-cache-v6-20-1', 'stroke-cache-v6-21-0', 'stroke-cache-v6-22-0'],
+      keys: async () => existingCacheKeys,
       delete: async (key) => {
         deletedCaches.push(key);
         return true;
@@ -117,11 +117,42 @@ describe('service worker update lifecycle', () => {
 
     expect(worker.skipWaitingCount).toBe(1);
     expect(worker.claimCount).toBe(0);
-    expect(worker.deletedCaches).toContain('stroke-cache-v6-20-1');
     expect(worker.deletedCaches).toContain('stroke-cache-v6-21-0');
-    expect(worker.deletedCaches).not.toContain('stroke-cache-v6-22-0');
+    expect(worker.deletedCaches).toContain('stroke-cache-v6-22-0');
+    expect(worker.deletedCaches).not.toContain('stroke-cache-v6-23-0');
     expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-update-ready', version: '6.22.0' });
+    expect(worker.postedMessages).toContainEqual({ type: 'sw-update-ready', version: '6.23.0' });
+  });
+
+  it('stays silent on a first install so new visitors are not told about an update', async () => {
+    // No prior stroke-cache-v* exists: this activate is a first install, not an
+    // upgrade. Broadcasting here showed every first-time visitor the "a new
+    // version of Stroke is ready" banner on the page they had just opened.
+    const worker = loadServiceWorker([]);
+
+    await worker.dispatch('install');
+    await worker.dispatch('activate');
+
+    expect(worker.postedMessages).toEqual([]);
+    expect(worker.claimCount).toBe(0);
+  });
+
+  it('still announces an upgrade when only a foreign cache is present alongside an older release', async () => {
+    const worker = loadServiceWorker(['some-unrelated-cache', 'stroke-cache-v6-22-0']);
+
+    await worker.dispatch('install');
+    await worker.dispatch('activate');
+
+    expect(worker.postedMessages).toContainEqual({ type: 'sw-update-ready', version: '6.23.0' });
+  });
+
+  it('stays silent when only unrelated caches exist', async () => {
+    const worker = loadServiceWorker(['workbox-precache', 'some-unrelated-cache']);
+
+    await worker.dispatch('install');
+    await worker.dispatch('activate');
+
+    expect(worker.postedMessages).toEqual([]);
   });
 
   it('claims clients and requests reload for the current update message', async () => {
@@ -131,7 +162,7 @@ describe('service worker update lifecycle', () => {
 
     expect(worker.claimCount).toBe(1);
     expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version: '6.22.0' });
+    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version: '6.23.0' });
   });
 
   it('claims clients and requests reload for legacy SKIP_WAITING messages', async () => {
@@ -141,19 +172,64 @@ describe('service worker update lifecycle', () => {
 
     expect(worker.claimCount).toBe(1);
     expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version: '6.22.0' });
+    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version: '6.23.0' });
   });
 
-  it('includes static JSON clinical endpoints, core assets, and iOS splash screens in precache list', () => {
-    expect(workerSource).toContain("'./data/index.json'");
+  it('precaches the app shell and the config the app actually fetches', () => {
+    for (const shell of ['./', './index.html', './app.js', './tailwind.css', './manifest.json', './offline.html']) {
+      expect(workerSource).toContain(`'${shell}'`);
+    }
+    // config.example.json is the ONE runtime fetch in src/ (src/app.jsx), so it
+    // stays precached.
     expect(workerSource).toContain("'./config.example.json'");
-    expect(workerSource).toContain("'./data/guidelines/index.json'");
-    expect(workerSource).toContain("'./data/management-cards.json'");
-    expect(workerSource).toContain("'./data/generic-protocols.json'");
-    expect(workerSource).toContain("'./data/calculators-index.json'");
-    expect(workerSource).toContain("'./data/atlas/active-trials.json'");
-    expect(workerSource).toContain("'./data/atlas/completed-trials.json'");
+  });
 
+  it('keeps the agent-API JSON and heavy infographics out of the install precache', () => {
+    // data/*.json is the machine-readable agent / llms.txt API. Nothing under
+    // src/ fetches it — the app compiles its guideline JSON into the bundle —
+    // so precaching it made every first-time visitor download ~929 KB of a
+    // second copy of data they already had. The large infographics (~3.6 MB)
+    // are lazy-loaded and opened by a minority of visitors. Both are still
+    // cached on first request by the cache-first same-origin fetch path, so
+    // offline availability after a visit is unchanged.
+    const match = workerSource.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/);
+    expect(match).not.toBeNull();
+    // eslint-disable-next-line no-eval
+    const coreAssets = eval(match[1]);
+
+    expect(coreAssets.filter((asset) => asset.startsWith('./data/'))).toEqual([]);
+
+    const heavyInfographics = [
+      './assets/toast_classification_infographic.png',
+      './assets/dapt_flowchart_timeline.png',
+      './assets/afib_timing_protocol.png',
+      './assets/select_score_chart.png',
+      './assets/ischemic_core_penumbra_render.png',
+      './assets/aspects_10_regions_render.png',
+      './assets/evt_lvo_occlusion_sites.png',
+      './assets/hematoma_expansion_render.png',
+    ];
+    for (const png of heavyInfographics) {
+      expect(coreAssets).not.toContain(png);
+    }
+
+    // The SVG companions are small and stay precached.
+    expect(coreAssets).toContain('./assets/toast_classification_infographic.svg');
+  });
+
+  it('keeps the install precache within its byte budget', () => {
+    const match = workerSource.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/);
+    // eslint-disable-next-line no-eval
+    const coreAssets = eval(match[1]);
+    const total = coreAssets.reduce((sum, asset) => {
+      const rel = asset === './' ? 'index.html' : asset.replace(/^\.\//, '');
+      return sum + (existsSync(join(repoRoot, rel)) ? statSync(join(repoRoot, rel)).size : 0);
+    }, 0);
+    // 9.26 MB before the trim. The budget is what stops it drifting back.
+    expect(total).toBeLessThan(6 * 1024 * 1024);
+  });
+
+  it('includes iOS splash screens in precache list', () => {
     const splashAssets = [
       './assets/splash/splash-ipad-mini.png',
       './assets/splash/splash-ipad-pro-11.png',

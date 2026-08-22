@@ -166,7 +166,13 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
       const arrayString = `[${match[1]}]`;
       const coreAssets = eval(arrayString); // Evaluates array of string paths safely
 
-      expect(coreAssets.length).toBeGreaterThan(50);
+      // Floor guards against the precache being gutted. Lowered from 50 in
+      // v6.23.0, which deliberately dropped 31 data/*.json agent-API entries
+      // (nothing in src/ fetches them) and 8 large infographic PNGs
+      // (lazy-loaded; the precached SVG is the onError fallback) — 9.26 MB of
+      // install payload down to 4.68 MB. Both groups still cache on first
+      // request via the cache-first same-origin fetch path.
+      expect(coreAssets.length).toBeGreaterThan(35);
 
       const missingAssets = [];
       for (const relAsset of coreAssets) {

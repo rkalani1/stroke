@@ -1,6 +1,6 @@
 {
   "name": "stroke",
-  "version": "6.22.0",
+  "version": "6.23.0",
   "description": "A client-side clinical decision support toolkit for stroke management with encounter workflows, calculators, protocols, trials, and evidence references.",
   "main": "service-worker.js",
   "scripts": {
@@ -47,7 +47,7 @@
     "evidence:template:top5": "node ./scripts/evidence-promotion-template.mjs --limit 5",
     "evidence:index": "node ./scripts/evidence-ops-index.mjs",
     "evidence:refresh": "npm run validate:evidence-churn-profiles && npm run evidence:watch && npm run evidence:promote && npm run evidence:template && npm run evidence:template:p0 && npm run evidence:index && npm run validate:evidence-promotion",
-    "test": "npm run check:leak-guard && npm run test:protocol && npm run validate:citations && npm run validate:pmids && npm run validate:inline-citations && npm run evidence:validate && npm run content:seed:check && npm run content:validate && npm run content:bundle:check && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && npm run validate:automedbench-lite && node ./scripts/qa-smoke.mjs --local-only",
+    "test": "npm run check:leak-guard && npm run check:asset-budget && npm run test:protocol && npm run validate:citations && npm run validate:pmids && npm run validate:inline-citations && npm run evidence:validate && npm run content:seed:check && npm run content:validate && npm run content:bundle:check && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && npm run validate:automedbench-lite && node ./scripts/qa-smoke.mjs --local-only",
     "qa": "npm run check:leak-guard && npm run validate:citations && npm run validate:inline-citations && npm run evidence:validate && npm run content:seed:check && npm run content:validate && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && npm run validate:automedbench-lite && node ./scripts/qa-smoke.mjs",
     "qa:latency-adaptive-local": "node ./scripts/qa-smoke.mjs --local-only --latency-profile adaptive --latency-profiles-file docs/qa-latency-profiles.json --enforce-latency-thresholds",
     "qa:latency:recalibrate": "node ./scripts/qa-latency-recalibration.mjs",
@@ -71,6 +71,8 @@
     "lint:tokens": "node ./scripts/lint-tokens.mjs",
     "lint:touch-targets": "node ./scripts/lint-touch-targets.mjs",
     "lint:contrast": "node ./scripts/lint-contrast.mjs",
+    "check:asset-budget": "node ./scripts/check-asset-budget.mjs",
+    "check:asset-budget:json": "node ./scripts/check-asset-budget.mjs --json",
     "check:leak-guard": "git ls-files | node ./scripts/check-no-institutional-leak.mjs",
     "check:leak-guard:staged": "sh ./scripts/check-staged-leak-guard.sh",
     "hooks:install": "git config core.hooksPath .githooks"

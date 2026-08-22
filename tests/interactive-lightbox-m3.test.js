@@ -52,29 +52,57 @@ describe('Milestone M3-1: Interactive Lightbox & Visual Asset Integration', () =
     });
   });
 
-  it('precaches all 16 visual asset PNG and SVG files in service-worker.js', () => {
-    const swAssets = [
-      './assets/toast_classification_infographic.png',
-      './assets/toast_classification_infographic.svg',
-      './assets/dapt_flowchart_timeline.png',
-      './assets/dapt_flowchart_timeline.svg',
-      './assets/afib_timing_protocol.png',
-      './assets/afib_timing_protocol.svg',
-      './assets/select_score_chart.png',
-      './assets/select_score_chart.svg',
-      './assets/ischemic_core_penumbra_render.png',
-      './assets/ischemic_core_penumbra_render.svg',
-      './assets/aspects_10_regions_render.png',
-      './assets/aspects_10_regions_render.svg',
-      './assets/evt_lvo_occlusion_sites.png',
-      './assets/evt_lvo_occlusion_sites.svg',
-      './assets/hematoma_expansion_render.png',
-      './assets/hematoma_expansion_render.svg'
-    ];
+  // v6.23.0 changed this contract deliberately. The 8 infographic PNGs are
+  // 2400x1800 and total ~3.6 MB — 39% of what a first-time visitor used to
+  // download before the app was offline-ready — and they are lazy-loaded, so
+  // most visitors never open one. They now cache on first view via the
+  // cache-first same-origin path in the service worker's fetch handler.
+  //
+  // Offline-before-first-view degrades gracefully rather than breaking:
+  // VisualAssetFigure renders the PNG as `src` with the SVG as its `onError`
+  // fallback, and the SVGs stay precached. They are genuine vector drawings
+  // (41-114 shape/text nodes each, no embedded raster) totalling ~83 KB, so
+  // the reader still gets the full figure.
+  const VISUAL_ASSET_STEMS = [
+    'toast_classification_infographic',
+    'dapt_flowchart_timeline',
+    'afib_timing_protocol',
+    'select_score_chart',
+    'ischemic_core_penumbra_render',
+    'aspects_10_regions_render',
+    'evt_lvo_occlusion_sites',
+    'hematoma_expansion_render',
+  ];
 
-    swAssets.forEach(asset => {
-      expect(serviceWorkerContent).toContain(asset);
-    });
+  it('precaches the SVG fallback for every visual asset so figures survive offline', () => {
+    for (const stem of VISUAL_ASSET_STEMS) {
+      expect(serviceWorkerContent).toContain(`'./assets/${stem}.svg'`);
+    }
+  });
+
+  it('keeps the heavy PNG originals out of the install precache', () => {
+    const match = serviceWorkerContent.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/);
+    expect(match).not.toBeNull();
+    // eslint-disable-next-line no-eval
+    const coreAssets = eval(match[1]);
+    for (const stem of VISUAL_ASSET_STEMS) {
+      expect(coreAssets).not.toContain(`./assets/${stem}.png`);
+    }
+  });
+
+  it('keeps the PNG as the rendered source with the SVG as its error fallback', () => {
+    // If this inverts, the precache trim above would silently cost the reader
+    // the figure when offline before first view.
+    expect(componentsContent).toContain('const activeSrc = hasError && fallbackSvgSrc ? fallbackSvgSrc : src;');
+    expect(componentsContent).toContain('onError={() => setHasError(true)}');
+  });
+
+  it('ships every visual asset in both formats on disk', () => {
+    for (const stem of VISUAL_ASSET_STEMS) {
+      for (const ext of ['png', 'svg']) {
+        expect(fs.existsSync(path.join(repoRoot, 'assets', `${stem}.${ext}`)), `assets/${stem}.${ext}`).toBe(true);
+      }
+    }
   });
 
   it('verifies interactive lightbox zoom bounds (1.0x to 4.0x), scale display, and position resets', () => {
