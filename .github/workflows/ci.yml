@@ -78,6 +78,19 @@ jobs:
       - name: Run vitest
         run: npm run test:unit
 
+      # Offline-deterministic content guards. These re-validate the committed
+      # content layer and generated assets without any network access (no
+      # PubMed/NCBI lookups — validate:pmids --check-identifiers and other
+      # network-dependent checks are deliberately NOT wired here).
+      - name: Content validation
+        run: npm run content:validate
+
+      - name: Content bundle check
+        run: npm run content:bundle:check
+
+      - name: Agent assets check
+        run: npm run agent:assets:check
+
       - name: Upload vitest output (on failure)
         if: failure()
         uses: actions/upload-artifact@v4

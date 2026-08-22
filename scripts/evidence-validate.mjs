@@ -175,6 +175,36 @@ async function main() {
 
   // Active trial: at least one matcherCriteria field; checked by schema.
 
+  // Orphan-citation report — informational only, never fails the build.
+  //
+  // Consumers of citation ids across src/evidence/*.js (verified by audit):
+  //   - completedTrials[].citationIds   (array)
+  //   - claims[].citationIds            (array)
+  //   - guidelines[].citationId         (single id)
+  //   - recommendations reference claims (supportingClaimIds), not citations
+  //   - activeTrials / topics carry no citation fields today
+  // Rather than hard-coding those field names, deep-walk every consumer
+  // record and count any string equal to a known citation id as a
+  // reference. That keeps the report accurate if a future schema change
+  // adds a nested citation field, at the cost of being conservative (an
+  // id mentioned anywhere in a record counts as consumed).
+  const referencedCitationIds = new Set();
+  const collectCitationRefs = (value) => {
+    if (typeof value === 'string') {
+      if (knownCitationIds.has(value)) referencedCitationIds.add(value);
+    } else if (Array.isArray(value)) {
+      for (const v of value) collectCitationRefs(v);
+    } else if (value && typeof value === 'object') {
+      for (const v of Object.values(value)) collectCitationRefs(v);
+    }
+  };
+  for (const list of [activeTrials, completedTrials, recommendations, claims, guidelines, topics]) {
+    for (const record of list) collectCitationRefs(record);
+  }
+  const orphanCitationIds = citations
+    .map((c) => c.id)
+    .filter((id) => id && !referencedCitationIds.has(id));
+
   // Aggregate counts for the summary line.
   const counts = {
     activeTrials: activeTrials.length,
@@ -199,7 +229,7 @@ async function main() {
   }
 
   if (json) {
-    const payload = { ok: errors.length === 0, counts, coverage, errors, warnings };
+    const payload = { ok: errors.length === 0, counts, coverage, errors, warnings, orphanCitations: orphanCitationIds };
     console.log(JSON.stringify(payload, null, 2));
     process.exit(errors.length === 0 ? 0 : 1);
     return;
@@ -213,6 +243,17 @@ async function main() {
     if (warnings.length) {
       warn(`(${warnings.length} warning${warnings.length === 1 ? '' : 's'} below — non-fatal)`);
       warn(fmtList('warnings', warnings));
+    }
+    // Informational orphan-citation report block. Warnings only — a
+    // citation with no consuming record is either staged for future
+    // promotion or was left behind by a pruned record; either way it is
+    // a curation prompt, not a structural defect, so exit code stays 0.
+    log('');
+    log(`Orphan citation report — citation ids in src/evidence/citations.js not referenced by any active trial, completed trial, recommendation, claim, guideline, or topic record (informational, non-fatal):`);
+    if (orphanCitationIds.length === 0) {
+      log('  none');
+    } else {
+      warn(fmtList('orphan citation warnings', orphanCitationIds).replace(/^\n/, ''));
     }
     process.exit(0);
   } else {

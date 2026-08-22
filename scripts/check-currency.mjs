@@ -79,6 +79,40 @@ function sourcesOf(rec) {
   return bits.join(' | ') || '(no source recorded)';
 }
 
+// Guideline metadata datasets under src/guidelines/*.json. These carry
+// publication identity (doi/pmid/urls) but — as of the 89-dataset library —
+// no lastReviewed (or equivalent) currency field. Missing currency is
+// reported as a WARNING ONLY: it never affects the exit code (including
+// --strict, which gates on stale /content entries just as before).
+const GUIDELINES_SRC = path.join(REPO, 'src', 'guidelines');
+const CURRENCY_FIELDS = ['lastReviewed', 'lastUpdated', 'reviewedDate', 'retrievedDate'];
+
+function guidelineMetaCurrency() {
+  const missing = [];
+  let datasets = 0;
+  if (!fs.existsSync(GUIDELINES_SRC)) return { datasets, missing };
+  for (const entry of fs.readdirSync(GUIDELINES_SRC)) {
+    if (!entry.endsWith('.json')) continue;
+    const file = path.join(GUIDELINES_SRC, entry);
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(file, 'utf8'));
+    } catch {
+      continue; // malformed JSON is validate-content's problem, not currency's
+    }
+    // A dataset is a guideline record (has an id). landmark-trials.json is a
+    // trial-grouping index without per-dataset identity; skip non-records.
+    if (!data || Array.isArray(data) || typeof data !== 'object' || !data.id) continue;
+    datasets += 1;
+    if (!CURRENCY_FIELDS.some((f) => data[f])) {
+      missing.push({ id: data.id, file: path.relative(REPO, file) });
+    }
+  }
+  return { datasets, missing };
+}
+
+const guidelineMeta = guidelineMetaCurrency();
+
 const stale = [];
 for (const file of walk(CONTENT)) {
   const domain = path.relative(CONTENT, file).split(path.sep)[0];
@@ -103,7 +137,15 @@ for (const file of walk(CONTENT)) {
 stale.sort((a, b) => b.ageMonths - a.ageMonths);
 
 if (asJson) {
-  console.log(JSON.stringify({ thresholdMonths: MONTHS, asOf: NOW.toISOString().slice(0, 10), stale }, null, 2));
+  console.log(JSON.stringify({
+    thresholdMonths: MONTHS,
+    asOf: NOW.toISOString().slice(0, 10),
+    stale,
+    guidelineMeta: {
+      datasets: guidelineMeta.datasets,
+      missingCurrencyField: guidelineMeta.missing,
+    },
+  }, null, 2));
 } else {
   console.log(`Currency report — entries not reviewed in > ${MONTHS} months (as of ${NOW.toISOString().slice(0, 10)})`);
   if (!stale.length) {
@@ -117,6 +159,20 @@ if (asJson) {
     }
     console.log(`\n${stale.length} entr${stale.length === 1 ? 'y' : 'ies'} due for re-verification.`);
   }
+
+  console.log(`\nGuideline metadata currency — src/guidelines/*.json (${guidelineMeta.datasets} datasets)`);
+  if (!guidelineMeta.missing.length) {
+    console.log('  ✓ every guideline metadata dataset carries a currency field.');
+  } else {
+    console.log(`  ⚠ ${guidelineMeta.missing.length}/${guidelineMeta.datasets} datasets lack a lastReviewed (or equivalent) field — warning only, does not affect exit code:`);
+    for (const m of guidelineMeta.missing) {
+      console.log(`  • [guideline-meta] ${m.id} — no currency field (${m.file})`);
+    }
+  }
 }
 
+// --strict gates on stale /content entries only; the src/guidelines metadata
+// currency gaps above are warnings by design (see task note: the 89-dataset
+// library predates the lastReviewed convention, a hard failure would turn
+// the suite red).
 if (strict && stale.length) process.exit(1);
