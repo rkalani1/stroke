@@ -1,0 +1,74 @@
+[
+  {
+    "id": "references-afib-doac-start-timing",
+    "title": "AFib DOAC Start Timing",
+    "category": "references",
+    "type": "pdf",
+    "path": "documents/references/AFib DOAC Start Timing.pdf",
+    "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "references-brain-death-guidelines",
+    "title": "Brain Death Guidelines",
+    "category": "references",
+    "type": "pdf",
+    "path": "documents/references/Brain Death Guidelines.pdf",
+    "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "references-cervical-artery-dissection",
+    "title": "Cervical Artery Dissection",
+    "category": "references",
+    "type": "pdf",
+    "path": "documents/references/Cervical Artery Dissection.pdf",
+    "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "references-dapt-guidelines",
+    "title": "DAPT Guidelines",
+    "category": "references",
+    "type": "pdf",
+    "path": "documents/references/DAPT Guidelines.pdf",
+    "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "references-external-ventricular-drain",
+    "title": "External Ventricular Drain",
+    "category": "references",
+    "type": "pdf",
+    "path": "documents/references/External Ventricular Drain.pdf",
+    "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "references-intracranial-hypertension-herniation",
+    "title": "Intracranial Hypertension & Herniation",
+    "category": "references",
+    "type": "pdf",
+    "path": "documents/references/Intracranial Hypertension & Herniation.pdf",
+    "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "references-malignant-infarction",
+    "title": "Malignant Infarction",
+    "category": "references",
+    "type": "pdf",
+    "path": "documents/references/Malignant Infarction.pdf",
+    "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "references-stroke-prognosis",
+    "title": "Stroke Prognosis",
+    "category": "references",
+    "type": "pdf",
+    "path": "documents/references/Stroke Prognosis.pdf",
+    "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "references-toast-stroke-classification",
+    "title": "TOAST Stroke Classification",
+    "category": "references",
+    "type": "pdf",
+    "path": "documents/references/TOAST Stroke Classification.pdf",
+    "provenance": "src/app.jsx reference library"
+  }
+]

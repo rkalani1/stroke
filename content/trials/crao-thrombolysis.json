@@ -6,14 +6,14 @@
     "category": "crao-thrombolysis",
     "population": "n=70, ≥18, NIHSS n/a, ≤4.5 h from severe vision loss",
     "finding": "No significant benefit: 19/29 (66%) vs 13/27 (48%)",
-    "teachingPoint": "CRAO IVT is reasonable in selected centers; no strong RCT support yet.",
+    "teachingPoint": "THEIA was neutral (adjusted OR 1.1, 95% CI 0.07-18.39, p=0.95; underpowered) — CRAO thrombolysis remains unproven; do not present it as evidence-supported outside trials.",
     "PMID": "41109232",
     "year": 2025,
     "citationIds": [
       "cit-theia-2023"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-07-18",
+    "lastReviewed": "2026-08-22",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

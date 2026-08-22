@@ -19,6 +19,7 @@ import {
   CarotidStenosisCard,
   VesselWallMriCard,
   CryptogenicStrokeEsusCard,
+  PfoClosureCard,
   RcvsCard,
   CadasilCarasilCard,
   MoyamoyaDiseaseCard,
@@ -74,6 +75,7 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
     // Domain 4: Diagnostic Algorithms, Neuroimaging & ESUS
     { id: 'vessel-wall-mri', Component: VesselWallMriCard, name: 'Vessel Wall MRI Differential' },
     { id: 'cryptogenic-stroke-esus', Component: CryptogenicStrokeEsusCard, name: 'Cryptogenic Stroke & ESUS' },
+    { id: 'pfo-closure', Component: PfoClosureCard, name: 'PFO Closure for Cryptogenic Stroke' },
     { id: 'rcvs', Component: RcvsCard, name: 'RCVS Diagnostic Flowchart' },
 
     // Domain 5: Rare Vasculopathies & Special Populations
@@ -181,8 +183,8 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
     const bundlePath = path.resolve(process.cwd(), 'content/bundle.json');
     const bundleData = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
 
-    it('verifies content/bundle.json contains all 48 education modules', () => {
-      expect(bundleData.education.length).toBe(40);
+    it('verifies content/bundle.json contains all education modules', () => {
+      expect(bundleData.education.length).toBe(41);
     });
 
     ALL_CURRICULUM_CARDS.forEach(({ id }) => {

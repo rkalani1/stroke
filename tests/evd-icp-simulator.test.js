@@ -88,4 +88,23 @@ describe('EVD/ICP simulator — drip dynamics', () => {
     const high = computeDripInterval({ trueMeanICP: 30, evdHeight: 5, transducerOffset: 0, stopcockPosition: 0, isKinked: false, isClotted: false });
     expect(high.intervalMs).toBeLessThan(low.intervalMs);
   });
+
+  it('a system lowered below the tragus (positive offset) drains FASTER, not slower', () => {
+    // Sign-error regression: transducerOffset is + when the system sits BELOW
+    // the tragus, which lowers the drip-chamber lip and raises driving pressure.
+    const level = computeDripInterval({ trueMeanICP: 12, evdHeight: 10, transducerOffset: 0, stopcockPosition: 0, isKinked: false, isClotted: false });
+    const lowered = computeDripInterval({ trueMeanICP: 12, evdHeight: 10, transducerOffset: 10, stopcockPosition: 0, isKinked: false, isClotted: false });
+    expect(lowered.drivingPressure).toBeGreaterThan(level.drivingPressure);
+    expect(lowered.intervalMs).toBeLessThan(level.intervalMs);
+  });
+
+  it('overdrain scenario state drips faster than its corrected state', () => {
+    // Flagship teaching scenario: bed raised without re-leveling (system 10 cm
+    // below tragus) + drip height dropped to 2 → excess drainage. The corrected
+    // state (re-leveled to 0 offset, drip height back to 10) must drip slower.
+    const overdrain = computeDripInterval({ trueMeanICP: 12, evdHeight: 2, transducerOffset: 10, stopcockPosition: 0, isKinked: false, isClotted: false, brainCompliance: 3 });
+    const corrected = computeDripInterval({ trueMeanICP: 12, evdHeight: 10, transducerOffset: 0, stopcockPosition: 0, isKinked: false, isClotted: false, brainCompliance: 3 });
+    expect(overdrain.drips).toBe(true);
+    expect(overdrain.intervalMs).toBeLessThan(corrected.intervalMs);
+  });
 });

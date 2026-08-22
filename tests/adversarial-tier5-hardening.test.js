@@ -9,7 +9,7 @@
 //   2. Matcher Engine & Field Resolvers / Operators (src/evidence/matcher-engine.js)
 //   3. Guideline Recommendations Decision Logic & Edge Cases (src/app.jsx)
 //   4. Educational Accordion Architecture & Fuzzy Search (src/education.jsx)
-//   5. 88 Guideline Datasets & 861 Recommendations (data/guidelines/)
+//   5. 89 Guideline Datasets & 862 Recommendations (data/guidelines/)
 //   6. Landmark Trial Citations & Central Registry Integrity (src/evidence/citations.js)
 
 import { describe, it, expect } from 'vitest';
@@ -199,8 +199,8 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       expect(report.total).toBe(42);
       expect(report.covered).toBe(42);
       expect(report.percent).toBe(100);
-      expect(report.exclusionsTotal).toBe(13);
-      expect(report.exclusionsCovered).toBe(13);
+      expect(report.exclusionsTotal).toBe(14);
+      expect(report.exclusionsCovered).toBe(14);
       expect(report.exclusionsPercent).toBe(100);
       expect(report.gaps).toEqual([]);
     });
@@ -357,7 +357,12 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       const result = evaluateAllTrialsViaEngine(activeTrials, patientEnvelope);
       expect(result).toBeDefined();
       const keys = Object.keys(result);
-      expect(keys.length).toBe(9);
+      // Only actively-enrolling trials are matchable — completed/withdrawn/
+      // halted records are status-gated out of the engine output so they can
+      // never surface as ELIGIBLE for a live patient.
+      const matchableCount = activeTrials.filter((t) => ['recruiting', 'enrolling-by-invitation'].includes(t.status)).length;
+      expect(keys.length).toBe(matchableCount);
+      expect(keys).not.toContain('MOST');
 
       for (const key of keys) {
         const trialResult = result[key];
@@ -394,7 +399,6 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         'evt_late_window',
         'evt_large_core_early',
         'evt_basilar',
-        'anticoag_af_timing',
         'doac_timing_af',
         'reversal_xa_inhibitor',
         'reversal_dabigatran',
@@ -412,7 +416,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       expect(appJsx).toContain("id: 'bp_post_evt'");
       expect(appJsx).toContain("classOfRec: 'III'");
       expect(appJsx).toContain("levelOfEvidence: 'A'");
-      expect(appJsx).toContain('Do NOT target SBP <140 mmHg after successful EVT reperfusion');
+      expect(appJsx).toContain('do NOT target SBP <140');
     });
 
     it('stress tests acute ICH BP lowering harm guard (ATACH-2 / AHA 2022)', () => {
@@ -426,7 +430,9 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
     it('stress tests DOAC resumption CATALYST 2025 evidence integration', () => {
       const appJsx = fs.readFileSync(path.join(REPO_ROOT, 'src', 'app.jsx'), 'utf8');
       
-      expect(appJsx).toContain("id: 'anticoag_af_timing'");
+      // anticoag_af_timing was merged into doac_timing_af (duplicate-rule
+      // consolidation) — CATALYST evidence now lives on the single card.
+      expect(appJsx).not.toContain("id: 'anticoag_af_timing'");
       expect(appJsx).toContain("id: 'doac_timing_af'");
       expect(appJsx).toMatch(/CATALYST.*2025|40570866/i);
     });
@@ -475,13 +481,13 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
   });
 
   // =========================================================================
-  // 5. 88 GUIDELINE DATASETS & 861 RECOMMENDATIONS ADVERSARIAL VALIDATION
+  // 5. 89 GUIDELINE DATASETS & 862 RECOMMENDATIONS ADVERSARIAL VALIDATION
   // =========================================================================
-  describe('5. 88 Guideline Datasets & 861 Recommendations Invariant Hardening', () => {
+  describe('5. 89 Guideline Datasets & 862 Recommendations Invariant Hardening', () => {
 
-    it('verifies all 88 guideline datasets exist and parse valid JSON with 861 recommendations', () => {
+    it('verifies all 89 guideline datasets exist and parse valid JSON with 862 recommendations', () => {
       const guidelineFiles = fs.readdirSync(GUIDELINES_DIR).filter(f => f.endsWith('.json') && f !== 'index.json' && f !== 'landmark-trials.json');
-      expect(guidelineFiles.length).toBe(88);
+      expect(guidelineFiles.length).toBe(89);
 
       let totalRecs = 0;
       const validCORs = new Set(['I', 'IIa', 'IIb', 'III', 'Statement']);
@@ -517,7 +523,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         }
       }
 
-      expect(totalRecs).toBe(861);
+      expect(totalRecs).toBe(862);
     });
 
     it('verifies 2026 AHA/ASA AIS guideline dataset contains 195 recommendations', () => {
@@ -707,7 +713,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         encoding: 'utf8'
       });
       expect(res).toContain('42/42 criteria (100%)');
-      expect(res).toContain('13/13 exclusions (100%)');
+      expect(res).toContain('14/14 exclusions (100%)');
       expect(res).toContain('Evidence Atlas validation passed');
     });
 

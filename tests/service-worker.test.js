@@ -29,7 +29,7 @@ function loadServiceWorker() {
     fetch: async () => ({ ok: true, clone: () => ({ ok: true }) }),
     caches: {
       open: async () => cacheStore,
-      keys: async () => ['stroke-cache-v6-19-2', 'stroke-cache-v6-19-3', 'stroke-cache-v6-20-1'],
+      keys: async () => ['stroke-cache-v6-19-3', 'stroke-cache-v6-20-1', 'stroke-cache-v6-21-0'],
       delete: async (key) => {
         deletedCaches.push(key);
         return true;
@@ -104,6 +104,9 @@ describe('service worker update lifecycle', () => {
     expect(indexSource).toContain(`app.js?v=${version}`);
     expect(indexSource).toContain(`tailwind.css?v=${version}`);
     expect(indexSource).toContain(`const APP_VERSION = '${version}'`);
+
+    const appSource = readFileSync(join(repoRoot, 'src', 'app.jsx'), 'utf8');
+    expect(appSource).toContain(`const APP_VERSION = '${version}'`);
   });
 
   it('stages updates without claiming clients during activate', async () => {
@@ -114,11 +117,11 @@ describe('service worker update lifecycle', () => {
 
     expect(worker.skipWaitingCount).toBe(1);
     expect(worker.claimCount).toBe(0);
-    expect(worker.deletedCaches).toContain('stroke-cache-v6-19-2');
     expect(worker.deletedCaches).toContain('stroke-cache-v6-19-3');
-    expect(worker.deletedCaches).not.toContain('stroke-cache-v6-20-1');
+    expect(worker.deletedCaches).toContain('stroke-cache-v6-20-1');
+    expect(worker.deletedCaches).not.toContain('stroke-cache-v6-21-0');
     expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-update-ready', version: '6.20.1' });
+    expect(worker.postedMessages).toContainEqual({ type: 'sw-update-ready', version: '6.21.0' });
   });
 
   it('claims clients and requests reload for the current update message', async () => {
@@ -128,7 +131,7 @@ describe('service worker update lifecycle', () => {
 
     expect(worker.claimCount).toBe(1);
     expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version: '6.20.1' });
+    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version: '6.21.0' });
   });
 
   it('claims clients and requests reload for legacy SKIP_WAITING messages', async () => {
@@ -138,7 +141,7 @@ describe('service worker update lifecycle', () => {
 
     expect(worker.claimCount).toBe(1);
     expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version: '6.20.1' });
+    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version: '6.21.0' });
   });
 
   it('includes static JSON clinical endpoints, core assets, and iOS splash screens in precache list', () => {

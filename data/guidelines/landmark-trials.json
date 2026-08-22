@@ -120,6 +120,36 @@
       "outcomes": "mRS 0-1 at 3mo: ITT 57% vs 55% (SRD 0.03, 95% CI -0.033 to 0.10) — non-inferiority NOT met in ITT; per-protocol 59% vs 56% — non-inferiority met. sICH 3% vs 2%.",
       "bottomLine": "Supportive but not decisive: non-inferiority held per-protocol, not in intention-to-treat.",
       "teachingPoint": "Stopped early once other TNK trials reported, leaving it underpowered. When ITT and per-protocol disagree in a non-inferiority trial, ITT is the conservative read — per-protocol analysis inflates apparent equivalence by discarding protocol violators."
+    },
+    {
+      "name": "TEMPO-2",
+      "year": 2024,
+      "citation": "Lancet 2024;403:2597-605 (PMID 38768626)",
+      "question": "Does IV TNK benefit minor NON-disabling stroke (NIHSS 0-5) when an intracranial occlusion is visible?",
+      "design": "Open-label RCT with blinded outcomes, n=886, 48 hospitals in 10 countries. TNK 0.25 mg/kg vs non-thrombolytic standard care within 12h; intracranial occlusion or focal perfusion abnormality required. Stopped early for futility.",
+      "outcomes": "Return to premorbid baseline mRS at 90d: 72% vs 75% (RR 0.96, 95% CI 0.88-1.04, p=0.29). Death: 5% (20) vs 1% (5), adjusted HR 3.8 (95% CI 1.4-10.2, p=0.0085). sICH 2% vs <1%.",
+      "bottomLine": "No benefit and possible harm — minor non-disabling stroke should not be routinely thrombolysed, even with a proven occlusion.",
+      "teachingPoint": "The visible occlusion on CTA is exactly what tempts treatment, and TEMPO-2 tested that instinct directly. Pairs with ARAMIS: for genuinely non-disabling deficits, the disability judgment — not the vessel finding — drives the lytic decision."
+    },
+    {
+      "name": "TRACE-III",
+      "year": 2024,
+      "citation": "NEJM 2024;391:203-12 (PMID 38884324)",
+      "question": "Does IV TNK at 4.5-24h benefit LVO patients WITHOUT access to thrombectomy?",
+      "design": "RCT, n=516, China. MCA/ICA occlusion with salvageable tissue on perfusion imaging and no EVT access. TNK 0.25 mg/kg (max 25 mg) vs standard medical treatment; <2% received rescue EVT.",
+      "outcomes": "mRS 0-1 at 90d: 33.0% vs 24.2% (RR 1.37, 95% CI 1.04-1.81, P=0.03). sICH ≤36h: 3.0% vs 0.8%. 90-day mortality 13.3% vs 13.1%.",
+      "bottomLine": "Late-window TNK improves outcomes in perfusion-selected LVO when thrombectomy is not available.",
+      "teachingPoint": "Read against TIMELESS: TNK at 4.5-24h failed as a BRIDGE to EVT but worked as a SUBSTITUTE where EVT is unreachable. Directly relevant to EVT-incapable hospitals facing long transfers — the drug is not futile late; it just adds little on top of successful thrombectomy."
+    },
+    {
+      "name": "PROST / PROST-2",
+      "year": "2023 / 2025",
+      "citation": "PROST JAMA Netw Open 2023;6:e2325415 (PMID 37490291); PROST-2 Lancet Neurol 2025;24:33-41 (PMID 39617030)",
+      "question": "Is IV recombinant human prourokinase non-inferior to alteplase within 4.5h?",
+      "design": "Two Chinese phase 3 open-label non-inferiority RCTs in patients ineligible for or refusing EVT. PROST-2: n=1552, 61 hospitals; prourokinase 15 mg bolus + 20 mg infusion over 30 min vs alteplase 0.9 mg/kg.",
+      "outcomes": "PROST-2: mRS 0-1 at 90d 72.0% vs 68.7% (RR 1.04, 95% CI 0.98-1.10; p<0.0001 for non-inferiority). sICH ≤36h LOWER: 0.3% vs 1.3% (p=0.021). PROST (2023) similarly met non-inferiority (mRS 0-1: 65.2% vs 64.3%).",
+      "bottomLine": "IV prourokinase is non-inferior to alteplase with less sICH — an alternative lytic where available.",
+      "teachingPoint": "NOT a PFO trial — do not confuse the acronym with PFO-closure studies. Prourokinase (like reteplase in RAISE) reflects the push for alternative lytics amid alteplase supply constraints; neither is part of US practice."
     }
   ],
   "thrombectomy": [
@@ -262,6 +292,76 @@
       "outcomes": "90d mRS in ischemic stroke population: adjusted common OR 1.03 (95% CI 0.82-1.29). Direct transport → LESS thrombolysis (47.5% vs 60.4%, OR 0.59) but MORE thrombectomy (48.8% vs 39.4%, OR 1.46). Mortality identical.",
       "bottomLine": "Bypassing the local centre bought thrombectomy at the cost of thrombolysis, and the two cancelled out.",
       "teachingPoint": "The definitive statement of the mothership-vs-drip-and-ship trade-off. It is geography-dependent: transport times and network maturity in Catalonia are not universal, and the authors explicitly call for replication before generalizing."
+    },
+    {
+      "name": "TENSION",
+      "year": 2023,
+      "citation": "Lancet 2023;402:1753-63 (PMID 37837989)",
+      "question": "Does EVT benefit established large infarct (ASPECTS 3-5) up to 12h, selected mostly by plain CT?",
+      "design": "Open-label RCT, n=253, 40 European hospitals + 1 Canadian site. EVT + medical vs medical alone ≤12h from onset. Stopped early for efficacy at the first interim analysis.",
+      "outcomes": "mRS shift at 90d: adjusted common OR 2.58 (95% CI 1.60-4.15, p=0.0001). Mortality LOWER: HR 0.67 (95% CI 0.46-0.98, p=0.038). sICH 6% vs 5%.",
+      "bottomLine": "EVT improves function and survival in ASPECTS 3-5 out to 12h — the European confirmation of the large-core trials.",
+      "teachingPoint": "Selection used non-contrast CT as the predominant imaging modality — no perfusion study required. With SELECT2, ANGEL-ASPECT and RESCUE-Japan LIMIT it rounds out the large-core evidence; the ATLAS IPD meta-analysis (Lancet 2026, PMID 42107392) pooled all six large-core trials and found consistent benefit with reduced 90-day mortality (aRR 0.82, 95% CI 0.70-0.97)."
+    },
+    {
+      "name": "LASTE",
+      "year": 2024,
+      "citation": "NEJM 2024;390:1677-89 (PMID 38718358)",
+      "question": "Does EVT benefit large infarcts of UNRESTRICTED size — ASPECTS 0-5, with no lower limit?",
+      "design": "RCT, n=333, EVT + medical care vs medical care alone within 6.5h; ASPECTS ≤5 on CT or MRI (patients ≥80y required ASPECTS 3-5). Stopped early after other large-core trials reported.",
+      "outcomes": "Median 90d mRS 4 vs 6; generalized OR 1.63 (95% CI 1.29-2.06, P<0.001). Mortality 36.1% vs 55.5% (adjusted RR 0.65, 95% CI 0.50-0.84). sICH 9.6% vs 5.7%.",
+      "bottomLine": "EVT improved outcomes and markedly reduced mortality even with no lower ASPECTS bound.",
+      "teachingPoint": "The only large-core trial to include ASPECTS 0-2, and the one with a clear mortality benefit — the control-arm median mRS was 6 (death). Note the age caveat: ASPECTS 0-2 enrolment was restricted to patients under 80."
+    },
+    {
+      "name": "TESLA",
+      "year": 2024,
+      "citation": "JAMA 2024;332:1355-66 (PMID 39374319)",
+      "question": "Does EVT benefit large infarct (ASPECTS 2-5) selected by NON-CONTRAST CT alone within 24h?",
+      "design": "Bayesian-adaptive RCT, n=300, 47 US centres. NCCT-only ASPECTS 2-5, anterior LVO, EVT vs usual care up to 24h.",
+      "outcomes": "Mean utility-weighted mRS: 2.93 vs 2.27; adjusted difference 0.63 (95% CrI -0.09 to 1.34); posterior probability of superiority 0.96 — below the prespecified 0.975 threshold, so the primary end point was NOT met. Mortality 35.3% vs 33.3%; sICH 4.0% vs 1.3%.",
+      "bottomLine": "Formally neutral, with a favourable trend that just missed its Bayesian success threshold.",
+      "teachingPoint": "A posterior probability of 0.96 against a bar of 0.975 is a near miss, not a refutation — the credible interval spans both no effect and a clinically relevant benefit. The ATLAS IPD meta-analysis pooling TESLA with the five other large-core trials supports benefit across ASPECTS strata."
+    },
+    {
+      "name": "DISTAL",
+      "year": 2025,
+      "citation": "NEJM 2025;392:1374-84 (PMID 39908430)",
+      "question": "Does EVT benefit isolated MEDIUM/DISTAL vessel occlusion (MeVO)?",
+      "design": "RCT, n=543. Isolated non-dominant/co-dominant M2, M3/M4, A1-A3, or P1-P3 occlusion within 24h; EVT + best medical therapy vs best medical therapy alone. Median NIHSS 6; 65% received IVT.",
+      "outcomes": "mRS shift at 90d: common OR 0.90 (95% CI 0.67-1.22, P=0.50) — neutral. Mortality 15.5% vs 14.0%; sICH 5.9% vs 2.6%. 12-month follow-up (Lancet Neurol 2026;25:571-80, PMID 42105785) also neutral: adjusted common OR 0.81 (95% CI 0.59-1.12, p=0.20).",
+      "bottomLine": "Routine EVT for mild-to-moderate MeVO stroke is not supported — at 90 days or at 12 months.",
+      "teachingPoint": "The presumed extension of EVT benefit down the vascular tree failed its first randomized test. Read with ESCAPE-MeVO, which adds a safety signal. MeVO EVT is now an individualized call (disabling deficit, IVT-ineligible or failed), not a default."
+    },
+    {
+      "name": "ESCAPE-MeVO",
+      "year": 2025,
+      "citation": "NEJM 2025;392:1385-95 (PMID 39908448)",
+      "question": "Does EVT benefit medium-vessel occlusion within 12h?",
+      "design": "RCT, n=530, 5 countries. MeVO (84.7% MCA-branch) with favourable baseline non-invasive imaging; EVT + usual care vs usual care alone.",
+      "outcomes": "mRS 0-1 at 90d: 41.6% vs 43.1% (adjusted RR 0.95, 95% CI 0.79-1.15, P=0.61). 90-day mortality HIGHER with EVT: 13.3% vs 8.4% (adjusted HR 1.82, 95% CI 1.06-3.12). sICH 5.4% vs 2.2%.",
+      "bottomLine": "Neutral primary outcome with a mortality and sICH signal against EVT.",
+      "teachingPoint": "Look at the control arm: 43% reached mRS 0-1 on usual care alone. MeVO strokes often do well without intervention, which shrinks the margin EVT can add and leaves its procedural risks exposed. Neutral-for-efficacy was not neutral-for-safety here."
+    },
+    {
+      "name": "ANGEL-TNK",
+      "year": 2025,
+      "citation": "JAMA 2025;334:582-91 (PMID 40616323)",
+      "question": "Does INTRA-ARTERIAL TNK after successful EVT improve outcomes in late-window LVO?",
+      "design": "Open-label blinded-endpoint RCT, n=256, 19 Chinese centres. Anterior LVO 4.5-24h from LKW achieving eTICI 2b-3 after EVT; IA TNK 0.125 mg/kg vs standard medical treatment.",
+      "outcomes": "mRS 0-1 at 90d: 40.5% vs 26.4% (RR 1.44, 95% CI 1.06-1.95, P=.02). None of the 7 secondary efficacy end points was significant. sICH 5.6% vs 6.2%; 90-day mortality 21.4% vs 21.7%.",
+      "bottomLine": "Positive primary without excess sICH or mortality — but unsupported by any secondary end point, so the authors themselves call for confirmatory trials.",
+      "teachingPoint": "\"Successful\" reperfusion (eTICI ≥2b) can still leave distal microvascular territory unperfused — the rationale for chasing it with an IA lytic. Contrast with CHOICE-2 (IA alteplase), also positive on the primary but with a mortality excess. Neither has entered guidelines."
+    },
+    {
+      "name": "CHOICE-2",
+      "year": 2026,
+      "citation": "JAMA 2026;335:1859-69 (PMID 42096239)",
+      "question": "Does adjunctive INTRA-ARTERIAL alteplase after successful EVT improve outcomes?",
+      "design": "Open-label blinded-endpoint RCT, n=440 randomized (433 analyzed), 14 Spanish centres. LVO treated ≤24h achieving eTICI 2b50-3; IA alteplase 0.225 mg/kg (max 20 mg) over 15 min vs thrombectomy alone.",
+      "outcomes": "mRS 0-1 at 90d: 57.5% vs 42.5% (adjusted risk difference 15.0%, 95% CI 5.7-24.3, P=.002). Residual hypoperfusion on follow-up CTP: 28.6% vs 50.5%. BUT 90-day mortality 12.1% vs 6.4% (adjusted difference 5.9%, 95% CI 0.5-11.3, P=.03). sICH 1.4% vs 0.5% (P=.33).",
+      "bottomLine": "Positive for excellent outcome with a mortality excess the authors flag as warranting further study — not practice-changing yet.",
+      "teachingPoint": "A trial can win its primary end point and still hand you an unresolved safety problem: more patients reached mRS 0-1 AND more died, and the mortality excess was not explained by sICH. Hold for pooled analyses with ANGEL-TNK and successor trials before adopting."
     }
   ],
   "postEVTbp": [
@@ -416,6 +516,36 @@
       "outcomes": "Recurrent ICH: 4% (12/268) vs 9% (23/268), adjusted HR 0.51 (95% CI 0.25-1.03, p=0.060). Major hemorrhagic events 7% vs 9%. Major occlusive events 15% vs 14%.",
       "bottomLine": "Restarting an antiplatelet did not increase recurrent ICH — the point estimate favoured restarting.",
       "teachingPoint": "Directly contradicts a widespread clinical fear. The trial excludes all but a very modest risk increase, so for a patient with a clear antiplatelet indication the established prevention benefit likely dominates. Very early restart (<1 month) remains untested."
+    },
+    {
+      "name": "SWITCH",
+      "year": 2024,
+      "citation": "Lancet 2024;403:2395-404 (PMID 38761811)",
+      "question": "Does decompressive craniectomy (WITHOUT clot evacuation) help severe DEEP supratentorial ICH?",
+      "design": "Open-label assessor-blinded RCT, n=197 analyzed, 42 European stroke centres. Basal ganglia or thalamic ICH (median volume 57 mL), age 18-75; craniectomy + best medical treatment vs best medical treatment alone. Stopped early for lack of funding.",
+      "outcomes": "mRS 5-6 at 180d: 44% vs 58% (adjusted RR 0.77, 95% CI 0.59-1.01, adjusted risk difference -13%, p=0.057).",
+      "bottomLine": "Weak evidence that craniectomy might reduce death-or-worst-disability in severe deep ICH — hypothesis-supporting, not definitive.",
+      "teachingPoint": "This is decompression WITHOUT evacuation — do not conflate with ENRICH (lobar, evacuation). p=0.057 in an early-stopped trial, and survival in both arms was frequently with severe disability — so frame any craniectomy discussion around what outcome the patient would accept, not survival alone."
+    },
+    {
+      "name": "FASTEST",
+      "year": 2026,
+      "citation": "Lancet 2026;407:773-83 (PMID 41653933)",
+      "question": "Does rFVIIa given within 2h of ICH onset improve functional outcome?",
+      "design": "Double-blind placebo-controlled adaptive phase 3 RCT, n=626, 93 sites in 6 countries. Spontaneous ICH 2-60 mL, GCS ≥8, no recent anticoagulation; rFVIIa 80 μg/kg IV vs placebo, mean onset-to-drug 100 min. Stopped for futility at the second interim analysis.",
+      "outcomes": "Primary (mRS 0-2/3/4-6 at 180d): adjusted common OR 1.09 (95% CI 0.79-1.51, p=0.61) — NEGATIVE. Hematoma growth reduced at 24h: ICH -3.7 mL, ICH+IVH -5.2 mL. Life-threatening thromboembolic events ≤4d: <5% vs 1% (RR 3.41, 95% CI 1.14-10.15, p=0.020).",
+      "bottomLine": "Even at a mean 100 minutes from onset, hemostatic therapy slowed bleeding but did not improve function — and increased life-threatening thrombotic events.",
+      "teachingPoint": "The definitive re-test of the FAST-era rFVIIa hypothesis under ideal conditions: hyperacute window, expansion-prone hematomas, no anticoagulation. As with TXA in TICH-2, less hematoma growth again failed to translate into better outcomes. Hemostatic drugs remain investigational in spontaneous ICH."
+    },
+    {
+      "name": "TRIDENT",
+      "year": 2026,
+      "citation": "NEJM 2026;394:1571-82 (PMID 42019018)",
+      "question": "Does adding a single low-dose triple-combination BP pill after ICH prevent recurrent stroke?",
+      "design": "Double-blind placebo-controlled RCT, n=1670. ICH survivors with SBP 130-160 mmHg on standard care; triple pill (telmisartan 20 mg / amlodipine 2.5 mg / indapamide 1.25 mg) vs placebo after a 2-week active run-in. Median follow-up 2.5y.",
+      "outcomes": "Recurrent stroke: 4.6% vs 7.4% (HR 0.61, 95% CI 0.41-0.92, P=0.02). Mean SBP during follow-up 127 vs 138 mmHg. Major CV events 6.6% vs 9.8% (P=0.04).",
+      "bottomLine": "Intensified BP lowering with a low-dose triple pill cut recurrent stroke by roughly 40% after ICH.",
+      "teachingPoint": "ICH survivors are the highest-yield BP-control population in stroke medicine, and the achieved separation (127 vs 138 mmHg) shows how far 'standard care' leaves them above target. Watch renal function — a ≥20% creatinine rise was the commonest reason for discontinuation."
     }
   ],
   "secondaryPrevention": [
@@ -720,6 +850,26 @@
       "outcomes": "Stroke/death ≤30d or ipsilateral stroke to 2 years: 8.6% (13/151) vs 12.3% (19/155); incidence difference -3.6% (95% CI -10.1% to 2.9%) — not significant.",
       "bottomLine": "The modern re-test of the 1985 EC-IC Bypass Study reached the same conclusion.",
       "teachingPoint": "Perfusion-based selection and contemporary surgical technique were supposed to rescue a therapy that failed forty years ago. They did not. A useful case study in why re-testing a negative trial requires a genuinely new mechanism, not just better patient selection."
+    },
+    {
+      "name": "BASIS",
+      "year": 2024,
+      "citation": "JAMA 2024;332:1059-69 (PMID 39235816)",
+      "question": "Does SUBMAXIMAL balloon angioplasty (no stent) plus aggressive medical therapy beat medical therapy alone for symptomatic ICAS?",
+      "design": "Open-label blinded-endpoint RCT, n=501, 31 Chinese centres. 70-99% intracranial stenosis with TIA <90d or stroke 14-90d before enrolment; submaximal angioplasty + aggressive medical management vs medical management alone.",
+      "outcomes": "Primary composite (stroke/death ≤30d, or ischemic stroke in the territory / revascularization of the qualifying artery through 12mo): 4.4% vs 13.5% (HR 0.32, 95% CI 0.16-0.63, P<.001). 30-day stroke/death 3.2% vs 1.6%. Procedural complications 17.4%; arterial dissection 14.5%.",
+      "bottomLine": "First positive endovascular ICAS trial — fewer late events, bought with real upfront procedural risk.",
+      "teachingPoint": "How does this square with SAMMPRIS and CASSISS? Angioplasty WITHOUT a stent, submaximal inflation, and a ≥14-day cooling-off period after stroke. Also inspect the composite: later revascularization is a soft component (1.2% vs 8.3%) that inflates the gap. Confirmation outside China is needed before practice change."
+    },
+    {
+      "name": "CAPTIVA",
+      "year": 2025,
+      "citation": "Design paper: Hoh et al. Int J Stroke 2025;20:623-8 (PMID 39862061); NCT05047172 — ONGOING, no efficacy results yet",
+      "question": "Is ticagrelor + ASA or low-dose rivaroxaban + ASA superior to clopidogrel + ASA for symptomatic 70-99% ICAS?",
+      "design": "Ongoing double-blind 3-arm RCT, n=1683, >100 US/Canadian sites. Ticagrelor 90 mg BID vs rivaroxaban 2.5 mg BID vs clopidogrel 75 mg daily, each with ASA 81 mg and intensive risk-factor management × 12 months. Qualifying event within 30 days, mRS ≤4.",
+      "outcomes": "STATUS ENTRY: at the completion of the first stage (January 2026) the DSMB recommended, and NINDS approved, termination of the low-dose rivaroxaban arm for increased safety events plus futility vs clopidogrel + aspirin (announced 2026-02-10). Ticagrelor and clopidogrel arms continue; primary completion expected 2027.",
+      "bottomLine": "Low-dose rivaroxaban is out for ICAS; the ticagrelor-vs-clopidogrel question remains open.",
+      "teachingPoint": "Note the contrast with COMPASS, where the same rivaroxaban 2.5 mg BID dose helped stable coronary/peripheral atherosclerosis — intracranial disease keeps punishing anticoagulation-based strategies. Until CAPTIVA reads out, clopidogrel + ASA × 90 days with intensive risk-factor management remains the ICAS default."
     }
   ],
   "rehabilitation": [

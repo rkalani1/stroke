@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "guidelines-index",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.20.1",
-    "checksum": "sha256:63af1603618dd87d5ac4ad4bf7bdb7c6",
+    "appVersion": "6.21.0",
+    "checksum": "sha256:b851087ab16cde888f35e1b84b5eb1be",
     "count": 89,
     "source": "Guideline metadata bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -103,7 +103,7 @@
     {
       "id": "aha-af-guideline-2023",
       "title": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines",
-      "shortTitle": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fib",
+      "shortTitle": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial",
       "doi": "10.1161/CIR.0000000000001193",
       "publisherUrl": "https://doi.org/10.1161/CIR.0000000000001193",
       "pdfUrl": null,
@@ -141,6 +141,16 @@
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-atrial-fibrillation-occurring-2023.json"
     },
     {
+      "id": "aha-brain-health-life-span-2026",
+      "title": "Brain Health Across the Life Span: A Framework for Future Studies: A Scientific Statement From the American Heart Association",
+      "shortTitle": "Brain Health Across the Life Span",
+      "doi": "10.1161/STR.0000000000000518",
+      "publisherUrl": "https://doi.org/10.1161/STR.0000000000000518",
+      "pdfUrl": null,
+      "recommendationCount": 1,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-brain-health-life-span-2026.json"
+    },
+    {
       "id": "aha-cadasil-2023",
       "title": "Management of Inherited CNS Small Vessel Diseases: The CADASIL Example: A Scientific Statement From the American Heart Association",
       "shortTitle": "Management of Inherited CNS Small Vessel Diseases",
@@ -153,7 +163,7 @@
     {
       "id": "aha-care-ais-evt-icu-2021",
       "title": "Care of the Patient With Acute Ischemic Stroke (Endovascular/Intensive Care Unit-Postinterventional Therapy): Update to 2009 Comprehensive Nursing Care Scientific Statement: A Scientific Statement From the American Heart Association",
-      "shortTitle": "Care of the Patient With Acute Ischemic Stroke (Endovascular/Intensive Care Un",
+      "shortTitle": "Care of the Patient With Acute Ischemic Stroke (Endovascular/Intensive Care",
       "doi": "10.1161/STR.0000000000000358",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000358",
       "pdfUrl": null,
@@ -173,7 +183,7 @@
     {
       "id": "aha-care-ais-prehospital-2021",
       "title": "Care of the Patient With Acute Ischemic Stroke (Prehospital and Acute Phase of Care): Update to the 2009 Comprehensive Nursing Care Scientific Statement: A Scientific Statement From the American Heart Association",
-      "shortTitle": "Care of the Patient With Acute Ischemic Stroke (Prehospital and Acute Phase of",
+      "shortTitle": "Care of the Patient With Acute Ischemic Stroke (Prehospital and Acute Phase",
       "doi": "10.1161/STR.0000000000000356",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000356",
       "pdfUrl": null,
@@ -223,7 +233,7 @@
     {
       "id": "aha-hypertension-guideline-2025",
       "title": "2025 AHA/ACC/AANP/AAPA/ABC/ACCP/ACPM/AGS/AMA/ASPC/NMA/PCNA/SGIM Guideline for the Prevention, Detection, Evaluation and Management of High Blood Pressure in Adults: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines",
-      "shortTitle": "2025 AHA/ACC/AANP/AAPA/ABC/ACCP/ACPM/AGS/AMA/ASPC/NMA/PCNA/SGIM Guideline for ",
+      "shortTitle": "2025 AHA/ACC/AANP/AAPA/ABC/ACCP/ACPM/AGS/AMA/ASPC/NMA/PCNA/SGIM Guideline",
       "doi": "10.1161/HYP.0000000000000249",
       "publisherUrl": "https://doi.org/10.1161/HYP.0000000000000249",
       "pdfUrl": null,
@@ -233,7 +243,7 @@
     {
       "id": "aha-ich-performance-measures-2024",
       "title": "2024 AHA/ASA Performance and Quality Measures for Spontaneous Intracerebral Hemorrhage: A Report From the American Heart Association/American Stroke Association",
-      "shortTitle": "2024 AHA/ASA Performance and Quality Measures for Spontaneous Intracerebral He",
+      "shortTitle": "2024 AHA/ASA Performance and Quality Measures for Spontaneous Intracerebral",
       "doi": "10.1161/STR.0000000000000464",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000464",
       "pdfUrl": null,
@@ -283,7 +293,7 @@
     {
       "id": "aha-lv-systolic-dysfunction-2026",
       "title": "Management of Patients at Risk of Ischemic Stroke With Left Ventricular Systolic Dysfunction in the Absence of Intracardiac Thrombus: A Scientific Statement From the American Heart Association",
-      "shortTitle": "Management of Patients at Risk of Ischemic Stroke With Left Ventricular Systol",
+      "shortTitle": "Management of Patients at Risk of Ischemic Stroke With Left Ventricular",
       "doi": "10.1161/STR.0000000000000528",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000528",
       "pdfUrl": null,
@@ -323,7 +333,7 @@
     {
       "id": "aha-recommendations-regional-destination-2021",
       "title": "Recommendations for Regional Stroke Destination Plans in Rural, Suburban, and Urban Communities From the Prehospital Stroke System of Care Consensus Conference: A Consensus Statement From the American Academy of Neurology, American Heart Association/American Stroke Association, American Society of Neuroradiology, National Association of EMS Physicians, National Association of State EMS Officials, Society of NeuroInterventional Surgery, and Society of Vascular and Interventional Neurology: Endorsed by the Neurocritical Care Society",
-      "shortTitle": "Recommendations for Regional Stroke Destination Plans in Rural, Suburban, and ",
+      "shortTitle": "Recommendations for Regional Stroke Destination Plans in Rural, Suburban",
       "doi": "10.1161/STROKEAHA.120.033228",
       "publisherUrl": "https://doi.org/10.1161/STROKEAHA.120.033228",
       "pdfUrl": null,
@@ -333,7 +343,7 @@
     {
       "id": "aha-rural-stroke-care-2024",
       "title": "Identifying Best Practices for Improving the Evaluation and Management of Stroke in Rural Lower-Resourced Settings: A Scientific Statement From the American Heart Association",
-      "shortTitle": "Identifying Best Practices for Improving the Evaluation and Management of Stro",
+      "shortTitle": "Identifying Best Practices for Improving the Evaluation and Management",
       "doi": "10.1161/STR.0000000000000478",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000478",
       "pdfUrl": null,
@@ -343,7 +353,7 @@
     {
       "id": "aha-sex-gender-evt-2022",
       "title": "Toward a Better Understanding of Sex- and Gender-Related Differences in Endovascular Stroke Treatment: A Scientific Statement From the American Heart Association/American Stroke Association",
-      "shortTitle": "Toward a Better Understanding of Sex- and Gender-Related Differences in Endova",
+      "shortTitle": "Toward a Better Understanding of Sex- and Gender-Related Differences",
       "doi": "10.1161/STR.0000000000000411",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000411",
       "pdfUrl": null,
@@ -353,7 +363,7 @@
     {
       "id": "aha-social-environmental-determinants-2026",
       "title": "Social and Environmental Determinants of Stroke Functional Outcome and Strategies to Reduce Inequities: A Scientific Statement From the American Heart Association",
-      "shortTitle": "Social and Environmental Determinants of Stroke Functional Outcome and Strateg",
+      "shortTitle": "Social and Environmental Determinants of Stroke Functional Outcome",
       "doi": "10.1161/STR.0000000000000520",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000520",
       "pdfUrl": null,
@@ -373,7 +383,7 @@
     {
       "id": "aha-targeted-nursing-interventions-2025",
       "title": "Targeted Nursing Interventions for Improving Stroke Care and Outcomes in the Rural Setting: A Scientific Statement From the American Heart Association",
-      "shortTitle": "Targeted Nursing Interventions for Improving Stroke Care and Outcomes in the R",
+      "shortTitle": "Targeted Nursing Interventions for Improving Stroke Care and Outcomes",
       "doi": "10.1161/STR.0000000000000495",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000495",
       "pdfUrl": null,
@@ -383,7 +393,7 @@
     {
       "id": "aha-transitions-of-care-2024",
       "title": "Exploring the Inclusion of Person-Centered Care Domains in Stroke Transitions of Care Interventions: A Scientific Statement From the American Heart Association",
-      "shortTitle": "Exploring the Inclusion of Person-Centered Care Domains in Stroke Transitions ",
+      "shortTitle": "Exploring the Inclusion of Person-Centered Care Domains in Stroke Transitions",
       "doi": "10.1161/STR.0000000000000462",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000462",
       "pdfUrl": null,
@@ -463,7 +473,7 @@
     {
       "id": "eso-artery-dissection-2021",
       "title": "ESO guideline for the management of extracranial and intracranial artery dissection",
-      "shortTitle": "ESO guideline for the management of extracranial and intracranial artery disse",
+      "shortTitle": "ESO guideline for the management of extracranial and intracranial artery",
       "doi": "10.1177/23969873211046475",
       "publisherUrl": "https://doi.org/10.1177/23969873211046475",
       "pdfUrl": null,
@@ -493,7 +503,7 @@
     {
       "id": "eso-carotid-stenosis-2021",
       "title": "European Stroke Organisation guideline on endarterectomy and stenting for carotid artery stenosis",
-      "shortTitle": "European Stroke Organisation guideline on endarterectomy and stenting for caro",
+      "shortTitle": "European Stroke Organisation guideline on endarterectomy and stenting",
       "doi": "10.1177/23969873211012121",
       "publisherUrl": "https://doi.org/10.1177/23969873211012121",
       "pdfUrl": null,
@@ -513,7 +523,7 @@
     {
       "id": "eso-dysphagia-2021",
       "title": "European Stroke Organisation and European Society for Swallowing Disorders guideline for the diagnosis and treatment of post-stroke dysphagia",
-      "shortTitle": "European Stroke Organisation and European Society for Swallowing Disorders gui",
+      "shortTitle": "European Stroke Organisation and European Society for Swallowing Disorders",
       "doi": "10.1177/23969873211039721",
       "publisherUrl": "https://doi.org/10.1177/23969873211039721",
       "pdfUrl": null,
@@ -523,7 +533,7 @@
     {
       "id": "eso-ean-poststroke-cognition-2021",
       "title": "European Stroke Organisation and European Academy of Neurology joint guidelines on post-stroke cognitive impairment",
-      "shortTitle": "European Stroke Organisation and European Academy of Neurology joint guideline",
+      "shortTitle": "European Stroke Organisation and European Academy of Neurology joint",
       "doi": "10.1177/23969873211042192",
       "publisherUrl": "https://doi.org/10.1177/23969873211042192",
       "pdfUrl": null,
@@ -533,7 +543,7 @@
     {
       "id": "eso-esmint-thrombectomy-2022",
       "title": "European Stroke Organisation - European Society for Minimally Invasive Neurological Therapy expedited recommendation on indication for intravenous thrombolysis before mechanical thrombectomy in patients with acute ischaemic stroke and anterior circulation large vessel occlusion",
-      "shortTitle": "European Stroke Organisation - European Society for Minimally Invasive Neurolo",
+      "shortTitle": "European Stroke Organisation - European Society for Minimally Invasive",
       "doi": "10.1177/23969873221076968",
       "publisherUrl": "https://doi.org/10.1177/23969873221076968",
       "pdfUrl": null,
@@ -553,7 +563,7 @@
     {
       "id": "eso-intracranial-atherosclerosis-2022",
       "title": "European Stroke Organisation guidelines on treatment of patients with intracranial atherosclerotic disease",
-      "shortTitle": "European Stroke Organisation guidelines on treatment of patients with intracra",
+      "shortTitle": "European Stroke Organisation guidelines on treatment of patients",
       "doi": "10.1177/23969873221099715",
       "publisherUrl": "https://doi.org/10.1177/23969873221099715",
       "pdfUrl": null,
@@ -573,7 +583,7 @@
     {
       "id": "eso-mobile-stroke-units-2022",
       "title": "European Stroke Organisation (ESO) guidelines on mobile stroke units for prehospital stroke management",
-      "shortTitle": "European Stroke Organisation (ESO) guidelines on mobile stroke units for preho",
+      "shortTitle": "European Stroke Organisation (ESO) guidelines on mobile stroke units",
       "doi": "10.1177/23969873221079413",
       "publisherUrl": "https://doi.org/10.1177/23969873221079413",
       "pdfUrl": null,
@@ -593,7 +603,7 @@
     {
       "id": "eso-moyamoya-2023",
       "title": "European Stroke Organisation (ESO) Guidelines on Moyamoya angiopathy Endorsed by Vascular European Reference Network (VASCERN)",
-      "shortTitle": "European Stroke Organisation (ESO) Guidelines on Moyamoya angiopathy Endorsed ",
+      "shortTitle": "European Stroke Organisation (ESO) Guidelines on Moyamoya angiopathy",
       "doi": "10.1177/23969873221144089",
       "publisherUrl": "https://doi.org/10.1177/23969873221144089",
       "pdfUrl": null,
@@ -643,7 +653,7 @@
     {
       "id": "eso-secondary-prevention-2022",
       "title": "European Stroke Organisation (ESO) guideline on pharmacological interventions for long-term secondary prevention after ischaemic stroke or transient ischaemic attack",
-      "shortTitle": "European Stroke Organisation (ESO) guideline on pharmacological interventions ",
+      "shortTitle": "European Stroke Organisation (ESO) guideline on pharmacological interventions",
       "doi": "10.1177/23969873221100032",
       "publisherUrl": "https://doi.org/10.1177/23969873221100032",
       "pdfUrl": null,
@@ -653,7 +663,7 @@
     {
       "id": "eso-short-term-dapt-2021",
       "title": "European Stroke Organisation expedited recommendation for the use of short-term dual antiplatelet therapy early after minor stroke and high-risk TIA",
-      "shortTitle": "European Stroke Organisation expedited recommendation for the use of short-ter",
+      "shortTitle": "European Stroke Organisation expedited recommendation for the use of short",
       "doi": "10.1177/23969873211000877",
       "publisherUrl": "https://doi.org/10.1177/23969873211000877",
       "pdfUrl": null,
@@ -663,7 +673,7 @@
     {
       "id": "eso-space-occupying-infarction-2021",
       "title": "European Stroke Organisation (ESO) guidelines on the management of space-occupying brain infarction",
-      "shortTitle": "European Stroke Organisation (ESO) guidelines on the management of space-occup",
+      "shortTitle": "European Stroke Organisation (ESO) guidelines on the management of space",
       "doi": "10.1177/23969873211014112",
       "publisherUrl": "https://doi.org/10.1177/23969873211014112",
       "pdfUrl": null,
@@ -683,7 +693,7 @@
     {
       "id": "eso-subclinical-af-screening-2022",
       "title": "European Stroke Organisation (ESO) guideline on screening for subclinical atrial fibrillation after stroke or transient ischaemic attack of undetermined origin",
-      "shortTitle": "European Stroke Organisation (ESO) guideline on screening for subclinical atri",
+      "shortTitle": "European Stroke Organisation (ESO) guideline on screening for subclinical",
       "doi": "10.1177/23969873221099478",
       "publisherUrl": "https://doi.org/10.1177/23969873221099478",
       "pdfUrl": null,
@@ -693,7 +703,7 @@
     {
       "id": "eso-tenecteplase-2023",
       "title": "European Stroke Organisation (ESO) expedited recommendation on tenecteplase for acute ischaemic stroke",
-      "shortTitle": "European Stroke Organisation (ESO) expedited recommendation on tenecteplase fo",
+      "shortTitle": "European Stroke Organisation (ESO) expedited recommendation on tenecteplase",
       "doi": "10.1177/23969873221150022",
       "publisherUrl": "https://doi.org/10.1177/23969873221150022",
       "pdfUrl": null,
@@ -703,7 +713,7 @@
     {
       "id": "eso-tia-2021",
       "title": "European Stroke Organisation (ESO) guidelines on management of transient ischaemic attack",
-      "shortTitle": "European Stroke Organisation (ESO) guidelines on management of transient ischa",
+      "shortTitle": "European Stroke Organisation (ESO) guidelines on management of transient",
       "doi": "10.1177/2396987321992905",
       "publisherUrl": "https://doi.org/10.1177/2396987321992905",
       "pdfUrl": null,
@@ -713,7 +723,7 @@
     {
       "id": "eso-unruptured-aneurysms-2022",
       "title": "European Stroke Organisation (ESO) guidelines on management of unruptured intracranial aneurysms",
-      "shortTitle": "European Stroke Organisation (ESO) guidelines on management of unruptured intr",
+      "shortTitle": "European Stroke Organisation (ESO) guidelines on management of unruptured",
       "doi": "10.1177/23969873221099736",
       "publisherUrl": "https://doi.org/10.1177/23969873221099736",
       "pdfUrl": null,
@@ -739,12 +749,6 @@
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407",
       "recommendationCount": 124,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/ich-2022.json"
-    },
-    {
-      "id": "landmark-trials",
-      "title": "Landmark Trials",
-      "recommendationCount": 0,
-      "url": "https://rkalani1.github.io/stroke/data/guidelines/landmark-trials.json"
     },
     {
       "id": "maternal-stroke-2026",
@@ -839,7 +843,7 @@
     {
       "id": "svin-dsa-collaterals-2025",
       "title": "Technical Performance and Interpretation of Digital Subtraction Angiography to Determine Cerebral Circulatory Arrest in Patients Being Evaluated for Brain Death/Death by Neurological Criteria: A Brief Practice Update From the Society of Vascular and Interventional Neurology (SVIN)",
-      "shortTitle": "Technical Performance and Interpretation of Digital Subtraction Angiography to",
+      "shortTitle": "Technical Performance and Interpretation of Digital Subtraction Angiography",
       "doi": "10.1161/SVIN.125.002091",
       "publisherUrl": "https://doi.org/10.1161/SVIN.125.002091",
       "pdfUrl": null,
@@ -849,7 +853,7 @@
     {
       "id": "svin-lab-consensus-2025",
       "title": "Society of Vascular and Interventional Neurology (SVIN) Stroke Interventional Laboratory Consensus (SILC) Criteria for Training Standards and Maintenance of Certification in Neurointervention",
-      "shortTitle": "Society of Vascular and Interventional Neurology (SVIN) Stroke Interventional ",
+      "shortTitle": "Society of Vascular and Interventional Neurology (SVIN) Stroke Interventional",
       "doi": "10.1161/SVIN.124.001478",
       "publisherUrl": "https://doi.org/10.1161/SVIN.124.001478",
       "pdfUrl": null,

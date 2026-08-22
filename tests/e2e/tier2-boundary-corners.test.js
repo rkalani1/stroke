@@ -350,7 +350,7 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
   describe('Feature 7 Boundary & Corner Cases', () => {
     const indexData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/index.json'), 'utf8'));
 
-    it('F7-T2.1: Search query filtering across all 861 recommendations handles case-insensitivity', () => {
+    it('F7-T2.1: Search query filtering across all 862 recommendations handles case-insensitivity', () => {
       const active = indexData.data.filter(x => x.id !== 'landmark-trials');
       let total = 0;
       let matches = 0;
@@ -360,7 +360,7 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
         total += recs.length;
         matches += recs.filter(r => /thromboly|alteplase|tenecteplase|stroke|prevention|management/i.test(r.text)).length;
       }
-      expect(total).toBe(861);
+      expect(total).toBe(862);
       expect(matches).toBeGreaterThan(100);
     });
 

@@ -5,6 +5,14 @@
   "doi": "10.1161/STR.0000000000000515",
   "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000515",
   "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000515",
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41608795/",
+  "pmid": "41608795",
+  "correctedBy": {
+    "pmid": "42044236",
+    "doi": "10.1161/STR.0000000000000522",
+    "citation": "Stroke. 2026;57(5):e193",
+    "note": "A published correction (2026-04-27) amends this scientific statement; its itemized changes could not be retrieved in this environment and are NOT yet applied here. Consult the correction at https://doi.org/10.1161/STR.0000000000000522 before relying on this summary."
+  },
   "recommendations": [
     {
       "section": "Early Recognition",

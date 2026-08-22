@@ -5,6 +5,8 @@
   "doi": "10.1161/STR.0000000000000436",
   "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000436",
   "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436",
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/37212182/",
+  "pmid": "37212182",
   "recommendations": [
     {
       "section": "Natural History and Outcome of aSAH",
@@ -33,7 +35,7 @@
     {
       "section": "Natural History and Outcome of aSAH",
       "classOfRec": "III",
-      "classNote": "No benefit",
+      "classNote": "No Benefit",
       "levelOfEvidence": "B-NR",
       "text": "Aneurysm treatment is not beneficial in aSAH patients who fail to improve after correction of modifiable conditions and have evidence of irreversible neurological injury deemed unsalvageable.",
       "page": 8
@@ -121,7 +123,7 @@
     {
       "section": "Medical Measures to Prevent Rebleeding",
       "classOfRec": "III",
-      "classNote": "No benefit",
+      "classNote": "No Benefit",
       "levelOfEvidence": "A",
       "text": "Routine use of antifibrinolytic therapy in aSAH patients is not useful for improving functional outcome.",
       "page": 13
@@ -281,7 +283,7 @@
     {
       "section": "Anesthetic Management of Surgical and Endovascular Procedures",
       "classOfRec": "III",
-      "classNote": "No benefit",
+      "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
       "text": "Routine use of induced mild hypothermia during aneurysm surgery is not beneficial in patients with good-grade aSAH.",
       "page": 17
@@ -473,7 +475,7 @@
     {
       "section": "Management of Cerebral Vasospasm and DCI",
       "classOfRec": "III",
-      "classNote": "No benefit",
+      "classNote": "No Benefit",
       "levelOfEvidence": "A",
       "text": "Routine statin therapy is not recommended in aSAH patients for the purpose of improving outcomes.",
       "page": 26
@@ -481,7 +483,7 @@
     {
       "section": "Management of Cerebral Vasospasm and DCI",
       "classOfRec": "III",
-      "classNote": "No benefit",
+      "classNote": "No Benefit",
       "levelOfEvidence": "A",
       "text": "Routine intravenous magnesium therapy is not recommended in aSAH patients for improving neurological outcomes.",
       "page": 26
@@ -521,7 +523,7 @@
     {
       "section": "Management of Hydrocephalus Associated with aSAH",
       "classOfRec": "III",
-      "classNote": "No benefit",
+      "classNote": "No Benefit",
       "levelOfEvidence": "C-LD",
       "text": "Routine fenestration of the lamina terminalis is not indicated in aSAH patients for reducing shunt dependency rates.",
       "page": 30
@@ -545,7 +547,7 @@
     {
       "section": "Management of Seizures Associated with aSAH",
       "classOfRec": "III",
-      "classNote": "No benefit",
+      "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
       "text": "Prophylactic antiseizure medication is not beneficial in aSAH patients without high-seizure-risk features (ruptured MCA aneurysm, high-grade SAH, ICH, hydrocephalus, or cortical infarction).",
       "page": 31
@@ -609,7 +611,7 @@
     {
       "section": "aSAH Acute Recovery",
       "classOfRec": "III",
-      "classNote": "No benefit",
+      "classNote": "No Benefit",
       "levelOfEvidence": "A",
       "text": "Fluoxetine therapy is not effective for enhancing post-stroke functional status in aSAH patients without depression.",
       "page": 34

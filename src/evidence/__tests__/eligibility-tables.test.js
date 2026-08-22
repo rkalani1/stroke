@@ -35,8 +35,8 @@ describe('eligibilityTables — structure & integrity', () => {
   it('has the expected trial count per table', () => {
     const counts = Object.fromEntries(eligibilityTables.map((t) => [`${t.category}-${t.phase}`, t.trials.length]));
     expect(counts).toEqual({
-      'ischemic-acute': 1,
-      'ischemic-inpatient': 7,
+      'ischemic-acute': 2,
+      'ischemic-inpatient': 8,
       'ischemic-outpatient': 6,
       'ich-acute': 2,
       'ich-inpatient': 3,
@@ -51,7 +51,7 @@ describe('eligibilityTables — structure & integrity', () => {
         expect(t.summary, `${table.id}/${t.acronym}`).toBeTruthy();
         expect(Array.isArray(t.eligibility) && t.eligibility.length > 0).toBe(true);
         expect(Array.isArray(t.exclusions) && t.exclusions.length > 0).toBe(true);
-        expect(['enrolling', 'soon', 'unverified']).toContain(t.status);
+        expect(['enrolling', 'soon', 'closed', 'unverified']).toContain(t.status);
       }
     }
   });

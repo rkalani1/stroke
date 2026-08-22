@@ -20,6 +20,7 @@ export const topics = [
   makeTopic({ id: 'novel-thrombolytics', label: 'Novel thrombolytics (reteplase, non-immunogenic staphylokinase)', parentId: 'acute-ischemic-stroke' }),
   makeTopic({ id: 'minor-stroke-thrombolysis', label: 'Thrombolysis vs antiplatelets in minor non-disabling stroke', parentId: 'acute-ischemic-stroke' }),
   makeTopic({ id: 'evt-technique', label: 'EVT technique & adjuncts (catheters, bailout stenting, anesthesia)', parentId: 'acute-ischemic-stroke' }),
+  makeTopic({ id: 'evt-early-window', label: 'EVT in early window (0-6h) — landmark trials', parentId: 'acute-ischemic-stroke' }),
   makeTopic({ id: 'evt-large-core', label: 'EVT for large-core infarct', parentId: 'acute-ischemic-stroke' }),
   makeTopic({ id: 'evt-late-window', label: 'EVT in late window (6-24h)', parentId: 'acute-ischemic-stroke' }),
   makeTopic({ id: 'bp-post-evt', label: 'Blood pressure target after EVT', parentId: 'acute-ischemic-stroke' }),

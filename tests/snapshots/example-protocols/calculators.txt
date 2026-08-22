@@ -41,6 +41,7 @@ Incomplete:
 complete every NIHSS item in the Encounter tab before using or copying the score.
 Use the NIHSS panel in the Encounter tab for full item-by-item scoring.
 The institutional acute-stroke algorithm requires NIHSS documentation but does not supply scoring definitions or interpretation.
+Source: Brott T et al. Stroke 1989;20:864-70 (PMID 2749846).
 Glasgow Coma Scale (GCS)
 Score:
 Incomplete
@@ -82,6 +83,7 @@ Extending
 None
 Incomplete:
 All three GCS components (Eye, Verbal, Motor) are required for a valid score.
+Source: Teasdale G, Jennett B. Lancet 1974;2:81-4 (PMID 4136544).
 ICH Score
 Score:
 Incomplete
@@ -89,22 +91,24 @@ Score:
 Incomplete
 Incomplete:
 select a GCS tier and confirm that the age, volume, IVH, and location criteria were reviewed before using or copying the ICH Score.
-Comfort-care-excluded cohort (2005-2008)
+30-day mortality by ICH Score (Hemphill 2001)
 ICH Score
 Mortality
 0
-0.9%
+0%
 1
-0.7%
+13%
 2
-5.3%
+26%
 3
-15.3%
+72%
 4
-36.8%
+97%
 5
-60.0%
-Values reproduced from the institutional pocket card. The table provides no score-6 value and no individual treatment rule.
+100%
+6
+Not observed (~100% expected)
+Hemphill JC et al. The ICH Score. Stroke 2001;32:891-897 (PMID 11283388). UCSF derivation cohort; no patient scored 6. Prognostic only — the score must NOT be used to limit treatment or justify early DNR (self-fulfilling-prophecy risk; AHA/ASA 2022 ICH).
 Glasgow Coma Scale:
 GCS 3-4
 (
@@ -150,6 +154,7 @@ GCS Score
 Use the source-backed GCS controls above.
 Pre-ICH Cognitive Status
 Pre-ICH cognitive impairment
+Source: Rost NS et al. Stroke 2008;39:2304-9 (FUNC score, PMID 18556582).
 Modified Rankin Scale (mRS)
 Score:
 Not Selected
@@ -163,6 +168,7 @@ Range: 0-6
 4 - Moderately severe disability; needs assistance
 5 - Severe disability; bedridden
 6 - Dead
+Source: Bruno A et al. Stroke 2010;41:1048-50 (simplified mRS questionnaire, PMID 20224060).
 ABCD² Score
 Score:
 Incomplete
@@ -173,7 +179,7 @@ BP: SBP≥140 or DBP≥90 (+1)
 Unilateral weakness (+2)
 Speech disturbance w/o weakness (+1)
 Symptom Duration:
->60 minutes
+≥60 minutes
 (
 +2 points
 )
@@ -184,10 +190,6 @@ Symptom Duration:
 <10 minutes
 (
 0 points
-)
-Exactly 60 minutes
-(
-source does not assign a score
 )
 Diabetes mellitus (+1)
 Required review:
@@ -207,6 +209,7 @@ select a duration and confirm every ABCD² criterion before using or copying the
 2-day: 8.1%
 7-day: 11.7%
 90-day: 17.8%
+Source: Johnston SC et al. Lancet 2007;369:283-92 (ABCD², PMID 17258668).
 CHA₂DS₂-VASc Score
 Score:
 Incomplete
@@ -243,26 +246,31 @@ Score 8:
 10.8%
 Score 9:
 12.2%
+Source: Lip GY et al. Chest 2010;137:263-72 (CHA₂DS₂-VASc, PMID 19762550).
 HAS-BLED Score
 Inputs retained
 H
-ypertension
+ypertension — uncontrolled, SBP >160 mmHg
 A
-bnormal renal function
+bnormal renal function — dialysis, transplant, or Cr ≥2.26 mg/dL (≥200 µmol/L)
 A
-bnormal liver function
+bnormal liver function — cirrhosis, or bilirubin >2× ULN with AST/ALT/ALP >3× ULN
 S
 troke history
 B
 leeding history or predisposition
 L
-abile INR
+abile INR — unstable/high INRs or time-in-therapeutic-range <60% (warfarin patients)
 E
-lderly
+lderly — age >65 years
 D
 rugs (antiplatelet agents, NSAIDs)
 D
-(cont.) Alcohol use
+(cont.) Alcohol use — ≥8 drinks/week
+HAS-BLED Score:
+0
+Score 0-2: lower bleeding risk. Reassess when clinical factors change.
+Source: Pisters R et al. Chest 2010;138:1093-1100 (HAS-BLED, PMID 20299623).
 ROPE Score and PASCAL Classification
 No history of hypertension
 No history of diabetes
@@ -270,6 +278,10 @@ No history of stroke or TIA
 Nonsmoker
 Cortical infarct
 Age (years)
+Large right-to-left shunt (PASCAL)
+Atrial septal aneurysm (PASCAL)
+Enter age to compute the RoPE score (age is the largest contributor).
+Sources: Kent DM et al. Neurology 2013;81:619-25 (RoPE, PMID 23864310); Kent DM et al. JAMA 2021;326:2277-86 (PASCAL, PMID 34905030).
 RCVS² Score
 Inputs retained
 Recurrent thunderclap headaches
@@ -277,6 +289,10 @@ Intracranial carotid artery involvement
 Vasoconstrictive trigger exposure
 Female sex
 Subarachnoid hemorrhage on imaging
+RCVS\u00b2 Score:
+0
+Score ≤2: RCVS unlikely (85% sensitivity, 100% specificity for exclusion) — evaluate for alternative arteriopathies (e.g., primary angiitis of the CNS).
+Source: Rocha EA et al. Neurology 2019;92:e639-e647 (RCVS², PMID 30635475).
 Hunt and Hess / WFNS Scale (SAH Grading)
 H&H:
 Not Selected
@@ -295,6 +311,7 @@ Grade 2
 Grade 3
 Grade 4
 Grade 5
+Sources: Hunt WE, Hess RM. J Neurosurg 1968;28:14-20 (PMID 5635959); WFNS Committee report, J Neurosurg 1988;68:985-6 (PMID 3131498).
 PHASES Score
 Inputs retained
 Population
@@ -309,12 +326,15 @@ Aneurysm site
 ICA
 MCA
 ACA / Pcomm / Posterior circulation
+Enter aneurysm size to compute the PHASES score.
+Source: Greving JP et al. Lancet Neurol 2014;13:59-66 (PHASES, PMID 24290159).
 ICH Volume Calculator (ABC/2 Method)
 A: Largest diameter (cm)
 B: Perpendicular diameter (cm)
 C: Slices x thickness (cm)
 Enter A, B, and C measurements from CT to calculate ICH volume.
 ABC/2 method: A = largest diameter, B = perpendicular diameter on same slice, C = number of slices with ICH x slice thickness.
+Source: Kothari RU et al. Stroke 1996;27:1304-5 (ABC/2, PMID 8711791).
 Andexanet Alfa (unavailable; dosing disabled)
 DOAC Type
 Select DOAC
@@ -334,9 +354,13 @@ Male
 Female
 Serum Cr (mg/dL)
 Height (cm) — for obesity-adjusted CrCl
+Enter age, weight, sex, and serum creatinine to calculate CrCl.
+Source: Cockcroft DW, Gault MH. Nephron 1976;16:31-41 (PMID 1244564).
 Enoxaparin Weight-Based Dosing
 Weight (kg)
 CrCl (mL/min)
+Enter weight (and CrCl when available) to calculate enoxaparin dosing.
+Source: Sherman DG et al. Lancet 2007;369:1347-55 (PREVAIL, PMID 17448820).
 ASPECTS Score (Interactive)
 Score:
 Incomplete
@@ -368,6 +392,7 @@ all 10 ASPECTS regions were assessed; unmarked regions are normal.
 Incomplete:
 confirm that every ASPECTS region was reviewed before using the score.
 Reset all regions
+Source: Barber PA et al. Lancet 2000;355:1670-4 (ASPECTS, PMID 10905241).
 PC-ASPECTS (Posterior Circulation)
 Score:
 Incomplete
@@ -405,6 +430,7 @@ confirm that every PC-ASPECTS region was reviewed before using the score.
 Alteplase (tPA) Dosing Calculator
 0.9 mg/kg, max 90 mg
 Enter patient weight in the encounter section to calculate dose.
+Source: NINDS rt-PA Stroke Study Group. NEJM 1995;333:1581-7 (PMID 7477192).
 SPAN-100, DRAGON, and SEDAN
 Inputs retained
 SPAN-100 Index
@@ -424,5 +450,6 @@ mTICI
 2c
 mTICI
 3
+Source: Zaidat OO et al. Stroke 2013;44:2650-63 (mTICI consensus, PMID 23920012).
 DRAGON Score
 Input labels: Dense artery sign or early infarct on NCCT; pre-stroke mRS; age; glucose; onset to treatment; NIHSS.

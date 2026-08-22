@@ -20,8 +20,9 @@
 
 const CTGOV = (nct) => `https://clinicaltrials.gov/study/${nct}`;
 
-// status: 'enrolling' | 'soon' | 'unverified'
+// status: 'enrolling' | 'soon' | 'closed' | 'unverified'
 // unverified: true marks trials with no ClinicalTrials.gov record (ESUS-MRI, MOCHA).
+// closed: registry active-not-recruiting — retained for reference, no new enrollment.
 
 export const PHASE_LABELS = {
   acute: 'Acute (Onset ≤ 24 Hours)',
@@ -40,6 +41,40 @@ const UNVERIFIED_SUMMARY =
 // ── Trial definitions, keyed by acronym so the same trial can appear in multiple
 //    phase tables without duplicating its summary/eligibility/exclusions text. ──
 const TRIALS = {
+  PICASSO: {
+    acronym: 'PICASSO',
+    nct: 'NCT05611242',
+    status: 'enrolling',
+    href: CTGOV('NCT05611242'),
+    summary:
+      'Emergent carotid stenting plus EVT vs EVT alone for tandem extracranial-carotid + intracranial-LVO occlusions.',
+    eligibility: [
+      'Age 18–79, AIS within 16 h of LKW, NIHSS ≥ 4, pre-stroke mRS ≤ 2',
+      'ASPECTS ≥ 7',
+      'Tandem lesion on CTA: extracranial ICA stenosis 70–100% + intracranial ICA-T / M1 / proximal M2',
+      'Ineligible for IV thrombolysis or failed IV thrombolysis'
+    ],
+    exclusions: [
+      'No tandem lesion on imaging',
+      'Beyond the 16-hour window'
+    ]
+  },
+  CAPTIVA: {
+    acronym: 'CAPTIVA',
+    nct: 'NCT05047172',
+    status: 'closed',
+    href: CTGOV('NCT05047172'),
+    summary:
+      'Ticagrelor+ASA vs clopidogrel+ASA in symptomatic 70–99% intracranial atherosclerosis. Closed to new enrollment (active-not-recruiting); the low-dose rivaroxaban (2.5 mg BID) arm was terminated in January 2026 (DSMB: safety events plus futility).',
+    eligibility: [
+      'Age ≥ 30, ischemic stroke or TIA attributed to ICAS (70–99% stenosis or MRA flow gap)',
+      'Within 30 days of qualifying event, mRS ≤ 4 at consent'
+    ],
+    exclusions: [
+      'Cardioembolic source (AF, valve)',
+      'On full-dose anticoagulation'
+    ]
+  },
   STEP: {
     acronym: 'STEP',
     nct: 'NCT06289985',
@@ -323,7 +358,7 @@ export const eligibilityTables = [
     category: 'ischemic',
     phase: 'acute',
     title: 'Ischemic Stroke — Acute (Onset ≤ 24 Hours)',
-    trials: [TRIALS.STEP]
+    trials: [TRIALS.STEP, TRIALS.PICASSO]
   },
   {
     id: 'ischemic-inpatient',
@@ -337,7 +372,8 @@ export const eligibilityTables = [
       TRIALS.CLARITY,
       TRIALS['ESUS-MRI'],
       TRIALS.MOCHA,
-      TRIALS.INTERCEPT
+      TRIALS.INTERCEPT,
+      TRIALS.CAPTIVA
     ]
   },
   {

@@ -106,6 +106,15 @@ describe('matcher engine — operators', () => {
       expect(evaluateCriterion(c, { telestrokeNote: { vesselOcclusion: ['P3'] } })).toBe('not_met');
       expect(evaluateCriterion(c, { telestrokeNote: { vesselOcclusion: [] } })).toBe('unknown');
     });
+    it('is negation-aware for free text: "No intracranial stenosis" must not match a stenosis criterion', () => {
+      const c = { field: 'ctaResults', operator: 'present', value: ['stenosis', 'intracranial', 'icas', 'atheroscler'] };
+      expect(evaluateCriterion(c, { telestrokeNote: { ctaResults: 'No intracranial stenosis identified' } })).toBe('not_met');
+      expect(evaluateCriterion(c, { telestrokeNote: { ctaResults: 'Severe intracranial stenosis of the M1' } })).toBe('met');
+      expect(evaluateCriterion(c, { telestrokeNote: { ctaResults: 'Without stenosis. Patent vessels.' } })).toBe('not_met');
+      const tandem = { field: 'ctaResults', operator: 'present', value: ['tandem'] };
+      expect(evaluateCriterion(tandem, { telestrokeNote: { ctaResults: 'No tandem lesion' } })).toBe('not_met');
+      expect(evaluateCriterion(tandem, { telestrokeNote: { ctaResults: 'Tandem occlusion: cervical ICA + M1' } })).toBe('met');
+    });
   });
 
   describe('field resolver', () => {
@@ -121,7 +130,13 @@ describe('matcher engine — operators', () => {
       // M2/M3 alone (low or unknown NIHSS) must NOT match — that false positive
       // was the pre-fix bug.
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'], nihss: '8' }, nihssScore: 8 })).toBe('mevo');
-      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'] } })).toBe('none');
+      // Occlusion entered but NIHSS not yet documented → needs-info (null),
+      // not a definite 'none' — a partially-filled form must not flip STEP
+      // to not-eligible.
+      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'] } })).toBeNull();
+      // Explicitly DOMINANT M2 on CTA is excluded from the STEP MVO domain.
+      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'], nihss: '9', ctaResults: 'dominant M2 occlusion' }, nihssScore: 9 })).toBe('none');
+      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'], nihss: '9', ctaResults: 'non-dominant M2 occlusion' }, nihssScore: 9 })).toBe('mevo');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M4'], nihss: '12' }, nihssScore: 12 })).toBe('none');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M1'], nihss: '4' }, nihssScore: 4 })).toBe('low-nihss-lvo');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M1'], nihss: '8' }, nihssScore: 8 })).toBe('none');
@@ -218,7 +233,25 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
     expect(r.status).toBe('eligible');
   });
 
-  it('PICASSO: tandem lesion patient → eligible', () => {
+  it('PICASSO: tandem lesion patient, documented IVT-ineligible → eligible', () => {
+    const data = {
+      telestrokeNote: {
+        age: '60',
+        nihss: '14',
+        premorbidMRS: '1',
+        ctaResults: 'tandem extracranial carotid + intracranial M1 occlusion',
+        // Registry inclusion #10: must be ineligible for or have failed IV
+        // t-PA — a documented decision NOT to give TNK satisfies the gate.
+        tnkRecommended: false
+      },
+      hoursFromLKW: 8,
+      aspectsScore: 8
+    };
+    const r = evaluateActiveTrial(getActiveTrial('picasso'), data);
+    expect(r.status).toBe('eligible');
+  });
+
+  it('PICASSO: without a documented IVT-ineligibility decision the gate stays open (needs_info)', () => {
     const data = {
       telestrokeNote: {
         age: '60',
@@ -230,7 +263,7 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
       aspectsScore: 8
     };
     const r = evaluateActiveTrial(getActiveTrial('picasso'), data);
-    expect(r.status).toBe('eligible');
+    expect(r.status).toBe('needs_info');
   });
 
   it('SATURN: lobar ICH on statin → eligible', () => {
@@ -308,14 +341,15 @@ describe('matcher engine — exclusions', () => {
     expect(r.exclusions.some((x) => x.id === 'pregnancy')).toBe(true);
   });
 
-  it('every active trial has matcherExclusions populated (13 across 9 active trials)', () => {
+  it('every active trial has matcherExclusions populated (14 across 9 active trials)', () => {
     let total = 0;
     for (const t of activeTrials) {
       total += (t.matcherExclusions || []).length;
     }
     expect(total).toBeGreaterThan(0);
-    // Trial-level matcherExclusions total across the active atlas.
-    expect(total).toBe(13);
+    // Trial-level matcherExclusions total across the active atlas
+    // (14 after adding STEP's registry MRI ASPECTS <7 exclusion).
+    expect(total).toBe(14);
   });
 });
 

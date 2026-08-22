@@ -15,5 +15,22 @@
     "certainty": "high",
     "lastReviewed": "2026-08-15",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "fastest",
+    "name": "FASTEST",
+    "fullName": "Recombinant Factor VIIa versus Placebo for Spontaneous Intracerebral Haemorrhage within 2 h of Symptom Onset",
+    "category": "ich-hemostatic",
+    "population": "n=626, adults, NIHSS spontaneous ICH, ≤2 h from onset (mean 100 min)",
+    "finding": "NEGATIVE: adjusted common OR 1.09; trial met prespecified futility criteria at 2nd interim analysis",
+    "teachingPoint": "rFVIIa has no role in spontaneous ICH even at ≤2 h: no functional benefit, more thrombotic harm.",
+    "PMID": "41653933",
+    "year": 2026,
+    "citationIds": [
+      "cit-fastest-2026"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-22",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

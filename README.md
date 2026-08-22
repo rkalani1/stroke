@@ -12,11 +12,11 @@ A client-side educational/demo toolkit for stroke management. Runs entirely in t
 - Clinic and wards workflows.
 - Post-tPA neurocheck timer; LKW countdown to 4.5h and 24h windows.
 - Note generators for telestroke consult, transfer, signout, progress, discharge.
-- **Evidence Atlas** sub-tab at `#/trials` with 113 completed/landmark trials, search, topic / certainty / evidence-type filters, and citation drilldown to PMID / DOI.
+- **Evidence Atlas** sub-tab at `#/trials` with 130 completed/landmark trials, search, topic / certainty / evidence-type filters, and citation drilldown to PMID / DOI.
 - **Context Bridge** in active-trial matcher cards: related completed trials surface as background evidence (never as eligibility criteria).
 - **"Why this recommendation?" drawer** in Management sections, walking guideline → claim → primary citation chain.
-- **Pure-function matcher engine** (`src/evidence/matcher-engine.js`) with 100% coverage of 42 inclusion criteria + 13 exclusions across 9 active trials.
-- **82 atlas citations** sourced from `docs/evidence-review-2021-2026.md` plus pre-2021 landmarks.
+- **Pure-function matcher engine** (`src/evidence/matcher-engine.js`) with 100% coverage of 42 inclusion criteria + 14 exclusions across 9 active trials.
+- **219 atlas citations** sourced from `docs/evidence-review-2021-2026.md` plus pre-2021 landmarks.
 
 
 ## Install
@@ -26,8 +26,8 @@ The app is a Progressive Web App and runs in any modern browser. Three install p
 | Platform | How |
 |---|---|
 | Web | Open ` /stroke/` |
-| iOS Safari | Share → Add to Home Screen (a one-time tip prompts you) |
-| Android Chrome / Desktop Chrome / Edge | Settings ("More") menu → **Install app** |
+| iOS Safari | **Install App** button in the Trials header opens an Add-to-Home-Screen walkthrough (Share → Add to Home Screen) |
+| Android Chrome / Desktop Chrome / Edge | **Install App** button in the Trials header fires the browser install prompt (the browser's own menu → Install also works) |
 | App Store / Play Store | Optional Capacitor wrapper — see [docs/pwa-and-app.md](docs/pwa-and-app.md) |
 
 Updates roll out via a non-intrusive **"A new version of Stroke is ready"** banner — clinicians mid-encounter are never auto-reloaded. See [docs/pwa-and-app.md](docs/pwa-and-app.md) for the full update / offline behavior, manifest shortcut targets, and Lighthouse run instructions.
@@ -95,7 +95,7 @@ separate reviewed `npm run test:protocol-snapshot:update` commit.
 - `npm run validate:evidence-churn-profiles`, `npm run validate:qa-latency-profiles`, `npm run validate:evidence-promotion` — operational validators for the QA-governance pipeline.
 
 ### Tests
-- `npm run test:unit` — runs vitest. 850 tests across calculators, atlas, matcher engine, scenario snapshots. Fast (<5s); guards every PR via CI.
+- `npm run test:unit` — runs vitest. 1,630 tests across calculators, atlas, matcher engine, e2e tiers, scenario snapshots (~25s). One tier-2 e2e spec needs outbound network access, so it fails in sandboxed environments without egress. Guards every PR via CI.
 - `npm test` — full local chain: validators + Playwright local smoke. Slower (~5–10 min). Requires Playwright browsers (`npx playwright install`).
 - `npm run qa` — full chain with live smoke against the deployed site.
 

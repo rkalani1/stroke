@@ -211,7 +211,9 @@ export const calculateESSEN = ({ age, hypertension, diabetes, priorMI, otherCV, 
   let score = 0;
   const a = parseFloat(age);
   if (Number.isFinite(a)) {
-    if (a >= 75) score += 2; else if (a >= 65) score += 1;
+    // Published brackets: 65-75 = 1 point, >75 = 2 points — age exactly 75
+    // falls in the 65-75 bracket (Weimar Stroke 2009, PMID 19023098).
+    if (a > 75) score += 2; else if (a >= 65) score += 1;
   }
   if (hypertension) score += 1;
   if (diabetes) score += 1;
@@ -228,24 +230,29 @@ export const calculateESSEN = ({ age, hypertension, diabetes, priorMI, otherCV, 
   };
 };
 
-// SPI-II (Kernan Stroke 1991, updated 2000)
-// Points: age >70 = 2, HTN = 3, DM = 3, prior CAD = 1, prior stroke = 3, severe HTN (SBP ≥180 / DBP ≥100) = 1.
-// 0-3 low, 4-7 moderate, 8-15 high.
-export const calculateSPI2 = ({ age, hypertension, diabetes, cad, priorStroke, sbp, dbp }) => {
+// SPI-II (Kernan WN et al., Stroke 2000;31:456-62; PMID 10657422)
+// Seven items, total 0-15: CHF = 3; diabetes = 3; prior stroke = 3;
+// age >70 = 2; stroke (not TIA) as the index event = 2; hypertension = 1;
+// coronary artery disease = 1.
+// Risk groups (pooled 2-year stroke-or-death across 3 validation cohorts):
+// Group I = 0-3 (10%), Group II = 4-7 (19%), Group III = 8-15 (31%).
+export const calculateSPI2 = ({ age, hypertension, diabetes, cad, priorStroke, chf, indexEventStroke }) => {
   let score = 0;
   const a = parseFloat(age);
-  const s = parseFloat(sbp); const d = parseFloat(dbp);
-  if (Number.isFinite(a) && a > 70) score += 2;
-  if (hypertension) score += 3;
+  if (chf) score += 3;
   if (diabetes) score += 3;
-  if (cad) score += 1;
   if (priorStroke) score += 3;
-  if ((Number.isFinite(s) && s >= 180) || (Number.isFinite(d) && d >= 100)) score += 1;
+  if (Number.isFinite(a) && a > 70) score += 2;
+  if (indexEventStroke) score += 2; // index event is stroke (not TIA)
+  if (hypertension) score += 1;
+  if (cad) score += 1;
   return {
     score,
     tier: score <= 3 ? 'low' : score <= 7 ? 'moderate' : 'high',
-    twoYearRisk: score <= 3 ? '~3-4%' : score <= 7 ? '~11-14%' : '~23-28%',
-    source: 'Kernan Stroke 1991; updated 2000'
+    riskGroup: score <= 3 ? 'I' : score <= 7 ? 'II' : 'III',
+    twoYearRisk: score <= 3 ? '10%' : score <= 7 ? '19%' : '31%',
+    outcome: 'stroke or death within 2 years (TIA or nondisabling ischemic stroke cohort)',
+    source: 'Kernan WN et al. Stroke 2000;31:456-62 (SPI-II, PMID 10657422)'
   };
 };
 
@@ -253,9 +260,11 @@ export const calculateSPI2 = ({ age, hypertension, diabetes, cad, priorStroke, s
 // ICH expansion scores
 // =====================================================================
 
-// BAT score (Morotti et al., JAMA Neurol 2016;73:203-10)
-// Blend sign on CT: +1; Any hypodensity: +2; Time from onset to CT <2.5 h: +2. Range 0-5.
-// 0-1 low (~5% expansion), 2-5 high (~40% expansion).
+// BAT score (Morotti A et al., Stroke 2018;49:1163-1169; PMID 29669875)
+// Blend sign on NCCT: +1; Any intrahematoma hypodensity: +2; Timing of NCCT
+// from onset <2.5 h: +2. Range 0-5. Published dichotomization: BAT ≥3
+// predicts hematoma expansion with sensitivity 0.50 and specificity 0.89
+// (c-statistic 0.77 development; 0.65/0.70 in validation cohorts).
 export const calculateBAT = ({ blendSign, hypodensity, timeToCTHours }) => {
   let score = 0;
   const t = parseFloat(timeToCTHours);
@@ -264,9 +273,9 @@ export const calculateBAT = ({ blendSign, hypodensity, timeToCTHours }) => {
   if (Number.isFinite(t) && t < 2.5) score += 2;
   return {
     score,
-    risk: score >= 2 ? 'high' : 'low',
-    expansionProbability: score >= 3 ? '~45-50%' : score === 2 ? '~35-40%' : score === 1 ? '~15%' : '~5%',
-    source: 'Morotti JAMA Neurol 2016;73:203-10'
+    risk: score >= 3 ? 'high' : 'low',
+    threshold: 'BAT ≥3 = high expansion risk (sensitivity 0.50, specificity 0.89)',
+    source: 'Morotti A et al. Stroke 2018;49:1163-1169 (BAT score, PMID 29669875)'
   };
 };
 
@@ -305,23 +314,32 @@ export const calculateBRAIN = ({ volumeMl, recurrentICH, anticoagulated, ivh, on
   };
 };
 
-// Nine-point (Brouwers) ICH expansion score
-// Warfarin use = 2, NOAC = 1, antiplatelet = 1, volume ≥30 mL = 2, onset-to-CT <6h = 2, IVH = 1, shape irregularity = 1.
-export const calculateNinePoint = ({ warfarin, noac, antiplatelet, volumeMl, onsetToCTHours, ivh, irregularShape }) => {
+// Nine-point (Brouwers) ICH hematoma-expansion prediction score
+// (Brouwers HB et al., JAMA Neurol 2014;71:158-64; PMID 24366060)
+// Warfarin use: yes = 2. Time from symptom onset to initial CT: ≤6 h = 2.
+// CTA spot sign: present = 3, CTA unavailable = 1, absent = 0.
+// Baseline ICH volume: <30 mL = 0, 30-60 mL = 1, >60 mL = 2. Max 9.
+// Risk strata: 0 = low (5.7% expansion), 1-3 = medium (12.4%), 4-9 = high
+// (36.4%; 80% at score 9). Expansion = >6 mL or >33% growth.
+export const calculateNinePoint = ({ warfarin, spotSign, volumeMl, onsetToCTHours }) => {
   let score = 0;
   const v = parseFloat(volumeMl);
   const t = parseFloat(onsetToCTHours);
   if (warfarin) score += 2;
-  else if (noac) score += 1;
-  if (antiplatelet) score += 1;
-  if (Number.isFinite(v) && v >= 30) score += 2;
-  if (Number.isFinite(t) && t < 6) score += 2;
-  if (ivh) score += 1;
-  if (irregularShape) score += 1;
+  if (Number.isFinite(t) && t <= 6) score += 2;
+  // spotSign is tri-state: true = present (3), false = absent (0),
+  // 'unavailable' / undefined / null = no baseline CTA performed (1).
+  if (spotSign === true) score += 3;
+  else if (spotSign !== false) score += 1;
+  if (Number.isFinite(v)) {
+    if (v > 60) score += 2;
+    else if (v >= 30) score += 1;
+  }
   return {
     score,
-    risk: score >= 6 ? 'high' : score >= 3 ? 'moderate' : 'low',
-    source: 'Brouwers Stroke 2014; Law Int J Stroke 2020'
+    risk: score >= 4 ? 'high' : score >= 1 ? 'medium' : 'low',
+    expansionIncidence: score >= 4 ? '36.4% (80% at score 9)' : score >= 1 ? '12.4%' : '5.7%',
+    source: 'Brouwers HB et al. JAMA Neurol 2014;71:158-64 (9-point expansion score, PMID 24366060)'
   };
 };
 
@@ -329,22 +347,33 @@ export const calculateNinePoint = ({ warfarin, noac, antiplatelet, volumeMl, ons
 // SAH / DCI scores
 // =====================================================================
 
-// VASOGRADE (de Oliveira Manoel Stroke 2015;46:1826-31)
-// Green: WFNS 1-2 + mFisher 1-2; Yellow: WFNS 1-3 + mFisher 3-4; Red: WFNS 4-5 (any mFisher).
+// VASOGRADE (de Oliveira Manoel Stroke 2015;46:1826-31; PMID 25977276)
+// Green: mFisher 1-2 AND WFNS 1-2; Yellow: mFisher 3-4 AND WFNS 1-3;
+// Red: WFNS 4-5 (any mFisher). WFNS 3 + mFisher 1-2 satisfies NONE of the
+// published categories — a recognized gap in the original scheme — and is
+// returned as 'Unclassified' rather than silently coerced to Yellow.
 export const calculateVASOGRADE = ({ wfns, modifiedFisher }) => {
   const w = parseFloat(wfns);
   const m = parseFloat(modifiedFisher);
   if (!Number.isFinite(w) || !Number.isFinite(m)) return null;
   let grade; let risk;
   if (w >= 4) { grade = 'Red'; risk = 'high'; }
-  else if ((w <= 2) && (m <= 2)) { grade = 'Green'; risk = 'low'; }
-  else { grade = 'Yellow'; risk = 'moderate'; }
-  return { grade, risk, source: 'de Oliveira Manoel Stroke 2015;46:1826-31' };
+  else if (w <= 2 && m <= 2) { grade = 'Green'; risk = 'low'; }
+  else if (w <= 3 && m >= 3) { grade = 'Yellow'; risk = 'moderate'; }
+  else {
+    grade = 'Unclassified';
+    risk = 'indeterminate';
+    return { grade, risk, note: 'WFNS 3 with modified Fisher 1-2 is not classified by the published VASOGRADE definitions — use clinical judgment and full DCI risk assessment.', source: 'de Oliveira Manoel Stroke 2015;46:1826-31 (PMID 25977276)' };
+  }
+  return { grade, risk, source: 'de Oliveira Manoel Stroke 2015;46:1826-31 (PMID 25977276)' };
 };
 
 // Ogilvy-Carter grading for aneurysmal SAH (0-5)
-// Factors: age >50 (1), Hunt-Hess IV-V (1), Fisher 3-4 (1), aneurysm >10 mm (1), posterior circulation / giant (1).
-export const calculateOgilvyCarter = ({ age, huntHess, fisher, size, posteriorOrGiant }) => {
+// (Ogilvy CS, Carter BS. Neurosurgery 1998;42:959-68; PMID 9588539)
+// Factors, 1 point each: age >50; Hunt-Hess IV-V; Fisher 3-4; aneurysm size
+// >10 mm; GIANT (≥25 mm) POSTERIOR-circulation lesion (both conditions
+// combined — not either alone; the >10 mm size point is separate).
+export const calculateOgilvyCarter = ({ age, huntHess, fisher, size, giantPosterior, posteriorCirculation }) => {
   const a = parseFloat(age);
   const hh = parseFloat(huntHess);
   const f = parseFloat(fisher);
@@ -354,8 +383,11 @@ export const calculateOgilvyCarter = ({ age, huntHess, fisher, size, posteriorOr
   if (Number.isFinite(hh) && hh >= 4) score += 1;
   if (Number.isFinite(f) && f >= 3) score += 1;
   if (Number.isFinite(sz) && sz > 10) score += 1;
-  if (posteriorOrGiant) score += 1;
-  return { score, source: 'Ogilvy-Carter Neurosurgery 1998' };
+  // Accept either an explicit combined flag, or derive it from size ≥25 mm
+  // plus a posterior-circulation flag.
+  const isGiantPosterior = giantPosterior === true || (posteriorCirculation === true && Number.isFinite(sz) && sz >= 25);
+  if (isGiantPosterior) score += 1;
+  return { score, source: 'Ogilvy CS, Carter BS. Neurosurgery 1998;42:959-68 (PMID 9588539)' };
 };
 
 // =====================================================================
@@ -838,9 +870,9 @@ export const dmvoEVTAdvisory = ({ occlusionLocation, nihss, deficitDisabling }) 
 // =====================================================================
 // MOST (Adeoye/Broderick NEJM 2024;391:810-20, PMID 39231343): Phase 3 RCT, n=514, AIS s/p IV lytic.
 // Argatroban or eptifibatide as adjunct vs placebo. STOPPED for futility — neither improved
-// outcome. MR CLEAN-MED (Lancet 2022, PMID 35202525) similarly showed periprocedural
+// outcome. MR CLEAN-MED (Lancet 2022, PMID 35240044) similarly showed periprocedural
 // heparin/aspirin during EVT increases sICH (stopped for harm).
-// NOTE: RESCUE BT2 (China, NEJM 2023;388:2025-36, PMID 37256974) showed tirofiban benefit in
+// NOTE: RESCUE-BT2 (China, NEJM 2023;388:2025-36, PMID 37256974) showed tirofiban benefit in
   // ischemic stroke WITHOUT large- or medium-vessel occlusion (mostly small atherosclerotic infarcts) who
 // were INELIGIBLE for lytic/EVT — different population; do NOT extrapolate to lytic-eligible.
 export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyticIneligible }) => {
@@ -849,7 +881,7 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
       recommend: 'No',
       drugs: ['argatroban', 'eptifibatide', 'tirofiban (post-lytic)', 'heparin'],
       rationale: 'MOST trial (Adeoye NEJM 2024, PMID 39231343) found NO benefit and possible harm from argatroban or eptifibatide added to IV lytic. Do not give adjunctive anticoagulants/antiplatelets in the first 24h post-lytic.',
-      source: 'Adeoye NEJM 2024;391:810-20 (MOST, PMID 39231343); MR CLEAN-MED Lancet 2022 (PMID 35202525)',
+      source: 'Adeoye NEJM 2024;391:810-20 (MOST, PMID 39231343); MR CLEAN-MED Lancet 2022 (PMID 35240044)',
       class: 'Class 3 (no benefit/possible harm)'
     };
   }
@@ -858,7 +890,7 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
       recommend: 'No (periprocedural heparin/aspirin)',
       drugs: ['heparin', 'aspirin (periprocedural)'],
       rationale: 'MR CLEAN-MED stopped for harm (sICH excess) when heparin or aspirin added periprocedurally. Avoid adjunctive antithrombotics during EVT.',
-      source: 'MR CLEAN-MED Lancet 2022 (PMID 35202525)',
+      source: 'MR CLEAN-MED Lancet 2022 (PMID 35240044)',
       class: 'Class 3'
     };
   }
@@ -866,8 +898,8 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
     return {
       recommend: 'Tirofiban may be considered',
       drugs: ['tirofiban'],
-      rationale: 'RESCUE BT2 (NEJM 2023) improved the primary endpoint of excellent outcome (mRS 0-1) at 90 days — 29.1% vs 22.2%, adjusted RR 1.26 (95% CI 1.04-1.53), p=0.02, though secondary endpoints were generally not consistent with the primary result — with tirofiban in non-cardioembolic AIS who could not receive IV lytic or EVT. Distinct population from MOST.',
-      source: 'RESCUE BT2 NEJM 2023 (PMID 37256974)',
+      rationale: 'RESCUE-BT2 (NEJM 2023) improved the primary endpoint of excellent outcome (mRS 0-1) at 90 days — 29.1% vs 22.2%, adjusted RR 1.26 (95% CI 1.04-1.53), p=0.02, though secondary endpoints were generally not consistent with the primary result — with tirofiban in non-cardioembolic AIS who could not receive IV lytic or EVT. Distinct population from MOST.',
+      source: 'RESCUE-BT2 NEJM 2023 (PMID 37256974)',
       class: 'Class 2b (selected non-cardioembolic, lytic/EVT-ineligible)'
     };
   }
@@ -971,7 +1003,7 @@ export const evaluateSWITCHEligibility = ({ icHLocation, volumeMl, gcs, timeFrom
 // Care bundle within first hour: SBP <140 ≤1h, glucose 6.1-7.8 (non-DM)/7.8-10 (DM),
 // Tmax <37.5°C, INR reversal <1.5 within 1h. cOR for mRS shift 0.86 (p=0.015); mortality HR 0.77.
 // Single most cost-effective ICH update.
-export const ichCareBundleCheck = ({ sbpAtArrival, sbpAt1h, glucose, isDiabetic, temp, inr, isOnWarfarin, anticoagReversed }) => {
+export const ichCareBundleCheck = ({ sbpAtArrival, sbpAt1h, glucose, glucoseUnit, isDiabetic, temp, inr, isOnWarfarin, anticoagReversed }) => {
   const sbp1 = parseFloat(sbpAt1h);
   const glu = parseFloat(glucose);
   const tmp = parseFloat(temp);
@@ -991,13 +1023,17 @@ export const ichCareBundleCheck = ({ sbpAtArrival, sbpAt1h, glucose, isDiabetic,
   const glucoseTarget = isDiabetic ? '7.8-10 mmol/L (140-180 mg/dL)' : '6.1-7.8 mmol/L (110-140 mg/dL)';
   const glucoseLow = isDiabetic ? 7.8 : 6.1;
   const glucoseHigh = isDiabetic ? 10 : 7.8;
-  // Convert mg/dL to mmol/L if needed
-  const gluMmol = Number.isFinite(glu) && glu > 30 ? glu / 18 : glu;
+  // Explicit unit toggle: 'mg/dL' or 'mmol/L'. The old magnitude heuristic
+  // (>30 means mg/dL) misread severe hypoglycemia — 28 mg/dL parsed as
+  // 28 mmol/L (~500 mg/dL). Without an explicit unit the value is treated
+  // as NOT interpretable rather than guessed.
+  const unit = glucoseUnit === 'mg/dL' || glucoseUnit === 'mmol/L' ? glucoseUnit : null;
+  const gluMmol = !Number.isFinite(glu) ? NaN : unit === 'mg/dL' ? glu / 18 : unit === 'mmol/L' ? glu : NaN;
   const glucoseDone = Number.isFinite(gluMmol) && gluMmol >= glucoseLow && gluMmol <= glucoseHigh;
   items.push({
     item: 'Glucose in target range',
     target: glucoseTarget,
-    current: Number.isFinite(glu) ? (glu > 30 ? `${glu} mg/dL (${gluMmol.toFixed(1)} mmol/L)` : `${glu} mmol/L`) : 'not entered',
+    current: Number.isFinite(glu) && unit ? (unit === 'mg/dL' ? `${glu} mg/dL (${gluMmol.toFixed(1)} mmol/L)` : `${glu} mmol/L`) : Number.isFinite(glu) ? `${glu} (unit not specified — select mg/dL or mmol/L)` : 'not entered',
     met: glucoseDone,
     action: glucoseDone ? null : (gluMmol < glucoseLow ? 'Treat hypoglycemia (D50W 25 g IV).' : `Insulin scale; target ${glucoseTarget}.`)
   });
@@ -1279,64 +1315,70 @@ export const afDetectionStrategy = ({ havocScore, strokeSubtype, hasICMAccess })
 };
 
 // =====================================================================
-// Boston 2.0 CAA criteria — for lobar ICH MRI interpretation
+// Boston criteria v2.0 for cerebral amyloid angiopathy
 // =====================================================================
-// Charidimou Lancet Neurol 2022;21:714-25 (PMID 35841910).
-// Adds non-hemorrhagic markers (CSO-PVS, multispot WMH) to boost sensitivity for "probable CAA"
-// from 75% to 88% with maintained specificity.
-export const evaluateBostonCAA20 = ({ age, lobarICH, corticalSiderosis, lobarMicrobleeds, csoPVSSevere, multispotWMH, otherCause }) => {
+// Charidimou A et al. Lancet Neurol 2022;21:714-25 (PMID 35841910).
+// Applies to patients aged >=50 presenting with spontaneous ICH, cognitive
+// impairment, or transient focal neurological episodes.
+// PROBABLE CAA: >=2 strictly lobar hemorrhagic lesions (ICH, cerebral
+// microbleeds, or cortical superficial siderosis foci — a lobar ICH is NOT
+// required) OR >=1 strictly lobar hemorrhagic lesion + >=1 white-matter
+// feature (severe CSO perivascular spaces or multispot WMH), with no other
+// cause. POSSIBLE CAA: 1 strictly lobar hemorrhagic lesion OR 1 white-matter
+// feature. vs autopsy: sensitivity 74.5% (65.4-82.4), specificity 95.0%
+// (83.1-99.4) for probable CAA.
+export const evaluateBostonCAA20 = ({ age, lobarICH, corticalSiderosis, lobarMicrobleeds, lobarHemorrhagicLesionCount, csoPVSSevere, multispotWMH, otherCause }) => {
   const a = parseFloat(age);
-  const isOver55 = !Number.isFinite(a) || a >= 55;
+  const meetsAge = !Number.isFinite(a) || a >= 50;
   const hasOtherCause = otherCause === true;
 
-  if (!isOver55) {
+  if (!meetsAge) {
     return {
       category: 'N/A',
-      rationale: 'Boston 2.0 criteria require age ≥55. Below this, CAA is uncommon; consider alternative etiologies (vasculitis, hereditary CAA syndromes).'
+      rationale: 'Boston v2.0 criteria apply to patients aged ≥50. Below this, consider alternative etiologies (vasculitis, hereditary CAA syndromes, vascular malformation).'
     };
   }
 
   if (hasOtherCause) {
     return {
       category: 'Excluded',
-      rationale: 'Other clear cause for ICH identified — Boston criteria not applied.'
+      rationale: 'Other clear cause for the hemorrhagic lesions identified — Boston criteria not applied.'
     };
   }
 
-  // Hemorrhagic markers
-  const hemorrhagic = (lobarICH === true ? 1 : 0) + (corticalSiderosis === true ? 1 : 0) + (lobarMicrobleeds === true ? 1 : 0);
-  // Non-hemorrhagic markers (Boston 2.0 additions)
-  const nonHem = (csoPVSSevere === true ? 1 : 0) + (multispotWMH === true ? 1 : 0);
-  const totalMarkers = hemorrhagic + nonHem;
+  // Count of strictly lobar hemorrhagic LESIONS (each ICH, each microbleed,
+  // and each focus of cortical superficial siderosis counts individually).
+  // Prefer the explicit count; otherwise derive a LOWER BOUND from the
+  // boolean marker flags.
+  const explicitCount = parseFloat(lobarHemorrhagicLesionCount);
+  const derivedMinCount = (lobarICH === true ? 1 : 0) + (corticalSiderosis === true ? 1 : 0) + (lobarMicrobleeds === true ? 1 : 0);
+  const lesionCount = Number.isFinite(explicitCount) ? explicitCount : derivedMinCount;
+  const wmFeatures = (csoPVSSevere === true ? 1 : 0) + (multispotWMH === true ? 1 : 0);
 
   let category, action;
-  if (lobarICH && (corticalSiderosis === true || lobarMicrobleeds === true)) {
+  if (lesionCount >= 2 || (lesionCount >= 1 && wmFeatures >= 1)) {
+    // >=2 strictly lobar hemorrhagic lesions qualifies as Probable even
+    // WITHOUT a symptomatic lobar ICH (e.g., two lobar microbleeds).
     category = 'Probable CAA';
-    action = 'Definitive lobar location + ≥1 hemorrhagic marker. AVOID DOAC for AF; consider LAA closure (Watchman). Manage BP <130/80; statin OK (no ICH increase per FOURIER).';
-  } else if (lobarICH && (csoPVSSevere === true || multispotWMH === true)) {
-    category = 'Probable CAA (Boston 2.0 enhanced)';
-    action = 'Lobar ICH + non-hemorrhagic CAA marker. Same management as Probable.';
-  } else if (totalMarkers >= 2) {
+    action = 'Meets Boston v2.0 Probable CAA. Anticoagulation decisions require caution — weigh recurrent-ICH risk; consider LAA occlusion for AF (shared decision); BP <130/80; statins were not associated with increased ICH in FOURIER.';
+  } else if (lesionCount === 1 || wmFeatures >= 1) {
     category = 'Possible CAA';
-    action = 'Some markers but not meeting Probable criteria. Cautious approach to anticoagulation; consider LAA closure if AF and high CHA₂DS₂-VASc.';
-  } else if (totalMarkers >= 1) {
-    category = 'Possible CAA (limited markers)';
-    action = 'Insufficient markers; consider alternative etiologies. Document marker count for future MRI comparison.';
+    action = 'One strictly lobar hemorrhagic lesion OR one white-matter feature. Not diagnostic — document markers, obtain/repeat susceptibility-weighted MRI, and reassess.';
   } else {
     category = 'CAA Unlikely';
-    action = 'No CAA markers; pursue alternative ICH etiology workup.';
+    action = 'No strictly lobar hemorrhagic lesions or CAA white-matter features; pursue alternative etiology workup.';
   }
 
   return {
     category,
     age: a,
-    hemorrhagicMarkers: hemorrhagic,
-    nonHemorrhagicMarkers: nonHem,
-    totalMarkers,
+    lobarHemorrhagicLesionCount: lesionCount,
+    lesionCountIsLowerBound: !Number.isFinite(explicitCount),
+    whiteMatterFeatures: wmFeatures,
     action,
-    sensitivity: 'Boston 2.0 sensitivity for Probable CAA: 88% (vs 75% Boston 1.5).',
-    source: 'Charidimou Lancet Neurol 2022;21:714-25 (Boston 2.0, PMID 35841910)',
-    class: 'No formal class — diagnostic criteria used for prognostication and AC decision-making'
+    accuracy: 'Boston v2.0 probable CAA vs autopsy: sensitivity 74.5% (95% CI 65.4-82.4), specificity 95.0% (95% CI 83.1-99.4).',
+    source: 'Charidimou A et al. Lancet Neurol 2022;21:714-25 (Boston criteria v2.0, PMID 35841910)',
+    class: 'No formal class — diagnostic criteria used for prognostication and anticoagulation decision-making'
   };
 };
 
@@ -1376,7 +1418,9 @@ export const getAIConfiguration = () => {
 // =====================================================================
 // Evaluates acute IV thrombolysis eligibility for Central Retinal Artery Occlusion.
 // AHA Statement 2021 (Mac Grory, Stroke 2021;52:e282-e294, PMID 33677974);
-// THEIA trial (Préterre et al., Lancet Neurol 2025;24:110-120, PMID 41109232).
+// THEIA trial (Préterre et al., Lancet Neurol 2025;24(11):909-919, PMID 41109232):
+// NEUTRAL — visual improvement 66% vs 48%, adjusted OR 1.1 (95% CI 0.07-18.39),
+// p=0.95; n=70, underpowered. Do not present THEIA as supporting CRAO lysis.
 export const evaluateCRAOTreatment = ({
   onsetHours,
   visualAcuity,
@@ -1431,8 +1475,8 @@ export const evaluateCRAOTreatment = ({
       ? 'Eligible for acute IV thrombolysis (TNK 0.25 mg/kg max 25 mg OR alteplase 0.9 mg/kg max 90 mg) within 4.5h of sudden painless monocular vision loss. Perform urgent ophthalmology / fundoscopy consult to confirm CRAO and rule out retinal hemorrhage prior to lytic infusion.'
       : `Ineligible for IV thrombolysis in CRAO: ${contraindications.join('; ')}.`,
     dosingInfo: 'IV Tenecteplase 0.25 mg/kg (max 25 mg) single IV bolus OR Alteplase 0.9 mg/kg (10% bolus, remainder over 60 min, max 90 mg).',
-    sources: 'AHA Scientific Statement (Mac Grory Stroke 2021, PMID 33677974); THEIA Trial (Préterre Lancet Neurol 2025, PMID 41109232)',
-    class: 'Class IIa (AHA 2021 statement & 2025 THEIA trial evidence)'
+    sources: 'AHA Scientific Statement (Mac Grory Stroke 2021, PMID 33677974); THEIA Trial (Préterre Lancet Neurol 2025;24:909-919, PMID 41109232 — NEUTRAL, underpowered)',
+    class: 'AHA 2021 statement frames CRAO IVT as an option in selected patients; the only completed RCT (THEIA 2025) was neutral — treat as unproven and individualized, ideally within a trial'
   };
 };
 
@@ -1441,11 +1485,14 @@ export const evaluateCRAOTreatment = ({
 // =====================================================================
 // Galovic M et al. Lancet Neurol 2018;17:143-152 (PMID 29413315).
 // Predicts 1-year and 5-year risk of late post-stroke seizures / epilepsy.
+// The 'L' item is LARGE-ARTERY ATHEROSCLEROTIC etiology (TOAST subtype),
+// NOT large-vessel occlusion.
 export const calculateSeLECTScore = ({
   nihss,
   corticalInvolvement,
   earlySeizure,
-  lvoArtery,
+  largeArteryAtherosclerosis,
+  lvoArtery, // deprecated alias retained for backward compatibility
   middleCerebralTerritory
 } = {}) => {
   const n = parseFloat(nihss);
@@ -1455,17 +1502,20 @@ export const calculateSeLECTScore = ({
 
   const isCortical = toBool(corticalInvolvement);
   const isEarlySeizure = toBool(earlySeizure);
-  const isLvo = toBool(lvoArtery);
+  const isLargeArtery = toBool(largeArteryAtherosclerosis !== undefined ? largeArteryAtherosclerosis : lvoArtery);
   const isMca = toBool(middleCerebralTerritory);
 
   const nihssPts = n >= 11 ? 2 : n >= 4 ? 1 : 0;
   const corticalPts = isCortical ? 2 : 0;
   const earlySeizurePts = isEarlySeizure ? 3 : 0;
-  const lvoPts = isLvo ? 1 : 0;
+  const largeArteryPts = isLargeArtery ? 1 : 0;
   const mcaPts = isMca ? 1 : 0;
 
-  const score = nihssPts + corticalPts + earlySeizurePts + lvoPts + mcaPts;
+  const score = nihssPts + corticalPts + earlySeizurePts + largeArteryPts + mcaPts;
 
+  // Published anchors (Galovic 2018): score 0 = 0.7% (1 y) / 1.3% (5 y);
+  // score 9 = 63% (95% CI 42-77) at 1 y and 83% (95% CI 62-93) at 5 y.
+  // Intermediate rows are read from the publication's risk figure.
   const riskTable = {
     0: { y1: '0.7%', y5: '1.3%', numY1: 0.7, numY5: 1.3, tier: 'Low' },
     1: { y1: '1.2%', y5: '2.4%', numY1: 1.2, numY5: 2.4, tier: 'Low' },
@@ -1476,7 +1526,7 @@ export const calculateSeLECTScore = ({
     6: { y1: '17.9%', y5: '31.6%', numY1: 17.9, numY5: 31.6, tier: 'High' },
     7: { y1: '28.1%', y5: '46.0%', numY1: 28.1, numY5: 46.0, tier: 'Very High' },
     8: { y1: '41.3%', y5: '61.7%', numY1: 41.3, numY5: 61.7, tier: 'Very High' },
-    9: { y1: '56.0%', y5: '76.2%', numY1: 56.0, numY5: 76.2, tier: 'Very High' }
+    9: { y1: '63%', y5: '83%', numY1: 63, numY5: 83, tier: 'Very High' }
   };
 
   const clampedScore = Math.min(Math.max(score, 0), 9);
@@ -1494,7 +1544,7 @@ export const calculateSeLECTScore = ({
       nihssPoints: nihssPts,
       corticalPoints: corticalPts,
       earlySeizurePoints: earlySeizurePts,
-      lvoPoints: lvoPts,
+      largeArteryAtherosclerosisPoints: largeArteryPts,
       mcaPoints: mcaPts
     },
     source: 'Galovic M et al. Lancet Neurol 2018;17:143-152 (SeLECT Score, PMID 29413315)'
@@ -1502,104 +1552,57 @@ export const calculateSeLECTScore = ({
 };
 
 // =====================================================================
-// EDEMA Score for Malignant MCA Brain Swelling Risk
+// EDEMA Score — potentially lethal malignant edema after anterior stroke
 // =====================================================================
-// Strbian D et al. Int J Stroke 2013;8:529-534 (PMID 22405327).
-// Predicts early severe brain swelling & malignant MCA infarction risk.
+// Ong CJ et al. Stroke 2017;48:1969-1972 (PMID 28487333; PMC5487281).
+// Items (from data within 24 h of ictus; derivation NIHSS >=8, anterior
+// circulation): basal cistern effacement = 3; glucose >=150 mg/dL = 2;
+// no tPA or thrombectomy = 1; midline shift at the septum pellucidum (mm):
+// 0 = 0, >0-3 = 1, 3-6 = 2, 6-9 = 4, >9 = 7; no previous stroke = 1.
+// Max 14. Score >=7: PPV 93%, specificity 99% for potentially lethal
+// malignant edema (death with midline shift >=5 mm or hemicraniectomy).
+// C-statistic 0.76 (derivation), 0.75 (bootstrap validation).
 export const calculateEDEMAScore = ({
-  nihss,
-  aspects,
-  earlyInfarctSigns,
-  denseArterySign,
-  bloodGlucoseMgDl,
-  bloodGlucoseMmolL,
-  massEffect,
-  historyHypertension
+  basalCisternEffacement,
+  glucoseMgDl,
+  glucoseMmolL,
+  noReperfusionTherapy,
+  midlineShiftMm,
+  noPreviousStroke
 } = {}) => {
-  const n = parseFloat(nihss);
-  if (!Number.isFinite(n)) return null;
+  const shift = parseFloat(midlineShiftMm);
+  const gMg = parseFloat(glucoseMgDl);
+  const gMmol = parseFloat(glucoseMmolL);
+  // The score is defined only when its imaging inputs are assessable.
+  if (!Number.isFinite(shift)) return null;
 
-  let score = 0;
+  const cisternPts = basalCisternEffacement === true ? 3 : 0;
+  const glucosePts = ((Number.isFinite(gMg) && gMg >= 150) || (Number.isFinite(gMmol) && gMmol >= 8.3)) ? 2 : 0;
+  const noTxPts = noReperfusionTherapy === true ? 1 : 0;
+  let shiftPts = 0;
+  if (shift > 9) shiftPts = 7;
+  else if (shift >= 6) shiftPts = 4;
+  else if (shift >= 3) shiftPts = 2;
+  else if (shift > 0) shiftPts = 1;
+  const noPriorPts = noPreviousStroke === true ? 1 : 0;
 
-  // 1. Admission NIHSS (12-19 = 1 pt, >=20 = 2 pts)
-  let nihssPts = 0;
-  if (n >= 20) nihssPts = 2;
-  else if (n >= 12) nihssPts = 1;
-  score += nihssPts;
-
-  // 2. Early Infarct Signs (ASPECTS < 7 or >1/3 MCA = 2 pts)
-  let earlyPts = 0;
-  const asp = parseFloat(aspects);
-  if (earlyInfarctSigns === true || (Number.isFinite(asp) && asp < 7)) {
-    earlyPts = 2;
-  }
-  score += earlyPts;
-
-  // 3. Dense Artery Sign (1 pt)
-  let densePts = denseArterySign === true ? 1 : 0;
-  score += densePts;
-
-  // 4. Elevated Blood Glucose (>162 mg/dL or >9.0 mmol/L = 1 pt)
-  let glucosePts = 0;
-  const gMg = parseFloat(bloodGlucoseMgDl);
-  const gMmol = parseFloat(bloodGlucoseMmolL);
-  if ((Number.isFinite(gMg) && gMg > 162) || (Number.isFinite(gMmol) && gMmol > 9.0)) {
-    glucosePts = 1;
-  }
-  score += glucosePts;
-
-  // 5. Mass Effect (sulcal effacement = 1 pt, midline shift = 2 pts)
-  let massPts = 0;
-  if (typeof massEffect === 'number' && Number.isFinite(massEffect)) {
-    massPts = Math.floor(Math.min(Math.max(massEffect, 0), 2));
-  } else if (typeof massEffect === 'string') {
-    const m = massEffect.toLowerCase().trim();
-    if (/^(no|without|absent|none|neg)/i.test(m) || m.includes('no shift') || m.includes('without midline shift') || m.includes('no effacement') || m.includes('without effacement') || m.includes('no compression')) {
-      massPts = 0;
-    } else if (m.includes('shift')) {
-      massPts = 2;
-    } else if (m.includes('effacement') || m.includes('cistern') || m.includes('compression')) {
-      massPts = 1;
-    }
-  } else if (massEffect === true) {
-    massPts = 2;
-  }
-  score += massPts;
-
-  // 6. History of Hypertension (1 pt)
-  let htnPts = historyHypertension === true ? 1 : 0;
-  score += htnPts;
-
-  const clampedScore = Math.min(Math.max(score, 0), 9);
-
-  let riskTier = 'Low';
-  let estimatedSwellingRisk = '<10%';
-  if (clampedScore >= 6) {
-    riskTier = 'High';
-    estimatedSwellingRisk = '>60-80%';
-  } else if (clampedScore >= 3) {
-    riskTier = 'Moderate';
-    estimatedSwellingRisk = '20-40%';
-  }
+  const score = cisternPts + glucosePts + noTxPts + shiftPts + noPriorPts;
+  const highRisk = score >= 7;
 
   return {
-    score: clampedScore,
-    riskTier,
-    estimatedSwellingRisk,
-    highRiskForMalignantEdema: clampedScore >= 6,
-    recommendation: clampedScore >= 6
-      ? `EDEMA Score ${clampedScore} indicates HIGH RISK (>60-80%) of malignant MCA brain swelling and herniation. Trigger early neurosurgical consultation for decompressive hemicraniectomy evaluation (DESTINY II / DECIMAL / HAMLET trials). Place ICU monitoring, order q1-2h neurochecks, target SBP <140 mmHg (or <180 post-EVT), avoid hypoventilation/hyperthermia, and prepare osmotherapy (3% hypertonic saline / mannitol).`
-      : clampedScore >= 3
-      ? `EDEMA Score ${clampedScore} indicates MODERATE RISK (20-40%) of severe brain swelling. Monitor in Neuro-ICU / Stepdown with serial neurochecks and repeat CT at 24h or immediately upon clinical change.`
-      : `EDEMA Score ${clampedScore} indicates LOW RISK (<10%) of malignant brain swelling. Standard post-stroke monitoring.`,
+    score,
+    highRiskForMalignantEdema: highRisk,
+    riskTier: highRisk ? 'High' : score >= 3 ? 'Intermediate' : 'Low',
+    recommendation: highRisk
+      ? `EDEMA Score ${score} (>=7): high specificity (99%) and PPV (93%) for potentially lethal malignant edema. Trigger early neurosurgical consultation for decompressive hemicraniectomy evaluation (DESTINY/DECIMAL/HAMLET); Neuro-ICU monitoring with q1-2h neurochecks; prepare osmotherapy; avoid hypoventilation and hyperthermia.`
+      : `EDEMA Score ${score} (<7): below the published high-risk threshold. Continue serial neurologic and imaging surveillance — the score is specific, not sensitive, so a low score does not exclude edema progression.`,
     breakdown: {
-      nihssPoints: nihssPts,
-      earlyInfarctPoints: earlyPts,
-      denseArteryPoints: densePts,
+      basalCisternPoints: cisternPts,
       glucosePoints: glucosePts,
-      massEffectPoints: massPts,
-      hypertensionPoints: htnPts
+      noReperfusionPoints: noTxPts,
+      midlineShiftPoints: shiftPts,
+      noPreviousStrokePoints: noPriorPts
     },
-    source: 'Strbian D et al. Int J Stroke 2013;8:529-534 (EDEMA Score, PMID 22405327)'
+    source: 'Ong CJ et al. Stroke 2017;48:1969-1972 (EDEMA Score, PMID 28487333)'
   };
 };

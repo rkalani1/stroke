@@ -13,13 +13,13 @@
 
 import { makeActiveTrial } from './schema.js';
 
-const lr = '2026-04-25';
+const lr = '2026-08-22'; // every record re-verified against live ClinicalTrials.gov this date
 
 export const activeTrials = [
   makeActiveTrial({
     id: 'step-evt',
     shortName: 'STEP-EVT',
-    fullName: 'Stroke Therapy for Endovascular treatment Platform — Mild and MeVO',
+    fullName: 'StrokeNet Thrombectomy Endovascular Platform',
     nctId: 'NCT06289985',
     phase: 'Adaptive Platform',
     status: 'recruiting',
@@ -57,7 +57,11 @@ export const activeTrials = [
       { id: 'pregnancy', field: 'pregnancy', operator: '==', value: true, label: 'Known pregnancy' },
       { id: 'hemorrhage', field: 'hemorrhage', operator: '==', value: true, label: 'Acute intracranial hemorrhage on imaging' },
       { id: 'seizureAtOnset', field: 'seizures', operator: '==', value: true, label: 'Seizure at stroke onset' },
-      { id: 'lowAspects', field: 'aspectsScore', operator: '<', value: 6, label: 'CT ASPECTS <6 (MRI <7)' },
+      { id: 'lowAspects', field: 'aspectsScore', operator: '<', value: 6, label: 'CT ASPECTS <6' },
+      // Registry wording: 'CT ASPECT score <6 (MRI ASPECT score <7)'. The MRI
+      // threshold applies only when the encounter documents MRI as the imaging
+      // pathway (wake-up workflow); mriAspectsScore resolves null otherwise.
+      { id: 'lowAspectsMri', field: 'mriAspectsScore', operator: '<', value: 7, label: 'MRI ASPECTS <7 (MRI pathway)' },
     ],
     relatedCompletedTrialIds: ['dawn', 'defuse-3', 'escape-mevo', 'distal'],
     link: 'https://clinicaltrials.gov/study/NCT06289985',
@@ -80,7 +84,7 @@ export const activeTrials = [
   makeActiveTrial({
     id: 'picasso',
     shortName: 'PICASSO',
-    fullName: 'Tandem Lesion Endovascular Trial',
+    fullName: 'Proximal Internal Carotid Artery Acute Stroke Secondary to Tandem or Local Occlusion Thrombectomy Trial',
     nctId: 'NCT05611242',
     phase: 'Phase 3',
     status: 'recruiting',
@@ -93,7 +97,8 @@ export const activeTrials = [
       'NIHSS ≥4',
       'Pre-stroke mRS ≤2',
       'ASPECTS ≥7',
-      'Tandem lesion on CTA (extracranial ICA stenosis 70-100% + intracranial ICA-T / M1 / proximal M2)'
+      'Tandem lesion on CTA (extracranial ICA stenosis 70-100% + intracranial ICA-T / M1 / proximal M2)',
+      'Must be ineligible for IV t-PA therapy or have failed IV t-PA therapy (registry inclusion #10)'
     ],
     exclusionCriteria: [
       'No tandem on imaging',
@@ -105,7 +110,8 @@ export const activeTrials = [
       { field: 'nihss', operator: '>=', value: 4, label: 'NIHSS ≥4' },
       { field: 'premorbidMRS', operator: '<=', value: 2, label: 'Pre-stroke mRS 0-2' },
       { field: 'aspectsScore', operator: '>=', value: 7, label: 'ASPECTS ≥7' },
-      { field: 'ctaResults', operator: 'present', value: ['tandem'], label: 'Tandem lesion present' }
+      { field: 'ctaResults', operator: 'present', value: ['tandem'], label: 'Tandem lesion present' },
+      { field: 'tnkRecommended', operator: '==', value: false, label: 'Ineligible for or failed IV thrombolysis (hard gate)' }
     ],
     matcherExclusions: [],
     relatedCompletedTrialIds: [],
@@ -235,8 +241,8 @@ export const activeTrials = [
     phase: 'Phase 3 (adaptive, multi-arm)',
     status: 'completed',
     topic: 'tnk-vs-alteplase',
-    briefDescription: 'Completed NINDS adaptive, multi-arm trial of argatroban or eptifibatide as adjuncts to standard IV thrombolysis in acute ischemic stroke; reported 2024 — neither adjunct improved 90-day outcome (neutral).',
-    rationale: 'Tested whether adding an antithrombotic adjunct (argatroban or eptifibatide) to IV thrombolysis improves 90-day disability; the completed trial was neutral for both.',
+    briefDescription: 'Completed NINDS adaptive, multi-arm trial of argatroban or eptifibatide as adjuncts to IV thrombolysis; stopped early for futility — neither adjunct reduced disability, and adjunct-arm 90-day mortality was higher (argatroban 24%, eptifibatide 12%, placebo 8%; Adeoye NEJM 2024, PMID 39231343).',
+    rationale: 'Tested whether adding an antithrombotic adjunct (argatroban or eptifibatide) to IV thrombolysis improves 90-day disability; the trial was stopped for futility with a mortality signal against the adjunct arms.',
     inclusionCriteria: [
       'Age ≥18 y',
       'AIS treated with IV thrombolysis (0.9 mg/kg alteplase or 0.25 mg/kg TNK) within 3 h of onset',
@@ -266,12 +272,12 @@ export const activeTrials = [
     verificationStatus: 'verified-clinicaltrials-gov',
     category: 'ischemic',
     keyTakeaways: [
-      "Completed adaptive, multi-arm trial of adjunctive argatroban or eptifibatide with IV thrombolysis",
-      "Neither adjunct improved 90-day functional outcome (neutral, reported 2024)",
-      "Does not support routine argatroban or eptifibatide as an adjunct to thrombolysis"
+      "Completed adaptive, multi-arm trial of adjunctive argatroban or eptifibatide with IV thrombolysis (NEJM 2024, PMID 39231343)",
+      "Stopped early for futility: neither adjunct reduced 90-day disability, and mortality was HIGHER in the adjunct arms (argatroban 24%, eptifibatide 12%, vs placebo 8%)",
+      "Do not give adjunctive argatroban or eptifibatide with thrombolysis"
     ],
     lookingFor: [
-      "Completed — no longer enrolling (results reported 2024, neutral)"
+      "Completed — no longer enrolling (stopped for futility with adjunct-arm mortality signal, 2024)"
     ],
     legacyMatcherKey: 'MOST'
   }),
@@ -282,15 +288,15 @@ export const activeTrials = [
     fullName: 'Comparison of Antithrombotic Treatments in Intracranial Atherosclerosis',
     nctId: 'NCT05047172',
     phase: 'Phase 3',
-    status: 'recruiting',
+    status: 'active-not-recruiting',
     topic: 'icas-prevention',
-    briefDescription: 'Three-arm trial of ticagrelor+ASA vs low-dose rivaroxaban+ASA vs clopidogrel+ASA in symptomatic 70-99% intracranial atherosclerosis.',
+    briefDescription: 'Trial of ticagrelor+ASA vs clopidogrel+ASA in symptomatic 70-99% intracranial atherosclerosis. The low-dose rivaroxaban (2.5 mg BID) arm was terminated in January 2026 (NIH DSMB: increased safety events plus futility vs clopidogrel+ASA; announced 2026-02-10); the ticagrelor and clopidogrel arms continue. Registry status: active, not recruiting.',
     rationale: 'Recurrent stroke risk on standard DAPT for symptomatic ICAS is 12-20% at 1 year; alternative regimens are needed.',
     inclusionCriteria: [
       'Age ≥30 y',
-      'Ischemic stroke or TIA attributed to ICAS',
-      'Within 21 days of qualifying event',
-      'Pre-stroke mRS ≤3'
+      'Ischemic stroke or TIA attributed to ICAS (70-99% stenosis or MRA flow gap)',
+      'Within 30 days of qualifying event',
+      'mRS ≤4 at time of consent'
     ],
     exclusionCriteria: [
       'Cardioembolic source (AF, valve)',
@@ -300,7 +306,7 @@ export const activeTrials = [
       { field: 'age', operator: '>=', value: 30, label: 'Age ≥30' },
       { field: 'diagnosisCategory', operator: 'in', value: ['ischemic', 'tia'], label: 'Ischemic stroke or TIA' },
       { field: 'ctaResults', operator: 'present', value: ['stenosis', 'intracranial', 'icas', 'atheroscler'], label: 'Intracranial stenosis 70-99%' },
-      { field: 'premorbidMRS', operator: '<=', value: 3, label: 'mRS ≤3' }
+      { field: 'premorbidMRS', operator: '<=', value: 4, label: 'mRS ≤4 at consent' }
     ],
     matcherExclusions: [
       { id: 'cardioembolic', field: 'cardioembolic', operator: '==', value: true, label: 'Cardioembolic source (AF, valve)' },
@@ -312,29 +318,33 @@ export const activeTrials = [
     verificationStatus: 'verified-clinicaltrials-gov',
     category: 'ischemic',
     keyTakeaways: [
-      "Three-arm trial for symptomatic intracranial atherosclerotic stenosis (ICAS) 70-99%",
-      "Tests ticagrelor+ASA and low-dose rivaroxaban+ASA against standard clopidogrel+ASA",
-      "Addresses a major unmet need — recurrent stroke risk is 12-20% at 1 year despite DAPT for ICAS"
+      "Originally three-arm for symptomatic ICAS 70-99%: ticagrelor+ASA vs low-dose rivaroxaban+ASA vs clopidogrel+ASA",
+      "NIH DSMB terminated the low-dose rivaroxaban arm at the first-stage analysis (Jan 2026; announced 2026-02-10) for increased safety events plus futility — do NOT use low-dose rivaroxaban for ICAS outside other indications",
+      "Ticagrelor and clopidogrel arms continue; registry status active-not-recruiting (no new enrollment)"
     ],
     lookingFor: [
-      "Symptomatic intracranial stenosis 70-99%",
-      "Ischemic stroke or TIA attributed to ICAS",
-      "Within 21 days of qualifying event",
-      "Age ≥30"
+      "Closed to new enrollment (active-not-recruiting) — participants in the ticagrelor and clopidogrel arms continue",
+      "Rivaroxaban 2.5 mg BID arm terminated Jan 2026 (DSMB: safety + futility)"
     ],
     legacyMatcherKey: 'CAPTIVA'
   }),
 
+  // WITHDRAWN — retained only as an atlas/context record. The previously
+  // listed NCT04953325 was a Sinovac COVID-19 vaccine trial (wrong
+  // identifier); the real phase-3 3K3A-APC trial is RHAPSODY-2
+  // (NCT05484154), WITHDRAWN with 0 enrollment per the live registry
+  // (2026-08-22). The matcher engine status-gates this record out of all
+  // patient matching and note output.
   makeActiveTrial({
     id: 'rhapsody',
-    shortName: 'RHAPSODY',
-    fullName: '3K3A-APC for Neuroprotection in AIS',
-    nctId: 'NCT04953325',
+    shortName: 'RHAPSODY-2',
+    fullName: '3K3A-APC in Combination with tPA, Mechanical Thrombectomy or Both in Moderate to Severe Acute Ischemic Stroke',
+    nctId: 'NCT05484154',
     phase: 'Phase 3',
-    status: 'recruiting',
+    status: 'withdrawn',
     topic: 'acute-ischemic-stroke',
-    briefDescription: '3K3A-APC (activated protein C variant) given as adjunctive neuroprotection after IVT and/or EVT in moderate-severe AIS.',
-    rationale: 'Phase 2 signal: reduced ICH and improved outcomes when added to standard reperfusion.',
+    briefDescription: 'WITHDRAWN (0 enrolled): planned phase-3 trial of 3K3A-APC (activated protein C variant) as adjunctive neuroprotection after IVT and/or EVT in moderate-severe AIS.',
+    rationale: 'Phase 2 (RHAPSODY) showed a signal of reduced ICH; the phase-3 study was withdrawn before enrolling — no phase-3 efficacy evidence exists.',
     inclusionCriteria: [
       'Age ≥18 y',
       'NIHSS ≥5',
@@ -356,20 +366,16 @@ export const activeTrials = [
       { id: 'hemorrhage', field: 'hemorrhage', operator: '==', value: true, label: 'Symptomatic ICH' },
     ],
     relatedCompletedTrialIds: [],
-    link: 'https://clinicaltrials.gov/study/NCT04953325',
+    link: 'https://clinicaltrials.gov/study/NCT05484154',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
     category: 'ischemic',
     keyTakeaways: [
-      "3K3A-APC (activated protein C variant) showed signal for reduced ICH and improved outcomes in phase 2",
-      "First neuroprotective agent with mechanistic basis in stroke (anti-inflammatory, anti-apoptotic, BBB stabilization)",
-      "Given as IV infusion after reperfusion — does not delay standard treatment"
+      "The phase-3 RHAPSODY-2 study (NCT05484154) was WITHDRAWN with zero enrollment — do not screen patients for it",
+      "Phase 2 (RHAPSODY) showed a possible reduced-ICH signal only; no phase-3 efficacy evidence exists for 3K3A-APC"
     ],
     lookingFor: [
-      "Moderate-severe acute ischemic stroke (NIHSS ≥5)",
-      "Received IVT and/or EVT",
-      "Can start study drug within 15h of LKW",
-      "Age 18+"
+      "WITHDRAWN — not enrolling anywhere; retained for historical context only"
     ],
     legacyMatcherKey: 'RHAPSODY'
   }),
@@ -440,10 +446,9 @@ export const activeTrials = [
     rationale: 'After ICH, the trade-off between thromboembolic protection and recurrent ICH risk is unresolved; ASPIRE directly compares apixaban to aspirin.',
     inclusionCriteria: [
       'Age ≥18 y',
-      'Spontaneous ICH',
-      'Non-valvular AF, CHA₂DS₂-VASc ≥2',
-      '14-180 days post-ICH',
-      'mRS ≤4'
+      'Spontaneous ICH (including primary IVH) confirmed by CT or MRI',
+      'Non-valvular AF (fibrillation or flutter) documented by ECG or physician-confirmed history',
+      'Randomization possible 14-180 days after ICH onset'
     ],
     exclusionCriteria: [
       'Mechanical heart valve'
@@ -451,8 +456,7 @@ export const activeTrials = [
     matcherCriteria: [
       { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
       { field: 'diagnosisCategory', operator: '==', value: 'ich', label: 'ICH confirmed' },
-      { field: 'pmh', operator: 'present', value: ['afib', 'atrial fib', 'af ', 'a-fib'], label: 'Atrial fibrillation' },
-      { field: 'mrsScore', operator: '<=', value: 4, label: 'mRS ≤4' }
+      { field: 'pmh', operator: 'present', value: ['afib', 'atrial fib', 'af ', 'a-fib'], label: 'Atrial fibrillation' }
     ],
     matcherExclusions: [
       { id: 'mechValve', field: 'mechValve', operator: '==', value: true, label: 'Mechanical heart valve' },
@@ -469,8 +473,7 @@ export const activeTrials = [
     ],
     lookingFor: [
       "ICH patient with atrial fibrillation",
-      "Randomize 14-180 days post-ICH",
-      "CHA2DS2-VASc ≥2"
+      "Randomize 14-180 days post-ICH"
     ],
     legacyMatcherKey: 'ASPIRE'
   })

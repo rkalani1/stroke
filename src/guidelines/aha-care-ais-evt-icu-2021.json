@@ -1,13 +1,19 @@
 {
   "id": "aha-care-ais-evt-icu-2021",
   "title": "Care of the Patient With Acute Ischemic Stroke (Endovascular/Intensive Care Unit-Postinterventional Therapy): Update to 2009 Comprehensive Nursing Care Scientific Statement: A Scientific Statement From the American Heart Association",
-  "shortTitle": "Care of the Patient With Acute Ischemic Stroke (Endovascular/Intensive Care Un",
+  "shortTitle": "Care of the Patient With Acute Ischemic Stroke (Endovascular/Intensive Care",
   "doi": "10.1161/STR.0000000000000358",
   "publisherUrl": "https://doi.org/10.1161/STR.0000000000000358",
   "pdfUrl": null,
   "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/33691467/",
   "pmid": "33691467",
   "society": "AHA/ASA",
+  "correctedBy": {
+    "pmid": "42507798",
+    "doi": "10.1161/STR.0000000000000531",
+    "citation": "Stroke. 2026;57(8):e460",
+    "note": "A published correction (2026-07-27) amends this scientific statement; its itemized changes could not be retrieved in this environment and are NOT yet applied here. Consult the correction at https://doi.org/10.1161/STR.0000000000000531 before relying on this summary."
+  },
   "recommendations": [
     {
       "section": "Scope",

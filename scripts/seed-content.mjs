@@ -294,7 +294,7 @@ async function seedEducation() {
 // ── References ← documents/* paths in app.jsx ─────────────────────────────
 async function seedReferences() {
   const src = fsSync.readFileSync(path.join(REPO, 'src/app.jsx'), 'utf8');
-  const rx = /documents\/[A-Za-z0-9 _%.&/-]+\.(pdf|jpe?g|png)/gi;
+  const rx = /documents\/[A-Za-z0-9 _%.&()/-]+\.(pdf|jpe?g|png)/gi;
   const seen = new Map();
   let m;
   while ((m = rx.exec(src)) !== null) {

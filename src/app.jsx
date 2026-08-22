@@ -14,6 +14,7 @@ import {
   calculateHASBLEDScore,
   calculateRCVS2Score,
   calculatePHASESScore,
+  getPHASESRisk,
   calculateICHVolume,
   isJune2026MieLobarLocationText,
   calculateEnoxaparinDose,
@@ -168,6 +169,7 @@ import ahaAfGuideline2023 from './guidelines/aha-af-guideline-2023.json';
 import ahaAggressiveLdlLowering2023 from './guidelines/aha-aggressive-ldl-lowering-2023.json';
 import ahaAntiamyloidImmunotherapy2024 from './guidelines/aha-antiamyloid-immunotherapy-2024.json';
 import ahaAtrialFibrillationOccurring2023 from './guidelines/aha-atrial-fibrillation-occurring-2023.json';
+import ahaBrainHealthLifeSpan2026 from './guidelines/aha-brain-health-life-span-2026.json';
 import ahaCadasil2023 from './guidelines/aha-cadasil-2023.json';
 import ahaCareAisEvtIcu2021 from './guidelines/aha-care-ais-evt-icu-2021.json';
 import ahaCareAisPosthyperacute2021 from './guidelines/aha-care-ais-posthyperacute-2021.json';
@@ -297,6 +299,11 @@ import {
 
 const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]));
 
+// Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
+// together with package.json "version", index.html APP_VERSION (+ ?v= asset
+// queries), and service-worker.js APP_VERSION/CACHE_NAME.
+const APP_VERSION = '6.21.0';
+
 // P0 evidence-locked calculators exposed for browser-console QA testing and future UI wiring.
 // These are pure functions with PMID/DOI citations in their source; running e.g.
 //   window.strokeP0.evaluateLargeCoreEVT({ age: 72, nihss: 18, aspects: 4, timeFromLKWh: 8, premorbidMRS: 1 })
@@ -304,7 +311,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // TESLA/LASTE. Window attachment also prevents esbuild tree-shaking until UI wiring lands.
 if (typeof window !== 'undefined') {
   window.strokeP0 = {
-    version: '5.20.0',
+    version: APP_VERSION,
     evaluateLargeCoreEVT,
     recommendLateWindowLytic,
     recommendPostEVTBP,
@@ -408,8 +415,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           }
         };
         const PUBLIC_DEMO_MODE = getPublicDemoMode();
-        // Default contacts (editable in Settings > Contact Directory).
-        const DEFAULT_CONTACTS = [];
 
         const parseStoredValue = (raw) => {
           if (raw === null || raw === undefined) return null;
@@ -771,22 +776,9 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           ich_bp: 'INTERACT3: Intensive BP lowering + bundle of care improves functional outcomes in ICH (Lancet 2023).',
           doac_timing: 'ELAN/OPTIMAS/CATALYST: early DOAC after AF-related stroke, ≤4 days reasonable across severities (OPTIMAS non-inferior across infarct sizes; CATALYST superior vs delay). Tiered default: minor (NIHSS <8) ~day 1; moderate (8-15) ~day 3; severe (16-20) ~day 6; very severe (≥21) or extensive hemorrhagic transformation ~day 7+ with repeat imaging.',
           aspects: 'ASPECTS 6-10: Standard EVT eligibility. ASPECTS 3-5: Consider EVT for mRS 0-1 patients with anterior LVO (SELECT2, ANGEL-ASPECT).',
-          pcc: 'Weight-based 4F-PCC (25-50 IU/kg by INR) for warfarin reversal in ICH (AHA/ASA 2022 COR I/B-R).',
+          pcc: 'Weight-based 4F-PCC (25-50 IU/kg by INR) for warfarin reversal in ICH (AHA/ASA 2022 COR I/B-R). Guideline weight-based dosing — the Example Protocols tab shows a fixed-dose institutional example (2000 units); the two schemes are not interchangeable.',
           wakeup: 'DWI-FLAIR mismatch suggests onset <4.5h; CTP mismatch allows treatment up to 9h from midpoint of sleep (WAKE-UP, EXTEND).'
         };
-
-        // ============================================
-        // CHANGELOG
-        // ============================================
-        const CHANGELOG = [
-          { version: '2.5', date: '2025-06', items: ['Updated ICH algorithms per AHA/ASA 2022 guidelines', 'Replaced EVT mermaid flowcharts with scannable tables', 'Added warfarin/DOAC reversal step-cards', 'Added post-thrombolytic ICH protocol', 'Added angioedema management', 'Added contrast allergy protocol', 'Added BP management quick reference'] },
-          { version: '2.6', date: '2025-07', items: ['Simplified encounter to Video Telestroke / Phone Consult', 'Removed inpatient/clinic contexts and quick/full mode toggle'] },
-          { version: '3.0', date: '2025-08', items: ['Toast notification system replacing inline alerts', 'Replaced all confirm/prompt dialogs with styled modals', 'Persistent timer visible across all tabs', 'Encounter templates for common presentations', 'Encounter history with shift handoff support', 'Focus mode for active encounters', 'Calculator drawer with inline scoring', 'Section completion indicators', 'Keyboard shortcuts (Ctrl+Shift+C, Ctrl+K, etc.)', 'Improved mobile touch targets', 'Visual timeline for stroke events', 'Auto-filtering trials by patient characteristics', 'References search and filtering', 'Error boundaries for graceful failure recovery', 'Service worker for offline support'] },
-          { version: '3.1', date: '2025-09', items: ['Added vital signs (HR, SpO2, Temp) to encounter and notes', 'Added EKG/Telemetry input fields', 'GCS score included in all note templates', 'Weight unit toggle (kg/lbs) with auto-conversion', 'Edoxaban added to anticoagulant system', 'aPTT auto-blocks TNK when >40s', 'Standardized platelet units (K/μL) throughout', 'Inline lab validation badges (glucose, INR, platelets, aPTT)', 'Andexanet alfa aligned to PCC-first protocol', 'Consent documentation in transfer notes', 'Fixed keyboard shortcut conflicts and section completion', 'Improved reset logic for new patients'] },
-          { version: '3.2', date: '2025-10', items: ['Notes now show consultation type (Telephone vs Video Telestroke)', 'BP phase target included in consultation, transfer, and signout notes', 'TOAST classification in transfer and discharge notes', 'Anticoagulation details with DOAC timing in consultation note', 'Transfer note shows weight, premorbid mRS, contrast allergy flag', 'Dysphagia screening and VTE prophylaxis in discharge note', 'Transfer note alerts for NPO status and contrast allergy', 'SAH + anticoagulation reversal warning', 'GCS ≤8 airway protection alert', 'Edoxaban CrCl >95 reduced efficacy warning', 'Hypoglycemia + TNK escalated to error severity', 'BP phase auto-reverts when diagnosis changes', 'Fixed INR/aPTT orphaned comma in lab line', 'Trial eligibility reset on new case'] },
-          { version: '3.3', date: '2025-11', items: ['CrCl calculator prioritized by diagnosis in calculator tab', 'Post-TNK neuro check schedule standardized (q15min×2h, q30min×6h, q1h×16h)', 'SAH seizure prophylaxis with specific indications in admission orders', 'Osmotic therapy data in discharge note (agent, Na+ target, osmolality)', 'Nutritional support and feeding route in discharge note', 'Falls risk screening in discharge note', 'Driving restrictions with commercial driver flag in discharge note', 'Clipboard fallback for insecure contexts (HTTP/dev builds)', 'Deep merge of stored data prevents crashes when new fields are added', 'All calculator copy buttons now have accessible labels', 'ICH Volume, Andexanet, and Enoxaparin calculators now sort by diagnosis priority'] },
-          { version: '3.4', date: '2026-02', items: ['SAH aneurysm characteristics (location, size, securing method) with posterior circulation and giant aneurysm alerts', 'SAH vasospasm/DCI monitoring protocol (TCD, neuro checks, sodium, induced HTN) with safety guard', 'ICH surgical decision support (cerebellar posterior-fossa mass effect/hydrocephalus, midline shift, deterioration) with neurosurgery urgency alert', 'Stroke vascular territory selector (MCA/ACA/PCA/basilar/vertebral/cerebellar/lacunar/watershed) with posterior circulation guidance', 'Stroke phenotype classifier (cortical-LVO, embolic, lacunar, posterior, dissection, watershed, cardioembolic)', 'Symptom trajectory tracking (stable/improving/fluctuating/worsening/resolved) with clinical alerts', 'Post-thrombolytic monitoring protocol checklist with sICH risk calculator (5 factors)', 'Family/surrogate communication log with auto-timestamp', 'All new fields integrated into consult, transfer, signout, progress, discharge, and Pulsara templates', 'Fixed GCS reference in ICH guideline conditions (seizure prophylaxis, MIE eligibility)', 'Fixed FUNC score GCS 13-15 returning null instead of 2 points', 'State cleanup on diagnosis category change includes nested objects'] }
-        ];
 
         const parseBloodPressure = (bpString) => {
           if (!bpString) return null;
@@ -811,16 +803,40 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           return `${yr}-${mo}-${dy}T${hr}:${mn}`;
         };
 
+        // Single canonical DOAC-recency model (CrCl-adjusted clearance). Both the
+        // TNK auto-block and the contraindication-checklist auto-detection read
+        // from this — previously a flat <48h check and this clearance model could
+        // flag and clear the same patient on one screen.
+        // JUDGMENT (documented in PR): an undocumented last-dose time remains a
+        // conservative block — unknown timing is treated as potentially recent.
+        const assessDOACRecency = (note) => {
+          const doacType = note?.lastDOACType;
+          if (!doacType || doacType === 'warfarin' || doacType === 'none') return { recent: false, note: '' };
+          const lastDose = note?.lastDOACDose ? new Date(note.lastDOACDose) : null;
+          if (!lastDose || Number.isNaN(lastDose.getTime())) {
+            return { recent: true, note: ' (last dose time unknown — conservative block)' };
+          }
+          const hoursSince = (Date.now() - lastDose.getTime()) / (1000 * 60 * 60);
+          if (hoursSince < 0) return { recent: true, note: ' (dose time in future — verify)' };
+          const crcl = calculateCrCl(note.age, note.weight, note.sex, note.creatinine, note.height);
+          const crclVal = crcl ? crcl.value : null;
+          const halfLifeMap = { apixaban: crclVal && crclVal < 30 ? 15 : 10, rivaroxaban: crclVal && crclVal < 30 ? 13 : 9, dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14, edoxaban: crclVal && crclVal < 30 ? 16 : 12 };
+          const estHalfLife = halfLifeMap[doacType] || 12;
+          const clearancePct = Math.min(99.9, (1 - Math.pow(0.5, hoursSince / estHalfLife)) * 100);
+          if (clearancePct < 97) return { recent: true, note: ` (~${clearancePct.toFixed(0)}% cleared)` };
+          return { recent: false, note: ` (~${clearancePct.toFixed(0)}% cleared)` };
+        };
+
         const getWindowStatusFromTime = (timeFromLKW) => {
           if (!timeFromLKW) return null;
           if (timeFromLKW.total <= 4.5) {
             return { color: 'green', message: 'Within IV thrombolysis window (≤4.5h)', urgent: false, eligible: 'tnk' };
           }
-          if (timeFromLKW.total < 6) {
-            return { color: 'orange', message: 'TNK window closed - EVT window (4.5-6h)', urgent: true, eligible: 'evt-early' };
+          if (timeFromLKW.total <= 9) {
+            return { color: 'orange', message: 'Standard TNK window closed — imaging-selected IVT possible to 9h (EXTEND); EVT window open', urgent: true, eligible: 'evt-early' };
           }
           if (timeFromLKW.total < 24) {
-            return { color: 'red', message: 'Late EVT window (6-24h - needs perfusion imaging)', urgent: true, eligible: 'evt-late' };
+            return { color: 'red', message: 'Late window (9-24h) — EVT with perfusion selection; imaging-selected IVT in select patients (TRACE-III/OPTION)', urgent: true, eligible: 'evt-late' };
           }
           return { color: 'gray', message: 'Beyond standard treatment window', urgent: false, eligible: 'none' };
         };
@@ -1011,7 +1027,6 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             ttlHoursOverride: null,
             defaultConsultationType: 'telephone',
             workflowPersona: 'senior',
-            contacts: DEFAULT_CONTACTS,
           });
 
         const getDefaultAppData = () => ({
@@ -1167,9 +1182,20 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           ...(API_PROVIDER_META[value] || {})
         }));
 
+        // What's New feed items, newest first. Rendered verbatim from the
+        // build-time whats-new.json (see scripts/generate-whats-new.mjs);
+        // unverified items carry no pmid/doi/pubmedUrl and link to their
+        // briefing source instead — the renderer must never synthesize a
+        // PubMed link for them. Defined ABOVE the routing-slice start
+        // (MANAGEMENT_SUBTABS) so tests/navigation-reorganization.test.js can
+        // still evaluate the slice standalone.
+        const WHATS_NEW_ITEMS = Array.isArray(whatsNewData && whatsNewData.items)
+          ? [...whatsNewData.items].sort((a, b) => (b.year || 0) - (a.year || 0))
+          : [];
+
         const MANAGEMENT_SUBTABS = ['ich', 'ischemic'];
 
-        const RESEARCH_SUBTABS = ['guidelines', 'references', 'calculators', 'education'];
+        const RESEARCH_SUBTABS = ['guidelines', 'references', 'calculators', 'education', 'whatsnew'];
 
         // BYOK (bring-your-own-key) LLM providers offered in Settings → API
         // Configuration. One table drives the <select>, the key placeholder and
@@ -1380,6 +1406,144 @@ const AutoDetectedContraindicationsBanner = ({ autoAbsolute, autoRelative, autoC
 
   return null;
 };
+
+// ── Reference Library document registry (P4-4) ────────────────────────────
+// Single source of truth for the Reference Library sub-tab's document list
+// (previously ~900 lines of hand-copied JSX rows). Each section renders as a
+// collapsible card; `items` entries are either a document record or a
+// `{ group, docs }` subsection. Document fields:
+//   type         — 'pdf' | 'image' (repo-local `path`) or 'external-link' (`href`).
+//   year         — publication year, populated ONLY where it is verifiable from
+//                  the document's own title/filename (never guessed).
+//   supersededBy — id of a newer registered document that unambiguously
+//                  replaces this one. Deliberately unpopulated for now: no
+//                  registered pair is an unambiguous successor — left for
+//                  physician review (schema + rendering are wired).
+//   emailTitle   — mailto subject when it differs from the display title
+//                  (kept verbatim from the pre-registry JSX rows).
+//   linkLabel    — button label for external links ('Open Link' default).
+// tests/reference-registry.test.js validates this block (paths exist on disk,
+// years traceable to title/path, supersededBy ids resolve).
+const REFERENCE_LIBRARY_SECTIONS = [
+  {
+    id: 'aneurysms',
+    title: 'Aneurysms & Vascular Malformations',
+    matchTitle: 'Aneurysms & Vascular Malformations',
+    items: [
+      { id: 'aneurysms-unruptured-cerebral-aneurysms', title: 'Unruptured Cerebral Aneurysms', subtitle: 'PDF Document', type: 'pdf', path: 'documents/aneurysms/Unruptured Cerebral Aneurysms.pdf' }
+    ]
+  },
+  {
+    id: 'antiplatelet',
+    title: 'Antiplatelet Therapy',
+    matchTitle: 'Antiplatelet Therapy',
+    items: [
+      { id: 'antiplatelet-dapt-minor-stroke-tia-trials', title: 'DAPT Minor Stroke-TIA Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf' },
+      { id: 'antiplatelet-dapt-after-ischemic-stroke-tia', title: 'DAPT After Ischemic Stroke-TIA', subtitle: 'Infographic - Match Patient to Trial', type: 'image', icon: 'image', path: 'documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg' },
+      { id: 'antiplatelet-other-antithrombotics', title: 'Other Antithrombotics', subtitle: 'PDF Document — Cilostazol & Factor XIa Inhibition Trials', type: 'pdf', path: 'documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf' }
+    ]
+  },
+  {
+    id: 'csvd',
+    title: 'Cerebral Small Vessel Disease',
+    matchTitle: 'Cerebral Small Vessel Disease',
+    items: [
+      { id: 'csvd-lacunar-stroke', title: 'Lacunar Stroke', subtitle: 'PDF Document', type: 'pdf', path: 'documents/csvd/Lacunar Stroke 7.13.22.pdf', year: 2022 }
+    ]
+  },
+  {
+    id: 'ebm',
+    title: 'Critical Appraisal',
+    matchTitle: 'EBM',
+    items: [
+      { id: 'ebm-interpretation-of-clinical-trials', title: 'Interpretation of Clinical Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/ebm/Interpretation of Clinical Trials.pdf' },
+      { id: 'ebm-cebm-oxford-resources', title: 'CEBM Oxford Resources', subtitle: 'Centre for Evidence-Based Medicine - University of Oxford', type: 'external-link', href: 'https://www.cebm.ox.ac.uk/resources', linkLabel: 'Visit' }
+    ]
+  },
+  {
+    id: 'evt',
+    title: 'Endovascular Therapy',
+    matchTitle: 'EVT',
+    items: [
+      { id: 'evt-large-core-anterior-circulation-lvo-evt-trials', title: 'Large Core Anterior Circulation LVO EVT Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf' },
+      { id: 'evt-basilar-artery-occlusion-evt-trials', title: 'Basilar Artery Occlusion EVT Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/evt/Basilar Artery Occlusion EVT Trials.pdf' },
+      { id: 'evt-mevo-distal-vessel-occlusion-evt-trials', title: 'MeVO & Distal Vessel Occlusion EVT Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf' }
+    ]
+  },
+  {
+    id: 'risk-factors',
+    title: 'Risk Factors',
+    matchTitle: 'Risk Factors',
+    items: [
+      {
+        group: 'Atrial Fibrillation',
+        docs: [
+          { id: 'afib-ac-timing-after-af-related-stroke', title: 'Timing of Anticoagulation after AF-Related Stroke', subtitle: 'PDF Document', type: 'pdf', path: 'documents/afib/AC timing after AF-related Stroke.pdf', emailTitle: 'AC timing after AF-related Stroke' },
+          { id: 'afib-af-secondary-stroke-prevention-july-2024', title: 'Atrial Fibrillation & Secondary Stroke Prevention', subtitle: 'PDF Document', type: 'pdf', path: 'documents/afib/AF & secondary stroke prevention July 2024.pdf', emailTitle: 'AF & secondary stroke prevention July 2024', year: 2024 },
+          { id: 'afib-aha-af-guidelines-2023', title: '2023 AHA AFib Guidelines', subtitle: 'External Link - AHA Journals', type: 'external-link', href: 'https://www.ahajournals.org/doi/10.1161/CIR.0000000000001193', year: 2023 },
+          { id: 'afib-esc-af-guidelines-2024', title: '2024 ESC AFib Guidelines', subtitle: 'External Link - European Heart Journal', type: 'external-link', href: 'https://academic.oup.com/eurheartj/article/45/36/3314/7738779', year: 2024 },
+          { id: 'afib-afib-stroke-epi519', title: 'AFib Stroke EPI519', subtitle: 'PDF Document', type: 'pdf', path: 'documents/afib/AFib Stroke EPI519.pdf' }
+        ]
+      },
+      { id: 'epidemiology-diabetes-and-stroke', title: 'Diabetes and stroke', subtitle: 'PDF Document', type: 'pdf', path: 'documents/epidemiology/Diabetes and stroke.pdf' },
+      { id: 'epidemiology-lipids-and-cerebrovascular-disease', title: 'Lipids and Cerebrovascular Disease', subtitle: 'PDF Document', type: 'pdf', path: 'documents/epidemiology/Lipids and Cerebrovascular Disease.pdf' }
+    ]
+  },
+  {
+    id: 'thrombolytic',
+    title: 'Thrombolytic Therapy',
+    matchTitle: 'Thrombolytic Therapy',
+    items: [
+      { id: 'thrombolytic-therapy-ais-45-24h-rcts', title: 'Thrombolytic Therapy AIS 4.5-24h RCTs', subtitle: 'PDF Document', type: 'pdf', path: 'documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf' },
+      { id: 'thrombolytic-wake-up-trial', title: 'WAKE-UP Trial', subtitle: 'External Link - New England Journal of Medicine', type: 'external-link', href: 'https://www.nejm.org/doi/full/10.1056/NEJMoa1804355' }
+    ]
+  },
+  {
+    id: 'exam',
+    title: 'Exam',
+    matchTitle: 'Exam',
+    items: [
+      { id: 'exam-delirium-vs-aphasia', title: 'Differentiating Acute Confusional State (Delirium) from Aphasia', subtitle: 'PDF Document', type: 'pdf', path: 'documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf' },
+      { id: 'exam-coma-exam', title: 'Coma Exam', subtitle: 'PDF Document', type: 'pdf', path: 'documents/exam/coma exam.pdf', emailTitle: 'coma exam' }
+    ]
+  },
+  {
+    id: 'lad',
+    title: 'Large Artery Disease',
+    matchTitle: 'Large Artery Disease',
+    items: [
+      { id: 'lad-symptomatic-cervical-carotid-artery-stenosis', title: 'Symptomatic Cervical Carotid Artery Stenosis', subtitle: 'PDF Document', type: 'pdf', path: 'documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf' },
+      { id: 'lad-crest-2-trial-dec-2025', title: 'CREST-2 Trial (December 2025)', subtitle: 'PDF Document', type: 'pdf', path: 'documents/lad/CREST-2 Trial - Dec 2025.pdf', year: 2025 }
+    ]
+  },
+  {
+    // Previously rendered only from the Educational Resources modules
+    // (src/education.jsx pdfPath props) and absent from the reference
+    // registry. Registered here so the Reference Library lists every
+    // repo-served document (P4-4b). All files exist under documents/references/.
+    id: 'quickrefs',
+    title: 'Quick Reference Sheets',
+    matchTitle: 'Quick Reference Sheets',
+    anchorId: 'ref-quickrefs',
+    note: 'Generated in-repo quick reference sheets, also linked from the Educational Resources modules.',
+    items: [
+      { id: 'quickref-afib-doac-start-timing', title: 'AFib DOAC Start Timing', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/AFib DOAC Start Timing.pdf' },
+      { id: 'quickref-brain-death-guidelines', title: 'Brain Death Guidelines', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Brain Death Guidelines.pdf' },
+      { id: 'quickref-cervical-artery-dissection', title: 'Cervical Artery Dissection', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Cervical Artery Dissection.pdf' },
+      { id: 'quickref-dapt-guidelines', title: 'DAPT Guidelines', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/DAPT Guidelines.pdf' },
+      { id: 'quickref-external-ventricular-drain', title: 'External Ventricular Drain', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/External Ventricular Drain.pdf' },
+      { id: 'quickref-intracranial-hypertension-herniation', title: 'Intracranial Hypertension & Herniation', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Intracranial Hypertension & Herniation.pdf' },
+      { id: 'quickref-malignant-infarction', title: 'Malignant Infarction', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Malignant Infarction.pdf' },
+      { id: 'quickref-stroke-prognosis', title: 'Stroke Prognosis', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Stroke Prognosis.pdf' },
+      { id: 'quickref-toast-stroke-classification', title: 'TOAST Stroke Classification', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/TOAST Stroke Classification.pdf' }
+    ]
+  }
+];
+const REFERENCE_LIBRARY_DOCS = REFERENCE_LIBRARY_SECTIONS.flatMap((section) =>
+  section.items.flatMap((item) => (item.docs ? item.docs : [item]))
+);
+const REFERENCE_DOC_BY_ID = new Map(REFERENCE_LIBRARY_DOCS.map((doc) => [doc.id, doc]));
+// end REFERENCE_LIBRARY_SECTIONS
 
         const StrokeClinicalTool = () => {
           const defaultTelestrokeTemplate = `Reason for Consultation: Acute stroke evaluation — {chiefComplaint}
@@ -3718,18 +3882,18 @@ Clinician Name`;
             'Early Recognition and Intervention for Poststroke Spasticity': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000515',
             'Intracranial Atherosclerosis': 'https://www.aan.com/Guidelines/home/GuidelineDetail/1103',
             'CATALYST': 'https://doi.org/10.1016/S0140-6736(25)00439-8',
-            'TIMELESS': 'https://doi.org/10.1056/NEJMoa2412179',
-            'OPTION': 'https://doi.org/10.1001/jama.2025.22824',
-            'TRACE-III': 'https://doi.org/10.1056/NEJMoa2408389',
-            'HOPE': 'https://doi.org/10.1056/NEJMoa2504049',
-            'EXPECTS': 'https://doi.org/10.1056/NEJMoa2504158',
-            'CHABLIS-T II': 'https://doi.org/10.1016/S0140-6736(25)00145-7',
+            'TIMELESS': 'https://doi.org/10.1056/NEJMoa2310392',
+            'OPTION': 'https://doi.org/10.1001/jama.2026.0210',
+            'TRACE-III': 'https://doi.org/10.1056/NEJMoa2402980',
+            'HOPE': 'https://doi.org/10.1001/jama.2025.12063',
+            'EXPECTS': 'https://doi.org/10.1056/NEJMoa2413344',
+            'CHABLIS-T II': 'https://doi.org/10.1161/STROKEAHA.124.048375',
             'ANNEXA-I': 'https://doi.org/10.1056/NEJMoa2313040',
             'CREST-2': 'https://doi.org/10.1056/NEJMoa2508800',
             'ECST-2': 'https://doi.org/10.1016/S1474-4422(25)00107-3',
-            'SELECT': 'https://doi.org/10.1056/NEJMoa2305049',
+            'SELECT': 'https://doi.org/10.1056/NEJMoa2307563',
             'CHANCE-2': 'https://doi.org/10.1056/NEJMoa2111749',
-            'CONVINCE': 'https://doi.org/10.1016/S0140-6736(24)00663-8',
+            'CONVINCE': 'https://doi.org/10.1016/S0140-6736(24)00968-1',
             'ESCAPE-MeVO': 'https://doi.org/10.1056/NEJMoa2411668',
             'SVIN Large-Core EVT 2025': 'https://www.ahajournals.org/doi/10.1161/SVIN.124.001581',
             'ACC Expert Consensus': 'https://doi.org/10.1016/j.jacc.2024.03.389'
@@ -3781,6 +3945,11 @@ Clinician Name`;
             ahaAggressiveLdlLowering2023,
             ahaAntiamyloidImmunotherapy2024,
             ahaAtrialFibrillationOccurring2023,
+            // Registered late (P4-2): the dataset shipped in src/guidelines and
+            // the served data layer but was never added to this UI index,
+            // leaving the library at 88 datasets / 861 recs vs the canonical
+            // 89 / 862.
+            ahaBrainHealthLifeSpan2026,
             ahaCadasil2023,
             ahaCareAisEvtIcu2021,
             ahaCareAisPosthyperacute2021,
@@ -3843,6 +4012,18 @@ Clinician Name`;
           ];
           const GUIDELINE_LIBRARY_INDEX = GUIDELINE_LIBRARY.map((guideline) => ({
             ...guideline,
+            // Abstract-only stub marker, derived mechanically from the data
+            // shape: a dataset whose every recommendation is the single
+            // "Scope" abstract statement carries no graded recommendations of
+            // its own, so its search results must not read as guideline
+            // silence — the UI flags it "Summary only — see source".
+            summaryOnly: guideline.recommendations.length > 0 &&
+              guideline.recommendations.every((rec) => rec.section === 'Scope'),
+            // PubMed fallback for paywalled publisher links — projected only
+            // from the dataset's own pubmedUrl/pmid fields, never synthesized
+            // from anything else.
+            pubmedFallbackUrl: guideline.pubmedUrl ||
+              (guideline.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${guideline.pmid}/` : null),
             recommendations: guideline.recommendations.map((rec, index) => ({
               ...rec,
               id: rec.id || `${guideline.id}-${index + 1}`,
@@ -3857,11 +4038,46 @@ Clinician Name`;
             // darken the IIa fill in dark so the white label clears AA (9.1:1).
             IIa: 'bg-cobalt-500 text-white dark:bg-cobalt-700',
             IIb: 'bg-warn-700 text-white',
+            // III: Harm (crit red) is visually distinct from III: No Benefit
+            // (slate) — the two carry different clinical meaning.
             III: 'bg-crit-600 text-white',
             'III-harm': 'bg-crit-600 text-white',
+            'III-no-benefit': 'bg-slate-600 text-white',
+            'N/A': 'bg-slate-500 text-white',
             Statement: 'bg-slate-500 text-white'
           };
+          // Normalizes free-form class strings ("III: No Benefit", "2a",
+          // "III/A", "N/A") onto a GUIDELINE_CLASS_COLORS key so composite or
+          // unlabeled classes never fall through to an unstyled badge.
+          const normalizeGuidelineClass = (cls) => {
+            const c = String(cls || '').trim();
+            if (!c || c.toUpperCase() === 'N/A') return 'N/A';
+            const lower = c.toLowerCase();
+            if (lower.includes('iii') || lower.startsWith('3')) {
+              if (lower.includes('harm')) return 'III-harm';
+              if (lower.includes('no benefit') || lower.includes('no-benefit')) return 'III-no-benefit';
+              return 'III';
+            }
+            if (lower.startsWith('iia') || lower.startsWith('2a')) return 'IIa';
+            if (lower.startsWith('iib') || lower.startsWith('2b')) return 'IIb';
+            if (lower.startsWith('i') || lower.startsWith('1')) return 'I';
+            return 'Statement';
+          };
 
+          // Documented-NIHSS resolver for rule conditions. Returns null when no
+          // NIHSS has been documented — a blank NIHSS must never coerce to 0 and
+          // qualify a patient for minor-stroke (low-NIHSS) pathways.
+          const documentedNIHSS = (data) => {
+            const fromNote = parseInt(data?.telestrokeNote?.nihss, 10);
+            if (Number.isFinite(fromNote)) return fromNote;
+            return Number.isFinite(data?.nihssScore) ? data.nihssScore : null;
+          };
+          // Word-boundary AF matcher: bare substring 'af'/'fib' matched inside
+          // words like 'graft' and produced false AF-history hits.
+          const AF_TEXT_RE = /\ba[\s.-]?fib\b|\batrial\s+fib\w*|\bafib\b|\baf\b|atrial\s+flutter/i;
+          const hasAFText = (txt) => AF_TEXT_RE.test(String(txt || ''));
+          // Word-boundary CAD/MI matcher: 'mi' matched inside 'mild'.
+          const CAD_TEXT_RE = /\bcad\b|coronary|\bmi\b|myocardial\s+infarct\w*|\bstent\w*|\bcabg\b/i;
           const GUIDELINE_RECOMMENDATIONS = {
             // ---------------------------------------------------------------
             // BLOOD PRESSURE MANAGEMENT
@@ -3919,16 +4135,16 @@ Clinician Name`;
             bp_post_evt: {
               id: 'bp_post_evt',
               category: 'Blood Pressure',
-              title: 'Post-EVT BP management (Class III: Harm)',
-              recommendation: 'Do NOT target SBP <140 mmHg after successful EVT reperfusion. Maintain SBP <180/105.',
-              detail: 'ENCHANTED2/MT and OPTIMAL-BP trials demonstrated that intensive BP lowering (SBP <140) post-EVT was associated with worse functional outcomes (Class III: Harm). Standard target SBP <180/105 is recommended.',
+              title: 'Post-EVT BP management (intensive lowering: Class III: Harm)',
+              recommendation: 'After DOCUMENTED successful reperfusion (mTICI 2b-3): maintain SBP 140-180 mmHg for ≥24h and do NOT target SBP <140. Keep BP <180/105 if IV lytic was given.',
+              detail: 'ENCHANTED2/MT (Lancet 2022) showed harm and OPTIMAL-BP (JAMA 2023) was stopped early with worse outcomes for intensive lowering (SBP <120-140) after successful recanalization; BP-TARGET and BEST-II showed no benefit of lower targets. Canonical app scheme: mTICI 2b-3 documented → SBP 140-180 ≥24h (continue up to 72h per local protocol); mTICI not documented or unsuccessful → post-lytic <180/105 or pre-procedure ≤185/110. This card appears only once a reperfusion grade is documented.',
               classOfRec: 'III',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               caveats: 'Based on ENCHANTED2/MT (Lancet 2022) and OPTIMAL-BP (JAMA 2023). Applies to successful reperfusion (mTICI 2b-3).',
               conditions: (data) => {
-                return !!data.telestrokeNote?.evtRecommended;
+                return isSuccessfulEvtReperfusion(data.telestrokeNote?.ticiScore || '');
               }
             },
             bp_ich_acute: {
@@ -3936,7 +4152,7 @@ Clinician Name`;
               category: 'Blood Pressure',
               title: 'ICH BP control process',
               recommendation: 'For acute spontaneous ICH, use medication titration for continuous, smooth, sustained BP control and timely treatment when BP lowering is indicated (Class 2a).',
-              detail: 'AHA/ASA Spontaneous ICH 2022 (Greenberg): smooth, sustained BP control and timely treatment are Class 2a process recommendations. This is separate from the numeric SBP target/range recommendation below. Avoid abrupt large BP drops and avoid treating the number in isolation from neurologic status, hematoma severity, anticoagulation reversal, and neurosurgical planning. For large/severe ICH or surgical decompression candidates, safety and efficacy of intensive lowering are not well established. INTERACT3 (Lancet 2023) tested a care bundle - early BP lowering plus glucose, anticoagulation reversal, and fever management - so do not treat its result as BP-only class evidence. Institutional ICH BP protocol agent: nicardipine IV infusion (or IV labetalol). This protocol covers spontaneous ICH and does not apply to hemorrhage from a neurosurgical vascular malformation or to post-operative neurosurgical cases.',
+              detail: 'Ultra-early/prehospital nuance: INTERACT4 (NEJM 2024, PMID 38752650) showed BP lowering in the ambulance is DIAGNOSIS-DEPENDENT — benefit in hemorrhagic stroke (poor-outcome cOR 0.75) but harm in ischemic stroke (cOR 1.30); once ICH is confirmed on imaging, early intensive lowering is supported. AHA/ASA Spontaneous ICH 2022 (Greenberg): smooth, sustained BP control and timely treatment are Class 2a process recommendations. This is separate from the numeric SBP target/range recommendation below. Avoid abrupt large BP drops and avoid treating the number in isolation from neurologic status, hematoma severity, anticoagulation reversal, and neurosurgical planning. For large/severe ICH or surgical decompression candidates, safety and efficacy of intensive lowering are not well established. INTERACT3 (Lancet 2023) tested a care bundle - early BP lowering plus glucose, anticoagulation reversal, and fever management - so do not treat its result as BP-only class evidence. Institutional ICH BP protocol agent: nicardipine IV infusion (or IV labetalol). This protocol covers spontaneous ICH and does not apply to hemorrhage from a neurosurgical vascular malformation or to post-operative neurosurgical cases.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -3982,18 +4198,19 @@ Clinician Name`;
               id: 'bp_ischemic_no_lysis',
               category: 'Blood Pressure',
               title: 'Ischemic stroke BP (no thrombolysis)',
-              recommendation: 'Permissive hypertension: treat only if BP >220/120 mmHg in first 24-48 hours. Lower by 15% in first 24 hours if treating.',
-              detail: 'For patients not receiving thrombolysis or EVT, aggressive BP lowering may worsen ischemic penumbra. After 24-48h, initiate oral antihypertensives to target <130/80 for secondary prevention.',
-              classOfRec: 'I',
+              recommendation: 'Treat only if BP >220/120 mmHg in first 24-48 hours (unless another indication such as aortic dissection, MI, or heart failure). Lower by ~15% in first 24 hours if treating. Starting/restarting antihypertensives early in stable patients is COR IIb.',
+              detail: 'For patients not receiving thrombolysis or EVT, aggressive BP lowering may worsen ischemic penumbra; treating BP <220/120 in the first 48-72h does not improve outcomes (III: No Benefit). Starting or restarting antihypertensive therapy within the first ~48h in neurologically stable patients is COR IIb. After 24-48h, initiate oral antihypertensives toward <130/80 for secondary prevention (2025 AHA/ACC hypertension guideline).',
+              classOfRec: 'IIb',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
-                const timeFrom = data.timeFromLKW;
-                const inWindow = timeFrom && timeFrom.total <= 4.5;
-                return isIschemic && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended && !inWindow;
+                // No time gate: early non-lysis patients previously got NO BP
+                // guidance at all inside 4.5h. Lysis/EVT candidates are excluded
+                // via the recommendation flags; their cards carry their targets.
+                return isIschemic && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
               }
             },
 
@@ -4077,7 +4294,7 @@ Clinician Name`;
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca/i.test(v)
+                  /^(ica|m1)$/i.test(String(v).trim())
                 );
                 return nihss >= 6 && timeFrom && timeFrom.total <= 6 && hasLVO;
               }
@@ -4099,7 +4316,7 @@ Clinician Name`;
                 const minNIHSS = age >= 80 ? 10 : 6; // DAWN: age ≥80 requires NIHSS ≥10
                 const timeFrom = data.timeFromLKW;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca/i.test(v)
+                  /^(ica|m1)$/i.test(String(v).trim())
                 );
                 const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 return nihss >= minNIHSS && timeFrom && timeFrom.total > 6 && timeFrom.total <= 24 && hasLVO && (aspects === null || aspects >= 6);
@@ -4108,21 +4325,21 @@ Clinician Name`;
             evt_large_core_early: {
               id: 'evt_large_core_early',
               category: 'EVT',
-              title: 'EVT for large core (ASPECTS 0-5, 0-24h)',
-              recommendation: 'EVT is recommended for anterior LVO within 0-24 hours when ASPECTS is 0-5 (ATLAS Trial 2026).',
-              detail: 'ATLAS Trial (2026) extended the large-core EVT window to 24 hours for all patients with ASPECTS ≤ 5. CTP core estimation is no longer strictly required for ASPECTS 0-2 in the late window. Discuss goals of care as sICH risk remains elevated with lower ASPECTS.',
-              classOfRec: 'I',
+              title: 'EVT for large core (ASPECTS 0-5, 0-24h) — ATLAS IPD meta-analysis',
+              recommendation: 'EVT benefits large-core anterior LVO (ASPECTS 0-5) up to 24 hours: the ATLAS individual-patient-data meta-analysis of six trials found better functional outcomes and LOWER mortality than medical management. Evidence is limited (wide CIs) for estimated core ≥150 mL presenting beyond 6 h.',
+              detail: 'ATLAS (Sarraj, Lancet 2026;407:2015-26, PMID 42107392) is a systematic review and individual-patient-data META-ANALYSIS — not a trial — pooling 1,886 patients from RESCUE-Japan LIMIT, ANGEL-ASPECT, SELECT2, TENSION, TESLA, and LASTE. mRS shift aGenOR 1.63 (95% CI 1.42-1.88, p<0.0001); 90-day mortality 31.1% vs 37.3% (aRR 0.82, 95% CI 0.70-0.97, p=0.022); sICH 1.1% vs 1.0% (no significant excess). Benefit was consistent across ASPECTS/core strata; the one attenuated stratum is estimated core ≥150 mL presenting BEYOND 6 h, where point estimates still favored EVT but wide CIs limit interpretation — core estimation remains most valuable in exactly that late-window/very-large-core decision. No AHA/ASA class has been issued for ATLAS itself (the 2026 guideline search closed before its publication); SVIN 2025 endorses large-core EVT.',
+              classOfRec: 'IIa',
               levelOfEvidence: 'A',
-              guideline: 'ATLAS Trial 2026 / SVIN 2025',
-              reference: 'ATLAS Investigators. 2026; Mokin M et al. Stroke Vasc Interv Neurol. 2025;5:e001581.',
-              caveats: 'Pre-stroke mRS 0-1 and age 18-80 generally expected. Higher sICH risk; discuss goals of care.',
-              sourceUrl: '',
+              guideline: 'ATLAS IPD meta-analysis (Lancet 2026); SVIN Large-Core EVT 2025; AHA/ASA 2026 (large-core recs predate ATLAS)',
+              reference: 'Sarraj A et al. Lancet 2026;407:2015-26 (ATLAS, PMID 42107392). DOI: 10.1016/S0140-6736(26)00876-7. Mokin M et al. Stroke Vasc Interv Neurol 2025;5:e001581 (SVIN, PMID 41573174).',
+              caveats: 'Pooled trials generally enrolled ages 18-85 with pre-stroke mRS 0-1 (LASTE allowed higher premorbid mRS; ANGEL-ASPECT capped at 80) — evidence above ~85 y is limited, matching the 18-85 gate in the large-core evaluator. Counsel on residual severe-disability outcomes.',
+              sourceUrl: 'https://doi.org/10.1016/S0140-6736(26)00876-7',
               conditions: (data) => {
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const timeFrom = data.timeFromLKW;
                 const aspects = Number.isFinite(data.aspectsScore) ? data.aspectsScore : null;
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca/i.test(v)
+                  /^(ica|m1)$/i.test(String(v).trim())
                 );
                 return nihss >= 6 && !!timeFrom && timeFrom.total <= 24 && aspects !== null && aspects <= 5 && hasLVO;
               }
@@ -4132,7 +4349,7 @@ Clinician Name`;
               category: 'EVT',
               title: 'EVT for basilar artery occlusion',
               recommendation: 'EVT is recommended for basilar artery occlusion within 24 hours of onset when NIHSS ≥10 and pc-ASPECTS ≥6 (COR I). For NIHSS 6-9 with pc-ASPECTS ≥6, EVT effectiveness is not well established (COR IIb).',
-              detail: 'Suggested protocol: Basilar EVT — LKW ≤24h, pc-ASPECTS ≥6. NIHSS ≥10: recommended (Class I, LOE A, ATTENTION/BAOCHE 2023). NIHSS 6-9: may be considered but effectiveness uncertain (Class IIb, LOE B-R, AHA/ASA 2026). Benefit demonstrated up to 24 hours with significant deficit.',
+              detail: 'Suggested protocol: Basilar EVT — LKW ≤24h, pc-ASPECTS ≥6. NIHSS ≥10: recommended (Class I, LOE A, ATTENTION/BAOCHE). NIHSS 6-9: may be considered but effectiveness uncertain (Class IIb, LOE B-R, AHA/ASA 2026). Trial evidence: BAOCHE (6-24h, N=217): mRS 0-3 46% vs 24% (RR 1.81). ATTENTION (0-12h, N=340): mRS 0-3 46% vs 23% (RR 2.06), lower mortality. BEST (N=131) and BASICS (N=300): underpowered/neutral with high crossover. Positive trials were predominantly Chinese populations with high ICAD rates — external validity considerations apply. Strongest benefit: younger age, NIHSS ≥10, proximal occlusion. Exclude extensive brainstem infarction on imaging.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -4143,7 +4360,9 @@ Clinician Name`;
                 const hasBasilar = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
                   /basilar/i.test(v)
                 );
-                return hasBasilar && timeFrom && timeFrom.total <= 24 && nihss >= 10;
+                // NIHSS >=6 so the stated NIHSS 6-9 (COR IIb) branch is reachable;
+                // the card text distinguishes >=10 (COR I) from 6-9 (COR IIb).
+                return hasBasilar && timeFrom && timeFrom.total <= 24 && nihss >= 6;
               }
             },
 
@@ -4155,17 +4374,18 @@ Clinician Name`;
               category: 'Antithrombotic',
               title: 'DAPT for minor stroke/TIA — match duration to trial analog',
               recommendation: 'Dual antiplatelet therapy (aspirin + clopidogrel or ticagrelor) for minor ischemic stroke (NIHSS ≤5) or high-risk TIA (ABCD2 ≥4). Select DAPT duration by matching the patient to the closest trial analog.',
-              detail: 'Loading: ASA 325 mg + clopidogrel 300 mg, then ASA 81 mg + clopidogrel 75 mg. Choose duration by trial analog:\n• CHANCE (<24h onset, NIHSS ≤3): 21 days DAPT then clopidogrel mono\n• POINT (<12h, high-risk TIA/minor stroke): 21 days (90d arm had more major bleeding)\n• THALES (<24h, NIHSS ≤5): 30 days ticagrelor 90 mg BID + ASA (higher bleeding risk)\n• INSPIRES (<72h, atherosclerotic mechanism): 21d DAPT then clopidogrel mono through day 90\nAfter ~21-30 days, ischemic recurrence benefit decreases while major bleeding risk continues — favor shorter DAPT (21-30d) for most phenotypes. For CYP2C19 LOF carriers: ticagrelor 180 mg load + ASA, then ticagrelor 90 mg BID + ASA x 21d, followed by ticagrelor monotherapy (CHANCE-2, Class IIb).',
+              detail: 'Loading: ASA 325 mg + clopidogrel 300 mg, then ASA 81 mg + clopidogrel 75 mg. Choose duration by trial analog:\n• CHANCE (<24h onset, NIHSS ≤3): 21 days DAPT then clopidogrel mono\n• POINT (<12h, high-risk TIA/minor stroke): 21 days (90d arm had more major bleeding)\n• THALES (<24h, NIHSS ≤5): 30 days ticagrelor 90 mg BID + ASA (higher bleeding risk)\n• INSPIRES (<72h, atherosclerotic mechanism): 21d DAPT then clopidogrel mono through day 90\nAfter ~21-30 days, ischemic recurrence benefit decreases while major bleeding risk continues — favor shorter DAPT (21-30d) for most phenotypes. Do NOT thrombolyse minor NON-disabling stroke even with an intracranial occlusion: TEMPO-2 (Coutts, Lancet 2024, PMID 38768626) was stopped for futility with possible harm (90-day death 5% vs 1%, aHR 3.8) — DAPT is the evidence-based pathway. Post-IVT note: TAPIS (Lancet 2026, PMID 42114550) found early ticagrelor+ASA within 6h AFTER thrombolysis (NIHSS 4-10) improved mRS 0-1 (68.7% vs 62.0%) without sICH excess — emerging evidence, not yet in guidelines. For CYP2C19 LOF carriers: ticagrelor 180 mg load + ASA, then ticagrelor 90 mg BID + ASA x 21d, followed by ticagrelor monotherapy (CHANCE-2, Class IIb).',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'AIS 2026 Rec #12. CHANCE: Wang Y et al. NEJM 2013. POINT: Johnston SC et al. NEJM 2018. CHANCE-2: Wang Y et al. NEJM 2021.',
               medications: ['ASA 325 mg load then 81 mg daily', 'Clopidogrel 300 mg load then 75 mg daily x 21 days', 'Alt (CYP2C19 LOF): Ticagrelor 180 mg load then 90 mg BID + ASA x 21 days'],
               conditions: (data) => {
-                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
+                const nihss = documentedNIHSS(data);
                 const cat = data.telestrokeNote?.diagnosisCategory;
-                const isIschemic = cat === 'ischemic' || cat === 'tia';
-                return isIschemic && nihss <= 3 && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
+                // Ischemic-only: high-risk TIA has its own DAPT card (tia_dapt),
+                // so the two no longer render together for the same TIA patient.
+                return cat === 'ischemic' && nihss !== null && nihss <= 3 && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
               }
             },
             dapt_ticagrelor_nihss5: {
@@ -4186,39 +4406,16 @@ Clinician Name`;
                 return isIschemic && nihss >= 4 && nihss <= 5 && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
               }
             },
-            anticoag_af_timing: {
-              id: 'anticoag_af_timing',
-              category: 'Antithrombotic',
-              title: 'Early DOAC initiation in AF-related stroke',
-              recommendation: 'Initiate DOAC early after AF-related ischemic stroke based on infarct severity: minor stroke within 48 hours, moderate stroke day 3-5, severe/large stroke day 6-14.',
-              detail: 'Based on CATALYST meta-analysis (ELAN, OPTIMAS, TIMING, START pooled data). No increased risk of symptomatic ICH with early DOAC initiation vs delayed. Individual timing should consider hemorrhagic transformation on imaging. DOAC preferred over warfarin (Class I, LOE A). AHA/ASA 2026: In carefully selected milder severity AIS patients with AF, early oral anticoagulation is low risk and reasonable (COR IIa, LOE A).',
-              classOfRec: 'IIa',
-              levelOfEvidence: 'A',
-              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026 + CATALYST Meta-Analysis 2025',
-              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513; Fischer U et al. Lancet Neurol. 2025.',
-              medications: ['Apixaban 5 mg BID (preferred)', 'Rivaroxaban 20 mg daily', 'Dabigatran 150 mg BID'],
-              caveats: 'Timing categories per CATALYST: mild (NIHSS <8, small infarct) 48h; moderate (NIHSS 8-15) day 3-5; severe (NIHSS ≥16 or large infarct) day 6-14. Reassess imaging before starting if any concern for hemorrhagic transformation.',
-              conditions: (data) => {
-                const meds = (data.telestrokeNote?.medications || '').toLowerCase();
-                const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
-                const hasAF = pmh.includes('afib') || pmh.includes('atrial fib') || pmh.includes('a-fib') || pmh.includes('af ') ||
-                              meds.includes('apixaban') || meds.includes('rivaroxaban') || meds.includes('eliquis') || meds.includes('xarelto') ||
-                              meds.includes('warfarin') || meds.includes('coumadin') || meds.includes('dabigatran') || meds.includes('pradaxa');
-                const cat = data.telestrokeNote?.diagnosisCategory;
-                const isIschemic = cat === 'ischemic' || cat === 'tia';
-                return isIschemic && hasAF;
-              }
-            },
             sicas_dapt: {
               id: 'sicas_dapt',
               category: 'Antithrombotic',
               title: 'Symptomatic intracranial atherosclerosis (sICAS) DAPT',
               recommendation: 'DAPT (aspirin + clopidogrel) for 90 days for severe symptomatic intracranial stenosis (70-99%), then aspirin 325 mg monotherapy. Note: 90-day DAPT is convention from the SAMMPRIS medical arm protocol — SAMMPRIS is NOT a DAPT-duration trial.',
-              detail: 'Do NOT offer intracranial stenting as initial treatment (Class III). Add high-intensity statin with LDL target <70 mg/dL. SAMMPRIS used 90-day DAPT in BOTH treatment arms for standardization; it did NOT test 90d vs shorter DAPT duration. The 90-day convention is strongest for severe (70-99%) symptomatic ICAD — do not generalize broadly to other stroke phenotypes.',
-              classOfRec: 'I',
-              levelOfEvidence: 'B-R',
-              guideline: 'AAN Intracranial Atherosclerosis Practice Advisory 2022 (reaffirmed 2025)',
-              reference: 'AAN Practice Advisory 2022. Reaffirmed 2025.',
+              detail: 'Do NOT offer intracranial stenting as initial treatment (Class III): SAMMPRIS 30-day stroke/death 14.7% vs 5.8% with medical therapy; CASSISS showed no benefit; pooled analysis (n=809) 30-day stroke/death higher with stenting (10.5% vs 4.2%, HR 2.62). Stenting is considered ONLY after >=2 recurrent events on maximal medical therapy at experienced centers (Class IIb, LOE C-LD). Add high-intensity statin (LDL <70; <55 if very-high-risk atherosclerotic) and BP control toward <130/80 once stable. SAMMPRIS used 90-day DAPT in BOTH treatment arms for standardization; it did NOT test 90d vs shorter DAPT duration. The 90-day convention is strongest for severe (70-99%) symptomatic ICAD — do not generalize broadly to other stroke phenotypes.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'B-NR',
+              guideline: 'AHA/ASA Secondary Stroke Prevention 2021 (COR 2a for adding clopidogrel to ASA up to 90d in severe sICAS); AAN Practice Advisory 2022 concurs (AAN grades are not ACC/AHA COR)',
+              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467 (PMID 34024117); AAN Practice Advisory 2022.',
               medications: ['ASA 325 mg daily (after 90-day DAPT)', 'Clopidogrel 75 mg daily x 90 days', 'High-intensity statin'],
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
@@ -4236,8 +4433,8 @@ Clinician Name`;
               id: 'statin_ischemic',
               category: 'Statin',
               title: 'High-intensity statin for ischemic stroke',
-              recommendation: 'Initiate high-intensity statin therapy (atorvastatin 40-80 mg or rosuvastatin 20-40 mg) with LDL target <70 mg/dL.',
-              detail: 'Add ezetimibe if LDL not at goal on max statin. Consider PCSK9 inhibitor if still not at goal. Start during inpatient stay.',
+              recommendation: 'Initiate high-intensity statin therapy (atorvastatin 40-80 mg or rosuvastatin 20-40 mg) with LDL target <70 mg/dL (all ischemic stroke/TIA). For documented ATHEROSCLEROTIC mechanism, the aggressive-LDL card applies (<55 mg/dL).',
+              detail: 'Patient selection for the two LDL targets: <70 mg/dL is the standard post-stroke target (TST); <55 mg/dL applies to very-high-risk atherosclerotic stroke (see the aggressive LDL card). Add ezetimibe if LDL not at goal on max statin. Consider PCSK9 inhibitor if still not at goal. Start during inpatient stay.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
@@ -4258,7 +4455,7 @@ Clinician Name`;
               category: 'Reversal',
               title: 'Warfarin reversal in ICH',
               recommendation: 'Administer IV Vitamin K 10 mg + 4-factor PCC (KCentra) for ICH on warfarin. Target INR <1.5 within 4 hours.',
-              detail: '4F-PCC preferred over FFP for rapid INR correction; give vitamin K after PCC to prevent rebound INR. Recheck INR at 15-30 minutes and repeat PCC if needed.',
+              detail: '4F-PCC preferred over FFP for rapid INR correction; give vitamin K after PCC to prevent rebound INR. Recheck INR at 15-30 minutes and repeat PCC if needed. DOSING NOTE: this card shows guideline weight-based dosing (25-50 IU/kg by INR). The Example Protocols tab shows a separate fixed-dose institutional example (2000 units) — these are two different dosing schemes; follow one, never combine them.',
               classOfRec: 'I',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4502,7 +4699,7 @@ Clinician Name`;
               category: 'ICH',
               title: 'Minimally invasive ICH evacuation (MIE) screen',
               recommendation: 'Screen for MIE only when spontaneous lobar IPH 30-80cc, NIHSS >5, GCS 5-14, age 18-80, and no underlying vascular lesion are confirmed; otherwise use this as a criteria checklist and discuss with Neurosurgery.',
-              detail: 'This card does not infer MIE eligibility from ICH alone. Confirm lobar location, ABC/2 volume 30-80 mL, age, NIHSS, GCS, CTA/MRA without vascular lesion, and operative timing before presenting MIE as an option. Functional outcome benefit remains selection-dependent.',
+              detail: 'This card does not infer MIE eligibility from ICH alone. Confirm lobar location, ABC/2 volume 30-80 mL, age, NIHSS, GCS, CTA/MRA without vascular lesion, and operative timing before presenting MIE as an option. Functional outcome benefit remains selection-dependent: ENRICH (lobar subgroup) was positive, but MIND (Arthur, JAMA Neurol 2025;82:1113-21, PMID 40892424; Artemis device, 20-80 mL, stopped early at n=236) showed NO significant benefit (180-day mRS aOR 1.10, P=.35) — device/technique and selection matter.',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4535,15 +4732,18 @@ Clinician Name`;
               id: 'transfer_evt',
               category: 'Disposition',
               title: 'Transfer for EVT evaluation',
-              recommendation: 'Transfer LVO patients to EVT-capable center immediately. Do NOT wait for clinical response to IV thrombolysis before initiating transfer.',
-              detail: 'Administer TNK at spoke site (if eligible) and initiate transfer simultaneously. Time-to-reperfusion is the critical metric.',
+              recommendation: 'Transfer LVO patients to EVT-capable center immediately. Do NOT wait for clinical response to IV thrombolysis before initiating transfer. Keep the head of bed at 0° while awaiting thrombectomy unless contraindicated (ZODIAC).',
+              detail: 'Administer TNK at spoke site (if eligible) and initiate transfer simultaneously. Time-to-reperfusion is the critical metric. HEAD POSITIONING pending EVT: ZODIAC (Alexandrov, JAMA Neurol 2025;82:905-914, PMID 40465238) — 0° head positioning before thrombectomy prevented pre-EVT neurologic worsening vs 30° (worsening ≥2 NIHSS: HR 34.4 favoring 0°; 3-month death 4.4% vs 21.7%; stopped early for efficacy). Use 0° unless active aspiration risk, vomiting, or ICP concern; return to 30° after reperfusion. The app\u2019s routine HOB 30° orders apply to POST-treatment care, not the pre-EVT wait.',
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
               conditions: (data) => {
+                // Exact-token match: 'mca' substring matching used to fire this
+                // LVO-transfer card for "M2 MCA branch" free text, contradicting
+                // the MeVO no-benefit card on the same screen.
                 const hasLVO = (data.telestrokeNote?.vesselOcclusion || []).some(v =>
-                  /ica|m1|mca|basilar/i.test(v)
+                  /^(ica|m1|basilar)$/i.test(String(v).trim())
                 );
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 return hasLVO && nihss >= 6;
@@ -4600,37 +4800,24 @@ Clinician Name`;
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const age = parseInt(data.telestrokeNote?.age, 10) || 0;
                 const isIschemic = data.telestrokeNote?.diagnosisCategory === 'ischemic';
-                return isIschemic && nihss >= 15 && age > 0 && age <= 60;
+                // No upper age cap: the card itself explains age <60 (COR I) vs
+                // >60 (DESTINY-II, COR IIb + goals-of-care) — capping at 60 made
+                // the >60 guidance unreachable.
+                return isIschemic && nihss >= 15 && age >= 18;
               }
             },
 
             // ---------------------------------------------------------------
             // SECONDARY PREVENTION
             // ---------------------------------------------------------------
-            carotid_intervention: {
-              id: 'carotid_intervention',
-              category: 'Secondary Prevention',
-              title: 'Carotid intervention for symptomatic stenosis',
-              recommendation: 'Carotid endarterectomy (CEA) or stenting within 2 weeks for symptomatic carotid stenosis 70-99%. Consider for 50-69% based on patient factors.',
-              detail: 'CEA preferred if age >70 and suitable anatomy. CAS reasonable if high surgical risk. Benefit diminishes if delayed beyond 2 weeks.',
-              classOfRec: 'I',
-              levelOfEvidence: 'A',
-              guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
-              reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
-              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=32',
-              conditions: (data) => {
-                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
-                return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('occlus'));
-              }
-            },
             pfo_closure: {
               id: 'pfo_closure',
               category: 'Secondary Prevention',
-              title: 'PFO closure for cryptogenic stroke',
-              recommendation: 'PFO closure is recommended for patients age 18-60 with cryptogenic ischemic stroke and high-risk PFO features (atrial septal aneurysm, large shunt).',
-              detail: 'Based on CLOSE, RESPECT, REDUCE trials. Also antiplatelet therapy. Anticoagulation if concurrent DVT/PE.',
-              classOfRec: 'I',
-              levelOfEvidence: 'A',
+              title: 'PFO closure for nonlacunar stroke of undetermined cause',
+              recommendation: 'For patients 18-60 with a NONLACUNAR ischemic stroke of UNDETERMINED CAUSE despite thorough evaluation and a PFO with high-risk anatomic features (atrial septal aneurysm, large shunt), transcatheter closure + long-term antiplatelet therapy is reasonable (COR 2a, LOE B-R). Without high-risk features: COR 2b, LOE C-LD.',
+              detail: 'Verbatim gate from the 2021 AHA/ASA guideline: nonlacunar stroke, undetermined cause after thorough evaluation, age 18-60, PFO with high-risk anatomic features → closure with device + long-term antiplatelet over antiplatelet alone (2a/B-R); without high-risk anatomy the benefit is not well established (2b/C-LD). Based on CLOSE, RESPECT, REDUCE, DEFENSE-PFO. Use RoPE + PASCAL to estimate attributable probability. Anticoagulation instead if concurrent DVT/PE.',
+              classOfRec: 'IIa',
+              levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375#page=48',
@@ -4692,11 +4879,9 @@ Clinician Name`;
               guideline: 'Suggested Protocol',
               reference: 'Initial non-traumatic IPH evaluation algorithm.',
               conditions: (data) => {
-                const cat = data.telestrokeNote?.diagnosisCategory;
-                const isICH = cat === 'ich';
-                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
-                const isLargeIschemic = cat === 'ischemic' && nihss >= 15;
-                return isICH || isLargeIschemic;
+                // This card's text is IPH-specific — it must not render for a
+                // large ischemic stroke (craniectomy guidance has its own card).
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
               }
             },
 
@@ -4714,7 +4899,10 @@ Clinician Name`;
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'SWIFT DIRECT (Lancet 2022), MR CLEAN NO IV (Lancet 2022), DIRECT-MT (Lancet 2020)',
               conditions: (data) => {
-                return !!data.telestrokeNote?.evtRecommended;
+                // Suppressed while the TNK auto-block is active: telling the
+                // clinician "do NOT withhold IVT" next to an active
+                // contraindication block was contradictory output.
+                return !!data.telestrokeNote?.evtRecommended && !data.telestrokeNote?.tnkAutoBlocked;
               }
             },
 
@@ -4729,8 +4917,8 @@ Clinician Name`;
               detail: 'ARCADIA (JAMA 2024): Apixaban 5mg BID vs aspirin 81mg daily in cryptogenic stroke with atrial cardiopathy (P-wave terminal force >5000 uV*ms, NT-proBNP >250, LA enlargement). HR 1.00 for recurrent stroke. Stopped for futility. P-wave abnormalities and elevated NT-proBNP do NOT justify empiric anticoagulation without confirmed AF.',
               classOfRec: 'III',
               levelOfEvidence: 'B-R',
-              guideline: 'AHA/ASA Secondary Prevention 2024 Update',
-              reference: 'Kamel H et al. JAMA. 2024;331(11):981-990. DOI: 10.1001/jama.2024.0840',
+              guideline: 'ARCADIA trial (JAMA 2024) — no AHA/ASA secondary-prevention update exists after 2021; the 2021 guideline already grades empiric anticoagulation for ESUS as III: No Benefit',
+              reference: 'Kamel H et al. JAMA. 2024;331:573-581 (ARCADIA, PMID 38324415).',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 if (cat !== 'ischemic' && cat !== 'tia') return false;
@@ -4745,17 +4933,16 @@ Clinician Name`;
             laao_after_ich: {
               id: 'laao_after_ich',
               category: 'ICH',
-              title: 'LAA closure after ICH with AF (STROKE-CLOSE)',
-              recommendation: 'LAA closure may be reasonable for ICH patients with AF who have high thromboembolic risk and high rebleeding risk, particularly lobar ICH with CAA features.',
-              detail: 'STROKE-CLOSE (Lancet 2024): Watchman FLX vs medical therapy in ICH patients with AF. Primary composite (stroke, SE, major bleed, CV death) HR 0.61 favoring LAA closure. Most benefit in lobar ICH. Consider outpatient referral for structural heart/EP evaluation. Limitations: open-label, moderate sample size.',
+              title: 'LAA occlusion after ICH with AF',
+              recommendation: 'LAA occlusion may be reasonable for ICH survivors with AF at high thromboembolic risk when long-term anticoagulation is judged too hazardous — particularly lobar ICH with CAA features (AHA/ASA 2022 ICH: Class 2b).',
+              detail: 'Rationale: PRESTIGE-AF showed DOACs after ICH nearly eliminate ischemic stroke (HR 0.05, 95% CI 0.01-0.36) but at the cost of markedly more recurrent ICH (HR 10.89, 90% CI 1.95-60.72; ~5.0 vs 0.8 events per 100 patient-years) — LAAO offers stroke prevention without chronic anticoagulant exposure. Consider outpatient structural heart/EP referral. NOTE: a previously cited dedicated RCT in ICH survivors ("STROKE-CLOSE, Lancet 2024, HR 0.61") could not be verified in PubMed or ClinicalTrials.gov during the 2026-08 evidence audit and has been removed; the LAAO evidence base in ICH survivors remains observational/extrapolated (PROTECT-AF/PREVAIL/ASAP populations).',
               classOfRec: 'IIb',
-              levelOfEvidence: 'B-R',
-              guideline: 'AHA/ASA Spontaneous ICH 2022 + STROKE-CLOSE 2024',
-              reference: 'STROKE-CLOSE: Nielsen TH et al. Lancet. 2024.',
+              levelOfEvidence: 'C-LD',
+              guideline: 'AHA/ASA Spontaneous ICH 2022',
+              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361 (PMID 35579034); PRESTIGE-AF: Veltkamp R et al. Lancet 2025;405:927-936 (PMID 40023176).',
               conditions: (data) => {
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
-                const afib = (data.telestrokeNote?.ekgResults || '').toLowerCase().includes('fib') ||
-                             (data.telestrokeNote?.ekgResults || '').toLowerCase().includes('af');
+                const afib = hasAFText(data.telestrokeNote?.ekgResults) || hasAFText(data.telestrokeNote?.pmh);
                 return isICH && afib;
               }
             },
@@ -4783,48 +4970,17 @@ Clinician Name`;
             // ---------------------------------------------------------------
             // SUPPORTIVE CARE
             // ---------------------------------------------------------------
-            dysphagia_screen: {
-              id: 'dysphagia_screen',
-              category: 'Supportive Care',
-              title: 'Dysphagia screening',
-              recommendation: 'Keep patient NPO until formal dysphagia screening is passed. Screen before any oral intake including medications.',
-              detail: 'Use validated bedside screening tool (e.g., Yale Swallow Protocol, 3-oz water test). SLP evaluation for failed screens. Aspiration pneumonia is a leading cause of post-stroke mortality.',
-              classOfRec: 'I',
-              levelOfEvidence: 'B-NR',
-              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
-              reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
-              conditions: (data) => {
-                const cat = data.telestrokeNote?.diagnosisCategory;
-                return !!cat && cat !== 'mimic';
-              }
-            },
             vte_prophylaxis: {
               id: 'vte_prophylaxis',
               category: 'Supportive Care',
               title: 'VTE prophylaxis',
-              recommendation: 'IPC/SCDs on admission. Post-lytic: SQ heparin at 24h (after stable follow-up imaging). Post-ICH: SQ heparin at 48h (after stable repeat imaging). SCDs in the interim.',
-              detail: 'Suggested protocol: Post-thrombolysis — SQ heparin 24h after lytic administration, after follow-up CT shows no hemorrhage. Post-ICH — SQ heparin 48h after IPH onset, after stability CT. IPC/SCDs should be placed on admission for all immobile stroke patients and continued until pharmacologic prophylaxis initiated.',
+              recommendation: 'IPC on admission for all immobile stroke patients (Class I, LOE B-R — CLOTS-3); graduated compression stockings alone are NOT recommended (Class III). Pharmacologic prophylaxis in AIS: benefit not well established (Class IIb) — when used, start post-lytic at 24h and post-ICH at 24-48h, each after stable follow-up imaging.',
+              detail: 'Single consolidated VTE card. MECHANICAL: CLOTS-3 (Lancet 2013) — IPC reduced DVT 12.1%→8.5% (OR 0.65); continue until independently mobile; TED stockings alone showed no benefit (CLOTS-1). PHARMACOLOGIC: prophylactic heparin benefit in immobile AIS is not well established (AHA/ASA: Class IIb, LOE A); LMWH may be preferred over UFH (PREVAIL, Stroke 2007: enoxaparin 40 mg SC daily reduced VTE 16%→8.1%; Class IIb, LOE B-R). ICH: chemical prophylaxis at 24-48h with stable imaging is Class 2b, LOE C-LD (AHA/ASA 2022 ICH). Timing protocol: post-thrombolysis wait 24h + hemorrhage-free CT; post-ICH 24-48h + stability CT; IPC in the interim. Duration 10-14 days or until mobile; anti-Xa monitoring (0.2-0.5 IU/mL) for BMI >40 or CrCl <30.',
               classOfRec: 'I',
               levelOfEvidence: 'B-R',
               guideline: 'AHA Systemic Complications of Acute Stroke 2024',
               reference: 'AHA Scientific Statement 2024. DOI: 10.1161/STR.0000000000000477',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000477#page=6',
-              conditions: (data) => {
-                const cat = data.telestrokeNote?.diagnosisCategory;
-                return !!cat && cat !== 'mimic';
-              }
-            },
-fever_management: {
-              id: 'fever_management',
-              category: 'Supportive Care',
-              title: 'Fever management',
-              recommendation: 'Treat fever (>38C) with acetaminophen and identify source. Maintain normothermia.',
-              detail: 'Fever worsens outcomes in stroke. Search for UTI, pneumonia, line infection. Induced hypothermia not recommended outside clinical trials.',
-              classOfRec: 'I',
-              levelOfEvidence: 'C-LD',
-              guideline: 'AHA Systemic Complications of Acute Stroke 2024',
-              reference: 'AHA Scientific Statement 2024. DOI: 10.1161/STR.0000000000000477',
-              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000477#page=4',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 return !!cat && cat !== 'mimic';
@@ -5137,7 +5293,15 @@ fever_management: {
               reference: 'Kleindorfer DO et al. Stroke. 2021;52:e364-e467.',
               medications: ['ASA 325 mg load then 81 mg daily', 'Clopidogrel 300 mg load then 75 mg daily x 21 days'],
               conditions: (data) => {
-                return data.telestrokeNote?.diagnosisCategory === 'tia';
+                if (data.telestrokeNote?.diagnosisCategory !== 'tia') return false;
+                // The card is explicitly for HIGH-RISK TIA (ABCD2 >=4 or DWI+) —
+                // gate on the documented ABCD2 (or a DWI-positive MRI mention)
+                // instead of firing for every TIA.
+                const abcd2 = Number.isFinite(data.abcd2Score) ? data.abcd2Score : null;
+                const imagingText = `${data.telestrokeNote?.ctResults || ''} ${data.telestrokeNote?.ctaResults || ''}`.toLowerCase();
+                const dwiPositive = data.telestrokeNote?.wakeUpStrokeWorkflow?.dwi?.positiveForLesion === true ||
+                  /dwi[^.]{0,30}(positive|restrict|lesion|infarct)|restricted diffusion/i.test(imagingText);
+                return (abcd2 !== null && abcd2 >= 4) || dwiPositive;
               }
             },
 
@@ -5253,7 +5417,7 @@ fever_management: {
               id: 'discharge_statin',
               category: 'Discharge',
               title: 'Discharge: High-intensity statin',
-              recommendation: 'Prescribe high-intensity statin at discharge with LDL target <70 mg/dL for ischemic stroke/TIA patients.',
+              recommendation: 'Prescribe high-intensity statin at discharge with LDL target <70 mg/dL for ischemic stroke/TIA patients (<55 mg/dL if documented atherosclerotic mechanism — see aggressive LDL card).',
               detail: 'Atorvastatin 80 mg or rosuvastatin 20-40 mg. Add ezetimibe if not at goal. Verify statin is on discharge medication list.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
@@ -5270,7 +5434,7 @@ fever_management: {
               category: 'Discharge',
               title: 'Discharge: BP optimization',
               recommendation: 'Initiate or optimize antihypertensive therapy at discharge targeting BP <130/80 for secondary stroke prevention.',
-              detail: 'ACE inhibitor or ARB + thiazide diuretic preferred. Initiate after 24-48 hours for ischemic stroke. Individualize timing for ICH (may start earlier). SBP <120 may be considered for selected patients (Class IIa, ESPRIT 2024). Use caution with bilateral severe carotid stenosis or orthostatic symptoms.',
+              detail: 'ACE inhibitor or ARB + thiazide diuretic preferred. Initiate after 24-48 hours for ischemic stroke. Individualize timing for ICH (may start earlier). The <130/80 goal for adults with hypertension — including secondary stroke prevention — is the 2025 AHA/ACC hypertension guideline target (DOI: 10.1161/HYP.0000000000000249). SBP <120 may be considered for selected patients (Class IIa, ESPRIT 2024). Use caution with bilateral severe carotid stenosis or orthostatic symptoms.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
@@ -5290,14 +5454,14 @@ fever_management: {
               category: 'ICH Management',
               title: 'Anticoagulation resumption after ICH',
               recommendation: 'Anticoagulation resumption after ICH should be individualized based on ICH location, CHA\u2082DS\u2082-VASc score, and recurrent hemorrhage risk. Non-lobar ICH with high thromboembolic risk may benefit from DOAC reinitiation at 4-8 weeks.',
-              detail: 'PRESTIGE-AF (2025): DOACs dramatically reduced ischemic stroke (HR 0.05) but increased recurrent ICH (HR 10.89). ENRICH-AF halted lobar ICH enrollment due to excess recurrent hemorrhage. For non-lobar ICH with CHA\u2082DS\u2082-VASc \u22654, DOAC reinitiation is reasonable after shared decision-making at 4-8 weeks. For lobar ICH (possible CAA), consider LAAO or avoidance of anticoagulation. DOACs preferred over warfarin when anticoagulation is chosen.',
+              detail: 'PRESTIGE-AF (Lancet 2025;405:927-936, PMID 40023176; n=319, median follow-up 1.4 y): DOACs vs no anticoagulation after ICH — first ischemic stroke HR 0.05 (95% CI 0.01-0.36; 0.83 vs 8.60 per 100 patient-years) but recurrent-ICH non-inferiority NOT met: HR 10.89 (90% CI 1.95-60.72; ~5.0 vs 0.8 per 100 patient-years). ENRICH-AF (NCT03950076) excluded lobar ICH by protocol amendment during the trial; it is active-not-recruiting with primary completion 2026-05 and NO published results yet. For non-lobar ICH with high thromboembolic risk, DOAC reinitiation is reasonable after shared decision-making at ~4-8 weeks. For lobar ICH (possible CAA), consider LAAO or anticoagulation avoidance. DOACs preferred over warfarin when anticoagulation is chosen.',
               classOfRec: 'IIb',
               levelOfEvidence: 'B-R',
-              guideline: 'AHA/ASA Spontaneous ICH 2022 + PRESTIGE-AF/ENRICH-AF 2025',
-              reference: 'PRESTIGE-AF: Lancet 2025; SoSTART: Lancet Neurol 2021; APACHE-AF: Lancet Neurol 2021',
+              guideline: 'AHA/ASA Spontaneous ICH 2022; trial evidence: PRESTIGE-AF 2025 (no post-2021 AHA/ASA secondary-prevention update exists)',
+              reference: 'PRESTIGE-AF: Veltkamp R et al. Lancet 2025;405:927-936 (PMID 40023176); SoSTART: Lancet Neurol 2021; APACHE-AF: Lancet Neurol 2021',
               conditions: (data) => {
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
-                const hasAF = (data.telestrokeNote?.pmh || '').toLowerCase().includes('fib') || (data.telestrokeNote?.pmh || '').toLowerCase().includes('af');
+                const hasAF = hasAFText(data.telestrokeNote?.pmh) || hasAFText(data.telestrokeNote?.ekgResults);
                 return isICH && hasAF;
               }
             },
@@ -5310,7 +5474,7 @@ fever_management: {
               category: 'Carotid',
               title: 'Symptomatic carotid stenosis management',
               recommendation: 'For symptomatic carotid stenosis \u226550%, CEA within 2 weeks is recommended. Optimal medical management is the foundation for all patients.',
-              detail: 'Symptomatic = stroke/TIA referable to the carotid territory within 6 months. CEA remains Class I for symptomatic stenosis \u226550%. NASCET endarterectomy NNTs: symptomatic 70\u201399% \u2192 NNT \u2248 6 (ARR \u224817% over 2 yr); symptomatic 50\u201369% \u2192 NNT \u2248 15 (ARR \u22486.5% over 5 yr). Benefit is greatest within 2 weeks of the event and diminishes with delay. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
+              detail: 'CEA preferred if age >70 and suitable anatomy; CAS reasonable if high surgical risk. Symptomatic = stroke/TIA referable to the carotid territory within 6 months \u2014 confirm the stenosis is IPSILATERAL to the symptomatic territory; a stenosis contralateral to the event is managed as asymptomatic disease (see the CREST-2 card). CEA for symptomatic 70\u201399% stenosis is Class I; for 50\u201369% stenosis CEA is Class IIa (reasonable, depending on patient-specific factors) \u2014 not Class I. NASCET endarterectomy NNTs: symptomatic 70\u201399% \u2192 NNT \u2248 6 (ARR \u224817% over 2 yr); symptomatic 50\u201369% \u2192 NNT \u2248 15 (ARR \u22486.5% over 5 yr). Benefit is greatest within 2 weeks of the event and diminishes with delay. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
@@ -5319,23 +5483,38 @@ fever_management: {
               conditions: (data) => {
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
                 const cm = data.telestrokeNote?.carotidManagement || {};
-                return cm.symptomatic && cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('occlusion'));
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                const carotidDisease = cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('occlusion') || cta.includes('narrowing'));
+                // Symptomatic status is DERIVED from the encounter: an ischemic
+                // stroke/TIA presentation with carotid disease is treated as
+                // presumed-symptomatic (confirm laterality) — it must never
+                // default to the asymptomatic CREST-2 pathway just because the
+                // explicit checkbox was left unticked.
+                return carotidDisease && (cm.symptomatic === true || cat === 'ischemic' || cat === 'tia');
               }
             },
             carotid_asymptomatic: {
               id: 'carotid_asymptomatic',
               category: 'Carotid',
               title: 'Asymptomatic carotid stenosis (CREST-2)',
-              recommendation: 'For asymptomatic carotid stenosis \u226570%, intensive medical management alone is the primary approach. CEA is NOT superior to intensive medical management (CREST-2, 2025).',
-              detail: 'CREST-2 (NEJM 2025): CEA + intensive medical management did NOT significantly reduce stroke/death vs. intensive medical management alone. CAS + intensive medical management showed modest benefit (NNT=31 at 4 years) at high-volume centers with periprocedural risk <3%. Intensive medical management protocol: SBP <130, LDL <70 (add PCSK9i if needed), health coaching, smoking cessation. Annual duplex surveillance recommended.\n\nShared decision-making: consider high-risk plaque features that may identify higher-risk asymptomatic lesions warranting revascularization consideration: intraplaque hemorrhage (IPH) on MRI, ulcerated or echolucent plaque on ultrasound, juxtaluminal black area (JBA), or progressive stenosis despite optimal medical therapy. These features may modify the risk-benefit calculation despite the overall neutral CREST-2 CEA result.',
-              classOfRec: 'IIa',
-              levelOfEvidence: 'A',
-              guideline: 'CREST-2 (NEJM 2025); ECST-2 (Lancet Neurol 2025)',
-              reference: 'CREST-2: NEJM 2025; ECST-2: Lancet Neurology 2025',
+              recommendation: 'For asymptomatic high-grade (\u226570%) carotid stenosis, CREST-2 found: STENTING + intensive medical management SIGNIFICANTLY reduced the primary outcome vs medical management alone (2.8% vs 6.0%, P=0.02); CEA + intensive medical management did NOT (3.7% vs 5.3%, P=0.24). Shared decision-making between intensive medical management alone and stenting at experienced centers.',
+              detail: 'CREST-2 (Brott, NEJM 2026;394:219-31, published online 2025-11-21; PMID 41269206; NCT02089217): two parallel randomized trials in \u226570% asymptomatic stenosis, no ipsilateral event within 180 days. Primary outcome = any stroke or death within 44 days of randomization OR ipsilateral ischemic stroke thereafter to 4 years. Stenting trial (n=1245): 2.8% (CAS+IMM) vs 6.0% (IMM alone), P=0.02 — significant benefit, despite upfront periprocedural events (7 strokes + 1 death vs 0). Endarterectomy trial (n=1240): 3.7% (CEA+IMM) vs 5.3% (IMM alone), P=0.24 — no significant benefit. The two trials were separate randomizations; CAS and CEA were NOT compared head-to-head. Intensive medical management in all arms: SBP <130, LDL <70, coaching, smoking cessation. Shared decision-making: patient anatomy/operator experience, periprocedural risk tolerance, and high-risk plaque features (intraplaque hemorrhage on MRI, ulceration, echolucency, progression on maximal therapy) all modify the calculus.',
+              classOfRec: 'N/A',
+              levelOfEvidence: 'B-R',
+              guideline: 'CREST-2 (NEJM 2026) — awaiting formal guideline integration; ECST-2 (Lancet Neurol 2025)',
+              reference: 'CREST-2: Brott TG et al. NEJM 2026;394:219-31 (PMID 41269206). DOI: 10.1056/NEJMoa2508800. ECST-2: Lancet Neurology 2025.',
+              sourceUrl: 'https://doi.org/10.1056/NEJMoa2508800',
               conditions: (data) => {
                 const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
                 const cm = data.telestrokeNote?.carotidManagement || {};
-                return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('narrowing')) && !cm.symptomatic;
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                // Only fires when the encounter itself is NOT an ischemic
+                // stroke/TIA presentation (e.g., incidental stenosis found
+                // during an ICH workup) AND the symptomatic flag is not set.
+                // An ischemic/TIA encounter with carotid disease routes to the
+                // symptomatic card instead — see carotid_symptomatic.
+                const isIschemicEncounter = cat === 'ischemic' || cat === 'tia';
+                return cta.includes('carotid') && (cta.includes('stenosis') || cta.includes('narrowing')) && cm.symptomatic !== true && !isIschemicEncounter;
               }
             },
 
@@ -5369,15 +5548,16 @@ fever_management: {
               category: 'Antithrombotic',
               title: 'Early DOAC initiation in AF-related stroke (CATALYST)',
               recommendation: 'For AF-related ischemic stroke without large hemorrhagic transformation, DOAC initiation within 4 days reduces recurrent ischemic stroke vs. later initiation (\u22655 days).',
-              detail: 'CATALYST IPDMA (Lancet 2025, n=5,441): Early DOAC (≤4 days) reduced the primary composite (recurrent ischemic stroke, sICH, or unclassified stroke) by 30% (OR 0.70, P=0.039) without increasing sICH. Use imaging-defined infarct size, hemorrhagic transformation, thrombolysis/EVT course, and clinical stability to individualize timing. Practical heuristic for medically managed strokes: mild/small infarct ≤4 days, moderate infarct day 3-5, severe/large infarct or high-risk hemorrhagic transformation day 6-14. After IV TNK/tPA, avoid antithrombotics for the first 24h and obtain follow-up imaging before starting anticoagulation; extend delay when hemorrhage, large infarct, or clinical instability is present.',
+              detail: 'CATALYST IPDMA (Lancet 2025, n=5,441): Early DOAC (≤4 days) reduced the primary composite (recurrent ischemic stroke, sICH, or unclassified stroke) by 30% (OR 0.70, P=0.039) without increasing sICH. AHA/ASA 2026: in carefully selected milder-severity AIS with AF, early oral anticoagulation is low risk and reasonable (COR IIa, LOE A). Canonical app tiers (ELAN/OPTIMAS/CATALYST — the same scheme as the DOAC timing calculator): minor (NIHSS <8) ~day 1; moderate (8-15) ~day 3; severe (16-20) ~day 6; very severe (≥21) or extensive hemorrhagic transformation ~day 7+ with repeat imaging. After IV TNK/tPA, avoid antithrombotics for the first 24h and obtain follow-up imaging before starting anticoagulation; extend delay when hemorrhage, large infarct, or clinical instability is present. DOAC preferred over warfarin (Class I, LOE A).',
               classOfRec: 'IIa',
               levelOfEvidence: 'A',
               guideline: 'CATALYST IPDMA 2025',
-              reference: 'CATALYST: Lancet 2025. Pooled TIMING, ELAN, OPTIMAS, START.',
+              reference: 'CATALYST: Lancet 2025. Pooled TIMING, ELAN, OPTIMAS, START. AHA/ASA 2026: DOI 10.1161/STR.0000000000000513.',
+              medications: ['Apixaban 5 mg BID (preferred)', 'Rivaroxaban 20 mg daily', 'Dabigatran 150 mg BID', 'Edoxaban 60 mg daily'],
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
-                const hasAF = (data.telestrokeNote?.pmh || '').toLowerCase().includes('fib') || (data.telestrokeNote?.pmh || '').toLowerCase().includes('af');
+                const hasAF = hasAFText(data.telestrokeNote?.pmh) || hasAFText(data.telestrokeNote?.ekgResults);
                 return isIschemic && hasAF;
               }
             },
@@ -5445,7 +5625,7 @@ fever_management: {
               category: 'Supportive Care',
               title: 'Dysphagia screening (2026 AHA)',
               recommendation: 'All stroke patients must undergo bedside dysphagia screening before any oral intake. Failure should trigger instrumental assessment (FEES or VFSS) by SLP.',
-              detail: 'Validated bedside tools: Gugging Swallowing Screen (GUSS), Toronto Bedside Swallowing Screening Test (TOR-BSST), 3-oz Water Swallow Test. Instrumental assessment (FEES or videofluoroscopic swallowing study) recommended when resources allow, especially for silent aspiration detection. FEES can be performed at bedside (advantage for critically ill). Early nurse-led bedside screening reduces pneumonia rates. NPO until screen passed.',
+              detail: 'Keep NPO (including medications) until the screen is passed — aspiration pneumonia is a leading cause of post-stroke mortality. Validated bedside tools: Gugging Swallowing Screen (GUSS), Toronto Bedside Swallowing Screening Test (TOR-BSST), 3-oz Water Swallow Test. Instrumental assessment (FEES or videofluoroscopic swallowing study) recommended when resources allow, especially for silent aspiration detection. FEES can be performed at bedside (advantage for critically ill). Early nurse-led bedside screening reduces pneumonia rates. NPO until screen passed.',
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -5502,12 +5682,12 @@ fever_management: {
               id: 'glp1ra_secondary_prevention',
               category: 'Secondary Prevention',
               title: 'GLP-1 RA for cardiovascular/stroke prevention',
-              recommendation: 'Semaglutide is recommended for stroke patients with T2DM and established ASCVD (Class I, LOE A). Consider for patients with BMI \u226527 + CVD even without diabetes (Class IIa).',
-              detail: 'SELECT (NEJM 2023, n=17,604): Semaglutide 2.4 mg weekly reduced MACE by 20% (HR 0.80, P<0.001) in overweight/obese patients with CVD but without diabetes. SUSTAIN-6: 39% reduction in nonfatal stroke (HR 0.61, P=0.04) in T2DM. SOUL (2025): 14% MACE reduction in T2DM, leading to EMA approval as first stroke management therapy. FDA approved March 2024 for MACE risk reduction in adults with overweight/obesity and established CVD. Benefit independent of baseline adiposity and weight loss.',
+              recommendation: 'GLP-1 receptor agonists (drug class) carry a Class 1 recommendation in the 2024 AHA/ASA PRIMARY prevention guideline for patients with diabetes (HbA1c \u22657%) and high CVD risk or established CVD — which includes secondary stroke prevention in that subgroup. For overweight/obesity + CVD without diabetes, benefit is trial-supported (SELECT) with FDA approval but no stroke-guideline class.',
+              detail: 'Scope matters: the Class 1 is a drug-CLASS recommendation from the 2024 AHA/ASA Primary Prevention of Stroke guideline, tied to diabetes with HbA1c \u22657% and elevated CVD risk/established CVD — it is not a blanket semaglutide-for-all-stroke-patients recommendation, and the 2021 secondary-prevention guideline predates the trials. Evidence: SELECT (NEJM 2023, n=17,604): semaglutide 2.4 mg weekly reduced MACE 20% (HR 0.80, P<0.001) in overweight/obese CVD patients without diabetes. SUSTAIN-6 (T2DM): nonfatal stroke HR 0.61. SOUL (2025): MACE reduction in T2DM. FDA approved March 2024 for MACE risk reduction in overweight/obesity + established CVD.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
-              guideline: 'AHA/ASA Secondary Prevention; SELECT (NEJM 2023); SOUL (2025)',
-              reference: 'SELECT: NEJM 2023. SUSTAIN-6: NEJM 2016. SOUL: 2025.',
+              guideline: 'AHA/ASA Primary Prevention of Stroke 2024 (Class 1 for GLP-1RA in diabetes HbA1c \u22657% + high CVD risk/established CVD, incl. secondary prevention)',
+              reference: 'AHA/ASA Primary Prevention 2024 (DOI: 10.1161/STR.0000000000000475). SELECT: NEJM 2023. SUSTAIN-6: NEJM 2016. SOUL: 2025.',
               conditions: (data) => {
                 const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
                 const cat = data.telestrokeNote?.diagnosisCategory;
@@ -5535,7 +5715,12 @@ fever_management: {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
-                return isIschemic && (toast.includes('athero') || toast === '' || toast.includes('undetermined'));
+                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
+                // LDL <55 is the very-high-risk (atherosclerotic) target — it must
+                // not fire for every patient whose TOAST is simply blank. The
+                // standard <70 rule covers non-atherosclerotic/unclassified stroke.
+                const atherosclerotic = toast.includes('athero') || cta.includes('atheroscler') || cta.includes('stenosis');
+                return isIschemic && atherosclerotic;
               }
             },
 
@@ -5555,8 +5740,8 @@ fever_management: {
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
-                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || 0;
-                return isIschemic && nihss <= 5;
+                const nihss = documentedNIHSS(data);
+                return isIschemic && nihss !== null && nihss <= 5;
               }
             },
 
@@ -5577,7 +5762,7 @@ fever_management: {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const pmh = (data.telestrokeNote?.pmh || '').toLowerCase();
-                const hasCAD = pmh.includes('cad') || pmh.includes('coronary') || pmh.includes('mi') || pmh.includes('stent') || pmh.includes('cabg');
+                const hasCAD = CAD_TEXT_RE.test(pmh);
                 return isIschemic && hasCAD;
               }
             },
@@ -5639,22 +5824,6 @@ fever_management: {
             // ---------------------------------------------------------------
             // INTRACRANIAL ATHEROSCLEROSIS (ICAD)
             // ---------------------------------------------------------------
-            icad_management: {
-              id: 'icad_management',
-              category: 'Antithrombotic',
-              title: 'Intracranial atherosclerotic disease (ICAD) management',
-              recommendation: 'Aggressive medical management is first-line for intracranial stenosis: DAPT + high-intensity statin + BP <140/90. Intracranial stenting is NOT recommended routinely (Class III: Harm).',
-              detail: 'SAMMPRIS: PTAS was inferior to aggressive medical management (30-day stroke/death 14.7% vs 5.8%). CASSISS: No benefit of stenting + medical therapy. Pooled analysis (n=809): 30-day stroke/death significantly higher with PTAS (10.5% vs 4.2%, HR 2.62). Medical protocol: DAPT (ASA + clopidogrel) \u00d7 90 days, then single antiplatelet. High-intensity statin (LDL <70). SBP <140/90. Stenting considered ONLY after \u22652 recurrent events on max medical therapy at experienced centers (Class IIb, LOE C).',
-              classOfRec: 'I',
-              levelOfEvidence: 'B-R',
-              guideline: '2022 AAN Intracranial Atherosclerosis',
-              reference: 'SAMMPRIS: NEJM 2011. CASSISS: JAMA 2022. Pooled IPD: 2025.',
-              conditions: (data) => {
-                const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
-                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
-                return toast.includes('large artery') || cta.includes('intracranial stenosis') || cta.includes('intracranial atheroscler');
-              }
-            },
 
             // ---------------------------------------------------------------
             // MEVO EVT (NOT RECOMMENDED)
@@ -5662,17 +5831,63 @@ fever_management: {
             mevo_evt_not_recommended: {
               id: 'mevo_evt_not_recommended',
               category: 'EVT',
-              title: 'MeVO/distal occlusion EVT: NOT recommended (Class III — No Benefit / Potential Harm)',
-              recommendation: 'EVT for nondominant/codominant M2, distal MCA, ACA, and PCA occlusions is NOT recommended (COR III, LOE A). ESCAPE-MeVO trial showed increased mortality with EVT (aHR 1.82). EXCEPTION: For dominant proximal M2 within 6h, mRS 0-1, NIHSS ≥6, ASPECTS ≥6, EVT is reasonable (COR IIa, LOE B-NR, AHA/ASA 2026).',
-              detail: 'Dominant proximal M2 within 6h: EVT is reasonable (Class IIa, LOE B-NR per AHA/ASA 2026) — benefits uncertain but reasonable to consider with favorable profile. Nondominant/codominant M2, M3-M4, ACA, PCA: EVT is NOT recommended (Class III, LOE A per AHA/ASA 2026). ESCAPE-MeVO (N=530): no functional improvement (ordinal mRS OR 0.90, NS) but showed increased 90-day mortality with EVT (13.3% vs 8.4%, aHR 1.82, 95% CI 1.06-3.12) and higher sICH (5.4% vs 2.2%). DISTAL (N=543): no functional benefit (adjusted common OR 0.82, NS) with 90-day mortality of 15.5% vs 14.0% (NS) and sICH of 5.9% vs 2.6%. DISCOUNT (2025): negative for M2 thrombectomy. This is a safety signal beyond neutral efficacy — Class III: Potential Harm (ESCAPE-MeVO). Flag eligible patients for clinical trial enrollment (for example STEP-EVT).',
+              title: 'MeVO/distal occlusion EVT: NOT recommended (Class III: No Benefit; safety signal in ESCAPE-MeVO)',
+              recommendation: 'EVT for nondominant/codominant M2, distal MCA, ACA, and PCA occlusions is NOT recommended (COR III: No Benefit, LOE A — DISTAL and ESCAPE-MeVO were neutral on their primary endpoints). ESCAPE-MeVO additionally showed a safety signal (90-day mortality aHR 1.82; sICH 5.4% vs 2.2%). EXCEPTION: for dominant proximal M2 within 6h, mRS 0-1, NIHSS ≥6, ASPECTS ≥6, EVT is reasonable (COR IIa, AHA/ASA 2026).',
+              detail: 'Dominant proximal M2 within 6h: EVT is reasonable (Class IIa, LOE B-NR per AHA/ASA 2026) — benefits uncertain but reasonable to consider with favorable profile. Nondominant/codominant M2, M3-M4, ACA, PCA: EVT is NOT recommended (Class III, LOE A per AHA/ASA 2026). ESCAPE-MeVO (N=530): no functional improvement (ordinal mRS OR 0.90, NS) but showed increased 90-day mortality with EVT (13.3% vs 8.4%, aHR 1.82, 95% CI 1.06-3.12) and higher sICH (5.4% vs 2.2%). DISTAL (N=543): no functional benefit (adjusted common OR 0.90, 95% CI 0.67-1.22, P=0.50) with sICH 5.9% vs 2.6%; 12-MONTH outcomes (Lancet Neurol 2026;25:571-80, PMID 42105785) remained neutral (aOR 0.81, 95% CI 0.59-1.12, p=0.20). DISCOUNT (2025): negative for M2 thrombectomy. The 2026 guideline grades routine distal/nondominant-M2 EVT as Class III: No Benefit (LOE A) — DISTAL and ESCAPE-MeVO were neutral, not formally harmful, on their primary endpoints; the ESCAPE-MeVO mortality/sICH excess is a safety signal on top of that. Flag eligible patients for clinical trial enrollment (for example STEP-EVT).',
               classOfRec: 'III',
-              levelOfEvidence: 'B-R',
+              levelOfEvidence: 'A',
               guideline: 'ESCAPE-MeVO (NEJM 2025); DISTAL (2025); DISCOUNT (2025)',
               reference: 'ESCAPE-MeVO: N Engl J Med. 2025. DOI: 10.1056/NEJMoa2411668. DISTAL and DISCOUNT: 2025 randomized MeVO/distal EVT trials.',
               caveats: 'Local protocol may permit consideration of proximal M2 EVT in highly select cases. Discuss with neurointerventionalist.',
               conditions: (data) => {
                 const vessels = data.telestrokeNote?.vesselOcclusion || [];
-                return vessels.some(v => /m2|m3|m4|distal|mevo|medium vessel/i.test(v));
+                // Fires only for ISOLATED medium/distal occlusion. A concurrent
+                // ICA/M1/basilar occlusion routes to the LVO transfer/EVT cards
+                // instead — both cards firing together was contradictory output.
+                const hasLVO = vessels.some(v => /^(ica|m1|basilar)$/i.test(String(v).trim()));
+                const hasMeVO = vessels.some(v =>
+                  /^(m2|m3|m4|a2|a3|p2|p3)$/i.test(String(v).trim()) || /distal|mevo|medium vessel/i.test(String(v))
+                );
+                return hasMeVO && !hasLVO;
+              }
+            },
+
+            // ---------------------------------------------------------------
+            // ADJUNCTIVE INTRA-ARTERIAL LYTIC AFTER SUCCESSFUL EVT
+            // ---------------------------------------------------------------
+            ia_lytic_post_evt: {
+              id: 'ia_lytic_post_evt',
+              category: 'EVT',
+              title: 'Adjunctive intra-arterial lytic after successful EVT (CHOICE-2 / ANGEL-TNK) — investigational',
+              recommendation: 'After successful thrombectomy (eTICI 2b50-3), adjunctive intra-arterial alteplase improved excellent outcomes in CHOICE-2 but with HIGHER 90-day mortality — investigational; discuss with neurointervention, ideally within a protocol.',
+              detail: 'CHOICE-2 (Renú, JAMA 2026;335:1859-69, PMID 42096239; LVO population, n=440 randomized / 433 analyzed): IA alteplase 0.225 mg/kg after successful EVT improved mRS 0-1 at 90d (57.5% vs 42.5%, adjusted RD 15.0%, P=.002) BUT 90-day mortality was higher (12.1% vs 6.4%, adjusted RD 5.9%, P=.03) — the authors flag the mortality signal as needing further study. ANGEL-TNK (JAMA 2025;334:582-91, PMID 40616323) tested IA tenecteplase post-EVT. Bridging IV TNK BEFORE late-window EVT is separately NEGATIVE (TNK-PLUS, JAMA 2026, PMID 42099212: mRS 0-2 44.2% vs 43.2%, P=.89; ATTENTION-LATE basilar: 30.3% vs 30.5%, presented ISC 2026, publication pending). No guideline class exists for adjunctive IA lytic.',
+              classOfRec: 'N/A',
+              levelOfEvidence: 'B-R',
+              guideline: 'CHOICE-2 (JAMA 2026) — investigational; no guideline recommendation',
+              reference: 'CHOICE-2: Renú A et al. JAMA 2026;335:1859-1869 (PMID 42096239). ANGEL-TNK: JAMA 2025;334:582-591 (PMID 40616323).',
+              conditions: (data) => {
+                return isSuccessfulEvtReperfusion(data.telestrokeNote?.ticiScore || '');
+              }
+            },
+            // ---------------------------------------------------------------
+            // TIROFIBAN FOR STROKE WITHOUT OCCLUSION (LYTIC-INELIGIBLE)
+            // ---------------------------------------------------------------
+            tirofiban_no_occlusion: {
+              id: 'tirofiban_no_occlusion',
+              category: 'Antithrombotic',
+              title: 'IV tirofiban for non-cardioembolic stroke without large/medium-vessel occlusion',
+              recommendation: 'For non-cardioembolic ischemic stroke WITHOUT large/medium-vessel occlusion in patients ineligible for thrombolysis/EVT (or with poor response to TNK), IV tirofiban may be considered (RESCUE-BT2; INSTANT).',
+              detail: 'RESCUE-BT2 (NEJM 2023;388:2025-36, PMID 37256974; n=1177 China): tirofiban vs aspirin in AIS without large/medium-vessel occlusion, lytic/EVT-ineligible — mRS 0-1 at 90d 29.1% vs 22.2% (aRR 1.26, 95% CI 1.04-1.53, P=0.02); sICH 1.0% vs 0%. INSTANT (JAMA 2026;335:1949-58, PMID 42100960; n=359): IV tirofiban 4-24h after TNK in non-LVO/non-cardioembolic patients with inadequate response — mRS 0-1 63.8% vs 52.2% (RR 1.22, P=.03); sICH 0.9% vs 0. Distinct population from MOST (adjuncts WITH thrombolysis — futile, mortality signal) — do not extrapolate across populations. Post-EVT tirofiban after successful reperfusion: ATTRACTION (Lancet 2026, PMID 42341797) positive (mRS 0-2 49% vs 43%).',
+              classOfRec: 'IIb',
+              levelOfEvidence: 'B-R',
+              guideline: 'RESCUE-BT2 (NEJM 2023); INSTANT (JAMA 2026) — not yet graded by AHA/ASA',
+              reference: 'RESCUE-BT2: NEJM 2023;388:2025-36 (PMID 37256974). INSTANT: JAMA 2026;335:1949-58 (PMID 42100960).',
+              conditions: (data) => {
+                const cat = data.telestrokeNote?.diagnosisCategory;
+                if (cat !== 'ischemic') return false;
+                const vessels = data.telestrokeNote?.vesselOcclusion || [];
+                const noOcclusion = vessels.length === 0 || vessels.every(v => /^none$/i.test(String(v).trim()));
+                return noOcclusion && (data.telestrokeNote?.tnkAutoBlocked === true || data.telestrokeNote?.tnkRecommended === false);
               }
             },
 
@@ -5683,15 +5898,15 @@ fever_management: {
               id: 'bp_post_evt_drip',
               category: 'Blood Pressure',
               title: 'Post-EVT BP drip titration protocol',
-              recommendation: 'For post-EVT BP management, use nicardipine 5-15 mg/hr or clevidipine 1-2 mg/hr. Maintain SBP <180/105; avoid targeting SBP <140 (Class III: Harm).',
-              detail: 'Nicardipine: start 5 mg/hr, titrate by 2.5 mg/hr every 5-15 min (max 15 mg/hr). Clevidipine: start 1-2 mg/hr, double every 90 seconds initially (max 32 mg/hr). For successfully recanalized (mTICI 2b-3): maintain SBP <180, avoid SBP <140. For non-recanalized: SBP <180. ENCHANTED2/MT: SBP <120 was harmful. OPTIMAL-BP (JAMA 2023): intensive <140 showed no benefit. BP-TARGET: intensive 100-129 showed no benefit. BEST-II (JAMA 2023): SBP 100-129 vs 130-159 post-EVT — lower targets trended toward worse outcomes; maintain SBP floor ~130 post-EVT. Meta-analysis of 4 RCTs: intensive targets reduced functional independence by 23%.',
+              recommendation: 'For post-EVT BP titration after documented successful reperfusion (mTICI 2b-3): nicardipine 5-15 mg/hr or clevidipine 1-2 mg/hr to SBP 140-180; avoid targeting SBP <140 (intensive lowering: Class III: Harm).',
+              detail: 'Nicardipine: start 5 mg/hr, titrate by 2.5 mg/hr every 5-15 min (max 15 mg/hr). Clevidipine: start 1-2 mg/hr, double every 90 seconds initially (max 32 mg/hr). Canonical scheme — mTICI 2b-3 documented: SBP 140-180 for ≥24h, avoid SBP <140; non-recanalized or grade not documented: SBP <180/105 (post-lytic) or ≤185/110 (pre-procedure). ENCHANTED2/MT: SBP <120 was harmful. OPTIMAL-BP (JAMA 2023): stopped early, intensive <140 worse. BP-TARGET: intensive 100-129 showed no benefit. BEST-II (JAMA 2023): futility for lower targets. Meta-analysis of 4 RCTs: intensive targets reduced functional independence by 23%.',
               classOfRec: 'I',
               levelOfEvidence: 'C-EO',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'ENCHANTED2/MT: Lancet 2022. OPTIMAL-BP: JAMA 2023. BP-TARGET: Lancet Neurol 2021.',
               medications: ['Nicardipine 5 mg/hr IV (titrate q5-15min, max 15)', 'Clevidipine 1-2 mg/hr IV'],
               conditions: (data) => {
-                return !!data.telestrokeNote?.evtRecommended;
+                return isSuccessfulEvtReperfusion(data.telestrokeNote?.ticiScore || '');
               }
             },
 
@@ -5789,42 +6004,12 @@ fever_management: {
               }
             },
             // VTE PROPHYLAXIS
-            vte_ipc_admission: {
-              id: 'vte_ipc_admission',
-              category: 'Acute',
-              title: 'IPC at admission for immobile stroke patients',
-              recommendation: 'Intermittent pneumatic compression (IPC) should be applied immediately at admission for all immobile AIS and ICH patients (Class I, LOE A). Graduated compression stockings alone are NOT effective (Class III).',
-              detail: 'CLOTS 3 trial: IPC reduced DVT from 12.1% to 8.5% (OR 0.65). TED hose alone showed no benefit (CLOTS 1). IPC should be continued until patient is independently mobile. Pharmacologic VTE prophylaxis added after 24-48h (post-thrombolysis: wait 24h + clear CT).',
-              classOfRec: 'I',
-              levelOfEvidence: 'A',
-              guideline: 'AHA/ASA 2019 AIS; AHA/ASA 2022 ICH; CLOTS 3',
-              reference: 'CLOTS 3: Lancet 2013.',
-              conditions: (data) => {
-                const cat = data.telestrokeNote?.diagnosisCategory;
-                return !!cat && cat !== 'mimic';
-              }
-            },
-            vte_enoxaparin_timing: {
-              id: 'vte_enoxaparin_timing',
-              category: 'Acute',
-              title: 'Enoxaparin preferred over UFH for VTE prophylaxis',
-              recommendation: 'Enoxaparin preferred over UFH for pharmacologic VTE prophylaxis. Post-lytic: start at 24h after stable imaging. Post-ICH: start at 48h after stable imaging. SCDs until then.',
-              detail: 'Suggested protocol: SQ heparin 24h after lytic, 48h after IPH. SCDs/IPC in the interim. PREVAIL trial: enoxaparin 40mg SC daily reduced VTE from 16% to 8.1% vs UFH. Duration: 10-14 days or until independently mobile. Anti-Xa monitoring (0.2-0.5 IU/mL) for BMI >40 or CrCl <30.',
-              classOfRec: 'I',
-              levelOfEvidence: 'A',
-              guideline: 'PREVAIL; AHA/ASA 2019; ACCP 9th Ed',
-              reference: 'PREVAIL: Stroke 2007.',
-              conditions: (data) => {
-                const cat = data.telestrokeNote?.diagnosisCategory;
-                return !!cat && cat !== 'mimic';
-              }
-            },
             // FEVER MANAGEMENT
             fever_management_protocol: {
               id: 'fever_management_protocol',
               category: 'Acute',
               title: 'Fever management in acute stroke',
-              recommendation: 'Target temperature 36.0-37.5C. Treat fever >37.5C within 1 hour. Acetaminophen is first-line; avoid NSAIDs in stroke (Class III). Implement FeSS bundle: Fever-Sugar-Swallowing.',
+              recommendation: 'Target normothermia (36.0-37.5C). Investigate and treat fever; nursing FeSS/QASC protocols treat >=37.5C within 1 hour, and AHA/ASA names >38C as the treatment trigger — both thresholds map to the same action: acetaminophen first-line, find the source. Avoid NSAIDs in stroke.',
               detail: 'Stepwise protocol: (1) Infection workup + treat, (2) Scheduled acetaminophen 650-1000mg q6h, (3) Surface cooling + counter-warming, (4) IV magnesium 2g bolus, (5) Buspirone 30mg q8h. Use BSAS (0-3) to guide anti-shivering therapy. QASC trial: FeSS bundle reduced death/dependency by 16%. Note: Prophylactic hypothermia (34-35°C) is NOT recommended for ischemic stroke (EuroHYP-1, Lancet Neurol 2019: neutral; Class III).',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-NR',
@@ -5883,6 +6068,20 @@ fever_management: {
               }
             },
             // ICH SCORE DISCLAIMER
+            ich_rfviia_fastest: {
+              id: 'ich_rfviia_fastest',
+              category: 'ICH',
+              title: 'rFVIIa for hyperacute ICH: NOT recommended (FASTEST negative)',
+              recommendation: 'Do NOT give recombinant factor VIIa for spontaneous ICH: FASTEST (Lancet 2026) showed no functional benefit despite reduced hematoma growth, with more life-threatening thromboembolic events.',
+              detail: 'FASTEST (Broderick, Lancet 2026;407:773-83, PMID 41653933; n=626, rFVIIa 80 µg/kg within 2h of onset): primary 180-day mRS NEGATIVE (adjusted common OR 1.09, 95% CI 0.79-1.51, p=0.61; stopped for futility) despite less hematoma growth (ICH growth -3.7 mL at 24h); life-threatening thromboembolic events within 4 days <5% vs 1% (RR 3.41, 95% CI 1.14-10.15, p=0.020). Hemostatic priorities remain: anticoagulant reversal, BP control, and the INTERACT3 bundle.',
+              classOfRec: 'III',
+              levelOfEvidence: 'B-R',
+              guideline: 'FASTEST (Lancet 2026) — trial evidence; predates formal guideline grading',
+              reference: 'Broderick JP et al. Lancet 2026;407:773-783 (FASTEST, PMID 41653933).',
+              conditions: (data) => {
+                return data.telestrokeNote?.diagnosisCategory === 'ich';
+              }
+            },
             ich_score_no_limit: {
               id: 'ich_score_no_limit',
               category: 'ICH',
@@ -5902,37 +6101,21 @@ fever_management: {
               id: 'permissive_hypertension',
               category: 'Acute',
               title: 'Permissive hypertension in acute ischemic stroke',
-              recommendation: 'Do NOT treat BP <220/120 in acute ischemic stroke without reperfusion therapy, at least in first 24h (Class III, LOE A). Restart home antihypertensives at 24-72h if neurologically stable.',
-              detail: 'Treatment of moderate hypertension in non-reperfused AIS worsens penumbral perfusion. CSBP and AHA/ASA agree: permissive approach unless other organ damage (aortic dissection, MI, HF).',
+              recommendation: 'In AIS WITHOUT reperfusion therapy: treating BP <220/120 in the first 24-48h does not improve outcomes (III: No Benefit, LOE A — the grade applies to early treatment, not to a named permissive strategy). Restart home antihypertensives at 24-72h if neurologically stable. Does NOT apply to thrombolysis/EVT candidates (they require BP ≤185/110).',
+              detail: 'Treatment of moderate hypertension in non-reperfused AIS worsens penumbral perfusion — INTERACT4 (NEJM 2024) confirmed prehospital/pre-imaging BP lowering HARMED patients whose stroke proved ischemic (cOR 1.30) even as it helped ICH; do not lower BP aggressively before imaging. The AHA/ASA grade is III: No Benefit for TREATING BP <220/120 early in non-reperfusion patients; permissive hypertension itself is not a separately graded recommendation. Exceptions requiring treatment: aortic dissection, acute MI, decompensated heart failure, hypertensive encephalopathy.',
               classOfRec: 'III',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA 2019 AIS; CSBP Acute 2022',
               reference: 'AHA/ASA AIS Guidelines 2019.',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
-                return cat === 'ischemic' || cat === 'tia';
+                const isIschemic = cat === 'ischemic' || cat === 'tia';
+                // Excluded for lysis/EVT candidates: their BP ceilings (185/110,
+                // 180/105) directly contradict a permissive framing.
+                return isIschemic && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
               }
             },
             // BASILAR ARTERY OCCLUSION EVT
-            basilar_evt_class1: {
-              id: 'basilar_evt_class1',
-              category: 'Acute',
-              title: 'Basilar artery occlusion EVT within 24h',
-              recommendation: 'EVT is recommended for basilar artery occlusion within 24h in patients with NIHSS >=10 and mild ischemic damage on imaging (Class I, LOE A).',
-              detail: 'Four RCTs with heterogeneous results:\n• BAOCHE (6-24h, China, N=217): POSITIVE — mRS 0-3 46% vs 24% (RR 1.81). Stopped early for superiority.\n• ATTENTION (0-12h, China, N=340): POSITIVE — mRS 0-3 46% vs 23% (RR 2.06). Lower mortality with EVT.\n• BEST (0-8h, international, N=131): NEGATIVE — ITT non-significant (underpowered, high crossover). As-treated analysis favored EVT.\n• BASICS (0-6h, 7 countries, N=300): NEUTRAL — underpowered (slow enrollment, high crossover).\nPositive trials (BAOCHE, ATTENTION) were predominantly Chinese populations with high rates of intracranial atherosclerotic disease. External validity considerations apply.\nSubgroups with strongest benefit: younger patients, higher NIHSS (≥10), more proximal basilar occlusion. Requires CT/CTA confirming basilar occlusion; exclude extensive brainstem infarction.',
-              classOfRec: 'I',
-              levelOfEvidence: 'A',
-              guideline: 'AHA/ASA 2026 AIS Guideline; ATTENTION; BAOCHE; BEST; BASICS',
-              reference: 'ATTENTION: NEJM 2022. BAOCHE: NEJM 2022. BEST: Lancet Neurol 2020. BASICS: Lancet 2021.',
-              conditions: (data) => {
-                const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
-                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
-                const hasBasilar = (data.telestrokeNote?.vesselOcclusion || []).some(v => /basilar/i.test(v)) || dx.includes('basilar') || cta.includes('basilar');
-                const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
-                const timeFrom = data.timeFromLKW;
-                return hasBasilar && nihss >= 10 && timeFrom && timeFrom.total <= 24;
-              }
-            },
             // STATUS EPILEPTICUS PROTOCOL
             status_epilepticus_protocol: {
               id: 'status_epilepticus_protocol',
@@ -5980,7 +6163,7 @@ fever_management: {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
                 const hx = (data.telestrokeNote?.pmh || '').toLowerCase();
-                const hasPolyvasc = hx.includes('cad') || hx.includes('coronary') || hx.includes('pad') || hx.includes('peripheral arterial') || hx.includes('mi') || hx.includes('cabg') || hx.includes('stent');
+                const hasPolyvasc = CAD_TEXT_RE.test(hx) || /\bpad\b|peripheral\s+arterial/i.test(hx);
                 return isIschemic && hasPolyvasc;
               }
             },
@@ -5988,18 +6171,25 @@ fever_management: {
             oceanic_stroke_fxia: {
               id: 'oceanic_stroke_fxia',
               category: 'Secondary Prevention',
-              title: 'OCEANIC-STROKE: Factor XIa inhibition (Asundexian)',
-              recommendation: 'In patients with non-cardioembolic ischemic stroke or high-risk TIA, adding a Factor XIa inhibitor (e.g., asundexian) to standard antiplatelet therapy may be considered to reduce ischemic events.',
-              detail: 'OCEANIC-STROKE evaluates asundexian 50 mg daily vs placebo, on top of standard antiplatelet therapy, in patients with acute non-cardioembolic ischemic stroke or high-risk TIA (within 48h). Factor XIa inhibition aims to uncouple hemostasis from thrombosis, potentially reducing recurrent ischemic events without significantly increasing major bleeding.',
-              classOfRec: 'IIb',
+              title: 'OCEANIC-STROKE: Factor XIa inhibition (asundexian) — positive phase 3',
+              recommendation: 'In non-cardioembolic ischemic stroke or high-risk TIA with atherosclerosis features, asundexian 50 mg daily added to antiplatelet therapy reduced recurrent ischemic stroke without increasing major bleeding (OCEANIC-STROKE, NEJM 2026). Regulatory status and guideline grading pending — not yet standard of care.',
+              detail: 'OCEANIC-STROKE (Sharma, NEJM 2026;394:1467-79, PMID 41985132, DOI 10.1056/NEJMoa2513880): 12,327 patients with non-cardioembolic ischemic stroke or high-risk TIA within 72 h, enriched for atherosclerosis (nonlacunar infarct, atherosclerosis history, or plaque on imaging), randomized to asundexian 50 mg daily vs placebo on top of single/dual antiplatelet therapy. Ischemic stroke: 6.2% vs 8.4% (HR 0.74, 95% CI 0.65-0.84, P<0.001). Major bleeding: 1.9% vs 1.7% (HR 1.10, 95% CI 0.85-1.44 — no significant increase). CV death/MI/stroke composite also lower. Phase 2 trials (PACIFIC-Stroke, AXIOMATIC-SSP) were neutral on MRI composites; OCEANIC-STROKE is the first positive phase-3 factor-XIa outcome trial in stroke. No guideline class yet — discuss availability/approval status before prescribing.',
+              classOfRec: 'N/A',
               levelOfEvidence: 'B-R',
-              guideline: 'OCEANIC-STROKE',
-              reference: 'OCEANIC-STROKE Trial.',
+              guideline: 'OCEANIC-STROKE (NEJM 2026) — no guideline recommendation issued yet',
+              reference: 'Sharma M et al. NEJM 2026;394:1467-79 (OCEANIC-STROKE, PMID 41985132). DOI: 10.1056/NEJMoa2513880.',
+              sourceUrl: 'https://doi.org/10.1056/NEJMoa2513880',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
+                // Surfaces for the trial's actual population — non-cardioembolic
+                // stroke/TIA with an atherosclerotic mechanism — rather than only
+                // when an unreachable regimen value was pre-selected.
+                const toast = (data.telestrokeNote?.toastClassification || '').toLowerCase();
+                const cta = (data.telestrokeNote?.ctaResults || '').toLowerCase();
                 const ap = (data.telestrokeNote?.secondaryPrevention?.antiplateletRegimen || '');
-                return isIschemic && ap === 'factor-xia-asundexian';
+                const atherosclerotic = toast.includes('athero') || cta.includes('atheroscler') || cta.includes('stenosis');
+                return isIschemic && (atherosclerotic || ap === 'factor-xia-asundexian');
               }
             },
             // DRUG INTERACTION: AED-DOAC
@@ -8424,11 +8614,6 @@ fever_management: {
           };
 
 
-          const updateContacts = (contacts) => {
-            updateSettings({ contacts });
-          };
-
-
           const formatDateTimeDisplay = (value) => {
             if (!value) return '';
             const parsed = value instanceof Date ? value : new Date(value);
@@ -8848,7 +9033,7 @@ fever_management: {
             tnkRiskBenefit: `Thrombolysis (IV tenecteplase/alteplase) risk-benefit discussion — documentation:\nAfter confirming no evident contraindications, IV thrombolysis was recommended for acute ischemic stroke. The potential benefits (improved chance of recovery without disability, greatest when treated early), the potential risks (including a risk of symptomatic intracranial hemorrhage of up to ~4%, and rarely orolingual angioedema), and the alternatives to treatment (standard supportive stroke care without thrombolysis) were discussed with the referring provider and the patient/family prior to initiating treatment. The patient/family expressed understanding and treatment proceeded per shared decision-making.`,
             evtRiskBenefit: `Endovascular therapy (mechanical thrombectomy) risk-benefit discussion — documentation:\nGiven a large-vessel occlusion with disabling neurological deficits and no evident contraindications, mechanical thrombectomy was recommended and the patient will be transferred to a thrombectomy-capable comprehensive stroke center for evaluation. The potential benefits, the potential risks (including groin/access-site complications, vessel injury, and intracranial hemorrhage), and the alternatives to treatment were discussed with the referring provider and the patient/family; the neurointerventional team will obtain informed consent from the patient/family prior to the procedure.`,
             postTnk: `Post-IV thrombolysis (TNK/tPA) management:\n- Admit to ICU / monitored stroke unit\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h\n- No antiplatelet or anticoagulant agents for 24h after thrombolysis\n- Maintain BP <180/105 for 24h after thrombolysis\n- Non-contrast head CT at ~24h post-thrombolysis (sooner if any deterioration)\n- MRI brain with diffusion-weighted imaging when feasible\n- EKG and continuous telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention\n- Monitor for post-thrombolysis complications: symptomatic ICH and orolingual angioedema`,
-            postEvt: `Post-endovascular thrombectomy (EVT) management:\n- Admit to Neuro ICU for ≥24h\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h; monitor arterial access site and distal pulses\n- Blood pressure during the procedure: maintain SBP >140 mmHg (neuroanesthesia responsible)\n- Blood pressure after successful reperfusion: maintain SBP 140-180 mmHg for ≥72h; avoid SBP <140 (associated with harm — ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II); keep BP <180/105\n- Antithrombotic timing per the neurointerventional team, after 24h imaging excludes hemorrhage\n- Non-contrast head CT (or dual-energy CT if available) at ~24h; immediate CT if clinical deterioration or failed recanalization (mTICI 0-2a)\n- MRI brain with diffusion-weighted imaging when feasible; EKG and telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention`
+            postEvt: `Post-endovascular thrombectomy (EVT) management:\n- Admit to Neuro ICU for ≥24h\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h; monitor arterial access site and distal pulses\n- Blood pressure during the procedure: maintain SBP >140 mmHg (neuroanesthesia responsible)\n- Blood pressure after DOCUMENTED successful reperfusion (mTICI 2b-3): maintain SBP 140-180 mmHg for ≥24h (up to 72h per local protocol); avoid SBP <140 (harm in ENCHANTED2-MT and OPTIMAL-BP; no benefit of lower targets in BP-TARGET/BEST-II); keep BP <180/105 if IV lytic given\n- Antithrombotic timing per the neurointerventional team, after 24h imaging excludes hemorrhage\n- Non-contrast head CT (or dual-energy CT if available) at ~24h; immediate CT if clinical deterioration or failed recanalization (mTICI 0-2a)\n- MRI brain with diffusion-weighted imaging when feasible; EKG and telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention`
           };
 
           const copyToClipboard = (text, label) => {
@@ -13043,7 +13228,10 @@ fever_management: {
             }
             const ptt = parseFloat(n.ptt);
             if (n.tnkRecommended && !isNaN(ptt) && ptt > 40) {
-              warnings.push({ id: 'tnk-ptt', severity: 'error', msg: `TNK recommended with aPTT ${ptt}s — aPTT >40s is a relative contraindication` });
+              warnings.push({ id: 'tnk-ptt', severity: 'error', msg: `TNK recommended with aPTT ${ptt}s — aPTT >40s contraindicates thrombolysis until anticoagulant effect is excluded (auto-block active)` });
+            }
+            if (n.tnkRecommended && n.tnkContraindicationChecklist?.recentMajorSurgery) {
+              warnings.push({ id: 'tnk-major-surgery', severity: 'error', msg: 'TNK recommended with recent major extracranial surgery/trauma — RELATIVE contraindication: careful risk-benefit assessment required; proceed only with documented justification.' });
             }
             // Lab-not-checked warnings when TNK recommended
             if (n.tnkRecommended && !n.inr) {
@@ -13455,7 +13643,7 @@ fever_management: {
               const bpMatch = n.bpPostEVT.match(/(\d+)/);
               const sbp = bpMatch ? parseInt(bpMatch[1], 10) : NaN;
               if (!isNaN(sbp) && sbp < 140) {
-                warnings.push({ id: 'post-evt-bp-too-low', severity: 'error', msg: `Post-EVT SBP ${sbp} mmHg — SBP <140 after successful reperfusion is Class III: Harm (ENCHANTED2/MT, BEST-II JAMA 2023). SBP <130 associated with worse outcomes. Target SBP 140-180/105.` });
+                warnings.push({ id: 'post-evt-bp-too-low', severity: 'error', msg: `Post-EVT SBP ${sbp} mmHg — intensive lowering (SBP <140) after successful reperfusion is Class III: Harm (harm in ENCHANTED2/MT and OPTIMAL-BP; no benefit of lower targets in BP-TARGET/BEST-II). Target SBP 140-180.` });
               }
             }
 
@@ -14007,12 +14195,12 @@ fever_management: {
           const jumpToEncounterField = (fieldName) => {
             const fieldTargets = {
               Age: { phase: 'phase-triage', section: 'patient-info-section', focusIds: ['input-age', 'phone-input-age'] },
-              Weight: { phase: 'phase-triage', section: 'patient-info-section', focusIds: ['input-weight'] },
+              Weight: { phase: 'phase-triage', section: 'patient-info-section', focusIds: ['input-weight', 'video-input-weight'] },
               LKW: { phase: 'phase-triage', section: 'lkw-section', focusIds: ['lkw-time', 'lkw-date', 'discovery-date', 'discovery-time', 'phone-lkw-date', 'phone-lkw-time', 'phone-discovery-date', 'phone-discovery-time'] },
-              Diagnosis: { phase: 'phase-decision', section: 'treatment-decision', focusIds: ['input-diagnosis'] },
+              Diagnosis: { phase: 'phase-decision', section: 'treatment-decision', focusIds: ['input-diagnosis', 'video-input-diagnosis'] },
               NIHSS: { phase: 'phase-triage', section: 'nihss-section', focusIds: ['input-nihss', 'phone-input-nihss'] },
               'CT Head': { phase: 'phase-triage', section: 'imaging-section', focusIds: ['input-ct-results', 'phone-input-ct-results'] },
-              Disposition: { phase: 'phase-documentation', section: 'discharge-checklist-section', focusIds: ['input-disposition'] }
+              Disposition: { phase: 'phase-documentation', section: 'discharge-checklist-section', focusIds: ['input-disposition', 'video-input-disposition'] }
             };
             const target = fieldTargets[fieldName];
             if (!target) return;
@@ -14142,6 +14330,7 @@ fever_management: {
               aspectsScore: isValidAspectsScore(aspectsScore) ? aspectsScore : null,
               gcsScore: calculateGCS(gcsItems),
               timeFromLKW: timeFrom,
+              abcd2Score: abcd2Complete ? calculateABCD2Score(abcd2Items) : null,
               ichScore: typeof calculateICHScore === 'function' ? calculateICHScore(ichScoreItems) : 0
             };
             return Object.values(GUIDELINE_RECOMMENDATIONS).filter(rec => {
@@ -14209,6 +14398,80 @@ fever_management: {
             const filter = evidenceFilter.toLowerCase();
             if (sectionTitle.toLowerCase().includes(filter)) return true;
             return documentTitles.some(title => title.toLowerCase().includes(filter));
+          };
+
+          // One Reference Library document row, driven by the module-level
+          // REFERENCE_LIBRARY_SECTIONS registry (P4-4). Renders the optional
+          // year badge and "Superseded by …" chip when the registry carries
+          // those fields.
+          const renderReferenceDoc = (doc, inGroup = false) => {
+            const HeadingTag = inGroup ? 'h5' : 'h4';
+            const superseder = doc.supersededBy ? REFERENCE_DOC_BY_ID.get(doc.supersededBy) : null;
+            const isExternal = doc.type === 'external-link';
+            return (
+              <div key={doc.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
+                <div className="flex items-center gap-3 flex-1">
+                  {(doc.icon || isExternal) && (
+                    <i aria-hidden="true" data-lucide={doc.icon || 'external-link'} className={`w-6 h-6 ${doc.icon === 'image' ? 'text-ok-600 dark:text-ok-300' : 'text-cobalt-600 dark:text-cobalt-300'}`}></i>
+                  )}
+                  <div className="flex-1">
+                    <HeadingTag className="text-sm font-medium text-slate-900 dark:text-ink flex flex-wrap items-center gap-x-2 gap-y-1">
+                      <span>{doc.title}</span>
+                      {doc.year && (
+                        <span className="px-1.5 py-0.5 rounded border border-line bg-paper-2 font-mono text-[11px] font-normal text-mute">{doc.year}</span>
+                      )}
+                      {superseder && (
+                        <span className="px-1.5 py-0.5 rounded-full border border-warn-300 bg-warn-50 text-warn-800 text-[11px] font-semibold dark:border-warn-700 dark:bg-warn-950 dark:text-warn-300">
+                          Superseded by {superseder.title}
+                        </span>
+                      )}
+                    </HeadingTag>
+                    <p className="text-xs text-slate-600 dark:text-mute">{doc.subtitle}</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {isExternal ? (
+                    <a
+                      href={doc.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
+                    >
+                      <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
+                      {doc.linkLabel || 'Open Link'}
+                    </a>
+                  ) : (
+                    <>
+                      <a
+                        href={doc.path}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
+                      >
+                        <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
+                        View
+                      </a>
+                      <a
+                        href={doc.path}
+                        download
+                        className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
+                      >
+                        <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
+                        Download
+                      </a>
+                      <button
+                        onClick={() => emailDocument(doc.emailTitle || doc.title, doc.path)}
+                        className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                        title="Email this document"
+                      >
+                        <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
+                        Email
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
           };
 
           const fuzzyScore = (query, target) => {
@@ -14344,7 +14607,11 @@ fever_management: {
               return true;
             };
             const missing = trackedFields.filter((field) => !isFieldPresent(field.value));
-            const required = [];
+            // Hard gate (judgment, PR-documented): a generated encounter note
+            // without a Diagnosis or a time reference (LKW/discovery) is
+            // clinically misleading — those two block output. Everything else
+            // stays 'recommended' so progressive drafting still works.
+            const required = missing.filter((field) => field.name === 'Diagnosis' || field.name === 'LKW');
             const recommended = missing;
             const completedCount = trackedFields.length - missing.length;
             const readinessPercent = Math.round((completedCount / trackedFields.length) * 100);
@@ -15660,36 +15927,18 @@ fever_management: {
             const elevatedAPTT = !Number.isNaN(pttVal) && pttVal > 40;
             const lowGlucose = !Number.isNaN(glucVal) && glucVal < 50;
             const isICH = telestrokeNote.diagnosisCategory === 'ich' || telestrokeNote.diagnosisCategory === 'sah';
-            // DOAC clearance-aware auto-block: only block if <97% cleared
+            // Single canonical DOAC-recency model (CrCl-adjusted clearance) —
+            // shared with the contraindication-checklist auto-detection.
             const doacType = telestrokeNote.lastDOACType;
-            let recentDOAC = false;
-            let doacClearanceNote = '';
-            if (doacType && doacType !== 'warfarin' && doacType !== 'none') {
-              const lastDose = telestrokeNote.lastDOACDose ? new Date(telestrokeNote.lastDOACDose) : null;
-              if (lastDose && !Number.isNaN(lastDose.getTime())) {
-                const hoursSince = (Date.now() - lastDose.getTime()) / (1000 * 60 * 60);
-                if (hoursSince >= 0) {
-                  const crcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
-                  const crclVal = crcl ? crcl.value : null;
-                  const halfLifeMap = { apixaban: crclVal && crclVal < 30 ? 15 : 10, rivaroxaban: crclVal && crclVal < 30 ? 13 : 9, dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14, edoxaban: crclVal && crclVal < 30 ? 16 : 12 };
-                  const estHalfLife = halfLifeMap[doacType] || 12;
-                  const halfLives = hoursSince / estHalfLife;
-                  const clearancePct = Math.min(99.9, (1 - Math.pow(0.5, halfLives)) * 100);
-                  if (clearancePct < 97) {
-                    recentDOAC = true;
-                    doacClearanceNote = ` (~${clearancePct.toFixed(0)}% cleared)`;
-                  }
-                } else {
-                  recentDOAC = true; // future date = can't calculate, block to be safe
-                  doacClearanceNote = ' (dose time in future — verify)';
-                }
-              } else {
-                recentDOAC = true; // no dose time entered, block to be safe
-                doacClearanceNote = ' (last dose time unknown)';
-              }
-            }
-            // Recent surgery auto-block
-            const recentSurgery = !!(telestrokeNote.tnkContraindicationChecklist?.recentIntracranialSurgery || telestrokeNote.tnkContraindicationChecklist?.recentMajorSurgery);
+            const doacRecency = assessDOACRecency(telestrokeNote);
+            const recentDOAC = doacRecency.recent;
+            const doacClearanceNote = doacRecency.note;
+            // Recent intracranial/intraspinal surgery auto-block. This is a
+            // deliberately CONSERVATIVE hard block (institutional posture).
+            // Major EXTRACRANIAL surgery is a relative contraindication
+            // (careful risk-benefit, COR IIb) and does NOT auto-block — it
+            // raises an error-severity warning in the readiness checks instead.
+            const recentSurgery = !!telestrokeNote.tnkContraindicationChecklist?.recentIntracranialSurgery;
             const hasIE = !!telestrokeNote.infectiveEndocarditis;
             const shouldBlock = warfarinWithHighINR || warfarinWithHighPT || lowPlatelets || elevatedAPTT || lowGlucose || isICH || recentDOAC || hasIE || recentSurgery;
             if (shouldBlock) {
@@ -15707,10 +15956,7 @@ fever_management: {
                 reasons.push(`Recent ${doacName}${doacClearanceNote}${dttNote}`);
               }
               if (recentSurgery) {
-                const surgTypes = [];
-                if (telestrokeNote.tnkContraindicationChecklist?.recentIntracranialSurgery) surgTypes.push('intracranial/intraspinal');
-                if (telestrokeNote.tnkContraindicationChecklist?.recentMajorSurgery) surgTypes.push('major extracranial');
-                reasons.push(`Recent ${surgTypes.join(' & ')} surgery`);
+                reasons.push('Recent intracranial/intraspinal surgery (conservative hard block)');
               }
               const reasonStr = reasons.join('; ');
               setTelestrokeNote(prev => {
@@ -15720,7 +15966,7 @@ fever_management: {
             } else {
               setTelestrokeNote(prev => prev.tnkAutoBlocked ? { ...prev, tnkAutoBlocked: false, tnkAutoBlockReason: '' } : prev);
             }
-          }, [telestrokeNote.lastDOACType, telestrokeNote.lastDOACDose, telestrokeNote.inr, telestrokeNote.pt, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.glucose, telestrokeNote.diagnosisCategory, telestrokeNote.infectiveEndocarditis, telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.tnkContraindicationChecklist?.recentIntracranialSurgery, telestrokeNote.tnkContraindicationChecklist?.recentMajorSurgery]);
+          }, [telestrokeNote.lastDOACType, telestrokeNote.lastDOACDose, telestrokeNote.inr, telestrokeNote.pt, telestrokeNote.plateletCount, telestrokeNote.ptt, telestrokeNote.glucose, telestrokeNote.diagnosisCategory, telestrokeNote.infectiveEndocarditis, telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.tnkContraindicationChecklist?.recentIntracranialSurgery]);
 
           useEffect(() => {
             const prev = decisionStateRef.current;
@@ -16698,26 +16944,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const curatedResourceUrls = new Set(encounterQuickLinks.map((link) => link.url));
           const headerResourceChips = headerResourceLinks.filter((link) => curatedResourceUrls.has(link.url));
           const headerResourceOverflow = headerResourceLinks.filter((link) => !curatedResourceUrls.has(link.url));
-          const sanitizePhoneForTel = (value) => {
-            const raw = String(value || '').trim();
-            if (!raw) return '';
-            const plusPrefixed = raw.startsWith('+');
-            const digitsOnly = raw.replace(/\D/g, '');
-            if (!digitsOnly) return '';
-            if (plusPrefixed) return `+${digitsOnly}`;
-            if (digitsOnly.length === 10) return `+1${digitsOnly}`;
-            if (digitsOnly.length === 11 && digitsOnly.startsWith('1')) return `+${digitsOnly}`;
-            return `+${digitsOnly}`;
-          };
-          const configuredContacts = Array.isArray(settings.contacts) ? settings.contacts : [];
-          const hasConfiguredPhones = configuredContacts.some((contact) => String(contact?.phone || '').trim());
-          const contactsForEdit = (hasConfiguredPhones ? configuredContacts : DEFAULT_CONTACTS).map((contact, index) => ({
-            id: contact?.id || `contact-${index}`,
-            label: String(contact?.label || '').trim(),
-            phone: String(contact?.phone || '').trim(),
-            note: String(contact?.note || '').trim()
-          }));
-          const quickContacts = contactsForEdit.filter((contact) => contact.phone && contact.label);
           const ttlDisplayHours = appConfig.ttlHoursOverride || DEFAULT_TTL_HOURS;
           const showDocumentActions = !PUBLIC_DEMO_MODE;
           const isNarrowViewport = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
@@ -20011,6 +20237,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </label>
                               <div className="flex items-center">
                                 <input
+                                  id="video-input-weight"
                                   type="number"
                                   value={telestrokeNote.weight}
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, weight: v})); }}
@@ -20614,7 +20841,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 {(() => {
                                   const a = parseFloat(telestrokeNote.ptt);
-                                  if (a && a > 40) return <p id="aptt-error" role="alert" className="text-xs text-crit-700 font-medium mt-0.5 dark:text-crit-300">Elevated aPTT — TNK relative CI</p>;
+                                  if (a && a > 40) return <p id="aptt-error" role="alert" className="text-xs text-crit-700 font-medium mt-0.5 dark:text-crit-300">Elevated aPTT (>40s) — TNK auto-blocked until anticoagulant effect excluded</p>;
                                   return null;
                                 })()}
                               </div>
@@ -20867,15 +21094,47 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               )}
                             </div>
 
-                            {/* CT Perfusion */}
+                            {/* CT Perfusion — structured inputs feed the extended-window
+                                perfusion auto-gate (getPerfusionMetrics), which free text
+                                never could */}
                             <div className="bg-slate-50 p-3 rounded border dark:bg-paper-2">
-                              <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">CT Perfusion</h3>
+                              <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">CT Perfusion (RAPID output)</h3>
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
+                                <div>
+                                  <label htmlFor="video-input-ctp-core" className="block text-xs text-slate-600 dark:text-ink-2">Core (mL)</label>
+                                  <input id="video-input-ctp-core" type="number" min="0" max="500" step="1"
+                                    value={(telestrokeNote.ctpStructured || {}).coreVolume || ''}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctpStructured: {...(prev.ctpStructured || {}), coreVolume: v}})); }}
+                                    placeholder="CBF<30%"
+                                    className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" />
+                                </div>
+                                <div>
+                                  <label htmlFor="video-input-ctp-penumbra" className="block text-xs text-slate-600 dark:text-ink-2">Penumbra (mL)</label>
+                                  <input id="video-input-ctp-penumbra" type="number" min="0" max="1500" step="1"
+                                    value={(telestrokeNote.ctpStructured || {}).penumbraVolume || ''}
+                                    onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctpStructured: {...(prev.ctpStructured || {}), penumbraVolume: v}})); }}
+                                    placeholder="Tmax>6s"
+                                    className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" />
+                                </div>
+                                <div>
+                                  <label htmlFor="video-input-ctp-mismatch" className="block text-xs text-slate-600 dark:text-ink-2">Mismatch Ratio</label>
+                                  <input id="video-input-ctp-mismatch" type="text" readOnly
+                                    value={(() => {
+                                      const c = parseFloat((telestrokeNote.ctpStructured || {}).coreVolume);
+                                      const pv = parseFloat((telestrokeNote.ctpStructured || {}).penumbraVolume);
+                                      if (!isNaN(c) && !isNaN(pv) && c > 0) { const r = pv / c; return isFinite(r) && r < 1000 ? r.toFixed(1) : '>999'; }
+                                      if (!isNaN(c) && c === 0 && !isNaN(pv) && pv > 0) return '∞';
+                                      return '';
+                                    })()}
+                                    className="w-full px-2 py-1 border border-line rounded text-sm bg-slate-50 text-center font-medium dark:bg-paper-2" />
+                                </div>
+                              </div>
                               <textarea
                                 aria-label="CT Perfusion results"
                                 value={telestrokeNote.ctpResults}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, ctpResults: v})); }}
-                                placeholder=""
-                                rows="3"
+                                placeholder="Additional CTP notes..."
+                                rows="2"
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
                               />
                             </div>
@@ -20904,11 +21163,18 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {(() => {
                             const timeFromLKW = calculateTimeFromLKW();
                             const hoursFromLKW = timeFromLKW ? timeFromLKW.total : null;
-                            const nihss = parseInt(telestrokeNote.nihss, 10) || nihssScore || 0;
+                            const nihssRaw = parseInt(telestrokeNote.nihss, 10);
+                            const nihssKnown = Number.isFinite(nihssRaw) || Number.isFinite(nihssScore);
+                            const nihss = Number.isFinite(nihssRaw) ? nihssRaw : (Number.isFinite(nihssScore) ? nihssScore : 0);
                             const aspects = isValidAspectsScore(aspectsScore) ? aspectsScore : null;
                             const age = parseInt(telestrokeNote.age, 10) || 0;
                             const contraindications = detectContraindications({ telestrokeNote });
                             const criticalContraindications = contraindications.filter(c => c.severity === 'critical');
+                            const occlusions = telestrokeNote.vesselOcclusion || [];
+                            const hasLVO = occlusions.some(v => ['ICA', 'M1', 'Basilar'].includes(v));
+                            const basilarOnly = occlusions.includes('Basilar') && !occlusions.some(v => ['ICA', 'M1'].includes(v));
+                            const hasMeVOOnly = !hasLVO && occlusions.some(v => ['M2', 'M3', 'M4', 'A1', 'A2', 'A3', 'P1', 'P2', 'P3'].includes(v));
+                            const wakeEval = getWakeUpEligibilityForNote(telestrokeNote);
 
                             // Determine TNK recommendation
                             let tnkRec = { eligible: false, reason: '', confidence: 'low' };
@@ -20919,43 +21185,67 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               tnkRec = { eligible: false, reason: 'Absolute contraindication(s) present', confidence: 'high' };
                             } else if (!hoursFromLKW) {
                               tnkRec = { eligible: false, reason: 'Set LKW time to evaluate', confidence: 'low' };
-                            } else if (nihss <= 5 && !telestrokeNote.disablingDeficit) {
-                              tnkRec = { eligible: false, reason: `NIHSS ${nihss} with non-disabling symptoms — IVT not recommended (Class III)`, confidence: 'medium' };
+                            } else if (!nihssKnown && !telestrokeNote.disablingDeficit) {
+                              tnkRec = { eligible: false, reason: 'Document NIHSS (or a disabling deficit) to evaluate thrombolysis', confidence: 'low' };
+                            } else if (nihssKnown && nihss <= 5 && !telestrokeNote.disablingDeficit) {
+                              tnkRec = { eligible: false, reason: `NIHSS ${nihss} with non-disabling symptoms — IVT not recommended (Class III). TEMPO-2 (Lancet 2024): TNK in minor non-disabling stroke WITH occlusion showed no benefit and possible harm (death 5% vs 1%).`, confidence: 'medium' };
                             } else if (hoursFromLKW <= 4.5) {
-                              if (nihss >= 4 || telestrokeNote.nihssDetails || telestrokeNote.disablingDeficit) {
+                              if (nihss >= 4 || telestrokeNote.disablingDeficit) {
                                 tnkRec = { eligible: true, reason: `Within 4.5h window, NIHSS ${nihss}`, confidence: 'high' };
                               }
                             } else if (hoursFromLKW > 4.5 && hoursFromLKW <= 9) {
-                              tnkRec = { eligible: true, reason: `Extended window (${hoursFromLKW.toFixed(1)}h) — consider IVT if CTP/MR perfusion mismatch or DWI/FLAIR mismatch`, confidence: 'medium' };
+                              if (wakeEval.extendEligible) {
+                                tnkRec = { eligible: true, reason: `Extended window (${hoursFromLKW.toFixed(1)}h) — documented perfusion criteria met (core ≤70 mL, mismatch ratio ≥1.2, mismatch volume ≥10 mL; EXTEND)`, confidence: 'medium' };
+                              } else {
+                                tnkRec = { eligible: false, reason: `Extended window (${hoursFromLKW.toFixed(1)}h) — IVT requires documented CTP/MR perfusion mismatch (EXTEND criteria) or DWI/FLAIR mismatch. Enter perfusion results in the wake-up/extended-window workflow to evaluate.`, confidence: 'low' };
+                              }
                             } else if (hoursFromLKW > 9 && hoursFromLKW <= 24) {
                               tnkRec = { eligible: false, reason: 'Late window (9-24h): benefit depends on LVO status and EVT plan. Non-LVO/MeVO with CTP mismatch (OPTION) or LVO without EVT (TRACE-III) may benefit. LVO+EVT bridging does NOT improve outcomes (TIMELESS). See late-window thrombolysis protocol.', confidence: 'medium' };
                             } else if (hoursFromLKW > 24) {
                               tnkRec = { eligible: false, reason: 'Outside all IVT windows (>24h)', confidence: 'high' };
                             }
 
-                            // EVT Logic
+                            // EVT Logic — requires a documented target occlusion; large-core
+                            // branches require a documented numeric ASPECTS (never inferred
+                            // from a blank score). Large-core eligibility defers to the
+                            // trial-criteria evaluator in calculators-extended.js.
+                            const largeCoreArgs = { age: telestrokeNote.age, nihss, aspects, coreMl: wakeEval.perfusion?.coreVolume, timeFromLKWh: hoursFromLKW, premorbidMRS: telestrokeNote.premorbidMRS };
                             if (!hoursFromLKW) {
                               evtRec = { eligible: false, reason: 'Set LKW time to evaluate', confidence: 'low' };
-                            } else if (nihss >= 6 && hoursFromLKW <= 24) {
-                              if (hoursFromLKW <= 6) {
-                                if (aspects >= 6) {
-                                  evtRec = { eligible: true, reason: `Early window, NIHSS ${nihss}, ASPECTS ${aspects}`, confidence: 'high' };
-                                } else if (aspects >= 0 && aspects <= 5) {
-                                  evtRec = { eligible: true, reason: `Early window large core (SVIN 2025): ASPECTS ${aspects}`, confidence: 'medium' };
-                                }
-                              } else if (hoursFromLKW > 6 && hoursFromLKW <= 24) {
-                                if (aspects >= 6) {
-                                  evtRec = { eligible: true, reason: `Late window eligible (DAWN/DEFUSE criteria likely met)`, confidence: 'medium' };
-                                } else if (aspects >= 3 && aspects <= 5) {
-                                  evtRec = { eligible: true, reason: `Late window large core (SVIN 2025): ASPECTS ${aspects}`, confidence: 'medium' };
-                                } else if (aspects <= 2) {
-                                  evtRec = { eligible: false, reason: `ASPECTS ${aspects} - late window benefit uncertain (SVIN IIb)`, confidence: 'medium' };
-                                }
-                              }
-                            } else if (nihss < 6) {
-                              evtRec = { eligible: false, reason: `NIHSS ${nihss} - consider if LVO present (STEP trial)`, confidence: 'medium' };
                             } else if (hoursFromLKW > 24) {
                               evtRec = { eligible: false, reason: 'Outside EVT window (>24h)', confidence: 'high' };
+                            } else if (occlusions.length === 0) {
+                              evtRec = { eligible: false, reason: 'No target vessel occlusion documented — EVT evaluation requires CTA/MRA vessel status. Select the occluded vessel(s) above to evaluate.', confidence: 'low' };
+                            } else if (hasMeVOOnly) {
+                              evtRec = { eligible: false, reason: 'Isolated medium/distal-vessel occlusion — routine EVT not supported (DISTAL, ESCAPE-MeVO 2025). Consider trial enrollment (STEP) or case-by-case neurointervention review for disabling deficits.', confidence: 'medium' };
+                            } else if (!hasLVO) {
+                              evtRec = { eligible: false, reason: 'No large-vessel occlusion (ICA/M1/basilar) documented — EVT not indicated without a target occlusion.', confidence: 'medium' };
+                            } else if (!nihssKnown) {
+                              evtRec = { eligible: false, reason: 'LVO documented — enter NIHSS to complete EVT evaluation.', confidence: 'low' };
+                            } else if (nihss < 6) {
+                              evtRec = { eligible: false, reason: `NIHSS ${nihss} with LVO — below standard EVT trial threshold (NIHSS ≥6). Consider STEP trial (low-NIHSS LVO domain) or individualized decision for disabling deficits.`, confidence: 'medium' };
+                            } else if (basilarOnly) {
+                              evtRec = { eligible: true, reason: `Basilar occlusion, NIHSS ${nihss}, ${hoursFromLKW.toFixed(1)}h — EVT supported to 24h (ATTENTION/BAOCHE); assess pc-ASPECTS and extent of brainstem infarct.`, confidence: 'medium' };
+                            } else if (aspects === null) {
+                              evtRec = { eligible: false, reason: `LVO within ${hoursFromLKW <= 6 ? '6h' : '24h'} — document ASPECTS to complete EVT evaluation (≥6 standard pathway; 0-5 large-core pathway).`, confidence: 'low' };
+                            } else if (hoursFromLKW <= 6) {
+                              if (aspects >= 6) {
+                                evtRec = { eligible: true, reason: `Early window, NIHSS ${nihss}, ASPECTS ${aspects}`, confidence: 'high' };
+                              } else {
+                                const lc = evaluateLargeCoreEVT(largeCoreArgs);
+                                evtRec = lc && lc.eligible
+                                  ? { eligible: true, reason: `Early window large core: ASPECTS ${aspects} — ${lc.bestMatch} trial criteria met (SVIN 2025 large-core pathway).`, confidence: 'medium' }
+                                  : { eligible: false, reason: `ASPECTS ${aspects} — large-core trial criteria not met.${lc && lc.rationale ? ` ${lc.rationale}` : ''}`, confidence: 'medium' };
+                              }
+                            } else {
+                              if (aspects >= 6) {
+                                evtRec = { eligible: true, reason: 'Late window eligible (DAWN/DEFUSE-3 criteria likely met — confirm with perfusion imaging)', confidence: 'medium' };
+                              } else {
+                                const lc = evaluateLargeCoreEVT(largeCoreArgs);
+                                evtRec = lc && lc.eligible
+                                  ? { eligible: true, reason: `Late window large core: ASPECTS ${aspects} — ${lc.bestMatch} trial criteria met (SVIN 2025 large-core pathway).`, confidence: 'medium' }
+                                  : { eligible: false, reason: `ASPECTS ${aspects} — late-window large-core trial criteria not met.${lc && lc.rationale ? ` ${lc.rationale}` : ''}`, confidence: 'medium' };
+                              }
                             }
 
                             // Only show if we have some data to work with
@@ -21126,7 +21416,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <label className="block text-sm font-medium text-slate-700 mb-2 dark:text-ink-2">Diagnosis</label>
 
                               {/* Diagnosis Category Selector */}
-                              <div className="flex flex-wrap gap-2 mb-2">
+                              <div id="video-input-diagnosis" tabIndex={-1} className="flex flex-wrap gap-2 mb-2">
                                 {[
                                   { value: 'ischemic', label: 'Ischemic Stroke or TIA', color: 'blue', icon: 'activity' },
                                   { value: 'ich', label: 'Intracranial Hemorrhage', color: 'red', icon: 'alert-triangle' },
@@ -21468,13 +21758,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   { id: 'pregnancy', label: 'Pregnancy', note: 'consult OB/GYN; alteplase/TNK do not cross placenta' },
                                   { id: 'recentStroke', label: 'Ischemic stroke within 3 months', note: null },
                                   { id: 'recentHeadTrauma', label: 'Moderate-severe head trauma', note: '14 days–3 months' },
-                                  { id: 'recentIntracranialSurgery', label: 'Recent intracranial/intraspinal surgery', note: '14 days–3 months' },
-                                  { id: 'recentMajorSurgery', label: 'Non-CNS major surgery or trauma', note: '14 days–3 months' },
+                                  { id: 'recentIntracranialSurgery', label: 'Recent intracranial/intraspinal surgery', note: '14 days–3 months — auto-blocks TNK (conservative hard block)' },
+                                  { id: 'recentMajorSurgery', label: 'Non-CNS major surgery or trauma', note: '14 days–3 months — warning only (careful risk-benefit); does not auto-block' },
                                   { id: 'recentGIGUBleeding', label: 'Recent GI/urinary tract hemorrhage', note: '<21 days' },
                                   { id: 'recentArterialPuncture', label: 'Recent arterial puncture at non-compressible site', note: '<7 days' },
                                   { id: 'recentLumbarPuncture', label: 'Recent dural puncture', note: '<7 days' },
                                   { id: 'recentHeparin', label: 'Treatment-dose heparin/LMWH', note: 'check aPTT; must be ≤40s' },
-                                  { id: 'recentDOAC', label: 'Recent DOAC exposure', note: 'timing, renal function, and drug level dependent' },
+                                  { id: 'recentDOAC', label: 'Recent DOAC exposure', note: 'timing, renal function, and drug level dependent — auto-blocks until clearance criteria met' },
                                   { id: 'abnormalCoagUnknown', label: 'Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use', note: null },
                                   { id: 'acutePericarditis', label: 'Acute pericarditis', note: null },
                                   { id: 'unrupturedAneurysm10mm', label: 'Unruptured unsecured intracranial aneurysm >10mm', note: null },
@@ -21483,7 +21773,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   { id: 'cerebralMicrobleeds', label: 'Cerebral microbleeds >10 on prior MRI', note: 'uncertain sICH risk (COR IIb)' },
                                   { id: 'lecanemab', label: 'Lecanemab or other anti-amyloid therapy', note: 'ARIA risk' },
                                   { id: 'lowGlucose', label: 'Blood glucose <50 mg/dL', note: 'correct and reassess — auto-blocks TNK until corrected' },
-                                  { id: 'elevatedAPTT', label: 'aPTT >40 seconds', note: 'coagulopathy — confirm anticoagulant status' },
+                                  { id: 'elevatedAPTT', label: 'aPTT >40 seconds', note: 'auto-blocks TNK until anticoagulant effect excluded (conservative hard block)' },
                                   { id: 'severeRenalFailure', label: 'Severe renal failure (Cr >3 or CrCl <25)', note: 'increased bleeding risk' }
                                 ];
 
@@ -21510,14 +21800,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               const bpVal = telestrokeNote.presentingBP || '';
                               const bpMatchVal = bpVal.match(/(\d+)\s*\/\s*(\d+)/);
                               if (bpMatchVal && (parseInt(bpMatchVal[1], 10) > 185 || parseInt(bpMatchVal[2], 10) > 110)) autoDetected.severeUncontrolledHTN = true;
-                              // DOAC detection
+                              // DOAC detection — reads the SAME CrCl-adjusted
+                              // clearance model as the TNK auto-block, so the
+                              // checklist and the block can no longer disagree
+                              // about the same patient.
                               if (telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== '' && telestrokeNote.lastDOACType !== 'none' && telestrokeNote.lastDOACType !== 'warfarin' && telestrokeNote.lastDOACType !== 'heparin') {
-                                if (telestrokeNote.lastDOACDose) {
-                                  const doacDoseDate = new Date(telestrokeNote.lastDOACDose);
-                                  const hoursSinceDOAC = Number.isNaN(doacDoseDate.getTime()) ? NaN : (new Date() - doacDoseDate) / (1000 * 60 * 60);
-                                  if (!isNaN(hoursSinceDOAC) && hoursSinceDOAC < 48) autoDetected.recentDOAC = true;
-                                  else if (isNaN(hoursSinceDOAC)) autoDetected.recentDOAC = true; // assume recent if date unparseable
-                                } else { autoDetected.recentDOAC = true; }
+                                if (assessDOACRecency(telestrokeNote).recent) autoDetected.recentDOAC = true;
                               }
                               // Heparin detection
                               if (telestrokeNote.lastDOACType === 'heparin') {
@@ -21584,6 +21872,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                               const updateChecklistItem = (id, value) => setTelestrokeNote(prev => ({...prev, tnkContraindicationChecklist: {...(prev.tnkContraindicationChecklist || {}), [id]: value}}));
 
+                              // Auto-detected items for prominent banner — declared BEFORE
+                              // clearAllAndProceed, which closes over autoAbsolute (was a
+                              // temporal-dead-zone hazard when declared below it).
+                              const autoDetectedItems = Object.keys(autoDetected);
+                              const autoAbsolute = absoluteContraindications.filter(c => autoDetected[c.id]);
+                              const autoRelative = relativeContraindications.filter(c => autoDetected[c.id]);
+                              const autoCautionary = cautionaryConditions.filter(c => autoDetected[c.id]);
+
                               const clearAllAndProceed = () => {
                                 // Block if auto-detected absolute contraindications exist (including IE, ICH/SAH, etc.)
                                 if (autoAbsolute.length > 0) {
@@ -21599,12 +21895,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   return {...prev, tnkContraindicationReviewed: true, tnkContraindicationReviewTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }), tnkRecommended: true};
                                 });
                               };
-
-                              // Auto-detected items for prominent banner
-                              const autoDetectedItems = Object.keys(autoDetected);
-                              const autoAbsolute = absoluteContraindications.filter(c => autoDetected[c.id]);
-                              const autoRelative = relativeContraindications.filter(c => autoDetected[c.id]);
-                              const autoCautionary = cautionaryConditions.filter(c => autoDetected[c.id]);
 
                               return (
                                 <>
@@ -22436,13 +22726,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                     'bp_ich_target_range': 'rec-ich-bp-target',
                                                     'bp_ich_avoid_low': 'rec-ich-bp-avoid-low',
                                                     'reversal_warfarin': 'rec-ich-anticoag-reversal-warfarin',
-                                                    'reversal_doac_xa': 'rec-ich-anticoag-reversal-fxa',
-                                                    'tnk_dose': 'rec-tnk-first-line',
-                                                    'evt_window': 'rec-evt-late-window',
-                                                    'evt_large_core': 'rec-evt-large-core',
-                                                    'late_window_ivt': 'rec-late-window-ivt',
+                                                    'reversal_xa_inhibitor': 'rec-ich-anticoag-reversal-fxa',
+                                                    'tnk_standard': 'rec-tnk-first-line',
+                                                    'evt_late_window': 'rec-evt-late-window',
+                                                    'evt_standard': 'rec-evt-late-window',
+                                                    'evt_large_core_early': 'rec-evt-large-core',
+                                                    'tnk_late_window': 'rec-late-window-ivt',
+                                                    'tnk_extended_imaging': 'rec-late-window-ivt',
                                                     'dapt_minor_stroke': 'rec-dapt-minor-stroke',
-                                                    'af_anticoag_timing': 'rec-af-early-anticoag'
+                                                    'doac_timing_af': 'rec-af-early-anticoag'
                                                   };
                                                   const atlasRecId = MANAGEMENT_REC_TO_ATLAS_REC[rec.id];
                                                   if (!atlasRecId) return null;
@@ -26486,6 +26778,27 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {/* Discharge Checklist - Show when recommendations or disposition is being addressed */}
                         {telestrokeNote.diagnosis && (
                           <div id="discharge-checklist-section" className="bg-white border border-ok-200 rounded-md p-4 dark:bg-card dark:border-ok-800 ">
+                            {/* Disposition — previously absent from the video branch, so
+                                readiness could never reach 100% and GWTG STK-5/6 checks and
+                                the note emitter had nothing to read */}
+                            <div className="mb-3">
+                              <label htmlFor="video-input-disposition" className="block text-xs text-slate-600 mb-1 dark:text-ink-2">Disposition</label>
+                              <select
+                                id="video-input-disposition"
+                                value={telestrokeNote.disposition || ''}
+                                onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, disposition: v})); }}
+                                className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
+                              >
+                                <option value="">-- Select --</option>
+                                <option value="Admit to Neuro ICU">Admit to Neuro ICU</option>
+                                <option value="Admit to Stroke Unit">Admit to Stroke Unit</option>
+                                <option value="Admit to Floor">Admit to Floor</option>
+                                <option value="Transfer to CSC">Transfer to Comprehensive Stroke Center</option>
+                                <option value="Transfer to PSC">Transfer to Primary Stroke Center</option>
+                                <option value="Observation">Observation</option>
+                                <option value="Discharge">Discharge</option>
+                              </select>
+                            </div>
                             <div className="flex items-center justify-between mb-3">
                               <h2 className="text-lg font-bold text-ok-900 flex items-center gap-2 dark:text-ok-300">
                                                                 Discharge Checklist
@@ -27207,10 +27520,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const eligibleTrials2 = trialResults2.filter(t => t.status === 'eligible');
                                 const needsInfoTrials2 = trialResults2.filter(t => t.status === 'needs_info');
                                 if (eligibleTrials2.length > 0 || needsInfoTrials2.length > 0) {
-                                  note += `\nCLINICAL TRIAL ELIGIBILITY:\n`;
+                                  note += `\nCLINICAL TRIAL SCREEN (first-pass, unverified — confirm full registry record, local activation, and consent path before any recruitment action):\n`;
                                   // Engine result already carries nct (copied from activeTrial.nctId).
                                   eligibleTrials2.forEach(t => {
-                                    note += `- ELIGIBLE: ${t.trialName} (${t.nct || ''}) — ${t.quickDescription}. Criteria met: ${t.metCount}/${t.criteria.length}.\n`;
+                                    note += `- TRIAL SCREEN (first-pass, unverified): ${t.trialName} (${t.nct || ''}) — ${t.quickDescription}. Criteria met: ${t.metCount}/${t.criteria.length}.\n`;
                                   });
                                   needsInfoTrials2.forEach(t => {
                                     const missing = t.criteria.filter(c => c.status === 'unknown').map(c => c.label).join(', ');
@@ -29293,7 +29606,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li>Codominant M2: the institutional flowchart supplies no recommendation.</li>
                               </ul>
                             </div>
-                            <div className="bg-white rounded-md border-l-4 border-amber-500 p-3 dark:bg-card ">
+                            <div className="bg-white rounded-md border-l-4 border-warn-500 p-3 dark:bg-card ">
                               <p className="font-semibold text-slate-800 text-sm mb-2 dark:text-ink">Generalizability limited for</p>
                               <ul className="list-disc pl-4 text-xs text-slate-700 space-y-1 dark:text-ink-2">
                                 {GENERALIZABILITY_LIMITATIONS.map((limitation, i) => (
@@ -30128,7 +30441,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'guidelines', name: 'Guidelines' },
                         { id: 'references', name: 'Reference Library' },
                         { id: 'calculators', name: 'Calculators' },
-                        { id: 'education', name: 'Educational Resources' }
+                        { id: 'education', name: 'Educational Resources' },
+                        { id: 'whatsnew', name: "What's New" }
                       ].map((tab) => {
                         const active = researchSubTab === tab.id;
                         return (
@@ -30303,6 +30617,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {!isNIHSSComplete() && <p className="mb-2 rounded border border-warn-200 bg-warn-50 p-2 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300"><strong>Incomplete:</strong> complete every NIHSS item in the Encounter tab before using or copying the score.</p>}
                         <p className="text-xs text-slate-600 mb-2 dark:text-mute">Use the NIHSS panel in the Encounter tab for full item-by-item scoring.</p>
                         <p className="text-xs text-slate-600 dark:text-ink-2">The institutional acute-stroke algorithm requires NIHSS documentation but does not supply scoring definitions or interpretation.</p>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Brott T et al. Stroke 1989;20:864-70 (PMID 2749846).</p>
                       </div>
                     </details>
 
@@ -30370,6 +30685,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         if (gcs === null) return React.createElement('div', { className: 'mt-3 border rounded-lg p-2 text-xs bg-warn-50 border-warn-200 text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300' }, React.createElement('span', { className: 'font-semibold' }, 'Incomplete: '), 'All three GCS components (Eye, Verbal, Motor) are required for a valid score.');
                         return null;
                       })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Teasdale G, Jennett B. Lancet 1974;2:81-4 (PMID 4136544).</p>
                       </div>
                     </details>
 
@@ -30396,7 +30712,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                       {(() => {
                         const ichScore = calculateICHScore(ichScoreItems);
-                        const cohortMortality = {0: '0.9%', 1: '0.7%', 2: '5.3%', 3: '15.3%', 4: '36.8%', 5: '60.0%'};
+                        // Hemphill JC et al. Stroke 2001;32:891-897 (PMID 11283388):
+                        // 30-day mortality by ICH Score in the UCSF derivation cohort.
+                        // No patient had a score of 6; given 100% mortality at 5,
+                        // score 6 is expected to approach 100%.
+                        const cohortMortality = {0: '0%', 1: '13%', 2: '26%', 3: '72%', 4: '97%', 5: '100%', 6: '~100% (not observed in cohort)'};
                         if (ichScore === null) {
                           return (
                             <div className="mt-2 rounded-lg border border-warn-200 bg-warn-50 p-2 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300" aria-live="polite">
@@ -30409,30 +30729,31 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="mt-2 rounded-lg border border-line bg-white p-2 text-xs dark:bg-card" aria-live="polite" aria-atomic="true">
                             <span className="font-semibold">ICH Score {ichScore}.</span>{' '}
                             {mortality
-                              ? <>Comfort-care-excluded cohort (2005-2008) mortality: <span className="font-semibold">{mortality}</span>.</>
-                              : 'The institutional cohort table supplies no mortality value for score 6.'}
+                              ? <>30-day mortality (Hemphill 2001, PMID 11283388): <span className="font-semibold">{mortality}</span>. Do not use the score to limit care — early DNR/withdrawal creates a self-fulfilling prophecy (AHA/ASA 2022 ICH, Class I).</>
+                              : 'No published mortality value for this score.'}
                           </div>
                         );
                       })()}
 
-                      {/* Institutional pocket-card cohort table */}
+                      {/* Hemphill 2001 30-day mortality table */}
                       {(() => {
                         const ichScore = calculateICHScore(ichScoreItems);
                         const rows = [
-                          { s: 0, mortality: '0.9%' },
-                          { s: 1, mortality: '0.7%' },
-                          { s: 2, mortality: '5.3%' },
-                          { s: 3, mortality: '15.3%' },
-                          { s: 4, mortality: '36.8%' },
-                          { s: 5, mortality: '60.0%' },
+                          { s: 0, mortality: '0%' },
+                          { s: 1, mortality: '13%' },
+                          { s: 2, mortality: '26%' },
+                          { s: 3, mortality: '72%' },
+                          { s: 4, mortality: '97%' },
+                          { s: 5, mortality: '100%' },
+                          { s: 6, mortality: 'Not observed (~100% expected)' },
                         ];
                         return (
                           <details className="mt-3 bg-card border border-line rounded-lg text-xs">
                             <summary className="cursor-pointer px-3 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg dark:text-ink-2 dark:hover:bg-paper-2">
-                              Comfort-care-excluded cohort (2005-2008)
+                              30-day mortality by ICH Score (Hemphill 2001)
                             </summary>
                             <div className="px-3 pb-3">
-                              <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: comfort-care-excluded cohort mortality by ICH Score">
+                              <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: 30-day mortality by ICH Score (Hemphill 2001)">
                                 <table className="w-full border-collapse text-xs">
                                   <thead>
                                     <tr className="text-left text-slate-600 border-b border-line dark:text-ink-2">
@@ -30450,7 +30771,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </tbody>
                                 </table>
                               </div>
-                              <p className="mt-2 text-slate-600 dark:text-ink-2">Values reproduced from the institutional pocket card. The table provides no score-6 value and no individual treatment rule.</p>
+                              <p className="mt-2 text-slate-600 dark:text-ink-2">Hemphill JC et al. The ICH Score. Stroke 2001;32:891-897 (PMID 11283388). UCSF derivation cohort; no patient scored 6. Prognostic only — the score must NOT be used to limit treatment or justify early DNR (self-fulfilling-prophecy risk; AHA/ASA 2022 ICH).</p>
                             </div>
                           </details>
                         );
@@ -30693,6 +31014,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </label>
                           </div>
                         </div>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Rost NS et al. Stroke 2008;39:2304-9 (FUNC score, PMID 18556582).</p>
                       </div>
                     </details>
 
@@ -30748,6 +31070,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <p className="text-sm text-cobalt-800 dark:text-cobalt-300">The institutional EVT flowchart supplies the selected category definition above; it does not add an outcome label.</p>
                         </div>
                       )}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Bruno A et al. Stroke 2010;41:1048-50 (simplified mRS questionnaire, PMID 20224060).</p>
                       </div>
                     </details>
 
@@ -30814,7 +31137,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <span className={`text-sm ${abcd2Items.unilateralWeakness ? 'text-slate-600 line-through dark:text-mute' : ''}`}>Speech disturbance w/o weakness (+1)</span>
                           </label>
                           <p className="font-semibold text-sm mt-3 mb-1">Symptom Duration:</p>
-                          {[{v:'duration60',l:'>60 minutes',p:'+2 points'},{v:'duration10',l:'10-59 minutes',p:'+1 point'},{v:'durationUnder10',l:'<10 minutes',p:'0 points'},{v:'durationExactly60',l:'Exactly 60 minutes',p:'source does not assign a score'}].map(o => (
+                          {[{v:'duration60',l:'\u226560 minutes',p:'+2 points'},{v:'duration10',l:'10-59 minutes',p:'+1 point'},{v:'durationUnder10',l:'<10 minutes',p:'0 points'}].map(o => (
                             <button key={o.v} type="button" role="radio" aria-checked={abcd2Items.duration === o.v} aria-label={`Symptom Duration: ${o.l} (${o.p})`}
                               className={`w-full text-left px-3 py-2 rounded border text-sm transition-colors mb-1 ${abcd2Items.duration === o.v ? 'bg-orange-700 text-white dark:bg-orange-700 border-orange-700 font-medium' : 'bg-white border-slate-200 hover:bg-slate-50 active:bg-slate-100 dark:bg-card dark:border-line dark:hover:bg-paper-2 dark:active:bg-paper-2'}`}
                               onClick={() => setAbcd2Items(prev => ({...prev, duration: o.v, criteriaReviewed: false}))} onKeyDown={handleRadioKeyDown}
@@ -30822,11 +31145,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {o.l} <span className={abcd2Items.duration === o.v ? 'text-white' : 'text-slate-600 dark:text-mute'}>({o.p})</span>
                             </button>
                           ))}
-                          {abcd2Items.duration === 'durationExactly60' && (
-                            <p className="rounded border border-warn-200 bg-warn-50 p-2 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300">
-                              The institutional source lists &gt;60 minutes and 10-59 minutes but does not assign exactly 60 minutes. Do not infer a score pending owner adjudication.
-                            </p>
-                          )}
                           <hr className="my-3" />
                           <label className="flex items-center space-x-2">
                             <input
@@ -30869,6 +31187,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
                       </div>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Johnston SC et al. Lancet 2007;369:283-92 (ABCD², PMID 17258668).</p>
                       </div>
                     </details>
 
@@ -31005,6 +31324,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
                       </div>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Lip GY et al. Chest 2010;137:263-72 (CHA₂DS₂-VASc, PMID 19762550).</p>
                       </div>
                     </details>
 
@@ -31024,7 +31344,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.hypertension}
                               onChange={(e) => setHasbledItems(prev => ({...prev, hypertension: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>H</strong>ypertension</span>
+                            <span className="text-sm"><strong>H</strong>ypertension — uncontrolled, SBP &gt;160 mmHg</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31033,7 +31353,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.renalDisease}
                               onChange={(e) => setHasbledItems(prev => ({...prev, renalDisease: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>A</strong>bnormal renal function</span>
+                            <span className="text-sm"><strong>A</strong>bnormal renal function — dialysis, transplant, or Cr ≥2.26 mg/dL (≥200 µmol/L)</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31042,7 +31362,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.liverDisease}
                               onChange={(e) => setHasbledItems(prev => ({...prev, liverDisease: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>A</strong>bnormal liver function</span>
+                            <span className="text-sm"><strong>A</strong>bnormal liver function — cirrhosis, or bilirubin &gt;2× ULN with AST/ALT/ALP &gt;3× ULN</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31069,7 +31389,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.labileINR}
                               onChange={(e) => setHasbledItems(prev => ({...prev, labileINR: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>L</strong>abile INR</span>
+                            <span className="text-sm"><strong>L</strong>abile INR — unstable/high INRs or time-in-therapeutic-range &lt;60% (warfarin patients)</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31078,7 +31398,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.elderly}
                               onChange={(e) => setHasbledItems(prev => ({...prev, elderly: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>E</strong>lderly</span>
+                            <span className="text-sm"><strong>E</strong>lderly — age &gt;65 years</span>
                           </label>
                           <label className="flex items-center space-x-2 p-2 hover:bg-pink-50 rounded cursor-pointer">
                             <input
@@ -31096,10 +31416,21 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               checked={hasbledItems.alcohol}
                               onChange={(e) => setHasbledItems(prev => ({...prev, alcohol: e.target.checked}))}
                             />
-                            <span className="text-sm"><strong>D</strong> (cont.) Alcohol use</span>
+                            <span className="text-sm"><strong>D</strong> (cont.) Alcohol use — ≥8 drinks/week</span>
                           </label>
                         </div>
-
+                        {(() => {
+                          const score = calculateHASBLEDScore(hasbledItems);
+                          return (
+                            <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
+                              <p className="text-lg font-bold">HAS-BLED Score: {score}</p>
+                              <p className="text-xs text-slate-700 dark:text-ink-2">{score >= 3
+                                ? 'Score \u22653: elevated bleeding risk \u2014 address modifiable factors (uncontrolled BP, labile INR, antiplatelets/NSAIDs, alcohol) and review more frequently. A high score is NOT by itself a reason to withhold anticoagulation.'
+                                : 'Score 0-2: lower bleeding risk. Reassess when clinical factors change.'}</p>
+                            </div>
+                          );
+                        })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Pisters R et al. Chest 2010;138:1093-1100 (HAS-BLED, PMID 20299623).</p>
                       </div>
                     </details>
 
@@ -31170,10 +31501,45 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               max="100"
                             />
                           </div>
+                          <label className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              className="text-cobalt-600 dark:text-cobalt-300"
+                              checked={!!ropeItems.largeShunt}
+                              onChange={(e) => setRopeItems(prev => ({...prev, largeShunt: e.target.checked}))}
+                            />
+                            <span className="text-sm">Large right-to-left shunt (PASCAL)</span>
+                          </label>
+                          <label className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              className="text-cobalt-600 dark:text-cobalt-300"
+                              checked={!!ropeItems.atrialSeptalAneurysm}
+                              onChange={(e) => setRopeItems(prev => ({...prev, atrialSeptalAneurysm: e.target.checked}))}
+                            />
+                            <span className="text-sm">Atrial septal aneurysm (PASCAL)</span>
+                          </label>
                         </div>
                       </div>
-
-                    </div>
+                      {(() => {
+                        const ropeScore = calculateROPEScore(ropeItems);
+                        const ageEntered = Number.isFinite(parseInt(ropeItems.age, 10));
+                        if (!ageEntered) {
+                          return <p className="text-xs text-slate-600 italic dark:text-mute">Enter age to compute the RoPE score (age is the largest contributor).</p>;
+                        }
+                        const pascal = evaluatePASCAL({ ropeScore, largeShunt: !!ropeItems.largeShunt, atrialSeptalAneurysm: !!ropeItems.atrialSeptalAneurysm });
+                        return (
+                          <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
+                            <p className="text-lg font-bold">RoPE Score: {ropeScore} / 10</p>
+                            {pascal && (
+                              <p className="text-sm mt-1"><span className="font-semibold">PASCAL category: {pascal.category}.</span> {pascal.recommendation}</p>
+                            )}
+                            <p className="text-xs text-slate-600 mt-1 dark:text-mute">Higher RoPE = more likely the PFO is pathogenic. PASCAL combines RoPE \u22657 with high-risk morphology (large shunt or atrial septal aneurysm); closure benefit concentrates in the Probable category.</p>
+                          </div>
+                        );
+                      })()}
+                    <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Sources: Kent DM et al. Neurology 2013;81:619-25 (RoPE, PMID 23864310); Kent DM et al. JAMA 2021;326:2277-86 (PASCAL, PMID 34905030).</p>
+                      </div>
                     </details>
 
 
@@ -31232,7 +31598,20 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <span className="text-sm">Subarachnoid hemorrhage on imaging</span>
                           </label>
                         </div>
-
+                        {(() => {
+                          const score = calculateRCVS2Score(rcvs2Items);
+                          return (
+                            <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
+                              <p className="text-lg font-bold">RCVS\u00b2 Score: {score}</p>
+                              <p className="text-xs text-slate-700 dark:text-ink-2">{score >= 5
+                                ? 'Score \u22655: RCVS highly likely (sensitivity 90%, specificity 99% in the derivation cohort).'
+                                : score >= 3
+                                  ? 'Score 3-4: indeterminate \u2014 further evaluation (vessel-wall imaging, CSF, repeat vascular imaging) to distinguish RCVS from vasculitis or other arteriopathy.'
+                                  : 'Score \u22642: RCVS unlikely (85% sensitivity, 100% specificity for exclusion) \u2014 evaluate for alternative arteriopathies (e.g., primary angiitis of the CNS).'}</p>
+                            </div>
+                          );
+                        })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Rocha EA et al. Neurology 2019;92:e639-e647 (RCVS², PMID 30635475).</p>
                       </div>
                     </details>
 
@@ -31287,6 +31666,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           </div>
                         </div>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Sources: Hunt WE, Hess RM. J Neurosurg 1968;28:14-20 (PMID 5635959); WFNS Committee report, J Neurosurg 1988;68:985-6 (PMID 3131498).</p>
                       </div>
                     </details>
 
@@ -31345,6 +31725,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </select>
                           </div>
                         </div>
+                        {(() => {
+                          const score = calculatePHASESScore(phasesItems);
+                          const risk = getPHASESRisk(score);
+                          const sizeEntered = Number.isFinite(parseFloat(phasesItems.size));
+                          if (!sizeEntered) {
+                            return <p className="text-xs text-slate-600 italic mt-2 dark:text-mute">Enter aneurysm size to compute the PHASES score.</p>;
+                          }
+                          return (
+                            <div className="p-3 mt-2 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
+                              <p className="text-lg font-bold">PHASES Score: {score}</p>
+                              <p className="text-sm">5-year rupture risk: <span className="font-semibold">{risk.risk}</span> ({risk.level})</p>
+                              <p className="text-xs text-slate-600 mt-1 dark:text-mute">Population-level estimate from pooled prospective cohorts \u2014 individualize with aneurysm morphology, growth, family history, and life expectancy.</p>
+                            </div>
+                          );
+                        })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Greving JP et al. Lancet Neurol 2014;13:59-66 (PHASES, PMID 24290159).</p>
                       </div>
                     </details>
 
@@ -31392,6 +31788,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           );
                         })()}
                         <p className="text-xs text-slate-600 mt-2 dark:text-mute">ABC/2 method: A = largest diameter, B = perpendicular diameter on same slice, C = number of slices with ICH x slice thickness.</p>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Kothari RU et al. Stroke 1996;27:1304-5 (ABC/2, PMID 8711791).</p>
                       </div>
                     </details>
 
@@ -31477,6 +31874,23 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, crclCalc: {...(prev.crclCalc || {}), height: v}})); }}
                             className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" placeholder="cm (optional — enables BMI/AdjBW calculation)" />
                         </div>
+                        {(() => {
+                          const cc = telestrokeNote.crclCalc || {};
+                          const result = calculateCrCl(cc.age || telestrokeNote.age, cc.weight || telestrokeNote.weight, cc.sex || telestrokeNote.sex, cc.cr || telestrokeNote.creatinine, cc.height || telestrokeNote.height);
+                          if (!result) {
+                            return <p className="text-xs text-slate-600 italic dark:text-mute">Enter age, weight, sex, and serum creatinine to calculate CrCl.</p>;
+                          }
+                          return (
+                            <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
+                              <p className="text-lg font-bold">CrCl: {result.value} mL/min — {result.label}</p>
+                              {result.obesityWarning && <p className="text-xs text-warn-700 dark:text-warn-300">{result.obesityWarning}</p>}
+                              <p className="text-xs text-slate-700 mt-1 dark:text-ink-2">{result.value < 30 ? 'CrCl <30: renally dose-adjust anticoagulants (enoxaparin 30 mg prophylaxis; DOAC adjustments per label).' : result.value < 50 ? 'CrCl 30-49: check DOAC-specific renal adjustments (dabigatran, edoxaban, rivaroxaban).' : 'No routine renal dose adjustment at this clearance for most stroke-relevant agents.'}</p>
+                              <button onClick={() => copyToClipboard(`CrCl (Cockcroft-Gault): ${result.value} mL/min (${result.label})`, 'CrCl')}
+                                className="mt-1 px-2 py-1 bg-slate-200 rounded text-xs hover:bg-slate-300 dark:bg-overlay dark:hover:bg-overlay" aria-label="Copy CrCl to clipboard">Copy</button>
+                            </div>
+                          );
+                        })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Cockcroft DW, Gault MH. Nephron 1976;16:31-41 (PMID 1244564).</p>
                       </div>
                     </details>
 
@@ -31503,6 +31917,23 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" placeholder="mL/min (auto from demographics)" />
                           </div>
                         </div>
+                        {(() => {
+                          const ec = telestrokeNote.enoxCalc || {};
+                          const autoCrcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
+                          const result = calculateEnoxaparinDose(ec.weightKg || telestrokeNote.weight, ec.crCl || (autoCrcl ? autoCrcl.value : ''));
+                          if (!result) {
+                            return <p className="text-xs text-slate-600 italic dark:text-mute">Enter weight (and CrCl when available) to calculate enoxaparin dosing.</p>;
+                          }
+                          return (
+                            <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
+                              <p className="text-sm font-semibold">{result.prophylaxisNote}</p>
+                              <p className="text-sm mt-1">{result.note}</p>
+                              <p className="text-xs text-slate-600 mt-1 dark:text-mute">{result.dailyTreatmentNote}</p>
+                              <p className="text-xs text-slate-600 mt-1 dark:text-mute">Timing in stroke: post-lytic \u226524h with hemorrhage-free imaging; post-ICH 24-48h with stable imaging; anti-Xa monitoring for BMI &gt;40 or CrCl &lt;30.</p>
+                            </div>
+                          );
+                        })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Sherman DG et al. Lancet 2007;369:1347-55 (PREVAIL, PMID 17448820).</p>
                       </div>
                     </details>
 
@@ -31581,6 +32012,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         })()}
                         <button type="button" onClick={() => { setTelestrokeNote(prev => ({...prev, aspectsRegions: {}, aspectsAssessed: false})); if (typeof setAspectsScore === 'function') setAspectsScore(''); setAspectsRegionState(getDefaultAspectsRegionState()); }}
                           className="mt-2 text-xs text-slate-600 hover:text-slate-700 underline dark:text-mute dark:hover:text-ink">Reset all regions</button>
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Barber PA et al. Lancet 2000;355:1670-4 (ASPECTS, PMID 10905241).</p>
                       </div>
                     </details>
 
@@ -31673,6 +32105,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <p className="text-sm text-warn-700 dark:text-warn-300">Enter patient weight in the encounter section to calculate dose.</p>
                           );
                         })()}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: NINDS rt-PA Stroke Study Group. NEJM 1995;333:1581-7 (PMID 7477192).</p>
                       </div>
                     </details>
 
@@ -31737,6 +32170,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <strong>Selected grade: mTICI {telestrokeNote.ticiScore}</strong>
                           </div>
                         )}
+                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Zaidat OO et al. Stroke 2013;44:2650-63 (mTICI consensus, PMID 23920012).</p>
                       </div>
                     </details>
 
@@ -31876,7 +32310,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         { id: 'guidelines', name: "Guidelines" },
                         { id: 'references', name: "Reference Library" },
                         { id: 'calculators', name: "Calculators" },
-                        { id: 'education', name: "Educational Resources" }
+                        { id: 'education', name: "Educational Resources" },
+                        { id: 'whatsnew', name: "What's New" }
                       ].map((tab) => {
                         const active = researchSubTab === tab.id;
                         return (
@@ -31906,7 +32341,174 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {researchSubTab === 'guidelines' && (
                       <div id="research-tabpanel-guidelines" role="tabpanel" aria-labelledby="research-tab-guidelines" className="space-y-6">
-                        {/* ===== GUIDELINES ===== */}
+
+                    {/* ===== GUIDELINE LIBRARY (searchable COR/LOE catalog) =====
+                        Moved here from the Reference Library sub-tab (P4-2a) so
+                        the Guidelines tab carries the full recommendation
+                        catalog, not just external links. A compatibility
+                        pointer with the old ref-guidelines anchor remains in
+                        the Reference Library sub-tab. */}
+                    <section aria-labelledby="guideline-library-heading" className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
+                      <div className="p-4 flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                          <h2 id="guideline-library-heading" className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Guideline Library</h2>
+                          <p className="text-xs text-slate-600 font-normal dark:text-ink-2">Full COR/LOE recommendations with direct publisher PDF links.</p>
+                        </div>
+                        <span className="text-xs text-cobalt-700 font-medium dark:text-cobalt-300">{guidelineLibraryResultsCount} recommendations</span>
+                      </div>
+                      <div className="p-4 pt-0">
+
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="Search recommendations..."
+                            value={guidelineLibraryQuery}
+                            onChange={(e) => setGuidelineLibraryQuery(e.target.value)}
+                            className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
+                            aria-label="Search guideline recommendations"
+                          />
+                          <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-3 top-2.5 text-slate-500 dark:text-mute"></i>
+                        </div>
+                        <select
+                          value={guidelineLibraryGuideline}
+                          onChange={(e) => {
+                            setGuidelineLibraryGuideline(e.target.value);
+                            setGuidelineLibrarySection('');
+                          }}
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
+                          aria-label="Filter by guideline"
+                        >
+                          <option value="">All guidelines</option>
+                          {guidelineLibraryGuidelineOptions.map((option) => (
+                            <option key={option.id} value={option.id}>{option.label}</option>
+                          ))}
+                        </select>
+                        <select
+                          value={guidelineLibrarySection}
+                          onChange={(e) => setGuidelineLibrarySection(e.target.value)}
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
+                          aria-label="Filter by section"
+                        >
+                          <option value="">All sections</option>
+                          {guidelineLibrarySectionOptions.map((section) => (
+                            <option key={section} value={section}>{section}</option>
+                          ))}
+                        </select>
+                        <select
+                          value={guidelineLibraryClass}
+                          onChange={(e) => setGuidelineLibraryClass(e.target.value)}
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
+                          aria-label="Filter by class of recommendation"
+                        >
+                          <option value="">All classes</option>
+                          {guidelineLibraryClassOptions.map((item) => (
+                            <option key={item} value={item}>{item}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {filteredGuidelineLibrary.length === 0 ? (
+                        <p className="text-sm text-slate-600 mt-3 dark:text-ink-2">No recommendations match the current filters. <button type="button" onClick={() => { setGuidelineLibraryQuery(''); setGuidelineLibraryGuideline(''); setGuidelineLibrarySection(''); setGuidelineLibraryClass(''); }} className="text-cobalt-700 underline dark:text-cobalt-300">Clear filters</button>.</p>
+                      ) : (
+                        <div className="mt-4 space-y-3">
+                          {filteredGuidelineLibrary.map((guideline) => {
+                            const grouped = {};
+                            guideline.recommendations.forEach((rec) => {
+                              if (!grouped[rec.section]) grouped[rec.section] = [];
+                              grouped[rec.section].push(rec);
+                            });
+                            const shouldExpand = Boolean(guidelineLibraryQuery || guidelineLibraryGuideline || guidelineLibrarySection || guidelineLibraryClass);
+                            return (
+                              <details key={guideline.id} className="border border-cobalt-200 rounded-lg bg-cobalt-50/40 dark:bg-cobalt-900/40 dark:border-cobalt-700" open={shouldExpand}>
+                                <summary className="cursor-pointer p-3 font-semibold text-cobalt-900 hover:bg-cobalt-100 rounded-lg flex items-center justify-between gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-800">
+                                  <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                    <span>{guideline.shortTitle || guideline.title}</span>
+                                    {guideline.summaryOnly && (
+                                      <span className="px-1.5 py-0.5 rounded-full border border-warn-300 bg-warn-50 text-warn-800 text-[11px] font-semibold dark:border-warn-700 dark:bg-warn-950 dark:text-warn-300">Summary only — see source</span>
+                                    )}
+                                  </span>
+                                  <span className="text-xs text-cobalt-600 shrink-0 dark:text-cobalt-300">{guideline.recommendations.length} recs</span>
+                                </summary>
+                                <div className="p-3 pt-0 space-y-3">
+                                  {Object.entries(grouped).map(([section, recs]) => (
+                                    <details key={section} className="bg-white border border-cobalt-100 rounded-lg dark:bg-card" open={shouldExpand || guidelineLibrarySection === section}>
+                                      <summary className="cursor-pointer px-3 py-2 text-sm font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-900">
+                                        <span>{section}</span>
+                                        <span className="text-xs text-cobalt-500">{recs.length}</span>
+                                      </summary>
+                                      <div className="px-3 pb-3 space-y-2">
+                                        {recs.map((rec) => {
+                                          const recClass = rec.classOfRec || 'Statement';
+                                          const recLevel = rec.levelOfEvidence || 'Ungraded';
+                                          const quickActions = getGuidelineQuickActions(rec.text);
+                                          return (
+                                            <div key={rec.id} id={`gl-rec-${rec.id}`} className="border border-cobalt-100 rounded-lg p-2 bg-cobalt-50/50 dark:bg-cobalt-900/50">
+                                              <div className="flex items-start gap-2">
+                                                <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold shrink-0 ${GUIDELINE_CLASS_COLORS[recClass] || 'bg-slate-500 text-white'}`}>
+                                                  {recClass}/{recLevel}
+                                                </span>
+                                                <div className="flex-1 min-w-0">
+                                                  <p className="text-sm text-slate-800 dark:text-ink">{rec.text}</p>
+                                                  {rec.classNote && (
+                                                    <p className="text-xs italic text-slate-600 mt-1 dark:text-mute">Note: {rec.classNote}</p>
+                                                  )}
+                                                  <p className="text-xs text-slate-600 mt-1 dark:text-mute">
+                                                    {guideline.title}
+                                                    {rec.page ? ` · p. ${rec.page}` : ''}
+                                                  </p>
+                                                  <div className="flex flex-wrap items-center gap-2 mt-1 text-xs">
+                                                    {rec.sourceUrl && (
+                                                      <a href={rec.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-link-600 dark:text-link-400 hover:text-link-700 hover:underline font-medium">
+                                                        <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
+                                                        <span>Publisher</span>
+                                                      </a>
+                                                    )}
+                                                    {rec.pdfSourceUrl && (
+                                                      <a href={rec.pdfSourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-link-600 dark:text-link-400 hover:text-link-700 hover:underline font-medium">
+                                                        <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
+                                                        <span>PDF p.{rec.page}</span>
+                                                      </a>
+                                                    )}
+                                                    {guideline.pubmedFallbackUrl && (
+                                                      <a href={guideline.pubmedFallbackUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-link-600 dark:text-link-400 hover:text-link-700 hover:underline font-medium">
+                                                        <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
+                                                        <span>PubMed</span>
+                                                      </a>
+                                                    )}
+                                                  </div>
+                                                  {quickActions.length > 0 && (
+                                                    <div className="flex flex-wrap gap-1 mt-2">
+                                                      {quickActions.map((action) => (
+                                                        <button
+                                                          key={action.id}
+                                                          type="button"
+                                                          onClick={() => navigateTo(action.target.tab, { subTab: action.target.subTab })}
+                                                          className="px-3 py-1.5 text-xs font-semibold rounded-full border border-cobalt-200 text-cobalt-700 hover:bg-cobalt-100 min-h-[32px] dark:border-cobalt-700 dark:text-cobalt-300 dark:hover:bg-cobalt-800"
+                                                        >
+                                                          {action.label}
+                                                        </button>
+                                                      ))}
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              </div>
+                                            </div>
+                                          );
+                                        })}
+                                      </div>
+                                    </details>
+                                  ))}
+                                </div>
+                              </details>
+                            );
+                          })}
+                        </div>
+                      )}
+                      </div>
+                    </section>
+
+                        {/* ===== GUIDELINES (external link grid) ===== */}
                     <section aria-labelledby="research-guidelines-heading" className="space-y-4">
                       <header>
                         <p className="font-mono uppercase text-eyebrow text-mute mb-1">Reference</p>
@@ -31929,10 +32531,106 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <p className="font-mono text-[11px] text-mute uppercase tracking-wide mt-1">{gl.shortTitle}</p>
                               ) : null}
                             </a>
+                            {(gl.summaryOnly || gl.pubmedFallbackUrl) && (
+                              <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                                {gl.summaryOnly && (
+                                  <span className="px-1.5 py-0.5 rounded-full border border-warn-300 bg-warn-50 text-warn-800 text-[11px] font-semibold dark:border-warn-700 dark:bg-warn-950 dark:text-warn-300">Summary only — see source</span>
+                                )}
+                                {gl.pubmedFallbackUrl && (
+                                  <a
+                                    href={gl.pubmedFallbackUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="font-semibold text-cobalt-700 hover:underline dark:text-cobalt-300"
+                                    aria-label={`Open ${gl.shortTitle || gl.title} on PubMed (opens in new tab)`}
+                                  >
+                                    PubMed
+                                  </a>
+                                )}
+                              </div>
+                            )}
                           </li>
                         ))}
                       </ul>
                     </section>
+                      </div>
+                    )}
+
+                    {/* What's New — curated evidence feed rendered verbatim from
+                        whats-new.json. Verified items link to PubMed/DOI; the
+                        unverified tier links only to its briefing source (never
+                        a synthesized PubMed link). */}
+                    {researchSubTab === 'whatsnew' && (
+                      <div id="research-tabpanel-whatsnew" role="tabpanel" aria-labelledby="research-tab-whatsnew" className="space-y-6">
+                        <section aria-labelledby="research-whatsnew-heading" className="space-y-4">
+                          <header>
+                            <p className="font-mono uppercase text-eyebrow text-mute mb-1">Curated evidence feed</p>
+                            <h2 id="research-whatsnew-heading" className="font-serif text-section text-ink">What&#8217;s New</h2>
+                          </header>
+                          <ul className="grid grid-cols-1 gap-3">
+                            {WHATS_NEW_ITEMS.map((item) => {
+                              const verified = item.verificationStatus === 'verified';
+                              const doiUrl = item.doi ? `https://doi.org/${item.doi}` : null;
+                              return (
+                                <li key={item.id} className="v7-card t-prevent">
+                                  <p className="font-sans text-body text-ink font-medium leading-snug text-pretty">
+                                    {item.fullName || item.shortName}
+                                  </p>
+                                  <p className="font-mono text-[11px] text-mute uppercase tracking-wide mt-1">
+                                    {[item.journal, item.year, item.topicLabel].filter(Boolean).join(' · ')}
+                                  </p>
+                                  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                                    {verified ? (
+                                      <span className="px-2 py-0.5 rounded-full border border-ok-200 bg-ok-50 text-ok-800 font-semibold dark:border-ok-800 dark:bg-ok-950 dark:text-ok-300">
+                                        Verified
+                                      </span>
+                                    ) : (
+                                      <span className="px-2 py-0.5 rounded-full border border-line bg-paper-2 text-mute font-semibold">
+                                        Not yet PubMed-indexed
+                                      </span>
+                                    )}
+                                    {verified && item.pubmedUrl && (
+                                      <a
+                                        href={item.pubmedUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-semibold text-cobalt-700 hover:underline dark:text-cobalt-300"
+                                        aria-label={`Open ${item.shortName || 'study'} on PubMed (opens in new tab)`}
+                                      >
+                                        PubMed{item.pmid ? ` ${item.pmid}` : ''}
+                                      </a>
+                                    )}
+                                    {verified && doiUrl && (
+                                      <a
+                                        href={doiUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-semibold text-cobalt-700 hover:underline dark:text-cobalt-300"
+                                        aria-label={`Open ${item.shortName || 'study'} DOI (opens in new tab)`}
+                                      >
+                                        DOI
+                                      </a>
+                                    )}
+                                    {!verified && item.sourceUrl && (
+                                      <a
+                                        href={item.sourceUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-semibold text-cobalt-700 hover:underline dark:text-cobalt-300"
+                                        aria-label={`Open source for ${item.shortName || 'study'} (opens in new tab)`}
+                                      >
+                                        Source
+                                      </a>
+                                    )}
+                                  </div>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                          {WHATS_NEW_ITEMS.length === 0 && (
+                            <p className="text-sm text-mute">No feed items available in this build.</p>
+                          )}
+                        </section>
                       </div>
                     )}
 
@@ -31981,11 +32679,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ['ref-prognosis', 'Prognosis'],
                         ...(isTraineeMode ? [['ref-pearls', 'Clinical Pearls'], ['ref-pitfalls', 'Pitfalls']] : []),
                         ['ref-imaging', 'Imaging F/U'],
+                        ['ref-code-stroke', 'Code Stroke'],
                         ['ref-mimics', 'Mimics DDx'],
                         ['ref-chameleons', 'Chameleons'],
                         ['ref-spinalcord', 'Spinal Cord'],
                         ['ref-ctp', 'CTP Guide'],
                         ['ref-orders', 'Admission Orders'],
+                        ['ref-quickrefs', 'Quick Ref PDFs'],
                         ['ref-guidelines', 'Guidelines'],
                       ].map(([id, label]) => (
                         <button key={id} onClick={() => { const el = document.getElementById(id); if (el) { if (el.tagName === 'DETAILS') el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}} className="px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-cobalt-100 text-slate-700 hover:text-cobalt-700 rounded-full border border-line hover:border-cobalt-300 transition-colors min-h-[36px] dark:bg-paper-2 dark:hover:bg-cobalt-800 dark:text-ink-2 dark:hover:text-cobalt-300">{label}</button>
@@ -32191,7 +32891,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         HINTS Exam — Acute Vestibular Syndrome
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
-                        <p className="text-xs text-slate-600 dark:text-ink-2">For acute continuous vertigo with nystagmus, head-motion intolerance, nausea/vomiting, gait unsteadiness lasting &gt;24h. Sensitivity 96.8%, specificity 98.5% for central cause (Kattah et al., 2009).</p>
+                        <p className="text-xs text-slate-600 dark:text-ink-2">Prerequisites: continuous acute vestibular syndrome WITH nystagmus (head-motion intolerance, nausea/vomiting, gait unsteadiness, &gt;24h); NOT valid for episodic or positional vertigo. In this population the HINTS battery was 100% sensitive and 96% specific for stroke (Kattah et al., Stroke 2009, PMID 19762709).</p>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                           <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
                             <h2 className="font-bold text-cobalt-900 text-sm mb-1 dark:text-cobalt-300">H — Head Impulse</h2>
@@ -32943,1047 +33643,53 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     </details>
 
-                    {/* Guideline Library */}
-                    <details id="ref-guidelines" className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex flex-wrap items-center justify-between gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                        <div>
-                          <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Guideline Library</h2>
-                          <p className="text-xs text-slate-600 font-normal dark:text-ink-2">Full COR/LOE recommendations with direct publisher PDF links.</p>
-                        </div>
-                        <span className="text-xs text-cobalt-700 font-medium dark:text-cobalt-300">{guidelineLibraryResultsCount} recommendations</span>
-                      </summary>
-                      <div className="p-4 pt-0">
-
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-                        <div className="relative">
-                          <input
-                            type="text"
-                            placeholder="Search recommendations..."
-                            value={guidelineLibraryQuery}
-                            onChange={(e) => setGuidelineLibraryQuery(e.target.value)}
-                            className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
-                            aria-label="Search guideline recommendations"
-                          />
-                          <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-3 top-2.5 text-slate-500 dark:text-mute"></i>
-                        </div>
-                        <select
-                          value={guidelineLibraryGuideline}
-                          onChange={(e) => {
-                            setGuidelineLibraryGuideline(e.target.value);
-                            setGuidelineLibrarySection('');
-                          }}
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
-                          aria-label="Filter by guideline"
-                        >
-                          <option value="">All guidelines</option>
-                          {guidelineLibraryGuidelineOptions.map((option) => (
-                            <option key={option.id} value={option.id}>{option.label}</option>
-                          ))}
-                        </select>
-                        <select
-                          value={guidelineLibrarySection}
-                          onChange={(e) => setGuidelineLibrarySection(e.target.value)}
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
-                          aria-label="Filter by section"
-                        >
-                          <option value="">All sections</option>
-                          {guidelineLibrarySectionOptions.map((section) => (
-                            <option key={section} value={section}>{section}</option>
-                          ))}
-                        </select>
-                        <select
-                          value={guidelineLibraryClass}
-                          onChange={(e) => setGuidelineLibraryClass(e.target.value)}
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
-                          aria-label="Filter by class of recommendation"
-                        >
-                          <option value="">All classes</option>
-                          {guidelineLibraryClassOptions.map((item) => (
-                            <option key={item} value={item}>{item}</option>
-                          ))}
-                        </select>
+                    {/* Guideline Library moved to the Guidelines sub-tab
+                        (P4-2a). This compatibility pointer keeps the
+                        ref-guidelines anchor (the TOC chip above and any older
+                        deep links) landing somewhere meaningful. */}
+                    <div id="ref-guidelines" className="bg-white border border-cobalt-200 rounded-lg p-4 flex flex-wrap items-center justify-between gap-3 dark:bg-card dark:border-cobalt-700">
+                      <div>
+                        <h2 className="text-base font-semibold text-cobalt-800 dark:text-cobalt-300">Guideline Library</h2>
+                        <p className="text-xs text-slate-600 dark:text-ink-2">Moved to the Guidelines sub-tab — the searchable COR/LOE recommendation catalog now lives there.</p>
                       </div>
+                      <button
+                        type="button"
+                        onClick={() => { setResearchSubTab('guidelines'); window.location.hash = '#/research/guidelines'; }}
+                        className="px-3 py-1.5 rounded-lg border border-cobalt-200 bg-cobalt-50 text-cobalt-700 text-xs font-semibold hover:bg-cobalt-100 min-h-[36px] dark:border-cobalt-700 dark:bg-cobalt-900 dark:text-cobalt-300 dark:hover:bg-cobalt-800"
+                      >Open Guidelines tab</button>
+                    </div>
 
-                      {filteredGuidelineLibrary.length === 0 ? (
-                        <p className="text-sm text-slate-600 mt-3 dark:text-ink-2">No recommendations match the current filters. <button type="button" onClick={() => { setGuidelineLibraryQuery(''); setGuidelineLibraryGuideline(''); setGuidelineLibrarySection(''); setGuidelineLibraryClass(''); }} className="text-cobalt-700 underline dark:text-cobalt-300">Clear filters</button>.</p>
-                      ) : (
-                        <div className="mt-4 space-y-3">
-                          {filteredGuidelineLibrary.map((guideline) => {
-                            const grouped = {};
-                            guideline.recommendations.forEach((rec) => {
-                              if (!grouped[rec.section]) grouped[rec.section] = [];
-                              grouped[rec.section].push(rec);
-                            });
-                            const shouldExpand = Boolean(guidelineLibraryQuery || guidelineLibraryGuideline || guidelineLibrarySection || guidelineLibraryClass);
-                            return (
-                              <details key={guideline.id} className="border border-cobalt-200 rounded-lg bg-cobalt-50/40 dark:bg-cobalt-900/40 dark:border-cobalt-700" open={shouldExpand}>
-                                <summary className="cursor-pointer p-3 font-semibold text-cobalt-900 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
-                                  <span>{guideline.shortTitle || guideline.title}</span>
-                                  <span className="text-xs text-cobalt-600 dark:text-cobalt-300">{guideline.recommendations.length} recs</span>
-                                </summary>
-                                <div className="p-3 pt-0 space-y-3">
-                                  {Object.entries(grouped).map(([section, recs]) => (
-                                    <details key={section} className="bg-white border border-cobalt-100 rounded-lg dark:bg-card" open={shouldExpand || guidelineLibrarySection === section}>
-                                      <summary className="cursor-pointer px-3 py-2 text-sm font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                                        <span>{section}</span>
-                                        <span className="text-xs text-cobalt-500">{recs.length}</span>
-                                      </summary>
-                                      <div className="px-3 pb-3 space-y-2">
-                                        {recs.map((rec) => {
-                                          const recClass = rec.classOfRec || 'Statement';
-                                          const recLevel = rec.levelOfEvidence || 'Ungraded';
-                                          const classLabel = rec.classNote ? `${recClass} (${rec.classNote})` : recClass;
-                                          const quickActions = getGuidelineQuickActions(rec.text);
-                                          return (
-                                            <div key={rec.id} className="border border-cobalt-100 rounded-lg p-2 bg-cobalt-50/50 dark:bg-cobalt-900/50">
-                                              <div className="flex items-start gap-2">
-                                                <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold shrink-0 ${GUIDELINE_CLASS_COLORS[recClass] || 'bg-slate-500 text-white'}`}>
-                                                  {classLabel}/{recLevel}
-                                                </span>
-                                                <div className="flex-1 min-w-0">
-                                                  <p className="text-sm text-slate-800 dark:text-ink">{rec.text}</p>
-                                                  <p className="text-xs text-slate-600 mt-1 dark:text-mute">
-                                                    {guideline.title}
-                                                    {rec.page ? ` · p. ${rec.page}` : ''}
-                                                  </p>
-                                                  <div className="flex flex-wrap items-center gap-2 mt-1 text-xs">
-                                                    {rec.sourceUrl && (
-                                                      <a href={rec.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-link-600 dark:text-link-400 hover:text-link-700 hover:underline font-medium">
-                                                        <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
-                                                        <span>Publisher</span>
-                                                      </a>
-                                                    )}
-                                                    {rec.pdfSourceUrl && (
-                                                      <a href={rec.pdfSourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-link-600 dark:text-link-400 hover:text-link-700 hover:underline font-medium">
-                                                        <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
-                                                        <span>PDF p.{rec.page}</span>
-                                                      </a>
-                                                    )}
-                                                  </div>
-                                                  {quickActions.length > 0 && (
-                                                    <div className="flex flex-wrap gap-1 mt-2">
-                                                      {quickActions.map((action) => (
-                                                        <button
-                                                          key={action.id}
-                                                          type="button"
-                                                          onClick={() => navigateTo(action.target.tab, { subTab: action.target.subTab })}
-                                                          className="px-3 py-1.5 text-xs font-semibold rounded-full border border-cobalt-200 text-cobalt-700 hover:bg-cobalt-100 min-h-[32px] dark:border-cobalt-700 dark:text-cobalt-300 dark:hover:bg-cobalt-800"
-                                                        >
-                                                          {action.label}
-                                                        </button>
-                                                      ))}
-                                                    </div>
-                                                  )}
-                                                </div>
-                                              </div>
-                                            </div>
-                                          );
-                                        })}
-                                      </div>
-                                    </details>
-                                  ))}
+                    {/* Reference document registry (P4-4): every document row
+                        below is projected from the module-level
+                        REFERENCE_LIBRARY_SECTIONS registry, which carries the
+                        optional year / supersededBy metadata. */}
+                    {REFERENCE_LIBRARY_SECTIONS.map((section) => {
+                      const sectionDocs = section.items.flatMap((item) => (item.docs ? item.docs : [item]));
+                      if (!evidenceSectionMatches(section.matchTitle || section.title, [section.title, ...sectionDocs.map((doc) => doc.title)])) return null;
+                      return (
+                        <details key={section.id} id={section.anchorId || undefined} className="bg-white border border-line rounded-lg dark:bg-card">
+                          <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
+                            <span>{section.title}</span>
+                            <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
+                          </summary>
+                          <div className="space-y-3 p-4 pt-0">
+                            {section.note && (
+                              <p className="text-xs text-slate-600 dark:text-mute">{section.note}</p>
+                            )}
+                            {section.items.map((item) => (
+                              item.docs ? (
+                                <div key={item.group} className="border-l-4 border-cobalt-500 pl-4">
+                                  <h4 className="text-base font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">{item.group}</h4>
+                                  <div className="space-y-3">
+                                    {item.docs.map((doc) => renderReferenceDoc(doc, true))}
+                                  </div>
                                 </div>
-                              </details>
-                            );
-                          })}
-                        </div>
-                      )}
-                      </div>
-                    </details>
-
-                    {/* Aneurysms & Vascular Malformations Section */}
-                    {evidenceSectionMatches('Aneurysms & Vascular Malformations', ['Unruptured Cerebral Aneurysms']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Aneurysms & Vascular Malformations</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Unruptured Cerebral Aneurysms */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h3 className="text-sm font-medium text-slate-900 dark:text-ink">Unruptured Cerebral Aneurysms</h3>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
+                              ) : renderReferenceDoc(item)
+                            ))}
                           </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/aneurysms/Unruptured Cerebral Aneurysms.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/aneurysms/Unruptured Cerebral Aneurysms.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Unruptured Cerebral Aneurysms', 'documents/aneurysms/Unruptured Cerebral Aneurysms.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* Antiplatelet Therapy Section */}
-                    {evidenceSectionMatches('Antiplatelet Therapy', ['DAPT Minor Stroke-TIA Trials', 'DAPT After Ischemic Stroke-TIA', 'Other Antithrombotics']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Antiplatelet Therapy</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - DAPT Minor Stroke-TIA Trials */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">DAPT Minor Stroke-TIA Trials</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('DAPT Minor Stroke-TIA Trials', 'documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                        {/* Document 2 - DAPT After Ischemic Stroke-TIA */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                            <i aria-hidden="true" data-lucide="image" className="w-6 h-6 text-ok-600 dark:text-ok-300"></i>
-                            <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">DAPT After Ischemic Stroke-TIA</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">Infographic - Match Patient to Trial</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('DAPT After Ischemic Stroke-TIA', 'documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                        {/* Document 3 - Other Antithrombotics */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Other Antithrombotics</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document — Cilostazol &amp; Factor XIa Inhibition Trials</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Other Antithrombotics', 'documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* Cerebral Small Vessel Disease Section */}
-                    {evidenceSectionMatches('Cerebral Small Vessel Disease', ['Lacunar Stroke']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Cerebral Small Vessel Disease</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Lacunar Stroke */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Lacunar Stroke</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/csvd/Lacunar Stroke 7.13.22.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/csvd/Lacunar Stroke 7.13.22.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Lacunar Stroke', 'documents/csvd/Lacunar Stroke 7.13.22.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* EBM Section */}
-                    {evidenceSectionMatches('EBM', ['Interpretation of Clinical Trials', 'CEBM Oxford Resources']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Critical Appraisal</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Interpretation of Clinical Trials */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Interpretation of Clinical Trials</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/ebm/Interpretation of Clinical Trials.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/ebm/Interpretation of Clinical Trials.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Interpretation of Clinical Trials', 'documents/ebm/Interpretation of Clinical Trials.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                        {/* External Link - CEBM Oxford Resources */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                            <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-cobalt-600 dark:text-cobalt-300"></i>
-                            <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">CEBM Oxford Resources</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">Centre for Evidence-Based Medicine - University of Oxford</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="https://www.cebm.ox.ac.uk/resources"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
-                              Visit
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* EVT Section */}
-                    {evidenceSectionMatches('EVT', ['Large Core Anterior Circulation LVO EVT Trials', 'Basilar Artery Occlusion EVT Trials', 'MeVO & Distal Vessel Occlusion EVT Trials']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Endovascular Therapy</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Large Core Anterior Circulation LVO EVT Trials */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Large Core Anterior Circulation LVO EVT Trials</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Large Core Anterior Circulation LVO EVT Trials', 'documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Document 2 - Basilar Artery Occlusion EVT Trials */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Basilar Artery Occlusion EVT Trials</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/evt/Basilar Artery Occlusion EVT Trials.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/evt/Basilar Artery Occlusion EVT Trials.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Basilar Artery Occlusion EVT Trials', 'documents/evt/Basilar Artery Occlusion EVT Trials.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Document 3 - MeVO & Distal Vessel Occlusion EVT Trials */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">MeVO & Distal Vessel Occlusion EVT Trials</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('MeVO & Distal Vessel Occlusion EVT Trials', 'documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* Risk Factors Section */}
-                    {evidenceSectionMatches('Risk Factors', ['Timing of Anticoagulation after AF-Related Stroke', 'Atrial Fibrillation & Secondary Stroke Prevention', 'AFib Stroke EPI519', 'Diabetes and stroke', 'Lipids and Cerebrovascular Disease']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Risk Factors</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-4 p-4 pt-0">
-
-                        {/* Atrial Fibrillation Subsection */}
-                        <div className="border-l-4 border-cobalt-500 pl-4">
-                          <h4 className="text-base font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">Atrial Fibrillation</h4>
-                          <div className="space-y-3">
-                            {/* Document 1 - Timing of Anticoagulation after AF-Related Stroke */}
-                            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                              <div className="flex items-center gap-3 flex-1">
-                                                                <div className="flex-1">
-                                  <h5 className="text-sm font-medium text-slate-900 dark:text-ink">Timing of Anticoagulation after AF-Related Stroke</h5>
-                                  <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                                </div>
-                              </div>
-                              <div className="flex flex-wrap gap-2">
-                                <a
-                                  href="documents/afib/AC timing after AF-related Stroke.pdf"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                                  View
-                                </a>
-                                <a
-                                  href="documents/afib/AC timing after AF-related Stroke.pdf"
-                                  download
-                                  className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                                  Download
-                                </a>
-                                <button
-                                  onClick={() => emailDocument('AC timing after AF-related Stroke', 'documents/afib/AC timing after AF-related Stroke.pdf')}
-                                  className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                                  title="Email this document"
-                                >
-                                  <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                                  Email
-                                </button>
-                              </div>
-                            </div>
-
-                            {/* Document 2 - Atrial Fibrillation & Secondary Stroke Prevention */}
-                            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                              <div className="flex items-center gap-3 flex-1">
-                                                                <div className="flex-1">
-                                  <h5 className="text-sm font-medium text-slate-900 dark:text-ink">Atrial Fibrillation & Secondary Stroke Prevention</h5>
-                                  <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                                </div>
-                              </div>
-                              <div className="flex flex-wrap gap-2">
-                                <a
-                                  href="documents/afib/AF & secondary stroke prevention July 2024.pdf"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                                  View
-                                </a>
-                                <a
-                                  href="documents/afib/AF & secondary stroke prevention July 2024.pdf"
-                                  download
-                                  className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                                  Download
-                                </a>
-                                <button
-                                  onClick={() => emailDocument('AF & secondary stroke prevention July 2024', 'documents/afib/AF & secondary stroke prevention July 2024.pdf')}
-                                  className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                                  title="Email this document"
-                                >
-                                  <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                                  Email
-                                </button>
-                              </div>
-                            </div>
-
-                            {/* Document 3 - 2023 AHA AFib Guidelines */}
-                            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                              <div className="flex items-center gap-3 flex-1">
-                                <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-cobalt-600 dark:text-cobalt-300"></i>
-                                <div className="flex-1">
-                                  <h5 className="text-sm font-medium text-slate-900 dark:text-ink">2023 AHA AFib Guidelines</h5>
-                                  <p className="text-xs text-slate-600 dark:text-mute">External Link - AHA Journals</p>
-                                </div>
-                              </div>
-                              <div className="flex flex-wrap gap-2">
-                                <a
-                                  href="https://www.ahajournals.org/doi/10.1161/CIR.0000000000001193"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
-                                  Open Link
-                                </a>
-                              </div>
-                            </div>
-
-                            {/* Document 4 - 2024 ESC AFib Guidelines */}
-                            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                              <div className="flex items-center gap-3 flex-1">
-                                <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-cobalt-600 dark:text-cobalt-300"></i>
-                                <div className="flex-1">
-                                  <h5 className="text-sm font-medium text-slate-900 dark:text-ink">2024 ESC AFib Guidelines</h5>
-                                  <p className="text-xs text-slate-600 dark:text-mute">External Link - European Heart Journal</p>
-                                </div>
-                              </div>
-                              <div className="flex flex-wrap gap-2">
-                                <a
-                                  href="https://academic.oup.com/eurheartj/article/45/36/3314/7738779"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
-                                  Open Link
-                                </a>
-                              </div>
-                            </div>
-
-                            {/* Document 5 - AFib Stroke EPI519 */}
-                            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                              <div className="flex items-center gap-3 flex-1">
-                                                                <div className="flex-1">
-                                  <h5 className="text-sm font-medium text-slate-900 dark:text-ink">AFib Stroke EPI519</h5>
-                                  <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                                </div>
-                              </div>
-                              <div className="flex flex-wrap gap-2">
-                                <a
-                                  href="documents/afib/AFib Stroke EPI519.pdf"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                                  View
-                                </a>
-                                <a
-                                  href="documents/afib/AFib Stroke EPI519.pdf"
-                                  download
-                                  className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                                >
-                                  <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                                  Download
-                                </a>
-                                <button
-                                  onClick={() => emailDocument('AFib Stroke EPI519', 'documents/afib/AFib Stroke EPI519.pdf')}
-                                  className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                                  title="Email this document"
-                                >
-                                  <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                                  Email
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Diabetes and stroke */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Diabetes and stroke</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/epidemiology/Diabetes and stroke.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/epidemiology/Diabetes and stroke.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Diabetes and stroke', 'documents/epidemiology/Diabetes and stroke.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Lipids and Cerebrovascular Disease */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Lipids and Cerebrovascular Disease</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/epidemiology/Lipids and Cerebrovascular Disease.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/epidemiology/Lipids and Cerebrovascular Disease.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Lipids and Cerebrovascular Disease', 'documents/epidemiology/Lipids and Cerebrovascular Disease.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* Thrombolytic Therapy Section */}
-                    {evidenceSectionMatches('Thrombolytic Therapy', ['Thrombolytic Therapy AIS 4.5-24h RCTs', 'WAKE-UP Trial']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Thrombolytic Therapy</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Thrombolytic Therapy AIS 4.5-24h RCTs */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Thrombolytic Therapy AIS 4.5-24h RCTs</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Thrombolytic Therapy AIS 4.5-24h RCTs', 'documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Document 2 - WAKE-UP Trial */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                            <i aria-hidden="true" data-lucide="external-link" className="w-6 h-6 text-cobalt-600 dark:text-cobalt-300"></i>
-                            <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">WAKE-UP Trial</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">External Link - New England Journal of Medicine</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="https://www.nejm.org/doi/full/10.1056/NEJMoa1804355"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
-                              Open Link
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* Exam Section */}
-                    {evidenceSectionMatches('Exam', ['Differentiating Acute Confusional State (Delirium) from Aphasia', 'Coma Exam']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Exam</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Differentiating Delirium from Aphasia */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Differentiating Acute Confusional State (Delirium) from Aphasia</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Differentiating Acute Confusional State (Delirium) from Aphasia', 'documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Document 2 - Coma Exam */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Coma Exam</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/exam/coma exam.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/exam/coma exam.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('coma exam', 'documents/exam/coma exam.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
-
-                    {/* Large Artery Disease Section */}
-                    {evidenceSectionMatches('Large Artery Disease', ['Symptomatic Cervical Carotid Artery Stenosis', 'CREST-2 Trial']) && (
-                    <details className="bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
-                        <span>Large Artery Disease</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
-                      </summary>
-                      <div className="space-y-3 p-4 pt-0">
-                        {/* Document 1 - Symptomatic Cervical Carotid Artery Stenosis */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">Symptomatic Cervical Carotid Artery Stenosis</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('Symptomatic Cervical Carotid Artery Stenosis', 'documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                        {/* Document 2 - CREST-2 Trial */}
-                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
-                          <div className="flex items-center gap-3 flex-1">
-                                                        <div className="flex-1">
-                              <h4 className="text-sm font-medium text-slate-900 dark:text-ink">CREST-2 Trial (December 2025)</h4>
-                              <p className="text-xs text-slate-600 dark:text-mute">PDF Document</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href="documents/lad/CREST-2 Trial - Dec 2025.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
-                              View
-                            </a>
-                            <a
-                              href="documents/lad/CREST-2 Trial - Dec 2025.pdf"
-                              download
-                              className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
-                            >
-                              <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
-                              Download
-                            </a>
-                            <button
-                              onClick={() => emailDocument('CREST-2 Trial (December 2025)', 'documents/lad/CREST-2 Trial - Dec 2025.pdf')}
-                              className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
-                              title="Email this document"
-                            >
-                              <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
-                              Email
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                    )}
+                        </details>
+                      );
+                    })}
                   </div>
                 )}
                 {/* End of References/Evidence Content */}
@@ -34012,7 +33718,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* ============================================ */}
                 {activeTab === 'settings' && (
                   <ErrorBoundary>
-                    <div id="tabpanel-settings" role="tabpanel" aria-labelledby="tab-settings" className="space-y-6">
+                    {/* Settings has no tab in the main tablist (it opens from the
+                        header menu), so label the panel directly instead of
+                        pointing aria-labelledby at a non-existent tab id. */}
+                    <div id="tabpanel-settings" role="tabpanel" aria-label="Settings" className="space-y-6">
                       <header className="bg-card border border-line rounded-md p-6">
                         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                           <div>
@@ -34114,6 +33823,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <button
                               type="button"
                               onClick={() => {
+                                // Cancel = discard unsaved draft edits (tempProvider/
+                                // tempKey) by restoring the last-saved values, then
+                                // leave Settings the same way Save does.
+                                setTempProvider(apiProvider);
+                                setTempKey(apiKey);
+                                setShowKey(false);
                                 navigateTo('encounter');
                               }}
                               className="px-4 py-2 text-sm font-semibold text-ink hover:bg-paper-2 active:bg-paper-3 border border-line rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-cobalt-500"

@@ -25,7 +25,6 @@ const CONTENT_FILES = [
   'src/calculators-extended.js',
   'src/app.jsx',
   'app.js',
-  'src/evidence/screener/minute.js',
   'src/evidence/screenerTrials.json',
   'src/evidence/eligibilityTables.js',
   'src/evidence/recommendations.js',

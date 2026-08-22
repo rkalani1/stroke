@@ -11,7 +11,7 @@ into approved environments.
 git clone https://github.com/example/stroke.git
 cd stroke
 npm install
-npm run test:unit   # 427 vitest tests, ~1s
+npm run test:unit   # 1,630 vitest tests, ~25s
 npm run build       # CSS + JS bundle
 ```
 
@@ -28,8 +28,9 @@ npm run build       # CSS + JS bundle
 
 ## Required for every PR
 
-1. **Tests pass**: `npm run test:unit` (427 specs across calculators,
-   atlas, matcher engine, scenario snapshots).
+1. **Tests pass**: `npm run test:unit` (1,630 specs across calculators,
+   atlas, matcher engine, e2e tiers, scenario snapshots; one tier-2 e2e
+   spec needs outbound network access and fails in sandboxes without it).
 2. **Validators clean**: `npm run validate:citations` and
    `npm run evidence:validate` (the latter reports matcher-engine
    coverage; should remain 100%).
@@ -81,7 +82,7 @@ PRs use the template at `.github/PULL_REQUEST_TEMPLATE.md`. The
 short version:
 
 - [ ] `npm run test:unit` is green
-- [ ] `npm run evidence:validate` is clean (52/52 + 16/16 = 100% if you touched the matcher)
+- [ ] `npm run evidence:validate` is clean (42/42 + 14/14 = 100% if you touched the matcher)
 - [ ] `npm run build` succeeds
 - [ ] No PHI in tests / scenarios / commit messages
 - [ ] No mobile-wrapper build artifacts on main (CI guards this)

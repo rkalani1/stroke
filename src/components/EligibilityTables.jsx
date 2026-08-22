@@ -103,6 +103,11 @@ function StatusBadge({ status }) {
       cls: 'bg-warn-50 text-warn-800 border-warn-200 dark:bg-warn-950 dark:text-warn-200 dark:border-warn-800',
       text: 'Soon'
     },
+    closed: {
+      dot: 'bg-slate-400',
+      cls: 'bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-900 dark:text-slate-300 dark:border-slate-700',
+      text: 'Closed to enrollment'
+    },
     unverified: {
       dot: 'bg-crit-500',
       cls: 'bg-crit-50 text-crit-800 border-crit-200 dark:bg-crit-950 dark:text-crit-200 dark:border-crit-800',
@@ -135,7 +140,7 @@ const escHtml = (s) =>
 // Markdown table cells must not contain raw pipes / newlines.
 const escMd = (s) => String(s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
 
-const STATUS_TEXT = { enrolling: 'Enrolling', soon: 'Enrolling soon', unverified: 'Unverified' };
+const STATUS_TEXT = { enrolling: 'Enrolling', soon: 'Enrolling soon', closed: 'Closed to enrollment', unverified: 'Unverified' };
 const statusText = (trial) => STATUS_TEXT[trial.status] || STATUS_TEXT.unverified;
 
 function trialStudyText(trial) {

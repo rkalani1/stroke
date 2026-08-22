@@ -6,5 +6,13 @@
     "type": "pdf",
     "path": "documents/exam/coma exam.pdf",
     "provenance": "src/app.jsx reference library"
+  },
+  {
+    "id": "exam-differentiating-acute-confusional-state-delirium-from-a",
+    "title": "Differentiating Acute Confusional State (Delirium) from Aphasia",
+    "category": "exam",
+    "type": "pdf",
+    "path": "documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf",
+    "provenance": "src/app.jsx reference library"
   }
 ]

@@ -1,5 +1,22 @@
 [
   {
+    "id": "oceanic-stroke",
+    "name": "OCEANIC-STROKE",
+    "fullName": "Asundexian for Secondary Stroke Prevention",
+    "category": "factor-xi-inhibition",
+    "population": "n=12327, ≥18, ≤72 h",
+    "finding": "Lower with asundexian: 6.2% vs 8.4%",
+    "teachingPoint": "Asundexian on top of antiplatelets cut ischaemic stroke ~26% without more major bleeding — could reshape noncardioembolic prevention.",
+    "PMID": "41985132",
+    "year": 2026,
+    "citationIds": [
+      "cit-oceanic-stroke-2026"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-05-30",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
     "id": "oceanic-af",
     "name": "OCEANIC-AF",
     "fullName": "Asundexian versus Apixaban in Patients with Atrial Fibrillation",
@@ -14,6 +31,23 @@
     ],
     "certainty": "high",
     "lastReviewed": "2026-08-15",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "axiomatic-ssp",
+    "name": "AXIOMATIC-SSP",
+    "fullName": "Safety and Efficacy of Factor XIa Inhibition with Milvexian for Secondary Stroke Prevention",
+    "category": "factor-xi-inhibition",
+    "population": "n=2366, adults, NIHSS acute ischaemic stroke or high-risk TIA, 90-day treatment period",
+    "finding": "NEUTRAL: placebo 16.8% vs milvexian arms 15.3-16.7%; no significant dose-response",
+    "teachingPoint": "Milvexian added to DAPT showed no efficacy signal but also no bleeding excess — groundwork for phase 3.",
+    "PMID": "38101902",
+    "year": 2024,
+    "citationIds": [
+      "cit-axiomatic-ssp-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-22",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

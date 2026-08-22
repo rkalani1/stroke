@@ -5,6 +5,14 @@
   "doi": "10.1161/STR.0000000000000513",
   "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
   "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000513",
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41582814/",
+  "pmid": "41582814",
+  "correctedBy": {
+    "pmid": "42507797",
+    "doi": "10.1161/STR.0000000000000530",
+    "citation": "Stroke. 2026;57(8):e461-e467",
+    "note": "A 7-page published correction (2026-07-27) amends this guideline; its itemized changes could not be retrieved in this environment and are NOT yet applied to these recommendations. Consult the correction at https://doi.org/10.1161/STR.0000000000000530 before relying on any COR/LOE here."
+  },
   "recommendations": [
     {
       "section": "Stroke Awareness (Population Level)",

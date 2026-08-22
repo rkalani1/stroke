@@ -92,7 +92,8 @@
         "ctaResults": "tandem extracranial carotid + intracranial M1 occlusion",
         "vesselOcclusion": [
           "M1"
-        ]
+        ],
+        "tnkRecommended": false
       },
       "strokeCodeForm": {
         "age": "",
