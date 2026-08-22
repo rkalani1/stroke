@@ -1,0 +1,21 @@
+{
+  "id": "aha-brain-health-life-span-2026",
+  "title": "Brain Health Across the Life Span: A Framework for Future Studies: A Scientific Statement From the American Heart Association",
+  "shortTitle": "Brain Health Across the Life Span",
+  "doi": "10.1161/STR.0000000000000518",
+  "publisherUrl": "https://doi.org/10.1161/STR.0000000000000518",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42047038/",
+  "pmid": "42047038",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope summary derived from the publication abstract; this statement provides a research framework, not graded recommendations.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "(summary from PubMed abstract) This scientific statement focuses on the role of nonvascular physical and psychologic variables that affect brain health — optimal functioning of the brain across cognitive, emotional, and behavioral domains throughout life — and cognitive resilience. It provides a broad overview of influences such as chronic medical conditions, inflammation, environmental exposures, and socioeconomic drivers that affect the developing brain, along with factors including sleep quality, the gut microbiome, and mental health that contribute to neurodegeneration. It also reviews the varying strength of evidence for biologic mechanisms and mitigating strategies that may help optimize resilience, with the goal of providing a framework for future studies.",
+      "page": null
+    }
+  ]
+}

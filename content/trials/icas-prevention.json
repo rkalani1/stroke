@@ -15,5 +15,22 @@
     "certainty": "high",
     "lastReviewed": "2026-08-15",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "sammpris",
+    "name": "SAMMPRIS",
+    "fullName": "Stenting versus Aggressive Medical Therapy for Intracranial Arterial Stenosis",
+    "category": "icas-prevention",
+    "population": "n=451, adults, NIHSS recent TIA or stroke, recent qualifying event",
+    "finding": "HARM from stenting: 30-day stroke/death 14.7% vs 5.8% (P=0.002); 1-year primary endpoint 20.0% vs 12.2%. Enrolment stopped early",
+    "teachingPoint": "Aggressive medical management — not stenting — is first-line for symptomatic 70-99% intracranial stenosis.",
+    "PMID": "21899409",
+    "year": 2011,
+    "citationIds": [
+      "cit-sammpris-2011"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-22",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

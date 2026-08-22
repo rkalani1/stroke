@@ -15,5 +15,73 @@
     "certainty": "moderate",
     "lastReviewed": "2026-08-15",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "decimal",
+    "name": "DECIMAL",
+    "fullName": "Early Decompressive Craniectomy in Malignant Middle Cerebral Artery Infarction",
+    "category": "malignant-edema",
+    "population": "n=38, 18-55, NIHSS malignant MCA infarction, early (protocol ≤24 h of randomization eligibility)",
+    "finding": "mRS ≤3: 25% vs 5.6% at 6 mo (P=0.18); 50% vs 22.2% at 1 y (P=0.10) — underpowered; mortality reduced by 52.8 pp (P<0.0001)",
+    "teachingPoint": "One of the three European trials whose pooled analysis made early hemicraniectomy standard for malignant MCA infarction in younger patients.",
+    "PMID": "17690311",
+    "year": 2007,
+    "citationIds": [
+      "cit-decimal-2007"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-22",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "destiny",
+    "name": "DESTINY",
+    "fullName": "Decompressive Surgery for the Treatment of Malignant Infarction of the Middle Cerebral Artery",
+    "category": "malignant-edema",
+    "population": "n=32, adults (≤60 by design), NIHSS malignant MCA infarction, early hemicraniectomy",
+    "finding": "30-day survival 88% vs 47% (P=0.02); mRS 0-3 at 6-12 mo: 47% vs 27% (P=0.23) — primary endpoint not significant alone",
+    "teachingPoint": "Demonstrated the survival benefit of hemicraniectomy in malignant MCA infarction; functional benefit established in the pooled analysis.",
+    "PMID": "17690310",
+    "year": 2007,
+    "citationIds": [
+      "cit-destiny-2007"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-22",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "hamlet",
+    "name": "HAMLET",
+    "fullName": "Hemicraniectomy After Middle Cerebral Artery Infarction with Life-threatening Edema Trial",
+    "category": "malignant-edema",
+    "population": "n=64, adults, NIHSS space-occupying hemispheric infarction, randomized within 4 days of onset",
+    "finding": "No effect on primary outcome (ARR 0%, 95% CI −21 to 21); case fatality reduced (ARR 38%, 95% CI 15-60)",
+    "teachingPoint": "Operate within 48 h: delayed decompression saves lives but has no demonstrated functional benefit.",
+    "PMID": "19269254",
+    "year": 2009,
+    "citationIds": [
+      "cit-hamlet-2009"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-22",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "destiny-2",
+    "name": "DESTINY II",
+    "fullName": "Hemicraniectomy in Older Patients with Extensive Middle-Cerebral-Artery Stroke",
+    "category": "malignant-edema",
+    "population": "n=112, ≥61 (median 70, range 61-82), NIHSS malignant MCA infarction, randomized within 48 h of onset",
+    "finding": "Favored surgery: 38% vs 18%",
+    "teachingPoint": "Hemicraniectomy improves survival without severe disability in patients >60, at the cost of survival largely into mRS 4-5.",
+    "PMID": "24645942",
+    "year": 2014,
+    "citationIds": [
+      "cit-destiny2-2014"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-22",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

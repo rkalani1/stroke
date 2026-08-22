@@ -344,11 +344,11 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   describe('Feature 7: Guideline Library & COR/LOE Catalog', () => {
     const indexData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/index.json'), 'utf8'));
 
-    it('F7-T1.1: Guideline index lists exactly 88 clinical guideline datasets totaling 861 recommendations', () => {
+    it('F7-T1.1: Guideline index lists exactly 89 clinical guideline datasets totaling 862 recommendations', () => {
       const activeDatasets = indexData.data.filter(g => g.id !== 'landmark-trials');
-      expect(activeDatasets.length).toBe(88);
+      expect(activeDatasets.length).toBe(89);
       const totalRecs = activeDatasets.reduce((sum, g) => sum + g.recommendationCount, 0);
-      expect(totalRecs).toBe(861);
+      expect(totalRecs).toBe(862);
     });
 
     it('F7-T1.2: Every guideline in index has valid title, shortTitle, doi, and publisherUrl', () => {
@@ -580,7 +580,7 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       const json = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/bundle.json'), 'utf8'));
       const { guidelines, trials, education, calculators, references } = json._meta.counts;
       expect(guidelines).toBe(11);
-      expect(trials).toBe(113);
+      expect(trials).toBe(130);
       expect(education).toBeGreaterThanOrEqual(32);
       expect(calculators).toBe(34);
       expect(references).toBe(18);
@@ -650,15 +650,15 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(result.stdout).toContain('Evidence Atlas validation passed');
     });
 
-    it('F14-T1.2: Evidence Atlas contains exactly 9 active trials and 113 completed trials', () => {
+    it('F14-T1.2: Evidence Atlas contains exactly 9 active trials and 130 completed trials', () => {
       expect(activeTrials.length).toBe(9);
-      expect(completedTrials.length).toBe(113);
+      expect(completedTrials.length).toBe(130);
     });
 
-    it('F14-T1.3: Matcher engine coverage achieves 100% (42/42 criteria and 13/13 exclusions)', () => {
+    it('F14-T1.3: Matcher engine coverage achieves 100% (42/42 criteria and 14/14 exclusions)', () => {
       const result = spawnSync('node', [path.join(ROOT, 'scripts/evidence-validate.mjs')], { cwd: ROOT, encoding: 'utf8' });
       expect(result.stdout).toContain('42/42 criteria (100%)');
-      expect(result.stdout).toContain('13/13 exclusions (100%)');
+      expect(result.stdout).toContain('14/14 exclusions (100%)');
     });
 
     it('F14-T1.4: Evidence index exports 87 citations and 11 guideline recommendations', () => {

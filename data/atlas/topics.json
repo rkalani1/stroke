@@ -3,8 +3,8 @@
     "endpoint": "topics",
     "schemaVersion": "1.0.0",
     "appVersion": "6.20.0",
-    "checksum": "sha256:cc57430cea73d2ebd7d2220d324fd24e",
-    "count": 50,
+    "checksum": "sha256:aa41294a7190ae36700d93cd22b24e57",
+    "count": 51,
     "source": "Evidence atlas topics bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
@@ -49,6 +49,12 @@
     {
       "id": "evt-technique",
       "label": "EVT technique & adjuncts (catheters, bailout stenting, anesthesia)",
+      "parentId": "acute-ischemic-stroke",
+      "notes": ""
+    },
+    {
+      "id": "evt-early-window",
+      "label": "EVT in early window (0-6h) — landmark trials",
       "parentId": "acute-ischemic-stroke",
       "notes": ""
     },

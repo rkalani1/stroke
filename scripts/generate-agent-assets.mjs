@@ -176,9 +176,10 @@ async function main() {
   for (const f of gfiles) {
     const raw = await fs.readFile(path.join(gdir, f), 'utf8');
     const g = JSON.parse(raw);
-    // Fallback id/title derived from the filename so non-guideline catalogs
-    // (e.g. landmark-trials.json, which has no id/title/doi metadata) still
-    // produce an identifiable, machine-parseable index entry.
+    write(`data/guidelines/${f}`, raw); // verbatim copy — no reformatting churn
+    // landmark-trials.json is a trials catalog, not a graded guideline dataset;
+    // it is still copied above but is excluded from the guidelines index.
+    if (f === 'landmark-trials.json') continue;
     const derivedId = f.replace(/\.json$/, '');
     const humanTitle = derivedId.replace(/(^|-)([a-z])/g, (_, sep, c) => (sep ? ' ' : '') + c.toUpperCase());
     gindex.push({
@@ -187,7 +188,6 @@ async function main() {
       recommendationCount: Array.isArray(g.recommendations) ? g.recommendations.length : 0,
       url: `${BASE_URL}/data/guidelines/${f}`,
     });
-    write(`data/guidelines/${f}`, raw); // verbatim copy — no reformatting churn
   }
   write('data/guidelines/index.json', envelope('guidelines-index', publicSourceLabel('src/guidelines/'), gindex));
 

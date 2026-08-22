@@ -15,5 +15,22 @@
     "certainty": "moderate",
     "lastReviewed": "2026-08-15",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "action-cvt",
+    "name": "ACTION-CVT",
+    "fullName": "Direct Oral Anticoagulants Versus Warfarin in the Treatment of Cerebral Venous Thrombosis",
+    "category": "cvt",
+    "population": "n=845, mean 44.8; 64.7% women, NIHSS CVT on oral anticoagulation, treated Jan 2015 - Dec 2020; median follow-up 345 d",
+    "finding": "Similar recurrence: aHR 0.94 (95% CI 0.51-1.73); major hemorrhage LOWER with DOACs: aHR 0.35 (0.15-0.82, p=0.02)",
+    "teachingPoint": "DOACs perform like warfarin for CVT recurrence and recanalization with less major bleeding — a reasonable first-line option.",
+    "PMID": "35143325",
+    "year": 2022,
+    "citationIds": [
+      "cit-action-cvt-2022"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-22",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

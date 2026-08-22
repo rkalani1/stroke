@@ -100,5 +100,22 @@
     "certainty": "high",
     "lastReviewed": "2026-05-30",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "tesla",
+    "name": "TESLA",
+    "fullName": "Thrombectomy for Stroke With Large Infarct on Noncontrast CT",
+    "category": "evt-large-core",
+    "population": "n=300, median 67, NIHSS moderate-severe, ≤24 h",
+    "finding": "DID NOT meet superiority: UW-mRS 2.93 vs 2.27, adjusted difference 0.63 (95% CrI −0.09 to 1.34); posterior probability .96",
+    "teachingPoint": "Cautions that NCCT-only ASPECTS 2-5 selection up to 24 h is not clearly beneficial — context for the otherwise positive large-core class.",
+    "PMID": "39374319",
+    "year": 2024,
+    "citationIds": [
+      "cit-tesla-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-22",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

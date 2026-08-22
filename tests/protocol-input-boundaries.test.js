@@ -220,7 +220,7 @@ describe('Protocols input-boundary contracts', () => {
 
   describe('score completeness and copy suppression', () => {
     it('scores duration >=60 minutes as 2 points with no un-scoreable "exactly 60" option', () => {
-      // ABCD2 (Johnston Lancet 2007, PMID 17258668): duration >=60 min = 2,
+      // ABCD² (Johnston Lancet 2007, PMID 17258668): duration >=60 min = 2,
       // 10-59 min = 1, <10 min = 0. The former "Exactly 60 minutes" option had
       // no published score and has been removed.
       const abcd2Card = sourceBetween(appSource, '{/* ABCD2 */}', '{/* CHADS2-VASC */}');

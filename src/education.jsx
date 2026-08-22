@@ -51,6 +51,7 @@ import ahaAfGuideline2023 from './guidelines/aha-af-guideline-2023.json';
 import ahaAggressiveLdlLowering2023 from './guidelines/aha-aggressive-ldl-lowering-2023.json';
 import ahaAntiamyloidImmunotherapy2024 from './guidelines/aha-antiamyloid-immunotherapy-2024.json';
 import ahaAtrialFibrillationOccurring2023 from './guidelines/aha-atrial-fibrillation-occurring-2023.json';
+import ahaBrainHealthLifeSpan2026 from './guidelines/aha-brain-health-life-span-2026.json';
 import ahaCadasil2023 from './guidelines/aha-cadasil-2023.json';
 import ahaCareAisEvtIcu2021 from './guidelines/aha-care-ais-evt-icu-2021.json';
 import ahaCareAisPosthyperacute2021 from './guidelines/aha-care-ais-posthyperacute-2021.json';
@@ -171,6 +172,7 @@ const GUIDELINE_LIBRARY = [
   ahaAggressiveLdlLowering2023,
   ahaAntiamyloidImmunotherapy2024,
   ahaAtrialFibrillationOccurring2023,
+  ahaBrainHealthLifeSpan2026,
   ahaCadasil2023,
   ahaCareAisEvtIcu2021,
   ahaCareAisPosthyperacute2021,
@@ -384,11 +386,7 @@ const EDUCATION_MODULES = [
       { label: 'CHANCE-2 Trial', citation: 'Wang Y et al. N Engl J Med. 2021;385:2520-2530.', pmid: '34708996' },
       { label: 'INSPIRES Trial', citation: 'Gao Y et al. N Engl J Med. 2023;389:2413-2424.', pmid: '38157499' },
       { label: 'THALES Trial', citation: 'Johnston SC et al. N Engl J Med. 2020;383:207-217.', pmid: '32668111' },
-      { label: 'SAMMPRIS Trial', citation: 'Chimowitz MI et al. N Engl J Med. 2011;365:993-1003.', pmid: '21899409' },
-      { label: 'SPS3 Trial', citation: 'Benavente OR, et al. Effects of clopidogrel added to aspirin in patients with recent lacunar stroke. N Engl J Med. 2012;367(9):817-825.', pmid: '22931315' },
-      { label: 'MATCH Trial', citation: 'Diener HC, et al. Aspirin and clopidogrel compared with clopidogrel alone after recent ischaemic stroke or TIA in high-risk patients (MATCH). Lancet. 2004;364(9431):331-337.', pmid: '15276392' },
-      { label: 'ARAMIS Trial', citation: 'Chen HS, et al. Dual Antiplatelet Therapy vs Alteplase for Patients With Minor Nondisabling Acute Ischemic Stroke: The ARAMIS Randomized Clinical Trial. JAMA. 2023;329(24):2135-2144.', pmid: '37367978' },
-      { label: 'CHANCE-3 (colchicine)', citation: 'Li J, et al. Colchicine in patients with acute ischaemic stroke or transient ischaemic attack (CHANCE-3). BMJ. 2024;385:e079061.', pmid: '38925803' }
+      { label: 'SAMMPRIS Trial', citation: 'Chimowitz MI et al. N Engl J Med. 2011;365:993-1003.', pmid: '21899409' }
     ]
   },
   {
@@ -415,6 +413,7 @@ const EDUCATION_MODULES = [
     lastReviewed: '2026-05-30',
     references: [
       { label: 'ELAN Trial', citation: 'Fischer U et al. N Engl J Med. 2023;388:2411-2421.', pmid: '37222476' },
+      { label: 'OPTIMAS Trial', citation: 'Werring DJ et al. Optimal timing of anticoagulation after acute ischaemic stroke with atrial fibrillation (OPTIMAS). Lancet. 2024. DOI 10.1016/S0140-6736(24)02197-4.', pmid: '39491870' },
       { label: 'CATALYST Meta-Analysis', citation: 'Dehbi HM et al. Lancet 2025.', pmid: '40570866' },
       { label: 'AFib Guidelines', citation: 'Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. Circulation. 2024;149:e1-e156.', pmid: '38033089' }
     ]
@@ -598,7 +597,6 @@ const EDUCATION_MODULES = [
       { label: 'TESLA', citation: 'Yoo AJ, et al. Thrombectomy for Stroke With Large Infarct on Noncontrast CT: The TESLA Randomized Clinical Trial. JAMA. 2024;332(16):1355-1366.', pmid: '39374319' },
       { label: 'RESCUE-Japan LIMIT', citation: 'Yoshimura S, et al. Endovascular Therapy for Acute Stroke with a Large Ischemic Region. N Engl J Med. 2022;386(14):1303-1313.', pmid: '35138767' },
       { label: '2026 AIS Guideline', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' },
-      { label: 'MR CLEAN-LATE Trial', citation: 'Olthuis SGH, et al. Endovascular treatment versus no endovascular treatment after 6-24 h in patients with ischaemic stroke and collateral flow on CT angiography (MR CLEAN-LATE). Lancet. 2023;401(10385):1371-1380.', pmid: '37003289' },
       { label: 'ATLAS IPD Meta-analysis', citation: 'Sarraj A, et al. Endovascular thrombectomy for patients with large-core ischaemic stroke presenting up to 24 h after onset (ATLAS): a systematic review and individual patient data meta-analysis with central imaging adjudication. Lancet. 2026;407(10543):2015-2026.', pmid: '42107392' }
     ]
   },
@@ -773,6 +771,7 @@ const EDUCATION_MODULES = [
       { label: 'ESCAPE-MeVO Trial', citation: 'Goyal M, et al. Endovascular Treatment for Medium Vessel Occlusion Stroke (ESCAPE-MeVO). N Engl J Med. 2025;392(14):1385-1395.', pmid: '39908448' },
       { label: 'CHOICE Trial', citation: 'Renú A, et al. Effect of Intra-arterial Alteplase vs Placebo Following Successful Thrombectomy on Functional Outcomes (CHOICE). JAMA. 2022;327(9):826-835.', pmid: '35143603' },
       { label: 'CHOICE-2 Trial', citation: 'Renú A, et al. Adjunctive Intra-Arterial Alteplase After Successful Thrombectomy for Acute Ischemic Stroke (CHOICE-2). JAMA. 2026.', pmid: '42096239' },
+      { label: 'TEMPO-2 Trial', citation: 'Coutts SB, et al. Tenecteplase versus standard of care for minor ischaemic stroke with proven occlusion (TEMPO-2). Lancet. 2024;403(10444):2597-2605.', pmid: '38768626' },
       { label: 'AHA/ASA 2026 AIS Guideline', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' }
     ]
   },
@@ -2477,7 +2476,7 @@ export function IntracranialAtherosclerosisCard() {
                 <div style={{ border: '1.5px solid var(--purple)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--purple-deep)', fontSize: '7.6pt' }}>Antithrombotics</strong>
                   <br />&bull; <strong>Aspirin 325 mg daily + clopidogrel 75 mg daily for 90 days</strong>, then aspirin alone &mdash; the exact regimen of the SAMMPRIS medical arm (PMID: 21899409). CASSISS used the identical 90-day DAPT window before dropping to a single agent.
-                  <br />&bull; <strong>Never warfarin</strong> for atherosclerotic ICAD (WASID, PMID: 15800226). No anticoagulant has yet outperformed antiplatelet therapy here; CAPTIVA is actively testing low-dose rivaroxaban and ticagrelor against clopidogrel, each added to aspirin (PMID: 39862061) &mdash; results pending.
+                  <br />&bull; <strong>Never warfarin</strong> for atherosclerotic ICAD (WASID, PMID: 15800226). No anticoagulant has yet outperformed antiplatelet therapy here; CAPTIVA (NCT05047172, active-not-recruiting) is testing ticagrelor against clopidogrel, each added to aspirin (PMID: 39862061). Its <strong>low-dose rivaroxaban (2.5 mg BID) arm was terminated by the NIH DSMB</strong> at the first-stage analysis in January 2026 (announced February 10, 2026) for increased safety events plus futility vs clopidogrel + aspirin; the ticagrelor and clopidogrel arms continue.
                 </div>
                 <div style={{ border: '1.5px solid var(--teal)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--teal-deep)', fontSize: '7.6pt' }}>Blood Pressure &mdash; and the Real Caveat</strong>
@@ -2615,7 +2614,7 @@ export function UnrupturedIntracranialAneurysmCard() {
         <text x="6" y="69" fill="var(--ink)" fontSize="4.3pt" fontFamily="IBM Plex Sans">Site: ICA lowest &rarr; MCA &rarr; ACA / PCom / posterior circulation highest</text>
 
         <rect x="0" y="78" width="222" height="36" rx="3" fill="#eff6ff" stroke="#3b82f6" strokeWidth="1" />
-        <text x="6" y="89" fill="#1d4ed8" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800">WHAT IT GENERATES (PMID 24290159)</text>
+        <text x="6" y="89" fill="#1d4ed8" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800">WHAT PHASES GENERATES (PMID 24290159)</text>
         <text x="6" y="98" fill="var(--ink)" fontSize="4.3pt" fontFamily="IBM Plex Sans">Pooled 5-y rupture risk 3.4% (2.9&ndash;4.0); spread 0.25% &rarr; &gt;15% by profile</text>
         <text x="6" y="107" fill="var(--red-deep)" fontSize="4.2pt" fontFamily="IBM Plex Sans" fontWeight="700">It prices rupture only &mdash; never the risk of the operation you are proposing</text>
       </g>
@@ -4696,7 +4695,8 @@ export function AfibAnticoagTimingCard() {
       <text x="661.7" y="137" fill="var(--red-deep)" fontSize="5.8pt" fontFamily="IBM Plex Sans" fontWeight="600" textAnchor="middle">Delay initiation to Day 12-14</text>
       
       
-      <text x="367" y="141" fill="var(--ink-mute)" fontSize="7pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">DOAC INITIATION TIMELINE AXIS (DAYS POST-AIS)</text>
+      <text x="367" y="134" fill="var(--ink-mute)" fontSize="7pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">DOAC INITIATION TIMELINE AXIS (DAYS POST-AIS)</text>
+      <text x="367" y="144" fill="var(--ink-mute)" fontSize="5.6pt" fontFamily="IBM Plex Sans" fontWeight="600" textAnchor="middle">Timing bands are a practice hybrid derived from ELAN, OPTIMAS, and CATALYST — not the ELAN protocol itself</text>
     </svg>
 
     
@@ -7423,7 +7423,7 @@ export function LargeCoreThrombectomyCard() {
             {/* §1 The question (purple) */}
             <CardSection color="purple" title="1. The Question">
               <div style={{ fontSize: '7.9pt', lineHeight: '1.42', color: 'var(--ink-soft)' }}>
-                Historically EVT required a <strong>small core (ASPECTS ≥6)</strong>. Six 2022&ndash;2024 RCTs tested EVT for a <strong>large ischemic core</strong> (low ASPECTS or large core volume). All pointed toward a functional-outcome benefit — five met their primary endpoint; <strong>TESLA missed its Bayesian threshold but trended favorably</strong> — generally with <strong>higher symptomatic hemorrhage</strong>.
+                Historically EVT required a <strong>small core (ASPECTS ≥6)</strong>. Six 2022&ndash;2024 RCTs tested EVT for a <strong>large ischemic core</strong> (low ASPECTS or large core volume). All pointed toward a functional-outcome benefit — five met their primary endpoint; <strong>TESLA missed its Bayesian threshold but trended favorably</strong>. The ATLAS IPD meta-analysis pooling all six (PMID: 42107392) found <strong>no significant sICH excess vs medical management (1.1% vs 1.0%)</strong>.
               </div>
             </CardSection>
 
@@ -7453,8 +7453,8 @@ export function LargeCoreThrombectomyCard() {
             <CardSection color="red" title="3. Bottom Line & Caveats" style={{ marginBottom: '6px' }}>
               <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
                 <li>EVT is now recommended for <strong>selected large-core patients</strong> (low ASPECTS or large core with salvageable tissue) — reflected in the 2026 AHA/ASA AIS guideline. Benefit is usually a <strong>shift toward less disability</strong>, not independence.</li>
-                <li>Symptomatic ICH is <strong>higher than in small-core EVT</strong>, but net functional benefit persists.</li>
-                <li>Very large cores (<strong>ASPECTS 0–2</strong>) benefit less and carry the highest hemorrhage risk — <strong>individualize</strong>.</li>
+                <li>ATLAS also showed a <strong>mortality benefit with EVT</strong> (aRR 0.82; 95% CI 0.70–0.97; p=0.022) and <strong>no significant sICH excess</strong> vs medical management (1.1% vs 1.0%).</li>
+                <li>ATLAS (Sarraj, Lancet 2026;407:2015-26; PMID: 42107392) — an IPD meta-analysis of six trials (RESCUE-Japan LIMIT, ANGEL-ASPECT, SELECT2, TENSION, TESLA, LASTE) — found benefit <strong>consistent across ASPECTS/core strata</strong> EXCEPT estimated core <strong>≥150 mL presenting beyond 6 h</strong>, where evidence is limited (wide CIs; point estimates still favored EVT) — <strong>individualize</strong> there.</li>
               </ul>
             </CardSection>
 
@@ -7694,7 +7694,7 @@ export function CarotidStenosisCard() {
             {/* §4 Intensive medical therapy (amber) */}
             <CardSection color="amber" title="4. Intensive Medical Therapy" style={{ marginBottom: '6px' }}>
               <div style={{ fontSize: '7.6pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
-                <strong>High-intensity statin (LDL &lt;70), antiplatelet, BP control, diabetes / lifestyle, smoking cessation</strong> — the common denominator across every arm.
+                <strong>High-intensity statin (standard post-stroke LDL target &lt;70 mg/dL; &lt;55 mg/dL for very-high-risk atherosclerotic disease), antiplatelet, BP control, diabetes / lifestyle, smoking cessation</strong> — the common denominator across every arm.
               </div>
             </CardSection>
 
@@ -9454,10 +9454,11 @@ export function DmvoMevoManagementCard() {
         <text x="6" y="62" fill="var(--ink-soft)" fontSize="4.3pt" fontFamily="IBM Plex Sans">mRS 0–1: 41.6% EVT vs 43.1% Usual (aRR 0.95; P=0.61)</text>
         <text x="6" y="70" fill="var(--red-deep)" fontSize="4.3pt" fontFamily="IBM Plex Sans" fontWeight="700">sICH: 5.4% EVT vs 2.2% Med &bull; Neutral functional effect</text>
 
-        <rect x="0" y="78" width="222" height="36" rx="3" fill="#eff6ff" stroke="#3b82f6" strokeWidth="1" />
+        <rect x="0" y="78" width="222" height="44" rx="3" fill="#eff6ff" stroke="#3b82f6" strokeWidth="1" />
         <text x="6" y="90" fill="#1d4ed8" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800">CHOICE &amp; CHOICE-2 (JAMA 2022 / 2026)</text>
-        <text x="6" y="100" fill="var(--ink-soft)" fontSize="4.3pt" fontFamily="IBM Plex Sans">Adjunctive IA Alteplase (0.225 mg/kg) post-successful EVT</text>
-        <text x="6" y="109" fill="#15803d" fontSize="4.3pt" fontFamily="IBM Plex Sans" fontWeight="700">Improves mRS 0–1 microvascular reperfusion without &uarr; sICH</text>
+        <text x="6" y="99" fill="var(--ink-soft)" fontSize="4.3pt" fontFamily="IBM Plex Sans">CHOICE-2: mRS 0–1 57.5% vs 42.5% (P=.002), but 90-day</text>
+        <text x="6" y="107" fill="var(--red-deep)" fontSize="4.3pt" fontFamily="IBM Plex Sans" fontWeight="700">mortality 12.1% vs 6.4% (P=.03) — a safety signal</text>
+        <text x="6" y="116" fill="var(--red-deep)" fontSize="4.3pt" fontFamily="IBM Plex Sans" fontWeight="700">Enrolled LVO post-successful EVT — NOT MeVO: no MeVO EVT guidance</text>
       </g>
 
       {/* Panel C: Clinical Selection Matrix */}
@@ -9549,7 +9550,7 @@ export function DmvoMevoManagementCard() {
                     <td><strong>CHOICE &amp; CHOICE-2</strong><br />(JAMA 2022 / 2026; PMIDs: 35143603, 42096239)</td>
                     <td>Adjunctive intra-arterial (IA) Alteplase 0.225 mg/kg after thrombectomy within 24h with eTICI 2b50–3: CHOICE max 22.5 mg over 15–30 min; CHOICE-2 max 20 mg over 15 min.</td>
                     <td><strong>CHOICE</strong> (phase 2b, stopped early; authors call findings preliminary): mRS 0–1 59.0% vs 40.4% (adjusted risk difference 18.4%; 95% CI 0.3%–36.4%; P=.047). <strong>CHOICE-2:</strong> mRS 0–1 57.5% vs 42.5% (aRD 15.0%; 95% CI 5.7%–24.3%; P=.002), but 90-day mortality 12.1% vs 6.4% (aRD 5.9%; P=.03).</td>
-                    <td><span style={{ color: '#166534' }}>sICH: CHOICE 0% vs 3.8%; CHOICE-2 1.4% vs 0.5% (aOR 3.10; 95% CI 0.32–30.0; P=.33). Clears downstream distal microvascular microthrombi and improves microcirculatory reperfusion.</span></td>
+                    <td><span style={{ color: '#166534' }}>sICH: CHOICE 0% vs 3.8%; CHOICE-2 1.4% vs 0.5% (aOR 3.10; 95% CI 0.32–30.0; P=.33). Clears downstream distal microvascular microthrombi and improves microcirculatory reperfusion.</span> <span style={{ color: 'var(--red-deep)' }}><strong>Note:</strong> CHOICE-2 enrolled <strong>LVO patients with successful EVT — NOT MeVO</strong> — so it does not inform MeVO EVT decisions, and its higher 90-day mortality warrants caution.</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -9570,7 +9571,7 @@ export function DmvoMevoManagementCard() {
 
                 <div style={{ border: '1.5px solid var(--purple)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--purple-deep)', fontSize: '7.6pt' }}>2026 AHA/ASA AIS Guideline Recommendation</strong>
-                  <br />&bull; <strong>IV Thrombolysis (TNK 0.25 mg/kg):</strong> First-line standard of care for all eligible patients within 4.5h window (Class I, LOE A).
+                  <br />&bull; <strong>IV Thrombolysis (TNK 0.25 mg/kg):</strong> First-line standard of care for eligible patients with <strong>disabling</strong> deficits within the 4.5h window (Class I, LOE A). <strong>Caveat &mdash; TEMPO-2</strong> (Lancet 2024; PMID: 38768626): in minor <strong>NON-disabling</strong> stroke with intracranial occlusion, TNK showed no benefit and possible harm (death 5% vs 1%; aHR 3.8) &mdash; do not thrombolyse non-disabling deficits routinely.
                   <br />&bull; <strong>Endovascular Thrombectomy:</strong> EVT in MeVO is <strong>not indicated for routine/mild unselected cases</strong> (Class IIb/III), but reasonable in <strong>highly selected patients</strong> with proximal dominant branches (&ge;1.5–2.0 mm), large perfusion mismatch, severe disabling deficits, and failing/ineligible for IV thrombolysis.
                 </div>
 
@@ -9612,6 +9613,7 @@ export function DmvoMevoManagementCard() {
               { label: 'ESCAPE-MeVO Trial', cite: 'Goyal M et al. N Engl J Med. 2025;392(14):1385-1395.', pmid: '39908448' },
               { label: 'CHOICE Trial', cite: 'Renú A et al. JAMA. 2022;327(9):826-835.', pmid: '35143603' },
               { label: 'CHOICE-2 Trial', cite: 'Renú A et al. JAMA. 2026.', pmid: '42096239' },
+              { label: 'TEMPO-2 Trial', cite: 'Coutts SB et al. Lancet. 2024;403(10444):2597-2605.', pmid: '38768626' },
               { label: 'AHA/ASA 2026 AIS Guideline', cite: 'Prabhakaran S et al. Stroke. 2026.', pmid: '41582814' },
             ]} />
           </div>
@@ -9952,7 +9954,7 @@ export function MetabolicStrokePreventionCard() {
         <text x="8" y="39" fill="var(--teal-deep)" fontSize="4.8pt" fontFamily="Outfit" fontWeight="800">B: Blood Pressure Target &lt;130/80 mmHg (&lt;120 if tolerated)</text>
 
         <rect x="0" y="48" width="221" height="22" rx="3" fill="#eff6ff" stroke="#3b82f6" strokeWidth="1" />
-        <text x="8" y="63" fill="#1d4ed8" fontSize="4.8pt" fontFamily="Outfit" fontWeight="800">C: Cholesterol (LDL &lt;55 mg/dL: Statin + Ezetimibe &plusmn; PCSK9i)</text>
+        <text x="8" y="63" fill="#1d4ed8" fontSize="4.5pt" fontFamily="Outfit" fontWeight="800">C: Cholesterol (LDL &lt;70; &lt;55 if very-high-risk athero) Statin+EZE&plusmn;PCSK9i</text>
 
         <rect x="0" y="72" width="221" height="22" rx="3" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1" />
         <text x="8" y="87" fill="var(--amber-deep)" fontSize="4.8pt" fontFamily="Outfit" fontWeight="800">D: Diabetes &amp; Incretins (GLP-1 RA / SGLT2i + Med Diet)</text>
@@ -10040,7 +10042,7 @@ export function MetabolicStrokePreventionCard() {
 
                 <div style={{ border: '1.5px solid var(--purple)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--purple-deep)', fontSize: '7.6pt' }}>C &amp; D: Cholesterol &amp; Diabetes/Diet</strong>
-                  <br />&bull; <strong>C (Cholesterol):</strong> Target <strong>LDL &lt;55 mg/dL</strong> (Atorvastatin 80 mg + Ezetimibe 10 mg &plusmn; Evolocumab / Alirocumab PCSK9i).
+                  <br />&bull; <strong>C (Cholesterol):</strong> Standard post-stroke target <strong>LDL &lt;70 mg/dL</strong> for atherosclerotic stroke/TIA (TST; PMID: 31738483); intensify to <strong>&lt;55 mg/dL</strong> for very-high-risk atherosclerotic disease (Atorvastatin 80 mg + Ezetimibe 10 mg &plusmn; Evolocumab / Alirocumab PCSK9i).
                   <br />&bull; <strong>D (Diabetes/Diet):</strong> HbA1c &lt;7.0% using GLP-1 RA + SGLT2i. High-adherence Mediterranean diet (PREDIMED).
                 </div>
 
@@ -10068,7 +10070,7 @@ export function MetabolicStrokePreventionCard() {
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>Smoking Cessation &amp; Alcohol</strong>
                   <br />&bull; Complete cessation of combustible cigarettes; varenicline / bupropion first-line.
-                  <br />&bull; Eliminate heavy alcohol intake (&gt;2 drinks/day triggers hemorrhagic transformation and hypertension).
+                  <br />&bull; Eliminate heavy alcohol intake (&gt;2 drinks/day raises the risk of hemorrhagic stroke (ICH) and hypertension).
                 </div>
               </div>
             </CardSection>
@@ -10080,6 +10082,7 @@ export function MetabolicStrokePreventionCard() {
               { label: 'SPRINT Trial', cite: 'Wright JT Jr et al. N Engl J Med. 2015;373(22):2103-2116.', pmid: '26551272' },
               { label: 'TRIDENT Trial', cite: 'Anderson CS et al. N Engl J Med. 2026;394:1571-1582.', pmid: '42019018' },
               { label: 'RESPECT Trial', cite: 'Kitagawa K et al. JAMA Neurol. 2019;76(11):1309-1318.', pmid: '31355878' },
+              { label: 'TST Trial', cite: 'Amarenco P et al. N Engl J Med. 2020;382(1):9.', pmid: '31738483' },
               { label: 'SPRINT MIND', cite: 'Williamson JD et al. JAMA. 2019;321(6):553-561.', pmid: '30688979' },
             ]} />
           </div>

@@ -15,5 +15,22 @@
     "certainty": "moderate",
     "lastReviewed": "2026-04-25",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "annexa-4",
+    "name": "ANNEXA-4",
+    "fullName": "Full Study Report of Andexanet Alfa for Bleeding Associated with Factor Xa Inhibitors",
+    "category": "ich-anticoag-reversal",
+    "population": "n=352, mean 77, NIHSS acute major bleeding, ≤18 h after factor Xa inhibitor dose",
+    "finding": "Anti-Xa activity reduced 92% (apixaban and rivaroxaban); excellent/good hemostasis 82% (204/249)",
+    "teachingPoint": "Established andexanet reverses anti-Xa activity with 82% good hemostasis, at a 10% 30-day thrombotic event rate.",
+    "PMID": "30730782",
+    "year": 2019,
+    "citationIds": [
+      "cit-annexa4-2019"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-22",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

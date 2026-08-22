@@ -32,5 +32,22 @@
     "certainty": "high",
     "lastReviewed": "2026-05-29",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "basics",
+    "name": "BASICS",
+    "fullName": "Endovascular Therapy for Stroke Due to Basilar-Artery Occlusion",
+    "category": "evt-basilar",
+    "population": "n=300, adults, NIHSS basilar-artery occlusion, ≤6 h from estimated onset",
+    "finding": "NOT significant: 44.2% vs 37.7%",
+    "teachingPoint": "First basilar EVT RCT — neutral, but set up the severity-selected trials that later proved benefit.",
+    "PMID": "34010530",
+    "year": 2021,
+    "citationIds": [
+      "cit-basics-2021"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-22",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]
