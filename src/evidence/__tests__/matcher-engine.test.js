@@ -218,7 +218,25 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
     expect(r.status).toBe('eligible');
   });
 
-  it('PICASSO: tandem lesion patient → eligible', () => {
+  it('PICASSO: tandem lesion patient, documented IVT-ineligible → eligible', () => {
+    const data = {
+      telestrokeNote: {
+        age: '60',
+        nihss: '14',
+        premorbidMRS: '1',
+        ctaResults: 'tandem extracranial carotid + intracranial M1 occlusion',
+        // Registry inclusion #10: must be ineligible for or have failed IV
+        // t-PA — a documented decision NOT to give TNK satisfies the gate.
+        tnkRecommended: false
+      },
+      hoursFromLKW: 8,
+      aspectsScore: 8
+    };
+    const r = evaluateActiveTrial(getActiveTrial('picasso'), data);
+    expect(r.status).toBe('eligible');
+  });
+
+  it('PICASSO: without a documented IVT-ineligibility decision the gate stays open (needs_info)', () => {
     const data = {
       telestrokeNote: {
         age: '60',
@@ -230,7 +248,7 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
       aspectsScore: 8
     };
     const r = evaluateActiveTrial(getActiveTrial('picasso'), data);
-    expect(r.status).toBe('eligible');
+    expect(r.status).toBe('needs_info');
   });
 
   it('SATURN: lobar ICH on statin → eligible', () => {

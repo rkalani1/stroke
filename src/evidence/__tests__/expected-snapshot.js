@@ -180,7 +180,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "saturn": {
