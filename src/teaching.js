@@ -2,11 +2,13 @@
 // Pure data — consumed by React components in teaching.jsx.
 //
 // EVIDENCE AUDIT: Last comprehensive review against primary publications
-// completed 2026-04-23. All trial outcomes, NNTs, COR/LOE labels, and
+// completed 2026-08-22. All trial outcomes, NNTs, COR/LOE labels, and
 // guideline attributions verified against peer-reviewed source publications.
-// Key guidelines referenced: AHA/ASA AIS 2019 (Powers) + 2019 focused update,
-// AHA/ASA ICH 2022 (Greenberg), AHA/ASA aSAH 2023, AHA/ASA CVT 2024,
-// AHA/ASA Secondary Prevention 2021 (Kleindorfer), ESC AF 2024 (van Gelder).
+// Key guidelines referenced: AHA/ASA AIS 2026 (Prabhakaran, PMID 41582814 —
+// replaces the 2019 guideline; note its July 2026 published correction,
+// PMID 42507797), AHA/ASA ICH 2022 (Greenberg), AHA/ASA aSAH 2023,
+// AHA/ASA CVT 2024 scientific statement, AHA/ASA Secondary Prevention 2021
+// (Kleindorfer), ESC AF 2024 (van Gelder).
 
 import landmarkTrials from './guidelines/landmark-trials.json' with { type: 'json' };
 
@@ -215,7 +217,7 @@ export const TEACHING_PEARLS = [
   {
     category: 'Imaging',
     q: 'What is ASPECTS and why is it important?',
-    a: 'Alberta Stroke Program Early CT Score — 10-point score assessing early ischemic changes in 10 MCA territory regions (M1-M6, L, I, C, IC). Starts at 10, subtract 1 per affected region. ASPECTS ≥6 for standard EVT (NIHSS ≥6); 3-5 eligible for large-core trials. <3 = very unfavorable but still consider SELECT2/ANGEL-ASPECT criteria.'
+    a: 'Alberta Stroke Program Early CT Score — 10-point score assessing early ischemic changes in 10 MCA territory regions (M1-M6, L, I, C, IC). Starts at 10, subtract 1 per affected region. ASPECTS ≥6 for standard EVT (NIHSS ≥6); 3-5 eligible for large-core trials. ASPECTS 0-2: SELECT2/ANGEL-ASPECT enrolled 3-5 — the 0-2 evidence comes from LASTE (ASPECTS 0-5 including 0-2, mortality benefit) and TESLA (2-5, trend only), pooled in the ATLAS meta-analysis (benefit consistent except core ≥150 mL beyond 6 h).'
   },
   {
     category: 'Imaging',
@@ -230,27 +232,27 @@ export const TEACHING_PEARLS = [
   {
     category: 'Thrombolysis',
     q: 'When is TNK contraindicated even if in window and no other exclusions?',
-    a: 'Glucose <50 (correct first), SBP >185/110 despite treatment (uncontrolled), INR >1.7, recent major surgery <14d, ICH on imaging, aortic dissection, endocarditis, severe head injury <14d, prior ICH (relative if amyloid; modifiable if HTN), platelets <100K, aPTT >40 (if on heparin).'
+    a: 'Glucose <50 (correct first), SBP >185/110 despite treatment (uncontrolled), INR >1.7, recent major extracranial surgery <14d (RELATIVE \u2014 careful risk-benefit), ICH on imaging, aortic dissection, endocarditis, severe head injury <14d, prior ICH (relative if amyloid; modifiable if HTN), platelets <100K, aPTT >40 (if on heparin).'
   },
   {
     category: 'Thrombolysis',
     q: 'What drug for wake-up stroke?',
-    a: 'Alteplase is the evidence-based agent (WAKE-UP trial). TNK can be extrapolated from AcT/TRACE-2 but direct RCT evidence in wake-up (TWIST) was negative without advanced imaging. Require DWI-FLAIR mismatch OR CTP mismatch.'
+    a: 'Alteplase carries the direct wake-up RCT evidence (WAKE-UP: MRI DWI-FLAIR mismatch). TNK 0.25 mg/kg is what most modern protocols (including this app\u2019s pocket cards) dispense, extrapolating from AcT/TRACE-2 equivalence — but TWIST (TNK without advanced imaging) was negative, so imaging-based selection (DWI-FLAIR mismatch OR CTP mismatch per EXTEND) is required regardless of agent.'
   },
   {
     category: 'Guidelines',
     q: 'What is the ICH BP target per 2022 AHA/ASA?',
-    a: 'For presenting SBP 150-220 mmHg: target SBP 140, maintain 130-150 (Class 2a, LOE B-R). Avoid SBP <130 (Class 3: Harm, LOE B-R). Basis: INTERACT2 and ATACH-2.'
+    a: 'For presenting SBP 150-220 mmHg: acute lowering to a target of 140, maintaining 130-150, may be reasonable (Class 2b, LOE B-R); SMOOTH, sustained control avoiding peaks/variability is the Class 2a process recommendation. Avoid acute lowering to SBP <130 (Class 3: Harm). Basis: INTERACT2 and ATACH-2.'
   },
   {
     category: 'Guidelines',
     q: 'Post-EVT BP target?',
-    a: 'For successful recanalization (mTICI ≥2b): SBP 140-180 (avoid <140 for 72h — Class 3: Harm per ENCHANTED2-MT, OPTIMAL-BP, BP-TARGET, BEST-II).'
+    a: 'For DOCUMENTED successful recanalization (mTICI ≥2b): SBP 140-180 for ≥24h (up to 72h per local protocol). Intensive lowering (<140) is Class 3: Harm — harm was shown in ENCHANTED2-MT and OPTIMAL-BP; BP-TARGET and BEST-II showed no benefit of lower targets (neutral/futility, not harm).'
   },
   {
     category: 'Etiology',
     q: 'How do you work up cryptogenic stroke?',
-    a: '30-day event monitor; consider implantable loop recorder when suspicion remains high (e.g., medium/high HAVOC score, atrial cardiopathy, recurrent embolic pattern), TEE with bubble study (PFO, aortic plaque, LAA thrombus), hypercoag panel (antiphospholipid, factor V Leiden, protein C/S/AT-III, homocysteine), vessel wall imaging if suspicion for vasculitis/ICAD/dissection. Do NOT empirically anticoagulate (NAVIGATE/RE-SPECT/ARCADIA all neutral).'
+    a: '30-day event monitor; consider implantable loop recorder when suspicion remains high (e.g., medium/high HAVOC score, atrial cardiopathy, recurrent embolic pattern), TEE with bubble study (PFO, aortic plaque, LAA thrombus), hypercoag panel only in selected patients (yield is low in unselected stroke; antiphospholipid is the highest-value test; protein C/S/AT-III are UNINTERPRETABLE during acute thrombosis or on anticoagulation \u2014 defer/repeat \u22656 weeks out), vessel wall imaging if suspicion for vasculitis/ICAD/dissection. Do NOT empirically anticoagulate (NAVIGATE/RE-SPECT/ARCADIA all neutral).'
   },
   {
     category: 'Etiology',
@@ -275,7 +277,7 @@ export const TEACHING_PEARLS = [
   {
     category: 'Management',
     q: 'DVT prophylaxis timing after ICH?',
-    a: 'Day 0: IPC only (CLOTS-3). Day 2-4 with stable imaging: enoxaparin 40 mg SC daily or UFH 5000 BID (Class 2b, LOE B-R per AHA/ASA 2022 ICH). For ischemic stroke: chemical ppx from admission (Class 1).'
+    a: 'Day 0: IPC only (CLOTS-3; Class 1, LOE B-R). At 24-48h from onset with stable imaging: low-dose UFH or LMWH may be reasonable (Class 2b, LOE C-LD per AHA/ASA 2022 ICH). For immobile ischemic stroke: IPC is Class 1; prophylactic heparin benefit is not well established (Class 2b).'
   },
   {
     category: 'Rehab',
