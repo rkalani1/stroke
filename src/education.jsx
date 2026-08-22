@@ -8719,7 +8719,7 @@ export const CadasilCarasilView = () => {
       title="Genetic Small Vessel Vasculopathies (CADASIL, CARASIL, Fabry, MELAS, COL4A1)"
       pdfPath="documents/references/CADASIL_CARASIL_Vasculopathies.pdf"
       pdfName="CADASIL_CARASIL_Vasculopathies.pdf"
-      iconColorClass="text-purple-600 dark:text-purple-400"
+      iconColorClass="text-cobalt-600 dark:text-cobalt-400"
     >
       <ScaledCardWrapper isLandscape={false}>
         <BedsidePocketCardsStyles />
@@ -9189,7 +9189,7 @@ export const CancerAssociatedStrokeView = () => {
       title="Cancer-Associated Stroke, Hypercoagulability & Marantic Endocarditis (NBTE)"
       pdfPath="documents/references/Cancer_Associated_Stroke_NBTE.pdf"
       pdfName="Cancer_Associated_Stroke_NBTE.pdf"
-      iconColorClass="text-red-600 dark:text-red-400"
+      iconColorClass="text-crit-600 dark:text-crit-400"
     >
       <ScaledCardWrapper isLandscape={false}>
         <BedsidePocketCardsStyles />
@@ -9401,7 +9401,7 @@ export const DmvoMevoManagementView = () => {
       title="Distal Medium Vessel Occlusions (DMVO / MeVO) Management"
       pdfPath="documents/references/DMVO_MeVO_Management.pdf"
       pdfName="DMVO_MeVO_Management.pdf"
-      iconColorClass="text-purple-600 dark:text-purple-400"
+      iconColorClass="text-cobalt-600 dark:text-cobalt-400"
     >
       <ScaledCardWrapper isLandscape={false}>
         <BedsidePocketCardsStyles />
@@ -9634,7 +9634,7 @@ export const IchBloodPressureView = () => {
       title="Acute ICH Expansion Mitigation & Blood Pressure Management"
       pdfPath="documents/references/ICH_Blood_Pressure_Expansion.pdf"
       pdfName="ICH_Blood_Pressure_Expansion.pdf"
-      iconColorClass="text-red-600 dark:text-red-400"
+      iconColorClass="text-crit-600 dark:text-crit-400"
     >
       <ScaledCardWrapper isLandscape={false}>
         <BedsidePocketCardsStyles />

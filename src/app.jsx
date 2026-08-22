@@ -29396,7 +29396,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <li>Codominant M2: the institutional flowchart supplies no recommendation.</li>
                               </ul>
                             </div>
-                            <div className="bg-white rounded-md border-l-4 border-amber-500 p-3 dark:bg-card ">
+                            <div className="bg-white rounded-md border-l-4 border-warn-500 p-3 dark:bg-card ">
                               <p className="font-semibold text-slate-800 text-sm mb-2 dark:text-ink">Generalizability limited for</p>
                               <ul className="list-disc pl-4 text-xs text-slate-700 space-y-1 dark:text-ink-2">
                                 {GENERALIZABILITY_LIMITATIONS.map((limitation, i) => (
