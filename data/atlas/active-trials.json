@@ -3,7 +3,7 @@
     "endpoint": "active-trials",
     "schemaVersion": "1.0.0",
     "appVersion": "6.20.0",
-    "checksum": "sha256:f5db3e876847d4325dcaedf4025a4c70",
+    "checksum": "sha256:c0d959cdababdb664aadb6f4e17b441f",
     "count": 9,
     "source": "Evidence atlas active-trials bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -118,7 +118,14 @@
           "field": "aspectsScore",
           "operator": "<",
           "value": 6,
-          "label": "CT ASPECTS <6 (MRI <7)"
+          "label": "CT ASPECTS <6"
+        },
+        {
+          "id": "lowAspectsMri",
+          "field": "mriAspectsScore",
+          "operator": "<",
+          "value": 7,
+          "label": "MRI ASPECTS <7 (MRI pathway)"
         }
       ],
       "relatedCompletedTrialIds": [

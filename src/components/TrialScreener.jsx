@@ -53,7 +53,9 @@ export const COMPLIANCE_BANNER =
 const CLASSIFICATIONS = [
   { id: 'ischemic', label: 'Ischemic', sub: 'stroke', onsetVal: 2 },
   { id: 'tia', label: 'TIA', sub: 'transient', onsetVal: 12 },
-  { id: 'ich', label: 'Hemorrhage', sub: 'ICH', onsetVal: 3 }
+  // val 3 + unit 'days' matches the '24h – 7d' preset button exactly — the
+  // previous forced-'hours' default matched no preset and left the picker blank.
+  { id: 'ich', label: 'Hemorrhage', sub: 'ICH', onsetVal: 3, onsetUnit: 'days' }
 ];
 
 const CLASSIFICATION_LABELS = {
@@ -751,7 +753,7 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
           <ClassificationPicker
             value={cls}
             onChange={(opt) =>
-              set({ classification: opt.id, onsetVal: opt.onsetVal, onsetUnit: 'hours', exclusions: {} })
+              set({ classification: opt.id, onsetVal: opt.onsetVal, onsetUnit: opt.onsetUnit || 'hours', exclusions: {} })
             }
           />
         </section>

@@ -5,6 +5,8 @@
   "doi": "10.1161/STR.0000000000000407",
   "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
   "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407",
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/35579034/",
+  "pmid": "35579034",
   "recommendations": [
     {
       "section": "Organization of Prefacility and Initial Systems",
@@ -713,9 +715,10 @@
     {
       "section": "Craniotomy for Posterior Fossa Hemorrhage",
       "classOfRec": "I",
-      "classNote": "June 2026 operational overlay",
+      "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "Urgent posterior-fossa surgical evaluation is recommended for cerebellar ICH with neurologic deterioration, brainstem compression, or obstructive hydrocephalus. The June 2026 initial-evaluation algorithm does not use cerebellar volume alone as an operative trigger.",
+      "text": "Urgent posterior-fossa surgical evaluation is recommended for cerebellar ICH with neurologic deterioration, brainstem compression, or obstructive hydrocephalus.",
+      "localNote": "Local operational note (June 2026 institutional overlay — NOT AHA/ASA guideline content): the local June 2026 initial-evaluation algorithm does not use cerebellar hematoma volume alone as an operative trigger.",
       "page": 42
     },
     {

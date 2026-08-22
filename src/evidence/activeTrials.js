@@ -57,7 +57,11 @@ export const activeTrials = [
       { id: 'pregnancy', field: 'pregnancy', operator: '==', value: true, label: 'Known pregnancy' },
       { id: 'hemorrhage', field: 'hemorrhage', operator: '==', value: true, label: 'Acute intracranial hemorrhage on imaging' },
       { id: 'seizureAtOnset', field: 'seizures', operator: '==', value: true, label: 'Seizure at stroke onset' },
-      { id: 'lowAspects', field: 'aspectsScore', operator: '<', value: 6, label: 'CT ASPECTS <6 (MRI <7)' },
+      { id: 'lowAspects', field: 'aspectsScore', operator: '<', value: 6, label: 'CT ASPECTS <6' },
+      // Registry wording: 'CT ASPECT score <6 (MRI ASPECT score <7)'. The MRI
+      // threshold applies only when the encounter documents MRI as the imaging
+      // pathway (wake-up workflow); mriAspectsScore resolves null otherwise.
+      { id: 'lowAspectsMri', field: 'mriAspectsScore', operator: '<', value: 7, label: 'MRI ASPECTS <7 (MRI pathway)' },
     ],
     relatedCompletedTrialIds: ['dawn', 'defuse-3', 'escape-mevo', 'distal'],
     link: 'https://clinicaltrials.gov/study/NCT06289985',

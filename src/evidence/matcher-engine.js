@@ -100,18 +100,37 @@ const fieldResolvers = {
   domainMatch: (d) => {
     const nihss = tryInt(nihssOf(d));
     const occlusion = d?.telestrokeNote?.vesselOcclusion || [];
-    // STEP MVO domain (NCT06289985): non-dominant/co-dominant M2 or M3 AND
+    // Needs-info when EITHER input is un-entered: a fresh form must surface
+    // as needs_info, not flip to a definite 'none'/not-eligible.
+    if (nihss === null || occlusion.length === 0) return null;
+    // STEP MVO domain (NCT06289985): NON-dominant/co-dominant M2 or M3 AND
     // NIHSS ≥8. M4/A/P occlusions and low-NIHSS MeVO are NOT in the trial's
-    // MVO domain — matching them would produce false-positive eligibility.
+    // MVO domain. Dominance is read from CTA free text when documented: an
+    // explicitly DOMINANT M2 is excluded from the STEP MVO domain; when
+    // dominance is undocumented the first-pass match stands (registry
+    // confirmation is always required downstream).
+    const cta = String(d?.telestrokeNote?.ctaResults || '').toLowerCase();
+    const nonDominantDocumented = /non[\s-]?dominant|co[\s-]?dominant/.test(cta);
+    const dominantDocumented = !nonDominantDocumented && /\bdominant\b/.test(cta);
     const mevoMatch =
-      nihss !== null && nihss >= 8 &&
-      occlusion.some((v) => ['M2', 'M3'].includes(v));
+      nihss >= 8 &&
+      occlusion.some((v) => ['M2', 'M3'].includes(v)) &&
+      !dominantDocumented;
     if (mevoMatch) return 'mevo';
-    if (nihss !== null && nihss <= 5 && (occlusion.includes('ICA') || occlusion.includes('M1'))) {
+    if (nihss <= 5 && (occlusion.includes('ICA') || occlusion.includes('M1'))) {
       return 'low-nihss-lvo';
     }
-    if (nihss === null && occlusion.length === 0) return null;
     return 'none';
+  },
+  // MRI-based ASPECTS: only resolves when the encounter documents that MRI was
+  // the imaging pathway (wake-up workflow, mriAvailable === true). Otherwise
+  // null so MRI-specific thresholds (e.g. STEP's MRI ASPECTS <7) never fire on
+  // a CT-derived score.
+  mriAspectsScore: (d) => {
+    if (d?.telestrokeNote?.wakeUpStrokeWorkflow?.mriAvailable === true) {
+      return d?.aspectsScore;
+    }
+    return null;
   }
 };
 
@@ -202,6 +221,9 @@ const operators = {
     // listed needles. Used for free-text fields like ctpResults
     // ('mismatch', 'penumbra'), or for array fields where any of a set
     // of options means the criterion is met.
+    // NEGATION-AWARE for free text: "No intracranial stenosis" must not
+    // satisfy a stenosis criterion. A needle whose every occurrence is
+    // negated counts as a documented ABSENCE (false), not a match.
     if (!Array.isArray(value)) return null;
     if (resolved === undefined || resolved === null) return null;
     if (Array.isArray(resolved)) {
@@ -210,7 +232,25 @@ const operators = {
     }
     if (!isPresentString(resolved)) return null;
     const hay = String(resolved).toLowerCase();
-    return value.some((needle) => hay.includes(String(needle).toLowerCase()));
+    let sawNegatedOnly = false;
+    for (const needle of value) {
+      const n = String(needle).toLowerCase();
+      let idx = hay.indexOf(n);
+      let anyHit = false;
+      let anyAffirmative = false;
+      while (idx !== -1) {
+        anyHit = true;
+        // Look back within the same clause for a negation cue.
+        const clauseStart = Math.max(0, Math.max(hay.lastIndexOf('.', idx), hay.lastIndexOf(';', idx), hay.lastIndexOf(',', idx)) + 1);
+        const prefix = hay.slice(Math.max(clauseStart, idx - 40), idx);
+        const negated = /(\bno\b|\bwithout\b|\bnegative for\b|\bdenies\b|\bnot?\s+(?:seen|present|identified|visualized)\b|\bnon-?occlusive\b|\bruled out\b|\babsent\b)\s*[^.;,]*$/.test(prefix);
+        if (!negated) { anyAffirmative = true; break; }
+        idx = hay.indexOf(n, idx + n.length);
+      }
+      if (anyAffirmative) return true;
+      if (anyHit) sawNegatedOnly = true;
+    }
+    return sawNegatedOnly ? false : false;
   }
 };
 

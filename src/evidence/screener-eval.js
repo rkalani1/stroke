@@ -212,15 +212,53 @@ export function evaluateTrialEligibility(trial, p) {
   const trialDefaults = trial.optimisticDefaults || {};
   Object.keys(OPT_DEFAULTS).forEach(k => { if (optP[k] === 'unselected') optP[k] = trialDefaults[k] !== undefined ? trialDefaults[k] : OPT_DEFAULTS[k]; });
 
-  const optErrors = [];
-  trial.eligibility.criteria.forEach(c => { if (!evaluateCriterion(c, optP)) optErrors.push(c.error); });
-  trial.eligibility.exclusions.forEach(c => { if (evaluateCriterion(c, optP)) optErrors.push(c.error); });
+  // "Too early" detector: an onset-window criterion the patient fails only
+  // because they have not yet REACHED the trial's declared window start. Driven
+  // from each trial's own criteria (onsetHours/onsetDays/onsetMonths fields),
+  // not from hardcoded acronyms.
+  const isTooEarlyFailure = (c, params) => {
+    if (!c) return false;
+    if (c.operator === 'or') {
+      // An 'or' criterion is "too early" if at least one branch would pass
+      // except for a too-early onset criterion (all its non-onset criteria pass).
+      return (c.branches || []).some((b) =>
+        b.criteria.some((cc) => isTooEarlyFailure(cc, params)) &&
+        b.criteria.every((cc) => evaluateCriterion(cc, params) || isTooEarlyFailure(cc, params))
+      );
+    }
+    if (!c.field || !String(c.field).startsWith('onset')) return false;
+    const v = params[c.field];
+    if (typeof v !== 'number') return false;
+    if (c.operator === '>=' || c.operator === '>') return v < c.value;
+    if (c.operator === 'between' && Array.isArray(c.value)) return v < c.value[0];
+    return false;
+  };
+
+  const optCriterionFailures = trial.eligibility.criteria.filter(c => !evaluateCriterion(c, optP));
+  const optExclusionHits = trial.eligibility.exclusions.filter(c => evaluateCriterion(c, optP));
+  const optErrors = [...optCriterionFailures.map(c => c.error), ...optExclusionHits.map(c => c.error)];
 
   if (optErrors.length > 0) {
+    // Previously this early return made every "enrolling soon" patient read as
+    // 'excluded' (e.g. a day-2 ICH+AF patient for ASPIRE's 14-180d window).
+    // If EVERY optimistic failure is a too-early onset criterion, the patient
+    // is a FUTURE match: surface as 'soon' with the window spelled out.
+    const allTooEarly = optExclusionHits.length === 0 &&
+      optCriterionFailures.every(c => isTooEarlyFailure(c, optP));
+    if (allTooEarly) {
+      return {
+        status: 'soon',
+        matchedCriteria: [],
+        pendingCriteria: optCriterionFailures.map(c => c.pendingLabel || c.error).filter(Boolean),
+        pendingFields: [],
+        exclusionReasons: [],
+        sourceGaps: trial.sourceGaps || []
+      };
+    }
     return { status: 'excluded', matchedCriteria: [], pendingCriteria: [], pendingFields: [], exclusionReasons: optErrors, sourceGaps: trial.sourceGaps || [] };
   }
 
-  const isSoon = trial.status === 'soon' || (trial.acronym === 'ASPIRE' && p.onsetDays < 14) || (trial.acronym === 'VERIFY' && p.onsetHours < 24) || (trial.acronym === 'TELE-REHAB-2' && p.onsetDays < 90);
+  const isSoon = trial.status === 'soon';
   const requiresSourceConfirmation = !!trial.sourceCompletenessStatus && trial.sourceCompletenessStatus !== 'complete';
 
   const pendingFields = [];
@@ -262,6 +300,12 @@ export function evaluateTrialEligibility(trial, p) {
     pendingCriteria.push('Confirm the full ClinicalTrials.gov record, approved local protocol, activation status, consent path, and study-owner instructions before any clinical or recruitment action');
   }
 
+  // NOTE (by design): every first-pass trial carries
+  // sourceCompletenessStatus !== 'complete', which pushes 'Full
+  // registry/protocol confirmation' into pendingFields above — so
+  // 'eligible' is UNREACHABLE for first-pass records and every real match
+  // surfaces as 'pending' (possible candidate). The green 'eligible' state
+  // would only ever render for a fully registry-verified trial record.
   const finalStatus = (pendingFields.length > 0 || trial.eligibility.criteria.some(c => !evaluateCriterion(c, pessP)) || trial.eligibility.exclusions.some(c => evaluateCriterion(c, pessP)))
     ? (isSoon ? 'soon' : 'pending')
     : (isSoon ? 'soon' : 'eligible');

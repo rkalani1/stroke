@@ -8,6 +8,12 @@
   "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/33691467/",
   "pmid": "33691467",
   "society": "AHA/ASA",
+  "correctedBy": {
+    "pmid": "42507798",
+    "doi": "10.1161/STR.0000000000000531",
+    "citation": "Stroke. 2026;57(8):e460",
+    "note": "A published correction (2026-07-27) amends this scientific statement; its itemized changes could not be retrieved in this environment and are NOT yet applied here. Consult the correction at https://doi.org/10.1161/STR.0000000000000531 before relying on this summary."
+  },
   "recommendations": [
     {
       "section": "Scope",
