@@ -949,21 +949,21 @@
                12–14px; the workspace panels were the one surface still at 8 */
             border-radius: 12px;
         }
-        #main .border.border-line,
-        #main .border.border-slate-200 {
+        #main .border.border-line:not(:focus-visible),
+        #main .border.border-slate-200:not(:focus-visible) {
             box-shadow: var(--lift-1);
             transition: border-color var(--dur) var(--ease),
                         box-shadow var(--dur) var(--ease),
                         transform var(--dur) var(--ease);
         }
-        html.dark #main .border.border-line,
-        [data-theme="dark"] #main .border.border-line {
+        html.dark #main .border.border-line:not(:focus-visible),
+        [data-theme="dark"] #main .border.border-line:not(:focus-visible) {
             box-shadow: var(--lift-1), var(--inner-hi);
         }
         @media (hover: hover) {
-            #main a.border.border-line:hover,
-            #main button.border.border-line:hover,
-            #main summary.border.border-line:hover {
+            #main a.border.border-line:hover:not(:focus-visible),
+            #main button.border.border-line:hover:not(:focus-visible),
+            #main summary.border.border-line:hover:not(:focus-visible) {
                 border-color: color-mix(in oklab, var(--accent) 45%, var(--line));
                 box-shadow: var(--lift-2);
                 transform: translateY(calc(-1px * var(--motion-scale)));
@@ -1036,14 +1036,14 @@
         }
 
         /* Soft accent buttons (Set diagnosis, Next incomplete, Copy) */
-        button.bg-cobalt-50.border-cobalt-300 {
+        button.bg-cobalt-50.border-cobalt-300:not(:focus-visible) {
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), var(--lift-1);
             transition: background-color var(--dur) var(--ease),
                         box-shadow var(--dur) var(--ease),
                         transform var(--dur) var(--ease);
         }
         @media (hover: hover) {
-            button.bg-cobalt-50.border-cobalt-300:hover {
+            button.bg-cobalt-50.border-cobalt-300:hover:not(:focus-visible) {
                 box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), var(--lift-2);
                 transform: translateY(calc(-1px * var(--motion-scale)));
             }
@@ -1267,7 +1267,8 @@
         /* Nothing above should survive onto paper. */
         @media print {
             body { background: #fff !important; }
-            .app-header::after { display: none; }
+            .app-header::after,
+            .app-shell::before { display: none; }
             #main .border.border-line,
             .v7-card,
             .v7-study { box-shadow: none !important; }
