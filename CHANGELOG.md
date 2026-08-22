@@ -1,5 +1,47 @@
 # CHANGELOG
 
+## v6.21.0 — 2026-08-22 — full-surface evidence audit (P0 safety → P5 content)
+
+- **P0 patient-safety:** EVT auto-recommendation engine rewritten (documented
+  LVO required, numeric ASPECTS gate, EXTEND-perfusion-gated 4.5–9 h IVT,
+  TEMPO-2 minor-nondisabling caution); single CrCl-adjusted DOAC-recency model
+  feeds both the TNK auto-block and the checklist; carotid symptomatic vs
+  asymptomatic pathways separated; Hemphill ICH mortality table and ABCD²
+  scoring corrected to published values; FASTEST negative result stated;
+  RHAPSODY registry record fixed (wrong NCT → RHAPSODY-2, withdrawn); screener
+  output relabeled "TRIAL SCREEN (first-pass, unverified)".
+- **P1 evidence currency:** ~30 guideline rules rewritten/added (ATLAS
+  large-core IPD meta, OCEANIC-STROKE, CREST-2, PRESTIGE-AF both directions,
+  CHOICE-2 with its mortality signal, MeVO EVT Class III, CAPTIVA
+  rivaroxaban-arm termination); 15 landmark-trial records and 17 Evidence
+  Atlas records added (completed trials 113 → 130); guideline library grew to
+  89 datasets / 862 recommendations with correctedBy metadata on four
+  datasets carrying published corrections; 8 DOI fixes.
+- **P2 consistency:** duplicate/contradictory rule pairs merged; BP-management
+  rules reconciled and post-EVT targets gated on actual reperfusion; HINTS
+  framing unified; teaching surfaces aligned to the 2026 AIS guideline;
+  EVD/ICP simulator drip-interval sign fixed.
+- **P3 engine:** matcher status gate, null domain-match on missing data,
+  negation-aware text operator, MRI-ASPECTS resolver; six rendered-but-unwired
+  calculator cards (HAS-BLED, RoPE/PASCAL, RCVS², PHASES, CrCl, enoxaparin)
+  now compute, with 17 citations added; cross-registry reconciliation test.
+- **P4 structural:** What's New feed finally renders (Research sub-tab);
+  Guideline Library moved into the Guidelines sub-tab with short COR badges,
+  per-recommendation anchors, PubMed fallbacks, and "summary only" stub chips;
+  References tab refactored to a registry with year/supersededBy support and
+  9 quick-reference PDFs registered; education dead-link PDFs and dead chips
+  removed, deep-link fallback added; settings cleanup (draft-discarding
+  Cancel, dead code removal, strokeP0.version wired to APP_VERSION — now the
+  sixth lockstep version location); orphan-citation and guideline-currency
+  reports added to validators; content checks wired into CI; docs counts
+  corrected and CHANGELOG backfilled (v6.11.9–v6.20.0).
+- **P5 content:** new PFO/PFO-closure education module (CLOSE, RESPECT,
+  REDUCE, DEFENSE-PFO, RoPE/PASCAL); thrombolysis-associated sICH reversal
+  subsection and verified andexanet dosing tiers; INTERACT4, SATURN, and
+  factor-XI class primer additions; PICASSO and CAPTIVA eligibility-table rows.
+- Every clinical number verified against primary sources retrieved
+  2026-08-22; Example Protocols content untouched (snapshots byte-identical).
+
 ## v6.20.0 — 2026-08-22 — mobile-first Trials tab
 
 - **Trials tab rebuilt as a mobile-first, installable bedside app:** the two

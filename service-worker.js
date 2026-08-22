@@ -41,6 +41,7 @@ const CORE_ASSETS = [
   './data/atlas/recommendations.json',
   './data/atlas/topics.json',
   './data/guidelines/index.json',
+  './data/guidelines/aha-brain-health-life-span-2026.json',
   './data/guidelines/ais-2026.json',
   './data/guidelines/cancer-stroke-2026.json',
   './data/guidelines/cardiac-brain-health-2024.json',
