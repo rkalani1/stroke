@@ -4,7 +4,7 @@ Stroke clinical-decision-support SPA. Single bundle `src/app.jsx` = **36,224 lin
 
 **Purpose of the coming refactor (Phases 2–6):** (a) extract clinical content into schema-validated `/content`, (b) de-duplicate shared concepts to one canonical source, (c) centralize calculators + citations, (d) add a Telestroke / Inpatient / Clinic context switch.
 
-**HARD CONSTRAINT (non-negotiable):** the Example Protocols tab (`activeTab === 'protocols'`, subtabs `ich/ischemic/sah/tia/cvt/calculators`, routes `#/protocols/*`, rendered in `app.jsx` **27678–33582**) must keep clinical wording **byte-identical**. A lock harness already exists (`scripts/snapshot-example-protocols.mjs`) — see §7.
+**HARD CONSTRAINT (non-negotiable):** the Example Protocols tab (`activeTab === 'protocols'`, routes `#/protocols/*`; at the audited HEAD its subtabs were `ich/ischemic/sah/tia/cvt/calculators`, rendered in `app.jsx` **27678–33582**) must keep clinical wording **byte-identical**. Current state: subtabs are `ich/ischemic` only (`sah/tia/cvt` were retired in v6.19.0 and the Calculators panel moved to Research in v6.19.2). The lock harness is `scripts/snapshot-example-protocols.mjs` — see §7 for the current lock scope.
 
 > Provenance: full findings in `scratchpad/audit/*.json` (11 app-slice files `app-1..app-11`, 4 module files `mod-*`, 11 duplication files `dup-*`). Line numbers are from the audited HEAD (`feat/v1-polish-privacy-2026-07`, app version 6.11.1). Treat as a map, not a spec; re-grep before editing.
 
@@ -276,38 +276,22 @@ The Atlas is **~80% of the target `/content` architecture already built** for th
 
 ---
 
-## 7. Example Protocols lock plan (HARD CONSTRAINT)
+## 7. Example Protocols content lock (HARD CONSTRAINT — current state)
 
-**Frozen surface:** `app.jsx` **27678–33582**, `activeTab === 'protocols'`, subtabs `ich/ischemic/sah/tia/cvt/calculators`, routes `#/protocols/*`. **~99% of clinical wording is inline JSX string literals** in this range; only three module imports feed it:
+*Rewritten to the current state of the lock. The original Phase-1 "lock plan" (untracked harness, missing baselines, six subtabs with audited-HEAD line ranges) is obsolete — superseded by the shipped implementation below.*
 
-| Imported into frozen range | Module | Render lines |
+**Locked surfaces today.** The Protocols tab now has two subtabs — `ich` and `ischemic` (`MANAGEMENT_SUBTABS = ['ich', 'ischemic']` in `src/app.jsx`). The `sah`/`tia`/`cvt` subtabs were retired in v6.19.0 (content reconciled into the ICH and Ischemic/TIA surfaces or removed as unsourced), and the Calculators panel moved to Guidelines & References at `#/research/calculators` in v6.19.2.
+
+**The lock harness (shipped, in CI).** `scripts/snapshot-example-protocols.mjs` is committed, runs as `npm run test:protocol-snapshot`, and gates CI (`.github/workflows/ci.yml`). It serves the built `app.js` (the same artifact GitHub Pages serves) locally, drives Playwright/Chromium, expands every collapsed disclosure, extracts every visible text node — including drug/agent modal content opened via the inline underlined triggers — normalizes, and compares against baselines in `tests/snapshots/example-protocols/`:
+
+| Baseline | Captured from | Lock policy |
 |---|---|---|
-| `ICH_INITIAL_EVALUATION_ALGORITHM` | `src/institutional-protocols.js` | 27983–28042 |
-| `AIS_COMMAND_CENTER_CARDS` + `AIS_SOURCE_LINKS` + `AIS_COMMAND_CENTER_LAST_REVIEWED` | `src/management-guidance.js` | 28808–28996 |
-| `PocketCards` | `src/pocket-cards.jsx` | 30420–30435 |
+| `ich.txt` | `#/protocols/ich` → `#tabpanel-protocols` | **Content-locked byte-for-byte.** Clinical wording must not drift; any diff fails. Intentional wording changes are separate, human-reviewed `--update` commits. |
+| `ischemic.txt` | `#/protocols/ischemic` → `#tabpanel-protocols` | Same byte-for-byte content lock as `ich.txt`. |
+| `calculators.txt` | `#/research/calculators` → `#research-tabpanel-calculators` | Snapshot-locked too, but **may be re-baselined in dedicated commits** when the Research→Calculators panel legitimately changes (e.g. wiring calculator results, adding per-card citations) — never as a side effect of an unrelated refactor. |
 
-**Also load-bearing but declared inline in app.jsx** (touch = wording risk): `protocolDetailMap` (drug modal text, useMemo 2725), `getOrderBundles` (order-set strings, 13292), `GUIDELINE_CLASS_COLORS` (3587).
-
-### Subtab → precise frozen line ranges
-
-| Subtab | Frozen ranges (app.jsx) |
-|---|---|
-| ich | 27966–28750 |
-| ischemic | 28758–30435 (incl. large-core trial matrix 29967–30085; BP titration tables 29580–29742) |
-| sah | 30441–30719 |
-| tia | 30724–31027 |
-| cvt | 31030–31358 |
-| calculators | 31360–33565 (card wording 31376–33561; math imported OR inline) |
-
-### The lock harness (already exists)
-
-`scripts/snapshot-example-protocols.mjs` builds the app, launches Playwright/chromium against `app.js`, extracts **every visible text node under `#tabpanel-protocols`** for each of the 6 subtabs, normalizes, and compares against `tests/snapshots/example-protocols/`.
-- `node scripts/snapshot-example-protocols.mjs` → CI gate (exit 1 on drift)
-- `--update` → re-baseline (git diff of baselines IS the human review surface)
-
-**Critical Phase-2 action:** the harness script itself is currently **untracked in git** (present on disk, not committed) and the baseline directory **`tests/snapshots/example-protocols/` does NOT yet exist**. Before any refactor commit touches shared surfaces: commit the script, run `--update` on the **current** build to create baselines, review/commit them, and wire the check into CI (it is not in the `test:protocol` npm script today). Every subsequent refactor commit must leave this check green; any legitimate protocols wording change is a separate, explicitly-reviewed `--update` commit.
-
-**Internal duplications inside the frozen zone** (extract-but-freeze, or reconcile only as reviewed wording changes): ECASS HT classification (28291 **and** 29845), angioedema ladder (28330 **and** 29882), warfarin/DOAC reversal (28105–28212 **and** 28515–28583, which disagree on INR band), post-lytic ICH (28214 **and** 29820), ABC/2 volume UI (31885 embedded **and** 32946 standalone, divergent state keys), ABCD2 risk table (30794 **and** 32308), COR/LOE legend (31650). Inline `calculateCrCl` reimplemented in Contrast Allergy card (30165). NBO card badge says IIa but body IIb (29745/29751) — preserve as-is.
+- `node scripts/snapshot-example-protocols.mjs` → check mode (CI gate; exit 1 on drift, reporting the first divergent line)
+- `node scripts/snapshot-example-protocols.mjs --update` → re-baseline. The git diff of the baseline files IS the human review surface — every changed line is a wording change a human must approve. Legitimate only for reviewed clinical content changes or approved structural moves.
 
 ---
 

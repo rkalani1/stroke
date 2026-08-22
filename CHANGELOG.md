@@ -1,5 +1,173 @@
 # CHANGELOG
 
+## v6.20.0 — 2026-08-22 — mobile-first Trials tab
+
+- **Trials tab rebuilt as a mobile-first, installable bedside app:** the two
+  `<iframe>` embeds of standalone GitHub Pages apps are replaced by the native
+  `TrialScreener` / `EligibilityTables` components (which existed but were never
+  mounted), plus the third sub-view the iframe used to hide. Screener flow is
+  two taps (classification, then time since last known well) with no other data
+  entry. Follow-up commit fixed three defects found in self-review.
+- New `InstallAppButton` — a single Install App control in the Trials header
+  (fires the browser install prompt on Chrome/Edge/Android; opens an
+  Add-to-Home-Screen sheet on iOS Safari). Manifest shortcuts updated; a bare
+  `#/trials` always means the screener.
+- Visual design refinement pass (v7.2, CSS-only) with follow-up fixes for eight
+  regressions, two dark-mode holdovers, and decorative shadows on focused
+  controls (PR #139).
+- Removed the SISTER trial from the Trials tab, screener, and eligibility
+  tables (PR #138).
+
+## v6.19.4 — 2026-08-17 — close the 25 confirmed findings left undone in v6.19.3
+
+- v6.19.3 implemented 21 of 72 adversarially-confirmed findings and reported
+  the rest as "refuted/no-change", conflating genuine refutations with
+  confirmed findings left undone. This release closes them: 19 further changes
+  implemented, 6 held with a stated reason.
+- Fail-closed fixes: the IVT Eligibility card and anterior-LVO EVT branch
+  rendered nothing for fail-closed holds and explicit negatives — both now
+  render every state; a future-dated last-known-well no longer resolves into
+  the 0–6h band with an affirmative COR I/LOE A (`resolveWindow` fails closed);
+  the 185/110 contraindication comparisons corrected to strictly-below.
+
+## v6.19.3 — 2026-08-17 — reconcile current Stroke Center sources
+
+- Re-audited every reachable assertion in Protocols → ICH and Ischemic/TIA
+  against a fresh 385-file inventory of the Stroke Center folder (37 selected
+  sources, hash-verified unchanged): 737 assertions checked, 661 already
+  source-correct; 21 source-backed changes shipped (tightening, wording,
+  removals of unsourced content, source-listed additions — no loosening).
+- Safety-relevant: amyloid immunotherapy / ARIA moved from the relative to the
+  absolute IVT contraindication tier; the IVT absolute exclusion now carries
+  the full combined source bullet (history of GI malignancy, or GI/GU
+  haemorrhage within 21 days).
+
+## v6.19.2 — 2026-08-17 — simplify Protocols navigation; move calculators to Research
+
+- Calculators panel relocated from Protocols to Guidelines & References
+  (`#/research/calculators`); the snapshot harness now captures it there.
+- Removed the per-card source-status notice boxes and simplified Protocols
+  navigation (PR #134).
+
+## v6.19.1 — 2026-08-17 — remove Order Bundles quick copy
+
+- Removed the shared "Order Bundles — Quick Copy" box from the ICH,
+  Ischemic/TIA, and Calculators surfaces (PR #133).
+
+## v6.19.0 — 2026-08-17 — complete the Protocols source reconciliation
+
+- Source-grounded Protocols release with the approved ICH, Ischemic/TIA, and
+  Calculators surfaces (PR #132). The standalone SAH, TIA, and CVT subtabs are
+  retired; their snapshot baselines are removed and the snapshot lock now
+  covers `ich`, `ischemic`, and `calculators`.
+
+## v6.18.3 — 2026-08-16 — finish the residue removal
+
+- v6.18.2 cleaned `src/institutional-protocols.js` and verified the source file
+  was clean — but the same assertions also lived in files not checked and were
+  still rendering: three further pupillometry clauses in `src/app.jsx`
+  consult-trigger lists (two rendered in the ICH subtab) and the glucose-target
+  line in `src/management-guidance.js`. Removed there too.
+
+## v6.18.2 — 2026-08-16 — clear the last four unsourced assertions from Protocols
+
+- A residue check against the 112 no-folder-source assertions found four had
+  survived the v6.18.0 removal pass. Each was re-checked against the folder
+  individually: two turned out to be folder-backed after all and stayed;
+  pupillometry (neurosurgery consult-trigger list and the monitoring-adjuncts
+  node of `ICH_INITIAL_EVALUATION_ALGORITHM`) and the glucose entries were
+  removed — no folder document mentions them.
+
+## v6.18.1 — 2026-08-16 — drop remaining frame chrome from the Eligibility Tables embed
+
+- Removed the breadcrumb and "Powered by" footer from the Eligibility Tables
+  DeviceFrame, matching what v6.11.11 did for the Bedside Screener frame; both
+  Trials embeds are now chrome-free. Companion disclaimer removals pushed to
+  the two embedded repos.
+
+## v6.18.0 — 2026-08-16 — Protocols becomes institutional-only
+
+- 104 removals across the six Protocols subtabs: content the Stroke Center
+  folder does not support is removed (snapshot line counts: ich 620→550,
+  ischemic 1470→1103, sah 239→30, tia 202→72, cvt 120→14, calculators
+  793→651). Guideline/literature material is not deleted from the app — it
+  remains in Guidelines & References, which follow the literature.
+- Cards that lost all clinical content carry a folder-neutral notice ("No
+  institutional protocol document is on file for this topic…") rather than a
+  blank panel — 20 such notices.
+
+## v6.17.0 — 2026-08-16 — the folder is the sole authority for Protocols; correct PCC dosing
+
+- Applies the two-authority governance rule stated by the clinician owner:
+  Protocols follows the Stroke Center folder; Guidelines/References follow the
+  medical literature; discrepancies between them are expected and acceptable.
+- Audit of all six Protocols subtabs against the folder: 224 assertions
+  folder-backed, 22 conflicts (all fixed), 112 with no folder source (reported
+  only — absence of a folder document is not a defect under this rule).
+- Highest-impact correction: 4F-PCC dosing brought into line with the folder
+  source (previously weight- and INR-based 25–50 IU/kg with a nomogram).
+
+## v6.16.0 — 2026-08-16 — complete the crosswalk; revert unsafe pediatric edits
+
+- 58 further verified edits finish reconciling Protocols against the current
+  Stroke Center materials; three source conflicts resolved explicitly rather
+  than silently.
+- 20 pediatric reperfusion edits REVERTED: they broke 13 dedicated tests,
+  including adding TNK 0.25 mg/kg as a pediatric thrombolysis option against
+  the app's hardened position that tenecteplase is not endorsed for children,
+  and moving the age floor from 28d–18y to ≥2y.
+
+## v6.15.0 — 2026-08-16 — apply 58 verified crosswalk edits
+
+- Per-topic adversarial verification of all 183 crosswalk findings against both
+  the extracted source documents and the live code: 123 confirmed, 71 rejected
+  (37% did not survive verification). 58 applied here — 18 corrects-value, 16
+  adds-content, 12 tightens-criterion, 7 loosens-criterion, 4 removes-content,
+  1 wording-only. All matched their targets exactly; leak guard clean.
+
+## v6.14.0 — 2026-08-16 — IVT eligibility reconciliation + source-register correction
+
+- Corrected the source register: two current documents (Clinical Telestroke
+  Workflow rev 6/30/2026 and the Partners IVT Eligibility Decision Algorithm
+  6/2026) existed only under a folder treated as a publishing mirror and had
+  been missed. Both are now extracted and recorded; the telestroke workflow
+  carries the institution's IVT inclusion/exclusion criteria in explicit list
+  form. Second crosswalk batch reconciled against them.
+
+## v6.13.0 — 2026-08-16 — expand guideline library to 88 datasets
+
+- Library 29 → 88 datasets (802 → 861 recommendations); society coverage 49
+  AHA/ASA + 28 ESO + 7 AAN + 4 SVIN. 59 verified additions sourced by a
+  four-slice PubMed sweep (134 queries), filtered to non-superseded 2021–2026
+  publications; every title/DOI/PMID copied verbatim from tool output and all
+  59 DOIs independently confirmed against the Crossref API.
+
+## v6.12.0 — 2026-08-16 — add 12 verified ESO and AAN guidelines
+
+- Library 17 → 29 datasets (771 → 802 recommendations); first ESO and AAN
+  coverage (16 AHA/ASA, 11 ESO, 1 AAN, 1 SVIN). All published 2022–2026,
+  PubMed-verified, each DOI confirmed to resolve via the Crossref API.
+- Removed the Guidelines section header blurb.
+
+## v6.11.11 — 2026-08-16 — remove four chrome strings from the Trials screener view
+
+- Requested removals in the Bedside Screener sub-view: header subtitle,
+  caption, frame breadcrumb, and "Powered by stroke-trials-screener" footer.
+
+## v6.11.10 — 2026-08-16 — trim three Protocols card labels
+
+- Label-only, requested directly: "Post-EVT BP guardrail" → "Post-EVT BP";
+  "DOAC-Exposed AIS Patient — IVT Pathway" → "…— IVT"; "EVT Eligibility
+  Matrix" → "EVT Eligibility". Snapshot baselines re-cut; the diff shows
+  exactly these three lines. No clinical values, thresholds, algorithms, or
+  COR/LOE assignments touched.
+
+## v6.11.9 — 2026-08-16 — protocols reconciliation; leak-guard test fix
+
+- Protocols reconciliation (EVT eligibility, angioedema) per PR #119.
+- Fixed two tests that operated on a real developer file (leak-guard test fix);
+  service-worker cache window slides so v6-11-7/8 caches are deleted.
+
 ## v6.11.5 — 2026-07-13 — 2026 guideline refresh for education cards
 
 Updated the clinical education cards in `src/education.jsx` to current (through
