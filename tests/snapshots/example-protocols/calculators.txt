@@ -89,22 +89,24 @@ Score:
 Incomplete
 Incomplete:
 select a GCS tier and confirm that the age, volume, IVH, and location criteria were reviewed before using or copying the ICH Score.
-Comfort-care-excluded cohort (2005-2008)
+30-day mortality by ICH Score (Hemphill 2001)
 ICH Score
 Mortality
 0
-0.9%
+0%
 1
-0.7%
+13%
 2
-5.3%
+26%
 3
-15.3%
+72%
 4
-36.8%
+97%
 5
-60.0%
-Values reproduced from the institutional pocket card. The table provides no score-6 value and no individual treatment rule.
+100%
+6
+Not observed (~100% expected)
+Hemphill JC et al. The ICH Score. Stroke 2001;32:891-897 (PMID 11283388). UCSF derivation cohort; no patient scored 6. Prognostic only — the score must NOT be used to limit treatment or justify early DNR (self-fulfilling-prophecy risk; AHA/ASA 2022 ICH).
 Glasgow Coma Scale:
 GCS 3-4
 (
@@ -173,7 +175,7 @@ BP: SBP≥140 or DBP≥90 (+1)
 Unilateral weakness (+2)
 Speech disturbance w/o weakness (+1)
 Symptom Duration:
->60 minutes
+≥60 minutes
 (
 +2 points
 )
@@ -184,10 +186,6 @@ Symptom Duration:
 <10 minutes
 (
 0 points
-)
-Exactly 60 minutes
-(
-source does not assign a score
 )
 Diabetes mellitus (+1)
 Required review:
@@ -246,23 +244,23 @@ Score 9:
 HAS-BLED Score
 Inputs retained
 H
-ypertension
+ypertension — uncontrolled, SBP >160 mmHg
 A
-bnormal renal function
+bnormal renal function — dialysis, transplant, or Cr ≥2.26 mg/dL (≥200 µmol/L)
 A
-bnormal liver function
+bnormal liver function — cirrhosis, or bilirubin >2× ULN with AST/ALT/ALP >3× ULN
 S
 troke history
 B
 leeding history or predisposition
 L
-abile INR
+abile INR — unstable/high INRs or time-in-therapeutic-range <60% (warfarin patients)
 E
-lderly
+lderly — age >65 years
 D
 rugs (antiplatelet agents, NSAIDs)
 D
-(cont.) Alcohol use
+(cont.) Alcohol use — ≥8 drinks/week
 ROPE Score and PASCAL Classification
 No history of hypertension
 No history of diabetes
