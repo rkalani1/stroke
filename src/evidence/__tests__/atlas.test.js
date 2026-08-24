@@ -320,6 +320,88 @@ describe('Schema validators', () => {
     expect(errors.some((e) => /matcherCriteria/.test(e))).toBe(true);
   });
 
+  describe('makeActiveTrial factory', () => {
+    it('throws an error when status is missing or invalid', () => {
+      expect(() => schema.makeActiveTrial({})).toThrowError(/makeActiveTrial: unknown status 'undefined' for trial '<unset>'/);
+      expect(() => schema.makeActiveTrial({ id: 'test-trial', status: 'invalid-status' })).toThrowError(
+        /makeActiveTrial: unknown status 'invalid-status' for trial 'test-trial'/
+      );
+    });
+
+    it('returns default active trial schema when provided valid status and minimal input', () => {
+      const trial = schema.makeActiveTrial({ status: 'recruiting' });
+      expect(trial).toEqual({
+        id: '',
+        shortName: '',
+        fullName: '',
+        nctId: '',
+        phase: '',
+        status: 'recruiting',
+        topic: '',
+        briefDescription: '',
+        rationale: '',
+        inclusionCriteria: [],
+        exclusionCriteria: [],
+        keyTakeaways: [],
+        lookingFor: [],
+        category: '',
+        matcherCriteria: [],
+        matcherExclusions: [],
+        relatedCompletedTrialIds: [],
+        link: '',
+        lastReviewed: '',
+        verificationStatus: 'todo-verify',
+        verificationNotes: '',
+        legacyMatcherKey: ''
+      });
+    });
+
+    it('correctly maps all input properties and nested arrays/objects', () => {
+      const input = {
+        id: 'test-id',
+        shortName: 'Test Short',
+        fullName: 'Test Full Name',
+        nctId: 'NCT12345678',
+        phase: 'Phase III',
+        status: 'active-not-recruiting',
+        topic: 'thrombolysis',
+        briefDescription: 'Brief description',
+        rationale: 'Rationale statement',
+        inclusionCriteria: ['Inc 1', 'Inc 2'],
+        exclusionCriteria: ['Exc 1'],
+        keyTakeaways: ['Takeaway 1'],
+        lookingFor: ['Condition 1'],
+        category: 'Acute Therapy',
+        matcherCriteria: [
+          { field: 'age', operator: '>=', value: 18, label: 'Age 18+' }
+        ],
+        matcherExclusions: [
+          { id: 'ex-1', field: 'ich', label: 'Intracranial Hemorrhage' },
+          { id: 'ex-2', field: 'sbp', operator: '>', value: 185, label: 'SBP > 185' }
+        ],
+        relatedCompletedTrialIds: ['completed-1'],
+        link: 'https://clinicaltrials.gov',
+        lastReviewed: '2026-05-01',
+        verificationStatus: 'verified-clinicaltrials-gov',
+        verificationNotes: 'Verified against ClinicalTrials.gov API',
+        legacyMatcherKey: 'TEST_LEGACY'
+      };
+
+      const trial = schema.makeActiveTrial(input);
+
+      expect(trial).toEqual({
+        ...input,
+        matcherCriteria: [
+          { field: 'age', operator: '>=', value: 18, label: 'Age 18+' }
+        ],
+        matcherExclusions: [
+          { id: 'ex-1', field: 'ich', operator: '==', value: true, label: 'Intracranial Hemorrhage' },
+          { id: 'ex-2', field: 'sbp', operator: '>', value: 185, label: 'SBP > 185' }
+        ]
+      });
+    });
+  });
+
   it('warns on Class I recommendation without supporting claims', () => {
     const r = schema.makeRecommendation({
       id: 'fake-rec', text: 'something', classOfRecommendation: 'I', levelOfEvidence: 'A',
