@@ -20,6 +20,7 @@ import {
   calculateTNKDose,
   calculatePCCDose,
   calculateAlteplaseDose,
+  calculateAdjunctiveIAAlteplase,
   calculateDOACStart,
   DOAC_PROTOCOLS
 } from '../src/calculators.js';
@@ -243,6 +244,62 @@ describe('calculateAlteplaseDose', () => {
     const r = calculateAlteplaseDose(70);
     expect(r.totalDose).toBe(63);
     expect(r.capped).toBe(false);
+  });
+});
+
+describe('calculateAdjunctiveIAAlteplase', () => {
+  it('calculates 0.225 mg/kg dose for valid weight below cap', () => {
+    // 70 kg * 0.225 = 15.75 mg
+    const r = calculateAdjunctiveIAAlteplase(70, '2b50');
+    expect(r).not.toBeNull();
+    expect(r.weightKg).toBe(70);
+    expect(r.eTICI).toBe('2b50');
+    expect(r.isEligible).toBe(true);
+    expect(r.dose).toBe(15.75);
+    expect(r.maxDoseReached).toBe(false);
+    expect(r.note).toMatch(/CHOICE-2 \(JAMA 2026\): Adjunctive IA alteplase 0.225 mg\/kg/);
+  });
+
+  it('caps dose at 22.5 mg when calculated dose exceeds maximum', () => {
+    // 110 kg * 0.225 = 24.75 mg -> capped at 22.5 mg
+    const r = calculateAdjunctiveIAAlteplase(110, '3');
+    expect(r).not.toBeNull();
+    expect(r.weightKg).toBe(110);
+    expect(r.dose).toBe(22.5);
+    expect(r.maxDoseReached).toBe(true);
+  });
+
+  it('handles max dose threshold exactly at 100 kg (100 * 0.225 = 22.5)', () => {
+    const r = calculateAdjunctiveIAAlteplase(100, '2c');
+    expect(r.dose).toBe(22.5);
+    expect(r.maxDoseReached).toBe(true);
+  });
+
+  it('correctly identifies eligible eTICI grades (case-insensitive)', () => {
+    const eligibleGrades = ['2b50', '2B50', '2b67', '2B67', '2c', '2C', '3'];
+    for (const grade of eligibleGrades) {
+      const r = calculateAdjunctiveIAAlteplase(70, grade);
+      expect(r.isEligible).toBe(true);
+      expect(r.note).toMatch(/CHOICE-2 \(JAMA 2026\)/);
+    }
+  });
+
+  it('correctly identifies ineligible eTICI grades', () => {
+    const ineligibleGrades = ['0', '1', '2a', '2b25', 'unclear', null, undefined];
+    for (const grade of ineligibleGrades) {
+      const r = calculateAdjunctiveIAAlteplase(70, grade);
+      expect(r.isEligible).toBe(false);
+      expect(r.note).toMatch(/CHOICE-2 criteria generally require successful reperfusion/);
+    }
+  });
+
+  it('returns null for invalid or out-of-range weight values', () => {
+    expect(calculateAdjunctiveIAAlteplase(0, '3')).toBeNull();
+    expect(calculateAdjunctiveIAAlteplase(-10, '3')).toBeNull();
+    expect(calculateAdjunctiveIAAlteplase(351, '3')).toBeNull();
+    expect(calculateAdjunctiveIAAlteplase('invalid', '3')).toBeNull();
+    expect(calculateAdjunctiveIAAlteplase(null, '3')).toBeNull();
+    expect(calculateAdjunctiveIAAlteplase(undefined, '3')).toBeNull();
   });
 });
 
