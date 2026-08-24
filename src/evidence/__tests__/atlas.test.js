@@ -13,6 +13,7 @@ import {
   topics,
   getActiveTrial,
   getActiveTrialByLegacyKey,
+  getAllActiveTrialIds,
   getCompletedTrial,
   getCitation,
   filterCompletedTrials,
@@ -102,6 +103,36 @@ describe('Evidence Atlas — data layer', () => {
 });
 
 describe('Evidence Atlas — query helpers', () => {
+  it('getActiveTrial returns active trial by id or null if not found', () => {
+    const trial = getActiveTrial('step-evt');
+    expect(trial).toBeTruthy();
+    expect(trial.id).toBe('step-evt');
+    expect(trial.shortName).toBe('STEP-EVT');
+
+    expect(getActiveTrial('non-existent-trial-id')).toBeNull();
+    expect(getActiveTrial(null)).toBeNull();
+    expect(getActiveTrial(undefined)).toBeNull();
+  });
+
+  it('getActiveTrialByLegacyKey returns active trial by legacy key or null if not found', () => {
+    const trial = getActiveTrialByLegacyKey('STEP');
+    expect(trial).toBeTruthy();
+    expect(trial.id).toBe('step-evt');
+
+    expect(getActiveTrialByLegacyKey('NON_EXISTENT_KEY')).toBeNull();
+    expect(getActiveTrialByLegacyKey(null)).toBeNull();
+    expect(getActiveTrialByLegacyKey(undefined)).toBeNull();
+  });
+
+  it('getAllActiveTrialIds returns a Set of all active trial IDs', () => {
+    const idsSet = getAllActiveTrialIds();
+    expect(idsSet).toBeInstanceOf(Set);
+    expect(idsSet.size).toBe(activeTrials.length);
+    for (const trial of activeTrials) {
+      expect(idsSet.has(trial.id)).toBe(true);
+    }
+  });
+
   it('filterCompletedTrials filters by topic', () => {
     const got = filterCompletedTrials({ topic: 'extended-window-ivt' });
     expect(got.length).toBeGreaterThan(0);
