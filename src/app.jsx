@@ -293,6 +293,71 @@ import {
   diffEvaluations as engineDiffEvaluations
 } from './evidence/matcher-engine.js';
 
+const clearUnusedDiagnosisFields = (note, prevCategory, newCategory) => {
+  if (newCategory === prevCategory) return {};
+  const next = {};
+
+  if (newCategory !== 'ischemic') {
+    next.tnkRecommended = false;
+    next.evtRecommended = false;
+    next.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', evtConsentWith: '', transferConsentDiscussed: false };
+    next.evtAccessSite = '';
+    next.evtDevice = '';
+    next.evtTechnique = '';
+    next.evtNumberOfPasses = '';
+    next.reperfusionTime = '';
+    next.postTNKMonitoring = { neuroChecksQ15min: false, bpChecksQ15min: false, bleedingWatch: false, repeatImagingOrdered: false, cardiacMonitoring: false };
+    next.doacTiming = { strokeSeverity: '', hemorrhagicTransformation: false, htClassification: '', doacInitiationDay: '', doacAgent: '' };
+    next.hemorrhagicTransformation = { detected: false, classification: '', symptomatic: false, managementActions: '', antithromboticHeld: false, reimagingPlanned: false };
+    next.angioedema = { detected: false, severity: '', aceInhibitorUse: false, stepsTaken: {}, intubated: false, resolved: false, onsetTime: '' };
+  }
+  if (newCategory !== 'ischemic' && (note.bpPhase === 'post-evt' || note.bpPhase === 'post-tnk')) {
+    next.bpPhase = 'pre-tnk';
+  }
+  if (newCategory !== 'ich') {
+    next.ichReversalInitiated = false;
+    next.ichReversalStartTime = '';
+    next.ichTransferDecisionTime = '';
+    next.ichBPManaged = false;
+    next.ichNeurosurgeryConsulted = false;
+    next.ichSeizureProphylaxis = false;
+    next.ichSurgicalCriteria = { cerebellarMassEffect: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
+    next.osmoticTherapy = { agentUsed: '', indication: '', serumSodium: '', serumOsmolality: '', sodiumTarget: '', correctionRate: '', baselineNa: '', baselineNaTime: '', repeatNa: '', repeatNaTime: '', weight: '', mannitolOsmGap: '' };
+  }
+  if (newCategory !== 'sah') {
+    next.sahGrade = '';
+    next.sahGradeScale = '';
+    next.sahBPManaged = false;
+    next.sahNimodipine = false;
+    next.sahEVDPlaced = false;
+    next.sahAneurysmSecured = false;
+    next.sahNeurosurgeryConsulted = false;
+    next.sahSeizureProphylaxis = false;
+    next.fisherGrade = '';
+    next.sahAneurysmLocation = '';
+    next.sahAneurysmSize = '';
+    next.sahSecuringMethod = '';
+    next.sahVasospasmMonitoring = { tcdOrdered: false, neuroChecksQ1h: false, sodiumMonitoring: false, dciSuspected: false, inducedHypertension: false, notes: '' };
+    next.sahOutcomeSet = { dischargeMRS: '', dischargeDisposition: '', followUpScheduled: false, followUpDate: '', ninetyDayMRS: '', ninetyDayMortality: '', cognitiveScreenPlanned: false, hrqolPlanned: false };
+  }
+  if (newCategory !== 'cvt') {
+    next.cvtAnticoagStarted = false;
+    next.cvtAnticoagType = '';
+    next.cvtIcpManaged = false;
+    next.cvtSeizureManaged = false;
+    next.cvtHematologyConsulted = false;
+    next.cvtSpecialPopulation = {
+      pregnancyPostpartum: false,
+      apsConfirmed: false,
+      activeCancer: false,
+      severeThrombophilia: false
+    };
+    next.cvtAnticoag = { acutePhase: '', transitionAgent: '', duration: '', apsStatus: '', etiologyProvoked: false };
+  }
+
+  return next;
+};
+
 const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]));
 
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
@@ -14273,65 +14338,7 @@ Clinician Name`;
                 updated.tnkAutoBlockReason = `TNK auto-cleared: ${category.toUpperCase()} diagnosis (thrombolysis contraindicated)`;
                 addToast(`TNK recommendation cleared — ${category.toUpperCase()} diagnosis is a contraindication to thrombolysis`, 'error');
               }
-              if (category !== prev.diagnosisCategory) {
-                if (category !== 'ischemic') {
-                  updated.tnkRecommended = false;
-                  updated.evtRecommended = false;
-                  updated.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', evtConsentWith: '', transferConsentDiscussed: false };
-                  updated.evtAccessSite = '';
-                  updated.evtDevice = '';
-                  updated.evtTechnique = '';
-                  updated.evtNumberOfPasses = '';
-                  updated.reperfusionTime = '';
-                  updated.postTNKMonitoring = { neuroChecksQ15min: false, bpChecksQ15min: false, bleedingWatch: false, repeatImagingOrdered: false, cardiacMonitoring: false };
-                  updated.doacTiming = { strokeSeverity: '', hemorrhagicTransformation: false, htClassification: '', doacInitiationDay: '', doacAgent: '' };
-                  updated.hemorrhagicTransformation = { detected: false, classification: '', symptomatic: false, managementActions: '', antithromboticHeld: false, reimagingPlanned: false };
-                  updated.angioedema = { detected: false, severity: '', aceInhibitorUse: false, stepsTaken: {}, intubated: false, resolved: false, onsetTime: '' };
-                }
-                if (category !== 'ischemic' && (prev.bpPhase === 'post-evt' || prev.bpPhase === 'post-tnk')) {
-                  updated.bpPhase = 'pre-tnk';
-                }
-                if (category !== 'ich') {
-                  updated.ichReversalInitiated = false;
-                  updated.ichReversalStartTime = '';
-                  updated.ichTransferDecisionTime = '';
-                  updated.ichBPManaged = false;
-                  updated.ichNeurosurgeryConsulted = false;
-                  updated.ichSeizureProphylaxis = false;
-                  updated.ichSurgicalCriteria = { cerebellarMassEffect: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
-                  updated.osmoticTherapy = { agentUsed: '', indication: '', serumSodium: '', serumOsmolality: '', sodiumTarget: '', correctionRate: '', baselineNa: '', baselineNaTime: '', repeatNa: '', repeatNaTime: '', weight: '', mannitolOsmGap: '' };
-                }
-                if (category !== 'sah') {
-                  updated.sahGrade = '';
-                  updated.sahGradeScale = '';
-                  updated.sahBPManaged = false;
-                  updated.sahNimodipine = false;
-                  updated.sahEVDPlaced = false;
-                  updated.sahAneurysmSecured = false;
-                  updated.sahNeurosurgeryConsulted = false;
-                  updated.sahSeizureProphylaxis = false;
-                  updated.fisherGrade = '';
-                  updated.sahAneurysmLocation = '';
-                  updated.sahAneurysmSize = '';
-                  updated.sahSecuringMethod = '';
-                  updated.sahVasospasmMonitoring = { tcdOrdered: false, neuroChecksQ1h: false, sodiumMonitoring: false, dciSuspected: false, inducedHypertension: false, notes: '' };
-                  updated.sahOutcomeSet = { dischargeMRS: '', dischargeDisposition: '', followUpScheduled: false, followUpDate: '', ninetyDayMRS: '', ninetyDayMortality: '', cognitiveScreenPlanned: false, hrqolPlanned: false };
-                }
-                if (category !== 'cvt') {
-                  updated.cvtAnticoagStarted = false;
-                  updated.cvtAnticoagType = '';
-                  updated.cvtIcpManaged = false;
-                  updated.cvtSeizureManaged = false;
-                  updated.cvtHematologyConsulted = false;
-                  updated.cvtSpecialPopulation = {
-                    pregnancyPostpartum: false,
-                    apsConfirmed: false,
-                    activeCancer: false,
-                    severeThrombophilia: false
-                  };
-                  updated.cvtAnticoag = { acutePhase: '', transitionAgent: '', duration: '', apsStatus: '', etiologyProvoked: false };
-                }
-              }
+              Object.assign(updated, clearUnusedDiagnosisFields(updated, prev.diagnosisCategory, category));
               return updated;
             });
 
@@ -14887,65 +14894,7 @@ Clinician Name`;
                         next.tnkAutoBlocked = true;
                         next.tnkAutoBlockReason = `TNK auto-cleared: ${category.toUpperCase()} diagnosis (thrombolysis contraindicated)`;
                       }
-                      if (category !== prev.diagnosisCategory) {
-                        if (category !== 'ischemic') {
-                          next.tnkRecommended = false;
-                          next.evtRecommended = false;
-                          next.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', evtConsentWith: '', transferConsentDiscussed: false };
-                          next.evtAccessSite = '';
-                          next.evtDevice = '';
-                          next.evtTechnique = '';
-                          next.evtNumberOfPasses = '';
-                          next.reperfusionTime = '';
-                          next.postTNKMonitoring = { neuroChecksQ15min: false, bpChecksQ15min: false, bleedingWatch: false, repeatImagingOrdered: false, cardiacMonitoring: false };
-                          next.doacTiming = { strokeSeverity: '', hemorrhagicTransformation: false, htClassification: '', doacInitiationDay: '', doacAgent: '' };
-                          next.hemorrhagicTransformation = { detected: false, classification: '', symptomatic: false, managementActions: '', antithromboticHeld: false, reimagingPlanned: false };
-                          next.angioedema = { detected: false, severity: '', aceInhibitorUse: false, stepsTaken: {}, intubated: false, resolved: false, onsetTime: '' };
-                        }
-                        if (category !== 'ischemic' && (prev.bpPhase === 'post-evt' || prev.bpPhase === 'post-tnk')) {
-                          next.bpPhase = 'pre-tnk';
-                        }
-                        if (category !== 'ich') {
-                          next.ichReversalInitiated = false;
-                          next.ichReversalStartTime = '';
-                          next.ichTransferDecisionTime = '';
-                          next.ichBPManaged = false;
-                          next.ichNeurosurgeryConsulted = false;
-                          next.ichSeizureProphylaxis = false;
-                          next.ichSurgicalCriteria = { cerebellarMassEffect: false, hydrocephalus: false, midlineShift: false, clinicalDeterioration: false, surgeryDiscussed: false, surgeryDecision: '' };
-                          next.osmoticTherapy = { agentUsed: '', indication: '', serumSodium: '', serumOsmolality: '', sodiumTarget: '', correctionRate: '', baselineNa: '', baselineNaTime: '', repeatNa: '', repeatNaTime: '', weight: '', mannitolOsmGap: '' };
-                        }
-                        if (category !== 'sah') {
-                          next.sahGrade = '';
-                          next.sahGradeScale = '';
-                          next.sahBPManaged = false;
-                          next.sahNimodipine = false;
-                          next.sahEVDPlaced = false;
-                          next.sahAneurysmSecured = false;
-                          next.sahNeurosurgeryConsulted = false;
-                          next.sahSeizureProphylaxis = false;
-                          next.fisherGrade = '';
-                          next.sahAneurysmLocation = '';
-                          next.sahAneurysmSize = '';
-                          next.sahSecuringMethod = '';
-                          next.sahVasospasmMonitoring = { tcdOrdered: false, neuroChecksQ1h: false, sodiumMonitoring: false, dciSuspected: false, inducedHypertension: false, notes: '' };
-                          next.sahOutcomeSet = { dischargeMRS: '', dischargeDisposition: '', followUpScheduled: false, followUpDate: '', ninetyDayMRS: '', ninetyDayMortality: '', cognitiveScreenPlanned: false, hrqolPlanned: false };
-                        }
-                        if (category !== 'cvt') {
-                          next.cvtAnticoagStarted = false;
-                          next.cvtAnticoagType = '';
-                          next.cvtIcpManaged = false;
-                          next.cvtSeizureManaged = false;
-                          next.cvtHematologyConsulted = false;
-                          next.cvtSpecialPopulation = {
-                            pregnancyPostpartum: false,
-                            apsConfirmed: false,
-                            activeCancer: false,
-                            severeThrombophilia: false
-                          };
-                          next.cvtAnticoag = { acutePhase: '', transitionAgent: '', duration: '', apsStatus: '', etiologyProvoked: false };
-                        }
-                      }
+                      Object.assign(next, clearUnusedDiagnosisFields(next, prev.diagnosisCategory, category));
                       return next;
                     });
                     if (mapping.category === 'ich') setManagementSubTab('ich');
