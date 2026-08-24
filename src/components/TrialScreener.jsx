@@ -47,9 +47,6 @@ import {
 
 const cx = (...p) => p.filter(Boolean).join(' ');
 
-export const COMPLIANCE_BANNER =
-  'Synthetic public demo — not for clinical decision-making. Do not enter real patient identifiers or PHI. Registry matches are first-pass screens only and must be confirmed against the full ClinicalTrials.gov record and approved local study materials before clinical action.';
-
 const CLASSIFICATIONS = [
   { id: 'ischemic', label: 'Ischemic', sub: 'stroke', onsetVal: 2 },
   { id: 'tia', label: 'TIA', sub: 'transient', onsetVal: 12 },
@@ -429,8 +426,8 @@ function ResultCard({ item, onOpenDetails, compact = false }) {
         {/* Facts the engine could not settle from classification + onset alone.
             Rendered as a quiet checklist, not a warning: it is what to check at
             the bedside, not a form to fill in. Registry/protocol source notes
-            live in the details sheet and the tab-level compliance banner —
-            repeating them on every card was noise. */}
+            live in the details sheet — repeating them on every card was
+            noise. */}
         {pendingFields && pendingFields.length > 0 && (
           <p className="mt-3 border-t border-paper-2 pt-3 text-2xs leading-relaxed text-mute">
             <span className="font-semibold uppercase tracking-[0.06em] text-ink-2">Still to confirm · </span>
