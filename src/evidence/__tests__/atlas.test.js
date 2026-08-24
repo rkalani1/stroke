@@ -517,3 +517,49 @@ describe('Schema validators', () => {
     });
   });
 });
+
+describe('Topic factory — makeTopic', () => {
+  it('returns default empty string properties when called with no arguments or empty object', () => {
+    const topicDefault = schema.makeTopic();
+    expect(topicDefault).toEqual({
+      id: '',
+      label: '',
+      parentId: '',
+      notes: ''
+    });
+
+    const topicEmpty = schema.makeTopic({});
+    expect(topicEmpty).toEqual({
+      id: '',
+      label: '',
+      parentId: '',
+      notes: ''
+    });
+  });
+
+  it('constructs a topic record with provided valid string inputs', () => {
+    const input = {
+      id: 'extended-window-ivt',
+      label: 'Extended-window IV Thrombolysis',
+      parentId: 'acute-ischemic-stroke',
+      notes: 'Covers IVT up to 9h or wake-up stroke with imaging mismatch.'
+    };
+    const topic = schema.makeTopic(input);
+    expect(topic).toEqual(input);
+  });
+
+  it('falls back to empty strings when non-string inputs are provided', () => {
+    const topic = schema.makeTopic({
+      id: 123,
+      label: null,
+      parentId: undefined,
+      notes: ['note1', 'note2']
+    });
+    expect(topic).toEqual({
+      id: '',
+      label: '',
+      parentId: '',
+      notes: ''
+    });
+  });
+});
