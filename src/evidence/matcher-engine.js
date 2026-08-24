@@ -140,8 +140,10 @@ export function resolveField(field, data) {
   return fn(data);
 }
 
+const KNOWN_FIELDS = new Set(Object.keys(fieldResolvers));
+
 export function knownFields() {
-  return new Set(Object.keys(fieldResolvers));
+  return KNOWN_FIELDS;
 }
 
 // ---------- Operator vocabulary ----------
@@ -254,8 +256,11 @@ const operators = {
   }
 };
 
+const KNOWN_OPERATORS = new Set(Object.keys(operators));
+const MATCHABLE_TRIAL_STATUS_SET = new Set(MATCHABLE_TRIAL_STATUS_VALUES);
+
 export function knownOperators() {
-  return new Set(Object.keys(operators));
+  return KNOWN_OPERATORS;
 }
 
 // ---------- Public API ----------
@@ -290,36 +295,47 @@ export function evaluateCriterion(criterion, data) {
  */
 export function evaluateActiveTrial(activeTrial, data) {
   if (!activeTrial) return null;
-  const criteria = (activeTrial.matcherCriteria || []).map((c, idx) => ({
-    id: c.field || `criterion-${idx}`,
-    label: c.label || c.field,
-    field: c.field,
-    operator: c.operator,
-    required: true, // matcherCriteria entries are required by default
-    status: evaluateCriterion(c, data)
-  }));
+  const rawCriteria = activeTrial.matcherCriteria;
+  const criteriaLen = rawCriteria ? rawCriteria.length : 0;
+  const criteria = new Array(criteriaLen);
+  const counts = { met: 0, not_met: 0, unknown: 0 };
+
+  for (let i = 0; i < criteriaLen; i++) {
+    const c = rawCriteria[i];
+    const status = evaluateCriterion(c, data);
+    counts[status] += 1;
+    criteria[i] = {
+      id: c.field || `criterion-${i}`,
+      label: c.label || c.field,
+      field: c.field,
+      operator: c.operator,
+      required: true, // matcherCriteria entries are required by default
+      status
+    };
+  }
 
   // Exclusions — inverse semantics. A criterion that evaluates to met
   // means the exclusion is *triggered*, which forces overall status to
   // not_eligible. unknown/not_met means the exclusion is not triggered.
   const exclusions = [];
-  for (const x of activeTrial.matcherExclusions || []) {
-    const r = evaluateCriterion(x, data);
-    if (r === 'met') {
-      exclusions.push({
-        id: x.id || x.field,
-        label: x.label || x.field,
-        field: x.field,
-        triggered: true
-      });
+  const rawExclusions = activeTrial.matcherExclusions;
+  if (rawExclusions) {
+    for (let i = 0; i < rawExclusions.length; i++) {
+      const x = rawExclusions[i];
+      const r = evaluateCriterion(x, data);
+      if (r === 'met') {
+        exclusions.push({
+          id: x.id || x.field,
+          label: x.label || x.field,
+          field: x.field,
+          triggered: true
+        });
+      }
     }
   }
 
-  const counts = { met: 0, not_met: 0, unknown: 0 };
-  for (const c of criteria) counts[c.status] += 1;
-
   let status = 'pending';
-  if (criteria.length === 0 && exclusions.length === 0) status = 'pending';
+  if (criteriaLen === 0 && exclusions.length === 0) status = 'pending';
   else if (exclusions.length > 0) status = 'not_eligible';
   else if (counts.not_met > 0) status = 'not_eligible';
   else if (counts.unknown > 0) status = 'needs_info';
@@ -390,11 +406,14 @@ function legacyIdFor(activeTrialId, field) {
 
 export function evaluateAllTrialsViaEngine(activeTrialsList, data) {
   const out = {};
-  for (const aTrial of activeTrialsList || []) {
+  if (!activeTrialsList) return out;
+  for (let i = 0; i < activeTrialsList.length; i++) {
+    const aTrial = activeTrialsList[i];
+    if (!aTrial) continue;
     // Status gate: a trial that is not actively enrolling (completed,
     // withdrawn, terminated, suspended, active-not-recruiting) must never be
     // matched against a live patient or written into a clinical note.
-    if (!MATCHABLE_TRIAL_STATUS_VALUES.includes(aTrial?.status)) continue;
+    if (!MATCHABLE_TRIAL_STATUS_SET.has(aTrial.status)) continue;
     const eng = evaluateActiveTrial(aTrial, data);
     if (!eng) continue;
     const legacyKey = aTrial.legacyMatcherKey || aTrial.id;
@@ -412,7 +431,7 @@ export function evaluateAllTrialsViaEngine(activeTrialsList, data) {
         status: c.status,
         required: c.required
       })),
-      exclusions: (eng.exclusions || []).map((x) => ({
+      exclusions: eng.exclusions.map((x) => ({
         id: x.id,
         label: x.label,
         triggered: true
@@ -434,29 +453,45 @@ export function evaluateAllTrialsViaEngine(activeTrialsList, data) {
  * retirement-readiness.
  */
 export function coverageReport(activeTrials) {
-  const fields = knownFields();
-  const ops = knownOperators();
+  const fields = KNOWN_FIELDS;
+  const ops = KNOWN_OPERATORS;
   let total = 0;
   let covered = 0;
   let exclusionsTotal = 0;
   let exclusionsCovered = 0;
   const gaps = [];
-  for (const t of activeTrials) {
-    for (const c of t.matcherCriteria || []) {
-      total += 1;
-      const fieldKnown = fields.has(c.field);
-      const opKnown = ops.has(c.operator);
-      if (fieldKnown && opKnown) covered += 1;
-      else gaps.push(`${t.id}/criterion/${c.field}/${c.operator}${fieldKnown ? '' : ' (unknown field)'}${opKnown ? '' : ' (unknown operator)'}`);
-    }
-    for (const x of t.matcherExclusions || []) {
-      exclusionsTotal += 1;
-      const fieldKnown = fields.has(x.field);
-      const opKnown = ops.has(x.operator);
-      if (fieldKnown && opKnown) exclusionsCovered += 1;
-      else gaps.push(`${t.id}/exclusion/${x.field}/${x.operator}${fieldKnown ? '' : ' (unknown field)'}${opKnown ? '' : ' (unknown operator)'}`);
+
+  if (activeTrials) {
+    for (let i = 0; i < activeTrials.length; i++) {
+      const t = activeTrials[i];
+      if (!t) continue;
+
+      const criteria = t.matcherCriteria;
+      if (criteria) {
+        for (let j = 0; j < criteria.length; j++) {
+          const c = criteria[j];
+          total += 1;
+          const fieldKnown = fields.has(c.field);
+          const opKnown = ops.has(c.operator);
+          if (fieldKnown && opKnown) covered += 1;
+          else gaps.push(`${t.id}/criterion/${c.field}/${c.operator}${fieldKnown ? '' : ' (unknown field)'}${opKnown ? '' : ' (unknown operator)'}`);
+        }
+      }
+
+      const exclusions = t.matcherExclusions;
+      if (exclusions) {
+        for (let j = 0; j < exclusions.length; j++) {
+          const x = exclusions[j];
+          exclusionsTotal += 1;
+          const fieldKnown = fields.has(x.field);
+          const opKnown = ops.has(x.operator);
+          if (fieldKnown && opKnown) exclusionsCovered += 1;
+          else gaps.push(`${t.id}/exclusion/${x.field}/${x.operator}${fieldKnown ? '' : ' (unknown field)'}${opKnown ? '' : ' (unknown operator)'}`);
+        }
+      }
     }
   }
+
   return {
     total, covered,
     exclusionsTotal, exclusionsCovered,
