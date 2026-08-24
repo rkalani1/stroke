@@ -6667,8 +6667,8 @@ Clinician Name`;
                                                     Key Takeaways
                         </h4>
                         <ul className="space-y-1">
-                          {matchedAtlas.keyTakeaways.map((t, i) => (
-                            <li key={i} className="text-sm text-cobalt-900 flex gap-2 dark:text-cobalt-300">
+                          {matchedAtlas.keyTakeaways.map((t) => (
+                            <li key={t} className="text-sm text-cobalt-900 flex gap-2 dark:text-cobalt-300">
                               <span className="text-cobalt-500 mt-0.5 shrink-0">&#8227;</span>
                               <span>{t}</span>
                             </li>
@@ -22852,8 +22852,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         {/* Key takeaways */}
                                         {config.keyTakeaways && config.keyTakeaways.length > 0 && (
                                           <div className="bg-white/70 dark:bg-slate-900/70 border border-line rounded px-2.5 py-1.5 space-y-0.5">
-                                            {config.keyTakeaways.map((t, i) => (
-                                              <p key={i} className="text-xs text-slate-700 flex gap-1.5 dark:text-ink-2">
+                                            {config.keyTakeaways.map((t) => (
+                                              <p key={t} className="text-xs text-slate-700 flex gap-1.5 dark:text-ink-2">
                                                 <span className="text-cobalt-500 mt-px shrink-0">&#8227;</span>
                                                 <span>{t}</span>
                                               </p>
