@@ -51,8 +51,13 @@ describe('getAllRecommendationIds', () => {
     expect(idsSet).toBeInstanceOf(Set);
     expect(idsSet.size).toBe(recommendations.length);
 
-    for (const rec of recommendations) {
-      expect(idsSet.has(rec.id)).toBe(true);
+    const expectedIds = recommendations.map((rec) => rec.id);
+    expect(Array.from(idsSet)).toEqual(expectedIds);
+
+    for (const id of idsSet) {
+      expect(typeof id).toBe('string');
+      expect(id.length).toBeGreaterThan(0);
+      expect(getRecommendation(id)).not.toBeNull();
     }
   });
 });
