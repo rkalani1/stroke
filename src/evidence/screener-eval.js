@@ -97,7 +97,19 @@ const OPERATORS = {
 
 function evaluateCriterion(c, p) {
   if (c.operator === 'or') {
-    return c.branches.some(b => b.criteria.every(cc => evaluateCriterion(cc, p)));
+    const branches = c.branches;
+    for (let i = 0; i < branches.length; i++) {
+      const criteria = branches[i].criteria;
+      let allPassed = true;
+      for (let j = 0; j < criteria.length; j++) {
+        if (!evaluateCriterion(criteria[j], p)) {
+          allPassed = false;
+          break;
+        }
+      }
+      if (allPassed) return true;
+    }
+    return false;
   }
   const val = p[c.field];
   const op = OPERATORS[c.operator];
@@ -107,7 +119,36 @@ function evaluateCriterion(c, p) {
 
 function getActiveBranch(c, p) {
   if (c.operator !== 'or') return null;
-  return c.branches.find(b => b.criteria.every(cc => evaluateCriterion(cc, p)));
+  const branches = c.branches;
+  for (let i = 0; i < branches.length; i++) {
+    const branch = branches[i];
+    const criteria = branch.criteria;
+    let allPassed = true;
+    for (let j = 0; j < criteria.length; j++) {
+      if (!evaluateCriterion(criteria[j], p)) {
+        allPassed = false;
+        break;
+      }
+    }
+    if (allPassed) return branch;
+  }
+  return null;
+}
+
+function hasUnselectedInCriterion(c, p) {
+  if (p[c.field] === 'unselected') return true;
+  if (c.operator === 'or' && c.branches) {
+    const branches = c.branches;
+    for (let i = 0; i < branches.length; i++) {
+      const criteria = branches[i].criteria;
+      if (criteria) {
+        for (let j = 0; j < criteria.length; j++) {
+          if (p[criteria[j].field] === 'unselected') return true;
+        }
+      }
+    }
+  }
+  return false;
 }
 
 function formatLabel(label, p, field) {
@@ -219,12 +260,30 @@ export function evaluateTrialEligibility(trial, p) {
   const isTooEarlyFailure = (c, params) => {
     if (!c) return false;
     if (c.operator === 'or') {
-      // An 'or' criterion is "too early" if at least one branch would pass
-      // except for a too-early onset criterion (all its non-onset criteria pass).
-      return (c.branches || []).some((b) =>
-        b.criteria.some((cc) => isTooEarlyFailure(cc, params)) &&
-        b.criteria.every((cc) => evaluateCriterion(cc, params) || isTooEarlyFailure(cc, params))
-      );
+      const branches = c.branches;
+      if (!branches) return false;
+      for (let i = 0; i < branches.length; i++) {
+        const b = branches[i];
+        let hasTooEarly = false;
+        for (let j = 0; j < b.criteria.length; j++) {
+          if (isTooEarlyFailure(b.criteria[j], params)) {
+            hasTooEarly = true;
+            break;
+          }
+        }
+        if (hasTooEarly) {
+          let allPassOrTooEarly = true;
+          for (let j = 0; j < b.criteria.length; j++) {
+            const cc = b.criteria[j];
+            if (!evaluateCriterion(cc, params) && !isTooEarlyFailure(cc, params)) {
+              allPassOrTooEarly = false;
+              break;
+            }
+          }
+          if (allPassOrTooEarly) return true;
+        }
+      }
+      return false;
     }
     if (!c.field || !String(c.field).startsWith('onset')) return false;
     const v = params[c.field];
@@ -234,9 +293,31 @@ export function evaluateTrialEligibility(trial, p) {
     return false;
   };
 
-  const optCriterionFailures = trial.eligibility.criteria.filter(c => !evaluateCriterion(c, optP));
-  const optExclusionHits = trial.eligibility.exclusions.filter(c => evaluateCriterion(c, optP));
-  const optErrors = [...optCriterionFailures.map(c => c.error), ...optExclusionHits.map(c => c.error)];
+  const optCriterionFailures = [];
+  const criteriaList = trial.eligibility.criteria;
+  for (let i = 0; i < criteriaList.length; i++) {
+    const c = criteriaList[i];
+    if (!evaluateCriterion(c, optP)) {
+      optCriterionFailures.push(c);
+    }
+  }
+
+  const optExclusionHits = [];
+  const exclusionsList = trial.eligibility.exclusions;
+  for (let i = 0; i < exclusionsList.length; i++) {
+    const c = exclusionsList[i];
+    if (evaluateCriterion(c, optP)) {
+      optExclusionHits.push(c);
+    }
+  }
+
+  const optErrors = [];
+  for (let i = 0; i < optCriterionFailures.length; i++) {
+    optErrors.push(optCriterionFailures[i].error);
+  }
+  for (let i = 0; i < optExclusionHits.length; i++) {
+    optErrors.push(optExclusionHits[i].error);
+  }
 
   if (optErrors.length > 0) {
     // Previously this early return made every "enrolling soon" patient read as
@@ -266,39 +347,61 @@ export function evaluateTrialEligibility(trial, p) {
     { key: 'age', label: 'Age' }, { key: 'nihss', label: 'NIHSS Score' }, { key: 'aspects', label: 'ASPECTS Score' }, { key: 'gcs', label: 'GCS Score' }, { key: 'preMrs', label: 'mRS / functional status' }, { key: 'vessel', label: 'Vessel status' }, { key: 'etiology', label: 'Stroke Subtype' }, { key: 'ichLocation', label: 'Hemorrhage Location' }, { key: 'volume', label: 'Hematoma Volume' }, { key: 'statin', label: 'Statin at onset' }, { key: 'afibHistory', label: 'Atrial Fibrillation history' }, { key: 'takingOac', label: 'Anticoagulation status' }, { key: 'language', label: 'Language spoken' }, { key: 'rehab', label: 'Rehab unit placement' }, { key: 'self_consent', label: 'Patient able to self-consent' }, { key: 'availability_54w', label: '54-week visits availability' }, { key: 'exUeWeakness', label: 'Upper extremity weakness' }, { key: 'unilateralSymptomatic', label: 'Unilateral symptomatic AIS' }, { key: 'anteriorCirculation', label: 'Anterior circulation' }, { key: 'presentedWithin24h', label: 'Presented within 24h' }, { key: 'singleAntiplateletSoc', label: 'Single antiplatelet SOC' }
   ];
 
-  fieldsToTest.forEach((f) => {
+  for (let i = 0; i < fieldsToTest.length; i++) {
+    const f = fieldsToTest[i];
     if (p[f.key] === 'unselected') {
-      const testP = { ...optP };
-      testP[f.key] = pessP[f.key];
-      const hasFailure = trial.eligibility.criteria.some(c => !evaluateCriterion(c, testP)) || trial.eligibility.exclusions.some(c => evaluateCriterion(c, testP));
+      const origVal = optP[f.key];
+      optP[f.key] = pessP[f.key];
+      let hasFailure = false;
+      for (let j = 0; j < criteriaList.length; j++) {
+        if (!evaluateCriterion(criteriaList[j], optP)) {
+          hasFailure = true;
+          break;
+        }
+      }
+      if (!hasFailure) {
+        for (let j = 0; j < exclusionsList.length; j++) {
+          if (evaluateCriterion(exclusionsList[j], optP)) {
+            hasFailure = true;
+            break;
+          }
+        }
+      }
+      optP[f.key] = origVal;
       if (hasFailure) pendingFields.push(f.label);
     }
-  });
+  }
 
   if (requiresSourceConfirmation) pendingFields.push('Full registry/protocol confirmation');
 
   const matchedCriteria = [];
-  trial.eligibility.criteria.forEach(c => {
+  for (let i = 0; i < criteriaList.length; i++) {
+    const c = criteriaList[i];
     if (evaluateCriterion(c, p)) {
       const label = c.operator === 'or'
         ? (getActiveBranch(c, p)?.label || formatLabel(c.matchedLabel, p, c.field))
         : formatLabel(c.matchedLabel, p, c.field);
-      // De-duplicated: distinct criteria may share a matchedLabel, and the card
-      // rendering the identical bullet twice reads as a data error.
       if (label && !matchedCriteria.includes(label)) matchedCriteria.push(label);
     }
-  });
+  }
 
   const pendingCriteria = [];
-  trial.eligibility.criteria.forEach(c => {
-    if (p[c.field] === 'unselected' || (c.operator === 'or' && c.branches.some(b => b.criteria.some(cc => p[cc.field] === 'unselected')))) {
+  for (let i = 0; i < criteriaList.length; i++) {
+    const c = criteriaList[i];
+    if (hasUnselectedInCriterion(c, p)) {
       if (c.pendingLabel) pendingCriteria.push(c.pendingLabel);
     }
-  });
-  trial.eligibility.exclusions.forEach(c => {
+  }
+  for (let i = 0; i < exclusionsList.length; i++) {
+    const c = exclusionsList[i];
     if (p[c.field] === 'unselected' && c.pendingLabel) pendingCriteria.push(c.pendingLabel);
-  });
-  (trial.eligibility.manualPending || []).forEach(m => pendingCriteria.push(m));
+  }
+  const manualPending = trial.eligibility.manualPending;
+  if (manualPending) {
+    for (let i = 0; i < manualPending.length; i++) {
+      pendingCriteria.push(manualPending[i]);
+    }
+  }
 
   if (requiresSourceConfirmation) {
     pendingCriteria.push('Confirm the full ClinicalTrials.gov record, approved local protocol, activation status, consent path, and study-owner instructions before any clinical or recruitment action');
