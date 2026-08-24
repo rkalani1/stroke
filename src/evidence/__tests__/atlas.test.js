@@ -194,4 +194,77 @@ describe('Schema validators', () => {
     expect(errors.length).toBe(0);
     expect(warnings.length).toBe(0);
   });
+
+  describe('makeClaim & validateClaim', () => {
+    it('creates a claim with defaults when given empty input', () => {
+      const claim = schema.makeClaim();
+      expect(claim).toEqual({
+        id: '',
+        statement: '',
+        topic: '',
+        citationIds: [],
+        certainty: 'moderate',
+        conflictNotes: '',
+        lastReviewed: ''
+      });
+    });
+
+    it('creates a claim with provided custom values', () => {
+      const input = {
+        id: 'cl-test-claim',
+        statement: 'Test statement for claim',
+        topic: 'test-topic',
+        citationIds: ['cit-1', 'cit-2'],
+        certainty: 'high',
+        conflictNotes: 'No conflicts observed',
+        lastReviewed: '2026-05-01'
+      };
+      const claim = schema.makeClaim(input);
+      expect(claim).toEqual(input);
+      // Ensure citationIds is cloned properly
+      expect(claim.citationIds).not.toBe(input.citationIds);
+    });
+
+    it('falls back to default certainty when given an invalid certainty value', () => {
+      const claim = schema.makeClaim({ certainty: 'invalid-certainty' });
+      expect(claim.certainty).toBe('moderate');
+    });
+
+    it('handles non-array citationIds and non-string inputs gracefully', () => {
+      const claim = schema.makeClaim({
+        id: 123,
+        statement: null,
+        citationIds: 'not-an-array'
+      });
+      expect(claim.id).toBe('');
+      expect(claim.statement).toBe('');
+      expect(claim.citationIds).toEqual([]);
+    });
+
+    it('validates a correct claim', () => {
+      const claim = schema.makeClaim({
+        id: 'cl-valid-claim',
+        statement: 'Valid claim statement',
+        certainty: 'high',
+        citationIds: ['cit-1']
+      });
+      const { errors, warnings } = schema.validateClaim(claim, { knownCitationIds: new Set(['cit-1']) });
+      expect(errors).toEqual([]);
+      expect(warnings).toEqual([]);
+    });
+
+    it('returns validation errors for invalid claim fields and unknown citations', () => {
+      const badClaim = {
+        id: 'Invalid ID',
+        statement: '',
+        certainty: 'ultra-high',
+        citationIds: ['unknown-cit']
+      };
+      const { errors } = schema.validateClaim(badClaim, { knownCitationIds: new Set(['known-cit']) });
+      expect(errors.some((e) => /id must be kebab-case/i.test(e))).toBe(true);
+      expect(errors.some((e) => /statement required/i.test(e))).toBe(true);
+      expect(errors.some((e) => /certainty invalid/i.test(e))).toBe(true);
+      expect(errors.some((e) => /citationIds references unknown citation 'unknown-cit'/i.test(e))).toBe(true);
+    });
+  });
 });
