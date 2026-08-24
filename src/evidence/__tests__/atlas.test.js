@@ -194,4 +194,54 @@ describe('Schema validators', () => {
     expect(errors.length).toBe(0);
     expect(warnings.length).toBe(0);
   });
+
+  describe('makeTopic factory', () => {
+    it('creates topic with defaults when called with no input or empty object', () => {
+      const defaultTopic = schema.makeTopic();
+      expect(defaultTopic).toEqual({
+        id: '',
+        label: '',
+        parentId: '',
+        notes: ''
+      });
+
+      const emptyObjTopic = schema.makeTopic({});
+      expect(emptyObjTopic).toEqual({
+        id: '',
+        label: '',
+        parentId: '',
+        notes: ''
+      });
+    });
+
+    it('populates provided fields correctly', () => {
+      const topic = schema.makeTopic({
+        id: 'ich-bp-management',
+        label: 'ICH blood pressure management',
+        parentId: 'ich',
+        notes: 'Target SBP < 140'
+      });
+      expect(topic).toEqual({
+        id: 'ich-bp-management',
+        label: 'ICH blood pressure management',
+        parentId: 'ich',
+        notes: 'Target SBP < 140'
+      });
+    });
+
+    it('falls back to default string values when non-string values are provided', () => {
+      const topic = schema.makeTopic({
+        id: 12345,
+        label: null,
+        parentId: undefined,
+        notes: ['invalid', 'array']
+      });
+      expect(topic).toEqual({
+        id: '',
+        label: '',
+        parentId: '',
+        notes: ''
+      });
+    });
+  });
 });
