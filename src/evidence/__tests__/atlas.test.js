@@ -563,3 +563,122 @@ describe('Topic factory — makeTopic', () => {
     });
   });
 });
+
+describe('schema — makeRecommendation', () => {
+  it('constructs a recommendation with schema defaults when input is empty or omitted', () => {
+    const rec1 = schema.makeRecommendation();
+    const rec2 = schema.makeRecommendation({});
+
+    expect(rec1).toEqual({
+      id: '',
+      topic: '',
+      setting: 'all',
+      text: '',
+      classOfRecommendation: 'IIa',
+      levelOfEvidence: 'B-R',
+      guidelineSource: '',
+      supportingClaimIds: [],
+      caveats: [],
+      lastReviewed: '',
+      verificationStatus: 'todo-verify',
+      verificationNotes: ''
+    });
+
+    expect(rec2).toEqual(rec1);
+  });
+
+  it('populates provided valid fields correctly', () => {
+    const input = {
+      id: 'rec-test-1',
+      topic: 'ischemic-stroke',
+      setting: 'inpatient',
+      text: 'Administer IV thrombolysis within 4.5 hours.',
+      classOfRecommendation: 'I',
+      levelOfEvidence: 'A',
+      guidelineSource: 'AHA/ASA 2019',
+      supportingClaimIds: ['cl-1', 'cl-2'],
+      caveats: ['Check contraindications'],
+      lastReviewed: '2026-01-15',
+      verificationStatus: 'verified-guideline',
+      verificationNotes: 'Verified against published AHA guidelines.'
+    };
+
+    const rec = schema.makeRecommendation(input);
+
+    expect(rec).toEqual({
+      id: 'rec-test-1',
+      topic: 'ischemic-stroke',
+      setting: 'inpatient',
+      text: 'Administer IV thrombolysis within 4.5 hours.',
+      classOfRecommendation: 'I',
+      levelOfEvidence: 'A',
+      guidelineSource: 'AHA/ASA 2019',
+      supportingClaimIds: ['cl-1', 'cl-2'],
+      caveats: ['Check contraindications'],
+      lastReviewed: '2026-01-15',
+      verificationStatus: 'verified-guideline',
+      verificationNotes: 'Verified against published AHA guidelines.'
+    });
+  });
+
+  it('falls back to default enum values when invalid enum strings are supplied', () => {
+    const rec = schema.makeRecommendation({
+      setting: 'invalid-setting',
+      classOfRecommendation: 'invalid-class',
+      levelOfEvidence: 'invalid-loe',
+      verificationStatus: 'invalid-status'
+    });
+
+    expect(rec.setting).toBe('all');
+    expect(rec.classOfRecommendation).toBe('IIa');
+    expect(rec.levelOfEvidence).toBe('B-R');
+    expect(rec.verificationStatus).toBe('todo-verify');
+  });
+
+  it('falls back to default empty strings for non-string input values', () => {
+    const rec = schema.makeRecommendation({
+      id: 12345,
+      topic: null,
+      text: undefined,
+      guidelineSource: {},
+      lastReviewed: false,
+      verificationNotes: ['not a string']
+    });
+
+    expect(rec.id).toBe('');
+    expect(rec.topic).toBe('');
+    expect(rec.text).toBe('');
+    expect(rec.guidelineSource).toBe('');
+    expect(rec.lastReviewed).toBe('');
+    expect(rec.verificationNotes).toBe('');
+  });
+
+  it('safely handles non-array inputs for array properties and defensively clones array properties', () => {
+    const inputClaims = ['cl-1'];
+    const inputCaveats = ['caveat-1'];
+
+    const rec = schema.makeRecommendation({
+      supportingClaimIds: inputClaims,
+      caveats: inputCaveats
+    });
+
+    expect(rec.supportingClaimIds).toEqual(['cl-1']);
+    expect(rec.caveats).toEqual(['caveat-1']);
+
+    // Assert defensive clone (mutating input arrays does not mutate recommendation object)
+    inputClaims.push('cl-2');
+    inputCaveats.push('caveat-2');
+
+    expect(rec.supportingClaimIds).toEqual(['cl-1']);
+    expect(rec.caveats).toEqual(['caveat-1']);
+
+    // Non-array inputs fall back to empty array []
+    const recInvalidArrays = schema.makeRecommendation({
+      supportingClaimIds: 'not-an-array',
+      caveats: { key: 'value' }
+    });
+
+    expect(recInvalidArrays.supportingClaimIds).toEqual([]);
+    expect(recInvalidArrays.caveats).toEqual([]);
+  });
+});
