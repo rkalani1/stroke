@@ -80,7 +80,7 @@ import { HeroReadout as V7HeroReadout } from './design/hero-readout.jsx';
 import { DrugChip as V7DrugChip } from './design/drug-chip.jsx';
 import { PatientStripMobile as V7PatientStripMobile, PatientStripRail as V7PatientStripRail } from './design/patient-strip.jsx';
 import { TimeWindowRing } from './design/time-window-ring.jsx';
-import { TrialScreener, StudyDatabase, COMPLIANCE_BANNER as TRIALS_COMPLIANCE_BANNER } from './components/TrialScreener.jsx';
+import { TrialScreener, StudyDatabase } from './components/TrialScreener.jsx';
 import { screenerTrials } from './evidence/screenerTrials.js';
 import { EligibilityTables } from './components/EligibilityTables.jsx';
 import { InstallAppButton } from './components/InstallAppButton.jsx';
@@ -32267,10 +32267,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <StudyDatabase />
                       </div>
                     )}
-
-                    <p className="rounded-md border-l-4 border-warn-600 bg-warn-50 px-3 py-2 text-2xs leading-relaxed text-warn-800 dark:border-warn-500 dark:bg-warn-950 dark:text-warn-200">
-                      {TRIALS_COMPLIANCE_BANNER}
-                    </p>
                   </div>
                   </ErrorBoundary>
                 )}
