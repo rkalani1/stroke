@@ -324,4 +324,88 @@ describe('Schema validators', () => {
     expect(errors.length).toBe(0);
     expect(warnings.length).toBe(0);
   });
+
+  describe('makeCitation factory', () => {
+    it('returns default schema structure when called with no arguments or empty object', () => {
+      const defaultCit = schema.makeCitation();
+      expect(defaultCit).toEqual({
+        id: '',
+        type: 'journal-article',
+        authors: '',
+        title: '',
+        journal: '',
+        year: 0,
+        volume: '',
+        pages: '',
+        pmid: '',
+        doi: '',
+        url: '',
+        verificationStatus: schema.TODO_VERIFY_STATUS,
+        verificationNotes: ''
+      });
+    });
+
+    it('constructs complete citation when given valid input properties', () => {
+      const input = {
+        id: 'cit-test-2024',
+        type: 'guideline-document',
+        authors: 'Smith J et al.',
+        title: 'Stroke Management Guidelines',
+        journal: 'Stroke Journal',
+        year: 2024,
+        volume: '55',
+        pages: '100-110',
+        pmid: '12345678',
+        doi: '10.1161/STROKEAHA.123.000000',
+        url: 'https://example.com/cit-test',
+        verificationStatus: 'verified-pubmed',
+        verificationNotes: 'Verified via PubMed API'
+      };
+
+      const cit = schema.makeCitation(input);
+      expect(cit).toEqual(input);
+    });
+
+    it('handles invalid or non-finite year inputs by falling back to 0', () => {
+      expect(schema.makeCitation({ year: '2024' }).year).toBe(0);
+      expect(schema.makeCitation({ year: NaN }).year).toBe(0);
+      expect(schema.makeCitation({ year: Infinity }).year).toBe(0);
+      expect(schema.makeCitation({ year: null }).year).toBe(0);
+      expect(schema.makeCitation({ year: undefined }).year).toBe(0);
+      expect(schema.makeCitation({ year: 2025 }).year).toBe(2025);
+    });
+
+    it('falls back to TODO_VERIFY_STATUS when verificationStatus is invalid or omitted', () => {
+      expect(schema.makeCitation({ verificationStatus: 'invalid-status' }).verificationStatus).toBe(schema.TODO_VERIFY_STATUS);
+      expect(schema.makeCitation({ verificationStatus: null }).verificationStatus).toBe(schema.TODO_VERIFY_STATUS);
+    });
+
+    it('coerces non-string string fields to fallback empty strings or defaults', () => {
+      const cit = schema.makeCitation({
+        id: 123,
+        type: 456,
+        authors: null,
+        title: undefined,
+        journal: [],
+        volume: {},
+        pages: true,
+        pmid: 999,
+        doi: false,
+        url: null,
+        verificationNotes: 123
+      });
+
+      expect(cit.id).toBe('');
+      expect(cit.type).toBe('journal-article');
+      expect(cit.authors).toBe('');
+      expect(cit.title).toBe('');
+      expect(cit.journal).toBe('');
+      expect(cit.volume).toBe('');
+      expect(cit.pages).toBe('');
+      expect(cit.pmid).toBe('');
+      expect(cit.doi).toBe('');
+      expect(cit.url).toBe('');
+      expect(cit.verificationNotes).toBe('');
+    });
+  });
 });
