@@ -713,3 +713,98 @@ describe('schema — makeRecommendation', () => {
     expect(recInvalidArrays.caveats).toEqual([]);
   });
 });
+
+describe('makeGuideline factory function', () => {
+  it('returns default guideline object when called with no arguments or empty input', () => {
+    const defaultGuideline = schema.makeGuideline();
+    expect(defaultGuideline).toEqual({
+      id: '',
+      name: '',
+      organization: '',
+      year: 0,
+      topic: '',
+      url: '',
+      citationId: '',
+      verificationStatus: 'verified-guideline',
+      lastReviewed: '',
+      verificationNotes: ''
+    });
+
+    expect(schema.makeGuideline({})).toEqual(defaultGuideline);
+  });
+
+  it('populates provided valid fields correctly', () => {
+    const input = {
+      id: 'gl-aha-ais-2026',
+      name: 'Early Management of Acute Ischemic Stroke',
+      organization: 'AHA/ASA',
+      year: 2026,
+      topic: 'acute-ischemic-stroke',
+      url: 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000513',
+      citationId: 'cit-aha-ais-2026',
+      verificationStatus: 'verified-guideline',
+      lastReviewed: '2026-04-25',
+      verificationNotes: 'Verified against official AHA/ASA published statement'
+    };
+
+    const result = schema.makeGuideline(input);
+    expect(result).toEqual(input);
+  });
+
+  it('coerces non-finite year inputs to default 0', () => {
+    expect(schema.makeGuideline({ year: '2026' }).year).toBe(0);
+    expect(schema.makeGuideline({ year: NaN }).year).toBe(0);
+    expect(schema.makeGuideline({ year: Infinity }).year).toBe(0);
+    expect(schema.makeGuideline({ year: null }).year).toBe(0);
+    expect(schema.makeGuideline({ year: undefined }).year).toBe(0);
+    expect(schema.makeGuideline({ year: 2026 }).year).toBe(2026);
+    expect(schema.makeGuideline({ year: 0 }).year).toBe(0);
+  });
+
+  it('safely coerces non-string input properties to empty strings', () => {
+    const badTypes = {
+      id: 123,
+      name: null,
+      organization: undefined,
+      topic: ['stroke'],
+      url: { link: 'http://example.com' },
+      citationId: true,
+      lastReviewed: 20260425,
+      verificationNotes: false
+    };
+
+    const result = schema.makeGuideline(badTypes);
+    expect(result.id).toBe('');
+    expect(result.name).toBe('');
+    expect(result.organization).toBe('');
+    expect(result.topic).toBe('');
+    expect(result.url).toBe('');
+    expect(result.citationId).toBe('');
+    expect(result.lastReviewed).toBe('');
+    expect(result.verificationNotes).toBe('');
+  });
+
+  it('validates verificationStatus and falls back to verified-guideline when invalid', () => {
+    for (const validStatus of schema.VERIFICATION_VALUES) {
+      expect(schema.makeGuideline({ verificationStatus: validStatus }).verificationStatus).toBe(validStatus);
+    }
+
+    expect(schema.makeGuideline({ verificationStatus: 'invalid-status-string' }).verificationStatus).toBe('verified-guideline');
+    expect(schema.makeGuideline({ verificationStatus: null }).verificationStatus).toBe('verified-guideline');
+  });
+
+  it('produces output that satisfies validateGuideline schema when valid inputs are given', () => {
+    const guideline = schema.makeGuideline({
+      id: 'gl-test-2026',
+      name: 'Test Guideline Title',
+      organization: 'Test Medical Society',
+      year: 2026,
+      topic: 'test-topic',
+      citationId: 'cit-test'
+    });
+
+    const validation = schema.validateGuideline(guideline, { knownCitationIds: new Set(['cit-test']) });
+    expect(validation.errors).toEqual([]);
+    expect(validation.warnings).toEqual([]);
+  });
+});
