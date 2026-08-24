@@ -53,6 +53,29 @@ describe('Evidence Atlas — data layer', () => {
     }
   });
 
+  it('getActiveTrialByLegacyKey retrieves active trial by legacy key and differs from regular ID lookup', () => {
+    const trialByLegacyKey = getActiveTrialByLegacyKey('STEP');
+    const trialById = getActiveTrial('step-evt');
+
+    expect(trialByLegacyKey).not.toBeNull();
+    expect(trialByLegacyKey).toBe(trialById);
+    expect(trialByLegacyKey.legacyMatcherKey).toBe('STEP');
+    expect(trialByLegacyKey.id).toBe('step-evt');
+
+    // Searching regular ID with getActiveTrialByLegacyKey returns null
+    expect(getActiveTrialByLegacyKey('step-evt')).toBeNull();
+
+    // Searching legacy key with getActiveTrial returns null
+    expect(getActiveTrial('STEP')).toBeNull();
+
+    // Non-matching inputs, empty string, wrong case, null, undefined return null
+    expect(getActiveTrialByLegacyKey('NON_EXISTENT_KEY')).toBeNull();
+    expect(getActiveTrialByLegacyKey('step')).toBeNull();
+    expect(getActiveTrialByLegacyKey('')).toBeNull();
+    expect(getActiveTrialByLegacyKey(null)).toBeNull();
+    expect(getActiveTrialByLegacyKey(undefined)).toBeNull();
+  });
+
   it('all foreign-key references resolve', () => {
     const citIds = new Set(citations.map((c) => c.id));
     const ctIds = new Set(completedTrials.map((c) => c.id));
