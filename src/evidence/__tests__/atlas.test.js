@@ -713,3 +713,121 @@ describe('schema — makeRecommendation', () => {
     expect(recInvalidArrays.caveats).toEqual([]);
   });
 });
+
+describe('Schema factory functions — makeActiveTrial', () => {
+  it('throws an error when status is missing or invalid', () => {
+    expect(() => schema.makeActiveTrial({})).toThrowError(
+      /makeActiveTrial: unknown status 'undefined' for trial '<unset>'/
+    );
+    expect(() => schema.makeActiveTrial({ id: 'my-trial', status: 'invalid-status' })).toThrowError(
+      /makeActiveTrial: unknown status 'invalid-status' for trial 'my-trial'/
+    );
+  });
+
+  it('constructs an ActiveTrial record with valid minimal input and defaults', () => {
+    const trial = schema.makeActiveTrial({ status: 'recruiting' });
+    expect(trial).toEqual({
+      id: '',
+      shortName: '',
+      fullName: '',
+      nctId: '',
+      phase: '',
+      status: 'recruiting',
+      topic: '',
+      briefDescription: '',
+      rationale: '',
+      inclusionCriteria: [],
+      exclusionCriteria: [],
+      keyTakeaways: [],
+      lookingFor: [],
+      category: '',
+      matcherCriteria: [],
+      matcherExclusions: [],
+      relatedCompletedTrialIds: [],
+      link: '',
+      lastReviewed: '',
+      verificationStatus: 'todo-verify',
+      verificationNotes: '',
+      legacyMatcherKey: ''
+    });
+  });
+
+  it('populates provided fields and valid verificationStatus', () => {
+    const input = {
+      id: 'step-evt',
+      shortName: 'STEP-EVT',
+      fullName: 'Study of Thrombectomy for Endovascular Procedural outcomes',
+      nctId: 'NCT01234567',
+      phase: 'Phase 3',
+      status: 'recruiting',
+      topic: 'evt-late-window',
+      briefDescription: 'Brief summary',
+      rationale: 'Clinical rationale',
+      inclusionCriteria: ['Age 18-80'],
+      exclusionCriteria: ['mRS > 2'],
+      keyTakeaways: ['Key takeaway 1'],
+      lookingFor: ['Target population'],
+      category: 'Interventional',
+      relatedCompletedTrialIds: ['select2'],
+      link: 'https://clinicaltrials.gov/study/NCT01234567',
+      lastReviewed: '2026-04-25',
+      verificationStatus: 'verified-clinicaltrials-gov',
+      verificationNotes: 'Verified against ClinicalTrials.gov record',
+      legacyMatcherKey: 'STEP'
+    };
+
+    const trial = schema.makeActiveTrial(input);
+    expect(trial.id).toBe('step-evt');
+    expect(trial.shortName).toBe('STEP-EVT');
+    expect(trial.fullName).toBe('Study of Thrombectomy for Endovascular Procedural outcomes');
+    expect(trial.nctId).toBe('NCT01234567');
+    expect(trial.status).toBe('recruiting');
+    expect(trial.verificationStatus).toBe('verified-clinicaltrials-gov');
+    expect(trial.legacyMatcherKey).toBe('STEP');
+  });
+
+  it('correctly maps matcherCriteria and matcherExclusions with default fallback values', () => {
+    const trial = schema.makeActiveTrial({
+      status: 'enrolling-by-invitation',
+      matcherCriteria: [
+        { field: 'nihss', operator: '>=', value: 6, label: 'NIHSS 6+' },
+        { field: 'age', operator: '<=', value: 80 }
+      ],
+      matcherExclusions: [
+        { id: 'ex-1', field: 'priorICH', label: 'Prior ICH' },
+        { id: 'ex-2', field: 'mRS', operator: '>', value: 2, label: 'Pre-stroke mRS > 2' },
+        { id: 'ex-3', field: 'pregnant', operator: '==', value: false, label: 'Not pregnant' }
+      ]
+    });
+
+    expect(trial.matcherCriteria).toEqual([
+      { field: 'nihss', operator: '>=', value: 6, label: 'NIHSS 6+' },
+      { field: 'age', operator: '<=', value: 80, label: '' }
+    ]);
+
+    expect(trial.matcherExclusions).toEqual([
+      { id: 'ex-1', field: 'priorICH', operator: '==', value: true, label: 'Prior ICH' },
+      { id: 'ex-2', field: 'mRS', operator: '>', value: 2, label: 'Pre-stroke mRS > 2' },
+      { id: 'ex-3', field: 'pregnant', operator: '==', value: false, label: 'Not pregnant' }
+    ]);
+  });
+
+  it('falls back to todo-verify when given an unknown verificationStatus', () => {
+    const trial = schema.makeActiveTrial({
+      status: 'active-not-recruiting',
+      verificationStatus: 'unknown-status'
+    });
+    expect(trial.verificationStatus).toBe('todo-verify');
+  });
+
+  it('defensively clones array inputs so external mutations do not contaminate returned trial', () => {
+    const incArray = ['Age >= 18'];
+    const trial = schema.makeActiveTrial({
+      status: 'recruiting',
+      inclusionCriteria: incArray
+    });
+
+    incArray.push('Mutated element');
+    expect(trial.inclusionCriteria).toEqual(['Age >= 18']);
+  });
+});
