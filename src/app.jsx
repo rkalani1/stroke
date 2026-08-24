@@ -815,7 +815,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               document.execCommand('copy');
               document.body.removeChild(ta);
             } catch (e) {
-              console.error('Fallback execCommand failed:', e);
+              // Silently handle fallback execution failures
             }
             done();
           };
