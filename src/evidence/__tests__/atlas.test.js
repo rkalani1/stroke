@@ -713,3 +713,129 @@ describe('schema — makeRecommendation', () => {
     expect(recInvalidArrays.caveats).toEqual([]);
   });
 });
+
+describe('schema — makeRecommendation factory', () => {
+  it('generates expected default properties when called with empty or no input', () => {
+    const rec1 = schema.makeRecommendation();
+    const rec2 = schema.makeRecommendation({});
+
+    const expectedDefaults = {
+      id: '',
+      topic: '',
+      setting: 'all',
+      text: '',
+      classOfRecommendation: 'IIa',
+      levelOfEvidence: 'B-R',
+      guidelineSource: '',
+      supportingClaimIds: [],
+      caveats: [],
+      lastReviewed: '',
+      verificationStatus: 'todo-verify',
+      verificationNotes: ''
+    };
+
+    expect(rec1).toEqual(expectedDefaults);
+    expect(rec2).toEqual(expectedDefaults);
+  });
+
+  it('populates custom valid values when provided', () => {
+    const input = {
+      id: 'rec-aha-2026-bp',
+      topic: 'bp-management',
+      setting: 'inpatient',
+      text: 'Maintain SBP < 140 mmHg in acute ICH.',
+      classOfRecommendation: 'I',
+      levelOfEvidence: 'A',
+      guidelineSource: 'AHA/ASA 2026 Guidelines',
+      supportingClaimIds: ['cl-bp-lowering-ich'],
+      caveats: ['Monitor for hypotension'],
+      lastReviewed: '2026-05-01',
+      verificationStatus: 'verified-guideline',
+      verificationNotes: 'Verified against published AHA guidelines.'
+    };
+
+    const rec = schema.makeRecommendation(input);
+    expect(rec).toEqual(input);
+  });
+
+  it('falls back to safe defaults when provided invalid enum or non-string/non-array values', () => {
+    const rec = schema.makeRecommendation({
+      id: 12345,
+      topic: null,
+      setting: 'ICU-only-invalid',
+      text: { invalid: 'object' },
+      classOfRecommendation: 'Class-INVALID',
+      levelOfEvidence: 'Level-Z',
+      guidelineSource: undefined,
+      supportingClaimIds: 'not-an-array',
+      caveats: null,
+      lastReviewed: 20260501,
+      verificationStatus: 'invalid-status',
+      verificationNotes: true
+    });
+
+    expect(rec.id).toBe('');
+    expect(rec.topic).toBe('');
+    expect(rec.setting).toBe('all');
+    expect(rec.text).toBe('');
+    expect(rec.classOfRecommendation).toBe('IIa');
+    expect(rec.levelOfEvidence).toBe('B-R');
+    expect(rec.guidelineSource).toBe('');
+    expect(rec.supportingClaimIds).toEqual([]);
+    expect(rec.caveats).toEqual([]);
+    expect(rec.lastReviewed).toBe('');
+    expect(rec.verificationStatus).toBe('todo-verify');
+    expect(rec.verificationNotes).toBe('');
+  });
+
+  it('clones input arrays so external mutations do not pollute recommendation state', () => {
+    const claimIds = ['cl-1', 'cl-2'];
+    const caveats = ['caveat-1'];
+
+    const rec = schema.makeRecommendation({
+      supportingClaimIds: claimIds,
+      caveats: caveats
+    });
+
+    // Mutate input arrays
+    claimIds.push('cl-mutated');
+    caveats.push('caveat-mutated');
+
+    expect(rec.supportingClaimIds).toEqual(['cl-1', 'cl-2']);
+    expect(rec.caveats).toEqual(['caveat-1']);
+
+    // Mutate output arrays
+    rec.supportingClaimIds.push('cl-output-mutated');
+    expect(claimIds).toEqual(['cl-1', 'cl-2', 'cl-mutated']);
+  });
+
+  it('integrates cleanly with validateRecommendation for valid and default outputs', () => {
+    const defaultRec = schema.makeRecommendation();
+    const { errors: defaultErrors } = schema.validateRecommendation(defaultRec);
+    expect(defaultErrors.some((e) => /id must be kebab-case/.test(e))).toBe(true);
+    expect(defaultErrors.some((e) => /text required/.test(e))).toBe(true);
+    expect(defaultErrors.some((e) => /lastReviewed/.test(e))).toBe(true);
+
+    const validRec = schema.makeRecommendation({
+      id: 'rec-test-valid',
+      topic: 'bp-management',
+      setting: 'inpatient',
+      text: 'Target SBP < 140 mmHg',
+      classOfRecommendation: 'I',
+      levelOfEvidence: 'A',
+      guidelineSource: 'AHA 2026',
+      supportingClaimIds: ['cl-bp-1'],
+      lastReviewed: '2026-05-01',
+      verificationStatus: 'verified-guideline',
+      verificationNotes: 'Verified'
+    });
+
+    const { errors, warnings } = schema.validateRecommendation(validRec, {
+      knownClaimIds: new Set(['cl-bp-1']),
+      claimById: new Map([['cl-bp-1', { id: 'cl-bp-1', topic: 'bp-management' }]])
+    });
+
+    expect(errors).toEqual([]);
+    expect(warnings).toEqual([]);
+  });
+});
