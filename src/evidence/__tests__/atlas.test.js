@@ -308,10 +308,127 @@ describe('Schema factories — makeCompletedTrial', () => {
 });
 
 describe('Schema validators', () => {
-  it('rejects missing primary endpoint result on completed trial', () => {
-    const bad = schema.makeCompletedTrial({ id: 'fake', shortName: 'X', fullName: 'X' });
-    const { errors } = schema.validateCompletedTrial(bad);
-    expect(errors.some((e) => /primaryEndpoint\.result/.test(e))).toBe(true);
+  describe('validateCompletedTrial', () => {
+    const makeValidTrial = () => schema.makeCompletedTrial({
+      id: 'valid-trial-id',
+      shortName: 'Trial Short',
+      fullName: 'Trial Full Name',
+      topic: 'acute-ischemic-stroke',
+      certainty: 'high',
+      evidenceType: 'rct',
+      verificationStatus: 'verified-rct',
+      primaryEndpoint: { result: 'Positive result' },
+      lastReviewed: '2026-01-15'
+    });
+
+    it('accepts a fully valid completed trial with zero errors and warnings', () => {
+      const trial = makeValidTrial();
+      const { errors, warnings } = schema.validateCompletedTrial(trial);
+      expect(errors).toEqual([]);
+      expect(warnings).toEqual([]);
+    });
+
+    it('rejects non-kebab-case or empty trial ID', () => {
+      const badId = { ...makeValidTrial(), id: 'Invalid_ID_Format' };
+      const emptyId = { ...makeValidTrial(), id: '' };
+
+      const res1 = schema.validateCompletedTrial(badId);
+      expect(res1.errors.some((e) => /id must be kebab-case/.test(e))).toBe(true);
+
+      const res2 = schema.validateCompletedTrial(emptyId);
+      expect(res2.errors.some((e) => /id must be kebab-case/.test(e))).toBe(true);
+    });
+
+    it('rejects missing required string fields (shortName, fullName, topic)', () => {
+      const noShortName = { ...makeValidTrial(), shortName: '' };
+      const noFullName = { ...makeValidTrial(), fullName: '' };
+      const noTopic = { ...makeValidTrial(), topic: '' };
+
+      expect(schema.validateCompletedTrial(noShortName).errors.some((e) => /shortName required/.test(e))).toBe(true);
+      expect(schema.validateCompletedTrial(noFullName).errors.some((e) => /fullName required/.test(e))).toBe(true);
+      expect(schema.validateCompletedTrial(noTopic).errors.some((e) => /topic required/.test(e))).toBe(true);
+    });
+
+    it('rejects invalid enumeration values for certainty, evidenceType, and verificationStatus', () => {
+      const badCertainty = { ...makeValidTrial(), certainty: 'ultra-high' };
+      const badEvidenceType = { ...makeValidTrial(), evidenceType: 'anecdote' };
+      const badVerificationStatus = { ...makeValidTrial(), verificationStatus: 'verified-by-trust' };
+
+      expect(schema.validateCompletedTrial(badCertainty).errors.some((e) => /certainty invalid/.test(e))).toBe(true);
+      expect(schema.validateCompletedTrial(badEvidenceType).errors.some((e) => /evidenceType invalid/.test(e))).toBe(true);
+      expect(schema.validateCompletedTrial(badVerificationStatus).errors.some((e) => /verificationStatus invalid/.test(e))).toBe(true);
+    });
+
+    it('rejects missing primary endpoint result on completed trial', () => {
+      const bad = schema.makeCompletedTrial({ id: 'fake', shortName: 'X', fullName: 'X' });
+      const { errors } = schema.validateCompletedTrial(bad);
+      expect(errors.some((e) => /primaryEndpoint\.result/.test(e))).toBe(true);
+    });
+
+    it('requires verificationNotes when verificationStatus is todo-verify', () => {
+      const missingNotes = {
+        ...makeValidTrial(),
+        verificationStatus: 'todo-verify',
+        verificationNotes: ''
+      };
+      const withNotes = {
+        ...makeValidTrial(),
+        verificationStatus: 'todo-verify',
+        verificationNotes: 'Verification pending secondary audit'
+      };
+
+      const resMissing = schema.validateCompletedTrial(missingNotes);
+      expect(resMissing.errors.some((e) => /verificationStatus=todo-verify requires verificationNotes/.test(e))).toBe(true);
+
+      const resWith = schema.validateCompletedTrial(withNotes);
+      expect(resWith.errors.some((e) => /verificationNotes/.test(e))).toBe(false);
+    });
+
+    it('validates lastReviewed format and warns on stale evidence older than 24 months', () => {
+      const invalidDate = { ...makeValidTrial(), lastReviewed: '2026/01/15' };
+      const staleDate = { ...makeValidTrial(), lastReviewed: '2018-01-01' };
+
+      const resInvalid = schema.validateCompletedTrial(invalidDate);
+      expect(resInvalid.errors.some((e) => /lastReviewed must be ISO date YYYY-MM-DD/.test(e))).toBe(true);
+
+      const resStale = schema.validateCompletedTrial(staleDate);
+      expect(resStale.errors.length).toBe(0);
+      expect(resStale.warnings.some((w) => /stale-evidence/.test(w))).toBe(true);
+    });
+
+    it('validates promotedDate ISO date format when present', () => {
+      const invalidPromoted = { ...makeValidTrial(), promotedDate: 'invalid-date' };
+      const validPromoted = { ...makeValidTrial(), promotedDate: '2026-02-01' };
+
+      const resInvalid = schema.validateCompletedTrial(invalidPromoted);
+      expect(resInvalid.errors.some((e) => /promotedDate must be ISO date YYYY-MM-DD/.test(e))).toBe(true);
+
+      const resValid = schema.validateCompletedTrial(validPromoted);
+      expect(resValid.errors).toEqual([]);
+    });
+
+    it('validates foreign-key references against ctx.knownCitationIds and ctx.knownActiveTrialIds', () => {
+      const trial = {
+        ...makeValidTrial(),
+        citationIds: ['cit-valid', 'cit-unknown'],
+        relatedActiveTrialIds: ['act-valid', 'act-unknown']
+      };
+
+      const ctx = {
+        knownCitationIds: new Set(['cit-valid']),
+        knownActiveTrialIds: new Set(['act-valid'])
+      };
+
+      const { errors } = schema.validateCompletedTrial(trial, ctx);
+      expect(errors.some((e) => /citationIds references unknown citation 'cit-unknown'/.test(e))).toBe(true);
+      expect(errors.some((e) => /relatedActiveTrialIds references unknown active trial 'act-unknown'/.test(e))).toBe(true);
+
+      const validCtx = {
+        knownCitationIds: new Set(['cit-valid', 'cit-unknown']),
+        knownActiveTrialIds: new Set(['act-valid', 'act-unknown'])
+      };
+      expect(schema.validateCompletedTrial(trial, validCtx).errors).toEqual([]);
+    });
   });
 
   it('rejects active trial without matcher criteria', () => {
