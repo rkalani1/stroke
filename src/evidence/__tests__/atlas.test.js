@@ -19,6 +19,8 @@ import {
   filterActiveTrials,
   resolveCompletedTrials,
   resolveClaimsWithCitations,
+  getClaim,
+  getAllClaimIds,
   schema
 } from '../index.js';
 
@@ -143,6 +145,27 @@ describe('Evidence Atlas — query helpers', () => {
     expect(expanded.length).toBe(1);
     expect(expanded[0].citationRecords.length).toBeGreaterThan(0);
     expect(expanded[0].citationRecords.map((c) => c.id)).toContain('cit-act-2022');
+  });
+
+  it('getClaim returns claim for valid ID and null for invalid or missing ID', () => {
+    const validClaim = getClaim('cl-tnk-noninferior-alteplase');
+    expect(validClaim).toBeTruthy();
+    expect(validClaim.id).toBe('cl-tnk-noninferior-alteplase');
+    expect(validClaim.statement).toBeDefined();
+
+    expect(getClaim('non-existent-claim-id')).toBeNull();
+    expect(getClaim('')).toBeNull();
+    expect(getClaim(undefined)).toBeNull();
+    expect(getClaim(null)).toBeNull();
+  });
+
+  it('getAllClaimIds returns a Set containing all seed claim IDs', () => {
+    const claimIds = getAllClaimIds();
+    expect(claimIds).toBeInstanceOf(Set);
+    expect(claimIds.size).toBeGreaterThan(0);
+    expect(claimIds.has('cl-tnk-noninferior-alteplase')).toBe(true);
+    expect(claimIds.has('cl-evt-large-core')).toBe(true);
+    expect(claimIds.size).toBe(claims.length);
   });
 });
 
