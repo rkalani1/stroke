@@ -442,10 +442,10 @@ export function validateRecommendation(r, ctx = {}) {
   // reversal recommendation whose only supporting claim was the INTERACT3 BP
   // bundle — semantically wrong, structurally valid before this check.
   if (ctx.claimById && r.topic && Array.isArray(r.supportingClaimIds)) {
+    const recRoot = String(r.topic).split('-')[0];
     for (const cid of r.supportingClaimIds) {
       const claim = ctx.claimById.get(cid);
       if (!claim || !claim.topic) continue;
-      const recRoot = String(r.topic).split('-')[0];
       const claimRoot = String(claim.topic).split('-')[0];
       if (claim.topic !== r.topic && claimRoot !== recRoot) {
         warnings.push(
