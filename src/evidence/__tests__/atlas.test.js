@@ -168,10 +168,81 @@ describe('Schema validators', () => {
     expect(warnings.some((w) => /Class I/.test(w))).toBe(true);
   });
 
-  it('rejects malformed PMID', () => {
-    const c = schema.makeCitation({ id: 'fake-cit', title: 't', pmid: '123', verificationStatus: 'verified-pubmed' });
-    const { errors } = schema.validateCitation(c);
-    expect(errors.some((e) => /pmid/i.test(e))).toBe(true);
+  describe('validateCitation', () => {
+    it('accepts a valid citation object', () => {
+      const c = schema.makeCitation({
+        id: 'valid-citation-id',
+        title: 'Valid Citation Title',
+        verificationStatus: 'verified-pubmed',
+        pmid: '12345678',
+        doi: '10.1016/j.stroke.2020.01.001'
+      });
+      const { errors, warnings } = schema.validateCitation(c);
+      expect(errors).toEqual([]);
+      expect(warnings).toEqual([]);
+    });
+
+    it('rejects missing or non-kebab-case id', () => {
+      const badId = schema.makeCitation({ id: 'Invalid ID Name', title: 'Title' });
+      const { errors: badIdErrors } = schema.validateCitation(badId);
+      expect(badIdErrors.some((e) => e.includes('id must be kebab-case'))).toBe(true);
+
+      const noId = { title: 'Title', verificationStatus: 'verified-pubmed' };
+      const { errors: noIdErrors } = schema.validateCitation(noId);
+      expect(noIdErrors.some((e) => e.includes('citations/<unset>: id must be kebab-case'))).toBe(true);
+    });
+
+    it('rejects missing title', () => {
+      const c = schema.makeCitation({ id: 'valid-id', title: '', verificationStatus: 'verified-pubmed' });
+      const { errors } = schema.validateCitation(c);
+      expect(errors.some((e) => e.includes('title required'))).toBe(true);
+    });
+
+    it('rejects invalid verificationStatus', () => {
+      const c = { id: 'valid-id', title: 'Title', verificationStatus: 'not-a-valid-status' };
+      const { errors } = schema.validateCitation(c);
+      expect(errors.some((e) => e.includes('verificationStatus invalid'))).toBe(true);
+    });
+
+    it('requires verificationNotes when verificationStatus is todo-verify', () => {
+      const withoutNotes = schema.makeCitation({
+        id: 'valid-id',
+        title: 'Title',
+        verificationStatus: 'todo-verify',
+        verificationNotes: ''
+      });
+      const { errors: errsWithoutNotes } = schema.validateCitation(withoutNotes);
+      expect(errsWithoutNotes.some((e) => e.includes('requires verificationNotes'))).toBe(true);
+
+      const withNotes = schema.makeCitation({
+        id: 'valid-id',
+        title: 'Title',
+        verificationStatus: 'todo-verify',
+        verificationNotes: 'Pending verification against pubmed'
+      });
+      const { errors: errsWithNotes } = schema.validateCitation(withNotes);
+      expect(errsWithNotes.length).toBe(0);
+    });
+
+    it('validates PMID format', () => {
+      const badPmid = schema.makeCitation({ id: 'valid-id', title: 'Title', pmid: '123', verificationStatus: 'verified-pubmed' });
+      const { errors: badErrors } = schema.validateCitation(badPmid);
+      expect(badErrors.some((e) => e.includes('pmid \'123\' fails 7-9 digit pattern'))).toBe(true);
+
+      const goodPmid = schema.makeCitation({ id: 'valid-id', title: 'Title', pmid: '12345678', verificationStatus: 'verified-pubmed' });
+      const { errors: goodErrors } = schema.validateCitation(goodPmid);
+      expect(goodErrors.length).toBe(0);
+    });
+
+    it('validates DOI format', () => {
+      const badDoi = schema.makeCitation({ id: 'valid-id', title: 'Title', doi: 'invalid-doi', verificationStatus: 'verified-doi' });
+      const { errors: badErrors } = schema.validateCitation(badDoi);
+      expect(badErrors.some((e) => e.includes('doi \'invalid-doi\' fails DOI pattern'))).toBe(true);
+
+      const goodDoi = schema.makeCitation({ id: 'valid-id', title: 'Title', doi: '10.1056/NEJMoa1706442', verificationStatus: 'verified-doi' });
+      const { errors: goodErrors } = schema.validateCitation(goodDoi);
+      expect(goodErrors.length).toBe(0);
+    });
   });
 
   it('rejects guideline missing required fields', () => {
