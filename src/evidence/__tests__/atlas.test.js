@@ -195,3 +195,74 @@ describe('Schema validators', () => {
     expect(warnings.length).toBe(0);
   });
 });
+
+describe('makeGuideline factory', () => {
+  it('constructs a guideline with default safe values when given empty or no input', () => {
+    const g = schema.makeGuideline();
+    expect(g).toEqual({
+      id: '',
+      name: '',
+      organization: '',
+      year: 0,
+      topic: '',
+      url: '',
+      citationId: '',
+      verificationStatus: 'verified-guideline',
+      lastReviewed: '',
+      verificationNotes: ''
+    });
+  });
+
+  it('populates all fields correctly when provided valid input', () => {
+    const input = {
+      id: 'aha-asa-2019-ais',
+      name: '2019 AHA/ASA Early Management of Acute Ischemic Stroke Guidelines',
+      organization: 'AHA/ASA',
+      year: 2019,
+      topic: 'ais-early-mgmt',
+      url: 'https://example.org/guideline',
+      citationId: 'cit-aha-2019',
+      verificationStatus: 'verified-pubmed',
+      lastReviewed: '2026-01-15',
+      verificationNotes: 'Verified via PubMed PMID 31643129'
+    };
+    const g = schema.makeGuideline(input);
+    expect(g).toEqual(input);
+  });
+
+  it('coerces non-finite year inputs to default 0', () => {
+    expect(schema.makeGuideline({ year: '2024' }).year).toBe(0);
+    expect(schema.makeGuideline({ year: NaN }).year).toBe(0);
+    expect(schema.makeGuideline({ year: Infinity }).year).toBe(0);
+    expect(schema.makeGuideline({ year: null }).year).toBe(0);
+    expect(schema.makeGuideline({ year: 2024 }).year).toBe(2024);
+  });
+
+  it('defaults verificationStatus to verified-guideline for invalid or missing status values', () => {
+    expect(schema.makeGuideline({ verificationStatus: 'invalid-status' }).verificationStatus).toBe('verified-guideline');
+    expect(schema.makeGuideline({ verificationStatus: null }).verificationStatus).toBe('verified-guideline');
+    expect(schema.makeGuideline({ verificationStatus: 'todo-verify' }).verificationStatus).toBe('todo-verify');
+    expect(schema.makeGuideline({ verificationStatus: 'verified-doi' }).verificationStatus).toBe('verified-doi');
+  });
+
+  it('safely handles non-string inputs for string fields', () => {
+    const g = schema.makeGuideline({
+      id: 123,
+      name: null,
+      organization: undefined,
+      topic: {},
+      url: [],
+      citationId: true,
+      lastReviewed: 20260101,
+      verificationNotes: false
+    });
+    expect(g.id).toBe('');
+    expect(g.name).toBe('');
+    expect(g.organization).toBe('');
+    expect(g.topic).toBe('');
+    expect(g.url).toBe('');
+    expect(g.citationId).toBe('');
+    expect(g.lastReviewed).toBe('');
+    expect(g.verificationNotes).toBe('');
+  });
+});
