@@ -194,4 +194,102 @@ describe('Schema validators', () => {
     expect(errors.length).toBe(0);
     expect(warnings.length).toBe(0);
   });
+
+  describe('validateActiveTrial', () => {
+    const validTrialInput = {
+      id: 'step-evt',
+      shortName: 'STEP',
+      fullName: 'Stroke Trial for Endovascular Treatment',
+      topic: 'evt-late-window',
+      status: 'recruiting',
+      nctId: 'NCT12345678',
+      matcherCriteria: [{ field: 'nihss', operator: '>=', value: 6 }],
+      lastReviewed: '2026-04-25',
+      verificationStatus: 'verified-clinicaltrials-gov',
+      relatedCompletedTrialIds: ['wake-up']
+    };
+
+    it('accepts a valid active trial record', () => {
+      const trial = schema.makeActiveTrial(validTrialInput);
+      const { errors, warnings } = schema.validateActiveTrial(trial, {
+        knownCompletedTrialIds: new Set(['wake-up'])
+      });
+      expect(errors).toHaveLength(0);
+      expect(warnings).toHaveLength(0);
+    });
+
+    it('validates id format (kebab-case required)', () => {
+      const trial = schema.makeActiveTrial(validTrialInput);
+      trial.id = 'Invalid_ID';
+      const { errors } = schema.validateActiveTrial(trial);
+      expect(errors.some((e) => /id must be kebab-case/.test(e))).toBe(true);
+    });
+
+    it('validates required fields: shortName, fullName, topic', () => {
+      const trial = schema.makeActiveTrial(validTrialInput);
+      trial.shortName = '';
+      trial.fullName = '';
+      trial.topic = '';
+      const { errors } = schema.validateActiveTrial(trial);
+      expect(errors.some((e) => /shortName required/.test(e))).toBe(true);
+      expect(errors.some((e) => /fullName required/.test(e))).toBe(true);
+      expect(errors.some((e) => /topic required/.test(e))).toBe(true);
+    });
+
+    it('validates status and verificationStatus values', () => {
+      const trial = schema.makeActiveTrial(validTrialInput);
+      trial.status = 'invalid-status';
+      trial.verificationStatus = 'invalid-verification';
+      const { errors } = schema.validateActiveTrial(trial);
+      expect(errors.some((e) => /status invalid/.test(e))).toBe(true);
+      expect(errors.some((e) => /verificationStatus invalid/.test(e))).toBe(true);
+    });
+
+    it('validates nctId format when present', () => {
+      const trial = schema.makeActiveTrial(validTrialInput);
+      trial.nctId = 'INVALID-NCT';
+      const { errors } = schema.validateActiveTrial(trial);
+      expect(errors.some((e) => /fails NCT pattern/.test(e))).toBe(true);
+    });
+
+    it('rejects active trial with missing or empty matcherCriteria', () => {
+      const trial = schema.makeActiveTrial(validTrialInput);
+      trial.matcherCriteria = [];
+      const { errors } = schema.validateActiveTrial(trial);
+      expect(errors.some((e) => /at least one matcherCriteria entry required/.test(e))).toBe(true);
+    });
+
+    it('requires verificationNotes when verificationStatus is todo-verify', () => {
+      const trial = schema.makeActiveTrial({
+        ...validTrialInput,
+        verificationStatus: 'todo-verify',
+        verificationNotes: ''
+      });
+      const { errors } = schema.validateActiveTrial(trial);
+      expect(errors.some((e) => /verificationStatus=todo-verify requires verificationNotes/.test(e))).toBe(true);
+    });
+
+    it('validates lastReviewed date format and reports staleness warning (> 24 months)', () => {
+      const trialInvalidDate = schema.makeActiveTrial(validTrialInput);
+      trialInvalidDate.lastReviewed = 'not-an-iso-date';
+      const { errors: errorsFormat } = schema.validateActiveTrial(trialInvalidDate);
+      expect(errorsFormat.some((e) => /lastReviewed must be ISO date/.test(e))).toBe(true);
+
+      const trialStale = schema.makeActiveTrial(validTrialInput);
+      trialStale.lastReviewed = '2020-01-01';
+      const { warnings: warningsStale } = schema.validateActiveTrial(trialStale);
+      expect(warningsStale.some((w) => /stale-evidence/.test(w))).toBe(true);
+    });
+
+    it('validates relatedCompletedTrialIds against known completed trial IDs in context', () => {
+      const trial = schema.makeActiveTrial({
+        ...validTrialInput,
+        relatedCompletedTrialIds: ['unknown-trial-id']
+      });
+      const { errors } = schema.validateActiveTrial(trial, {
+        knownCompletedTrialIds: new Set(['wake-up', 'extend'])
+      });
+      expect(errors.some((e) => /references unknown completed trial 'unknown-trial-id'/.test(e))).toBe(true);
+    });
+  });
 });
