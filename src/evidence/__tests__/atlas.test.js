@@ -53,6 +53,38 @@ describe('Evidence Atlas — data layer', () => {
     }
   });
 
+  describe('getActiveTrialByLegacyKey', () => {
+    it('retrieves active trials by legacyMatcherKey and matches getActiveTrial by ID', () => {
+      for (const trial of activeTrials) {
+        if (trial.legacyMatcherKey) {
+          const fetchedByLegacyKey = getActiveTrialByLegacyKey(trial.legacyMatcherKey);
+          const fetchedById = getActiveTrial(trial.id);
+          expect(fetchedByLegacyKey).toBe(fetchedById);
+          expect(fetchedByLegacyKey.id).toBe(trial.id);
+          expect(fetchedByLegacyKey.legacyMatcherKey).toBe(trial.legacyMatcherKey);
+        }
+      }
+    });
+
+    it('distinguishes between legacyMatcherKey and primary ID', () => {
+      // 'STEP' is the legacyMatcherKey while 'step-evt' is the primary ID
+      const byLegacyKey = getActiveTrialByLegacyKey('STEP');
+      const byPrimaryIdAsLegacyKey = getActiveTrialByLegacyKey('step-evt');
+      const byPrimaryId = getActiveTrial('step-evt');
+
+      expect(byLegacyKey).toBe(byPrimaryId);
+      expect(byPrimaryIdAsLegacyKey).toBeNull();
+    });
+
+    it('returns null for unknown, non-existent, or invalid keys', () => {
+      expect(getActiveTrialByLegacyKey('NON_EXISTENT_KEY')).toBeNull();
+      expect(getActiveTrialByLegacyKey('')).toBeNull();
+      expect(getActiveTrialByLegacyKey(null)).toBeNull();
+      expect(getActiveTrialByLegacyKey(undefined)).toBeNull();
+      expect(getActiveTrialByLegacyKey('step')).toBeNull(); // case-sensitive match
+    });
+  });
+
   it('all foreign-key references resolve', () => {
     const citIds = new Set(citations.map((c) => c.id));
     const ctIds = new Set(completedTrials.map((c) => c.id));
