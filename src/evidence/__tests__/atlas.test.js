@@ -298,10 +298,118 @@ describe('Schema validators', () => {
     expect(warnings.some((w) => /Class I/.test(w))).toBe(true);
   });
 
-  it('rejects malformed PMID', () => {
-    const c = schema.makeCitation({ id: 'fake-cit', title: 't', pmid: '123', verificationStatus: 'verified-pubmed' });
-    const { errors } = schema.validateCitation(c);
-    expect(errors.some((e) => /pmid/i.test(e))).toBe(true);
+  describe('validateCitation', () => {
+    it('accepts a fully valid citation', () => {
+      const valid = schema.makeCitation({
+        id: 'cit-valid-2026',
+        title: 'Thrombolysis with Alteplase at 3 to 4.5 Hours',
+        verificationStatus: 'verified-pubmed',
+        pmid: '19776407',
+        doi: '10.1056/NEJMoa0804656'
+      });
+      const { errors, warnings } = schema.validateCitation(valid);
+      expect(errors).toEqual([]);
+      expect(warnings).toEqual([]);
+    });
+
+    it('rejects missing or non-kebab-case id', () => {
+      const badId = schema.makeCitation({
+        id: 'Invalid_ID_Format!',
+        title: 'Test Title',
+        verificationStatus: 'verified-pubmed'
+      });
+      const { errors } = schema.validateCitation(badId);
+      expect(errors.some((e) => /id must be kebab-case/.test(e))).toBe(true);
+
+      const missingId = schema.makeCitation({
+        id: '',
+        title: 'Test Title',
+        verificationStatus: 'verified-pubmed'
+      });
+      const { errors: missingErrors } = schema.validateCitation(missingId);
+      expect(missingErrors.some((e) => /id must be kebab-case/.test(e))).toBe(true);
+    });
+
+    it('rejects missing title', () => {
+      const missingTitle = schema.makeCitation({
+        id: 'cit-test',
+        title: '',
+        verificationStatus: 'verified-pubmed'
+      });
+      const { errors } = schema.validateCitation(missingTitle);
+      expect(errors.some((e) => /title required/.test(e))).toBe(true);
+    });
+
+    it('rejects invalid verificationStatus', () => {
+      const invalidStatus = {
+        id: 'cit-test',
+        title: 'Test Title',
+        verificationStatus: 'not-a-real-status'
+      };
+      const { errors } = schema.validateCitation(invalidStatus);
+      expect(errors.some((e) => /verificationStatus invalid/.test(e))).toBe(true);
+    });
+
+    it('requires verificationNotes when verificationStatus is todo-verify', () => {
+      const todoWithoutNotes = schema.makeCitation({
+        id: 'cit-test',
+        title: 'Test Title',
+        verificationStatus: 'todo-verify',
+        verificationNotes: ''
+      });
+      const { errors: err1 } = schema.validateCitation(todoWithoutNotes);
+      expect(err1.some((e) => /requires verificationNotes/.test(e))).toBe(true);
+
+      const todoWithNotes = schema.makeCitation({
+        id: 'cit-test',
+        title: 'Test Title',
+        verificationStatus: 'todo-verify',
+        verificationNotes: 'Pending review against PubMed'
+      });
+      const { errors: err2 } = schema.validateCitation(todoWithNotes);
+      expect(err2.some((e) => /requires verificationNotes/.test(e))).toBe(false);
+      expect(err2.length).toBe(0);
+    });
+
+    it('validates PMID format when present', () => {
+      const malformedPmid = schema.makeCitation({
+        id: 'cit-test',
+        title: 'Test Title',
+        pmid: '123',
+        verificationStatus: 'verified-pubmed'
+      });
+      const { errors: err1 } = schema.validateCitation(malformedPmid);
+      expect(err1.some((e) => /pmid '123' fails 7-9 digit pattern/.test(e))).toBe(true);
+
+      const validPmid = schema.makeCitation({
+        id: 'cit-test',
+        title: 'Test Title',
+        pmid: '12345678',
+        verificationStatus: 'verified-pubmed'
+      });
+      const { errors: err2 } = schema.validateCitation(validPmid);
+      expect(err2.length).toBe(0);
+    });
+
+    it('validates DOI format when present', () => {
+      const malformedDoi = schema.makeCitation({
+        id: 'cit-test',
+        title: 'Test Title',
+        doi: 'invalid-doi-string',
+        verificationStatus: 'verified-doi'
+      });
+      const { errors: err1 } = schema.validateCitation(malformedDoi);
+      expect(err1.some((e) => /doi 'invalid-doi-string' fails DOI pattern/.test(e))).toBe(true);
+
+      const validDoi = schema.makeCitation({
+        id: 'cit-test',
+        title: 'Test Title',
+        doi: '10.1016/j.stroke.2020.01.001',
+        verificationStatus: 'verified-doi'
+      });
+      const { errors: err2 } = schema.validateCitation(validDoi);
+      expect(err2.length).toBe(0);
+    });
   });
 
   it('rejects guideline missing required fields', () => {
