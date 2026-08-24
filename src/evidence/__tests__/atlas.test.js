@@ -195,3 +195,84 @@ describe('Schema validators', () => {
     expect(warnings.length).toBe(0);
   });
 });
+
+describe('makeActiveTrial factory', () => {
+  it('constructs active trial with default fields when minimal input provided', () => {
+    const trial = schema.makeActiveTrial({ status: 'recruiting' });
+    expect(trial.id).toBe('');
+    expect(trial.shortName).toBe('');
+    expect(trial.fullName).toBe('');
+    expect(trial.nctId).toBe('');
+    expect(trial.phase).toBe('');
+    expect(trial.status).toBe('recruiting');
+    expect(trial.topic).toBe('');
+    expect(trial.briefDescription).toBe('');
+    expect(trial.rationale).toBe('');
+    expect(trial.inclusionCriteria).toEqual([]);
+    expect(trial.exclusionCriteria).toEqual([]);
+    expect(trial.keyTakeaways).toEqual([]);
+    expect(trial.lookingFor).toEqual([]);
+    expect(trial.category).toBe('');
+    expect(trial.matcherCriteria).toEqual([]);
+    expect(trial.matcherExclusions).toEqual([]);
+    expect(trial.relatedCompletedTrialIds).toEqual([]);
+    expect(trial.link).toBe('');
+    expect(trial.lastReviewed).toBe('');
+    expect(trial.verificationStatus).toBe(schema.TODO_VERIFY_STATUS);
+    expect(trial.verificationNotes).toBe('');
+    expect(trial.legacyMatcherKey).toBe('');
+  });
+
+  it('throws descriptive error when status is missing or invalid', () => {
+    expect(() => schema.makeActiveTrial({})).toThrow(
+      "makeActiveTrial: unknown status 'undefined' for trial '<unset>'"
+    );
+    expect(() => schema.makeActiveTrial({ id: 'test-trial', status: 'invalid-status' })).toThrow(
+      "makeActiveTrial: unknown status 'invalid-status' for trial 'test-trial'"
+    );
+  });
+
+  it('accepts all valid active trial statuses', () => {
+    for (const status of schema.ACTIVE_TRIAL_STATUS_VALUES) {
+      const trial = schema.makeActiveTrial({ id: 'trial-1', status });
+      expect(trial.status).toBe(status);
+    }
+  });
+
+  it('correctly maps matcherCriteria and matcherExclusions with default fallbacks', () => {
+    const input = {
+      id: 'active-trial-1',
+      status: 'recruiting',
+      matcherCriteria: [
+        { field: 'age', operator: '>=', value: 18, label: 'Adults' },
+        null
+      ],
+      matcherExclusions: [
+        { id: 'ex-1', field: 'ich', label: 'Intracranial Hemorrhage' },
+        { id: 'ex-2', field: 'nihss', operator: '>', value: 25, label: 'Severe stroke' },
+        { id: 'ex-3', field: 'pregnancy', operator: '==', value: false, label: 'Not pregnant' }
+      ]
+    };
+
+    const trial = schema.makeActiveTrial(input);
+
+    expect(trial.matcherCriteria).toEqual([
+      { field: 'age', operator: '>=', value: 18, label: 'Adults' },
+      { field: '', operator: '', value: undefined, label: '' }
+    ]);
+
+    expect(trial.matcherExclusions).toEqual([
+      { id: 'ex-1', field: 'ich', operator: '==', value: true, label: 'Intracranial Hemorrhage' },
+      { id: 'ex-2', field: 'nihss', operator: '>', value: 25, label: 'Severe stroke' },
+      { id: 'ex-3', field: 'pregnancy', operator: '==', value: false, label: 'Not pregnant' }
+    ]);
+  });
+
+  it('handles verificationStatus validation and defaults', () => {
+    const valid = schema.makeActiveTrial({ status: 'recruiting', verificationStatus: 'verified-clinicaltrials-gov' });
+    expect(valid.verificationStatus).toBe('verified-clinicaltrials-gov');
+
+    const invalid = schema.makeActiveTrial({ status: 'recruiting', verificationStatus: 'not-a-valid-status' });
+    expect(invalid.verificationStatus).toBe(schema.TODO_VERIFY_STATUS);
+  });
+});
