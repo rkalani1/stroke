@@ -15,6 +15,8 @@ import {
   getActiveTrialByLegacyKey,
   getCompletedTrial,
   getCitation,
+  getClaim,
+  getAllClaimIds,
   filterCompletedTrials,
   filterActiveTrials,
   resolveCompletedTrials,
@@ -143,6 +145,27 @@ describe('Evidence Atlas — query helpers', () => {
     expect(expanded.length).toBe(1);
     expect(expanded[0].citationRecords.length).toBeGreaterThan(0);
     expect(expanded[0].citationRecords.map((c) => c.id)).toContain('cit-act-2022');
+  });
+
+  it('getClaim retrieves claim by valid ID and returns null for unknown or invalid IDs', () => {
+    const validClaim = getClaim('cl-tnk-noninferior-alteplase');
+    expect(validClaim).toBeTruthy();
+    expect(validClaim.id).toBe('cl-tnk-noninferior-alteplase');
+    expect(validClaim.topic).toBe('tnk-vs-alteplase');
+
+    expect(getClaim('unknown-claim-id')).toBeNull();
+    expect(getClaim('')).toBeNull();
+    expect(getClaim(null)).toBeNull();
+    expect(getClaim(undefined)).toBeNull();
+  });
+
+  it('getAllClaimIds returns a Set containing all claim IDs', () => {
+    const ids = getAllClaimIds();
+    expect(ids).toBeInstanceOf(Set);
+    expect(ids.size).toBe(claims.length);
+    for (const claim of claims) {
+      expect(ids.has(claim.id)).toBe(true);
+    }
   });
 });
 
