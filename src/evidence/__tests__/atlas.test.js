@@ -194,4 +194,88 @@ describe('Schema validators', () => {
     expect(errors.length).toBe(0);
     expect(warnings.length).toBe(0);
   });
+
+  describe('makeRecommendation factory', () => {
+    it('creates a recommendation with default properties when called with no input', () => {
+      const rec = schema.makeRecommendation();
+      expect(rec).toEqual({
+        id: '',
+        topic: '',
+        setting: 'all',
+        text: '',
+        classOfRecommendation: 'IIa',
+        levelOfEvidence: 'B-R',
+        guidelineSource: '',
+        supportingClaimIds: [],
+        caveats: [],
+        lastReviewed: '',
+        verificationStatus: 'todo-verify',
+        verificationNotes: ''
+      });
+    });
+
+    it('populates custom valid properties correctly', () => {
+      const input = {
+        id: 'rec-pfo-closure',
+        topic: 'pfo-closure',
+        setting: 'outpatient',
+        text: 'Perform PFO closure in patients <60 years with cryptogenic stroke.',
+        classOfRecommendation: 'I',
+        levelOfEvidence: 'A',
+        guidelineSource: '2021 AHA/ASA Ischemic Stroke Guidelines',
+        supportingClaimIds: ['cl-pfo-benefit'],
+        caveats: ['Requires multidisciplinary evaluation.'],
+        lastReviewed: '2026-05-01',
+        verificationStatus: 'verified-guideline',
+        verificationNotes: 'Source verified against guideline PDF.'
+      };
+      const rec = schema.makeRecommendation(input);
+      expect(rec).toEqual(input);
+    });
+
+    it('falls back to default enum values for invalid inputs', () => {
+      const rec = schema.makeRecommendation({
+        setting: 'intensive-care',
+        classOfRecommendation: 'IV',
+        levelOfEvidence: 'E',
+        verificationStatus: 'unapproved'
+      });
+      expect(rec.setting).toBe('all');
+      expect(rec.classOfRecommendation).toBe('IIa');
+      expect(rec.levelOfEvidence).toBe('B-R');
+      expect(rec.verificationStatus).toBe('todo-verify');
+    });
+
+    it('defensively clones array inputs and handles invalid non-array/non-string fields', () => {
+      const claimIds = ['cl-1', 'cl-2'];
+      const caveats = ['caveat-1'];
+      const rec = schema.makeRecommendation({
+        id: 123,
+        text: null,
+        supportingClaimIds: claimIds,
+        caveats: caveats
+      });
+
+      expect(rec.id).toBe('');
+      expect(rec.text).toBe('');
+
+      // Assert defensive cloning
+      expect(rec.supportingClaimIds).toEqual(['cl-1', 'cl-2']);
+      expect(rec.supportingClaimIds).not.toBe(claimIds);
+      expect(rec.caveats).toEqual(['caveat-1']);
+      expect(rec.caveats).not.toBe(caveats);
+
+      // Mutating original input should not affect rec
+      claimIds.push('cl-3');
+      expect(rec.supportingClaimIds).toEqual(['cl-1', 'cl-2']);
+
+      // Non-array inputs for array fields fall back to empty array
+      const recInvalidArrays = schema.makeRecommendation({
+        supportingClaimIds: 'invalid',
+        caveats: 456
+      });
+      expect(recInvalidArrays.supportingClaimIds).toEqual([]);
+      expect(recInvalidArrays.caveats).toEqual([]);
+    });
+  });
 });
