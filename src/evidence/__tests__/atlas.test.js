@@ -314,10 +314,142 @@ describe('Schema validators', () => {
     expect(errors.some((e) => /primaryEndpoint\.result/.test(e))).toBe(true);
   });
 
+  it('accepts a valid active trial', () => {
+    const trial = schema.makeActiveTrial({
+      id: 'valid-trial',
+      shortName: 'Valid',
+      fullName: 'Valid Active Trial',
+      topic: 'acute-ischemic-stroke',
+      status: 'recruiting',
+      nctId: 'NCT12345678',
+      matcherCriteria: [{ field: 'nihss', operator: '>=', value: 6 }],
+      lastReviewed: '2026-04-25',
+      verificationStatus: 'verified-clinicaltrials-gov',
+      relatedCompletedTrialIds: ['wake-up']
+    });
+    const { errors, warnings } = schema.validateActiveTrial(trial, {
+      knownCompletedTrialIds: new Set(['wake-up'])
+    });
+    expect(errors).toHaveLength(0);
+    expect(warnings).toHaveLength(0);
+  });
+
+  it('rejects active trial with invalid ID or missing required text fields', () => {
+    const trial = {
+      id: 'Invalid_ID!',
+      shortName: '',
+      fullName: '',
+      topic: '',
+      status: 'recruiting',
+      matcherCriteria: [{ field: 'nihss' }],
+      lastReviewed: '2026-04-25',
+      verificationStatus: 'verified-clinicaltrials-gov'
+    };
+    const { errors } = schema.validateActiveTrial(trial);
+    expect(errors.some((e) => /id must be kebab-case/.test(e))).toBe(true);
+    expect(errors.some((e) => /shortName required/.test(e))).toBe(true);
+    expect(errors.some((e) => /fullName required/.test(e))).toBe(true);
+    expect(errors.some((e) => /topic required/.test(e))).toBe(true);
+  });
+
+  it('rejects active trial with invalid status or verificationStatus', () => {
+    const trial = {
+      id: 'active-test',
+      shortName: 'Test',
+      fullName: 'Test Trial',
+      topic: 'stroke',
+      status: 'invalid-status',
+      matcherCriteria: [{ field: 'nihss' }],
+      lastReviewed: '2026-04-25',
+      verificationStatus: 'invalid-verification'
+    };
+    const { errors } = schema.validateActiveTrial(trial);
+    expect(errors.some((e) => /status invalid/.test(e))).toBe(true);
+    expect(errors.some((e) => /verificationStatus invalid/.test(e))).toBe(true);
+  });
+
+  it('rejects active trial with malformed nctId', () => {
+    const trial = schema.makeActiveTrial({
+      id: 'active-test',
+      shortName: 'Test',
+      fullName: 'Test Trial',
+      topic: 'stroke',
+      status: 'recruiting',
+      nctId: '12345678',
+      matcherCriteria: [{ field: 'nihss' }],
+      lastReviewed: '2026-04-25',
+      verificationStatus: 'verified-clinicaltrials-gov'
+    });
+    const { errors } = schema.validateActiveTrial(trial);
+    expect(errors.some((e) => /fails NCT pattern/.test(e))).toBe(true);
+  });
+
   it('rejects active trial without matcher criteria', () => {
     const bad = schema.makeActiveTrial({ id: 'fake', shortName: 'X', fullName: 'X', topic: 't', status: 'recruiting', lastReviewed: '2026-04-25', verificationStatus: 'verified-clinicaltrials-gov' });
     const { errors } = schema.validateActiveTrial(bad);
     expect(errors.some((e) => /matcherCriteria/.test(e))).toBe(true);
+  });
+
+  it('requires verificationNotes when verificationStatus is todo-verify', () => {
+    const trial = schema.makeActiveTrial({
+      id: 'active-test',
+      shortName: 'Test',
+      fullName: 'Test Trial',
+      topic: 'stroke',
+      status: 'recruiting',
+      matcherCriteria: [{ field: 'nihss' }],
+      lastReviewed: '2026-04-25',
+      verificationStatus: 'todo-verify',
+      verificationNotes: ''
+    });
+    const { errors } = schema.validateActiveTrial(trial);
+    expect(errors.some((e) => /requires verificationNotes/.test(e))).toBe(true);
+  });
+
+  it('validates lastReviewed date format and reports stale-evidence warnings', () => {
+    const invalidDateTrial = schema.makeActiveTrial({
+      id: 'active-test',
+      shortName: 'Test',
+      fullName: 'Test Trial',
+      topic: 'stroke',
+      status: 'recruiting',
+      matcherCriteria: [{ field: 'nihss' }],
+      lastReviewed: '2026/04/25',
+      verificationStatus: 'verified-clinicaltrials-gov'
+    });
+    const { errors: err1 } = schema.validateActiveTrial(invalidDateTrial);
+    expect(err1.some((e) => /lastReviewed must be ISO date/.test(e))).toBe(true);
+
+    const staleTrial = schema.makeActiveTrial({
+      id: 'active-test',
+      shortName: 'Test',
+      fullName: 'Test Trial',
+      topic: 'stroke',
+      status: 'recruiting',
+      matcherCriteria: [{ field: 'nihss' }],
+      lastReviewed: '2020-01-01',
+      verificationStatus: 'verified-clinicaltrials-gov'
+    });
+    const { warnings } = schema.validateActiveTrial(staleTrial);
+    expect(warnings.some((w) => /stale-evidence/.test(w))).toBe(true);
+  });
+
+  it('rejects active trial referencing unknown related completed trial', () => {
+    const trial = schema.makeActiveTrial({
+      id: 'active-test',
+      shortName: 'Test',
+      fullName: 'Test Trial',
+      topic: 'stroke',
+      status: 'recruiting',
+      matcherCriteria: [{ field: 'nihss' }],
+      lastReviewed: '2026-04-25',
+      verificationStatus: 'verified-clinicaltrials-gov',
+      relatedCompletedTrialIds: ['unknown-completed-trial']
+    });
+    const { errors } = schema.validateActiveTrial(trial, {
+      knownCompletedTrialIds: new Set(['wake-up'])
+    });
+    expect(errors.some((e) => /relatedCompletedTrialIds references unknown completed trial/.test(e))).toBe(true);
   });
 
   it('warns on Class I recommendation without supporting claims', () => {
