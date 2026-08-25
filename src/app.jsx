@@ -16743,9 +16743,13 @@ Clinician Name`;
               document.body.style.paddingRight = `${scrollbarWidth}px`;
               // Focus trap: keep Tab within the open modal dialog
               const previouslyFocused = document.activeElement;
+              let cachedModal = null;
               const trapFocus = (e) => {
                 if (e.key !== 'Tab') return;
-                const modal = document.querySelector('[role="dialog"], [aria-modal="true"]');
+                if (!cachedModal || !cachedModal.isConnected) {
+                  cachedModal = document.querySelector('[role="dialog"], [aria-modal="true"]');
+                }
+                const modal = cachedModal;
                 if (!modal) return;
                 const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
                 if (focusable.length === 0) return;
