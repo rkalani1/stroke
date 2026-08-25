@@ -20,6 +20,7 @@ import {
   calculateTNKDose,
   calculatePCCDose,
   calculateAlteplaseDose,
+  calculateAdjunctiveIAAlteplase,
   calculateDOACStart,
   DOAC_PROTOCOLS
 } from '../src/calculators.js';
@@ -497,5 +498,65 @@ describe('calculateABCD2WithDetail', () => {
     const items = { duration: 'duration10' };
     const result = calculateABCD2WithDetail(items);
     expect(result.components.duration).toBe(1);
+  });
+});
+
+describe('calculateAdjunctiveIAAlteplase', () => {
+  it('returns null for invalid, non-positive, or out-of-range weights', () => {
+    expect(calculateAdjunctiveIAAlteplase(-10, '2b50')).toBeNull();
+    expect(calculateAdjunctiveIAAlteplase(0, '2b50')).toBeNull();
+    expect(calculateAdjunctiveIAAlteplase(351, '2b50')).toBeNull();
+    expect(calculateAdjunctiveIAAlteplase('invalid', '2b50')).toBeNull();
+    expect(calculateAdjunctiveIAAlteplase(null, '2b50')).toBeNull();
+  });
+
+  it('calculates dose correctly for eligible eTICI grades (0.225 mg/kg)', () => {
+    // 70 kg * 0.225 = 15.75 mg
+    const result = calculateAdjunctiveIAAlteplase(70, '2b50');
+    expect(result).toEqual({
+      weightKg: 70,
+      eTICI: '2b50',
+      isEligible: true,
+      dose: 15.75,
+      maxDoseReached: false,
+      note: expect.stringContaining('CHOICE-2 (JAMA 2026)')
+    });
+  });
+
+  it('handles case-insensitive eligible eTICI values (2b50, 2b67, 2c, 3)', () => {
+    const eligibleTiciList = ['2b50', '2B67', '2C', '3'];
+    for (const tici of eligibleTiciList) {
+      const result = calculateAdjunctiveIAAlteplase(80, tici);
+      expect(result.isEligible).toBe(true);
+      expect(result.note).toMatch(/CHOICE-2 \(JAMA 2026\)/);
+    }
+  });
+
+  it('marks ineligible eTICI grades and provides appropriate note', () => {
+    const ineligibleTiciList = ['0', '1', '2a', '2b0', '2b25'];
+    for (const tici of ineligibleTiciList) {
+      const result = calculateAdjunctiveIAAlteplase(70, tici);
+      expect(result.isEligible).toBe(false);
+      expect(result.dose).toBe(15.75);
+      expect(result.note).toMatch(/CHOICE-2 criteria generally require successful reperfusion/);
+    }
+  });
+
+  it('caps maximum dose at 22.5 mg for heavy patients', () => {
+    // 100 kg * 0.225 = 22.5 mg
+    const exactMax = calculateAdjunctiveIAAlteplase(100, '3');
+    expect(exactMax.dose).toBe(22.5);
+    expect(exactMax.maxDoseReached).toBe(true);
+
+    // 120 kg * 0.225 = 27 mg -> capped at 22.5 mg
+    const capped = calculateAdjunctiveIAAlteplase(120, '2c');
+    expect(capped.dose).toBe(22.5);
+    expect(capped.maxDoseReached).toBe(true);
+  });
+
+  it('correctly rounds dose to 2 decimal places', () => {
+    // 83.3 kg * 0.225 = 18.7425 -> 18.74 mg
+    const result = calculateAdjunctiveIAAlteplase(83.3, '2b67');
+    expect(result.dose).toBe(18.74);
   });
 });
