@@ -19,7 +19,10 @@ import {
   filterCompletedTrials,
   filterActiveTrials,
   resolveCompletedTrials,
+  resolveActiveTrials,
+  resolveCitations,
   resolveClaimsWithCitations,
+  relatedEvidenceFor,
   schema
 } from '../index.js';
 
@@ -185,27 +188,121 @@ describe('Evidence Atlas — query helpers', () => {
     expect(filterActiveTrials({ query: 'tandem' }).some((t) => t.id === 'picasso')).toBe(true);
   });
 
-  it('resolveCompletedTrials drops dangling references', () => {
-    const got = resolveCompletedTrials(['wake-up', 'does-not-exist']);
-    expect(got.length).toBe(1);
-    expect(got[0].id).toBe('wake-up');
+  describe('resolveCompletedTrials', () => {
+    it('returns empty array when given no arguments, null, undefined, or empty array', () => {
+      expect(resolveCompletedTrials()).toEqual([]);
+      expect(resolveCompletedTrials(undefined)).toEqual([]);
+      expect(resolveCompletedTrials(null)).toEqual([]);
+      expect(resolveCompletedTrials([])).toEqual([]);
+    });
+
+    it('resolves valid completed trial IDs into full records in order', () => {
+      const result = resolveCompletedTrials(['wake-up', 'extend']);
+      expect(result.length).toBe(2);
+      expect(result[0].id).toBe('wake-up');
+      expect(result[0].shortName).toBe('WAKE-UP');
+      expect(result[1].id).toBe('extend');
+      expect(result[1].shortName).toBe('EXTEND');
+    });
+
+    it('filters out dangling / unresolvable trial IDs', () => {
+      const result = resolveCompletedTrials(['wake-up', 'non-existent-trial', 'extend', 'another-bad-id']);
+      expect(result.length).toBe(2);
+      expect(result.map((t) => t.id)).toEqual(['wake-up', 'extend']);
+    });
   });
 
-  it('TESTED active trial surfaces late-window EVT context', () => {
-    const tested = getActiveTrial('tested');
-    expect(tested).toBeTruthy();
-    const ctx = resolveCompletedTrials(tested.relatedCompletedTrialIds);
-    const ids = ctx.map((c) => c.id);
-    expect(ids).toContain('select2');
-    expect(ids).toContain('angel-aspect');
-    expect(ids).toContain('tension');
+  describe('resolveActiveTrials', () => {
+    it('returns empty array when given no arguments, null, undefined, or empty array', () => {
+      expect(resolveActiveTrials()).toEqual([]);
+      expect(resolveActiveTrials(undefined)).toEqual([]);
+      expect(resolveActiveTrials(null)).toEqual([]);
+      expect(resolveActiveTrials([])).toEqual([]);
+    });
+
+    it('resolves valid active trial IDs into full records in order', () => {
+      const result = resolveActiveTrials(['step-evt', 'aspire']);
+      expect(result.length).toBe(2);
+      expect(result[0].id).toBe('step-evt');
+      expect(result[1].id).toBe('aspire');
+    });
+
+    it('filters out dangling active trial IDs', () => {
+      const result = resolveActiveTrials(['step-evt', 'invalid-active-id', 'aspire']);
+      expect(result.length).toBe(2);
+      expect(result.map((t) => t.id)).toEqual(['step-evt', 'aspire']);
+    });
   });
 
-  it('resolveClaimsWithCitations expands claim → citation chain', () => {
-    const expanded = resolveClaimsWithCitations(['cl-tnk-noninferior-alteplase']);
-    expect(expanded.length).toBe(1);
-    expect(expanded[0].citationRecords.length).toBeGreaterThan(0);
-    expect(expanded[0].citationRecords.map((c) => c.id)).toContain('cit-act-2022');
+  describe('resolveCitations', () => {
+    it('returns empty array when given no arguments, null, undefined, or empty array', () => {
+      expect(resolveCitations()).toEqual([]);
+      expect(resolveCitations(undefined)).toEqual([]);
+      expect(resolveCitations(null)).toEqual([]);
+      expect(resolveCitations([])).toEqual([]);
+    });
+
+    it('resolves valid citation IDs into full records', () => {
+      const result = resolveCitations(['cit-wake-up-2018', 'cit-extend-2019']);
+      expect(result.length).toBe(2);
+      expect(result[0].id).toBe('cit-wake-up-2018');
+      expect(result[1].id).toBe('cit-extend-2019');
+    });
+
+    it('filters out non-existent citation IDs', () => {
+      const result = resolveCitations(['cit-wake-up-2018', 'fake-cit-id']);
+      expect(result.length).toBe(1);
+      expect(result[0].id).toBe('cit-wake-up-2018');
+    });
+  });
+
+  describe('relatedEvidenceFor', () => {
+    it('returns empty array for falsy active trial or active trial without relatedCompletedTrialIds', () => {
+      expect(relatedEvidenceFor()).toEqual([]);
+      expect(relatedEvidenceFor(null)).toEqual([]);
+      expect(relatedEvidenceFor(undefined)).toEqual([]);
+      expect(relatedEvidenceFor({})).toEqual([]);
+    });
+
+    it('resolves related completed trials for active trial record', () => {
+      const tested = getActiveTrial('tested');
+      expect(tested).toBeTruthy();
+      const ctx = relatedEvidenceFor(tested);
+      const ids = ctx.map((c) => c.id);
+      expect(ids).toContain('select2');
+      expect(ids).toContain('angel-aspect');
+      expect(ids).toContain('tension');
+    });
+
+    it('filters out dangling references in relatedCompletedTrialIds', () => {
+      const mockActive = { relatedCompletedTrialIds: ['wake-up', 'dangling-id'] };
+      const ctx = relatedEvidenceFor(mockActive);
+      expect(ctx.length).toBe(1);
+      expect(ctx[0].id).toBe('wake-up');
+    });
+  });
+
+  describe('resolveClaimsWithCitations', () => {
+    it('returns empty array when given no arguments, null, undefined, or empty array', () => {
+      expect(resolveClaimsWithCitations()).toEqual([]);
+      expect(resolveClaimsWithCitations(undefined)).toEqual([]);
+      expect(resolveClaimsWithCitations(null)).toEqual([]);
+      expect(resolveClaimsWithCitations([])).toEqual([]);
+    });
+
+    it('expands claim IDs into records with attached citationRecords', () => {
+      const expanded = resolveClaimsWithCitations(['cl-tnk-noninferior-alteplase']);
+      expect(expanded.length).toBe(1);
+      expect(expanded[0].id).toBe('cl-tnk-noninferior-alteplase');
+      expect(expanded[0].citationRecords.length).toBeGreaterThan(0);
+      expect(expanded[0].citationRecords.map((c) => c.id)).toContain('cit-act-2022');
+    });
+
+    it('filters out unknown claim IDs and handles claim without citation IDs', () => {
+      const expanded = resolveClaimsWithCitations(['cl-tnk-noninferior-alteplase', 'unknown-claim-id']);
+      expect(expanded.length).toBe(1);
+      expect(expanded[0].id).toBe('cl-tnk-noninferior-alteplase');
+    });
   });
 });
 
