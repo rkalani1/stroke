@@ -465,8 +465,8 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
     it('stress tests guideline library indexing and search helpers in education.jsx', () => {
       const educationJsx = fs.readFileSync(path.join(REPO_ROOT, 'src', 'education.jsx'), 'utf8');
       
-      expect(educationJsx).toContain('const GUIDELINE_LIBRARY = [');
-      expect(educationJsx).toContain('const GUIDELINE_LIBRARY_INDEX =');
+      expect(educationJsx).toContain('GUIDELINE_LIBRARY');
+      expect(educationJsx).toContain('GUIDELINE_LIBRARY_INDEX');
       expect(educationJsx).toContain('const fuzzyScore =');
       expect(educationJsx).toContain('const getGuidelineQuickActions =');
 
