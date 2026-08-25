@@ -1055,3 +1055,93 @@ describe('makeActiveTrial factory', () => {
     expect(invalid.verificationStatus).toBe(schema.TODO_VERIFY_STATUS);
   });
 });
+
+describe('makeCitation factory', () => {
+  it('returns default citation object when called with no arguments or empty object', () => {
+    const defaultCitation = schema.makeCitation();
+    expect(defaultCitation).toEqual({
+      id: '',
+      type: 'journal-article',
+      authors: '',
+      title: '',
+      journal: '',
+      year: 0,
+      volume: '',
+      pages: '',
+      pmid: '',
+      doi: '',
+      url: '',
+      verificationStatus: schema.TODO_VERIFY_STATUS,
+      verificationNotes: ''
+    });
+  });
+
+  it('populates fields correctly when provided with custom input', () => {
+    const input = {
+      id: 'cit-test-2026',
+      type: 'book',
+      authors: 'Smith J, Doe A',
+      title: 'Stroke Management Handbook',
+      journal: 'Medical Press',
+      year: 2026,
+      volume: '12',
+      pages: '100-110',
+      pmid: '12345678',
+      doi: '10.1016/j.stroke.2026.01.001',
+      url: 'https://example.com/cit-test-2026',
+      verificationStatus: 'verified-pubmed',
+      verificationNotes: 'Verified via PubMed API'
+    };
+
+    const citation = schema.makeCitation(input);
+    expect(citation).toEqual(input);
+  });
+
+  it('handles invalid or non-string/non-finite field types gracefully with safe fallbacks', () => {
+    const input = {
+      id: 123,
+      type: null,
+      authors: undefined,
+      title: {},
+      journal: [],
+      year: '2026', // non-finite number type
+      volume: true,
+      pages: false,
+      pmid: 999,
+      doi: null,
+      url: undefined,
+      verificationStatus: 'invalid-status',
+      verificationNotes: 456
+    };
+
+    const citation = schema.makeCitation(input);
+    expect(citation).toEqual({
+      id: '',
+      type: 'journal-article',
+      authors: '',
+      title: '',
+      journal: '',
+      year: 0,
+      volume: '',
+      pages: '',
+      pmid: '',
+      doi: '',
+      url: '',
+      verificationStatus: schema.TODO_VERIFY_STATUS,
+      verificationNotes: ''
+    });
+  });
+
+  it('validates citations produced by makeCitation using validateCitation', () => {
+    const created = schema.makeCitation({
+      id: 'cit-valid-2026',
+      title: 'Valid Citation Title',
+      pmid: '34567890',
+      verificationStatus: 'verified-pubmed'
+    });
+
+    const { errors, warnings } = schema.validateCitation(created);
+    expect(errors.length).toBe(0);
+    expect(warnings.length).toBe(0);
+  });
+});
