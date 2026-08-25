@@ -18,7 +18,14 @@ import {
   filterCompletedTrials,
   filterActiveTrials,
   resolveCompletedTrials,
+  resolveActiveTrials,
+  resolveCitations,
   resolveClaimsWithCitations,
+  relatedEvidenceFor,
+  VERIFICATION_STATUS_LABELS,
+  CERTAINTY_LABELS,
+  EVIDENCE_TYPE_LABELS,
+  ACTIVE_STATUS_LABELS,
   schema
 } from '../index.js';
 
@@ -121,28 +128,175 @@ describe('Evidence Atlas — query helpers', () => {
     expect(late.some((t) => t.id === 'tested')).toBe(true);
     expect(filterActiveTrials({ query: 'tandem' }).some((t) => t.id === 'picasso')).toBe(true);
   });
+});
 
-  it('resolveCompletedTrials drops dangling references', () => {
-    const got = resolveCompletedTrials(['wake-up', 'does-not-exist']);
-    expect(got.length).toBe(1);
-    expect(got[0].id).toBe('wake-up');
+describe('Evidence Atlas — resolver functions', () => {
+  describe('resolveCompletedTrials', () => {
+    it('handles default and empty parameters gracefully', () => {
+      expect(resolveCompletedTrials()).toEqual([]);
+      expect(resolveCompletedTrials(null)).toEqual([]);
+      expect(resolveCompletedTrials([])).toEqual([]);
+    });
+
+    it('resolves valid completed trial IDs into full records in specified order', () => {
+      const result = resolveCompletedTrials(['wake-up', 'extend', 'dawn']);
+      expect(result.length).toBe(3);
+      expect(result[0].id).toBe('wake-up');
+      expect(result[1].id).toBe('extend');
+      expect(result[2].id).toBe('dawn');
+      expect(result[0]).toHaveProperty('shortName');
+      expect(result[0]).toHaveProperty('fullName');
+    });
+
+    it('drops unresolvable and dangling references', () => {
+      const got = resolveCompletedTrials(['wake-up', 'does-not-exist', 'dawn', 'invalid-id']);
+      expect(got.length).toBe(2);
+      expect(got.map((t) => t.id)).toEqual(['wake-up', 'dawn']);
+    });
+
+    it('preserves order and duplicates when resolving', () => {
+      const got = resolveCompletedTrials(['wake-up', 'wake-up']);
+      expect(got.length).toBe(2);
+      expect(got[0].id).toBe('wake-up');
+      expect(got[1].id).toBe('wake-up');
+    });
+
+    it('handles non-string or falsy array elements gracefully', () => {
+      const got = resolveCompletedTrials([null, undefined, 'wake-up', 123]);
+      expect(got.length).toBe(1);
+      expect(got[0].id).toBe('wake-up');
+    });
   });
 
-  it('TESTED active trial surfaces late-window EVT context', () => {
-    const tested = getActiveTrial('tested');
-    expect(tested).toBeTruthy();
-    const ctx = resolveCompletedTrials(tested.relatedCompletedTrialIds);
-    const ids = ctx.map((c) => c.id);
-    expect(ids).toContain('select2');
-    expect(ids).toContain('angel-aspect');
-    expect(ids).toContain('tension');
+  describe('resolveActiveTrials', () => {
+    it('handles default and empty parameters gracefully', () => {
+      expect(resolveActiveTrials()).toEqual([]);
+      expect(resolveActiveTrials(null)).toEqual([]);
+      expect(resolveActiveTrials([])).toEqual([]);
+    });
+
+    it('resolves valid active trial IDs into full records in specified order', () => {
+      const result = resolveActiveTrials(['step-evt', 'aspire']);
+      expect(result.length).toBe(2);
+      expect(result[0].id).toBe('step-evt');
+      expect(result[1].id).toBe('aspire');
+      expect(result[0]).toHaveProperty('shortName');
+    });
+
+    it('drops dangling/unresolvable active trial references', () => {
+      const result = resolveActiveTrials(['step-evt', 'non-existent-active']);
+      expect(result.length).toBe(1);
+      expect(result[0].id).toBe('step-evt');
+    });
   });
 
-  it('resolveClaimsWithCitations expands claim → citation chain', () => {
-    const expanded = resolveClaimsWithCitations(['cl-tnk-noninferior-alteplase']);
-    expect(expanded.length).toBe(1);
-    expect(expanded[0].citationRecords.length).toBeGreaterThan(0);
-    expect(expanded[0].citationRecords.map((c) => c.id)).toContain('cit-act-2022');
+  describe('resolveCitations', () => {
+    it('handles default and empty parameters gracefully', () => {
+      expect(resolveCitations()).toEqual([]);
+      expect(resolveCitations(null)).toEqual([]);
+      expect(resolveCitations([])).toEqual([]);
+    });
+
+    it('resolves valid citation IDs into full records in specified order', () => {
+      const result = resolveCitations(['cit-act-2022', 'cit-wake-up-2018']);
+      expect(result.length).toBe(2);
+      expect(result[0].id).toBe('cit-act-2022');
+      expect(result[1].id).toBe('cit-wake-up-2018');
+      expect(result[0]).toHaveProperty('title');
+    });
+
+    it('drops dangling/unresolvable citation references', () => {
+      const result = resolveCitations(['cit-act-2022', 'non-existent-citation']);
+      expect(result.length).toBe(1);
+      expect(result[0].id).toBe('cit-act-2022');
+    });
+  });
+
+  describe('resolveClaimsWithCitations', () => {
+    it('handles default and empty parameters gracefully', () => {
+      expect(resolveClaimsWithCitations()).toEqual([]);
+      expect(resolveClaimsWithCitations(null)).toEqual([]);
+      expect(resolveClaimsWithCitations([])).toEqual([]);
+    });
+
+    it('expands claim → citation chain and maps records', () => {
+      const expanded = resolveClaimsWithCitations(['cl-tnk-noninferior-alteplase']);
+      expect(expanded.length).toBe(1);
+      expect(expanded[0].id).toBe('cl-tnk-noninferior-alteplase');
+      expect(Array.isArray(expanded[0].citationRecords)).toBe(true);
+      expect(expanded[0].citationRecords.length).toBeGreaterThan(0);
+      expect(expanded[0].citationRecords.map((c) => c.id)).toContain('cit-act-2022');
+    });
+
+    it('drops unresolvable claims and handles missing citationIds', () => {
+      const result = resolveClaimsWithCitations(['cl-tnk-noninferior-alteplase', 'non-existent-claim']);
+      expect(result.length).toBe(1);
+      expect(result[0].id).toBe('cl-tnk-noninferior-alteplase');
+    });
+  });
+
+  describe('relatedEvidenceFor', () => {
+    it('returns empty array for null, undefined, or missing active trial', () => {
+      expect(relatedEvidenceFor()).toEqual([]);
+      expect(relatedEvidenceFor(null)).toEqual([]);
+      expect(relatedEvidenceFor({})).toEqual([]);
+      expect(relatedEvidenceFor({ relatedCompletedTrialIds: [] })).toEqual([]);
+    });
+
+    it('surfaces related completed trials for an active trial', () => {
+      const tested = getActiveTrial('tested');
+      expect(tested).toBeTruthy();
+      const ctx = relatedEvidenceFor(tested);
+      const ids = ctx.map((c) => c.id);
+      expect(ids).toContain('select2');
+      expect(ids).toContain('angel-aspect');
+      expect(ids).toContain('tension');
+    });
+
+    it('filters out unresolvable completed trial references from active trial', () => {
+      const mockActive = {
+        id: 'mock-trial',
+        relatedCompletedTrialIds: ['wake-up', 'dangling-trial-id']
+      };
+      const res = relatedEvidenceFor(mockActive);
+      expect(res.length).toBe(1);
+      expect(res[0].id).toBe('wake-up');
+    });
+  });
+});
+
+describe('Evidence Atlas — status & label constants', () => {
+  it('VERIFICATION_STATUS_LABELS maps valid tones and labels', () => {
+    expect(VERIFICATION_STATUS_LABELS).toHaveProperty('verified-pubmed');
+    for (const [key, val] of Object.entries(VERIFICATION_STATUS_LABELS)) {
+      expect(typeof key).toBe('string');
+      expect(typeof val.label).toBe('string');
+      expect(typeof val.tone).toBe('string');
+    }
+  });
+
+  it('CERTAINTY_LABELS maps expected levels to labels and tones', () => {
+    expect(CERTAINTY_LABELS.high).toEqual({ label: 'High certainty', tone: 'emerald' });
+    for (const val of Object.values(CERTAINTY_LABELS)) {
+      expect(typeof val.label).toBe('string');
+      expect(typeof val.tone).toBe('string');
+    }
+  });
+
+  it('EVIDENCE_TYPE_LABELS contains standard study designs', () => {
+    expect(EVIDENCE_TYPE_LABELS.rct).toEqual({ label: 'RCT', tone: 'sky' });
+    for (const val of Object.values(EVIDENCE_TYPE_LABELS)) {
+      expect(typeof val.label).toBe('string');
+      expect(typeof val.tone).toBe('string');
+    }
+  });
+
+  it('ACTIVE_STATUS_LABELS covers active trial status states', () => {
+    expect(ACTIVE_STATUS_LABELS.recruiting).toEqual({ label: 'Recruiting', tone: 'emerald' });
+    for (const val of Object.values(ACTIVE_STATUS_LABELS)) {
+      expect(typeof val.label).toBe('string');
+      expect(typeof val.tone).toBe('string');
+    }
   });
 });
 
