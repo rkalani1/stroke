@@ -179,7 +179,8 @@ export const savePatientsBatch = async (patients) => {
   const db = await openDB();
   if (!db) {
     const patientsById = lsReadMap();
-    for (const p of processed) {
+    for (let i = 0, len = processed.length; i < len; i++) {
+      const p = processed[i];
       patientsById[p.id] = p;
     }
     lsWriteMap(patientsById);
