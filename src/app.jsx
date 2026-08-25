@@ -462,991 +462,991 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
   );
 };
 
-        const STORAGE_PREFIX = (window.strokeAppStorage && window.strokeAppStorage.prefix) || 'strokeApp:';
-        const APP_DATA_KEY = (window.strokeAppStorage && window.strokeAppStorage.appDataKey) || 'stroke.appData.v2';
-        const LEGACY_KEYS = (window.strokeAppStorage && window.strokeAppStorage.legacyKeys) || [
-          'app_version',
-          'darkMode',
-          'activeTab',
-          'patientData',
-          'nihssScore',
-          'aspectsScore',
-          'gcsItems',
-          'mrsScore',
-          'ichScoreItems',
-          'funcItems',
-          'abcd2Items',
-          'chads2vascItems',
-          'ropeItems',
-          'huntHessGrade',
-          'wfnsGrade',
-          'hasbledItems',
-          'rcvs2Items',
-          'strokeCodeForm',
-          'lkwTime',
-          'currentStep',
-          'completedSteps',
-          'aspectsRegionState',
-          'pcAspectsRegions',
-          'telestrokeNote',
-          'telestrokeTemplate',
-          'thrombolysisAlertsMuted',
-          'timerSidebarCollapsed',
-          'shiftPatients',
-          'currentPatientId',
-          'consultationType',
-          'ttlHoursOverride',
-          'lastUpdated',
-          'legacyMigrated'
-        ];
-        const LEGACY_SESSION_KEYS = (window.strokeAppStorage && window.strokeAppStorage.legacySessionKeys) || ['error_reload_attempted'];
-        const DEFAULT_TTL_HOURS = 12;
-        const LAST_UPDATED_KEY = 'lastUpdated';
-        const LEGACY_MIGRATION_KEY = 'legacyMigrated';
-        const APP_DATA_SCHEMA_VERSION = 1;
-        const getPublicDemoMode = () => {
-          if (typeof window === 'undefined') return false;
-          if (window.__STROKE_PUBLIC_DEMO_MODE__ === true) return true;
-          const hostIsPublicPages = /(^|\.)github\.io$/i.test(window.location.hostname || '');
-          try {
-            return hostIsPublicPages || new URLSearchParams(window.location.search || '').get('publicDemo') === '1';
-          } catch (_) {
-            return hostIsPublicPages;
-          }
-        };
-        const PUBLIC_DEMO_MODE = getPublicDemoMode();
+const STORAGE_PREFIX = (window.strokeAppStorage && window.strokeAppStorage.prefix) || 'strokeApp:';
+const APP_DATA_KEY = (window.strokeAppStorage && window.strokeAppStorage.appDataKey) || 'stroke.appData.v2';
+const LEGACY_KEYS = (window.strokeAppStorage && window.strokeAppStorage.legacyKeys) || [
+  'app_version',
+  'darkMode',
+  'activeTab',
+  'patientData',
+  'nihssScore',
+  'aspectsScore',
+  'gcsItems',
+  'mrsScore',
+  'ichScoreItems',
+  'funcItems',
+  'abcd2Items',
+  'chads2vascItems',
+  'ropeItems',
+  'huntHessGrade',
+  'wfnsGrade',
+  'hasbledItems',
+  'rcvs2Items',
+  'strokeCodeForm',
+  'lkwTime',
+  'currentStep',
+  'completedSteps',
+  'aspectsRegionState',
+  'pcAspectsRegions',
+  'telestrokeNote',
+  'telestrokeTemplate',
+  'thrombolysisAlertsMuted',
+  'timerSidebarCollapsed',
+  'shiftPatients',
+  'currentPatientId',
+  'consultationType',
+  'ttlHoursOverride',
+  'lastUpdated',
+  'legacyMigrated'
+];
+const LEGACY_SESSION_KEYS = (window.strokeAppStorage && window.strokeAppStorage.legacySessionKeys) || ['error_reload_attempted'];
+const DEFAULT_TTL_HOURS = 12;
+const LAST_UPDATED_KEY = 'lastUpdated';
+const LEGACY_MIGRATION_KEY = 'legacyMigrated';
+const APP_DATA_SCHEMA_VERSION = 1;
+const getPublicDemoMode = () => {
+  if (typeof window === 'undefined') return false;
+  if (window.__STROKE_PUBLIC_DEMO_MODE__ === true) return true;
+  const hostIsPublicPages = /(^|\.)github\.io$/i.test(window.location.hostname || '');
+  try {
+    return hostIsPublicPages || new URLSearchParams(window.location.search || '').get('publicDemo') === '1';
+  } catch (_) {
+    return hostIsPublicPages;
+  }
+};
+const PUBLIC_DEMO_MODE = getPublicDemoMode();
 
-        const parseStoredValue = (raw) => {
-          if (raw === null || raw === undefined) return null;
-          try {
-            return JSON.parse(raw);
-          } catch {
-            return raw;
-          }
-        };
+const parseStoredValue = (raw) => {
+  if (raw === null || raw === undefined) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return raw;
+  }
+};
 
-        const normalizeStoredValue = (value, fallback) => {
-          if (value === undefined || value === null || value === 'undefined' || value === 'null') {
-            return fallback;
-          }
-          if (typeof value === 'object' && value !== null && 'data' in value && 'expiresAt' in value) {
-            if (typeof value.expiresAt === 'number' && Date.now() > value.expiresAt) {
-              return fallback;
-            }
-            return value.data;
-          }
-          return value;
-        };
+const normalizeStoredValue = (value, fallback) => {
+  if (value === undefined || value === null || value === 'undefined' || value === 'null') {
+    return fallback;
+  }
+  if (typeof value === 'object' && value !== null && 'data' in value && 'expiresAt' in value) {
+    if (typeof value.expiresAt === 'number' && Date.now() > value.expiresAt) {
+      return fallback;
+    }
+    return value.data;
+  }
+  return value;
+};
 
-        const getKey = (name, fallback) => {
-          if (PUBLIC_DEMO_MODE) return fallback;
-          const namespaced = localStorage.getItem(STORAGE_PREFIX + name);
-          if (namespaced !== null) {
-            return normalizeStoredValue(parseStoredValue(namespaced), fallback);
-          }
-          const legacy = localStorage.getItem(name);
-          if (legacy !== null) {
-            return normalizeStoredValue(parseStoredValue(legacy), fallback);
-          }
-          return fallback;
-        };
+const getKey = (name, fallback) => {
+  if (PUBLIC_DEMO_MODE) return fallback;
+  const namespaced = localStorage.getItem(STORAGE_PREFIX + name);
+  if (namespaced !== null) {
+    return normalizeStoredValue(parseStoredValue(namespaced), fallback);
+  }
+  const legacy = localStorage.getItem(name);
+  if (legacy !== null) {
+    return normalizeStoredValue(parseStoredValue(legacy), fallback);
+  }
+  return fallback;
+};
 
-        const touchLastUpdated = () => {
-          if (PUBLIC_DEMO_MODE) return;
-          try {
-            localStorage.setItem(STORAGE_PREFIX + LAST_UPDATED_KEY, JSON.stringify(Date.now()));
-          } catch (e) {
-            if (e.name === 'QuotaExceededError' || e.code === 22) {
-              throw e;
-            }
-          }
-        };
+const touchLastUpdated = () => {
+  if (PUBLIC_DEMO_MODE) return;
+  try {
+    localStorage.setItem(STORAGE_PREFIX + LAST_UPDATED_KEY, JSON.stringify(Date.now()));
+  } catch (e) {
+    if (e.name === 'QuotaExceededError' || e.code === 22) {
+      throw e;
+    }
+  }
+};
 
-        const setKey = (name, value, options = {}) => {
-          if (PUBLIC_DEMO_MODE) return;
-          try {
-            localStorage.setItem(STORAGE_PREFIX + name, JSON.stringify(value));
-            if (!options.skipLastUpdated && name !== LAST_UPDATED_KEY) {
-              touchLastUpdated();
-            }
-          } catch (e) {
-            if (e.name === 'QuotaExceededError' || e.code === 22) {
-              throw e; // Re-throw quota errors for caller to handle
-            }
-          }
-        };
+const setKey = (name, value, options = {}) => {
+  if (PUBLIC_DEMO_MODE) return;
+  try {
+    localStorage.setItem(STORAGE_PREFIX + name, JSON.stringify(value));
+    if (!options.skipLastUpdated && name !== LAST_UPDATED_KEY) {
+      touchLastUpdated();
+    }
+  } catch (e) {
+    if (e.name === 'QuotaExceededError' || e.code === 22) {
+      throw e; // Re-throw quota errors for caller to handle
+    }
+  }
+};
 
-        const removeKey = (name) => {
-          if (PUBLIC_DEMO_MODE) return;
-          localStorage.removeItem(STORAGE_PREFIX + name);
-          localStorage.removeItem(name);
-        };
+const removeKey = (name) => {
+  if (PUBLIC_DEMO_MODE) return;
+  localStorage.removeItem(STORAGE_PREFIX + name);
+  localStorage.removeItem(name);
+};
 
-        const clearAllAppStorage = () => {
-          if (window.strokeAppStorage && typeof window.strokeAppStorage.clearAppStorage === 'function') {
-            window.strokeAppStorage.clearAppStorage({ includeLegacy: true });
+const clearAllAppStorage = () => {
+  if (window.strokeAppStorage && typeof window.strokeAppStorage.clearAppStorage === 'function') {
+    window.strokeAppStorage.clearAppStorage({ includeLegacy: true });
+    return;
+  }
+  try {
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith(STORAGE_PREFIX)) {
+        localStorage.removeItem(key);
+      }
+    });
+    localStorage.removeItem(APP_DATA_KEY);
+    LEGACY_KEYS.forEach((key) => localStorage.removeItem(key));
+    Object.keys(sessionStorage).forEach((key) => {
+      if (key.startsWith(STORAGE_PREFIX)) {
+        sessionStorage.removeItem(key);
+      }
+    });
+    LEGACY_SESSION_KEYS.forEach((key) => sessionStorage.removeItem(key));
+  } catch (e) {
+  }
+};
+
+if (PUBLIC_DEMO_MODE) {
+  try {
+    clearAllAppStorage();
+    localStorage.removeItem('strokeApp:encounterHistory');
+    localStorage.removeItem('strokeApp:patientCensus:lsFallback');
+    if (typeof indexedDB !== 'undefined' && indexedDB.deleteDatabase) {
+      indexedDB.deleteDatabase('strokeAppCensus');
+    }
+  } catch (e) {
+  }
+}
+
+const migrateLegacyStorage = () => {
+  if (PUBLIC_DEMO_MODE) return;
+  try {
+    const migrated = localStorage.getItem(STORAGE_PREFIX + LEGACY_MIGRATION_KEY);
+    if (migrated) return;
+    LEGACY_KEYS.forEach((key) => {
+      const legacyValue = localStorage.getItem(key);
+      if (legacyValue === null) return;
+      const parsed = parseStoredValue(legacyValue);
+      const normalized = normalizeStoredValue(parsed, undefined);
+      if (normalized !== undefined) {
+        localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(normalized));
+      }
+    });
+    localStorage.setItem(STORAGE_PREFIX + LEGACY_MIGRATION_KEY, JSON.stringify(true));
+  } catch (e) {
+  }
+};
+
+const ensureArray = (value, fallback = []) => Array.isArray(value) ? value : fallback;
+const toIsoString = (value = new Date()) => {
+  try {
+    return new Date(value).toISOString();
+  } catch {
+    return new Date().toISOString();
+  }
+};
+const safeParseDt = (val) => {
+  if (!val) return null;
+  const d = new Date(val);
+  return Number.isNaN(d.getTime()) ? null : d;
+};
+const safeFormatTime = (val) => {
+  const d = safeParseDt(val);
+  return d ? d.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null;
+};
+
+const GlobalPatientContext = React.createContext(null);
+const useGlobalPatient = () => useContext(GlobalPatientContext);
+
+// ============================================
+// TOAST NOTIFICATION SYSTEM
+// ============================================
+let toastIdCounter = 0;
+
+
+const ToastContainer = ({ toasts, removeToast }) => {
+  return React.createElement('div', {
+    className: 'fixed bottom-20 left-1/2 -translate-x-1/2 z-[100] flex flex-col-reverse gap-2 pointer-events-none max-w-md w-full px-4',
+    'aria-live': 'polite',
+    'aria-atomic': 'true'
+  }, toasts.map(t => React.createElement('div', {
+    key: t.id,
+    className: `pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-md  border text-sm font-medium transition-all animate-toast-in toast-alert ${
+      t.type === 'success' ? 'bg-ok-600 text-white border-ok-700' :
+      t.type === 'error' ? 'bg-crit-600 text-white border-crit-700' :
+      t.type === 'warning' ? 'bg-warn-600 text-white border-warn-700' :
+      'bg-slate-800 text-white border-slate-700'
+    }`,
+    role: t.type === 'error' ? 'alert' : 'status'
+  },
+    React.createElement('span', { className: 'flex-1' }, t.message),
+    React.createElement('button', {
+      onClick: () => removeToast(t.id),
+      className: 'ml-2 opacity-70 hover:opacity-100 transition-opacity text-white',
+      'aria-label': 'Dismiss'
+    }, '\u00D7')
+  )));
+};
+
+// ============================================
+// CONFIRMATION MODAL (replaces confirm/prompt)
+// ============================================
+const ConfirmModal = ({ config, onClose }) => {
+  const [inputValue, setInputValue] = React.useState(config.defaultValue || '');
+  if (!config) return null;
+  const handleModalKeyDown = (e) => {
+    if (e.key === 'Escape') { e.preventDefault(); if (!config.required) onClose(null); }
+    if (e.key === 'Enter' && !config.input) { e.preventDefault(); onClose(true); }
+  };
+  const handleInputKeyDown = (e) => {
+    if (e.key === 'Enter' && config.inputType !== 'textarea') { e.preventDefault(); onClose(inputValue); }
+  };
+  return React.createElement('div', { className: 'fixed inset-0 z-[200] flex items-center justify-center p-4' },
+    React.createElement('div', { className: 'fixed inset-0 bg-black/40', onClick: () => { if (!config.required) onClose(null); }, role: 'presentation', 'aria-hidden': 'true' }),
+    React.createElement('div', { className: 'relative bg-white rounded-md shadow-2xl max-w-md w-full p-6 space-y-4 dark:bg-card', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'confirm-modal-title', onKeyDown: handleModalKeyDown },
+      React.createElement('h3', { id: 'confirm-modal-title', className: 'text-lg font-bold text-slate-900 dark:text-ink' }, config.title || 'Confirm'),
+      config.message && React.createElement('p', { className: 'text-sm text-slate-600 dark:text-ink-2' }, config.message),
+      config.input && React.createElement('div', { className: 'space-y-1' },
+        config.inputLabel && React.createElement('label', { htmlFor: 'confirm-modal-input', className: 'block text-xs font-medium text-slate-700 dark:text-ink-2' }, config.inputLabel),
+        config.inputType === 'textarea'
+          ? React.createElement('textarea', {
+              id: 'confirm-modal-input',
+              value: inputValue,
+              onChange: (e) => setInputValue(e.target.value),
+              rows: 3,
+              className: 'w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 focus:outline-none',
+              placeholder: config.placeholder || '',
+              autoFocus: true
+            })
+          : React.createElement('input', {
+              id: 'confirm-modal-input',
+              type: 'text',
+              value: inputValue,
+              onChange: (e) => setInputValue(e.target.value),
+              onKeyDown: handleInputKeyDown,
+              className: 'w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 focus:outline-none',
+              placeholder: config.placeholder || '',
+              autoFocus: true
+            })
+      ),
+      React.createElement('div', { className: 'flex justify-end gap-2' },
+        React.createElement('button', {
+          onClick: () => onClose(null),
+          className: 'px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors dark:text-ink-2 dark:hover:bg-paper-2'
+        }, 'Cancel'),
+        React.createElement('button', {
+          onClick: () => onClose(config.input ? inputValue : true),
+          className: `px-4 py-2 text-sm font-medium text-white rounded-lg transition-colors ${
+            config.danger ? 'bg-crit-600 hover:bg-crit-700' : 'bg-cobalt-600 hover:bg-cobalt-700'
+          }`
+        }, config.confirmLabel || 'Confirm')
+      )
+    )
+  );
+};
+
+// ============================================
+// ERROR BOUNDARY
+// ============================================
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null, errorInfo: null, copied: false };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, info) {
+    console.error('ErrorBoundary caught:', error, info);
+    this.setState({ errorInfo: info });
+  }
+  buildDiagnostics = () => {
+    const err = this.state.error;
+    const stack = err && err.stack ? String(err.stack) : '';
+    const componentStack = this.state.errorInfo && this.state.errorInfo.componentStack ? String(this.state.errorInfo.componentStack) : '';
+    const appVersion = (window.strokeAppStorage && window.strokeAppStorage.appVersion) || 'unknown';
+    let storageStatus = 'ok';
+    try {
+      localStorage.setItem('__diag_probe__', '1');
+      localStorage.removeItem('__diag_probe__');
+    } catch (probeErr) {
+      storageStatus = `unavailable (${probeErr && probeErr.name ? probeErr.name : 'error'})`;
+    }
+    // Intentionally no patient-identifying data — keep the 12-hour no-PII policy intact.
+    return [
+      `Stroke app diagnostics (${new Date().toISOString()})`,
+      `Version: ${appVersion}`,
+      `Storage: ${storageStatus}`,
+      `URL hash: ${typeof location !== 'undefined' ? location.hash : ''}`,
+      `UA: ${typeof navigator !== 'undefined' ? navigator.userAgent : ''}`,
+      `Message: ${err && err.message ? err.message : String(err)}`,
+      '',
+      'Stack:',
+      stack,
+      '',
+      'Component stack:',
+      componentStack
+    ].join('\n');
+  };
+  copyDiagnostics = () => {
+    const text = this.buildDiagnostics();
+    const done = () => {
+      this.setState({ copied: true });
+      setTimeout(() => this.setState({ copied: false }), 2000);
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch((err) => {
+          console.warn('Clipboard API failed:', err);
+          done();
+        });
+        return;
+      }
+    } catch (e) {
+      console.warn('Clipboard API error, falling back:', e);
+    }
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'absolute';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    } catch (e) {
+      console.error('Fallback execCommand failed:', e);
+    }
+    done();
+  };
+  render() {
+    if (this.state.hasError) {
+      return React.createElement('div', {
+        role: 'alert',
+        className: 'p-4 bg-crit-50 border border-crit-200 rounded-md space-y-3 dark:bg-crit-950 dark:border-crit-800'
+      },
+        React.createElement('p', { className: 'text-crit-800 font-semibold dark:text-crit-300' }, 'Something went wrong in this section.'),
+        React.createElement('p', { className: 'text-sm text-crit-700 font-mono break-words' }, this.state.error?.message || 'Unknown error'),
+        React.createElement('div', { className: 'flex flex-wrap gap-2 pt-1' },
+          React.createElement('button', {
+            type: 'button',
+            onClick: () => this.setState({ hasError: false, error: null, errorInfo: null }),
+            className: 'px-3 py-2 bg-crit-600 text-white rounded-lg text-sm font-medium hover:bg-crit-700 transition-colors'
+          }, 'Reset section'),
+          React.createElement('button', {
+            type: 'button',
+            onClick: this.copyDiagnostics,
+            className: 'px-3 py-2 bg-white border border-crit-300 text-crit-700 rounded-lg text-sm font-medium hover:bg-crit-100 transition-colors dark:bg-card dark:border-crit-800 dark:text-crit-300 dark:hover:bg-crit-900'
+          }, this.state.copied ? 'Copied!' : 'Copy diagnostics'),
+          React.createElement('button', {
+            type: 'button',
+            onClick: () => window.location.reload(),
+            className: 'px-3 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-100 transition-colors dark:bg-card dark:border-strong dark:text-ink-2 dark:hover:bg-paper-2'
+          }, 'Reload app')
+        ),
+        React.createElement('p', { className: 'text-xs text-crit-600 dark:text-crit-300' },
+          'Diagnostics include version, error stack, and component stack only — no patient data.'
+        )
+      );
+    }
+    return this.props.children;
+  }
+}
+
+// ============================================
+// ENCOUNTER TEMPLATES
+// ============================================
+const ENCOUNTER_TEMPLATES = [
+  { id: 'blank', label: 'Blank Encounter', icon: 'file-plus', description: 'Start fresh', defaults: {} },
+  { id: 'acute-lvo', label: 'Acute LVO', icon: 'zap', description: 'Large vessel occlusion workup', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'Ischemic stroke - LVO' } },
+  { id: 'tia', label: 'TIA Workup', icon: 'activity', description: 'Transient ischemic attack evaluation', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'TIA' } },
+  { id: 'wakeup', label: 'Wake-up Stroke', icon: 'moon', description: 'Unknown onset / wake-up presentation', defaults: { diagnosisCategory: 'ischemic', lkwUnknown: true, wakeUpStrokeWorkflow: { isWakeUpStroke: true } } },
+  { id: 'ich-anticoag', label: 'ICH on Anticoagulation', icon: 'alert-triangle', description: 'Hemorrhage with reversal needed', defaults: { diagnosisCategory: 'ich', diagnosis: 'Intracerebral hemorrhage' } },
+  { id: 'sah', label: 'SAH', icon: 'droplets', description: 'Subarachnoid hemorrhage management', defaults: { diagnosisCategory: 'sah', diagnosis: 'Subarachnoid hemorrhage' } },
+  { id: 'posterior', label: 'Posterior Circulation', icon: 'brain', description: 'Basilar/vertebral stroke', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'Posterior circulation stroke' } },
+  { id: 'minor-stroke', label: 'Minor Stroke', icon: 'activity', description: 'NIHSS ≤5, DAPT protocol', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'Minor ischemic stroke' } }
+];
+
+// ============================================
+// CLINICAL PEARLS
+// ============================================
+const CLINICAL_PEARLS = {
+  tnk: 'TNK 0.25 mg/kg is non-inferior to alteplase with similar sICH rates (3.4% vs 3.2%) and simpler single-bolus administration (AcT trial, Lancet 2022).',
+  evt: 'EVT benefit is time-dependent: NNT ~2.6 overall at 0-6h (HERMES). Late-window with perfusion selection: NNT ~2.8 (DAWN), ~3.6 (DEFUSE-3). Every 15-min delay reduces benefit.',
+  ich_bp: 'INTERACT3: Intensive BP lowering + bundle of care improves functional outcomes in ICH (Lancet 2023).',
+  doac_timing: 'ELAN/OPTIMAS/CATALYST: early DOAC after AF-related stroke, ≤4 days reasonable across severities (OPTIMAS non-inferior across infarct sizes; CATALYST superior vs delay). Tiered default: minor (NIHSS <8) ~day 1; moderate (8-15) ~day 3; severe (16-20) ~day 6; very severe (≥21) or extensive hemorrhagic transformation ~day 7+ with repeat imaging.',
+  aspects: 'ASPECTS 6-10: Standard EVT eligibility. ASPECTS 3-5: Consider EVT for mRS 0-1 patients with anterior LVO (SELECT2, ANGEL-ASPECT).',
+  pcc: 'Weight-based 4F-PCC (25-50 IU/kg by INR) for warfarin reversal in ICH (AHA/ASA 2022 COR I/B-R). Guideline weight-based dosing — the Example Protocols tab shows a fixed-dose institutional example (2000 units); the two schemes are not interchangeable.',
+  wakeup: 'DWI-FLAIR mismatch suggests onset <4.5h; CTP mismatch allows treatment up to 9h from midpoint of sleep (WAKE-UP, EXTEND).'
+};
+
+const parseBloodPressure = (bpString) => {
+  if (!bpString) return null;
+  const match = bpString.match(/(\d{2,3})\s*\/\s*(\d{2,3})/);
+  if (!match) return null;
+  return {
+    systolic: parseInt(match[1], 10),
+    diastolic: parseInt(match[2], 10)
+  };
+};
+
+// Convert Date to local ISO string for datetime-local inputs (avoids UTC offset bug)
+const toLocalISO = (d) => {
+  if (!d) return '';
+  const dateObj = d instanceof Date ? d : new Date(d);
+  if (Number.isNaN(dateObj.getTime())) return '';
+  const yr = dateObj.getFullYear();
+  const mo = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const dy = String(dateObj.getDate()).padStart(2, '0');
+  const hr = String(dateObj.getHours()).padStart(2, '0');
+  const mn = String(dateObj.getMinutes()).padStart(2, '0');
+  return `${yr}-${mo}-${dy}T${hr}:${mn}`;
+};
+
+// Single canonical DOAC-recency model (CrCl-adjusted clearance). Both the
+// TNK auto-block and the contraindication-checklist auto-detection read
+// from this — previously a flat <48h check and this clearance model could
+// flag and clear the same patient on one screen.
+// JUDGMENT (documented in PR): an undocumented last-dose time remains a
+// conservative block — unknown timing is treated as potentially recent.
+const assessDOACRecency = (note) => {
+  const doacType = note?.lastDOACType;
+  if (!doacType || doacType === 'warfarin' || doacType === 'none') return { recent: false, note: '' };
+  const lastDose = note?.lastDOACDose ? new Date(note.lastDOACDose) : null;
+  if (!lastDose || Number.isNaN(lastDose.getTime())) {
+    return { recent: true, note: ' (last dose time unknown — conservative block)' };
+  }
+  const hoursSince = (Date.now() - lastDose.getTime()) / (1000 * 60 * 60);
+  if (hoursSince < 0) return { recent: true, note: ' (dose time in future — verify)' };
+  const crcl = calculateCrCl(note.age, note.weight, note.sex, note.creatinine, note.height);
+  const crclVal = crcl ? crcl.value : null;
+  const halfLifeMap = { apixaban: crclVal && crclVal < 30 ? 15 : 10, rivaroxaban: crclVal && crclVal < 30 ? 13 : 9, dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14, edoxaban: crclVal && crclVal < 30 ? 16 : 12 };
+  const estHalfLife = halfLifeMap[doacType] || 12;
+  const clearancePct = Math.min(99.9, (1 - Math.pow(0.5, hoursSince / estHalfLife)) * 100);
+  if (clearancePct < 97) return { recent: true, note: ` (~${clearancePct.toFixed(0)}% cleared)` };
+  return { recent: false, note: ` (~${clearancePct.toFixed(0)}% cleared)` };
+};
+
+const getWindowStatusFromTime = (timeFromLKW) => {
+  if (!timeFromLKW) return null;
+  if (timeFromLKW.total <= 4.5) {
+    return { color: 'green', message: 'Within IV thrombolysis window (≤4.5h)', urgent: false, eligible: 'tnk' };
+  }
+  if (timeFromLKW.total <= 9) {
+    return { color: 'orange', message: 'Standard TNK window closed — imaging-selected IVT possible to 9h (EXTEND); EVT window open', urgent: true, eligible: 'evt-early' };
+  }
+  if (timeFromLKW.total < 24) {
+    return { color: 'red', message: 'Late window (9-24h) — EVT with perfusion selection; imaging-selected IVT in select patients (TRACE-III/OPTION)', urgent: true, eligible: 'evt-late' };
+  }
+  return { color: 'gray', message: 'Beyond standard treatment window', urgent: false, eligible: 'none' };
+};
+
+const useStrokeWindow = ({
+  lkwDate,
+  lkwTime,
+  lkwUnknown,
+  discoveryDate,
+  discoveryTime,
+  now
+}) => {
+  return useMemo(() => {
+    const buildDate = (dateStr, timeStr) => {
+      if (!dateStr || !timeStr) return null;
+      const [year, month, day] = dateStr.split('-').map(Number);
+      const [hours, minutes] = timeStr.split(':').map(Number);
+      if (!year || !month || !day || Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+      return new Date(year, month - 1, day, hours, minutes);
+    };
+
+    const discovery = buildDate(discoveryDate, discoveryTime);
+    const lkw = buildDate(lkwDate, lkwTime);
+    const reference = lkwUnknown ? discovery : lkw;
+    if (!reference) {
+      return { timeFrom: null, status: null, label: lkwUnknown ? 'Discovery' : 'LKW' };
+    }
+
+    const nowTime = now instanceof Date ? now : new Date();
+    const diffMs = Math.max(0, nowTime - reference);
+    const diffHrs = diffMs / (1000 * 60 * 60);
+    const diffMins = (diffMs / (1000 * 60)) % 60;
+    const timeFrom = {
+      hours: Math.floor(diffHrs),
+      minutes: Math.floor(Math.abs(diffMins)),
+      total: diffHrs,
+      label: lkwUnknown ? 'Discovery' : 'LKW'
+    };
+    return {
+      timeFrom,
+      status: getWindowStatusFromTime(timeFrom),
+      label: timeFrom.label
+    };
+  }, [lkwDate, lkwTime, lkwUnknown, discoveryDate, discoveryTime, now instanceof Date ? now.getTime() : now]);
+};
+
+// DOAC_PROTOCOLS imported from ./calculators.js
+
+// calculateDOACStart imported from ./calculators.js
+
+const generateId = (prefix = 'id') => {
+  const stamp = Date.now().toString(36);
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    const array = new Uint32Array(1);
+    crypto.getRandomValues(array);
+    return `${prefix}_${stamp}_${array[0].toString(36).slice(0, 6)}`;
+  }
+  throw new Error('Secure random number generation is not supported by this environment');
+};
+
+const copyPlainText = async (text) => {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+    return copyFallback(text);
+  } catch (e) {
+    return copyFallback(text);
+  }
+};
+
+
+const copyWithSectionHeaders = async (sections) => {
+  const content = sections
+    .filter(section => section && section.body && section.body.trim())
+    .map(section => `=== ${section.title} ===\n${section.body}`)
+    .join('\n\n');
+  if (!content.trim()) return false;
+  return copyPlainText(content.trim());
+};
+
+
+
+const importJSON = (file) => {
+  return new Promise((resolve, reject) => {
+    if (!file) {
+      reject(new Error('No file provided'));
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      reject(new Error('File too large (>10MB) — likely not a valid case export'));
+      return;
+    }
+    if (file.type && !file.type.includes('json') && !file.type.includes('text')) {
+      reject(new Error('Invalid file type — expected JSON'));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(reader.result);
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+          reject(new Error('Invalid JSON structure — expected an object'));
+          return;
+        }
+        // Schema validation: must have recognizable app structure
+        const hasAppData = parsed.schemaVersion || parsed.appData;
+        const hasCaseData = parsed.telestrokeNote || parsed.strokeCodeForm || parsed.patientData;
+        if (!hasAppData && !hasCaseData) {
+          reject(new Error('Unrecognized file format — missing telestrokeNote, strokeCodeForm, or schemaVersion'));
+          return;
+        }
+        // Validate telestrokeNote shape if present
+        const note = parsed.telestrokeNote || parsed.appData?.telestrokeNote;
+        if (note) {
+          if (typeof note !== 'object' || Array.isArray(note)) {
+            reject(new Error('Invalid telestrokeNote — expected an object'));
             return;
           }
-          try {
-            Object.keys(localStorage).forEach((key) => {
-              if (key.startsWith(STORAGE_PREFIX)) {
-                localStorage.removeItem(key);
-              }
-            });
-            localStorage.removeItem(APP_DATA_KEY);
-            LEGACY_KEYS.forEach((key) => localStorage.removeItem(key));
-            Object.keys(sessionStorage).forEach((key) => {
-              if (key.startsWith(STORAGE_PREFIX)) {
-                sessionStorage.removeItem(key);
-              }
-            });
-            LEGACY_SESSION_KEYS.forEach((key) => sessionStorage.removeItem(key));
-          } catch (e) {
-          }
-        };
-
-        if (PUBLIC_DEMO_MODE) {
-          try {
-            clearAllAppStorage();
-            localStorage.removeItem('strokeApp:encounterHistory');
-            localStorage.removeItem('strokeApp:patientCensus:lsFallback');
-            if (typeof indexedDB !== 'undefined' && indexedDB.deleteDatabase) {
-              indexedDB.deleteDatabase('strokeAppCensus');
-            }
-          } catch (e) {
+          // Check for unexpected executable content
+          const noteStr = JSON.stringify(note);
+          if (/<script/i.test(noteStr) || /javascript:/i.test(noteStr) || /data:text\/html/i.test(noteStr) || /vbscript:/i.test(noteStr) || /\bon\w+\s*=/i.test(noteStr)) {
+            reject(new Error('Import blocked — file contains potentially unsafe content'));
+            return;
           }
         }
+        resolve(parsed);
+      } catch (e) {
+        reject(new Error('Invalid JSON — ' + e.message));
+      }
+    };
+    reader.onerror = () => reject(reader.error || new Error('File read failed'));
+    reader.readAsText(file);
+  });
+};
 
-        const migrateLegacyStorage = () => {
-          if (PUBLIC_DEMO_MODE) return;
-          try {
-            const migrated = localStorage.getItem(STORAGE_PREFIX + LEGACY_MIGRATION_KEY);
-            if (migrated) return;
-            LEGACY_KEYS.forEach((key) => {
-              const legacyValue = localStorage.getItem(key);
-              if (legacyValue === null) return;
-              const parsed = parseStoredValue(legacyValue);
-              const normalized = normalizeStoredValue(parsed, undefined);
-              if (normalized !== undefined) {
-                localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(normalized));
-              }
-            });
-            localStorage.setItem(STORAGE_PREFIX + LEGACY_MIGRATION_KEY, JSON.stringify(true));
-          } catch (e) {
-          }
-        };
+const getDeidWarnings = (text) => {
+  return getPublicDemoPhiWarnings(text);
+};
 
-        const ensureArray = (value, fallback = []) => Array.isArray(value) ? value : fallback;
-        const toIsoString = (value = new Date()) => {
-          try {
-            return new Date(value).toISOString();
-          } catch {
-            return new Date().toISOString();
-          }
-        };
-        const safeParseDt = (val) => {
-          if (!val) return null;
-          const d = new Date(val);
-          return Number.isNaN(d.getTime()) ? null : d;
-        };
-        const safeFormatTime = (val) => {
-          const d = safeParseDt(val);
-          return d ? d.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}) : null;
-        };
+const getDefaultClipboardPacks = () => ([
+  {
+    id: 'telestroke-consult',
+    title: 'Telestroke Consult Pack',
+    description: 'Summary for consult documentation.',
+    sections: [
+      { id: 'summary', title: 'Summary', enabled: true, template: 'Alias: {PATIENT_ALIAS}\nAge/Sex: {AGE}{SEX}\nNIHSS: {NIHSS}\nDx: {DIAGNOSIS}\nLVO: {LVO}\nWeight: {WEIGHT_KG} kg' },
+      { id: 'times', title: 'Key Times', enabled: true, template: 'LKW: {LKW}\nArrival: {ARRIVAL}\nCT: {CT_TIME}\nCTA: {CTA_TIME}' },
+      { id: 'imaging', title: 'Imaging', enabled: true, template: 'CT: {CT_RESULTS}\nCTA: {CTA_RESULTS}\nASPECTS: {ASPECTS}' },
+      { id: 'plan', title: 'Plan', enabled: true, template: 'TNK: {TNK_STATUS}\nEVT: {EVT_STATUS}\nDisposition: {DISPOSITION}' }
+    ]
+  },
+  {
+    id: 'transfer-pack',
+    title: 'Transfer Pack',
+    description: 'Transfer-ready summary for receiving centers.',
+    sections: [
+      { id: 'summary', title: 'Summary', enabled: true, template: 'Alias: {PATIENT_ALIAS}\nAge/Sex: {AGE}{SEX}\nNIHSS: {NIHSS}\nDx: {DIAGNOSIS}\nLVO: {LVO}' },
+      { id: 'imaging', title: 'Imaging', enabled: true, template: 'CT: {CT_RESULTS}\nCTA: {CTA_RESULTS}\nASPECTS: {ASPECTS}\nPerfusion: {CTP_RESULTS}' },
+      { id: 'treatment', title: 'Treatment', enabled: true, template: 'TNK: {TNK_STATUS}\nEVT: {EVT_STATUS}\nTransfer status: {TRANSFER_STATUS}' }
+    ]
+  },
+  {
+    id: 'signout-pack',
+    title: 'Signout Pack',
+    description: 'End-of-shift signout snapshot.',
+    sections: [
+      { id: 'summary', title: 'Summary', enabled: true, template: 'Alias: {PATIENT_ALIAS}\nAge/Sex: {AGE}{SEX}\nNIHSS: {NIHSS}\nDx: {DIAGNOSIS}\nDisposition: {DISPOSITION}' },
+      { id: 'pending', title: 'Pending / Follow-up', enabled: true, template: '{PENDING_ITEMS}' }
+    ]
+  },
+  {
+    id: 'ich-pack',
+    title: 'ICH Pack',
+    description: 'ICH-specific bundle.',
+    sections: [
+      { id: 'summary', title: 'Summary', enabled: true, template: 'Alias: {PATIENT_ALIAS}\nAge/Sex: {AGE}{SEX}\nICH Score: {ICH_SCORE}\nGCS: {GCS}\nBP: {BP}' },
+      { id: 'imaging', title: 'Imaging', enabled: true, template: 'CT: {CT_RESULTS}\nHematoma: {HEMATOMA}\nIVH: {IVH}' },
+      { id: 'plan', title: 'Plan', enabled: true, template: 'Reversal: {REVERSAL}\nDisposition: {DISPOSITION}' }
+    ]
+  }
+]);
 
-        const GlobalPatientContext = React.createContext(null);
-        const useGlobalPatient = () => useContext(GlobalPatientContext);
+  const getDefaultSettings = () => ({
+    deidMode: true,
+    allowFreeTextStorage: false,
+    ttlHoursOverride: null,
+    defaultConsultationType: 'telephone',
+    workflowPersona: 'senior',
+  });
 
-        // ============================================
-        // TOAST NOTIFICATION SYSTEM
-        // ============================================
-        let toastIdCounter = 0;
+const getDefaultAppData = () => ({
+  schemaVersion: APP_DATA_SCHEMA_VERSION,
+  settings: getDefaultSettings(),
+  shiftBoards: [],
+  uiState: {
+    lastActiveTab: 'encounter',
+    lastShiftBoardId: null,
+    lastManagementSubTab: 'ich',
+    lastLibrarySection: 'management',
+    legacyMigratedAt: null,
+    searchHighlightId: null,
+  },
+  encounter: {
+    clipboardPacks: getDefaultClipboardPacks(),
+    clipboardPackVisibility: {}
+  }
+});
 
+const mergeAppData = (base, incoming) => {
+  const merged = {
+    ...base,
+    ...incoming,
+    settings: { ...base.settings, ...(incoming && incoming.settings ? incoming.settings : {}) },
+    uiState: { ...base.uiState, ...(incoming && incoming.uiState ? incoming.uiState : {}) },
+    encounter: { ...base.encounter, ...(incoming && incoming.encounter ? incoming.encounter : {}) }
+  };
+  delete merged.pinnedReferences;
+  merged.shiftBoards = ensureArray(merged.shiftBoards, []);
+  merged.encounter.clipboardPacks = ensureArray(merged.encounter.clipboardPacks, getDefaultClipboardPacks());
+  return merged;
+};
 
-        const ToastContainer = ({ toasts, removeToast }) => {
-          return React.createElement('div', {
-            className: 'fixed bottom-20 left-1/2 -translate-x-1/2 z-[100] flex flex-col-reverse gap-2 pointer-events-none max-w-md w-full px-4',
-            'aria-live': 'polite',
-            'aria-atomic': 'true'
-          }, toasts.map(t => React.createElement('div', {
-            key: t.id,
-            className: `pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-md  border text-sm font-medium transition-all animate-toast-in toast-alert ${
-              t.type === 'success' ? 'bg-ok-600 text-white border-ok-700' :
-              t.type === 'error' ? 'bg-crit-600 text-white border-crit-700' :
-              t.type === 'warning' ? 'bg-warn-600 text-white border-warn-700' :
-              'bg-slate-800 text-white border-slate-700'
-            }`,
-            role: t.type === 'error' ? 'alert' : 'status'
-          },
-            React.createElement('span', { className: 'flex-1' }, t.message),
-            React.createElement('button', {
-              onClick: () => removeToast(t.id),
-              className: 'ml-2 opacity-70 hover:opacity-100 transition-opacity text-white',
-              'aria-label': 'Dismiss'
-            }, '\u00D7')
-          )));
-        };
+const migrateAppData = (data) => {
+  const next = { ...data };
+  const version = Number.isFinite(next.schemaVersion) ? next.schemaVersion : 0;
+  if (version < APP_DATA_SCHEMA_VERSION) {
+    next.schemaVersion = APP_DATA_SCHEMA_VERSION;
+  }
+  return next;
+};
 
-        // ============================================
-        // CONFIRMATION MODAL (replaces confirm/prompt)
-        // ============================================
-        const ConfirmModal = ({ config, onClose }) => {
-          const [inputValue, setInputValue] = React.useState(config.defaultValue || '');
-          if (!config) return null;
-          const handleModalKeyDown = (e) => {
-            if (e.key === 'Escape') { e.preventDefault(); if (!config.required) onClose(null); }
-            if (e.key === 'Enter' && !config.input) { e.preventDefault(); onClose(true); }
-          };
-          const handleInputKeyDown = (e) => {
-            if (e.key === 'Enter' && config.inputType !== 'textarea') { e.preventDefault(); onClose(inputValue); }
-          };
-          return React.createElement('div', { className: 'fixed inset-0 z-[200] flex items-center justify-center p-4' },
-            React.createElement('div', { className: 'fixed inset-0 bg-black/40', onClick: () => { if (!config.required) onClose(null); }, role: 'presentation', 'aria-hidden': 'true' }),
-            React.createElement('div', { className: 'relative bg-white rounded-md shadow-2xl max-w-md w-full p-6 space-y-4 dark:bg-card', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'confirm-modal-title', onKeyDown: handleModalKeyDown },
-              React.createElement('h3', { id: 'confirm-modal-title', className: 'text-lg font-bold text-slate-900 dark:text-ink' }, config.title || 'Confirm'),
-              config.message && React.createElement('p', { className: 'text-sm text-slate-600 dark:text-ink-2' }, config.message),
-              config.input && React.createElement('div', { className: 'space-y-1' },
-                config.inputLabel && React.createElement('label', { htmlFor: 'confirm-modal-input', className: 'block text-xs font-medium text-slate-700 dark:text-ink-2' }, config.inputLabel),
-                config.inputType === 'textarea'
-                  ? React.createElement('textarea', {
-                      id: 'confirm-modal-input',
-                      value: inputValue,
-                      onChange: (e) => setInputValue(e.target.value),
-                      rows: 3,
-                      className: 'w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 focus:outline-none',
-                      placeholder: config.placeholder || '',
-                      autoFocus: true
-                    })
-                  : React.createElement('input', {
-                      id: 'confirm-modal-input',
-                      type: 'text',
-                      value: inputValue,
-                      onChange: (e) => setInputValue(e.target.value),
-                      onKeyDown: handleInputKeyDown,
-                      className: 'w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 focus:outline-none',
-                      placeholder: config.placeholder || '',
-                      autoFocus: true
-                    })
-              ),
-              React.createElement('div', { className: 'flex justify-end gap-2' },
-                React.createElement('button', {
-                  onClick: () => onClose(null),
-                  className: 'px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors dark:text-ink-2 dark:hover:bg-paper-2'
-                }, 'Cancel'),
-                React.createElement('button', {
-                  onClick: () => onClose(config.input ? inputValue : true),
-                  className: `px-4 py-2 text-sm font-medium text-white rounded-lg transition-colors ${
-                    config.danger ? 'bg-crit-600 hover:bg-crit-700' : 'bg-cobalt-600 hover:bg-cobalt-700'
-                  }`
-                }, config.confirmLabel || 'Confirm')
-              )
-            )
-          );
-        };
+const migrateLegacyToAppData = (data) => {
+  if (data.uiState && data.uiState.legacyMigratedAt) return data;
+  const next = mergeAppData(getDefaultAppData(), data);
 
-        // ============================================
-        // ERROR BOUNDARY
-        // ============================================
-        class ErrorBoundary extends React.Component {
-          constructor(props) {
-            super(props);
-            this.state = { hasError: false, error: null, errorInfo: null, copied: false };
-          }
-          static getDerivedStateFromError(error) {
-            return { hasError: true, error };
-          }
-          componentDidCatch(error, info) {
-            console.error('ErrorBoundary caught:', error, info);
-            this.setState({ errorInfo: info });
-          }
-          buildDiagnostics = () => {
-            const err = this.state.error;
-            const stack = err && err.stack ? String(err.stack) : '';
-            const componentStack = this.state.errorInfo && this.state.errorInfo.componentStack ? String(this.state.errorInfo.componentStack) : '';
-            const appVersion = (window.strokeAppStorage && window.strokeAppStorage.appVersion) || 'unknown';
-            let storageStatus = 'ok';
-            try {
-              localStorage.setItem('__diag_probe__', '1');
-              localStorage.removeItem('__diag_probe__');
-            } catch (probeErr) {
-              storageStatus = `unavailable (${probeErr && probeErr.name ? probeErr.name : 'error'})`;
-            }
-            // Intentionally no patient-identifying data — keep the 12-hour no-PII policy intact.
-            return [
-              `Stroke app diagnostics (${new Date().toISOString()})`,
-              `Version: ${appVersion}`,
-              `Storage: ${storageStatus}`,
-              `URL hash: ${typeof location !== 'undefined' ? location.hash : ''}`,
-              `UA: ${typeof navigator !== 'undefined' ? navigator.userAgent : ''}`,
-              `Message: ${err && err.message ? err.message : String(err)}`,
-              '',
-              'Stack:',
-              stack,
-              '',
-              'Component stack:',
-              componentStack
-            ].join('\n');
-          };
-          copyDiagnostics = () => {
-            const text = this.buildDiagnostics();
-            const done = () => {
-              this.setState({ copied: true });
-              setTimeout(() => this.setState({ copied: false }), 2000);
-            };
-            try {
-              if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(done).catch((err) => {
-                  console.warn('Clipboard API failed:', err);
-                  done();
-                });
-                return;
-              }
-            } catch (e) {
-              console.warn('Clipboard API error, falling back:', e);
-            }
-            try {
-              const ta = document.createElement('textarea');
-              ta.value = text;
-              ta.setAttribute('readonly', '');
-              ta.style.position = 'absolute';
-              ta.style.left = '-9999px';
-              document.body.appendChild(ta);
-              ta.select();
-              document.execCommand('copy');
-              document.body.removeChild(ta);
-            } catch (e) {
-              console.error('Fallback execCommand failed:', e);
-            }
-            done();
-          };
-          render() {
-            if (this.state.hasError) {
-              return React.createElement('div', {
-                role: 'alert',
-                className: 'p-4 bg-crit-50 border border-crit-200 rounded-md space-y-3 dark:bg-crit-950 dark:border-crit-800'
-              },
-                React.createElement('p', { className: 'text-crit-800 font-semibold dark:text-crit-300' }, 'Something went wrong in this section.'),
-                React.createElement('p', { className: 'text-sm text-crit-700 font-mono break-words' }, this.state.error?.message || 'Unknown error'),
-                React.createElement('div', { className: 'flex flex-wrap gap-2 pt-1' },
-                  React.createElement('button', {
-                    type: 'button',
-                    onClick: () => this.setState({ hasError: false, error: null, errorInfo: null }),
-                    className: 'px-3 py-2 bg-crit-600 text-white rounded-lg text-sm font-medium hover:bg-crit-700 transition-colors'
-                  }, 'Reset section'),
-                  React.createElement('button', {
-                    type: 'button',
-                    onClick: this.copyDiagnostics,
-                    className: 'px-3 py-2 bg-white border border-crit-300 text-crit-700 rounded-lg text-sm font-medium hover:bg-crit-100 transition-colors dark:bg-card dark:border-crit-800 dark:text-crit-300 dark:hover:bg-crit-900'
-                  }, this.state.copied ? 'Copied!' : 'Copy diagnostics'),
-                  React.createElement('button', {
-                    type: 'button',
-                    onClick: () => window.location.reload(),
-                    className: 'px-3 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-100 transition-colors dark:bg-card dark:border-strong dark:text-ink-2 dark:hover:bg-paper-2'
-                  }, 'Reload app')
-                ),
-                React.createElement('p', { className: 'text-xs text-crit-600 dark:text-crit-300' },
-                  'Diagnostics include version, error stack, and component stack only — no patient data.'
-                )
-              );
-            }
-            return this.props.children;
-          }
-        }
+  const legacyActiveTab = getKey('activeTab', null);
+  if (legacyActiveTab) {
+    next.uiState.lastActiveTab = legacyActiveTab;
+  }
 
-        // ============================================
-        // ENCOUNTER TEMPLATES
-        // ============================================
-        const ENCOUNTER_TEMPLATES = [
-          { id: 'blank', label: 'Blank Encounter', icon: 'file-plus', description: 'Start fresh', defaults: {} },
-          { id: 'acute-lvo', label: 'Acute LVO', icon: 'zap', description: 'Large vessel occlusion workup', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'Ischemic stroke - LVO' } },
-          { id: 'tia', label: 'TIA Workup', icon: 'activity', description: 'Transient ischemic attack evaluation', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'TIA' } },
-          { id: 'wakeup', label: 'Wake-up Stroke', icon: 'moon', description: 'Unknown onset / wake-up presentation', defaults: { diagnosisCategory: 'ischemic', lkwUnknown: true, wakeUpStrokeWorkflow: { isWakeUpStroke: true } } },
-          { id: 'ich-anticoag', label: 'ICH on Anticoagulation', icon: 'alert-triangle', description: 'Hemorrhage with reversal needed', defaults: { diagnosisCategory: 'ich', diagnosis: 'Intracerebral hemorrhage' } },
-          { id: 'sah', label: 'SAH', icon: 'droplets', description: 'Subarachnoid hemorrhage management', defaults: { diagnosisCategory: 'sah', diagnosis: 'Subarachnoid hemorrhage' } },
-          { id: 'posterior', label: 'Posterior Circulation', icon: 'brain', description: 'Basilar/vertebral stroke', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'Posterior circulation stroke' } },
-          { id: 'minor-stroke', label: 'Minor Stroke', icon: 'activity', description: 'NIHSS ≤5, DAPT protocol', defaults: { diagnosisCategory: 'ischemic', diagnosis: 'Minor ischemic stroke' } }
-        ];
-
-        // ============================================
-        // CLINICAL PEARLS
-        // ============================================
-        const CLINICAL_PEARLS = {
-          tnk: 'TNK 0.25 mg/kg is non-inferior to alteplase with similar sICH rates (3.4% vs 3.2%) and simpler single-bolus administration (AcT trial, Lancet 2022).',
-          evt: 'EVT benefit is time-dependent: NNT ~2.6 overall at 0-6h (HERMES). Late-window with perfusion selection: NNT ~2.8 (DAWN), ~3.6 (DEFUSE-3). Every 15-min delay reduces benefit.',
-          ich_bp: 'INTERACT3: Intensive BP lowering + bundle of care improves functional outcomes in ICH (Lancet 2023).',
-          doac_timing: 'ELAN/OPTIMAS/CATALYST: early DOAC after AF-related stroke, ≤4 days reasonable across severities (OPTIMAS non-inferior across infarct sizes; CATALYST superior vs delay). Tiered default: minor (NIHSS <8) ~day 1; moderate (8-15) ~day 3; severe (16-20) ~day 6; very severe (≥21) or extensive hemorrhagic transformation ~day 7+ with repeat imaging.',
-          aspects: 'ASPECTS 6-10: Standard EVT eligibility. ASPECTS 3-5: Consider EVT for mRS 0-1 patients with anterior LVO (SELECT2, ANGEL-ASPECT).',
-          pcc: 'Weight-based 4F-PCC (25-50 IU/kg by INR) for warfarin reversal in ICH (AHA/ASA 2022 COR I/B-R). Guideline weight-based dosing — the Example Protocols tab shows a fixed-dose institutional example (2000 units); the two schemes are not interchangeable.',
-          wakeup: 'DWI-FLAIR mismatch suggests onset <4.5h; CTP mismatch allows treatment up to 9h from midpoint of sleep (WAKE-UP, EXTEND).'
-        };
-
-        const parseBloodPressure = (bpString) => {
-          if (!bpString) return null;
-          const match = bpString.match(/(\d{2,3})\s*\/\s*(\d{2,3})/);
-          if (!match) return null;
-          return {
-            systolic: parseInt(match[1], 10),
-            diastolic: parseInt(match[2], 10)
-          };
-        };
-
-        // Convert Date to local ISO string for datetime-local inputs (avoids UTC offset bug)
-        const toLocalISO = (d) => {
-          if (!d) return '';
-          const dateObj = d instanceof Date ? d : new Date(d);
-          if (Number.isNaN(dateObj.getTime())) return '';
-          const yr = dateObj.getFullYear();
-          const mo = String(dateObj.getMonth() + 1).padStart(2, '0');
-          const dy = String(dateObj.getDate()).padStart(2, '0');
-          const hr = String(dateObj.getHours()).padStart(2, '0');
-          const mn = String(dateObj.getMinutes()).padStart(2, '0');
-          return `${yr}-${mo}-${dy}T${hr}:${mn}`;
-        };
-
-        // Single canonical DOAC-recency model (CrCl-adjusted clearance). Both the
-        // TNK auto-block and the contraindication-checklist auto-detection read
-        // from this — previously a flat <48h check and this clearance model could
-        // flag and clear the same patient on one screen.
-        // JUDGMENT (documented in PR): an undocumented last-dose time remains a
-        // conservative block — unknown timing is treated as potentially recent.
-        const assessDOACRecency = (note) => {
-          const doacType = note?.lastDOACType;
-          if (!doacType || doacType === 'warfarin' || doacType === 'none') return { recent: false, note: '' };
-          const lastDose = note?.lastDOACDose ? new Date(note.lastDOACDose) : null;
-          if (!lastDose || Number.isNaN(lastDose.getTime())) {
-            return { recent: true, note: ' (last dose time unknown — conservative block)' };
-          }
-          const hoursSince = (Date.now() - lastDose.getTime()) / (1000 * 60 * 60);
-          if (hoursSince < 0) return { recent: true, note: ' (dose time in future — verify)' };
-          const crcl = calculateCrCl(note.age, note.weight, note.sex, note.creatinine, note.height);
-          const crclVal = crcl ? crcl.value : null;
-          const halfLifeMap = { apixaban: crclVal && crclVal < 30 ? 15 : 10, rivaroxaban: crclVal && crclVal < 30 ? 13 : 9, dabigatran: crclVal && crclVal < 30 ? 28 : crclVal && crclVal < 50 ? 18 : 14, edoxaban: crclVal && crclVal < 30 ? 16 : 12 };
-          const estHalfLife = halfLifeMap[doacType] || 12;
-          const clearancePct = Math.min(99.9, (1 - Math.pow(0.5, hoursSince / estHalfLife)) * 100);
-          if (clearancePct < 97) return { recent: true, note: ` (~${clearancePct.toFixed(0)}% cleared)` };
-          return { recent: false, note: ` (~${clearancePct.toFixed(0)}% cleared)` };
-        };
-
-        const getWindowStatusFromTime = (timeFromLKW) => {
-          if (!timeFromLKW) return null;
-          if (timeFromLKW.total <= 4.5) {
-            return { color: 'green', message: 'Within IV thrombolysis window (≤4.5h)', urgent: false, eligible: 'tnk' };
-          }
-          if (timeFromLKW.total <= 9) {
-            return { color: 'orange', message: 'Standard TNK window closed — imaging-selected IVT possible to 9h (EXTEND); EVT window open', urgent: true, eligible: 'evt-early' };
-          }
-          if (timeFromLKW.total < 24) {
-            return { color: 'red', message: 'Late window (9-24h) — EVT with perfusion selection; imaging-selected IVT in select patients (TRACE-III/OPTION)', urgent: true, eligible: 'evt-late' };
-          }
-          return { color: 'gray', message: 'Beyond standard treatment window', urgent: false, eligible: 'none' };
-        };
-
-        const useStrokeWindow = ({
-          lkwDate,
-          lkwTime,
-          lkwUnknown,
-          discoveryDate,
-          discoveryTime,
-          now
-        }) => {
-          return useMemo(() => {
-            const buildDate = (dateStr, timeStr) => {
-              if (!dateStr || !timeStr) return null;
-              const [year, month, day] = dateStr.split('-').map(Number);
-              const [hours, minutes] = timeStr.split(':').map(Number);
-              if (!year || !month || !day || Number.isNaN(hours) || Number.isNaN(minutes)) return null;
-              return new Date(year, month - 1, day, hours, minutes);
-            };
-
-            const discovery = buildDate(discoveryDate, discoveryTime);
-            const lkw = buildDate(lkwDate, lkwTime);
-            const reference = lkwUnknown ? discovery : lkw;
-            if (!reference) {
-              return { timeFrom: null, status: null, label: lkwUnknown ? 'Discovery' : 'LKW' };
-            }
-
-            const nowTime = now instanceof Date ? now : new Date();
-            const diffMs = Math.max(0, nowTime - reference);
-            const diffHrs = diffMs / (1000 * 60 * 60);
-            const diffMins = (diffMs / (1000 * 60)) % 60;
-            const timeFrom = {
-              hours: Math.floor(diffHrs),
-              minutes: Math.floor(Math.abs(diffMins)),
-              total: diffHrs,
-              label: lkwUnknown ? 'Discovery' : 'LKW'
-            };
-            return {
-              timeFrom,
-              status: getWindowStatusFromTime(timeFrom),
-              label: timeFrom.label
-            };
-          }, [lkwDate, lkwTime, lkwUnknown, discoveryDate, discoveryTime, now instanceof Date ? now.getTime() : now]);
-        };
-
-        // DOAC_PROTOCOLS imported from ./calculators.js
-
-        // calculateDOACStart imported from ./calculators.js
-
-        const generateId = (prefix = 'id') => {
-          const stamp = Date.now().toString(36);
-          if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
-            const array = new Uint32Array(1);
-            crypto.getRandomValues(array);
-            return `${prefix}_${stamp}_${array[0].toString(36).slice(0, 6)}`;
-          }
-          throw new Error('Secure random number generation is not supported by this environment');
-        };
-
-        const copyPlainText = async (text) => {
-          try {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-              await navigator.clipboard.writeText(text);
-              return true;
-            }
-            return copyFallback(text);
-          } catch (e) {
-            return copyFallback(text);
-          }
-        };
+  const legacyTtl = getKey('ttlHoursOverride', null);
+  if (Number.isFinite(Number(legacyTtl)) && Number(legacyTtl) > 0) {
+    next.settings.ttlHoursOverride = Number(legacyTtl);
+  }
 
 
-        const copyWithSectionHeaders = async (sections) => {
-          const content = sections
-            .filter(section => section && section.body && section.body.trim())
-            .map(section => `=== ${section.title} ===\n${section.body}`)
-            .join('\n\n');
-          if (!content.trim()) return false;
-          return copyPlainText(content.trim());
-        };
+  next.uiState.legacyMigratedAt = toIsoString();
+  return next;
+};
 
+const loadAppData = () => {
+  const base = getDefaultAppData();
+  const raw = localStorage.getItem(APP_DATA_KEY);
+  if (!raw) {
+    return migrateLegacyToAppData(base);
+  }
+  try {
+    const parsed = JSON.parse(raw);
+    const merged = mergeAppData(base, parsed);
+    return migrateLegacyToAppData(migrateAppData(merged));
+  } catch (e) {
+    return migrateLegacyToAppData(base);
+  }
+};
 
+const saveAppData = (data) => {
+  if (PUBLIC_DEMO_MODE) return;
+  try {
+    localStorage.setItem(APP_DATA_KEY, JSON.stringify(data));
+    touchLastUpdated();
+  } catch (e) {
+    if (e.name === 'QuotaExceededError' || e.code === 22) {
+      try { document.dispatchEvent(new CustomEvent('storage-quota-exceeded')); } catch (_) {}
+    }
+  }
+};
 
-        const importJSON = (file) => {
-          return new Promise((resolve, reject) => {
-            if (!file) {
-              reject(new Error('No file provided'));
-              return;
-            }
-            if (file.size > 10 * 1024 * 1024) {
-              reject(new Error('File too large (>10MB) — likely not a valid case export'));
-              return;
-            }
-            if (file.type && !file.type.includes('json') && !file.type.includes('text')) {
-              reject(new Error('Invalid file type — expected JSON'));
-              return;
-            }
-            const reader = new FileReader();
-            reader.onload = () => {
-              try {
-                const parsed = JSON.parse(reader.result);
-                if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-                  reject(new Error('Invalid JSON structure — expected an object'));
-                  return;
-                }
-                // Schema validation: must have recognizable app structure
-                const hasAppData = parsed.schemaVersion || parsed.appData;
-                const hasCaseData = parsed.telestrokeNote || parsed.strokeCodeForm || parsed.patientData;
-                if (!hasAppData && !hasCaseData) {
-                  reject(new Error('Unrecognized file format — missing telestrokeNote, strokeCodeForm, or schemaVersion'));
-                  return;
-                }
-                // Validate telestrokeNote shape if present
-                const note = parsed.telestrokeNote || parsed.appData?.telestrokeNote;
-                if (note) {
-                  if (typeof note !== 'object' || Array.isArray(note)) {
-                    reject(new Error('Invalid telestrokeNote — expected an object'));
-                    return;
-                  }
-                  // Check for unexpected executable content
-                  const noteStr = JSON.stringify(note);
-                  if (/<script/i.test(noteStr) || /javascript:/i.test(noteStr) || /data:text\/html/i.test(noteStr) || /vbscript:/i.test(noteStr) || /\bon\w+\s*=/i.test(noteStr)) {
-                    reject(new Error('Import blocked — file contains potentially unsafe content'));
-                    return;
-                  }
-                }
-                resolve(parsed);
-              } catch (e) {
-                reject(new Error('Invalid JSON — ' + e.message));
-              }
-            };
-            reader.onerror = () => reject(reader.error || new Error('File read failed'));
-            reader.readAsText(file);
-          });
-        };
+const parseLastUpdated = (value) => {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value === 'string') {
+    const numeric = Number(value);
+    if (Number.isFinite(numeric)) return numeric;
+    const parsedDate = Date.parse(value);
+    if (!Number.isNaN(parsedDate)) return parsedDate;
+  }
+  return null;
+};
 
-        const getDeidWarnings = (text) => {
-          return getPublicDemoPhiWarnings(text);
-        };
+const applyStorageExpiration = (ttlHours) => {
+  const lastUpdatedRaw = getKey(LAST_UPDATED_KEY, null);
+  const lastUpdated = parseLastUpdated(lastUpdatedRaw);
+  if (!lastUpdated || !Number.isFinite(ttlHours) || ttlHours <= 0) {
+    return false;
+  }
+  const ttlMs = ttlHours * 60 * 60 * 1000;
+  if (Date.now() - lastUpdated > ttlMs) {
+    clearAllAppStorage();
+    return true;
+  }
+  return false;
+};
 
-        const getDefaultClipboardPacks = () => ([
-          {
-            id: 'telestroke-consult',
-            title: 'Telestroke Consult Pack',
-            description: 'Summary for consult documentation.',
-            sections: [
-              { id: 'summary', title: 'Summary', enabled: true, template: 'Alias: {PATIENT_ALIAS}\nAge/Sex: {AGE}{SEX}\nNIHSS: {NIHSS}\nDx: {DIAGNOSIS}\nLVO: {LVO}\nWeight: {WEIGHT_KG} kg' },
-              { id: 'times', title: 'Key Times', enabled: true, template: 'LKW: {LKW}\nArrival: {ARRIVAL}\nCT: {CT_TIME}\nCTA: {CTA_TIME}' },
-              { id: 'imaging', title: 'Imaging', enabled: true, template: 'CT: {CT_RESULTS}\nCTA: {CTA_RESULTS}\nASPECTS: {ASPECTS}' },
-              { id: 'plan', title: 'Plan', enabled: true, template: 'TNK: {TNK_STATUS}\nEVT: {EVT_STATUS}\nDisposition: {DISPOSITION}' }
-            ]
-          },
-          {
-            id: 'transfer-pack',
-            title: 'Transfer Pack',
-            description: 'Transfer-ready summary for receiving centers.',
-            sections: [
-              { id: 'summary', title: 'Summary', enabled: true, template: 'Alias: {PATIENT_ALIAS}\nAge/Sex: {AGE}{SEX}\nNIHSS: {NIHSS}\nDx: {DIAGNOSIS}\nLVO: {LVO}' },
-              { id: 'imaging', title: 'Imaging', enabled: true, template: 'CT: {CT_RESULTS}\nCTA: {CTA_RESULTS}\nASPECTS: {ASPECTS}\nPerfusion: {CTP_RESULTS}' },
-              { id: 'treatment', title: 'Treatment', enabled: true, template: 'TNK: {TNK_STATUS}\nEVT: {EVT_STATUS}\nTransfer status: {TRANSFER_STATUS}' }
-            ]
-          },
-          {
-            id: 'signout-pack',
-            title: 'Signout Pack',
-            description: 'End-of-shift signout snapshot.',
-            sections: [
-              { id: 'summary', title: 'Summary', enabled: true, template: 'Alias: {PATIENT_ALIAS}\nAge/Sex: {AGE}{SEX}\nNIHSS: {NIHSS}\nDx: {DIAGNOSIS}\nDisposition: {DISPOSITION}' },
-              { id: 'pending', title: 'Pending / Follow-up', enabled: true, template: '{PENDING_ITEMS}' }
-            ]
-          },
-          {
-            id: 'ich-pack',
-            title: 'ICH Pack',
-            description: 'ICH-specific bundle.',
-            sections: [
-              { id: 'summary', title: 'Summary', enabled: true, template: 'Alias: {PATIENT_ALIAS}\nAge/Sex: {AGE}{SEX}\nICH Score: {ICH_SCORE}\nGCS: {GCS}\nBP: {BP}' },
-              { id: 'imaging', title: 'Imaging', enabled: true, template: 'CT: {CT_RESULTS}\nHematoma: {HEMATOMA}\nIVH: {IVH}' },
-              { id: 'plan', title: 'Plan', enabled: true, template: 'Reversal: {REVERSAL}\nDisposition: {DISPOSITION}' }
-            ]
-          }
-        ]);
+migrateLegacyStorage();
+const INITIAL_APP_DATA = loadAppData();
+const storedTtlOverride = INITIAL_APP_DATA.settings.ttlHoursOverride ?? getKey('ttlHoursOverride', null);
+const initialTtlHours = Number.isFinite(storedTtlOverride) && storedTtlOverride > 0
+  ? storedTtlOverride
+  : DEFAULT_TTL_HOURS;
+const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
 
-          const getDefaultSettings = () => ({
-            deidMode: true,
-            allowFreeTextStorage: false,
-            ttlHoursOverride: null,
-            defaultConsultationType: 'telephone',
-            workflowPersona: 'senior',
-          });
+// NOTE: this block sits ABOVE the management-subtab declaration on
+// purpose. tests/navigation-reorganization.test.js slices the source
+// between that declaration and the AutoDetectedContraindicationsBanner
+// one and evaluates it with new Function(), so everything in that range
+// must be self-contained. API_PROVIDERS references an import and would
+// throw ReferenceError inside that sandbox. Keep this comment free of
+// those two marker strings as well — the slice is found by indexOf, so
+// repeating them here would make it start mid-comment.
+// Display metadata for the BYOK providers. AI_PROVIDERS in
+// calculators-extended.js is the single source of truth for WHICH
+// providers exist and in what order; this only supplies how each one is
+// labelled and what its key looks like. Deriving the list rather than
+// restating it means the dropdown and the storage reader cannot drift.
+//
+// keyPrefix is the vendor's documented key format. It is a typo guard —
+// it catches a key pasted under the wrong provider — not authentication;
+// only the vendor can say whether a key is real.
+const API_PROVIDER_META = {
+  openai: { label: 'OpenAI API', keyPrefix: 'sk-', placeholder: 'sk-...' },
+  anthropic: { label: 'Anthropic API', keyPrefix: 'sk-ant-', placeholder: 'sk-ant-...' },
+  gemini: { label: 'Google Gemini API', keyPrefix: 'AIza', placeholder: 'AIza...' },
+  grok: { label: 'xAI Grok API', keyPrefix: 'xai-', placeholder: 'xai-...' }
+};
+// A provider added upstream without metadata still renders, under its own
+// id and with no prefix check, rather than vanishing from the dropdown.
+const API_PROVIDERS = AI_PROVIDERS.map((value) => ({
+  value,
+  label: value,
+  keyPrefix: '',
+  placeholder: '',
+  ...(API_PROVIDER_META[value] || {})
+}));
 
-        const getDefaultAppData = () => ({
-          schemaVersion: APP_DATA_SCHEMA_VERSION,
-          settings: getDefaultSettings(),
-          shiftBoards: [],
-          uiState: {
-            lastActiveTab: 'encounter',
-            lastShiftBoardId: null,
-            lastManagementSubTab: 'ich',
-            lastLibrarySection: 'management',
-            legacyMigratedAt: null,
-            searchHighlightId: null,
-          },
-          encounter: {
-            clipboardPacks: getDefaultClipboardPacks(),
-            clipboardPackVisibility: {}
-          }
-        });
+const MANAGEMENT_SUBTABS = ['ich', 'ischemic'];
 
-        const mergeAppData = (base, incoming) => {
-          const merged = {
-            ...base,
-            ...incoming,
-            settings: { ...base.settings, ...(incoming && incoming.settings ? incoming.settings : {}) },
-            uiState: { ...base.uiState, ...(incoming && incoming.uiState ? incoming.uiState : {}) },
-            encounter: { ...base.encounter, ...(incoming && incoming.encounter ? incoming.encounter : {}) }
-          };
-          delete merged.pinnedReferences;
-          merged.shiftBoards = ensureArray(merged.shiftBoards, []);
-          merged.encounter.clipboardPacks = ensureArray(merged.encounter.clipboardPacks, getDefaultClipboardPacks());
-          return merged;
-        };
+const RESEARCH_SUBTABS = ['guidelines', 'references', 'calculators', 'education'];
 
-        const migrateAppData = (data) => {
-          const next = { ...data };
-          const version = Number.isFinite(next.schemaVersion) ? next.schemaVersion : 0;
-          if (version < APP_DATA_SCHEMA_VERSION) {
-            next.schemaVersion = APP_DATA_SCHEMA_VERSION;
-          }
-          return next;
-        };
+// BYOK (bring-your-own-key) LLM providers offered in Settings → API
+// Configuration. One table drives the <select>, the key placeholder and
+// the save-time prefix check, so adding a provider is a single entry
+// rather than three parallel edits that can drift apart.
+//
+// keyPrefix is the vendor's documented key format. It is a typo guard —
+// it catches a key pasted into the wrong provider — not authentication;
+// only the vendor can say whether a key is real.
 
-        const migrateLegacyToAppData = (data) => {
-          if (data.uiState && data.uiState.legacyMigratedAt) return data;
-          const next = mergeAppData(getDefaultAppData(), data);
+const LEGACY_MANAGEMENT_TABS = {
+  ich: 'ich',
+  protocols: 'ischemic',
+  calculators: 'ischemic',
+  references: 'references',
+  evidence: 'references',
+  teaching: 'references',
+  // Removed sub-tabs — redirect persisted user state to a sensible neighbor.
+  clinic: 'ischemic',
+  wards: 'ischemic',
+  'pocket-cards': 'ischemic',
+  sah: 'ich',
+  tia: 'ischemic',
+  cvt: 'ischemic'
+};
 
-          const legacyActiveTab = getKey('activeTab', null);
-          if (legacyActiveTab) {
-            next.uiState.lastActiveTab = legacyActiveTab;
-          }
+const normalizeManagementSubTab = (value) => {
+  if (!value) return null;
+  const normalized = String(value).toLowerCase();
+  if (MANAGEMENT_SUBTABS.includes(normalized)) return normalized;
+  if (LEGACY_MANAGEMENT_TABS[normalized]) return LEGACY_MANAGEMENT_TABS[normalized];
+  return null;
+};
 
-          const legacyTtl = getKey('ttlHoursOverride', null);
-          if (Number.isFinite(Number(legacyTtl)) && Number(legacyTtl) > 0) {
-            next.settings.ttlHoursOverride = Number(legacyTtl);
-          }
+const normalizeResearchSubTab = (value) => {
+  if (!value) return null;
+  const normalized = String(value).toLowerCase();
+  if (RESEARCH_SUBTABS.includes(normalized)) return normalized;
+  return null;
+};
 
+const TRIALS_VIEWS = ['screener', 'tables', 'database'];
+const LEGACY_TRIALS_VIEWS = { active: 'screener', eligibility: 'tables', studies: 'database' };
 
-          next.uiState.legacyMigratedAt = toIsoString();
-          return next;
-        };
+const normalizeTrialsView = (value) => {
+  if (!value) return null;
+  const normalized = String(value).toLowerCase();
+  if (TRIALS_VIEWS.includes(normalized)) return normalized;
+  return LEGACY_TRIALS_VIEWS[normalized] || null;
+};
 
-        const loadAppData = () => {
-          const base = getDefaultAppData();
-          const raw = localStorage.getItem(APP_DATA_KEY);
-          if (!raw) {
-            return migrateLegacyToAppData(base);
-          }
-          try {
-            const parsed = JSON.parse(raw);
-            const merged = mergeAppData(base, parsed);
-            return migrateLegacyToAppData(migrateAppData(merged));
-          } catch (e) {
-            return migrateLegacyToAppData(base);
-          }
-        };
+const VALID_TABS = [
+  'encounter',
+  'protocols',
+  'trials',
+  'research',
+  'management',
+  'library',
+  'education',
+  'settings'
+];
 
-        const saveAppData = (data) => {
-          if (PUBLIC_DEMO_MODE) return;
-          try {
-            localStorage.setItem(APP_DATA_KEY, JSON.stringify(data));
-            touchLastUpdated();
-          } catch (e) {
-            if (e.name === 'QuotaExceededError' || e.code === 22) {
-              try { document.dispatchEvent(new CustomEvent('storage-quota-exceeded')); } catch (_) {}
-            }
-          }
-        };
+const parseHashRoute = (hash) => {
+  if (!hash) return { tab: 'encounter' };
+  const cleaned = String(hash).replace(/^#+\/*/, '').trim();
+  if (!cleaned) {
+    return { tab: 'encounter' };
+  }
+  const parts = cleaned.split('/').filter(Boolean);
+  const root = parts[0] ? parts[0].toLowerCase() : '';
+  const sub = parts[1] ? parts[1].toLowerCase() : undefined;
 
-        const parseLastUpdated = (value) => {
-          if (typeof value === 'number' && Number.isFinite(value)) return value;
-          if (typeof value === 'string') {
-            const numeric = Number(value);
-            if (Number.isFinite(numeric)) return numeric;
-            const parsedDate = Date.parse(value);
-            if (!Number.isNaN(parsedDate)) return parsedDate;
-          }
-          return null;
-        };
+  switch (root) {
+    case 'dashboard':
+    case 'home':
+    case 'encounter':
+      return { tab: 'encounter' };
+    case 'protocols':
+    case 'library':
+    case 'management':
+      if (sub === 'calculators') {
+        return { tab: 'research', sub: 'calculators' };
+      }
+      if (sub === 'simulators') {
+        return { tab: 'research', sub: 'education', educationSub: 'simulators' };
+      }
+      if (sub === 'references') {
+        return { tab: 'research', sub: 'references' };
+      }
+      if (sub === 'education') {
+        return { tab: 'research', sub: 'education', educationSub: parts[2] || null };
+      }
+      if (sub === 'trials') {
+        const nestedTrialsSub = normalizeTrialsView(parts[2]);
+        return nestedTrialsSub ? { tab: 'trials', sub: nestedTrialsSub } : { tab: 'trials' };
+      }
+      return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
+    case 'settings':
+      return { tab: 'settings' };
+    case 'ich':
+      return { tab: 'protocols', sub: LEGACY_MANAGEMENT_TABS[root] };
+    case 'calculators':
+      return { tab: 'research', sub: 'calculators' };
+    case 'guidelines':
+    case 'guideline':
+      return { tab: 'research', sub: 'guidelines' };
+    case 'evidence':
+    case 'teaching':
+    case 'references':
+    case 'reference':
+      return { tab: 'research', sub: 'references' };
+    case 'research':
+      if (sub === 'education') {
+        return { tab: 'research', sub: 'education', educationSub: parts[2] || null };
+      }
+      return { tab: 'research', sub: normalizeResearchSubTab(sub) };
+    case 'trials':
+    case 'trial': {
+      const trialsSub = normalizeTrialsView(sub);
+      return trialsSub ? { tab: 'trials', sub: trialsSub } : { tab: 'trials' };
+    }
+    case 'education':
+    case 'curriculum':
+    case 'curricula':
+      return { tab: 'research', sub: 'education', educationSub: sub || null };
+    case 'simulators':
+      return { tab: 'research', sub: 'education', educationSub: 'simulators' };
+    default:
+      return null;
+  }
+};
 
-        const applyStorageExpiration = (ttlHours) => {
-          const lastUpdatedRaw = getKey(LAST_UPDATED_KEY, null);
-          const lastUpdated = parseLastUpdated(lastUpdatedRaw);
-          if (!lastUpdated || !Number.isFinite(ttlHours) || ttlHours <= 0) {
-            return false;
-          }
-          const ttlMs = ttlHours * 60 * 60 * 1000;
-          if (Date.now() - lastUpdated > ttlMs) {
-            clearAllAppStorage();
-            return true;
-          }
-          return false;
-        };
-
-        migrateLegacyStorage();
-        const INITIAL_APP_DATA = loadAppData();
-        const storedTtlOverride = INITIAL_APP_DATA.settings.ttlHoursOverride ?? getKey('ttlHoursOverride', null);
-        const initialTtlHours = Number.isFinite(storedTtlOverride) && storedTtlOverride > 0
-          ? storedTtlOverride
-          : DEFAULT_TTL_HOURS;
-        const INITIAL_STORAGE_EXPIRED = applyStorageExpiration(initialTtlHours);
-
-        // NOTE: this block sits ABOVE the management-subtab declaration on
-        // purpose. tests/navigation-reorganization.test.js slices the source
-        // between that declaration and the AutoDetectedContraindicationsBanner
-        // one and evaluates it with new Function(), so everything in that range
-        // must be self-contained. API_PROVIDERS references an import and would
-        // throw ReferenceError inside that sandbox. Keep this comment free of
-        // those two marker strings as well — the slice is found by indexOf, so
-        // repeating them here would make it start mid-comment.
-        // Display metadata for the BYOK providers. AI_PROVIDERS in
-        // calculators-extended.js is the single source of truth for WHICH
-        // providers exist and in what order; this only supplies how each one is
-        // labelled and what its key looks like. Deriving the list rather than
-        // restating it means the dropdown and the storage reader cannot drift.
-        //
-        // keyPrefix is the vendor's documented key format. It is a typo guard —
-        // it catches a key pasted under the wrong provider — not authentication;
-        // only the vendor can say whether a key is real.
-        const API_PROVIDER_META = {
-          openai: { label: 'OpenAI API', keyPrefix: 'sk-', placeholder: 'sk-...' },
-          anthropic: { label: 'Anthropic API', keyPrefix: 'sk-ant-', placeholder: 'sk-ant-...' },
-          gemini: { label: 'Google Gemini API', keyPrefix: 'AIza', placeholder: 'AIza...' },
-          grok: { label: 'xAI Grok API', keyPrefix: 'xai-', placeholder: 'xai-...' }
-        };
-        // A provider added upstream without metadata still renders, under its own
-        // id and with no prefix check, rather than vanishing from the dropdown.
-        const API_PROVIDERS = AI_PROVIDERS.map((value) => ({
-          value,
-          label: value,
-          keyPrefix: '',
-          placeholder: '',
-          ...(API_PROVIDER_META[value] || {})
-        }));
-
-        const MANAGEMENT_SUBTABS = ['ich', 'ischemic'];
-
-        const RESEARCH_SUBTABS = ['guidelines', 'references', 'calculators', 'education'];
-
-        // BYOK (bring-your-own-key) LLM providers offered in Settings → API
-        // Configuration. One table drives the <select>, the key placeholder and
-        // the save-time prefix check, so adding a provider is a single entry
-        // rather than three parallel edits that can drift apart.
-        //
-        // keyPrefix is the vendor's documented key format. It is a typo guard —
-        // it catches a key pasted into the wrong provider — not authentication;
-        // only the vendor can say whether a key is real.
-
-        const LEGACY_MANAGEMENT_TABS = {
-          ich: 'ich',
-          protocols: 'ischemic',
-          calculators: 'ischemic',
-          references: 'references',
-          evidence: 'references',
-          teaching: 'references',
-          // Removed sub-tabs — redirect persisted user state to a sensible neighbor.
-          clinic: 'ischemic',
-          wards: 'ischemic',
-          'pocket-cards': 'ischemic',
-          sah: 'ich',
-          tia: 'ischemic',
-          cvt: 'ischemic'
-        };
-
-        const normalizeManagementSubTab = (value) => {
-          if (!value) return null;
-          const normalized = String(value).toLowerCase();
-          if (MANAGEMENT_SUBTABS.includes(normalized)) return normalized;
-          if (LEGACY_MANAGEMENT_TABS[normalized]) return LEGACY_MANAGEMENT_TABS[normalized];
-          return null;
-        };
-
-        const normalizeResearchSubTab = (value) => {
-          if (!value) return null;
-          const normalized = String(value).toLowerCase();
-          if (RESEARCH_SUBTABS.includes(normalized)) return normalized;
-          return null;
-        };
-
-        const TRIALS_VIEWS = ['screener', 'tables', 'database'];
-        const LEGACY_TRIALS_VIEWS = { active: 'screener', eligibility: 'tables', studies: 'database' };
-
-        const normalizeTrialsView = (value) => {
-          if (!value) return null;
-          const normalized = String(value).toLowerCase();
-          if (TRIALS_VIEWS.includes(normalized)) return normalized;
-          return LEGACY_TRIALS_VIEWS[normalized] || null;
-        };
-
-        const VALID_TABS = [
-          'encounter',
-          'protocols',
-          'trials',
-          'research',
-          'management',
-          'library',
-          'education',
-          'settings'
-        ];
-
-        const parseHashRoute = (hash) => {
-          if (!hash) return { tab: 'encounter' };
-          const cleaned = String(hash).replace(/^#+\/*/, '').trim();
-          if (!cleaned) {
-            return { tab: 'encounter' };
-          }
-          const parts = cleaned.split('/').filter(Boolean);
-          const root = parts[0] ? parts[0].toLowerCase() : '';
-          const sub = parts[1] ? parts[1].toLowerCase() : undefined;
-
-          switch (root) {
-            case 'dashboard':
-            case 'home':
-            case 'encounter':
-              return { tab: 'encounter' };
-            case 'protocols':
-            case 'library':
-            case 'management':
-              if (sub === 'calculators') {
-                return { tab: 'research', sub: 'calculators' };
-              }
-              if (sub === 'simulators') {
-                return { tab: 'research', sub: 'education', educationSub: 'simulators' };
-              }
-              if (sub === 'references') {
-                return { tab: 'research', sub: 'references' };
-              }
-              if (sub === 'education') {
-                return { tab: 'research', sub: 'education', educationSub: parts[2] || null };
-              }
-              if (sub === 'trials') {
-                const nestedTrialsSub = normalizeTrialsView(parts[2]);
-                return nestedTrialsSub ? { tab: 'trials', sub: nestedTrialsSub } : { tab: 'trials' };
-              }
-              return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
-            case 'settings':
-              return { tab: 'settings' };
-            case 'ich':
-              return { tab: 'protocols', sub: LEGACY_MANAGEMENT_TABS[root] };
-            case 'calculators':
-              return { tab: 'research', sub: 'calculators' };
-            case 'guidelines':
-            case 'guideline':
-              return { tab: 'research', sub: 'guidelines' };
-            case 'evidence':
-            case 'teaching':
-            case 'references':
-            case 'reference':
-              return { tab: 'research', sub: 'references' };
-            case 'research':
-              if (sub === 'education') {
-                return { tab: 'research', sub: 'education', educationSub: parts[2] || null };
-              }
-              return { tab: 'research', sub: normalizeResearchSubTab(sub) };
-            case 'trials':
-            case 'trial': {
-              const trialsSub = normalizeTrialsView(sub);
-              return trialsSub ? { tab: 'trials', sub: trialsSub } : { tab: 'trials' };
-            }
-            case 'education':
-            case 'curriculum':
-            case 'curricula':
-              return { tab: 'research', sub: 'education', educationSub: sub || null };
-            case 'simulators':
-              return { tab: 'research', sub: 'education', educationSub: 'simulators' };
-            default:
-              return null;
-          }
-        };
-
-        const buildHashRoute = (tab, sub, educationSub) => {
-          switch (tab) {
-            case 'home':
-            case 'encounter':
-              return '#/encounter';
-            case 'settings':
-              return '#/settings';
-            case 'protocols':
-            case 'library':
-            case 'management': {
-              const managementSub = normalizeManagementSubTab(sub);
-              return managementSub ? `#/protocols/${managementSub}` : '#/protocols';
-            }
-            case 'trials': {
-              const trialsSub = normalizeTrialsView(sub);
-              return trialsSub && trialsSub !== 'screener' ? `#/trials/${trialsSub}` : '#/trials';
-            }
-            case 'research': {
-              const resSub = normalizeResearchSubTab(sub) || 'guidelines';
-              if (resSub === 'education') {
-                return educationSub ? `#/research/education/${educationSub}` : '#/research/education';
-              }
-              return `#/research/${resSub}`;
-            }
-            case 'education':
-              return sub ? `#/research/education/${sub}` : '#/research/education';
-            default:
-              return '#/encounter';
-          }
-        };
+const buildHashRoute = (tab, sub, educationSub) => {
+  switch (tab) {
+    case 'home':
+    case 'encounter':
+      return '#/encounter';
+    case 'settings':
+      return '#/settings';
+    case 'protocols':
+    case 'library':
+    case 'management': {
+      const managementSub = normalizeManagementSubTab(sub);
+      return managementSub ? `#/protocols/${managementSub}` : '#/protocols';
+    }
+    case 'trials': {
+      const trialsSub = normalizeTrialsView(sub);
+      return trialsSub && trialsSub !== 'screener' ? `#/trials/${trialsSub}` : '#/trials';
+    }
+    case 'research': {
+      const resSub = normalizeResearchSubTab(sub) || 'guidelines';
+      if (resSub === 'education') {
+        return educationSub ? `#/research/education/${educationSub}` : '#/research/education';
+      }
+      return `#/research/${resSub}`;
+    }
+    case 'education':
+      return sub ? `#/research/education/${sub}` : '#/research/education';
+    default:
+      return '#/encounter';
+  }
+};
 
 
 const AutoDetectedContraindicationsBanner = ({ autoAbsolute, autoRelative, autoCautionary }) => {
