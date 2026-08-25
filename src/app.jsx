@@ -2752,6 +2752,8 @@ Clinician Name`;
           const runEncounterOutputRef = useRef(null);
           const navigateToRef = useRef(null);
           const exportToPDFRef = useRef(null);
+          const calcCardsContainerRef = useRef(null);
+          const calcCardsCacheRef = useRef(null);
           // Element to restore focus to when the command palette closes without
           // navigating (WCAG 2.4.3 Focus Order). Captured at open time.
           const paletteReturnFocusRef = useRef(null);
@@ -3072,22 +3074,34 @@ Clinician Name`;
             return -1 * (calculatorPriorityList.length - idx);
           };
           useEffect(() => {
-            if (activeTab !== 'research' || researchSubTab !== 'calculators') return undefined;
+            if (activeTab !== 'research' || researchSubTab !== 'calculators') {
+              calcCardsCacheRef.current = null;
+              return undefined;
+            }
             const rawQuery = calculatorFilter.trim().toLowerCase();
             const normalizedQuery = rawQuery
               .replace(/[₂²]/g, '2')
               .replace(/[^a-z0-9]+/g, ' ')
               .trim();
             const frame = requestAnimationFrame(() => {
-              const cards = document.querySelectorAll('#research-tabpanel-calculators details[id^="calc-"]');
-              cards.forEach((card) => {
-                const rawText = `${card.id || ''} ${card.textContent || ''}`.toLowerCase();
-                const normalizedText = rawText
-                  .replace(/[₂²]/g, '2')
-                  .replace(/[^a-z0-9]+/g, ' ');
+              let cache = calcCardsCacheRef.current;
+              if (!cache || cache.length === 0) {
+                const container = calcCardsContainerRef.current || document.getElementById('research-tabpanel-calculators');
+                const cards = container ? container.querySelectorAll('details[id^="calc-"]') : document.querySelectorAll('#research-tabpanel-calculators details[id^="calc-"]');
+                cache = Array.from(cards).map((card) => {
+                  const rawText = `${card.id || ''} ${card.textContent || ''}`.toLowerCase();
+                  const normalizedText = rawText
+                    .replace(/[₂²]/g, '2')
+                    .replace(/[^a-z0-9]+/g, ' ');
+                  return { card, rawText, normalizedText };
+                });
+                calcCardsCacheRef.current = cache;
+              }
+              for (let i = 0; i < cache.length; i++) {
+                const { card, rawText, normalizedText } = cache[i];
                 const visible = !rawQuery || rawText.includes(rawQuery) || (normalizedQuery && normalizedText.includes(normalizedQuery));
                 card.hidden = !visible;
-              });
+              }
             });
             return () => cancelAnimationFrame(frame);
           }, [activeTab, calculatorFilter, researchSubTab]);
@@ -30263,7 +30277,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       })}
                     </div>
                   <GlobalPatientContext.Provider value={patientContextValue}>
-                  <div id="research-tabpanel-calculators" role="tabpanel" aria-labelledby="research-tab-calculators" className="flex flex-col gap-4">
+                  <div id="research-tabpanel-calculators" ref={calcCardsContainerRef} role="tabpanel" aria-labelledby="research-tab-calculators" className="flex flex-col gap-4">
 
                     {/* Post-tPA neurocheck timer requires the full administration datetime. */}
                     {(() => {
