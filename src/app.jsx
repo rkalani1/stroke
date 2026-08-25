@@ -27524,7 +27524,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     note += `- TRIAL SCREEN (first-pass, unverified): ${t.trialName} (${t.nct || ''}) — ${t.quickDescription}. Criteria met: ${t.metCount}/${t.criteria.length}.\n`;
                                   });
                                   needsInfoTrials2.forEach(t => {
-                                    const missing = t.criteria.filter(c => c.status === 'unknown').map(c => c.label).join(', ');
+                                    const missing = t.criteria.reduce((acc, c) => c.status === 'unknown' ? (acc ? acc + ', ' + c.label : c.label) : acc, '');
                                     note += `- NEEDS INFO: ${t.trialName} (${t.nct || ''}) — missing: ${missing}.\n`;
                                   });
                                 }
