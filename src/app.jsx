@@ -659,6 +659,8 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         // ============================================
         // ERROR BOUNDARY
         // ============================================
+        const DIAGNOSTICS_COPY_TIMEOUT_MS = 2000;
+
         class ErrorBoundary extends React.Component {
           constructor(props) {
             super(props);
@@ -703,7 +705,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             const text = this.buildDiagnostics();
             const done = () => {
               this.setState({ copied: true });
-              setTimeout(() => this.setState({ copied: false }), 2000);
+              setTimeout(() => this.setState({ copied: false }), DIAGNOSTICS_COPY_TIMEOUT_MS);
             };
             try {
               if (navigator.clipboard && navigator.clipboard.writeText) {
