@@ -459,6 +459,136 @@ describe('Schema factories — makeCompletedTrial', () => {
   });
 });
 
+describe('Schema factories — makeCompletedTrial', () => {
+  it('returns default object shape when called with no input or empty object', () => {
+    const trial = schema.makeCompletedTrial();
+    expect(trial).toEqual({
+      id: '',
+      shortName: '',
+      fullName: '',
+      topic: '',
+      diseaseArea: [],
+      population: {
+        n: 0,
+        ageRange: '',
+        nihssRange: '',
+        timeWindow: '',
+        keyInclusion: [],
+        keyExclusion: []
+      },
+      intervention: '',
+      comparator: '',
+      primaryEndpoint: {
+        definition: '',
+        timepoint: '',
+        result: '',
+        effectSize: '',
+        confidenceInterval: '',
+        pValue: ''
+      },
+      secondaryEndpoints: [],
+      safetyFindings: {
+        sich: '',
+        mortality: '',
+        other: ''
+      },
+      imagingCriteria: '',
+      applicabilityNotes: '',
+      limitations: '',
+      certainty: 'moderate',
+      evidenceType: 'rct',
+      citationIds: [],
+      relatedActiveTrialIds: [],
+      practiceImpact: '',
+      lastReviewed: '',
+      promotedDate: '',
+      verificationStatus: 'todo-verify',
+      verificationNotes: ''
+    });
+  });
+
+  it('populates fields correctly from input object and maps secondary endpoints', () => {
+    const input = {
+      id: 'wake-up',
+      shortName: 'WAKE-UP',
+      fullName: 'WAKE-UP Trial',
+      topic: 'extended-window-ivt',
+      diseaseArea: ['stroke', 'ivt'],
+      population: {
+        n: 503,
+        ageRange: '18-80',
+        nihssRange: '0-25',
+        timeWindow: 'unknown onset',
+        keyInclusion: ['MRI mismatch'],
+        keyExclusion: ['hemorrhage']
+      },
+      intervention: 'Alteplase 0.9 mg/kg',
+      comparator: 'Placebo',
+      primaryEndpoint: {
+        definition: 'mRS 0-1 at 90 days',
+        timepoint: '90 days',
+        result: '53.3% vs 41.8%',
+        effectSize: 'OR 1.61',
+        confidenceInterval: '1.01-2.56',
+        pValue: '0.04'
+      },
+      secondaryEndpoints: [
+        { name: 'mRS 0-2', result: '65% vs 52%' },
+        { name: undefined, result: null }
+      ],
+      safetyFindings: {
+        sich: '2.0% vs 0.4%',
+        mortality: '4.1% vs 1.2%',
+        other: 'No other major findings'
+      },
+      imagingCriteria: 'DWI-FLAIR mismatch',
+      applicabilityNotes: 'Applicable in MRI centers',
+      limitations: 'Small sample size',
+      certainty: 'high',
+      evidenceType: 'rct',
+      citationIds: ['cit-wakeup-2018'],
+      relatedActiveTrialIds: ['at-1'],
+      practiceImpact: 'Changed clinical practice',
+      lastReviewed: '2024-01-01',
+      promotedDate: '2024-01-15',
+      verificationStatus: 'verified-pubmed',
+      verificationNotes: 'Verified via PubMed'
+    };
+
+    const trial = schema.makeCompletedTrial(input);
+    expect(trial.id).toBe('wake-up');
+    expect(trial.shortName).toBe('WAKE-UP');
+    expect(trial.fullName).toBe('WAKE-UP Trial');
+    expect(trial.population.n).toBe(503);
+    expect(trial.population.keyInclusion).toEqual(['MRI mismatch']);
+    expect(trial.primaryEndpoint.result).toBe('53.3% vs 41.8%');
+    expect(trial.secondaryEndpoints).toEqual([
+      { name: 'mRS 0-2', result: '65% vs 52%' },
+      { name: '', result: '' }
+    ]);
+    expect(trial.certainty).toBe('high');
+    expect(trial.verificationStatus).toBe('verified-pubmed');
+    expect(trial.promotedDate).toBe('2024-01-15');
+  });
+
+  it('handles invalid or unrecognised enum values and defaults appropriately', () => {
+    const trial = schema.makeCompletedTrial({
+      certainty: 'invalid-certainty',
+      evidenceType: 'invalid-type',
+      verificationStatus: 'invalid-status',
+      population: { n: 'not-a-number' },
+      lastReviewed: '2025-05-01'
+    });
+
+    expect(trial.certainty).toBe('moderate');
+    expect(trial.evidenceType).toBe('rct');
+    expect(trial.verificationStatus).toBe('todo-verify');
+    expect(trial.population.n).toBe(0);
+    // promotedDate defaults to lastReviewed when omitted or non-string
+    expect(trial.promotedDate).toBe('2025-05-01');
+  });
+});
+
 describe('Schema validators', () => {
   it('rejects missing primary endpoint result on completed trial', () => {
     const bad = schema.makeCompletedTrial({ id: 'fake', shortName: 'X', fullName: 'X' });
