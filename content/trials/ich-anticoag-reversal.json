@@ -32,5 +32,22 @@
     "certainty": "moderate",
     "lastReviewed": "2026-08-22",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "andexanet-vs-4fpcc-meta",
+    "name": "Andexanet vs 4F-PCC meta-analysis",
+    "fullName": "Efficacy and Safety of Andexanet Alfa Versus Four Factor Prothrombin Complex Concentrate for Emergent Reversal of Factor Xa Inhibitor Associated Intracranial Hemorrhage: A Systematic Review and Meta-Analysis",
+    "category": "ich-anticoag-reversal",
+    "population": "n=2977, Not reported in aggregate across the 16 included studies, NIHSS Not reported, Emergent reversal on presentation, as defined by each source study; literature searched to 16 May 2024",
+    "finding": "Mixed, and internally inconsistent. Haemostatic efficacy favoured andexanet (RR 1.10). Overall mortality was lower with andexanet (RR 0.67), yet 30-day mortality specifically DID NOT differ (RR 0.82). Thromboembolic events were MORE frequent with andexanet (RR 1.47).",
+    "teachingPoint": "Teaches that no randomised trial has ever compared andexanet with 4F-PCC head to head, and that US practice reverted to 4F-PCC because andexanet was withdrawn from the US market in December 2025 — a regulatory and supply consequence, not a demonstration that 4F-PCC works better.",
+    "PMID": "39379749",
+    "year": 2025,
+    "citationIds": [
+      "cit-andexanet-vs-4fpcc-meta-2025"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

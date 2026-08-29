@@ -1,0 +1,36 @@
+[
+  {
+    "id": "save-cpap",
+    "name": "SAVE",
+    "fullName": "Sleep Apnea Cardiovascular Endpoints — CPAP for Prevention of Cardiovascular Events in Obstructive Sleep Apnea (SAVE)",
+    "category": "sleep-apnea-stroke",
+    "population": "n=2717, 45-75 years; most participants were men, NIHSS not reported — enrolment was by established coronary or cerebrovascular disease, not stroke severity, mean follow-up 3.7 years",
+    "finding": "DID NOT meet: a primary end-point event occurred in 229 CPAP participants (17.0%) and 207 usual-care participants (15.4%) — the point estimate favors usual care",
+    "teachingPoint": "Teaches that CPAP should be offered for symptoms — sleepiness, snoring, quality of life — and not promised as a way to prevent recurrent vascular events; the largest randomized test found no event reduction.",
+    "PMID": "27571048",
+    "year": 2016,
+    "citationIds": [
+      "cit-save-2016"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "poststroke-pap-meta-2026",
+    "name": "Post-stroke PAP meta-analysis",
+    "fullName": "Post-stroke sleep disordered breathing and the effect of positive airway pressure treatment: an updated systematic review and meta-analysis of randomized controlled trials",
+    "category": "sleep-apnea-stroke",
+    "population": "n=1457, not reported in the abstract, NIHSS not reported in the abstract, records searched from inception in July 2024 up to September 2024; 72,387 records screened",
+    "finding": "PAP reduced recurrent vascular events",
+    "teachingPoint": "Keeps the post-stroke sleep-apnea question open rather than closing it: a pooled signal for fewer recurrent vascular events sits against a larger neutral trial, and neither supports promising a patient that PAP will improve functional independence.",
+    "PMID": "41297370",
+    "year": 2026,
+    "citationIds": [
+      "cit-poststroke-pap-2026"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

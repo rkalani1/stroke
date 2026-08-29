@@ -1,0 +1,45 @@
+{
+  "id": "eso-esmint-mechanical-thrombectomy-2019",
+  "title": "European Stroke Organisation (ESO) - European Society for Minimally Invasive Neurological Therapy (ESMINT) Guidelines on Mechanical Thrombectomy in Acute Ischaemic Stroke, Endorsed by Stroke Alliance for Europe (SAFE)",
+  "shortTitle": "ESO/ESMINT Mechanical Thrombectomy 2019",
+  "society": "ESO",
+  "doi": "10.1177/2396987319832140",
+  "publisherUrl": "https://doi.org/10.1177/2396987319832140",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/31165090/",
+  "pmid": "31165090",
+  "recommendations": [
+    {
+      "section": "Thrombectomy within 6 hours",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "High certainty",
+      "text": "High-quality evidence was found to recommend mechanical thrombectomy plus best medical management, including intravenous thrombolysis whenever indicated, to improve functional outcome in patients with large-vessel-occlusion-related acute ischaemic stroke within 6 hours after symptom onset.",
+      "page": null
+    },
+    {
+      "section": "6 to 24 hour time window",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Moderate-quality evidence was found to recommend mechanical thrombectomy plus best medical management in the 6 to 24 hour time window in patients meeting the eligibility criteria of the published randomised trials.",
+      "page": null
+    },
+    {
+      "section": "Scope and method",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "An interdisciplinary working group identified 15 relevant questions, performed systematic reviews and meta-analyses of the literature, assessed the quality of the available evidence and wrote evidence-based recommendations following GRADE; expert opinion was provided where evidence was insufficient. The document further details prehospital management, patient selection based on clinical and imaging characteristics, and treatment modalities.",
+      "page": null
+    },
+    {
+      "section": "Acknowledged evidence gaps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline states that further randomised trials are needed to inform clinical decision-making with regard to the mothership and drip-and-ship approaches and to anaesthesia modalities during thrombectomy, and to determine whether thrombectomy is beneficial in patients with low stroke severity or large infarct volume.",
+      "page": null
+    }
+  ]
+}

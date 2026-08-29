@@ -15,5 +15,56 @@
     "certainty": "moderate",
     "lastReviewed": "2026-08-15",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "attraction",
+    "name": "ATTRACTION",
+    "fullName": "Adjunct Tirofiban Treatment after Successful Endovascular Thrombectomy Recanalisation in Acute Anterior Circulation Ischaemic Stroke",
+    "category": "acute-antithrombotic-adjuncts",
+    "population": "n=1380, median 71 y (IQR 62-77); 591 (43%) female, 789 (57%) male, NIHSS not restricted by a protocol NIHSS band (anterior-circulation LVO), Randomization after successful reperfusion by thrombectomy",
+    "finding": "MET superiority, favoring tirofiban: 49% (340/689) vs 43% (299/691)",
+    "teachingPoint": "Reopens the adjunctive-antiplatelet question specifically for the post-reperfusion window, while the numerically higher symptomatic haemorrhage and the near-uniformly Han Chinese cohort mean it is not yet a general recommendation.",
+    "PMID": "42341797",
+    "year": 2026,
+    "citationIds": [
+      "cit-attraction-2026"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "rescue-bt",
+    "name": "RESCUE BT",
+    "fullName": "Effect of Intravenous Tirofiban vs Placebo Before Endovascular Thrombectomy on Functional Outcomes in Large Vessel Occlusion Stroke",
+    "category": "acute-antithrombotic-adjuncts",
+    "population": "n=948, mean 67 y; 391 (41.2%) women, NIHSS not restricted by a protocol NIHSS band (proximal intracranial LVO), ≤24 h from time last known well",
+    "finding": "DID NOT meet superiority — neutral: median (IQR) 90-day mRS 3 (1-4) with tirofiban vs 3 (1-4) with placebo",
+    "teachingPoint": "Does not support giving intravenous tirofiban before endovascular thrombectomy: 90-day disability was unchanged and symptomatic hemorrhage was numerically higher.",
+    "PMID": "35943471",
+    "year": 2022,
+    "citationIds": [
+      "cit-rescue-bt-2022"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "most",
+    "name": "MOST",
+    "fullName": "Multi-arm Optimization of Stroke Thrombolysis: Adjunctive Intravenous Argatroban or Eptifibatide for Ischemic Stroke",
+    "category": "acute-antithrombotic-adjuncts",
+    "population": "n=514, adults ≥18 y, NIHSS NIHSS ≥6 before intravenous thrombolysis, IV thrombolysis within 3 h of onset; study drug started within 75 min of the start of thrombolysis",
+    "finding": "DID NOT meet superiority for either adjunct — mean (±SD) utility-weighted 90-day mRS 5.2±3.7 with argatroban, 6.3±3.2 with eptifibatide and 6.8±3.0 with placebo; both adjuncts were numerically WORSE than placebo",
+    "teachingPoint": "Argues against adding intravenous argatroban or eptifibatide to IV thrombolysis in the first hours after treatment: no reduction in disability, and a numerical mortality excess the trial was stopped too early to characterise.",
+    "PMID": "39231343",
+    "year": 2024,
+    "citationIds": [
+      "cit-most-2024"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

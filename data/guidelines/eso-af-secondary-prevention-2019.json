@@ -1,0 +1,45 @@
+{
+  "id": "eso-af-secondary-prevention-2019",
+  "title": "Antithrombotic treatment for secondary prevention of stroke and other thromboembolic events in patients with stroke or transient ischemic attack and non-valvular atrial fibrillation: A European Stroke Organisation guideline",
+  "shortTitle": "ESO Atrial Fibrillation Secondary Prevention 2019",
+  "society": "ESO",
+  "doi": "10.1177/2396987319841187",
+  "publisherUrl": "https://doi.org/10.1177/2396987319841187",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/31984228/",
+  "pmid": "31984228",
+  "recommendations": [
+    {
+      "section": "Oral anticoagulation versus antiplatelet therapy",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "In patients with atrial fibrillation and previous stroke or transient ischaemic attack, oral anticoagulants reduce the risk of recurrence compared with antiplatelets or no antithrombotic treatment.",
+      "page": null
+    },
+    {
+      "section": "Choice of anticoagulant",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Non-vitamin K antagonist oral anticoagulants are preferred over vitamin K antagonists because they have a lower risk of major bleeding and death; for patients with atrial fibrillation and ischaemic stroke or transient ischaemic attack they are the preferred treatment for secondary prevention of recurrent stroke or thromboembolism.",
+      "page": null
+    },
+    {
+      "section": "Timing, prior intracerebral haemorrhage and special subgroups",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Recommendations are weak regarding the timing of treatment, regarding (re-)starting oral anticoagulants in patients with previous intracerebral haemorrhage, and regarding treatment in specific patient subgroups including those of older age and those with cognitive impairment, renal failure or small vessel disease, because of a lack of strong evidence.",
+      "page": null
+    },
+    {
+      "section": "Acknowledged evidence gaps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Further research is required to determine the best timing for initiating oral anticoagulants after an acute ischaemic stroke, whether or not oral anticoagulants should be (re)started in patients with a history of intracerebral haemorrhage, and the best secondary preventive treatment in specific subgroups.",
+      "page": null
+    }
+  ]
+}

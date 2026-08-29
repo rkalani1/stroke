@@ -1,0 +1,70 @@
+[
+  {
+    "id": "cadiss",
+    "name": "CADISS",
+    "fullName": "Cervical Artery Dissection in Stroke Study — antiplatelet treatment compared with anticoagulation treatment for cervical artery dissection",
+    "category": "cervical-dissection",
+    "population": "n=250, Adults; mean age not reported in the abstract. Dissection is the commonest identified cause of ischaemic stroke in adults under 50, so the enrolled population is a young-stroke population., NIHSS Severity not reported as NIHSS. 224/250 presented with stroke or transient ischaemic attack; 26/250 presented with local symptoms only (headache, neck pain or Horner syndrome)., Symptom onset within the previous 7 days; mean time to randomisation 3.65 days (SD 1.91)",
+    "finding": "NO DIFFERENCE DETECTED, and the trial was far too small to detect one: stroke or death occurred in 3/126 (2%) assigned antiplatelet versus 1/124 (1%) assigned anticoagulant. Only 4 of all 250 patients (2%) had a recurrent stroke, all ipsilateral — an event rate far below what observational series had predicted.",
+    "teachingPoint": "Establishes that recurrent stroke after cervical artery dissection is uncommon (about 2% at 3 months) and that neither antiplatelet nor anticoagulant therapy has been shown superior — so the choice can be made on bleeding risk, adherence and cost rather than on a presumed efficacy gap.",
+    "PMID": "25684164",
+    "year": 2015,
+    "citationIds": [
+      "cit-cadiss-2015"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "treat-cad",
+    "name": "TREAT-CAD",
+    "fullName": "Aspirin versus anticoagulation in cervical artery dissection (TREAT-CAD): an open-label, randomised, non-inferiority trial",
+    "category": "cervical-dissection",
+    "population": "n=194, Older than 18 years; the abstract frames cervical artery dissection as a major cause of stroke in people aged under 50, NIHSS Not reported as NIHSS; entry required symptomatic, MRI-verified cervical artery dissection, Randomised within 2 weeks of symptom onset; treatment given for 90 days",
+    "finding": "DID NOT meet non-inferiority. The primary endpoint occurred in 21/91 (23%) on aspirin versus 12/82 (15%) on vitamin K antagonist; the upper bound of the confidence interval (21%) exceeded the 12% non-inferiority margin, so aspirin was NOT shown to be non-inferior. Note what this does and does not say: failing to show non-inferiority is not the same as showing inferiority.",
+    "teachingPoint": "Aspirin was not shown to be non-inferior to a vitamin K antagonist after cervical artery dissection, and every ischaemic stroke in the trial occurred on aspirin — enough to keep anticoagulation a reasonable option in dissection, particularly where CADISS offers no reassurance to the contrary.",
+    "PMID": "33765420",
+    "year": 2021,
+    "citationIds": [
+      "cit-treat-cad-2021"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "cad-antithrombotic-ipd-meta",
+    "name": "CAD antithrombotic IPD meta-analysis",
+    "fullName": "Antithrombotic Treatment for Cervical Artery Dissection: A Systematic Review and Individual Patient Data Meta-Analysis",
+    "category": "cervical-dissection",
+    "population": "n=444, Pooled participants of CADISS and TREAT-CAD; the paper opens by noting cervical artery dissection is the most common cause of stroke in younger adults, NIHSS Not reported as NIHSS in the abstract, 90 days of follow-up in both pooled trials",
+    "finding": "DID NOT reach statistical significance: 3/218 (1.4%) with anticoagulation versus 10/226 (4.4%) with antiplatelet therapy. The direction favours anticoagulation and the point estimate is large, but with 13 events in total the confidence interval crosses 1 and the authors' own conclusion is that no significant difference was found in preventing early recurrent events.",
+    "teachingPoint": "Confirms that no randomised evidence establishes either antiplatelet or anticoagulant superiority after cervical artery dissection; both remain defensible, and the decision should turn on individual bleeding risk and practical considerations rather than on a claimed efficacy difference.",
+    "PMID": "38739383",
+    "year": 2024,
+    "citationIds": [
+      "cit-kaufmann-ipd-2024"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "stop-cad",
+    "name": "STOP-CAD",
+    "fullName": "Antithrombotic Treatment for Stroke Prevention in Cervical Artery Dissection: The STOP-CAD Study",
+    "category": "cervical-dissection",
+    "population": "n=3636, Adults with cervical artery dissection; age distribution not given in the abstract, NIHSS Not reported as NIHSS, Outcomes assessed within 30 and 180 days of dissection",
+    "finding": "NO SIGNIFICANT DIFFERENCE in ischemic stroke: anticoagulation versus antiplatelet adjusted HR 0.71 (95% CI 0.45-1.12) by day 30 and 0.80 (95% CI 0.28-2.24) by day 180. Overall event rates were low — 162 new ischemic strokes (4.4%) and 28 major hemorrhages (0.8%) by day 180 — and 87.0% of all ischemic strokes had already occurred by day 30.",
+    "teachingPoint": "Reinforces that recurrent stroke after cervical artery dissection is front-loaded into the first 30 days, and that if anticoagulation is used it is reasonable to plan a switch to an antiplatelet before 180 days, when the bleeding excess appears.",
+    "PMID": "38335240",
+    "year": 2024,
+    "citationIds": [
+      "cit-stop-cad-2024"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

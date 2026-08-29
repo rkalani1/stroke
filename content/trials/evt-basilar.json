@@ -49,5 +49,22 @@
     "certainty": "moderate",
     "lastReviewed": "2026-08-22",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "veritas",
+    "name": "VERITAS",
+    "fullName": "Endovascular therapy for acute vertebrobasilar occlusion (VERITAS): a systematic review and individual patient data meta-analysis",
+    "category": "evt-basilar",
+    "population": "n=988, median 67 y (IQR 58-74); 686 (69%) male, 302 (31%) female, NIHSS Per the contributing trials; treatment effect was heterogeneous by baseline severity, with an uncertain effect at baseline NIHSS below 10, 904 of 988 patients (91%) were randomly assigned within 12 h of estimated stroke onset",
+    "finding": "POSITIVE: mRS 0-3 in 251/556 (45%) with endovascular therapy vs 128/432 (30%) with control",
+    "teachingPoint": "Pooled across all four randomized basilar trials, endovascular therapy roughly 2.4-fold increased the odds of a favourable 90-day outcome and cut 90-day mortality from 45% to 36%, at the cost of a rise in symptomatic haemorrhage from under 1% to 5%; benefit is uncertain below NIHSS 10 and greater with more proximal occlusions.",
+    "PMID": "39674187",
+    "year": 2025,
+    "citationIds": [
+      "cit-veritas-2025"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

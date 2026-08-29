@@ -32,5 +32,90 @@
     "certainty": "high",
     "lastReviewed": "2026-07-18",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "bp-target",
+    "name": "BP-TARGET",
+    "fullName": "Safety and efficacy of intensive blood pressure lowering after successful endovascular therapy in acute ischaemic stroke (BP-TARGET)",
+    "category": "bp-post-evt",
+    "population": "n=324, adults ≥18 years, NIHSS not reported in the primary report, target achieved within 1 h of randomisation and maintained for 24 h after reperfusion",
+    "finding": "NULL - the intensive target DID NOT reduce radiographic intraparenchymal haemorrhage: 65/154 (42%) intensive vs 68/157 (43%) standard",
+    "teachingPoint": "Establishes that driving SBP to 100-129 mm Hg after successful thrombectomy does not reduce post-procedural intraparenchymal haemorrhage - it removed the main mechanistic rationale for intensive lowering before the later trials showed functional harm.",
+    "PMID": "33647246",
+    "year": 2021,
+    "citationIds": [
+      "cit-bp-target-2021"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "best-ii",
+    "name": "BEST-II",
+    "fullName": "Blood Pressure Management After Endovascular Therapy for Acute Ischemic Stroke: The BEST-II Randomized Clinical Trial",
+    "category": "bp-post-evt",
+    "population": "n=120, mean 69.6 years (SD 14.5); 69 of 120 (58%) female, NIHSS not reported in the primary report, targets initiated within 60 minutes of recanalization and maintained for 24 h",
+    "finding": "DID NOT meet the prespecified futility criteria. Mean follow-up infarct volume was 32.4 mL for the <140 mm Hg group, 50.7 mL for the <160 mm Hg group and 46.4 mL for the ≤180 mm Hg group - the MOST intensive arm had the SMALLEST infarct volume. Mean utility-weighted mRS was 0.51 (<140), 0.47 (<160) and 0.58 (≤180). This is a low probability of benefit, NOT demonstrated harm.",
+    "teachingPoint": "Teaches the difference between 'low probability of future trial success' and 'demonstrated harm' - and supplies the reason the ≤180 mm Hg ceiling, rather than a 140-160 band, remains the referenced target after thrombectomy.",
+    "PMID": "37668620",
+    "year": 2023,
+    "citationIds": [
+      "cit-best-ii-2023"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "identify-post-evt-bp",
+    "name": "IDENTIFY",
+    "fullName": "Early intensive blood pressure management after endovascular treatment in ischaemic stroke (IDENTIFY): a multicentre, open-label, blinded-endpoint, randomised controlled trial",
+    "category": "bp-post-evt",
+    "population": "n=383, adults (age range not stated in the primary report), NIHSS not reported in the primary report, endovascular treatment within 6 h of onset; blood-pressure targets maintained until 24 h post-EVT",
+    "finding": "NULL - intensive management to <130 mm Hg DID NOT improve outcomes: 130/183 (71.0%) intensive vs 135/200 (67.5%) standard",
+    "teachingPoint": "Adds a third randomised null to the post-thrombectomy BP question - a <130 mm Hg target within the 6-hour window changed neither function, haemorrhage, oedema nor death.",
+    "PMID": "40538518",
+    "year": 2025,
+    "citationIds": [
+      "cit-identify-2025"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "optimal-bp-1-year",
+    "name": "OPTIMAL-BP 1-year",
+    "fullName": "Intensive Versus Conventional Blood Pressure Lowering After Successful Endovascular Thrombectomy: OPTIMAL-BP 1-Year Outcomes",
+    "category": "bp-post-evt",
+    "population": "n=306, adults (age range not stated in the extension report; age was an adjustment covariate), NIHSS baseline NIHSS used as an adjustment covariate; distribution not reported in the extension, randomisation within 2 h after recanalization; BP targets applied for 24 h after enrolment; follow-up extended to 1 year",
+    "finding": "Functional independence at 1 year was NUMERICALLY LOWER with intensive management (40.5% vs 52.7%), but the INTENTION-TO-TREAT estimate did NOT cross conventional significance (P=0.051). Only the per-protocol analysis did (41.1% vs 54.7%, P=0.040). State this as persistence of the early signal, not as newly proven long-term harm, and never quote the per-protocol figure as if it were the intention-to-treat result.",
+    "teachingPoint": "Shows the functional cost of 24 hours of intensive post-thrombectomy BP lowering is still measurable at one year, reinforcing existing recommendations against intensive lowering after successful reperfusion.",
+    "PMID": "42212393",
+    "year": 2026,
+    "citationIds": [
+      "cit-optimal-bp-1y-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "cochrane-bp-reperfused-2026",
+    "name": "Cochrane review: BP after reperfusion",
+    "fullName": "Blood pressure management in reperfused ischemic stroke (Cochrane Database of Systematic Reviews)",
+    "category": "bp-post-evt",
+    "population": "n=4381, adults enrolled in the included randomized trials, NIHSS NIHSS pooled as an outcome, not an inclusion criterion, blood-pressure management during and after reperfusion by systemic thrombolysis or endovascular thrombectomy",
+    "finding": "Intensive management results in LITTLE TO NO clinically meaningful difference in clinical function (high-certainty evidence). IMPORTANT READING NOTE: the published abstract does not state the direction of the mRS dichotomy, so this risk ratio must NOT be paraphrased as favouring either arm.",
+    "teachingPoint": "Supplies the GRADE-graded bottom line for post-reperfusion BP: intensive systolic lowering below 160 mm Hg buys no clinically meaningful functional benefit and probably increases all-cause mortality.",
+    "PMID": "42445947",
+    "year": 2026,
+    "citationIds": [
+      "cit-cochrane-bp-reperfused-2026"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

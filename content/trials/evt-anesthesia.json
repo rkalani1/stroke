@@ -1,0 +1,87 @@
+[
+  {
+    "id": "siesta",
+    "name": "SIESTA",
+    "fullName": "Sedation vs Intubation for Endovascular Stroke Treatment (SIESTA)",
+    "category": "evt-anesthesia",
+    "population": "n=150, mean 71.5 y; 60 women (40%), NIHSS NIHSS greater than 10 required for entry; median NIHSS 17, Not specified in the abstract",
+    "finding": "DID NOT meet superiority: general anesthesia NIHSS 16.8 at admission to 13.6 at 24 h (difference -3.2, 95% CI -5.6 to -0.8) vs conscious sedation 17.2 to 13.6 (difference -3.6, 95% CI -5.5 to -1.7)",
+    "teachingPoint": "Does not support routinely avoiding general anesthesia for thrombectomy; teaches that the airway decision trades procedural stillness against hypothermia, delayed extubation and pneumonia.",
+    "PMID": "27785516",
+    "year": 2016,
+    "citationIds": [
+      "cit-siesta-2016"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "goliath",
+    "name": "GOLIATH",
+    "fullName": "General or Local Anesthesia in Intra Arterial Therapy (GOLIATH)",
+    "category": "evt-anesthesia",
+    "population": "n=128, mean 71.4 y (SD 11.4); 62 women (48.4%), NIHSS median NIHSS 18 (IQR 14-21), Within 6 h of onset",
+    "finding": "DID NOT meet the prespecified hypothesis — the difference was not statistically significant, and the numerical direction favoured general anesthesia: median (IQR) growth 8.2 (2.2-38.6) mL with general anesthesia vs 19.4 (2.4-79.0) mL with conscious sedation",
+    "teachingPoint": "General anesthesia for thrombectomy did not produce worse tissue or clinical outcomes than conscious sedation, so an anesthesia plan should be chosen on airway, agitation and workflow grounds rather than on a presumed harm from intubation.",
+    "PMID": "29340574",
+    "year": 2018,
+    "citationIds": [
+      "cit-goliath-2018"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "anstroke",
+    "name": "AnStroke",
+    "fullName": "General Anesthesia Versus Conscious Sedation for Endovascular Treatment of Acute Ischemic Stroke: The AnStroke Trial (Anesthesia During Stroke)",
+    "category": "evt-anesthesia",
+    "population": "n=90, Not specified in the abstract, NIHSS Not specified in the abstract (admission NIHSS was recorded and balanced), Not specified in the abstract",
+    "finding": "NO DIFFERENCE: mRS 0-2 achieved by 19/45 (42.2%) with general anesthesia vs 18/45 (40.0%) with conscious sedation",
+    "teachingPoint": "Adds a neutral, physiologically controlled data point: with blood pressure managed to protocol, general anesthesia and conscious sedation produced the same 3-month outcomes.",
+    "PMID": "28522637",
+    "year": 2017,
+    "citationIds": [
+      "cit-anstroke-2017"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "canvas-ii",
+    "name": "CANVAS II",
+    "fullName": "Choice of Anesthesia for Endovascular Treatment of Acute Ischemic Stroke (CANVAS II): General Anesthesia vs Conscious Sedation in Posterior Circulation Stroke",
+    "category": "evt-anesthesia",
+    "population": "n=87, mean 62 y (SD 12); 16 female (18.4%), 71 male (81.6%), NIHSS median NIHSS 15 (IQR 12-17), Not specified in the abstract",
+    "finding": "NO SIGNIFICANT DIFFERENCE: functional independence 48.8% with general anesthesia vs 54.5% with conscious sedation",
+    "teachingPoint": "In posterior-circulation thrombectomy, conscious sedation was not better than general anesthesia and frequently converted to it — so plan the airway ahead of the case rather than defaulting to sedation.",
+    "PMID": "36156704",
+    "year": 2023,
+    "citationIds": [
+      "cit-canvas-ii-2023"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "ga-vs-nonga-bayesian-meta-2026",
+    "name": "GA vs non-GA Bayesian meta-analysis",
+    "fullName": "General Anesthesia Versus Non-GA in Endovascular Therapy for Acute Ischemic Stroke: A Systematic Review and Bayesian Meta-Analysis of RCTs",
+    "category": "evt-anesthesia",
+    "population": "n=1601, mean 70.0 y; 46.6% female, NIHSS Per the contributing trials, Per the contributing trials",
+    "finding": "Signal favouring general anesthesia, but the credible interval INCLUDES the null: OR 1.24 with a 94.2% posterior probability of superiority",
+    "teachingPoint": "Across all ten randomized trials, general anesthesia improves reperfusion and shows a functional-outcome signal that does not reach the level of demonstrated benefit, while costing more intraprocedural hypotension and pneumonia — a reason to stop treating conscious sedation as the safer default, not a mandate to intubate everyone.",
+    "PMID": "42462185",
+    "year": 2026,
+    "citationIds": [
+      "cit-ga-nonga-bayesian-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

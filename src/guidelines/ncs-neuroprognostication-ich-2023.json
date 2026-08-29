@@ -1,0 +1,132 @@
+{
+  "id": "ncs-neuroprognostication-ich-2023",
+  "title": "Guidelines for Neuroprognostication in Critically Ill Adults with Intracerebral Hemorrhage",
+  "shortTitle": "NCS Neuroprognostication ICH 2023",
+  "doi": "10.1007/s12028-023-01854-7",
+  "publisherUrl": "https://link.springer.com/article/10.1007/s12028-023-01854-7",
+  "pdfUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10959839/pdf/",
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/37923968/",
+  "pmid": "37923968",
+  "recommendations": [
+    {
+      "section": "Scope and Method",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Neurocritical Care Society guideline on the formal reliability of clinical predictors used in intracerebral hemorrhage neuroprognostication, developed by narrative systematic review using GRADE and PICOTS. Six candidate clinical variables and two grading scales (the original ICH score and the max-ICH score) were assessed; 347 of 10,751 screened articles met eligibility criteria.",
+      "page": null
+    },
+    {
+      "section": "Good Practice: Timing",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Good Practice Statement 1: Aside from the most clinically devastated patients, neuroprognostication for patients with ICH should in general be deferred for at least the first 48-72 h of ICU admission (conditional recommendation, evidence not graded).",
+      "page": null
+    },
+    {
+      "section": "Good Practice: Comorbidity",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Good Practice Statement 2: Factors such as preexisting cognitive impairment, poor baseline level of functioning, preexisting illness associated with limited life expectancy, and multiorgan failure should be considered at the time of prognostication. These factors are distinct from the scope of these guidelines (strong recommendation, evidence not graded).",
+      "page": null
+    },
+    {
+      "section": "Good Practice: Outcomes That Matter",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Good Practice Statement 3: Long-term cognitive and psychological impairments are common among patients with ICH who do not necessarily meet criteria for a poor functional outcome. Care should be taken during counseling of individual patients' families to understand what outcomes would have been most valued by the patient (strong recommendation, evidence not graded).",
+      "page": null
+    },
+    {
+      "section": "Good Practice: Trajectory of Recovery",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Good Practice Statement 4: Patients and surrogates should be counseled that ultimate neurological recovery among patients with ICH may occur over a variable period of time, from several days to several months or years (strong recommendation, evidence not graded).",
+      "page": null
+    },
+    {
+      "section": "Predictor: Age",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Very low certainty",
+      "text": "When counseling patients with ICH or their surrogates, the guideline suggests the patient's age alone not be considered a reliable predictor of poor functional outcome assessed at 3 months or later (weak recommendation; very low quality evidence).",
+      "page": null
+    },
+    {
+      "section": "Predictor: Admission Examination",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Low certainty",
+      "text": "When counseling patients with ICH or their surrogates, the guideline suggests the patient's clinical examination on admission alone not be considered a reliable predictor of poor functional outcome assessed at 3 months or later (weak recommendation; low quality evidence).",
+      "page": null
+    },
+    {
+      "section": "Predictor: ICH Volume",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Low certainty",
+      "text": "When counseling patients with ICH or their surrogates, the guideline suggests the patient's ICH volume on admission alone not be considered a reliable predictor of poor functional outcome assessed at 3 months or later (weak recommendation; low quality evidence).",
+      "page": null
+    },
+    {
+      "section": "Predictor: Infratentorial Location",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Low certainty",
+      "text": "When counseling patients with ICH or their surrogates, the guideline suggests that an infratentorial location alone of the patient's ICH not be considered a reliable predictor of poor functional outcome assessed at 3 months or later (weak recommendation; low quality evidence).",
+      "page": null
+    },
+    {
+      "section": "Predictor: Intraventricular Hemorrhage",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Low certainty",
+      "text": "When counseling patients with ICH or their surrogates, the guideline suggests that the presence of intraventricular hemorrhage on admission alone not be considered a reliable predictor of poor functional outcome assessed at 3 months or later (weak recommendation; low quality evidence).",
+      "page": null
+    },
+    {
+      "section": "Predictor: Anticoagulation at Onset",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Low certainty",
+      "text": "When counseling patients with ICH or their surrogates, the guideline suggests that anticoagulation at the time of the patient's ICH onset alone not be considered a reliable predictor of poor functional outcome assessed at 3 months or later (weak recommendation; low quality evidence).",
+      "page": null
+    },
+    {
+      "section": "Grading Scale: ICH Score",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Low certainty",
+      "text": "When counseling patients with ICH or their surrogates, the guideline suggests that the patient's original ICH score not be considered a reliable predictor of poor functional outcome at 3 months or later (weak recommendation; low quality evidence).",
+      "page": null
+    },
+    {
+      "section": "Grading Scale: max-ICH Score",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Low certainty",
+      "text": "When counseling patients with ICH or their surrogates, the guideline suggests that the patient's max-ICH score not be considered a reliable predictor of poor functional outcome at 3 months or later (weak recommendation; low quality evidence).",
+      "page": null
+    },
+    {
+      "section": "Grading Scale: ICH Score for 30-Day Mortality",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Very low certainty",
+      "text": "When counseling patients with ICH or their surrogates, the guideline suggests that the patient's original ICH score not be considered a reliable predictor of mortality at 30 days (weak recommendation; very low quality evidence).",
+      "page": null
+    },
+    {
+      "section": "Bottom Line",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Although many clinical variables and grading scales are associated with poor outcome after ICH, no clinical variable alone and no sole clinical grading scale was suggested by the panel as currently reliable by itself for counseling patients with ICH and their surrogates about functional outcome at 3 months and beyond, or about 30-day mortality. Clinicians formulating a prognosis should avoid anchoring bias based solely on any one clinical variable or published grading scale.",
+      "page": null
+    }
+  ]
+}

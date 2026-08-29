@@ -1,0 +1,381 @@
+{
+  "id": "caa-icaa-wso-2025",
+  "title": "Diagnosis and management of cerebral amyloid angiopathy: a scientific statement from the International CAA Association and the World Stroke Organization",
+  "shortTitle": "ICAA/WSO CAA Statement 2025",
+  "doi": "10.1177/17474930251365861",
+  "publisherUrl": "https://journals.sagepub.com/doi/10.1177/17474930251365861",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/40721902/",
+  "pmid": "40721902",
+  "society": "ICAA/WSO",
+  "recommendations": [
+    {
+      "section": "Method note",
+      "classOfRec": "Statement",
+      "classNote": "Expert Consensus",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "This document rates each recommendation with a Strength of Recommendation (SOR) of Strong or Weak only. It assigns no separate certainty-of-evidence grade, and the authors state the SOR is \"intended to reflect both an assessment of the evidence base supporting the recommendation and the authors' opinion of the clinical importance of the recommended action.\" Recommendations are \"based on published literature or on the expert opinion of the writing group when there were insufficient published data.\" Every entry below therefore carries the document's own SOR as its strength and \"Expert Consensus\" in the certainty field, because no certainty rating exists to report.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis, Testing, and Prediction of ICH Risk",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "CAA should be suspected in patients ≥50 years of age as a potential cause of lobar ICH, cSAH, or TFNE or potential contributor to cognitive decline.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis, Testing, and Prediction of ICH Risk",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "For patients with potential CAA-related clinical and imaging findings who are <50 years of age or have multiple affected first-degree family members, a detailed family history should be taken with consideration of genetic testing for autosomal dominant mutations that cause CAA.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis, Testing, and Prediction of ICH Risk",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "CAA should be considered as a possible cause of unexplained lobar ICH, cSAH, cognitive decline, or TFNE in patients with prior exposure to relevant human cadaveric tissue (including dural grafts, embolization material derived from human dura mater, or growth hormone derived from human cadaveric pituitary glands), including in patients less than 50 years old.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis, Testing, and Prediction of ICH Risk",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Patients suspected of CAA should have brain MRI with T2*-weighted sequences sensitive to hemorrhagic lesions.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis, Testing, and Prediction of ICH Risk",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "The Boston Criteria v2.0 are recommended for diagnosis of CAA.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis, Testing, and Prediction of ICH Risk",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "For patients with a lobar ICH and CT only, where MRI is not feasible, the simplified Edinburgh Criteria are a reasonable alternative for diagnosis.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis, Testing, and Prediction of ICH Risk",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Amyloid biomarker testing, by CSF or PET, is generally not needed to diagnose CAA.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis, Testing, and Prediction of ICH Risk",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "However, amyloid biomarker testing could be considered in cases where the Boston criteria cannot be applied (e.g. in patients with mixed lobar and deep ICH or patients less than 50 years old with neurosurgical history) or when competing causes are possible.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis, Testing, and Prediction of ICH Risk",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "For patients with ICH or cSAH otherwise meeting the definition of probable CAA by Boston Criteria, the use of non-invasive CT- or MR-angiography, as indicated by local stroke guidelines, is sufficient to rule out vascular malformations or other secondary causes; intra-arterial digital subtraction angiography is probably not needed.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis, Testing, and Prediction of ICH Risk",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "It is reasonable to incorporate the presence, type and extent of prior hemorrhagic lesions on brain imaging when stratifying risk of future CAA-related ICH. Multiple prior ICHs and multifocal or disseminated cSS appear associated with highest risk of future CAA-related ICH, whereas probable CAA with CMB alone (i.e. without ICH or cSS) appears to be associated with the lowest risk among CAA patients for future ICH.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis, Testing, and Prediction of ICH Risk",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Testing for APOE genotype is not indicated to diagnose CAA or predict CAA-related ICH risk, except when applying the Edinburgh criteria or evaluating patients with AD for anti-Aβ immunotherapies such as lecanemab or donanemab.",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Agents and Vascular Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "For all patients with probable CAA, clinicians should individualize the decision to initiate or resume antithrombotic treatment according to the known risks and benefits of antithrombotic treatment, the patient's personalized risks of major ischemic vascular events, future ICH and other hemorrhagic complications, and personal preferences. Future risk of ICH in patients with CAA should be estimated using their individual CAA phenotypic markers. Similarly, risk of major ischemic vascular events should be estimated based on patient characteristics, and if available, on validated scores (e.g. CHA2DS2-VASc in patients with atrial fibrillation).",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Agents and Vascular Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In patients with probable CAA, we do not recommend antiplatelet treatment in the absence of prior symptomatic ischemic stroke, cardiovascular disease, or peripheral vascular disease (i.e. for primary prevention).",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Agents and Vascular Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In patients with probable CAA who have not experienced a prior symptomatic ICH or cSAH and are not known to have disseminated or multifocal cSS on MRI, antiplatelet or anticoagulation is reasonable where there is an established indication for secondary prevention of major ischemic vascular events or ischemic stroke prevention.",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Agents and Vascular Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In patients with CAA-related ICH and an indication for antithrombotic medication, treatment with antiplatelet monotherapy may be safe and may be considered.",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Agents and Vascular Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In patients with CAA-related ICH or cSAH and high-risk atrial fibrillation (CHA2DS2-VASc ≥2), it is unclear whether anticoagulation should be resumed or avoided. Based on the current evidence, anticoagulation may be avoided in this situation.",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Agents and Vascular Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "If anticoagulation is considered, a direct oral anticoagulant (DOAC) is preferable to a vitamin K antagonist (VKA).",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Agents and Vascular Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In patients with CAA-related ICH and high-risk atrial fibrillation (CHA2DS2-VASc ≥2), clinicians might consider left atrial appendage closure, although it is unclear whether left atrial appendage closure provides greater net benefit than medical management in this setting.",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Agents and Vascular Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In patients with probable CAA and a mechanical heart valve and additional cardioembolic risk factors (such as greater age or prior valve-related stroke), VKAs should be considered because the high risk of cardiogenic emboli likely outweighs the risk of ICH. In patients with aortic mechanical valves, no additional risk factors, and recurrent lobar ICH, clinicians might consider antiplatelet treatment in place of VKAs.",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Agents and Vascular Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In patients with probable CAA and an acute ischemic stroke due to large vessel occlusion, endovascular thrombectomy (EVT) without thrombolysis is the preferred treatment option.",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Agents and Vascular Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In patients with probable CAA and acute ischemic stroke who are not eligible for EVT, clinicians should consider intravenous thrombolysis in the absence of prior history of ICH, because of the known benefits of intravenous thrombolysis, and the limited evidence of the attenuation of net benefit in patients with CAA. However, patients with prior CAA-related ICH are likely at increased risk of hemorrhagic complications.",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Agents and Vascular Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Multiple other conditions exist for which long-term anticoagulation is indicated, for example, unprovoked or repeated deep venous thrombosis, pulmonary embolism, antiphospholipid syndrome. For these situations, it is reasonable to take an individualized and multidisciplinary approach to weighing the relative risks and benefits.",
+      "page": null
+    },
+    {
+      "section": "Vascular Risk Factors and Concomitant Medications",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In patients with ICH attributed to CAA, blood pressure (BP) should be regularly monitored to maintain a long-term target of ≤130/80 mm Hg to reduce risk of ICH recurrence. Home BP monitoring may be helpful to empower patients, improve medication adherence, and allow more frequent and accurate BP measurements to avoid BP variability.",
+      "page": null
+    },
+    {
+      "section": "Vascular Risk Factors and Concomitant Medications",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "There are insufficient data to assess the benefits versus risks of lipid-lowering agents (including statins) relative to prevention of cardiovascular events and hemorrhage occurrence in patients with CAA. Pending data from randomized trials, it may be reasonable to continue lipid-lowering therapy in high-risk patients with an established cardiovascular indication and to discontinue therapy when the indication is for primary prevention only.",
+      "page": null
+    },
+    {
+      "section": "Vascular Risk Factors and Concomitant Medications",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "The risks of continuation or initiation of selective serotonin reuptake inhibitors (SSRIs) on hemorrhage occurrence in patients with CAA are uncertain. It may be reasonable to use SSRIs in CAA patients with significant depressive symptoms.",
+      "page": null
+    },
+    {
+      "section": "Vascular Risk Factors and Concomitant Medications",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Regular long-term use of non-steroidal anti-inflammatory drugs (NSAIDs) in patients with CAA should be avoided because of increased ICH risk.",
+      "page": null
+    },
+    {
+      "section": "Vascular Risk Factors and Concomitant Medications",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In patients with CAA, healthy lifestyle modifications including avoidance of excessive alcohol consumption and smoking cessation are advisable to reduce stroke risk.",
+      "page": null
+    },
+    {
+      "section": "Transient Focal Neurological Episodes (TFNEs)",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "CAA should be suspected in patients 50 years of age or older presenting with TFNEs.",
+      "page": null
+    },
+    {
+      "section": "Transient Focal Neurological Episodes (TFNEs)",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In patients with acute presentations of CAA-related TFNEs and imaging evidence of acute cSAH, management should follow principles and guidelines similar to those for acute ICH. This includes acute blood pressure lowering (e.g. targeting a systolic blood pressure of 130-140 mm Hg), anticoagulation reversal, and avoiding antithrombotic (antiplatelet and anticoagulant) medications for 24-48 h before reassessment.",
+      "page": null
+    },
+    {
+      "section": "Transient Focal Neurological Episodes (TFNEs)",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "While CAA-related TFNEs are usually self-limited, in patients with multiple attacks causing distress, it is reasonable to consider a short course (e.g. 3-6 months) of an antiseizure drug, particularly those also effective against migraine (e.g. topiramate, lamotrigine, and levetiracetam).",
+      "page": null
+    },
+    {
+      "section": "Transient Focal Neurological Episodes (TFNEs)",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Patients with CAA-related TFNEs, particularly if associated with cSS/cSAH, are at high risk for future intracranial hemorrhage (ICH or cSAH) and should be treated like other high-risk CAA patients.",
+      "page": null
+    },
+    {
+      "section": "Anti-Aβ Immunotherapy",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "CAA appears to be associated with increased risk for adverse effects of anti-Aβ immunotherapy. As such, these treatments should not be used for the purpose of treating CAA outside the context of a research trial.",
+      "page": null
+    },
+    {
+      "section": "Anti-Aβ Immunotherapy",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In line with appropriate use recommendations, patients with early AD who are eligible for passive immunotherapy with monoclonal antibodies targeting Aβ who have prior ICH or cSAH, >4 CMBs, or foci of cSS should be excluded from treatment.",
+      "page": null
+    },
+    {
+      "section": "Management of CAA-Related ICH",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Standard acute ICH management guidelines apply to CAA-related lobar ICH.",
+      "page": null
+    },
+    {
+      "section": "Management of CAA-Related ICH",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In patients who are eligible for hematoma evacuation, CAA should not be considered a contraindication.",
+      "page": null
+    },
+    {
+      "section": "Management of CAA-Related ICH",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "When hematoma evacuation is performed, a tissue sample should be obtained for histopathological analysis.",
+      "page": null
+    },
+    {
+      "section": "CAA-Related Inflammation (CAA-ri) and Vasculitis",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "The term CAA-related inflammation (CAA-ri) is preferred for all cases, with the terms amyloid-beta related angiitis (ABRA) or CAA-related vasculitis reserved (as an additional descriptor) only where there is clear pathological evidence of an angio-destructive vasculitis.",
+      "page": null
+    },
+    {
+      "section": "CAA-Related Inflammation (CAA-ri) and Vasculitis",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "CAA-ri should be suspected in patients (usually over the age of 50 years) with: an appropriate clinical syndrome (including headache, subacute encephalopathy, seizures, focal neurological symptoms and signs, but also less severe symptoms or an acute and rapidly progressive cognitive syndrome); and appropriate radiological findings (including asymmetric cortico-subcortical confluent hyperintensities or sulcal hyperintensities/effusions on fluid-attenuated inversion recovery (FLAIR) MRI, lobar CMB (with or without cSS or ICH), or leptomeningeal enhancement) not otherwise attributable to acute ICH.",
+      "page": null
+    },
+    {
+      "section": "CAA-Related Inflammation (CAA-ri) and Vasculitis",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Patients suspected of CAA-ri should have MRI including FLAIR, T2*-weighted imaging (e.g., susceptibility sensitive SWI sequences), diffusion-weighted imaging, and contrast-enhanced T1-weighted or FLAIR MR imaging.",
+      "page": null
+    },
+    {
+      "section": "CAA-Related Inflammation (CAA-ri) and Vasculitis",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "In suspected CAA-ri, CSF testing should be performed to seek evidence of alternative diagnoses including other autoimmune or infectious diseases.",
+      "page": null
+    },
+    {
+      "section": "CAA-Related Inflammation (CAA-ri) and Vasculitis",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "If there is diagnostic doubt regarding CAA-ri after detailed non-invasive tests, or a lack of response to first-line immunotherapy, then a brain biopsy should be considered after evaluating the risks and benefits.",
+      "page": null
+    },
+    {
+      "section": "CAA-Related Inflammation (CAA-ri) and Vasculitis",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Early immunosuppression (as soon as possible after diagnosis) with corticosteroids is recommended (e.g. intravenous or oral methylprednisolone 1 g/day for 5 days, followed by an oral steroid taper, typically over 3-6 months).",
+      "page": null
+    },
+    {
+      "section": "CAA-Related Inflammation (CAA-ri) and Vasculitis",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "Response to treatment of CAA-ri should be monitored with clinical assessments (neurological and cognitive examination), repeat MRI, and blood test monitoring as needed.",
+      "page": null
+    },
+    {
+      "section": "CAA-Related Inflammation (CAA-ri) and Vasculitis",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "If there is a limited response, poor tolerability, or relapse with corticosteroids, and the diagnosis is secure, then alternative second-line longer-term immunosuppression should be considered; reasonable options include cyclophosphamide, azathioprine, or mycophenolate. Where these agents are used, local protocols should guide preventive treatments to reduce the incidence of known side-effects or complications.",
+      "page": null
+    },
+    {
+      "section": "CAA-Related Inflammation (CAA-ri) and Vasculitis",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Expert Consensus",
+      "text": "The efficacy of monoclonal antibodies (e.g. rituximab), plasma exchange and intravenous immunoglobulin in CAA-ri are unknown; further research is required.",
+      "page": null
+    }
+  ]
+}

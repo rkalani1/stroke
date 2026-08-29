@@ -1,0 +1,21 @@
+{
+  "id": "esc-endocarditis-2023",
+  "title": "2023 ESC Guidelines for the management of endocarditis: Developed by the task force on the management of endocarditis of the European Society of Cardiology (ESC) Endorsed by the European Association for Cardio-Thoracic Surgery (EACTS) and the European Association of Nuclear Medicine (EANM)",
+  "shortTitle": "2023 ESC Endocarditis Guidelines",
+  "doi": "10.1093/eurheartj/ehad193",
+  "publisherUrl": "https://academic.oup.com/eurheartj/article/44/39/3948/7243107",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/37622656/",
+  "pmid": "37622656",
+  "society": "ESC",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope-only record. PubMed carries no abstract for this document and the publisher full text does not expose its recommendation tables, so NO class-of-recommendation or level-of-evidence content is entered here. Every graded recommendation must be read from the linked source.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The current European Society of Cardiology guideline on infective endocarditis, published in European Heart Journal 2023;44(39):3948-4042 (task force chairs Delgado V, Borger MA), endorsed by EACTS and EANM. It is the reference document for the neurologic questions that arise on a stroke service when infective endocarditis is the embolic source: cerebral imaging in endocarditis, the indications and timing of cardiac surgery after a neurological complication of active endocarditis, infectious (mycotic) intracranial aneurysms, and the use of antithrombotic therapy during active endocarditis. Its published table of contents lists dedicated recommendation tables for the treatment of neurological complications, for indications and timing of cardiac surgery after neurological complications in active infective endocarditis, and for antithrombotic therapy in infective endocarditis, together with a figure on surgery for infective endocarditis following stroke. The graded content of those tables was not retrievable and is not reproduced here.",
+      "page": null
+    }
+  ]
+}

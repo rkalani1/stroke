@@ -344,11 +344,11 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   describe('Feature 7: Guideline Library & COR/LOE Catalog', () => {
     const indexData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/index.json'), 'utf8'));
 
-    it('F7-T1.1: Guideline index lists exactly 89 clinical guideline datasets totaling 862 recommendations', () => {
+    it('F7-T1.1: Guideline index lists exactly 108 clinical guideline datasets totaling 1010 recommendations', () => {
       const activeDatasets = indexData.data.filter(g => g.id !== 'landmark-trials');
-      expect(activeDatasets.length).toBe(89);
+      expect(activeDatasets.length).toBe(108);
       const totalRecs = activeDatasets.reduce((sum, g) => sum + g.recommendationCount, 0);
-      expect(totalRecs).toBe(862);
+      expect(totalRecs).toBe(1010);
     });
 
     it('F7-T1.2: Every guideline in index has valid title, shortTitle, doi, and publisherUrl', () => {
@@ -580,10 +580,10 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       const json = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/bundle.json'), 'utf8'));
       const { guidelines, trials, education, calculators, references } = json._meta.counts;
       expect(guidelines).toBe(11);
-      expect(trials).toBe(131);
+      expect(trials).toBe(237);
       expect(education).toBeGreaterThanOrEqual(32);
       expect(calculators).toBe(34);
-      expect(references).toBe(28); // 18 + 9 quick-reference sheets + 1 parenthesized-path PDF (seed regex fix)
+      expect(references).toBe(32); // 28 repo-local documents + 4 external links (registry-driven seeding)
       expect(guidelines + trials + education + calculators + references).toBeGreaterThanOrEqual(166);
     });
 
@@ -650,9 +650,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(result.stdout).toContain('Evidence Atlas validation passed');
     });
 
-    it('F14-T1.2: Evidence Atlas contains exactly 9 active trials and 131 completed trials', () => {
+    it('F14-T1.2: Evidence Atlas contains exactly 9 active trials and 237 completed trials', () => {
       expect(activeTrials.length).toBe(9);
-      expect(completedTrials.length).toBe(131);
+      expect(completedTrials.length).toBe(237);
     });
 
     it('F14-T1.3: Matcher engine coverage achieves 100% (42/42 criteria and 14/14 exclusions)', () => {

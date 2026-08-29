@@ -1,0 +1,172 @@
+[
+  {
+    "id": "qasc",
+    "name": "QASC",
+    "fullName": "Quality in Acute Stroke Care: implementation of evidence-based treatment protocols to manage fever, hyperglycaemia, and swallowing dysfunction in acute stroke",
+    "category": "stroke-unit-care",
+    "population": "n=1696, adults ≥18 y, NIHSS unselected stroke severity; benefit reported as present irrespective of severity, presentation ≤48 h of symptom onset",
+    "finding": "POSITIVE: intervention-unit patients were significantly less likely to be dead or dependent — 236/558 (42%) vs 259/449 (58%) — number needed to treat 6.4",
+    "teachingPoint": "Supports enforcing a nurse-initiated fever/glucose/swallowing protocol on admission as a package rather than leaving each element to individual discretion.",
+    "PMID": "21996470",
+    "year": 2011,
+    "citationIds": [
+      "cit-qasc-2011"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "clots-3",
+    "name": "CLOTS 3",
+    "fullName": "Effectiveness of intermittent pneumatic compression in reduction of risk of deep vein thrombosis in patients who have had a stroke (CLOTS 3)",
+    "category": "stroke-unit-care",
+    "population": "n=2876, median 76 y (IQR 67-84), NIHSS not reported; immobility used as the entry criterion instead of NIHSS, enrolled day 0 to day 3 of hospital admission",
+    "finding": "POSITIVE: proximal DVT in 122/1438 (8.5%) with IPC vs 174/1438 (12.1%) without — absolute risk reduction 3.6%",
+    "teachingPoint": "Supports applying intermittent pneumatic compression from the day of admission in stroke patients who cannot walk to the toilet unaided, with daily skin inspection.",
+    "PMID": "23727163",
+    "year": 2013,
+    "citationIds": [
+      "cit-clots3-2013"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "clots-1",
+    "name": "CLOTS 1",
+    "fullName": "Effectiveness of thigh-length graduated compression stockings to reduce the risk of deep vein thrombosis after stroke (CLOTS trial 1)",
+    "category": "stroke-unit-care",
+    "population": "n=2518, adults; trial enrolled a broadly representative immobile stroke population, NIHSS not reported; immobility used as the entry criterion, admitted to hospital within 1 week of acute stroke",
+    "finding": "DID NOT meet its aim — NULL: proximal DVT in 126/1256 (10.0%) with stockings vs 133/1262 (10.5%) without, a non-significant absolute risk reduction of 0.5%",
+    "teachingPoint": "Argues against ordering thigh-length graduated compression stockings for VTE prophylaxis after stroke, given no measured benefit and a four-fold excess of skin injury.",
+    "PMID": "19477503",
+    "year": 2009,
+    "citationIds": [
+      "cit-clots1-2009"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "prevail",
+    "name": "PREVAIL",
+    "fullName": "The efficacy and safety of enoxaparin versus unfractionated heparin for the prevention of venous thromboembolism after acute ischaemic stroke (PREVAIL Study)",
+    "category": "stroke-unit-care",
+    "population": "n=1762, adults, NIHSS stratified at randomisation: severe stroke NIHSS ≥14 vs less severe NIHSS <14, randomised within 48 h of symptom onset",
+    "finding": "POSITIVE for the composite: 68/666 (10%) with enoxaparin vs 121/669 (18%) with unfractionated heparin — a 43% relative reduction",
+    "teachingPoint": "Informs the choice between once-daily enoxaparin and twice-daily unfractionated heparin for VTE prophylaxis in non-ambulatory ischaemic stroke, with extracranial bleeding as the trade-off to weigh.",
+    "PMID": "17448820",
+    "year": 2007,
+    "citationIds": [
+      "cit-prevail-2007"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "food-tube-feeding",
+    "name": "FOOD (Trials 2 and 3)",
+    "fullName": "Effect of timing and method of enteral tube feeding for dysphagic stroke patients (FOOD): a multicentre randomised controlled trial",
+    "category": "stroke-unit-care",
+    "population": "n=1180, adults admitted with stroke and dysphagia, NIHSS not reported; dysphagia requiring consideration of tube feeding was the entry criterion, Trial 2 enrolled within 7 days of admission; Trial 3 within 30 days of admission",
+    "finding": "BOTH comparisons DID NOT meet significance on the primary endpoint. Trial 2 (early vs avoid): absolute reduction in death of 5.8% (p=0.09, not significant) but a reduction in death or poor outcome of only 1.2% (p=0.7) — i.e. the primary endpoint was flat, with the direction of effect being fewer deaths and more dependent survivors. Trial 3 (PEG vs nasogastric): absolute INCREASE in risk of death of 1.0% (p=0.9) and an increased risk of death or poor outcome of 7.8% (p=0.05), i.e. borderline evidence of harm from starting with PEG",
+    "teachingPoint": "Frames tube-feeding decisions after stroke as a survival-versus-dependency trade-off and argues against starting with a PEG rather than a nasogastric tube in newly dysphagic patients.",
+    "PMID": "15733717",
+    "year": 2005,
+    "citationIds": [
+      "cit-food-2005"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "so2s",
+    "name": "SO2S",
+    "fullName": "Effect of Routine Low-Dose Oxygen Supplementation on Death and Disability in Adults With Acute Stroke: The Stroke Oxygen Study Randomized Clinical Trial",
+    "category": "stroke-unit-care",
+    "population": "n=8003, mean 72 y (SD 13); 4398 (55%) men, NIHSS median NIHSS 5 — a predominantly mild stroke population, enrolled within 24 h of hospital admission",
+    "finding": "DID NOT meet — NULL: no benefit of prophylactic oxygen at any dose or schedule. Unadjusted OR for a better outcome 0.97 for oxygen vs control, and 1.03 for continuous vs nocturnal oxygen. No subgroup could be identified that benefited",
+    "teachingPoint": "Argues against routine prophylactic supplemental oxygen in non-hypoxic stroke patients; treat the measured desaturation, not the diagnosis.",
+    "PMID": "28973619",
+    "year": 2017,
+    "citationIds": [
+      "cit-so2s-2017"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "headpost",
+    "name": "HeadPoST",
+    "fullName": "Head Positioning in Acute Stroke Trial: cluster-randomized, crossover trial of head positioning in acute stroke",
+    "category": "stroke-unit-care",
+    "population": "n=11093, adults with acute stroke, NIHSS not reported in the primary publication abstract; 85% of strokes were ischaemic, position initiated soon after hospital admission; median 14 h from symptom onset (IQR 5-35 h) and maintained for 24 h",
+    "finding": "DID NOT meet — NULL: no significant shift in the 90-day mRS distribution between lying flat and sitting up",
+    "teachingPoint": "Removes routine head-of-bed position from the list of things that change stroke outcome, leaving it a patient-specific judgement about perfusion or aspiration risk.",
+    "PMID": "28636854",
+    "year": 2017,
+    "citationIds": [
+      "cit-headpost-2017"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "pass-preventive-antibiotics",
+    "name": "PASS",
+    "fullName": "The Preventive Antibiotics in Stroke Study (PASS): a pragmatic randomised open-label masked endpoint clinical trial",
+    "category": "stroke-unit-care",
+    "population": "n=2550, adults with acute stroke, NIHSS not reported in the primary publication abstract, randomised within 24 h of symptom onset",
+    "finding": "DID NOT meet — NULL: preventive ceftriaxone did not affect the distribution of 90-day mRS scores",
+    "teachingPoint": "Argues against prophylactic antibiotics as part of the stroke admission bundle; antibiotics are for documented infection.",
+    "PMID": "25612858",
+    "year": 2015,
+    "citationIds": [
+      "cit-pass-2015"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "shine-glucose",
+    "name": "SHINE",
+    "fullName": "Stroke Hyperglycemia Insulin Network Effort (SHINE): Intensive vs Standard Treatment of Hyperglycemia and Functional Outcome in Patients With Acute Ischemic Stroke",
+    "category": "stroke-unit-care",
+    "population": "n=1151, mean 66 y (SD 13.1); 529 (46%) women, NIHSS not reported in the primary publication abstract; the primary outcome was adjusted for baseline stroke severity, enrolled within 12 h of stroke onset; treatment for up to 72 h",
+    "finding": "DID NOT meet — NULL, and enrolment was STOPPED FOR FUTILITY at a prespecified interim analysis: favourable outcome in 119/581 (20.5%) with intensive control vs 123/570 (21.6%) with standard control",
+    "teachingPoint": "Argues against intensive IV insulin targeting 80-130 mg/dL after ischaemic stroke; a moderate target avoids the hypoglycaemia without giving up any measured functional benefit.",
+    "PMID": "31334795",
+    "year": 2019,
+    "citationIds": [
+      "cit-shine-2019"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "avert-dose-response",
+    "name": "AVERT dose-response",
+    "fullName": "Prespecified dose-response analysis for A Very Early Rehabilitation Trial (AVERT)",
+    "category": "stroke-unit-care",
+    "population": "n=2104, aged ≥18 y, NIHSS baseline stroke severity was a modelled covariate and a top CART splitting variable; range not stated in the abstract, admitted to a stroke unit within 24 h of stroke onset",
+    "finding": "The two dose dimensions pull in OPPOSITE directions: greater daily frequency of out-of-bed sessions improved the odds of a favourable outcome (OR 1.13), while greater amount of mobilisation in minutes per day REDUCED the odds of a good outcome (OR 0.94), each holding the other and time to first mobilisation constant",
+    "teachingPoint": "Supports framing early mobilisation orders around short, frequent out-of-bed sessions rather than total minutes, while flagging that the randomised dose question was not settled by this analysis.",
+    "PMID": "26888985",
+    "year": 2016,
+    "citationIds": [
+      "cit-avert-dose-2016"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

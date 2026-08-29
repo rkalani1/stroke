@@ -1,0 +1,36 @@
+[
+  {
+    "id": "ceres-tandem",
+    "name": "CERES-TANDEM",
+    "fullName": "Emergent Carotid Stenting for Acute Anterior Circulation Ischemic Stroke With Tandem Lesions: The Multicenter CERES-TANDEM Study",
+    "category": "tandem-lesions",
+    "population": "n=4053, mean 70 y; 65.5% female, NIHSS Not specified in the abstract, Within 24 h of symptom onset (presentation beyond 24 h was an exclusion)",
+    "finding": "Emergent carotid stenting was ASSOCIATED WITH a better mRS shift after IPTW weighting",
+    "teachingPoint": "Provides the largest real-world signal that stenting the cervical carotid during thrombectomy for a tandem lesion tracks with better 90-day recovery without more symptomatic haemorrhage — an association to weigh, not a randomized result to follow.",
+    "PMID": "41453121",
+    "year": 2026,
+    "citationIds": [
+      "cit-ceres-tandem-2026"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "iris-tandem-stenting",
+    "name": "IRIS tandem-lesion carotid-stenting analysis",
+    "fullName": "Acute Carotid Stenting for Tandem Lesions in Patients Randomized to Endovascular Treatment With or Without Thrombolysis: Results From the IRIS Individual Participant Data Meta-Analysis",
+    "category": "tandem-lesions",
+    "population": "n=340, Not specified in the abstract, NIHSS Not specified in the abstract, Per the contributing trials; all patients presented directly to endovascular-capable centres",
+    "finding": "Acute carotid stenting was ASSOCIATED WITH better 90-day functional outcomes; confirmed on inverse-probability-of-treatment weighting (adjusted common OR 1.66, 95% CI 1.08-2.54)",
+    "teachingPoint": "Teaches that prior IV thrombolysis did not modify the association between acute carotid stenting and 90-day outcome in tandem lesions — evidence against treating a preceding lytic as an automatic contraindication to stenting, while the randomized question remains open.",
+    "PMID": "41104449",
+    "year": 2026,
+    "citationIds": [
+      "cit-iris-tandem-2026"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

@@ -1,0 +1,45 @@
+{
+  "id": "eso-glycaemia-2018",
+  "title": "European Stroke Organisation (ESO) guidelines on glycaemia management in acute stroke",
+  "shortTitle": "ESO Glycaemia Management 2018",
+  "society": "ESO",
+  "doi": "10.1177/2396987317742065",
+  "publisherUrl": "https://doi.org/10.1177/2396987317742065",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/31008333/",
+  "pmid": "31008333",
+  "recommendations": [
+    {
+      "section": "Tight glycaemic control with intravenous insulin",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Low certainty",
+      "text": "The guideline suggests against the routine use of tight glycaemic control with intravenous insulin as a means to improve outcomes in patients with acute ischaemic or haemorrhagic stroke.",
+      "page": null
+    },
+    {
+      "section": "Trial evidence for tight glycaemic control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "Low-quality evidence was found from clinical trials in ischaemic or haemorrhagic stroke exploring intravenous insulin aimed at tight glycaemic control with different glucose level targets. None of these trials, nor their meta-analysis, demonstrated any significant benefit of tight glycaemic control on functional outcome or survival, and they showed an increased risk of hypoglycaemia.",
+      "page": null
+    },
+    {
+      "section": "Strength of the recommendations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The currently available data about the management of glycaemia in patients with acute stroke are limited and the strengths of the recommendations are therefore weak. The guideline notes that this does not prevent hyperglycaemia in acute stroke patients from being treated as in any other hospitalised patient.",
+      "page": null
+    },
+    {
+      "section": "Background",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Hyperglycaemia is a frequent complication in acute stroke that has been shown to be independently associated with larger infarct size, haematoma growth, poor clinical outcome and mortality.",
+      "page": null
+    }
+  ]
+}

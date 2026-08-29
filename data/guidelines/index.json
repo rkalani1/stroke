@@ -3,8 +3,8 @@
     "endpoint": "guidelines-index",
     "schemaVersion": "1.0.0",
     "appVersion": "6.23.0",
-    "checksum": "sha256:b851087ab16cde888f35e1b84b5eb1be",
-    "count": 89,
+    "checksum": "sha256:4f341251a23565a57db93e890ec8bde8",
+    "count": 108,
     "source": "Guideline metadata bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
@@ -301,6 +301,26 @@
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-lv-systolic-dysfunction-2026.json"
     },
     {
+      "id": "aha-lv-thrombus-2022",
+      "title": "Management of Patients at Risk for and With Left Ventricular Thrombus: A Scientific Statement From the American Heart Association",
+      "shortTitle": "AHA LV Thrombus Statement 2022",
+      "doi": "10.1161/CIR.0000000000001092",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000001092",
+      "pdfUrl": null,
+      "recommendationCount": 1,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-lv-thrombus-2022.json"
+    },
+    {
+      "id": "aha-mis-ich-evacuation-2026",
+      "title": "Evidence Update for Minimally Invasive Surgical Evacuation of Supratentorial Spontaneous Intracerebral Hemorrhage: A Science Advisory From the American Heart Association",
+      "shortTitle": "AHA MIS ICH Evacuation Advisory 2026",
+      "doi": "10.1161/STR.0000000000000529",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000529",
+      "pdfUrl": null,
+      "recommendationCount": 1,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-mis-ich-evacuation-2026.json"
+    },
+    {
       "id": "aha-nursing-role-psychosocial-2024",
       "title": "Nursing's Role in Psychosocial Health Management After a Stroke Event: A Scientific Statement From the American Heart Association",
       "shortTitle": "Nursing's Role in Psychosocial Health Management After a Stroke Event",
@@ -381,6 +401,16 @@
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-standards-postacute-rehabilitation-2025.json"
     },
     {
+      "id": "aha-stroke-rehabilitation-2026",
+      "title": "2026 Guideline for Adult Stroke Rehabilitation and Recovery: A Guideline From the American Heart Association and American Stroke Association",
+      "shortTitle": "2026 AHA/ASA Stroke Rehabilitation Guideline",
+      "doi": "10.1161/STR.0000000000000536",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000536",
+      "pdfUrl": null,
+      "recommendationCount": 1,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-stroke-rehabilitation-2026.json"
+    },
+    {
       "id": "aha-targeted-nursing-interventions-2025",
       "title": "Targeted Nursing Interventions for Improving Stroke Care and Outcomes in the Rural Setting: A Scientific Statement From the American Heart Association",
       "shortTitle": "Targeted Nursing Interventions for Improving Stroke Care and Outcomes",
@@ -431,6 +461,16 @@
       "url": "https://rkalani1.github.io/stroke/data/guidelines/ais-2026.json"
     },
     {
+      "id": "caa-icaa-wso-2025",
+      "title": "Diagnosis and management of cerebral amyloid angiopathy: a scientific statement from the International CAA Association and the World Stroke Organization",
+      "shortTitle": "ICAA/WSO CAA Statement 2025",
+      "doi": "10.1177/17474930251365861",
+      "publisherUrl": "https://journals.sagepub.com/doi/10.1177/17474930251365861",
+      "pdfUrl": null,
+      "recommendationCount": 46,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/caa-icaa-wso-2025.json"
+    },
+    {
       "id": "cancer-stroke-2026",
       "title": "AHA Scientific Statement 2026: Classification and Management of Ischemic Stroke in Patients With Active Cancer",
       "shortTitle": "Cancer-Associated Stroke 2026",
@@ -459,6 +499,36 @@
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456",
       "recommendationCount": 5,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/cvt-2024.json"
+    },
+    {
+      "id": "esc-endocarditis-2023",
+      "title": "2023 ESC Guidelines for the management of endocarditis: Developed by the task force on the management of endocarditis of the European Society of Cardiology (ESC) Endorsed by the European Association for Cardio-Thoracic Surgery (EACTS) and the European Association of Nuclear Medicine (EANM)",
+      "shortTitle": "2023 ESC Endocarditis Guidelines",
+      "doi": "10.1093/eurheartj/ehad193",
+      "publisherUrl": "https://academic.oup.com/eurheartj/article/44/39/3948/7243107",
+      "pdfUrl": null,
+      "recommendationCount": 1,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/esc-endocarditis-2023.json"
+    },
+    {
+      "id": "eso-af-secondary-prevention-2019",
+      "title": "Antithrombotic treatment for secondary prevention of stroke and other thromboembolic events in patients with stroke or transient ischemic attack and non-valvular atrial fibrillation: A European Stroke Organisation guideline",
+      "shortTitle": "ESO Atrial Fibrillation Secondary Prevention 2019",
+      "doi": "10.1177/2396987319841187",
+      "publisherUrl": "https://doi.org/10.1177/2396987319841187",
+      "pdfUrl": null,
+      "recommendationCount": 4,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-af-secondary-prevention-2019.json"
+    },
+    {
+      "id": "eso-anticoagulant-reversal-ich-2019",
+      "title": "European Stroke Organisation Guideline on Reversal of Oral Anticoagulants in Acute Intracerebral Haemorrhage",
+      "shortTitle": "ESO Anticoagulant Reversal in ICH 2019",
+      "doi": "10.1177/2396987319849763",
+      "publisherUrl": "https://doi.org/10.1177/2396987319849763",
+      "pdfUrl": null,
+      "recommendationCount": 7,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-anticoagulant-reversal-ich-2019.json"
     },
     {
       "id": "eso-aphasia-rehab-2025",
@@ -521,6 +591,16 @@
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-covert-csvd-2021.json"
     },
     {
+      "id": "eso-cvt-2017",
+      "title": "European Stroke Organization guideline for the diagnosis and treatment of cerebral venous thrombosis - Endorsed by the European Academy of Neurology",
+      "shortTitle": "ESO Cerebral Venous Thrombosis 2017",
+      "doi": "10.1177/2396987317719364",
+      "publisherUrl": "https://doi.org/10.1177/2396987317719364",
+      "pdfUrl": null,
+      "recommendationCount": 9,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-cvt-2017.json"
+    },
+    {
       "id": "eso-dysphagia-2021",
       "title": "European Stroke Organisation and European Society for Swallowing Disorders guideline for the diagnosis and treatment of post-stroke dysphagia",
       "shortTitle": "European Stroke Organisation and European Society for Swallowing Disorders",
@@ -541,6 +621,16 @@
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-ean-poststroke-cognition-2021.json"
     },
     {
+      "id": "eso-esmint-mechanical-thrombectomy-2019",
+      "title": "European Stroke Organisation (ESO) - European Society for Minimally Invasive Neurological Therapy (ESMINT) Guidelines on Mechanical Thrombectomy in Acute Ischaemic Stroke, Endorsed by Stroke Alliance for Europe (SAFE)",
+      "shortTitle": "ESO/ESMINT Mechanical Thrombectomy 2019",
+      "doi": "10.1177/2396987319832140",
+      "publisherUrl": "https://doi.org/10.1177/2396987319832140",
+      "pdfUrl": null,
+      "recommendationCount": 4,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-esmint-mechanical-thrombectomy-2019.json"
+    },
+    {
       "id": "eso-esmint-thrombectomy-2022",
       "title": "European Stroke Organisation - European Society for Minimally Invasive Neurological Therapy expedited recommendation on indication for intravenous thrombolysis before mechanical thrombectomy in patients with acute ischaemic stroke and anterior circulation large vessel occlusion",
       "shortTitle": "European Stroke Organisation - European Society for Minimally Invasive",
@@ -549,6 +639,16 @@
       "pdfUrl": null,
       "recommendationCount": 1,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-esmint-thrombectomy-2022.json"
+    },
+    {
+      "id": "eso-glycaemia-2018",
+      "title": "European Stroke Organisation (ESO) guidelines on glycaemia management in acute stroke",
+      "shortTitle": "ESO Glycaemia Management 2018",
+      "doi": "10.1177/2396987317742065",
+      "publisherUrl": "https://doi.org/10.1177/2396987317742065",
+      "pdfUrl": null,
+      "recommendationCount": 4,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-glycaemia-2018.json"
     },
     {
       "id": "eso-ich-2025",
@@ -569,6 +669,16 @@
       "pdfUrl": null,
       "recommendationCount": 1,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-intracranial-atherosclerosis-2022.json"
+    },
+    {
+      "id": "eso-ivt-2021",
+      "title": "European Stroke Organisation (ESO) guidelines on intravenous thrombolysis for acute ischaemic stroke",
+      "shortTitle": "ESO Intravenous Thrombolysis 2021",
+      "doi": "10.1177/2396987321989865",
+      "publisherUrl": "https://doi.org/10.1177/2396987321989865",
+      "pdfUrl": null,
+      "recommendationCount": 4,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-ivt-2021.json"
     },
     {
       "id": "eso-lacunar-2024",
@@ -629,6 +739,16 @@
       "pdfUrl": null,
       "recommendationCount": 5,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-pfo-2024.json"
+    },
+    {
+      "id": "eso-poststroke-seizures-2017",
+      "title": "European Stroke Organisation guidelines for the management of post-stroke seizures and epilepsy",
+      "shortTitle": "ESO Post-Stroke Seizures and Epilepsy 2017",
+      "doi": "10.1177/2396987317705536",
+      "publisherUrl": "https://doi.org/10.1177/2396987317705536",
+      "pdfUrl": null,
+      "recommendationCount": 4,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-poststroke-seizures-2017.json"
     },
     {
       "id": "eso-sah-2026",
@@ -701,6 +821,16 @@
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-subclinical-af-screening-2022.json"
     },
     {
+      "id": "eso-temperature-2015",
+      "title": "European Stroke Organisation (ESO) guidelines for the management of temperature in patients with acute ischemic stroke",
+      "shortTitle": "ESO Temperature Management 2015",
+      "doi": "10.1111/ijs.12579",
+      "publisherUrl": "https://doi.org/10.1111/ijs.12579",
+      "pdfUrl": null,
+      "recommendationCount": 4,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-temperature-2015.json"
+    },
+    {
       "id": "eso-tenecteplase-2023",
       "title": "European Stroke Organisation (ESO) expedited recommendation on tenecteplase for acute ischaemic stroke",
       "shortTitle": "European Stroke Organisation (ESO) expedited recommendation on tenecteplase",
@@ -741,6 +871,16 @@
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-visual-2025.json"
     },
     {
+      "id": "eso-vte-prophylaxis-2016",
+      "title": "European Stroke Organisation (ESO) guidelines for prophylaxis for venous thromboembolism in immobile patients with acute ischaemic stroke",
+      "shortTitle": "ESO VTE Prophylaxis in Immobile Stroke 2016",
+      "doi": "10.1177/2396987316628384",
+      "publisherUrl": "https://doi.org/10.1177/2396987316628384",
+      "pdfUrl": null,
+      "recommendationCount": 6,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-vte-prophylaxis-2016.json"
+    },
+    {
       "id": "ich-2022",
       "title": "AHA/ASA Spontaneous ICH Guideline 2022",
       "shortTitle": "ICH 2022",
@@ -759,6 +899,56 @@
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000514",
       "recommendationCount": 3,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/maternal-stroke-2026.json"
+    },
+    {
+      "id": "ncs-ich-seizure-prophylaxis-2024",
+      "title": "Guidelines for Seizure Prophylaxis in Patients Hospitalized with Nontraumatic Intracerebral Hemorrhage: A Clinical Practice Guideline for Health Care Professionals from the Neurocritical Care Society",
+      "shortTitle": "NCS ICH Seizure Prophylaxis 2024",
+      "doi": "10.1007/s12028-024-02183-z",
+      "publisherUrl": "https://link.springer.com/article/10.1007/s12028-024-02183-z",
+      "pdfUrl": null,
+      "recommendationCount": 5,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-ich-seizure-prophylaxis-2024.json"
+    },
+    {
+      "id": "ncs-neuroprognostication-ais-2026",
+      "title": "Guidelines for Neuroprognostication in Critically ill Adults with Acute Ischemic Stroke",
+      "shortTitle": "NCS Neuroprognostication AIS 2026",
+      "doi": "10.1007/s12028-026-02486-3",
+      "publisherUrl": "https://link.springer.com/article/10.1007/s12028-026-02486-3",
+      "pdfUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13249629/pdf/",
+      "recommendationCount": 15,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-neuroprognostication-ais-2026.json"
+    },
+    {
+      "id": "ncs-neuroprognostication-ich-2023",
+      "title": "Guidelines for Neuroprognostication in Critically Ill Adults with Intracerebral Hemorrhage",
+      "shortTitle": "NCS Neuroprognostication ICH 2023",
+      "doi": "10.1007/s12028-023-01854-7",
+      "publisherUrl": "https://link.springer.com/article/10.1007/s12028-023-01854-7",
+      "pdfUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10959839/pdf/",
+      "recommendationCount": 15,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-neuroprognostication-ich-2023.json"
+    },
+    {
+      "id": "ncs-sah-seizure-prophylaxis-2026",
+      "title": "Guidelines for Seizure Prophylaxis in Patients with Aneurysmal Subarachnoid Hemorrhage: A Statement for Healthcare Professionals from the Neurocritical Care Society",
+      "shortTitle": "NCS aSAH Seizure Prophylaxis 2026",
+      "doi": "10.1007/s12028-026-02614-z",
+      "publisherUrl": "https://link.springer.com/article/10.1007/s12028-026-02614-z",
+      "pdfUrl": null,
+      "recommendationCount": 5,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-sah-seizure-prophylaxis-2026.json"
+    },
+    {
+      "id": "ncs-sccm-antithrombotic-reversal-2016",
+      "title": "Guideline for Reversal of Antithrombotics in Intracranial Hemorrhage: A Statement for Healthcare Professionals from the Neurocritical Care Society and Society of Critical Care Medicine",
+      "shortTitle": "NCS/SCCM Antithrombotic Reversal 2016 (predates andexanet)",
+      "doi": "10.1007/s12028-015-0222-x",
+      "publisherUrl": "https://link.springer.com/article/10.1007/s12028-015-0222-x",
+      "pdfUrl": "https://www.neurocriticalcare.org/Portals/0/Docs/Resources/FINAL_COPY_COAG.pdf",
+      "recommendationCount": 12,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-sccm-antithrombotic-reversal-2016.json"
     },
     {
       "id": "perioperative-stroke-2021",

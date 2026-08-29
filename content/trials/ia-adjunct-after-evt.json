@@ -32,5 +32,90 @@
     "certainty": "moderate",
     "lastReviewed": "2026-05-30",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "pearl",
+    "name": "PEARL",
+    "fullName": "Intra-Arterial Alteplase After Successful Endovascular Reperfusion in Acute Stroke",
+    "category": "ia-adjunct-after-evt",
+    "population": "n=324, median 68 y (IQR 58-75), NIHSS not restricted by protocol NIHSS band (anterior-circulation LVO), ≤24 h from symptom onset to thrombectomy",
+    "finding": "MET superiority, favoring IA alteplase: 44.8% (73/163) vs 30.2% (48/159)",
+    "teachingPoint": "Strengthens, but does not settle, the case for adjunctive IA alteplase 0.225 mg/kg after successful anterior-circulation thrombectomy; the accompanying numerically higher mortality means it remains an unadopted, guideline-unclassed adjunct rather than a standard step.",
+    "PMID": "42262770",
+    "year": 2025,
+    "citationIds": [
+      "cit-pearl-2025"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "angel-tnk",
+    "name": "ANGEL-TNK",
+    "fullName": "Intra-arterial Tenecteplase for Acute Stroke After Successful Endovascular Therapy",
+    "category": "ia-adjunct-after-evt",
+    "population": "n=256, median 71.6 y (IQR 61.3-79.2); 44.1% female, NIHSS not restricted by a protocol NIHSS band (anterior-circulation LVO), 4.5 to 24 h from last known well",
+    "finding": "MET superiority, favoring IA tenecteplase: 40.5% (51/126) vs 26.4% (34/129)",
+    "teachingPoint": "Extends the adjunctive-lysis hypothesis to intra-arterial tenecteplase in the late window, but a positive primary with no supporting secondary endpoint is not a basis to adopt it; it remains investigational with no guideline class.",
+    "PMID": "40616323",
+    "year": 2025,
+    "citationIds": [
+      "cit-angel-tnk-2025"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "iat-top",
+    "name": "IAT-TOP",
+    "fullName": "Intra-arterial Alteplase Thrombolysis After Successful Thrombectomy for Acute Ischemic Stroke in the Posterior Circulation",
+    "category": "ia-adjunct-after-evt",
+    "population": "n=246, median 65.0 y (IQR 56.0-72.0); 176 male (71.5%), NIHSS not restricted by a protocol NIHSS band (acute basilar artery occlusion), ≤24 h from time last known well",
+    "finding": "DID NOT meet superiority — flatly neutral and numerically favoring control: 41.9% (52/124) with IA alteplase vs 46.7% (57/122) control",
+    "teachingPoint": "Argues against extrapolating adjunctive intra-arterial alteplase from the anterior circulation to basilar occlusion — after successful basilar recanalization it was safe but produced no functional gain.",
+    "PMID": "42026933",
+    "year": 2026,
+    "citationIds": [
+      "cit-iat-top-2026"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "ia-tenecteplase-dose-escalation",
+    "name": "IA Tenecteplase Dose-Escalation Trial",
+    "fullName": "Intra-Arterial Tenecteplase After Successful Reperfusion in Large Vessel Occlusion Stroke: A Phase 1b/2a Dose-Escalation and Dose-Expansion Randomized Clinical Trial",
+    "category": "ia-adjunct-after-evt",
+    "population": "n=205, median 71 y (IQR 60-77); 113 (55.1%) male, NIHSS not restricted by a protocol NIHSS band (anterior-circulation LVO), ≤24 h from last known well",
+    "finding": "Phase 1b: the 0.1250 mg/kg tier CROSSED the prespecified safety threshold (sICH in 3 of 12 patients, P=.04); sICH occurred in 1 of 14 at 0.0313 mg/kg and 2 of 22 at 0.0625 mg/kg. Phase 2a DID NOT demonstrate benefit at either surviving dose: mRS 0-1 33.8% (22/65) control vs 37.0% (17/46) at 0.0313 mg/kg vs 43.5% (20/46) at 0.0625 mg/kg",
+    "teachingPoint": "Shows that the safety of adjunctive intra-arterial tenecteplase is dose-dependent and that the 0.125 mg/kg tier tripped a prespecified hemorrhage boundary in escalation — dose, not just drug class, has to be specified before any adjunctive-lysis claim is made.",
+    "PMID": "40616333",
+    "year": 2025,
+    "citationIds": [
+      "cit-ia-tenecteplase-dose-2025"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "ia-thrombolysis-dose-network-meta-analysis",
+    "name": "IA Thrombolysis Dose Network Meta-analysis",
+    "fullName": "Dose-Specific Intra-Arterial Thrombolysis After Endovascular Thrombectomy for Large-Vessel Occlusion Stroke: A Network Meta-Analysis of Randomized Trials",
+    "category": "ia-adjunct-after-evt",
+    "population": "n=2126, median approximately 69 y; approximately 40% women, NIHSS as per the seven contributing randomized trials, as per the contributing trials (angiographic reperfusion achieved after EVT)",
+    "finding": "Signal confined to two regimens: IA alteplase 0.225 mg/kg OR 1.94 vs control, and tenecteplase 0.125 mg/kg OR 1.90 vs control; lower-dose tenecteplase (0.0625 and 0.03125 mg/kg) and urokinase showed attenuated or uncertain effects",
+    "teachingPoint": "Frames adjunctive intra-arterial lysis as a dose-specific question rather than a settled class effect, and explicitly does not support adopting any regimen into practice on current evidence.",
+    "PMID": "42088338",
+    "year": 2026,
+    "citationIds": [
+      "cit-ia-thrombolysis-dose-nma-2026"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

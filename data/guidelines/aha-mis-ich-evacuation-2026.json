@@ -1,0 +1,21 @@
+{
+  "id": "aha-mis-ich-evacuation-2026",
+  "title": "Evidence Update for Minimally Invasive Surgical Evacuation of Supratentorial Spontaneous Intracerebral Hemorrhage: A Science Advisory From the American Heart Association",
+  "shortTitle": "AHA MIS ICH Evacuation Advisory 2026",
+  "doi": "10.1161/STR.0000000000000529",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000529",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42634945/",
+  "pmid": "42634945",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope quoted verbatim from the publication abstract. The publisher full text returned HTTP 403 and could not be read, so no class-of-recommendation or level-of-evidence content is entered here — consult the linked source for any graded content.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "\"Recent evidence has reignited interest in the role of surgical intervention for improving outcomes after spontaneous intracerebral hemorrhage. Historically, the surgical management of intracerebral hemorrhage has been limited due to concerns regarding procedural risks and lack of functional improvement. However, recent advances in minimally invasive surgical techniques suggest improvements in functional recovery, broadening consideration for surgical treatment of certain patients, such as those with lobar hemorrhage after spontaneous intracerebral hemorrhage. This science advisory summarizes randomized evidence for minimally invasive surgical evacuation of intracerebral hemorrhage compared with medical management, including considerations related to patient selection, care pathways, and surgical technique.\" Published in Stroke, 24 August 2026 (Wolfe SQ, Amin-Hanjani S, Tschoe C, Simon SD, Kellner CP, Sheth KN, et al.). This advisory postdates the 2022 AHA/ASA intracerebral hemorrhage guideline carried elsewhere in this library.",
+      "page": null
+    }
+  ]
+}

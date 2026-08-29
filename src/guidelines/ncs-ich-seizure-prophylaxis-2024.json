@@ -1,0 +1,52 @@
+{
+  "id": "ncs-ich-seizure-prophylaxis-2024",
+  "title": "Guidelines for Seizure Prophylaxis in Patients Hospitalized with Nontraumatic Intracerebral Hemorrhage: A Clinical Practice Guideline for Health Care Professionals from the Neurocritical Care Society",
+  "shortTitle": "NCS ICH Seizure Prophylaxis 2024",
+  "doi": "10.1007/s12028-024-02183-z",
+  "publisherUrl": "https://link.springer.com/article/10.1007/s12028-024-02183-z",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/39707127/",
+  "pmid": "39707127",
+  "recommendations": [
+    {
+      "section": "Scope and Method",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Neurocritical Care Society clinical practice guideline built on a systematic review and meta-analysis of primary antiseizure medication (ASM) prophylaxis in adults hospitalized with acute nontraumatic intracerebral hemorrhage, graded with GRADE methodology. The initial literature search yielded 1,988 articles, of which 15 formed the basis of the recommendations. Three PICO questions were addressed: ASM versus no ASM in patients with no clinical or electrographic seizures; levetiracetam versus phenytoin/fosphenytoin if an ASM is used; and long (>7 days) versus short (<=7 days) duration of prophylaxis.",
+      "page": null
+    },
+    {
+      "section": "Prophylactic ASM vs No ASM",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Very low certainty",
+      "text": "The guideline suggests avoidance of prophylactic ASM in hospitalized adult patients with acute nontraumatic intracerebral hemorrhage (weak/conditional recommendation, very low quality of evidence).",
+      "page": null
+    },
+    {
+      "section": "Evidence Behind the Recommendation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "This is a neutral-to-negative evidence base, not a positive one. Meta-analysis found no significant impact of prophylactic ASM on early seizure (<=14 days), late seizure (>14 days), or mortality; it did demonstrate increased adverse events and a higher relative risk of poor functional outcome at 90 days with prophylactic ASM use. Teaching point: the harm signal, not a seizure-prevention benefit, is what drives the recommendation against routine prophylaxis.",
+      "page": null
+    },
+    {
+      "section": "Choice of Agent",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Very low certainty",
+      "text": "If an ASM is used, the guideline suggests levetiracetam over phenytoin/fosphenytoin (weak/conditional recommendation, very low quality of evidence). No significant positive or negative effect of phenytoin/fosphenytoin compared with levetiracetam was detected for early seizures or adverse events, although point estimates tended to favor levetiracetam.",
+      "page": null
+    },
+    {
+      "section": "Duration of Prophylaxis",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Very low certainty",
+      "text": "If an ASM is used, the guideline suggests a short duration of <=7 days (weak/conditional recommendation, very low quality of evidence). This rests on a single decision analysis in which quality-adjusted life-years increased with a shorter duration of ASM prophylaxis.",
+      "page": null
+    }
+  ]
+}

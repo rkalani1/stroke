@@ -1,0 +1,121 @@
+[
+  {
+    "id": "catis",
+    "name": "CATIS",
+    "fullName": "China Antihypertensive Trial in Acute Ischemic Stroke",
+    "category": "bp-acute-ischemic",
+    "population": "n=4071, adults (age range not stated in the primary report), NIHSS not reported in the primary report, ≤48 h from onset",
+    "finding": "NULL - the primary outcome DID NOT differ between groups: 683 events with antihypertensive treatment vs 681 events with control",
+    "teachingPoint": "Teaches that lowering BP in the first 24-48 h of non-thrombolysed ischaemic stroke is comorbidity management rather than a neuroprotective intervention - it changed neither death nor disability.",
+    "PMID": "24240777",
+    "year": 2014,
+    "citationIds": [
+      "cit-catis-2014"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "catis-2",
+    "name": "CATIS-2",
+    "fullName": "China Antihypertensive Trial in Acute Ischaemic Stroke II - early versus delayed antihypertensive treatment in patients with acute ischaemic stroke",
+    "category": "bp-acute-ischemic",
+    "population": "n=4810, ≥40 years, NIHSS mild-to-moderate stroke (severity distribution not given in the primary report), enrolled 24-48 h after symptom onset",
+    "finding": "NULL - early treatment DID NOT reduce dependency or death: 289/2413 (12.0%) early vs 250/2397 (10.5%) delayed. The point estimate numerically favours delaying treatment.",
+    "teachingPoint": "Supports not rushing to restart or start antihypertensives in the first week after a non-thrombolysed ischaemic stroke - deferring to day 8 was not worse at 90 days.",
+    "PMID": "37813418",
+    "year": 2023,
+    "citationIds": [
+      "cit-catis2-2023"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "enos",
+    "name": "ENOS",
+    "fullName": "Efficacy of Nitric Oxide, With or Without Continuing Antihypertensive Treatment, for Management of High Blood Pressure in Acute Stroke - a partial-factorial randomised controlled trial",
+    "category": "bp-acute-ischemic",
+    "population": "n=4011, adults admitted to hospital with acute stroke (age range not stated in the primary report), NIHSS not reported in the primary report, within 48 h of stroke onset (median 26 h, IQR 16-37)",
+    "finding": "NULL in BOTH comparisons - functional outcome DID NOT differ for glyceryl trinitrate versus none, nor for continuing versus stopping pre-stroke antihypertensives",
+    "teachingPoint": "The authors state there is no evidence to support continuing pre-stroke antihypertensive drugs in the first few days after acute stroke - the decision to hold or continue does not change 90-day function.",
+    "PMID": "25465108",
+    "year": 2015,
+    "citationIds": [
+      "cit-enos-2015"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "cossacs",
+    "name": "COSSACS",
+    "fullName": "Continue or Stop Post-Stroke Antihypertensives Collaborative Study",
+    "category": "bp-acute-ischemic",
+    "population": "n=763, >18 years, NIHSS predominantly mild stroke (the investigators describe the cohort as acute mild stroke); NIHSS distribution not reported, enrolled within 48 h of stroke AND within 48 h of the last antihypertensive dose",
+    "finding": "NULL - continuing antihypertensives DID NOT reduce death or dependency: 72/379 continue vs 82/384 stop",
+    "teachingPoint": "Adds a safety argument to the continue-or-stop discussion: the lower pressures produced by continuing home antihypertensives after mild stroke were not associated with more adverse events, though the trial was too small to settle the efficacy question.",
+    "PMID": "20621562",
+    "year": 2010,
+    "citationIds": [
+      "cit-cossacs-2010"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "scast",
+    "name": "SCAST",
+    "fullName": "Scandinavian Candesartan Acute Stroke Trial - the angiotensin-receptor blocker candesartan for treatment of acute stroke",
+    "category": "bp-acute-ischemic",
+    "population": "n=2029, older than 18 years, NIHSS not reported in the primary report (Scandinavian Stroke Scale used as a secondary outcome), within 30 h of symptom onset",
+    "finding": "NEITHER co-primary favoured candesartan. The composite vascular endpoint did not differ (120 events candesartan vs 111 placebo). Functional outcome trended WORSE with candesartan, but the trend DID NOT clear the prespecified p≤0.025 threshold, so it is a signal rather than a demonstration of harm.",
+    "teachingPoint": "Argues against reflexively starting an ARB for BP lowering within 30 h of acute stroke - the functional trend went the wrong way and symptomatic hypotension and renal failure were numerically more common.",
+    "PMID": "21316752",
+    "year": 2011,
+    "citationIds": [
+      "cit-scast-2011"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "chase",
+    "name": "CHASE",
+    "fullName": "Controlling Hypertension After Severe Cerebrovascular Event - a randomized, multicenter, controlled study",
+    "category": "bp-acute-ischemic",
+    "population": "n=500, adults (age range not stated in the primary report), NIHSS acute SEVERE stroke; severity scale distribution not reported, acute phase of severe stroke",
+    "finding": "NULL - individualized lowering DID NOT significantly reduce poor outcome: 71.1% vs 73.4%. The point estimate numerically favours individualization but the confidence interval is wide and includes both meaningful benefit and meaningful harm.",
+    "teachingPoint": "Shows that in severe stroke an individualized 10-15% BP reduction did not clearly beat a permissive fixed ceiling, and that outcomes remained poor in about 72% of patients regardless of strategy.",
+    "PMID": "32525464",
+    "year": 2021,
+    "citationIds": [
+      "cit-chase-2021"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "early-antihypertensive-ais-meta-2026",
+    "name": "Early AHT in AIS meta-analysis",
+    "fullName": "Early antihypertensive therapy in acute ischemic stroke: a meta-analysis of randomized controlled trials",
+    "category": "bp-acute-ischemic",
+    "population": "n=15521, adults enrolled in the component randomized trials, NIHSS not reported at the meta-analysis level, antihypertensive therapy initiated within 48 h of symptom onset",
+    "finding": "NULL on both primary outcomes - early antihypertensive therapy was NOT associated with a difference in all-cause mortality or in death/functional dependency",
+    "teachingPoint": "Provides the one-line summary for the category: early BP lowering in acute ischaemic stroke produces a real BP reduction and no measurable change in mortality, dependency or recurrence.",
+    "PMID": "42546365",
+    "year": 2026,
+    "citationIds": [
+      "cit-early-antihypertensive-meta-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

@@ -1,0 +1,61 @@
+{
+  "id": "eso-vte-prophylaxis-2016",
+  "title": "European Stroke Organisation (ESO) guidelines for prophylaxis for venous thromboembolism in immobile patients with acute ischaemic stroke",
+  "shortTitle": "ESO VTE Prophylaxis in Immobile Stroke 2016",
+  "society": "ESO",
+  "doi": "10.1177/2396987316628384",
+  "publisherUrl": "https://doi.org/10.1177/2396987316628384",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/31008263/",
+  "pmid": "31008263",
+  "recommendations": [
+    {
+      "section": "Intermittent pneumatic compression",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "The guideline recommends that clinicians should use intermittent pneumatic compression in immobile patients with acute ischaemic stroke; the strongest evidence in this guideline is for intermittent pneumatic compression.",
+      "page": null
+    },
+    {
+      "section": "Graduated compression stockings",
+      "classOfRec": "Statement",
+      "classNote": "Recommendation against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "The guideline recommends that clinicians should not use graduated compression stockings for venous thromboembolism prophylaxis in immobile patients with acute ischaemic stroke.",
+      "page": null
+    },
+    {
+      "section": "Prophylactic anticoagulation",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Prophylactic anticoagulation with unfractionated heparin (5000 units twice or three times daily), or with a low-molecular-weight heparin or heparinoid, should be considered in immobile patients with ischaemic stroke in whom the benefit of reducing the risk of venous thromboembolism is high enough to offset the increased risks of intracranial and extracranial bleeding associated with their use.",
+      "page": null
+    },
+    {
+      "section": "Choice of prophylactic anticoagulant",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Where a judgement has been made that prophylactic anticoagulation is indicated, a low-molecular-weight heparin or heparinoid should be considered instead of unfractionated heparin because of its greater reduction in risk of deep vein thrombosis and the greater convenience, reduced staff costs and patient comfort of single versus multiple daily injections. These advantages should be weighed against the higher risk of extracranial bleeding, higher drug costs, and risks in elderly patients with poor renal function associated with low-molecular-weight heparins and heparinoids.",
+      "page": null
+    },
+    {
+      "section": "Neuromuscular electrical stimulation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "No randomised trials evaluating neuromuscular electrical stimulation were identified, and further research is required to test whether it is effective.",
+      "page": null
+    },
+    {
+      "section": "Acknowledged evidence gaps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Better methods are needed to help stratify patients in the first few weeks after stroke onset by their risk of venous thromboembolism and their risk of bleeding on anticoagulants.",
+      "page": null
+    }
+  ]
+}

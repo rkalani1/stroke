@@ -9,7 +9,7 @@
 //   2. Matcher Engine & Field Resolvers / Operators (src/evidence/matcher-engine.js)
 //   3. Guideline Recommendations Decision Logic & Edge Cases (src/app.jsx)
 //   4. Educational Accordion Architecture & Fuzzy Search (src/education.jsx)
-//   5. 89 Guideline Datasets & 862 Recommendations (data/guidelines/)
+//   5. 108 Guideline Datasets & 1010 Recommendations (data/guidelines/)
 //   6. Landmark Trial Citations & Central Registry Integrity (src/evidence/citations.js)
 
 import { describe, it, expect } from 'vitest';
@@ -483,18 +483,23 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
   // =========================================================================
   // 5. 89 GUIDELINE DATASETS & 862 RECOMMENDATIONS ADVERSARIAL VALIDATION
   // =========================================================================
-  describe('5. 89 Guideline Datasets & 862 Recommendations Invariant Hardening', () => {
+  describe('5. 108 Guideline Datasets & 1010 Recommendations Invariant Hardening', () => {
 
-    it('verifies all 89 guideline datasets exist and parse valid JSON with 862 recommendations', () => {
+    it('verifies all 108 guideline datasets exist and parse valid JSON with 1010 recommendations', () => {
       const guidelineFiles = fs.readdirSync(GUIDELINES_DIR).filter(f => f.endsWith('.json') && f !== 'index.json' && f !== 'landmark-trials.json');
-      expect(guidelineFiles.length).toBe(89);
+      expect(guidelineFiles.length).toBe(108);
 
       let totalRecs = 0;
       const validCORs = new Set(['I', 'IIa', 'IIb', 'III', 'Statement']);
       const validLOEs = new Set([
         'A', 'B', 'C', 'B-R', 'B-NR', 'C-LD', 'C-EO',
         'Expert Consensus', 'Guideline Summary', 'Emerging',
-        'A*', 'B*', 'B/C', 'A* (LE), B (UE)', 'B/C*', 'C*'
+        'A*', 'B*', 'B/C', 'A* (LE), B (UE)', 'B/C*', 'C*',
+        // GRADE certainty, used by the ESO / NCS / WSO documents. Those bodies
+        // do not grade with ACC/AHA levels, so their recommendations carry a
+        // certainty rating here and their strength in classNote.
+        'High certainty', 'Moderate certainty', 'Low certainty', 'Very low certainty',
+        'Very low to moderate certainty'
       ]);
 
       for (const file of guidelineFiles) {
@@ -523,7 +528,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         }
       }
 
-      expect(totalRecs).toBe(862);
+      expect(totalRecs).toBe(1010);
     });
 
     it('verifies 2026 AHA/ASA AIS guideline dataset contains 195 recommendations', () => {

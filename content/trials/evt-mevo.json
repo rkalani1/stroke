@@ -50,5 +50,22 @@
     "certainty": "moderate",
     "lastReviewed": "2026-08-22",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "discount",
+    "name": "DISCOUNT",
+    "fullName": "Mechanical Thrombectomy in Ischemic Stroke With a Medium or Distal Arterial Occlusion: The DISCOUNT Randomized Clinical Trial",
+    "category": "evt-mevo",
+    "population": "n=244, median 75 y (IQR 67-81); 56% male, NIHSS median NIHSS 8 (IQR 6-12), Within 8 h of symptom onset, or within 24 h of last seen well if no hyperintense signal was present on FLAIR imaging",
+    "finding": "DID NOT meet its endpoint, with the point estimate favouring medical treatment alone: 72/116 (62%) with thrombectomy vs 81/119 (68%) with medical treatment alone. The trial was STOPPED at the planned interim analysis on the recommendation of the data and safety monitoring board for futility AND an increased rate of symptomatic intracranial hemorrhage with thrombectomy.",
+    "teachingPoint": "Adds a randomized trial halted for futility plus a haemorrhage signal to the medium- and distal-vessel occlusion evidence, and supplies the procedural-complication data — subarachnoid haemorrhage and embolus migration — that the neutral MeVO trials do not report.",
+    "PMID": "42485024",
+    "year": 2026,
+    "citationIds": [
+      "cit-discount-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

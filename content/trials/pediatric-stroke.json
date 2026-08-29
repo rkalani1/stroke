@@ -1,0 +1,20 @@
+[
+  {
+    "id": "save-childs",
+    "name": "Save ChildS",
+    "fullName": "Feasibility, Safety, and Outcome of Endovascular Recanalization in Childhood Stroke: The Save ChildS Study",
+    "category": "pediatric-stroke",
+    "population": "n=73, Under 18 years; median age 11.3 years (IQR 7.0-15.0). 37 (51%) boys and 36 (49%) girls, NIHSS Median Pediatric NIH Stroke Scale (PedNIHSS) 14.0 (IQR 9.2-20.0) at admission, on a scale of 0 (no deficit) to 34 (maximum deficit), Cases accrued 1 January 2000 to 31 December 2018; median follow-up 16 months. No uniform time-from-onset window was applied — treatment timing was at the discretion of the treating centre",
+    "finding": "Neurologic status improved: median PedNIHSS fell from 14.0 (IQR 9.2-20.0) at admission to 4.0 (IQR 2.0-7.3) at day 7. With no control arm, this is a description of outcome after treatment, not a treatment effect.",
+    "teachingPoint": "Frames pediatric thrombectomy honestly: feasible, with complication rates not detectably worse than in adult trials, but supported only by a 73-child uncontrolled series because the sole randomized pediatric thrombolysis trial closed after enrolling one child — so it remains an off-label, case-by-case extrapolation from adult evidence.",
+    "PMID": "31609380",
+    "year": 2020,
+    "citationIds": [
+      "cit-save-childs-2020",
+      "cit-tips-study-2009"
+    ],
+    "certainty": "very-low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

@@ -87,6 +87,25 @@ import esoAphasiaRehab2025 from './guidelines/eso-aphasia-rehab-2025.json';
 import esoMotorRehab2025 from './guidelines/eso-motor-rehab-2025.json';
 import esoVisual2025 from './guidelines/eso-visual-2025.json';
 import aanSicas2022 from './guidelines/aan-sicas-2022.json';
+import ahaLvThrombus2022 from './guidelines/aha-lv-thrombus-2022.json';
+import ahaMisIchEvacuation2026 from './guidelines/aha-mis-ich-evacuation-2026.json';
+import ahaStrokeRehabilitation2026 from './guidelines/aha-stroke-rehabilitation-2026.json';
+import caaIcaaWso2025 from './guidelines/caa-icaa-wso-2025.json';
+import escEndocarditis2023 from './guidelines/esc-endocarditis-2023.json';
+import esoAfSecondaryPrevention2019 from './guidelines/eso-af-secondary-prevention-2019.json';
+import esoAnticoagulantReversalIch2019 from './guidelines/eso-anticoagulant-reversal-ich-2019.json';
+import esoCvt2017 from './guidelines/eso-cvt-2017.json';
+import esoEsmintMechanicalThrombectomy2019 from './guidelines/eso-esmint-mechanical-thrombectomy-2019.json';
+import esoGlycaemia2018 from './guidelines/eso-glycaemia-2018.json';
+import esoIvt2021 from './guidelines/eso-ivt-2021.json';
+import esoPoststrokeSeizures2017 from './guidelines/eso-poststroke-seizures-2017.json';
+import esoTemperature2015 from './guidelines/eso-temperature-2015.json';
+import esoVteProphylaxis2016 from './guidelines/eso-vte-prophylaxis-2016.json';
+import ncsIchSeizureProphylaxis2024 from './guidelines/ncs-ich-seizure-prophylaxis-2024.json';
+import ncsNeuroprognosticationAis2026 from './guidelines/ncs-neuroprognostication-ais-2026.json';
+import ncsNeuroprognosticationIch2023 from './guidelines/ncs-neuroprognostication-ich-2023.json';
+import ncsSahSeizureProphylaxis2026 from './guidelines/ncs-sah-seizure-prophylaxis-2026.json';
+import ncsSccmAntithromboticReversal2016 from './guidelines/ncs-sccm-antithrombotic-reversal-2016.json';
 
 export const GUIDELINE_LIBRARY = [
   ais2026,
@@ -177,7 +196,26 @@ export const GUIDELINE_LIBRARY = [
   esoAphasiaRehab2025,
   esoMotorRehab2025,
   esoVisual2025,
-  aanSicas2022
+  aanSicas2022,
+  ahaLvThrombus2022,
+  ahaMisIchEvacuation2026,
+  ahaStrokeRehabilitation2026,
+  caaIcaaWso2025,
+  escEndocarditis2023,
+  esoAfSecondaryPrevention2019,
+  esoAnticoagulantReversalIch2019,
+  esoCvt2017,
+  esoEsmintMechanicalThrombectomy2019,
+  esoGlycaemia2018,
+  esoIvt2021,
+  esoPoststrokeSeizures2017,
+  esoTemperature2015,
+  esoVteProphylaxis2016,
+  ncsIchSeizureProphylaxis2024,
+  ncsNeuroprognosticationAis2026,
+  ncsNeuroprognosticationIch2023,
+  ncsSahSeizureProphylaxis2026,
+  ncsSccmAntithromboticReversal2016
 ];
 
 export const GUIDELINE_LIBRARY_INDEX = GUIDELINE_LIBRARY.map((guideline) => ({

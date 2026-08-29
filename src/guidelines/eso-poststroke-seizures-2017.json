@@ -1,0 +1,45 @@
+{
+  "id": "eso-poststroke-seizures-2017",
+  "title": "European Stroke Organisation guidelines for the management of post-stroke seizures and epilepsy",
+  "shortTitle": "ESO Post-Stroke Seizures and Epilepsy 2017",
+  "society": "ESO",
+  "doi": "10.1177/2396987317705536",
+  "publisherUrl": "https://doi.org/10.1177/2396987317705536",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/31008306/",
+  "pmid": "31008306",
+  "recommendations": [
+    {
+      "section": "Primary prophylaxis with antiepileptic drugs",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In most instances the guideline suggests not to administer antiepileptic drugs for prevention of post-stroke seizures.",
+      "page": null
+    },
+    {
+      "section": "After a first unprovoked post-stroke seizure",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Very low certainty",
+      "text": "Due to the high incidence of seizure recurrence after one post-stroke unprovoked seizure, secondary antiepileptic drug prophylaxis needs to be considered.",
+      "page": null
+    },
+    {
+      "section": "Certainty of the evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "A writing committee identified seven questions relating to prevention of post-stroke seizures and epilepsy and to amelioration of functional outcome and prevention of mortality. In the absence of adequately powered randomised controlled trials, the evidence for all recommendations is very low, and only some weak recommendations could be made on the basis of observational studies. Adequately powered randomised controlled trials are required.",
+      "page": null
+    },
+    {
+      "section": "Background epidemiology",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Following stroke, acute symptomatic seizures (manifestation within seven days) are reported in 3 to 6 percent of patients and epilepsy in up to 12 percent. The incidence of acute symptomatic seizures is higher in intracranial haemorrhage (10 to 16 percent) than in ischaemic stroke (2 to 4 percent). Acute symptomatic seizures and unprovoked seizures may be associated with unfavourable functional outcome and increased mortality.",
+      "page": null
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "id": "eso-anticoagulant-reversal-ich-2019",
+  "title": "European Stroke Organisation Guideline on Reversal of Oral Anticoagulants in Acute Intracerebral Haemorrhage",
+  "shortTitle": "ESO Anticoagulant Reversal in ICH 2019",
+  "society": "ESO",
+  "doi": "10.1177/2396987319849763",
+  "publisherUrl": "https://doi.org/10.1177/2396987319849763",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/31903428/",
+  "pmid": "31903428",
+  "recommendations": [
+    {
+      "section": "Vitamin K antagonists",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline strongly recommends using prothrombin complex concentrate, together with vitamin K, over no treatment and over fresh-frozen plasma in patients with acute intracerebral haemorrhage taking a vitamin K antagonist (warfarin, phenprocoumon or acenocoumarol).",
+      "page": null
+    },
+    {
+      "section": "Dabigatran",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline strongly recommends using idarucizumab in patients with acute intracerebral haemorrhage taking dabigatran.",
+      "page": null
+    },
+    {
+      "section": "Rivaroxaban and apixaban",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline makes a recommendation for andexanet alfa over no treatment in patients with acute intracerebral haemorrhage taking rivaroxaban or apixaban.",
+      "page": null
+    },
+    {
+      "section": "Edoxaban, and factor Xa inhibitors when andexanet alfa is unavailable",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline makes a weak recommendation on using high-dose prothrombin complex concentrate (50 IU/kg) for all patients taking edoxaban, and for patients taking rivaroxaban or apixaban in case andexanet alfa is not available.",
+      "page": null
+    },
+    {
+      "section": "Tranexamic acid and recombinant factor VIIa",
+      "classOfRec": "Statement",
+      "classNote": "Recommendation against",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline recommends against using tranexamic acid and recombinant factor VIIa, outside of clinical trials.",
+      "page": null
+    },
+    {
+      "section": "Limits of the underlying evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The stated aim of these treatment recommendations is to normalise coagulation. The guideline notes explicitly that there are no data, or only indirect data, on effects on functional outcome or mortality, and only little data from randomised controlled trials.",
+      "page": null
+    },
+    {
+      "section": "How anticoagulant exposure was defined",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "As a basic principle the working group defined use of oral anticoagulation pragmatically: oral anticoagulation use is assumed from a positive medical history unless relevant anticoagulant activity is regarded as unlikely by medical history or has been ruled out by laboratory testing.",
+      "page": null
+    }
+  ]
+}

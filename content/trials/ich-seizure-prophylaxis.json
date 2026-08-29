@@ -1,0 +1,20 @@
+[
+  {
+    "id": "peach",
+    "name": "PEACH",
+    "fullName": "Safety and Efficacy of Prophylactic Levetiracetam for Prevention of Epileptic Seizures in the Acute Phase of Intracerebral Haemorrhage (PEACH)",
+    "category": "ich-seizure-prophylaxis",
+    "population": "n=50, Aged 18 years or older, NIHSS Randomisation stratified by baseline NIHSS; the enrolled cohort is described as mild-to-moderate severity intracerebral haemorrhage, Randomised within 24 h of onset; continuous EEG started within 24 h of inclusion and recorded over 48 h",
+    "finding": "Favoured levetiracetam: a clinical or electrographic seizure occurred in 3/19 (16%) on levetiracetam versus 10/23 (43%) on placebo. Every seizure captured in the first 72 h was electrographic only — none were clinical.",
+    "teachingPoint": "Teaches why prophylactic levetiracetam after ICH remains a research question rather than routine care: PEACH reduced EEG-detected seizures in 42 analysable patients and says nothing about function, so guidelines still advise against routine prophylaxis.",
+    "PMID": "35963261",
+    "year": 2022,
+    "citationIds": [
+      "cit-peach-2022",
+      "cit-peach-eeg-2026"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

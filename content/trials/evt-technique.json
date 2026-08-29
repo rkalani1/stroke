@@ -32,5 +32,73 @@
     "certainty": "moderate",
     "lastReviewed": "2026-08-15",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "aster",
+    "name": "ASTER",
+    "fullName": "Contact Aspiration vs Stent Retriever for Successful Revascularization (ASTER)",
+    "category": "evt-technique",
+    "population": "n=381, mean 69.9 y; 174 women (45.7%), NIHSS Not specified in the abstract, Within 6 h of symptom onset; median onset-to-arterial-puncture 227 min (IQR 180-280)",
+    "finding": "DID NOT show a difference: 164/192 (85.4%) with contact aspiration vs 157/189 (83.1%) with stent retriever",
+    "teachingPoint": "Teaches that either contact aspiration or a stent retriever is a defensible first-line choice for anterior-circulation thrombectomy; the technique argument should not be presented to trainees as settled in either direction.",
+    "PMID": "28763550",
+    "year": 2017,
+    "citationIds": [
+      "cit-aster-2017"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "compass-thrombectomy",
+    "name": "COMPASS (thrombectomy)",
+    "fullName": "Aspiration thrombectomy versus stent retriever thrombectomy as first-line approach for large vessel occlusion (COMPASS)",
+    "category": "evt-technique",
+    "population": "n=270, Not specified in the abstract, NIHSS Not specified in the abstract, Within 6 h of symptom onset",
+    "finding": "MET non-inferiority: mRS 0-2 in 69/134 (52%, 95% CI 43.8-60.3) with aspiration first pass vs 67/136 (50%, 95% CI 41.6-57.4) with stent retriever first line",
+    "teachingPoint": "Supports a direct-aspiration first-pass strategy as an acceptable alternative to a stent retriever for anterior-circulation thrombectomy, judged on 90-day disability rather than on angiographic reperfusion alone.",
+    "PMID": "30860055",
+    "year": 2019,
+    "citationIds": [
+      "cit-compass-2019"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "aster2",
+    "name": "ASTER2",
+    "fullName": "Thrombectomy With Combined Contact Aspiration and Stent Retriever vs Stent Retriever Alone (ASTER2)",
+    "category": "evt-technique",
+    "population": "n=408, mean 73 y; 220 women (54%), 185 men (46%) among the 405 analysed, NIHSS Not specified in the abstract, Up to 8 h after symptom onset",
+    "finding": "DID NOT differ significantly: 131/203 (64.5%) combined vs 117/202 (57.9%) stent retriever alone",
+    "teachingPoint": "Does not support routinely combining contact aspiration with a stent retriever on the first pass; the first-pass reperfusion advantage does not survive to the end of the procedure.",
+    "PMID": "34581737",
+    "year": 2021,
+    "citationIds": [
+      "cit-aster2-2021"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "vector",
+    "name": "VECTOR",
+    "fullName": "Adaptive Endovascular Strategy to the Clot MRI in Large Intracranial Vessel Occlusion (VECTOR): stent retrievers plus contact aspiration versus contact aspiration alone in susceptibility-vessel-sign-positive stroke",
+    "category": "evt-technique",
+    "population": "n=521, median 74.9 y (IQR 64.4-83.3); 284 (55%) female, 237 (45%) male, NIHSS Not specified in the abstract, Arterial puncture within 24 h of symptom onset",
+    "finding": "DID NOT differ significantly: 152/263 (58%) combined vs 135/258 (52%) contact aspiration alone",
+    "teachingPoint": "Even when the clot is selected on MRI as red-cell-rich, adding a stent retriever to contact aspiration on the first pass does not improve near-complete reperfusion within three passes; either first-line strategy remains defensible.",
+    "PMID": "38876748",
+    "year": 2024,
+    "citationIds": [
+      "cit-vector-2024"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

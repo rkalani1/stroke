@@ -1,0 +1,85 @@
+{
+  "id": "eso-cvt-2017",
+  "title": "European Stroke Organization guideline for the diagnosis and treatment of cerebral venous thrombosis - Endorsed by the European Academy of Neurology",
+  "shortTitle": "ESO Cerebral Venous Thrombosis 2017",
+  "society": "ESO",
+  "doi": "10.1177/2396987317719364",
+  "publisherUrl": "https://doi.org/10.1177/2396987317719364",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/31008314/",
+  "pmid": "31008314",
+  "recommendations": [
+    {
+      "section": "Confirming the diagnosis",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline suggests using magnetic resonance angiography or computed tomography angiography for confirming the diagnosis of cerebral venous thrombosis.",
+      "page": null
+    },
+    {
+      "section": "Screening for thrombophilia and cancer",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline suggests not screening patients with cerebral venous thrombosis routinely for thrombophilia or for cancer.",
+      "page": null
+    },
+    {
+      "section": "Acute anticoagulation",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline recommends parenteral anticoagulation in acute cerebral venous thrombosis.",
+      "page": null
+    },
+    {
+      "section": "Choice of anticoagulant",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline suggests preferentially using low-molecular-weight heparin in the acute phase, and suggests not using direct oral anticoagulants.",
+      "page": null
+    },
+    {
+      "section": "Decompressive surgery",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline recommends decompressive surgery to prevent death due to brain herniation.",
+      "page": null
+    },
+    {
+      "section": "Steroids and acetazolamide",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline suggests not using steroids and not using acetazolamide to reduce death or dependency.",
+      "page": null
+    },
+    {
+      "section": "Early seizures",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline suggests using antiepileptics in patients with an early seizure and supratentorial lesions, to prevent further early seizures.",
+      "page": null
+    },
+    {
+      "section": "Questions left without a recommendation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "Because of very poor quality of evidence, no recommendations could be made concerning duration of anticoagulation after the acute phase, thrombolysis and/or thrombectomy, therapeutic lumbar puncture, or prevention of remote seizures with antiepileptic drugs.",
+      "page": null
+    },
+    {
+      "section": "Contraception and pregnancy",
+      "classOfRec": "Statement",
+      "classNote": "Conditional recommendation",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline suggests that in women who suffered a previous cerebral venous thrombosis, contraceptives containing oestrogens should be avoided. It also suggests that subsequent pregnancies are safe, but that use of prophylactic low-molecular-weight heparin should be considered throughout pregnancy and the puerperium.",
+      "page": null
+    }
+  ]
+}

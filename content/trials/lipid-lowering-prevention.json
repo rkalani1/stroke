@@ -1,0 +1,36 @@
+[
+  {
+    "id": "vesalius-cv",
+    "name": "VESALIUS-CV",
+    "fullName": "Evolocumab in Patients without a Previous Myocardial Infarction or Stroke (VESALIUS-CV)",
+    "category": "lipid-lowering-prevention",
+    "population": "n=12257, median 66 years; 43% women, 93% White, NIHSS not applicable — no prior stroke permitted, median follow-up 4.6 years",
+    "finding": "MET both primary end points. 3-point MACE in 336 patients (5-year KM 6.2%) with evolocumab vs 443 (8.0%) with placebo; 4-point MACE in 747 (13.4%) vs 907 (16.2%)",
+    "teachingPoint": "Teaches that the PCSK9 evidence base now reaches patients with atherosclerosis or diabetes and no prior event — but explicitly not stroke survivors, for whom SPARCL and Treat Stroke to Target remain the anchors.",
+    "PMID": "41211925",
+    "year": 2026,
+    "citationIds": [
+      "cit-vesalius-cv-2026"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "ez-pave",
+    "name": "Ez-PAVE",
+    "fullName": "Intensive LDL Cholesterol Targeting in Atherosclerotic Cardiovascular Disease (Ez-PAVE)",
+    "category": "lipid-lowering-prevention",
+    "population": "n=3048, 19-80 years by protocol; age distribution not reported in the abstract, NIHSS not reported — enrolment was by ASCVD status, not stroke severity, median follow-up 3.0 years",
+    "finding": "MET superiority: 100 events (Kaplan-Meier cumulative incidence 6.6%) with the <55 mg/dL target vs 147 events (9.7%) with the <70 mg/dL target",
+    "teachingPoint": "Adds randomized support for pushing LDL below 55 mg/dL in established atherosclerotic disease, while teaching why an open-label composite containing 'any revascularization' cannot be read as a stroke-specific result.",
+    "PMID": "41910315",
+    "year": 2026,
+    "citationIds": [
+      "cit-ez-pave-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

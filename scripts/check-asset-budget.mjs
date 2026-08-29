@@ -56,12 +56,27 @@ function corePrecacheBytes() {
 
 const precache = corePrecacheBytes();
 
+// BUDGET HISTORY
+// 2026-08-28: app.js raw 4 -> 5 MB, gzip 1000 -> 1300 KB.
+// The evidence atlas grew from 131 to 237 completed trials (+102 citations,
+// +19 society guideline documents) in one reviewed literature refresh, which
+// took app.js from 3.62 MB to 4.30 MB raw / 1.07 MB gzip. The payload is data,
+// not code: src/evidence/completedTrials.js alone went 243 KB -> 744 KB and is
+// imported eagerly through src/evidence/index.js.
+// This was raised deliberately rather than by trimming records, because the
+// per-record prose carries the caveats that make a trial card safe to read
+// (stopped-early status, as-treated vs randomized, non-inferiority margins).
+// The real lever remains route-level code splitting: the atlas is only needed
+// by the Reference Library and education views, so lazy-loading the evidence
+// layer would return roughly half a megabyte to first load. Until that lands,
+// treat further growth here as a prompt to split, not to raise again.
+
 const checks = [
   {
     id: 'app-js-gzip',
     label: 'app.js (gzip)',
     actual: gzipSizeOf('app.js'),
-    budget: 1000 * KB,
+    budget: 1300 * KB,
     unit: KB,
     unitLabel: 'KB',
     note: 'route-level code splitting is the lever that moves this',
@@ -70,7 +85,7 @@ const checks = [
     id: 'app-js-raw',
     label: 'app.js (raw)',
     actual: sizeOf('app.js'),
-    budget: 4 * MB,
+    budget: 5 * MB,
     unit: MB,
     unitLabel: 'MB',
     note: 'parse/execute cost scales with this, not the gzip figure',

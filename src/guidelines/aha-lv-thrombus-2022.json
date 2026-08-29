@@ -1,0 +1,21 @@
+{
+  "id": "aha-lv-thrombus-2022",
+  "title": "Management of Patients at Risk for and With Left Ventricular Thrombus: A Scientific Statement From the American Heart Association",
+  "shortTitle": "AHA LV Thrombus Statement 2022",
+  "doi": "10.1161/CIR.0000000000001092",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000001092",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/36106537/",
+  "pmid": "36106537",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Scope",
+      "classOfRec": "Statement",
+      "classNote": "Scope quoted verbatim from the publication abstract. The publisher full text returned HTTP 403 and could not be read; this document states it offers \"practical management suggestions\" rather than graded recommendations, and no class-of-recommendation or level-of-evidence content is entered here.",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "\"Despite the many advances in cardiovascular medicine, decisions concerning the diagnosis, prevention, and treatment of left ventricular (LV) thrombus often remain challenging. There are only limited organizational guideline recommendations with regard to LV thrombus. Furthermore, management issues in current practice are increasingly complex, including concerns about adding oral anticoagulant therapy to dual antiplatelet therapy, the availability of direct oral anticoagulants as a potential alternative option to traditional vitamin K antagonists, and the use of diagnostic modalities such as cardiac magnetic resonance imaging, which has greater sensitivity for LV thrombus detection than echocardiography. Therefore, this American Heart Association scientific statement was commissioned with the goals of addressing 8 key clinical management questions related to LV thrombus, including the prevention and treatment after myocardial infarction, prevention and treatment in dilated cardiomyopathy, management of mural (laminated) thrombus, imaging of LV thrombus, direct oral anticoagulants as an alternative to warfarin, treatments other than oral anticoagulants for LV thrombus (eg, dual antiplatelet therapy, fibrinolysis, surgical excision), and the approach to persistent LV thrombus despite anticoagulation therapy. Practical management suggestions in the form of text, tables, and flow diagrams based on careful and critical review of actual study data as formulated by this multidisciplinary writing committee are given.\" Published in Circulation 2022;146(15):e205-e223 (Levine GN, McEvoy JW, Fang JC, Ibeh C, et al.). This statement addresses detected intracardiac thrombus and is the companion to the AHA statement on ischemic stroke risk with left ventricular systolic dysfunction in the absence of intracardiac thrombus, carried separately in this library.",
+      "page": null
+    }
+  ]
+}

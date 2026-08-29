@@ -1,0 +1,45 @@
+{
+  "id": "eso-ivt-2021",
+  "title": "European Stroke Organisation (ESO) guidelines on intravenous thrombolysis for acute ischaemic stroke",
+  "shortTitle": "ESO Intravenous Thrombolysis 2021",
+  "society": "ESO",
+  "doi": "10.1177/2396987321989865",
+  "publisherUrl": "https://doi.org/10.1177/2396987321989865",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/33817340/",
+  "pmid": "33817340",
+  "recommendations": [
+    {
+      "section": "Alteplase within 4.5 hours",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "High certainty",
+      "text": "The working group found high-quality evidence to recommend intravenous thrombolysis with alteplase to improve functional outcome in patients with acute ischaemic stroke within 4.5 hours after symptom onset.",
+      "page": null
+    },
+    {
+      "section": "Wake-up stroke and unknown onset",
+      "classOfRec": "Statement",
+      "classNote": "Strong recommendation",
+      "levelOfEvidence": "High certainty",
+      "text": "High-quality evidence was found to recommend intravenous thrombolysis with alteplase in patients with acute ischaemic stroke on awakening from sleep, who were last seen well more than 4.5 hours earlier, who have MRI DWI-FLAIR mismatch, and for whom mechanical thrombectomy is not planned.",
+      "page": null
+    },
+    {
+      "section": "Scope and method",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Developed under the ESO standard operating procedure using GRADE: the working group identified clinical questions, performed systematic reviews and meta-analyses of the literature, assessed the quality of the available evidence and wrote recommendations. Expert consensus statements were provided where evidence was insufficient to support a GRADE recommendation. Further recommendations address patient subgroups, late time windows, imaging selection strategies, relative and absolute contraindications to alteplase, and tenecteplase.",
+      "page": null
+    },
+    {
+      "section": "Acknowledged evidence gaps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Guideline Summary",
+      "text": "The guideline states that further randomised controlled clinical trials are needed to inform clinical decision-making with regard to tenecteplase and with regard to the use of intravenous thrombolysis before mechanical thrombectomy in patients with large vessel occlusion.",
+      "page": null
+    }
+  ]
+}
