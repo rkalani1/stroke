@@ -4,7 +4,8 @@
     "title": "Unruptured Cerebral Aneurysms",
     "category": "aneurysms",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/aneurysms/Unruptured Cerebral Aneurysms.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   }
 ]

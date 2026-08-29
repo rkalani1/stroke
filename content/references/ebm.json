@@ -1,10 +1,20 @@
 [
   {
+    "id": "ebm-cebm-oxford-resources",
+    "title": "CEBM Oxford Resources",
+    "category": "ebm",
+    "type": "external-link",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
+    "url": "https://www.cebm.ox.ac.uk/resources",
+    "subtitle": "Centre for Evidence-Based Medicine - University of Oxford"
+  },
+  {
     "id": "ebm-interpretation-of-clinical-trials",
     "title": "Interpretation of Clinical Trials",
     "category": "ebm",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/ebm/Interpretation of Clinical Trials.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   }
 ]

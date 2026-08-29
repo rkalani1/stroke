@@ -1,26 +1,30 @@
 [
   {
     "id": "afib-ac-timing-after-af-related-stroke",
-    "title": "AC timing after AF-related Stroke",
+    "title": "Timing of Anticoagulation after AF-Related Stroke",
     "category": "afib",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/afib/AC timing after AF-related Stroke.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   },
   {
     "id": "afib-af-secondary-stroke-prevention-july-2024",
-    "title": "AF & secondary stroke prevention July 2024",
+    "title": "Atrial Fibrillation & Secondary Stroke Prevention",
     "category": "afib",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/afib/AF & secondary stroke prevention July 2024.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document",
+    "year": 2024
   },
   {
     "id": "afib-afib-stroke-epi519",
     "title": "AFib Stroke EPI519",
     "category": "afib",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/afib/AFib Stroke EPI519.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   }
 ]

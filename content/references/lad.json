@@ -1,18 +1,21 @@
 [
   {
     "id": "lad-crest-2-trial-dec-2025",
-    "title": "CREST-2 Trial - Dec 2025",
+    "title": "CREST-2 Trial (December 2025)",
     "category": "lad",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/lad/CREST-2 Trial - Dec 2025.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document",
+    "year": 2025
   },
   {
     "id": "lad-symptomatic-cervical-carotid-artery-stenosis",
     "title": "Symptomatic Cervical Carotid Artery Stenosis",
     "category": "lad",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   }
 ]

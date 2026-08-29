@@ -4,23 +4,26 @@
     "title": "DAPT After Ischemic Stroke-TIA",
     "category": "antiplatelet",
     "type": "image",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "Infographic - Match Patient to Trial"
   },
   {
     "id": "antiplatelet-dapt-minor-stroke-tia-trials",
     "title": "DAPT Minor Stroke-TIA Trials",
     "category": "antiplatelet",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   },
   {
-    "id": "antiplatelet-other-antithrombotics-for-secondary-stroke-prev",
-    "title": "Other Antithrombotics for Secondary Stroke Prevention",
+    "id": "antiplatelet-other-antithrombotics",
+    "title": "Other Antithrombotics",
     "category": "antiplatelet",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document — Cilostazol & Factor XIa Inhibition Trials"
   }
 ]

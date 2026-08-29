@@ -1,10 +1,20 @@
 [
   {
-    "id": "thrombolytic-thrombolytic-therapy-ais-4-5-24h-rcts",
+    "id": "thrombolytic-therapy-ais-45-24h-rcts",
     "title": "Thrombolytic Therapy AIS 4.5-24h RCTs",
     "category": "thrombolytic",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
+  },
+  {
+    "id": "thrombolytic-wake-up-trial",
+    "title": "WAKE-UP Trial",
+    "category": "thrombolytic",
+    "type": "external-link",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
+    "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa1804355",
+    "subtitle": "External Link - New England Journal of Medicine"
   }
 ]

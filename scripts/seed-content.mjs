@@ -293,29 +293,68 @@ async function seedEducation() {
 
 // ── References ← documents/* paths in app.jsx ─────────────────────────────
 async function seedReferences() {
+  // Seed from REFERENCE_LIBRARY_SECTIONS in src/app.jsx — the registry the
+  // Reference Library sub-tab itself renders — rather than regexing raw
+  // `documents/*.pdf` strings out of the file. The old regex was structurally
+  // blind to `type: 'external-link'` entries (they carry `href`, not a
+  // repo-local path), so the external links the app ships were absent from
+  // /content and any hand-added link was reported as drift and clobbered.
   const src = fsSync.readFileSync(path.join(REPO, 'src/app.jsx'), 'utf8');
-  const rx = /documents\/[A-Za-z0-9 _%.&()/-]+\.(pdf|jpe?g|png)/gi;
-  const seen = new Map();
-  let m;
-  while ((m = rx.exec(src)) !== null) {
-    let p = m[0].replace(/%20/g, ' ');
-    if (seen.has(p)) continue;
-    const parts = p.split('/');
-    const category = parts[1] || 'general';
-    const file = parts[parts.length - 1];
-    const title = file.replace(/\.(pdf|jpe?g|png)$/i, '');
-    const ext = file.split('.').pop().toLowerCase();
-    seen.set(p, {
-      id: kebab(`${category}-${title}`).slice(0, 60),
-      title,
-      category,
-      type: ext === 'pdf' ? 'pdf' : 'image',
-      path: p,
-      provenance: 'src/app.jsx reference library',
-    });
+  const marker = 'const REFERENCE_LIBRARY_SECTIONS = [';
+  const start = src.indexOf(marker);
+  if (start === -1) throw new Error('seedReferences: REFERENCE_LIBRARY_SECTIONS not found in src/app.jsx');
+  const open = start + marker.length - 1;
+  let depth = 0;
+  let end = -1;
+  let quote = null;
+  for (let i = open; i < src.length; i += 1) {
+    const ch = src[i];
+    if (quote) {
+      if (ch.charCodeAt(0) === 92) { i += 1; continue; } // backslash escape
+      if (ch === quote) quote = null;
+      continue;
+    }
+    if (ch === "'" || ch === '"' || ch === '`') { quote = ch; continue; }
+    if (ch === '[') depth += 1;
+    else if (ch === ']') { depth -= 1; if (depth === 0) { end = i; break; } }
   }
+  if (end === -1) throw new Error('seedReferences: unbalanced REFERENCE_LIBRARY_SECTIONS array');
+  // The registry is a pure data literal (no identifiers, calls or spreads), so
+  // evaluating it is equivalent to parsing it.
+  const sections = new Function(`return ${src.slice(open, end + 1)};`)();
+
+  const seen = new Map();
+  for (const section of sections) {
+    const docs = [];
+    for (const item of section.items || []) {
+      if (item && Array.isArray(item.docs)) docs.push(...item.docs);
+      else if (item) docs.push(item);
+    }
+    for (const doc of docs) {
+      if (!doc || seen.has(doc.id)) continue;
+      const isLink = doc.type === 'external-link';
+      // Repo-local documents keep their `documents/<category>/` grouping so the
+      // mirror stays aligned with the folders on disk; external links have no
+      // path, so they group under the section that renders them.
+      const category = isLink
+        ? kebab(section.id)
+        : (String(doc.path || '').split('/')[1] || kebab(section.id));
+      const record = {
+        id: doc.id,
+        title: doc.title,
+        category,
+        type: doc.type,
+        provenance: 'src/app.jsx REFERENCE_LIBRARY_SECTIONS',
+      };
+      if (isLink) record.url = doc.href;
+      else record.path = String(doc.path || '').replace(/%20/g, ' ');
+      if (doc.subtitle) record.subtitle = doc.subtitle;
+      if (Number.isFinite(doc.year)) record.year = doc.year;
+      seen.set(doc.id, record);
+    }
+  }
+
   const records = [...seen.values()].sort((a, b) => a.id.localeCompare(b.id));
-  // Group by category directory.
   const groups = new Map();
   for (const r of records) {
     const slug = kebab(r.category);

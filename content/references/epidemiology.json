@@ -4,15 +4,17 @@
     "title": "Diabetes and stroke",
     "category": "epidemiology",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/epidemiology/Diabetes and stroke.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   },
   {
     "id": "epidemiology-lipids-and-cerebrovascular-disease",
     "title": "Lipids and Cerebrovascular Disease",
     "category": "epidemiology",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/epidemiology/Lipids and Cerebrovascular Disease.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   }
 ]

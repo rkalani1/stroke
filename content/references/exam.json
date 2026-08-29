@@ -1,18 +1,20 @@
 [
   {
     "id": "exam-coma-exam",
-    "title": "coma exam",
+    "title": "Coma Exam",
     "category": "exam",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/exam/coma exam.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   },
   {
-    "id": "exam-differentiating-acute-confusional-state-delirium-from-a",
+    "id": "exam-delirium-vs-aphasia",
     "title": "Differentiating Acute Confusional State (Delirium) from Aphasia",
     "category": "exam",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   }
 ]
