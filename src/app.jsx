@@ -8953,15 +8953,13 @@ Clinician Name`;
           };
 
           const copyToClipboard = (text, label) => {
-            if (PUBLIC_DEMO_MODE) {
-              const identifierWarnings = getPublicDemoPhiWarnings(text);
-              const isGeneratedDemoNote = typeof text === 'string' && text.startsWith(PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX);
-              const allowSyntheticExample = isSyntheticDemoText(text) && !isGeneratedDemoNote;
-              if (identifierWarnings.length > 0 && !allowSyntheticExample) {
-                addToast(`Copy blocked in public demo: possible PHI or identifiers detected (${identifierWarnings.slice(0, 3).join(', ')}). Use only synthetic examples.`, 'warning');
-                return;
-              }
-            }
+            // Copy is never blocked. The PHI heuristics (getPublicDemoPhiWarnings)
+            // match on dates, long digit runs and phone-shaped numbers, which occur
+            // constantly in a legitimate stroke summary — last-known-well times, NIHSS
+            // tallies, door-to-needle minutes — so gating the clipboard on them made
+            // the Pulsara summary, handoff and auto-note uncopyable in normal use.
+            // The standing PHI banner and the file-export paths still carry the
+            // warning; the clipboard does not withhold the user's own text.
             const onSuccess = () => {
               setCopiedText(label);
               if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
@@ -14523,14 +14521,17 @@ Clinician Name`;
             () => createEncounterOutputGate(encounterReadiness.required),
             [encounterReadiness.required]
           );
-          const runEncounterOutput = (action) => runGatedEncounterOutput(
-            encounterOutputGate,
-            action,
-            (gate) => {
-              addToast(gate.message, 'warning');
-              jumpToNextRequiredEncounterField();
+          // Advisory, not a gate. Incomplete required fields used to withhold the
+          // output entirely (and yank focus to the missing field), which meant the
+          // copy shortcut and the command-palette copy entries silently produced
+          // nothing. The output is now always produced; the missing fields are just
+          // named, so a partial summary can still be copied and pasted.
+          const runEncounterOutput = (action) => {
+            if (!encounterOutputGate.ready && encounterOutputGate.required.length) {
+              addToast(`Copied — still incomplete: ${encounterOutputGate.required.join(', ')}.`, 'info');
             }
-          );
+            return runGatedEncounterOutput({ ...encounterOutputGate, ready: true }, action, () => {});
+          };
           const renderEncounterOutput = (buildOutput) =>
             renderGatedEncounterOutput(encounterOutputGate, buildOutput);
           runEncounterOutputRef.current = runEncounterOutput;
