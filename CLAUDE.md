@@ -50,12 +50,16 @@ check go green — if a check looks wrong, say so and stop.
   tracked files. This repo is public: no institutional identifiers, no real patient data, no
   internal hostnames or paths in anything committed. If the guard trips, fix the content — do not
   narrow the guard.
-- **The pre-commit hook needs a private denylist.** `npm run hooks:install` points
-  `core.hooksPath` at `.githooks`, whose pre-commit runs `check:leak-guard:staged` — and that
-  script *hard-fails* with "private denylist required but no private denylist was loaded" unless
-  `STROKE_LEAK_GUARD_PRIVATE_DENYLIST` is set or `scripts/leak-guard-denylist.local.json` exists
-  (both are local-only and untracked). Install the hook only after providing one, or every commit
-  is blocked. `git config --unset core.hooksPath` backs it out.
+- **The pre-commit hook needs a private denylist.** `npm run hooks:install` points `core.hooksPath`
+  at `.githooks`, whose pre-commit runs `check:leak-guard:staged`. That script hard-fails with
+  "private denylist required but no private denylist was loaded" unless
+  `STROKE_LEAK_GUARD_PRIVATE_DENYLIST` is set or `scripts/leak-guard-denylist.local.json` exists.
+  That file is gitignored and must never be staged — the guard rejects the commit if it is.
+  It needs at least one rule under `institutionalTokens`, `identityTokens`, `phiPatterns`,
+  `literalDenylist`, or `literalSha256Denylist`; an empty ruleset still fails. Note the split:
+  `exemptFiles` only skips institutional rules, while **`fullyExemptFiles`** is what skips a file
+  for PHI patterns. `git config --unset core.hooksPath` backs the hook out if needed.
+
 - **Path guard.** Keep build outputs out of the diff: `android/app/build/`,
   `android/app/src/main/assets/public/`, `ios/App/Pods/`, `node_modules/`, and the generated
   `*.br` / `*.gz` / bundled `app.js` artifacts. Source under `android/` and `ios/` is fine.
