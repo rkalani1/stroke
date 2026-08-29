@@ -10,60 +10,94 @@
   "pmid": "31903428",
   "recommendations": [
     {
-      "section": "Vitamin K antagonists",
-      "classOfRec": "Statement",
-      "classNote": "Strong recommendation",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline strongly recommends using prothrombin complex concentrate, together with vitamin K, over no treatment and over fresh-frozen plasma in patients with acute intracerebral haemorrhage taking a vitamin K antagonist (warfarin, phenprocoumon or acenocoumarol).",
+      "section": "PICO 1: PCC versus no treatment in VKA-related ICH",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with ICH occurring during use of VKA (with an INR above normal), we recommend using PCC (30 IU/kg) to decrease mortality and normalise INR.",
       "page": null
     },
     {
-      "section": "Dabigatran",
-      "classOfRec": "Statement",
-      "classNote": "Strong recommendation",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline strongly recommends using idarucizumab in patients with acute intracerebral haemorrhage taking dabigatran.",
+      "section": "PICO 2: PCC versus FFP in VKA-related ICH",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In patients with VKA-induced ICH, we recommend PCC (30 IU/kg) over FFP (20 mL/kg) to decrease mortality and normalise INR.",
       "page": null
     },
     {
-      "section": "Rivaroxaban and apixaban",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline makes a recommendation for andexanet alfa over no treatment in patients with acute intracerebral haemorrhage taking rivaroxaban or apixaban.",
+      "section": "PICO 2: PCC versus FFP in VKA-related ICH",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert opinion (vote: six of six experts): In patients with VKA-induced ICH, we recommend to use PCC dosages in the range from 20 to 50 IU/kg if INR >= 2 and 10 to 20 IU/kg if 1.3 <= INR < 2.",
       "page": null
     },
     {
-      "section": "Edoxaban, and factor Xa inhibitors when andexanet alfa is unavailable",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline makes a weak recommendation on using high-dose prothrombin complex concentrate (50 IU/kg) for all patients taking edoxaban, and for patients taking rivaroxaban or apixaban in case andexanet alfa is not available.",
+      "section": "PICO 3: Vitamin K in VKA-related ICH",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with ICH occurring during use of VKA (with an INR >= 1.3), we recommend the initial use of vitamin K (10 mg intravenously (IV)) in addition to fast reversal strategies including PCC to prevent re-increase of INR, to decrease haematoma expansion and decrease mortality.",
       "page": null
     },
     {
-      "section": "Tranexamic acid and recombinant factor VIIa",
-      "classOfRec": "Statement",
-      "classNote": "Recommendation against",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline recommends against using tranexamic acid and recombinant factor VIIa, outside of clinical trials.",
+      "section": "PICO 4: Recombinant factor VIIa in VKA-related ICH",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We recommend against using rFVIIa to improve outcome, decrease haematoma expansion or increase normalisation of INR in patients with ICH occurring during use of VKA.",
       "page": null
     },
     {
-      "section": "Limits of the underlying evidence",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The stated aim of these treatment recommendations is to normalise coagulation. The guideline notes explicitly that there are no data, or only indirect data, on effects on functional outcome or mortality, and only little data from randomised controlled trials.",
+      "section": "PICO 5: Tranexamic acid in VKA-related ICH",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with ICH occurring during use of VKA and INR >= 1.3, we recommend against use of tranexamic acid.",
       "page": null
     },
     {
-      "section": "How anticoagulant exposure was defined",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "As a basic principle the working group defined use of oral anticoagulation pragmatically: oral anticoagulation use is assumed from a positive medical history unless relevant anticoagulant activity is regarded as unlikely by medical history or has been ruled out by laboratory testing.",
+      "section": "PICO 6: PCC in NOAC-related ICH",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with ICH occurring during use of NOAC and when specific reversal agents are not available, we recommend considering the use of four-factor PCC (37.5-50 IU/kg) to normalise coagulation tests.",
+      "page": null
+    },
+    {
+      "section": "PICO 7: FFP in NOAC-related ICH",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with ICH occurring during use of NOAC, we recommend against using FFP to improve outcome, reduce mortality, decrease haematoma expansion or reverse the effects of NOAC.",
+      "page": null
+    },
+    {
+      "section": "PICO 8: Idarucizumab in dabigatran-related ICH",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We recommend idarucizumab to reverse effects of dabigatran in adult patients with ICH occurring during use of dabigatran. Evidence for effects on clinical endpoints is limited.",
+      "page": null
+    },
+    {
+      "section": "PICO 9: Andexanet alfa in factor Xa inhibitor-related ICH",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We recommend using andexanet alfa if available - in adult patients with ICH occurring during use of rivaroxaban or apixaban. We also recommend randomising into trials as based on the low quality of evidence, there is significant uncertainty whether desirable outweigh undesirable effects.",
+      "page": null
+    },
+    {
+      "section": "PICO 10: Ciraparantag in factor Xa inhibitor-related ICH",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We recommend against the administration of ciraparantag outside of clinical trials.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

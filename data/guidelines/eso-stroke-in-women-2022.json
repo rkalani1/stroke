@@ -10,12 +10,86 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Pregnancy, postpartum and menopause are regarded as periods women are more vulnerable to ischaemic events. There are conflicting results regarding stroke risk and hormone replacement therapy (HRT) during menopause. Stroke in pregnancy is generally increasing with serious consequences for mother and child; therefore, recommendations for acute treatment with intravenous thrombolysis (IVT) and/or mechanical thrombectomy (MT) are needed.",
+      "section": "PICO 1.1: HRT and risk of ischaemic stroke in postmenopausal women",
+      "classOfRec": "Conditional",
+      "classNote": "Against (printed as 'Weak against intervention')",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In postmenopausal women, we suggest against the use of HRT to reduce the risk of ischaemic stroke. (Quality of evidence: Very low; Strength of recommendation: Weak against intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO 1.2: HRT and risk of haemorrhagic stroke in postmenopausal women (primary prevention)",
+      "classOfRec": "Conditional",
+      "classNote": "Against (printed as 'Weak against intervention')",
+      "levelOfEvidence": "Low certainty",
+      "text": "In postmenopausal women, we suggest against the use of HRT to reduce the risk of haemorrhagic stroke. (Quality of evidence: Low; Strength of recommendation: Weak against intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO 1.3 / 1.4: Prior HRT and functional outcome or mortality after acute stroke",
+      "classOfRec": "Conditional",
+      "classNote": "Against (printed as 'Weak against intervention')",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In postmenopausal women with acute stroke, we suggest against the use of HRT to reduce mortality. (Quality of evidence: Very low; Strength of recommendation: Weak against intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO 2.1: Intravenous thrombolysis in pregnant women with acute ischaemic stroke",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For — the evidence-based recommendation itself makes no recommendation (no grade assigned)",
+      "levelOfEvidence": "Ungraded",
+      "text": "Evidence-based recommendation: Available data do not allow a specific recommendation on IVT in pregnant women with acute ischaemic stroke. Expert consensus statement: A majority of members suggests that pregnant women with acute disabling ischaemic stroke, who otherwise meet eligibility criteria, can be treated with IVT after appropriately assessing the benefit/risk profile on an individual basis.",
+      "page": null
+    },
+    {
+      "section": "PICO 2.2: Mechanical thrombectomy or intraarterial thrombolysis during pregnancy",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For — the evidence-based recommendation itself makes no recommendation (no grade assigned)",
+      "levelOfEvidence": "Ungraded",
+      "text": "Evidence-based recommendation: Available data do not allow a specific recommendation on MT in women with acute ischaemic stroke during pregnancy. Expert consensus statement: All members suggest that pregnant women with acute ischaemic stroke and large vessel occlusion, who otherwise meet eligibility criteria, can be treated with MT after appropriate assessment of the benefit/risk profile on an individual basis.",
+      "page": null
+    },
+    {
+      "section": "PICO 2.2: Mechanical thrombectomy or intraarterial thrombolysis during pregnancy",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For MT alone over IVT or bridging therapy",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement: A majority of members suggests that in pregnant women with acute ischaemic stroke related to large vessel occlusion, and if MT is available, MT alone should be preferred over IVT or bridging therapy (IVT + MT).",
+      "page": null
+    },
+    {
+      "section": "PICO 2.3: Intravenous thrombolysis in the postpartum period",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For — the evidence-based recommendation itself makes no recommendation (no grade assigned)",
+      "levelOfEvidence": "Ungraded",
+      "text": "Evidence-based recommendation: Available data do not allow a specific recommendation on IVT in postpartum women with acute ischaemic stroke. Expert consensus statement: All members suggest that postpartum women with disabling ischaemic stroke, occurring at least 10 days after delivery, who otherwise meet eligibility criteria, can be treated with IVT with alteplase after appropriate assessment of the benefit/risk profile on an individual basis.",
+      "page": null
+    },
+    {
+      "section": "PICO 2.4: Mechanical thrombectomy or intraarterial thrombolysis in the postpartum period",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For — the evidence-based recommendation itself makes no recommendation (no grade assigned)",
+      "levelOfEvidence": "Ungraded",
+      "text": "Evidence-based recommendation: Available data do not allow a specific recommendation on MT in women with acute ischaemic stroke during the postpartum period (defined as >= 10 days < 3 months). Expert consensus statement: Although there are no currently available data waiting for evidence from clinical studies, it is reasonably plausible that postpartum women with acute ischaemic stroke, who otherwise meet eligibility criteria, might benefit from MT after appropriate assessment of the benefit/risk profile on an individual basis.",
+      "page": null
+    },
+    {
+      "section": "PICO 2.4: Mechanical thrombectomy or intraarterial thrombolysis in the postpartum period",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For MT alone over IVT or bridging therapy, if bleeding risk is deemed high",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement: Furthermore, a majority of members suggests that, based on the time of stroke onset from delivery, if the risk of bleeding is deemed high, and if MT is available, it is reasonably plausible to prefer MT alone over IVT or bridging therapy (IVT + MT) on an individual basis.",
+      "page": null
+    },
+    {
+      "section": "PICO 2.5: Intravenous thrombolysis in women with acute ischaemic stroke during menstruation",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For — the evidence-based recommendation itself makes no recommendation (no grade assigned)",
+      "levelOfEvidence": "Ungraded",
+      "text": "Evidence-based recommendation: Available data do not allow specific recommendation on IVT in women with ischaemic stroke during menstruation. Expert consensus statement: All members suggest that women with acute ischaemic stroke during menstruation, who otherwise meet eligibility criteria, can be treated with IVT with alteplase after appropriate assessment of the benefit/risk profile on an individual basis.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

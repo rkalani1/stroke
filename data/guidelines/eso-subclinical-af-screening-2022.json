@@ -10,12 +10,102 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "We aimed to provide practical recommendations for the screening of subclinical atrial fibrillation (AF) in patients with ischaemic stroke or transient ischaemic attack (TIA) of undetermined origin. These guidelines are based on the Grading of Recommendations, Assessment, Development and Evaluation (GRADE) methodology. Five relevant Population, Intervention, Comparator, Outcome questions were defined by a multidisciplinary module working group (MWG).",
+      "section": "PICO 1: Longer versus shorter duration of cardiac rhythm monitoring - Evidence-based recommendation",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In adult patients with ischaemic stroke or TIA of undetermined origin, we recommend a prolonged cardiac monitoring instead of standard 24 h monitoring to increase the detection of subclinical AF. (Quality of evidence: Moderate; Strength of recommendation: Strong for intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Longer versus shorter duration of cardiac rhythm monitoring - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with ischaemic stroke or TIA of undetermined origin, we suggest prolonged cardiac rhythm monitoring for AF for more than 48 h.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Additional outpatient cardiac rhythm monitoring versus in-hospital monitoring alone - Evidence-based recommendation",
+      "classOfRec": "Conditional",
+      "classNote": "For (printed as 'Weak for intervention')",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with ischaemic stroke or TIA of undetermined origin, we suggest the use of additional outpatient monitoring compared with in-hospital cardiac rhythm monitoring alone to increase the detection of subclinical AF. (Quality of evidence: Very low; Strength of recommendation: Weak for intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Additional outpatient cardiac rhythm monitoring - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with ischaemic stroke or TIA of undetermined origin we suggest to initiate ECG monitoring as early as possible during the in-hospital stay, to increase the rate of AF detection.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Implantable versus non-implantable monitoring devices - Evidence-based recommendation",
+      "classOfRec": "Strong",
+      "classNote": "For — note the statement is worded 'we suggest' but the printed strength is 'Strong for intervention' with only Low quality of evidence",
+      "levelOfEvidence": "Low certainty",
+      "text": "In adult patients with ischaemic stroke or TIA of undetermined origin, we suggest the use of implantable devices for prolonged cardiac monitoring instead of non-implantable devices to increase the detection of subclinical AF. (Quality of evidence: Low; Strength of recommendation: Strong for intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Biomarkers (blood, echocardiographic, ECG, heart or brain imaging) to guide AF detection - Evidence-based recommendation",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Uncertain — neither for nor against",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with ischaemic stroke or TIA of undetermined origin there is continued uncertainty over the advantages of the use of blood, echocardiographic, ECG or heart or brain imaging biomarkers to increase the detection of subclinical AF.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Biomarkers to guide AF detection - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against using biomarkers to EXCLUDE patients from long-term monitoring (not against biomarkers as such)",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with ischaemic stroke or TIA of undetermined origin the presence of potential blood, echocardiographic, ECG or brain imaging biomarkers might increase the probability of AF detection, but given the limited current evidence we suggest avoiding their use for excluding patients from long-term ECG monitoring.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Implantable versus non-implantable monitoring in patients with PFO - Evidence-based recommendation",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Uncertain — neither for nor against",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with ischaemic stroke or TIA of undetermined origin and PFO, there is continued uncertainty over the risks and benefits of the use of implantable monitor devices over any non-implantable external monitor devices to increase the detection of subclinical AF.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Implantable versus non-implantable monitoring in patients with PFO - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with ischaemic stroke or TIA of undetermined origin and PFO, we suggest prolonged cardiac rhythm monitoring for AF for more than 48 h in patients older than 55 years to increase the detection of subclinical AF.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Implantable versus non-implantable monitoring in patients with PFO - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest prolonged cardiac rhythm monitoring for AF to increase the rate of anticoagulation or reduce unnecessary PFO occluder implantations in patients with cryptogenic stroke and PFO older than 55 years.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Implantable versus non-implantable monitoring in patients with PFO - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "The MWG suggests implantable monitoring devices, compared to any non-implantable external monitoring device to detect paroxysmal AF in patients with cryptogenic stroke and PFO older than 55 years.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Implantable versus non-implantable monitoring in patients with PFO - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For (basic monitoring may suffice in patients younger than 55 years)",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients younger than 55 years with undetermined stroke and PFO, we suggest that a basic cardiac monitoring during 24 h by telemetry or Holter-ECG could be enough.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

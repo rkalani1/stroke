@@ -168,5 +168,7 @@
       "text": "For minor stroke (NIHSS <=3) or high-risk TIA (ABCD2 >=4), use short-term DAPT (aspirin + clopidogrel) begun within 12-24 hours for 21-90 days, then single therapy.",
       "page": 6
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ACC/AHA"
 }

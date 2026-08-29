@@ -10,12 +10,174 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Definitions",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Central retinal artery occlusion (CRAO) is a form of acute ischemic stroke that causes severe visual loss and is a harbinger of further cerebrovascular and cardiovascular events. There is a paucity of scientific information on the appropriate management of CRAO, with most strategies based on observational literature and expert opinion. In this scientific statement, we critically appraise the literature on CRAO and provide a framework within which to consider acute treatment and secondary prevention.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "CRAO with retinal infarction conforms to the diagnosis of acute ischemic stroke. It is defined on the basis of a compelling clinical history supported by the presence of a relative afferent pupillary defect and classic funduscopic findings.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology and Risk Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The incidence of CRAO is approximately 1.9 per 100 000 person-years. This risk increases with age and in the presence of vascular risk factors such as hypertension, hyperlipidemia, diabetes, tobacco exposure, and obesity.",
+      "page": null
+    },
+    {
+      "section": "Pathophysiology",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In 95% of cases, CRAO occurs as a result of thromboembolic disease. In 5% of cases, it occurs as arteritic CRAO, usually as a component of giant cell arteritis.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Sudden, painless, monocular visual loss most often results from CRAO, optic neuropathy (most often ischemic), retinal detachment, or intraocular hemorrhage. An ophthalmological examination, including a funduscopic examination, is necessary for the diagnosis of CRAO and to rule out intraocular hemorrhage.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "If an eye care specialist is not available on site for an emergency evaluation and the treating physician is not comfortable establishing the diagnosis, ocular fundus photography can be obtained and relayed to an eye care specialist by telemedicine/telestroke for confirmation of the diagnosis.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Imaging modalities such as optical coherence tomography, optical coherence tomography angiography, or fluorescein angiography can support the diagnosis of CRAO, particularly when the expected findings are subtle or absent. Optical coherence tomography can detect retinal edema easily and rapidly in the acute setting.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Arteritic CRAO should be suspected in patients older than 50 years of age with systemic symptoms including jaw claudication, polymyalgia rheumatica, diffuse posterior neck pain, scalp tenderness with or without nodules, new-onset headache, or elevated inflammatory markers.",
+      "page": null
+    },
+    {
+      "section": "Natural History",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "CRAO affects central vision (visual acuity), peripheral vision (visual fields), color vision, and stereovision. The natural history of CRAO is poor, with only 17% of patients achieving a functional visual acuity in the affected eye.",
+      "page": null
+    },
+    {
+      "section": "Acute Treatment: Triage and Rapid Evaluation of Patients With Suspected CRAO",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with suspected CRAO should be triaged to the nearest emergency department. When CRAO is diagnosed in an ophthalmology, optometry, neurology, or primary clinic, immediate triage to an emergency department is necessary and should not be delayed to obtain further outpatient evaluation or institute other treatments. Public outreach campaigns should emphasize painless, monocular visual loss as a symptom of stroke.",
+      "page": null
+    },
+    {
+      "section": "Acute Treatment: Triage and Rapid Evaluation of Patients With Suspected CRAO",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Two additions to the standard stroke code process are necessary in the setting of CRAO: a funduscopic examination to confirm the diagnosis and exclude alternative causes such as vitreal or retinal hemorrhage, and screening for arteritis. The efficacy of thrombolysis has not been evaluated in the setting of arteritic CRAO, but early screening and immediate steroid therapy are indicated to preserve vision in the contralateral eye.",
+      "page": null
+    },
+    {
+      "section": "Acute Treatment: Triage and Rapid Evaluation of Patients With Suspected CRAO",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The sequence of thrombolytic treatment for CRAO in the emergency department should begin with an immediate ophthalmological examination in parallel with a structured neurological assessment (NIHSS) and a noncontrast computed tomography scan of the brain. When there is a high suspicion for a coagulopathy, a platelet count and coagulation studies should be performed, and in patients with a high clinical suspicion for giant cell arteritis, testing of the erythrocyte sedimentation rate and CRP is reasonable before a final decision is made on the administration of tPA.",
+      "page": null
+    },
+    {
+      "section": "Acute Treatment: Intravenous tPA",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Intravenous tPA may be considered in patients who have disabling visual deficits and who otherwise meet criteria for systemic tPA after a thorough benefit/risk discussion with the affected patient. Until a fully powered efficacy trial has been completed, there is equipoise in the utility of intravenous tPA for CRAO, and the decision to use this therapy rests on a thorough discussion between the treating specialist and the affected patient.",
+      "page": null
+    },
+    {
+      "section": "Acute Treatment: Intravenous tPA",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The risk of symptomatic intracranial hemorrhage appears to be low when tPA is administered to treat CRAO; there are no recorded cases of symptomatic intracranial hemorrhage when tPA is administered within 4.5 hours of symptom onset and without concomitant anticoagulation. Because of a 30% incidence of concurrent cerebral ischemic stroke and a reduced efficacy signal in the 4.5- to 6-hour time epoch, treatment beyond 4.5 hours requires further study.",
+      "page": null
+    },
+    {
+      "section": "Acute Treatment: Intra-Arterial tPA",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In centers capable of deploying endovascular therapy, intra-arterial tPA may be considered in patients with disabling visual deficits at early time points, especially if they are not candidates for intravenous tPA. This consideration comes with the strong caveat that, at present, intra-arterial thrombolysis is an unproven therapy and should be considered only in light of the devastating visual outcome associated with CRAO.",
+      "page": null
+    },
+    {
+      "section": "Acute Treatment: Intra-Arterial tPA",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The recommended technique for superselective ophthalmic artery microcatheterization is placement of a small microcatheter (0.60 mm) in the ostium of the artery. Although distal microcatheterization of the ophthalmic artery is possible, overall it is not recommended because it increases the risk of arterial dissection and thromboembolic events. Mechanical clot retrieval is not possible with existing technology given the size of the vessels involved.",
+      "page": null
+    },
+    {
+      "section": "Acute Treatment: Conservative Treatments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is no compelling evidence that conservative treatments for CRAO are effective, and trends in the observational literature suggest that ocular massage, anterior chamber paracentesis, and hemodilution may be harmful. Because of a lack of evidence for efficacy and suggestions of harm, these treatments are not currently endorsed in professional guidelines on the management of CRAO.",
+      "page": null
+    },
+    {
+      "section": "Acute Treatment: Conservative Treatments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hyperbaric oxygen therapy may provide benefit as a temporizing measure while definitive reperfusion is pursued, although it is not felt to promote reperfusion itself; it is associated with a low risk of systemic complications, but is labor intensive to deploy and available at only select centers, and requires further study.",
+      "page": null
+    },
+    {
+      "section": "Secondary Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Secondary prevention (including monitoring for complications) should be a collaborative effort between neurology, ophthalmology, and primary care medicine. Risk factor modification should include pharmacological and lifestyle interventions - treatment of hypertension, dyslipidemia, diabetes, obesity, and obstructive sleep apnea; smoking cessation; a plant-based diet; and regular physical activity - following established professional guidelines for cerebral ischemic stroke.",
+      "page": null
+    },
+    {
+      "section": "Secondary Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Antiplatelet therapy is a reasonable consideration for pharmacological secondary prevention when the cause is cryptogenic or attributed to atherosclerosis. In patients with a presenting NIHSS score of 3 or less, an initial course of 21 days of dual antiplatelet therapy may be reasonable, followed by long-term treatment with a single antiplatelet agent, typically aspirin 81 mg daily or clopidogrel 75 mg daily.",
+      "page": null
+    },
+    {
+      "section": "Secondary Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "If atrial fibrillation or another cardioembolic source is detected during the diagnostic workup, anticoagulation may be appropriate for secondary prevention. The ideal screening regimen for AF in patients with CRAO has not been defined, but some duration of ambulatory cardiac rhythm monitoring is appropriate in patients without a clear other cause. Because of the high rate of structural heart disease, it is reasonable to consider transthoracic echocardiography; transesophageal echocardiography should be reserved for high suspicion of an occult structural cardiac lesion with an otherwise negative workup.",
+      "page": null
+    },
+    {
+      "section": "Secondary Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "High-grade stenosis of the ipsilateral carotid artery should be identified rapidly with computed tomography/magnetic resonance angiography or cervical artery ultrasound and treated as symptomatic carotid stenosis; severe stenosis may require surgical intervention for secondary stroke prevention. Screening for less common causes of CRAO, including hypercoagulable states, paradoxical emboli, and septic emboli, should be considered in select high-risk patients.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

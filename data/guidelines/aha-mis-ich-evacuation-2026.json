@@ -10,12 +10,166 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Abstract",
       "classOfRec": "Statement",
-      "classNote": "Scope quoted verbatim from the publication abstract. The publisher full text returned HTTP 403 and could not be read, so no class-of-recommendation or level-of-evidence content is entered here — consult the linked source for any graded content.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "\"Recent evidence has reignited interest in the role of surgical intervention for improving outcomes after spontaneous intracerebral hemorrhage. Historically, the surgical management of intracerebral hemorrhage has been limited due to concerns regarding procedural risks and lack of functional improvement. However, recent advances in minimally invasive surgical techniques suggest improvements in functional recovery, broadening consideration for surgical treatment of certain patients, such as those with lobar hemorrhage after spontaneous intracerebral hemorrhage. This science advisory summarizes randomized evidence for minimally invasive surgical evacuation of intracerebral hemorrhage compared with medical management, including considerations related to patient selection, care pathways, and surgical technique.\" Published in Stroke, 24 August 2026 (Wolfe SQ, Amin-Hanjani S, Tschoe C, Simon SD, Kellner CP, Sheth KN, et al.). This advisory postdates the 2022 AHA/ASA intracerebral hemorrhage guideline carried elsewhere in this library.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Recent advances in minimally invasive surgical techniques suggest improvements in functional recovery, broadening consideration for surgical treatment of certain patients, such as those with lobar hemorrhage after spontaneous intracerebral hemorrhage. This science advisory summarizes randomized evidence for minimally invasive surgical evacuation of intracerebral hemorrhage compared with medical management, including considerations related to patient selection, care pathways, and surgical technique.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": "Class 2a/2b are the 2022 AHA ICH guideline's grades, cited here; this science advisory assigns no Class of Recommendation or Level of Evidence of its own.",
+      "levelOfEvidence": "Ungraded",
+      "text": "The 2022 guideline for the management of patients with spontaneous intracerebral hemorrhage provides a Class 2a (moderate) recommendation supporting the use of minimally invasive surgical intracerebral hemorrhage evacuation to reduce mortality and a Class 2b (weak) recommendation regarding functional benefit. Since publication of those guidelines, 2 additional randomized controlled trials (ENRICH and MIND) have been published; together, these studies suggest that select patients are considered good candidates for surgical management.",
+      "page": null
+    },
+    {
+      "section": "Evidence Update: MIS Evacuation of ICH",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "MISTIE III randomized 499 patients to stereotactic aspiration plus alteplase, showing a clear mortality benefit at 365 days but no significant improvement in functional outcomes. Subgroup analysis showed a correlation between improved functional outcomes and residual intracerebral hemorrhage volume <=15 mL, which was associated with site and surgeon experience.",
+      "page": null
+    },
+    {
+      "section": "Evidence Update: MIS Evacuation of ICH",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The ENRICH trial (n=300) of minimally invasive tubular hematoma evacuation within 24 hours in patients with Glasgow Coma Scale score 5-14 and hematoma volumes 30 to 80 cc revealed significant 6-month functional benefit and improved 30-day mortality (9.3% versus 18%), although the mortality benefit was nonsignificant at 180 days. The observed benefits were driven by lobar intracerebral hemorrhage location; enrollment of anterior basal ganglia hemorrhage was stopped for futility.",
+      "page": null
+    },
+    {
+      "section": "Evidence Update: MIS Evacuation of ICH",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The MIND trial randomized 236 patients with hematoma volumes 20 to 80 cc to endoscopic minimally invasive surgery within 72 hours and was stopped early. It achieved high technical efficacy (approximately 80% reduction, residual <=15 mL in 79%) with fewer serious adverse events in the surgical group on exploratory analysis, but showed no significant reduction in mortality or improvement in functional outcomes at the 180-day end point. Neither ENRICH nor MIND enrolled patients >80 years of age, limiting generalizability to those patients.",
+      "page": null
+    },
+    {
+      "section": "Evidence Update: MIS Evacuation of ICH",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A 2025 Cochrane meta-analysis found that minimally invasive surgery probably increases the chance of good functional outcome (risk ratio, 1.36 [CI, 1.18-1.58]) and reduces all-cause mortality (risk ratio, 0.71 [CI, 0.60-0.84]); however, the observed functional benefit is attenuated to nonsignificance when the analysis is restricted to studies with low risk of bias (risk ratio, 1.12 [CI, 0.96-1.32]).",
+      "page": null
+    },
+    {
+      "section": "Surgical Techniques and Goals",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There are broadly 3 minimally invasive surgical techniques for intracerebral hemorrhage evacuation: tubular (or endoport-based), endoscopic, and stereotactic aspiration (with or without intermittent thrombolytic adjuvant therapy for up to 72 hours). All use navigation to plan trajectories to avoid eloquent cortex and account for subcortical tracts, and use intrahematomal decompression respecting adjacent tissue boundaries to optimize brain preservation.",
+      "page": null
+    },
+    {
+      "section": "Surgical Techniques and Goals",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Because outcomes have been linked to site and surgeon experience, all major US-based randomized controlled trials required investigators to undergo standardized competency training in the technique with case reviews by the study principal investigators.",
+      "page": null
+    },
+    {
+      "section": "Surgical Techniques and Goals",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Across techniques, a residual volume <=15 mL appears to be the common surgical goal. With regard to timing, one meta-analysis suggests that evacuation up to 72 hours may improve outcomes; ultraearly craniotomy (<4 hours) may carry higher bleeding risk, but early minimally invasive surgery (<24 hours) appears safe. The question of optimal timing of surgery for intracerebral hemorrhage is not yet resolved.",
+      "page": null
+    },
+    {
+      "section": "Acute Medical Management Algorithm for Medical Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Acute implementation of a multicomponent care bundle for intracerebral hemorrhage (rapid correction of coagulopathy, blood pressure reduction, normothermia, and normoglycemia) instituted within 1 hour of presentation has been shown to significantly lower the likelihood of poor functional outcome and reduce serious adverse events (INTERACT3). INTERACT3 targeted glucose levels of 110 to 140 mg/dL for nondiabetic patients and 140 to 180 mg/dL for patients with diabetes.",
+      "page": null
+    },
+    {
+      "section": "Acute Medical Management Algorithm for Medical Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Rapid correction of coagulopathy is essential, within 90 minutes per the 2022 guidelines but with potential benefit achieved within 60 minutes as demonstrated by INTERACT3. For patients on warfarin or direct oral anticoagulants, reversal with 4-factor prothrombin complex concentrate or a specific reversal agent is indicated.",
+      "page": null
+    },
+    {
+      "section": "Acute Medical Management Algorithm for Medical Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A systolic blood pressure goal of 130 to 140 mm Hg achieved within 1 hour of arrival and maintained up to 7 days balances hematoma stability with cerebral perfusion without increased incidence of acute renal failure. Blood pressure reduction is suggested to be moderated in patients with longstanding hypertension or renal insufficiency to prevent acute renal injury.",
+      "page": null
+    },
+    {
+      "section": "Acute Medical Management Algorithm for Medical Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In line with the 2022 intracerebral hemorrhage guidelines, platelet transfusion might be considered for patients on antiplatelets undergoing minimally invasive surgical evacuation, although evidence in this setting is limited, and platelet transfusion carries potential harm and is not recommended in patients managed medically.",
+      "page": null
+    },
+    {
+      "section": "Acute Medical Management Algorithm for Medical Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Close neurologic monitoring, management of intracranial pressure, and avoidance of secondary brain injury through normoglycemia and normothermia are core medical principles. Postoperative neuroimaging to ensure successful evacuation, and at intervals to monitor for rebleeding, development of hydrocephalus, and edema based on clinical condition, is advisable. Coordination among neurosurgical, neurocritical care, and anesthesiology teams is essential.",
+      "page": null
+    },
+    {
+      "section": "Surgical Patient Selection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Overall, minimally invasive surgery warrants consideration for patients presenting with lobar intracerebral hemorrhage between 30 and 80 mL with good premorbid neurologic status, National Institutes of Health Stroke Scale score >5, and Glasgow Coma Scale score >5, undergoing surgery within the first 24 hours.",
+      "page": null
+    },
+    {
+      "section": "Surgical Patient Selection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We hypothesize that a mortality benefit from minimally invasive surgical evacuation in supratentorial intracerebral hemorrhage may be achieved with adequate clot evacuation within the first 72 hours. Despite the lack of demonstrated functional benefit from evacuation of basal ganglia intracerebral hemorrhage, minimally invasive surgical evacuation may confer a mortality benefit, reduce the need for hemicraniectomy, and shorten intensive care unit and hospital length of stay.",
+      "page": null
+    },
+    {
+      "section": "Surgical Patient Selection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients meeting these criteria with reversible coagulopathies or anticoagulation, correctable antiplatelet use, or suspicion of cerebral amyloid angiopathy should not be summarily excluded from consideration for surgical minimally invasive evacuation, given that these were not exclusion criteria in trials. Patients with clinically significant intraventricular hemorrhage and moderate baseline deficit (mRS 2-3) have not been studied in previous trials but may be considered on a case-by-case basis pending future data.",
+      "page": null
+    },
+    {
+      "section": "Surgical Patient Selection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Trial exclusion criteria were similar across ENRICH, MIND, and MISTIE III and included clinical signs of herniation, uncorrectable coagulopathy, suspicion of an underlying lesion such as arteriovenous malformation or tumor, large or isolated intraventricular hemorrhage, and traumatic intracerebral hemorrhage.",
+      "page": null
+    },
+    {
+      "section": "Future Directions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Based on current data, minimally invasive surgical evacuation appears to confer a mortality benefit, and functional outcome improvement has been supported for evacuation of lobar hemorrhages. The importance of surgeon training and performance in achieving technical success and maintaining safety underscores the importance of minimally invasive surgical evacuation being performed by practitioners with appropriate neurosurgical expertise.",
+      "page": null
+    },
+    {
+      "section": "Future Directions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Gaps in knowledge remain, including the optimal timing of minimally invasive surgical intervention, the maximum threshold of timing that could still offer benefit, functional benefit in deep nonlobar hemorrhage, and the superiority of any specific minimally invasive technique, none of which has been established. The majority of patients with intracerebral hemorrhage do not meet the criteria associated with benefit from minimally invasive surgical evacuation.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "advisory",
+  "gradingSystem": "ungraded"
 }

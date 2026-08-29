@@ -10,12 +10,16 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Source not machine-readable",
       "classOfRec": "Statement",
-      "classNote": "Scope quoted verbatim from the publication abstract. The publisher full text returned HTTP 403 and could not be read, so no class-of-recommendation or level-of-evidence content is entered here — consult the linked source for the graded recommendations.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "\"The '2026 Guidelines for Adult Stroke Rehabilitation and Recovery' replaces the 2016 'Guidelines for Adult Stroke Rehabilitation and Recovery.' This updated guideline is intended to provide a comprehensive, up-to-date, evidence-based set of recommendations. The intended audience includes physicians, allied health professionals, and caregivers. A comprehensive search for literature published since the 2016 guideline, derived from research involving human participants, published in English, and indexed in MEDLINE, PubMed, Cochrane Library, and other selected databases relevant to this guideline, was conducted between June and October 2025. Other documents on related subject matter previously published by the American Heart Association were also reviewed. This guideline provides recommendations based on the most current evidence available for stroke rehabilitation and recovery. Key updates include new and revised recommendations across the stroke recovery continuum, including the assessment and treatment of medical comorbidities, fracture risk, fall prevention, technology-enabled rehabilitation, caregiver support, participation, and safe return to work and driving. Although this guideline reflects significant advances, it also highlights gaps in knowledge and underscores the urgent need for continued research to further refine and improve treatment strategies.\" Published in Stroke, 27 August 2026 (Richards LG, Ifejika NL, Stein J, Bahouth MN, et al.). This is the current AHA/ASA rehabilitation guideline and supersedes the 2016 version.",
+      "classNote": "Recommendations not machine-readable",
+      "levelOfEvidence": "Ungraded",
+      "text": "Published 27 August 2026. The publisher currently serves only the abstract view; the graded recommendation tables are behind a subscription and could not be read. Consult the source for the recommendations and their Class/Level of Evidence.",
       "page": null
     }
-  ]
+  ],
+  "extractionStatus": "source-not-machine-readable",
+  "extractionNote": "Published 27 August 2026. The publisher currently serves only the abstract view; the graded recommendation tables are behind a subscription and could not be read. Consult the source for the recommendations and their Class/Level of Evidence.",
+  "documentType": "guideline",
+  "gradingSystem": "ungraded"
 }

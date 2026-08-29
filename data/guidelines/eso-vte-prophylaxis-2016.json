@@ -10,52 +10,38 @@
   "pmid": "31008263",
   "recommendations": [
     {
-      "section": "Intermittent pneumatic compression",
-      "classOfRec": "Statement",
-      "classNote": "Strong recommendation",
-      "levelOfEvidence": "Moderate certainty",
-      "text": "The guideline recommends that clinicians should use intermittent pneumatic compression in immobile patients with acute ischaemic stroke; the strongest evidence in this guideline is for intermittent pneumatic compression.",
-      "page": null
-    },
-    {
       "section": "Graduated compression stockings",
-      "classOfRec": "Statement",
-      "classNote": "Recommendation against",
+      "classOfRec": "Strong",
+      "classNote": "Against",
       "levelOfEvidence": "Moderate certainty",
-      "text": "The guideline recommends that clinicians should not use graduated compression stockings for venous thromboembolism prophylaxis in immobile patients with acute ischaemic stroke.",
+      "text": "We recommend that graduated compression stockings should not be used in patients with ischaemic stroke. (Quality of evidence: Moderate; Strength of recommendation: Strong against)",
       "page": null
     },
     {
-      "section": "Prophylactic anticoagulation",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "Intermittent pneumatic compression",
+      "classOfRec": "Strong",
+      "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
-      "text": "Prophylactic anticoagulation with unfractionated heparin (5000 units twice or three times daily), or with a low-molecular-weight heparin or heparinoid, should be considered in immobile patients with ischaemic stroke in whom the benefit of reducing the risk of venous thromboembolism is high enough to offset the increased risks of intracranial and extracranial bleeding associated with their use.",
+      "text": "We recommend that intermittent pneumatic compression (IPC) (thigh-length, sequential) should be used for immobile patients with ischaemic stroke. It should not be used in patients with open wounds on the legs and should be used with caution in those with existing DVT, heart failure, severe peripheral vascular disease or confusion where attempts to mobilise when unsupervised could lead to falls and injury. (Quality of evidence: Moderate; Strength of recommendation: Strong for)",
       "page": null
     },
     {
-      "section": "Choice of prophylactic anticoagulant",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "Anticoagulants",
+      "classOfRec": "Conditional",
+      "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
-      "text": "Where a judgement has been made that prophylactic anticoagulation is indicated, a low-molecular-weight heparin or heparinoid should be considered instead of unfractionated heparin because of its greater reduction in risk of deep vein thrombosis and the greater convenience, reduced staff costs and patient comfort of single versus multiple daily injections. These advantages should be weighed against the higher risk of extracranial bleeding, higher drug costs, and risks in elderly patients with poor renal function associated with low-molecular-weight heparins and heparinoids.",
+      "text": "Prophylactic anticoagulation with unfractionated heparin (UFH) (5000U x2, or x3 daily) or low molecular weight heparin (LMWH) or heparinoid should be considered in immobile patients with ischaemic stroke in whom the benefits of reducing the risk of venous thromboembolism is high enough to offset the increased risks of intracranial and extracranial bleeding associated with their use. (Quality of evidence: Moderate; Strength of recommendation: Weak for)",
       "page": null
     },
     {
-      "section": "Neuromuscular electrical stimulation",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "No randomised trials evaluating neuromuscular electrical stimulation were identified, and further research is required to test whether it is effective.",
-      "page": null
-    },
-    {
-      "section": "Acknowledged evidence gaps",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Better methods are needed to help stratify patients in the first few weeks after stroke onset by their risk of venous thromboembolism and their risk of bleeding on anticoagulants.",
+      "section": "LMWHs or heparinoids or UFH",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Where a judgement has been made that prophylactic anticoagulation is indicated LMWH or heparinoid should be considered instead of UFH because of its greater reduction in risk of DVT, the greater convenience, reduced staff costs and patient comfort associated single daily dose vs. multiple daily injections but these advantages should be weighed against the higher risk of extracranial bleeding, higher drug costs and risks in elderly patients with poor renal function. (Quality of evidence: Moderate; Strength of recommendation: Weak for)",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

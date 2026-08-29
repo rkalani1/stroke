@@ -10,12 +10,38 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Six randomized controlled clinical trials have assessed whether mechanical thrombectomy (MT) alone is non-inferior to intravenous thrombolysis (IVT) plus MT within 4.5 hours of symptom onset in patients with anterior circulation large vessel occlusion (LVO) ischaemic stroke and no contraindication to IVT.",
+      "section": "PICO 1: Patients admitted to a thrombectomy-capable centre ('Mothership' paradigm) - Evidence-based recommendation",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For patients directly admitted to a thrombectomy-capable centre for an acute ischaemic stroke (<= 4.5 hrs of symptom onset) with anterior circulation large vessel occlusion and who are eligible for both treatments, we recommend intravenous thrombolysis plus mechanical thrombectomy over mechanical thrombectomy alone. Both treatments should be performed as early as possible after hospital arrival. Mechanical thrombectomy should not prevent the initiation of intravenous thrombolysis, and intravenous thrombolysis should not delay mechanical thrombectomy.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Patients admitted to a thrombectomy-capable centre ('Mothership' paradigm) - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients directly admitted to a thrombectomy-capable centre within 4.5 hours of symptom recognition after wake-up ischaemic stroke caused by anterior circulation large vessel occlusion, we suggest intravenous thrombolysis plus mechanical thrombectomy over mechanical thrombectomy alone in selected patients. The selection criteria for IVT and MT for patients with wake-up stroke are detailed in the corresponding European Guidelines. Notably, eligibility imaging criteria for IVT include DWI-FLAIR mismatch or perfusion core/penumbra mismatch (infarct core volume < 70 ml, and critically hypoperfused volume / infarct core volume > 1.2, and mismatch volume > 10 ml; core defined by rCBF <30% on CT perfusion or ADC < 620 micrometre^2/s on diffusion MRI, critical hypoperfusion by Tmax >6 s). (The working group states these expert consensus statements should not be mistaken for evidence-based recommendations; no GRADE quality or strength was assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Patients admitted to a non-thrombectomy-capable centre ('drip-and-ship') - Evidence-based recommendation",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients admitted to a non-thrombectomy-capable centre for an acute ischaemic stroke (<= 4.5 hrs of symptom onset) with anterior circulation large vessel occlusion and who are eligible for both treatments, we recommend intravenous thrombolysis followed by rapid transfer to a centre with thrombectomy facilities over omitting intravenous thrombolysis and transfer to a centre with thrombectomy facilities. Intravenous thrombolysis should not delay the transfer to a centre with thrombectomy facilities.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Patients admitted to a non-thrombectomy-capable centre ('drip-and-ship') - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients admitted to a non-thrombectomy capable centre within 4.5 hours of symptom recognition after wake-up ischaemic stroke caused by anterior circulation large vessel occlusion, we suggest intravenous thrombolysis plus mechanical thrombectomy over mechanical thrombectomy alone in selected patients. The selection criteria for IVT and MT for patients with wake-up stroke are detailed in the corresponding European Guidelines. Notably, eligibility imaging criteria for IVT include DWI-FLAIR mismatch or perfusion core/penumbra mismatch (infarct core volume < 70 ml, and critically hypoperfused volume / infarct core volume > 1.2, and mismatch volume > 10 ml; core defined by rCBF <30% on CT perfusion or ADC < 620 micrometre^2/s on diffusion MRI, critical hypoperfusion by Tmax >6 s). (The working group states these expert consensus statements should not be mistaken for evidence-based recommendations; no GRADE quality or strength was assigned.)",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

@@ -10,76 +10,198 @@
   "pmid": "31008314",
   "recommendations": [
     {
-      "section": "Confirming the diagnosis",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline suggests using magnetic resonance angiography or computed tomography angiography for confirming the diagnosis of cerebral venous thrombosis.",
+      "section": "Part I, Section A — Neuroimaging: MRV versus digital subtraction angiography",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest that MRV can be used as a reliable alternative to DSA for the confirmation of the diagnosis of CVT in patients with suspected CVT. (Strength of recommendation: weak)",
       "page": null
     },
     {
-      "section": "Screening for thrombophilia and cancer",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline suggests not screening patients with cerebral venous thrombosis routinely for thrombophilia or for cancer.",
+      "section": "Part I, Section A — Neuroimaging: CT venography versus digital subtraction angiography",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest that CT venography can be used as a reliable alternative to DSA for the diagnosis of CVT in patients with suspected CVT. (Strength of recommendation: weak)",
       "page": null
     },
     {
-      "section": "Acute anticoagulation",
-      "classOfRec": "Statement",
-      "classNote": "Strong recommendation",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline recommends parenteral anticoagulation in acute cerebral venous thrombosis.",
+      "section": "Part I, Section A — Neuroimaging: CT venography versus MRI and MRV",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest that CT venography can be used as a reliable alternative to MRV for confirming the diagnosis of CVT in patients with suspected CVT. (Strength of recommendation: weak)",
       "page": null
     },
     {
-      "section": "Choice of anticoagulant",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline suggests preferentially using low-molecular-weight heparin in the acute phase, and suggests not using direct oral anticoagulants.",
+      "section": "Part I, Section A — D-dimer",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest measuring D-dimer before neuroimaging in patients with suspected CVT, except in those with isolated headache and in case of prolonged duration of symptoms (i.e. more than 1 week) before the test. (Strength of recommendation: weak)",
       "page": null
     },
     {
-      "section": "Decompressive surgery",
-      "classOfRec": "Statement",
-      "classNote": "Strong recommendation",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline recommends decompressive surgery to prevent death due to brain herniation.",
+      "section": "Part I, Section B — Screening for thrombophilia",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We do not suggest thrombophilia screening to reduce death or improve functional outcome or prevent recurrent venous thrombosis in patients with CVT. Additional information: thrombophilia screening may be performed in patients with high pre-test probability to carry severe thrombophilia (i.e. a personal and/or family history of venous thrombosis, young age at CVT, CVT without a transient or a permanent risk factor) to prevent recurrent venous thrombotic events. (Strength of the recommendation: weak)",
       "page": null
     },
     {
-      "section": "Steroids and acetazolamide",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline suggests not using steroids and not using acetazolamide to reduce death or dependency.",
+      "section": "Part I, Section B — Malignancy screening",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest not performing routine screening for occult malignancy in patients with CVT to improve outcome. (Strength of recommendation: weak)",
       "page": null
     },
     {
-      "section": "Early seizures",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline suggests using antiepileptics in patients with an early seizure and supratentorial lesions, to prevent further early seizures.",
+      "section": "Part II, Section 1 — Acute anticoagulant treatment",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "We recommend treating adult patients with acute cerebral venous thrombosis with heparin in therapeutic dosage. This recommendation also applies to patients with an intracerebral haemorrhage at baseline. Additional information: no recommendation can be given for children. (Strength of recommendation: strong)",
       "page": null
     },
     {
-      "section": "Questions left without a recommendation",
-      "classOfRec": "Statement",
+      "section": "Part II, Section 1 — Type of heparin in acute CVT",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest treating patients with acute cerebral venous thrombosis with LMWH instead of UFH. Additional information: this recommendation does not apply to patients with a contraindication for LMWH (e.g. renal insufficiency) or situations where fast reversal of the anticoagulant effect is required (e.g. patients who have to undergo neurosurgical intervention). (Strength of recommendation: weak)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 1 — Thrombolysis and thrombectomy in acute CVT",
+      "classOfRec": "No recommendation",
       "classNote": null,
       "levelOfEvidence": "Very low certainty",
-      "text": "Because of very poor quality of evidence, no recommendations could be made concerning duration of anticoagulation after the acute phase, thrombolysis and/or thrombectomy, therapeutic lumbar puncture, or prevention of remote seizures with antiepileptic drugs.",
+      "text": "We cannot provide a recommendation on thrombolysis for cerebral venous thrombosis. Additional information: we suggest not using thrombolysis in acute CVT patients with a pre-treatment low risk of poor outcome. (Strength of recommendation: uncertain)",
       "page": null
     },
     {
-      "section": "Contraception and pregnancy",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline suggests that in women who suffered a previous cerebral venous thrombosis, contraceptives containing oestrogens should be avoided. It also suggests that subsequent pregnancies are safe, but that use of prophylactic low-molecular-weight heparin should be considered throughout pregnancy and the puerperium.",
+      "section": "Part II, Section 1 — Duration of anticoagulation",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest using oral anticoagulants (vitamin K antagonists) for 3 to 12 months after CVT to prevent recurrent CVT and other venous thromboembolic events (VTEs). Additional information: patients with recurrent venous thrombosis or with an associated prothrombotic condition with a high thrombotic risk may need permanent anticoagulation. (Strength of recommendation: weak)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 1 — New oral anticoagulants",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We do not recommend using NOACs (factor Xa or thrombin inhibitors) for the treatment of CVT, especially during the acute phase. (Strength of recommendation: weak)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 2 — Therapeutic lumbar puncture",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "No specific recommendation can be made regarding therapy with therapeutic LP to improve outcome in patients with cerebral venous thrombosis and signs of intracranial hypertension. Additional information: therapeutic LP may be considered in patients with CVT and signs of intracranial hypertension, because of a potential beneficial effect on visual loss and/or headache, whenever its safety profile is acceptable. (Strength of recommendation: uncertain)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 2 — Acetazolamide and diuretics",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest not using acetazolamide for patients with acute CVT, to prevent death or to improve functional outcome. Additional information: in isolated intracranial hypertension secondary to CVT, causing severe headaches or threatening vision, acetazolamide may be considered if its safety profile is acceptable. (Quality of information: low; Strength of recommendation: weak)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 2 — Steroids",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest not using steroids in patients with acute CVT to prevent death or to improve functional outcome. (Quality of information: low; Strength of recommendation: weak)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 2 — Steroids",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest to use steroids in patients with acute CVT and Behçet's disease and other inflammatory diseases (e.g. SLE) to improve outcome. (Quality of information: very low; Strength of recommendation: weak)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 2 — Shunt (external ventricular drain, ventriculoperitoneal, ventriculoatrial or ventriculojugular shunt)",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest not to use routine shunting (without other surgical treatment) in patients with acute CVT and impending brain herniation due to parenchymal lesions to prevent death. (Strength of recommendation: weak)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 2 — Shunt (external ventricular drain, ventriculoperitoneal, ventriculoatrial or ventriculojugular shunt)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "No recommendation can be made for the use of shunting to prevent death or improve outcome for patients with acute or recent CVT and hydrocephalus. (Strength of recommendation: uncertain)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 2 — Decompressive surgery",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We recommend using decompressive surgery for patients with acute CVT and parenchymal lesion(s) with impending herniation to prevent death. (Strength of recommendation: strong)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 3 — Prevention of seizures and antiepileptic drugs (AEDs)",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest using AEDs in patients with acute CVT with supratentorial lesions and seizures to prevent early recurrent seizures. (Strength of recommendation: weak)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 3 — Prevention of seizures and antiepileptic drugs (AEDs)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "No recommendations can be made for the prevention of remote seizures. (Strength of recommendation: uncertain)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 4 — Cerebral venous thrombosis during pregnancy",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest therapy with subcutaneous LMWH in pregnant and puerperal patients with acute CVT. (Strength of recommendation: weak)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 4 — Contraceptive use after cerebral venous thrombosis",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "Women in fertile age and prior CVT should be informed about the risks of combined hormonal contraception and advised against its use. (Strength of recommendation: weak)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 4 — Safety of pregnancy following CVT",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "For all women with prior history of CVT, we suggest to inform on the absolute and relative risks of venous thrombotic events and abortion during subsequent pregnancies and to not contraindicate future pregnancies based only in the past history of CVT. (Strength of recommendation: weak)",
+      "page": null
+    },
+    {
+      "section": "Part II, Section 4 — Antithrombotic prophylaxis in pregnant women with previous CVT",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest prophylaxis with subcutaneous LMWH during pregnancy/puerperium, for pregnant women with previous history of CVT and without contraindication for prophylaxis or indication for anticoagulation in therapeutic dosage. (Strength of recommendation: weak)",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

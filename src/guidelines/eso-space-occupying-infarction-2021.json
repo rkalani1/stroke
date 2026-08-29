@@ -10,12 +10,150 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Space-occupying brain oedema is a potentially life-threatening complication in the first days after large hemispheric or cerebellar infarction. Several treatment strategies for this complication are available, but the size and quality of the scientific evidence on which these strategies are based vary considerably. The aim of this Guideline document is to assist physicians in their management decisions when treating patients with space-occupying hemispheric or cerebellar infarction.",
+      "section": "PICO 1: Surgical decompression within 48 hours, age 18 up to and including 60 years - Evidence-based recommendation",
+      "classOfRec": "Strong",
+      "classNote": "For — strength taken from the Discussion ('the large and consistent effects allowed a strong recommendation'); the boxed recommendation itself is an image and is absent from the available full text — text: 'the quality of the evidence was rated as moderate'; GRADE profile rates death HIGH and death-or-moderately-severe-disability (mRS 4-6) MODERATE; the Abstract says 'high-quality evidence to recommend'",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Surgical decompression is recommended to reduce the risk of death and to increase the chance of a favourable outcome in adult patients aged 18 up to and including 60 years with space-occupying hemispheric infarction who can be treated within 48 hours of stroke onset. Meta-analysis (217 patients): death RR 0.36 (95% CI 0.25-0.53), absolute 44% reduction; poor outcome RR 0.79 (0.63-0.99); survival with moderately severe to severe disability (mRS 4 or 5) increased from 11% to 36%.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Expert consensus statements",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "There is consensus among the group members that in patients with space-occupying hemispheric infarction the benefit of surgical decompression does not depend on the absence or presence of aphasia.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Expert consensus statements",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Most group members agree that the benefit of surgical decompression does not depend on the presence of an infarct in the territory of the anterior or posterior cerebral artery in addition to that of the middle cerebral artery.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Expert consensus statements",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "There is consensus among the group members that additional space-occupying haemorrhagic transformation should not be regarded as a contraindication to surgery.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Expert consensus statements",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "There is consensus among the group members that in patients with space-occupying hemispheric infarction who will undergo decompressive surgery the diameter of the craniectomy should be at least 12 cm.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Surgical decompression later than 48 hours, age 18 up to and including 60 years - Evidence-based recommendation",
+      "classOfRec": "No recommendation",
+      "classNote": "Uncertain — neither for nor against — text: 'the quality of the evidence was rated as low'",
+      "levelOfEvidence": "Low certainty",
+      "text": "There is continued uncertainty about the benefit and risks of surgical decompression in patients with space-occupying hemispheric infarction if this is done after the first 48 hours (Abstract and Discussion). In the meta-analysis of 34 patients treated 48-96 hours after onset, surgical decompression had no effect on the risk of death (RR 0.82, 95% CI 0.30-2.28) nor on the risk of a poor outcome (RR 1.07, 95% CI 0.67-1.72).",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Surgical decompression later than 48 hours - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "There is consensus among the module working group members that surgical decompression should also be considered later than 48 hours after stroke onset if based on clinical grounds death due to herniation appears likely.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Surgical decompression within 48 hours, age 61 years or older - Evidence-based recommendation",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For (Abstract: 'low-quality evidence to support this treatment in older patients') — text: 'the quality of the evidence was rated as low'",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients aged 61 years or older with space-occupying hemispheric infarction treated within 48 hours of stroke onset, surgical decompression reduced the risk of death by an absolute 42% (RR 0.40, 95% CI 0.24-0.67) but had no effect on the risk of a poor outcome (RR 0.72, 95% CI 0.41-1.28), and increased the chance of survival with moderately severe to severe disability (mRS 4 or 5) from 16% to 35%. The Abstract states there is low-quality evidence to support this treatment in older patients.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Surgical decompression for space-occupying cerebellar infarction - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For (in selected patients only)",
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members suggest considering surgical decompression with or without CSF drainage in selected patients with space-occupying cerebellar infarction, such as in those with a reduced consciousness caused by brainstem compression. The precise selection of patients and the optimal timing of treatment remain uncertain. There is insufficient evidence to support its routine use.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: CSF drainage in space-occupying cerebellar infarction - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For (in selected patients only)",
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members suggest considering CSF drainage alone or combined with surgical decompression in selected patients with space-occupying cerebellar infarction and signs of an obstructive hydrocephalus, such as in those with a reduced consciousness. The selection of patients and the optimal timing of treatment remain uncertain. There is insufficient evidence to support its routine use.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Intracranial pressure monitoring - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "A majority of group members suggest against routine ICP monitoring as a means to reduce the risk of death or poor outcome in patients with space-occupying hemispheric infarction.",
+      "page": null
+    },
+    {
+      "section": "PICO 7: Intensive care unit admission - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "A majority of group members suggest admission to an ICU for clinical and technical monitoring and intensive care treatment including mechanical ventilation, if required, irrespective of treatment with surgical decompression.",
+      "page": null
+    },
+    {
+      "section": "PICO 8: Sedation - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against routine use; may be considered as rescue",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with space-occupying hemispheric infarction, a majority of group members suggest against the use of sedation as a means to reduce the risk of death or a poor outcome if this is not otherwise indicated. Short-term sedation may be considered as a rescue procedure in patients with clinical signs of raised ICP or impending herniation.",
+      "page": null
+    },
+    {
+      "section": "PICO 9: Osmotic therapy - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against routine use; may be considered as rescue",
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members suggest against the routine use of osmotic therapy as a means to reduce the risk of death or a poor outcome. Short-term osmotic therapy (i.e. a single or a few doses) may be considered as a rescue procedure in case of signs of an increased intracranial pressure or impending herniation. For short-term osmotic therapy with mannitol, we suggest the use of bolus administration rather than continuous infusion. The choice of mannitol or hypertonic saline depends on local preferences and expertise.",
+      "page": null
+    },
+    {
+      "section": "PICO 10: Corticosteroids - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members suggest against the use of corticosteroids as a means to reduce the risk of death or a poor outcome.",
+      "page": null
+    },
+    {
+      "section": "PICO 11: Hyperventilation - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against routine use; may be considered as rescue",
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members suggest against the use of routine hyperventilation. Short-term hyperventilation may be considered as a rescue procedure in patients with clinical signs of brain herniation.",
+      "page": null
+    },
+    {
+      "section": "PICO 12: Hypothermia - Evidence-based recommendation",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against / no benefit — text: 'the quality of the evidence was rated as very low'",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with space-occupying hemispheric infarction, there was no evidence that hypothermia reduces the risk of death (RR 1.06, 95% CI 0.63-1.78) or that of a poor outcome (RR 1.28, 95% CI 0.70-2.35) in a meta-analysis of 140 patients from four randomised trials; two trials were stopped prematurely and serious adverse events were more frequent with hypothermia (80% vs 43% at 12 months in one trial; HR 2.54, 95% CI 1.29-5.00).",
+      "page": null
+    },
+    {
+      "section": "PICO 13: Glyburide (glibenclamide) - Evidence-based recommendation",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against / no benefit — text: 'the quality of the evidence was rated as very low'",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with space-occupying hemispheric infarction, glyburide had no effect on the risk of death or a poor outcome (mRS 4-6) in the single identified phase 2 RCT (77 of 86 randomised patients analysed; the trial was terminated prematurely for funding reasons against a target of 240).",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

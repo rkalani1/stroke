@@ -10,12 +10,70 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Prevention of early recurrent ischaemic stroke remains a priority in people with TIA or ischaemic stroke. A number of trials have recently been completed assessing the efficacy of short-term dual antiplatelet therapy (DAPT) versus single antiplatelet therapy early after minor or moderate stroke or high-risk TIA. We present an Expedited Recommendation for use of dual antiplatelet therapy early after ischaemic stroke and TIA on behalf of the ESO Guideline Board.",
+      "section": "Recommendation 1 (PICO 1: aspirin plus clopidogrel)",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "High certainty",
+      "text": "In people with a non-cardioembolic minor ischaemic stroke (NIHSS score of 3 or less) or high-risk TIA (ABCD2 score of 4 or more) in the past 24 hours, we recommend 21-days of dual antiplatelet therapy with aspirin and clopidogrel, followed by antiplatelet monotherapy thereafter. (Quality of evidence: High; Strength of recommendation: Strong for intervention.)",
+      "page": null
+    },
+    {
+      "section": "Recommendation 2 (PICO 2: aspirin plus ticagrelor)",
+      "classOfRec": "Conditional",
+      "classNote": "For (printed as 'Weak for intervention')",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In people with non-cardioembolic mild to moderate ischaemic stroke (NIHSS of 5 or less) or high-risk TIA (ABCD2 score of 6 or more or other high-risk features*) in the past 24 hours, we suggest 30-days of dual antiplatelet therapy with aspirin and ticagrelor followed by antiplatelet monotherapy thereafter. *Other high-risk features defined as either intracranial atherosclerotic disease or at least 50% stenosis in an internal carotid artery that could account for the presentation. (Quality of evidence: Moderate; Strength of recommendation: Weak for intervention.)",
+      "page": null
+    },
+    {
+      "section": "Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "In people with acute non-cardioembolic low risk TIA or in whom the diagnosis is uncertain, 11/11 experts voted against use of dual antiplatelet therapy over monotherapy.",
+      "page": null
+    },
+    {
+      "section": "Considerations before starting DAPT (narrative practice points, not a voted consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Brain imaging should always be performed prior to initiation of dual antiplatelet therapy. Dual antiplatelet therapy should be started as soon as possible, within the first twenty-four hours after symptom onset.",
+      "page": null
+    },
+    {
+      "section": "Considerations before starting DAPT (narrative practice points, not a voted consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "People with high grade carotid stenosis and planned revascularisation were excluded from POINT, CHANCE and THALES. In addition, people with a clear indication for anticoagulation (such as fibrillation, mechanical heart valve) or recognised increased risk of bleeding were excluded. DAPT should not routinely be used in people with an indication for anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "Loading and maintenance doses (narrative practice points, not a voted consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "The single loading dose of clopidogrel used in the trials varied from 300 mg to 600 mg. We suggest giving a single loading dose of 300 mg of clopidogrel in patients not already taking the relevant medication, followed by the daily maintenance dose for up to 21 days. The dose of aspirin used in the trials varied from 50 mg to 325 mg and was at the treating physician's discretion for up to 21 days.",
+      "page": null
+    },
+    {
+      "section": "Loading and maintenance doses (narrative practice points, not a voted consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In the THALES study, a 180 mg loading dose of ticagrelor and a single loading dose of 300 or 325 mg of aspirin was used. This was followed by 90 mg twice daily of ticagrelor and 75 to 100 mg of aspirin. We suggest following this dosing regimen.",
+      "page": null
+    },
+    {
+      "section": "Choice of drug regimen (narrative practice points, not a voted consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "DAPT with ticagrelor and aspirin should be considered as an alternative to clopidogrel based DAPT, particularly in people known to be intolerant of clopidogrel or in people who have moderate stroke (NIHSS 4 or 5) and no other contraindication.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

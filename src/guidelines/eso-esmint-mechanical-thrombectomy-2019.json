@@ -10,36 +10,342 @@
   "pmid": "31165090",
   "recommendations": [
     {
-      "section": "Thrombectomy within 6 hours",
-      "classOfRec": "Statement",
-      "classNote": "Strong recommendation",
+      "section": "PICO 1: MT plus BMM versus BMM alone within 6 hours of symptom onset",
+      "classOfRec": "Strong",
+      "classNote": "For",
       "levelOfEvidence": "High certainty",
-      "text": "High-quality evidence was found to recommend mechanical thrombectomy plus best medical management, including intravenous thrombolysis whenever indicated, to improve functional outcome in patients with large-vessel-occlusion-related acute ischaemic stroke within 6 hours after symptom onset.",
+      "text": "In adults with anterior circulation LVO-related acute ischaemic stroke presenting within 6 hours after symptom onset, we recommend MT plus BMM, including IVT whenever indicated, over BMM alone to improve functional outcome.",
       "page": null
     },
     {
-      "section": "6 to 24 hour time window",
-      "classOfRec": "Statement",
-      "classNote": "Strong recommendation",
+      "section": "PICO 1: MT plus BMM versus BMM alone within 6 hours of symptom onset - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "There is a consensus among the guideline group (11/11 votes) that patients with M2 occlusion fulfilled the inclusion criteria in most randomized trials and therefore mechanical thrombectomy is reasonable in this situation.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: MT plus BMM versus BMM alone within 6 hours of symptom onset - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "There is a consensus among the panel (11/11 votes) that in analogy to anterior circulation LVO and with regard to the grim natural course of basilar artery occlusions, the therapeutic approach with IVT plus MT should strongly be considered.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: MT plus BMM versus BMM alone 6 to 24 hours from time last known well",
+      "classOfRec": "Strong",
+      "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
-      "text": "Moderate-quality evidence was found to recommend mechanical thrombectomy plus best medical management in the 6 to 24 hour time window in patients meeting the eligibility criteria of the published randomised trials.",
+      "text": "In adults with anterior circulation LVO-related acute ischaemic stroke presenting between 6 and 24 hours from time last known well and fulfilling the selection criteria of DEFUSE-3 or DAWN, we recommend MT plus BMM over BMM alone to improve functional outcome.",
       "page": null
     },
     {
-      "section": "Scope and method",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "An interdisciplinary working group identified 15 relevant questions, performed systematic reviews and meta-analyses of the literature, assessed the quality of the available evidence and wrote evidence-based recommendations following GRADE; expert opinion was provided where evidence was insufficient. The document further details prehospital management, patient selection based on clinical and imaging characteristics, and treatment modalities.",
+      "section": "PICO 2: MT plus BMM versus BMM alone 6 to 24 hours from time last known well - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients should be treated with MT plus BMM up to approximately 7 hours 18 min after stroke onset, without the need of perfusion imaging-based selection.",
       "page": null
     },
     {
-      "section": "Acknowledged evidence gaps",
-      "classOfRec": "Statement",
+      "section": "PICO 2: MT plus BMM versus BMM alone 6 to 24 hours from time last known well - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "10/11 experts agree that patients can be treated in the 6-12 hour time window if they fulfil the ESCAPE criteria, notably ASPECTS >= 6 and moderate-to-good collateral circulation. However, such patients should preferably be treated in the context of clinical studies. Also, concurrent software applications utilizing similar perfusion algorithms and rendering equivalent volumetry results as those used in the DAWN and DEFUSE-3 trials may be options, as well as simple volumetry on a high quality DWI scan for core volume when applying DAWN criteria.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: IVT plus MT versus MT alone",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In LVO-related ischaemic stroke patients eligible for both treatments, we recommend IVT plus MT over MT alone. Both treatments should be performed as early as possible after hospital arrival. MT should not prevent the initiation of IVT, and IVT should not delay MT.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: IVT plus MT versus MT alone",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In LVO-related ischaemic stroke patients not eligible for IVT, we recommend MT as standalone treatment.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: IVT plus MT versus MT alone - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In LVO-related ischaemic stroke patients eligible for IVT before MT, 7/11 experts suggest the use of tenecteplase (0.25 mg/kg) over alteplase (0.9 mg/kg) if the decision on IVT is made after vessel occlusion status is known.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Use of a prehospital scale in suspected acute stroke",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with suspected stroke, we cannot make a recommendation on the use of a prehospital scale for improving identification of patients eligible for MT. We suggest enrolling patients in a dedicated randomized controlled trial, whenever possible. (Quality of evidence: Very low; the guideline assigned no strength of recommendation.)",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Use of a prehospital scale in suspected acute stroke - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "11/11 experts concluded that there is currently not enough evidence to use a clinical scale in routine care to help triage potential thrombectomy candidates in the prehospital field.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Use of a prehospital scale in suspected acute stroke - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "All patients suspected of having an acute stroke, irrespective of the time of onset, should undergo emergency imaging of the brain, including vascular imaging.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Mothership versus drip-and-ship model",
+      "classOfRec": "Expert Consensus",
       "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline states that further randomised trials are needed to inform clinical decision-making with regard to the mothership and drip-and-ship approaches and to anaesthesia modalities during thrombectomy, and to determine whether thrombectomy is beneficial in patients with low stroke severity or large infarct volume.",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We cannot make recommendations on whether for adults identified as potential candidates for MT in the prehospital field, the mothership or the drip-and-ship model should be applied to improve functional outcome. (Quality of evidence: Very low; the guideline assigned no strength of recommendation.)",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Mothership versus drip-and-ship model - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "As there is lack of strong evidence for superiority of one organizational model, the choice of model should depend on local and regional service organization and patient characteristics (vote: 11/11 experts agree).",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Mothership versus drip-and-ship model - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "The mothership model might be favored in metropolitan areas, with transportation time to a comprehensive stroke center of less than 30-45 minutes, and the use of the drip-and-ship model when transportation times are longer (vote: 11/11 experts agree).",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Mothership versus drip-and-ship model - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "As there is limited experience with the other two models (drip-and-drive and mobile stroke unit) no expert opinion can be provided when to use these models (vote: 11/11 experts agree).",
+      "page": null
+    },
+    {
+      "section": "PICO 6: MT in patients aged 80 years or more",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "We recommend that patients aged 80 years or more with LVO-related acute ischaemic stroke within 6 hours of symptom onset should be treated with MT plus BMM, including IVT whenever indicated. Application of an upper age limit for MT is not justified.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: MT in patients aged 80 years or more",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest that patients aged 80 years or more with LVO-related acute ischaemic stroke between 6 and 24 hours from time last known well should be treated with MT plus BMM if they meet the eligibility criteria of the DEFUSE-3 or DAWN trials. (Strength of recommendation: Weak.)",
+      "page": null
+    },
+    {
+      "section": "PICO 7: Selection of MT candidates by NIHSS score threshold",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "High certainty",
+      "text": "We do not recommend an upper NIHSS score limit for decision-making on MT. We recommend that patients with high stroke severity and LVO-related acute ischaemic stroke be treated with MT plus BMM, including IVT whenever indicated. These recommendations also apply for patients in the 6-24 h time window, provided that they meet the inclusion criteria for the DAWN or DEFUSE-3 studies.",
+      "page": null
+    },
+    {
+      "section": "PICO 7: Selection of MT candidates by NIHSS score threshold",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We recommend that patients with low stroke severity (NIHSS 0-5) and LVO-related acute ischaemic stroke within 24 hours from time last known well be included in randomized controlled trials comparing MT plus BMM versus BMM alone. (Quality of evidence: Very low; the guideline assigned no strength of recommendation.)",
+      "page": null
+    },
+    {
+      "section": "PICO 7: Selection of MT candidates by NIHSS score threshold - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with a low NIHSS score (0-5) who are not eligible for a dedicated randomized controlled trial, we suggest that treatment with mechanical thrombectomy in addition to intravenous thrombolysis (or alone in case of contraindication to intravenous thrombolysis) may be reasonable in patients with deficits that appear disabling (e.g. significant motor deficit or aphasia or hemianopia) at presentation (vote: 9/11 experts).",
+      "page": null
+    },
+    {
+      "section": "PICO 7: Selection of MT candidates by NIHSS score threshold - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with a low NIHSS score (0-5) who are not eligible for a dedicated randomized controlled trial, mechanical thrombectomy may be reasonable in the case of clinical worsening despite intravenous thrombolysis (vote: 9/11 experts).",
+      "page": null
+    },
+    {
+      "section": "PICO 7: Selection of MT candidates by NIHSS score threshold - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We did not reach a majority vote to suggest mechanical thrombectomy in patients with deficits that appear non-disabling (e.g. mild hypoesthesia) at presentation (vote: 5/11 experts).",
+      "page": null
+    },
+    {
+      "section": "PICO 8: Selection of MT candidates by ASPECTS or infarct core volume threshold",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "High certainty",
+      "text": "In the 0-6 hour time window, we recommend MT plus BMM (including IVT whenever indicated) over BMM alone in LVO-related anterior circulation stroke patients without evidence of extensive infarct core (e.g. ASPECTS >= 6 on non-contrast CT scan or infarct core volume <= 70 ml).",
+      "page": null
+    },
+    {
+      "section": "PICO 8: Selection of MT candidates by ASPECTS or infarct core volume threshold",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In the 6-24 hour time window, we recommend MT plus BMM (including IVT whenever indicated) over BMM alone in LVO-related anterior circulation stroke patients fulfilling the selection criteria of DEFUSE-3 or DAWN, including estimated volume of infarct core.",
+      "page": null
+    },
+    {
+      "section": "PICO 8: Selection of MT candidates by ASPECTS or infarct core volume threshold",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We recommend that anterior circulation stroke patients with extensive infarct core (e.g. ASPECTS < 6 on non-contrast CT scan or core volume > 70 ml or > 100 ml) be included in RCTs comparing mechanical thrombectomy plus best medical management versus best medical management alone. (Quality of evidence: Very low; the guideline assigned no strength of recommendation.)",
+      "page": null
+    },
+    {
+      "section": "PICO 8: Selection of MT candidates by ASPECTS or infarct core volume threshold - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "If inclusion of the patient in a dedicated randomized controlled trial is not possible, we suggest that treatment with MT may be reasonable on an individual basis in selected cases with ASPECTS < 6 or core volume > 70 ml (11/11 experts agree). Patient selection criteria might include age, severity and type of neurological impairment, time since symptom onset, location of the ischaemic lesion on plain CT scanner or MRI, and results of advanced imaging, notably perfusion-core mismatch.",
+      "page": null
+    },
+    {
+      "section": "PICO 9: Selection of MT candidates based on advanced perfusion, core, or collateral imaging",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In adult patients with anterior circulation LVO-related acute ischaemic stroke presenting from 0-6 hours from time last known well, advanced imaging is not necessary for patient selection. (Strength of recommendation: Weak against.)",
+      "page": null
+    },
+    {
+      "section": "PICO 9: Selection of MT candidates based on advanced perfusion, core, or collateral imaging",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In adult patients with anterior circulation LVO-related acute ischaemic stroke presenting beyond 6 hours from time last known well, advanced imaging selection is necessary.",
+      "page": null
+    },
+    {
+      "section": "PICO 10: MT performed in a comprehensive stroke center",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with LVO-related acute ischaemic stroke, we recommend treatment in a comprehensive stroke center.",
+      "page": null
+    },
+    {
+      "section": "PICO 11: TICI Grade 3 versus TICI Grade 2b reperfusion",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "For adults with LVO-related acute ischaemic stroke, we recommend that interventionalists should attempt a TICI Grade 3 reperfusion, if achievable with reasonable safety.",
+      "page": null
+    },
+    {
+      "section": "PICO 12: Direct aspiration versus stent retriever",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "There is currently no evidence that contact aspiration alone improves functional outcome compared with BMM in patients undergoing MT. There is currently no evidence that contact aspiration alone increases the rate of reperfusion over thrombectomy using a stent retriever. Therefore, we suggest the use of a stent retriever over contact aspiration alone for MT in patients with acute ischaemic stroke. (Strength of recommendation: Weak for.)",
+      "page": null
+    },
+    {
+      "section": "PICO 12: Direct aspiration versus stent retriever - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "9/11 experts believe that ADAPT may be used as standard first-line treatment, followed by stent retriever thrombectomy as rescue therapy if needed.",
+      "page": null
+    },
+    {
+      "section": "PICO 12: Direct aspiration versus stent retriever - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We did not reach a majority vote that distal aspiration should be used only in combination with a stent-retriever (3/11 experts).",
+      "page": null
+    },
+    {
+      "section": "PICO 12: Direct aspiration versus stent retriever - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "8/11 experts believe that any MT procedure should be performed preferably in conjunction with a proximal balloon guide catheter.",
+      "page": null
+    },
+    {
+      "section": "PICO 13: Conscious sedation versus general anaesthesia during MT",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We cannot provide recommendations to use general anesthesia or conscious sedation in patients undergoing MT, due to a low quality of evidence and conflicting results between 3 small single-center randomized clinical trials and the best available observational evidence. Therefore, we recommend the enrollment of patients in multicenter randomized controlled trials addressing this question. (Quality of evidence: Very low; the guideline assigned no strength of recommendation.)",
+      "page": null
+    },
+    {
+      "section": "PICO 13: Conscious sedation versus general anaesthesia during MT - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "If inclusion of the patient in a randomized controlled trial is not possible, 11/11 experts suggest that local anesthesia or conscious sedation may be favored over general anesthesia, if the patient is able to undergo MT without general anesthesia. General anesthesia does not need to be avoided if indicated. The decision for or against general anesthesia should be made rapidly and delays to induction of general anesthesia should be minimized. A specialized neuro-anesthesiological or neurocritical care team should perform the general anesthesia procedure, whenever possible. Excessive blood pressure drops should be avoided. Adequate monitoring of vital parameters of patients under conscious sedation or local anesthesia is also advised.",
+      "page": null
+    },
+    {
+      "section": "PICO 14: Blood pressure targets during and after MT",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest to keep blood pressure below 180/105 mmHg during and 24 hours after MT. No specific blood pressure-lowering drug can be recommended. (Strength of recommendation: Weak for.)",
+      "page": null
+    },
+    {
+      "section": "PICO 14: Blood pressure targets during and after MT",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "During MT, systolic blood pressure drops should be avoided. (Strength of recommendation: Strong against.)",
+      "page": null
+    },
+    {
+      "section": "PICO 14: Blood pressure targets during and after MT - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "11/11 experts think that the degree of reperfusion should be taken into account in the choice of a blood pressure target after MT, with a lower blood pressure target in case of complete reperfusion.",
+      "page": null
+    },
+    {
+      "section": "PICO 15: Cervical stenting in addition to MT for high-grade extracranial carotid stenosis",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "No recommendation can be provided regarding which treatment modality should be favored in patients with LVO-related acute ischaemic stroke and associated extracranial carotid artery stenosis or occlusion. We recommend the inclusion of such patients in dedicated randomized controlled trials. (Quality of evidence: Very low; the guideline assigned no strength of recommendation.)",
+      "page": null
+    },
+    {
+      "section": "PICO 15: Cervical stenting in addition to MT for high-grade extracranial carotid stenosis - Expert opinion",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "9/11 experts suggest that if inclusion in a dedicated randomized controlled trial is not possible, patients with high-grade stenosis or occlusion may be treated with intra-procedural stenting if unavoidably needed.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

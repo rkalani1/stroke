@@ -12,10 +12,492 @@
     {
       "section": "Scope",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "In 2009, the American Heart Association/American Stroke Association published a comprehensive scientific statement detailing the nursing care of the patient with an acute ischemic stroke through all phases of hospitalization.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "This scientific statement updates the 2009 AHA comprehensive nursing care statement for the posthyperacute and prehospital-discharge phase of acute ischemic stroke care. It is an AHA scientific statement and assigns no class of recommendation or level of evidence to its statements; where it refers to 'Class I evidence' for the FeSS interventions, that grade belongs to the AHA/ASA acute ischemic stroke guideline it cites, not to this document.",
+      "page": null
+    },
+    {
+      "section": "Best Practices for Acute Care Unit Stroke Nursing Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients who have had a stroke and receive organized inpatient care in a stroke unit from an interprofessional team who specialize in stroke management are more likely to be alive, independent, and living at home 1 year after stroke. Health care providers should consider developing standardized stroke care order sets or pathways to guide patient care decisions.",
+      "page": null
+    },
+    {
+      "section": "Best Practices for Acute Care Unit Stroke Nursing Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Implementation of evidence-based practices is compromised by multiple factors; in a systematic review of health care professionals' perceptions of barriers to implementing acute ischemic stroke care, the most commonly cited reason was lack of institutional support, namely not hiring needed staff such as qualified nurses and specialists.",
+      "page": null
+    },
+    {
+      "section": "Outcomes in Stroke Units Versus Nonstroke Units",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients admitted to nonstroke units or with in-hospital stroke require the same level of care and immediate attention as those in acute stroke units. In-hospital stroke accounts for approximately 4% to 17% of patients with acute ischemic stroke and is associated with worse outcomes, more severe strokes, and less coordinated evidence-based care; management goals are rapid recognition, diagnosis, and timely evidence-based treatment. Atrial fibrillation is the primary cardiac risk factor for in-hospital stroke, compared with hypertension for community-onset stroke.",
+      "page": null
+    },
+    {
+      "section": "Mortality, Function, and Return to Home",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Overall mortality at 90 days to 1 year after stroke was better when the patient was cared for in an acute stroke unit, and care in a stroke unit resulted in an increased chance of functional recovery assessed with Barthel scores. Patients cared for in acute stroke units using standardized protocols were significantly more likely to have better physical function at 90 days and reduced mortality than patients from units not using protocols.",
+      "page": null
+    },
+    {
+      "section": "Nursing Assessment: Initial Assessments After Admission to Acute Inpatient Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All patients with stroke should be admitted to an acute stroke unit as soon as possible, ideally within 3 hours of stroke onset. In the absence of a specialized stroke unit, patients should still receive stroke nursing care consistent with best practice regardless of the hospital unit to which they are admitted, and recommendations for vital sign monitoring in acute stroke units also apply on a general hospital unit.",
+      "page": null
+    },
+    {
+      "section": "Nursing Assessment: Initial Assessments After Admission to Acute Inpatient Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nurses are expected to perform comprehensive and systematic physical assessments for all patients with stroke, including monitoring the main 5 vital signs: body temperature, blood pressure, breathing effort (rate, patterns, and chest expansion), oxygen saturation, and mental status/level of consciousness.",
+      "page": null
+    },
+    {
+      "section": "Vital Signs Monitoring",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The initial nursing assessment after admission should include vital signs, particularly oxygen saturation, blood pressure, and temperature, in addition to measuring blood glucose and performing a bedside dysphagia screen/assessment. These assessments apply to all patients with stroke, including those who receive reperfusion therapy and thrombectomy. The frequency of all assessments and observations should be determined by the patient's status.",
+      "page": null
+    },
+    {
+      "section": "Vital Signs Monitoring",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients who are not hypoxic, routine use of supplemental oxygen is not recommended; supplemental oxygen should be provided only to maintain oxygen saturation >94% and as long as there are no contraindications.",
+      "page": null
+    },
+    {
+      "section": "Vital Signs Monitoring",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nurses should closely monitor blood pressure in the first 48 hours after stroke onset. The blood pressure level that should be maintained in acute ischemic stroke for the best outcome remains unknown. Intensive blood pressure lowering in the acute phase after stroke (systolic BP <140 mm Hg) is not recommended. Best practice recommends cautious reduction in blood pressure >220/120 mm Hg, by no more than 20%, over the first 24 hours; hypotension and hypovolemia should be corrected to maintain systemic perfusion.",
+      "page": null
+    },
+    {
+      "section": "Vital Signs Monitoring",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with hypertension, evidence suggests reducing blood pressure to <185/110 mm Hg before treatment with intravenous thrombolysis for eligible patients, and maintaining blood pressure at <180/105 mm Hg in the first 24 hours after treatment.",
+      "page": null
+    },
+    {
+      "section": "Fever, Hyperglycemia, and Swallowing Dysfunction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Monitoring of body temperature, blood glucose, and dysphagia is standard of care for all patients with stroke, yet audit data show major gaps: in the 2019 Australian national stroke audit, fewer than half (48%) of patients with fever received acetaminophen/paracetamol within an hour, 30% received insulin within 1 hour when indicated, and 55% received a swallow screen/assessment before food or drink.",
+      "page": null
+    },
+    {
+      "section": "Fever, Hyperglycemia, and Swallowing Dysfunction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Use of the fever, sugar, swallowing (FeSS) clinical protocols in the first 72 hours of acute stroke unit admission significantly reduced death and dependency by 16% in the QASC trial, and patients cared for in units implementing FeSS protocols had sustained improved survival, with >20% more likely to be alive after 4 years. FeSS protocols are also applicable to patients with stroke managed in a general inpatient ward.",
+      "page": null
+    },
+    {
+      "section": "Fever, Hyperglycemia, and Swallowing Dysfunction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "FeSS protocol elements: monitor temperature at least 4 times per day for 3 days, treating temperature >37.5 degrees C (99.5 degrees F) with paracetamol/acetaminophen (intravenous, per rectum, or oral) unless clinically contraindicated; measure formal venous and finger-prick glucose on admission and finger-prick glucose at least 4 times per day for 3 days, treating glucose >180 mg/dL (10 mmol/L) with insulin; a trained nurse or speech pathologist should perform a swallowing screen within 24 hours of admission using a validated evidence-based tool and before giving food, fluids, or oral medications, and refer failures to a speech pathologist.",
+      "page": null
+    },
+    {
+      "section": "Fever, Hyperglycemia, and Swallowing Dysfunction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with stroke were more likely to be independent at 90 days when blood glucose was measured on admission or within 2 hours of stroke unit admission, when finger-prick glucose was measured within 72 hours of stroke unit admission, or when swallowing screening or assessment was performed within 24 hours of acute stroke unit admission.",
+      "page": null
+    },
+    {
+      "section": "Fever, Hyperglycemia, and Swallowing Dysfunction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For temperature readings >37.5 degrees C (99.5 degrees F), the best evidence is to increase the frequency of monitoring and initiate temperature-reducing measures. Canadian guidelines recommend temperature monitoring at least every 4 hours for the first 48 hours; Australian guidelines recommend at least 4 times a day for 72 hours.",
+      "page": null
+    },
+    {
+      "section": "Fever, Hyperglycemia, and Swallowing Dysfunction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Blood glucose monitoring is necessary not only for patients with diabetes and stroke but also for patients who are not diabetic; hyperglycemic patients after stroke have a 3-fold higher risk of mortality and increased risk of poor functional recovery. Intensive treatment of hyperglycemia (target blood glucose 80-130 mg/dL) is not recommended in ischemic stroke; the FeSS protocols support insulin treatment of major hyperglycemia (>180 mg/dL).",
+      "page": null
+    },
+    {
+      "section": "Fever, Hyperglycemia, and Swallowing Dysfunction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nurses should assess swallowing status as early after stroke as possible on admission using a validated screening tool. Patients need to be placed nil per os - no oral foods, fluids, or medications - until swallowing ability has been determined; this may mean poststroke antiplatelet therapy must be given rectally or intravenously if patients fail the swallow screen. Patients should be rescreened over the admission as needed or if swallowing or neurological status changes. A dysphagia screening tool is not diagnostic; it is a pass/fail procedure done by a trained nurse before formal speech-language pathologist assessment.",
+      "page": null
+    },
+    {
+      "section": "National Institutes of Health Stroke Scale Tool",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nurses should use the full version of the NIHSS rather than shortened versions to avoid false-negative results, particularly in patients with low NIHSS scores. The Glasgow Coma Scale should not be used in acute stroke.",
+      "page": null
+    },
+    {
+      "section": "Other Key Nursing Assessments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Additional assessments to be undertaken by nurses within 4 hours of admission include comprehensive assessments for nutrition and hydration status, deep vein thrombosis risk, mobilization needs, falls risk, pressure ulcer risk, and oral care.",
+      "page": null
+    },
+    {
+      "section": "Other Key Nursing Assessments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nurses should assess patients for malnutrition on admission and at least weekly while in the hospital. An enteral diet should be started within 7 days of admission, but nurses should first feed patients with swallowing difficulty with a nasogastric tube in the early phase of stroke; for those with longer anticipated persistent swallowing difficulty, insertion of a percutaneous gastrostomy tube may be warranted.",
+      "page": null
+    },
+    {
+      "section": "Other Key Nursing Assessments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients at high risk of deep venous thromboembolism are those unable to independently mobilize, those with comorbidities, and those with a history of venous thromboembolism. Regular skin assessments should be performed by nurses using objective scales (eg, Braden scale) to assess the risk of pressure injury.",
+      "page": null
+    },
+    {
+      "section": "Other Key Nursing Assessments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Shortly after admission, all patients with stroke, including those with dentures, should have an oral assessment with subsequent implementation of oral care protocols consistent with evidence-based practices, with mouth care performed at least 3 times a day; implementing such protocols has the potential to reduce the risk of stroke-associated pneumonia.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Neurological",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hemorrhagic transformation occurs in 1.5% in the absence of reperfusion therapy; risks include advanced age, stroke severity, hypertension, diabetes, and early infarct signs on baseline neuroimaging. Monitor closely for decreased level of consciousness, worsening neurological deficits, new pupil changes, and changes in respiratory status; optimize blood pressure and consider cryoprecipitate.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Neurological",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "About 10% of patients with MCA infarct will experience malignant MCA syndrome (cerebral edema, elevated intracranial pressure, herniation); risks include large territorial cerebral and cerebellar infarcts. Interventions include osmotic therapy, hyperventilation, and decompressive craniectomy or ventriculostomy as necessary.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Neurological",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Evolution of stroke: early reocclusion with clinical worsening may occur in up to 14% of patients receiving alteplase; risks include high NIHSS score and severe carotid stenosis. Perform serial NIHSS with comparison to baseline, assess results of carotid ultrasound or angiography, and activate in-hospital code stroke if the patient is eligible for reperfusion therapy.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Neurological",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Seizures occur in 5% to 12% of patients with acute ischemic stroke; risks include cortical location and stroke severity. Obtain EEG for a change in mental status or depressed mental status out of proportion to the stroke, and give antiseizure medication for patients with documented seizure. Prophylactic seizure medication is not recommended.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Dysphagia and Pneumonia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Dysphagia occurs in up to 40% to 78% of patients with acute stroke. Keep all patients with stroke nil per os until dysphagia screening is completed within 4 to 24 hours by a trained nurse; if the patient fails the screen, consult a speech-language pathologist for formal dysphagia assessment and a dietitian for patient-specific nutritional or tube-feeding needs, and train patient and caregiver on dysphagia management. There is no consensus on the optimal screening tool.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Dysphagia and Pneumonia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke-associated pneumonia occurs in about 14% of patients in the first 7 days and is associated with a 3-fold increase in in-hospital mortality, prolonged length of stay, and poorer functional outcomes. Intensive oral hygiene protocols (chlorhexidine) may reduce the risk of stroke-associated pneumonia from 28% to 7%. Use of enteral feeding by nasogastric tube or PEG/PEJ has shown no difference in aspiration pneumonia incidence. Good pulmonary toilet and early mobility are recommended.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Urinary and Gastrointestinal",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Urinary tract infection occurs in 10% to 28% and leads to decreased functional outcome and increased length of stay; risks include catheterization, bladder dysfunction, poststroke disability, and increasing age. Avoid inserting indwelling urinary catheters; if required, use aseptic technique, maintain a closed drainage system, secure the catheter, and use daily reminders or stop orders. Consider alternatives such as intermittent catheterization; obtain urinalysis and urine culture and treat with antibiotics if indicated.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Urinary and Gastrointestinal",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Urinary retention is commonly seen in the first 72 hours after acute stroke in 21% to 47% of patients; risks include age, preexisting urologic disease, and stroke in the dominant hemisphere. Assess bladder for retention, use bladder scanning to obtain postvoid residual or in-and-out catheterization within 30 minutes of voiding, and provide frequent toileting every 2 hours during the day and every 4 hours at night. If the postvoid residual is <100 mL on 3 consecutive occasions, monitoring can be discontinued; if >100 mL, scheduled intermittent catheterization every 4 to 6 hours will be necessary.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Urinary and Gastrointestinal",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Constipation occurs in 45% of patients during acute hospitalization; risks include immobility and bedpan use. Assess prestroke bowel function (stool consistency, frequency, timing, bowel care practices) and provide mobility and a prophylactic stool softener. Early occurrence, on day 2 of admission, calls for prompt preventive interventions.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Urinary and Gastrointestinal",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Gastrointestinal bleeding occurs in 1.2% to 8.5% during hospitalization; risks include advanced age and a history of peptic ulcer or liver disease. Assess for melenic stool and blood in emesis and monitor hemoglobin and hematocrit; consider withdrawal of antiplatelet or anticoagulation medications and administer blood products as necessary.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Psychosocial and Neuropsychological",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Poststroke cognitive impairment is common: 1 in 10 patients will develop dementia after a stroke. Risks include baseline poor cognition, comorbid conditions, the effect of the stroke, and stroke complications. Assess mental status as a component of the neurological examination, and provide cognitive rehabilitation to improve attention, memory, visual neglect, and executive functioning, along with enriched environments to increase engagement with cognitive activities.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Psychosocial and Neuropsychological",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Depression occurs in up to one-third of patients with ischemic stroke; risks include physical disability, stroke severity, prestroke depression, and cognitive impairment. Nurses should identify patients at risk through early depression screening. Patients with poststroke depression should be treated with antidepressants in the absence of contraindications and closely monitored for effectiveness, with drug choice and length of treatment individualized.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Psychosocial and Neuropsychological",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Pseudobulbar affect occurs in 10% to 48%; assess for mood swings and other mood disorders using the Pathological Laughing and Crying Scale and the Center for Neurological Study-Lability Scale. Cognitive and emotional therapy, psychotherapy, and support groups may help; acknowledgment and education about pseudobulbar affect can defuse potentially uncomfortable situations, and dextromethorphan/quinidine is FDA approved.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Psychosocial and Neuropsychological",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Delirium occurs in about 1 in 4 patients during the acute period; risks include older age, preexisting cognitive deficits, higher NIHSS score, infection, and right hemispheric location. Screen with the 4 Assessment Test for Delirium or the Confusion Assessment Method ICU; avoid infection, dehydration, and sedative or neuroactive drugs, regulate sleep/wake cycles, provide cognitive stimulation and early mobilization, evaluate for reversible causes, and consider short-term antipsychotic agents.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Mobility",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For impaired mobility, provide early, short, frequent exercise. Daily stretching of the hemiplegic limbs may avoid contracture and patients and families should be taught proper stretching techniques. Positioning of the hemiplegic shoulder in maximum external rotation for 30 minutes every day, and use of supportive devices and slings, may prevent shoulder subluxation; resting ankle splints at night and during assisted standing may be considered for prevention of ankle contracture.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Mobility",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Falls: assess fall risk with a validated tool. Risks include anxiety, delirium, fear of falls, prior falls, male sex, NIHSS score >=8, history of myocardial infarction, or renal insufficiency, and most falls occur during transfers, toileting, or attempting activities without supervision. Interventions include a fall prevention program, physiotherapy, music therapy, postural training and task-oriented therapy, assisting with transfers and toileting, preventing delirium, and considering bed/chair alarms and video monitoring.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Mobility",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Pressure injury: perform regular skin assessment and documentation using an objective scale such as the Braden scale. Risks include older age, being unmarried, modified Rankin Scale score 3 to 5 on admission, higher NIHSS score, diabetes, anemia, peripheral vascular disease, incontinence, and longer length of stay. Minimize skin friction and pressure, provide support surfaces, practice good skin hygiene, avoid excessive moisture, maintain adequate nutrition and hydration, turn regularly, and use specialized mattresses, wheelchair cushions, and seating until mobility returns.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Mobility",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Poststroke pain: assess with pain rating scales and physical examination and obtain a formal rehabilitation assessment. Risks include increased muscle tone, reduced upper extremity movement, sensory deficits, poststroke pain syndromes, and poststroke headache. Provide short, frequent mobilization, train family members to assist, and manage pain with judicious use of medications; treatment of pain has been associated with improvements in cognition and quality of life.",
+      "page": null
+    },
+    {
+      "section": "Key Nursing Assessments (Table 3): Mobility",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Venous thromboembolism: assess for signs of venous thromboembolism, especially in the lower extremities; risks include immobility after stroke and potential long-term risk over time after stroke. Interventions include early mobilization, intermittent pneumatic compression if there are no contraindications in addition to routine care, aspirin and hydration, and patient and family education on the importance of intermittent pneumatic compression.",
+      "page": null
+    },
+    {
+      "section": "Nursing Assessment: Complications in Acute Ischemic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Anticipation, prevention, early recognition, and management of poststroke medical complications are essential. In the Berlin Stroke Registry (16 518 patients), 60% to 70% of early deaths and poor outcomes among patients with shorter stays were attributed to nonmodifiable predictors (stroke severity on admission, age, prestroke disability), whereas modifiable factors accounted for 39% of late deaths in patients staying longer than 7 days. In a Danish registry of 13 721 patients, 25.2% experienced at least 1 medical complication, all associated with longer length of stay and higher risk of adverse outcomes.",
+      "page": null
+    },
+    {
+      "section": "Neurological Complications",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Neurological complications - hemorrhagic transformation, cerebral edema, stroke evolution, and poststroke seizures - result in early neurological deterioration associated with poor outcomes. All nurses caring for patients with acute ischemic stroke, not only those in the neuro-ICU, should be knowledgeable about these risks, and nurses should develop a standardized approach to recognition and management of time-sensitive complications, including an inpatient code stroke protocol.",
+      "page": null
+    },
+    {
+      "section": "Cardiac Complications",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cardiac complications of stroke account for 2% to 6% of mortality within the first 3 months, with the highest risk in the first 2 weeks; predictors include a history of heart failure, diabetes, elevated creatinine, severe stroke, and a long-QT segment or ventricular extrasystoles on ECG. Myocardial infarction, cardiac arrhythmias, heart failure, or takotsubo syndrome may complicate stroke. A baseline ECG and cardiac monitoring for at least the first 24 hours are needed, and patients at highest risk for cardiac events may benefit from cardiac monitoring.",
+      "page": null
+    },
+    {
+      "section": "Dysphagia and Pneumonia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Between 40% and 78% of patients with acute stroke experience dysphagia; swallowing function returns in 7 days in the majority, but 11% to 50% may still have dysphagia 6 months after stroke. Major consequences include stroke-associated pneumonia, malnutrition, dehydration, increased mortality, and effects on discharge location and quality of life.",
+      "page": null
+    },
+    {
+      "section": "Dysphagia and Pneumonia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "While the patient is nil per os, it is essential to maintain hydration by administering maintenance fluid until dysphagia assessment is complete; a nasogastric or small-bore feeding tube is essential if the patient cannot swallow safely, to provide medication access and enteral nutrition. Once the patient is extubated, the nurse should perform a dysphagia screening before administering anything orally and refer to a speech-language pathologist for formal assessment, because postextubation dysphagia is common and older age and duration of intubation are the main risk factors.",
+      "page": null
+    },
+    {
+      "section": "Neuropsychological and Psychosocial Complications",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nurses should screen for cognitive issues such as problem-solving and executive function even if the patient is experiencing mild physical impairments after stroke, and refer to the speech-language pathologist or neuropsychologist as needed. Patients with stroke present unique diagnostic challenges because of aprosodic speech, abulia, or flat affect, and individuals with aphasia may go undiagnosed or receive inadequate treatment.",
+      "page": null
+    },
+    {
+      "section": "Neuropsychological and Psychosocial Complications",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Fatigue is a common and debilitating sequela of stroke, affecting at least half of survivors; poststroke fatigue reduces participation in physical activities and rehabilitation and is associated with poor neurological recovery, decreased quality of life, and increased mortality. Stroke severity and neurological disability drive exertional fatigue early, whereas depression plays a more important role in the long term.",
+      "page": null
+    },
+    {
+      "section": "Neuropsychological and Psychosocial Complications",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is important to identify and assess sleep disorders - sleep apnea, nighttime sleep disturbances, and excessive daytime sleepiness - which are independent risk factors for stroke, may contribute to poststroke fatigue, and affect stroke recovery. The prevalence of poststroke sleep disorders ranges from 13.2% to 94.0%, and combined subjective and objective assessment may increase detection and early treatment.",
+      "page": null
+    },
+    {
+      "section": "Urinary and Gastrointestinal Complications",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In a meta-analysis of 16 studies with 13 513 patients with stroke, 19% developed urinary tract infection, which decreased functional outcomes, increased length of stay by a median of 3 days, increased acute care costs, and increased the likelihood of discharge to a care home or long-term care facility. Urinary incontinence may affect 40% to 60% of patients admitted after a stroke; 25% continue at discharge and 15% continue 1 year after stroke. Management includes behavioral strategies (timed voiding, bladder retraining), complementary therapies, and physical therapy with transcutaneous electric nerve stimulation and pelvic floor muscle training.",
+      "page": null
+    },
+    {
+      "section": "Complications of Impaired Mobility",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When mobilization is attempted early after stroke, short, frequent mobilization is associated with a better outcome. High-dose, very early mobilization within 24 hours of stroke onset should not be performed because it may carry an increased risk in some people with stroke. Patients should receive rehabilitation at an intensity commensurate with anticipated benefits and tolerance, and family members should be trained to assist with mobilization.",
+      "page": null
+    },
+    {
+      "section": "Complications of Impaired Mobility",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Regardless of whether rehabilitation is started during the inpatient stay, all patients should undergo a formal rehabilitation assessment by clinicians with expertise in rehabilitation; activities of daily living, communication abilities, and functional mobility should be evaluated to assess rehabilitation needs before discharge.",
+      "page": null
+    },
+    {
+      "section": "Complications of Impaired Mobility",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Venous thromboembolism manifests as deep venous thromboembolism in about two-thirds of patients and as pulmonary embolism in one-third, and both increase mortality risk by as much as 30%. Best practice guidelines have not defined an advantage of low-molecular-weight heparin versus unfractionated heparin for prophylaxis; both show a reduction in deep venous thromboembolism with a slight risk of intracranial or extracranial hemorrhage, and clinicians must determine whether the benefit outweighs the risk. Low-molecular-weight heparin has the disadvantage of higher cost and bleeding risk in older patients with renal impairment.",
+      "page": null
+    },
+    {
+      "section": "Care Transition Interventions for Survivors of Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Determination of postacute rehabilitation needs should be based on assessment of residual neurological deficits; cognitive, communication, and psychological status; swallowing ability; previous functional ability and medical comorbidities; level of family/caregiver support; capacity of family caregivers; likelihood of returning to community living; and ability to participate in rehabilitation.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Secondary stroke prevention requires treatment of the specific stroke mechanism and reduction of modifiable risk factors (hypertension, diabetes, dyslipidemia), promoting a healthy lifestyle through diet and exercise, smoking cessation, and addressing social concerns. Health care providers should implement evidence-based educational strategies individualized and tailored to patients' health needs and medical conditions, including culturally tailored interventions.",
+      "page": null
+    },
+    {
+      "section": "Self-Management of the Survivor and Family Caregiver",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Self-management teaching should begin in the acute setting before hospital discharge; in meta-analysis of systematic reviews, self-management interventions were effective in reducing mortality and fostering independence among survivors of stroke. It is imperative to identify premorbid depression and poststroke depression, provide prompt and targeted treatment, and make necessary referrals for supportive mental health therapy.",
+      "page": null
+    },
+    {
+      "section": "Reducing Readmissions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In 2013 approximately 12% of US patients with stroke had a readmission within 30 days, of which 90% were unscheduled and 13% deemed preventable. A nurse-led transitional stroke clinic with follow-up phone calls and office visits at regular intervals after discharge may be an effective model for reducing readmission rates. An individually tailored discharge plan and assessment of understanding of the plan by patients and caregivers are essential; patients should be oriented to location-specific community resources and provided an early follow-up appointment scheduled before discharge.",
+      "page": null
+    },
+    {
+      "section": "Goals of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Discussion of care options and possible outcomes should take place quickly, and caregivers should ascertain and include patient preferences in shared decision making when considering interventions or limitations of care. Clinicians should direct patients with stroke and their families to palliative care resources as appropriate, and providers should be knowledgeable and respectful of diverse cultural and religious preferences, referring to social workers and chaplains when appropriate.",
+      "page": null
+    },
+    {
+      "section": "Innovation in Transitions of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Technological innovations in mobile health and telemedicine offer new methods to extend care remotely after hospital discharge, often through home health nurses, incorporating gaming, sensors, robotics, virtual reality, and telemedicine. A randomized trial of home-based telerehabilitation versus in-clinic rehabilitation found similar improvements in arm motor function regardless of setting, and mobile cardiac telemetry, implantable loop recorders, and smartwatches allow remote detection of paroxysmal atrial fibrillation after discharge.",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Critical gaps in nursing research remain: specialized nursing care is not clearly defined in evidence-based practice or the literature, and there is a lack of well-planned research detailing the specific contribution nurses make to patient and family outcomes after stroke or whether subspecialty certification makes a difference. Using evidence-based best practices, specialized nurses can affect outcomes, decrease length of stay, decrease costs, and decrease event recurrence.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

@@ -10,12 +10,78 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The aim of the present European Stroke Organisation Transient Ischaemic Attack (TIA) management guideline document is to provide clinically useful evidence-based recommendations on approaches to triage, investigation and secondary prevention, particularly in the acute phase following TIA. The guidelines were prepared following the Standard Operational Procedure for a European Stroke Organisation guideline document and according to GRADE methodology.",
+      "section": "Services organization — PICO 1.1: stroke specialist review within 24 hours versus more than 24 hours",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with a TIA, we recommend specialist review of the patient within 24 hours after the onset of symptoms compared to assessment more than 24 hours after symptoms onset.",
+      "page": null
+    },
+    {
+      "section": "Services organization — PICO 2.1: specialist review in a TIA clinic within 24 hours versus conventional outpatient appointment",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?)",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with a TIA, we suggest specialist review in a TIA clinic within 24 hours over a conventional outpatient appointment more than 24 hours after the TIA.",
+      "page": null
+    },
+    {
+      "section": "Services organization — PICO 3.1: TIA clinic review within 24 hours versus hospitalization in a stroke unit for high-risk TIA",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is insufficient evidence to provide a recommendation. Expert consensus statement: In patients suspected of high-risk TIA, 9/9 experts suggest that prompt review in a TIA clinic or hospitalization in a stroke unit are reasonable options as settings for evaluation by a stroke specialist, depending on local available resources and the patients' preferences, in the absence of evidence comparing each approach.",
+      "page": null
+    },
+    {
+      "section": "Risk prediction tools — PICO 4.1: use of risk prediction tools by primary care physicians",
+      "classOfRec": "Conditional",
+      "classNote": "Against (Weak against intervention, ↓)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with suspected TIA, we suggest not to use prediction tools alone to identify high risk patients/make triage and treatment decisions.",
+      "page": null
+    },
+    {
+      "section": "Imaging — PICO 5.1: MRI (DWI/PWI) or CT perfusion versus standard CT alone",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "There is insufficient evidence to provide a recommendation. Expert consensus statement: In suspected TIA patients, to confirm ischaemic pathophysiology of transient neurological symptoms, where it will influence treatment and/or there is diagnostic uncertainty, 8/9 experts suggest to use MR (multimodal) or CT perfusion, if feasible, instead of non-contrast CT.",
+      "page": null
+    },
+    {
+      "section": "Imaging — PICO 6.1: MR angiography versus CT angiography for large artery stenosis of 50% or greater",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In TIA patients, we suggest using either MRA or CTA for additional confirmation after ultrasound of large artery stenosis of 50% or greater, to guide further management.",
+      "page": null
+    },
+    {
+      "section": "Secondary prevention — PICO 7.1: \"de novo\" antiplatelet usage prior to imaging versus delayed antiplatelet usage",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?)",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients suspected of TIA, if a wait of more than 24 hours to planned imaging is foreseen and a delay is judged to increase the risk of further ischaemic events, above the risk of starting antiplatelet medication, we suggest \"de novo\" antiplatelet monotherapy usage compared to not starting antiplatelet monotherapy.",
+      "page": null
+    },
+    {
+      "section": "Secondary prevention — PICO 8.1: dual antiplatelet therapy versus monotherapy in non-cardioembolic acute TIA",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "High certainty",
+      "text": "In patients with acute non-cardioembolic high risk TIA (ABCD2 score of 4 or more), we recommend short term dual antiplatelet therapy with aspirin and clopidogrel over monotherapy, subsequently followed by monotherapy.",
+      "page": null
+    },
+    {
+      "section": "Secondary prevention — PICO 8.1 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with acute non-cardioembolic low risk TIA or uncertain TIA diagnosis, 9/9 experts voted against using dual antiplatelet therapy over monotherapy.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

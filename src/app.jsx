@@ -3944,15 +3944,31 @@ Clinician Name`;
             'III-harm': 'bg-crit-600 text-white',
             'III-no-benefit': 'bg-slate-600 text-white',
             'N/A': 'bg-slate-500 text-white',
-            Statement: 'bg-slate-500 text-white'
+            Statement: 'bg-slate-500 text-white',
+            // GRADE (ESO / NCS / WSO). Those bodies do not grade with ACC/AHA
+            // classes; strength lives here and certainty renders beside it.
+            Strong: 'bg-ok-600 text-white',
+            'Strong-against': 'bg-crit-600 text-white',
+            Conditional: 'bg-cobalt-500 text-white dark:bg-cobalt-700',
+            'Conditional-against': 'bg-warn-700 text-white',
+            'Expert Consensus': 'bg-slate-600 text-white'
           };
           // Normalizes free-form class strings ("III: No Benefit", "2a",
           // "III/A", "N/A") onto a GUIDELINE_CLASS_COLORS key so composite or
           // unlabeled classes never fall through to an unstyled badge.
-          const normalizeGuidelineClass = (cls) => {
+          const normalizeGuidelineClass = (cls, note) => {
             const c = String(cls || '').trim();
             if (!c || c.toUpperCase() === 'N/A') return 'N/A';
             const lower = c.toLowerCase();
+            // GRADE first: 'Strong'/'Conditional' would otherwise fall through to
+            // the ACC/AHA branches ('conditional' does not, but 'strong' must not
+            // be mistaken for anything numeric) and render unstyled.
+            const against = /against/i.test(String(note || ''));
+            if (lower.startsWith('strong')) return against ? 'Strong-against' : 'Strong';
+            if (lower.startsWith('conditional') || lower.startsWith('weak')) {
+              return against ? 'Conditional-against' : 'Conditional';
+            }
+            if (lower.includes('expert consensus')) return 'Expert Consensus';
             if (lower.includes('iii') || lower.startsWith('3')) {
               if (lower.includes('harm')) return 'III-harm';
               if (lower.includes('no benefit') || lower.includes('no-benefit')) return 'III-no-benefit';
@@ -32265,7 +32281,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           return (
                                             <div key={rec.id} id={`gl-rec-${rec.id}`} className="border border-cobalt-100 rounded-lg p-2 bg-cobalt-50/50 dark:bg-cobalt-900/50">
                                               <div className="flex items-start gap-2">
-                                                <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold shrink-0 ${GUIDELINE_CLASS_COLORS[recClass] || 'bg-slate-500 text-white'}`}>
+                                                <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold shrink-0 ${GUIDELINE_CLASS_COLORS[normalizeGuidelineClass(recClass, rec.classNote)] || 'bg-slate-500 text-white'}`}>
                                                   {recClass}/{recLevel}
                                                 </span>
                                                 <div className="flex-1 min-w-0">

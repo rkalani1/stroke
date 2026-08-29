@@ -10,12 +10,254 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Methods",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Left ventricular (LV) systolic dysfunction, defined here as reduced LV ejection fraction ≤40% or left wall motion abnormality, is commonly found in patients with ischemic stroke. Although there is an increased risk of incident and recurrent embolic stroke among patients with LV dysfunction without thrombus detected, the data supporting anticoagulation in these patients are limited.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In addition to quantitative results from the literature, we provide narrative consensus summary statements. No Class of Recommendation or Level of Evidence is provided for these statements because this is not a guideline document; the statements reflect expert opinions of the authors.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": "Class/LOE cited belong to the referenced AHA/ASA guidelines; this scientific statement assigns no Class of Recommendation or Level of Evidence of its own.",
+      "levelOfEvidence": "Ungraded",
+      "text": "2024 AHA/American Stroke Association guidelines recommend against anticoagulation for primary prevention of stroke in patients with LVEF <=35% to 40% and sinus rhythm. For secondary stroke prevention in patients with previous stroke or TIA, 2021 AHA/American Stroke Association guidelines recommend individualized decision-making regarding use of anticoagulation (Class of Recommendation 2b, Level of Evidence B-R). This scientific statement expounds upon those previous recommendations; for management guidance when an LV thrombus is detected, the reader is directed to the 2022 AHA scientific statement.",
+      "page": null
+    },
+    {
+      "section": "Definition of LV Systolic Dysfunction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The operational definition of LV systolic dysfunction used in this scientific statement includes LVEF <=40%; the presence of moderate to severe LV wall motion abnormalities characterized by an akinetic, dyskinetic, or aneurysmal wall; or both of these features. Only LV systolic dysfunction in the absence of atrial fibrillation, intracardiac thrombus, ventricular assist device, mechanical heart valves, or other conditions warranting definitive anticoagulation is included.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Summary of the Evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "TTE is the first-line diagnostic test to evaluate for LV systolic dysfunction and LV thrombus.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Summary of the Evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Ultrasound enhancing agents are recommended for endocardial border visualization and thrombus detection.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Summary of the Evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Consider using an ultrasound enhancing agent during echocardiography if LV ejection fraction <40% or wall motion abnormality is present.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Summary of the Evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When an LV systolic dysfunction-related stroke pathogenesis is suspected and TTE is limited or nondiagnostic, cardiac magnetic resonance or computed tomography can be considered to evaluate for an LV thrombus.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Summary of the Evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Among primary prevention trials, the net benefit of oral anticoagulation over nonanticoagulation strategies in patients with LV systolic dysfunction has not been established.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Summary of the Evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Among primary prevention trials that reported ischemic stroke events, oral anticoagulation was associated with a lower risk of stroke or systemic embolism compared with nonanticoagulation strategies.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Summary of the Evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Among secondary prevention trials for patients with cryptogenic embolic stroke, patients with LV systolic dysfunction treated with direct oral anticoagulants had a lower risk of recurrent stroke compared with patients treated with aspirin.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Summary of the Evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with ischemic stroke in the absence of an alternate known mechanism, LV systolic dysfunction without intracardiac thrombus, and no other indication for anticoagulation, we suggest individualized and shared decision-making regarding treatment with anticoagulation to reduce the risk of stroke.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Summary of the Evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When anticoagulation is deemed beneficial for LV systolic dysfunction, use of either apixaban or rivaroxaban (dosed for atrial fibrillation) is preferred over alternative anticoagulation strategies due to ease of use, limited pharmacologic interactions, representation in relevant clinical studies, and safety profile.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Summary of the Evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "If oral anticoagulation is recommended for LV systolic dysfunction after ischemic stroke, the timing of initiation of anticoagulation is best individualized, considering the risk of hemorrhagic transformation and other clinical factors, as the optimal timing has not been established.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Summary of the Evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with ischemic stroke and LV dysfunction who qualify for guideline-directed therapies for stroke prevention, consider initiating these therapies to improve cardiac function or reduce mortality risk.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Summary of the Evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with LV dysfunction and stroke, extended cardiac monitoring may identify patients with paroxysmal atrial fibrillation, for whom anticoagulation has been associated with a lower risk of recurrent stroke.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Summary of the Evidence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with LV dysfunction at risk of stroke, management with an interdisciplinary care team is recommended when possible, inclusive of cardiology and neurology clinicians.",
+      "page": null
+    },
+    {
+      "section": "Cardiac Diagnostic Modalities to Identify LV Systolic Dysfunction and Evaluate for LV Thrombus",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Our interdisciplinary expert consensus is that among patients with ischemic stroke, sinus rhythm, and LV systolic dysfunction, defined by LVEF <=40% or any LV wall motion abnormality, or both, observed on the current or a previous echocardiogram study, we suggest ultrasound enhancing agent administration, if available and no contraindications are present, to evaluate for an LV thrombus. This extends the 2018 American Society of Echocardiography recommendation that an ultrasound enhancing agent should be used when >=2 LV segments cannot be adequately visualized.",
+      "page": null
+    },
+    {
+      "section": "Cardiac Diagnostic Modalities to Identify LV Systolic Dysfunction and Evaluate for LV Thrombus",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Late gadolinium-enhanced cardiac magnetic resonance is more sensitive than TTE (even with ultrasound enhancing agents) to detect LV thrombus and is considered the preferred imaging modality when there is the suggestion of a possible LV thrombus on echocardiogram but echocardiographic imaging is nondiagnostic, and when echocardiography does not demonstrate LV thrombus but a clinical concern (eg, cardioembolic stroke) remains. Cardiac computed tomography is an alternative modality to CMR.",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Secondary Stroke Prevention Treatment Considerations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For the secondary prevention of stroke in patients with LV systolic dysfunction and absence of atrial fibrillation or an alternate, established stroke mechanism, we suggest individualized and shared medical decision-making regarding the initiation of anticoagulation. Secondary analyses signal a net benefit for ischemic stroke prevention with anticoagulation, but the competing risk of major hemorrhage ought to be considered.",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Secondary Stroke Prevention Treatment Considerations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Until more compelling data are available, we recommend a thorough evaluation at a minimum using enhanced TTE, cardiac computed tomography, or magnetic resonance imaging in patients with acute ischemic stroke and LV systolic dysfunction when an intracardiac thrombus may be suspected, as it is a treatable target.",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Secondary Stroke Prevention Treatment Considerations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Due to the lack of comparative effectiveness trials between oral anticoagulants in patients with stroke and LV systolic dysfunction, if an anticoagulation prevention strategy is selected, we suggest the direct oral anticoagulants apixaban or rivaroxaban over warfarin due to ease of use, representation in relevant clinical studies, lack of major drug-drug or dietary interactions, and, for apixaban, lower bleeding risk versus warfarin in comparative trials in atrial fibrillation. If a direct oral anticoagulant is deemed beneficial, we suggest selecting the direct oral anticoagulant dose recommended for atrial fibrillation.",
+      "page": null
+    },
+    {
+      "section": "Antithrombotic Secondary Stroke Prevention Treatment Considerations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Unless indicated for other concomitant conditions (eg, acute coronary syndrome), the addition of antiplatelet therapy to anticoagulation in LV dysfunction likely offers limited additional benefit for stroke or systemic embolism prevention, and it is associated with an established, greater risk of bleeding. If anticoagulation is not recommended, use of antiplatelet therapy should be instituted for secondary stroke prevention in accordance with the most recent guidelines.",
+      "page": null
+    },
+    {
+      "section": "Timing of Anticoagulation Initiation if Indicated After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "If anticoagulation is to be considered for secondary stroke prevention in LV systolic dysfunction, the timing of initiation may be determined with consideration of stroke severity, infarct size, presence and severity of hemorrhagic transformation, and other risk factors associated with intracranial hemorrhage.",
+      "page": null
+    },
+    {
+      "section": "Stratification of Cardioembolic Stroke Risk in LV Systolic Dysfunction to Inform Anticoagulation Decision-Making: Future Directions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Optimal risk stratification and management of patients with ischemic stroke, sinus rhythm, and LV systolic dysfunction can be challenging; additional research is needed to understand the various features and natural progression of LV dysfunction as they relate to stroke risk and anticoagulation responsiveness. The role of cardiac biomarkers (BNP, NT-proBNP, MR-proANP) has not been well defined or integrated into clinical decision-making, and the use of artificial intelligence-enabled ECG or echocardiographic models to predict thrombogenic risk remains an area for further inquiry.",
+      "page": null
+    },
+    {
+      "section": "Instituting Stroke Prevention Guideline-Directed Medical Therapies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The decision to anticoagulate patients with stroke and LV dysfunction does not preclude other risk factor management, including treatment of hypertension, dyslipidemia, and substance use disorders, among others. For patients with ischemic stroke and concomitant heart failure with reduced ejection fraction, institution of quadruple guideline-directed medical therapy (a beta-blocker, angiotensin receptor-neprilysin inhibitor, mineralocorticoid receptor antagonist, and sodium glucose cotransporter-2 inhibitor) has been associated with improvement in LVEF.",
+      "page": null
+    },
+    {
+      "section": "Role of Extended Cardiac Monitoring After Stroke Among Those With LV Dysfunction and Sinus Rhythm",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with ischemic stroke and LV dysfunction who remain in sinus rhythm, extended cardiac monitoring is increasingly recognized as an effective strategy to identify subclinical atrial fibrillation. Current guidelines and expert consensus recommend extended cardiac monitoring be offered to patients with stroke and sinus rhythm who are candidates for anticoagulation as a secondary prevention strategy.",
+      "page": null
+    },
+    {
+      "section": "Interdisciplinary Care/Systems of Care Models",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend consultation with a cardiology health care professional regarding the care of patients with acute ischemic stroke and LV dysfunction. Cardiology input on TTE features, such as the presence of spontaneous echo contrast, and potential risk factors, such as recency of a myocardial infarction, may inform the decision to initiate anticoagulation or pursue more advanced cardiac imaging.",
+      "page": null
+    },
+    {
+      "section": "Interdisciplinary Care/Systems of Care Models (ABC-LVD pathway)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Avoid stroke: The decision to anticoagulate may benefit from collaboration between cardiology and neurology clinicians considering individualized risk of stroke due to LV dysfunction and propensity for hemorrhage.",
+      "page": null
+    },
+    {
+      "section": "Interdisciplinary Care/Systems of Care Models (ABC-LVD pathway)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Better functional status: LV and overall cardiac function would benefit from optimization, inclusive of coronary revascularization and implantable cardiac defibrillator therapy when indicated, goal-directed medical therapy, and repeat imaging to evaluate for recovery or worsening of LV function.",
+      "page": null
+    },
+    {
+      "section": "Interdisciplinary Care/Systems of Care Models (ABC-LVD pathway)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Comorbidities and cardiovascular risk factor management: Management of LV dysfunction involves evaluation of the underlying cause and individualized treatment, including use of lipid-lowering therapies, diet and lifestyle interventions, tobacco cessation counseling, and medications to optimize body weight.",
+      "page": null
+    },
+    {
+      "section": "Conclusion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The available evidence supports an independent relationship between LV systolic dysfunction and ischemic stroke risk. The risk of stroke is higher in patients with preceding stroke, where annualized rates are 5%-9%/year compared with 1%-2%/year in patients without preceding stroke. In secondary stroke prevention studies, there is growing evidence that anticoagulation is associated with a lower risk of recurrent stroke, although there is a lack of Class I evidence to support a singular strategy in this population; randomized controlled trials are needed.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

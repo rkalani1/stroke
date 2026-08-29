@@ -10,12 +10,78 @@
   "society": "SVIN",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "M2 Segment Occlusions - M2 Recommendations",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "EVT is reasonable for patients with disabling stroke due to proximal and/or dominant M2 occlusions, particularly when associated with moderate-to-severe deficits and imaging evidence of salvageable brain tissue (class IIa; LOE B-nonrandomized).",
+      "page": null
+    },
+    {
+      "section": "M2 Segment Occlusions - M2 Recommendations",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "EVT may be considered in distal, codominant, or nondominant M2 occlusions who present with disabling deficits and an NIHSS score >=6 (class IIb; LOE B-randomized).",
+      "page": null
+    },
+    {
+      "section": "M2 Segment Occlusions - M2 Recommendations",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "A",
+      "text": "Routine EVT is not recommended for patients with distal or nondominant M2 occlusions presenting with low stroke severity and nondisabling symptoms (class III: no benefit; LOE A).",
+      "page": null
+    },
+    {
+      "section": "M3/M4 Segments Occlusions - M3/M4 Recommendations",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-R",
+      "text": "EVT for distal MCA (M3/M4) - EVT with mechanical devices is not recommended as a standard treatment for occlusions of the M3/M4 MCA branches (class III: no benefit; LOE B-randomized).",
+      "page": null
+    },
+    {
+      "section": "M3/M4 Segments Occlusions - M3/M4 Recommendations",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The authors present an overview of the current evidence and management recommendations for evaluation and treatment of adults with acute ischemic stroke from distal- and medium-vessel occlusion (DMVO) for endovascular thrombectomy (EVT). The intended audiences are prehospital care providers, physicians, and allied health professionals.",
+      "classNote": "Research recommendation printed under the M3/M4 Recommendations heading; no COR or LOE is assigned to it in the text — Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "It is reasonable to enroll patients with M3/M4 occlusions and disabling deficit in future RCTs examining the safety and efficacy of EVT using aspiration technique, small/adjustable stentrievers, or intra-arterial thrombolysis compared with best medical management.",
+      "page": null
+    },
+    {
+      "section": "ACA Occlusions (A2/A3) - ACA Recommendations",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-NR",
+      "text": "In acute ischemic stroke due to an occlusion of the distal ACA (A2/A3 segments), routine EVT is not recommended due to insufficient evidence demonstrating clear benefit (class III: no benefit; LOE B-nonrandomized).",
+      "page": null
+    },
+    {
+      "section": "ACA Occlusions (A2/A3) - ACA Recommendations",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with ACA occlusion with disabling deficits, large territory at risk, favorable imaging, and good baseline functional status, EVT may be considered on a case-by-case basis (class IIb; LOE B-nonrandomized).",
+      "page": null
+    },
+    {
+      "section": "PCA P1 to P3 Segments Occlusions - PCA Recommendations",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-NR",
+      "text": "EVT is not recommended as a routine treatment for isolated PCA occlusions (class III: no benefit; LOE B-nonrandomized).",
+      "page": null
+    },
+    {
+      "section": "PCA P1 to P3 Segments Occlusions - PCA Recommendations",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "EVT for isolated PCA occlusions (P1, P2, or P3 segments) may be considered in selected patients who present early, exhibit severe neurological deficits significantly impacting quality of life, or who are ineligible for intravenous thrombolysis (class IIb; LOE B-randomized).",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "ACC/AHA"
 }

@@ -9,12 +9,110 @@
   "pmid": "40401755",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: GRADE.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Evidence-based recommendations on screening methods, timing of screening and assessment, and management options for the varying types of post-stroke visual impairment.",
+      "section": "PICO 1: for adults with visual problems due to stroke, does routine use of vision screening, compared to no routine vision screening, improve detection rate?",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?) — QUADAS-2 medium risk of bias",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with stroke, we suggest vision screening to improve detection of visual problems. Vision screening should be undertaken using a validated vision screening tool or by specialist eye team assessment. Vision screening versus routine stroke screening improves the detection rate of presence of visual impairment while specialist visual assessment further improves the accuracy of detection of visual impairment.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: for adults with visual problems due to stroke, does early assessment within 1 week of stroke admission, compared to later assessment, improve activities and quality of daily life?",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For; ESO recorded quality of evidence Low ⊕⊕ but strength of recommendation Not assessable (–), so the operative guidance is the 10/10 expert consensus statement",
+      "levelOfEvidence": "Low certainty",
+      "text": "For adults with visual problems due to stroke, there are insufficient data to make an evidence-based recommendation on the use of early vision screening (quality of evidence low; strength of recommendation not assessable). Expert consensus statement, 10 of 10 experts suggest: (1) In adults with stroke, early vision screening should be undertaken to detect their visual problems. This is feasible and acceptable within 3-4 days post onset of stroke. The majority can be assessed within 1 week post-stroke onset. (2) Vision screening should be undertaken by specialist eye team assessment or at least by using a validated vision screening tool.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: for adults with visual field loss due to stroke, does identification of visual field loss by vision screening or specialist eye team, compared to routine stroke screen, improve detection rate and activities/quality of life?",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For; strength of recommendation Not assessable (–) — QUADAS-2 medium risk of bias",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with visual field loss due to stroke, there are insufficient data to make an evidence-based recommendation on the use of vision screening or specialist eye team assessment compared to routine stroke screen (strength of recommendation not assessable). Expert consensus statement, 10 of 10 experts suggest: (1) In adults with stroke, early vision screening should be undertaken to detect visual field loss. This is feasible and acceptable within 3-4 days post onset of stroke. The majority can be assessed within 1 week post onset. Visual field loss screening should be undertaken by specialist eye team assessment or at least by using a validated vision screening tool. (2) Vision screening versus routine stroke screening improves the detection rate of presence of visual field loss while specialist visual assessment further improves the accuracy of detection of visual impairment.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: for adults with central vision impairment due to stroke, does identification of visual acuity loss by vision screening or specialist eye team, compared to routine stroke screen, improve detection rate and activities/quality of life?",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For; strength of recommendation Not assessable (–) — QUADAS-2 medium risk of bias",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with central vision impairment due to stroke, there are insufficient data to make an evidence-based recommendation on the use of vision screening or specialist eye team assessment compared to routine stroke screen (strength of recommendation not assessable). Expert consensus statement, 10 of 10 experts suggest: (1) In adults with stroke, early vision screening should be undertaken to detect central vision impairment. This is feasible and acceptable within 3-4 days post onset of stroke. The majority can be assessed within 1 week post onset. Visual acuity loss screening should be undertaken by specialist eye team assessment or at least by using a validated vision screening tool. (2) Vision screening versus routine stroke screening improves the detection rate of presence of central vision impairment while specialist visual assessment further improves the accuracy of detection of visual impairment.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: for adults with eye movement disorders due to stroke, does identification of strabismus and/or ocular motility deficit loss by vision screening or specialist eye team, compared to routine stroke screen, improve detection rate and activities/quality of life?",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For; strength of recommendation Not assessable (–) — QUADAS-2 medium risk of bias",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with eye movement disorders due to stroke, there are insufficient data to make an evidence-based recommendation on the use of vision screening or specialist eye team assessment compared to routine stroke screen (strength of recommendation not assessable). Expert consensus statement, 10 of 10 experts suggest: (1) In adults with stroke, early vision screening should be undertaken to detect eye movement disorders. This is feasible and acceptable within 3-4 days post onset of stroke. The majority can be assessed within 1 week post onset. Screening for eye movement disorders should be undertaken by specialist eye team assessment or at least by using a validated vision screening tool. (2) Vision screening versus routine stroke screening improves the detection rate of presence of eye movement disorders while specialist visual assessment further improves the accuracy of detection of visual impairment.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: for adults with visual perceptual disorders due to stroke, does identification of visual perceptual disorders by screening proforma/tool or specialist team, compared to routine stroke screen, improve detection rate and activities/quality of life?",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For; strength of recommendation Not assessable (–) — QUADAS-2 medium risk of bias",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with visual perceptual disorders due to stroke, there are insufficient data to make an evidence-based recommendation on the use of vision screening or specialist eye team assessment compared to routine stroke screen (strength of recommendation not assessable). Expert consensus statement, 10 of 10 experts suggest: (1) In adults with stroke, early vision screening should be undertaken to detect visual perceptual disorders. This is feasible and acceptable within 3-4 days post onset of stroke. The majority can be assessed within 1 week post onset. Screening for visual perceptual disorders should be undertaken by specialist eye team assessment or at least by using a validated vision screening tool. (2) Vision screening versus routine stroke screening improves the detection rate of presence of visual perceptual disorders while specialist visual assessment further improves the accuracy of detection of visual impairment.",
+      "page": null
+    },
+    {
+      "section": "PICO 7: for adults with visual neglect due to stroke, does identification of visual neglect by screening proforma/tool or specialist team, compared to routine stroke screen, improve detection rate and activities/quality of life?",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?) — QUADAS-2 high risk of bias",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with stroke, we suggest vision screening to improve detection of visual neglect. Vision screening versus routine stroke screening improves the detection rate of presence of visual neglect while specialist visual assessment and use of a battery of tests further improves the accuracy of detection of visual neglect.",
+      "page": null
+    },
+    {
+      "section": "PICO 8: for adults with homonymous visual field loss due to stroke, does compensatory, substitute or restitutive intervention, compared to no intervention, improve activities and quality of daily life?",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with visual field loss due to stroke, we suggest compensatory interventions of visual scanning/visual search to aid adaptation to visual field loss after stroke. We suggest early commencement of treatment as soon as is feasible and acceptable to the patient.",
+      "page": null
+    },
+    {
+      "section": "PICO 9: for adults with ocular stroke, does compensatory, substitute or restitutive intervention, compared to no intervention, improve activities and quality of daily life?",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with ocular stroke (central retinal artery occlusion), we suggest thrombolysis within 4.5 h of stroke onset to aid recovery of visual function after stroke.",
+      "page": null
+    },
+    {
+      "section": "PICO 10: for adults with central vision impairment due to stroke, does compensatory, substitute or restitutive intervention, compared to no intervention, improve activities and quality of daily life?",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For; ESO recorded quality of evidence Very low ⊕ but strength of recommendation Not assessable (–)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For adults with central vision impairment due to stroke, there are insufficient data to make an evidence-based recommendation on the use of compensatory, substitutive or restitutive interventions (quality of evidence very low; strength of recommendation not assessable). Expert consensus statement, 10 of 10 experts suggest: (1) For adults with central vision impairment due to stroke, early management options to improve visual acuity should be offered as soon as possible after stroke onset. (2) Stroke survivors should wear their prescribed spectacles and these should be updated promptly if lost/broken or old. Clinicians should signpost to appropriate information, resource materials and vision aids.",
+      "page": null
+    },
+    {
+      "section": "PICO 11: for adults with eye movement disorders due to stroke, does compensatory, substitute or restitutive intervention, compared to no intervention, improve activities and quality of daily life?",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with eye movement disorders due to stroke, we suggest individualised intervention targeted at the specific type of eye movement problem that has arisen. We suggest referral to specialist eye services for the targeted management of eye movement disorders. Prior to/while awaiting specialist eye care, alleviation of troublesome diplopia can be achieved using partial or total occlusion (eye patching) with a caveat of caution where total occlusion is used, thus rendering the patient monocular with potential impact from loss of visual input from the occluded eye.",
+      "page": null
+    },
+    {
+      "section": "PICO 12: for adults with visual neglect due to stroke, does compensatory, substitute or restitutive intervention, compared to no intervention, improve activities and quality of daily life?",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with visual neglect due to stroke, we suggest individualised intervention targeted at the specific type of neglect syndrome that has arisen. We suggest close collaboration between stroke teams (particularly occupational therapy), neuropsychology and eye care teams (orthoptics, ophthalmology) for their targeted management of visual neglect.",
+      "page": null
+    },
+    {
+      "section": "PICO 13: for adults with other visual perceptual disorders due to stroke, does compensatory, substitute or restitutive intervention, compared to no intervention, improve activities and quality of daily life?",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with visual perceptual disorders due to stroke, we suggest individualised intervention targeted at the specific type of perceptual problem that has arisen. Clinicians should signpost to appropriate vision information and resource materials. We suggest close collaboration between stroke teams (particularly occupational therapy), neuropsychology and eye care teams (orthoptics, ophthalmology) for their targeted management of visual perceptual disorders.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

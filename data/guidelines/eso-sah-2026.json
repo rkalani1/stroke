@@ -9,12 +9,288 @@
   "pmid": "42095754",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Topic 1 / PICO 1a - Antifibrinolytic drugs to prevent rebleeding and poor functional outcome",
       "classOfRec": "Statement",
-      "classNote": "Source grading: GRADE.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Joint ESO/EANS/ESMINT guideline on aneurysmal subarachnoid haemorrhage, prepared using GRADE from meta-analyses, randomised trials and prospective observational data. Case fatality after aSAH is approximately 40%, with frequent functional, cognitive or emotional sequelae in survivors.",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with aneurysmal subarachnoid haemorrhage (aSAH), we recommend against the routine use of antifibrinolytic drugs prior to aneurysm treatment. Patients with aSAH should not receive antifibrinolytic drugs to reduce the risk of rebleeding, as they do not decrease the risk of poor outcome.",
+      "page": null
+    },
+    {
+      "section": "Topic 3 / PICO 3a - Endovascular vs neurosurgical aneurysm occlusion",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend regular coiling over microsurgical clipping if both aneurysm treatment options are equally suitable in patients who are in good clinical condition. In patients who are awake or only mildly drowsy, with at most mild neurological deficits, coiling without adjunctive devices is preferred over microsurgical clipping to treat the ruptured aneurysm in situations where both treatment options are equally suitable.",
+      "page": null
+    },
+    {
+      "section": "Topic 3 / PICO 3b - Endovascular aneurysm treatment other than coiling",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Because of lower levels of evidence, no evidence-based recommendation can be made for treatment of the ruptured aneurysm with endovascular devices other than coils. For aneurysms that cannot be treated by regular coiling, ie, without adjunctive devices, there are no high-quality data showing that more novel endovascular techniques and devices (such as stent-assisted coiling, flow diverting stents or intra-saccular devices) decrease the risk of poor outcome compared to regular coiling.",
+      "page": null
+    },
+    {
+      "section": "Topic 4 / PICO 4 - Calcium antagonists (oral nimodipine) for prevention of delayed cerebral ischaemia",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend oral administration of nimodipine in adult patients with aSAH. All patients should receive oral nimodipine, a drug that reduces the risk of brain damage.",
+      "page": null
+    },
+    {
+      "section": "Topic 4 / PICO 4 - Tirilazad for prevention of delayed cerebral ischaemia",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend against the use of tirilazad in adult patients with aSAH.",
+      "page": null
+    },
+    {
+      "section": "Topic 4 / PICO 4 - Statins for prevention of delayed cerebral ischaemia",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend against the use of statins in adult patients with aSAH.",
+      "page": null
+    },
+    {
+      "section": "Topic 4 / PICO 4 - Magnesium sulphate for prevention of delayed cerebral ischaemia",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend against the use of magnesium sulphate in adult patients with aSAH.",
+      "page": null
+    },
+    {
+      "section": "Topic 4 / PICO 4 - Endothelin receptor antagonists (ETRAs) for prevention of delayed cerebral ischaemia",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend against the use of endothelin receptor antagonists (ETRAs) in adult patients with aSAH.",
+      "page": null
+    },
+    {
+      "section": "Topic 4 / PICO 4 - Prophylactic antiplatelet drugs for prevention of delayed cerebral ischaemia",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Because of lower levels of evidence, no evidence-based recommendation can be made for the prophylactic use of antiplatelet drugs in adult patients with aSAH.",
+      "page": null
+    },
+    {
+      "section": "Topic 4 / PICO 4 - External lumbar drainage for prevention of delayed cerebral ischaemia",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Based on the currently available evidence, which includes 2 RCTs with conflicting results and a third positive study the results of which could not be included in the pooled analysis, no recommendation can be made for or against the use of LD (lumbar drainage) to decrease the risk of poor functional outcome after aSAH. Further research is needed to provide conclusive evidence.",
+      "page": null
+    },
+    {
+      "section": "Topic 5 / PICO 5a - Hypertension induction for clinical deterioration due to DCI",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Because of lower levels of evidence, no evidence-based recommendation can be made for hypertension induction in adult patients with aSAH and clinical deterioration due to delayed cerebral ischaemia (DCI).",
+      "page": null
+    },
+    {
+      "section": "Topic 5 / PICO 5b - Endovascular treatment of vasospasm for clinical deterioration due to DCI",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Because of lower levels of evidence, no evidence-based recommendation can be made for endovascular treatment of vasospasm in adult patients with aSAH and clinical deterioration due to DCI.",
+      "page": null
+    },
+    {
+      "section": "Topic 1 / PICO 1b - Antihypertensive treatment before aneurysm treatment (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Lowering blood pressure before the aneurysm is treated may help reduce the risk of rebleeding of the aneurysm in patients with very high blood pressure, but it remains unclear whether or not it decreases the risk of poor outcome.",
+      "page": null
+    },
+    {
+      "section": "Topic 1 / PICO 1b - How to lower blood pressure before aneurysm treatment (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Blood pressure lowering should be performed slowly and in a controlled manner, ie, without undershoot, and with short-acting medications.",
+      "page": null
+    },
+    {
+      "section": "Topic 2 / PICO 2 - Timing of treatment of the ruptured aneurysm (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Treatment of the ruptured aneurysm within 24 hours after ictus; the timing should be optimised to ensure that the most dedicated team of experts is available when needed.",
+      "page": null
+    },
+    {
+      "section": "Topic 3 / PICO 3a - Multidisciplinary treatment decision-making (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Treatment decisions should always be made by a multidisciplinary team (composed of at least 1 neurosurgeon and 1 neurointerventionalist) to consider the different aneurysm treatment options, and decide on the safest method, and the most effective and durable treatment outcome.",
+      "page": null
+    },
+    {
+      "section": "Topic 3 / PICO 3b - Choice of treatment when regular coiling is not possible (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "If regular coiling is not possible, we suggest that the multidisciplinary team discusses the safety, effectiveness and durability of microsurgical and alternative endovascular options to determine the preferred treatment strategy, given the limited comparative evidence available.",
+      "page": null
+    },
+    {
+      "section": "Topic 3 / PICO 3b - Stent-assisted coiling of the ruptured aneurysm (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Stent-assisted coiling has a less favourable safety profile in patients with a ruptured aneurysm, so we suggest that this treatment is only performed if other treatment options are not feasible.",
+      "page": null
+    },
+    {
+      "section": "Topic 3 / PICO 3b - Flow diversion of the ruptured aneurysm (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Flow diversion also has a less favourable safety profile and often does not result in immediate aneurysm occlusion, which may lead to rebleeding of the ruptured aneurysm in the first few days. Therefore, we suggest to reserve flow diversion as a last-line treatment option.",
+      "page": null
+    },
+    {
+      "section": "Topic 5 / PICO 5a - Hypertension induction in DCI (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "If a patient worsens due to reduced blood flow in the brain, raising blood pressure may be considered, but only after the aneurysm is secured and fluid administration has failed.",
+      "page": null
+    },
+    {
+      "section": "Topic 5 / PICO 5b - Intra-arterial pharmacological treatment of vasospasm (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Endovascular drug treatments may be used in patients with a critically reduced blood flow to the brain due to severe narrowing of the brain arteries.",
+      "page": null
+    },
+    {
+      "section": "Topic 5 / PICO 5b - Balloon angioplasty for vasospasm (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Treatments that widen the arteries by the use of inflatable balloons should only be considered as a last-line rescue treatment after careful multidisciplinary discussion of the potential risks and uncertain benefits.",
+      "page": null
+    },
+    {
+      "section": "Topic 5 / PICO 5b - Temporary (retrievable) stents for vasospasm (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "The current data are insufficient to support the use of temporary stents.",
+      "page": null
+    },
+    {
+      "section": "Topic 6 / PICO 6a - Neuroimaging (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Brain scans (CT and CT-perfusion) are useful when a patient's condition worsens or cannot be assessed clinically.",
+      "page": null
+    },
+    {
+      "section": "Topic 6 / PICO 6b - Neuromonitoring (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Routine invasive brain monitoring, EEG and complex monitoring systems are not recommended because benefits are unclear.",
+      "page": null
+    },
+    {
+      "section": "Topic 7 / PICO 7 - Treatment of acute hydrocephalus (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "If fluid builds up in the brain (hydrocephalus), drainage is recommended when there is a reduced level of consciousness. The type of drainage depends on the results of brain imaging and the presence of blood in the ventricles.",
+      "page": null
+    },
+    {
+      "section": "Topic 7 / PICO 7 - Permanent CSF shunt for chronic hydrocephalus (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Long-term fluid drainage devices should be used in patients with chronic hydrocephalus when temporary drainage is no longer safe.",
+      "page": null
+    },
+    {
+      "section": "Topic 8 / PICO 8 - Dedicated neuro-ICU or high care unit (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Treat aSAH patients in a dedicated neuro-ICU or high care unit.",
+      "page": null
+    },
+    {
+      "section": "Topic 9 / PICO 9a - Centre volume (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Treat aSAH patients in a centre that treats at least 70 patients with aSAH per year, or at least 35 patients with aSAH per year in geographically remote areas.",
+      "page": null
+    },
+    {
+      "section": "Topic 9 / PICO 9b - Neurosurgeon/neurointerventionalist volume (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "The ruptured aneurysm should be treated by an experienced physician who treats at least 30 intracranial aneurysms (either ruptured or unruptured) per year.",
+      "page": null
+    },
+    {
+      "section": "Topic 10 / PICO 10 - Indication for radiological follow-up (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Follow-up imaging is only indicated as long as re-treatment of the aneurysm remains an option.",
+      "page": null
+    },
+    {
+      "section": "Topic 10 / PICO 10 - Radiological follow-up after coiling (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients treated with coils should have follow-up imaging at least once at or after 12 months after aneurysm treatment.",
+      "page": null
+    },
+    {
+      "section": "Topic 10 / PICO 10 - Radiological follow-up after clipping (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients treated with clips usually do not need long-term follow-up imaging if imaging within 6 months after treatment shows that the aneurysm is completely occluded.",
+      "page": null
+    },
+    {
+      "section": "Topic 10 / PICO 10 - Radiological follow-up after partial occlusion or newer devices (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with partially occluded aneurysms or those who are treated with newer devices, such as intrasaccular devices or flow-diverting stents, need long-term follow-up.",
+      "page": null
+    },
+    {
+      "section": "Topic 10 / PICO 10 - Screening for de novo aneurysms (expert consensus)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients who are at high risk of developing new aneurysms, such as those with a young age, positive family history for aneurysmal subarachnoid haemorrhage or autosomal dominant polycystic kidney disease, should have scans every 5 years to check for new aneurysms.",
       "page": null
     }
-  ]
+  ],
+  "extractionStatus": "source-not-machine-readable",
+  "extractionNote": "The guideline publishes its 15 evidence-based recommendations and 37 expert consensus statements as images (Table 3 and the boxed recommendations), so their exact wording and GRADE ratings are not machine-readable from PubMed Central, Europe PMC or the publisher. The statements below are drawn from the article's own abstract, plain-language summary and discussion; treat them as a faithful summary, not as the boxed recommendation text, and consult the source for exact wording and grades.",
+  "documentType": "guideline",
+  "gradingSystem": "ungraded"
 }

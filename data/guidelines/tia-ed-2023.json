@@ -9,100 +9,654 @@
   "pmid": "36655570",
   "recommendations": [
     {
-      "section": "Diagnostics",
+      "section": "Introduction",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Perform point-of-care glucose for all suspected TIA to rule out hypoglycemia; obtain CBC, chemistry panel, A1c, and lipid profile to define risk factors.",
-      "page": 4
+      "levelOfEvidence": "Ungraded",
+      "text": "In 2009 the American Heart Association redefined TIA using a tissue-based approach (symptom resolution plus absence of infarction on brain imaging) rather than the time-based approach (symptom resolution within 24 hours alone). TIA is an acute neurovascular syndrome attributable to a vascular territory that rapidly resolves, leaving no evidence of tissue infarction on diffusion-weighted imaging (DWI) MRI.",
+      "page": null
     },
     {
-      "section": "Diagnostics",
+      "section": "Introduction",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Use ECG, telemetry, and troponin for all TIA patients; consider prolonged rhythm monitoring (about 30 days) within 6 months when cardioembolic source is suspected.",
-      "page": 4
+      "levelOfEvidence": "Ungraded",
+      "text": "A patient with resolved symptoms and MRI demonstrating infarct should be diagnosed with an ischemic stroke.",
+      "page": null
     },
     {
-      "section": "Vessel Imaging",
+      "section": "Epidemiology",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Perform acute-phase vessel imaging in the ED regardless of ABCD2 score to guide management; CTA is preferred, with MRA as alternative when contrast is contraindicated.",
-      "page": 4
+      "levelOfEvidence": "Ungraded",
+      "text": "Estimates of 90-day stroke risk after TIA range from 10% to 18% and highlight the importance of rapid evaluation and initiation of secondary prevention strategies in the emergency department.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Significant race-based disparities have been reported, with Black Americans having a 1.4 times greater risk of TIA compared with White Americans, although recent data on these disparities are lacking.",
+      "page": null
+    },
+    {
+      "section": "Clinical Evaluation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Acute onset of focal neurological symptoms followed by complete resolution is suggestive of a TIA. Patients for whom TIA is being considered must have a neurological examination consistent with their baseline status.",
+      "page": null
+    },
+    {
+      "section": "Clinical Evaluation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nonspecific symptoms or examination findings (eg, isolated dizziness, confusion/lethargy/encephalopathy), focal symptoms with other features (eg, headache, seizure), or new radiological findings (eg, mass lesion) may suggest an alternate diagnosis or mimic.",
+      "page": null
+    },
+    {
+      "section": "Clinical Evaluation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In cases of diagnostic uncertainty, conventional wisdom suggests performing a neurovascular workup for suspected TIA to reduce the risk of a recurrent event, ideally with expedited neurological consultation.",
+      "page": null
+    },
+    {
+      "section": "Clinical Evaluation (Table 1: Factors Suggestive of TIA Versus TIA Mimic)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Features favoring TIA: older age; presence of vascular risk factors (hypertension, diabetes, coronary artery disease, peripheral artery disease, smoking, obesity, hyperlipidemia, atrial fibrillation, previous stroke, obstructive sleep apnea); abrupt onset with maximal symptoms at onset; duration typically <60 min; preserved mentation; localizing/focal neurological symptoms corresponding to a vascular territory (dysarthria/aphasia, facial droop, hemiparesis, hemibody numbness); dizziness paired with cranial neuropathies, vision loss/diplopia, difficulty with coordination or gait/truncal ataxia, or severe nausea/vomiting suggesting a posterior circulation process; hypertensive on presentation.",
+      "page": null
+    },
+    {
+      "section": "Clinical Evaluation (Table 1: Factors Suggestive of TIA Versus TIA Mimic)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Features favoring a TIA mimic: younger patient without vascular risk factors; history of epilepsy, migraines, or brain tumor; headache with ptosis and miosis (which might indicate dissection); symptoms that spread/march from the site of onset (which might suggest seizure); altered mentation; migraine headache; and signs or symptoms suggesting an alternative diagnosis (positive visual phenomena, seizure-like activity, positional vertigo without localizing/focal symptoms). This table is a guide and should not be the sole determinant of ultimate diagnosis.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Brain Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the emergency department, the role of acute phase imaging is to rule out alternative diagnoses, aid in risk stratification, and identify potentially symptomatic lesions.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Brain Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "An initial noncontrast head computed tomography (NCCT) is a useful initial test to evaluate for subacute ischemia, hemorrhage, or mass lesion. NCCT alone, however, has limited utility in patients whose symptoms have resolved; although its sensitivity to detect an acute infarct is low, it does have utility in ruling out TIA mimics.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Brain Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Multimodal brain MRI is the preferred method to evaluate for acute ischemic infarct and ideally should be obtained within 24 hours of symptom onset. In cases where MRI with DWI can be obtained without delay, NCCT can be safely avoided in a stable patient with completely resolved symptoms.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Brain Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "MRI with DWI demonstrates lesions in approximately 40% of patients presenting with TIA symptoms, and DWI positivity is associated with a >6-fold increased risk of recurrent stroke at 1 year. If a DWI-positive lesion is identified, a diagnosis of ischemic stroke is typically made, followed by hospital admission.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Brain Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The distribution of DWI lesions can help identify stroke pathogenesis (a single lacune in a deep structure suggests small vessel disease; scattered emboli in multiple territories might point to a cardioembolic mechanism such as atrial fibrillation; a watershed distribution suggests large vessel disease) and guides further workup and secondary prevention strategies.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Brain Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When MRI cannot be obtained acutely to definitively distinguish TIA from stroke, it remains reasonable to make a clinical diagnosis of TIA in the emergency department on the basis of a negative NCCT and symptom resolution within 24 hours. A potential next step would be hospital admission for MRI, comprehensive workup, and neurology consultation; other options include transferring patients to a facility with advanced imaging and vascular neurology expertise or arranging a timely (ideally <24 hours) outpatient MRI.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Vascular Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Noninvasive imaging to screen for carotid stenosis (or vertebral artery stenosis for patients with posterior circulation symptoms) should be a routine component of the acute phase imaging for patients with TIA. A primary goal of vascular imaging is to identify patients with high-grade cervical carotid stenosis who might be candidates for revascularization.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Vascular Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Symptomatic intracranial stenosis is associated with a higher risk of recurrent stroke; therefore many centers include intracranial in addition to cervical vascular imaging in the workup of patients with TIA. Identification of symptomatic intracranial stenosis might sway toward admission for centers with low risk tolerance, and potentially caution clinicians against overly aggressive blood pressure reduction that might lead to recurrence of symptoms.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Vascular Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Computed tomography angiography (CTA) is the most widely accessible modality in emergency departments and can be obtained rapidly in conjunction with NCCT. CTA has higher sensitivity and positive predictive value than magnetic resonance angiography (MRA) for detection of intracranial stenosis and occlusion and is recommended over time-of-flight (without contrast) MRA.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Vascular Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "CTA is considered safe in patients with known chronic kidney disease and is not associated with significant risk of acute kidney injury. Centers may still obtain a serum creatinine before CTA to establish baseline renal function.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Vascular Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients in whom administration of iodinated contrast is a concern, expedited MRI with MRA is an alternative. Time-of-flight MRA is of lesser quality and may overestimate the degree of cervical carotid stenosis compared with gadolinium-enhanced MRA; although time-of-flight is suitable for screening, gadolinium-enhanced MRA neck is preferred in patients who can safely receive gadolinium contrast.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Vascular Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Duplex carotid ultrasound and transcranial Doppler are noncontrast options to evaluate cervical and intracranial vessels, respectively, but may not be available in the emergency department; admission to a 24-hour observation or inpatient unit is typically required to obtain these studies.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Vascular Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Digital subtraction angiography, although considered the gold standard to assess cerebral vasculature, is invasive and should not be used to screen for carotid stenosis.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Laboratory and Cardiac Testing, Neurology Consultation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Point-of-care blood glucose testing should be performed for all patients with suspected TIA to rule out hypoglycemia, a known stroke mimic.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Laboratory and Cardiac Testing, Neurology Consultation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A complete blood count, chemistry panel, hemoglobin A1c, and lipid profile can help identify potential risk factors. A nonfasting lipid profile is acceptable to identify hyperlipidemia as a risk factor.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Laboratory and Cardiac Testing, Neurology Consultation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients >50 years of age with visual complaints may benefit from screening with erythrocyte sedimentation rate and C-reactive protein to assess for temporal arteritis.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Laboratory and Cardiac Testing, Neurology Consultation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Telemetry, troponin assays, and electrocardiography are warranted in all patients with TIA, given the shared risk factors for myocardial infarction and ischemic stroke and to screen for atrial fibrillation. Initial electrocardiography detects atrial fibrillation in up to 7% of patients with ischemic stroke and TIA, but longer cardiac monitoring results in higher detection rates, especially among patients with palpitations or structural heart disease.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Laboratory and Cardiac Testing, Neurology Consultation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with TIA/stroke in whom a cardioembolic source is suspected, the American Heart Association/American Stroke Association recommends prolonged rhythm monitoring (30 days) within 6 months of the event; this can be coordinated through cardiology, vascular neurology, primary care, or, if possible, the emergency department.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Laboratory and Cardiac Testing, Neurology Consultation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The role of routine transthoracic echocardiogram for patients with TIA has not been well established but is often performed to identify a source of cardiac embolism and structural abnormalities associated with arrhythmia (eg, left atrial dilation). If suspicion for a cardioembolic process is low and the patient is otherwise safe for discharge, a transthoracic echocardiogram could be arranged as an expedited outpatient study (ideally within 1 week).",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Laboratory and Cardiac Testing, Neurology Consultation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When available, a neurology (preferably vascular neurology) consultation, either in person or through telemedicine, is a central part of the evaluation of patients with suspected TIA. Early neurology consultation has been associated with lower 90-day and 1-year mortality rates, and telemedicine neurology evaluations have demonstrated noninferiority to in-person evaluations in patient and caregiver satisfaction.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Laboratory and Cardiac Testing, Neurology Consultation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "If early neurology consultation is not possible, consider establishing a mechanism by which an appointment with a neurologist, ideally within 48 hours but no later than a week after TIA, can be scheduled, given the high risk of stroke in the days after TIA.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "NCCT is insensitive to rule out small acute ischemic strokes but can help rule out TIA mimics.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "MRI with DWI is the preferred imaging modality to rule out acute infarct. If MRI with DWI can be obtained without delay for patients with TIA, NCCT can be safely avoided.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "NCCT and CTA can be performed together to evaluate for hemorrhage and symptomatic stenosis.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "CTA is safe in patients with chronic kidney disease, and the risk of acute kidney injury related to contrast administration is low.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Extended cardiac monitoring in selected patients is helpful to evaluate for potential sources of cardiac embolism.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients benefit from early neurology consultation, preferably in the emergency department or rapid follow-up within 1 week after the TIA.",
+      "page": null
     },
     {
       "section": "Risk Stratification",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "TIA risk stratification scales help identify high-risk patients and guide disposition decisions.",
-      "page": 5
+      "levelOfEvidence": "Ungraded",
+      "text": "The most widely used risk stratification tool is the ABCD2 score (age >=60 y, blood pressure >=140/90 mm Hg, clinical features, symptom duration, diabetes), which stratifies patients into low- (0-3), moderate- (4-5), and high-risk (6-7) groups. Corresponding 2-day, 7-day, and 90-day stroke risks are 1.0%/1.2%/3.1% for low risk, 4.1%/5.9%/9.8% for moderate risk, and 8.1%/11.7%/17.8% for high risk.",
+      "page": null
     },
     {
-      "section": "Disposition",
+      "section": "Risk Stratification",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Presumed symptomatic >50% extracranial or intracranial stenosis warrants facility admission.",
-      "page": 7
+      "levelOfEvidence": "Ungraded",
+      "text": "A meta-analysis of 33 studies and just over 16 000 patients found that the ABCD2 had high sensitivity but low specificity when stratifying high-risk (score 6-7) versus low-risk (score 0-3) patients; at 7 days after TIA, the high-risk group had a recurrent stroke risk of 7% versus 2.1% in the low-risk group.",
+      "page": null
     },
     {
-      "section": "Disposition",
+      "section": "Risk Stratification",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Acceptable disposition options include rapid ED TIA protocols with expedited referral to specialized clinics, 24-hour observation, or standard facility admission.",
-      "page": 7
+      "levelOfEvidence": "Ungraded",
+      "text": "The ABCD2 score does not include symptoms suggesting a posterior circulation process (such as dysmetria, ataxia, or homonymous hemianopia), nor does it account for TIA mechanism or the presence of ipsilateral large artery stenosis on imaging, and therefore should be part of a more comprehensive assessment. Large artery disease (unstable or severe carotid atherosclerosis, intracranial atherosclerosis, cervical artery dissection, carotid web) or atrial fibrillation may further increase recurrent stroke risk beyond a traditional risk score.",
+      "page": null
     },
     {
-      "section": "Disposition",
+      "section": "Risk Stratification",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Disposition should reflect short-term stroke risk, vessel imaging, timeliness of workup, rapid follow-up availability, and patient ability to return for evaluation.",
-      "page": 7
+      "levelOfEvidence": "Ungraded",
+      "text": "Performing acute phase vessel imaging in the emergency department is important regardless of ABCD2 score because it can guide immediate management. For example, in patients with presumed symptomatic cervical or intracranial stenosis, more frequent neurological checks, stricter blood pressure parameters to avoid hypotension, dual antiplatelet therapy, and early consultation of surgical specialties could all be considered.",
+      "page": null
     },
     {
-      "section": "Disposition",
+      "section": "Risk Stratification",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Institutional and regional factors should guide disposition protocols for TIA patients.",
-      "page": 7
+      "levelOfEvidence": "Ungraded",
+      "text": "TIA scores have evolved to incorporate radiographic data and dual TIA (>=2 episodes of TIA symptoms within the past 7 days). ABCD3 adds dual TIA; ABCD3-I incorporates dual TIA, MRI findings, and carotid stenosis; and ABCD3-I (d, c/i) incorporates intracranial stenosis. Dual TIA and crescendo TIA (recurrent transient events of increasing duration, frequency, or severity) are high-risk clinical features that may warrant admission, and crescendo TIAs specifically may suggest ipsilateral carotid stenosis.",
+      "page": null
     },
     {
-      "section": "Risk Reduction",
+      "section": "Risk Stratification - Considerations for Clinical Practice",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Maximal medical therapy includes antithrombotic therapy plus BP, glucose, and lipid control with targets consistent with established guidelines.",
-      "page": 9
+      "levelOfEvidence": "Ungraded",
+      "text": "TIA risk stratification scales aid in the identification of high-risk patients and help guide disposition.",
+      "page": null
     },
     {
-      "section": "Risk Reduction",
+      "section": "Risk Stratification - Considerations for Clinical Practice",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "ABCD2 can guide antithrombotic regimens; use risk profiles rather than scores alone.",
-      "page": 9
+      "levelOfEvidence": "Ungraded",
+      "text": "Given their limitations, TIA risk stratification scales should be part of a more comprehensive evaluation.",
+      "page": null
     },
     {
-      "section": "Risk Reduction",
+      "section": "Risk Stratification - Considerations for Clinical Practice",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Provide counseling for patients with substance use disorders alongside medical management.",
-      "page": 9
+      "levelOfEvidence": "Ungraded",
+      "text": "Vessel imaging in the emergency department is warranted regardless of ABCD2 score or likelihood of admission.",
+      "page": null
     },
     {
-      "section": "Health Equity",
+      "section": "Patient Disposition",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Address social determinants of health to reduce disparities in TIA care and outcomes.",
-      "page": 9
+      "levelOfEvidence": "Ungraded",
+      "text": "Expedited TIA management pathways and diagnostic protocols have been associated with increased use of evidence-based strategies, reductions in treatment delays (eg, time to MRI), reduction in emergency department length of stay, reduction in admission rates, and cost savings without evidence of an increase in short-term stroke risk or mortality. Many of these investigations were performed at certified stroke centers, so such protocols may be difficult to deploy in more resource-limited settings.",
+      "page": null
+    },
+    {
+      "section": "Patient Disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Successful emergency department TIA protocols include a clinical protocol enabling rapid identification and diagnosis, rapid access to diagnostic testing and advanced imaging, risk stratification criteria (eg, ABCD2 score), access to neurovascular expertise, implementation of appropriate secondary prevention interventions, and access to a short-term follow-up clinic. Partnership across departments and service lines is necessary (eg, reserved MRI time slots, time-sensitive outpatient echocardiogram access, and rapid access to neurology/TIA clinics).",
+      "page": null
+    },
+    {
+      "section": "Patient Disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The presence of a high ABCD2 score, infarction on MRI, or presumed symptomatic (>50%) extracranial or intracranial stenosis resulted in hospital admission in published pathway studies. In the absence of a high-risk ABCD2 score or presumed symptomatic stenosis, other high-risk features such as MRI evidence of infarction, severe hypertension, dual TIA, severe metabolic derangements, or abnormal electrocardiography findings including a new diagnosis of atrial fibrillation may also warrant hospital admission.",
+      "page": null
+    },
+    {
+      "section": "Patient Disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients in underserved areas or who face barriers such as lack of transportation to follow-up appointments or timely completion of outpatient studies may also benefit from admission. Admission for high-risk patients may also allow faster administration of acute stroke treatments in the case of a recurrent event.",
+      "page": null
+    },
+    {
+      "section": "Patient Disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Discharging a patient with a TIA from the emergency department can be safe if proper protocols are in place before discharge, followed by outpatient completion of the workup and rapid follow-up in a dedicated TIA clinic, preferably within 48 hours. Lack of such a clinic might warrant either emergency department observation or admission, even for the low-risk patient.",
+      "page": null
+    },
+    {
+      "section": "Patient Disposition - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Presumed symptomatic (>50%) extracranial or intracranial stenosis warrants hospital admission.",
+      "page": null
+    },
+    {
+      "section": "Patient Disposition - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Acceptable disposition options include rapid emergency department TIA protocols with expedited referral to specialized cerebrovascular or TIA-specific clinics, admission to a 24-hour emergency department observation unit, or standard hospital admission.",
+      "page": null
+    },
+    {
+      "section": "Patient Disposition - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "To determine disposition of patients with TIA, consider short-term stroke risk on the basis of presentation and vessel imaging, timeliness of a reliable workup, availability of rapid outpatient follow-up, and the patient's ability to return for rapid workup in a clinic setting.",
+      "page": null
+    },
+    {
+      "section": "Patient Disposition - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Institutional and regional factors should guide protocols for decision-making about disposition for patients with TIA.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA (Table 4: Secondary Prevention Checklist)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Antiplatelet therapy should be started within 12-24 h of symptom onset. For ABCD2 <4 (low risk): aspirin 50-325 mg daily OR clopidogrel 75 mg daily OR aspirin 25 mg/extended-release dipyridamole 200 mg twice daily. For ABCD2 >=4 (high risk): aspirin 81 mg plus clopidogrel 75 mg daily for 21-90 d, then transition to single therapy (based on CHANCE and POINT protocols). For ABCD2 >=6 with symptomatic ipsilateral intracranial stenosis: aspirin 81 mg plus clopidogrel 75 mg daily for 21-90 d, OR ticagrelor 180 mg load followed by 90 mg twice daily plus aspirin 75-100 mg daily for 30 d (based on THALES), then transition to single therapy. When ABCD2 >=4, strongly consider hospital admission when possible.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA (Table 4: Secondary Prevention Checklist)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Antihypertensives (long-term goal blood pressure <130/80 mm Hg): angiotensin-converting enzyme inhibitor, angiotensin II receptor blockers, or thiazide diuretic; calcium channel blockers can be considered for patients who need additional options.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA (Table 4: Secondary Prevention Checklist)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Anticoagulation for patients with atrial fibrillation or other indications: apixaban, dabigatran, edoxaban, rivaroxaban, or warfarin. In patients with moderate to severe mitral stenosis or a mechanical heart valve, warfarin is preferred.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA (Table 4: Secondary Prevention Checklist)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Lipid lowering (goal low-density lipoprotein cholesterol <70 mg/dL): HMG-CoA reductase inhibitors (statins) first line, then ezetimibe, then a PCSK9 inhibitor if needed for very-high-risk patients.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA (Table 4: Secondary Prevention Checklist)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nutrition: encourage a low sodium or Mediterranean diet; for patients with diabetes, start the conversation and consider referral to a nutrition specialist. Counsel regarding modification of lifestyle factors (smoking cessation, physical activity, alcohol moderation) in an individualized, culturally sensitive manner, and arrange follow-up appointments with expedited TIA/neurology and primary care clinics.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Antithrombotics",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Antithrombotic therapy is warranted in all patients with suspected TIA who have no known contraindications. Antiplatelet therapy is recommended for stroke prevention in patients who do not have an indication for anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Antithrombotics",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Short-term dual antiplatelet therapy with aspirin plus either clopidogrel or ticagrelor has been shown to reduce risk of recurrent events in selected high-risk patients with TIA who present within 24 hours of symptom onset. Consider consulting vascular neurology to determine the appropriateness and duration of dual antiplatelet therapy, to arrange follow-up, and to ensure transition back to monotherapy to reduce risk of future bleeding complications.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Antithrombotics",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with TIA already on single-agent therapy, it is not well established whether increasing antiplatelet doses or switching to another agent confers any benefit.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Antithrombotics",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Therapeutic anticoagulation is effective at lowering the risk of stroke in patients with atrial fibrillation, and evidence has shown it can safely be prescribed from the emergency department. For patients who have TIA with known atrial fibrillation not previously receiving anticoagulation, contacting the primary care physician or cardiologist to discuss risks versus benefits can help ensure appropriate secondary prevention. Even for patients with a history of falls, therapeutic anticoagulation remains the optimal therapy and outweighs bleeding risks in most cases.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Antithrombotics",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "MRI can detect DWI hyperintensities and cortical microhemorrhages that might sway decision-making; therefore, waiting to start anticoagulation until MRI is complete is reasonable.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Statins",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "High-intensity statin therapy has been shown to reduce stroke recurrence in patients with ischemic stroke by 16% and is well established as a key aspect of secondary prevention after TIA or stroke. Beyond reduction in low-density lipoprotein levels, statins are also beneficial for plaque stabilization, improvement in endothelial dysfunction, and inflammatory responses.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Hypertension",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Initiation of antihypertensive agents, preferably in partnership with outpatient clinicians, is critical for lowering risk of future events. Reducing blood pressure with an ultimate outpatient target of <130/80 mm Hg has demonstrated a reduction in recurrent stroke risk by 22%.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Diabetes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Among patients with TIA or ischemic stroke, diabetes and hyperglycemia are associated with early neurological worsening and stroke recurrence. A screening hemoglobin A1c is suggested in patients with suspected TIA, and severe hyperglycemia at the time of presentation may warrant hospital admission for glycemic management.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Diabetes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "First-line treatments for those with type 2 diabetes include metformin and lifestyle optimization. Additional agents to consider include sodium-glucose linked transporter inhibitors and glucagon-like peptide-1 receptor agonists, although these would typically be prescribed by primary care physicians or endocrinologists.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Behavioral and Lifestyle Counseling",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The American Heart Association/American Stroke Association recommends implementing behavior change interventions to improve stroke literacy, lifestyle, and medication adherence to reduce the risk of recurrent stroke. Whereas extensive counseling may be considered out of the scope of acute care in the emergency department, incorporating behavioral health counseling as part of an emergency department observation pathway should be considered.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Behavioral and Lifestyle Counseling",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Increased physical activity is another cornerstone of stroke prevention. Among patients with TIA or nondisabling stroke caused by intracranial stenosis in the medical therapy group of SAMMPRIS, greater physical activity was associated with a decreased likelihood of recurrent stroke; interventions such as text messaging and cardiac rehabilitation have improved physical activity after stroke/TIA, with the strongest effect when implemented early after the event.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Behavioral and Lifestyle Counseling",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Discussions about a healthy diet, specifically Mediterranean-type or DASH diets that have demonstrated reductions in stroke risk, can be implemented successfully.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Behavioral and Lifestyle Counseling",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The American Heart Association/American Stroke Association recommends that patients with TIA receive counseling to limit excessive alcohol intake and referral for specialized services for patients with substance use disorders. A systematic review found that combined use of smoking-cessation medications with behavioral interventions may increase smoking cessation, but the quality of the evidence was low.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Underserved and Rural Communities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Disparities in treatment rates, mortality, and 30-day readmissions have remained constant or widened in rural populations. Disparities in under-resourced communities may stem from patient (mistrust, literacy), clinician (unconscious bias, lack of underrepresented clinicians), system (access to and quality of care), or policy (health insurance, resource allocation) sources. Culturally tailored behavioral interventions should address both the individual's risk factors and their social determinants of health.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Underserved and Rural Communities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Telestroke networks provide rural and under-resourced communities greater access to vascular neurologists. Telemedicine might also be a useful way for physicians to facilitate rapid TIA diagnosis, identify underlying causes, implement individualized risk reduction plans, and provide access to stroke prevention clinics attended by vascular neurologists.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Education Required: Signs and Symptoms of Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients' knowledge retention of stroke signs and symptoms or stroke risk factors is often poor after discharge with TIA or stroke, and patients with TIA or mild symptoms are less likely to activate emergency services on a subsequent visit. Multilingual education materials on stroke signs and symptoms, when to return for emergency care, time sensitivity of treatment options, and the importance of secondary prevention treatments should be provided.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Maximal medical therapy includes antithrombotic therapy paired with blood pressure, glucose, and lipid control with targets adherent to established guidelines.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The ABCD2 score can be used to guide antithrombotic regimens.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Counseling paired with medical management may be helpful to patients with substance use disorders.",
+      "page": null
+    },
+    {
+      "section": "Risk Reduction After TIA - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Attention to social determinants of health can aid in addressing health disparities.",
+      "page": null
+    },
+    {
+      "section": "Follow-Up Appointments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Primary care providers are essential in the long-term management of cardiovascular risk factors and should be notified when a patient presents to the emergency department with TIA. Given the subsequent risk for recurrent stroke after TIA, rapid follow-up with both a neurologist and a primary care physician is warranted; one study found a significant reduction in 90-day stroke risk when time from TIA to stroke specialist review changed from 3 days to 1 day (10.3% to 2.1%).",
+      "page": null
+    },
+    {
+      "section": "Follow-Up Appointments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Telehealth or other electronic modalities of communication are potential options for clinicians to address risk factor management if resources are limited. Nurse-led, telephone-based interventions and other integrated mobile health technology programs have led to improved blood-pressure control and lipid management in rural populations.",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "TIA is a strong predictor of future stroke and requires careful evaluation to properly identify high-risk patients. Incorporating risk stratification scales, acute phase imaging, and neurological consultation into a clinical pathway can facilitate appropriate disposition - hospital admission for those at highest risk while reducing unnecessary hospitalizations for lower-risk patients - and implementation of patient-specific secondary prevention strategies is critical to prevent future events.",
+      "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

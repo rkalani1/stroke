@@ -9,44 +9,94 @@
   "pmid": "42552475",
   "recommendations": [
     {
-      "section": "Scope and Method",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Neurocritical Care Society statement built on a systematic review and meta-analysis of antiseizure medication (ASM) prophylaxis in adults with aneurysmal subarachnoid hemorrhage, graded with GRADE methodology. The initial search yielded 1988 articles, of which 10 formed the basis of the recommendations. The panel states that overall the quality of evidence is low, precluding strong recommendations.",
-      "page": null
-    },
-    {
-      "section": "Prophylactic ASM vs No ASM",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "PICO 1: Antiseizure medication vs. no antiseizure medication in aneurysmal SAH - Recommendation",
+      "classOfRec": "Conditional",
+      "classNote": "Either option (no preference for or against)",
       "levelOfEvidence": "Low certainty",
-      "text": "The guideline suggests that either ASM or no ASM may be used in patients hospitalized with aneurysmal subarachnoid hemorrhage who have no history of clinical or electrographic seizures (conditional recommendation, low quality of evidence). No significant difference was found in early seizure, adverse events, mortality, or functional outcomes when ASM was compared with no ASM.",
+      "text": "Given the uncertainty in benefits and harms, we suggest that prophylactic ASM be used or withheld in patients with aneurysmal subarachnoid hemorrhage (conditional recommendation, low quality of evidence).",
       "page": null
     },
     {
-      "section": "Choice of Agent",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "PICO 1 - Expert guidance",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In clinical practice, ASM prophylaxis may be considered for patients at high risk of early seizures, including those with high-grade SAH, anterior circulation aneurysms, intraparenchymal hemorrhage, or hydrocephalus requiring cerebral spinal fluid (CSF) diversion, or those undergoing aneurysm clipping. EEG findings may also guide prophylaxis decisions.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Levetiracetam or phenytoin/fosphenytoin - Recommendation",
+      "classOfRec": "Conditional",
+      "classNote": "Either option (no preference between agents) — For",
       "levelOfEvidence": "Very low certainty",
-      "text": "If an ASM is used, the guideline suggests either levetiracetam or phenytoin/fosphenytoin (conditional recommendation, very low quality of evidence). Fewer early seizures were observed with phenytoin/fosphenytoin and a lower risk of neurologic decline with levetiracetam, but with low certainty of evidence; mortality did not differ significantly between treatment types.",
+      "text": "We suggest either prophylactic levetiracetam or phenytoin/fosphenytoin in patients with aneurysmal subarachnoid hemorrhage (conditional recommendation, very low quality of evidence).",
       "page": null
     },
     {
-      "section": "Duration of Prophylaxis",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "PICO 2 - Expert guidance",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Despite limited comparative evidence, levetiracetam is generally preferred due to its favorable safety profile and fewer drug interactions. The observed differences in early seizure prevention could be attributable to appropriate dosing of ASM. Thus, higher dosing may be considered in patients with augmented renal clearance.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Long (> 3 days) vs. short (<= 3 days) duration of prophylaxis - Recommendation",
+      "classOfRec": "Conditional",
+      "classNote": "Either option (individualize; no preference for short or long)",
       "levelOfEvidence": "Moderate certainty",
-      "text": "If an ASM is used, the guideline suggests either a short (<=3 days) or a long (>3 days) duration of prophylaxis (conditional recommendation, moderate quality of evidence). Extended use may be associated with lower seizure risk but at the same time with a higher risk of adverse effects.",
+      "text": "Regarding the duration of antiseizure medications, because of the uncertainty of benefits and harm, we suggest that the decision to use either short- or long-term therapy with ASM as prophylaxis in adult patients with aneurysmal subarachnoid hemorrhage be individualized to each patient (conditional recommendation, moderate quality of evidence).",
       "page": null
     },
     {
-      "section": "How to Read This Document",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Teaching point on where practice outruns evidence: this graded society document does not establish a single default duration of prophylaxis. Its duration comparison is anchored at 3 days, and the panel could not favour a short course over an extended one. Fixed 3-7 day prophylaxis defaults that appear in many local order sets and protocols are therefore a local convention, not a graded recommendation from this guideline. Educational use only; management decisions rest with the treating team.",
+      "section": "PICO 3 - Expert guidance",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "A short course (<= 3 days) is generally favored unless EEG or clinical features suggest ongoing seizure risk or high-risk EEG findings. Prophylactic ASM should not be continued beyond 3 days in patients without seizure.",
+      "page": null
+    },
+    {
+      "section": "Discussion - In Our Practice: PICO 1",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "With the current data, many practitioners may use short-term (e.g., until aneurysm is secured, or for up to 3 days) ASM prophylaxis particularly in patients with high risk of early seizures, including those with higher-grade SAH, anterior circulation aneurysms, concomitant intraparenchymal clot, hydrocephalus requiring CSF diversion, or those undergoing clipping versus coiling.",
+      "page": null
+    },
+    {
+      "section": "Discussion - In Our Practice: PICO 1",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "An additional consideration is the use of continuous EEG monitoring, when available, to guide ASM prophylaxis. Practitioners may consider ASM prophylaxis if EEG demonstrates high risk patterns, which may include rhythmic and periodic patterns (excluding generalized rhythmic delta) at > 2 Hz, sporadic epileptiform discharges, lateralized periodic discharges, or lateralized rhythmic delta activity; superimposed plus features as defined by the American Clinical Neurophysiology Society; and brief ictal rhythmic discharges.",
+      "page": null
+    },
+    {
+      "section": "Discussion - In Our Practice: PICO 2",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "If electing to use ASM prophylaxis, practitioners prefer levetiracetam due to better safety profile and tolerability and fewer drug-drug interactions; phenytoin/fosphenytoin induces CYP3A4 and may cause subtherapeutic nimodipine levels. Levetiracetam is generally dosed initially at 500 mg two times a day, although higher maintenance doses of 750-1000 mg two times a day may be considered, particularly in light of the potential for augmented renal clearance commonly observed in aneurysmal subarachnoid hemorrhage patients.",
+      "page": null
+    },
+    {
+      "section": "Discussion - In Our Practice: PICO 3",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "If prophylactic ASM is used, we consider using a short course. Thereafter, ASM prophylaxis may be continued using EEG monitoring for guidance. High-risk features on EEG (e.g., high 2HELPS2B score) may be used to guide ASM prophylaxis for a longer duration. We do not favor using ASM prophylaxis beyond 3 days in patients with SAH who do not have clinical or electrographic seizures or high-risk EEG findings.",
+      "page": null
+    },
+    {
+      "section": "Discussion - In Our Practice: PICO 3",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with confirmed clinical or electrographic seizures, we consider continuing ASM treatment at hospital discharge, with close-interval follow-up within 3 months to guide further ASM management.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

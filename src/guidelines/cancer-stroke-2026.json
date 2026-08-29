@@ -12,145 +12,299 @@
       "section": "Introduction",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Coordinate neurology-oncology shared decision-making for AIS in patients with cancer, weighing prognosis and risks/benefits of diagnostics and treatments.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Shared decision-making and close collaboration between neurology and oncology are essential when managing a patient with cancer and acute ischemic stroke and should consider cancer prognosis and the perceived risks and benefits of potential diagnostic tests and treatments.",
+      "page": null
     },
     {
       "section": "Introduction",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Anticipate a growing burden of cancer-associated AIS as cancer survivorship increases; plan systems of care accordingly.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Given the growing incidence of cancer and the falling mortality associated with improved therapeutics, there will be >21 million American cancer survivors by 2030, representing >6% of the population.",
+      "page": null
     },
     {
       "section": "Epidemiology and Primary Prevention",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Active or prior cancer increases AIS risk; risk varies by cancer type, stage, histology, genomics, and treatments.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Both active and historical cancers are risk factors for acute ischemic stroke, although the specific risks vary over time and by cancer type, histology, stage, genomics, and treatments. Among patients with known active cancer there is an approximately 2-fold increased risk of acute ischemic stroke compared with the general population, and this increased risk is borne primarily during the first year after cancer diagnosis.",
+      "page": null
     },
     {
       "section": "Epidemiology and Primary Prevention",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Primary prevention: aspirin or anticoagulation has not shown AIS risk reduction in cancer; observational data suggest statins may reduce risk in some groups.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "According to secondary analyses of primary prevention trials, neither aspirin nor anticoagulant therapy appears to reduce the risk of acute ischemic stroke in patients with cancer. Conversely, observational data suggest that statins may reduce acute ischemic stroke risk in patients with cancer, particularly in those treated with radiotherapy to the head, neck, or thorax.",
+      "page": null
+    },
+    {
+      "section": "Clinical Presentation: Cancer Presenting as Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the year after acute ischemic stroke, 1.5% to 10% of patients are newly diagnosed with incident cancer. Risks are highest in patients with elevated D-dimer, cryptogenic mechanisms, and multiterritorial cerebral infarctions. Controlled studies are needed to determine whether routine screening for occult cancer in patients with acute ischemic stroke improves clinical outcomes.",
+      "page": null
+    },
+    {
+      "section": "Clinical Presentation: Cancer Presenting as Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Our approach is to assess all patients with acute ischemic stroke for typical symptoms and signs of cancer through a thorough history and examination and laboratory testing of blood counts and liver function to direct any cancer diagnostic evaluations. If symptoms or signs of cancer are present, we typically pursue focused cancer screening targeting the organ or system involved, and we ensure that patients are up to date with guideline-directed cancer screening such as mammography, colonoscopy, low-dose chest computed tomography, and prostate-specific antigen testing.",
+      "page": null
+    },
+    {
+      "section": "Clinical Presentation: Cancer Presenting as Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although it is not unreasonable to consider body imaging with contrast-enhanced computed tomography or positron emission tomography-computed tomography in patients with cryptogenic stroke and clinical characteristics associated with cancer-related stroke such as elevated D-dimer levels or multiterritorial infarction patterns, this approach is not supported by data, and it remains to be proved whether earlier identification of occult cancer in patients with acute ischemic stroke improves outcomes.",
+      "page": null
     },
     {
       "section": "Clinical Presentation",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "After AIS, 1.5%-10% are diagnosed with incident cancer within 1 year; risk is higher with elevated D-dimer, cryptogenic mechanisms, or multiterritorial infarcts.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Compared with the general ischemic stroke population, patients with cancer and acute ischemic stroke tend to be older and to have fewer stroke risk factors, higher stroke severity, more widespread infarcts, and increased blood markers of thrombosis and inflammation.",
+      "page": null
     },
     {
-      "section": "Clinical Presentation",
+      "section": "Biological Pathways Implicated in Heightened Stroke Risk",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Compared with noncancer AIS, patients with cancer tend to be older, have fewer traditional risk factors, higher severity, and more widespread infarcts with thrombosis/inflammation markers.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Prospective studies indicate that, compared with controls with only stroke, patients with active cancer and acute ischemic stroke have higher levels of platelet, coagulation, and endothelial activation; neutrophil extracellular trap formation; and circulating cancer- and platelet-derived extracellular vesicles.",
+      "page": null
     },
     {
-      "section": "Biological Pathways",
+      "section": "Biological Pathways Implicated in Heightened Stroke Risk",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Cancer-associated AIS shows platelet/coagulation/endothelial activation, NET formation, and circulating cancer or platelet-derived vesicles.",
-      "page": 3
-    },
-    {
-      "section": "Biological Pathways",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Multiple pathways contribute to cancer-related AIS; no single prevention target is sufficient.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Because multiple biological pathways are implicated in the pathogenesis of cancer-related acute ischemic stroke, no single target exists for preventing recurrent thromboembolism in these patients.",
+      "page": null
     },
     {
       "section": "Stroke Mechanisms",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Conventional mechanisms (cardioembolism, atherosclerosis) account for about half of AIS in active cancer; cancer therapies can mediate these mechanisms.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Conventional stroke mechanisms such as cardioembolism and atherosclerosis account for about half the burden of acute ischemic stroke in patients with active cancer. However, cancer-related factors such as radiation and chemotherapy sometimes mediate these mechanisms.",
+      "page": null
     },
     {
       "section": "Stroke Mechanisms",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Remaining cases are undetermined or cancer-specific; many cryptogenic cases may reflect covert NBTE; stroke from cancer drugs is rare and drug-class specific.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "The remaining 50% of acute ischemic strokes in patients with active cancer are either of undetermined source or due to known cancer-specific mechanisms. Among the cryptogenic cases, many are suspected to be due to covert nonbacterial thrombotic endocarditis based on clinical and histopathologic data. Stroke from cancer drugs is rare and limited to select classes and agents.",
+      "page": null
     },
     {
       "section": "Diagnostic Evaluation",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Extend the AIS diagnostic evaluation in cancer with D-dimer and consideration of blood cultures, right-to-left shunt testing, TEE, chest CT, and prolonged rhythm monitoring.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "The diagnostic approach to patients with suspected stroke and active cancer must account for additional layers of complexity related to the dual disease process. For example, a hypodensity on head computed tomography could represent an infarction, metastasis, or infection; therefore MRI is preferred, although even MRI may be insufficient for an immediate definitive diagnosis. In some cases a repeat MRI in 1 to 2 months is necessary to confirm stroke.",
+      "page": null
     },
     {
-      "section": "Classification",
+      "section": "Diagnostic Evaluation",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Use the proposed cancer-related stroke classification (probable/possible/unlikely) and categorize as 'other determined cause' when criteria are met.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "In addition to the standard diagnostic evaluation for acute ischemic stroke, D-dimer is generally advised for patients with cancer. Blood cultures, right-to-left shunt assessments, transesophageal echocardiography, chest computed tomography, and more prolonged cardiac rhythm monitoring should also be strongly considered for these patients.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Vascular imaging should include the aortic arch among patients with prior chest radiation; thus computed tomography angiography may be preferred over magnetic resonance angiography. Blood cultures should be considered to assess for infectious endocarditis, especially in those who are immunosuppressed, have indwelling venous catheters, or endorse systemic symptoms.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We typically measure D-dimer during the index stroke hospitalization and every few months thereafter. In patients treated with intravenous thrombolysis or thrombectomy, early D-dimer measurements may be falsely elevated, so checking toward the end of the hospitalization may be prudent.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Evaluation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Echocardiography should generally include an agitated saline injection to assess for right-to-left shunts because the risk of venous thromboembolism is markedly elevated with cancer and could lead to paradoxical embolism; if a right-to-left shunt is identified, venous ultrasound of the extremities may be warranted. Because these tests can be burdensome for frail patients with active cancer, decisions about which diagnostic tests to obtain should be individualized and shared with the patient.",
+      "page": null
+    },
+    {
+      "section": "New Classification for Cancer-Related Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We propose a novel classification system with varying degrees of certainty to attribute some strokes to cancer itself. These \"cancer-related strokes\" would then be categorized under the \"stroke of other determined cause\" subtype. The different categories for certainty of causality (probable vs possible vs unlikely) relate to patients' distinctive clinical features and their risk for recurrent thromboembolism.",
+      "page": null
+    },
+    {
+      "section": "New Classification for Cancer-Related Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Probable cancer-related stroke requires meeting at least 1 of the following: cardiac vegetation(s) with negative blood cultures (ie, nonbacterial thrombotic endocarditis); ISTH DIC Score >=5 fulfilling criteria for overt disseminated intravascular coagulation; or radiographic evidence for tumor invading the left atrium or ventricle, pulmonary veins, or cervicocephalic arteries with acute infarction confined to the corresponding cerebrovascular territories.",
+      "page": null
+    },
+    {
+      "section": "New Classification for Cancer-Related Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Possible cancer-related stroke requires cryptogenic ischemic stroke after standard diagnostic evaluation in a patient with active cancer that has spread beyond the primary site OR recently progressed, AND at least 1 of the following: D-dimer >2500 ng/mL FEU in the absence of an acute venous thromboembolism; acute infarction in multiple cerebrovascular territories (ie, bilateral anterior, unilateral anterior and posterior, or bilateral anterior and posterior); bilateral microemboli (high-intensity transient signals) on transcranial Doppler; or absence of the susceptibility vessel sign on MRI despite a confirmed acute intracranial occlusion on vessel imaging. Cases not meeting criteria for probable or possible causality are classified as having an uncertain causal link.",
+      "page": null
     },
     {
       "section": "Goals of Care",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Reassess goals of care periodically and integrate palliative care alongside disease-targeting therapies.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest periodically outlining the goals of care for patients with active cancer and acute ischemic stroke because they may change over the course of their disease.",
+      "page": null
+    },
+    {
+      "section": "Goals of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Palliative care to control symptoms and to enhance quality of life should be implemented along with disease-targeting medical therapies.",
+      "page": null
     },
     {
       "section": "Acute Treatment",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Consider IV thrombolysis using standard criteria with added vigilance; check CBC/coagulation and generally avoid IVT if brain metastases are present.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with acute ischemic stroke and active cancer should be considered for intravenous thrombolysis according to standard criteria; cancer is not a contraindication. However, an additional layer of vigilance is warranted in the assessment of eligibility. We suggest checking complete blood counts and coagulation studies before treatment, and a careful review of baseline brain imaging must exclude not only hemorrhage but also metastatic disease.",
+      "page": null
     },
     {
       "section": "Acute Treatment",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Consider thrombectomy for LVO on an individualized basis, incorporating cancer prognosis, goals of care, and procedural risk/benefit.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "If brain metastases are present, we generally advise against intravenous thrombolysis because of the high risk for hemorrhagic complications.",
+      "page": null
     },
     {
-      "section": "Recurrent Risk",
+      "section": "Acute Treatment",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Cancer-related AIS has high recurrence risk (2-3x; 14%-29% at 1 year) with a U-shaped risk over time after cancer diagnosis.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Mechanical thrombectomy is associated with similar rates of technical success and in-hospital outcomes but higher rates of stroke recurrence and death in patients with versus those without active cancer. Patients with cancer and large-vessel occlusion stroke should be considered on an individual basis for thrombectomy while accounting for their long-term goals of care, cancer prognosis, and the perceived risks and benefits of the procedure.",
+      "page": null
     },
     {
-      "section": "Secondary Prevention",
+      "section": "Acute Treatment",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Tailor prevention to mechanism: antiplatelet therapy and risk-factor control for small-vessel disease, DOACs for nonvalvular AF, and statins for most patients.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients who have a large core infarct on baseline imaging and are likely to have permanent severe disability even with reperfusion, a more palliative approach may be more appropriate. Because patients' wishes in such scenarios may be unknown to treating neurologists acutely, we encourage emergency consultation with the involved oncologist(s) to assist with medical decision-making.",
+      "page": null
     },
     {
-      "section": "Secondary Prevention",
+      "section": "Risk of Recurrent Stroke and Other Adverse Events",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "When mechanism is absent (ESUS/possible cancer-related), equipoise exists between anticoagulation and antiplatelet therapy; evidence is insufficient to favor one.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Cancer-related stroke is one of the highest risk subgroups for recurrent thromboembolism. Compared with the general stroke population, patients with active cancer have a 2- to 3-fold increased risk of recurrent stroke at 1 year, with rates ranging from 14% to 29%. Most of these events occur within 3 months, an especially high-risk period for recurrence.",
+      "page": null
+    },
+    {
+      "section": "Risk of Recurrent Stroke and Other Adverse Events",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is a U-shaped curve for incident and recurrent acute ischemic stroke risk in patients with cancer, with highest risk soon after cancer diagnosis from peak hypercoagulability due to amplified cancer activity and treatment, then a reduction in risk during the years after cancer control or cure, followed by a progressive rise in stroke risk associated with tumor recurrence or the long-term effects of cancer treatments.",
+      "page": null
+    },
+    {
+      "section": "Risk of Recurrent Stroke and Other Adverse Events",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with cancer and acute ischemic stroke are also at high risk of major bleeding because of frequent thrombocytopenia, invasive tumors, or cancer therapies impairing hemostasis; in a prospective cohort the estimated 1-year cumulative incidence of major bleeding was 24%.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention: For Patients With Known Mechanisms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Secondary stroke prevention in patients with cancer should be tailored to the stroke mechanism if known. For instance, antiplatelet therapy and aggressive risk factor control is advised for small-vessel disease, whereas direct oral anticoagulants should be administered for nonvalvular atrial fibrillation. Furthermore, most patients with cancer and acute ischemic stroke should be treated with a statin.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention: For Patients With Known Mechanisms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke from radiation-induced atherosclerosis of the extracranial carotid artery should generally be treated with revascularization, typically endovascular stenting because of the perceived higher risks of adverse events related to open surgical dissection through fibrotic soft tissue; consultation with proceduralists with expertise in this population is suggested.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention: For Patients With Known Mechanisms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with confirmed nonbacterial thrombotic endocarditis or overt disseminated intravascular coagulation, therapeutic-dose anticoagulants are typically prescribed, although supportive clinical trial data are admittedly lacking, and a reasonable argument could be made to administer antiplatelets to patients with confirmed nonbacterial thrombotic endocarditis because of their platelet-rich vegetations. Many begin with unfractionated or low-molecular-weight heparin, particularly for overt disseminated intravascular coagulation, which frequently causes bleeding, thereby favoring a short-acting anticoagulant; long term, direct oral anticoagulants may be preferred.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention: For Patients With Unknown Mechanisms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When a defined stroke mechanism is absent in a patient with active cancer and the stroke is categorized as embolic stroke of undetermined source (or possible cancer-related stroke as proposed in this statement), equipoise exists between anticoagulant and antiplatelet therapy. There are strong theoretical arguments for either approach, and current observational and clinical trial data do not indicate one to be clearly superior to the other. Dedicated randomized controlled trials are needed.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention: For Patients With Unknown Mechanisms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Vitamin K antagonists have not been studied in clinical trials focused on acute ischemic stroke with cancer; however, they are generally avoided in this population because of their narrow therapeutic window, interactions with cancer treatments, and inferiority to other anticoagulants for the treatment of cancer-associated venous thromboembolism.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention: For Patients With Unknown Mechanisms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the absence of clear indications, decisions surrounding secondary stroke prevention should be individualized and guided by multidisciplinary discussions between neurologists and oncologists. Drug-drug interactions should be considered in the selection of medications, particularly direct oral anticoagulants because of their cytochrome P450 3A4 and P-glycoprotein metabolism.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention: For Patients With Unknown Mechanisms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Aggressive oncological treatment is critical to reduce the prothrombotic effects of cancer. Therefore chemotherapy, especially targeted agents that cause less systemic toxicity, should not be postponed in patients with acute ischemic stroke with reasonable performance status. One exception is when the index stroke is attributed to a cancer medication, in which case the medication should be substituted for comparable alternatives. For cancer surgery, we generally advise not postponing surgery beyond a few weeks unless the stroke was severely disabling or the surgical risks are too high.",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cancer-related acute ischemic stroke is a growing, high-risk subgroup of ischemic stroke with distinctive clinical features, mechanisms, and outcomes. The proposed classification system is intended to enable consistent nomenclature across practice and research and to spur controlled trials determining the optimal strategies for acute treatment and secondary prevention in this population.",
+      "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

@@ -10,36 +10,470 @@
   "pmid": "33817340",
   "recommendations": [
     {
-      "section": "Alteplase within 4.5 hours",
-      "classOfRec": "Statement",
-      "classNote": "Strong recommendation",
+      "section": "PICO 1.1: 0-4.5 h time window",
+      "classOfRec": "Strong",
+      "classNote": "For",
       "levelOfEvidence": "High certainty",
-      "text": "The working group found high-quality evidence to recommend intravenous thrombolysis with alteplase to improve functional outcome in patients with acute ischaemic stroke within 4.5 hours after symptom onset.",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, we recommend intravenous thrombolysis with alteplase.",
       "page": null
     },
     {
-      "section": "Wake-up stroke and unknown onset",
-      "classOfRec": "Statement",
-      "classNote": "Strong recommendation",
+      "section": "PICO 2.1: 4.5-9 h time window (known onset), plain CT",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For patients with acute ischaemic stroke of 4.5-9 h duration (known onset time), and with no brain imaging other than plain CT, we recommend no intravenous thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "PICO 3.1: 4.5-9 h time window (known onset), core/perfusion mismatch",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with ischaemic stroke of 4.5-9 h duration (known onset time) and with CT or MRI core/perfusion mismatch, and for whom mechanical thrombectomy is either not indicated or not planned, we recommend intravenous thrombolysis with alteplase. (Mismatch defined as infarct core volume < 70 ml, critically hypoperfused volume / infarct core volume > 1.2, and mismatch volume > 10 ml.)",
+      "page": null
+    },
+    {
+      "section": "PICO 3.1: 4.5-9 h time window - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with ischaemic stroke of 4.5-9 h duration (known onset), and with no CT or MRI core/perfusion mismatch, 9 of 9 group members suggest against IVT with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 3.1: 4.5-9 h time window - Expert consensus statement",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients presenting directly to a thrombectomy centre with ischaemic stroke of 4.5-9 h duration (known onset) with CT or MRI core/perfusion mismatch and who are eligible for mechanical thrombectomy, the group members could not reach a consensus regarding whether intravenous thrombolysis should be used before mechanical thrombectomy.",
+      "page": null
+    },
+    {
+      "section": "PICO 3.1: 4.5-9 h time window - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients presenting to a non-thrombectomy centre with ischaemic stroke of 4.5-9 h duration (known onset) with CT or MRI core/perfusion mismatch and who are eligible for mechanical thrombectomy, 6 of 9 group members suggest intravenous thrombolysis before mechanical thrombectomy.",
+      "page": null
+    },
+    {
+      "section": "PICO 4.1: Wake-up stroke / unknown onset",
+      "classOfRec": "Strong",
+      "classNote": "For",
       "levelOfEvidence": "High certainty",
-      "text": "High-quality evidence was found to recommend intravenous thrombolysis with alteplase in patients with acute ischaemic stroke on awakening from sleep, who were last seen well more than 4.5 hours earlier, who have MRI DWI-FLAIR mismatch, and for whom mechanical thrombectomy is not planned.",
+      "text": "For patients with acute ischaemic stroke on awakening from sleep, who were last seen well more than 4.5 h earlier, who have MRI DWI-FLAIR mismatch, and for whom mechanical thrombectomy is either not indicated or not planned, we recommend intravenous thrombolysis with alteplase.",
       "page": null
     },
     {
-      "section": "Scope and method",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Developed under the ESO standard operating procedure using GRADE: the working group identified clinical questions, performed systematic reviews and meta-analyses of the literature, assessed the quality of the available evidence and wrote recommendations. Expert consensus statements were provided where evidence was insufficient to support a GRADE recommendation. Further recommendations address patient subgroups, late time windows, imaging selection strategies, relative and absolute contraindications to alteplase, and tenecteplase.",
+      "section": "PICO 4.1: Wake-up stroke / unknown onset",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For patients with acute ischaemic stroke on awakening from sleep, who have CT or MRI core/perfusion mismatch within nine hours from the midpoint of sleep, and for whom mechanical thrombectomy is either not indicated or not planned, we recommend intravenous thrombolysis with alteplase.",
       "page": null
     },
     {
-      "section": "Acknowledged evidence gaps",
-      "classOfRec": "Statement",
+      "section": "PICO 4.1: Wake-up stroke - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients presenting directly to a thrombectomy centre with acute ischaemic stroke on awakening from sleep, who would be eligible for both IVT and mechanical thrombectomy, 6 of 9 group members suggest IVT before mechanical thrombectomy.",
+      "page": null
+    },
+    {
+      "section": "PICO 4.1: Wake-up stroke - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients presenting to a non-thrombectomy centre with acute ischaemic stroke on awakening from sleep, who would be eligible for both IVT and mechanical thrombectomy, 7 of 9 group members suggest IVT before mechanical thrombectomy.",
+      "page": null
+    },
+    {
+      "section": "PICO 5.1: Tenecteplase - no large vessel occlusion",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration and not eligible for thrombectomy, we suggest intravenous thrombolysis with alteplase over intravenous thrombolysis with tenecteplase. Please see PICO 5.2 for patients eligible for mechanical thrombectomy.",
+      "page": null
+    },
+    {
+      "section": "PICO 5.2: Tenecteplase - large vessel occlusion",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration and with large vessel occlusion who are candidates for mechanical thrombectomy and for whom intravenous thrombolysis is considered before thrombectomy, we suggest intravenous thrombolysis with tenecteplase 0.25 mg/kg over intravenous thrombolysis with alteplase 0.9 mg/kg.",
+      "page": null
+    },
+    {
+      "section": "PICO 6.1: Low-dose alteplase",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "High certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration who are eligible for intravenous thrombolysis, we recommend standard-dose alteplase (0.9 mg/kg) over low-dose alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 7.1: Adjunct antithrombotic therapy",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, we recommend no antithrombotic drugs within 24 h of intravenous thrombolysis over antithrombotic drugs as an adjunct therapy to intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 7.2: Sonothrombolysis",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, we recommend against ultrasound augmentation in patients receiving intravenous thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "PICO 8.1: Higher age (over 80 years)",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "High certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, who are over 80 years of age, we recommend intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 8.2: Multimorbidity, frailty or prior disability",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, and with multimorbidity, frailty or pre-stroke disability, we suggest intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 8.1/8.2: Age - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Nine of nine group members believe that age alone should not be a limiting factor for IVT, even in other situations covered in the present guidelines (e.g. wake-up stroke; ischaemic stroke of 4.5-9 h duration (known onset time) with CT or MRI core/perfusion mismatch; minor stroke with disabling symptoms).",
+      "page": null
+    },
+    {
+      "section": "PICO 9.1: Minor stroke (disabling)",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For patients with acute minor, disabling ischaemic stroke of <4.5 h duration, we recommend intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 9.2: Minor stroke (non-disabling)",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For patients with acute minor non-disabling ischaemic stroke of <4.5 h duration, we suggest no intravenous thrombolysis. For patients with minor stroke and large-vessel occlusion, please refer to PICO 9.3.",
+      "page": null
+    },
+    {
+      "section": "PICO 9.3: Minor non-disabling stroke with large vessel occlusion - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with acute minor, non-disabling ischaemic stroke of <4.5 h duration, and with large-vessel occlusion, 6 of 8 group members suggest intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 9.4: Rapidly improving symptoms - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with acute ischaemic stroke with <4.5 h duration, and rapidly improving neurological signs, which are still disabling, 8 of 9 group members suggest intravenous thrombolysis with alteplase. The group agreed that the treatment decision should be based on the clinical status at presentation, and that it is not justifiable to wait for resolution of symptoms.",
+      "page": null
+    },
+    {
+      "section": "PICO 10.1: Severe stroke",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For patients with clinically severe acute ischaemic stroke of <4.5 h duration, we recommend intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 10.1: Severe stroke defined by extent of early ischaemic changes on CT",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, and with severe stroke, defined by the extent of early ischaemic changes on CT, we suggest that intravenous thrombolysis with alteplase be considered in selected cases (see the Expert consensus statement).",
+      "page": null
+    },
+    {
+      "section": "PICO 10.1: Severe stroke - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "7 of 9 group members voted for intravenous thrombolysis with alteplase in selected patients with severe stroke associated with extended radiological signs of infarction (e.g. early ischaemic change of more than 1/3 of the middle cerebral artery territory or ASPECTS <7 on plain CT). Patient selection criteria might include eligibility for an alternative reperfusion strategy (mechanical thrombectomy), results of advanced imaging (notably perfusion/core mismatch), time since symptom onset, and pre-stroke disability.",
+      "page": null
+    },
+    {
+      "section": "PICO 11.1: High blood pressure on admission (persistently elevated)",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, and with persistently increased systolic blood pressure >185 mmHg or diastolic blood pressure >110 mmHg even after blood pressure lowering treatment, we suggest no intravenous thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "PICO 11.2: High blood pressure subsequently lowered",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, and with systolic blood pressure >185 mmHg or diastolic blood pressure >110 mmHg, which has subsequently been lowered to <185 and <110 mmHg, we recommend intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 11.3: Pre-stroke hypertension",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, and with known pre-stroke hypertension, we recommend intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 11.4: High glucose level on admission",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, and with blood glucose levels above 22.2 mmol/L (400 mg/dL), we suggest intravenous thrombolysis with alteplase. Intravenous thrombolysis should not prevent the administration of insulin therapy in acute ischaemic stroke patients with high blood glucose levels.",
+      "page": null
+    },
+    {
+      "section": "PICO 11.5: Diabetes mellitus",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, and with known diabetes mellitus, we recommend intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 12.1: Antiplatelet agents prior to stroke",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, who used single or dual antiplatelet agents prior to the stroke, we suggest intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 12.2: Vitamin K antagonists, INR 1.7 or lower",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, who use vitamin K antagonists and have INR <=1.7, we recommend intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 12.2: Vitamin K antagonists, INR above 1.7",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, who use vitamin K antagonists and have INR >1.7, we recommend no intravenous thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "PICO 12.2: Vitamin K antagonists, coagulation testing unknown",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, who use vitamin K antagonists, and for whom the result of coagulation testing is unknown, we recommend no intravenous thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "PICO 12.3: NOACs before stroke",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, who used a NOAC during the last 48 h before stroke onset, and for whom there are no specific coagulation tests available (i.e. calibrated anti-Xa activity for factor Xa inhibitors, thrombin time for dabigatran, or the NOAC blood concentrations), we suggest no intravenous thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "PICO 12.3: NOACs - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, who used a NOAC during the last 48 h before stroke onset, and who have an anti-Xa activity <0.5 U/ml (for factor Xa inhibitors) or thrombin time <60 s (for direct thrombin inhibitors), 7 of 9 group members suggest IVT with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 12.3: NOACs - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, who used dabigatran during the last 48 h before stroke onset, 8 of 9 group members suggest the combination of idarucizumab and intravenous thrombolysis with alteplase over no intravenous thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "PICO 12.3: NOACs - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, who used factor Xa inhibitors during the last 48 h before stroke onset, 9 of 9 group members suggest against the combination of andexanet and intravenous thrombolysis with alteplase over no intravenous thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "PICO 13.1: Low platelet count",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, and with known platelet count <100 x 10^9/L, we suggest no intravenous thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "PICO 13.1: Unknown platelet count",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, and with unknown platelet count before initiation of intravenous thrombolysis and no reason to expect abnormal values, we recommend starting intravenous thrombolysis with alteplase while waiting for lab test results.",
+      "page": null
+    },
+    {
+      "section": "PICO 13.2: Recent trauma or surgery",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration and with major surgery on a non-compressible site where bleeding is likely to lead to significant haemorrhage (e.g. abdomen, chest, skull, well-vascularized tissues, or large artery) during the preceding 14 days, we recommend no intravenous thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "PICO 13.3: History of intracranial haemorrhage - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration and with a history of intracranial haemorrhage, 8 of 9 members suggest intravenous thrombolysis with alteplase in selected cases. For example, intravenous thrombolysis may be considered if a long time has elapsed since the haemorrhage, if there was a specific underlying cause for the haemorrhage (e.g. trauma, subarachnoid haemorrhage with subsequent endovascular or surgical aneurysm removal, or use of specific antithrombotic medication).",
+      "page": null
+    },
+    {
+      "section": "PICO 13.4: Cerebral microbleeds (unknown or low burden)",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, for whom cerebral microbleed burden is unknown or known to be low (e.g. <10), we suggest intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 13.4: Cerebral microbleeds (high burden)",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, for whom cerebral microbleed burden has been previously reported to be high (e.g. >10), we suggest no intravenous thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "PICO 13.4: Cerebral microbleeds - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with acute ischaemic stroke within 4.5 h of stroke onset, 9 of 9 members suggest against screening with MRI to assess cerebral microbleed burden before making a treatment decision regarding intravenous thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "PICO 13.5: White matter lesions (small to moderate burden)",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, and small to moderate burden of white matter lesions, we recommend intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 13.5: White matter lesions (high burden)",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, and high burden of white matter lesions, we suggest intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 13.6: Unruptured cerebral aneurysm",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, who have an unruptured cerebral artery aneurysm, we suggest IVT with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 14.1: History of ischaemic stroke within three months - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration, and a history of ischaemic stroke within the last three months, nine of nine members voted for intravenous thrombolysis with alteplase in selected cases, for example in case of a small infarct, stroke occurring more than one month earlier, or good clinical recovery.",
+      "page": null
+    },
+    {
+      "section": "PICO 14.2: Seizure at stroke onset",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration who have seizures at time of stroke onset, and for whom there is no suspicion of a stroke mimic or significant head trauma, we suggest intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 14.3: Aortic arch dissection",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration and with aortic arch dissection we recommend no intravenous thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "PICO 14.3: Isolated cervical artery dissection",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration and with isolated cervical artery dissections, we suggest intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 14.3: Intracerebral artery dissection - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration and with an intracerebral artery dissection, 6 of 9 group members suggest against intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 14.4: Subacute ST-elevation myocardial infarction within the last seven days",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration and with history of subacute (>6 h) ST-elevation myocardial infarction during the last seven days, we suggest no IVT.",
+      "page": null
+    },
+    {
+      "section": "PICO 14.4: ST-elevation myocardial infarction more than a week to three months earlier",
+      "classOfRec": "No recommendation",
       "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The guideline states that further randomised controlled clinical trials are needed to inform clinical decision-making with regard to tenecteplase and with regard to the use of intravenous thrombolysis before mechanical thrombectomy in patients with large vessel occlusion.",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration and with history of ST-elevation myocardial infarction of more than a week to three months, there is insufficient evidence to make a recommendation. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 14.4: Myocardial infarction - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration and with history of ST-elevation myocardial infarction of more than a week to three months, nine of nine group members suggest IVT with alteplase in specific situations. Variables to take into account are the size of the myocardial infarction, whether recanalisation therapy was given for the myocardial infarction, and echocardiographic findings.",
+      "page": null
+    },
+    {
+      "section": "PICO 14.4: Non-ST-elevation myocardial infarction within the last three months",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration and with a history of non-ST-elevation myocardial infarction during the last three months, we suggest intravenous thrombolysis with alteplase.",
+      "page": null
+    },
+    {
+      "section": "PICO 14.5: Infective endocarditis",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration and with a clear or suspected diagnosis of infective endocarditis, we suggest no intravenous thrombolysis.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

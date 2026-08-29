@@ -10,12 +10,326 @@
   "society": "SVIN",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "The Magnitude of the Problem",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The global shortage of neurointerventionalists presents a challenge to timely stroke care, particularly in low- and middle-income countries. The Society of Vascular and Interventional Neurology Stroke Interventional Laboratory Consensus criteria aim to standardize training and certification in neurointervention to address these disparities.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A worldwide gap in the demand and supply of neurointerventionalists prevails not only in low- and middle-income countries but to a considerable extent in high-income countries as well. Of the estimated 2000 mechanical thrombectomy-ready centers worldwide, 78% are located in the United States, United Kingdom, Brazil, France, Germany, and Australia (providing coverage for a population of ~800 million), and the majority of the world's 7.7 billion population is served by the remaining 22%.",
+      "page": null
+    },
+    {
+      "section": "Need for Standardized Training",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the absence of certifying organizations addressing standard requirements for neurointervention training, other parts of the world are left with a shortage of qualified neurointerventionalists, potentially jeopardizing the credibility of endovascular therapy and negatively affecting stakeholder attitudes toward future health care system planning.",
+      "page": null
+    },
+    {
+      "section": "Entry Criteria - Prerequisites for Training Eligibility",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Candidates must have a valid national license to practice medicine in the country where training will take place, and a full continuum of education and training in a related clinical neuroscience specialty (neurology, neurosurgery, neuroradiology) at a program recognized according to national regulations would be necessary to qualify for training in neurointervention at a SILC-certified training program.",
+      "page": null
+    },
+    {
+      "section": "Entry Criteria - Prerequisites for Training Eligibility",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nonneuroscience applicants must provide verification of 6 months (if requesting Level I certification in stroke intervention) and 12 months (if requesting Level II certification in neurointervention or Level III certification) of clinical neuroscience training including vascular neurology and/or neurocritical care with exposure to interpretation of neuroimaging, as signed off on by the neuroscience or stroke center program director.",
+      "page": null
+    },
+    {
+      "section": "Entry Criteria - Prerequisites for Training Eligibility",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Neuroscience applicants should provide verification of completed clinical training in neuroscience. Training sites must be designated as comprehensive neuroscience centers or stroke centers, with on-site programs in neurology, neurosurgery, and neuroradiology, and clinical sites must support dedicated rotations on the stroke unit and neurocritical units with exposure to the interpretation of neuroimaging in cerebrovascular disease.",
+      "page": null
+    },
+    {
+      "section": "Training Overview - Level I Certification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Level I (12 months) is gained after basic training in percutaneous access, diagnostic cerebral angiography, and stroke intervention including management of neuroendovascular procedures related to ischemic cerebrovascular disease (e.g., mechanical thrombectomy). Performance of 100 diagnostic cerebral angiography procedures is recommended for initial credentialing.",
+      "page": null
+    },
+    {
+      "section": "Training Overview - Level I Certification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Credentialing for acute stroke intervention requires completion of at least 30 neurointervention or stroke intervention procedures employing use of microcatheters (including aspiration catheters) intracranially, with at least 15 mechanical thrombectomies. Catheter infusion therapy requires completion of at least 10 procedures (e.g., vasospasm treatment, thrombolytic infusions), and exposure to stenting techniques requires completion of at least 10 procedures (e.g., carotid or intracranial angioplasty and/or stenting). Minimum total (diagnostic plus therapeutic) for Level I is 150 procedures.",
+      "page": null
+    },
+    {
+      "section": "Training Overview - Level II Certification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Level II (12 months after Level I) is achieved after advanced training in neurointerventional techniques including management of hemorrhagic cerebrovascular disease. Performance of 50 diagnostic angiography procedures (with increasing complexity including Type 3 arches and at least 5 spinal angiograms) and at least 25 intracranial embolization procedures (e.g., brain aneurysms, AVMs/AVFs, tumors) are recommended for initial credentialing. The SVIN writing committee endorses exposure to stenting techniques of at least 25 procedures during Level II training (may include Level I case logs). Minimum total for Level II is 100 procedures.",
+      "page": null
+    },
+    {
+      "section": "Training Overview - Level III Certification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Level III (3-12 months after Level II) is achieved after advanced training in pediatric neurointervention (including ischemic stroke, brain aneurysms, vascular malformations, tumors), spinal endovascular procedures (including spinal AVMs/AVFs, tumors), and percutaneous spinal interventions (including facet injections, vertebroplasty/kyphoplasty). Minimums include 5 pediatric angiograms (including neonates <1 year), 5 pediatric neurointerventional procedures (age <18 years), 5 spinal endovascular procedures, and a hands-on workshop (e.g., cadaveric course) or at least 5 percutaneous spinal interventions. At least 3 dedicated months are required, which may be enfolded into the Level II year.",
+      "page": null
+    },
+    {
+      "section": "Training Overview - Level IV Certification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Level IV represents the achievement of a high level of expertise in the treatment of neurovascular disease similar to Level III, and is needed for selecting/approving program directors. The candidate must meet ONE of the following criteria: Experience - a minimum of 500 neurointervention procedures (diagnostic and therapeutic) OR 5 years since fellowship training; or Reputation - having been elected by peers as a Fellow of one of the reputed neurointervention societies (e.g., Fellow of SVIN).",
+      "page": null
+    },
+    {
+      "section": "Duration and Place of Training for Initial Certification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Depending on prerequisite case volumes, neurointervention training ranges from 1 to 3 years, and depending on the training site external rotations may be needed. After graduation, teleproctoring, e-proctoring, and local mentoring can be used to support operators at lower volume centers (e.g., annual case volume <50).",
+      "page": null
+    },
+    {
+      "section": "Duration and Place of Training for Initial Certification - Prerequisite Training",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A minimum of 12 months of recommended clinical training in clinical neuroscience, including vascular neurology and/or neurocritical care with exposure to interpretation of neuroimaging, applies when Level II, Level III, or Level IV certification is requested; a minimum of 6 months is recommended if Level I certification alone is requested. Level I requires a minimum of 12 months of mandatory dedicated training in neurointerventional diagnostic and stroke intervention procedures including mechanical thrombectomy; Level II requires a minimum of 12 additional months of dedicated advanced training.",
+      "page": null
+    },
+    {
+      "section": "Duration and Place of Training for Initial Certification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "To meet regional unmet clinical demand for a specific intervention (e.g., stroke intervention), a focused training program limited to a certain therapy may be adopted with special criteria under SILC relaxed-requirement regulations, stipulating a minimum annual activity for that area; institutional conditions and operational guidelines should both be provided/guaranteed by the training center according to SILC Lab criteria.",
+      "page": null
+    },
+    {
+      "section": "Training Program Content",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Training program content should meet SILC requirements to provide both theoretical and practical education in neurointervention and should allocate adequate time for training and educational activities independent of clinical duties. Under conditions prohibiting adequate training being arranged internally (e.g., a low-income country with low case-volume centers), SILC mandates a structured organization of specific training periods in other incorporated units/departments.",
+      "page": null
+    },
+    {
+      "section": "Training Program Content - SILC Trainees Registry (SILC-tR)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The SILC trainees registry (SILC-tR / SILC-Track) serves as a unified platform for trainees to develop a training portfolio detailing training posts, exams passed, publications/communication lists, attended courses, case logs, and assessment reports completed by the program director, in order to facilitate standardization of trainee evaluation and guide maintenance of performance needed for renewal of program accreditation and trainee certification.",
+      "page": null
+    },
+    {
+      "section": "SILC Training Program Accreditation - Three Pillars and Governance",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Governance is divided between two bodies: the SVIN SILC Board for Diplomates (SILC-BD), proposed to have up to 10 expert members approved by the SVIN board, which approves/disapproves/modifies standards, reviews 1 to 3 years of trainee case logs, oversees written and oral/proctored examinations, and may constitute a Diplomate Credentialing Subcommittee; and the SVIN SILC-Accreditation Council for Training Programs in Neurointervention (SILC-ACT), which oversees accreditation resources, case number and case mix, faculty number, trainees allowed per program, training duration by certification level, remote proctoring and hands-on components, with review every 2 years plus an annual online program audit.",
+      "page": null
+    },
+    {
+      "section": "SILC Training Program Accreditation - Attainment of Accreditation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Accreditation is a time-limited process and regular renewal according to SILC criteria is mandatory to maintain accreditation status; special prerequisites and documentation of minimum annual activities are needed during the accreditation application process. In special circumstances the SILC-ACT or another endorsed accrediting authority may define an intermediate level of activities to meet clinical demand.",
+      "page": null
+    },
+    {
+      "section": "SILC Training Program Accreditation - Attainment of Accreditation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A clinical neuroscience-based institution encompassing appropriately related specialties (e.g., neurology, neuroradiology, neurosurgery, and neurocritical care) is required to host the SILC teaching/training program, and the candidate/trainee must be exposed to a diversity of neuropathology involving the brain, spine, peripheral nervous system, and head and neck vasculature.",
+      "page": null
+    },
+    {
+      "section": "Program Structure and Standards - Basic Science",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Basic science domain goals include neuroanatomy and neurovascular embryology (brain, spine, head, and neck, with special focus on arterial and venous functional anatomy), neurobiology including genetics and molecular biology of the neurovascular system, neurophysiology, neuropathology including flow dynamics, neurovascular regulatory mechanisms, and pathophysiological theories for neurovascular diseases; plus radiation physics and biology of image-guided modalities with active participation in patient and staff safety/protection protocols in accordance with national radiation laws.",
+      "page": null
+    },
+    {
+      "section": "Program Structure and Standards - Clinical Knowledge",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Clinical knowledge goals include utilizing epidemiology, clinical history taking, interview skills, and clinical assessment including a complete neurological examination with clinico-radiological localization; developing professional communication skills for discussions with patients and relatives about indications and contraindications, interdisciplinary care team coordination, generating professional procedure reports and consultations, participating in clinical rounds and department meetings, and participating in clinical audits, morbidity and mortality meetings, and governance requirements.",
+      "page": null
+    },
+    {
+      "section": "Program Structure and Standards - Objectives of Training: Clinical Neuroimaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "SILC-accredited training programs should include training in clinical neuroimaging with a focus on neurovascular disorders, providing knowledge of the physics and technical aspects of neuroimaging modalities used in diagnostic and therapeutic neurointervention (including but not restricted to computed tomography, magnetic resonance imaging, ultrasound, and digital subtraction angiography) and developing the ability to select the optimum modality based on indications, complications, and limitations.",
+      "page": null
+    },
+    {
+      "section": "Program Structure and Standards - Periprocedural Management and Ancillary Workup",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Trainees must acquire skills and knowledge to select and interpret periprocedural ancillary studies necessary for diagnosis, treatment planning, and follow-up; skills in patient preparation, periprocedural management, and hospital discharge workflow including documentation and dictation of study reports; and clinical pharmacology knowledge to use different perioperative agents (e.g., antihypertensives, vasopressors, antiepileptics, analgesics, sedatives, vasodilators, anticoagulants/antiplatelets, and thrombolytics).",
+      "page": null
+    },
+    {
+      "section": "Final Goal for Achievement of Qualification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The trainee should have the required skills to safely and effectively perform percutaneous access via different vascular access sites as appropriate to specific neurovascular pathologies, skillfully use the different delivery systems and therapeutic devices (including needles, catheters, wires, coils, stents, balloons, mechanical thrombectomy devices, flow diverters), handle procedure- and device-related risks, operative limits, and complications, and manage postprocedural care.",
+      "page": null
+    },
+    {
+      "section": "Pregraduation Requirements - Procedural Volume",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "To qualify for the SILC training graduation exam, a minimum of 250 procedures must be submitted to the SILC-tR for Level II certification in neurointervention, including digital subtraction angiography performed as first operator (across levels of technical difficulty related to variant anatomy) and therapeutic neurointerventional procedures acting as primary operator in more than 50% of submitted cases, spanning the spectrum of therapeutic neurointervention (EVT of aneurysms, acute ischemic stroke, extra/intracranial percutaneous transluminal angioplasty and stenting, and embolization of cerebral and spinal AVM and dural AVM/AVF).",
+      "page": null
+    },
+    {
+      "section": "Pregraduation Requirements - Cognitive Competencies Level 1: Ischemic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Ischemic stroke competencies require the ability to identify and select patients for intravenous and intra-arterial endovascular revascularization (physicians performing EVT should also be proficient in administering IV thrombolysis), competence in post-revascularization intensive care management including blood pressure parameters, imaging interpretation and hemorrhage reversal protocols, and proficiency in neurological assessments such as the NIH Stroke Scale.",
+      "page": null
+    },
+    {
+      "section": "Pregraduation Requirements - Cognitive Competencies Level 2: Hemorrhagic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hemorrhagic stroke competencies require basic competency in the management and diagnosis of spontaneous intracerebral hemorrhage and aneurysmal subarachnoid hemorrhage, skills in managing seizures and cerebral edema, competence in administration and reversal of anticoagulants and management of vasospasm, and proficiency in blood pressure management in patients with hemorrhagic stroke.",
+      "page": null
+    },
+    {
+      "section": "Pregraduation Requirements - Cognitive Competencies Level 3: Advanced",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Advanced competencies comprise (3a) detailed competencies specific to pediatric neurointervention, including the unique anatomical and physiological considerations in pediatric patients, and (3b) detailed competencies specific to spine neurointervention, covering both diagnostic and therapeutic procedures related to spinal pathologies.",
+      "page": null
+    },
+    {
+      "section": "Pregraduation Requirements - Academic Activities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Prior to graduation the trainee should have participated in national/international courses and/or meetings (e.g., the SVIN annual meeting) and obtained a minimum of 20 continuing medical education credits related to stroke and/or neurointervention during each year of the training program.",
+      "page": null
+    },
+    {
+      "section": "The Graduation Process - Program Director Instructions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The SILC-certified program director (Level IV certified), in consultation with codirectors and faculty, has to evaluate the qualification and progress of each trainee at least twice a year with comprehensive evaluation reports submitted to the SILC-tR (SILC-Track), assessing medical knowledge, technical skills, attitudes and interpersonal relationships, decision-making, and clinical management. Trainees must have the opportunity to provide a documented evaluation of the program and faculty at least once a year.",
+      "page": null
+    },
+    {
+      "section": "The Graduation Process - Mastery of Skill Levels",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Clinical and technical skill evaluation uses five graded stages: Stage 1 (assistant operator) assisting the primary operator and handling instruments safely; Stage 2 (completely supervised operator) performing straightforward procedures start to finish under direct supervision; Stage 3 (minimally supervised primary operator) performing under indirect supervision, potentially with e-mentorship or teleproctoring, recognizing and managing common periprocedural complications; Stage 4 (independent primary operator) performing the majority of basic procedures and anatomic variations with occasional assistance; and Stage 5 (expert primary operator) performing all types of procedures independently and able to instruct and supervise other trainees.",
+      "page": null
+    },
+    {
+      "section": "The Graduation Process - Exam Eligibility and Final SILC Exam System",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Before graduation, evaluation for exam eligibility must be approved by both the program director and the SVIN SILC Board of Directors (SILC-BOD) and conducted by the SILC evaluation/exam board; applications for the final graduation exam should not exceed 6 months from the date of SILC-BOD approval. The Final SILC Examination System is a technology-driven, paperless platform maintained by the SILC-BOD supporting question banks, exam timing, objective/subjective sections, and remote procedural skills proctoring; graduation is completed by passing the final SILC exam.",
+      "page": null
+    },
+    {
+      "section": "Requirements for the SILC-Accredited Training Program - Venue",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The training program should preferentially be organized and conducted at a single institute/center where a unified neurointervention unit is responsible as the principal service health care provider, networked with integrative neuroscience-based clinical, diagnostic, and therapeutic facilities in reasonable geographic proximity. Where the program takes place across a network of institutions/departments, the program director is responsible for ensuring adherence to set training standards and evaluating the trainee at remote facilities.",
+      "page": null
+    },
+    {
+      "section": "Requirements for the SILC-Accredited Training Program - Program",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The principal neurointervention unit should be able to sustain a minimum case load of 100 annual neurointervention cases with evidence of case mix diversity representative of local/national prevalence (e.g., ruptured and unruptured cerebral aneurysms, CNS AVM/dural AVF, and stroke interventions), with a minimum of 15 stroke thrombectomy procedures per year. If accreditation is limited to one neurointervention therapy (e.g., stroke interventions), adjusted criteria may be adopted. Program leadership (director/codirectors) must meet Level IV certification criteria with a clear conflict of interest statement.",
+      "page": null
+    },
+    {
+      "section": "Requirements for the SILC-Accredited Training Program - Program",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The faculty of the training program must include at least 2 members actively and fully employed in the unit; the faculty-to-trainee ratio is preferentially 1:1 and should not exceed 1:2. Access to computerized literature facilities from well-known publishers should be available for all trainees.",
+      "page": null
+    },
+    {
+      "section": "SILC Requirements for the Program Director and Faculty",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The program director should be a senior neurointerventionalist with adequate experience and reputation who is Level IV SILC certified, responsible for directing the program, supervising faculty members, selecting trainees and managing these interrelationships, ensuring the program meets SILC or other required national academic standards, and being actively involved in obtaining and renewing neurointervention laboratory SILC accreditation. Both director and codirectors should actively participate in CME/continuous professional development activities endorsed by a national regulatory body.",
+      "page": null
+    },
+    {
+      "section": "Certification/Recognition of a Particular Qualification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "SILC is not a substitution for national/regional medical authorities responsible for the recognition and/or certification of a particular qualification. SILC cooperates with such authorities (if available) or organizes high standards for consensus in establishing specialized programs in neurointervention training.",
+      "page": null
+    },
+    {
+      "section": "Maintenance and Augmentation of Qualification - e-Training/e-Proctorship",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "At the present time, appropriate formal training, experience in clinical cervicocerebral angiography, and intervention in an approved clinical training program have no adequate substitute in contemporary medical practice. Societal recommendations favor using simulation for basic training in neurointervention, and SILC will create standard recommendations and requirements for including simulator training as an augmentation tool for neurointervention training programs, especially in low- and medium-flow centers.",
+      "page": null
+    },
+    {
+      "section": "Continuous Maintenance of Certification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The SVIN SILC training recommendations propose an annual continuous maintenance of certification (C-MOC / C-Cert) model, with key annual elements including a minimum of 15 CME credits in neurointervention (e.g., SVIN annual meeting), a minimum of 5 CME credits in stroke centers and systems of care, an annual reading list of up to a maximum of 10 clinical trials or articles selected by the SVIN SILC-BOD with a 25-question online post-reading quiz requiring a passing score of 80% or higher, successful completion of 15 neurointervention procedures including stroke interventions using newer or current devices on the SILC e-training platform as live or recorded live cases, and updates on newer or current medications and devices.",
+      "page": null
+    },
+    {
+      "section": "SILC Relaxed Requirement Criteria (Special Circumstances)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "SILC allows local organizations/licensing authorities justified relaxation of the requirements and eligibility criteria of SILC standards, justified by an accurate balance between regional need and the highest degree of procedural safety. Any relaxation must be requested before the beginning of the training program by the Level IV-certified SILC program director, and may cover trainee entry requirements, center requirements (case load, case type, subspecialties, interdisciplinary team), director requirements, and training program syllabus requirements.",
+      "page": null
+    },
+    {
+      "section": "Maintenance of Certification and Assurance of Continuing Quality of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "At this time there is insufficient information about the specifics of maintenance of competency related to requirements for annual numbers of specific cases performed. Experience plays an important role, and the SVIN SILC training recommendations encourage all physicians to consider progressing to Level IV certification and meeting the requirements as an expert in the field.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

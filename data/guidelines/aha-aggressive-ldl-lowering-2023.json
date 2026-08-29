@@ -10,12 +10,222 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Impact of Aggressive LDL-C Reduction on ASCVD Events - Clinical Studies in Individuals With Coronary Heart Disease",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The objective of this scientific statement is to evaluate contemporary evidence that either supports or refutes the conclusion that aggressive low-density lipoprotein cholesterol lowering or lipid lowering exerts toxic effects on the brain, leading to cognitive impairment or dementia or hemorrhagic stroke.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Multiple prospective randomized controlled trials show that lowering LDL-C reduces morbidity and mortality in those at high risk for or with established ASCVD. The Cholesterol Treatment Trialists Collaboration meta-analysis of 174 149 participants reported that each 1-mmol/L (39-mg/dL) reduction in LDL-C results in a 21% reduction in risk of major adverse cardiovascular events (risk reduction 0.79 [95% CI, 0.77-0.81]; P<0.0001), consistently across comorbidities, baseline LDL-C, age, sex, and cardiovascular risk profiles.",
+      "page": null
+    },
+    {
+      "section": "Impact of Aggressive LDL-C Reduction on ASCVD Events - Clinical Studies in Individuals With Coronary Heart Disease",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Trials of nonstatin therapy show benefit at very low achieved LDL-C: IMPROVE-IT (ezetimibe added to high-dose simvastatin after acute coronary syndrome, mean LDL-C 54 mg/dL; hazard ratio 0.94), FOURIER (evolocumab added to maximally tolerated statin, median LDL-C 30 mg/dL; hazard ratio 0.85), and ODYSSEY (alirocumab after acute coronary syndrome, mean LDL-C 48 mg/dL; hazard ratio 0.85). A prespecified FOURIER analysis of 504 patients with achieved LDL-C below 10 mg/dL found a lower event rate than at any greater LDL-C level, without an increase in serious adverse events or adverse events leading to drug discontinuation.",
+      "page": null
+    },
+    {
+      "section": "Impact of Aggressive LDL-C Reduction on ASCVD Events",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In summary, evidence from randomized controlled trials, epidemiological studies, and genomic investigation supports the use of statins and specific nonstatin therapies to improve cardiovascular outcomes by aggressively lowering LDL-C with no lower threshold restriction.",
+      "page": null
+    },
+    {
+      "section": "Consequences of Inadequate LDL-C Reduction - Practice Gaps in Lipid Control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Substantial gaps in population-level lipid control remain. Nearly 28% of US adults have an LDL-C of 130 mg/dL or higher. Most adults with established ASCVD do not meet LDL-C goals, nearly 50% are not receiving a statin, and fewer than a quarter are receiving a high-intensity statin. Race and ethnicity, sex, age, and socioeconomic disparities in statin use and LDL-C control are documented, with the greatest disparities among individuals with multiple social vulnerabilities.",
+      "page": null
+    },
+    {
+      "section": "Consequences of Inadequate LDL-C Reduction - Side Effect Concerns",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Statin discontinuation and nonadherence are both associated with an increased risk of cardiovascular events. In a meta-analysis including more than 4 million patients, the estimated frequency of statin intolerance ranged from 5% in randomized clinical trials to 17% in observational cohort studies.",
+      "page": null
+    },
+    {
+      "section": "Consequences of Inadequate LDL-C Reduction - Statin-Associated Muscle Symptoms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Myalgias typically occur within weeks of initiation of therapy or dose escalation, occur symmetrically in large muscle groups, resolve with discontinuation, and are not associated with creatine kinase elevations. Myopathy (creatine kinase greater than 10 times the upper limit of normal) is estimated to occur in 1 in 10 000 individuals and rhabdomyolysis in 1 in 100 000. A Cholesterol Treatment Trialists meta-analysis found that more than 90% of muscle symptoms reported by participants in statin trials were not attributable to statins, supporting a high prevalence of a nocebo effect. There is no association between either ezetimibe or PCSK9 inhibitors and muscle symptoms, even among those with very low LDL-C.",
+      "page": null
+    },
+    {
+      "section": "Consequences of Inadequate LDL-C Reduction - Other Neurological Concerns With Lipid Lowering",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Concerns about sleep disturbances, neuropathy, depression, and aggressive behavior with statins have not been supported by meta-analyses using individual participant-level data from randomized controlled trials. A systematic review of 34 studies concluded that the preponderance of evidence suggests no adverse effect of statins on physical function, sleep, or mood, and a large Swedish population-based study found no association between statin use and anxiety disorders or suicidality.",
+      "page": null
+    },
+    {
+      "section": "Blood-Brain Barrier and Lipids",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The blood-brain barrier markedly isolates the brain compared with other tissues through complex tight junctions, pericytes, and inhibited transcytosis of lipids. Thus, the brain does not depend on dietary or hepatic sources of cholesterol or other lipids to support structural and functional demands. Most extracellular lipid transport inside the central nervous system is enabled by APO E-containing lipoproteins originating from the brain itself, and brain cholesterol metabolism is independent from that in plasma.",
+      "page": null
+    },
+    {
+      "section": "Brain Metabolism of Cholesterol and Potential Effect of Cholesterol-Lowering Drugs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The brain contains approximately 25% of the body's total content of cholesterol, but the cholesterol synthesis rate of the brain is low (less than 2% of the liver's production) and cholesterol synthesized in the brain may persist for months to years. Statin treatment lowers 24S-hydroxycholesterol levels by 21.4%, suggesting an overall lower production of cholesterol within the brain, although whether statins lower levels of brain cholesterol is less clear.",
+      "page": null
+    },
+    {
+      "section": "Brain Metabolism of Cholesterol and Potential Effect of Cholesterol-Lowering Drugs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "To summarize, the content of cholesterol in the brain is largely isolated from peripheral circulation levels by the blood-brain barrier. Although there are numerous gaps in understanding, there is very little mechanistic evidence supporting a possible causal effect of cholesterol-lowering medications on development of neurodegeneration.",
+      "page": null
+    },
+    {
+      "section": "ASCVD Risk Factors and Alzheimer Disease",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Midlife hyperlipidemia, hypertension, obesity, metabolic syndrome, smoking, diabetes, and heightened systemic inflammatory tone are all associated with increased risk for Alzheimer disease, complicating studies aimed at evaluating associations between lipid-lowering therapies and Alzheimer disease. Studies probing this relationship typically do not adjust for other risk factors, so confounding may account for some of the dementia observed in unadjusted or partially adjusted analyses.",
+      "page": null
+    },
+    {
+      "section": "ASCVD Risk Factors and Alzheimer Disease",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Randomized data are encouraging: analyses from the Heart Protection Study and the PROSPER trial offer reassurance that statin therapy per se is not linked to cognitive impairment or frank Alzheimer disease in older patients over approximately 5 years of follow-up. In EBBINGHAUS, no impact on cognitive function was shown over approximately 19 months even when LDL-C was reduced to below 25 mg/dL with a statin plus evolocumab. In FOURIER, participants experienced no cognitive changes over a median of 2.2 years, including among the 2339 patients who achieved an LDL-C below 20 mg/dL.",
+      "page": null
+    },
+    {
+      "section": "Reports of Cognitive Changes After Statins Are Started",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "US Food and Drug Administration labeling notes rare postmarketing reports of cognitive impairment associated with statin use, generally nonserious and reversible upon discontinuation. Database studies found a strong association between first exposure to a statin and incident acute memory loss (adjusted odds ratio 4.40 [95% CI, 3.01-6.42]) but an equivalent association for nonstatin lipid-lowering drugs (adjusted odds ratio 3.60 [95% CI, 1.34-9.70]), with no difference between them, suggesting either a class-wide effect or detection bias. A causal relationship between statin exposure and impaired memory or cognition remains uncertain.",
+      "page": null
+    },
+    {
+      "section": "Reports of Cognitive Changes After Statins Are Started",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A Cochrane systematic review identified 2 trials with relevant data (PROSPER and the Heart Protection Study), including 26 340 participants 40 to 82 years of age, and found no differences in cognitive outcomes between the statin and nonstatin groups. A randomized trial of atorvastatin 80 mg/d for 72 weeks in 640 patients with mild to moderate Alzheimer disease found no difference in the coprimary end points of cognition and global function.",
+      "page": null
+    },
+    {
+      "section": "Reports of Cognitive Changes After Statins Are Started",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "As reflected by the National Lipid Association Statin Cognitive Safety Task Force, if a patient who is receiving a statin develops cognitive complaints, it may be reasonable to obtain cognitive testing and to evaluate the patient for other potential contributors, with treatment decisions guided by individual patient characteristics in a shared decision-making environment. Obtaining a formal cognitive evaluation with scales such as the Mini-Mental State Examination or the Montreal Cognitive Assessment was thought to be of little value.",
+      "page": null
+    },
+    {
+      "section": "Low LDL-C and Ischemic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "High LDL-C is an established risk factor for ischemic stroke. A Cholesterol Treatment Trialists meta-analysis found a 16% (95% CI, 11%-21%) risk reduction in any stroke for each 1-mmol/L reduction in LDL-C. The consensus is reflected in evidence-based guidelines, which recommend lowering LDL-C with statins or a combination of agents to below 70 mg/dL in patients with stroke of atherosclerotic origin.",
+      "page": null
+    },
+    {
+      "section": "Low LDL-C and Ischemic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Two secondary prevention trials in patients with a history of stroke or TIA showed the benefits of lowering LDL-C. SPARCL randomized 4731 patients with noncardioembolic ischemic stroke or intracerebral hemorrhage to atorvastatin 80 mg or placebo, with a 5-year absolute risk reduction in recurrent stroke of 2.2%. The TST trial enrolled 2860 patients with atherosclerotic ischemic stroke or TIA and found benefit of the lower LDL-C target (below 70 mg/dL versus 90-110 mg/dL) for the prevention of cardiovascular events.",
+      "page": null
+    },
+    {
+      "section": "Low LDL-C and Ischemic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The addition of ezetimibe to statin therapy may have a modest effect on stroke prevention. When added to statins, PCSK9 inhibitors uniformly have a modest risk reduction for ischemic stroke in populations at high cardiovascular risk. Trials of niacin and cholesterylester transfer protein inhibitors did not find a benefit. Omega-3 fatty acid supplementation with a carboxylic acid formulation did not lead to stroke prevention, whereas a highly purified formulation of icosapent ethyl provided incremental stroke risk reduction.",
+      "page": null
+    },
+    {
+      "section": "LDL-C Reduction and Hemorrhagic Stroke Risk - Statins",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Statin trials do not show increased risks for hemorrhagic stroke among statin-treated patients without stroke history; a meta-analysis of 26 randomized trials found a nonsignificant excess in hemorrhagic stroke but a 16% overall decrease in all strokes per 1-mmol/L LDL-C reduction, driven by reductions in ischemic stroke. In patients with a history of ischemic stroke, statin use for secondary prevention has been associated with increased hemorrhagic stroke risk; a secondary analysis of SPARCL found hemorrhagic stroke risk was highest in statin-treated patients with cerebral small vessel disease or whose qualifying stroke was a hemorrhagic stroke.",
+      "page": null
+    },
+    {
+      "section": "LDL-C Reduction and Hemorrhagic Stroke Risk - PCSK9 Inhibitors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A meta-analysis of statin and PCSK9 inhibitor trials reported increased hemorrhagic stroke risk with statins but not with the addition of PCSK9 inhibitors. In ODYSSEY OUTCOMES, alirocumab reduced ischemic stroke without increasing hemorrhagic stroke among participants with a history of ischemic stroke, regardless of LDL-C levels; similar results were reported in FOURIER, in which 19% of participants had a history of ischemic stroke.",
+      "page": null
+    },
+    {
+      "section": "LDL-C Reduction and Hemorrhagic Stroke Risk - Other Lipid-Lowering Therapies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The available data do not suggest that ezetimibe monotherapy increases the risk for hemorrhagic stroke. Overall, aggregate randomized data do not show an increased risk for hemorrhagic stroke with statins or other lipid-lowering therapies in patients without a history of stroke. Some data suggest a tendency for a small increased risk in some patient groups, particularly those with prior ischemic stroke, but this is offset by the benefits of reducing overall stroke and other major cardiovascular events.",
+      "page": null
+    },
+    {
+      "section": "LDL-C Reduction After Hemorrhagic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is a paucity of prospective and randomized data on statin effects in patients who have had a hemorrhagic stroke, and most studies are retrospective, nonrandomized, observational, and prone to confounding. Some studies suggest that hemorrhagic stroke in lobar locations, often attributed to cerebral amyloid angiopathy, occurs more frequently among statin users than nonusers, and that statins confer higher risks for lobar intracerebral hemorrhage in APO E4/E4 and E2/E4 carriers. Patients with a history of hemorrhagic stroke and uncontrolled hypertension were excluded from PCSK9 inhibitor trials; therefore, the risks and benefits of PCSK9 inhibitors are unknown in patients with intracerebral hemorrhage.",
+      "page": null
+    },
+    {
+      "section": "LDL-C Reduction After Hemorrhagic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Regardless of stroke risk, there might be value in treating patients with hemorrhagic stroke with a statin. In a Kaiser Permanente study of 3481 participants with hemorrhagic stroke, inpatient statin therapy was associated with a greater likelihood of being alive 30 days after presentation (odds ratio 4.25 [95% CI, 3.46-5.23]) and of discharge home or to rehabilitation (odds ratio 2.57 [95% CI, 2.16-3.06]); participants whose statin therapy was discontinued were less likely to survive to 30 days (odds ratio 0.16 [95% CI, 0.12-0.21]). In patients who have sustained a hemorrhagic stroke, statins have an unclear effect on the risk of recurrent intracerebral hemorrhage but may be associated with reduced risks of ischemic stroke and ASCVD events.",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The available data consistently show that lowering LDL-C reduces the risk of adverse ASCVD-related events in high-risk populations.",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although some older retrospective, case-control, and prospective longitudinal studies suggest that statins and LDL-C lowering are associated with cognitive impairment or dementia, the preponderance of observational studies and data from randomized trials do not support this conclusion, at least over the course of the trials that varied from a median of 1.6 to 6.0 years of follow-up. Additional studies are needed to ensure cognitive safety over longer periods of time. In the interim, contemporary guidelines recommending the risk-stratified attainment of lipid-lowering goals are reasonable.",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The risk of a hemorrhagic stroke associated with statin therapy in patients without a history of cerebrovascular disease is small and consistently nonsignificant. There is no evidence that PCSK9 inhibitors or ezetimibe increase bleeding risk. There is no indication from either randomized studies or mendelian inheritance studies evaluating patients or populations with lifelong low LDL-C that they have enhanced vulnerability to hemorrhagic stroke, and there is little evidence that achieving very low levels of LDL-C increases that risk. It is clear, however, that lower LDL-C correlates with lower risk of overall stroke and stroke recurrence, mostly related to a reduction in ischemic stroke. Concern about hemorrhagic stroke risk should not deter a clinician from treating LDL-C to guideline-recommended risk-stratified targets.",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Data reflecting the risk of hemorrhagic stroke with statin treatment among patients with a history of hemorrhagic stroke are not robust. PCSK9 inhibitors have not been adequately tested in patients with prior intracerebral hemorrhage. Lipid lowering in this population requires more focused study.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

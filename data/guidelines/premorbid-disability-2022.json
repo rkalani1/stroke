@@ -9,44 +9,206 @@
   "pmid": "35343235",
   "recommendations": [
     {
-      "section": "Background",
+      "section": "Defining the Problem",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Premorbid disability and dementia are common in AIS, but randomized trial evidence is limited because these patients are often excluded.",
-      "page": 2
+      "levelOfEvidence": "Ungraded",
+      "text": "Observational studies indicate that preexisting disabilities exist in approximately one-third of patients with ischemic stroke, whereas preexisting dementia is present in approximately one tenth. Patients with premorbid disability or dementia have generally been excluded from randomized controlled trials of thrombolysis and endovascular therapy (EVT), so definitive evidence for these therapies in this population is absent.",
+      "page": null
     },
     {
-      "section": "Guideline Context",
+      "section": "Defining the Problem",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "European guidelines note uncertain benefit when prestroke mRS >=2; AHA/ASA suggests reperfusion may be reasonable in selected cases despite less improvement and higher mortality.",
-      "page": 2
+      "levelOfEvidence": "Ungraded",
+      "text": "Trial exclusions have generally been defined using functional outcome measures - the seminal EVT trials generally excluded patients with an mRS score >=2 or Barthel Index score <95 - but such definitions do not necessarily capture how disability and dementia manifest in practice and vary by rating scale and threshold. The mRS mixes impairment, disability, and handicap and overvalues physical disability relative to cognitive disability.",
+      "page": null
     },
     {
-      "section": "Evidence Summary",
+      "section": "Defining the Problem",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Observational data do not show consistent increases in sICH risk with IVT or EVT among patients with prestroke disability or dementia.",
-      "page": 6
+      "levelOfEvidence": "Ungraded",
+      "text": "Identification of prestroke disability or dementia in the acute setting involves considerable uncertainty because the quality of available information is almost certainly inadequate: scales such as the mRS are constrained by limited access to reliable informants and by the patient's inability to communicate, forcing reliance on incomplete or inaccurate proxy reports or medical records, and time constraints rule out formal assessment of prior cognitive decline.",
+      "page": null
     },
     {
-      "section": "Evidence Summary",
+      "section": "Defining the Problem",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Some studies show higher mortality and lower return to baseline after IVT; EVT outcomes show similar accumulated disability compared with those without disability.",
-      "page": 6
+      "levelOfEvidence": "Ungraded",
+      "text": "Applying an intersectionality lens, exclusion by premorbid disability likely also unintentionally promotes exclusion by other demographic factors: in OXVASC, patients with premorbid disability (mRS score >=2) were generally older, more often female, and more likely to be socioeconomically deprived even after adjustment for comorbidities. Exclusion of patients by premorbid disability or dementia may therefore limit the generalizability of treatment evidence for older patients, women, and certain races.",
+      "page": null
     },
     {
-      "section": "Decision-Making",
+      "section": "Implications of Prestroke Disability and Dementia on the Prognosis of Acute Ischemic Stroke",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Avoid automatic exclusion based on prestroke disability; consider intersectionality, bias, and individual values in shared decision-making.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with prestroke disability or dementia face delays in prehospital recognition, confounded stroke severity assessment, lower rates of thrombolysis, and documented delays in treatment times for thrombolysis and endovascular treatment. Once admitted, they are less likely to receive defect-free evidence-based stroke care, with fewer stroke unit admissions and fewer investigations for secondary stroke prevention.",
+      "page": null
+    },
+    {
+      "section": "Implications of Prestroke Disability and Dementia on the Prognosis of Acute Ischemic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "This population has a 3 to 4 times higher nosocomial infection rate, a longer average hospital stay, and 3 to 5.4 times higher odds of in-hospital mortality, with a higher rate of withdrawal of care. Patients with preexisting dementia or disability who are not treated and who survive to discharge have a higher probability of being discharged to a nursing home or being institutionalized.",
+      "page": null
+    },
+    {
+      "section": "Implications of Prestroke Disability and Dementia on the Prognosis of Acute Ischemic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In OXVASC, each added degree of poststroke disability (change in mRS score at 3 months) carried a worse outcome, with hazard ratios for 5-year mortality/institutionalization from 1.62 to 5.45 depending on the degree of change; a change in mRS score of >=2 was associated with a $40,533 increased cost over 5 years. This highlights the high societal costs of routinely withholding acute stroke treatments in patients with prestroke disability.",
+      "page": null
+    },
+    {
+      "section": "Current Evidence for the Safety and Efficacy of Thrombolysis and EVT in Patients With Prestroke Disability or Dementia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Current evidence on thrombolysis and EVT in patients with prestroke disability or dementia is mostly from observational case-control studies and registries subject to significant selection bias. The only major EVT trial that permitted enrollment of patients with prestroke disability was MR CLEAN, which included 45 patients with a prestroke mRS score >=2 (26 with an mRS score of 2), but these patients were not analyzed separately.",
+      "page": null
+    },
+    {
+      "section": "Current Evidence for the Safety and Efficacy of Thrombolysis and EVT in Patients With Prestroke Disability or Dementia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is no consistent evidence at present to support the concern that prestroke dementia or disability may be associated with increased risk of symptomatic intracerebral hemorrhage associated with reperfusion therapies, and there is no convincing evidence for a loss of treatment benefit with reperfusion therapies in these populations.",
+      "page": null
+    },
+    {
+      "section": "Current Evidence for the Safety and Efficacy of Thrombolysis and EVT in Patients With Prestroke Disability or Dementia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is some (albeit inconsistent) evidence for increased mortality and reduced return to prestroke function after thrombolysis in patients with prestroke dementia/disability. For EVT, the rates of accumulated poststroke disability (versus return to prestroke function) appear similar for patients with prestroke disability compared with those without.",
+      "page": null
+    },
+    {
+      "section": "Ethics of Inclusion Versus Exclusion of Patients With Disability or Dementia From Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the absence of definitive evidence on the balance of risks versus benefits, stroke teams should, whenever possible, seek to respect a patient's autonomy or their wishes and values as expressed by their proxies in the acute stroke setting. Basing decisions on a perceived lack of cost-effectiveness or futile resource use is difficult to justify in the absence of high-quality effectiveness or cost data in this population.",
+      "page": null
+    },
+    {
+      "section": "Ethics of Inclusion Versus Exclusion of Patients With Disability or Dementia From Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Enthusiasm to treat these patients must be tempered by the reality that individuals with multiple comorbidities and disability are more likely to succumb to complications of acute stroke. Providing good end-of-life palliative care to patients with stroke and their families is an inherent moral obligation of the stroke community and needs to be weighed in discussions of acute treatment allocation.",
+      "page": null
+    },
+    {
+      "section": "Ethics of Inclusion Versus Exclusion of Patients With Disability or Dementia From Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Several biases can influence a physician's or caregiver's decision-making when considering acute stroke therapies in patients with premorbid disability or dementia, including ableism, impact or ineffectual bias, optimism bias, fragility bias, catastrophe bias, therapeutic nihilism, medical paternalism, and biases from lived experience (or lack thereof). Being cognizant of these biases can help physicians think critically about their decision-making.",
+      "page": null
+    },
+    {
+      "section": "Considerations for the Use of Acute Stroke Therapies in Patients With Premorbid Disability or Dementia in Routine Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "From the best available literature, it seems reasonable to conclude that a blanket disability cutoff such as a premorbid mRS score of 2 probably should not be used as a protocolized threshold to exclude patients from acute stroke therapies. Instead, we may consider a pragmatic, case-by-case approach to the use of acute stroke therapies in patients with premorbid disability or dementia, pending the availability of more definitive evidence.",
+      "page": null
+    },
+    {
+      "section": "Considerations for the Use of Acute Stroke Therapies in Patients With Premorbid Disability or Dementia in Routine Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Key elements of a pragmatic approach include acknowledging the spectrum of good and bad outcomes that may be achieved in these patients, disclosing the uncertain state of the evidence when discussing treatment options with patients or proxies, and adopting patient-centered care strategies whenever possible, taking into account long-term goals of care. Such discussions should acknowledge the potential added risks, given that observational studies have fairly consistently shown higher mortality among treated patients with premorbid disability/dementia.",
+      "page": null
+    },
+    {
+      "section": "Considerations for the Use of Acute Stroke Therapies in Patients With Premorbid Disability or Dementia in Routine Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Treatment risks will also be modified by additional patient-specific data; for example, patients with prestroke disability/dementia may have previous neuroimaging showing a considerable burden of white matter hyperintensities or microbleeds, known to increase the risk of postthrombolysis intracerebral hemorrhage.",
+      "page": null
+    },
+    {
+      "section": "Considerations for the Use of Acute Stroke Therapies in Patients With Premorbid Disability or Dementia in Routine Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The patient's outcome will depend not just on the immediate treatment decision but also on continuing high-quality postacute care, including rehabilitation and stroke unit care to prevent complications such as pneumonia, which may erode any benefits of thrombolysis or EVT. Ensuring access to assistive technologies and psychosocial supports also may help these patients better adapt to life after stroke.",
+      "page": null
+    },
+    {
+      "section": "Considerations for the Use of Acute Stroke Therapies in Patients With Premorbid Disability or Dementia in Routine Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Outside the acute stroke setting, such as in the stroke prevention or neurovascular clinic, physicians should discuss quality-of-life concerns and future care preferences with patients at risk of major stroke who have preexisting disability or dementia, including their caregivers or families as appropriate, to facilitate advance care planning including living wills or advance care directives noting preferences for acute stroke care.",
+      "page": null
+    },
+    {
+      "section": "Considerations for the Use of Acute Stroke Therapies in Patients With Premorbid Disability or Dementia in Routine Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Health care systems should invest greater resources in the accurate documentation of the wishes and values of patients with disability or dementia and ensure that such documentation is readily available for health care teams during emergency situations, without relying on the availability of family members or caregivers, and should foster a culture in which quality-of-life issues and patients' wishes are openly discussed, documented, and shared in a standardized format.",
+      "page": null
+    },
+    {
+      "section": "Roadmap for Future Studies of Acute Stroke Therapies in Patients With Prestroke Disability or Dementia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "To conduct high-quality randomized controlled trials including patients with premorbid disability, we need harmonized, validated strategies to measure disability and capture these data, and better measures that are reliable in an acute stroke setting and elucidate the nature of a patient's disability (eg, cognitive versus physical), which is currently not well captured by the mRS. Such premorbid measures should also be captured in clinical registries, along with the causes of or contributors to prestroke disability.",
+      "page": null
+    },
+    {
+      "section": "Roadmap for Future Studies of Acute Stroke Therapies in Patients With Prestroke Disability or Dementia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is time for acute stroke trials to move away from conventional 3-month mRS dichotomies of 0-1/2-6 or 0-2/3-6. Instead, ordinal mRS approaches, measures like the change in mRS score from before to after stroke, or more inclusive dichotomous outcomes such as return to prestroke mRS score or avoidance of an mRS score of 5 to 6 should be strongly considered. Home time, health care costs, and quality of life would also be valuable, at least as secondary outcomes.",
+      "page": null
+    },
+    {
+      "section": "Roadmap for Future Studies of Acute Stroke Therapies in Patients With Prestroke Disability or Dementia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We encourage the systematic measurement and tracking of prestroke versus poststroke functional outcome in patients with prestroke disability and dementia in prospective registries of acute stroke, ideally capturing data on both treated and untreated patients so that posttreatment outcomes may be compared with those of untreated patients of similar prestroke status, instead of expecting them to meet the arbitrary standard of treated patients without disability/dementia.",
+      "page": null
+    },
+    {
+      "section": "Roadmap for Future Studies of Acute Stroke Therapies in Patients With Prestroke Disability or Dementia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We encourage the enrollment of patients with prestroke disability/dementia in phase 4 trials of thrombolysis/EVT and in future trials of new therapies, with separate planned subgroup analyses of patients with physical and cognitive disability. Consideration may be given to strategies such as caregiver/proxy assent or, if appropriate, waiver of consent, and to telephone- or video-assisted remote follow-up visits to facilitate inclusion.",
+      "page": null
+    },
+    {
+      "section": "Roadmap for Future Studies of Acute Stroke Therapies in Patients With Prestroke Disability or Dementia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is a need for high-quality mixed-methods studies engaging patients and their families/caregivers to capture their views on the uncertain benefits versus risks of acute stroke therapies, on potentially living a longer life with greater disability after stroke, and on involvement in acute stroke trials. Equity, diversity, and inclusion initiatives in stroke research should also promote training and leadership opportunities for physicians living with disability.",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Observational data demonstrate similar hemorrhagic risks in treated patients with premorbid disability/dementia compared with treated patients without, but much higher mortality in the former group; they also suggest that such patients have a substantial potential to retain their prestroke level of disability when treated, despite their generally worse prognosis overall, although this remains to be validated in higher-quality registries and clinical trials.",
+      "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

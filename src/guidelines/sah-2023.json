@@ -656,5 +656,7 @@
       "text": "Follow-up cerebrovascular imaging is recommended in aSAH patients after aneurysm repair to detect recurrence or regrowth of the treated aneurysm, changes in other known aneurysms, or development of new aneurysms that may require treatment.",
       "page": 37
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "ACC/AHA"
 }

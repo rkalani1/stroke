@@ -15,244 +15,310 @@
   },
   "recommendations": [
     {
-      "section": "Early Recognition",
+      "section": "Definitions and Clinical Manifestations of Spasticity",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Spasticity can emerge within the first month after stroke and worsen over 6-12 months; early recognition and timely intervention are essential.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Spasticity is classically defined as a velocity-dependent increase in tonic stretch reflexes with exaggerated tendon jerks, resulting from hyperexcitability of the stretch reflex, as one component of the upper motor neuron syndrome. Stroke-related injury involving cortical motor neurons and their descending axonal tracts spans 3 interrelated domains that together degrade functional mobility: (1) abnormal involuntary muscle activity, (2) impaired voluntary motor control, and (3) passive tissue remodeling.",
+      "page": null
     },
     {
-      "section": "Assessment and Diagnosis",
+      "section": "Definitions and Clinical Manifestations of Spasticity",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Use structured clinical rating scales and, when needed, electrophysiologic or biomechanical tools to quantify spasticity and monitor response.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Involuntary muscle overactivity, abnormal voluntary control, and passive tissue remodeling form a self-reinforcing triad. Muscle overactivity and abnormal voluntary control occur earlier - often within the first month - in individuals with more severe motor and sensory impairment; resulting stiffness and shortening of spastic muscles follows and worsens over the first 6 months to a year.",
+      "page": null
     },
     {
-      "section": "Involuntary Muscle Activation",
+      "section": "Assessment and Diagnosis of Spasticity",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A*",
-      "text": "Botulinum toxin (BoNT-A) consistently reduces tone; early use with optimized dosing and ultrasound guidance improves outcomes.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "The most widely used clinical rating tools are the Modified Ashworth Scale (MAS) and the Modified Tardieu Scale; both assess resistance to passive movement but have limited ability to distinguish resistance caused by increased involuntary muscle activity from that caused by passive tissue changes. A MAS score of 1 or greater is commonly used to indicate spasticity, but the MAS does not account for the velocity-dependent nature of spasticity and may overestimate tone in the presence of joint stiffness or contracture.",
+      "page": null
     },
     {
-      "section": "Involuntary Muscle Activation",
+      "section": "Assessment and Diagnosis of Spasticity",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "Intrathecal baclofen is effective for generalized spasticity but requires monitoring for adverse effects.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "A recent scientific statement supports a 5-step framework for assessment of spasticity that includes evaluation of passive movement, active movement, fatigability during repeated movement, and upper and lower limb function. Measurement approaches that integrate a broader assessment of spasticity may more accurately reflect real-world functional effects on mobility, independence, and quality of life.",
+      "page": null
     },
     {
-      "section": "Involuntary Muscle Activation",
+      "section": "Pathophysiology of Poststroke Spasticity",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "Selective dorsal rhizotomy can be effective in lower extremity spasticity in selected patients.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "The initial driver of stroke-induced motor deficits is interruption of the descending corticospinal tract; motor weakness is typically the earliest clinical manifestation, whereas hyperactivity of the muscle stretch reflex emerges days to weeks after stroke onset. Muscular hyperactivity is likely enhanced by pathologic activation of brainstem supraspinal pathways, with the reticulospinal tract receiving considerable attention in humans.",
+      "page": null
     },
     {
-      "section": "Involuntary Muscle Activation",
+      "section": "Pathophysiology of Poststroke Spasticity",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "Transcutaneous electrical nerve stimulation is effective in lower limbs; duration of effect and upper-limb efficacy are less clear.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Spasticity promotes secondary non-neural alterations in muscle and connective tissue, including shortened muscle fascicle length and joint stiffness from accumulation of extracellular matrix fibrotic components such as hyaluronan and collagen. These biomechanical alterations can occur independently of neural hyperexcitability and may persist even after neuromodulatory treatments such as botulinum toxin.",
+      "page": null
     },
     {
-      "section": "Involuntary Muscle Activation",
+      "section": "Current Treatment Approaches",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "B*",
-      "text": "Phenol or alcohol nerve blocks provide temporary tone reduction and are options when BoNT-A is unavailable or ineffective.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "The AHA/ASA guideline for poststroke rehabilitation includes the following recommendations: management of spasticity may include stretching, splinting, oral medications, and chemodenervation (eg, botulinum toxin injections); and for patients with stroke and focal spasticity interfering with function or care, botulinum toxin may be considered. Newer approaches targeting abnormal voluntary motor control and passive tissue changes are under investigation and may warrant inclusion in future clinical practice guidelines.",
+      "page": null
     },
     {
-      "section": "Involuntary Muscle Activation",
+      "section": "Table: Involuntary muscle activation - Botulinum toxin (BoNT-A)",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "B/C",
-      "text": "Oral antispasticity agents (e.g., baclofen, tizanidine) offer modest tone reduction but are often limited by systemic side effects.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Botulinum toxin (BoNT-A) consistently reduces MAS; early use with optimized dosing and ultrasound guidance enhances outcomes. The document's own Table assigns this a level of evidence of A, with evidence of effectiveness when given in early stroke (<3 months from onset); this letter is the statement's evidence grade for treatment efficacy, not an AHA class of recommendation or level of evidence.",
+      "page": null
     },
     {
-      "section": "Involuntary Muscle Activation",
+      "section": "Table: Involuntary muscle activation - Intrathecal baclofen",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "C",
-      "text": "Selective motor neurectomy is an invasive option with longer-lasting effects and limited availability.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Intrathecal baclofen is effective for generalized spasticity and requires monitoring for adverse effects. The document's Table assigns a level of evidence of A for treatment efficacy (not an AHA class/level of evidence).",
+      "page": null
     },
     {
-      "section": "Involuntary Muscle Activation",
+      "section": "Table: Involuntary muscle activation - Selective dorsal rhizotomy",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Emerging",
-      "text": "Cryoneurolysis has emerging evidence for sustained tone reduction; more research is needed.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Selective dorsal rhizotomy is effective in lower extremity spasticity and is used selectively. The document's Table assigns a level of evidence of A for treatment efficacy.",
+      "page": null
     },
     {
-      "section": "Abnormal Voluntary Control",
+      "section": "Table: Involuntary muscle activation - Transcutaneous electrical nerve stimulation",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A*",
-      "text": "Task-specific training improves motor control and function.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Transcutaneous electrical nerve stimulation is effective in the lower limbs; duration of effect and upper limb efficacy remain unclear. The document's Table assigns a level of evidence of A for treatment efficacy.",
+      "page": null
     },
     {
-      "section": "Abnormal Voluntary Control",
+      "section": "Table: Involuntary muscle activation - Phenol or alcohol nerve blocks",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "Constraint-induced movement therapy promotes use of the affected limb and is best suited for higher-functioning patients.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Phenol or alcohol nerve blocks provide temporary tone reduction and are an option when BoNT-A is unavailable or ineffective. The document's Table assigns a level of evidence of B, with evidence of effectiveness when given in early stroke (<3 months from onset).",
+      "page": null
     },
     {
-      "section": "Abnormal Voluntary Control",
+      "section": "Table: Involuntary muscle activation - Oral antispasticity agents",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A* (LE), B (UE)",
-      "text": "Functional electrical stimulation enhances voluntary activation; effects depend on timing and limb.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Oral antispasticity agents (eg, baclofen, tizanidine) produce modest tone reduction, often limited by sedation or systemic side effects. The document's Table assigns a level of evidence of B/C for treatment efficacy.",
+      "page": null
     },
     {
-      "section": "Abnormal Voluntary Control",
+      "section": "Table: Involuntary muscle activation - Selective motor neurectomy and cryoneurolysis",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "Noninvasive brain stimulation (rTMS/tDCS) is effective for upper-limb motor control; strongest evidence for anodal tDCS and low-frequency rTMS.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Selective motor neurectomy is an invasive option with longer-lasting effects but limited availability (Table level of evidence C). Cryoneurolysis has emerging evidence for sustained tone reduction; more research is needed (Table level of evidence Emerging).",
+      "page": null
     },
     {
-      "section": "Abnormal Voluntary Control",
+      "section": "Table: Abnormal voluntary control - Task-specific training and constraint-induced movement therapy",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "Repetitive peripheral magnetic stimulation can reduce tone; protocols need further refinement.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Task-specific training improves motor control and function (Table level of evidence A, with evidence of effectiveness in early stroke <3 months from onset). Constraint-induced movement therapy promotes use of the affected limb and is best suited for higher-functioning patients (Table level of evidence A).",
+      "page": null
     },
     {
-      "section": "Abnormal Voluntary Control",
+      "section": "Table: Abnormal voluntary control - Functional electrical stimulation",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "B*",
-      "text": "Bimanual training supports interlimb coordination; more robust trials are needed.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Functional electrical stimulation enhances voluntary muscle activation; optimal results depend on timing. The document's Table assigns a level of evidence of A for lower extremity (with evidence of effectiveness in early stroke) and B for upper extremity.",
+      "page": null
     },
     {
-      "section": "Abnormal Voluntary Control",
+      "section": "Table: Abnormal voluntary control - Noninvasive brain stimulation and repetitive peripheral magnetic stimulation",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "B/C*",
-      "text": "Music-supported therapy shows encouraging early evidence for motor function via auditory-motor coupling.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Noninvasive brain stimulation (rTMS/tDCS) is effective in the upper limbs, with strongest support for anodal tDCS and low-frequency rTMS (Table level of evidence A). Repetitive peripheral magnetic stimulation reduces MAS, though treatment measures require further refinement (Table level of evidence A).",
+      "page": null
     },
     {
-      "section": "Abnormal Voluntary Control",
+      "section": "Table: Abnormal voluntary control - Bimanual training, music-supported therapy, robotic therapy",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "B",
-      "text": "Robotic therapy facilitates repetitive task-specific training and may be most effective as adjunct to conventional therapy.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Bimanual training supports interlimb coordination but more robust trials are needed (Table level of evidence B, effective in early stroke). Music-supported therapy has encouraging early evidence and supports motor function through auditory-motor coupling (Table level B/C, effective in early stroke). Robotic therapy facilitates repetitive, task-specific training and is promising in combination with conventional therapy (Table level B).",
+      "page": null
     },
     {
-      "section": "Abnormal Voluntary Control",
+      "section": "Table: Abnormal voluntary control - Vagal nerve stimulation and aerobic exercise",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "B",
-      "text": "Vagal nerve stimulation paired with therapy improves upper extremity motor scores.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Vagal nerve stimulation improves Fugl-Meyer upper extremity scores when paired with therapy (Table level of evidence B). Aerobic exercise and endurance training improve motor control and counter the effects of inactivity (Table level C, effective in early stroke).",
+      "page": null
     },
     {
-      "section": "Abnormal Voluntary Control",
+      "section": "Table: Passive tissue changes - Early mobilization and stretching",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "C*",
-      "text": "Aerobic and endurance training can improve motor control and counter inactivity effects.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Early mobilization and weight-bearing interventions help prevent contractures and reduce hyperreflexia when started early (Table level of evidence A, effective in early stroke). Passive stretching exercises are not effective as standalone treatment and must be combined with other rehabilitation modalities (Table level A). Static stretching with positioning orthoses gives modest MAS improvements, with evidence limited by small studies (Table level A).",
+      "page": null
     },
     {
-      "section": "Passive Tissue Changes",
+      "section": "Table: Passive tissue changes - Dry needling and extracorporeal shockwave therapy",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A*",
-      "text": "Early mobilization and weight-bearing interventions help prevent contractures and reduce hyperreflexia when started early.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Dry needling gives short-term benefit in the lower limbs, with effects diminishing by 4 weeks (Table level of evidence A). Extracorporeal shockwave therapy provides short-term MAS reduction, and radial may be superior to focused therapy (Table level A).",
+      "page": null
     },
     {
-      "section": "Passive Tissue Changes",
+      "section": "Table: Passive tissue changes - Vibration therapies",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "Passive stretching alone is not effective; combine with other rehabilitation modalities.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Whole-body vibration is more effective in younger patients, with strongest support for lower extremity using <20 Hz, 10-minute protocols (Table level of evidence A). Localized muscle vibration improves MAS at the elbow or wrist, with limited data on long-term and lower limb effects (Table level A).",
+      "page": null
     },
     {
-      "section": "Passive Tissue Changes",
+      "section": "Table: Passive tissue changes - Serial casting, soft tissue interventions, hyaluronidase",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "Static stretching with positioning orthoses provides modest tone improvements; evidence is limited by small studies.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Serial casting temporarily prevents contractures but requires labor-intensive application (Table level of evidence B). Soft tissue interventions (eg, massage, myofascial release) have limited evidence and are frequently used as an adjunct (Table level C). Hyaluronidase improves MAS and range of motion in subacute or chronic spasticity, an emerging therapeutic role (Table level Emerging).",
+      "page": null
     },
     {
-      "section": "Passive Tissue Changes",
+      "section": "Rationale and Evidence Supporting Early Treatment",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "Dry needling has short-term benefit in lower limbs; effects diminish over weeks.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Delayed or omitted treatment in patients with established, symptomatic spasticity can lead to substantial harm, including increased pain, progressive motor dysfunction, and secondary musculoskeletal complications such as stiffness, muscle shortening, and joint contractures. Delays are often attributable to underrecognition of early symptoms, lack of health care professional training, and fragmented referral pathways.",
+      "page": null
     },
     {
-      "section": "Passive Tissue Changes",
+      "section": "Early Spasticity Treatment Improves Mobility During the Critical Window for Recovery",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "Extracorporeal shockwave therapy reduces tone short-term; radial therapy may be superior.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "The early poststroke period, typically within the first 3 to 6 months, is the critical window when intensive, task-specific training is most effective. Spasticity can emerge within the first few weeks after stroke onset and may undermine neurorehabilitation; early intervention aimed at reducing spasticity during this phase of maximal spontaneous plasticity may help optimize the benefits of neurorehabilitation and improve long-term outcomes.",
+      "page": null
     },
     {
-      "section": "Passive Tissue Changes",
+      "section": "Early Activity May Promote Reparative Plasticity",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "Whole-body vibration can reduce spasticity, with strongest evidence in lower limbs using low-frequency protocols.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "The close interactions of paresis and spasticity must be recognized: targeting spasticity alone may not improve functional capacity if underlying weakness is not also addressed. Preventing or minimizing structural maladaptations through early mobility and other interventions may reduce long-term disability and improve functional outcomes.",
+      "page": null
     },
     {
-      "section": "Passive Tissue Changes",
+      "section": "Evidence for Early Treatment of Established Spasticity",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "Localized muscle vibration improves tone in elbow or wrist; long-term and lower-limb data are limited.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "In a systematic review of 27 studies of early interventions for poststroke spasticity, the most robust evidence supported early administration of botulinum toxin: ten studies demonstrated significant short-term reduction in involuntary muscle activation, measured primarily by MAS or electromyography. Functional electrical stimulation and task-specific training also showed probable benefit, with 4 of 6 studies reporting significant reductions in spasticity when applied early. Transcutaneous electrical nerve stimulation, tDCS, and robot-assisted therapy showed mixed or inconclusive results, as did interventions targeting passive muscle changes such as orthoses and shockwave therapy.",
+      "page": null
     },
     {
-      "section": "Passive Tissue Changes",
+      "section": "Evidence for Early Treatment of Established Spasticity",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "B",
-      "text": "Serial casting can temporarily prevent contractures but is labor intensive.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Only 2 studies directly compared early versus late intervention. An observational routine-practice study of 303 patients found greater MAS reduction in the early treatment start group, but this was not statistically different from the medium- or late-start groups at the end of the study; a longitudinal cohort of 83 patients found MAS scores significantly lower at 4 and 12 weeks in patients who first received botulinum treatment <3 months after stroke onset compared with those treated >3 months after stroke. Randomized controlled and dosing studies are needed. Despite promising findings, there is no universally accepted critical window for spasticity intervention as exists for motor recovery.",
+      "page": null
     },
     {
-      "section": "Passive Tissue Changes",
+      "section": "Can Spasticity Be Prevented?",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "C",
-      "text": "Soft tissue interventions (e.g., massage, myofascial release) have limited evidence and are typically adjunctive.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with initial features such as severe motor paresis, early hyperreflexia, or lesions involving the internal capsule or brainstem are particularly vulnerable to spasticity, and proactive strategies may help prevent onset or reduce severity. Preventive measures include early passive mobilization, active rehabilitation such as robotic-assisted therapy targeting the flexor synergy pattern, and use of stretching devices. Pharmacologic treatment initiated within the first 3 months after injury may further reduce the risk of persistent spasticity.",
+      "page": null
     },
     {
-      "section": "Passive Tissue Changes",
+      "section": "Can Spasticity Be Prevented?",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Emerging",
-      "text": "Hyaluronidase shows emerging benefit for tone and range of motion in subacute or chronic spasticity.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Initiating mobilization within 24 to 72 hours after stroke, as part of comprehensive rehabilitation, may help preserve muscle length, reduce neural hyperexcitability, and maintain joint range of motion, thereby mitigating the risk of spasticity. Combining botulinum toxin injections with early motor training appears to be the most beneficial strategy for modulating muscle tone and improving motor recovery, compared with delaying treatment or using these treatments separately.",
+      "page": null
+    },
+    {
+      "section": "Strengthen Spasticity Risk Assessment and Diagnosis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Among the most reliable predictors of spasticity are severity of initial sensorimotor impairment and early onset of spasticity during the acute poststroke phase. Hemorrhagic stroke and anterior circulation ischemic strokes - especially those involving the corticospinal tract, internal capsule, or basal ganglia - are associated with elevated spasticity risk. Additional risk factors include stroke lesions >3 cm in diameter and an NIHSS score >=10.",
+      "page": null
+    },
+    {
+      "section": "Strengthen Spasticity Risk Assessment and Diagnosis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The MAS with a threshold of >=1 is the most frequently used clinical metric for diagnosing spasticity but lacks sensitivity and may fail to detect early or subclinical spasticity; validated, standardized clinical screening approaches usable for stepwise assessment by nonspecialists in primary care and inpatient settings are needed. Emerging tools include biomechanical sensors, automated motion analysis, surface electromyography, H-reflex and reciprocal inhibition studies, and imaging-based predictors.",
+      "page": null
+    },
+    {
+      "section": "Establish Techniques for Remote Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Validated methods for remote spasticity assessment have the potential to facilitate earlier diagnosis and improve access, especially in medically underserved or geographically remote areas. A proposed telemedicine framework includes caregiver assistance in demonstrating range of motion for video assessment; patient- and caregiver-reported outcome measures such as ArmA and LegA may support subjective assessment, and caregiver burden may be assessed with the Zarit Burden Interview. Wearable surface electromyography and inertial measurement units can capture abnormal muscle activity and joint kinematics.",
+      "page": null
+    },
+    {
+      "section": "Establish Opportunities for Remote Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Telemedicine and virtual consultations offer scalable solutions for extending specialty expertise to rural or resource-limited settings, and telehealth approaches have been tailored to support remote spasticity management in patients receiving botulinum toxin. Future priorities include developing standardized protocols and reimbursement frameworks, validating sensor-based biomarkers against in-person measures, and designing integrated telehealth pathways.",
+      "page": null
+    },
+    {
+      "section": "Expand Patient and Health Care Team Awareness",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although spasticity affects up to 80% of stroke survivors, it remains underdiagnosed and undertreated. Empowering patients and caregivers through training for earlier recognition and reporting of symptoms may prompt evaluation before contractures or irreversible tissue changes develop. Professional training should emphasize screening tools such as the Poststroke Checklist and promote timely referral to spasticity specialists.",
+      "page": null
+    },
+    {
+      "section": "Expand Access to Spasticity Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Improving access requires expanding the trained workforce (fellowships, interdisciplinary residencies, continuing medical education, mentorship, and core curricula for therapists, rehabilitation nurses, stroke navigators, nurse practitioners, and physician assistants), integrating spasticity care into multidisciplinary care models with standardized referral pathways and electronic health record prompts, and reforming reimbursement mechanisms to support early and sustained intervention.",
+      "page": null
+    },
+    {
+      "section": "Expand Access to Spasticity Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Emerging evidence suggests early intervention may be cost-saving: a secondary cost-consequence analysis of a randomized controlled trial found that early administration of botulinum toxin significantly reduced contracture treatment costs without increasing overall costs of care. Policy strategies such as mandating spasticity screening at hospital discharge or early outpatient follow-up may improve functional outcomes, reduce health care utilization, and limit disability progression.",
+      "page": null
+    },
+    {
+      "section": "Conclusions and Future Directions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Reframing poststroke spasticity as a potentially preventable and treatable complication rather than an inevitable consequence requires a coordinated, multidisciplinary effort, initiated early and tailored to each patient's evolving needs, that targets all 3 contributors to spasticity: involuntary muscle activation, impaired voluntary motor control, and secondary passive tissue changes.",
+      "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

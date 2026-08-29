@@ -9,12 +9,62 @@
   "pmid": "40401760",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: GRADE.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Updated evidence-based support for clinical practice across six critical areas: dose for upper-limb and gait therapy, high-intensity gait training, effect of a therapy transfer package, group versus individual therapy, and sit-to-stand training.",
+      "section": "PICO 1 – Dose of repetitive upper limb practice",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For clinical practice, we suggest considering adding additional time of repetitive upper limb practice to existing stroke rehabilitation programmes. The exact amount of additional practice time is unclear but will likely be at least 20 h, commonly delivered 3–5 times per week over 4–6 weeks. (Strength of recommendation: Weak for intervention ↑?; quality of evidence: Very low ⊕)",
+      "page": null
+    },
+    {
+      "section": "PICO 2 – Dose of gait training (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Based on the overall available evidence, 13 out of 17 MWG members (76%) suggest that additional time spent in walking practice can improve walking capacity in people with stroke. The exact amount of the additional practice time is unclear but will likely be at least 20 h, commonly delivered 3–5 times per week over 4–6 weeks. Thus, for clinical practice, we suggest considering adding extra time of walking practice to existing stroke rehabilitation programmes, preferably at least 20 h. (Due to the limited evidence of only a single RCT, no evidence-based recommendation could be made; quality of evidence and strength of recommendation are not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 3 – High-intensity walking training (walking endurance)",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In people in the chronic stage of stroke with stable cardiovascular status, we recommend high-intensity walking training rather than duration-matched walking training at a lower intensity to improve walking endurance. (Strength of recommendation: Strong for intervention ↑↑; quality of evidence: Moderate ⊕⊕⊕)",
+      "page": null
+    },
+    {
+      "section": "PICO 3 – High-intensity walking training (comfortable and maximum walking speed)",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In people in the chronic stage of stroke with stable cardiovascular status, we suggest high-intensity walking training rather than duration-matched walking training at a lower intensity to improve comfortable and maximum walking speed. (Strength of recommendation: Weak for intervention ↑?; quality of evidence: Low ⊕⊕)",
+      "page": null
+    },
+    {
+      "section": "PICO 4 – Behavioural transfer package with upper limb task-specific training (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Acknowledging the current lack of evidence for this PICO, 13 out of 17 MWG members (76%) suggest considering a transfer package when providing repetitive upper limb task-specific training, when aiming to achieve a transfer from treatment to daily life. The transfer package would include daily evaluation, a patient-kept daily diary, problem-solving, behavioural contract, home practice of specified exercises, and weekly follow-up contacts. (Due to the limited evidence, based only on a single RCT, no evidence-based recommendation could be made.)",
+      "page": null
+    },
+    {
+      "section": "PICO 5 – Group (at least 1:2 therapist–patient ratio) versus time-matched one-to-one task-specific training",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For clinical practice, group-based lower limb training could be offered to improve lower limb activity capacity, but a reasonable ratio between patients and therapists is required to ensure safety and supervision as well as offering additional individualised therapy to address patients’ goals and preferences. (Strength of recommendation: Weak for intervention ↑?; quality of evidence: Very low ⊕. This was a non-inferiority analysis: group-based therapy was found equally – not less – effective than time-matched one-to-one therapy for balance capacity, gait speed and walking endurance.)",
+      "page": null
+    },
+    {
+      "section": "PICO 6 – Additional sit-to-stand training on top of usual care",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For clinical practice, additional sit-to-stand training on top of usual care could be provided but the additional training should include sufficient repetitions, training sessions and adequate duration and content of training. What these parameters are is currently unclear. (Strength of recommendation: Weak for intervention ↑?; quality of evidence: Moderate ⊕⊕⊕; outcome: postural balance capacity.)",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

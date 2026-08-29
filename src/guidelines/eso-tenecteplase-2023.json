@@ -10,12 +10,78 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Within the last year, four randomised-controlled clinical trials (RCTs) have been published comparing intravenous thrombolysis (IVT) with tenecteplase and alteplase in acute ischaemic stroke (AIS) patients with a non-inferiority design for three of them. An expedited recommendation process was initiated by the European Stroke Organisation (ESO) and conducted according to ESO standard operating procedure based on the Grading of Recommendations, Assessment, Development and Evaluations (GRADE) framework.",
+      "section": "PICO 1 AIS patients <4.5 h — 1.1 tenecteplase 0.25 mg/kg versus alteplase 0.90 mg/kg",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration who are eligible for intravenous thrombolysis, tenecteplase 0.25 mg/kg can be used as a safe and effective alternative to alteplase 0.9 mg/kg.",
+      "page": null
+    },
+    {
+      "section": "PICO 1 AIS patients <4.5 h — 1.1 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "All MWG members suggest favouring tenecteplase 0.25 mg/kg over alteplase 0.9 mg/kg for patients with acute ischaemic stroke of <4.5 h duration in light of safety and efficacy data and because tenecteplase can be administered with a single bolus rather than a 1-hr infusion. Voting: 9/9 members.",
+      "page": null
+    },
+    {
+      "section": "PICO 1 AIS patients <4.5 h — 1.2 tenecteplase 0.40 mg/kg versus alteplase 0.90 mg/kg",
+      "classOfRec": "Strong",
+      "classNote": "Against (Strong against intervention, ↓↓)",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration who are eligible for intravenous thrombolysis, we recommend against using tenecteplase at a dose of 0.40 mg/kg.",
+      "page": null
+    },
+    {
+      "section": "PICO 1 AIS patients <4.5 h — 1.3 prehospital management with a mobile stroke unit",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?)",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration with prehospital management with a mobile stroke unit who are eligible for intravenous thrombolysis, we suggest tenecteplase 0.25 mg/kg over alteplase 0.90 mg/kg.",
+      "page": null
+    },
+    {
+      "section": "PICO 2 Patients <4.5 h and large vessel occlusion — 2.1",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For patients with large vessel occlusion acute ischaemic stroke of <4.5 h duration who are eligible for intravenous thrombolysis, we recommend tenecteplase 0.25 mg/kg over alteplase 0.9 mg/kg. Intravenous thrombolysis should not delay mechanical thrombectomy.",
+      "page": null
+    },
+    {
+      "section": "PICO 2 Patients <4.5 h and large vessel occlusion — 2.1 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with large vessel occlusion acute ischaemic stroke of <4.5 h duration who are eligible for intravenous thrombolysis and are directly admitted to a thrombectomy-capable centre, all MWG members suggest IVT with tenecteplase 0.25 mg/kg over skipping IVT. For patients with large vessel occlusion acute ischaemic stroke of <4.5 h duration who are eligible for intravenous thrombolysis and are admitted to a centre without mechanical thrombectomy capability, all MWG members suggest IVT with tenecteplase 0.25 mg/kg followed by rapid transfer to a thrombectomy-capable centre. Voting: 9/9 members.",
+      "page": null
+    },
+    {
+      "section": "PICO 3 Wake-up stroke/unknown onset — 3.1 tenecteplase 0.25 mg/kg versus no intravenous thrombolysis",
+      "classOfRec": "Strong",
+      "classNote": "Against (Strong against intervention, ↓↓)",
+      "levelOfEvidence": "Low certainty",
+      "text": "For patients with acute ischaemic stroke on awakening from sleep or acute ischaemic stroke of unknown onset who are selected with non-contrast CT, we recommend against intravenous thrombolysis with tenecteplase 0.25 mg/kg.",
+      "page": null
+    },
+    {
+      "section": "PICO 3 Wake-up stroke/unknown onset — 3.1 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "All MWG members suggest that tenecteplase 0.25 mg/kg could be a reasonable alternative to alteplase 0.9 mg/kg for patients with acute ischaemic stroke on awakening from sleep or acute ischaemic stroke of unknown onset and who are eligible for intravenous thrombolysis after selection with advanced imaging (FLAIR-DWI mismatch or Perfusion mismatch as outlined in the 2021 ESO Guidelines on IVT). Voting: 9/9 members.",
+      "page": null
+    },
+    {
+      "section": "PICO 3 Wake-up stroke/unknown onset — 3.2 tenecteplase 0.25 or 0.40 mg/kg versus alteplase 0.90 mg/kg",
+      "classOfRec": "No recommendation",
+      "classNote": "Evidence-based recommendation column; ESO assigned no strength of recommendation (Strength of recommendation: –). Not an expert consensus statement.",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients with acute ischaemic stroke on awakening from sleep or acute ischaemic stroke of unknown onset and who are eligible for intravenous thrombolysis, there is continued uncertainty over the potential benefits and harms of tenecteplase compared with alteplase.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

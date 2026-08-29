@@ -9,44 +9,192 @@
   "pmid": "42095756",
   "recommendations": [
     {
-      "section": "Pre-hospital",
+      "section": "PICO 1 — Pre-hospital BP lowering in suspected acute stroke",
       "classOfRec": "Statement",
-      "classNote": "Source grading: Moderate certainty (GRADE).",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "ESO advises against routine pre-hospital BP lowering in suspected stroke.",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with suspected stroke, we suggest against routine blood pressure lowering in the pre-hospital setting.",
       "page": null
     },
     {
-      "section": "Before and after reperfusion",
+      "section": "PICO 1 — Pre-hospital BP lowering in suspected acute stroke (expert consensus statement, vote 10/10)",
       "classOfRec": "Statement",
-      "classNote": "Source grading: Low certainty (IVT) / moderate certainty (MT).",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Maintain BP <185/110 mmHg before the intravenous thrombolysis bolus, and <180/105 mmHg during and for 24 h after intravenous thrombolysis and/or mechanical thrombectomy.",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Due to the potential harm to patients with ICH, treatment with transdermal glyceryl trinitrate should be avoided. Intravenous urapidil or labetalol could be the treatment of choice.",
       "page": null
     },
     {
-      "section": "After successful thrombectomy",
+      "section": "PICO 2 — Hospitalised AIS not treated with reperfusion therapies (IVT or MT)",
       "classOfRec": "Statement",
-      "classNote": "Source grading: High certainty (GRADE).",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "ESO recommends AGAINST intensively lowering systolic BP <140 mmHg in the first 24 h after successful mechanical thrombectomy.",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised patients with acute ischaemic stroke and blood pressure < 220/110 mmHg not treated with intravenous thrombolysis or mechanical thrombectomy, we suggest against the routine use of blood pressure-lowering agents at least in the first 24 h following symptom onset, unless this is necessary for a specific comorbid condition that requires blood pressure lowering.",
       "page": null
     },
     {
-      "section": "Neurological deterioration",
+      "section": "PICO 2 — Hospitalised AIS not treated with reperfusion therapies (expert consensus statement, vote 10/10)",
       "classOfRec": "Statement",
-      "classNote": "Source grading: Low certainty (GRADE).",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Routine use of vasopressors to raise BP in AIS patients with neurological deterioration who are not treated with acute reperfusion therapy is discouraged.",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised patients with acute ischaemic stroke and blood pressure > 220/120 mmHg not treated with intravenous thrombolysis or mechanical thrombectomy, careful blood pressure reduction (< 15% systolic blood pressure reduction in 24 h) is reasonable and likely to be safe. No specific blood pressure-lowering agent can be recommended.",
       "page": null
     },
     {
-      "section": "Acute ICH",
+      "section": "PICO 3 — Hospitalised AIS undergoing intravenous thrombolysis (with or without mechanical thrombectomy)",
       "classOfRec": "Statement",
-      "classNote": "Source grading: Expert consensus.",
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Net clinical benefit of intensive BP lowering in acute ICH remains uncertain; expert consensus supports early systolic BP reduction to <140 mmHg in small-to-moderate haematomas to limit haematoma expansion.",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised patients with acute ischaemic stroke and undergoing intravenous thrombolysis (with or without mechanical thrombectomy), we suggest maintaining blood pressure below 185/110 mmHg before bolus, and below 180/105 mmHg after bolus and for 24 h. No specific blood pressure-lowering agent can be recommended.",
+      "page": null
+    },
+    {
+      "section": "PICO 3 — Hospitalised AIS undergoing intravenous thrombolysis (with or without mechanical thrombectomy)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised patients with acute ischaemic stroke and undergoing intravenous thrombolysis (with or without mechanical thrombectomy), we suggest against lowering systolic blood pressure to a target of 130–140 mmHg compared to < 180 mmHg during the first 72 h following symptom onset.",
+      "page": null
+    },
+    {
+      "section": "PICO 4 — AIS caused by LVO undergoing mechanical thrombectomy (with or without IVT)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with acute ischaemic stroke caused by LVO and undergoing mechanical thrombectomy (with or without intravenous thrombolysis), we suggest keeping blood pressure below 180/105 mmHg during, and for 24 h after, mechanical thrombectomy. No specific blood pressure-lowering agent can be recommended.",
+      "page": null
+    },
+    {
+      "section": "PICO 4 — AIS caused by LVO undergoing mechanical thrombectomy (with or without IVT)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with acute ischaemic stroke caused by LVO and undergoing mechanical thrombectomy (with or without intravenous thrombolysis), we suggest against individualised blood pressure management (guided by pre-procedural blood pressure levels) during mechanical thrombectomy.",
+      "page": null
+    },
+    {
+      "section": "PICO 4 — AIS caused by LVO undergoing mechanical thrombectomy (with or without IVT)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with acute ischaemic stroke caused by LVO and undergoing mechanical thrombectomy (with or without intravenous thrombolysis), we recommend against actively reducing systolic blood pressure < 140 mmHg for the first 24 h following successful mechanical thrombectomy.",
+      "page": null
+    },
+    {
+      "section": "PICO 4 — AIS caused by LVO undergoing mechanical thrombectomy (with or without IVT)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with acute ischaemic stroke caused by LVO and undergoing mechanical thrombectomy (with or without intravenous thrombolysis), systolic blood pressure drops should be avoided.",
+      "page": null
+    },
+    {
+      "section": "PICO 4 — AIS caused by LVO undergoing mechanical thrombectomy (expert consensus statement, vote 10/10)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with acute ischaemic stroke due to LVO who achieve successful reperfusion defined as modified thrombolysis in cerebral infarction grade of 3 following mechanical thrombectomy, we suggest against induced hypertension.",
+      "page": null
+    },
+    {
+      "section": "PICO 5 — AIS not treated with reperfusion therapies and with clinical deterioration: induced hypertension",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with acute ischaemic stroke not treated with reperfusion therapies (intravenous thrombolysis or mechanical thrombectomy) and with clinical deterioration, we suggest against the routine use of vasopressor drugs to increase blood pressure.",
+      "page": null
+    },
+    {
+      "section": "PICO 5 — AIS not treated with reperfusion therapies and with clinical deterioration (expert consensus statement, vote 10/10)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with acute ischaemic stroke not treated with reperfusion therapies (intravenous thrombolysis or mechanical thrombectomy) and with clinical deterioration where a haemodynamic mechanism is suspected or shown to be directly responsible for the deterioration, we suggest: stopping existing blood pressure-lowering therapy; administering intravenous fluids; and introducing non-pharmacological procedures to raise blood pressure — before considering careful use of vasopressor agents to increase blood pressure with close monitoring of blood pressure values.",
+      "page": null
+    },
+    {
+      "section": "PICO 6 — AIS: continuing vs temporarily stopping previous oral BP-lowering therapy",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with acute ischaemic stroke, we suggest against routinely continuing previous oral blood pressure-lowering therapy.",
+      "page": null
+    },
+    {
+      "section": "PICO 6 — AIS: continuing vs temporarily stopping previous oral BP-lowering therapy (expert consensus statement, vote 10/10)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with acute ischaemic stroke, we suggest stopping previous oral blood pressure-lowering therapy in patients with dysphagia until swallowing is restored or a nasogastric tube is in place.",
+      "page": null
+    },
+    {
+      "section": "PICO 7 — Acute ICH: intensive blood pressure lowering vs control",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with acute spontaneous ICH and systolic blood pressure of 150–220 mmHg, the overall balance of beneficial and adverse effects is uncertain, so we recommend recruitment to ongoing randomised controlled trials. (Strength of recommendation: none assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 7 — Acute ICH: intensive blood pressure lowering (expert consensus statement, vote 10/10)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest lowering systolic blood pressure below 140 mmHg within 6 h of symptom onset in minor or moderate ICH (haematoma volume < 30 mL) to reduce haematoma expansion.",
+      "page": null
+    },
+    {
+      "section": "PICO 7 — Acute ICH: intensive blood pressure lowering (expert consensus statement, vote 10/10)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with spontaneous ICH, we suggest avoiding a reduction in systolic blood pressure of more than 70 mmHg from baseline and avoiding active reduction of systolic blood pressure below 110 mmHg. Caution is advised when lowering very high systolic blood pressure (> 220 mmHg), in patients with large haematoma volumes (> 30 mL) or when haematoma evacuation is planned.",
+      "page": null
+    },
+    {
+      "section": "PICO 7 — Acute ICH: intensive blood pressure lowering (expert consensus statement, vote 10/10)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with acute ICH, blood pressure target–based interventions should be preferred over interventions based on fixed antihypertensive agents.",
+      "page": null
+    },
+    {
+      "section": "PICO 7 — Acute ICH: intensive blood pressure lowering (expert consensus statement, vote 10/10)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with spontaneous minor or moderate ICH (haematoma volume < 30 mL), we suggest applying the following aspects: initiating antihypertensive treatment as early as possible, ideally within the first 2 h following the onset of symptoms (acute phase): lower systolic blood pressure to < 140 mmHg and minimise variability in blood pressure fluctuations. After lowering systolic blood pressure below the target threshold (up to 7 days, sub-acute phase): maintain systolic blood pressure below 140 mmHg.",
+      "page": null
+    },
+    {
+      "section": "PICO 8 — Acute ICH: continuing vs temporarily stopping previous oral antihypertensive therapy",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with acute ICH there is continued uncertainty over the benefits and risks (advantages/disadvantages) of continuing vs temporarily stopping previous oral blood pressure-lowering therapy. (Strength of recommendation: none assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 8 — Acute ICH: continuing vs temporarily stopping previous oral antihypertensive therapy (expert consensus statement, vote 10/10)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with acute ICH who need blood pressure-lowering therapy to maintain blood pressure within the recommended range and who do not have swallowing problems, we suggest continuation of prior oral antihypertensive agents.",
+      "page": null
+    },
+    {
+      "section": "PICO 8 — Acute ICH: continuing vs temporarily stopping previous oral antihypertensive therapy (expert consensus statement, vote 10/10)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with acute ICH who need blood pressure-lowering therapy to maintain blood pressure within the recommended range and who have dysphagia or decreased level of consciousness, we suggest temporarily stopping previous oral hypertensive therapy and using intravenous antihypertensive agents until swallowing is restored or a nasogastric tube is in place.",
       "page": null
     }
-  ]
+  ],
+  "extractionStatus": "source-not-machine-readable",
+  "extractionNote": "The recommendation boxes are published as images. The statements below are drawn from the article's running text; grades are recorded only where the text states them explicitly. Consult the source for exact wording.",
+  "documentType": "guideline",
+  "gradingSystem": "ungraded"
 }

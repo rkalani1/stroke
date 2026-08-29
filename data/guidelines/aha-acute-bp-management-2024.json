@@ -10,12 +10,334 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Definitions",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Over the past 3 decades, a substantial body of high-quality evidence has guided the diagnosis and management of elevated blood pressure (BP) in the outpatient setting. In contrast, there is a lack of comparable evidence for guiding the management of elevated BP in the acute care setting, resulting in significant practice variation. Throughout this scientific statement, we use the terms acute care and inpatient to refer to care received in the emergency department and after admission to the hospital.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Historical terms such as hypertensive crisis and hypertensive urgency fail to acknowledge the nuances of treatment decisions and, through the use of subjective emotive language, may encourage unnecessary antihypertensive treatment. We propose the following objective terminology: hypertensive emergency (SBP/DBP >180/110-120 mm Hg with evidence of new or worsening target-organ damage), asymptomatic markedly elevated inpatient BP (SBP/DBP >180/110-120 mm Hg without evidence of new or worsening target-organ damage), and asymptomatic elevated inpatient BP (SBP/DBP >=130/80 mm Hg without evidence of new or worsening target-organ damage).",
+      "page": null
+    },
+    {
+      "section": "Definitions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "BP-related target-organ damage might manifest even when BP is below the 180/110 to 120 mm Hg threshold in particular contexts, indicating that this benchmark should not be perceived as an unequivocal aspect of the definition criteria. Target-organ damage is defined by any symptom, sign, or diagnostic finding indicative of acute damage, including injuries to the brain (hypertensive encephalopathy, intracranial hemorrhage, acute ischemic stroke), heart (acute myocardial infarction, unstable angina, acute left ventricular failure with pulmonary edema), large vessels (dissecting aortic aneurysm), kidneys, and the microvasculature.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Asymptomatic elevated inpatient BP is more common than hypertensive emergency; in a systematic review of 9 studies it was present in 50% to 72% of hospitalizations, and a multihospital study of 224 265 adults admitted for reasons other than hypertension found that 10% had asymptomatic markedly elevated inpatient BP.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is no evidence suggesting that the threshold for initiating antihypertensive medication or indicating the type or combinations of antihypertensive medications to use should differ according to sex or gender. The management of hypertension in pregnancy in the inpatient setting has special requirements, and readers are referred to recent guidelines and scientific statements on hypertension in pregnancy.",
+      "page": null
+    },
+    {
+      "section": "BP Measurement in the Acute Care Setting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "BP recordings in the electronic health record typically omit critical contextual factors contributing to variability and inaccuracy, including device type, validation and calibration status of the device, cuff placement, cuff size, patient position (eg, supine, seated), and situational factors (eg, anxiety, pain, patient woken up for BP measurement).",
+      "page": null
+    },
+    {
+      "section": "BP Measurement in the Acute Care Setting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Arterial lines are preferred for hypertensive emergencies and for intravenous antihypertensives, and for monitoring the rate of BP decline. When BPs are >180/100 mm Hg in critical care or surgical inpatient populations, oscillometric devices may underestimate BP by as much as 50/30 mm Hg compared with BP from an arterial line.",
+      "page": null
+    },
+    {
+      "section": "BP Measurement in the Acute Care Setting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In asymptomatic elevated BP, when feasible, using standardized BP measurements in the acute care setting before making BP management decisions is reasonable and may help minimize variability and ensure appropriate treatment.",
+      "page": null
+    },
+    {
+      "section": "Management of Elevated Inpatient BP",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The management of elevated inpatient BP involves appropriate measurement technique, assessment of the severity of the reading, evaluation for new or worsening target-organ damage, addressing underlying causes of elevated BP, and judicious appraisal of the risks and benefits of initiating antihypertensive treatment. The inpatient A-I-M acronym (assess, identify, modify) guides initial management and the posthospitalization A-I-M acronym (arrange, inform, monitor) guides discharge and transition-of-care planning.",
+      "page": null
+    },
+    {
+      "section": "Hypertensive Emergency",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Distinguishing hypertensive emergencies from asymptomatic elevated inpatient BP is the critical first step in management. After an accurate BP measurement, assess the severity of the reading and assess for evidence of new or worsening target-organ damage, the hallmark of hypertensive emergency. The BARKH acronym (brain, arteries, retina, kidney, heart) assists in quickly identifying potential target organs at risk.",
+      "page": null
+    },
+    {
+      "section": "Hypertensive Emergency",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A comprehensive evaluation of markedly elevated BP includes a thorough history (chronic hypertension, current antihypertensive medications and adherence, available outpatient BP readings) and physical examination focused on comparing bilateral pulses, auscultating the heart and lungs, and performing a fundoscopic examination. Further diagnostic investigations include a basic metabolic panel, complete blood count, chest radiograph, 12-lead ECG including heart rate, and assessment of volume status and risk of orthostasis.",
+      "page": null
+    },
+    {
+      "section": "Hypertensive Emergency",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "If the BP reading is confirmed and evidence of new or worsening target-organ damage is present, then the treatment pathway for hypertensive emergency as outlined in the 2017 Hypertension Clinical Practice Guidelines should be promptly initiated.",
+      "page": null
+    },
+    {
+      "section": "Hypertensive Emergency (Table 1: Hypertensive Emergencies by Organ and Initial Treatment Approach)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Brain - stroke: initial BP target 130<SBP<180 mm Hg, MAP decline 15% in 1 h; treatment agents labetalol, nicardipine. Hypertensive encephalopathy (PRES): immediate MAP decline 20%-25%. Cerebral hemorrhage: immediate MAP decline 15%.",
+      "page": null
+    },
+    {
+      "section": "Hypertensive Emergency (Table 1: Hypertensive Emergencies by Organ and Initial Treatment Approach)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Arteries - acute aortic dissection: SBP <120 mm Hg immediate; treatment with esmolol and nitroprusside, nitroglycerin, or nicardipine. Preeclampsia, HELLP, eclampsia: immediate SBP <160 mm Hg and DBP <105 mm Hg if severe; labetalol, nicardipine, magnesium sulfate, or hydralazine.",
+      "page": null
+    },
+    {
+      "section": "Hypertensive Emergency (Table 1: Hypertensive Emergencies by Organ and Initial Treatment Approach)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Retina - grade III-IV Keith-Wagener-Barker hypertensive retinopathy: SBP <180 mm Hg. Kidney - acute kidney injury: MAP decline of 15%; thrombotic microangiopathy: MAP decline 20%-25% over several hours. Heart - acute heart failure: SBP <180 mm Hg or MAP decline 25%; pulmonary edema and acute coronary syndrome: immediate SBP <140 mm Hg.",
+      "page": null
+    },
+    {
+      "section": "Asymptomatic Elevated Inpatient BP",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In general, it is prudent to avoid pro re nata (PRN) orders for antihypertensive medications to treat asymptomatic elevated inpatient BP. PRN parenteral antihypertensive orders may lead to administration of antihypertensives during the night, potentially lowering morning BP enough to withhold morning oral antihypertensive medications, contributing to a recurrent pattern of high BP at night and increased overall BP variability.",
+      "page": null
+    },
+    {
+      "section": "Careful Assessment of the BP Reading and Identifying Reversible Causes of Inpatient Elevated BP",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The initial step in addressing asymptomatic elevated inpatient BP involves verifying the accuracy of the BP measurement and assessing for reversible causes: check that the device is in optimal working condition and recently calibrated, then repeat the BP measurement using proper technique (eg, having the patient sit up in bed rather than being supine). It is incumbent on hospital administration and medical engineering departments to ensure all BP measurement devices are routinely calibrated and maintained.",
+      "page": null
+    },
+    {
+      "section": "Careful Assessment of the BP Reading and Identifying Reversible Causes of Inpatient Elevated BP",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The evidence supports identifying and addressing reversible causes of elevated BP: acute stress, pain, anxiety, sleep deprivation, and other acute illness-related factors. Home and inpatient medication lists should be reviewed for agents that could increase BP such as excessive intravenous fluids, nonsteroidal anti-inflammatory drugs, stimulants, corticosteroids, or illicit substances (eg, cocaine, methamphetamine). Heart rate should be monitored closely because it affects cardiac output and thus BP.",
+      "page": null
+    },
+    {
+      "section": "Careful Assessment of the BP Reading and Identifying Reversible Causes of Inpatient Elevated BP",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with an existing hypertension diagnosis already taking antihypertensive medications at home, the evidence supports assessment of whether their home medications have been appropriately restarted during this admission; one study reported that 41% of patients prescribed PRN antihypertensives were not receiving their home regimen while in the hospital.",
+      "page": null
+    },
+    {
+      "section": "Careful Assessment of the BP Reading and Identifying Reversible Causes of Inpatient Elevated BP",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In managing asymptomatic elevated inpatient BP it is important to assess the patient's volume status and to assess and manage pain. If available, the evidence supports evaluating the patient's measured BP levels outside of the hospital, because persistent BP elevations in inpatient and outpatient settings might indicate the need for initiating or intensifying oral medications while the patient is in the hospital.",
+      "page": null
+    },
+    {
+      "section": "Outcomes of Treating Asymptomatic Elevated Inpatient BP",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "No randomized clinical trials have studied the treatment of asymptomatic elevated inpatient BP. Multiple recent observational studies suggest that pharmacological treatment of asymptomatic elevated inpatient BP in the acute care setting, especially with intravenous medications, carries risks, including a higher rate of a composite of mortality, acute kidney injury, stroke, troponin elevation, BNP elevation, and ICU transfer (adjusted OR 1.28) and more hypotensive episodes.",
+      "page": null
+    },
+    {
+      "section": "Outcomes of Treating Asymptomatic Elevated Inpatient BP",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Parenteral antihypertensive medications can lower BP abruptly, particularly in people with acute illness and impaired autoregulation. Patients treated with intravenous antihypertensives were 40% more likely to have a >=30% reduction in mean arterial pressure and had 60% greater risk of myocardial injury; PRN antihypertensive use (93% intravenous) was associated with a 2-fold higher risk of death, 24% higher risk of acute kidney injury, and 2-fold higher risk of abrupt BP lowering.",
+      "page": null
+    },
+    {
+      "section": "Does the Evidence Support Any Situation to Treat Asymptomatic Elevated Inpatient BP?",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Best practices for patients with persistent markedly elevated inpatient BP readings (ie, SBP/DBP >180/110-120 mm Hg) who have a history of high outpatient BPs may include initiating or intensifying antihypertensive medication during their admission. It may also be reasonable to initiate or intensify antihypertensive medications in those with persistently high or persistently uncontrolled BP, as well as those at high risk for or with a history of CVD.",
+      "page": null
+    },
+    {
+      "section": "Does the Evidence Support Any Situation to Treat Asymptomatic Elevated Inpatient BP?",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A patient's BP may take several days to weeks to adjust to a medication change; a typical inpatient stay is unlikely to be sufficient to fully assess the effect of a single medication change, and close outpatient follow-up is needed. For patients hospitalized for conditions unrelated to hypertension, a period of acute illness may be a less optimal time to intervene.",
+      "page": null
+    },
+    {
+      "section": "Does the Evidence Support Any Situation to Treat Asymptomatic Elevated Inpatient BP?",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The current state of evidence suggests that treating asymptomatic elevated inpatient BP should generally be the exception, not the rule. If the choice to begin antihypertensive medication is made, using the 2017 Hypertension Clinical Practice Guidelines to guide the initial regimen in the acute care setting is reasonable.",
+      "page": null
+    },
+    {
+      "section": "Optimizing Transitions of Care: Disposition After an ED Encounter",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The 2013 American College of Emergency Physicians clinical policy discourages antihypertensive medication for asymptomatic elevated inpatient BP in the ED, but initiating oral therapy in the ED at discharge to home is supported by the evidence for some patients. Initiating antihypertensive treatment in the ED can help address health care disparities, particularly in disenfranchised groups who often lack primary medical care.",
+      "page": null
+    },
+    {
+      "section": "Optimizing Transitions of Care: Disposition After an ED Encounter",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with asymptomatic elevated BP presenting to the ED, engaging community health workers, implementing specific care pathways, and providing referral strategies, including harnessing alternative care models to facilitate primary care follow-up and ongoing BP management, are critical to ensuring appropriate and equitable management after ED discharge.",
+      "page": null
+    },
+    {
+      "section": "Optimizing Transitions of Care: Disposition After Hospital Admission",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with elevated inpatient BP with or without a preadmission diagnosis of hypertension, there are 2 crucial steps at discharge: (1) careful review and adjustment of medication with adequate patient counseling and (2) planning for future care coordination. The best available evidence suggests maintaining the prehospitalization antihypertensive medication regimen and avoiding intensification at discharge.",
+      "page": null
+    },
+    {
+      "section": "Optimizing Transitions of Care: Disposition After Hospital Admission",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Any new antihypertensive medication initiated during the admission should align with the 2017 Hypertension Clinical Practice Guidelines and should account for factors affecting treatment effectiveness and adherence such as health literacy, health insurance, affordability, social support, and self-management resources. Among US adults with hypertension, about 18% take at least 1 medication that can increase inpatient BP, and these medications should be discontinued when possible.",
+      "page": null
+    },
+    {
+      "section": "Optimizing Transitions of Care: Disposition After Hospital Admission",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Consideration should be given to fixed-dose or combination therapy, which can improve adherence, help achieve adequate BP control sooner, and reduce medication burden. High-quality medication counseling on discharge is critical, with clear communication about any changes made during the admission and the need for outpatient monitoring, including out-of-office BP monitoring.",
+      "page": null
+    },
+    {
+      "section": "Optimizing Transitions of Care: Disposition After Hospital Admission",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "High-quality postdischarge care involves patient education, promotion of self-management and lifestyle modifications, potential use of antihypertensive medications, and home BP monitoring with validated home BP measurement devices. Establishing a follow-up appointment with the primary care clinician is crucial; if a timely appointment is not feasible, scheduling the patient to see another clinical team member, ideally a case manager within a team-based care model for hypertension, is reasonable.",
+      "page": null
+    },
+    {
+      "section": "Table 3: Ten Key Implications for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "1. It is important to use proper techniques with a recently calibrated device to measure BP.",
+      "page": null
+    },
+    {
+      "section": "Table 3: Ten Key Implications for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "2. It is important to detect and correct reversible causes of elevated inpatient BP.",
+      "page": null
+    },
+    {
+      "section": "Table 3: Ten Key Implications for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "3. In the ED setting, for asymptomatic elevated BP or asymptomatic markedly elevated BP, evidence supports avoiding intensifying hypertension medications, with a preference toward restarting home medications and planning for close outpatient follow-up care.",
+      "page": null
+    },
+    {
+      "section": "Table 3: Ten Key Implications for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "4. Further research is needed to better define optimal inpatient BP measurement methods across different settings.",
+      "page": null
+    },
+    {
+      "section": "Table 3: Ten Key Implications for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "5. Hypertensive emergencies require immediate and acute treatment usually with parenteral medications and often in the ICU setting.",
+      "page": null
+    },
+    {
+      "section": "Table 3: Ten Key Implications for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "6. Elevated BP in the hospital without new or worsening target-organ damage may be best served by accurate remeasurement and attention to contributing circumstantial factors.",
+      "page": null
+    },
+    {
+      "section": "Table 3: Ten Key Implications for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "7. Working with hospital administration to ensure regular validation of BP measurement devices may reduce erroneous elevated BP readings.",
+      "page": null
+    },
+    {
+      "section": "Table 3: Ten Key Implications for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "8. The threshold to initiate or intensify antihypertensive medications in response to asymptomatic elevated inpatient BP should be high.",
+      "page": null
+    },
+    {
+      "section": "Table 3: Ten Key Implications for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "9. Use of intravenous antihypertensives is not supported by the evidence in the absence of hypertensive emergency.",
+      "page": null
+    },
+    {
+      "section": "Table 3: Ten Key Implications for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "10. Research is needed to determine the ideal inpatient candidate for intensification of the antihypertensive medication in response to asymptomatic elevated inpatient BP readings.",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although hypertensive emergency clearly warrants aggressive treatment with close monitoring, when and how to treat asymptomatic elevated inpatient BP remain less certain. The best available evidence suggests a practical, common sense approach to treatment of asymptomatic elevated inpatient BP, including repeating the BP measurement with a proper measurement technique and addressing all underlying conditions such as pain, anxiety, or other underlying illnesses, rather than focusing primarily on pharmacological interventions.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

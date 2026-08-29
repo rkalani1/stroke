@@ -10,12 +10,16 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Source not machine-readable",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The optimal management of post-stroke cognitive impairment remains controversial. These joint European Stroke Organisation (ESO) and European Academy of Neurology (EAN) guidelines provide evidence-based recommendations to assist clinicians in decision making around prevention, diagnosis, treatment and prognosis. These guidelines were developed according to ESO standard operating procedure and the Grading of Recommendations, Assessment, Development and Evaluation (GRADE) methodology.",
+      "classNote": "Recommendations not machine-readable",
+      "levelOfEvidence": "Ungraded",
+      "text": "The recommendation boxes in this guideline are published as images and no recommendation text was machine-readable from any open source. Consult the source directly.",
       "page": null
     }
-  ]
+  ],
+  "extractionStatus": "source-not-machine-readable",
+  "extractionNote": "The recommendation boxes in this guideline are published as images and no recommendation text was machine-readable from any open source. Consult the source directly.",
+  "documentType": "guideline",
+  "gradingSystem": "ungraded"
 }

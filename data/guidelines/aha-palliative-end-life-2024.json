@@ -10,12 +10,294 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Introduction",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "To provide an update on palliative care needs specific to stroke and provide key points for clinicians and health care systems caring for patients with stroke and their families. Members of the writing group were chosen to represent the multidisciplinary team of professionals who care for people who have had a stroke.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Integrating palliative care principles into stroke care is fundamental in all stages of stroke. High-quality stroke care should always include primary palliative care, which is palliative care provided by the primary medical team who is trained in communication skills and able to assess and manage patient and family needs effectively, either themselves or through referral to other specialists. A palliative care specialist team, if available, may be needed in cases with more complex symptoms, situations, or communication needs.",
+      "page": null
+    },
+    {
+      "section": "Abstract - Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Palliative care needs are common after stroke and should be addressed throughout the illness continuum. Research is urgently needed.",
+      "page": null
+    },
+    {
+      "section": "Racial or Ethnic Health Care Inequities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Inequities by race or ethnicity have been found in advance care planning and patterns of serious illness treatment after stroke. People from historically underrepresented racial or ethnic groups are less likely than White individuals to have advance directives or do-not-resuscitate orders or to transition to comfort measures only, and are more likely to use long-term life-sustaining treatments such as tracheostomy or percutaneous gastrostomy tube.",
+      "page": null
+    },
+    {
+      "section": "Racial or Ethnic Health Care Inequities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Assuming that these observed care patterns are solely attributable to patient factors ignores the long history of inequities in care resulting from upstream factors, such as structural racism and implicit bias, and does not account for the role of clinicians and the health care system. Systems-level factors contribute to these inequities: a major driver of palliative care use is the hospital at which the patient received treatment, independent of race or ethnicity.",
+      "page": null
+    },
+    {
+      "section": "Racial or Ethnic Health Care Inequities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Systematic tailored interventions may help mitigate these historical inequities, such as a goals-of-care conversation priming guide (which improved documentation of goals-of-care conversations with a greater effect size in patients from historically underrepresented racial or ethnic groups) and bilingual, bicultural lay patient navigators (which substantially increased engagement in advance care planning and hospice use).",
+      "page": null
+    },
+    {
+      "section": "Palliative Care Needs and Holistic Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patient- and family-centered palliative care requires a comprehensive assessment of multidimensional distress conceptualized as the total pain of illness, including symptoms and needs beyond physical pain such as emotional, psychosocial, spiritual, and existential distress. At the center of this assessment is a proactive and holistic exploration of the effects of the stroke on the patient and their family, their expectations after the stroke, their values, and their goals of care.",
+      "page": null
+    },
+    {
+      "section": "Palliative Care Needs and Holistic Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The palliative care needs of patients and their care partners fluctuate over the course of the illness. Certain events can serve as signposts indicating a change in health status or signaling prognostic implications, including a change in neurologic examination results or medical condition, rehospitalization, or the end of a time-limited trial. If anticipated, such events can prompt discussion of changes in management, treatment, goals of care, and the patient's and family's needs, hopes, and fears, and may trigger referral to a specialty palliative care or hospice team.",
+      "page": null
+    },
+    {
+      "section": "Palliative Care Needs and Holistic Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Six phases are proposed after severe stroke - diagnosis, treatment, medical stabilization, preparation, adjustment, and adaptation - each of which requires a different focus of support. Trajectories may vary among individuals with the same diagnosis, and clinicians need to assess multidimensional needs carefully and proactively.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Palliative Care Needs Screening Tools or Triggers - Surprise question",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Surprise question (adapted for stroke): Would you be surprised if this patient dies within the next year, dies during this hospitalization, or does not recover to independence? If 'no,' consider a serious illness conversation (eg, advance care planning, family meeting, referral to palliative care team).",
+      "page": null
+    },
+    {
+      "section": "Table 1. Palliative Care Needs Screening Tools or Triggers - SuPPOrTT checklist",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "SuPPOrTT checklist: Su - Does the patient or family need psychosocial or spiritual support or help with coping? P - Does the patient have pain or other distressing symptoms? PO - Does the patient or family have questions about prognosis or treatment options? rTT - Do we need to readdress goals of care or target treatment to patient-centered goals? If 'yes,' consider a primary palliative care intervention, change in symptom management, or referral to the respective expert for specialist palliative care.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Palliative Care Needs Screening Tools or Triggers - End of a time-limited trial",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A time-limited trial is a specified time frame in which to continue life-sustaining treatment to evaluate response and prognosis. When this specified period has passed, another family meeting is key to assess symptoms and recovery, and to revisit goals of care.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Palliative Care Needs Screening Tools or Triggers - Changes in living situation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Changes in living situation may include moving from a facility to home, increasing need for assistance with activities of daily living, and loss of ability to work or drive. Any change can be stressful; a change in living situation may also signal a need for revisiting treatment options and goals of care. Referral to social work and support groups may be helpful.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Palliative Care Needs Screening Tools or Triggers - Screening for caregiver distress or burnout",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Ask care partners specifically about their role as a caregiver, their own wellbeing, and their ability to cope. Acknowledge the care partner's role and possible strain, normalize feelings of overwhelm, and recognize burnout. Consider involving social work and peer support groups, and encourage caregivers to engage with their clinicians to address their own health care needs.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Palliative Care Needs Screening Tools or Triggers - Screening for spiritual care needs (HOPE instrument)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Explore sources of hope and inquire into organized religion, personal spiritual beliefs, and practices or restrictions that may affect medical care. Consider referral to spiritual care or personal or community faith leader.",
+      "page": null
+    },
+    {
+      "section": "Pain and Other Physical Symptoms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Poststroke pain exhibits a trajectory, with highest severity of pain at 4 to 6 months and >2 years after stroke, and continues to be underdiagnosed and poorly controlled, suggesting that clinicians need to ask about and assess for poststroke pain symptoms carefully. In patients who are unable to communicate, nonverbal indicators of discomfort, such as the Critical Care Pain Observation Tool, may be valuable.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Common Symptoms After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Central poststroke pain: management options include antidepressants (tricyclics, selective serotonin reuptake inhibitors, serotonin-norepinephrine reuptake inhibitors) - noting tricyclic antidepressants may lead to dry mouth or delirium - and antiseizure medications, most commonly lamotrigine, pregabalin, or gabapentin.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Common Symptoms After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Depression: antidepressants, with the agent selected on the basis of comorbidities and expected side effect profile. Hemiplegic shoulder pain: physical therapy with range of motion exercises, and nonsteroidal anti-inflammatory agents, which can help improve range of motion before exercise. Spasticity: stretching exercises, muscle relaxants, and botulinum toxin.",
+      "page": null
+    },
+    {
+      "section": "Emotional Support",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Skilled communication from stroke health care professionals needs to include a commitment to meaningful engagement and nonabandonment throughout the stroke trajectory. Prognostic uncertainty can be a considerable source of distress after severe stroke, and families need guidance and support. Patients who have experienced stroke and their care partners should be viewed as a unit of care; dyadic interventions may improve physical functioning, memory, and quality of life for the stroke survivor and depression symptoms for the care partner.",
+      "page": null
+    },
+    {
+      "section": "Psychosocial Support",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the setting of acute severe stroke, family members must step into the role of surrogate decision-makers and need to honor patient autonomy through substituted judgment while facing highly consequential treatment decisions and the possible loss of the person they knew. Such tasks require multidimensional support from the clinician team, who should provide needed unbiased prognostic information, offer treatment options, and provide emotional support.",
+      "page": null
+    },
+    {
+      "section": "Spiritual Support",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Clinicians should ask their patients and families about spiritual or religious beliefs and offer referral to a chaplain or spiritual care. Spiritual distress - a disruption of a person's value or belief system - can lead to a loss of strength, hope, and sense of meaning, yet health care professionals rarely address spiritual concerns, even when raised by family members.",
+      "page": null
+    },
+    {
+      "section": "Communication and Goals of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Providing goal-concordant care requires clinicians to (1) assess the patient's and family's understanding and perception of their current condition, values and preferences, and hopes and fears for the future, including potential trade-offs; (2) provide tailored and honest information about the illness, prognosis, and treatment options; and (3) consider a treatment recommendation that aligns with these.",
+      "page": null
+    },
+    {
+      "section": "Communication and Goals of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Skilled communicators acknowledge the difficult emotions associated with not having a clear answer or path ahead and help patients and families adapt and cope with new possible futures. Even when the eventual outcome is uncertain, clinicians can provide a road map describing anticipated next steps in management and in the clinical condition, and alleviate uncertainty by describing a best-case, worst-case scenario.",
+      "page": null
+    },
+    {
+      "section": "Communication and Goals of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Prognosis discordance between family care partners and physicians is common in the setting of acute severe stroke and is typically caused by a combination of misunderstanding and belief differences, which in turn may be driven by faith, optimism, or uncertainty. It is important to understand the perspective of patients and families to manage the discordance appropriately.",
+      "page": null
+    },
+    {
+      "section": "Communication and Goals of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A time-limited trial - providing more intensive care temporarily, for an agreed-on time period, to allow all parties to better understand the likely prognosis, patient goals, and associated trade-offs - can provide structure and support as families navigate life-or-death decisions, and may justify the short-term use of medical care that is overall considered discordant with a patient's presumed or previously stated goals. Such conversations ideally are initiated at an early stage of illness and revisited periodically.",
+      "page": null
+    },
+    {
+      "section": "Communication and Goals of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "After stroke, goals of care conversations should be considered alongside conversations about secondary stroke prevention; however, although desired and recommended, these conversations are infrequent among stroke survivors.",
+      "page": null
+    },
+    {
+      "section": "Postacute Care - Epidemiology",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Regardless of discharge destination, referrals to palliative care after stroke are typically low: stroke comprises between 0.4% and 8.9% of referrals to specialist palliative care services, with most referrals being made near the end of life.",
+      "page": null
+    },
+    {
+      "section": "Postacute Care - Epidemiology",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In a National Hospital Care Survey study of 36 519 patients hospitalized with stroke, 22.5% died either in the hospital or by the end of the following year (approximately 6.8% in hospital and 15.7% after discharge, about half of those deaths occurring >90 days after discharge). Across 2 US-based studies, approximately 34% to 45% of patients were discharged home without additional services, 10% to 11% home with home care or home health services, 30% to 42% to inpatient postacute facilities, 6% to 8% died in the hospital, 2% to 3% were discharged to an inpatient hospice facility, and 1% with home hospice.",
+      "page": null
+    },
+    {
+      "section": "Palliative Care for Stroke in the Postacute Setting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There are no randomized controlled trials evaluating poststroke palliative care interventions, and most studies focused on the final days of life; there is limited evidence to guide how to integrate palliative care into routine stroke care, especially if prognosis is uncertain. For stroke, interdisciplinary models that include specially trained nurses and social workers may be the most effective approach, given the multidimensional needs of patients with stroke and their families.",
+      "page": null
+    },
+    {
+      "section": "Palliative Care for Stroke in the Postacute Setting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although not specific to palliative care, a meta-analysis of 8 randomized controlled trials including 1196 stroke survivors discharged directly home found that a case management intervention improved patients' mental health and activities of daily living, and a systematic review of 18 studies of family caregiver support and dyadic interventions after stroke suggests improved caregiver outcomes, including reduced burden and improved mental health and quality of life. Nurse-led community-based palliative care models developed for heart failure and other serious noncancer illnesses, ranging from 3 to 12 months in length, could be adapted for stroke.",
+      "page": null
+    },
+    {
+      "section": "Postacute Care of Family Members",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Families need to be provided with guidance about which resources and websites might be most helpful, given their individual situations and where they are in the stroke trajectory. They also need different types of resources at different times along the stroke trajectory, which could be addressed by an interdisciplinary postacute stroke palliative care model that crosses the continuum of care from inpatient care to home.",
+      "page": null
+    },
+    {
+      "section": "End-of-Life Care After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients and families deserve comprehensive end-of-life symptom control, including intensive comfort measures and emotional support. Because patients who die of stroke often have altered consciousness or awareness or difficulty communicating, health care professionals should perform regular pain assessments using both verbal (eg, 0-10 pain intensity scale) and nonverbal (eg, increased respiratory or heart rate, muscle tension, grimacing) indicators of discomfort.",
+      "page": null
+    },
+    {
+      "section": "End-of-Life Care After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The most commonly documented symptoms after stroke at the end of life include pain (25%-65%) and dyspnea (16%-81%), for which intermittent use of opioids and benzodiazepines is most effective, with escalating doses. For increased respiratory secretions (the death rattle), the initial recommendation is to educate family members and reposition the patient; in addition, oral glycopyrrolate or scopolamine patches can reduce secretions.",
+      "page": null
+    },
+    {
+      "section": "End-of-Life Care After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In addition to managing restlessness and discomfort, clinicians must counsel families on what to expect, including reduced food and fluid intake, decreased ability to cough, breathing noises and changes in breathing, reduced circulatory and renal function, reduced levels of consciousness, and agitation.",
+      "page": null
+    },
+    {
+      "section": "End-of-Life Care After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hospice care is appropriate when the prognosis is <=6 months and life-prolonging measures are not being pursued. For stroke, guidelines suggest that hospice could be considered when oral intake is limited and artificial nutrition is not pursued; complications of stroke occur, including aspiration pneumonia, sepsis, refractory sacral ulcers, or recurrent fevers; imaging findings indicate a poor prognosis; or coma has persisted for 3 days and is associated with the absence of a verbal response, brainstem reflexes, and withdrawal response to pain, along with poor renal function.",
+      "page": null
+    },
+    {
+      "section": "End-of-Life Care After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The hospice team includes nurses, physicians, social workers, spiritual advisors, aides, and often volunteers to support patients and families, and hospice care can be provided in various locations, including inpatient hospice when care cannot be provided at home because of refractory symptoms or patient preference. In the United States, hospice services are covered under the Medicare benefit, but Medicare does not pay for custodial care (eg, bathing, feeding, toileting), rehabilitation therapies, or room and board if a patient is receiving hospice care in a nursing home or a hospice inpatient facility.",
+      "page": null
+    },
+    {
+      "section": "Conclusions and Future Directions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Multidimensional needs assessment tools should be integrated into routine practice and education, stroke specialist training should include goals of care communication training, and specialist palliative care teams should be available for consultation when symptoms are refractory to first-line treatment, care partners are experiencing distress or burnout, or a goals-of-care or prognosis conversation requires more in-depth clinical training.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

@@ -226,7 +226,12 @@ describe('service worker update lifecycle', () => {
       return sum + (existsSync(join(repoRoot, rel)) ? statSync(join(repoRoot, rel)).size : 0);
     }, 0);
     // 9.26 MB before the trim. The budget is what stops it drifting back.
-    expect(total).toBeLessThan(6 * 1024 * 1024);
+    // Raised 6 -> 8 MB on 2026-08-29 with the guideline-library rebuild: 108
+    // datasets went from placeholder scope lines to 3547 real recommendations,
+    // and app.jsx guarantees the Guidelines tab works fully offline, so that
+    // payload has to be precached. See the budget history in
+    // scripts/check-asset-budget.mjs for why splitting does not avoid this.
+    expect(total).toBeLessThan(8 * 1024 * 1024);
   });
 
   it('includes iOS splash screens in precache list', () => {

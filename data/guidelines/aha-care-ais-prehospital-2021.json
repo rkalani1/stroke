@@ -12,10 +12,340 @@
     {
       "section": "Scope",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The year 2020 was the year of the nurse, celebrating nurse scholarship, innovation, and leadership by promoting scientific nursing research, improving nursing practice, advancing nursing education, and providing leadership to influence health policy. As architects of stroke care, neuroscience nurses play a vital role in collaborating and coordinating care between multiple health professionals.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "This scientific statement updates the 2009 AHA comprehensive nursing care statement for the prehospital and acute phase of acute ischemic stroke care, organized around the D's of Stroke Care (Detection, Dispatch, Delivery, Door, Data, Decision, Drug, Disposition). It is an AHA scientific statement and assigns no class of recommendation or level of evidence to its statements; where it cites a 'Level IA recommendation' for mechanical thrombectomy, that grade belongs to the 2019 AHA/ASA acute ischemic stroke guideline, not to this document.",
+      "page": null
+    },
+    {
+      "section": "Prehospital Stroke Care: Detection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Understanding the social determinants of health and targeting high-risk groups to tailor interventions are essential in improving individual response to stroke symptom recognition; inequities in emergency care access and knowledge of stroke warning signs are largest in women and underrepresented race and ethnic groups, contributing to delays in EMS activation and ED presentation. Certified stroke programs are required to host yearly public awareness campaigns.",
+      "page": null
+    },
+    {
+      "section": "Prehospital Stroke Care: Dispatch",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The dispatcher should be trained to recognize when a caller may be requesting help for a person with a range of neurological deficits and be able to talk a caller through the administration of a simple stroke evaluation scale such as the Cincinnati Prehospital Stroke Scale or the Los Angeles Prehospital Stroke Screen, and to collect valuable information such as last known normal (LKN).",
+      "page": null
+    },
+    {
+      "section": "Prehospital Stroke Care: Dispatch",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The LKN must be established because of time constraints around treatment. LKN means what time or when the person was last known to be at baseline, with the goal of determining time of symptom onset; it should not be interpreted as the time the patient was found with symptoms, because the onset of brain ischemia may have started before symptoms were recognized. It is best obtained from the patient if possible, but family, friends, and bystanders may contribute.",
+      "page": null
+    },
+    {
+      "section": "Prehospital Stroke Care: Dispatch",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Prehospital triage factors influencing initial dispatch and subsequent EMS routing include distance to a stroke-capable facility, run times, stroke designation tiers (CSC, TCS, PSC, ASRH), availability of services (mobile stroke unit, ground or air transport), diversion status, medical control system, dispatch criteria, public versus private EMS, patient preference, symptom onset, stroke severity, and patient stability.",
+      "page": null
+    },
+    {
+      "section": "Delivery: EMS Field Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Assessment of a patient with suspected stroke in the field by EMS personnel should include airway, breathing, vital signs, a baseline neurological assessment, blood glucose, and cardiac monitoring, concurrent with collection of the patient's current medication list, establishment of LKN, and obtaining family and witness contact information.",
+      "page": null
+    },
+    {
+      "section": "Delivery: EMS Field Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is not recommended that EMS personnel administer antihypertensive medications to lower blood pressure in the patient with a suspected stroke because of concern about limiting perfusion to ischemic tissue and worsening the stroke; concern about significant elevations in blood pressure should be communicated to EMS medical control per individual EMS protocol.",
+      "page": null
+    },
+    {
+      "section": "Delivery: EMS Field Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The administration of a standardized stroke scale is recommended; the Cincinnati Prehospital Stroke Scale and the Los Angeles Pre-Hospital Stroke Scale are used frequently because they are the only prehospital validated tools. Several numeric scales with varying cutoff points identify symptoms associated with large vessel occlusion (LVO) and assist with routing to mechanical thrombectomy-capable centers. Future research is needed to develop consensus on the best tools for prehospital providers.",
+      "page": null
+    },
+    {
+      "section": "Delivery: EMS Field Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Blood glucose is an important measure to assess for hyperglycemia/hypoglycemia and must be collected on all suspected patients with stroke symptoms. Transient hypoglycemia (blood glucose <60 mg/dL) may manifest as a stroke mimic with acute mental status changes, seizure, loss of consciousness, hemiplegia, and aphasia; symptoms usually resolve with prompt treatment of intravenous glucose.",
+      "page": null
+    },
+    {
+      "section": "AHA Prehospital Management Recommendations (Table 6)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Prehospital management: assess airway, breathing, circulation and do not treat high blood pressure unless recommended; implement cardiac monitoring; maintain oxygen saturation >94%; assess blood glucose and treat if <60 mg/dL; do not administer excessive intravenous fluids or solutions containing glucose; do not give any fluids or medication by mouth; establish intravenous access, two 18-gauge if possible; determine LKN; document medical history and medication use; obtain family/friend/bystander phone numbers; and provide rapid transport to the most appropriate hospital capable of stroke emergency treatment.",
+      "page": null
+    },
+    {
+      "section": "Door: EMS Routing",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Triage recommendations should balance the benefits of early initiation of intravenous alteplase with early access to mechanical thrombectomy for patients with suspected LVOs. The Mission: Lifeline Severity-Based Stroke Triage Algorithm for EMS provides recommendations for on-scene assessments, including use of an LVO screening tool and considerations for both time to treatment and availability of regional stroke center resources.",
+      "page": null
+    },
+    {
+      "section": "Door: EMS Routing",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nurses should be educated on EMS algorithms used in their communities because these may vary according to stroke center certification levels and availability of geographic resources. It is important to use all stroke centers such as Acute Stroke Ready Hospitals and Primary Stroke Centers to avoid overloading thrombectomy-capable centers (Comprehensive Stroke Centers and Thrombectomy-Capable Stroke Centers) while supporting treatment closest to the patient's location.",
+      "page": null
+    },
+    {
+      "section": "Mobile Stroke Units",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The mobile stroke unit contains a point-of-care laboratory, CT imaging capabilities, and a stroke team; together these can speed diagnosis, treatment, and triage, increasing treatment opportunities. Prehospital imaging and neurovascular assessment performed by a specialist ensure that patients are both treated at the earliest possible time and delivered to a center capable of supporting acute ischemic stroke treatment.",
+      "page": null
+    },
+    {
+      "section": "Mobile Stroke Units",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although noncontrast CT can rule out hemorrhage for thrombolysis administration, many MSUs can obtain CT angiography, which can confirm LVO and be accessed by neurointerventionalists to determine thrombectomy eligibility. Completing CT and CTA before hospital arrival ideally allows MSU personnel to bypass the ED and transport the patient directly to the interventional suite; many MSUs have demonstrated reduced door-to-needle and door-to-puncture times compared with traditional EMS transports.",
+      "page": null
+    },
+    {
+      "section": "Emergency Management and Treatment: Emergency Departments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "EDs are a critical entry portal into a stroke system of care and vary in patient volume, clinician and nursing staffing expertise, and availability of interventional resources; some are free-standing or satellite extensions serving suburban or rural communities. EDs are usually designed with 2 entrances for ambulance arrivals and private-vehicle arrivals, both supporting triage teams. A patient accepted from EMS usually triggers a prehospital alert and assignment to a higher-acuity section, whereas walk-in patients may not have had any formal evaluation, so the triage nurse must quickly assess presenting symptoms and consider activating the stroke response team.",
+      "page": null
+    },
+    {
+      "section": "Data: Triage",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Arrival in the ED marks time 0 for tracking the evaluate-to-treat processes for patients with suspected acute ischemic stroke; however, with mobile stroke units, time 0 is documented as the time the MSU arrives on scene and begins the immediate patient assessment.",
+      "page": null
+    },
+    {
+      "section": "Data: Triage",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is recommended that skills training for triage personnel include recognizing both typical and atypical symptoms of stroke and have an agreed-on time window (from LKN) within which to activate the stroke response team. Competency and ongoing stroke education should be required for all triage staff and should complement the use of stroke screening tools analogous to those used in the prehospital setting.",
+      "page": null
+    },
+    {
+      "section": "Data: Triage",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is reasonable to suggest that stroke centers use the prehospital assessment to delineate Emergency Severity Index (ESI) levels. Instances suggesting an LVO or eligibility for reperfusion therapies merit strong consideration for being triaged as an ESI level 1. The system of care should function in the same manner for stroke alert patients at ESI level 1 or 2 with regard to time-to-imaging and time-to-intervention metrics.",
+      "page": null
+    },
+    {
+      "section": "Decision: Stroke Expertise",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "An organized protocol that facilitates the early identification of patients with acute onset of neurological deficits and identifies when the patient was last normal should define the stroke code process. The currently accepted time window of 24 hours from LKN reflects the period for effective treatment options for acute ischemic stroke and thus dictates the stroke code activation window.",
+      "page": null
+    },
+    {
+      "section": "Decision: Stroke Expertise",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Activation of a stroke team can be initiated before patient arrival by EMS (if there has been a field call with a reported suspected stroke case) or after the triage assessment at the time of arrival. Some stroke programs have created unique roles such as a stroke responder - a nurse or advanced practice provider with advanced skills in neurological evaluation whose primary responsibility is to coordinate the stroke code.",
+      "page": null
+    },
+    {
+      "section": "Decision: Stroke Expertise",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The AHA's Target: Stroke Phase III advocates a 'door straight to CT imaging' best practice model in which the patient is directed to CT before completing a full history, physical examination, or other initial diagnostic testing. It is reasonable in some systems to do this while the patient is still on an EMS stretcher if there is an organized direct EMS-to-CT protocol and the patient is stable per EMS report.",
+      "page": null
+    },
+    {
+      "section": "Decision: Stroke Expertise",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The only assessment required by guidelines before initiation of thrombolytic agents is a blood glucose level, often available from the EMS field evaluation. A noncontrast CT is required before initiation of revascularization interventions, principally to exclude intracerebral hemorrhage or subarachnoid hemorrhage. Additional studies such as chest x-ray and 12-lead ECG should be deferred until after completion of neuroimaging.",
+      "page": null
+    },
+    {
+      "section": "Decision: Stroke Expertise",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is recommended that a stroke severity assessment be performed with a tool such as the NIHSS and that ongoing education and quality improvement initiatives maintain competency for accuracy and efficiency. Nurses certified in the NIHSS may perform the initial assessment and track specific deficits during the decision to treat and after treatment. The NIHSS has limitations in assessing posterior circulation and nondominant hemisphere strokes; in selected cases the stroke team may direct a more focused neurological examination for trending stroke severity.",
+      "page": null
+    },
+    {
+      "section": "Target: Stroke Time Interval Goals (Table 5)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "AHA-suggested Target: Stroke time interval goals. For a 60-minute door-to-needle target: door to physician 10 minutes or less, door to stroke team 15 minutes or less, door to CT/MRI initiation 25 minutes or less, door to CT/MRI interpretation 45 minutes or less, door to needle 60 minutes or less. For a 45-minute door-to-needle target: 5, 10, 20, 35, and 45 minutes or less, respectively. For a 30-minute door-to-needle target: 2.5, 5, 15, 25, and 30 minutes or less, respectively. For a 90-minute door-to-device target: door to physician 5 minutes or less, door to stroke team 10 minutes or less, door to CT/MRI initiation 20 minutes or less, door to CT/MRI interpretation 35 minutes or less, door to needle 45 minutes or less, door to neurointerventional team activation 40 minutes or less, door to patient arrival in the neurointerventional suite 60 minutes or less, door to puncture 75 minutes or less, and door to device 90 minutes or less.",
+      "page": null
+    },
+    {
+      "section": "Drug/Device: AIS Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Alteplase within the first 3 hours of symptom onset is the current standard of care and has been FDA approved since 1996; earlier administration correlates with a higher treatment effect. Alteplase has also become a standard of care for select patients within a 4.5-hour window of LKN. To ensure safe patient selection, all centers should have care protocols derived from current promulgated clinical practice guidelines, and systems should operate under the premise that eligible patients receive alteplase in the fastest achievable onset-to-treatment time.",
+      "page": null
+    },
+    {
+      "section": "Drug/Device: AIS Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For each time window, the dose of alteplase is 0.9 mg/kg to a maximum of 90 mg over 60 minutes with an initial 10% of dose given as a bolus over 1 minute. Alteplase may be mixed by an ED nurse, designated stroke nurse, or pharmacist, which is preferential to a central pharmacy sending the drug via a runner; a dual sign-off or verification of the dose can be performed and documented by 2 stroke response team members. A subsequent normal saline flush at the same rate ensures the entire dose is received and prevents bolus dosing of drug remaining in the tubing.",
+      "page": null
+    },
+    {
+      "section": "Drug/Device: AIS Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is anticipated that clinical trial literature and practice guidelines will evolve to include use of tenecteplase as a thrombolytic treatment for acute ischemic stroke; recent evidence suggests a dose of 0.25 mg/kg may be adequate, and one advantage is that the total dose is administered by intravenous push rather than an infusion.",
+      "page": null
+    },
+    {
+      "section": "Drug/Device: AIS Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A risk/benefit discussion should occur between a stroke team member and either the patient or a legally authorized patient representative, with summary documentation in the medical record. EDs should have relevant stroke education materials to complement these discussions. If the patient is unable to consent or a legally authorized representative is not available, it is reasonable to proceed with interventions the stroke team believes to be the current standard of care under the premise of emergency consent.",
+      "page": null
+    },
+    {
+      "section": "Drug/Device: AIS Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The risk for complications after thrombolytic therapy is higher during the first several hours after alteplase administration; patients are typically cared for on units (critical care, stroke units, progressive or intermediate care units) that meet the care recommendations. A protocol for responding to bleeding or other complications such as angioedema should be included in the acute ischemic stroke policy.",
+      "page": null
+    },
+    {
+      "section": "Drug/Device: AIS Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with suspected LVO - identified using a prehospital LVO scale, an initial NIHSS, or at the discretion of the stroke team - should have noninvasive neurovascular imaging as quickly as possible because they may be candidates for mechanical thrombectomy. CTA may be obtained before acquisition of serum creatinine in patients with no history of renal dysfunction, and current evidence suggests the risk of contrast-induced acute kidney injury in patients with chronic kidney disease is low. For patients with relatively minor symptoms (NIHSS score <6), it is still reasonable to acquire early hyperacute-phase vessel imaging because a proportion may have an LVO and subsequent deterioration within several hours.",
+      "page": null
+    },
+    {
+      "section": "Drug/Device: AIS Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Imaging of the extracranial carotid and vertebral vasculature in addition to the intracranial vessels is reasonable and may yield information influencing procedural planning; it may also be reasonable to incorporate collateral flow assessments via multiphase CTA in determining thrombectomy eligibility in some treatment candidates. Of thrombectomy candidates also eligible for thrombolysis, alteplase is still administered as first-line therapy if the patient meets alteplase eligibility criteria.",
+      "page": null
+    },
+    {
+      "section": "Drug/Device: AIS Treatment",
+      "classOfRec": "Statement",
+      "classNote": "The Class I / Level A grade cited here is reproduced from the 2019 AHA/ASA acute ischemic stroke guideline; this scientific statement assigns no grade of its own.",
+      "levelOfEvidence": "Ungraded",
+      "text": "For select patients with LVO presenting within 6 hours of LKN, 6 clinical trials demonstrated an unequivocal treatment effect using predominantly stent retrieval devices; these underlie the 2019 AHA/American Stroke Association guideline Level IA recommendation for the procedure in patients with a prestroke modified Rankin Scale score of 0 to 1, age >18 years, NIHSS score >=6, ASPECTS >=6, a causative occlusion of the internal carotid artery or proximal middle cerebral artery (M1), and who could have skin puncture within 6 hours of stroke onset. A HERMES secondary analysis of 5 of these trials demonstrated a time-sensitive treatment effect with a less favorable degree of disability for every hour of delay to reperfusion.",
+      "page": null
+    },
+    {
+      "section": "Drug/Device: AIS Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with LVO presenting in the extended 6- to 24-hour window, acquisition of penumbral imaging (CT perfusion, diffusion-weighted MRI with or without MRI perfusion) is a prerequisite for selecting patients for endovascular thrombectomy, using the clinical deficit/infarct volume mismatch criteria of the DAWN and DEFUSE 3 randomized controlled trials. Patients were included if they had an LVO of the cervical or intracranial internal carotid artery and the proximal or first segment of the middle cerebral artery.",
+      "page": null
+    },
+    {
+      "section": "Drug/Device: AIS Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is reasonable to aim for a 90-minute time window (ED arrival to skin puncture) for patients arriving directly and a 60-minute window for patients transferred from a sending hospital. In some systems a select group of out-of-hospital transfers will go directly to the thrombectomy suite, bypassing the ED; it is advisable to establish criteria for considering bypassing the ED in the event of a change in the patient's clinical status warranting additional preprocedure management.",
+      "page": null
+    },
+    {
+      "section": "Drug/Device: AIS Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Supportive care for all patients with ischemia undergoing medical or interventional reperfusion procedures includes providing supplemental oxygen to maintain oxygen saturation >94%, avoiding hypotension and hypovolemia, avoiding hyperthermia, and, for patients receiving alteplase, keeping systolic blood pressure <180 mm Hg and diastolic blood pressure <105 mm Hg.",
+      "page": null
+    },
+    {
+      "section": "Telestroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Studies have shown that the use of telestroke increased rates of alteplase administration with shorter door-to-needle time and risks similar to in-person neurology care, and numerous studies support telestroke evaluations as being as robust as the bedside neurological examination for the diagnosis of acute ischemic stroke. The nurse may act as the initial point of contact alerting the teleneurologist to an incoming patient with stroke symptoms.",
+      "page": null
+    },
+    {
+      "section": "Telestroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The nurse should explain to the patient that a neurologist will evaluate them in video format; extraneous conversation should be discouraged because telemedicine audio picks up room sounds, and awareness of the physical environment and body positioning of both patient and nurse relative to the camera is important. If the nurse must leave the encounter, the nurse should notify the teleneurologist.",
+      "page": null
+    },
+    {
+      "section": "Telestroke: Assisting With the Neurological Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The nurse should be prepared to communicate key elements of the history, including LKN time, historic and current vital signs, allergies, medication list, and EMS-collected data, because the teleneurologist may not have access to the medical record. A family member is often brought into the evaluation to obtain additional history and help make treatment decisions. The nurse should communicate objective information about the subjective aspects of the physical examination, recognizing that the teleneurologist may not perform the examination in the same systematic order the nurse expects.",
+      "page": null
+    },
+    {
+      "section": "Disposition: Transition of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Disposition is the transfer of patients out of the ED to an intensive care unit or stroke unit. Transition is a time of greatest vulnerability, creating nursing opportunities to improve quality of care and reduce stroke risk. A well-designed electronic health record platform facilitates coordination of care by sharing up-to-date diagnostic and patient-specific information, decreases fragmentation during transitions, and enables electronic identification of patients with stroke, automated data collection, and electronic reporting of quality metrics.",
+      "page": null
+    },
+    {
+      "section": "ED Nursing Evaluation (Table 7)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "ED nursing evaluation: perform a quick assessment to ensure airway, breathing, and circulation are stabilized; obtain blood pressure and blood glucose; confirm time of stroke symptom onset; confirm medical and current medical history; complete a rapid neurological examination such as the NIHSS; assist in obtaining a rapid initial noncontrast CT; place 2 intravenous lines; and collect laboratory studies.",
+      "page": null
+    },
+    {
+      "section": "Quality Improvement",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Prehospital and emergent stroke care quality measures nurses should track include time to dispatch; EMS on-scene time (percent 15 minutes or less); documentation of LKN, blood glucose measurement, stroke screening tool use, and severity/LVO screening; EMS prenotification; arrival mode; telestroke consult, satisfaction, decision-making, and technical failure metrics; patient transfer time; door to CT/MRI initiation and interpretation; door to ED provider and stroke team evaluation; door to pertinent laboratory values; NIHSS performed before thrombolysis; time to intravenous thrombolysis and treatment by 3 or 4.5 hours; thrombolysis complications; and door to neurointerventional activation, suite arrival, puncture, and device.",
+      "page": null
+    },
+    {
+      "section": "Quality Improvement",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Quality improvement provides a systematic method to use collected data to drive improvements, and nursing leaders in stroke care (stroke managers, coordinators, and directors) should receive training in quality improvement methodologies. The AHA Get With The Guidelines program and the Paul Coverdell National Acute Stroke Registry are national databases aimed at providing data to guide performance improvement. Nurses are challenged to take an active role in local, state, and regional health care platforms targeting economic, racial, and sex disparities affecting access to emergency stroke care.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

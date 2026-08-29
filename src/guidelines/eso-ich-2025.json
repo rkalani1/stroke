@@ -9,36 +9,494 @@
   "pmid": "40401775",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: GRADE.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Update of the 2014 ESO ICH guideline, developed with EANS across 37 PICO questions; 115,647 articles screened and 208 studies included.",
+      "section": "PICO 1.1: Organised stroke unit care",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In adults with spontaneous ICH, not requiring intensive care treatment, we recommend admission to an organised stroke unit to reduce the risk of death or dependence.",
       "page": null
     },
     {
-      "section": "Supported interventions",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: Strong recommendation.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Evidence supports care on organised stroke units and secondary prevention with blood pressure lowering.",
+      "section": "PICO 1.2.1: Algorithms for targeted investigation of ICH cause",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In adults with spontaneous ICH, we suggest using algorithms such as DIAGRAM for targeted investigation of ICH cause vs standard of care to improve the performance (calibration/discrimination/clinical utility) of prediction of underlying cause of ICH.",
       "page": null
     },
     {
-      "section": "Recommended against",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: Recommendation against.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "ESO recommends against routine rFVIIa, platelet transfusion for antiplatelet-associated ICH, prophylactic anti-seizure medicines, and general policies that limit treatment within 24 h of ICH onset.",
+      "section": "PICO 1.2.2: Non-invasive vascular imaging versus intraarterial digital subtraction angiography",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "In adults with spontaneous ICH there is uncertainty about whether cerebral computed tomographic angiography (CTA) or venography (CTV), or magnetic resonance angiography (MRA) or venography (MRV) have superior diagnostic performance when compared with intraarterial digital subtraction angiography (IADSA) to disclose underlying intracranial vascular malformations, so we recommend recruitment to diagnostic test accuracy studies. (Quality of evidence: Low; Strength of recommendation: not assigned.)",
       "page": null
     },
     {
-      "section": "Weak / consensus areas",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: Weak / expert consensus. Source lists a volume figure for cerebellar evacuation; omitted here because this app deliberately does not present cerebellar volume alone as an operative trigger. See the linked source for the full graded recommendation.",
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Weak recommendations or consensus statements cover acute BP lowering, craniotomy and minimally invasive surgery for supratentorial ICH, evacuation of cerebellar ICH, EVD with intraventricular thrombolysis, intermittent pneumatic compression, and care bundles.",
+      "section": "PICO 1.2.2: Vascular imaging - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with spontaneous ICH, we suggest using cerebral computed tomographic angiography (CTA)/venography (CTV), or magnetic resonance angiography (MRA)/venography (MRV) to select patients for intra-arterial digital subtraction angiography (IADSA) to disclose underlying intracranial vascular malformations.",
+      "page": null
+    },
+    {
+      "section": "PICO 1.3.1: Algorithms for prediction of outcome",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with ICH, there is continued uncertainty whether outcome prediction tools have better predictive properties compared with clinicians' evaluation. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 1.3.1: Outcome prediction - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with spontaneous ICH, we suggest limiting the use of the ICH score to providing prognostic information, rather than using it as the primary or sole method for predicting outcomes for adults with ICH, given the risk of a self-fulfilling prophecy.",
+      "page": null
+    },
+    {
+      "section": "PICO 1.3.2: Policies limiting treatment or DNACPR within 24 h",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults within 24 h of spontaneous ICH onset, there is insufficient evidence from randomised trials regarding the influence of policies on limitation of treatment and do-not-resuscitate orders on death and dependency. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 1.3.2: Limitation of treatment - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults within 24 h of spontaneous ICH onset, we suggest not implementing general policies that limit treatment or initiate do not attempt cardiopulmonary resuscitation orders.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Acute blood pressure lowering",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "For adults with acute spontaneous ICH and systolic blood pressure of 150-220 mmHg, the overall balance of beneficial and adverse effects is uncertain, so we recommend recruitment to ongoing randomised controlled trials. (Quality of evidence: Low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Acute blood pressure lowering - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest lowering systolic blood pressure below 140 mmHg within 6 h of symptom onset in minor or moderate ICH (haematoma volume < 30 mL) to reduce haematoma expansion.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Acute blood pressure lowering - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with spontaneous ICH, we suggest avoiding a reduction in systolic blood pressure of more than 70 mmHg from baseline and to avoid active reduction of systolic blood pressure below 110 mmHg. Caution is advised when lowering very high systolic blood pressure (>220 mmHg), for patients with large haematoma volumes (>30 mL) or when there is planned haematoma evacuation.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Acute blood pressure lowering - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with spontaneous minor or moderate ICH (haematoma volume < 30 mL), we suggest applying the following aspects: initiating antihypertensive treatment as early as possible, ideally within the first 2 h following the onset of symptoms (acute phase), lowering systolic blood pressure to <140 mmHg and minimising variability in blood pressure fluctuations; after lowering systolic blood pressure below the target threshold (up to 7 days, sub-acute phase), maintaining systolic blood pressure below 140 mmHg; and for secondary prevention (after the sub-acute phase) following the recommendations on secondary prevention, specifically section 6.1 on blood pressure management.",
+      "page": null
+    },
+    {
+      "section": "PICO 3.1.1: Recombinant activated factor VII (rFVIIa)",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For adults with spontaneous ICH not associated with antithrombotic drug use, there is uncertainty about the balance of beneficial and adverse effects of rFVIIa, so we suggest against its routine use and suggest recruitment to ongoing randomised controlled trials.",
+      "page": null
+    },
+    {
+      "section": "PICO 3.1.2: Tranexamic acid in ICH not associated with antithrombotic drugs",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "For adults with spontaneous ICH not associated with antithrombotic drug use, there is uncertainty about the balance of clinical benefits (functional outcome, death and dependence) and adverse effects of tranexamic acid. Therefore, we recommend recruitment to ongoing randomised controlled trials. (Quality of evidence: Low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 3.1.2: Tranexamic acid - Expert consensus statement (vote 13/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "TXA may be considered for reducing haematoma expansion, if enrolment in an ongoing randomised controlled trial is not possible.",
+      "page": null
+    },
+    {
+      "section": "PICO 3.2.1: Platelet transfusion for antiplatelet-associated ICH",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In adults with spontaneous ICH associated with antiplatelet drug use we suggest against the use of platelet transfusion.",
+      "page": null
+    },
+    {
+      "section": "PICO 3.2.2: Desmopressin for antiplatelet-associated ICH",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with spontaneous ICH associated with antiplatelet drug use, there is uncertainty about the beneficial and adverse effects of desmopressin, so we recommend inclusion in ongoing clinical trials. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 3.3.1.1: PCC versus FFP for vitamin K antagonist-associated ICH",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with ICH associated with use of vitamin K-antagonists (VKA), there is continuing uncertainty about the beneficial and adverse effects of PCC vs FFP on clinical outcomes. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 3.3.1.1: VKA reversal - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with ICH associated with use of vitamin K-antagonists (VKA), we recommend using 4-factor PCC dosages in the range from 30 to 50 IU/kg if INR >= 2.0 and 10 IU/kg if INR is 1.3-1.9 combined with use of intravenous vitamin K (10 mg) to normalise and prevent subsequent increase of INR.",
+      "page": null
+    },
+    {
+      "section": "PICO 3.3.2.1: PCC for factor Xa inhibitor-associated ICH",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "For adults with spontaneous ICH associated with factor Xa-inhibitor (FXaI) use there is uncertainty about the balance of beneficial and adverse effects of PCC, so we recommend recruitment to further randomised controlled trials. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 3.3.2.1: PCC for FXaI-ICH - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with spontaneous ICH associated with factor Xa-inhibitor (FXaI), PCC may be considered for FXaI-ICH, but clinicians should carefully consider the balance between its unknown benefit for reducing haematoma expansion and poor clinical outcome, and the potential increase in thromboembolic events.",
+      "page": null
+    },
+    {
+      "section": "PICO 3.3.2.2: Andexanet alfa for factor Xa inhibitor-associated ICH",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "In adults with acute spontaneous ICH associated with use of a factor Xa-inhibitor (i.e. within 15 h after the last dose of apixaban, edoxaban or rivaroxaban), there is continuing uncertainty about the balance of clinical benefits (functional outcome, death and dependence) and adverse effects of andexanet alfa, so we recommend recruitment to randomised controlled trials. (Quality of evidence: Low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 3.3.2.2: Andexanet alfa - Expert consensus statement (vote 14/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with spontaneous ICH associated with use of factor Xa-inhibitor (FXaI) (apixaban, rivaroxaban) within 15 h after the last dose of a FXaI (or proven anti-FXa activity > 100 ng/mL) and within 12 h since onset of symptoms we suggest considering the use of andexanet alfa to reduce haematoma expansion. The potential clinical benefit should be evaluated in sufficiently powered randomised controlled trials.",
+      "page": null
+    },
+    {
+      "section": "PICO 3.3.2.3: Tranexamic acid for factor Xa inhibitor-associated ICH",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "For adults with acute spontaneous ICH associated with use of factor Xa-inhibitors (FXaI; apixaban, edoxaban, rivaroxaban), there remains uncertainty about the beneficial and adverse effects of TXA, therefore we recommend recruitment to ongoing randomised controlled trials. (Quality of evidence: Low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 3.3.2.4: Idarucizumab for direct thrombin inhibitor-associated ICH",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with anticoagulant-associated ICH associated with the use of direct thrombin inhibitor there are no RCTs. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 3.3.2.4: Idarucizumab - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with anticoagulant-associated ICH associated with use of direct thrombin inhibitor (dabigatran) we suggest the immediate use of idarucizumab (2 x 2.5 g intravenously).",
+      "page": null
+    },
+    {
+      "section": "PICO 4.1.1: Surgery aimed at haematoma removal in supratentorial ICH",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with acute spontaneous supratentorial ICH, we suggest for a surgical approach aiming at haematoma removal and prevention of secondary brain injury to reduce the risk of death and dependence, taking into account additional factors such as haematoma location and volume, the patient's neurological condition, timing, method of intervention, and the surgeon's complication rate. Given differences in results and quality of evidence for surgical interventions, recommendations are further specified for craniotomy (PICO 4.1.2), minimally invasive surgical removal (PICO 4.1.3), and surgery with catheter placement plus thrombolysis (PICO 4.1.4).",
+      "page": null
+    },
+    {
+      "section": "PICO 4.1.2: Open craniotomy for supratentorial ICH",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In non-comatose adults with acute spontaneous supratentorial lobar ICH where minimally invasive approaches are not available (see PICO 4.1.3), we suggest consideration of early surgical haematoma removal by means of open craniotomy and a standard surgical evacuation technique.",
+      "page": null
+    },
+    {
+      "section": "PICO 4.1.3: Minimally invasive surgical removal for supratentorial ICH",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In adults within 24 h after spontaneous supratentorial ICH onset, we suggest minimally invasive evacuation of the haematoma to reduce mortality and to improve functional outcome in adults with lobar ICH, whereas the effect in deep haematomas remains uncertain, so we encourage recruitment to ongoing randomised controlled trials.",
+      "page": null
+    },
+    {
+      "section": "PICO 4.1.4: Surgery with catheter placement plus thrombolysis",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with spontaneous supratentorial ICH, there is uncertainty about surgery with catheter placement plus thrombolysis over medical management alone, so we recommend recruitment to randomised controlled trials. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 4.1.5: Decompressive craniectomy for deep supratentorial ICH",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In adults aged 18-75 years within 72 h of severe deep spontaneous ICH (i.e. GCS 8-13, NIHSS 10-30, and stable ICH volume 30-100 mL), we suggest consideration of decompressive surgery without haematoma removal to reduce the risk of death or severe dependence (mRS 5-6).",
+      "page": null
+    },
+    {
+      "section": "PICO 4.2.1: External ventricular drainage with or without lumbar drainage",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with spontaneous ICH and intraventricular extension of the haemorrhage there is uncertainty about the balance of beneficial and adverse effects of external ventricular drainage (EVD) with or without combined lumbar drainage (LD) on the risk of death or dependence, or shunt dependence, so we recommend recruitment to randomised controlled trials. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 4.2.1: External ventricular drainage - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with ICH, intraventricular extension of the haemorrhage and hydrocephalus contributing to an impaired level of consciousness, the insertion of an external ventricular drainage (EVD) is recommended to reduce mortality.",
+      "page": null
+    },
+    {
+      "section": "PICO 4.2.2: External ventricular drainage with intraventricular thrombolysis",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with acute spontaneous ICH and intraventricular extension, we suggest considering external ventricular drainage (EVD) with intraventricular thrombolysis to reduce death, though there is uncertainty about the balance of beneficial and adverse effects of external ventricular drainage (EVD) with intraventricular thrombolysis, concerning death, dependence, and shunt dependence. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 4.2.3: Minimally invasive surgical evacuation of intraventricular blood",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with intraventricular extension of the ICH who require an external ventricular drainage (EVD), we suggest for minimally invasive surgical evacuation of intraventricular blood to improve functional outcome and reduce shunt dependence.",
+      "page": null
+    },
+    {
+      "section": "PICO 4.3: Surgery for cerebellar haemorrhage",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with acute cerebellar haemorrhage, we suggest surgical evacuation of haematomas larger than 15 mL to improve survival.",
+      "page": null
+    },
+    {
+      "section": "PICO 5.1.1: Physical measures to prevent venous thromboembolism",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In immobile adults with spontaneous ICH, we suggest for intermittent pneumatic compression stockings for 30 days (or hospital discharge or independent ambulation, if sooner) to prevent proximal deep vein thrombosis. Continued uncertainty exists whether intermittent pneumatic compression reduces symptomatic pulmonary embolism and death.",
+      "page": null
+    },
+    {
+      "section": "PICO 5.1.2: Short-term anticoagulation for venous thromboembolism prophylaxis",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with spontaneous ICH, there is uncertainty whether subcutaneous low-molecular-weight heparins (LMWH) at prophylactic doses starting as early as 24 h after ICH onset and established stability of the ICH prevent venous thromboembolism, symptomatic deep vein thrombosis (DVT), pulmonary embolism (PE) or death, without increasing the risk of recurrent ICH, so we recommend recruitment to randomised controlled trials. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 5.1.2: LMWH prophylaxis - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Low-molecular-weight heparins (LMWH) prophylaxis after ICH might be used for venous thromboembolism (VTE) prevention in standard clinical practice if intermittent pneumatic compression is not available or feasible. The use should be limited to immobile patients, as well as patients at high prothrombotic risk (due to comorbidities, or prothrombotic medications).",
+      "page": null
+    },
+    {
+      "section": "PICO 5.1.3: Active body temperature management as a single measure",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with spontaneous ICH, we suggest not actively managing body temperature as single measure only, unless it is used with further measures as part of a care bundle (see PICO 5.2), to reduce the risk of death or dependence.",
+      "page": null
+    },
+    {
+      "section": "PICO 5.1.4: Blood glucose control as a single measure",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with spontaneous ICH, we suggest not intensively controlling blood glucose as a single measure to reduce the risk of death or dependence unless it is used as part of a care bundle (see PICO 5.2). There is continued uncertainty about its effect on haematoma expansion.",
+      "page": null
+    },
+    {
+      "section": "PICO 5.1.5: Intracranial pressure monitoring",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "In adults with severe acute spontaneous space-occupying ICH, there is uncertainty about the use of invasive intracranial pressure (ICP) monitoring for reducing death or dependence, so we recommend recruitment to randomised controlled trials. (Quality of evidence: Low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 5.1.5: Intracranial pressure monitoring - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with severe acute spontaneous space-occupying ICH, and if clinical symptom monitoring alone is not feasible, the use of invasive intracranial pressure (ICP) monitoring may be considered, preferably using intraventricular measurements with the additional option of cerebral spinal fluid (CSF) drainage.",
+      "page": null
+    },
+    {
+      "section": "PICO 5.1.6: Anti-inflammatory interventions",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with acute spontaneous ICH, we recommend against using anti-inflammatory interventions (in particular, anakinra, celecoxib, citicoline, corticosteroids, deferoxamine, edaravone, fingolimod, minocycline, panax notoginseng or reactive oxygen species scavengers) to reduce death, morbidity or perihaematomal oedema, outside of randomised controlled trials.",
+      "page": null
+    },
+    {
+      "section": "PICO 5.1.7: Prophylactic anti-seizure medication",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In adults with spontaneous ICH, we suggest against treatment with anti-seizure medications for the primary prevention of acute/remote symptomatic epileptic seizures.",
+      "page": null
+    },
+    {
+      "section": "PICO 5.1.7: Anti-seizure medication after symptomatic seizure within 7 days",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with spontaneous supratentorial ICH and symptomatic seizure within 7 days after onset, we cannot make a recommendation about the use of anti-seizure medications because there is continued uncertainty about their effects. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 5.1.7: Anti-seizure medication - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with spontaneous ICH, in whom anti-seizure medication was initiated after symptomatic seizure(s) during the first seven days after ICH onset, and in whom no further seizures occur, we suggest anti-seizure treatment to be discontinued from 4 weeks onwards.",
+      "page": null
+    },
+    {
+      "section": "PICO 5.2: Care bundle",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In adults with acute spontaneous ICH, we recommend implementing a care bundle to reduce death or dependence (see Expert Consensus Statement for details and targets). (Strength of recommendation as printed: Weak for intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO 5.2: Care bundle components not supported",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest against the prophylactic use of temperature-lowering measures, prokinetic anti-emetics and/or antibiotics.",
+      "page": null
+    },
+    {
+      "section": "PICO 5.2: Care bundle - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend implementing the components of the care bundle influencing our recommendation, which were: (1) early intensive blood pressure management with the goal of achieving a target systolic blood pressure of less than 140 mmHg in minor to moderate ICH within 1 h of the initiation of treatment (see also PICO 2); (2) control of elevated blood glucose (target 110-141 mg/dL (6.1-7.8 mmol/L) without diabetes / 141-180 mg/dL (7.8-10 mmol/L) with diabetes; avoiding hypoglycaemia) as soon as possible after the initiation of treatment; (3) treatment of pyrexia with the goal of achieving a body temperature of less than 37.5 degrees C within 1 h of initiation; and (4) the reversal of abnormal anticoagulation in those taking vitamin K-antagonists using prothrombin complex concentrate with the goal of reaching an INR of less than 1.3 within 1 h of treatment, and application of specific reversal agents to patients receiving direct oral anticoagulants. We suggest additional components of other care bundles that may be beneficial: avoiding do-not-resuscitate orders within the first 24 h after admission unless there is a clear will of the patient; application of routine dysphagia screening and treatment; and early consulting of a neurosurgeon to evaluate surgical measures in patients such as with large spontaneous ICH, intraventricular bleeding or space-occupying infratentorial haemorrhage. We recommend inclusion of patients in randomised trials of bundles of care.",
+      "page": null
+    },
+    {
+      "section": "PICO 6.1: Blood pressure lowering for secondary prevention",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In adults with prior ICH, we recommend blood pressure control to reduce the risk of subsequent stroke. No evidence-based specific recommendation can be made targeting a specific blood pressure level or choice of antihypertensive drug.",
+      "page": null
+    },
+    {
+      "section": "PICO 6.1: Blood pressure target - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest blood pressure control to a target value of <= 130/80 mmHg in patients surviving ICH as a means to reduce the risk of subsequent stroke.",
+      "page": null
+    },
+    {
+      "section": "PICO 6.2: Long-term oral anticoagulation in ICH with non-valvular atrial fibrillation",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "In adults with spontaneous ICH and non-valvular atrial fibrillation (NVAF), there is uncertainty about the net benefit of long-term oral anticoagulation (OAC) to reduce the risk of major adverse cardiovascular events and death or dependence compared with the avoidance of OAC, so we encourage recruitment to randomised controlled trials. (Quality of evidence: Low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 6.2: Oral anticoagulation - Expert consensus statement (vote 14/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Direct oral anticoagulant (DOAC) treatment after ICH in patients with non-valvular atrial fibrillation (NVAF) seems to increase the risk of recurrent ICH, but reduces the overall risk of major adverse cardiovascular events, so DOAC may be considered after careful evaluation of the individual risk-benefit profile.",
+      "page": null
+    },
+    {
+      "section": "PICO 6.3: Left atrial appendage occlusion",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with a history of prior ICH and non-valvular atrial fibrillation (NVAF), there is uncertainty about the effects of left atrial appendage occlusion (LAAO) compared to long-term anticoagulation for the prevention of thromboembolic events, and we encourage enrolment in randomised controlled trials. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 6.3: Left atrial appendage occlusion - Expert consensus statement A (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Left atrial appendage occlusion (LAAO) may be considered as a means to reduce thromboembolic events in adults with prior ICH and non-valvular atrial fibrillation (NVAF), who are considered unsuitable for long-term OAC therapy (e.g. people with imaging or pathological evidence of cerebral amyloid angiopathy), and we encourage enrolment of these patients in randomised controlled trials.",
+      "page": null
+    },
+    {
+      "section": "PICO 6.3: Left atrial appendage occlusion - Expert consensus statement B (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest periprocedural antithrombotic treatment according to the recommendation provided by the European Society of Cardiology.",
+      "page": null
+    },
+    {
+      "section": "PICO 6.4: Antiplatelet therapy after ICH",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In adults with spontaneous ICH who were taking antiplatelet therapy before the event, we suggest restarting antiplatelet therapy for a licensed indication is safe, but overall effects are uncertain.",
+      "page": null
+    },
+    {
+      "section": "PICO 6.4: Antiplatelet therapy - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest to consider restarting or initiating antiplatelet treatment if there is a licensed indication, ideally within randomised controlled trials. Antiplatelet therapy without a licensed indication should not be initiated outside of randomised controlled trials.",
+      "page": null
+    },
+    {
+      "section": "PICO 6.5: Statin therapy after ICH",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with a history of ICH, continuing uncertainty exists regarding secondary prevention with statin compared with no statin therapy to reduce recurrent ICH, major vascular events, or death. We recommend inclusion of suitable patients in ongoing randomised controlled trials. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 6.5: Statin therapy - Expert consensus statement (vote 15/15)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with a history of ICH and an indication for statin use, we suggest initiating statin treatment over no use of statin therapy in patients with high cardiovascular risk in primary as well as secondary prevention after evaluation of the individual risk-benefit profile.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

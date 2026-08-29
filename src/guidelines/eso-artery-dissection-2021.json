@@ -10,12 +10,142 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The aim of the present European Stroke Organisation guideline is to provide clinically useful evidence-based recommendations on the management of extracranial artery dissection (EAD) and intracranial artery dissection (IAD). EAD and IAD represent leading causes of stroke in the young, but are uncommon in the general population, thus making it challenging to conduct clinical trials and large observational studies.",
+      "section": "PICO 1: Intravenous thrombolysis in acute ischemic stroke due to cervical or intracranial artery dissection",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with symptomatic extracranial artery dissection (EAD) with acute ischemic stroke within 4.5 hours of onset, we suggest using intravenous thrombolysis with alteplase, if the standard inclusion / exclusion criteria are met.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Intravenous thrombolysis in acute ischemic stroke due to cervical or intracranial artery dissection",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with symptomatic intracranial artery dissection (IAD) with acute ischemic stroke within 4.5 hours of onset, there is insufficient data to provide a recommendation. (The document records the strength of recommendation for this question as '-'.)",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Intravenous thrombolysis in acute ischemic stroke due to cervical or intracranial artery dissection",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement (10/11 experts): In patients with an acute ischemic stroke suspected to be caused by IAD, all but one expert suggest that IVT should be considered, after ruling out standard contra-indications, including subtle signs of subarachnoid bleeding on brain imaging.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Endovascular treatment in acute ischemic stroke due to artery dissection",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In acute ischemic stroke patients with EAD and large vessel occlusion of the anterior circulation, we suggest using mechanical thrombectomy (MT).",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Endovascular treatment in acute ischemic stroke due to artery dissection",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In acute ischemic stroke patients with IAD, there is insufficient data to provide a recommendation regarding the use of EVT. (The document records the strength of recommendation for this question as '-'.)",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Endovascular treatment in acute ischemic stroke due to artery dissection",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement (10/11 experts): In acute ischemic stroke with EAD and large vessel occlusion of the anterior circulation, all but one expert suggest EVT (other than MT) for the treatment of the EAD lesion in case of carotid occlusion without patent circle of Willis or in case of recurrent embolism.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Endovascular treatment in acute ischemic stroke due to artery dissection",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement (11/11 experts): In acute ischemic stroke with IAD and large vessel occlusion of the anterior circulation, all experts suggest EVT (other than MT) for the treatment of the IAD lesion at the hyperacute phase after assessing the risk/benefit ratio based on the location of the dissection and bleeding risk.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Endovascular or surgical treatment of intracranial dissecting aneurysm with subarachnoid haemorrhage",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients suffering IAD with SAH, we suggest early surgical or endovascular intervention. There is insufficient data to provide a recommendation on the type of intervention to prioritize and the precise time window.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Endovascular or surgical treatment of intracranial dissecting aneurysm with subarachnoid haemorrhage",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement (11/11 experts): Different types of surgical and endovascular treatment methods can be used for treating IAD with SAH. In the absence of RCTs and considering the limited data from observational studies with high risk of bias, all experts suggest that the choice of intervention type in acute IAD-related SAH should ideally be the result of a multidisciplinary assessment.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Endovascular or surgical treatment of intracranial dissecting aneurysm with isolated headache",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "For symptomatic IAD patients with an intracranial dissecting aneurysm and isolated headache (no TIA, no acute ischemic stroke, no SAH), there is uncertainty over the benefits and risks of endovascular or surgical treatment and therefore it is not possible to make a recommendation. (The document records the strength of recommendation for this question as '-'.)",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Endovascular or surgical treatment of intracranial dissecting aneurysm with isolated headache",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement (10/11 experts): For symptomatic IAD patients with an intracranial aneurysm and isolated headache, all but one expert suggest against endovascular or surgical treatment unless the aneurysmal size increases significantly on follow-up imaging, or signs of compression occur.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Anticoagulant versus antiplatelet therapy in the acute phase of symptomatic dissection",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In the acute phase of symptomatic EAD, we recommend that clinicians can prescribe either anticoagulants or antiplatelet therapy.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Anticoagulant versus antiplatelet therapy in the acute phase of symptomatic dissection",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement (8/11 experts): For symptomatic EAD patients treated with anticoagulants in the acute phase, all but three experts felt that DOACs could be used in place of vitamin K antagonists.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Anticoagulant versus antiplatelet therapy in the acute phase of symptomatic dissection",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement (10/11 experts): For symptomatic EAD patients, all but one expert felt it was reasonable to use dual antiplatelet therapy with aspirin and clopidogrel in the acute phase in patients with TIA or minor stroke and restricted to a few weeks.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Anticoagulant versus antiplatelet therapy in the acute phase of symptomatic dissection",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement (10/11 experts): For acute symptomatic IAD patients with ischemic stroke or TIA and no SAH, all but one expert felt antiplatelet agents had a better risk/benefit ratio than anticoagulants.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Endovascular or surgical treatment outside the acute phase (post-acute EAD)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In post-acute EAD patients with residual stenosis or dissecting aneurysm, there is uncertainty over the benefits and risks of endovascular or surgical treatment and therefore it is not possible to make a recommendation. (The document records the strength of recommendation for this question as '-'.)",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Endovascular or surgical treatment outside the acute phase (post-acute EAD)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement (10/11 experts): Given the overwhelming evidence of a very low rate of recurrent ischemic events in post-acute EAD patients under medical treatment and the lack of evidence for an impact of residual stenosis or dissecting aneurysms on the rate of these events, all but one expert suggest against routine use of endovascular/surgical treatment in these patients: based on current limited evidence, endovascular/surgical treatment of post-acute EAD patients with residual stenosis or dissecting aneurysms may be carefully considered in exceptional situations, such as recurrent ischemic events despite optimal antithrombotic therapy or expanding dissecting aneurysms causing compression, after assessment by a multidisciplinary team (neurologist, neuroradiologist, neurosurgeon, and neurointerventionalist).",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

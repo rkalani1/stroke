@@ -10,12 +10,126 @@
   "society": "SVIN",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "DSA Indications for CCA Determination in Patients Being Evaluated for BD/DNC",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The Society of Vascular and Interventional Neurology (SVIN) Guidelines and Practice Standards Committee issues Brief Practice Updates to provide concise, evidence-based recommendations and suggestions on focused topics relevant to vascular and interventional neurology.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "DSA is primarily indicated for BD/DNC determination in cases where clinical or other ancillary tests are inconclusive or when definitive confirmation of absent cerebral blood flow is required.",
+      "page": null
+    },
+    {
+      "section": "DSA Indications for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "DSA may be considered in complex clinical scenarios, such as in patients with severe cranial trauma, illicit substance use, electrolyte disturbances, hemodynamic instability, or other conditions that might interfere with the accuracy of other diagnostic modalities.",
+      "page": null
+    },
+    {
+      "section": "DSA Indications for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Survey responses demonstrated moderate agreement: 92.9% endorsed DSA as providing definitive evidence of absent cerebral blood flow, with near-perfect sensitivity and specificity. However, only 71.4% considered it the gold standard ancillary test, and just 57.1% agreed it should be considered a \"core\" test alongside clinical examination and apnea testing. The results highlight DSA's recognized diagnostic accuracy but also reflect the ongoing debate about its role relative to other ancillary modalities (eg, transcranial Doppler or single-photon emission computed tomography).",
+      "page": null
+    },
+    {
+      "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "No consensus was reached on arterial access route: only half of the respondents favored femoral access over radial, reflecting both evolving endovascular practice patterns and the lack of comparative data.",
+      "page": null
+    },
+    {
+      "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There was greater agreement (64%-85%) on the need for a complete angiogram of all major cervical vessels with cranial fluoroscopy.",
+      "page": null
+    },
+    {
+      "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There was greater agreement (64%-85%) on careful catheter positioning in standard proximal segments.",
+      "page": null
+    },
+    {
+      "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There was greater agreement (64%-85%) on use of diagnostic catheters with 0.038-inch inner diameter to avoid altering cerebral flow.",
+      "page": null
+    },
+    {
+      "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There was greater agreement (64%-85%) on avoidance of manual hand injections when possible; respondents generally endorsed automated injection systems (78.6%). Some variability persisted, particularly regarding hand versus automated injections, underscoring the need for case-by-case judgment while moving toward standardized practice.",
+      "page": null
+    },
+    {
+      "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Respondents reached consensus on optimal injection parameters (flow rates 2-3 mL/s, run duration >=10 s, frame rate 2 fps, and vessel-specific pressure ranges of 150-750 PSI).",
+      "page": null
+    },
+    {
+      "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Establishing uniform technical specifications would enhance reproducibility, minimize operator-dependent variability, and ensure that negative angiograms truly reflect absent intracranial perfusion rather than suboptimal technique.",
+      "page": null
+    },
+    {
+      "section": "DSA Interpretation for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The interpretation of DSA for CCA determination in patients being evaluated for BD/DNC should be conducted by a qualified neurointerventionalist with rigorous adherence to specific neurovascular imaging criteria.",
+      "page": null
+    },
+    {
+      "section": "DSA Interpretation for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The current evidence and clinical standard practice establish CCA based on the absence of contrast within the intracranial arteries, reflecting elevated intracranial pressure exceeding systemic mean arterial pressure and resulting in absent cerebral perfusion. Published literature emphasizes clear visualization of contrast delivery from the catheter tip as well as filling of the external carotid artery branches, with complete lack of opacification of the anterior intracranial circulation distal to the clinoid portion of the internal carotid artery (ie, distal to the distal intradural ring) and of the posterior intracranial circulation distal to the intradural segment of the vertebral artery for a duration of 30 seconds.",
+      "page": null
+    },
+    {
+      "section": "DSA Interpretation for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Some studies also suggest that partial stasis or filling in limited segments may still be consistent with CCA and that reports of retrograde venous sinus opacification via emissary veins or jugular venous reflux should be interpreted cautiously, as such findings do not constitute evidence of cerebral activity in isolation.",
+      "page": null
+    },
+    {
+      "section": "DSA Interpretation for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Survey results demonstrated the strongest consensus in this domain, with 92.9% of the surveyed neurointerventionalists agreeing that absent intracranial arterial opacification is the key diagnostic marker of CCA, supporting a tiered classification (high probability, probable, possible, and inconsistent) based on the most distal level of opacification.",
+      "page": null
+    },
+    {
+      "section": "DSA Interpretation for CCA Determination in Patients Being Evaluated for BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "85.7% endorsed standardized reports that include blood pressure, imaging technique, timing, and multidisciplinary communication.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "advisory",
+  "gradingSystem": "ungraded"
 }

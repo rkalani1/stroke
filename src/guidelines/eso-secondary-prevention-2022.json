@@ -10,12 +10,110 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Recurrent stroke affects 9% to 15% of people within 1 year. This European Stroke Organisation (ESO) guideline provides evidence-based recommendations on pharmacological management of blood pressure (BP), diabetes mellitus, lipid levels and antiplatelet therapy for the prevention of recurrent stroke and other important outcomes in people with ischaemic stroke or transient ischaemic attack (TIA).",
+      "section": "PICO question 1: Blood pressure lowering treatment",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "High certainty",
+      "text": "In people with previous ischaemic stroke or TIA, we recommend blood pressure lowering treatment to reduce the risk of recurrent stroke. (Quality of evidence: High; Strength of recommendation: Strong for intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO question 2: Out of office blood pressure measurement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement: In people with previous ischaemic stroke or TIA, we support the use of out of office blood pressure measurements wherever feasible, to achieve better long-term control of blood pressure.",
+      "page": null
+    },
+    {
+      "section": "PICO question 3: Intensive versus less intensive blood pressure target",
+      "classOfRec": "Conditional",
+      "classNote": "For (printed as 'Weak for intervention')",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In people with previous ischaemic stroke or TIA, we suggest aiming for a blood pressure target of <130/80 mmHg to reduce the risk of recurrent stroke. (Quality of evidence: Moderate; Strength of recommendation: Weak for intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO question 4: Initiation of two blood pressure lowering medications versus monotherapy",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement: In people with ischaemic stroke or TIA, we support initiation of a combination of two blood pressure lowering drugs to reduce the risk of recurrent stroke, with consideration of monotherapy where there are potential risks of hypotension, such as in frail, elderly people and people with borderline hypertension.",
+      "page": null
+    },
+    {
+      "section": "PICO question 5: HMGCoA reductase inhibitor (statin) therapy",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "High certainty",
+      "text": "In people with previous ischaemic stroke or TIA we recommend use of a HMGCoA reductase inhibitor to reduce the risk of recurrent ischaemic stroke. (Quality of evidence: High; Strength of recommendation: Strong for intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO question 6: Intensive cholesterol treatment target",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In people with ischaemic stroke or TIA, we recommend aiming for an LDL cholesterol level of <1.8 mmol/l (70 mg/dl) to reduce the risk of major cardiovascular events. (Quality of evidence: Moderate; Strength of recommendation: Strong for intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO question 7: Ezetimibe and/or PCSK9-inhibitor added to a statin",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement: In people with ischaemic stroke or TIA who do not achieve the recommended LDL-C targets despite taking maximally tolerated dose of a HMGCoA reductase inhibitor for at least 6 weeks, we support the addition of ezetimibe as an option to reduce the risk of recurrent major cardiovascular events.",
+      "page": null
+    },
+    {
+      "section": "PICO question 8: Long-term antiplatelet therapy",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In people with previous ischaemic stroke or TIA, we recommend long-term use of antiplatelet therapy to reduce the risk of recurrent stroke. (Quality of evidence: Moderate; Strength of recommendation: Strong for intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO question 9: Dual antiplatelet therapy for longer than 90 days",
+      "classOfRec": "Conditional",
+      "classNote": "Against — printed as 'Weak against intervention' even though the statement is worded 'we recommend against'",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In people with previous ischaemic stroke or TIA, we recommend against use of dual antiplatelet therapy with aspirin and clopidogrel in the long-term and recommend use of single antiplatelet to reduce the risk of recurrent stroke. (Quality of evidence: Very Low; Strength of recommendation: Weak against intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO question 10: Antiplatelet plus low-dose direct oral anticoagulant in atherosclerosis",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For in people with coronary or peripheral arterial disease; explicitly against in those without",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement: The use of antiplatelet therapy combined with a low-dose direct oral anticoagulant (rivaroxaban) can be considered to optimise treatment of coronary artery disease or peripheral arterial disease in people with a history of ischaemic stroke or TIA more than 1 month previously. It should not be considered in people with ischaemic stroke or TIA who do not have coronary artery disease or peripheral arterial disease.",
+      "page": null
+    },
+    {
+      "section": "PICO question 11: Direct oral anticoagulant versus antiplatelet in embolic stroke of undetermined source (ESUS)",
+      "classOfRec": "Conditional",
+      "classNote": "Against the DOAC (printed as 'Weak against intervention'; the intervention assessed was the DOAC, so the statement favours antiplatelet therapy)",
+      "levelOfEvidence": "Low certainty",
+      "text": "In people with an embolic stroke of undetermined source, we suggest use of antiplatelet therapy and not a DOAC to reduce the risk of recurrent stroke. (Quality of evidence: Low; Strength of recommendation: Weak against intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO question 12: Intensive versus less intensive HbA1c control in diabetes mellitus",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement: In people with ischaemic stroke or TIA and diabetes mellitus, we support aiming for an HbA1c level of <53 mmol/mol (7%, 154 mg/dl) to reduce risk of microvascular and macrovascular complications. However, this target may need to be individualised based on duration of diabetes, age and comorbidities.",
+      "page": null
+    },
+    {
+      "section": "PICO question 13: Pioglitazone",
+      "classOfRec": "Conditional",
+      "classNote": "For (printed as 'Weak for intervention')",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In people with ischaemic stroke or TIA, who have insulin resistance or type 2 diabetes mellitus, we suggest pioglitazone be used to reduce risk of recurrent stroke. (Quality of evidence: Moderate; Strength of recommendation: Weak for intervention.)",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

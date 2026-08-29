@@ -9,44 +9,86 @@
   "pmid": "39707127",
   "recommendations": [
     {
-      "section": "Scope and Method",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Neurocritical Care Society clinical practice guideline built on a systematic review and meta-analysis of primary antiseizure medication (ASM) prophylaxis in adults hospitalized with acute nontraumatic intracerebral hemorrhage, graded with GRADE methodology. The initial literature search yielded 1,988 articles, of which 15 formed the basis of the recommendations. Three PICO questions were addressed: ASM versus no ASM in patients with no clinical or electrographic seizures; levetiracetam versus phenytoin/fosphenytoin if an ASM is used; and long (>7 days) versus short (<=7 days) duration of prophylaxis.",
+      "section": "PICO 1: Antiseizure medication vs. no antiseizure medication - Recommendation",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients hospitalized with acute nontraumatic ICH and no history of clinical or electrographic seizure, we suggest against the use of prophylactic ASMs (weak recommendation, very low quality of evidence).",
       "page": null
     },
     {
-      "section": "Prophylactic ASM vs No ASM",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "PICO 2: Levetiracetam vs. phenytoin/fosphenytoin - Recommendation",
+      "classOfRec": "Conditional",
+      "classNote": "For",
       "levelOfEvidence": "Very low certainty",
-      "text": "The guideline suggests avoidance of prophylactic ASM in hospitalized adult patients with acute nontraumatic intracerebral hemorrhage (weak/conditional recommendation, very low quality of evidence).",
+      "text": "If a prophylactic ASM is used after acute nontraumatic ICH, we suggest LEV should be used over PHT/fPHT for seizure prophylaxis (weak recommendation, very low quality of evidence).",
       "page": null
     },
     {
-      "section": "Evidence Behind the Recommendation",
-      "classOfRec": "Statement",
-      "classNote": null,
+      "section": "PICO 3: Duration of antiseizure medication use - Recommendation",
+      "classOfRec": "Conditional",
+      "classNote": "For",
       "levelOfEvidence": "Very low certainty",
-      "text": "This is a neutral-to-negative evidence base, not a positive one. Meta-analysis found no significant impact of prophylactic ASM on early seizure (<=14 days), late seizure (>14 days), or mortality; it did demonstrate increased adverse events and a higher relative risk of poor functional outcome at 90 days with prophylactic ASM use. Teaching point: the harm signal, not a seizure-prevention benefit, is what drives the recommendation against routine prophylaxis.",
+      "text": "If a prophylactic ASM is used after acute nontraumatic ICH, we suggest a short duration of use (<= 7 days) versus a longer duration of use (weak recommendation, very low quality of evidence).",
       "page": null
     },
     {
-      "section": "Choice of Agent",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
-      "levelOfEvidence": "Very low certainty",
-      "text": "If an ASM is used, the guideline suggests levetiracetam over phenytoin/fosphenytoin (weak/conditional recommendation, very low quality of evidence). No significant positive or negative effect of phenytoin/fosphenytoin compared with levetiracetam was detected for early seizures or adverse events, although point estimates tended to favor levetiracetam.",
+      "section": "PICO 1: Use of ASM vs. No ASM: In Our Practice",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Because the risk of electrographic-only (nonconvulsive) seizures post ICH is high, panel members concurred that they typically maintain a high level of vigilance for seizure in patients with ICH. Most panel members reported use of continuous EEG monitoring for both deep and lobar ICH locations, although EEG monitoring was less frequently used in patients with infratentorial ICH, where the risk of seizure is likely small.",
       "page": null
     },
     {
-      "section": "Duration of Prophylaxis",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
-      "levelOfEvidence": "Very low certainty",
-      "text": "If an ASM is used, the guideline suggests a short duration of <=7 days (weak/conditional recommendation, very low quality of evidence). This rests on a single decision analysis in which quality-adjusted life-years increased with a shorter duration of ASM prophylaxis.",
+      "section": "PICO 1: Use of ASM vs. No ASM: In Our Practice",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Depending on individual risk/benefit assessment and value placed on seizure avoidance versus ASM side effects, prophylactic ASM may be considered for a medium seizure risk (12% risk, 2HELPS2B score = 1) or high seizure risk (> 25% risk, 2HELPS2B score >= 2), whereas ASM prophylaxis may be avoided in those with a low seizure risk (2HELPS2B score = 0, < 5% risk).",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Use of ASM vs. No ASM: In Our Practice",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In high-risk cases in which continuous video EEG monitoring is indicated but not readily available (e.g., comatose patients with limited examinations, or patients with a prior seizure), shorter duration routine EEG and/or limited montage rapid response EEG can be employed, although the sensitivity and specificity of both are lower than that for continuous EEG, and interpretation of artifact is challenging when there is no accompanying video. When EEG data are not available, the CAVE score (cortical involvement, age < 65 years, ICH volume > 10 mL, early seizures <= 7 days from ICH), which was developed to predict late seizures (> 7 days) after ICH, is based entirely on clinical variables.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Use of ASM vs. No ASM: In Our Practice",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "Overall, the committee members concurred that in general, they do not use prophylactic ASM in patients with ICH. However, most would use EEG features, including the presence of epileptiform discharges, to identify a subset of patients who may be at high seizure risk and/or may benefit from prophylactic ASM.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: LEV vs. PHT/fPHT: In Our Practice",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "When LEV is used, a reasonable starting dose for patients with creatinine clearance > 30 mL/min is 750-1,000 mg twice daily. Patients with augmented renal clearance (>= 130 mL/min) may require even higher or more frequent doses to reach target serum levels. Lower doses (e.g., 500 mg once or twice daily) are typically reserved for patients with creatinine clearance <= 30 mL/min. When possible, many panel members trend LEV levels and adjust LEV dosing to maintain target serum levels.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Duration of ASM Use: In Our Practice",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Most of the panel would defer primary prophylaxis at the time of admission and use continuous EEG monitoring to evaluate for high-risk electrographic features. When EEG monitoring suggests moderate-high seizure risk (i.e., 2HELPS2B score >= 1 or epileptiform discharges seen), some panel members would initiate primary ASM prophylaxis. In patients without high-risk EEG features or when EEG cannot be performed, panel members who initiate primary ASM prophylaxis would use it only for 7 days, not longer.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Duration of ASM Use: In Our Practice",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "If an early seizure occurs, panel members universally would initiate ASM treatment. Many panel members would opt to continue ASM post discharge and reevaluate the patient in follow-up, taking into account recurrent seizures post discharge and medication-emergent side effects; several members routinely perform repeat EEG (ambulatory preferred) to assess for ongoing high-risk features prior to weaning ASM at 3-6 months post discharge.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

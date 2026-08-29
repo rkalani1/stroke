@@ -16,12 +16,198 @@
   },
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Telestroke: Building the Original Virtual Stroke Network - Key Points",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Rapid evaluation, triage, and transport of patients with stroke for thrombolytics, thrombectomy, and other acute treatments have become a vital part of cerebrovascular care. As such, there is a need for technology to facilitate interinstitutional coordination of care. This scientific statement describes how technology expands stroke systems of care.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Telestroke has expanded stroke care beyond the physical hospital, resulting in the first virtual stroke network.",
+      "page": null
+    },
+    {
+      "section": "Telestroke: Building the Original Virtual Stroke Network - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Telestroke has expanded access to care and increased use of thrombolysis in underresourced areas by bringing stroke expertise to the virtual bedside.",
+      "page": null
+    },
+    {
+      "section": "Telestroke: Building the Original Virtual Stroke Network - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Adding mobile and broadband technology has stretched the reach of telestroke beyond the hospital walls. Prehospital telestroke consultations can occur directly in the transporting ambulance, with reliable NIHSS measurements performed in the prehospital setting; ambulance-based telestroke is comparable to in-person vascular neurology assessment and may improve the accuracy of early stroke diagnosis, expedite treatment after hospital arrival, and support prehospital triage for patients with large vessel occlusions.",
+      "page": null
+    },
+    {
+      "section": "Mobile and AI-Enhanced Neuroimaging - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Mobile access to neuroimaging has allowed optimization of transfer and triage decision-making for patients needing neuroendovascular care for acute ischemic stroke across the virtual stroke network.",
+      "page": null
+    },
+    {
+      "section": "Mobile and AI-Enhanced Neuroimaging - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "AI allows fast imaging-based decisions by allowing nonradiology professionals access to complex neuroimaging results in real time, remotely, across multiple facilities.",
+      "page": null
+    },
+    {
+      "section": "Mobile and AI-Enhanced Neuroimaging - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Open questions include best practices for data and image sharing and integration of clinical and imaging data to develop predictive modeling and individualized prognostics.",
+      "page": null
+    },
+    {
+      "section": "Mobile and AI-Enhanced Neuroimaging: Building Blocks for an Efficient Virtual Network",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There are important limitations in AI software. Per good clinical practice as well as US Food and Drug Administration recommendations, AI imaging software platforms are intended for triage and do not replace formal interpretations by a radiologist or final decision-making by clinicians.",
+      "page": null
+    },
+    {
+      "section": "Mobile and AI-Enhanced Neuroimaging: Building Blocks for an Efficient Virtual Network",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "AI-driven insights may eventually assist with decision-making for expanded treatment windows beyond current guidelines, using imaging and clinical data to prognosticate individual benefit and risk of medical and endovascular interventions in patients with late-presenting or unknown onset of stroke. However, these future directions require much further study before integration into clinical practice.",
+      "page": null
+    },
+    {
+      "section": "Emerging AI Tools for Robust Virtual Stroke Networks - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Most AI tools for stroke care in development are in the untested pilot phase and are not ready for widespread clinical use.",
+      "page": null
+    },
+    {
+      "section": "Emerging AI Tools for Robust Virtual Stroke Networks - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Examples of AI tools for stroke care in development include those pertinent to health information technology, remote monitoring, and clinical decision-making.",
+      "page": null
+    },
+    {
+      "section": "Emerging AI Tools for Robust Virtual Stroke Networks - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Challenges include how to best collaborate in building robust stroke data sets for AI development; how to validate AI applications for acute stroke care in a robust, safe manner; and how to adequately evaluate newly designed AI technologies before implementation to avoid negative disruption of current clinical stroke pathways.",
+      "page": null
+    },
+    {
+      "section": "The Potential of Remote Neurointervention - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Teleproctoring and telerobotics could expand access to neurointerventional care.",
+      "page": null
+    },
+    {
+      "section": "The Potential of Remote Neurointervention - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Advances in technology are hindered by multiple implementation barriers, including lack of sufficient reliable broadband, manual procedural components, and complex postprocedure care needs.",
+      "page": null
+    },
+    {
+      "section": "The Potential of Remote Neurointervention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Teleproctoring requires at least 5G-based networks in both locations, because data transmission gaps and connection failures can have serious clinical consequences. Fully remote robotic interventional procedures in the neuroendovascular field remain limited to diagnostic and nonemergent procedures; manual steps such as arterial access and device deployment lead to an estimated 7% conversion rate to a manual operator, and Internet latency times greater than 300 ms are associated with instrument inaccuracies and procedural error.",
+      "page": null
+    },
+    {
+      "section": "Envisioning an Integrated Virtual Stroke Network - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Technologic advances in mobile health and AI-based applications could support acute stroke identification, transfer, triage, and treatment in the prehospital space.",
+      "page": null
+    },
+    {
+      "section": "Envisioning an Integrated Virtual Stroke Network - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In-hospital technology-supported care could strengthen collaborations within and between hospitals and health systems, enabling improved diagnosis, prognosis, treatment, and monitoring of stroke-related performance metrics.",
+      "page": null
+    },
+    {
+      "section": "Envisioning an Integrated Virtual Stroke Network - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Health system investment is needed because a key role of stroke systems of care is provision of the tools necessary to promote effective stroke treatment, including components of the virtual network of care (eg, telestroke infrastructure, neuroimaging applications with integrated AI technology, additional AI tools such as EMR natural language processing), to support efficient, effective care.",
+      "page": null
+    },
+    {
+      "section": "Envisioning an Integrated Virtual Stroke Network - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Further research is needed to determine the cost-effectiveness of an integrated virtual stroke network.",
+      "page": null
+    },
+    {
+      "section": "Medicolegal, Ethical, and Regulatory Concerns - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Many acute stroke medicolegal cases in the future will likely involve some aspects of a telestroke network or other use of technology, with a broadened liability for professionals using these technologies.",
+      "page": null
+    },
+    {
+      "section": "Medicolegal, Ethical, and Regulatory Concerns - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The medical record of the receiving institution after transfer provides an opportunity to document how technology was used to manage an epoch of patient care, providing crucial documentation for potential future medicolegal questions. It is crucial for AI notifications and messaging communications on stroke triaging apps to be memorialized in the treating institution's electronic medical record.",
+      "page": null
+    },
+    {
+      "section": "Medicolegal, Ethical, and Regulatory Concerns - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Ethical considerations in the development of AI tools include diversity of data used in development, automation bias, and explainability of the tools. Human stroke professionals will remain accountable for their clinical diagnostic reasoning even when relying on automated or augmented decision support.",
+      "page": null
+    },
+    {
+      "section": "Medicolegal, Ethical, and Regulatory Concerns - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Data security measures, validation and reporting of real-world performance, and education of clinicians on AI-enabled stroke practices must be developed before AI implementation. AI models should be evaluated for their generalizability across diverse populations, and ongoing bias surveillance throughout the AI life cycle is essential to promote equitable health care outcomes and reduce disparities.",
+      "page": null
+    },
+    {
+      "section": "Medicolegal, Ethical, and Regulatory Concerns - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "AI solutions used in stroke care should be developed by engineers in close collaboration with stroke clinicians, with input from other key advisors, including ethicists, legal experts, and patient stakeholders, and models will have to incorporate explainable AI.",
+      "page": null
+    },
+    {
+      "section": "Future Directions and Open Questions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When considering research into the use and implementation of these technologies, 3 categories for measurement of effectiveness should be considered: access, outcomes, and cost. AI applications in virtual stroke care should be validated in multicentric trials including diverse socioeconomic populations and various practice models (eg, academic and community, urban and rural), and cost-efficiency analyses should be conducted. Once higher levels of evidence become available from large-scale trials, national society guidelines should be developed to guide neurologists in adopting AI-enabled telehealth tools.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

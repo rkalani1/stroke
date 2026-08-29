@@ -10,12 +10,246 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The American Heart Association/American Stroke Association released a revised spontaneous intracerebral hemorrhage guideline in 2022. A working group of stroke experts reviewed this guideline and identified a subset of recommendations that were deemed suitable for creating performance measures. These 15 performance measures encompass a wide spectrum of intracerebral hemorrhage patient care, from prehospital to posthospital settings, highlighting the importance of timely interventions.",
+      "section": "Appendix 1: Performance Measurement Set Specifications - PM-1: Rapid Neuroimaging",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients presenting with stroke-like symptoms, rapid neuroimaging with CT or MRI is recommended to confirm the diagnosis of spontaneous ICH. [Basis for performance measure PM-1, Rapid Neuroimaging: percentage of patients with acute spontaneous ICH who received brain CT or MRI within 25 min of arrival to the hospital; attributed to the presenting facility. Excludes patients <18 y, last known well >24 h before arrival, and comfort care/hospice established before arrival.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-2: ICH Baseline Severity Score",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with spontaneous ICH, administering a baseline measure of overall hemorrhage severity is recommended as part of the initial evaluation to provide an overall measure of clinical severity. [Basis for performance measure PM-2: percentage of patients with acute spontaneous ICH in whom an ICH-specific baseline severity score (eg, ICH score) is measured and a total score recorded within 6 h of ICH diagnosis by brain CT or MRI, and before any intracranial procedure performed within 6 h of arrival. NIHSS and GCS are not sufficient to meet this measure.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-3: Anticoagulant Reversal",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with anticoagulant-associated spontaneous ICH, anticoagulation should be discontinued immediately and rapid reversal of anticoagulation should be performed as soon as possible after diagnosis of spontaneous ICH to improve survival. [Basis for performance measure PM-3: percentage of patients with anticoagulant-related acute ICH who receive an appropriate reversal agent within 90 min of ED arrival along with anticoagulant discontinuation.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-3: Anticoagulant Reversal",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with VKA-associated spontaneous ICH and INR >=2.0, 4-factor PCC is recommended in preference to FFP to achieve rapid correction of INR and limit hematoma expansion.",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-3: Anticoagulant Reversal",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with VKA-associated spontaneous ICH, intravenous vitamin K should be administered directly after coagulation factor replacement (PCC or other) to prevent later increase in INR and subsequent hematoma expansion.",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-3: Anticoagulant Reversal",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with direct factor Xa inhibitor-associated spontaneous ICH, andexanet alfa is reasonable to reverse the anticoagulant effect of factor Xa inhibitors.",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-3: Anticoagulant Reversal",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with dabigatran-associated spontaneous ICH, idarucizumab is reasonable to reverse the anticoagulant effect of dabigatran.",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-3: Anticoagulant Reversal",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with direct factor Xa inhibitor-associated spontaneous ICH, a 4-factor PCC or aPCC may be considered to improve hemostasis.",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-3: Anticoagulant Reversal",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with UFH-associated spontaneous ICH, intravenous protamine is reasonable to reverse the anticoagulant effect of heparin.",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-3: Anticoagulant Reversal",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with LMWH-associated spontaneous ICH, intravenous protamine may be considered to partially reverse the anticoagulant effect of heparin.",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-4: Avoidance of Platelet Transfusion in Patients Taking Antiplatelets",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "For patients with spontaneous ICH being treated with aspirin and not scheduled for emergency surgery, platelet transfusions are potentially harmful and should not be administered. [Basis for performance measure PM-4: percentage of patients with acute spontaneous ICH being treated with antiplatelet therapy and not scheduled for emergency surgery who receive a platelet transfusion. The writing group extended the measure to any antiplatelet medication rather than aspirin alone.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-5: Avoidance of Corticosteroids",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-R",
+      "text": "In patients with spontaneous ICH, corticosteroids should not be administered for treatment of elevated ICP. [Basis for performance measure PM-5: percentage of patients with acute spontaneous ICH who receive corticosteroids.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-6: Diagnostic Vascular Imaging for Lobar ICH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with lobar spontaneous ICH and age <70 years, deep/posterior fossa spontaneous ICH and age <45 years, or deep/posterior fossa and age 45 to 70 years without history of hypertension, acute CTA plus consideration of venography is recommended to exclude macrovascular causes or cerebral venous thrombosis. [Basis for performance measure PM-6: percentage of patients with acute spontaneous ICH originating from lobar structures and age 18 to 70 years who received cerebral vascular imaging before hospital discharge.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-7: Diagnostic Vascular Imaging for Nonlobar ICH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with lobar spontaneous ICH and age <70 years, deep/posterior fossa spontaneous ICH and age <45 years, or deep/posterior fossa and age 45 to 70 years without history of hypertension, acute CTA plus consideration of venography is recommended to exclude macrovascular causes or cerebral venous thrombosis. [Basis for performance measure PM-7: percentage of patients with deep/posterior fossa acute spontaneous ICH and age 18 to 45 years, or age 45 to 70 years without history of hypertension, who received cerebral vascular imaging before hospital discharge.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-8: DSA for Acute, Spontaneous, Isolated IVH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with spontaneous IVH and no detectable parenchymal hemorrhage, catheter intra-arterial DSA is recommended to exclude a macrovascular cause. [Basis for performance measure PM-8: percentage of patients with acute spontaneous, isolated IVH without detectable parenchymal component or known cause of hemorrhage, regardless of findings on noncatheter angiography (MRA, CTA), who undergo catheter intra-arterial DSA.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-9: Patients With Hydrocephalus Transferred",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with spontaneous ICH and clinical hydrocephalus, transfer to centers with neurosurgical capabilities for definitive hydrocephalus management (eg, EVD placement and monitoring) is recommended to reduce mortality. [Basis for performance measure PM-9: percentage of patients with acute spontaneous ICH or IVH and hydrocephalus who are urgently transferred for definitive hydrocephalus management to a center with neurosurgical capabilities on diagnosis of hydrocephalus by brain CT or MRI; attributed to the transferring facility.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-10: EVD for Clinical Hydrocephalus",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with spontaneous ICH or IVH and hydrocephalus that is contributing to decreased level of consciousness, ventricular drainage should be performed to reduce mortality. [Basis for performance measure PM-10: percentage of patients with acute spontaneous ICH or IVH and clinical hydrocephalus (radiographic hydrocephalus plus a change in neurological examination from baseline) who receive an EVD.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-11: Surgery for Deteriorating Cerebellar ICH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with cerebellar ICH who are deteriorating neurologically, have brainstem compression and/or hydrocephalus from ventricular obstruction, or with cerebellar ICH volume >=15 mL, immediate surgical removal of the hemorrhage with or without EVD is recommended in preference to medical management alone to reduce mortality. [Basis for performance measure PM-11: percentage of such patients who undergo neurosurgical evacuation of the hemorrhage with or without EVD.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-12: Specialized Units",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with spontaneous ICH, provision of care in a specialized inpatient (eg, stroke) unit with a multidisciplinary team is recommended to improve outcomes and reduce mortality. [Basis for performance measure PM-12: percentage of patients with acute spontaneous ICH who are admitted to an ICU or dedicated stroke unit with physician and nursing neuroscience acute care expertise.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-12: Specialized Units",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with spontaneous ICH, provision of care at centers that can provide the full range of high-acuity care and expertise is recommended to improve outcomes.",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-13: Dysphagia Screening",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with spontaneous ICH, a formal dysphagia screening protocol should be implemented before initiation of oral intake to reduce disability and the risk of pneumonia. [Basis for performance measure PM-13: percentage of patients with acute spontaneous ICH who pass an institutionally approved dysphagia screening protocol before initiation of oral intake.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-14: VTE Prophylaxis",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In nonambulatory patients with spontaneous ICH, intermittent pneumatic compression starting on the day of diagnosis is recommended for venous thromboembolism (DVT and PE) prophylaxis. [Basis for performance measure PM-14: percentage of patients with acute spontaneous ICH receiving VTE prophylaxis with pneumatic compression devices within 1 day of ICH diagnosis (hospital day 0 or 1, where day 0 is the day of ED arrival).]",
+      "page": null
+    },
+    {
+      "section": "Appendix 1 - PM-15: Long-Term BP Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with spontaneous ICH, BP control is recommended to prevent hemorrhage recurrence. [Basis for performance measure PM-15: percentage of patients with acute spontaneous ICH with hypertension (BP >130/80 mm Hg) who are prescribed an oral or transdermal antihypertensive medication at the time of hospital discharge.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 2: Quality Measurement Set Specifications - QM-1: Prehospital Stroke Screen for ICH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with sudden onset of neurological symptoms or signs attributable to potential spontaneous ICH, use of stroke recognition and severity tools is recommended for dispatch personnel and first responders to identify potential stroke and facilitate rapid transport to reduce time to diagnosis and treatment. [Basis for quality measure QM-1: percentage of patients with acute spontaneous ICH who were transported by EMS and had a stroke-specific screen performed; attributed to the EMS agency.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 2 - QM-2: EMS Prearrival Notification for ICH",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with potential spontaneous ICH, early notification by EMS staff to the receiving hospital is recommended to improve time to diagnosis and treatment. [Basis for quality measure QM-2: percentage of patients with acute spontaneous ICH transported by EMS for whom a stroke-specific notification of the receiving hospital by EMS was performed.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 2 - QM-3: Neurobehavioral Screening",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with spontaneous ICH, administration of depression and anxiety screening tools in the postacute period is recommended to identify patients with poststroke depression and anxiety. [Basis for quality measure QM-3: percentage of patients with acute spontaneous ICH who receive structured neurobehavioral screening assessments for both mood disorder (depression/anxiety) and cognitive impairment, at the end of the hospital admission or in the postacute setting.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 2 - QM-3: Neurobehavioral Screening",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with spontaneous ICH, administration of a cognitive screening tool in the postacute period is useful to identify patients with cognitive impairment and dementia.",
+      "page": null
+    },
+    {
+      "section": "Appendix 2 - QM-4: Time to BP Target",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with spontaneous ICH in whom acute BP lowering is considered, initiating treatment within 2 h of ICH onset and reaching target within 1 h can be beneficial to reduce the risk of hematoma expansion and improve functional outcome. [Basis for quality measure QM-4: percentage of patients with acute spontaneous ICH in whom acute BP lowering is initiated within 1 h of hospital arrival and in whom the institution-defined target BP is reached within 2 h of hospital arrival. The guideline did not make a Class 1 recommendation for a specific BP target, so this was created as a quality measure with institution-defined targets.]",
+      "page": null
+    },
+    {
+      "section": "Appendix 2 - QM-4: Time to BP Target",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with spontaneous ICH requiring acute BP lowering, careful titration to ensure continuous smooth and sustained control of BP, avoiding peaks and large variability in systolic BP, can be beneficial for improving functional outcomes.",
+      "page": null
+    },
+    {
+      "section": "Appendix 2 - QM-5: Rapid Transfer for EVD",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with spontaneous ICH and clinical hydrocephalus, transfer to centers with neurosurgical capabilities for definitive hydrocephalus management (eg, EVD placement and monitoring) is recommended to reduce mortality. [Basis for quality measure QM-5: percentage of patients with acute spontaneous ICH or IVH and hydrocephalus who are transferred to a center with neurosurgical capabilities within 90 min of hydrocephalus diagnosis by brain CT or MRI (picture-to-door-out time).]",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "ACC/AHA"
 }

@@ -9,100 +9,558 @@
   "pmid": "26714677",
   "recommendations": [
     {
-      "section": "Read This First: Vintage of the Document",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "This is the 2016 NCS/SCCM reversal guideline, and it is the most recent graded reversal guideline either society has issued: there is no NCS reversal guideline from 2023 or later. Because it was written in 2015-2016, it predates the approval of andexanet alfa and predates the ANNEXA-I randomized trial of andexanet in factor Xa inhibitor-associated intracerebral hemorrhage entirely. Its factor Xa inhibitor section should therefore be read as a historical PCC-era document, not as current FXa-reversal guidance; for contemporary teaching on factor Xa inhibitor reversal, consult the 2022 AHA/ASA ICH guideline and the ANNEXA-4 and ANNEXA-I evidence in this app. The idarucizumab recommendations for dabigatran remain broadly aligned with later practice.",
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend discontinuing vitamin K antagonists when intracranial hemorrhage is present or suspected. (Good Practice statement)",
       "page": null
     },
     {
-      "section": "Scope and Method",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Joint Neurocritical Care Society and Society of Critical Care Medicine evidence-based practice guideline, developed by an international multidisciplinary committee using GRADE methodology, covering reversal of vitamin K antagonists, direct factor Xa antagonists, direct thrombin inhibitors, unfractionated heparin, low-molecular-weight heparin, heparinoids, pentasaccharides, thrombolytics, and antiplatelet agents in the setting of intracranial hemorrhage. The stated rationale is that although antithrombotic-associated intracranial hemorrhage can be devastating, rapid reversal of coagulopathy may help limit hematoma expansion and improve outcomes.",
-      "page": null
-    },
-    {
-      "section": "Vitamin K Antagonists",
-      "classOfRec": "Statement",
-      "classNote": "Strong recommendation",
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
-      "text": "Urgent reversal of vitamin K antagonists is recommended in patients with intracranial hemorrhage (strong recommendation, moderate quality evidence), together with discontinuation of the VKA when intracranial hemorrhage is present or suspected (good practice statement). Vitamin K should be administered to ensure durable reversal of the INR, dosed as soon as possible or concomitantly with other reversal agents (strong recommendation, moderate quality evidence); the guideline suggests one dose of vitamin K 10 mg IV with subsequent treatment guided by follow-up INR (good practice statement).",
+      "text": "We recommend urgent reversal of vitamin K antagonists in patients with intracranial hemorrhage (Strong recommendation, moderate quality evidence), with the considerations that follow.",
       "page": null
     },
     {
-      "section": "Vitamin K Antagonists: Factor Replacement",
-      "classOfRec": "Statement",
-      "classNote": "Strong recommendation",
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest against VKA reversal in patients where there is a high suspicion of intracranial hemorrhage due to cerebral venous thrombosis. (Conditional recommendation, very low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend assessing risks and benefits when considering VKA reversal in intracranial hemorrhage patients with concurrent symptomatic or life-threatening thrombosis, ischemia, heparin-induced thrombocytopenia, or DIC. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
-      "text": "Administration of 3-factor or 4-factor PCC rather than FFP is recommended for patients with VKA-associated intracranial hemorrhage and INR at or above 1.4 (strong recommendation, moderate quality evidence). The guideline suggests 4-factor PCC over 3-factor PCC, and initial reversal with PCC alone rather than combined with FFP or rFVIIa (conditional recommendations, low-quality evidence). PCC dosing should be weight-based and vary with admission INR and PCC type (strong recommendation, moderate quality evidence), with INR repeated 15-60 min after administration and serially every 6-8 h for 24-48 h (good practice statement).",
+      "text": "We recommend administration of Vitamin K to ensure durable reversal of INR following VKA-associated intracranial hemorrhage. Vitamin K should be dosed as soon as possible or concomitantly with other reversal agents. (Strong recommendation, moderate quality evidence)",
       "page": null
     },
     {
-      "section": "Vitamin K Antagonists: Agents Advised Against",
-      "classOfRec": "Statement",
-      "classNote": "Recommendation against",
-      "levelOfEvidence": "Low certainty",
-      "text": "Administration of recombinant factor VIIa for reversal of vitamin K antagonists is recommended against (strong recommendation, low-quality evidence), because the INR is particularly sensitive to factor VII levels and may correct despite inadequate levels of factors II, IX and X required for hemostasis. The guideline also suggests against VKA reversal where there is a high suspicion that the intracranial hemorrhage is due to cerebral venous thrombosis (conditional recommendation, very low-quality evidence).",
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest one dose of Vitamin K 10 mg IV. Subsequent treatment should be guided by follow-up INR. (Good Practice statement)",
       "page": null
     },
     {
-      "section": "Direct Factor Xa Inhibitors",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
-      "levelOfEvidence": "Low certainty",
-      "text": "Factor Xa inhibitors should be discontinued when intracranial hemorrhage is present or suspected, and information obtained on time since the last dose and possible medication interactions (good practice statements). Pharmacological reversal should be guided primarily by bleeding (major or intracranial) rather than by laboratory testing (conditional recommendation, low-quality evidence). The guideline suggests 4-factor PCC 50 U/kg or activated PCC 50 U/kg if the hemorrhage occurred within 3-5 terminal half-lives of drug exposure or in the context of liver failure, and suggests 4-factor PCC or activated PCC over rFVIIa because of the lower risk of adverse thrombotic events (conditional recommendations, low-quality evidence). Note the vintage caveat above: no specific FXa antidote existed when this section was written.",
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "If repeat INR is still elevated >= 1.4 within the first 24-48 h after reversal agent administration, we suggest redosing with vitamin K 10 mg IV. (Good Practice statement)",
       "page": null
     },
     {
-      "section": "Direct Thrombin Inhibitors",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
-      "levelOfEvidence": "Low certainty",
-      "text": "Direct thrombin inhibitors should be discontinued when intracranial hemorrhage is present or suspected, with assessment of the time and amount of the last ingested dose, renal function, and possible medication interactions (good practice statements). Idarucizumab 5 g IV in two divided doses is recommended for dabigatran-associated intracranial hemorrhage when dabigatran was administered within 3-5 half-lives. Where clinically significant bleeding continues after idarucizumab, PCC or activated PCC, the guideline suggests considering redosing idarucizumab and/or hemodialysis (conditional recommendation, low-quality evidence). Administration of rFVIIa or FFP in direct thrombin inhibitor-related intracranial hemorrhage is recommended against (strong recommendation, low-quality evidence).",
-      "page": null
-    },
-    {
-      "section": "Unfractionated Heparin",
-      "classOfRec": "Statement",
-      "classNote": "Strong recommendation",
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
-      "text": "Intravenous protamine sulfate is recommended to reverse heparin in the context of intracranial hemorrhage (strong recommendation, moderate quality evidence), dosed according to the heparin infused over the preceding 2-3 h (strong recommendation, high-quality evidence): 1 mg protamine for every 100 units of heparin given in the previous 2-3 h, to a maximum single dose of 50 mg (strong recommendation, moderate quality evidence). If the aPTT remains elevated, the guideline suggests repeat protamine at 0.5 mg per 100 units of UFH (conditional recommendation, low quality of evidence). Reversal of prophylactic subcutaneous heparin may be considered if the aPTT is significantly prolonged (good practice statement).",
+      "text": "We recommend administering 3-factor or 4-factor PCC rather than FFP to patients with VKA-associated intracranial hemorrhage and INR >= 1.4. (Strong recommendation, moderate quality evidence)",
       "page": null
     },
     {
-      "section": "Low-Molecular-Weight Heparin",
-      "classOfRec": "Statement",
-      "classNote": "Strong recommendation",
-      "levelOfEvidence": "Moderate certainty",
-      "text": "Reversal is recommended in patients with intracranial hemorrhage receiving therapeutic doses of LMWH (strong recommendation, moderate evidence), using protamine by slow intravenous injection over about 10 min. For enoxaparin given within 8 h, protamine 1 mg per 1 mg enoxaparin (maximum single dose 50 mg); for enoxaparin given 8-12 h earlier, 0.5 mg protamine per 1 mg enoxaparin; after 3-5 half-lives protamine is probably not needed (strong recommendation, moderate quality evidence). For dalteparin, nadroparin and tinzaparin, protamine 1 mg per 100 anti-Xa units administered in the past 3-5 half-lives, to a maximum single dose of 50 mg (strong recommendation, moderate quality evidence).",
-      "page": null
-    },
-    {
-      "section": "Thrombolytic Agents",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
       "levelOfEvidence": "Low certainty",
-      "text": "Thrombolytic agents should be discontinued when intracranial hemorrhage is present or suspected (good practice statement). The guideline suggests cryoprecipitate, 10 units as an initial dose, in patients with thrombolytic-related symptomatic intracranial hemorrhage who received a thrombolytic in the previous 24 h (conditional recommendation, low-quality evidence). Where cryoprecipitate is contraindicated or not available in a timely manner, it suggests an antifibrinolytic agent (tranexamic acid 10-15 mg/kg IV over 20 min, or epsilon-aminocaproic acid 4-5 g IV) as an alternative (conditional recommendation, very low-quality evidence), and checking fibrinogen after reversal, giving additional cryoprecipitate if fibrinogen is below 150 mg/dL (conditional recommendation, very low-quality evidence). The panel states it is unclear whether platelet transfusion is useful and offers no recommendation on it in this setting.",
+      "text": "We suggest the use of 4-factor PCC over 3-factor PCC. (Conditional recommendation, low-quality evidence)",
       "page": null
     },
     {
-      "section": "Antiplatelet Agents",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
       "levelOfEvidence": "Low certainty",
-      "text": "Antiplatelet agents should be discontinued when intracranial hemorrhage is present or suspected (good practice statement). The guideline suggests AGAINST platelet transfusion for patients with antiplatelet-associated intracranial hemorrhage who will NOT undergo a neurosurgical procedure, regardless of the type of platelet inhibitor, platelet function testing, hemorrhage volume, or neurological examination (conditional recommendation, low-quality evidence). This is the negative recommendation clinicians most often misremember, and it is concordant with the PATCH trial published later the same year.",
+      "text": "We suggest initial reversal with PCC alone (either 3- or 4-factor) rather than combined with FFP or rFVIIa. (Conditional recommendation, low-quality evidence)",
       "page": null
     },
     {
-      "section": "Antiplatelet Agents: Surgical Candidates",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
-      "text": "Platelet transfusion is suggested for patients with aspirin- or ADP inhibitor-associated intracranial hemorrhage who WILL undergo a neurosurgical procedure (conditional recommendation, moderate quality of evidence), with platelet function testing before transfusion where possible (strong recommendation, moderate quality evidence); empiric transfusion may be reasonable when function testing is not readily available (conditional recommendation, low-quality evidence). Transfusion is recommended against for patients with laboratory-documented normal platelet function or documented antiplatelet resistance (strong recommendation, moderate quality evidence), and suggested against in NSAID- or GP IIb/IIIa inhibitor-related intracranial hemorrhage even in the context of neurosurgical intervention.",
+      "text": "We recommend that PCC dosing should be weight-based and vary according to admission INR and type of PCC used. (Strong recommendation, moderate quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend repeating INR testing soon after PCC administration (15-60 min), and serially every 6-8 h for the next 24-48 h. Subsequent treatment should be guided by follow-up INR, with consideration given to the fact that repeat PCC dosing may lead to increased thrombotic complications and risk of DIC. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "If the repeat INR is still elevated >= 1.4 within the first 24-48 h after initial PCC dosing, we suggest further correction with FFP. (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "We recommend against administration of rFVIIa for the reversal of VKA. (Strong recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "If PCCs are not available or contraindicated, alternative treatment is recommended over no treatment. (Strong recommendation, moderate quality evidence) Treatment choice may be guided by available therapies and patient-specific factors. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Treatment with FFP and Vitamin K is recommended over no treatment. (Strong recommendation, moderate quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for VKA Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest dosing FFP at 10-15 ml/kg IV along with one dose of vitamin K 10 mg IV. (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Oral Direct Factor Xa Inhibitors Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend discontinuing factor Xa inhibitors when intracranial hemorrhage is present or suspected. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Oral Direct Factor Xa Inhibitors Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend obtaining information on the time elapsed since the last dose of direct factor Xa inhibitor and possible medication interactions to assist in estimating the degree of anticoagulation exposure. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Oral Direct Factor Xa Inhibitors Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest that pharmacological reversal of oral factor Xa inhibitors should be guided primarily by bleeding (major or intracranial) and not primarily by laboratory testing. (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Oral Direct Factor Xa Inhibitors Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest administration of activated charcoal (50 g) to intubated intracranial hemorrhage patients with enteral access and/or those at low risk of aspiration who present within 2 h of ingestion of an oral direct factor Xa inhibitor. (Conditional recommendation, very low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Oral Direct Factor Xa Inhibitors Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest administering a 4-factor PCC (50 U/kg) or activated PCC (50 U/kg) if intracranial hemorrhage occurred within 3-5 terminal half-lives of drug exposure or in the context of liver failure. (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Oral Direct Factor Xa Inhibitors Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest administering 4-factor PCC or activated PCC over rFVIIa because of the lower risk of adverse thrombotic events. (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Direct Thrombin Inhibitor Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend discontinuing direct thrombin inhibitors when intracranial hemorrhage is present or suspected. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Direct Thrombin Inhibitor Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend assessing the time and amount of the last ingested dose, renal function, and possible medication interactions to assist in estimating the degree of anticoagulation exposure. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Direct Thrombin Inhibitor Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest that pharmacological reversal of direct thrombin inhibitors should be guided primarily by bleeding (major or intracranial) and not primarily by laboratory testing. (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Direct Thrombin Inhibitor Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest administering activated charcoal (50 g) to intubated intracranial hemorrhage patients with enteral access and/or those at low risk of aspiration who present within 2 h of ingestion of an oral direct thrombin inhibitor. (Conditional recommendation, very low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Direct Thrombin Inhibitor Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "We recommend administering idarucizumab (5 g IV in two divided doses) to patients with intracranial hemorrhage associated with dabigatran if: (a) the dabigatran was administered within a period of 3-5 half-lives and there is no evidence of renal failure, or (b) there is renal insufficiency leading to continued drug exposure beyond the normal 3-5 half-lives. (Strong recommendation, moderate quality of evidence for both a and b)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Direct Thrombin Inhibitor Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest administering aPCC (50 units/kg) or 4-factor PCC (50 units/kg) to patients with intracranial hemorrhage associated with direct thrombin inhibitors if idarucizumab is not available or if the hemorrhage is associated with a DTI other than dabigatran if: (a) the direct thrombin inhibitor was administered within a period of 3-5 half-lives and there is no evidence of renal failure, or (b) there is renal insufficiency leading to continued drug exposure beyond the normal 3-5 half-lives. (Conditional recommendation, low-quality evidence for both a and b)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Direct Thrombin Inhibitor Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with dabigatran-associated intracranial hemorrhage and renal insufficiency or dabigatran overdose, we suggest hemodialysis if idarucizumab is not available. (Conditional recommendation, low-quality data)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Direct Thrombin Inhibitor Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with dabigatran-associated intracranial hemorrhage who have already been treated with idarucizumab, PCC, or aPCC, with ongoing evidence of clinically significant bleeding, we suggest consideration of redosing idarucizumab and/or hemodialysis. (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Direct Thrombin Inhibitor Reversal",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "We recommend against administration of rFVIIa or FFP in direct thrombin inhibitor-related intracranial hemorrhage. (Strong recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Unfractionated Heparin Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend discontinuing heparin infusions when intracranial hemorrhage is present or suspected. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Unfractionated Heparin Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend urgently reversing anticoagulation in patients who develop intracranial hemorrhage during full dose heparin infusion. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Unfractionated Heparin Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "We do not recommend routinely reversing prophylactic subcutaneous heparin. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Unfractionated Heparin Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest considering reversal of prophylactic subcutaneous heparin if the aPTT is significantly prolonged. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Unfractionated Heparin Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "We recommend administering intravenous protamine sulfate to reverse heparin in the context of intracranial hemorrhage. (Strong recommendation, moderate quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Unfractionated Heparin Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "High certainty",
+      "text": "We recommend dosing protamine according to the dose of heparin infused over the preceding 2-3 h. (Strong recommendation, high-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Unfractionated Heparin Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "We recommend dosing protamine sulfate at 1 mg for every 100 units of heparin given in the previous 2-3 h with a maximum single dose of 50 mg. (Strong recommendation, moderate quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Unfractionated Heparin Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "If the aPTT remains elevated, we suggest repeat administration of protamine at a dose of 0.5 mg protamine per 100 units of UFH. (Conditional recommendation, low quality of evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Low-Molecular Weight Heparin Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend discontinuing LMWH when intracranial hemorrhage is present or suspected. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Low-Molecular Weight Heparin Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "We recommend reversing LMWH in patients with intracranial hemorrhage receiving therapeutic doses of LMWH. (Strong recommendation, moderate evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Low-Molecular Weight Heparin Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "We recommend protamine administration by slow intravenous injection over a period of about 10 min. For enoxaparin: if enoxaparin was given within 8 h, protamine sulfate should be administered at a dose of 1 mg per 1 mg of enoxaparin administered (up to a maximum single dose of 50 mg). If enoxaparin was given within 8-12 h, a dose of 0.5 mg of protamine per 1 mg of enoxaparin should be administered. After 3-5 half-lives have elapsed, protamine is probably not needed. (Strong recommendation, moderate quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Low-Molecular Weight Heparin Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For dalteparin, nadroparin, and tinzaparin: Dose protamine at 1 mg per 100 anti-Xa units of LMWH administered in the past 3-5 half-lives of the drug, up to a maximum single dose of 50 mg. (Strong recommendation, moderate quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Low-Molecular Weight Heparin Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "If life-threatening bleeding persists, or the patient has renal insufficiency, we suggest redosing protamine (0.5 mg of protamine per 100 anti-Xa units or per 1 mg of enoxaparin). (Conditional recommendation, very low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Low-Molecular Weight Heparin Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest considering recombinant Factor VIIa (90 mcg/kg IV) if protamine is contraindicated. (Conditional recommendation, very low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Low-Molecular Weight Heparin Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend against the reversal of LMWH in patients with intracranial hemorrhage receiving prophylactic dosing of LMWH. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Low-Molecular Weight Heparin Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest against reversing danaparoid with protamine. (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Low-Molecular Weight Heparin Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest reversing danaparoid with recombinant Factor VIIa (90 mcg/kg IV once) in the context of intracranial hemorrhage. (Conditional recommendation, very low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Low-Molecular Weight Heparin Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest against using FFP, PCC, or aPCC to reverse LMWH. (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Pentasaccharide Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend discontinuing pentasaccharides when intracranial hemorrhage is present or suspected. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Pentasaccharide Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest reversing pentasaccharides in patients with intracranial hemorrhage receiving full therapeutic doses. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Pentasaccharide Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest administration of aPCC (20 IU/kg) for reversal of pentasaccharides. (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Pentasaccharide Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "If aPCC is contraindicated or not available, we suggest administration of rFVIIa (90 mcg/kg). (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Pentasaccharide Reversal",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "We recommend against protamine for reversal of pentasaccharides. (Strong recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Pentasaccharide Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "In intracranial hemorrhage patients receiving pentasaccharides for venous thromboembolism prophylaxis, we suggest against reversal unless there is evidence of bioaccumulation or impaired clearance. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Thrombolytic Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend discontinuing thrombolytic agents when intracranial hemorrhage is present or suspected. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Thrombolytic Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest using cryoprecipitate (10 units initial dose) in patients with thrombolytic agent-related symptomatic intracranial hemorrhage who have received a thrombolytic agent in the previous 24 h. (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Thrombolytic Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In cases where cryoprecipitate is contraindicated or not available in a timely manner, we suggest using an antifibrinolytic agent (tranexamic acid 10-15 mg/kg IV over 20 min or epsilon-aminocaproic acid 4-5 g IV) as an alternative to cryoprecipitate. (Conditional recommendation, very low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Thrombolytic Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest checking fibrinogen levels after administration of reversal agents. If the fibrinogen is less than 150 mg/dL, we suggest administration of additional cryoprecipitate. (Conditional recommendation, very low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Antiplatelet Agent Reversal",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend discontinuing antiplatelet agents when intracranial hemorrhage is present or suspected. (Good Practice statement)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Antiplatelet Agent Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest against platelet transfusion for patients with antiplatelet-associated intracranial hemorrhage who will not undergo a neurosurgical procedure, regardless of the type of platelet inhibitor, platelet function testing, hemorrhage volume, or neurological exam. (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Antiplatelet Agent Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "We suggest platelet transfusion for patients with aspirin- or ADP inhibitor-associated intracranial hemorrhage who will undergo a neurosurgical procedure. (Conditional recommendation, moderate quality of evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Antiplatelet Agent Reversal",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "We recommend platelet function testing prior to platelet transfusion if possible. (Strong recommendation, moderate quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Antiplatelet Agent Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "When platelet function testing is not readily available, empiric platelet transfusion may be reasonable. (Conditional recommendation, low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Antiplatelet Agent Reversal",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "We recommend against platelet transfusion for patients with laboratory documented platelet function within normal limits or documented antiplatelet resistance. (Strong recommendation, moderate quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Antiplatelet Agent Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest against platelet transfusion in NSAID or GP IIb/IIIa inhibitor-related intracranial hemorrhage, even in the context of neurosurgical intervention. (Conditional recommendation, very low-quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Antiplatelet Agent Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In candidates for platelet transfusion, we suggest an initial dose of one single-donor apheresis unit of platelets. Platelet testing is suggested prior to repeat platelet transfusion, if available, and repeat transfusion should be used only for those with persistently abnormal platelet function tests and/or ongoing bleeding. (Conditional recommendation, moderate quality evidence)",
+      "page": null
+    },
+    {
+      "section": "Recommendations for Antiplatelet Agent Reversal",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "We suggest consideration of a single dose of desmopressin (DDAVP) in intracranial hemorrhage (0.4 mcg/kg IV) associated with aspirin/COX-1 inhibitors or ADP receptor inhibitors. In patients deemed appropriate (e.g., those undergoing a neurosurgical procedure), DDAVP can be used in addition to platelet transfusion. (Conditional recommendation, low-quality evidence)",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

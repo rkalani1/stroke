@@ -10,36 +10,62 @@
   "pmid": "31008306",
   "recommendations": [
     {
-      "section": "Primary prophylaxis with antiepileptic drugs",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "PICO 1 – Immediate primary prophylaxis with an antiepileptic drug to prevent acute symptomatic seizures",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
       "levelOfEvidence": "Very low certainty",
-      "text": "In most instances the guideline suggests not to administer antiepileptic drugs for prevention of post-stroke seizures.",
+      "text": "The presence of only one underpowered RCT does not give any reliable evidence if immediate primary prophylaxis with an antiepileptic drug compared to no treatment prevents occurrence of ASS in ischaemic stroke or intracranial (intracerebral or subarachnoid) haemorrhage. Observational studies show that in most patients with stroke, the risk to develop ASS is very low (approximately 5%). Furthermore, the consequences of ASS probably are rather limited. Thus, only a weak recommendation can be made, and we suggest not generally employing primary AED prophylaxis. (Quality of evidence: Very low ⊕; Strength of recommendation: Weak against ↓?)",
       "page": null
     },
     {
-      "section": "After a first unprovoked post-stroke seizure",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "PICO 2 – Immediate secondary prophylaxis after at least one acute symptomatic seizure",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
       "levelOfEvidence": "Very low certainty",
-      "text": "Due to the high incidence of seizure recurrence after one post-stroke unprovoked seizure, secondary antiepileptic drug prophylaxis needs to be considered.",
+      "text": "The absence of RCTs does not give guidance for a recommendation on when and whom to administer secondary AED prophylaxis compared to no treatment for prevention of further ASS. Findings from observational studies indicate that acute seizure recurrence after one ASS is low (10–20%). Thus, only a weak recommendation can be made, and we suggest not generally employing secondary AED prophylaxis. (Quality of evidence: Very low ⊕; Strength of recommendation: Weak against ↓?)",
       "page": null
     },
     {
-      "section": "Certainty of the evidence",
-      "classOfRec": "Statement",
-      "classNote": null,
+      "section": "PICO 3 – Continuous primary prophylaxis to prevent unprovoked seizures",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
       "levelOfEvidence": "Very low certainty",
-      "text": "A writing committee identified seven questions relating to prevention of post-stroke seizures and epilepsy and to amelioration of functional outcome and prevention of mortality. In the absence of adequately powered randomised controlled trials, the evidence for all recommendations is very low, and only some weak recommendations could be made on the basis of observational studies. Adequately powered randomised controlled trials are required.",
+      "text": "In the absence of RCTs, there is no reliable evidence to support the decision to start immediate and sustained primary prophylaxis with an AED to prevent occurrence of unprovoked post-stroke seizures. As in most patients with ischaemic stroke or intracranial (intracerebral or subarachnoid) haemorrhage, the risk to develop US is low (approximately 10%), we suggest not generally employing primary AED prophylaxis. (Quality of evidence: Very low ⊕; Strength of recommendation: Weak against ↓?)",
       "page": null
     },
     {
-      "section": "Background epidemiology",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Following stroke, acute symptomatic seizures (manifestation within seven days) are reported in 3 to 6 percent of patients and epilepsy in up to 12 percent. The incidence of acute symptomatic seizures is higher in intracranial haemorrhage (10 to 16 percent) than in ischaemic stroke (2 to 4 percent). Acute symptomatic seizures and unprovoked seizures may be associated with unfavourable functional outcome and increased mortality.",
+      "section": "PICO 4 – Continuous secondary prophylaxis after at least one unprovoked seizure",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "The absence of RCTs does not guide us to make a recommendation if – after an index US – immediate secondary prophylaxis with an AED should be implemented to prevent occurrence of further unprovoked post-stroke seizures. Findings from observational studies indicate high seizure recurrence risk (70%) after one post-stroke US. Thus, employing secondary AED prophylaxis after one US needs to be considered. (Quality of evidence: Very low ⊕; Strength of recommendation: Weak FOR ↑? — this is the only recommendation in this guideline directed toward treatment. Note: the Box 4 summary table mislabels this row as 'Weak against intervention (↑?)'; the arrow and the PICO 4 body text both specify 'Weak for'.)",
+      "page": null
+    },
+    {
+      "section": "PICO 5 – Immediate but temporary pharmacological treatment to prevent later unprovoked seizures",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "RCTs do not provide any sufficient evidence to recommend temporary treatment with an AED or any other pharmacological substance to reduce the risk of subsequent US. As in most patients with stroke, the risk to develop US is low (approximately 10%), we suggest not generally employing temporary AED prophylaxis. (Quality of evidence: Very low ⊕; Strength of recommendation: Weak against ↓?)",
+      "page": null
+    },
+    {
+      "section": "PICO 6 – Antiepileptic drug treatment to ameliorate functional outcome",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "There is no consistent evidence from RCTs to support use of AED to improve functional outcome after stroke. Thus, we suggest not employing temporary AED treatment to prevent later occurrence of epileptic seizures. (Quality of evidence: Very low ⊕; Strength of recommendation: Weak against ↓?)",
+      "page": null
+    },
+    {
+      "section": "PICO 7 – Antiepileptic drug treatment to prevent mortality",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In the two available RCTs, there is no evidence that immediate, temporary primary prophylaxis with an antiepileptic drug reduces mortality. Thus, we suggest not employing AED prophylaxis to prevent death. (Quality of evidence: Very low ⊕; Strength of recommendation: Weak against ↓?)",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

@@ -3,7 +3,7 @@
     "endpoint": "guidelines-index",
     "schemaVersion": "1.0.0",
     "appVersion": "6.23.0",
-    "checksum": "sha256:4f341251a23565a57db93e890ec8bde8",
+    "checksum": "sha256:99227a1b83c819d1ca7534454c850d41",
     "count": 108,
     "source": "Guideline metadata bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -17,7 +17,7 @@
       "doi": "10.1212/WNL.0000000000012944",
       "publisherUrl": "https://doi.org/10.1212/WNL.0000000000012944",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 14,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aan-asm-withdrawal-2021.json"
     },
     {
@@ -27,7 +27,7 @@
       "doi": "10.1212/WNL.0000000000214334",
       "publisherUrl": "https://doi.org/10.1212/WNL.0000000000214334",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 27,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aan-brain-death-guidance-2025.json"
     },
     {
@@ -37,7 +37,7 @@
       "doi": "10.1212/WNL.0000000000013040",
       "publisherUrl": "https://doi.org/10.1212/WNL.0000000000013040",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 26,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aan-consent-ais-2022.json"
     },
     {
@@ -47,7 +47,7 @@
       "doi": "10.1212/WNL.0000000000213459",
       "publisherUrl": "https://doi.org/10.1212/WNL.0000000000213459",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 28,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aan-driver-licensure-2025.json"
     },
     {
@@ -57,7 +57,7 @@
       "doi": "10.1212/WNL.0000000000214466",
       "publisherUrl": "https://doi.org/10.1212/WNL.0000000000214466",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 33,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aan-functional-seizures-2025.json"
     },
     {
@@ -67,7 +67,7 @@
       "doi": "10.1212/WNL.0000000000200063",
       "publisherUrl": "https://doi.org/10.1212/WNL.0000000000200063",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 36,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aan-neuropalliative-2022.json"
     },
     {
@@ -77,7 +77,7 @@
       "doi": "10.1212/WNL.0000000000200030",
       "publisherUrl": "https://doi.org/10.1212/WNL.0000000000200030",
       "pdfUrl": null,
-      "recommendationCount": 4,
+      "recommendationCount": 15,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aan-sicas-2022.json"
     },
     {
@@ -87,7 +87,7 @@
       "doi": "10.1161/HYP.0000000000000238",
       "publisherUrl": "https://doi.org/10.1161/HYP.0000000000000238",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 41,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-acute-bp-management-2024.json"
     },
     {
@@ -97,7 +97,7 @@
       "doi": "10.1161/STR.0000000000000443",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000443",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 28,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-adult-moyamoya-disease-2023.json"
     },
     {
@@ -107,7 +107,7 @@
       "doi": "10.1161/CIR.0000000000001193",
       "publisherUrl": "https://doi.org/10.1161/CIR.0000000000001193",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 194,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-af-guideline-2023.json"
     },
     {
@@ -117,7 +117,7 @@
       "doi": "10.1161/ATV.0000000000000164",
       "publisherUrl": "https://doi.org/10.1161/ATV.0000000000000164",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 27,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-aggressive-ldl-lowering-2023.json"
     },
     {
@@ -127,7 +127,7 @@
       "doi": "10.1161/STR.0000000000000480",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000480",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 22,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-antiamyloid-immunotherapy-2024.json"
     },
     {
@@ -137,7 +137,7 @@
       "doi": "10.1161/CIR.0000000000001133",
       "publisherUrl": "https://doi.org/10.1161/CIR.0000000000001133",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 47,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-atrial-fibrillation-occurring-2023.json"
     },
     {
@@ -147,7 +147,7 @@
       "doi": "10.1161/STR.0000000000000518",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000518",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 26,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-brain-health-life-span-2026.json"
     },
     {
@@ -157,7 +157,7 @@
       "doi": "10.1161/STR.0000000000000444",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000444",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 30,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-cadasil-2023.json"
     },
     {
@@ -167,7 +167,7 @@
       "doi": "10.1161/STR.0000000000000358",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000358",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 34,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-care-ais-evt-icu-2021.json"
     },
     {
@@ -177,7 +177,7 @@
       "doi": "10.1161/STR.0000000000000357",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000357",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 61,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-care-ais-posthyperacute-2021.json"
     },
     {
@@ -187,7 +187,7 @@
       "doi": "10.1161/STR.0000000000000356",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000356",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 42,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-care-ais-prehospital-2021.json"
     },
     {
@@ -197,7 +197,7 @@
       "doi": "10.1161/STR.0000000000000457",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000457",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 26,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-cervical-artery-dissection-2024.json"
     },
     {
@@ -207,7 +207,7 @@
       "doi": "10.1161/STR.0000000000000388",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000388",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 13,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-clinical-performance-measures-2021.json"
     },
     {
@@ -217,7 +217,7 @@
       "doi": "10.1161/STR.0000000000000366",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000366",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 21,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-crao-2021.json"
     },
     {
@@ -227,7 +227,7 @@
       "doi": "10.1161/STR.0000000000000511",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000511",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 24,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-creating-virtual-networks-2025.json"
     },
     {
@@ -237,7 +237,7 @@
       "doi": "10.1161/HYP.0000000000000249",
       "publisherUrl": "https://doi.org/10.1161/HYP.0000000000000249",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 20,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-hypertension-guideline-2025.json"
     },
     {
@@ -247,7 +247,7 @@
       "doi": "10.1161/STR.0000000000000464",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000464",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 30,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-ich-performance-measures-2024.json"
     },
     {
@@ -257,7 +257,7 @@
       "doi": "10.1161/STR.0000000000000424",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000424",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 40,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-ideal-foundational-requirements-2023.json"
     },
     {
@@ -267,7 +267,7 @@
       "doi": "10.1161/STR.0000000000000453",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000453",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 43,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-impact-sleep-disorders-2024.json"
     },
     {
@@ -277,7 +277,7 @@
       "doi": "10.1161/STR.0000000000000493",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000493",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 87,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-improving-access-rehabilitation-2025.json"
     },
     {
@@ -287,7 +287,7 @@
       "doi": "10.1161/STR.0000000000000402",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000402",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 45,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-in-hospital-stroke-2022.json"
     },
     {
@@ -297,7 +297,7 @@
       "doi": "10.1161/STR.0000000000000528",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000528",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 31,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-lv-systolic-dysfunction-2026.json"
     },
     {
@@ -307,7 +307,7 @@
       "doi": "10.1161/CIR.0000000000001092",
       "publisherUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000001092",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 27,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-lv-thrombus-2022.json"
     },
     {
@@ -317,7 +317,7 @@
       "doi": "10.1161/STR.0000000000000529",
       "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000529",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 20,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-mis-ich-evacuation-2026.json"
     },
     {
@@ -327,7 +327,7 @@
       "doi": "10.1161/STR.0000000000000471",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000471",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 36,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-nursing-role-psychosocial-2024.json"
     },
     {
@@ -337,7 +337,7 @@
       "doi": "10.1161/STR.0000000000000479",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000479",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 36,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-palliative-end-life-2024.json"
     },
     {
@@ -347,7 +347,7 @@
       "doi": "10.1161/STR.0000000000000367",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000367",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 29,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-primary-agenda-brain-2021.json"
     },
     {
@@ -357,7 +357,7 @@
       "doi": "10.1161/STROKEAHA.120.033228",
       "publisherUrl": "https://doi.org/10.1161/STROKEAHA.120.033228",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 47,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-recommendations-regional-destination-2021.json"
     },
     {
@@ -367,7 +367,7 @@
       "doi": "10.1161/STR.0000000000000478",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000478",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 35,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-rural-stroke-care-2024.json"
     },
     {
@@ -377,7 +377,7 @@
       "doi": "10.1161/STR.0000000000000411",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000411",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 29,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-sex-gender-evt-2022.json"
     },
     {
@@ -387,7 +387,7 @@
       "doi": "10.1161/STR.0000000000000520",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000520",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 37,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-social-environmental-determinants-2026.json"
     },
     {
@@ -397,7 +397,7 @@
       "doi": "10.1161/STROKEAHA.124.048942",
       "publisherUrl": "https://doi.org/10.1161/STROKEAHA.124.048942",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 18,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-standards-postacute-rehabilitation-2025.json"
     },
     {
@@ -417,7 +417,7 @@
       "doi": "10.1161/STR.0000000000000495",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000495",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 28,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-targeted-nursing-interventions-2025.json"
     },
     {
@@ -427,7 +427,7 @@
       "doi": "10.1161/STR.0000000000000462",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000462",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 21,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-transitions-of-care-2024.json"
     },
     {
@@ -437,7 +437,7 @@
       "doi": "10.1161/STR.0000000000000396",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000396",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 31,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-use-marijuana-effect-2022.json"
     },
     {
@@ -447,7 +447,7 @@
       "doi": "10.1161/STR.0000000000000524",
       "publisherUrl": "https://doi.org/10.1161/STR.0000000000000524",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 27,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-vascular-contributions-cognitive-2026.json"
     },
     {
@@ -477,7 +477,7 @@
       "doi": "10.1161/STR.0000000000000517",
       "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000517",
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000517",
-      "recommendationCount": 18,
+      "recommendationCount": 37,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/cancer-stroke-2026.json"
     },
     {
@@ -487,7 +487,7 @@
       "doi": "10.1161/STR.0000000000000476",
       "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000476",
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000476",
-      "recommendationCount": 9,
+      "recommendationCount": 33,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/cardiac-brain-health-2024.json"
     },
     {
@@ -497,7 +497,7 @@
       "doi": "10.1161/STR.0000000000000456",
       "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000456",
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456",
-      "recommendationCount": 5,
+      "recommendationCount": 38,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/cvt-2024.json"
     },
     {
@@ -517,7 +517,7 @@
       "doi": "10.1177/2396987319841187",
       "publisherUrl": "https://doi.org/10.1177/2396987319841187",
       "pdfUrl": null,
-      "recommendationCount": 4,
+      "recommendationCount": 23,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-af-secondary-prevention-2019.json"
     },
     {
@@ -527,7 +527,7 @@
       "doi": "10.1177/2396987319849763",
       "publisherUrl": "https://doi.org/10.1177/2396987319849763",
       "pdfUrl": null,
-      "recommendationCount": 7,
+      "recommendationCount": 11,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-anticoagulant-reversal-ich-2019.json"
     },
     {
@@ -537,7 +537,7 @@
       "doi": "10.1177/23969873241311025",
       "publisherUrl": "https://doi.org/10.1177/23969873241311025",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 12,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-aphasia-rehab-2025.json"
     },
     {
@@ -547,7 +547,7 @@
       "doi": "10.1177/23969873211046475",
       "publisherUrl": "https://doi.org/10.1177/23969873211046475",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 17,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-artery-dissection-2021.json"
     },
     {
@@ -557,7 +557,7 @@
       "doi": "10.1177/23969873241257223",
       "publisherUrl": "https://doi.org/10.1177/23969873241257223",
       "pdfUrl": null,
-      "recommendationCount": 6,
+      "recommendationCount": 18,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-bao-2024.json"
     },
     {
@@ -567,7 +567,7 @@
       "doi": "10.1093/esj/aakag004",
       "publisherUrl": "https://doi.org/10.1093/esj/aakag004",
       "pdfUrl": null,
-      "recommendationCount": 5,
+      "recommendationCount": 23,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-bp-2025.json"
     },
     {
@@ -577,7 +577,7 @@
       "doi": "10.1177/23969873211012121",
       "publisherUrl": "https://doi.org/10.1177/23969873211012121",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 16,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-carotid-stenosis-2021.json"
     },
     {
@@ -587,7 +587,7 @@
       "doi": "10.1177/23969873211012132",
       "publisherUrl": "https://doi.org/10.1177/23969873211012132",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 15,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-covert-csvd-2021.json"
     },
     {
@@ -597,7 +597,7 @@
       "doi": "10.1177/2396987317719364",
       "publisherUrl": "https://doi.org/10.1177/2396987317719364",
       "pdfUrl": null,
-      "recommendationCount": 9,
+      "recommendationCount": 24,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-cvt-2017.json"
     },
     {
@@ -607,7 +607,7 @@
       "doi": "10.1177/23969873211039721",
       "publisherUrl": "https://doi.org/10.1177/23969873211039721",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 23,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-dysphagia-2021.json"
     },
     {
@@ -627,7 +627,7 @@
       "doi": "10.1177/2396987319832140",
       "publisherUrl": "https://doi.org/10.1177/2396987319832140",
       "pdfUrl": null,
-      "recommendationCount": 4,
+      "recommendationCount": 42,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-esmint-mechanical-thrombectomy-2019.json"
     },
     {
@@ -637,7 +637,7 @@
       "doi": "10.1177/23969873221076968",
       "publisherUrl": "https://doi.org/10.1177/23969873221076968",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 4,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-esmint-thrombectomy-2022.json"
     },
     {
@@ -647,7 +647,7 @@
       "doi": "10.1177/2396987317742065",
       "publisherUrl": "https://doi.org/10.1177/2396987317742065",
       "pdfUrl": null,
-      "recommendationCount": 4,
+      "recommendationCount": 7,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-glycaemia-2018.json"
     },
     {
@@ -657,7 +657,7 @@
       "doi": "10.1177/23969873251340815",
       "publisherUrl": "https://doi.org/10.1177/23969873251340815",
       "pdfUrl": null,
-      "recommendationCount": 4,
+      "recommendationCount": 61,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-ich-2025.json"
     },
     {
@@ -667,7 +667,7 @@
       "doi": "10.1177/23969873221099715",
       "publisherUrl": "https://doi.org/10.1177/23969873221099715",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 22,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-intracranial-atherosclerosis-2022.json"
     },
     {
@@ -677,7 +677,7 @@
       "doi": "10.1177/2396987321989865",
       "publisherUrl": "https://doi.org/10.1177/2396987321989865",
       "pdfUrl": null,
-      "recommendationCount": 4,
+      "recommendationCount": 58,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-ivt-2021.json"
     },
     {
@@ -687,7 +687,7 @@
       "doi": "10.1177/23969873231219416",
       "publisherUrl": "https://doi.org/10.1177/23969873231219416",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 34,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-lacunar-2024.json"
     },
     {
@@ -697,7 +697,7 @@
       "doi": "10.1177/23969873221079413",
       "publisherUrl": "https://doi.org/10.1177/23969873221079413",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 3,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-mobile-stroke-units-2022.json"
     },
     {
@@ -707,7 +707,7 @@
       "doi": "10.1177/23969873251338142",
       "publisherUrl": "https://doi.org/10.1177/23969873251338142",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 7,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-motor-rehab-2025.json"
     },
     {
@@ -717,7 +717,7 @@
       "doi": "10.1177/23969873221144089",
       "publisherUrl": "https://doi.org/10.1177/23969873221144089",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 29,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-moyamoya-2023.json"
     },
     {
@@ -727,7 +727,7 @@
       "doi": "10.1177/23969873231190431",
       "publisherUrl": "https://doi.org/10.1177/23969873231190431",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 32,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-pacns-2023.json"
     },
     {
@@ -737,7 +737,7 @@
       "doi": "10.1177/23969873241247978",
       "publisherUrl": "https://doi.org/10.1177/23969873241247978",
       "pdfUrl": null,
-      "recommendationCount": 5,
+      "recommendationCount": 22,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-pfo-2024.json"
     },
     {
@@ -747,7 +747,7 @@
       "doi": "10.1177/2396987317705536",
       "publisherUrl": "https://doi.org/10.1177/2396987317705536",
       "pdfUrl": null,
-      "recommendationCount": 4,
+      "recommendationCount": 7,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-poststroke-seizures-2017.json"
     },
     {
@@ -757,7 +757,7 @@
       "doi": "10.1093/esj/aakag043",
       "publisherUrl": "https://doi.org/10.1093/esj/aakag043",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 35,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-sah-2026.json"
     },
     {
@@ -767,7 +767,7 @@
       "doi": "10.1093/esj/aakag044",
       "publisherUrl": "https://doi.org/10.1093/esj/aakag044",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 35,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-sap-2026.json"
     },
     {
@@ -777,7 +777,7 @@
       "doi": "10.1177/23969873221100032",
       "publisherUrl": "https://doi.org/10.1177/23969873221100032",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 13,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-secondary-prevention-2022.json"
     },
     {
@@ -787,7 +787,7 @@
       "doi": "10.1177/23969873211000877",
       "publisherUrl": "https://doi.org/10.1177/23969873211000877",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 8,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-short-term-dapt-2021.json"
     },
     {
@@ -797,7 +797,7 @@
       "doi": "10.1177/23969873211014112",
       "publisherUrl": "https://doi.org/10.1177/23969873211014112",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 18,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-space-occupying-infarction-2021.json"
     },
     {
@@ -807,7 +807,7 @@
       "doi": "10.1177/23969873221078696",
       "publisherUrl": "https://doi.org/10.1177/23969873221078696",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 10,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-stroke-in-women-2022.json"
     },
     {
@@ -817,7 +817,7 @@
       "doi": "10.1177/23969873221099478",
       "publisherUrl": "https://doi.org/10.1177/23969873221099478",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 12,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-subclinical-af-screening-2022.json"
     },
     {
@@ -827,7 +827,7 @@
       "doi": "10.1111/ijs.12579",
       "publisherUrl": "https://doi.org/10.1111/ijs.12579",
       "pdfUrl": null,
-      "recommendationCount": 4,
+      "recommendationCount": 3,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-temperature-2015.json"
     },
     {
@@ -837,7 +837,7 @@
       "doi": "10.1177/23969873221150022",
       "publisherUrl": "https://doi.org/10.1177/23969873221150022",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 9,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-tenecteplase-2023.json"
     },
     {
@@ -847,7 +847,7 @@
       "doi": "10.1177/2396987321992905",
       "publisherUrl": "https://doi.org/10.1177/2396987321992905",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 9,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-tia-2021.json"
     },
     {
@@ -857,7 +857,7 @@
       "doi": "10.1177/23969873221099736",
       "publisherUrl": "https://doi.org/10.1177/23969873221099736",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 28,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-unruptured-aneurysms-2022.json"
     },
     {
@@ -867,7 +867,7 @@
       "doi": "10.1177/23969873251314693",
       "publisherUrl": "https://doi.org/10.1177/23969873251314693",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 13,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-visual-2025.json"
     },
     {
@@ -877,7 +877,7 @@
       "doi": "10.1177/2396987316628384",
       "publisherUrl": "https://doi.org/10.1177/2396987316628384",
       "pdfUrl": null,
-      "recommendationCount": 6,
+      "recommendationCount": 4,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-vte-prophylaxis-2016.json"
     },
     {
@@ -897,7 +897,7 @@
       "doi": "10.1161/STR.0000000000000514",
       "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000514",
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000514",
-      "recommendationCount": 3,
+      "recommendationCount": 57,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/maternal-stroke-2026.json"
     },
     {
@@ -907,7 +907,7 @@
       "doi": "10.1007/s12028-024-02183-z",
       "publisherUrl": "https://link.springer.com/article/10.1007/s12028-024-02183-z",
       "pdfUrl": null,
-      "recommendationCount": 5,
+      "recommendationCount": 10,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-ich-seizure-prophylaxis-2024.json"
     },
     {
@@ -917,7 +917,7 @@
       "doi": "10.1007/s12028-026-02486-3",
       "publisherUrl": "https://link.springer.com/article/10.1007/s12028-026-02486-3",
       "pdfUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13249629/pdf/",
-      "recommendationCount": 15,
+      "recommendationCount": 23,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-neuroprognostication-ais-2026.json"
     },
     {
@@ -927,7 +927,7 @@
       "doi": "10.1007/s12028-023-01854-7",
       "publisherUrl": "https://link.springer.com/article/10.1007/s12028-023-01854-7",
       "pdfUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10959839/pdf/",
-      "recommendationCount": 15,
+      "recommendationCount": 13,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-neuroprognostication-ich-2023.json"
     },
     {
@@ -937,7 +937,7 @@
       "doi": "10.1007/s12028-026-02614-z",
       "publisherUrl": "https://link.springer.com/article/10.1007/s12028-026-02614-z",
       "pdfUrl": null,
-      "recommendationCount": 5,
+      "recommendationCount": 11,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-sah-seizure-prophylaxis-2026.json"
     },
     {
@@ -947,7 +947,7 @@
       "doi": "10.1007/s12028-015-0222-x",
       "publisherUrl": "https://link.springer.com/article/10.1007/s12028-015-0222-x",
       "pdfUrl": "https://www.neurocriticalcare.org/Portals/0/Docs/Resources/FINAL_COPY_COAG.pdf",
-      "recommendationCount": 12,
+      "recommendationCount": 69,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-sccm-antithrombotic-reversal-2016.json"
     },
     {
@@ -957,7 +957,7 @@
       "doi": "10.1161/CIR.0000000000000968",
       "publisherUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000968",
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/CIR.0000000000000968",
-      "recommendationCount": 10,
+      "recommendationCount": 28,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/perioperative-stroke-2021.json"
     },
     {
@@ -967,7 +967,7 @@
       "doi": "10.1161/STR.0000000000000430",
       "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000430",
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000430",
-      "recommendationCount": 10,
+      "recommendationCount": 32,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/poststroke-cognitive-2023.json"
     },
     {
@@ -987,7 +987,7 @@
       "doi": "10.1161/STR.0000000000000515",
       "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000515",
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000515",
-      "recommendationCount": 30,
+      "recommendationCount": 38,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/poststroke-spasticity-2026.json"
     },
     {
@@ -997,7 +997,7 @@
       "doi": "10.1161/STR.0000000000000406",
       "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000406",
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000406",
-      "recommendationCount": 5,
+      "recommendationCount": 25,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/premorbid-disability-2022.json"
     },
     {
@@ -1037,7 +1037,7 @@
       "doi": "10.1161/SVIN.125.002091",
       "publisherUrl": "https://doi.org/10.1161/SVIN.125.002091",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 15,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/svin-dsa-collaterals-2025.json"
     },
     {
@@ -1047,7 +1047,7 @@
       "doi": "10.1161/SVIN.124.001478",
       "publisherUrl": "https://doi.org/10.1161/SVIN.124.001478",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 40,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/svin-lab-consensus-2025.json"
     },
     {
@@ -1067,7 +1067,7 @@
       "doi": "10.1161/SVIN.125.002314",
       "publisherUrl": "https://doi.org/10.1161/SVIN.125.002314",
       "pdfUrl": null,
-      "recommendationCount": 1,
+      "recommendationCount": 9,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/svin-mevo-dvo-evt-2026.json"
     },
     {
@@ -1077,7 +1077,7 @@
       "doi": "10.1161/STR.0000000000000477",
       "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000477",
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000477",
-      "recommendationCount": 3,
+      "recommendationCount": 34,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/systemic-complications-2024.json"
     },
     {
@@ -1087,7 +1087,7 @@
       "doi": "10.1161/STR.0000000000000418",
       "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000418",
       "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000418",
-      "recommendationCount": 12,
+      "recommendationCount": 81,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/tia-ed-2023.json"
     }
   ]

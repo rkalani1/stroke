@@ -9,52 +9,150 @@
   "pmid": "38752743",
   "recommendations": [
     {
-      "section": "Intravenous thrombolysis",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: Expert consensus.",
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Expert consensus suggests using IVT up to 24 h in basilar artery occlusion unless otherwise contraindicated, and suggests IVT plus endovascular treatment over direct EVT.",
+      "section": "PICO 1: Intravenous thrombolysis alone versus no IVT within 24 h",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with BAO-related acute ischaemic stroke presenting within 24 h from the time last known well, there are insufficient data to make an evidence-based recommendation on the use of IVT. Please see the Expert Consensus Statement below. (Quality of evidence: -; Strength of recommendation: -)",
       "page": null
     },
     {
-      "section": "EVT vs best medical treatment",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: Very low certainty (GRADE).",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "ESO suggests EVT plus best medical treatment over BMT alone, derived from patients with NIHSS >=10 and a low proportion of IVT in the BMT arm.",
+      "section": "PICO 1: Intravenous thrombolysis alone versus no IVT within 24 h",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with BAO-related acute ischaemic stroke presenting within 4.5 h from the time last known well without contraindications for IVT and without extensive ischaemic changes in the posterior circulation (i.e. extensive bilateral and/or brainstem ischaemic changes), 10/10 MWG members suggest intravenous thrombolysis rather than no intravenous thrombolysis (please also see PICO 5 and 7).",
       "page": null
     },
     {
-      "section": "NIHSS below 10",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: No recommendation.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "For patients with NIHSS below 10 there was no evidence to recommend EVT over BMT; BMT was non-significantly better and safer than EVT.",
+      "section": "PICO 1: Intravenous thrombolysis alone versus no IVT within 24 h",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with BAO-related acute ischaemic stroke presenting between 4.5 and 12 h from the time last known well without contraindications for IVT (apart from the time window) and without extensive ischaemic changes in the posterior circulation (i.e. extensive bilateral and/or brainstem ischaemic changes), 8/10 MWG members suggest intravenous thrombolysis rather than no intravenous thrombolysis (please also see PICO 5 and 7).",
       "page": null
     },
     {
-      "section": "Occlusion location",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: Very low certainty (GRADE).",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "A stronger treatment effect of EVT plus BMT over BMT alone was observed for proximal and middle basilar occlusion compared with distal location.",
+      "section": "PICO 1: Intravenous thrombolysis alone versus no IVT within 24 h",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with BAO-related acute ischaemic stroke presenting between 12 and 24 h from the time last known well without contraindications for IVT (apart from the time window) and without extensive ischaemic changes in the posterior circulation (i.e. extensive bilateral and/or brainstem ischaemic changes), 8/10 MWG members suggest intravenous thrombolysis rather than no intravenous thrombolysis (please also see PICO 5 and 7).",
       "page": null
     },
     {
-      "section": "Extensive ischaemic change",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: Expert consensus.",
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Expert consensus suggests AGAINST reperfusion therapy in patients with extensive bilateral and/or brainstem ischaemic changes; reperfusion is suggested regardless of collateral scores.",
+      "section": "PICO 2: EVT plus best medical treatment versus BMT alone within 6 h",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For adults with BAO-related acute ischaemic stroke presenting within 6 h from the time last seen well, we suggest EVT plus BMT over BMT alone. However, there are caveats, and this recommendation does not apply to all patients as detailed below. The recommendation considers only patients with NIHSS >= 10 (please see also PICO 4). The effect of treatment depends on use of IVT in the BMT group, with greater benefit of EVT seen in those trials with lesser use of IVT; much of this evidence comes from Asian trials with high prevalence of ICAD, and in which BMT often comprises conventional therapy only (antiaggregatory and anticoagulation). For imaging criteria, please refer to PICO 5. (Quality of evidence: Very low; Strength of recommendation: Weak for intervention)",
       "page": null
     },
     {
-      "section": "Technique",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: Limited evidence / expert consensus.",
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Direct aspiration is suggested over stent retriever as first-line mechanical thrombectomy strategy; rescue angioplasty and/or stenting is suggested after a failed EVT procedure.",
+      "section": "PICO 3: EVT plus best medical treatment versus BMT alone 6–24 h",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For adults with BAO-related acute ischaemic stroke presenting within 6–24 h from the time last known well, we suggest EVT plus BMT over BMT alone. However, there are caveats, and this recommendation does not apply to all patients as detailed below. The recommendation considers only patients with NIHSS >= 10 (please see also PICO 4). Much of this evidence comes from Asian trials with high prevalence of ICAD, and in which BMT often comprises conventional therapy only (antiaggregatory and anticoagulation). For imaging criteria, please refer to PICO 5. (Quality of evidence: Very low; Strength of recommendation: Weak for intervention)",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Selection of reperfusion treatment based on clinical presentation",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For adults with BAO-related acute ischaemic stroke, there is a differential treatment effect (a significant interaction) of reperfusion therapy according to specific presentation. The treatment effect is different for patients with high compared to low NIHSS scores and for proximal or middle locations of basilar artery occlusions compared to distal locations (see also PICO 2 and 3 for caveats in general recommendations). For patients presenting with severe symptoms (NIHSS >= 10), we suggest BMT + EVT over BMT only. The effect is stronger for proximal and middle location of the occlusion. (Quality of evidence: Very low; Strength of recommendation: Weak for intervention)",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Selection of reperfusion treatment based on clinical presentation",
+      "classOfRec": "Conditional",
+      "classNote": "For BMT alone (i.e. against EVT+BMT); the guideline labels this 'Weak for intervention', the intervention being BMT only",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients presenting with mild-to-moderate symptoms (NIHSS < 10), we could not find evidence to recommend EVT over BMT for efficacy, but BMT appeared safer than EVT. We suggest BMT only over EVT+BMT in this group. These data come from a randomised trial with low prevalence of ICAD, and in which BMT very often comprised intravenous thrombolysis. These findings are also supported by non-randomised data. (Quality of evidence: Very low; Strength of recommendation: Weak for intervention)",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Selection of reperfusion candidates by pc-ASPECTS",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with BAO-related acute ischaemic stroke without extensive ischaemic changes at baseline (pc-ASPECTS 7–10), we suggest reperfusion therapy over no reperfusion therapy according to the certainty of evidence and strength of recommendation in PICOs 1, 2, 3, 4 and 7. For adults with BAO-related acute ischaemic stroke with pc-ASPECTS 0–6, there are insufficient data to make an evidence-based recommendation on the use of reperfusion therapy (see the Expert Consensus Statement below). (Quality of evidence: -; Strength of recommendation: -)",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Selection of reperfusion candidates by pc-ASPECTS",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with BAO-related acute ischaemic stroke with ischaemic changes at baseline being more extensive than those included in randomised controlled clinical trials (i.e. pc-ASPECTS 0–6), 10/10 MWG members suggest considering other prognostic variables (such as pre-stroke handicap, age, frailty) before offering reperfusion therapy.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Selection of reperfusion candidates by pc-ASPECTS",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "However, for patients with very extensive bilateral and/or brainstem ischaemic lesions, 7/10 MWG members suggest no reperfusion therapy.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Selection of reperfusion candidates by advanced imaging",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with BAO-related acute ischaemic stroke, there are insufficient data to make an evidence-based recommendation on the selection of reperfusion therapy based on evaluation of advanced imaging (perfusion, core, or collateral imaging). Please see the Expert Consensus Statement below. (Quality of evidence: -; Strength of recommendation: -)",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Selection of reperfusion candidates by advanced imaging",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with BAO-related acute ischaemic stroke (and in the absence of extensive ischaemic changes in the posterior circulation, i.e. extensive bilateral and/or brainstem ischaemic changes), 10/10 MWG members suggest reperfusion therapy (EVT or IVT) rather than no reperfusion therapy, irrespective of any collateral score points.",
+      "page": null
+    },
+    {
+      "section": "PICO 7: Direct EVT versus EVT plus IVT",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "For adults with BAO-related acute ischaemic stroke, we suggest combined IVT and EVT treatment over direct EVT in case IVT is not contraindicated. (Quality of evidence: Low; Strength of recommendation: Weak for intervention)",
+      "page": null
+    },
+    {
+      "section": "PICO 8: Direct aspiration versus stent retriever as first-line strategy",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For adults with BAO-related acute ischaemic stroke, we suggest EVT using direct aspiration over stent retriever as the first-line strategy. (Quality of evidence: Very low; Strength of recommendation: Weak for intervention)",
+      "page": null
+    },
+    {
+      "section": "PICO 9: Angioplasty and/or stenting in addition to EVT in suspected ICAD",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with BAO-related acute ischaemic stroke and with a suspected ICAD and basilar artery stenosis, there is insufficient evidence to make an evidence-based recommendation on the use of PTA and/or stenting in addition to EVT. Please see the Expert Consensus Statement below. (Quality of evidence: -; Strength of recommendation: -)",
+      "page": null
+    },
+    {
+      "section": "PICO 9: Angioplasty and/or stenting in addition to EVT in suspected ICAD",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with BAO-related acute ischaemic stroke and with suspected ICAD and severe underlying basilar artery stenosis, 10/10 MWG members suggest rescue PTA and/or stenting after a failed endovascular procedure (please also see PICO 10).",
+      "page": null
+    },
+    {
+      "section": "PICO 10: Add-on antithrombotic treatment during or after reperfusion therapy",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For adults with BAO-related acute ischaemic stroke treated with EVT and no concomitant IVT, and where the EVT procedure is complicated (defined as failed, or imminent re-occlusion, or need for additional stenting or angioplasty), we suggest add-on antithrombotic treatment during the EVT procedure or within 24 h after EVT over no add-on antithrombotic treatment. However, this should be used as a rescue strategy after assessing the bleeding risk of patients in case of failed EVT, in line with the ESO guidelines on the management of ICAD. (Quality of evidence: Very low; Strength of recommendation: Weak for intervention)",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

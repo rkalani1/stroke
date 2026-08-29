@@ -10,12 +10,110 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Performance Measure 1: Enteral Feeding (Preventive Treatment; acute hospital)",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The American Heart Association/American Stroke Association released the adult stroke rehabilitation and recovery guidelines in 2016. A working group of stroke rehabilitation experts reviewed these guidelines and identified a subset of recommendations that were deemed suitable for creating performance measures.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "People with stroke who cannot safely swallow should have enteral feeding initiated within 7 d after stroke. Measured as: \"Enteral Feeding: Percentage of people with stroke with swallowing difficulties or barriers to oral feeding who have enteral feeding initiated within 7 d after stroke.\" Numerator: people with stroke unable to safely swallow who have had enteral feeding initiated within 7 d after stroke. Excluded: people placed on end-of-life care during the first 7 d after stroke; people who died or were transferred during the first 7 d after stroke. Period of assessment: day 7 after presentation at acute care.",
+      "page": null
+    },
+    {
+      "section": "Performance Measure 2: Assessment of Urinary Retention (Preventive Treatment; acute hospital, postacute facility)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "People with stroke and urinary symptoms should have an assessment of urinary retention through bladder scanning or intermittent catheterizations after voiding while recording volumes. Measured as: \"Urinary Retention: Percentage of people with stroke with incontinence or urinary retention who received assessment of bladder residuals.\" Excluded: people with indwelling Foley catheters or other forms of nonphysiological bladder drainage; people with normal spontaneous voiding without incontinence or retention. Period of assessment: during acute hospitalization; during postacute rehabilitation unit stay or SNF.",
+      "page": null
+    },
+    {
+      "section": "Performance Measure 3: Inpatient Rehabilitation Facility (Treatment Standards/Disposition Process; acute hospital, postacute facility)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "People with stroke who qualify for, would benefit from, and have geographic access to IRF care should receive acute inpatient rehabilitation in an IRF. Measured as: \"IRF Referral: Percentage of people with stroke who qualify for, would benefit from, and have geographic access to IRF care who are transferred to an IRF for rehabilitation.\" Included: hospitalized people with acute stroke who require active ongoing intervention of multiple rehabilitation therapy disciplines, can participate in and benefit from >=3 h of rehabilitation therapy per day, require physician supervision during rehabilitation, and require a coordinated interdisciplinary team approach. Excluded: death before hospital discharge; limited rehabilitation potential or inability to tolerate an intensive program because of frailty or comorbidities; no geographic access to an IRF; patient, family, or health care proxy declines IRF admission. Period of assessment: discharge from acute hospital stay after stroke.",
+      "page": null
+    },
+    {
+      "section": "Performance Measure 4: ADL and Mobility (Active Treatment Process; acute hospital, postacute facility, home care, outpatient)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "People with stroke should receive ADL and mobility training tailored to individual needs and eventual discharge setting. Measured as: \"ADL: Percentage of people with stroke who receive ADL and mobility training tailored to individual needs and eventual living situation.\" People with stroke receiving end-of-life care are excluded from the compliance calculation.",
+      "page": null
+    },
+    {
+      "section": "Performance Measure 5: Aphasia — Speech and Language Therapy (Active Treatment Process; acute hospital, postacute facility, home care, outpatient)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "People with stroke with residual aphasia should receive SLT (speech and language therapy). Measured as: \"SLT for Aphasia: Percentage of people with stroke with aphasia who receive SLT.\"",
+      "page": null
+    },
+    {
+      "section": "Performance Measure 6: Education About Impact of Stroke (Educative Treatment Process; acute hospital, postacute facility, home care, outpatient)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "People with stroke should be provided education about stroke, including information on secondary prevention, rehabilitation, and the opportunity to talk about the impact on their lives. Measured as: \"Patient Education: Percentage of people with stroke provided with education about stroke: information, advice, and the opportunity to talk about the impact on their lives.\"",
+      "page": null
+    },
+    {
+      "section": "Performance Measure 7: Fall Prevention (Active and Preventive Treatment Process; acute hospital, postacute facility, home care, outpatient)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "People with stroke who have impaired balance, low balance confidence, or fear of falls should be provided a fall prevention training program. Measured as: \"Fall Prevention: Percentage of people with stroke at risk for falls provided with a fall prevention training.\"",
+      "page": null
+    },
+    {
+      "section": "Performance Measure 8: Poststroke Depression Screening (Assessment; acute hospital, postacute facility, home care, outpatient)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "People with stroke should be screened for depression with a structured depression inventory. Measured as: \"Poststroke Depression Screening: Percentage of people with stroke who receive a structured depression assessment inventory.\"",
+      "page": null
+    },
+    {
+      "section": "Performance Measure 9: Poststroke Depression Treatment (Treatment; acute hospital, postacute facility, home care, outpatient)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "People with stroke diagnosed with poststroke depression should receive appropriate evidence-based treatment. Measured as: \"Poststroke Depression Treatment: Percentage of people with stroke diagnosed with depression who receive treatment for depression\" (per patient population: percentage receiving antidepressant therapy or evidence-based psychotherapy).",
+      "page": null
+    },
+    {
+      "section": "Performance Measure 10: DVT Prophylaxis (Preventive Treatment; postacute facility)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "People with stroke who have impaired mobility should receive DVT prophylaxis during postacute inpatient rehabilitation. Measured as: \"Prevention of DVT: Percentage of people with stroke who have impaired mobility who receive some form of DVT prophylaxis during postacute inpatient rehabilitation\" — for all the days that they were at risk, before regaining mobility, without contraindications.",
+      "page": null
+    },
+    {
+      "section": "Performance Measure 11: Postacute Rehabilitation (Treatment Standards/Disposition Process; postacute facility)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "People with stroke receiving postacute rehabilitation in an inpatient setting should receive organized, coordinated, interprofessional care. Measured as: \"Organization of Postacute Rehabilitation Care: Percentage of people with stroke who are candidates for postacute rehabilitation and who receive organized, coordinated, interprofessional care.\"",
+      "page": null
+    },
+    {
+      "section": "Performance Measure 12: Follow-Up After Discharge (Assessment Process; home care, outpatient)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Follow-up is recommended to ensure that people with stroke and their families receive the necessary rehabilitation services after discharge. Measured as: \"Follow-Up: Percentage of people with stroke discharged to home who receive the necessary rehabilitation services after discharge.\"",
+      "page": null
+    },
+    {
+      "section": "Performance Measure 13: Tailored Exercise and Fitness Program (Active Treatment Process; outpatient)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "People with stroke should be provided an individually tailored exercise and fitness program. Measured as: \"Exercise: Percentage of people with stroke discharged home who are provided an individually tailored exercise and fitness program\" — an individually tailored exercise program to enhance cardiorespiratory fitness and to reduce the risk of stroke recurrence, provided after successful screening.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

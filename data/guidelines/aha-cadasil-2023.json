@@ -12,10 +12,244 @@
     {
       "section": "Scope",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Lacunar infarcts and vascular dementia are important phenotypic characteristics of cerebral autosomal dominant arteriopathy with subcortical infarcts and leukoencephalopathy, the most common inherited cerebral small vessel disease. Individuals with the disease show variability in the nature and onset of symptoms and rates of progression, which are only partially explained by differences in pathogenic mutations in thegene.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The purposes of this scientific statement are to help clinicians recognize, diagnose, prognose, and manage CADASIL, to distinguish it from other inherited cerebral small vessel diseases (CSVDs), and to outline pathways to disease-modifying therapy. It is an AHA scientific statement and assigns no class of recommendation or level of evidence to any statement.",
+      "page": null
+    },
+    {
+      "section": "Overlap and Distinction in Phenotypes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The classic CADASIL phenotype consists of migraines, subcortical strokes, and ultimately vascular dementia. Clinicians need to recognize the similarities and differences among CADASIL and other inherited CSVDs, including CARASIL and HTRA1-related CSVD, CARASAL, RVCL-S, COL4A1/A2-related disease, PADMAL, and Fabry disease.",
+      "page": null
+    },
+    {
+      "section": "Molecular Genetics of CADASIL and Other CSVDs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Disease-associated NOTCH3 mutations classically result in gain or loss of a cysteine residue within the 34 EGF repeat motifs of the protein, but cysteine-affecting mutations are not all equally detrimental; variants in the first 6 repeats, and perhaps in repeats 18 through 34, are associated with earlier age at stroke onset and increased likelihood of encephalopathy and dementia.",
+      "page": null
+    },
+    {
+      "section": "Molecular Genetics of CADASIL and Other CSVDs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The penetrance of NOTCH3 variants is incomplete and highly variable; the reduced penetrance or spectrum of effect sizes for the same variant is likely due to other genetic determinants as well as comorbidities and environmental factors. Conferring pathogenicity to rare variants in genes like NOTCH3 will likely require functional evaluation and biological readouts.",
+      "page": null
+    },
+    {
+      "section": "Brain Imaging for Detecting and Characterizing Disease",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The radiographic spectrum of CSVD includes diffuse, symmetrical, progressive white matter hyperintensities; multiple subcortical (lacunar) infarcts, acute on diffusion-weighted imaging or chronic on FLAIR/CT; dilated perivascular spaces; cerebral microbleeds on T2* gradient recall echo or susceptibility-weighted imaging; and brain atrophy on T1-weighted MRI.",
+      "page": null
+    },
+    {
+      "section": "Brain Imaging for Detecting and Characterizing Disease",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The presence of MRI white matter hyperintensities involving the anterior temporal poles, the frontal lobes (subinsular areas and superior frontal gyri), and the periventricular white matter has high discriminatory accuracy for CADASIL compared with sporadic subcortical arteriosclerotic encephalopathy, whereas subcortical punctate FLAIR lesions in the temporal lobes are highly specific for CADASIL but only moderately sensitive. Other inherited microangiopathies and even sporadic CSVD can have similar patterns.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Approach to CADASIL and Other Genetic CSVDs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Clinicians should tailor their approach to diagnosing patients with CADASIL and other monogenic CSVDs to the clinical scenario, symptom status, age, and family history. Although Fabry disease is currently the only monogenic CSVD with disease-specific therapy, addressing vascular risk factors may delay onset, modify severity, or prolong the course, so securing a diagnosis may prove important.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Approach to CADASIL and Other Genetic CSVDs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Consider gene testing in patients with small vessel stroke before 55 years of age with a paucity of vascular risk factors (eg, normotensive, nondiabetic, nonsmoker) or a positive family history of CADASIL. Anterior temporal polar white matter hyperintensity on brain MRI is a marker of CADASIL with good sensitivity and specificity, and the Pescini scale (>14 of 25 points suspicious for CADASIL) can help prioritize gene testing.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Approach to CADASIL and Other Genetic CSVDs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Strong consideration should be given to genetic counseling before testing to discuss the ramifications of results on the patient and family, including health, life, disability, and long-term care insurance and employment discrimination. One should distinguish diagnostic testing in individuals with clinical manifestations from predictive or presymptomatic testing.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Approach to CADASIL and Other Genetic CSVDs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In general, children, unless emancipated minors, should not undergo predictive testing because this robs them of the choice of knowing or not knowing their status. Posttest counseling can help with interpretation, especially of variants of unclear significance, and with navigating grief or guilt from positive, negative, and equivocal results.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Approach to CADASIL and Other Genetic CSVDs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When a family's pathogenic NOTCH3 mutation is unknown or unavailable, the general laboratory approach involves staged testing for the more common variants within the more commonly affected EGF domains, followed by targeted testing, followed by sequencing of the whole exome/gene. When multiple CSVDs are under consideration, genetic panels can be considered and may be more cost-effective than ordering each test separately.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Approach to CADASIL and Other Genetic CSVDs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although used less frequently, there is still a role for skin biopsy to look for pathognomonic granular osmophilic material on electron microscopy that may clarify the clinical significance of a mutation of uncertain or unknown significance; the accuracy of skin biopsy is enhanced by the use of immunochemistry.",
+      "page": null
+    },
+    {
+      "section": "Diagnostic Approach to CADASIL and Other Genetic CSVDs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Epidemiologic data on prevalence of CADASIL in different racial and ethnic groups are incomplete; identification of CADASIL in people of African ancestry remains rare, and underreporting due to resource limitations, underrecognition, and undertesting may account for these differences. To suggest that CADASIL or other CSVDs should be considered only in certain populations might compound health inequities.",
+      "page": null
+    },
+    {
+      "section": "Role of Antithrombotic and Thrombolytic Therapies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In CADASIL, the role of antiplatelet therapy in preventing recurrent ischemic stroke is unknown. There is no evidence to support the use of antiplatelet agents in patients with CADASIL without prior ischemic stroke; avoid antiplatelet therapy for primary stroke prevention.",
+      "page": null
+    },
+    {
+      "section": "Role of Antithrombotic and Thrombolytic Therapies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although there are no high-quality data on the safety or efficacy of antiplatelet therapies in patients with CADASIL, low-dose aspirin likely carries low risk and is frequently given in patients with prior ischemic stroke. Aspirin monotherapy may be safe for preventing recurrent ischemic stroke, but evidence for efficacy is lacking.",
+      "page": null
+    },
+    {
+      "section": "Role of Antithrombotic and Thrombolytic Therapies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Oral anticoagulants can be given to patients with CADASIL and high-risk atrial fibrillation (eg, CHA2DS2-VASc score >2); oral anticoagulation is not contraindicated. In patients with both CADASIL and atrial fibrillation, left atrial appendage device closure may be a reasonable alternative to long-term anticoagulation, particularly for those with high CHA2DS2-VASc scores and high microbleed count.",
+      "page": null
+    },
+    {
+      "section": "Role of Antithrombotic and Thrombolytic Therapies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Little is known about the safety or efficacy of thrombolysis or thrombectomy in patients with CADASIL presenting with acute stroke. Pending systematic study, decisions on reperfusion or recanalization therapy should be made on a case-by-case basis. For patients presenting with unrelated large vessel stroke, mechanical thrombectomy without thrombolysis may be preferred to thrombectomy with thrombolysis.",
+      "page": null
+    },
+    {
+      "section": "Migraine and Its Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The migrainous aura in CADASIL may be severe and vary in semiology, including hemiplegia, hemi-anesthesia, and visual scotoma. Episodes of fever, confusion, and reduced arousal ('CADASIL coma') may occur in up to 8.5% of patients; these episodes last weeks and self-resolve to the patient's preexisting neurological baseline.",
+      "page": null
+    },
+    {
+      "section": "Migraine and Its Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "No randomized trial has established optimal migraine treatment in CADASIL. A meta-analysis of prophylactic medications found most common choices equivocal, although propranolol seemed to have a deleterious effect and both acetazolamide and sodium valproate may be physiologically beneficial; consider avoiding beta-blockers for prophylaxis and preferring acetazolamide or sodium valproate.",
+      "page": null
+    },
+    {
+      "section": "Migraine and Its Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Abortive therapy with triptans appears sufficiently safe in CADASIL. Migraine triggers are similar to those in patients without CADASIL, and although there are no robust data, avoiding triggers and maintaining good sleep and exercise should be considered. No robust data exist on the benefit of onabotulinum toxin-A, wearable devices, acupuncture or acupressure, or calcitonin gene-related peptide modulators.",
+      "page": null
+    },
+    {
+      "section": "Neuropsychiatric Phenomena",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Neuropsychiatric complications may occur in up to 30% of those with CADASIL, most after the fourth decade; adjustment disorders, dysthymia, apathy, and pseudobulbar palsy are most common. Cognitive profiles early in disease typically show executive dysfunction and inattention, progressing to multidomain impairment and dementia after 60 years of age in about 60% of individuals, with memory relatively spared.",
+      "page": null
+    },
+    {
+      "section": "Neuropsychiatric Phenomena",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Optimal therapies for neuropsychiatric symptoms in CADASIL are not well defined, relying on conventional pharmacotherapy such as selective serotonin reuptake inhibitors; mood disturbances are often refractory. A randomized trial of donepezil showed no benefit in overall cognition (Vascular Dementia Assessment Scale cognitive subscale) but did show benefit for several subscores of executive function; donepezil 10 mg/d may be considered to improve impaired executive function.",
+      "page": null
+    },
+    {
+      "section": "Managing Modifiable Vascular Risk Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In CADASIL, hypertension has been shown to be associated with incident dementia, disability due to dementia, overall disability, incident stroke, and intracerebral hemorrhage. Hypertension and glucose control are associated with cerebral microbleeds.",
+      "page": null
+    },
+    {
+      "section": "Managing Modifiable Vascular Risk Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "No randomized trials have studied the effects of vascular risk factor management on clinical outcomes in CADASIL. From observational studies and the expected deleterious effects of vascular risk factors on arteriolosclerosis-related brain health, tight (intensive) control of blood pressure seems prudent in CADASIL.",
+      "page": null
+    },
+    {
+      "section": "Managing Modifiable Vascular Risk Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Given reported associations between tobacco smoking and earlier onset of stroke in patients with CADASIL, smoking cessation should be strongly encouraged. A clear association of hyperlipidemia with clinical outcomes in CADASIL has yet to be established, and the value of treating comorbid dyslipidemia remains unknown.",
+      "page": null
+    },
+    {
+      "section": "Pregnancy in CADASIL",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In a case series of 93 pregnancies in 50 women with NOTCH3 mutations, CADASIL was not associated with higher rates of complications during pregnancy, peripartum, or postpartum. Antithrombotic prophylaxis is not required during pregnancy. There are no data showing that vaginal birth is unsafe. In a Finnish study of 25 R133C carriers over 43 pregnancies, almost half experienced transient neurological symptoms, mainly in the puerperium.",
+      "page": null
+    },
+    {
+      "section": "Perioperative Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There has been no systematic study of perioperative management in CADASIL, although neuraxial and general anesthesia have been used without postoperative stroke or delirium. It has been proposed that intraoperative mean arterial pressure should be maintained >60 mm Hg (8 kPa), that end-tidal carbon dioxide should be approximately 40 mm Hg (5.3 kPa), and that head-down positioning should be restricted or avoided to avoid obstructing venous return.",
+      "page": null
+    },
+    {
+      "section": "Avoiding Catheter Angiography",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In a review of individuals with CADASIL undergoing cerebral catheter angiography, 69% (11/16) experienced neurological symptoms lasting hours to weeks. Because cerebral catheter angiography is unnecessary for diagnosing CADASIL, a clinical or genetic diagnosis of CADASIL should be considered a relative contraindication to cerebral catheter angiography, the exception being a known symptomatic acute large vessel occlusion for which a catheter procedure would be done for therapeutic, not merely diagnostic, reasons.",
+      "page": null
+    },
+    {
+      "section": "Pathways to Disease-Modifying Therapies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Many mechanistic models posit that mutant NOTCH3 protein triggers a pathological gain of function within the cerebral vasculature. Maturing technologies such as gene silencing, gene editing, exon skipping, and monoclonal antibody production could be applied to CADASIL; efforts to knock down or knock out mutant alleles offer potential avenues for treatment.",
+      "page": null
+    },
+    {
+      "section": "Future Directions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "With the notable exception of Fabry disease, inherited CSVDs lack disease-specific, targeted therapies; therapeutic uncertainty should not translate to therapeutic nihilism. Challenges to generating reliable evidence for rare disorders include limited statistical power and disease heterogeneity, although dedicated international trial consortia and establishment and use of biomarkers may offer a pathway forward.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

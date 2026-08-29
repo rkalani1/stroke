@@ -10,12 +10,222 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Practical Management Suggestions",
       "classOfRec": "Statement",
-      "classNote": "Scope quoted verbatim from the publication abstract. The publisher full text returned HTTP 403 and could not be read; this document states it offers \"practical management suggestions\" rather than graded recommendations, and no class-of-recommendation or level-of-evidence content is entered here.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "\"Despite the many advances in cardiovascular medicine, decisions concerning the diagnosis, prevention, and treatment of left ventricular (LV) thrombus often remain challenging. There are only limited organizational guideline recommendations with regard to LV thrombus. Furthermore, management issues in current practice are increasingly complex, including concerns about adding oral anticoagulant therapy to dual antiplatelet therapy, the availability of direct oral anticoagulants as a potential alternative option to traditional vitamin K antagonists, and the use of diagnostic modalities such as cardiac magnetic resonance imaging, which has greater sensitivity for LV thrombus detection than echocardiography. Therefore, this American Heart Association scientific statement was commissioned with the goals of addressing 8 key clinical management questions related to LV thrombus, including the prevention and treatment after myocardial infarction, prevention and treatment in dilated cardiomyopathy, management of mural (laminated) thrombus, imaging of LV thrombus, direct oral anticoagulants as an alternative to warfarin, treatments other than oral anticoagulants for LV thrombus (eg, dual antiplatelet therapy, fibrinolysis, surgical excision), and the approach to persistent LV thrombus despite anticoagulation therapy. Practical management suggestions in the form of text, tables, and flow diagrams based on careful and critical review of actual study data as formulated by this multidisciplinary writing committee are given.\" Published in Circulation 2022;146(15):e205-e223 (Levine GN, McEvoy JW, Fang JC, Ibeh C, et al.). This statement addresses detected intracardiac thrombus and is the companion to the AHA statement on ischemic stroke risk with left ventricular systolic dysfunction in the absence of intracardiac thrombus, carried separately in this library.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Only AHA/ACC guidelines can in general make formal recommendations. The writing group has striven to generate practical management suggestions based on careful and critical review of actual study data, existing guidelines, and expert opinion, addressing the 8 key questions that served as the rationale for this scientific statement.",
+      "page": null
+    },
+    {
+      "section": "Table 3. Suggested Practical Management (1)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that CMR may be most appropriate when (1) there is the suggestion of a possible LV thrombus on echocardiogram but echocardiography imaging even with an ultrasound-enhancing agent is not diagnostic and (2) echocardiography does not demonstrate LV thrombus but a clinical concern remains (for example, cardioembolic stroke).",
+      "page": null
+    },
+    {
+      "section": "Table 3. Suggested Practical Management (2)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that, given the relatively weak data supporting prophylactic (preventive) oral anticoagulation in patients with acute anteroapical STEMI treated with reperfusion therapy (usually primary PCI) and anteroapical akinesis, any such consideration of oral anticoagulation should weigh and incorporate the perceived risk of thrombus formation and bleeding and involve shared decision making. If oral anticoagulation is initiated, a treatment duration might be 1-3 months, depending on bleeding risk.",
+      "page": null
+    },
+    {
+      "section": "Table 3. Suggested Practical Management (3)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that, on the basis of reasonable study data, post-myocardial infarction patients with LV thrombus should be treated with oral anticoagulation, typically for a duration of 3 months.",
+      "page": null
+    },
+    {
+      "section": "Table 3. Suggested Practical Management (4)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that, given reasonably randomized data, patients with dilated cardiomyopathy should not be prophylactically treated with oral anticoagulation, with the possible exception of those with specific cardiomyopathies (for example, takotsubo syndrome, LV noncompaction, eosinophilic myocarditis, peripartum cardiomyopathy, and cardiac amyloidosis) with associated factors that increase the risk of LV thrombus formation, in which cases oral anticoagulation could be considered.",
+      "page": null
+    },
+    {
+      "section": "Table 3. Suggested Practical Management (5)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that, on the basis of limited data, patients with nonischemic cardiomyopathy with LV thrombus should be treated with oral anticoagulation for at least 3-6 months, with discontinuation if LVEF improves to >35% (assuming resolution of the LV thrombus) or if major bleeding occurs. There are insufficient study data to determine whether oral anticoagulation should be continued indefinitely.",
+      "page": null
+    },
+    {
+      "section": "Table 3. Suggested Practical Management (6)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that, on the basis of limited data, it may be prudent to treat patients with oral anticoagulation for newly diagnosed mural (laminated) LV thrombus as one would a patient with a protruding or mobile thrombus.",
+      "page": null
+    },
+    {
+      "section": "Table 3. Suggested Practical Management (7)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that, on the basis of supportive though insufficiently powered randomized data, in patients with LV thrombus, a direct oral anticoagulant seems to be a reasonable alternative to warfarin.",
+      "page": null
+    },
+    {
+      "section": "Table 3. Suggested Practical Management (8)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that, on the basis of consensus opinion, in some patients with persistent LV thrombus, particularly a protruding or mobile thrombus, a trial of an alternative oral anticoagulant or low-molecular-weight heparin (for example, VKA if on DOAC, DOAC if on VKA with repeatedly subtherapeutic INR, LMWH if on VKA with therapeutic INRs) is not unreasonable. On the other hand, also on the basis of consensus opinion, discontinuation of oral anticoagulation in patients with persistent mural (laminar) thrombus, particularly if the thrombus becomes organized or calcified, is not unreasonable.",
+      "page": null
+    },
+    {
+      "section": "Imaging of LV Thrombus",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Transthoracic echocardiography is the standard imaging technique for the detection of LV thrombus. It would seem advisable to administer an echocardiography-enhancing agent to increase sensitivity in patients in whom there is concern for LV thrombus, such as those with acute myocardial infarction with anteroapical akinesis (or dyskinesis) and those with suspected cardioembolic stroke. Transesophageal echocardiography does not generally improve visualization of the LV apex and is not regarded as a useful secondary imaging modality.",
+      "page": null
+    },
+    {
+      "section": "Prevention of LV Thrombus After Acute MI",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although a practice of routine prophylactic anticoagulation in all patients does not appear to be supported by data, consideration of the pros and cons of prophylactic anticoagulant therapy to prevent LV thrombus on a patient-by-patient basis seems prudent. If prophylactic anticoagulation is initiated after myocardial infarction, we suggest a 1- to 3-month duration because the risk of LV thrombus formation is highest within the first month after myocardial infarction before declining.",
+      "page": null
+    },
+    {
+      "section": "Prevention of LV Thrombus After Acute MI",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients after myocardial infarction with anteroapical akinesis or dyskinesis in whom no LV thrombus is visualized in the first or several days after myocardial infarction and anticoagulation initiation is not planned, a focused follow-up echocardiogram with an intravenous ultrasound-enhancing agent (or CMR if the echocardiography image quality is poor) might be considered. There are, however, no good study data that such a strategy of repeat imaging actually leads to a reduction in embolic events.",
+      "page": null
+    },
+    {
+      "section": "Treatment of LV Thrombus After Acute MI",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Therapeutic anticoagulation generally should be initiated for the treatment of LV thrombus after acute myocardial infarction, typically for a duration of 3 months, with follow-up imaging at this time point using the same modality of imaging (or better) that was used to initially diagnose the LV thrombus. If there is thrombus resolution, it seems reasonable to discontinue oral anticoagulation at that time.",
+      "page": null
+    },
+    {
+      "section": "Treatment of LV Thrombus After Acute MI",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is the consensus of this writing group that anticoagulation (VKA or DOAC) should be initiated for patients with LV thrombus in the setting of nonrecent (eg, >3 months) myocardial infarction or ischemic cardiomyopathy for at least 3 to 6 months. A shared decision-making approach should be applied as to whether anticoagulation should be continued indefinitely, factoring in the demonstrated milieu to form thrombus, improvement or lack of improvement in LV systolic function, bleeding risk, tolerability, and the patient's risk tolerances.",
+      "page": null
+    },
+    {
+      "section": "Prevention of LV Thrombosis in DCM",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "No prospective trials support the routine use of oral anticoagulation for the primary prevention of LV thrombus in patients with dilated cardiomyopathy in sinus rhythm. On a case-by-case basis, oral anticoagulation could be considered in patients with specific types of dilated cardiomyopathy at increased risk for LV thrombus formation such as takotsubo syndrome, LV noncompaction, eosinophilic myocarditis, peripartum cardiomyopathy, and cardiac amyloidosis. In such cases the recommended duration is not established; indefinite oral anticoagulation might be considered unless the LVEF improves or bleeding contraindication occurs.",
+      "page": null
+    },
+    {
+      "section": "Treatment of LV Thrombus in DCM",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The consensus of this writing group, based on retrospective registry data and small prospective observational studies, is for anticoagulation (VKA or DOAC) in patients with LV thrombus in the setting of dilated cardiomyopathy for at least 3 to 6 months, with discontinuation if LVEF improves to >35% (assuming resolution of the LV thrombus) or if major bleeding occurs. Indefinite anticoagulation might be prudent in those whose LV systolic function does not improve with guideline-directed therapies, those with persistent apical akinesis or dyskinesis, and patients with proinflammatory or hypercoagulable states such as malignancy or renal failure.",
+      "page": null
+    },
+    {
+      "section": "Mural (Laminated) Thrombus",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For a newly diagnosed mural thrombus, although the risk of embolization may be less than for a protuberant thrombus, it is likely not trivial, and it would be prudent to anticoagulate for this thrombus similarly to a protuberant thrombus. For persistent mural thrombus after a course of oral anticoagulation, particularly if organized or calcified, the risk of embolization is likely low, and a shared decision-making approach seems appropriate.",
+      "page": null
+    },
+    {
+      "section": "DOAC as an Alternative to Warfarin for the Treatment of LV Thrombus",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "According to all currently available data, DOACs are considered by this writing group to be a reasonable alternative to VKA in patients with LV thrombus, and may be particularly attractive in patients in whom a therapeutic INR range is difficult to achieve consistently or in whom frequent INR checks are impractical. There are no data on the use of DOACs for either prophylaxis or treatment of LV thrombus in patients with end-stage renal disease; the choice of oral anticoagulant in such patients must be based on best clinical judgment and shared decision-making.",
+      "page": null
+    },
+    {
+      "section": "OAC in Patients Treated With Antiplatelet Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When oral anticoagulation is added to antiplatelet therapy in patients who have undergone PCI, a general strategy of double (dual) therapy, with an oral anticoagulant (preferably a DOAC) and a P2Y12 inhibitor (preferably clopidogrel), after 1 to 4 weeks of triple therapy, is preferred over longer-term triple therapy consisting of an oral anticoagulant plus dual antiplatelet therapy.",
+      "page": null
+    },
+    {
+      "section": "DAPT for the Prevention of LV Thrombus",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There are overall insufficient high-quality study data to assess whether dual antiplatelet therapy alone has any protective effects for the formation of LV thrombus, or whether a more potent P2Y12 inhibitor such as ticagrelor might be preferable if dual antiplatelet therapy alone is used to treat patients at risk of LV thrombus formation.",
+      "page": null
+    },
+    {
+      "section": "Fibrinolysis for LV Thrombus",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "On the basis of consensus opinion, given the very limited safety data and small but likely nonzero risk of embolization, we do not generally suggest fibrinolytic treatment for the primary purpose of treating LV thrombus.",
+      "page": null
+    },
+    {
+      "section": "Surgical Excision of LV Thrombus",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "At present, there are insufficient data to recommend surgical excision (without other indications for surgery) for the treatment of LV thrombus. Because of the risks of surgery and lack of supportive data, such an approach should be limited to rare circumstances such as inability to tolerate anticoagulation therapy when there is perceived to be a high risk of embolization or cardioembolic stroke despite anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "LV Thrombus Size, LV Thrombus Regression, and Embolic Risk",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Multiple studies have found that the most important risk factor for LV thrombus embolization is a mobile or protuberant thrombus. LV thrombus size rarely appears in studies as a risk factor for embolization, and when it does, it is a lesser risk factor. Thus, for most thrombi, size per se should not factor strongly into decisions about oral anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "Management of Massive LV Thrombus",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There are insufficient data to preferentially recommend any one approach to large or massive LV thrombi, and these rare scenarios are best addressed with a multidisciplinary approach to therapeutic intervention.",
+      "page": null
+    },
+    {
+      "section": "LV Thrombus Persistence Despite Anticoagulation Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although trial data informing the treatment of persistent or recurrent LV thrombus are lacking, prolonged anticoagulation and repeated imaging assessment are generally recommended. Treatment adherence should be assessed, and anticoagulation should generally be continued until resolution. We suggest, on the basis of consensus opinion, a trial of an alternative oral anticoagulant in some patients with persistent LV thrombus, particularly a protruding or mobile thrombus. There is no evidence that surgery for persistent LV thrombus has net efficacy.",
+      "page": null
+    },
+    {
+      "section": "Table 4. Factors That Support Continuation of OAC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Factors that favor continued oral anticoagulation: anteroapical myocardial infarction with persistent akinesis; protruding/mobile thrombus; suspected or known cardioembolic event; not high bleeding risk; proinflammatory or hypercoagulable states; recurrent LV thrombus.",
+      "page": null
+    },
+    {
+      "section": "Table 4. Factors That May or Do Not Favor Continued OAC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Factors that may or do not favor continued oral anticoagulation: high bleeding risk; concomitant antiplatelet therapy; improvement in LVEF or focal akinesis; persistent mural (laminated) thrombus, particularly if organized or calcified, despite therapeutic oral anticoagulation.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

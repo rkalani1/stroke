@@ -9,84 +9,230 @@
   "pmid": "33827230",
   "recommendations": [
     {
-      "section": "Preop Thromboembolic Risk",
+      "section": "Preoperative Risk Stratification",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Stratify thromboembolic risk in nonvalvular AF with CHA2DS2-VASc; stratify prosthetic valve risk by valve type/location and patient factors.",
-      "page": 8
+      "levelOfEvidence": "Ungraded",
+      "text": "All patients undergoing evaluation before surgery should be assessed for perioperative stroke risk in terms of key risk factors (age, renal disease, and history of transient ischemic attack/stroke) with additional emphasis on timing of surgery relative to prior stroke, overall cardiovascular risk, and type of surgery planned.",
+      "page": null
     },
     {
-      "section": "Preop Thromboembolic Risk",
+      "section": "Preoperative Risk Stratification",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Stratify VTE risk by time since diagnosis and patient factors; defer elective operations for at least 3 months after VTE.",
-      "page": 8
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that risk stratification be performed with the web-based ACS (American College of Surgeons) surgical risk calculator to identify patients with elevated stroke risk who may benefit from targeted approaches that minimize the risk of perioperative stroke. The ACS surgical risk calculator and the MI or cardiac arrest risk calculator exhibited significantly better predictive accuracy than other risk prediction models, despite not having been developed to predict stroke risk.",
+      "page": null
     },
     {
-      "section": "Timing of Surgery",
+      "section": "Preoperative Risk Stratification",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Defer elective surgery after PCI: at least 14 days for balloon angioplasty, 30 days for bare-metal stent, and 1 year for drug-eluting stent placement.",
-      "page": 8
+      "levelOfEvidence": "Ungraded",
+      "text": "The presence of a patent foramen ovale may also be associated with higher perioperative stroke risk. Risk predictions can be discussed with patients to inform shared decision making, with the caveat that although the ACS surgical risk calculator does not directly predict the risk of stroke, patients predicted to be at high risk of serious complications are more likely to experience a stroke perioperatively.",
+      "page": null
     },
     {
-      "section": "Timing of Surgery",
+      "section": "Timing of Surgery After Stroke",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Defer elective operations for at least 9 months after ischemic stroke when feasible.",
-      "page": 8
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that elective noncardiac surgery be deferred at least 6 months after a prior stroke, and possibly as long as 9 months, to reduce the risk of perioperative stroke. Alternatively, patients who stand to gain significant improvements in quality of life with elective surgery may consider waiting only 6 months after a prior stroke.",
+      "page": null
     },
     {
-      "section": "Bleeding Risk",
+      "section": "Timing of Surgery After Stroke",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Stratify patient bleeding risk with HAS-BLED and procedure-related bleeding risk with surgical assessment.",
-      "page": 8
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients who underwent elective noncardiac surgery within 3 months of a prior stroke were at the highest risk of ischemic stroke; the increased odds ratio for major adverse cardiovascular and cerebrovascular events, 30-day mortality, and ischemic stroke leveled off at approximately 9 months. The odds of stroke were >20-fold higher in patients undergoing emergency noncardiac surgery within 3 months of a prior stroke.",
+      "page": null
     },
     {
-      "section": "Bridging Therapy",
+      "section": "Preoperative Stroke Prevention Strategies: Extracranial Carotid Artery Stenosis",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "No evidence supports antiplatelet bridging or heparin bridging for DOACs; consider warfarin bridging only in high VTE risk patients and stop warfarin about 5 days pre-op.",
-      "page": 8
+      "levelOfEvidence": "Ungraded",
+      "text": "Perform carotid revascularization (carotid endarterectomy vs carotid artery stenting) in patients with symptomatic (stroke or transient ischemic attack within the last 6 months) carotid artery stenosis (>70%) before planned surgery. Symptomatic patients with moderate stenosis (50%-69%) should also be considered for revascularization provided that the surgical risk is <6%.",
+      "page": null
     },
     {
-      "section": "Intraoperative Hemodynamics",
+      "section": "Preoperative Stroke Prevention Strategies: Extracranial Carotid Artery Stenosis",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Avoid significant intraoperative hypotension; consider maintaining MAP above ~70 mm Hg when possible to reduce end-organ injury risk.",
-      "page": 10
+      "levelOfEvidence": "Ungraded",
+      "text": "Perioperative management of patients with high-grade asymptomatic carotid stenosis is uncertain but should be informed by existing guidelines for carotid revascularization and contemporary medical treatment in this population. Routine carotid screening is not recommended in patients without symptoms, including those planning noncardiac surgery. Elective surgical procedures may be postponed if carotid revascularization is planned, but the optimal duration of delay is unknown.",
+      "page": null
     },
     {
-      "section": "Transfusion",
+      "section": "Preoperative Stroke Prevention Strategies: Intracranial Stenosis",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Monitor for anemia and consider cerebral perfusion reserve in patients with cerebrovascular disease when selecting transfusion thresholds.",
-      "page": 11
+      "levelOfEvidence": "Ungraded",
+      "text": "Intracranial stenosis is routinely managed medically, with antithrombotic therapy and assiduous risk factor modification; stenting of intracranial stenosis is limited to select patients who fail maximal medical therapy, and no evidence supports its prophylactic use in the preoperative setting.",
+      "page": null
     },
     {
-      "section": "Ventilation",
+      "section": "Preoperative Stroke Prevention Strategies: Patent Foramen Ovale",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Avoid hypocapnia in high-risk patients; use lung-protective ventilation to reduce perioperative complications and hypoxemia.",
-      "page": 13
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients already determined to need patent foramen ovale closure may consider undergoing this procedure before elective surgery, although urgent and emergency surgery should not be delayed to address a patent foramen ovale.",
+      "page": null
     },
     {
-      "section": "Stroke Recognition",
+      "section": "Perioperative Medication Management: Beta-Blockers",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Maintain vigilance for inpatient/perioperative stroke and establish rapid recognition and response pathways.",
-      "page": 13
+      "levelOfEvidence": "Ungraded",
+      "text": "The 2014 ACC/AHA perioperative guideline strongly supports continuing beta-blockers in patients who are on beta-blockers long term; it may be reasonable to begin beta-blockade in patients at high risk according to preoperative testing or with 3 or more Revised Cardiac Risk Index factors, but beta-blockers should not be initiated on the day of surgery. In POISE, preoperative metoprolol doubled the risk of perioperative stroke (1.0% versus 0.5%) and increased mortality.",
+      "page": null
+    },
+    {
+      "section": "Perioperative Medication Management: Statins",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients already taking a statin before undergoing noncardiac surgery, perioperative continuation is recommended to lower the risk of cardiovascular events, although no study has found a significant decrease in perioperative stroke risk associated with perioperative statin use.",
+      "page": null
+    },
+    {
+      "section": "Perioperative Medication Management: Antithrombotic Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Use or adjustment of medications such as statins, beta-blockers, and antithrombotic agents should be based on existing guidelines but tailored to individual patient characteristics. In particular, aspirin should be held unless patients have had a prior percutaneous coronary intervention (the referenced ACS guidance specifies holding aspirin 7-10 days before a high-bleeding-risk operation in patients who have not had a PCI, and consulting a cardiologist in patients with recent PCI).",
+      "page": null
+    },
+    {
+      "section": "Perioperative Medication Management: Antithrombotic Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with a mechanical heart valve receiving a vitamin K antagonist should be bridged with low-molecular-weight heparin or intravenous heparin. Patients at high risk for thromboembolism taking a vitamin K antagonist (eg, atrial fibrillation with high CHA2DS2-VASc score, recent venous thromboembolic disease) may be bridged with full-dose (therapeutic) low-molecular-weight heparin or intravenous heparin; bridging should otherwise be limited primarily to patients at high thromboembolic risk.",
+      "page": null
+    },
+    {
+      "section": "Preoperative Evaluation and Management to Reduce Risk of Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Consider nonsurgical treatment in discussion with the patient and caregivers as an alternative to surgery in patients with elevated risk of stroke.",
+      "page": null
+    },
+    {
+      "section": "Intraoperative Management: Blood Pressure Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Consider maintaining a mean arterial pressure >70 mm Hg, especially in patients who are at moderate or high risk for perioperative stroke. Although evidence to specify a safe upper limit of mean arterial pressure during noncardiac surgery is lacking, care should be taken to avoid extremes of hypertension.",
+      "page": null
+    },
+    {
+      "section": "Intraoperative Management: Blood Pressure Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients undergoing surgery in the sitting position (eg, shoulder surgery, cervical spine surgery), the difference in blood pressure between the brachial artery and the brain should be considered: the intra-arterial transducer should be zeroed at the level of the auditory meatus, and for noninvasive cuff monitoring the mean arterial pressure target should account for the 0.8-mm Hg gradient for every 1-cm height difference between the cuff and the auditory meatus.",
+      "page": null
+    },
+    {
+      "section": "Intraoperative Management: Perioperative Goal-Directed Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is insufficient literature to make any firm suggestions on the use of perioperative goal-directed therapy to prevent strokes, although goal-directed hemodynamic algorithms have reduced overall complication rates in randomized trials.",
+      "page": null
+    },
+    {
+      "section": "Intraoperative Management: Perioperative Blood Transfusion Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is reasonable to consider a transfusion threshold of 8 g/dL for patients with a history of recent stroke or significant cerebrovascular disease (eg, carotid or intracranial stenosis >70%). Clinicians may consider a transfusion threshold of 8-9 g/dL in patients with an acute perioperative stroke, ongoing bleeding, hemodynamic instability, and known cerebrovascular insufficiency attributable to stenosis or occlusion.",
+      "page": null
+    },
+    {
+      "section": "Intraoperative Management: Effects of the Choice of Anesthetic Technique",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is insufficient evidence to make clear suggestions on the use of general anesthesia versus regional anesthesia. The evidence to date suggests that anesthetic agents are neither neuroprotective nor neurotoxic and that the choice of anesthetic agent is unlikely to influence the risk of stroke in the perioperative period.",
+      "page": null
+    },
+    {
+      "section": "Intraoperative Management: Ventilation Strategies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is reasonable to consider a lung-protective ventilation strategy as part of an overall strategy to reduce postoperative complications, although there are no data to support this approach for the reduction of perioperative stroke. Hypocarbia should be generally avoided in patients at high risk for perioperative stroke.",
+      "page": null
+    },
+    {
+      "section": "Identification and Treatment of Perioperative Stroke: Stroke Recognition in the Perioperative Setting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Postanesthesia care units should consider routinely performing neurological assessments for early identification of stroke in high-risk patients, including evaluation of level of arousal, speech/language, and motor function. Abbreviated versions of the NIHSS or the Cincinnati Prehospital Stroke Scale may be reasonable options in the perioperative setting, although no scale has been validated there.",
+      "page": null
+    },
+    {
+      "section": "Identification and Treatment of Perioperative Stroke: Stroke Recognition in the Perioperative Setting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The risk of perioperative stroke (within 30 days) is higher within the first 72 hours after surgery, with the first 24 hours carrying the highest risk and offering the greatest challenge in identification of stroke symptoms because of lingering effects of the procedure and anesthetic medications. Presentation may be nonfocal, such as mental status change, agitated delirium, autonomic instability, or delayed emergence from anesthesia; many perioperative medications affecting mental status can be reversed to facilitate neurological evaluation.",
+      "page": null
+    },
+    {
+      "section": "Identification and Treatment of Perioperative Stroke: Emergent Evaluation, Code Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All centers performing surgery should consider establishing algorithms for the evaluation and treatment of patients with perioperative stroke by stroke code teams, with protocols in place for immediate treatment or transfer to hospitals capable of providing advanced care. If an acute stroke is suspected, an institutional stroke code and rapid response stroke team should be activated, a noncontrast head CT obtained immediately to rule out hemorrhage, and CT angiography and perfusion added when large vessel occlusion is suspected.",
+      "page": null
+    },
+    {
+      "section": "Identification and Treatment of Perioperative Stroke: Emergent Evaluation, Code Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Suggested perioperative in-hospital stroke response time goals: stroke symptom discovery to stroke alert <5 minutes; symptom discovery to neurological expertise <10 minutes; symptom discovery to CT/MRI <25 minutes; symptom discovery to imaging result <45 minutes; symptom discovery to initiation of treatment <60 minutes (alert to needle) and <75 minutes (alert to puncture). Simultaneously initiate the code stroke/telestroke consult, notify the anesthesiologist and surgeon, perform a screening assessment (CPSS or modified/full NIHSS), check fingerstick glucose (treat <60 mg/dL), and check blood pressure (notify if >185/110 mm Hg, treat hypotension); confirm last known well, which may be the anesthesia induction time.",
+      "page": null
+    },
+    {
+      "section": "Identification and Treatment of Perioperative Stroke: Acute Stroke Treatment, Endovascular Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Restoring blood flow to the injured brain is critically important. Patients with a perioperative stroke should be strongly considered for evaluation for mechanical embolectomy and intravenous thrombolysis because both interventions have been shown to be safe in select patients. Mechanical thrombectomy is preferable to intravenous thrombolysis alone in large vessel occlusion strokes and can be performed without systemic anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "Identification and Treatment of Perioperative Stroke: Acute Stroke Treatment, Endovascular Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Obtaining more advanced imaging initially, including CT angiography and perfusion studies, should be considered for patients with more severe stroke symptoms (NIHSS score >6 or cortical deficits) to determine eligibility for mechanical thrombectomy. If a surgical procedure is to be performed at a center that is not thrombectomy capable, provisions for transfer to an advanced stroke center should be established beforehand; procedures with a high risk of perioperative stroke should ideally be done only at thrombectomy-capable centers.",
+      "page": null
+    },
+    {
+      "section": "Identification and Treatment of Perioperative Stroke: Acute Stroke Treatment, Thrombolytic Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients presenting with a perioperative stroke after major surgery may be considered for treatment with intravenous alteplase within 4.5 hours from the time of last known well. Intracranial or intraspinal surgery within the past 3 months is an absolute contraindication to intravenous alteplase. Intravenous alteplase should be considered in patients with recent surgery after a careful, individualized risk-benefit discussion; the risk of bleeding at the surgical site must be weighed, and if mechanical thrombectomy is an option it should take precedence.",
+      "page": null
+    },
+    {
+      "section": "Identification and Treatment of Perioperative Stroke: Acute Stroke Treatment, Thrombolytic Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Use of intravenous alteplase beyond 4.5 hours (imaging-selected wake-up or unclear-onset stroke) in surgical patients should be considered cautiously and undertaken only with selection criteria and high-level imaging similar to those used in the WAKE-UP, EXTEND, ECASS 4 and EPITHET trials, with well-documented informed consent.",
+      "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

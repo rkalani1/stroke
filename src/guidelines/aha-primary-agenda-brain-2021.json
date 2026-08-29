@@ -10,12 +10,238 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Methods",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "A healthy brain is critical for living a longer and fuller life. The projected aging of the population, however, raises new challenges in maintaining quality of life. As we age, there is increasing compromise of neuronal activity that affects functions such as cognition, also making the brain vulnerable to disease. Once pathology-induced decline begins, few therapeutic options are available. Prevention is therefore paramount, and primary care can play a critical role.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The writing group was commissioned to focus on 4 topics: definition of brain health, risk factors for cognitive impairment, strategies to safeguard brain health, and integration of best practices into primary care. This statement is a narrative scientific statement and does not assign a Class of Recommendation or Level of Evidence to any of its statements.",
+      "page": null
+    },
+    {
+      "section": "Cognition — Definitions and Diagnostic Criteria for Subjective Cognitive Decline, MCI, and Dementia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Subjective cognitive decline is a self-experienced, persistent decline in cognitive function from a previous state, lasting >6 months, without (or before) a formal examination by a health care provider or cognitive testing. Mild cognitive impairment (MCI) is a clinical diagnosis for a symptomatic syndrome on the continuum between normal cognition and dementia, characterized by measurable cognitive impairment that does not significantly impair daily, social, or occupational functioning. Dementia is a clinical diagnosis for a syndrome of objective cognitive impairment occurring over months to years that is severe enough to interfere with daily, social, or occupational functioning, in which help is needed to perform basic or instrumental activities of daily living.",
+      "page": null
+    },
+    {
+      "section": "Cognition — Definitions and Diagnostic Criteria",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "After determining the severity of the cognitive impairment and its impact on everyday functioning, clinicians can assign a pathogenetic subtype. MCI and dementia can be caused by different pathologies, including neurodegenerative disease (Alzheimer disease, Lewy body disease, TAR DNA-binding protein 43, and hippocampal sclerosis) and cerebrovascular disease; most cases of MCI and dementia are mixed.",
+      "page": null
+    },
+    {
+      "section": "Cognition — Epidemiology of Subjective Cognitive Decline, MCI, and Dementia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Approximately 11.7% of Americans ≥65 years of age report subjective cognitive decline; prevalence of MCI is estimated at 22.2% and dementia at 13.9% among individuals ≥71 years of age. The numbers of Americans with MCI and dementia are projected to triple by 2050, although there is recent evidence that the incidence of Alzheimer disease may be declining, especially in higher-income countries, with improvements in vascular health management likely contributing.",
+      "page": null
+    },
+    {
+      "section": "Cognition — Epidemiology",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Prognosis is uncertain for individuals with subjective cognitive decline and MCI. Subjective cognitive decline does not inevitably progress to MCI, even after 10 to 20 years, and MCI does not inevitably progress to dementia even after a decade; a small percentage of individuals with MCI have improvements in cognition. The risk of conversion from MCI to dementia ranges from 3%/y to 15%/y, lower in community-based samples and higher in samples from Alzheimer disease clinics and research centers.",
+      "page": null
+    },
+    {
+      "section": "Cognition — Risk Factors for Cognitive Impairment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A Delphi consensus study identified the following major, modifiable risk factors for cognitive decline: depression, midlife hypertension, physical inactivity, diabetes, midlife obesity, hyperlipidemia, and smoking. A commissioned report estimated that 35% of dementia cases would be prevented if known risk factors were eliminated, including obesity, hypertension, depression, smoking, physical inactivity, diabetes, hearing impairment, less education, and social isolation.",
+      "page": null
+    },
+    {
+      "section": "Association of Modifiable Risk Factors With Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "SPRINT MIND showed in a randomized controlled trial that lowering systolic blood pressure to <120 mm Hg reduced risk for the combined outcome of MCI and dementia. This proof-of-concept research supports the more general thesis that reducing risk for vascular disease may improve brain health.",
+      "page": null
+    },
+    {
+      "section": "Life's Simple 7 — BP Control: Hypertension",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hypertension is a well-established risk factor for stroke and vascular dementia; systolic BP >160 mm Hg was associated with a 25% increase in risk for Alzheimer disease and systolic BP >140 mm Hg with an 18% increased risk, and midlife hypertension (40–65 years of age) was associated with increased risk of later-life dementia. In SPRINT MIND, targeting a systolic BP <120 mm Hg compared with <140 mm Hg in hypertensive adults ≥50 years of age at high cardiovascular risk reduced the risk for the nonprimary combined outcome of MCI and dementia by 19% over a median intervention period of 3.3 years. More trials are needed to confirm optimal BP targets to maintain cognitive function.",
+      "page": null
+    },
+    {
+      "section": "Life's Simple 7 — Smoking Status",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Smoking is the third most important modifiable risk factor for dementia, behind hypertension and less education. A recent meta-analysis involving >900 000 cases showed that whereas smokers clearly had an increased risk of dementia, quitting smoking decreased that risk to close to the level of never smokers.",
+      "page": null
+    },
+    {
+      "section": "Life's Simple 7 — Physical Activity",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Less physical activity has been associated with a higher risk of cognitive decline in many epidemiological studies, but clinical trials are not convincing: a 2015 Cochrane review of 12 clinical trials (>750 patients) found no evidence that aerobic exercise improves cognitive function in older adults with otherwise normal cognition, while a more recent community-based trial found that aerobic exercise significantly improved executive function compared with stretching/toning. The optimal dose, type, frequency, and duration of physical activity for optimal brain health across the life span remain to be established.",
+      "page": null
+    },
+    {
+      "section": "Life's Simple 7 — Diabetes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The association between diabetes and increased risk for dementia is well established; individuals with diabetes have greater rates of decline in cognitive function and are at 50% increased risk of cognitive decline. Although no clinical trials have demonstrated that intensive control of diabetes or treatment of insulin resistance lowers the risk for cognitive impairment, the observational data suggest that better control might eventually prove effective.",
+      "page": null
+    },
+    {
+      "section": "Life's Simple 7 — Dietary Patterns",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The combined evidence, primarily from observational studies, supports that greater adherence to healthier diets such as the DASH, Mediterranean, and MIND diets is associated with slower cognitive decline in middle-aged and older adults, although findings are not uniform across cohorts. More studies, including clinical trials, are needed to better understand mechanisms to guide dietary recommendations for the prevention of MCI.",
+      "page": null
+    },
+    {
+      "section": "Life's Simple 7 — Body Mass Index: Obesity",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Considerable epidemiological evidence supports the association of midlife obesity with increased risk of cognitive impairment, and obesity is identified as one of the most common risk factors for Alzheimer disease and related dementias. Whether midlife weight loss or weight loss maintenance benefits cognition remains unknown; nevertheless obesity is an important risk factor to consider because it is on the causal pathway between other risk factors and cognitive outcomes, including physical activity, diet, diabetes, and hypertension.",
+      "page": null
+    },
+    {
+      "section": "Life's Simple 7 — Serum Cholesterol",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A pooled analysis found that high total cholesterol in midlife increased the risk of Alzheimer disease later in life. Evidence from existing clinical trials suggests that statin treatment in late life does not prevent cognitive decline or dementia; at the same time, a systematic review and meta-analysis of randomized trials showed that statin therapy was not associated with adverse effects on cognition.",
+      "page": null
+    },
+    {
+      "section": "Other Factors of Importance — Alcohol Consumption",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Light to moderate alcohol consumption has been hypothesized to be protective against MCI, generally found to be true in older ages with a U-shaped (primarily), J-shaped, or linear association. Excessive and prolonged alcohol use can lead to brain injury through neurotoxicity, nutritional deficiency, neuroinflammation, and changes in neurotransmitter systems.",
+      "page": null
+    },
+    {
+      "section": "Other Factors of Importance — Sleep",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Results from numerous observational studies consistently demonstrate that various sleep disorders contribute to cognitive decline; sleep disorders such as obstructive sleep apnea and insomnia contribute to vascular dementia via diverse mechanisms. Effective interventions exist to improve sleep, such as sleep restriction–sleep compression therapy and multicomponent cognitive-behavioral therapy. Studies with longer follow-up and objective sleep measures are needed.",
+      "page": null
+    },
+    {
+      "section": "Other Factors of Importance — Social Engagement",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Growing and consistent evidence shows the effects of social isolation and loneliness as risk factors for cognitive decline and dementia; in the Betula study, a positive response to the question \"Do you often feel lonely?\" was associated with a 51% increase in risk for all-cause dementia. In randomized trials, a structured social activity improved global cognition but did not affect specific domains.",
+      "page": null
+    },
+    {
+      "section": "Other Factors of Importance — Hearing",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In a meta-analysis of 36 cross-sectional and longitudinal studies, age-related hearing loss was associated with both cognitive impairment and dementia; approximately one-third of older adults experience hearing impairment and it remains largely untreated. Currently, no randomized trial evidence supports the benefits of hearing interventions on long-term cognitive outcomes.",
+      "page": null
+    },
+    {
+      "section": "Other Factors of Importance — Mood: Depression",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Depression appears to be a risk factor for dementia, yet dementia is also a risk factor for depression in older age. Individuals with depressive symptoms in midlife were not at increased risk for dementia, but those with depressive symptoms later in life had a higher risk of dementia, suggesting that the symptoms may be an early sign of dementia. Research is needed on the role of antidepressants in the depression-dementia relationship.",
+      "page": null
+    },
+    {
+      "section": "Other Factors of Importance — Education",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In general, studies find higher educational attainment to be protective against cognitive decline in older adults; a meta-analysis of 13 longitudinal studies found that low educational level (≤8 years) increased risk for dementia or cognitive impairment by 1.8 times. Modification of education-associated risk starts early in the life span.",
+      "page": null
+    },
+    {
+      "section": "Integration Into Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Most modifiable risk factors for cognitive impairment operate through a lifetime and are theoretically amenable to public health policies that improve education, expand opportunities for college attendance, discourage tobacco use, reduce social isolation, promote physical activity, reduce noise-induced hearing loss, and encourage healthy eating. Clinicians can seek support for such policies by reprising their role as activists and advocates.",
+      "page": null
+    },
+    {
+      "section": "Integration Into Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Standard prevention in primary care addresses every element of the AHA's Life's Simple 7. Five of the 7 elements are recommended for formal screening by professional guidelines: screening for BP, glucose, cholesterol, smoking status, and weight, generally every 1 to 5 years beginning in very early adulthood. For the other 2 elements — healthy diet and physical activity — there are no commonly accepted screening instruments, and professional guidelines instead recommend that all patients receive counseling to eat well and exercise a minimum of 150 min/wk.",
+      "page": null
+    },
+    {
+      "section": "Integration Into Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Three other risk factors for cognitive decline are not among Life's Simple 7 but are part of routine primary care practice: the US Preventive Services Task Force has recommended screening for depression since 2016; sleep apnea, although not recommended for routine screening, is commonly diagnosed and affected patients are referred for care; and current guidelines do not recommend testing for hearing loss in asymptomatic adults but do recommend testing in patients who report hearing loss or may have hearing loss according to office-based observation. NICE guidelines recommend regular hearing assessment in patients with cognitive impairment.",
+      "page": null
+    },
+    {
+      "section": "Integration Into Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Frailty — the accumulation of symptoms, signs, physical limitations, and comorbid illnesses that increase vulnerability to poor health outcomes — is independently associated with increased risk for Alzheimer-type dementia and may represent another opportunity to safeguard brain health through physical therapy, nutritional improvement, and other interventions.",
+      "page": null
+    },
+    {
+      "section": "Integration Into Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Prevention in primary care should begin at earlier stages in the age spectrum because new data show that modifiable risk factors in younger groups increase the odds of cognitive decline in middle age and older; these data justify the importance of monitoring risk factors years before the effects on the brain may be apparent.",
+      "page": null
+    },
+    {
+      "section": "Integration Into Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Neither the US Preventive Services Task Force nor the American Academy of Neurology recommends screening asymptomatic individuals for cognitive impairment, but they do suggest vigilance for change that should warrant case finding. Specifically, when there is concern for cognitive decline on the basis of patient or informant report or the clinician's own observations, the clinician should gather pertinent history and consider testing with a validated cognitive assessment instrument such as the Montreal Cognitive Assessment or the Brief Alzheimer Screen.",
+      "page": null
+    },
+    {
+      "section": "Integration Into Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Results of FINGER suggest that the optimal intervention may prove to be a broad-based approach involving vascular risk modification and lifestyle improvement. Such a comprehensive approach must be tailored to sex, race and ethnicity, and socioeconomic status; higher rates of cognitive impairment are notable in certain racial and ethnic groups (eg, Black and Latino people in the United States), and these groups would be particularly likely to benefit from the preventive strategies recommended.",
+      "page": null
+    },
+    {
+      "section": "Integration Into Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The evidence-practice gap in primary care is being partially closed by innovations in practice redesign and technology, including telehealth, self-monitoring for chronic illness, and team-based and collaborative care; in hypertension control, examples include self-monitoring and self-titration and collaborative care with pharmacists.",
+      "page": null
+    },
+    {
+      "section": "Integration Into Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The main barrier to improving brain health in primary care is access to primary care services: an estimated 15% of American adults lack health insurance, copays and caregiver shortages (particularly in rural areas) are serious problems, and the proportion of Americans with a source of primary care decreased from 77% to 75% between 2002 and 2015. Bridging the gap will depend on improving access to high-quality primary care for adults of all ages through reform of health care finance and of primary care practice.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

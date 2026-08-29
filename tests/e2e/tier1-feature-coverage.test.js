@@ -344,11 +344,11 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   describe('Feature 7: Guideline Library & COR/LOE Catalog', () => {
     const indexData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/index.json'), 'utf8'));
 
-    it('F7-T1.1: Guideline index lists exactly 108 clinical guideline datasets totaling 1010 recommendations', () => {
+    it('F7-T1.1: Guideline index lists exactly 108 clinical guideline datasets totaling 3547 recommendations', () => {
       const activeDatasets = indexData.data.filter(g => g.id !== 'landmark-trials');
       expect(activeDatasets.length).toBe(108);
       const totalRecs = activeDatasets.reduce((sum, g) => sum + g.recommendationCount, 0);
-      expect(totalRecs).toBe(1010);
+      expect(totalRecs).toBe(3547);
     });
 
     it('F7-T1.2: Every guideline in index has valid title, shortTitle, doi, and publisherUrl', () => {

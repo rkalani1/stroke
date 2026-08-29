@@ -10,12 +10,166 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The \"2025 AHA/ACC/AANP/AAPA/ABC/ACCP/ACPM/AGS/AMA/ASPC/NMA/PCNA/SGIM Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults\" retires and replaces the \"2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults.\" A comprehensive literature search was conducted from December 2023 to June 2024 to identify clinical studies, reviews, and other evidence performed on human subjects that were published since February 2015 in English from MEDLINE (through PubMed), EMBASE, the Cochrane Library, the Agency for Healthcare Research and Quality, and other selected databases relevant to this guideline.",
+      "section": "3.2.3. Secondary Forms of Hypertension",
+      "classOfRec": "I",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with resistant hypertension, screening for primary aldosteronism is recommended regardless of whether hypokalemia is present to increase rates of detection, diagnosis, and specific targeted therapy.",
+      "page": null
+    },
+    {
+      "section": "3.2.3.1. Primary Aldosteronism",
+      "classOfRec": "I",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with an indication for screening for primary aldosteronism, it is recommended to continue most antihypertensive medications (other than MRA) prior to initial screening to minimize barriers to or delays in screening.",
+      "page": null
+    },
+    {
+      "section": "5.1. Lifestyle and Psychosocial Approaches",
+      "classOfRec": "IIa",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with or without hypertension, potassium-based salt substitutes can be useful to prevent or treat elevated BP and hypertension, particularly for patients in whom salt intake is related mostly to food preparation or flavoring at home, except in the presence of CKD or use of drugs that reduce potassium excretion where additional monitoring is probably indicated.",
+      "page": null
+    },
+    {
+      "section": "5.2.2. BP Treatment Threshold and the Use of CVD Risk Estimation to Guide Drug Treatment of Hypertension",
+      "classOfRec": "I",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with hypertension without clinical CVD but with diabetes or CKD or at increased 10-year CVD risk (ie, >=7.5% based on PREVENT), initiation of medications to lower BP is recommended when average SBP is >=130 mm Hg and average DBP is >=80 mm Hg to reduce the risk of CVD events and total mortality.",
+      "page": null
+    },
+    {
+      "section": "5.2.2. BP Treatment Threshold and the Use of CVD Risk Estimation to Guide Drug Treatment of Hypertension",
+      "classOfRec": "I",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with hypertension without clinical CVD and with estimated 10-year CVD risk <7.5% based on PREVENT, initiation of medications to lower BP is recommended if average SBP remains >=130 mm Hg or average DBP remains >=80 mm Hg after a 3- to 6-month trial of lifestyle intervention to prevent target organ damage and mitigate further increases in BP.",
+      "page": null
+    },
+    {
+      "section": "5.3.1. Diabetes",
+      "classOfRec": "I",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with diabetes and hypertension, ACEi or ARB are recommended in the presence of CKD as identified by eGFR <60 mL/min/1.73 m2 or albuminuria >=30 mg/g and should be considered when mild albuminuria (<30 mg/g) is present to delay progression of diabetic kidney disease.",
+      "page": null
+    },
+    {
+      "section": "5.3.8. Hypertension Treatment in Patients With Chronic Kidney Disease",
+      "classOfRec": "I",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with hypertension and CKD as identified by eGFR <60 mL/min/1.73 m2 with albuminuria of >=30 mg/g, RAASi (either with ACEi or ARB but not both) is recommended to decrease CVD and delay progression of kidney disease.",
+      "page": null
+    },
+    {
+      "section": "5.3.9.1. Acute Intracerebral Hemorrhage",
+      "classOfRec": "IIa",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adult patients with acute spontaneous ICH who present with SBP between 150 and 220 mm Hg, it can be beneficial to immediately lower SBP to 130 to <140 mm Hg for at least 7 days after ICH to improve functional outcomes, but stop antihypertensive medications if SBP <130 mm Hg.",
+      "page": null
+    },
+    {
+      "section": "5.3.9.1. Acute Intracerebral Hemorrhage",
+      "classOfRec": "IIa",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with acute spontaneous ICH requiring acute BP lowering, careful titration to ensure smooth, nonlabile, and sustained control of BP, avoiding peaks and large variability in SBP, can be beneficial for improving functional outcomes.",
+      "page": null
+    },
+    {
+      "section": "5.3.9.2. Acute Ischemic Stroke",
+      "classOfRec": "III",
+      "classNote": "Harm — Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients undergoing successful brain reperfusion with endovascular treatment for a large vessel occlusion, lowering SBP <140 mm Hg within the first 24 to 72 hours after reperfusion can worsen long-term functional outcome.",
+      "page": null
+    },
+    {
+      "section": "5.3.9.4. Mild Cognitive Impairment and Dementia",
+      "classOfRec": "I",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with hypertension, a goal of <130 mm Hg SBP is recommended to prevent mild cognitive impairment and dementia.",
+      "page": null
+    },
+    {
+      "section": "5.5. Hypertension and Pregnancy",
+      "classOfRec": "I",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "Pregnant individuals with SBP >=160 mm Hg or DBP >=110 mm Hg confirmed on repeat measurement within 15 minutes should receive antihypertensive medication to lower BP to <160/<110 mm Hg within 30 to 60 minutes to prevent adverse events.",
+      "page": null
+    },
+    {
+      "section": "5.5. Hypertension and Pregnancy",
+      "classOfRec": "I",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "Pregnant individuals with chronic hypertension (defined as prepregnancy hypertension or SBP 140-159 mm Hg and/or DBP 90-109 mm Hg prior to 20 weeks gestation) should receive antihypertensive therapy to achieve BP <140/90 mm Hg to prevent maternal and perinatal morbidity and mortality.",
+      "page": null
+    },
+    {
+      "section": "5.5. Hypertension and Pregnancy",
+      "classOfRec": "I",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "Individuals with hypertension who are planning a pregnancy or who become pregnant should be counseled about the benefits of low-dose aspirin to reduce the risk of preeclampsia and its sequelae.",
+      "page": null
+    },
+    {
+      "section": "5.5. Hypertension and Pregnancy",
+      "classOfRec": "III",
+      "classNote": "Harm — Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "Individuals with hypertension who are planning a pregnancy or who become pregnant should not be treated with atenolol, ACEi, ARB, direct renin inhibitors, nitroprusside, or MRA to avoid fetal harm.",
+      "page": null
+    },
+    {
+      "section": "5.6. Resistant Hypertension and Renal Denervation",
+      "classOfRec": "I",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with resistant hypertension, a more detailed evaluation for secondary causes, to include careful review of all medications and removal of those with interfering effects on BP, is beneficial for lowering BP and simplifying treatment.",
+      "page": null
+    },
+    {
+      "section": "5.6. Resistant Hypertension and Renal Denervation",
+      "classOfRec": "I",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "All patients with hypertension who are being considered for RDN should be evaluated by a multidisciplinary team with expertise in resistant hypertension and RDN.",
+      "page": null
+    },
+    {
+      "section": "5.6. Resistant Hypertension and Renal Denervation",
+      "classOfRec": "I",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with hypertension for whom RDN is contemplated, the benefits of lowering BP and potential procedural risks compared with continuing medical therapy should be discussed as part of a shared decision-making process to ensure patients choose the therapy that meets their expectations.",
+      "page": null
+    },
+    {
+      "section": "6.2. Hypertensive Emergencies and Severe Hypertension for Nonpregnant and Nonstroke Patients",
+      "classOfRec": "III",
+      "classNote": "Harm — Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with severe hypertension (>180/120 mm Hg) who are hospitalized for noncardiac conditions without evidence of acute target organ damage, intermittent use of additional intravenous or oral antihypertensive medications are not recommended to acutely reduce BP.",
+      "page": null
+    },
+    {
+      "section": "5.3.8. Hypertension Treatment in Patients With Chronic Kidney Disease (superseded 2017 wording retained in Table 1 comparison column)",
+      "classOfRec": "IIa",
+      "classNote": "Ungraded",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with hypertension and CKD (stage 3 or higher or stage 1 and 2 with albuminuria >=300 mg/d, or >=300 mg/g albumin-to-creatinine ratio or the equivalent in the first morning void), treatment with an ACEi is reasonable to slow kidney disease progression.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "ACC/AHA"
 }

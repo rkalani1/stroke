@@ -9,12 +9,102 @@
   "pmid": "40401776",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: GRADE.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Multi-disciplinary, evidence-based recommendations supporting delivery of high-quality stroke-related aphasia rehabilitation, developed under ESO standard procedures and GRADE. Evidence of effective aphasia rehabilitation is emerging, yet intervention and delivery vary widely.",
+      "section": "PICO 1: Dose of speech and language therapy",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In people with aphasia post-stroke, we recommend high dose SLT interventions (>=20 hours) rather than lower dose SLT (<20 hours) should be offered.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Intensity of speech and language therapy",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In people with aphasia post-stroke, we suggest high intensity SLT (>=3 hours per week) rather than lower intensity should be offered.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Frequency of speech and language therapy",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In people with aphasia post-stroke, we suggest high frequency SLT (>=4 days per week) should be offered rather than lower frequency SLT (<4 days per week).",
+      "page": null
+    },
+    {
+      "section": "PICO 4a: Digitally-delivered versus in-person SLT",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In people with aphasia after stroke, we suggest using either in-person or digitally-delivered SLT. (Weak recommendation that digitally delivered and in-person SLT interventions lead to similar gains.)",
+      "page": null
+    },
+    {
+      "section": "PICO 4b: In-person SLT plus digital augmentation",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In people with aphasia after stroke, we suggest in-person SLT plus digital augmentation should be offered rather than usual in-person SLT.",
+      "page": null
+    },
+    {
+      "section": "PICO 5a: Group versus one-to-one SLT",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In people with aphasia post-stroke, we suggest using either one-to-one or group therapy. (Weak recommendation that one-to-one and group SLT interventions lead to similar gains.)",
+      "page": null
+    },
+    {
+      "section": "PICO 5b: One-to-one plus group SLT versus one-to-one SLT alone",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In people with aphasia post-stroke, the benefits of providing one-to-one plus group SLT compared to one-to-one SLT alone are uncertain and therefore we cannot make a recommendation. (The document records the strength of recommendation for this PICO as '-'.)",
+      "page": null
+    },
+    {
+      "section": "PICO 5b: One-to-one plus group SLT versus one-to-one SLT alone",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement (12/12, 100% of writing group members agreed): In people with aphasia following stroke where access to one-to-one therapy is constrained by resource availability, we suggest that group therapy delivered in addition to one-to-one SLT may facilitate increased therapy time, provide additional opportunities to use language in a social context and enhance communication confidence. We also suggest that the therapy timing and format should follow other recommendations in this clinical guideline, aiming to enhance language recovery, communication, participation, and quality of life.",
+      "page": null
+    },
+    {
+      "section": "PICO 6 (a)-(f): SLT plus transcranial direct current stimulation (tDCS)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In people with aphasia post-stroke, the benefits of SLT plus tDCS compared to SLT plus sham tDCS are uncertain and therefore we cannot make a recommendation. (The document records the strength of recommendation for this PICO as '-'.)",
+      "page": null
+    },
+    {
+      "section": "PICO 6 (a)-(f): SLT plus transcranial direct current stimulation (tDCS)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert consensus statement (10/12 agreed the first statement, 12/12 the remainder): In people with aphasia following stroke, we suggest that in the clinical context, SLT should be delivered alone, rather than SLT alongside tDCS. Individualised tDCS protocols for post-stroke aphasia may be beneficial, but further evidence is required. Left- or right-sided cortical or cerebellar tDCS (anodal or cathodal) should only be delivered alongside SLT in a high-quality trial context, where validated outcome measurement instruments are used, participant demographics are fully described and adverse events (even if none are observed) are reported.",
+      "page": null
+    },
+    {
+      "section": "PICO 7a: SLT individually tailored by functional relevance",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In people with aphasia post-stroke, we suggest tailored SLT by functional relevance rather than non-tailored SLT by functional relevance should be offered.",
+      "page": null
+    },
+    {
+      "section": "PICO 7b: SLT individually tailored by level of language task difficulty",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In people with aphasia post-stroke, we suggest that SLT individually-tailored by level of language task difficulty should be offered.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

@@ -10,12 +10,382 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Methods",
       "classOfRec": "Statement",
-      "classNote": "No abstract is indexed on PubMed for this document; consult the linked source for its full guidance.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Summary only — abstract not indexed; see source document.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "These recommendations were developed by consensus of a multisociety organizing committee and 3 working groups (rural, suburban, urban) convened at the Prehospital Stroke System of Care Consensus Conference held at the AHA/ASA International Stroke Conference in January 2018. A formal systematic literature search was not performed before the meeting due to the lack of high-quality evidence to guide modifications in suburban and rural environments; meta-analyses and statistical analyses were not applied to the limited available data, and a formal definition of consensus was not established a priori (formal voting on each recommendation was not held). No Class of Recommendation or Level of Evidence is assigned to any statement. These recommendations will require updating as new evidence emerges on the benefits of various transport protocols.",
+      "page": null
+    },
+    {
+      "section": "Community Classification for SSOC: Urban, Suburban, and Rural",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Three types of stroke systems of care (SSOC) are defined on the basis of Rural-Urban Commuting Area (RUCA) codes and time-based access to a stroke center capable of performing EVT. A rural SSOC modification is appropriate for a nonmetropolitan region or a metro area region designated by a RUCA code from 4 to 10 (generally <50 000 residents, limited local health care resources, few nearby ASRHs or PSCs, and often no CSC/TSC within a 60-minute ground transport time although they may be reachable by air). A suburban SSOC modification is appropriate for larger residential communities adjacent to an urban core with RUCA codes of 2 to 3 (population density closer to the urban core threshold, with access to advanced stroke centers within a 30- to 60-minute transport time by air or ground). An urban SSOC modification is appropriate for a metro region with a RUCA code of 1 (≥50 000 residents and abundant resources, with access to ≥1 CSC/TSC within a 30-minute ground transport time). These definitions are overly simplistic by design and are to be used as guiding principles rather than rigid categories.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Regional SSOC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A region-specific SSOC should be developed by all local stakeholders with consideration and integration of all regional stroke resources. Stroke advisory committees should be created and include representatives from all regional EMS services (including air medical transport), EMS medical directors, public safety answering points, hospitals of all certification levels, patient advocacy groups, professional/medical societies, and local and state governments, as well as policymakers. Destination plans should require data collection and reporting of evidence-based measures with benchmark comparisons to peer organizations and timely performance feedback; prehospital records, including National EMS Information System data elements, should be incorporated into stroke registries.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Destination Plans",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All EMS agencies providing services within the regional SSOC should be involved in the creation, administration, and auditing of compliance of the destination plan. To be effective in real-world settings, EMS agencies should implement simple and actionable destination plans based on both time and severity for patients with suspected acute ischemic stroke. Regional destination plans should consider general eligibility for IV thrombolytics and, for patients with suspected large vessel occlusion (LVO) within 24 hours of last known well, should prioritize a nearby comprehensive stroke center (CSC) over other centers of lower capability when available within acceptable transport times, expressed in both absolute terms of maximum travel time and additional interval time from the scene to all available stroke centers.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Public Education",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All members of the SSOC should be engaged in public education efforts regarding stroke risk factors, warning signs, and symptoms of a stroke (eg, Face Arm Speech Test and Balance, Eyes, Face, Arm, Speech, Time) and the importance of calling 911 for a person experiencing stroke signs and symptoms.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — 911 Stroke Screening",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Public safety answering points (eg, 911 call centers) should utilize specific screening protocols for potential stroke patients and prioritize EMS dispatch at the appropriate level for patients screening positive for acute stroke. In conjunction with EMS, public safety answering points should use quality improvement processes to review screening and dispatch for patients transported by EMS who are suspected of having a stroke and, whenever possible, review the final clinical hospital diagnoses. Call takers should have annual stroke education training requirements to maintain knowledge and proficiency.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Integration of Regional EMS Into the SSOC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "1. Stroke management protocols, and valid, evidence-based stroke screening tools and severity scales for identifying suspected acute stroke and those potentially due to LVO, should be harmonized across all first responder and EMS agencies in a given geographic region to facilitate training and communication among health care providers. Stroke severity tools require further refinement to maximize sensitivity and specificity.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Integration of Regional EMS Into the SSOC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "2. EMS agencies should ensure that stroke management education is provided at least yearly and is integrated as a core care competency for their EMS providers. This training should be developed and delivered in conjunction or consultation with the agency's stroke hospitals and local/regional EMS partners.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Integration of Regional EMS Into the SSOC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "3. All EMS agencies within a region should adopt, in conjunction with their local, regional, and state EMS and hospital stakeholders, a single, valid, evidence-based stroke screening tool and severity scale for identifying suspected acute stroke and those due to LVO.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Integration of Regional EMS Into the SSOC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "4. EMS agencies should develop and utilize, in conjunction with their local, regional, and state EMS and hospital stakeholders, stroke destination plans based on stroke hospital locations and capability, anticipated transport times, and patient acuity. The local algorithm should include consideration of air medical transport for longer transport distances.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Integration of Regional EMS Into the SSOC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "5. Regional interfacility transport agencies should be trained for the safe and rapid transport of stroke patients, including patients who received thrombolytics or who require consideration for endovascular therapy (EVT).",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Integration of Regional EMS Into the SSOC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "6. EMS agencies should develop uniform and integrated prehospital stroke notification protocols with their receiving stroke hospitals. Prehospital notification enables better preparation at the hospital and activation of parallel strategies, such as direct transport of the patient to the CT scanner by EMS on ED arrival and rapid evaluation of the patient by the emergency physician and stroke team when appropriate.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — ED Stroke Expertise",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "EMS should prioritize hospitals that have ED staff who can assess and treat patients and have immediate access to local and regional stroke expertise either onsite or via telemedicine as required, to ensure rapid IV thrombolysis administration for eligible patients.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Advanced Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with suspected LVO, rapid access to intracranial vessel imaging and interpretation should be available at most initial destination hospitals recommended in prehospital triage algorithms. In all regions, acute stroke-ready hospitals (ASRHs) and primary stroke centers (PSCs) should develop plans to implement noninvasive vessel imaging (eg, CT or magnetic resonance angiography) in selected patients, with rapid interpretation by staff onsite or via teleradiology, and these images should be made available for review by regional CSC or thrombectomy-capable stroke center (TSC) stroke team personnel, with adjunctive telemedicine if needed, to facilitate selection of patients who may be candidates for thrombectomy. The acquisition of CT or magnetic resonance perfusion imaging at ASRHs and PSCs should be considered based on individual patient characteristics or after consultation with the potential EVT receiving facility to minimize door-in-door-out (DIDO) times.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Evidence-Based Inpatient Stroke Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When options exist, prehospital destination plans and interfacility transport policies should prioritize the transport of patients to a hospital with a dedicated stroke unit for poststroke care unless compelling circumstances favor them being triaged to or remaining at a local hospital without a stroke unit. Patients who receive initial care at an ASRH or basic receiving facility that does not have a stroke unit should generally be transferred to a higher level of stroke care for admission and evaluation.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Coordinated Interfacility Transport",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When prehospital severity scores suggest the presence of an LVO, EMS personnel should alert the receiving hospital of the suspected LVO to facilitate subsequent rapid interfacility transport if the initial hospital is not EVT capable. Interfacility transport by ground or air should be rapidly available and integrated into all SSOCs, and when options exist, destination and transport policies should prioritize transport of suspected LVO patients to a hospital with well-defined evaluation and stabilization protocols to minimize DIDO times. When determining the optimal interfacility transfer destination, hospital personnel should weigh factors such as continuity of care after telestroke consultation, time to thrombectomy for potentially eligible patients, and patient preference. The transfer destination should reflect a patient-centered decision, and hospital-corporate affiliation per se should not be a driving factor in decision-making.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Rapid Access to Appropriate Level of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The regional SSOC should ensure rapid access to the appropriate level of care during both the prehospital and hospital phases. In general, when >1 stroke center is within close proximity from the scene, transport to the highest level of care is preferable, and EMS should generally transport a patient with suspected LVO to the center with the highest level of care available if within acceptable transport times from the scene, subject to certain patient characteristics (eg, refusal by an otherwise competent patient, strong patient preference, or previously expressed limitations on care that are inconsistent with performing EVT).",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Coordinated QI",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All participating prehospital agencies should engage in quality improvement programs coordinated with the SSOC as a whole, with an emphasis on dispatch, response, field triage, and transitions of care. Agencies should assess their adherence to recommended prehospital performance goals in acute stroke care.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Required Data Collection and Reporting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "States should require standardized data collection and reporting from health care entities and data sharing and transparency consistent with the exceptions to privacy laws governing routine health care operations and quality improvement. These systems should include elements from stroke detection and 911 activation through hospital discharge, and clinical outcomes should be used to assess the effectiveness of the regional SSOC. Because no randomized trial data exist to support a definitive recommendation on the acceptable additional time when considering triaging a patient with suspected LVO to a CSC, ongoing research is critical.",
+      "page": null
+    },
+    {
+      "section": "Common Principles — Quality Improvement/Performance Measures (Table 2)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Consensus-based measures for assessment of the acute phase of stroke systems of care include: 911 dispatcher use of suspected stroke algorithms; identification of suspected strokes; documentation of last known well and symptom discovery times; evaluation of blood glucose; stroke screen performed and reported using a validated tool; stroke severity score performed and reported using a validated LVO tool; advanced notification with triage findings; EMS use of the regional destination protocol; on-scene times for suspected stroke with a goal of ≤15 min; DIDO at the first hospital before transfer with a goal of ≤60 min; time from EMS first medical contact to stroke alert notification; time from EMS first medical contact to brain imaging; and time from first medical contact to first pass of the endovascular thrombectomy device.",
+      "page": null
+    },
+    {
+      "section": "Variation in Maximum Transport Times Based on Community Classification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Maximum total transport time is greatest for rural areas at 60 minutes and is progressively reduced by 15-minute increments for suburban areas to 45 minutes and urban areas to 30 minutes, to minimize the likelihood of extensive transport times in areas where locally advanced care options exist. The proposed times are meant to serve as starting points for local discussion; regional SSOC authorities may consider unique local circumstances to modify destination protocols and maximum transport times.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Rural SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "1. Rural hospitals should work with area stakeholders to develop prehospital response and destination plans with consideration for long transport times and the potential role of air medical transport. Efforts should prioritize ensuring thrombolysis within 4.5 hours from last known well is locally available for all eligible patients. For those patients with suspected LVO, efficient transport to a thrombectomy-capable center (CSC or TSC) should occur as soon as possible.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Rural SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "2. In rural communities or those where large distances separate stroke centers, patients with suspected LVO should be routed directly to a CSC if the additional transport time beyond the nearest TSC does not exceed 30 minutes and the maximum total transport time from scene to CSC does not exceed 60 minutes. If no CSC is within 60 minutes, then EMS should go directly to a TSC if the additional transport time beyond the nearest PSC or ASRH does not exceed 30 minutes and the maximum total transport time from scene to TSC does not exceed 60 minutes. If no CSC or TSC exists within 60 minutes of total travel time, then EMS should go to the nearest ASRH or PSC. If patients are medically unstable or unsafe for prolonged transport, EMS should follow local protocols to determine appropriate destinations.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Rural SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "3. When no CSC or TSC is available within 60 minutes of ground transport time, the SSOC should include air medical transport options, define maximum allowable transport times, and consider implementing advanced brain imaging options at rural community hospitals to identify eligible candidates for EVT and keep the costs and potential harms of overtriage to a minimum during interfacility transfer to a distantly located CSC or TSC. If feasible, these communities should work with surrounding area health care systems to prioritize the development of a regional TSC reachable within 60 minutes by ground transport or by air medical transport if needed.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Rural SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "4. EMS destination plans should prioritize rural hospitals (or freestanding EDs if no rural hospital is available) that have formal collaboration agreements with regional CSCs (or TSCs) for access to expert stroke consultation, often via telestroke. Written transfer agreements should be in place, and rural sites should implement quality improvement processes such as Mission: Lifeline Stroke to optimize and monitor DIDO times.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Rural SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "5. EMS providers in rural areas without access to EVT centers within a 60-minute transport time should transport suspected stroke patients to the nearest ASRH or PSC, especially for patients within the IV thrombolysis treatment window.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Rural SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All rural hospitals should have an identified regional partner for advanced stroke care and a predetermined plan for rapid escalation of care, early notification of the regional partner, and rapid interfacility transfer when needed. Algorithms should include in parallel simultaneous notification of the CSC/TSC that operates in partnership with the rural hospital and activation of the EMS agency that will provide interfacility transport. Interfacility transport should be at the level of advanced life support or higher when available. If >1 local destination option exists, EMS should preferentially transport patients to the nearest local hospital that has these protocols in place.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Rural SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "EMS should bypass a nearby rural hospital and use direct transport to access a higher level of acute care only per local EMS system acute stroke triage algorithms and restrictions on maximum allowable travel out of the service area. All rural communities should assess their local health care resources and acute stroke triage algorithms and make the modifications necessary to create a sustainable model for optimal health care outcomes that recognizes existing local constraints. Patients with suspected LVO who are beyond thrombolysis windows may require a different destination than those who are early in the ischemic window.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Rural SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "EMS destination plans should prioritize rural hospitals that identify and support internal hospital stroke resources, including a dedicated stroke coordinator, and that seek to become certified as an ASRH to track their performance on evidence-based stroke care.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Rural SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stakeholders should work with regional resources to establish rapid interfacility transport mechanisms for patients requiring EVT or a higher level of acute care. In rural areas, interfacility transfers will likely require local EMS for transport, so the impact on service should be considered. EMS providers who participate in interfacility transport of stroke patients should be trained in postthrombolysis management, and transport should occur without delay; completion of the thrombolysis infusion at the initial hospital should not delay interfacility transport in those potentially eligible for EVT except in exceptional circumstances.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Rural SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "EMS destination plans should prioritize rural hospitals that participate in a regional stroke quality improvement program. Delays to definitive care should be carefully examined, and all providers in the SSOC should provide feedback to each other about the acute stroke triage algorithms and destination plans. The process improvement should be patient centered and include all steps in the chain of acute stroke care.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Rural SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke centers in rural areas should seek to partner with their regional CSC to provide access to stroke research and quality improvement opportunities when feasible and commensurate with their capabilities.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Suburban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "1. Like all geographic regions, suburban communities should establish an SSOC to maximize treatment opportunities for patients eligible for reperfusion strategies. In suburban communities with >1 destination option, patients with suspected LVO should be routed directly to a CSC if the additional transport time past the nearest TSC does not exceed 30 minutes and the maximum total transport time from scene to CSC does not exceed 45 minutes. If no CSC is within 45 minutes, then EMS should go directly to a TSC if the additional transport time past the nearest PSC or ASRH does not exceed 30 minutes and the maximum total transport time from scene to a TSC does not exceed 45 minutes. If no CSC or TSC exists within 45 minutes of total travel time, then EMS should go to the nearest ASRH or PSC. If patients are medically unstable or unsafe for prolonged transport, EMS should follow local protocols. Triage algorithms should include in parallel simultaneous notification of a CSC/TSC that collaborates with the hospital and activation of the EMS agency that will provide interfacility transport.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Suburban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "2. All suburban hospitals should have established protocols in place to rapidly and efficiently care for stroke patients, whether or not they chose to seek certification. This should include the administration of thrombolysis when indicated and the rapid assessment and transfer of patients eligible for EVT to CSCs or TSCs when indicated if not locally available.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Suburban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "3. If the suburban hospital is a certified PSC, then it is appropriate for most stroke patients to be admitted for poststroke care. Inpatient management of some complex stroke patients may require transfer to a CSC or TSC based on the stroke type and severity and availability of specialist consultation. Protocols for rapid transfer of patients requiring a higher level of care should be established within the regional SSOC. All hospitals should participate in a national stroke quality improvement program.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Suburban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "4. Hospitals should have recurring stroke education for their staff and quality improvement programs to optimize patient care processes, especially the ability to minimize DIDO time for patients needing transfer for EVT.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Suburban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "5. EMS providers in suburban areas without access to EVT centers within 45 minutes of transport time should transport suspected stroke patients to the nearest ASRH or PSC, especially for patients within the IV thrombolysis treatment window, since many patients with suspected stroke due to LVO may not be candidates for EVT after evaluation. All suburban hospitals should have an identified regional partner for advanced stroke care and a predetermined plan for rapid escalation of care, early notification of the regional partner, and rapid interfacility transfer when needed. Algorithms should include in parallel simultaneous notification of the CSC/TSC that operates in partnership with the suburban hospital and activation of the EMS agency that will provide interfacility transport. If >1 local destination option exists, EMS should preferentially transport patients to the nearest local hospital that has these protocols in place.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Suburban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "6. EMS destination protocols should prioritize suburban hospitals that participate in a regional stroke quality improvement program. Delays to definitive care should be carefully examined, and all providers in the SSOC should provide feedback to each other about the acute stroke triage and transport process.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Suburban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "7. PSCs, TSCs, and CSCs in suburban areas should seek to partner with their regional CSC to provide access to stroke research and quality improvement opportunities when feasible and commensurate with their capabilities.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Urban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "1. EMS agencies should implement simplified and actionable destination plans that prioritize CSCs over other nearby centers for patients with suspected LVO within 24 hours of last known well.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Urban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "2. In urban communities with >1 destination option, patients with suspected LVO should be triaged directly to a CSC if the total transport time from scene to CSC does not exceed 30 minutes. If no CSC is within a 30-minute transport time, then EMS should go directly to a TSC if the total transport time from scene to a TSC does not exceed 30 minutes. If no TSC or CSC exists within a 30-minute total travel time, then EMS should go to the nearest PSC or ASRH. If patients are medically unstable or unsafe for prolonged transport, EMS should follow local protocols. Triage algorithms should include in parallel simultaneous notification of the CSC/TSC that operates in partnership with the destination hospital and activation of the EMS agency that will provide interfacility transport.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Urban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "3. Urban communities that have limited health care resources and no CSCs or TSCs within 45 minutes of the majority of scene departures should consider adopting the recommendations for suburban communities.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Urban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "4. Urban areas are often served by multiple EMS agencies and vehicles, including mobile stroke units, so the integration of all these services into a cohesive SSOC is essential. Triage algorithms and destination plans should follow patient-centric protocols and not be dictated by EMS or mobile stroke unit ownership affiliations.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Urban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "5. Urban tertiary care facilities within an SSOC should serve as a source for exporting best practices, assist referring hospitals with in-house and transfer protocols, and provide overall continuing education opportunities for regional partners.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Urban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "6. Urban tertiary care facilities within an SSOC should provide patient-specific and systems-level feedback to patient referral sites as part of ongoing quality improvement projects.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Urban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "7. Stroke experts, typically found at CSCs in urban areas, should be included in local/state departments of health and governmental organization efforts to create legislative or regulatory priorities for stroke care and the enabling regulations for tiered SSOC.",
+      "page": null
+    },
+    {
+      "section": "Specific Recommendations for Urban SSOCs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "8. PSCs, TSCs, and CSCs in urban centers should provide access to clinical trial opportunities for patients with stroke commensurate with their capabilities.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

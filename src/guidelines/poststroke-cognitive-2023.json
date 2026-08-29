@@ -9,84 +9,262 @@
   "pmid": "37125534",
   "recommendations": [
     {
-      "section": "Risk and Predictors",
+      "section": "Definitions",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "PSCI risk is higher with lobar ICH (often CAA-related), SAH complications, larger lesion burden, and markers such as WMH or atrophy.",
-      "page": 6
+      "levelOfEvidence": "Ungraded",
+      "text": "Post-stroke cognitive impairment (PSCI) refers to any severity of cognitive impairment, irrespective of cause, noted after an overt stroke; post-stroke dementia (PSD) is the end of a continuum of severity of PSCI and refers to all types of dementia after stroke. Vascular cognitive impairment (VCI) refers to cognitive impairment of any severity associated with cerebrovascular disease irrespective of the occurrence of stroke symptoms.",
+      "page": null
     },
     {
-      "section": "Screening",
+      "section": "Prevalence and incidence of post-stroke cognitive impairment",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "MoCA is generally preferred over MMSE for poststroke cognitive screening; tool choice should reflect demographics, culture, language, and stroke deficits.",
-      "page": 7
+      "levelOfEvidence": "Ungraded",
+      "text": "PSCI is most common in the first year after stroke, occurring in up to 60% of stroke survivors: about 38% have mild cognitive impairment and 7%-41% have dementia. There is substantial heterogeneity in reported prevalence, mostly explained by cohort selection criteria.",
+      "page": null
     },
     {
-      "section": "Assessment",
+      "section": "Prevalence and incidence of post-stroke cognitive impairment",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Use tailored neuropsychological evaluation when screening is inadequate or when deficits are complex or subtle.",
-      "page": 8
+      "levelOfEvidence": "Ungraded",
+      "text": "About 10% of patients have dementia before a first stroke, 10% develop new dementia soon after a first stroke, and more than a third have dementia after recurrent stroke. Stroke in Black patients results in greater cognitive decline and is more frequently associated with dementia within 5 years of ischemic stroke than in White patients, despite a younger age at incident stroke.",
+      "page": null
     },
     {
-      "section": "Screening",
+      "section": "Prevalence and incidence of post-stroke cognitive impairment",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Screen when there is cognitive complaint or clinician concern and plan longitudinal reassessment; avoid mislabeling from cultural or language bias.",
-      "page": 8
+      "levelOfEvidence": "Ungraded",
+      "text": "Both pre-stroke and post-stroke cognitive impairment and dementia are frequent after intracranial hemorrhage (ICH) and higher with lobar ICH: incidence of new-onset dementia at 1 year was 23.4% for lobar versus 9.2% for non-lobar ICH. After subarachnoid hemorrhage, impairment on global mental status testing at 3 months ranges from 26% to 43% and is 21% at 12 months.",
+      "page": null
     },
     {
-      "section": "Management",
+      "section": "Natural history of post-stroke cognitive impairment",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Aggressively manage vascular risk factors (hypertension, diabetes, lipids, smoking, sleep apnea) to reduce recurrent stroke and PSCI risk.",
-      "page": 9
+      "levelOfEvidence": "Ungraded",
+      "text": "PSCI tends to improve over time, with most recovery occurring within the first 3 to 6 months. Post-stroke dementia may be an inappropriate label for early fluctuations in cognition because improvement may occur; cognitive recovery may be limited in patients with multiple comorbidities, polypharmacy, older age, and previous cognitive decline.",
+      "page": null
     },
     {
-      "section": "Management",
+      "section": "Natural history of post-stroke cognitive impairment",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Simultaneous control of multiple vascular risks may slow cognitive decline compared with single-risk interventions.",
-      "page": 9
+      "levelOfEvidence": "Ungraded",
+      "text": "Longitudinal dementia risk varies by stroke severity: in ARIC the adjusted hazard ratio for dementia versus no stroke was 1.76 for 1 minor-to-mild stroke, 3.47 for 1 moderate-to-severe stroke, 3.48 for 2 or more minor-to-mild strokes, and 6.68 for 2 or more moderate-to-severe strokes. In the Oxford Vascular Study the 5-year cumulative incidence of new post-stroke dementia was 33.1%, with 51% diagnosed within the first year.",
+      "page": null
     },
     {
-      "section": "Therapies",
+      "section": "Delayed onset post-stroke cognitive impairment",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Acute reperfusion therapies may improve cognitive outcomes by reducing infarct size, although evidence is limited and heterogeneous.",
-      "page": 9
+      "levelOfEvidence": "Ungraded",
+      "text": "Late post-stroke dementia (onset more than three to six months after the stroke) occurs in approximately 1.7% of stroke survivors per year. One major risk factor is stroke recurrence, which may be decreased by robust secondary stroke prevention; among those without recurrent symptomatic stroke, progression of cerebral small vessel disease and covert stroke appear important, although other neurodegenerative diseases such as Alzheimer's disease also need to be considered.",
+      "page": null
     },
     {
-      "section": "Therapies",
+      "section": "Differential diagnosis",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Cholinesterase inhibitors or memantine can yield small cognitive benefits but may cause adverse effects; use selectively.",
-      "page": 10
+      "levelOfEvidence": "Ungraded",
+      "text": "The differential diagnosis of PSCI includes pre-stroke cognitive decline; co-existing age-related neuropathologies (for example Alzheimer's disease); and effects of medical conditions and complications such as metabolic abnormalities, medication side effects, infections, delirium, sleep disorders, hearing and vision impairments, and depression. Delirium is a common complication of stroke, occurring in about 25% of admitted patients, and should be differentiated from PSCI.",
+      "page": null
     },
     {
-      "section": "Therapies",
+      "section": "Symptoms and cognitive domains affected",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Emerging therapies (tDCS, rTMS, remote ischemic conditioning, acupuncture) show preliminary benefit; confirmatory studies are needed.",
-      "page": 10
+      "levelOfEvidence": "Ungraded",
+      "text": "Cognitive deficits after stroke can be global or limited to specific domains. Difficulty with executive function and attention (and in some studies memory) is common after ischemic stroke and shows the most improvement by 3-6 months, whereas impairment in the language domain does not tend to improve. Because aphasia is common after left MCA stroke and many cognitive tests depend on intact language, the severity of cognitive impairment may be overestimated in individuals with aphasia.",
+      "page": null
     },
     {
-      "section": "Systems of Care",
+      "section": "Symptoms and cognitive domains affected",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Provide interdisciplinary care and address comorbid depression, sleep disorders, and social supports that influence cognitive recovery.",
-      "page": 11
+      "levelOfEvidence": "Ungraded",
+      "text": "Involvement of strategic locations such as the left frontotemporal region, left thalamus, right parietal lobe, left angular gyrus, and left basal ganglia and surrounding white matter, as well as the left middle cerebral artery territory, has been associated with increased likelihood of PSCI. After subarachnoid hemorrhage, the highest rates of impairment are in executive function and verbal memory.",
+      "page": null
+    },
+    {
+      "section": "Pathophysiology",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "PSCI arises from stroke-related injury to the neurovascular unit, secondary neurodegeneration, and loss of structural and functional connectivity, interacting with pre-existing brain pathology.",
+      "page": null
+    },
+    {
+      "section": "Risk factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Risk of cognitive decline is determined by the stroke lesion and by cerebral vulnerability/reserve. Key risk factors are older age, pre-stroke cognitive decline, pre-existing white matter disease or neurodegeneration, diabetes, stroke severity, prior/recurrent stroke, stroke location, and acute cognitive status. Higher educational attainment and premorbid intelligence may partially mitigate risk.",
+      "page": null
+    },
+    {
+      "section": "Risk factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Risk of PSCI varies with stroke subtype (higher in hemorrhagic and cardioembolic than lacunar stroke). In ICH, lobar location carries greater risk than deep location, likely because of underlying cerebral amyloid angiopathy. In aneurysmal subarachnoid hemorrhage, delayed cerebral ischemia and chronic hydrocephalus predict PSCI. Post-stroke delirium is associated with higher risk for post-stroke dementia and lower survival; acute cognitive status is a powerful predictor.",
+      "page": null
+    },
+    {
+      "section": "Association with other post-stroke outcomes",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "PSCI is associated with other adverse outcomes including physical disability, sleep disorders, behavioral and personality changes, depression, and other neuropsychological changes, all leading to lower quality of life. Patients with PSCI may have difficulty participating in rehabilitation and experiencing its full benefit; cognitive dysfunction is not conditional on physical disability and may occur after mild stroke or TIA.",
+      "page": null
+    },
+    {
+      "section": "Screening and diagnostic modalities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is necessary to screen whenever there is a cognitive complaint or a clinician concern over cognitive ability. Clinician concern should be triggered by unexplained patient difficulties with cognitive-related activities of daily living, following clinician instructions, or providing a reliable history.",
+      "page": null
+    },
+    {
+      "section": "Screening and diagnostic modalities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is no gold standard for cognitive screening post-stroke. The MoCA is generally recommended over the MMSE, particularly in subacute phases post-stroke, as it has less of a ceiling effect and is more sensitive to mild cognitive impairment. The choice of screening tool will vary based on the psychometric properties of the test, demographic (age, sex, educational attainment), cultural and language characteristics of the patient, circumstances of test administration, and the presence of other stroke-related impairments.",
+      "page": null
+    },
+    {
+      "section": "Screening and diagnostic modalities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Tailored comprehensive neuropsychological evaluations, using appropriate normative data that consider educational attainment, age, sex, cultural and linguistic factors, and that account for stroke-related deficits, improve diagnostic accuracy and provide thorough characterization of the patient's cognitive strengths and weaknesses. Objective cognitive assessment is crucial to accurately identify cognitive dysfunction, particularly when anosognosia is present.",
+      "page": null
+    },
+    {
+      "section": "Screening and diagnostic modalities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There are potential downsides to screening, including cost and the potential to falsely label patients as cognitively impaired based on low test scores from confounding factors such as cultural bias, education bias, test anxiety, or administration in a second language; false positive diagnoses can cause harm by inducing psychological distress or reducing patient autonomy. Stroke systems of care need to be resourced to provide cognitive screening and assessment in patients at risk.",
+      "page": null
+    },
+    {
+      "section": "Management of post-stroke cognitive impairment: A. Interdisciplinary collaboration",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Interdisciplinary collaboration is essential for the optimal identification and management of PSCI, involving neurologists, gerontologists, primary care physicians, speech-language pathologists, occupational therapists, neuropsychologists, nurses, and related health professionals. Team composition should be tailored to the symptoms and needs of the individual patient; telehealth services may be a useful tool to implement a streamlined interdisciplinary model beyond the acute and subacute phases.",
+      "page": null
+    },
+    {
+      "section": "Management of post-stroke cognitive impairment: B. Cognitive rehabilitation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cognitive rehabilitation (including restorative cognitive training and functional cognitive rehabilitation) after stroke results in small improvements of cognitive functioning compared with control conditions, with immediate and sustained gains in attention, memory, executive function, and visuospatial neglect. Memory gains occur with strategy training, but attention training does not produce consistent benefits. Benefits of computerized cognitive training are inconsistent but tend to be better with clinician-directed programs.",
+      "page": null
+    },
+    {
+      "section": "Management of post-stroke cognitive impairment: C. Physical activity",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Physical activity may have a positive impact on cognitive function after stroke, with a possible advantage of aerobic compared with non-aerobic exercise. Small studies suggest cognitive benefits of specific forms of physical activity such as Tai Chi, boxing, and resistance exercises; evidence regarding the added benefit of virtual reality with physical activity is inconclusive.",
+      "page": null
+    },
+    {
+      "section": "Management of post-stroke cognitive impairment: D. Medical and pharmacological treatments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Because the risk of PSCI increases with stroke recurrence, secondary stroke prevention including antihypertensive therapy, statins, diabetes control, and anticoagulation for atrial fibrillation is an important approach to prevent the risk or worsening of PSCI. Treatments for hypertension and lifestyle programs to reach target blood pressure after stroke have so far failed to show positive impacts on cognitive function, and current evidence is insufficient to prove whether some antihypertensive drug classes are better than others at preserving cognition.",
+      "page": null
+    },
+    {
+      "section": "Management of post-stroke cognitive impairment: D. Medical and pharmacological treatments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There are no consistently positive effects of pharmaceutical agents for post-stroke cognition, although individual small studies show some benefits. Systematic reviews of dopamine agonists and selective serotonin reuptake inhibitors show no consistent beneficial effects on cognition following stroke.",
+      "page": null
+    },
+    {
+      "section": "Management of post-stroke cognitive impairment: D. Medical and pharmacological treatments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Randomized trials provide moderate quality evidence for small improvements in cognition, of uncertain clinical relevance, with donepezil, rivastigmine, galantamine, or memantine; however, they are complicated by adverse events (including dizziness and diarrhea) and patient discontinuation. More work is needed to define the safety and efficacy of these drugs after stroke.",
+      "page": null
+    },
+    {
+      "section": "Management of post-stroke cognitive impairment: D. Medical and pharmacological treatments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The few studies that evaluated cognitive outcomes following acute stroke treatments suggest that intravenous thrombolysis and mechanical thrombectomy improve cognitive outcomes compared with no treatment, but these benefits are strongly associated with functional outcome.",
+      "page": null
+    },
+    {
+      "section": "Management of post-stroke cognitive impairment: E. Emerging, complementary, and integrative treatments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Small studies have shown benefits of remote ischemic conditioning for visuospatial, attention, and executive functions and for long-term global cognition; confirmatory studies with larger samples are warranted. In a meta-analysis of 15 tDCS studies, anodal tDCS was associated with a small improvement in general cognitive and attention performance but not memory, although most studies were of lower methodological quality. Acupuncture may have a positive effect on global cognition, but most such studies were of low quality.",
+      "page": null
+    },
+    {
+      "section": "Management of post-stroke cognitive impairment: E. Emerging, complementary, and integrative treatments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Preliminary and exploratory studies suggest potential cognitive benefits from herbal treatments and vitamins including Huperzine A, depsides salts from Salvia miltiorrhiza, ginkgo biloba, pomegranate polyphenols, and Cerebralcare Granule, but no benefits from mailuoning, folic acid, or B vitamins. None of these are approved by the US Food and Drug Administration for use in post-stroke cognitive impairment.",
+      "page": null
+    },
+    {
+      "section": "Anticipatory guidance: A. Actionable Considerations for the Clinician When Cognitive Impairment is Detected on Screening",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When cognitive impairment is detected on screening, comprehensive cognitive evaluation such as a battery of standardized neuropsychological assessments can further help characterize impaired cognitive domains. Other considerations include assessing home environment safety, return to work (if applicable), driving, and caregiver fatigue, connecting patients and caregivers with community resources, and advance care planning including personal medical directives and identifying an enduring power of attorney.",
+      "page": null
+    },
+    {
+      "section": "Anticipatory guidance: B. Home Safety",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "To ensure home safety, health care providers need to assess the home environment, identify home safety issues, and provide appropriate recommendations to stroke survivors and their caregivers. Examples include providing appropriate mobility equipment, installing grab bars or raising toilet seats, and establishing a personal emergency system. Impaired cognition is associated with falls, and the majority of falls occur at home; more intensive transitional care processes may increase home safety and reduce hospital readmission.",
+      "page": null
+    },
+    {
+      "section": "Anticipatory guidance: C. Return to Work",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Deficits in global cognitive function and specifically executive function are negatively related to return to work. Lack of knowledge of, or support for, invisible deficits such as cognitive impairment deters return to work or maintaining a job; return to work may be facilitated by cognitive or vocational rehabilitation.",
+      "page": null
+    },
+    {
+      "section": "Anticipatory guidance: D. Driving",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "After a stroke, approximately one third of patients require some type of training or rehabilitation to return to driving. A systematic review of 53 studies did not find strong evidence to recommend any one cognitive assessment tool over another; better attention and executive function are most often related to return to driving. A systematic review of four randomized trials reported no improvements in on-road performance or cognitive function following a driving intervention, although driving simulations may be more effective than other training programs.",
+      "page": null
+    },
+    {
+      "section": "Conclusions and future directions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Management of PSCI requires a multi-pronged approach including evaluation and management of comorbid conditions, anticipatory guidance for matters such as home safety and driving, implementation of secondary stroke prevention strategies to minimize progression of cognitive impairment, and administration of treatments to optimize functioning and improve cognition. The implementation of protocols to systematically evaluate and treat PSCI based on locally available resources is warranted.",
+      "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

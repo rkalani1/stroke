@@ -12,10 +12,212 @@
     {
       "section": "Scope",
       "classOfRec": "Statement",
-      "classNote": "Scope summary derived from the publication abstract; this statement provides a research framework, not graded recommendations.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "(summary from PubMed abstract) This scientific statement focuses on the role of nonvascular physical and psychologic variables that affect brain health — optimal functioning of the brain across cognitive, emotional, and behavioral domains throughout life — and cognitive resilience. It provides a broad overview of influences such as chronic medical conditions, inflammation, environmental exposures, and socioeconomic drivers that affect the developing brain, along with factors including sleep quality, the gut microbiome, and mental health that contribute to neurodegeneration. It also reviews the varying strength of evidence for biologic mechanisms and mitigating strategies that may help optimize resilience, with the goal of providing a framework for future studies.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "This scientific statement focuses on the role of nonvascular physical and psychologic variables that affect brain health across the life span, providing an initial framework for future studies by highlighting the varying strength of existing evidence for biologic contributions to brain health along with potential mitigating strategies to optimize resilience. It does not assign a class of recommendation or level of evidence to any statement.",
+      "page": null
+    },
+    {
+      "section": "Stress, Depression, and Anxiety",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The primary drivers of noncommunicable physical health disorders overlap substantially with those of neurologic and mental health disorders: a Western dietary pattern, physical inactivity, smoking, excessive alcohol intake, tobacco use, substance use, poor sleep quality, social isolation, and socioeconomic disadvantage are common risk factors, and targeting these primary drivers has been shown to positively influence mental health across the life span.",
+      "page": null
+    },
+    {
+      "section": "Stress, Depression, and Anxiety",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Chronic stress-related neurobiologic changes underlying depression and anxiety lead to a higher risk of stroke and progression of cognitive decline and dementia in patients with Alzheimer disease or vascular dementia, and negative emotional states predispose to higher cardiovascular or stroke-related morbidity and mortality.",
+      "page": null
+    },
+    {
+      "section": "Stress, Depression, and Anxiety",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Timing of depression appears important to its association with dementia: depression or depressive symptoms earlier in life are associated with a 2-fold or greater increase in risk of dementia. The critical period for addressing mental health concerns may begin far earlier than initially appreciated; data show reduced gray matter volume in children who have experienced depression.",
+      "page": null
+    },
+    {
+      "section": "Stress, Depression, and Anxiety",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Likely biologic mechanisms linking depression and dementia include vascular disease, alterations in glucocorticoid steroids, hippocampal atrophy, increased deposition of beta-amyloid plaques, inflammatory changes, and deficits of nerve growth factors, with altered neuroplasticity (neuronal atrophy and synaptic loss in the medial prefrontal cortex and hippocampus) as a driving factor.",
+      "page": null
+    },
+    {
+      "section": "Stress, Depression, and Anxiety",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Chronic stress and negative emotions promote a proinflammatory state, contributing to neurodegenerative and cerebrovascular changes and accelerating biologic aging. Excessive substance use (tobacco, alcohol, illicit drugs) can directly damage brain cells and increase dementia risk through accelerated senescence, oxidative stress, altered neuroimmune function and metabolism, pathogenic tauopathy, and disruption of neuronal excitatory-inhibitory balance.",
+      "page": null
+    },
+    {
+      "section": "Stress, Depression, and Anxiety",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Because remission rates for a single treatment modality for depression and anxiety are low (30%-50%) and relapse rates high, it is imperative to develop accessible, effective treatments for depression and anxiety, as recommended by recent guidelines from the American Heart Association, American Academy of Neurology, and World Health Organization. Evidence supports both early primary and secondary intervention approaches.",
+      "page": null
+    },
+    {
+      "section": "Pollution and Environmental Exposures",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Epidemiologic studies consistently associate chronic exposure to particulate matter with a diameter of 2.5 micrometers or less (PM2.5) with increased risk of mild cognitive impairment and Alzheimer disease, potentially mediated by neuroinflammation, oxidative stress, blood-brain barrier dysfunction, vascular changes, and accumulation of amyloid and tau pathology. In meta-analysis the overall hazard ratio per 2 micrograms/m3 PM2.5 was 1.04 (95% CI, 0.99-1.09).",
+      "page": null
+    },
+    {
+      "section": "Pollution and Environmental Exposures",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Prenatal and early-life exposures to pollutants may disrupt brain development: in 6 European birth cohorts (n=9482 children), the global psychomotor development score decreased by 0.68 points (95% CI, -1.25 to -0.11) per 10 micrograms/m3 increase in NO2 during pregnancy. Prenatal exposure to polycyclic aromatic hydrocarbons and heavy metals such as lead or mercury is linked to lower IQ scores and increased risk of neurodevelopmental delay and disorder.",
+      "page": null
+    },
+    {
+      "section": "Pollution and Environmental Exposures",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Approximately 26% of disability associated with ischemic stroke in adults has been linked to air pollution, including ambient particulate matter (PM2.5) and household air pollution. Pesticides and microplastics are also independently linked to neurodegenerative disorders through oxidative stress, neuroinflammation, and disruption of the gut-brain axis.",
+      "page": null
+    },
+    {
+      "section": "Pollution and Environmental Exposures",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Recognizing that people from underrepresented racial or ethnic groups and households with incomes below the poverty level experience disproportionate exposures, policies to reduce these environmental toxins should be prioritized. Strategies to reduce exposure, including regulatory policies to lower emissions, urban planning to mitigate traffic-related pollution, and public health interventions, are needed to protect brain health across all life stages.",
+      "page": null
+    },
+    {
+      "section": "Chronic Inflammation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Chronic inflammation is a central contributor to impaired brain health across the life span. In early development, excessive or unresolved inflammation, often triggered by maternal infection or environmental insults, can disrupt synapse formation, myelination, and neuronal migration, and has been linked to increased risk for neurodevelopmental disorders including autism spectrum disorder and schizophrenia.",
+      "page": null
+    },
+    {
+      "section": "Chronic Inflammation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Chronic inflammation damages blood vessels, accelerating atherosclerosis and endothelial dysfunction and increasing the risk of myocardial infarction, stroke, and impaired brain circulation; vascular injury itself promotes inflammation, creating a feed-forward loop that contributes to accelerated brain aging. Elevated circulating inflammatory markers such as IL-6 are associated with hippocampal atrophy, reduced cognitive resilience, and accelerated decline in memory and executive function in aging populations.",
+      "page": null
+    },
+    {
+      "section": "Chronic Inflammation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Evidence-based mitigation strategies for chronic inflammation include regular physical activity, a Mediterranean-style diet, optimizing sleep, and reducing psychologic stress; these lifestyle approaches have shown consistent benefits, although optimal implementation protocols are under investigation. By contrast, anti-inflammatory and antioxidant pharmacologic therapies have shown limited benefit in humans despite strong efficacy in animal models.",
+      "page": null
+    },
+    {
+      "section": "Gut Microbiome Dysbiosis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Alterations in gut microbiota can affect cognitive performance, emotion regulation, and susceptibility to neurodegenerative diseases. Key microbial metabolites, notably short-chain fatty acids, directly modulate blood-brain barrier integrity, microglial activation, and neuroinflammatory signaling; fiber-rich diets support short-chain fatty acid production, whereas Western-style diets promote microbial dysbiosis correlating with increased intestinal permeability, systemic inflammation, and adverse cognitive outcomes.",
+      "page": null
+    },
+    {
+      "section": "Gut Microbiome Dysbiosis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The gut-brain axis exhibits particular vulnerability during early development and aging: prenatal and early postnatal establishment of the microbiome has a tremendous influence on neurodevelopment, and in older populations age-related shifts in microbiome composition reduce microbial diversity and increase gut barrier dysfunction and low-grade inflammation.",
+      "page": null
+    },
+    {
+      "section": "Gut Microbiome Dysbiosis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although strain- and dose-specific guidance for probiotics, prebiotics, and fecal microbiota transplantation is not yet sufficiently standardized to support universal recommendations, current evidence supports increasing dietary fiber through various plant-based foods, reducing ultraprocessed foods and added sugars, and including fermented foods such as yogurt, kefir, or kimchi, as these strategies are consistently associated with enhanced microbial diversity and metabolite production.",
+      "page": null
+    },
+    {
+      "section": "Poor Sleep Quality",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Inadequate sleep or poor sleep quality is associated with cognitive decline and dementia, in part through impaired removal of toxic beta-amyloid and other substances from the brain; accumulation of beta-amyloid and tau may in turn disrupt the sleep-wake cycle, leading to increased sleep fragmentation and wakefulness and decreased slow-wave sleep.",
+      "page": null
+    },
+    {
+      "section": "Poor Sleep Quality",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Medical conditions such as obstructive sleep apnea may increase the risk of cognitive decline and dementia by interfering with blood flow to the brain and patterns of brain activity that promote memory and attention. Self-reported sleep duration among adolescents has decreased over the past 2 decades and has been identified as a global public health concern.",
+      "page": null
+    },
+    {
+      "section": "Poor Sleep Quality",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Policy-level perspectives have emphasized 'sleep capital' as a key investment in brain health, cognitive resilience, and economic productivity throughout life, conceptualized as the cumulative social, economic, and health gains derived from maintaining adequate sleep and light exposure across the life span.",
+      "page": null
+    },
+    {
+      "section": "Socioeconomic Factors and Adverse Childhood Experiences",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Fewer years of formal education is linked with lower socioeconomic status, which in turn is associated with greater risk of diabetes and hypertension, both risk factors for cognitive decline and dementia. Racial inequities have been broadly linked to the global burden of stroke and cardiovascular disease and to disparities in overall brain health.",
+      "page": null
+    },
+    {
+      "section": "Socioeconomic Factors and Adverse Childhood Experiences",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Adverse childhood experiences (ACEs) - abuse, neglect, and household challenges - are experienced by many individuals (17.3% of US adults report 4 or more ACEs) and increase the risk for learning and attention difficulties in childhood as well as mental health conditions, neurovascular events, and Alzheimer and other dementias with aging, through prolonged hypothalamic-pituitary-adrenal axis activation and a 'toxic stress response.'",
+      "page": null
+    },
+    {
+      "section": "Socioeconomic Factors and Adverse Childhood Experiences",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A key goal of screening for ACEs is to identify who may be at risk of a toxic stress response, considering type, timing, and duration of adversity as well as exacerbating factors versus supports and protective factors. In addition to psychotherapy, evidence-based interventions focus on ensuring a safe, healing, and cognitively stimulating environment through interactive play, consistent reading, regular physical activity, a balanced diet, and sufficient sleep; limiting screen time, facilitating time in natural outdoor settings, and managing stress are key.",
+      "page": null
+    },
+    {
+      "section": "Early Life Infection and Chronic Medical Conditions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Chronic nonatherosclerotic cardiovascular and cerebrovascular diseases of childhood - congenital heart disease, sickle cell anemia, and cerebral arteriopathies such as moyamoya - share impaired cerebral perfusion, which disrupts normal formation of neural networks and leads to cognitive impairment. Atherosclerotic factors do not emerge as risk factors for overt stroke until young adulthood.",
+      "page": null
+    },
+    {
+      "section": "Early Life Infection and Chronic Medical Conditions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Recent advances suggest opportunities to preserve brain health in children at elevated cerebrovascular risk; in sickle cell disease, hydroxyurea protects against silent brain infarcts and helps maintain cognitive function. Major and minor infections are associated with increased risk of stroke in childhood - minor infection in the week before arterial ischemic stroke is common across stroke subtypes - and poor vaccination status is an independent predictor of childhood stroke.",
+      "page": null
+    },
+    {
+      "section": "Conclusion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We emphasize the intrinsic link between neurologic and mental health in aging and urge health care professionals, policymakers, and the general public to prioritize comprehensive strategies that safeguard and promote brain health from the prenatal period through adulthood across all communities. As a leading principle of prevention of neurodegeneration and cerebrovascular disease, we advocate for a holistic approach that integrates the biopsychosocial framework within traditional medical practice.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

@@ -9,44 +9,182 @@
   "pmid": "38752755",
   "recommendations": [
     {
-      "section": "PFO closure",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: High quality (GRADE).",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "High-quality evidence supports PFO closure plus antiplatelet therapy in selected patients aged 18-60 years in whom no other evident cause of stroke is found. The PASCAL classification can be used to select candidates; patients with both a large right-to-left shunt and an atrial septal aneurysm benefit most.",
+      "section": "PICO 1.1, 1.2 and 1.3: Diagnostic testing for a PFO-related right-to-left shunt — no evidence-based recommendation possible (Quality of evidence: Very low; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients without an obvious cause of stroke, there is continued uncertainty over the most accurate diagnostic approach for detecting any right-to-left shunt (RLS), because of the lack of a gold standard. Therefore, we are unable to offer an evidence-based recommendation.",
       "page": null
     },
     {
-      "section": "Age limits",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: Insufficient evidence.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "There is insufficient evidence for an evidence-based recommendation on PFO closure in patients older than 60 or younger than 18 years.",
+      "section": "PICO 1.1–1.3: Diagnostic approach to right-to-left shunt — Expert Consensus Statement (vote 8/9)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "As there is no technique that can be considered as a gold standard, we advise locally agreed diagnostic algorithms using the available techniques (c-TCD, c-TTE, and c-TOE) to diagnose an RLS, keeping into consideration that c-TCD is suggested when c-TTE and/or c-TOE is inconclusive.",
       "page": null
     },
     {
-      "section": "Unlikely PFO-related stroke",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: Low quality (GRADE).",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Low-quality evidence suggests against PFO closure in patients whose stroke is unlikely PFO-related by PASCAL classification, except in specific scenarios.",
+      "section": "PICO 1.1–1.3: Diagnostic approach to right-to-left shunt — Expert Consensus Statement (vote 6/9)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In light of the available data, the module working group acknowledges that TCD demonstrates superior sensitivity relative to TTE in RLS screening.",
       "page": null
     },
     {
-      "section": "Anticoagulation",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: Suggestion against.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "ESO suggests against long-term anticoagulation in PFO-associated stroke unless anticoagulation is indicated for other medical reasons.",
+      "section": "PICO 1.1–1.3: Diagnostic approach to right-to-left shunt — Expert Consensus Statement (vote 9/9)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients without an obvious cause of stroke, but with positive diagnosis of RLS on initial assessment, we suggest TOE to gain additional information about the presence and anatomy of the PFO.",
       "page": null
     },
     {
-      "section": "Diagnosis",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: Expert consensus.",
-      "levelOfEvidence": "Expert Consensus",
-      "text": "The working group notes an evidentiary gap in the diagnostic algorithm for PFO detection; transoesophageal echocardiography is conventionally held as most accurate but its 'gold standard' status is not substantiated by rigorously validated evidence.",
+      "section": "PICO 2: Percutaneous PFO closure plus antiplatelet therapy versus antiplatelet therapy alone — Evidence-based recommendation",
+      "classOfRec": "Strong",
+      "classNote": "For intervention (↑↑)",
+      "levelOfEvidence": "High certainty",
+      "text": "In patients aged 18–60 years in whom no other evident cause of stroke is found but a PFO (i.e. PFO-associated stroke), we recommend PFO closure in selected patients, in addition to antiplatelet therapy (please see below for details).",
+      "page": null
+    },
+    {
+      "section": "PICO 2: PFO closure in possible or probable PFO-related stroke (PASCAL classification) — Evidence-based recommendation",
+      "classOfRec": "Strong",
+      "classNote": "For intervention (↑↑)",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In patients aged 18–60 years with possible or probable PFO-related stroke according to the PASCAL classification, we recommend PFO closure in addition to antiplatelet therapy.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: PFO closure in unlikely PFO-related stroke (PASCAL classification) — Evidence-based recommendation",
+      "classOfRec": "Conditional",
+      "classNote": "Against intervention (↓?)",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients aged 18–60 years with unlikely PFO-related stroke according to the PASCAL classification, we suggest against PFO closure unless there is a high probability of clinical causality.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: PFO closure in patients older than 60 years — Expert Consensus Statement (vote 8/9)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We encourage the inclusion of patients older than 60 years old with stroke and PFO in randomised trials whenever possible, or at least in a registry. If this is not possible, the majority of the module working group members suggest using the PASCAL Classification System and clinical judgement to guide therapy.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: PFO closure in patients aged 13–17 years — Expert Consensus Statement (vote 9/9)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest PFO closure in selected patients aged between 13 and 17 with PFO-related stroke according to PFO anatomy.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: PFO closure despite an unlikely PASCAL classification — Expert Consensus Statement (vote 7/9)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients aged 18–60 years with unlikely PFO-related stroke according to the PASCAL classification, a majority of module working group members suggest PFO closure in various combinations of the following situations, which suggest a high probability of clinical causality: non-cerebral embolism, deep venous thrombosis and/or pulmonary embolism close to index stroke, pulmonary arterial hypertension, history of sleep apnoea or other hypoxaemic conditions associated with PFO, Valsalva at stroke onset, migraine aura, recent history of prolonged immobility, recent airline travel, presence of venous thrombophilia, decompressive illness in divers, platypnea-orthodeoxia syndrome, or a Eustachian valve or other anatomical features on echocardiography to enhance the risk of paradoxical embolism.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: PFO closure plus antiplatelet therapy versus oral anticoagulants — Evidence-based recommendation",
+      "classOfRec": "Conditional",
+      "classNote": "For intervention (↑?)",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients aged 18–60 years old with possible or probable PFO-related stroke according to the PASCAL classification, there is continued uncertainty regarding the risks and benefits of long-term anticoagulation versus PFO closure. Nonetheless, we suggest PFO closure in addition to antiplatelet therapy instead of long-term oral anticoagulants alone, based on (1) the cumulative risk of major bleedings associated with long-term anticoagulation and (2) superiority of PFO closure over antithrombotic therapy demonstrated in the pivotal RCTs.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Oral anticoagulation versus antiplatelet therapy — no evidence-based recommendation possible (Quality of evidence: Low; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "There is continued uncertainty over the risks and benefits of the use of anticoagulation versus antiplatelet therapy in patients in whom no other evident cause of stroke is found but a PFO (i.e. PFO-associated stroke).",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Antithrombotic therapy in patients who refuse PFO closure — Expert Consensus Statement (vote 9/9)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In light of the results of the meta-analyses including both randomised trials and observational studies, the majority of this panel suggest an individualised approach to the choice of antithrombotic therapy for patients with PFO-related stroke who refuse PFO closure. The choice of anticoagulation over antiplatelet therapy should balance the expected lower risk of PFO-related stroke recurrence with a possible increase in the long-term risk of major bleeding and take into account the patient's preference.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Dual versus single antiplatelet therapy after percutaneous PFO closure — Evidence-based recommendation",
+      "classOfRec": "Conditional",
+      "classNote": "Against intervention (↓?) — as printed in Table 12; the intervention under test is ongoing dual antiplatelet therapy, and the statement endorses DAPT followed by a switch to single antiplatelet therapy",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients undergoing PFO closure we suggest dual antiplatelet therapy followed by single antiplatelet therapy to reduce the risk of recurrent stroke, based on the protocol of available RCTs (please see the Expert consensus statement for details).",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Duration of single antiplatelet therapy after PFO closure — no evidence-based recommendation possible (Quality of evidence: Very low; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "No evidence-based recommendation can be formulated regarding the duration of the single antiplatelet treatment.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Antiplatelet regimen after PFO closure — Expert Consensus Statement (vote 9/9)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with PFO-related stroke who underwent percutaneous closure, according to the protocol design of the majority of positive randomised controlled trials this panel suggests prescribing a dual antiplatelet therapy for 1–6 months and to continue a single antiplatelet therapy in the long term, for at least 5 years after percutaneous closure.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Prolonged cardiac monitoring after percutaneous PFO closure — no evidence-based recommendation possible (Quality of evidence: Very low; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients aged 18–60 years in whom no other evident cause of stroke is found but a PFO, there is continued uncertainty over the risks and benefits of the use of long-term cardiac monitoring (i.e. implantable loop recorder) to increase the detection of subclinical AF.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Cardiac monitoring before PFO closure — Expert Consensus Statement (vote 8/9)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In line with the ESO guidelines on screening for AF after cryptogenic stroke, this panel suggests that in patients aged 18–60 years in whom no other evident cause of stroke is found but a PFO (i.e. PFO-associated stroke), a basic cardiac monitoring during 24 h by telemetry or Holter-ECG should be performed before closure.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Implantable loop recorder in patients older than 60 years — Expert Consensus Statement (vote 7/9)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In line with the ESO guidelines on screening for atrial fibrillation after cryptogenic stroke, we suggest using an implantable loop recorder (ILR) to detect paroxysmal AF in patients with cryptogenic stroke and PFO older than 60 years.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Continuation of loop recorder monitoring — Expert Consensus Statement (vote 8/9)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that patients that have been implanted a loop recorder before PFO closure continue monitoring AF until the end-of-life of the recorder.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Loop recorder after recurrent stroke following PFO closure — Expert Consensus Statement (vote 8/9)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We advise in favour of a systematic use of an implantable loop recorder (ILR) in patients with recurrent stroke after PFO closure, negative short-term ECG monitoring and no other obvious causes for recurrence, regardless of age.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Routine monitoring device implantation after PFO closure — Expert Consensus Statement (vote 8/9)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We advise against systematic implantation of monitoring devices after PFO closure.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

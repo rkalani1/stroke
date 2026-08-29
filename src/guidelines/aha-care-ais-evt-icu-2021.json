@@ -18,10 +18,276 @@
     {
       "section": "Scope",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Ischemic stroke remains the fifth leading cause of death in the United States. Nurses play a pivotal role in the care of patients throughout the continuum. With the advances in stroke care, including mechanical thrombectomy, the American Heart Association/American Stroke Association charged the writing panel to complement the 2009 clinical practice guideline, \"Comprehensive Overview of Nursing and Interdisciplinary Care of the Acute Ischemic Stroke Patient,\" with current evidence-based nursing care.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "This scientific statement updates the 2009 AHA comprehensive nursing care statement for the endovascular and ICU/postinterventional phase of acute ischemic stroke care. It is an AHA scientific statement and assigns no class of recommendation or level of evidence to its own statements; where it reproduces Class/LOE (eg, the reprinted blood pressure management table, COR IIb, LOE C-EO), those grades belong to the 2019 AHA/ASA acute ischemic stroke guideline, not to this document. The Class I through IV designations appearing in Table 1 are Mallampati airway classes, and ASA I through VI in Table 2 are American Society of Anesthesiologists physical status classes; neither is a class of recommendation.",
+      "page": null
+    },
+    {
+      "section": "Endovascular Nursing Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with disabling symptoms attributable to large vessel occlusion are at high risk for neurological deterioration, airway compromise, and hemodynamic complications. During mechanical thrombectomy the interventional nurse plays a key role in prevention, early identification, and monitoring of signs of decline; administration of procedural medications; procedural documentation; and preprocedural/postprocedural transition-of-care communication with emergency departments, transferring organizations, and ICU staff.",
+      "page": null
+    },
+    {
+      "section": "Preprocedural Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Before the start of the procedure, at a minimum, the nurse verifies provider documentation of the patient's history and physical examination, an airway assessment predicting ease of endotracheal intubation using a Mallampati score, and determination of the American Society of Anesthesiologists physical status classification to predict anesthetic and surgical risk. Informed consent for the procedure should be obtained if required.",
+      "page": null
+    },
+    {
+      "section": "Preprocedural Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Recognition of patients who may require more aggressive airway management is critical before the procedure: patients with decreased mental status, posterior circulation involvement, high NIHSS score, or major comorbid cardiopulmonary disease are more likely to require extra support and intubation.",
+      "page": null
+    },
+    {
+      "section": "Preprocedural Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients undergoing mechanical thrombectomy under moderate sedation, it is reasonable to provide supplemental oxygen to maintain oxygen saturation >94%; however, there are no data to show a benefit in patients with stroke who are not hypoxic.",
+      "page": null
+    },
+    {
+      "section": "Preprocedural Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although no single evidence-based standard for frequency of vital signs and neurological assessments exists, it is reasonable to assess at least every 30 to 60 minutes before the mechanical thrombectomy procedure, or more frequently when intravenous thrombolytics are administered. An NIHSS score is documented before thrombectomy and should be completed at hand-off communication with the transferring department.",
+      "page": null
+    },
+    {
+      "section": "Preprocedural Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Before the procedure it is reasonable for nurses to perform and document a limited baseline assessment of the patient's level of arousal, cranial nerves, motor and sensory response, and coordination, plus a baseline neurovascular assessment of the extremities (pulses distal to the anticipated arterial access site, capillary refill, skin color, temperature). For a transradial approach the Allen or Barbeau test is most commonly used as a baseline assessment of the radial artery. Abnormalities identified preprocedurally are relayed to the physician before the procedure.",
+      "page": null
+    },
+    {
+      "section": "Periprocedural Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Universal protocol, or time-out, is completed and documented according to organizational policy immediately before mechanical thrombectomy. Periprocedural monitoring includes electrocardiographic rhythm, pulse, blood pressure, respiratory rate, pulse oximetry, end-tidal carbon dioxide by capnography, pain level, anxiety level, and level of consciousness; vital signs and level of consciousness are assessed every 5 minutes during the procedure.",
+      "page": null
+    },
+    {
+      "section": "Periprocedural Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Blood pressure management during thrombectomy entails maintaining sufficient cerebral perfusion pressure to collaterals supplying the ischemic penumbra while mitigating the risk of intracerebral hemorrhage from excessive hypertension, especially once the cerebral artery is recanalized; hypotension may lead to failure of collateral perfusion and extension of infarct. The optimal range of blood pressure for the best outcomes is not known, and no studies have addressed the treatment of low blood pressure in patients with stroke.",
+      "page": null
+    },
+    {
+      "section": "Periprocedural Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients for whom mechanical thrombectomy is planned who have not received intravenous thrombolytics, it is reasonable to maintain blood pressure <185/110 mm Hg before the procedure; for patients who received intravenous thrombolytics before thrombectomy, the goal is <180 mm Hg systolic (per the 2019 AHA/ASA guideline). Options for treating hypertension include labetalol, nicardipine, or clevidipine.",
+      "page": null
+    },
+    {
+      "section": "Periprocedural Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In thrombectomy procedures without anesthesia providers present, the sedation nurse may administer procedural sedation under the direction of a practitioner privileged in sedation and monitors the patient per American Society of Anesthesiologists recommendations. Reversal medications for opioid and benzodiazepine medications should be readily available in the procedure room, and nurses administering sedation and analgesia should be experienced and certified in advanced cardiac life support and airway management.",
+      "page": null
+    },
+    {
+      "section": "Periprocedural Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Emergency equipment should be kept in the endovascular suite or at a central location in the event of unforeseen complications such as cardiac arrest or vessel perforation resulting in acute hemorrhage; airway equipment including suction with tubing and oral and nasal airways should be immediately available. Nursing staff should be knowledgeable in caring for patients with neurological emergencies such as increased intracranial pressure, external ventricular drainage, and blood pressure management.",
+      "page": null
+    },
+    {
+      "section": "Postprocedural Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Current evidence supports completing a repeat neurological assessment immediately after the procedure. If the patient received intravenous thrombolytics, it is reasonable for vital sign and neurological monitoring after thrombectomy to follow the same manufacturer's guidelines for intravenous thrombolytic therapy: every 15 minutes for 2 hours, every 30 minutes for 6 hours, and every hour for 16 hours. Because standardization decreases errors, even if thrombolytics were not given it is reasonable for the nurse to restart monitoring vital signs and neurological status every 15 minutes for 2 hours, every 30 minutes for 6 hours, and every hour thereafter according to current ICU standards of care.",
+      "page": null
+    },
+    {
+      "section": "Postprocedural Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "If manual pressure is used to achieve hemostasis, compression should be for 15 to 20 minutes for a femoral artery approach and 10 minutes for a transradial artery approach. When a compression band is used for a transradial approach, nurses must follow the manufacturer's recommendation for release of pressure. Sheath removal time and time of hemostasis should be documented in the medical record.",
+      "page": null
+    },
+    {
+      "section": "Postprocedural Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nurses monitor for access complications such as arterial spasm, pain, swelling, bruising, erythema, bleeding, hematoma, pulsatile mass, and drainage from the puncture site, and assess the affected extremity for neurovascular compromise. Best practice is for extremity assessments to be completed and documented every 15 minutes for 1 hour, every 30 minutes for 1 hour, and every hour for 4 hours, continuing seamlessly on transfer.",
+      "page": null
+    },
+    {
+      "section": "Complications: Mechanical Thrombectomy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Reported procedure-related complication rates in trials varied between 4% and 29%, and in prospective studies and registries between 7% and 31%. Device-related complications include vasospasm, arterial perforation and dissection, and device detachment or misplacement during the procedure. Intraprocedural vessel perforation or dissection can result in subarachnoid hemorrhage, made worse by recent thrombolytic or prior antithrombotic therapy. Embolization to a new or target vessel territory may extend the stroke territory, and hemorrhage may occur secondary to thrombectomy or postoperatively as late as 72 hours or more.",
+      "page": null
+    },
+    {
+      "section": "Complications: Postprocedural",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Access-site complications include vessel or nerve injury, hemorrhage (including retroperitoneal), pseudoaneurysm, arterial closure device failure, distal embolization causing limb ischemia, localized infection, and ecchymosis. Radial artery occlusion occurs in 1% to 10% and can be asymptomatic because of collateral ulnar circulation, spontaneously recanalizing in 2 to 3 days.",
+      "page": null
+    },
+    {
+      "section": "Complications: Postprocedural",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke programs should have standardized nursing assessments after the procedure to assess improvement or decline in patient condition, including complications, and standardized practitioner alert processes and methods to handle patient deterioration. Although some complications may not be preventable, complications may be minimized with early detection and appropriate management.",
+      "page": null
+    },
+    {
+      "section": "Complications After Intravenous Thrombolytic Intervention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The most frequent complications after intravenous thrombolytic therapy are intracranial hemorrhage, systemic hemorrhage, and angioedema. Intracranial hemorrhage is separated into symptomatic and asymptomatic on the basis of clinical deterioration with an increased NIHSS score between 2 and 4 points in the first 36 to 48 hours after intravenous thrombolytic therapy. In the NINDS trial symptomatic hemorrhage occurred in 6.4% of thrombolytic-treated versus 0.6% of placebo-treated patients treated within 3 hours; in ECASS III it occurred in 2.4% versus 0.2%. Patients with symptomatic intracerebral hemorrhage may have mortality up to 83%.",
+      "page": null
+    },
+    {
+      "section": "Complications After Intravenous Thrombolytic Intervention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Risk factors for symptomatic intracranial hemorrhage include older age, greater stroke severity, higher baseline glucose, hypertension, congestive heart failure, renal impairment, diabetes, ischemic heart disease, atrial fibrillation, baseline antiplatelet/anticoagulant use, lower platelet counts, preexisting leukoaraiosis, chronic white matter disease, early ischemic changes on imaging, and microhemorrhages on MRI.",
+      "page": null
+    },
+    {
+      "section": "Complications After Intravenous Thrombolytic Intervention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The NINDS trials found that serious systemic hemorrhage occurred in approximately 1.6% of patients treated with intravenous recombinant tissue plasminogen activator. Major systemic bleeding complications after intravenous thrombolytic therapy are retroperitoneal, genitourinary, and gastrointestinal hemorrhages; minor bleeding complications such as oozing from gums and venipuncture sites, hematuria, and hemoptysis may also occur.",
+      "page": null
+    },
+    {
+      "section": "Complications After Intravenous Thrombolytic Intervention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Post-intravenous thrombolysis orolingual angioedema is noted in 1.3% to 5.1% of patients and can be unilateral or bilateral; when unilateral, tongue swelling is generally contralateral to the affected hemisphere. Risk increases with use of angiotensin-converting enzyme inhibitors and with frontal, insular strokes. Initial treatment has not been determined; nursing staff may anticipate standard treatment for anaphylaxis, including corticosteroids, antihistamines, and possible intubation.",
+      "page": null
+    },
+    {
+      "section": "ICU Nursing Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Because the patient with acute ischemic stroke treated with intravenous thrombolysis with or without thrombectomy is particularly vulnerable to complications leading to secondary brain injury, this population usually requires intensive monitoring. Nursing care strategies for the ICU include individualizing patient care, maintaining hemodynamic stability to optimize cerebral perfusion, and using neuroprotective practices to minimize the risk of reperfusion injury. ICU nurses should anticipate hand-off communication containing presenting symptoms, area of infarct, intervention, postintervention NIHSS score, time of hemostasis of the access point, and plan of care.",
+      "page": null
+    },
+    {
+      "section": "ICU Nursing Care: Airway Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Considerations for endotracheal intubation include reduced level of consciousness, signs of increased intracranial pressure, respiratory failure, seizures, and cerebral and pulmonary edema; preserved consciousness with weakened oropharyngeal function, slurred or slow speech, and inability to manage secretions are reasonable indicators for intubation. Assessment for angioedema continues in the ICU.",
+      "page": null
+    },
+    {
+      "section": "ICU Nursing Care: Airway Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Oxygen concentrations should be maintained at >94%; routine use of oxygen therapy is not supported, as there is no benefit to supplemental oxygen in patients who are not hypoxic. Patients with acute ischemic stroke should have nothing by mouth until an effective swallow is confirmed with an evidence-based swallow screening tool. Although current clinical practice guidelines found no evidence to support a flat-lying head-of-bed position, others recommend head of bed elevation between 15 and 30 degrees to prevent airway obstruction or aspiration, with the degree determined by the care team.",
+      "page": null
+    },
+    {
+      "section": "ICU Nursing Care: Hemodynamic Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hemodynamic goals after intravenous thrombolysis and thrombectomy should be individualized based on the degree of revascularization, collateral blood flow, extent of infarction on postprocedural imaging, and risk of hemorrhagic transformation; parameters should be identified by the practitioner and documented in the medical record. Avoiding extremes in blood pressure in the initial 24 hours after stroke onset is best practice. Cardiac monitoring is indicated at minimum for the first 24 hours after stroke and may be extended to assess for dysrhythmias such as atrial fibrillation.",
+      "page": null
+    },
+    {
+      "section": "ICU Nursing Care: Neurological Assessment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Few experimental studies have evaluated monitoring frequency in acute ischemic stroke; monitoring should be guided by the risk for complications. Nurses should incorporate conservative measures to minimize causes of increased intracranial pressure - avoiding straining with coughing, suctioning, or bowel movement, reducing excessive environmental stimuli, and clustering nursing activities. Any change in neurological assessment justifies notification of the provider and probable emergent noncontrast CT or MRI of the head.",
+      "page": null
+    },
+    {
+      "section": "Supportive Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Both fever and extremes in glycemic control are associated with worse outcomes after stroke. First-line therapy for fever is antipyretic medications, with cooling devices considered for refractory fevers; evaluation of fever should include a workup for infectious and noninfectious sources, and a central fever should remain a diagnosis of exclusion. There is no good evidence that induced therapeutic hypothermia is of benefit in the acute ischemic stroke population.",
+      "page": null
+    },
+    {
+      "section": "Supportive Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is prudent for nurses to maintain glucose in the range of 140 to 180 mg/dL, and to avoid and immediately treat hypoglycemia (<60 mg/dL). Patients with acute ischemic stroke are also at risk for skin breakdown from immobility and bowel and bladder dysfunction and should undergo comprehensive skin assessment, be repositioned frequently, and be placed on a pressure-relieving mattress.",
+      "page": null
+    },
+    {
+      "section": "Venous Thromboembolism Prophylaxis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Venous thromboembolism is one of the leading causes of morbidity and mortality after acute stroke, with risk elevated in the first 120 days; predisposing factors include immobility, hemiparesis, and advanced age. Patients with acute ischemic stroke without venous thromboembolism prophylaxis have a 75% chance of developing venous thromboembolism (deep vein thrombosis or pulmonary embolism), and an earlier study found the chance of developing pulmonary embolism as high as 20% in hemiplegic patients.",
+      "page": null
+    },
+    {
+      "section": "Venous Thromboembolism Prophylaxis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Prophylaxis with unfractionated heparin or a low-molecular-weight heparin in combination with intermittent pneumatic compression has been shown to prevent venous thromboembolism more successfully in patients with acute stroke, provided that no hemorrhagic complication is present. VTE prophylaxis should be initiated as soon as possible; dual pharmacological and mechanical therapy is recommended, and intermittent pneumatic compression is strongly recommended for patients with limited mobility.",
+      "page": null
+    },
+    {
+      "section": "Venous Thromboembolism Prophylaxis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Early mobilization is an effective prevention strategy for patients with stroke, although its timing is not well established, and the type and amount of mobilization vary with stroke severity and whether the patient received thrombolysis. If a thrombolytic is given, clinical guidelines recommend delaying early mobilization for 24 hours to enhance reperfusion.",
+      "page": null
+    },
+    {
+      "section": "Early Enteral Nutrition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Malnutrition is an independent predictor of morbidity and mortality after stroke, with prevalence ranging from 6.1% to 62%. All patients with an acute stroke should have a swallowing screen before any intake of food, medication, and fluids. If the swallowing screen on admission reveals difficulty swallowing, a complete swallowing assessment should be performed by a speech and language specialist within 24 to 72 hours of admission, and an assessment of nutrition requirements by a dietitian is also required. To prevent undernourishment, a decision should be made with the patient or family for enteral feeding within the first 72 hours of admission.",
+      "page": null
+    },
+    {
+      "section": "Goals of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Early communication with the patient and family by the care team is essential to understand goals of care, and early palliative care consultation can likely decrease patient suffering by concentrating on holistic patient care. All health care providers should consider incorporating palliative care early during the stroke admission as routine care and not solely for life-limiting illness.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

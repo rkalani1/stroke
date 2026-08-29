@@ -10,12 +10,182 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Background",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Antibodies directed at the amyloid-β peptide offer the prospect of disease-modifying therapy for early-stage Alzheimer disease but also carry the risk of brain edema or bleeding events, collectively designated amyloid-related imaging abnormalities.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Three anti-amyloid-beta monoclonal antibodies are FDA-approved for treatment of mild cognitive impairment or mild dementia attributable to Alzheimer disease. ARIA-E and ARIA-H events were associated with drug treatment in each of the phase 3 studies, indicating a class effect. ARIA-E was detected in 35% of participants who received high-dose aducanumab, 12.6% who received lecanemab, and 24% who received donanemab; the corresponding figures for ARIA-H were 28%, 17.3%, and 31.4%. A subset of approximately 1% to 2% of treated individuals had ARIA-E classified as a severe adverse event, and approximately 0.5% had intracerebral hemorrhage greater than 1 cm in diameter.",
+      "page": null
+    },
+    {
+      "section": "Background",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Reported risk factors for ARIA-E are recent initiation of immunotherapy (most ARIA occurs within approximately 13 weeks of initiation), APOE genotype (greater number of APOE epsilon-4 alleles), baseline presence of hemorrhagic lesions (microbleeds or cortical superficial siderosis), greater baseline amyloid PET burden, higher baseline mean arterial blood pressure, and baseline absence of antihypertensive use.",
+      "page": null
+    },
+    {
+      "section": "Background",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The appearance of vasogenic edema and hemorrhagic lesions in ARIA closely resembles that of cerebral amyloid angiopathy (CAA)-related inflammation, suggesting a close relationship between the 2 syndromes and supporting a model for ARIA based on binding of administered antibodies to the vascular amyloid-beta deposits that comprise CAA.",
+      "page": null
+    },
+    {
+      "section": "Considerations for Immunotherapy Candidates With Evidence of Preexisting Cerebrovascular Disease - Evidence of CAA",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The clinical trials for aducanumab, lecanemab, and donanemab excluded individuals with more than 4 cerebral microbleeds, past intracerebral hemorrhage, or at least 1 (aducanumab and lecanemab) or more than 1 (donanemab) foci of cortical superficial siderosis. The FDA labels for aducanumab and lecanemab recommend caution in treating individuals outside these parameters, and published Appropriate Use Recommendations recommend that such individuals be excluded from immunotherapy treatment.",
+      "page": null
+    },
+    {
+      "section": "Considerations for Immunotherapy Candidates With Evidence of Preexisting Cerebrovascular Disease - Evidence of CAA",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Microbleed count depends on the sensitivity of the T2*-weighted MRI method, with greater numbers of lesions detected using higher-sensitivity techniques such as susceptibility-weighted imaging or higher (3 to 7 T) field strength; this must be considered in practice. There are no data on whether more recently identified nonhemorrhagic MRI markers of CAA, such as severe centrum semiovale perivascular spaces or multispot white matter hyperintensities, are also associated with increased ARIA risk.",
+      "page": null
+    },
+    {
+      "section": "Considerations for Immunotherapy Candidates With Evidence of Preexisting Cerebrovascular Disease - Evidence of CAA",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The FDA labels advise considering testing for APOE epsilon-4 status to inform the risk of developing ARIA, and Appropriate Use Recommendations recommend APOE genotyping.",
+      "page": null
+    },
+    {
+      "section": "Considerations for Immunotherapy Candidates With Evidence of Preexisting Cerebrovascular Disease - Evidence of Ischemic Lesions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Individuals with past ischemic stroke or severe white matter hyperintensities were excluded from immunotherapy trials. This exclusion is not thought to be attributable to ARIA risk but rather to the possibility that these individuals' cognitive impairment had a substantial vascular component, limiting their potential benefit from amyloid-beta removal. Appropriate Use Recommendations exclude patients with more than 2 lacunar infarcts or stroke involving a major vascular territory, and severe (Fazekas grade 3) white matter hyperintensities.",
+      "page": null
+    },
+    {
+      "section": "Considerations for Immunotherapy Candidates With Indications for Anticoagulant, Antiplatelet, or Thrombolytic Agents",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Analysis of individuals receiving concomitant lecanemab and anticoagulation reported symptomatic intracerebral hemorrhage in 2 of 83 (2.4%) in the phase 3 randomized study and 4 of 139 (2.9%) in the phase 3 plus open-label extension. FDA labels advise additional caution in use of concomitant antithrombotic agents, and Appropriate Use Recommendations have recommended against concomitant use of anticoagulants until more data demonstrating safety are available.",
+      "page": null
+    },
+    {
+      "section": "Considerations for Immunotherapy Candidates With Indications for Anticoagulant, Antiplatelet, or Thrombolytic Agents",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Antiplatelet monotherapy appears to be reasonably well tolerated with immunotherapy; lecanemab clinical trial data suggest no excess risk of ARIA when antiplatelet therapy is combined with antiamyloid therapy. Immunotherapy trial data are not available regarding dual antiplatelet therapy, which in patients with cardiovascular or cerebrovascular disease appears to increase risk for intracranial hemorrhage approximately 1.4-fold.",
+      "page": null
+    },
+    {
+      "section": "Considerations for Immunotherapy Candidates With Indications for Anticoagulant, Antiplatelet, or Thrombolytic Agents",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The Appropriate Use Recommendation for lecanemab recommends against use of thrombolytics until further data demonstrate safety. Fatal multifocal intracerebral hemorrhages have been reported in 1 lecanemab-treated patient after intravenous alteplase and 1 donanemab-treated patient after tenecteplase.",
+      "page": null
+    },
+    {
+      "section": "Considerations for Immunotherapy Candidates With Indications for Anticoagulant, Antiplatelet, or Thrombolytic Agents",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In stroke care practice it will be important to consider the possibility that acute ARIA-related symptoms might appear as a stroke mimic requiring urgent MRI for correct diagnosis, particularly in the context of ARIA risk factors such as APOE epsilon-4/epsilon-4 genotype or recent initiation of immunotherapy. Advance care planning discussions between the patient and physician regarding the patient's preference are an additional practical step in anticipation of unexpected events.",
+      "page": null
+    },
+    {
+      "section": "Considerations for Immunotherapy Candidates With Indications for Anticoagulant, Antiplatelet, or Thrombolytic Agents",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Mechanical thrombectomy performed without thrombolytic administration for large-vessel occlusion does not appear to increase risk for symptomatic intracerebral hemorrhage even in the presence of cerebral microbleeds and is therefore likely a safe option to be considered when evaluating possible acute stroke in patients receiving immunotherapy. These considerations and methods for identifying individuals being treated with amyloid immunotherapy should be disseminated across the acute stroke team.",
+      "page": null
+    },
+    {
+      "section": "Considerations for Treating and Preventing Incident ARIA",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "FDA recommendations for management of ARIA are to suspend dosing for moderate to severe ARIA-E or ARIA-H MRI findings (a hyperintense lesion at least 5 cm in greatest dimension or multiple hyperintense foci, at least 5 new cerebral microbleeds, or at least 2 new foci of cortical superficial siderosis), moderate to severe ARIA-E clinical symptoms sufficient to affect daily activities, or any symptomatic ARIA-H including all intracerebral hemorrhages, and to base the decision to resume dosing on resolution of imaging findings and symptoms and on clinical judgment.",
+      "page": null
+    },
+    {
+      "section": "Considerations for Treating and Preventing Incident ARIA",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The Appropriate Use Recommendations suggest the additional option of anti-inflammatory treatment such as corticosteroids. Retrospective data in CAA-related inflammation (most commonly intravenous methylprednisolone 1 g daily for 3 to 5 days, then oral prednisone 60 mg daily tapered to discontinuation over several months) offer some support for high-dose steroid treatment for severe ARIA-E, with the caveat that results from the spontaneous syndrome may not fully generalize to the iatrogenic one.",
+      "page": null
+    },
+    {
+      "section": "Considerations for Treating and Preventing Incident ARIA",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For care of patients with ARIA-H presenting as symptomatic intracerebral hemorrhage, there is no reason to deviate from existing intracerebral hemorrhage guidelines. Evacuation of the types of lobar intracerebral hemorrhage that are often related to CAA does not appear to carry increased risk of surgical complication.",
+      "page": null
+    },
+    {
+      "section": "Conclusions and Future Steps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "ARIA is a common effect of amyloid-beta immunotherapy. Whereas ARIA is often asymptomatic, it is symptomatic in a substantial subset of patients, and occasionally is associated with irreversible brain injury or neurologic impairment. Knowledge about potential presenting symptoms, including headache, altered mental status, partial or generalized seizures, and focal neurologic deficits, is potentially relevant to all clinicians providing care for patients with stroke.",
+      "page": null
+    },
+    {
+      "section": "Conclusions and Future Steps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is solid evidence that ARIA risk can be stratified by presence of CAA markers, such as cerebral microbleeds, cortical superficial siderosis, and APOE genotype. Detection of these markers therefore provides a good basis for personalized decision-making that incorporates the risk of severe ARIA along with the individual's projected benefits from immunotherapy.",
+      "page": null
+    },
+    {
+      "section": "Conclusions and Future Steps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Limited data indicating associations of higher baseline blood pressure and absence of antihypertensive medication use with increased risk of donanemab-related ARIA-E support close adherence to guidelines for detection and treatment of hypertension for patients treated with immunotherapy.",
+      "page": null
+    },
+    {
+      "section": "Conclusions and Future Steps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Anticoagulation likely increases the risk of severe ARIA in the form of symptomatic intracerebral hemorrhage. Personalized decision-making for patients with coexisting early Alzheimer disease and nonvalvular atrial fibrillation (with elevated CHA2DS2-VASc score) requires incorporating this risk, the individual's projected benefit of immunotherapy, and the American Heart Association Class I recommendations favoring anticoagulation for primary and secondary stroke prevention.",
+      "page": null
+    },
+    {
+      "section": "Conclusions and Future Steps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Limited data are available to guide individual-level decisions regarding thrombolysis, but dictate vigilant scrutiny for ARIA as the potential cause of stroke-like symptoms. Review of recent monitoring MRIs and performance of immediate MRI are reasonable approaches to identifying the presence of ARIA and its possible presentation as an acute stroke mimic. Pending further data demonstrating the safety of thrombolysis in this setting, treating clinicians might reasonably consider a high level of caution or avoidance of thrombolytic use in patients receiving immunotherapy. Mechanical thrombectomy without thrombolytics for patients with established clinical indications is likely safe and should be performed.",
+      "page": null
+    },
+    {
+      "section": "Conclusions and Future Steps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Treatment of symptomatic or radiographically advanced ARIA centers on suspending immunotherapy and considering lessons from the response of CAA-related inflammation to anti-inflammatory treatment.",
+      "page": null
+    },
+    {
+      "section": "Conclusions and Future Steps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Optimizing the benefit-to-risk tradeoff of amyloid-beta immunotherapy for Alzheimer disease will require better predictors of severe or life-threatening ARIA, mechanism-based prevention and treatment strategies, and delineation of the decision tipping point for determining when benefit outweighs risk; real-world data collection, such as through the ALZ-NET registry required by the Centers for Medicare & Medicaid Services, will advance this.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "advisory",
+  "gradingSystem": "ungraded"
 }

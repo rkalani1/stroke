@@ -10,12 +10,382 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Definitions",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Acute atrial fibrillation is defined as atrial fibrillation detected in the setting of acute care or acute illness; atrial fibrillation may be detected or managed for the first time during acute hospitalization for another condition. Atrial fibrillation after cardiothoracic surgery is a distinct type of acute atrial fibrillation. Acute atrial fibrillation is associated with high risk of long-term atrial fibrillation recurrence, warranting clinical attention during acute hospitalization and over long-term follow-up.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Acute AF is defined as AF detected in an acute care setting or during an acute illness. The writing group chose to move away from the term secondary AF because it is often unclear whether AF detected in acute care settings is truly secondary to the acute issue and would not have otherwise arisen; AF might have been present before the acute illness but not previously diagnosed or detected. The acute AF may be paroxysmal or persistent, and symptomatic or asymptomatically detected on rhythm monitoring or ECG.",
+      "page": null
+    },
+    {
+      "section": "Scope of the Issue and Public Health Significance",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In medical patients, the incidence of acute AF ranges from 1% to 46% across different patient cohorts. In patients with sepsis the incidence varies with severity: 8% to 10% in sepsis, 6% to 22% in severe sepsis, and 23% to 44% in septic shock. Acute AF is associated with longer length of hospitalization, greater morbidity and mortality, and high rates of recurrent AF.",
+      "page": null
+    },
+    {
+      "section": "Scope of the Issue and Public Health Significance",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Depending on the type of noncardiac surgery, 3% to 16% of patients develop acute AF. Postoperative AF after cardiac surgery affects approximately 32% of patients after coronary artery bypass grafting, 49% after concomitant coronary artery bypass grafting and aortic valve replacement, and 64% after coronary artery bypass grafting and mitral valve replacement. Regardless of the hospitalization setting, acute AF is not benign.",
+      "page": null
+    },
+    {
+      "section": "Substrates and Triggers of Acute AF",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Substrates for acute AF pertain to atrial scars or electrical or structural remodeling arising from chronic processes (valvular heart disease, cardiomyopathy, long-standing hypertension, chronic kidney disease, atrial myopathy), prior cardiac or thoracic surgeries, or existing pulmonary disease; additional substrates include the pericardial fat pad and pulmonary vein automaticity. Triggers include inflammation, local mechanical stress, oxidative stress, electrolyte imbalance, and shifts in autonomic tone, with sources including infection, pericardial effusion, long procedural time, hemodynamic shifts, volume loss or overload, pulmonary complications, and medications including inotropic agents.",
+      "page": null
+    },
+    {
+      "section": "Detection of Acute AF",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Continuity of electrocardiographic monitoring during the hospital stay influences the detection of acute AF, with continuous monitoring with telemetry being more likely to detect acute AF compared with episodic ECG. Of the patient-based risk scores evaluated (CHA2DS2-VASc, ATRIA, HATCH, and POAF), the CHA2DS2-VASc score has been studied most extensively and has outperformed the HATCH or the POAF score in the setting of cardiac surgery. Patients at higher risk for acute AF may benefit from increased intensity of electrocardiographic monitoring during hospitalization.",
+      "page": null
+    },
+    {
+      "section": "Acute Management - Overview",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Principal goals of management of AF occurring during acute hospitalization are optimization of hemodynamics, alleviation of patient symptoms, and reduction of short- and long-term risks of thromboembolism. Key dimensions of acute management include identification and treatment of triggers, selection and implementation of rate/rhythm control, and management of anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "Acute Management - Acute Triggers: Identification and Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A priority in the management of acute AF is the identification and treatment of potential triggers because rate and rhythm control may be less likely to succeed until the acute illness improves. Identification and management of triggers would benefit from multidisciplinary partnership with the care teams managing the patient's acute hospitalized conditions.",
+      "page": null
+    },
+    {
+      "section": "Acute Management - AF Management: Acute Rate and Rhythm Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Because acute AF may spontaneously convert to sinus rhythm, an initial rate control and delayed cardioversion wait-and-see approach may be reasonable for hemodynamically stable asymptomatic patients with acute AF while acute triggers are being aggressively treated. In hemodynamically unstable patients, immediate electrical cardioversion is the treatment of choice.",
+      "page": null
+    },
+    {
+      "section": "Acute Management - Acute Rate Control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Target heart rate for optimal rate control in the setting of acute AF has not been established. A heart rate below 110 bpm may be reasonable to permit some leniency while balancing diastolic filling. Recent guidelines recommend a stricter target of a resting heart rate below 80 bpm for patients with deterioration of left ventricular function, symptoms, concomitant cardiac resynchronization therapy, or tachycardia-mediated cardiomyopathy. In the specific context of AF after cardiac surgery, rate control targeting heart rate below 100 bpm is reasonable for asymptomatic patients.",
+      "page": null
+    },
+    {
+      "section": "Acute Management - Acute Rhythm Control",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In hemodynamically unstable patients, immediate electrical cardioversion with direct current cardioversion is the treatment of choice. In hemodynamically stable patients intolerant of atrioventricular dyssynchrony, acute rhythm control can be achieved either with electrical cardioversion or pharmacologically. Rhythm control should also be considered for patients unable to attain clinically adequate rate control despite optimal use of atrioventricular node-blocking agents and identification and management of acute triggers.",
+      "page": null
+    },
+    {
+      "section": "Acute Management - Antiarrhythmic Medications for Acute Pharmacological Cardioversion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Ibutilide, dofetilide, flecainide, propafenone, amiodarone, procainamide, and vernakalant (not FDA approved in the United States) are used for acute pharmacological cardioversion, typically with a more gradual time course with amiodarone or dofetilide. Ibutilide can be a reasonable choice for patients unable to receive anesthesia in the absence of existing QT prolongation, with torsade de pointes the most important concern. For patients able to take oral medications and without underlying structural heart disease, either propafenone or flecainide oral bolus is an option. While using intravenous procainamide, the patient needs to be closely monitored for hypotension, QT prolongation, and proarrhythmia.",
+      "page": null
+    },
+    {
+      "section": "Acute Management - Electrical Cardioversion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Electrical cardioversion is safe, rapid, and more effective than pharmacological cardioversion alone, with the tradeoff of the need for sedation. Efficacy can be improved by use of biphasic energy and upfront high fixed energy instead of a strategy of energy escalation. When energy output is not high or when the AF is of longer duration, the anterior-posterior electrode orientation may be more effective. In patients with obesity, the use of paddles, manual pressure augmentation, and further escalation of electrical energy improved success.",
+      "page": null
+    },
+    {
+      "section": "Acute Management - Monitoring During and After Cardioversion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cardioversion with either an electrical or a pharmacological approach warrants electrocardiographic, hemodynamic, and oximetry monitoring during and after cardioversion. Postcardioversion monitoring for pharmacological cardioversion is recommended for a duration of time equal to half of the therapeutic half-life of the medication. In patients who receive ibutilide, close monitoring is required with a defibrillator readily available for 4 hours or until the QT normalizes.",
+      "page": null
+    },
+    {
+      "section": "Acute Management - Anticoagulation During Acute Hospitalization: General Considerations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A decision to initiate anticoagulation needs to balance the risk of thromboembolism against the risk of bleeding and should involve shared decision-making with the patient. General considerations are based on substrates, with a CHA2DS2-VASc score of 2 or greater for men or 3 or greater for women as an accepted indication for anticoagulation in the absence of contraindications and significant bleeding risks. In the setting of acute illness, the potential prothrombotic and coagulopathic milieu and periprocedural hemostasis may also need to be considered.",
+      "page": null
+    },
+    {
+      "section": "Acute Management - Thromboembolic Risks of Acute Cardioversion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The prior concept that it is safe to cardiovert without further assessment or anticoagulation if AF duration has been no more than 48 hours has been challenged; time to cardioversion of 12 hours or more is an independent predictor of thromboembolic complications, and thromboembolic risks increase with increasing CHA2DS2-VASc score even when reported AF duration is no more than 48 hours. When early cardioversion is planned, in the absence of 3 weeks of precardioversion anticoagulation with ascertainment of strict compliance, a transesophageal echocardiogram to exclude existing intracardiac thrombus before cardioversion is recommended by current guidelines.",
+      "page": null
+    },
+    {
+      "section": "Acute Management - Thromboembolic Risks of Acute Cardioversion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "After cardioversion, uninterrupted anticoagulation is recommended for 4 weeks, the putative period for recovery of mechanical atrial systole. Only in patients with CHA2DS2-VASc of 0 in men or 1 in women with very low associated thromboembolic risks may omission of uninterrupted postcardioversion anticoagulation be considered. If interruption of anticoagulation is anticipated in a hemodynamically stable patient with acute AF, a focus on rate control first and deferring cardioversion may be preferable.",
+      "page": null
+    },
+    {
+      "section": "Acute Management - Options for Anticoagulation During Acute Hospitalization",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Given rapid time to therapeutic efficacy and ease of continuation, direct oral anticoagulants have been recommended for thromboembolic prophylaxis, including in the setting of cardioversion for AF, barring contraindications. Strategies to manage potential bleeding and availability of and access to reversal or mitigating agents should also be part of the consideration in deciding on the choice of anticoagulant.",
+      "page": null
+    },
+    {
+      "section": "Acute Management Considerations in Specific Settings - Emergency Department",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Emergency presentation of hemodynamically unstable acute AF is managed with immediate direct current cardioversion. Initiation of anticoagulation in the ED is safe. Considerations for anticoagulation include substrate-based assessment for thromboembolic risk (such as the CHA2DS2-VASc score) and assessment of active bleeding risks or contraindications. Evaluation of an anticipated need for interruption of anticoagulation may also influence candidacy for acute cardioversion in hemodynamically stable patients.",
+      "page": null
+    },
+    {
+      "section": "Acute Management Considerations in Specific Settings - Critically Ill Patients",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Aggressive management of acute illnesses and prompt treatment of triggers remain the cornerstone of acute AF management in critically ill patients. It may be appropriate to wait to directly treat the acute AF until further treatment of the acute illness if the rapid heart rate is a compensatory mechanism for the critical illness. In patients whose acute AF is causing hemodynamic compromise, immediate direct current cardioversion is the strategy of choice. Electrical cardioversion may be successful, but early relapse is common in patients who remain acutely ill.",
+      "page": null
+    },
+    {
+      "section": "Acute Management Considerations in Specific Settings - Critically Ill Patients",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Critically ill patients with new-onset AF have a more than 2-fold higher risk of in-hospital ischemic stroke compared with those without AF. In patients with sepsis, however, CHA2DS2-VASc alone poorly predicts the risk for ischemic stroke. Parenteral anticoagulation in patients with acute AF and sepsis did not reduce risks for ischemic stroke and was associated with increased clinically significant bleeding in one study. Available evidence does not favor routine acute anticoagulation in patients with sepsis with acute AF.",
+      "page": null
+    },
+    {
+      "section": "Acute Management Considerations in Specific Settings - Coronavirus Disease 2019",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Similar to critical illness in general, AF in the setting of COVID-19 is related to disease severity. Preadmission oral anticoagulation in patients with preexisting AF with COVID-19 was associated with a lower likelihood of adverse events during the hospitalization. Whether the propensity for thrombosis or benefits of anticoagulation remain applicable to subsequent variants or to vaccinated individuals needs to be further assessed.",
+      "page": null
+    },
+    {
+      "section": "Acute Management Considerations in Specific Settings - Hyperthyroidism",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Goals for management of acute AF in the setting of hyperthyroidism include efforts to restore the euthyroid state and, if feasible, beta-blockade for rate control. Hyperthyroidism is not included in the risk stratification scheme for thromboembolism in patients with AF; anticoagulation for patients with thyrotoxicosis and AF is guided by CHA2DS2-VASc risk factors. Recent data noted increased risks of ischemic stroke and systemic embolism in patients with AF with hyperthyroidism in the first year of AF diagnosis, with a reduction of that increased risk with treatment of the hyperthyroidism.",
+      "page": null
+    },
+    {
+      "section": "Acute Management Considerations in Specific Settings - Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A subset of AF can manifest in temporal proximity to stroke events, and sometimes first diagnosis of AF may occur in close temporal proximity to incident stroke, posing implications for clinical management and the timing of anticoagulation. Approximately 6.5% to 15% of strokes occur in hospitalized patients, and stroke is more common in the perioperative setting and in patients with high-risk conditions such as acute coronary syndromes or prothrombotic states. Strokes associated with AF more commonly involve the middle cerebral artery territories and may be amenable to mechanical thrombectomy.",
+      "page": null
+    },
+    {
+      "section": "Acute Management Considerations in Specific Settings - Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In general, the risk of early re-embolization is low. Urgent anticoagulation with the goal of preventing early recurrent stroke or preventing neurological deterioration is not recommended. Because of the low risk of early recurrent stroke and the risk of worsening hemorrhagic transformation, it is reasonable to delay oral anticoagulation for 4 to 14 days among those with acute ischemic stroke in the setting of AF.",
+      "page": null
+    },
+    {
+      "section": "Acute Management Considerations in Specific Settings - Noncardiac Surgery",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The treatment of AF after noncardiac surgery should include the identification and correction of potential triggers, with particular importance on the exclusion of bleeding, which would preclude initiation of anticoagulation necessary for a rhythm control strategy. Given that AF after noncardiac surgery frequently spontaneously reverts to sinus rhythm, it may be reasonable to treat with a rate control strategy when the tachycardia is not a compensatory response for acute volume loss and underlying triggers have been identified and aggressively treated. A rhythm control strategy may be considered for selected patients who remain symptomatic despite rate control or in whom rapid restoration of sinus rhythm may be preferred given comorbidities such as heart failure or severe ischemia.",
+      "page": null
+    },
+    {
+      "section": "Acute Management Considerations in Specific Settings - Cardiac Surgery: Prophylaxis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Beta-blockade and amiodarone are currently the agents of choice for pharmacological prophylaxis for postoperative AF in the setting of cardiac surgery. Recent comprehensive guidelines noted data for colchicine as prophylaxis not to be robust. The PALACS study found posterior left pericardiotomy to be associated with a reduction in the incidence of postoperative AF in selected patients undergoing coronary bypass or aortic valve or aortic surgery without significantly added risks.",
+      "page": null
+    },
+    {
+      "section": "Acute Management Considerations in Specific Settings - Cardiac Surgery: Acute Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Treating hemodynamically stable, asymptomatic acute AF after cardiac surgery with rate control as the initial strategy is reasonable, given the similar length of hospitalization, morbidities, and mortality with a rate control target below 100 bpm or rhythm maintenance with amiodarone. When acute pharmacological cardioversion is considered, ibutilide and vernakalant have demonstrated specific efficacy in acute pharmacological cardioversion of AF after cardiac surgery. Patients who develop atrial arrhythmias after surgical ablation would benefit from a heart team approach with close collaboration of the cardiac electrophysiologist and the operating surgeon.",
+      "page": null
+    },
+    {
+      "section": "Acute Management Considerations in Specific Settings - Cardiac Surgery: Anticoagulation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Data related to anticoagulation for AF after cardiac surgery are limited, and balancing the risk of stroke against the risk of major bleeding in this postsurgical population is key. In the absence of data from dedicated randomized controlled trials, the Cardiothoracic Surgical Trials Network protocol (anticoagulation if patients remained in AF or had recurrent AF 48 hours after randomization, warfarin targeting an international normalized ratio of 2 to 3, continued for 60 days) has frequently been extrapolated for clinical care. For patients after surgical ablation for AF, the current guideline recommends oral anticoagulation as soon as feasible while balancing the risk of postoperative bleeding.",
+      "page": null
+    },
+    {
+      "section": "Acute Management Considerations in Specific Settings - Cardiac Surgery: Anticoagulation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "LAAOS III demonstrated that concomitant left atrial appendage occlusion performed during cardiac surgery in patients with prior AF and a high CHA2DS2-VASc score (mean 4.2) who continued long-term oral anticoagulation significantly reduced stroke and systemic embolism over 3.8 years of follow-up (4.8% in the occlusion group versus 7.0% in the no-occlusion group; hazard ratio 0.67 [95% CI, 0.53-0.85]; P=0.001). Given the potential for incomplete ligation, management of postoperative AF in patients with reported left atrial appendage closure should include formal evaluation of the left atrial appendage with transesophageal echocardiogram or computed tomography to assess adequacy of closure.",
+      "page": null
+    },
+    {
+      "section": "Acute Management Considerations in Specific Settings - Atrial Flutter",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Management of atrial flutter in the acute care setting follows the same principles as AF management. Often, atrial flutter is more difficult than AF to rate control medically, necessitating cardioversion. The same principles concerning precardioversion and postcardioversion anticoagulation apply. For medical cardioversion of atrial flutter, ibutilide and dofetilide have been shown to be more effective than the class I medications or intravenous amiodarone; class I medications can slow the flutter cycle length, resulting in rapid ventricular rates from 1:1 atrioventricular conduction if conversion is not achieved.",
+      "page": null
+    },
+    {
+      "section": "Longer-Term Management - Acute AF Recurs Long Term",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with acute AF have high rates of AF recurrence long term. The 5-year AF recurrence rates were 42% to 68% in patients with acute AF in the setting of acute medical illness, 39% after noncardiac surgery, and 32% to 76% after cardiac surgery, with higher detection of recurrence in studies using continuous heart rhythm monitoring.",
+      "page": null
+    },
+    {
+      "section": "Longer-Term Management - Long-Term Follow-Up Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Given the notable long-term AF recurrence, patients with acute AF warrant long-term outpatient follow-up evaluation and management. Clinical follow-up evaluation with the cardiovascular specialist should include assessment of family history, associated conditions and risk factors, structural heart disease, thromboembolic risk, and symptoms.",
+      "page": null
+    },
+    {
+      "section": "Longer-Term Management - Options and Strategies for Heart Rhythm Monitoring",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the absence of randomized controlled trials of monitoring strategies specific to acute AF, the writing group suggests shared decision-making with consideration of patient substrate for AF and thromboembolic risks in the selection of the monitoring strategy. Given the high risk for AF recurrence, patients with acute AF with a CHA2DS2-VASc score of 2 or greater for men or 3 or greater for women may warrant longer duration of monitoring, and consideration of a longer-term continuous monitoring strategy may be reasonable.",
+      "page": null
+    },
+    {
+      "section": "Longer-Term Management - Considerations for Long-Term Anticoagulation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Given the high rates of long-term AF recurrence after acute AF episodes, barring significant contraindications, initiation of long-term anticoagulation according to the patient's stroke risk similar to the general approach for long-term anticoagulation in patients with AF may be reasonable. Current guidelines recommend long-term anticoagulation for patients with a CHA2DS2-VASc score of 2 or greater for men or 3 or greater for women, with preference for a direct oral anticoagulant over a vitamin K antagonist. For patients who have undergone cardioversion as part of the management of acute AF, anticoagulation should not be interrupted during the 4 weeks after cardioversion due to concerns for thromboembolism and atrial stunning. Decisions beyond those 4 weeks should be guided by substrate; in patients with high thromboembolic risk, continuation of anticoagulation, barring contraindications, may be reasonable because acute AF may be a manifestation of previously undiagnosed and likely recurrent AF.",
+      "page": null
+    },
+    {
+      "section": "Longer-Term Management - Considerations for Long-Term Anticoagulation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with acute AF after cardiac surgery, long-term anticoagulation may be considered according to the anticipated net benefit and informed patient preference. For patients who underwent surgical AF ablation, oral anticoagulation as soon as feasible during hospitalization and long-term anticoagulation based on CHA2DS2-VASc score are recommended. In patients who developed acute AF after noncardiac surgery, registry data suggest that initiation of oral anticoagulation within 30 days after discharge was associated with a reduced risk of thromboembolic events.",
+      "page": null
+    },
+    {
+      "section": "Longer-Term Management - Longer-Term Rhythm Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Long-term rhythm management should be individualized as part of a shared decision plan with each patient. Several randomized trials have shown that AF ablation is more effective at maintaining long-term sinus rhythm compared with medical therapy, and mortality benefit with AF ablation has been observed in patients with heart failure; in applicable patients, ablation may be considered as an early management strategy at experienced centers.",
+      "page": null
+    },
+    {
+      "section": "Longer-Term Management - Longer-Term Adjunct Risk Factor Evaluation and Modifications",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Obesity, obstructive sleep apnea, hypertension, diabetes, physical inactivity, and alcohol abuse have been shown to be risk factors for AF. Intensive weight loss, comprehensive risk factor modification, and aerobic exercise training have been demonstrated to reduce AF burden and improve quality of life. Aggressive risk factor modification and lifestyle interventions should be pursued for all patients with acute AF, in tandem with long-term AF management strategies.",
+      "page": null
+    },
+    {
+      "section": "Implications for Clinical Practice - 10 Key Takeaways",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Acute AF is defined as AF detected in the setting of acute care or acute illness; this includes AF occurring during acute hospitalization. Acute AF may be detected or managed for the first time during acute hospitalization for another condition.",
+      "page": null
+    },
+    {
+      "section": "Implications for Clinical Practice - 10 Key Takeaways",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Acute AF is associated with high risk of long-term AF recurrence, warranting clinical attention during acute hospitalization, at transition of care, and over long-term follow-up.",
+      "page": null
+    },
+    {
+      "section": "Implications for Clinical Practice - 10 Key Takeaways",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A framework of substrates and triggers can be useful for the evaluation and management of AF occurring during acute hospitalization. AF after cardiac surgery is a distinct type of acute AF.",
+      "page": null
+    },
+    {
+      "section": "Implications for Clinical Practice - 10 Key Takeaways",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Acute management of AF occurring during hospitalization requires a multipronged approach. Key components of acute management include identification and treatment of triggers, selection and implementation of rate/rhythm control, and management of anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "Implications for Clinical Practice - 10 Key Takeaways",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Acute rate or rhythm control strategy should be individualized with consideration of the patient's capacity to tolerate the potential rapid rates or atrioventricular dyssynchrony, as well as the patient's ability to tolerate the risk of either the rate or rhythm control strategy.",
+      "page": null
+    },
+    {
+      "section": "Implications for Clinical Practice - 10 Key Takeaways",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In hemodynamically unstable patients, immediate electrical cardioversion with direct current cardioversion is the treatment of choice. Rhythm control should also be considered for patients unable to attain clinically adequate rate control despite optimal use of atrioventricular nodal blocking agents and management of acute triggers. Electrical cardioversion is the most effective method to achieve acute rhythm control. Hemodynamic monitoring and considerations for thromboembolic prophylaxis are warranted for both electrical and pharmacological cardioversion.",
+      "page": null
+    },
+    {
+      "section": "Implications for Clinical Practice - 10 Key Takeaways",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Indication for anticoagulation is based on substrate, with feasibility and timing for anticoagulation based on the patient's bleeding risk and contextual considerations of the acute conditions.",
+      "page": null
+    },
+    {
+      "section": "Implications for Clinical Practice - 10 Key Takeaways",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Given the high risks of AF recurrence in patients with acute AF, clinical follow-up and extended heart rhythm monitoring are warranted to tailor longer-term management. Management of AF and modifications targeting the substrate should be instituted. Long-term management will be heavily tied to the substrate, guiding follow-up, long-term heart rhythm monitoring, and considerations for rhythm management strategies.",
+      "page": null
+    },
+    {
+      "section": "Implications for Clinical Practice - 10 Key Takeaways",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Overall management of acute AF addresses substrates and triggers. The 3As of acute management are acute triggers, AF rate/rhythm management, and anticoagulation. The 2As and 2Ms of long-term management are AF rate/rhythm management, anticoagulation, monitoring of heart rhythm, and modification of lifestyle and risk factors.",
+      "page": null
+    },
+    {
+      "section": "Implications for Clinical Practice - 10 Key Takeaways",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with acute AF benefit from close interdisciplinary care collaborations, allowing appropriate treatments tailored to the patient's underlying substrates and acute conditions.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

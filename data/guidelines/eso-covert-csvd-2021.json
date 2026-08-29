@@ -10,12 +10,126 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "'Covert' cerebral small vessel disease (ccSVD) is common on neuroimaging in persons without overt neurological manifestations, and increases the risk of future stroke, cognitive impairment, dependency, and death. These European Stroke Organisation (ESO) guidelines provide evidence-based recommendations to assist with clinical decisions about management of ccSVD, specifically white matter hyperintensities and lacunes, to prevent adverse clinical outcomes.",
+      "section": "PICO 1: Antihypertensive treatment in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members suggest that: BP should be appropriately monitored and well controlled. Provided that BP is well controlled we cannot advise any specific antihypertensive treatment.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Antihypertensive treatment in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Most group members suggest that: For ccSVD patients, there is currently insufficient evidence to systematically advocate targeting BP levels lower than standard targets, although more intensive BP lowering than conventional BP lowering guidelines is associated with slower progression of WMH burden.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Antihypertensive treatment in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members suggest that: In ccSVD patients in whom more intensive BP lowering targets are recommended for other reasons there is no strong evidence to suggest that this could be harmful.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Antihypertensive treatment in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "On current evidence the guideline group unanimously does not support systematic BP lowering in normotensive ccSVD patients.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Antiplatelet treatment in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "Most group members agreed that: We advise against use of antiplatelet drugs to prevent clinical outcomes in subjects with ccSVD when no other indication for this treatment exists.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Antiplatelet treatment in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "Most group members agreed that: With current available knowledge, the use of antiplatelet drugs to prevent progression of cerebral SVD may be harmful in older patients (from around >=70 years of age) if no other indication for this treatment exists.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Lipid lowering treatment in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "The group members were narrowly in favour that: Lipid lowering with statins could be considered in patients with ccSVD, even when no other indication for statin treatment exists, with the aim of delaying the progression of ccSVD, although the clinical implications of this delayed progression remain to be proven.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Lifestyle interventions in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members suggest that: There is no direct evidence to suggest that any specific lifestyle interventions prevent clinical outcomes in patients with ccSVD.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Lifestyle interventions in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members suggest that: However it is reasonable to promote healthy lifestyle interventions as recommended in primary prevention for vascular disease (including but not limited to maintaining healthy body weight, promoting exercise, avoiding smoking and excess alcohol, eating a healthy, balanced diet) in patients with ccSVD.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Glucose lowering therapy in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members agree that in prediabetes or diabetic patients with ccSVD: Glycaemic level should be appropriately monitored so as to be controlled according to the standards of medical care.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Glucose lowering therapy in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members agree that in prediabetes or diabetic patients with ccSVD: We cannot advise any specific agent for obtaining appropriate glycaemic control.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Glucose lowering therapy in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members agree that in prediabetes or diabetic patients with ccSVD: There is currently insufficient evidence to recommend targeting a specific glucose or HbA1c level distinct from the standard targets.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Glucose lowering therapy in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members agree that in prediabetes or diabetic patients with ccSVD: There is no evidence to support any therapeutic intervention to reduce the normal glucose level.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Conventional anti-dementia drugs in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "Most group members suggest that: Considering the current lack of evidence for cholinesterase inhibitors and memantine in patients with ccSVD, and the small effects, at most, in patients with VCI or vascular dementia, we advise against prescribing these anti-dementia drugs in patients with ccSVD to prevent or reduce cognitive decline.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Conventional anti-dementia drugs in covert cerebral small vessel disease",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All group members suggest that: There is insufficient evidence for the use of any other anti-dementia drugs in patients with ccSVD to prevent or reduce cognitive decline.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

@@ -10,12 +10,1558 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The \"2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation\" provides recommendations to guide clinicians in the treatment of patients with atrial fibrillation.",
+      "section": "2.5 Address Health Inequities and Barriers to AF Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Patients with AF, regardless of sex and gender diversity, race and ethnicity, or adverse social determinants of health (SDOH), should be equitably offered guideline-directed stroke risk reduction therapies as well as rate or rhythm control strategies and LRFM as indicated to improve quality of life (QOL) and prevent adverse outcomes.",
+      "page": null
+    },
+    {
+      "section": "3 SDM in AF Management",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF, the use of evidence-based decision aids might be useful to guide stroke reduction therapy treatment decisions throughout the disease course to improve engagement, decisional quality, and patient satisfaction.",
+      "page": null
+    },
+    {
+      "section": "4.2.1 Basic Clinical Evaluation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with newly diagnosed AF, a transthoracic echocardiogram to assess cardiac structure, laboratory testing to include a complete blood count, metabolic panel, and thyroid function, and when clinical suspicion exists, targeted testing to assess for other medical conditions associated with AF are recommended to determine stroke and bleeding risk factors, as well as underlying conditions that will guide further management.",
+      "page": null
+    },
+    {
+      "section": "4.2.1 Basic Clinical Evaluation",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with newly diagnosed AF, protocolized testing for ischemia, acute coronary syndrome (ACS), and pulmonary embolism (PE) should not routinely be performed to assess the etiology of AF unless there are additional signs or symptoms to indicate those disorders.",
+      "page": null
+    },
+    {
+      "section": "4.2.2 Rhythm Monitoring Tools and Methods",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Among individuals without a known history of AF, it is recommended that an initial AF diagnosis be made by a clinician using visual interpretation of the electrocardiographic signals, regardless of the type of rhythm or monitoring device.",
+      "page": null
+    },
+    {
+      "section": "4.2.2 Rhythm Monitoring Tools and Methods",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with an intracardiac rhythm device capable of a diagnosis of AF, such as from an atrial pacemaker lead, a diagnosis of AF should only be made after it is visually confirmed by reviewing intracardiac tracings to exclude signal artifacts and other arrhythmias.",
+      "page": null
+    },
+    {
+      "section": "4.2.2 Rhythm Monitoring Tools and Methods",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "For patients who have had a systemic thromboembolic event without a known history of AF and in whom maximum sensitivity to detect AF is sought, an implantable cardiac monitor is reasonable.",
+      "page": null
+    },
+    {
+      "section": "4.2.2 Rhythm Monitoring Tools and Methods",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Among patients with a diagnosis of AF, it is reasonable to infer AF frequency, duration, and burden using automated algorithms available from electrocardiographic monitors, implantable cardiac monitors, and cardiac rhythm devices with an atrial lead, recognizing that periodic review can be required to exclude other arrythmias.",
+      "page": null
+    },
+    {
+      "section": "4.2.2 Rhythm Monitoring Tools and Methods",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Among patients with AF in whom cardiac monitoring is advised, it is reasonable to recommend use of a consumer-accessible electrocardiographic device that provides a high-quality tracing to detect recurrences.",
+      "page": null
+    },
+    {
+      "section": "5.1 Primary Prevention",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Patients at increased risk of AF should receive comprehensive guideline-directed LRFM for AF, targeting obesity, physical inactivity, unhealthy alcohol consumption, smoking, diabetes, and hypertension.",
+      "page": null
+    },
+    {
+      "section": "5.2.1 Weight Loss in Individuals Who Are Overweight or Obese",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF who are overweight or obese (with body mass index [BMI] >27 kg/m2), weight loss is recommended, with an ideal target of at least 10% weight loss to reduce AF symptoms, burden, recurrence, and progression to persistent AF.",
+      "page": null
+    },
+    {
+      "section": "5.2.2 Physical Fitness",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In individuals with AF, moderate-to-vigorous exercise training to a target of 210 minutes per week is recommended to reduce AF symptoms and burden, increase maintenance of sinus rhythm, increase functional capacity, and improve QOL. (Guideline footnote: applies to patients without AF related to excessive exercise training.)",
+      "page": null
+    },
+    {
+      "section": "5.2.3 Smoking Cessation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Patients with a history of AF who smoke cigarettes should be strongly advised to quit smoking and should receive GDMT for tobacco cessation to mitigate increased risks of AF-related cardiovascular complications and other adverse outcomes.",
+      "page": null
+    },
+    {
+      "section": "5.2.4 Alcohol Consumption",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "Patients with AF seeking a rhythm-control strategy should minimize or eliminate alcohol consumption to reduce AF recurrence and burden.",
+      "page": null
+    },
+    {
+      "section": "5.2.5 Caffeine Consumption",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with AF, recommending caffeine abstention to prevent AF episodes is of no benefit, although it may reduce symptoms in patients who report caffeine triggers or worsens AF symptoms.",
+      "page": null
+    },
+    {
+      "section": "5.2.8 Treatment of Hypertension",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with AF and hypertension, optimal BP control is recommended to reduce AF recurrence and AF-related cardiovascular events.",
+      "page": null
+    },
+    {
+      "section": "5.2.9 Sleep",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Among patients with AF, it may be reasonable to screen for obstructive sleep apnea, given its high prevalence in patients with AF, although the role of treatment of sleep-disordered breathing (SDB) to maintain sinus rhythm is uncertain.",
+      "page": null
+    },
+    {
+      "section": "5.2.10 Comprehensive Care",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Patients with AF should receive comprehensive care addressing guideline-directed LRFM, AF symptoms, risk of stroke, and other associated medical conditions to reduce AF burden, progression, or consequences.",
+      "page": null
+    },
+    {
+      "section": "5.2.10 Comprehensive Care",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF, use of clinical care pathways, such as nurse-led AF clinics, is reasonable to promote comprehensive, team-based care and to enhance adherence to evidence-based therapies for AF and associated conditions.",
+      "page": null
+    },
+    {
+      "section": "6.1 Risk Stratification Schemes",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Patients with AF should be evaluated for their annual risk of thromboembolic events using a validated clinical risk score, such as CHA 2 DS 2 -VASc.",
+      "page": null
+    },
+    {
+      "section": "6.1 Risk Stratification Schemes",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Patients with AF should be evaluated for factors that specifically indicate a higher risk of bleeding, such as previous bleeding and use of drugs that increase bleeding risk, in order to identify possible interventions to prevent bleeding on anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "6.1 Risk Stratification Schemes",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Patients with AF at intermediate annual risk of thromboembolic events by risk scores (eg, equivalent to CHA 2 DS 2 -VASc score of 1 in men or 2 in women), who remain uncertain about the benefit of anticoagulation, can benefit from consideration of factors that might modify their risk of stroke to help inform the decision.",
+      "page": null
+    },
+    {
+      "section": "6.1 Risk Stratification Schemes",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-NR",
+      "text": "In patients who are deemed at high risk for stroke, bleeding risk scores should not be used in isolation to determine eligibility for oral anticoagulation but instead to identify and modify bleeding risk factors and to inform medical decision-making.",
+      "page": null
+    },
+    {
+      "section": "6.2 Risk-Based Selection of Oral Anticoagulation: Balancing Risks and Benefits",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients diagnosed with AF who have an estimated annual risk of stroke or thromboembolic events ≥2%, selection of therapy to reduce the risk of stroke should be based on the risk of thromboembolism, regardless of whether the AF pattern is paroxysmal, persistent, long-standing persistent, or permanent.",
+      "page": null
+    },
+    {
+      "section": "6.2 Risk-Based Selection of Oral Anticoagulation: Balancing Risks and Benefits",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF at risk for stroke, reevaluation of the need for and choice of stroke risk reduction therapy at periodic intervals is recommended to reassess stroke and bleeding risk, net clinical benefit, and proper dosing.",
+      "page": null
+    },
+    {
+      "section": "6.3.1 Antithrombotic Therapy",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "For patients with AF and an estimated annual thromboembolic risk of ≥2% per year (eg, CHA 2 DS 2 -VASc score of ≥2 in men and ≥3 in women), anticoagulation is recommended to prevent stroke and systemic thromboembolism.",
+      "page": null
+    },
+    {
+      "section": "6.3.1 Antithrombotic Therapy",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with AF who do not have a history of moderate to severe rheumatic mitral stenosis or a mechanical heart valve, and who are candidates for anticoagulation, DOACs are recommended over warfarin to reduce the risk of mortality, stroke, systemic embolism, and ICH.",
+      "page": null
+    },
+    {
+      "section": "6.3.1 Antithrombotic Therapy",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "For patients with AF and an estimated annual thromboembolic risk of ≥1% but <2% per year (equivalent to CHA 2 DS 2 -VASc score of 1 in men and 2 in women), anticoagulation is reasonable to prevent stroke and systemic thromboembolism.",
+      "page": null
+    },
+    {
+      "section": "6.3.1 Antithrombotic Therapy",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF who are candidates for anticoagulation and without an indication for antiplatelet therapy, aspirin either alone or in combination with clopidogrel as an alternative to anticoagulation is not recommended to reduce stroke risk.",
+      "page": null
+    },
+    {
+      "section": "6.3.1 Antithrombotic Therapy",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF without risk factors for stroke, aspirin monotherapy for prevention of thromboembolic events is of no benefit.",
+      "page": null
+    },
+    {
+      "section": "6.3.1.1 Considerations in Managing Anticoagulants",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "For patients with AF receiving DOACs, optimal management of drug interactions is recommended for those receiving concomitant therapy with interacting drugs, especially CYP3A4 and/or p-glycoprotein inhibitors or inducers (Table 13).",
+      "page": null
+    },
+    {
+      "section": "6.3.1.1 Considerations in Managing Anticoagulants",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "For patients with AF receiving warfarin, a target INR between 2 and 3 is recommended, as well as optimal management of drug-drug interactions, consistency in vitamin K dietary intake, and routine INR monitoring to improve time in therapeutic range and to minimize risks of preventable thromboembolism or major bleeding.",
+      "page": null
+    },
+    {
+      "section": "6.3.1.1 Considerations in Managing Anticoagulants",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with AF, nonevidence-based doses of DOACs should be avoided to minimize risks of preventable thromboembolism or major bleeding and to improve survival.",
+      "page": null
+    },
+    {
+      "section": "6.4 Silent AF and Stroke of Undetermined Cause",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with stroke or TIA of undetermined cause, initial cardiac monitoring and, if needed, extended monitoring with an implantable loop recorder are reasonable to improve detection of AF.",
+      "page": null
+    },
+    {
+      "section": "6.4.1 Oral Anticoagulation for Device-Detected Atrial High-Rate Episodes Among Patients Without a Previous Diagnosis of AF",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with a device-detected atrial high-rate episode (AHRE) lasting ≥24 hours and with a CHA 2 DS 2 -VASc score ≥2 or equivalent stroke risk, it is reasonable to initiate oral anticoagulation within a SDM framework that considers episode duration and individual patient risk.",
+      "page": null
+    },
+    {
+      "section": "6.4.1 Oral Anticoagulation for Device-Detected Atrial High-Rate Episodes Among Patients Without a Previous Diagnosis of AF",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with a device-detected AHRE lasting between 5 minutes and 24 hours and with a CHA 2 DS 2 -VASc score ≥3 or equivalent stroke risk, it may be reasonable to initiate anticoagulation within a SDM framework that considers episode duration and individual patient risk.",
+      "page": null
+    },
+    {
+      "section": "6.4.1 Oral Anticoagulation for Device-Detected Atrial High-Rate Episodes Among Patients Without a Previous Diagnosis of AF",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-NR",
+      "text": "Patients with a device-detected AHRE lasting <5 minutes and without another indication for oral anticoagulation should not receive oral anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "6.5.1 Percutaneous Approaches to Occlude the LAA",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF, a moderate to high risk of stroke (CHA 2 DS 2 -VASc score ≥2), and a contraindication (Table 14) to long-term oral anticoagulation due to a nonreversible cause, percutaneous LAAO (pLAAO) is reasonable.",
+      "page": null
+    },
+    {
+      "section": "6.5.1 Percutaneous Approaches to Occlude the LAA",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF and a moderate to high risk of stroke and a high risk of major bleeding on oral anticoagulation, pLAAO may be a reasonable alternative to oral anticoagulation based on patient preference, with careful consideration of procedural risk and with the understanding that the evidence for oral anticoagulation is more extensive.",
+      "page": null
+    },
+    {
+      "section": "6.5.2 Cardiac Surgery–LAA Exclusion/Excision",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with AF undergoing cardiac surgery with a CHA 2 DS 2 -VASc score ≥2 or equivalent stroke risk, surgical LAA exclusion, in addition to continued anticoagulation, is indicated to reduce the risk of stroke and systemic embolism.",
+      "page": null
+    },
+    {
+      "section": "6.5.2 Cardiac Surgery–LAA Exclusion/Excision",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with AF undergoing cardiac surgery and LAA exclusion, a surgical technique resulting in absence of flow across the suture line and a stump of <1 cm as determined by intraoperative transesophageal echocardiography should be used.",
+      "page": null
+    },
+    {
+      "section": "6.5.2 Cardiac Surgery–LAA Exclusion/Excision",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with AF undergoing cardiac surgery with CHA 2 DS 2 -VASc score ≥2 or equivalent stroke risk, the benefit of surgical LAA exclusion in the absence of continued anticoagulation to reduce the risk of stroke and systemic embolism is uncertain.",
+      "page": null
+    },
+    {
+      "section": "6.6 Active Bleeding on Anticoagulant Therapy and Reversal Drugs",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF receiving dabigatran who develop life-threatening bleeding, treatment with idarucizumab is recommended to rapidly reverse dabigatran's anticoagulation effect.",
+      "page": null
+    },
+    {
+      "section": "6.6 Active Bleeding on Anticoagulant Therapy and Reversal Drugs",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF receiving dabigatran who develop life-threatening bleeding, treatment with activated prothrombin complex concentrate (PCC) is reasonable to reverse dabigatran's anticoagulation effect if idarucizumab is unavailable.",
+      "page": null
+    },
+    {
+      "section": "6.6 Active Bleeding on Anticoagulant Therapy and Reversal Drugs",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF receiving factor Xa inhibitors who develop life-threatening bleeding, treatment with either andexanet alfa (apixaban or rivaroxaban, edoxaban) or 4-factor prothrombin complex concentrate is recommended to rapidly reverse factor Xa inhibitor's anticoagulation effect. (Dual LOE: B-NR applies to the apixaban and rivaroxaban data; C-LD applies to the edoxaban data and to 4-factor prothrombin complex concentrate.)",
+      "page": null
+    },
+    {
+      "section": "6.6 Active Bleeding on Anticoagulant Therapy and Reversal Drugs",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with AF receiving warfarin who develop life-threatening bleeding, treatment with 4-factor prothrombin complex concentrate (if available) in addition to intravenous vitamin K is recommended to rapidly achieve INR correction over fresh frozen plasma and intravenous vitamin K treatment.",
+      "page": null
+    },
+    {
+      "section": "6.6 Active Bleeding on Anticoagulant Therapy and Reversal Drugs",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF who develop major gastrointestinal bleeding, resumption of oral anticoagulation therapy may be reasonable after correction of reversible causes of bleeding and reassessment of its long-term benefits and risks with a multidisciplinary team approach during SDM with patients.",
+      "page": null
+    },
+    {
+      "section": "6.6.1 Management of Patients With AF and ICH",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF and conditions associated with very high risk of thromboembolic events (>5%/year), such as rheumatic heart disease or a mechanical heart valve, early (1–2 weeks) resumption of anticoagulation after ICH is reasonable to reduce the risk of thromboembolic events.",
+      "page": null
+    },
+    {
+      "section": "6.6.1 Management of Patients With AF and ICH",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF and ICH, delayed (4–8 weeks) resumption of anticoagulation may be considered to balance the risks of thromboembolic and hemorrhagic complications after careful risk benefit assessment.",
+      "page": null
+    },
+    {
+      "section": "6.6.1 Management of Patients With AF and ICH",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF and conditions associated with high risk of recurrent ICH (eg, cerebral amyloid angiopathy) anticoagulation-sparing strategies (eg, LAAO) may be considered to reduce the risk of recurrent hemorrhage.",
+      "page": null
+    },
+    {
+      "section": "6.7 Periprocedural Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF (excluding those with recent stroke or TIA, or a mechanical valve) and on oral anticoagulation with either warfarin or DOAC who are scheduled to undergo an invasive procedure or surgery, temporary cessation of oral anticoagulation without bridging anticoagulation is recommended. (LOE B-R applies to the warfarin data; B-NR applies to the DOAC data.)",
+      "page": null
+    },
+    {
+      "section": "6.7 Periprocedural Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with AF on warfarin anticoagulation and an annual predicted risk of thromboembolism of ≥5% undergoing pacemaker or defibrillator implantation or generator change, continued anticoagulation is recommended in preference to interruption of warfarin and bridging anticoagulation with heparin to reduce the risk of pocket hematoma.",
+      "page": null
+    },
+    {
+      "section": "6.7 Periprocedural Management",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with AF with CHA 2 DS 2 -VASc score ≥2 or equivalent risk of stroke, on DOAC anticoagulation and undergoing pacemaker or defibrillator implantation or generator change, either uninterrupted or interrupted DOAC is reasonable.",
+      "page": null
+    },
+    {
+      "section": "6.7 Periprocedural Management",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF on DOAC and scheduled to undergo an invasive procedure or surgery that cannot be performed safely on uninterrupted anticoagulation, the timing of interruption of DOAC should be guided by the specific agent, renal function, and the bleeding risk of the procedure (Table 18).",
+      "page": null
+    },
+    {
+      "section": "6.7 Periprocedural Management",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF on DOAC that has been interrupted for an invasive procedure or surgery, in general, resumption of anticoagulation the day after low bleeding risk surgery and between the evening of the second day and the evening of the third day after high bleeding risk surgery is reasonable, as long as hemostasis has been achieved and further bleeding is not anticipated.",
+      "page": null
+    },
+    {
+      "section": "6.7 Periprocedural Management",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF on warfarin anticoagulation, who are undergoing surgeries or procedures for which they are holding warfarin, except in patients with mechanical valve or recent stroke or TIA, bridging anticoagulation with low-molecular-weight heparin should not be administered.",
+      "page": null
+    },
+    {
+      "section": "6.8.1 AF Complicating ACS or PCI",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with AF and an increased risk for stroke who undergo PCI, DOACs are preferred over VKAs in combination with APT to reduce the risk of clinically relevant bleeding.",
+      "page": null
+    },
+    {
+      "section": "6.8.1 AF Complicating ACS or PCI",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In most patients with AF who take oral anticoagulation and undergo PCI, early discontinuation of aspirin (1–4 wk) and continuation of dual antithrombotic therapy with OAC and a P2Y12 inhibitor is preferred over triple therapy (OAC, P2Y12 inhibitor, and aspirin) to reduce the risk of clinically relevant bleeding.",
+      "page": null
+    },
+    {
+      "section": "6.8.2 CCD",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF and CCD (beyond 1 year after revascularization or CAD not requiring coronary revascularization) without history of stent thrombosis, oral anticoagulation monotherapy is recommended over the combination therapy of OAC and single APT (aspirin or P2Y12 inhibitor) to decrease the risk of major bleeding.",
+      "page": null
+    },
+    {
+      "section": "6.8.3 PAD",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF and concomitant stable PAD, monotherapy oral anticoagulation is reasonable over dual therapy (anticoagulation plus aspirin or P2Y12 inhibitors) to reduce the risk of bleeding.",
+      "page": null
+    },
+    {
+      "section": "6.8.4 CKD/Kidney Failure",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "For patients with AF at elevated risk for stroke and CKD stage 3, treatment with warfarin or, preferably, evidence-based doses of direct thrombin or factor Xa inhibitors (Table 19) is recommended to reduce the risk of stroke.",
+      "page": null
+    },
+    {
+      "section": "6.8.4 CKD/Kidney Failure",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with AF at elevated risk for stroke and CKD stage 4, treatment with warfarin or labeled doses of DOACs is reasonable to reduce the risk of stroke.",
+      "page": null
+    },
+    {
+      "section": "6.8.4 CKD/Kidney Failure",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with AF at elevated risk for stroke and who have end-stage CKD (CrCl <15 mL/min) or are on dialysis, it might be reasonable to prescribe warfarin (INR 2.0–3.0) or an evidence-based dose of apixaban for oral anticoagulation to reduce the risk of stroke.",
+      "page": null
+    },
+    {
+      "section": "6.8.5 AF in VHD",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with rheumatic mitral stenosis or mitral stenosis of moderate or greater severity and history of AF, long-term anticoagulation with warfarin is recommended over DOACs, independent of the CHA 2 DS 2 -VASc score to prevent cardiovascular events, including stroke or death.",
+      "page": null
+    },
+    {
+      "section": "6.8.5 AF in VHD",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF and valve disease other than moderate or greater mitral stenosis or a mechanical heart valve, DOACs are recommended over VKAs.",
+      "page": null
+    },
+    {
+      "section": "6.8.6 Anticoagulation of Typical AFL",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with AFL, anticoagulant therapy is recommended according to the same risk profile used for AF.",
+      "page": null
+    },
+    {
+      "section": "6.8.6 Anticoagulation of Typical AFL",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AFL who undergo successful cardioversion or ablation resulting in restoration of sinus rhythm, anticoagulation should be continued for at least 4 weeks postprocedure.",
+      "page": null
+    },
+    {
+      "section": "6.8.6 Anticoagulation of Typical AFL",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Patients with typical AFL who have undergone successful CTI ablation and have had AF previously detected before AFL ablation should receive ongoing oral anticoagulation postablation as indicated for AF.",
+      "page": null
+    },
+    {
+      "section": "6.8.6 Anticoagulation of Typical AFL",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Patients with typical AFL who have undergone successful CTI ablation and are deemed to be at high thromboembolic risk, without any known previous history of AF, should receive close follow-up and arrhythmia monitoring to detect silent AF if they are not receiving ongoing anticoagulation in view of significant risk of AF.",
+      "page": null
+    },
+    {
+      "section": "6.8.6 Anticoagulation of Typical AFL",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with typical AFL who have undergone successful CTI ablation without any known previous history of AF who are at high risk for development of AF (eg, LA enlargement, inducible AF, chronic obstructive pulmonary disease [COPD], HF), it may be reasonable to prescribe long-term anticoagulation if thromboembolic risk assessment suggests high risk (>2% annual risk) for stroke.",
+      "page": null
+    },
+    {
+      "section": "7.1 Broad Considerations for Rate Control",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF, SDM with the patient is recommended to discuss rhythm- versus rate-control strategies (taking into consideration clinical presentation, comorbidity burden, medication profile, and patient preferences), discuss therapeutic options, and for assessing long-term benefits.",
+      "page": null
+    },
+    {
+      "section": "7.1 Broad Considerations for Rate Control",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF without HF who are candidates for select rate-control strategies, heart rate target should be guided by underlying patient symptoms, in general aiming at a resting heart rate of <100 to 110 bpm.",
+      "page": null
+    },
+    {
+      "section": "7.2.1 Acute Rate Control",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF with rapid ventricular response who are hemodynamically stable, beta blockers or nondihydropyridine calcium channel blockers (verapamil, diltiazem; provided that EF >40%) are recommended for acute rate control (Figure 17).",
+      "page": null
+    },
+    {
+      "section": "7.2.1 Acute Rate Control",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF with rapid ventricular response in whom beta blockers and nondihydropyridine calcium channel blockers are ineffective or contraindicated, digoxin can be considered for acute rate control, either alone or in combination with the aforementioned agents.",
+      "page": null
+    },
+    {
+      "section": "7.2.1 Acute Rate Control",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with AF with rapid ventricular response, the addition of intravenous magnesium to standard rate-control measures is reasonable to achieve and maintain rate control.",
+      "page": null
+    },
+    {
+      "section": "7.2.1 Acute Rate Control",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF with rapid ventricular response who are critically ill and/or in decompensated HF in whom beta blockers and nondihydropyridine calcium channel blockers are ineffective or contraindicated, intravenous amiodarone may be considered for acute rate control. (Guideline footnote: consider the risk of cardioversion and stroke when using amiodarone as a rate-control agent.)",
+      "page": null
+    },
+    {
+      "section": "7.2.1 Acute Rate Control",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF with rapid ventricular response and known moderate or severe LV systolic dysfunction with or without decompensated HF, intravenous nondihydropyridine calcium channel blockers should not be administered.",
+      "page": null
+    },
+    {
+      "section": "7.2.2 Long-Term Rate Control",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF, beta blockers or nondihydropyridine calcium channel blockers (diltiazem, verapamil) are recommended for long-term rate control with the choice of agent according to underlying substrate and comorbid conditions.",
+      "page": null
+    },
+    {
+      "section": "7.2.2 Long-Term Rate Control",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with AF in whom measuring serum digoxin levels is indicated, it is reasonable to target levels <1.2 ng/mL.",
+      "page": null
+    },
+    {
+      "section": "7.2.2 Long-Term Rate Control",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF and HF symptoms, digoxin is reasonable for long-term rate control in combination with other rate-controlling agents, or as monotherapy if other agents are not preferred, not tolerated, or contraindicated.",
+      "page": null
+    },
+    {
+      "section": "7.2.2 Long-Term Rate Control",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF and LVEF <40%, nondihydropyridine calcium channel–blocking drugs should not be administered given their potential to exacerbate HF.",
+      "page": null
+    },
+    {
+      "section": "7.2.2 Long-Term Rate Control",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "In patients with permanent AF who have risk factors for cardiovascular events, dronedarone should not be used for long-term rate control.",
+      "page": null
+    },
+    {
+      "section": "7.3 AVNA",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF and a persistently rapid ventricular response who undergo AVNA, initial pacemaker lower rate programming should be 80 to 90 bpm to reduce the risk of sudden death.",
+      "page": null
+    },
+    {
+      "section": "7.3 AVNA",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF and uncontrolled rapid ventricular response refractory to rate-control medications (who are not candidates for or in whom rhythm control has been unsuccessful), AVNA can be useful to improve symptoms and QOL.",
+      "page": null
+    },
+    {
+      "section": "7.3 AVNA",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF who are planned to undergo AVNA, implantation of a pacemaker before the ablation (ie, before or same day of ablation) is recommended to ensure adequacy of the pacing leads before performing ablation.",
+      "page": null
+    },
+    {
+      "section": "7.3 AVNA",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF with normal EF undergoing AVNA, conduction system pacing of the His bundle or left bundle area may be reasonable.",
+      "page": null
+    },
+    {
+      "section": "8.1 Goals of Therapy With Rhythm Control",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with reduced LV function and persistent (or high burden) AF, a trial of rhythm control should be recommended to evaluate whether AF is contributing to the reduced LV function.",
+      "page": null
+    },
+    {
+      "section": "8.1 Goals of Therapy With Rhythm Control",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with symptomatic AF, rhythm control can be useful to improve symptoms.",
+      "page": null
+    },
+    {
+      "section": "8.1 Goals of Therapy With Rhythm Control",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with a recent diagnosis of AF (<1 year), rhythm control can be useful to reduce hospitalizations, stroke, and mortality.",
+      "page": null
+    },
+    {
+      "section": "8.1 Goals of Therapy With Rhythm Control",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF and HF, rhythm control can be useful for improving symptoms and improving outcomes, such as mortality and hospitalizations for HF and ischemia.",
+      "page": null
+    },
+    {
+      "section": "8.1 Goals of Therapy With Rhythm Control",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF, rhythm-control strategies can be useful to reduce the likelihood of AF progression.",
+      "page": null
+    },
+    {
+      "section": "8.1 Goals of Therapy With Rhythm Control",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF where symptoms associated with AF are uncertain, a trial of rhythm control (eg, cardioversion or pharmacological therapy) may be useful to determine what if any symptoms are attributable to AF.",
+      "page": null
+    },
+    {
+      "section": "8.1 Goals of Therapy With Rhythm Control",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF, rhythm-control strategies may be useful to reduce the likelihood of development of dementia or worsening cardiac structural abnormalities.",
+      "page": null
+    },
+    {
+      "section": "8.2.1 Prevention of Thromboembolism in the Setting of Cardioversion",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF duration of ≥48 hours, a 3-week duration of uninterrupted therapeutic anticoagulation or imaging evaluation to exclude intracardiac thrombus is recommended before elective cardioversion.",
+      "page": null
+    },
+    {
+      "section": "8.2.1 Prevention of Thromboembolism in the Setting of Cardioversion",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF undergoing cardioversion, therapeutic anticoagulation should be established before cardioversion and continued for at least 4 weeks afterwards without interruption to prevent thromboembolism.",
+      "page": null
+    },
+    {
+      "section": "8.2.1 Prevention of Thromboembolism in the Setting of Cardioversion",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF in whom cardioversion is deferred due to LAA thrombus detected on precardioversion imaging, therapeutic anticoagulation should be instituted for at least 3 to 6 weeks, after which imaging should be repeated before cardioversion.",
+      "page": null
+    },
+    {
+      "section": "8.2.1 Prevention of Thromboembolism in the Setting of Cardioversion",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF and previous LAAO who are not on anticoagulation, imaging evaluation to assess the adequacy of LAAO and exclude device-related thrombosis before cardioversion may be reasonable.",
+      "page": null
+    },
+    {
+      "section": "8.2.1 Prevention of Thromboembolism in the Setting of Cardioversion",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF and previous LAAO with residual leak, pericardioversion anticoagulation may be considered and continued thereafter.",
+      "page": null
+    },
+    {
+      "section": "8.2.1 Prevention of Thromboembolism in the Setting of Cardioversion",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with reported AF duration of <48 hours (not in the setting of cardiac surgery) and who are not on anticoagulation, precardioversion imaging to exclude intracardiac thrombus may be considered in those who are at elevated thromboembolic risk (CHA 2 DS 2 -VASc score ≥2 or equivalent).",
+      "page": null
+    },
+    {
+      "section": "8.2.1 Prevention of Thromboembolism in the Setting of Cardioversion",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with low thromboembolic risks (CHA 2 DS 2 -VASc 0–1 or equivalent) and AF duration of <12 hours, the benefit of precardioversion imaging or pericardioversion anticoagulation is uncertain given the low incidence of pericardioversion thromboembolic events in this population.",
+      "page": null
+    },
+    {
+      "section": "8.2.2 Electrical Cardioversion",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with hemodynamic instability attributable to AF, immediate electrical cardioversion should be performed to restore sinus rhythm.",
+      "page": null
+    },
+    {
+      "section": "8.2.2 Electrical Cardioversion",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF who are hemodynamically stable, electrical cardioversion can be performed as initial rhythm-control strategy or after unsuccessful pharmacological cardioversion.",
+      "page": null
+    },
+    {
+      "section": "8.2.2 Electrical Cardioversion",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF undergoing electrical cardioversion, energy delivery should be confirmed to be synchronized to the QRS to reduce the risk of inducing VF.",
+      "page": null
+    },
+    {
+      "section": "8.2.2 Electrical Cardioversion",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "For patients with AF undergoing elective electrical cardioversion, the use of biphasic energy of at least 200 J as initial energy can be beneficial to improve success of initial electrical shock.",
+      "page": null
+    },
+    {
+      "section": "8.2.2 Electrical Cardioversion",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF undergoing elective cardioversion, with longer duration of AF or unsuccessful initial shock, optimization of electrode vector, use of higher energy, and pretreatment with antiarrhythmic drugs can facilitate success of electrical cardioversion.",
+      "page": null
+    },
+    {
+      "section": "8.2.2 Electrical Cardioversion",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with obesity and AF, use of manual pressure augmentation and/or further escalation of electrical energy may be beneficial to improve success of electrical cardioversion.",
+      "page": null
+    },
+    {
+      "section": "8.2.3 Pharmacological Cardioversion",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "For patients with AF, pharmacological cardioversion is reasonable as an alternative to electrical cardioversion for those who are hemodynamically stable or in situations when electrical cardioversion is preferred but cannot be performed.",
+      "page": null
+    },
+    {
+      "section": "8.2.3 Pharmacological Cardioversion",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "For patients with AF, ibutilide is reasonable for pharmacological cardioversion for patients without depressed LV function (LVEF <40%).",
+      "page": null
+    },
+    {
+      "section": "8.2.3 Pharmacological Cardioversion",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "For patients with AF, intravenous amiodarone is reasonable for pharmacological cardioversion, although time to conversion is generally longer than with other agents (8–12 hours).",
+      "page": null
+    },
+    {
+      "section": "8.2.3 Pharmacological Cardioversion",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "For patients with recurrent AF occurring outside the setting of a hospital, the \"pill-in-the-pocket\" (PITP) approach with a single oral dose of flecainide or propafenone, with a concomitant atrioventricular nodal blocking agent, is reasonable for pharmacological cardioversion if previously tested in a monitored setting.",
+      "page": null
+    },
+    {
+      "section": "8.2.3 Pharmacological Cardioversion",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "For patients with AF, use of intravenous procainamide may be considered for pharmacological cardioversion when other intravenous agents are contraindicated or not preferred.",
+      "page": null
+    },
+    {
+      "section": "8.3.1 Specific Drug Therapy for Long-Term Maintenance of Sinus Rhythm",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "For patients with AF and HFrEF (≤40%), therapy with dofetilide or amiodarone is reasonable for long-term maintenance of sinus rhythm. (LOE A applies to the dofetilide data; B-NR applies to the amiodarone data.)",
+      "page": null
+    },
+    {
+      "section": "8.3.1 Specific Drug Therapy for Long-Term Maintenance of Sinus Rhythm",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "For patients with AF and no previous MI, or known or suspected significant structural heart disease, or ventricular scar or fibrosis, use of flecainide or propafenone is reasonable for long-term maintenance of sinus rhythm.",
+      "page": null
+    },
+    {
+      "section": "8.3.1 Specific Drug Therapy for Long-Term Maintenance of Sinus Rhythm",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "For patients with AF without recent decompensated HF or severe LV dysfunction, use of dronedarone is reasonable for long-term maintenance of sinus rhythm.",
+      "page": null
+    },
+    {
+      "section": "8.3.1 Specific Drug Therapy for Long-Term Maintenance of Sinus Rhythm",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "For patients with AF without significant baseline QT interval prolongation or uncorrected hypokalemia or hypomagnesemia, use of dofetilide is reasonable for long-term maintenance of sinus rhythm, with proper dose selection based on kidney function and close monitoring of the QT interval, serum potassium and magnesium concentrations, and kidney function.",
+      "page": null
+    },
+    {
+      "section": "8.3.1 Specific Drug Therapy for Long-Term Maintenance of Sinus Rhythm",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "For patients with AF and normal LV function, use of low-dose amiodarone (100–200 mg/d) is reasonable for long-term maintenance of sinus rhythm but, in view of its adverse effect profile, should be reserved for patients in whom other rhythm control strategies are ineffective, not preferred, or contraindicated.",
+      "page": null
+    },
+    {
+      "section": "8.3.1 Specific Drug Therapy for Long-Term Maintenance of Sinus Rhythm",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "For patients with AF without significant baseline QT interval prolongation, hypokalemia, hypomagnesemia, or bradycardia, use of sotalol may be considered for long-term maintenance of sinus rhythm, with proper dose selection based on kidney function and close monitoring of the QT interval, heart rate, serum potassium and magnesium concentrations, and kidney function.",
+      "page": null
+    },
+    {
+      "section": "8.3.1 Specific Drug Therapy for Long-Term Maintenance of Sinus Rhythm",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "In patients with previous MI and/or significant structural heart disease, including HFrEF (LVEF ≤40%), flecainide and propafenone should not be administered due to the risk of worsening HF, potential proarrhythmia, and increased mortality.",
+      "page": null
+    },
+    {
+      "section": "8.3.1 Specific Drug Therapy for Long-Term Maintenance of Sinus Rhythm",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "For patients with AF, dronedarone should not be administered for maintenance of sinus rhythm to those with NYHA class III and IV HF or patients who have had an episode of decompensated HF in the past 4 weeks, due to the risk of increased early mortality associated with worsening HF.",
+      "page": null
+    },
+    {
+      "section": "8.3.2 Inpatient Initiation of Antiarrhythmic Agents",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "Patients with AF who are initiating, increasing the dose of, or reinitiating dofetilide therapy should be admitted for a minimum of 3 days to a facility that can provide continuous electrocardiographic monitoring, calculations of CrCl, and cardiac resuscitation, given the potential for proarrhythmia.",
+      "page": null
+    },
+    {
+      "section": "8.3.2 Inpatient Initiation of Antiarrhythmic Agents",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF, it is reasonable to initiate sotalol therapy in a facility that can provide continuous electrocardiographic monitoring, calculations of CrCl, and cardiac resuscitation, given the potential for proarrhythmia and bradycardia.",
+      "page": null
+    },
+    {
+      "section": "8.3.2 Inpatient Initiation of Antiarrhythmic Agents",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF who are initiating PITP dosing of flecainide and propafenone with concomitant atrioventricular nodal blocking drugs, it is reasonable to receive the first dose in a facility that can provide continuous electrocardiographic monitoring, given the potential for proarrhythmia.",
+      "page": null
+    },
+    {
+      "section": "8.4 AF Catheter Ablation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with symptomatic AF in whom antiarrhythmic drugs have been ineffective, contraindicated, not tolerated or not preferred, and continued rhythm control is desired, catheter ablation is useful to improve symptoms.",
+      "page": null
+    },
+    {
+      "section": "8.4 AF Catheter Ablation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In selected patients (generally younger with few comorbidities) with symptomatic paroxysmal AF in whom rhythm control is desired, catheter ablation is useful as first-line therapy to improve symptoms and reduce progression to persistent AF.",
+      "page": null
+    },
+    {
+      "section": "8.4 AF Catheter Ablation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with symptomatic or clinically significant AFL, catheter ablation is useful for improving symptoms.",
+      "page": null
+    },
+    {
+      "section": "8.4 AF Catheter Ablation",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients who are undergoing ablation for AF, ablation of additional clinically significant supraventricular arrhythmias can be useful to reduce the likelihood of future arrhythmia.",
+      "page": null
+    },
+    {
+      "section": "8.4 AF Catheter Ablation",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients (other than younger with few comorbidities) with symptomatic paroxysmal or persistent AF who are being managed with a rhythm-control strategy, catheter ablation as first-line therapy can be useful to improve symptoms.",
+      "page": null
+    },
+    {
+      "section": "8.4 AF Catheter Ablation",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In selected patients with asymptomatic or minimally symptomatic AF, catheter ablation may be useful for reducing progression of AF and its associated complications. (Guideline footnote: \"selected\" means younger patients with few comorbidities and a moderate to high burden of AF, or persistent AF and AFL.)",
+      "page": null
+    },
+    {
+      "section": "8.4.2 Techniques and Technologies for AF Catheter Ablation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients undergoing ablation for AF, PVI is recommended as the primary lesion set for all patients unless a different specific trigger is identified.",
+      "page": null
+    },
+    {
+      "section": "8.4.2 Techniques and Technologies for AF Catheter Ablation",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients undergoing ablation for AF, the value of other endpoints beyond PVI such as noninducibility and ablation of additional anatomic ablation targets (eg, posterior wall sites, low voltage areas, complex fractionated electrograms, rotors) is uncertain.",
+      "page": null
+    },
+    {
+      "section": "8.4.3 Management of Recurrent AF After Catheter Ablation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with recurrent symptomatic AF after catheter ablation, repeat catheter ablation or antiarrhythmic drug therapy is useful to improve symptoms and freedom from AF.",
+      "page": null
+    },
+    {
+      "section": "8.4.3 Management of Recurrent AF After Catheter Ablation",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In some patients who have undergone catheter ablation of AF, short-term antiarrhythmic drug therapy after ablation can be useful to reduce early recurrences of atrial arrhythmia and hospitalization.",
+      "page": null
+    },
+    {
+      "section": "8.4.4 Anticoagulation Therapy Before and After Catheter Ablation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients on warfarin who are undergoing catheter ablation of AF, catheter ablation should be performed on uninterrupted therapeutic anticoagulation with a goal INR of 2.0 to 3.0.",
+      "page": null
+    },
+    {
+      "section": "8.4.4 Anticoagulation Therapy Before and After Catheter Ablation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients on a DOAC who are undergoing catheter ablation of AF, catheter ablation should be performed with either continuous or minimally interrupted oral anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "8.4.4 Anticoagulation Therapy Before and After Catheter Ablation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients who have undergone catheter ablation of AF, oral anticoagulation should be continued for at least 3 months after the procedure with a longer duration determined by underlying risk.",
+      "page": null
+    },
+    {
+      "section": "8.4.4 Anticoagulation Therapy Before and After Catheter Ablation",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients who have undergone catheter ablation of AF, continuation of longer-term oral anticoagulation should be dictated according to the patients' stroke risk (eg, CHA 2 DS 2 -VASc score ≥2).",
+      "page": null
+    },
+    {
+      "section": "8.5 Role of Pacemakers and ICDs for the Prevention and Treatment of AF",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In patients with bradycardia requiring cardiac-implanted electronic devices who have normal atrioventricular conduction, device selection and programming strategies to maintain atrioventricular synchrony and minimize ventricular pacing should be used to reduce the incidence and progression of AF.",
+      "page": null
+    },
+    {
+      "section": "8.5 Role of Pacemakers and ICDs for the Prevention and Treatment of AF",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In selected patients with a pacemaker and symptomatic atrial tachyarrhythmias, antitachycardia atrial pacing and ventricular pacing minimization may be useful for reducing symptoms.",
+      "page": null
+    },
+    {
+      "section": "8.5 Role of Pacemakers and ICDs for the Prevention and Treatment of AF",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF who require significant ventricular pacing, conduction system pacing may be useful to reduce progression of AF.",
+      "page": null
+    },
+    {
+      "section": "8.5 Role of Pacemakers and ICDs for the Prevention and Treatment of AF",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF, specialized atrial pacing algorithms designed to suppress AF are not useful for reducing the incidence or slowing the progression of AF.",
+      "page": null
+    },
+    {
+      "section": "8.6 Surgical Ablation",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "For patients with AF who are undergoing cardiac surgery, concomitant surgical ablation can be beneficial to reduce the risk of recurrent AF.",
+      "page": null
+    },
+    {
+      "section": "8.6 Surgical Ablation",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients undergoing surgical ablation, anticoagulation therapy is reasonable for at least 3 months after the procedure to reduce the risk of stroke or systemic embolism.",
+      "page": null
+    },
+    {
+      "section": "8.6 Surgical Ablation",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "For patients with symptomatic, persistent AF refractory to antiarrhythmic drug therapy a hybrid epicardial and endocardial ablation might be reasonable to reduce the risk of recurrent atrial arrhythmia.",
+      "page": null
+    },
+    {
+      "section": "9.2 Management of AF in Patients With HF",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients who present with a new diagnosis of HFrEF and AF, arrhythmia-induced cardiomyopathy should be suspected, and an early and aggressive approach to AF rhythm control is recommended.",
+      "page": null
+    },
+    {
+      "section": "9.2 Management of AF in Patients With HF",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In appropriate patients with AF and HFrEF who are on GDMT, and with reasonable expectation of procedural benefit (Figure 24), catheter ablation is beneficial to improve symptoms, QOL, ventricular function, and cardiovascular outcomes.",
+      "page": null
+    },
+    {
+      "section": "9.2 Management of AF in Patients With HF",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In appropriate patients with symptomatic AF and HFpEF with reasonable expectation of benefit, catheter ablation can be useful to improve symptoms and improve QOL.",
+      "page": null
+    },
+    {
+      "section": "9.2 Management of AF in Patients With HF",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF and HF, digoxin is reasonable for rate control, in combination with other rate-controlling agents or as monotherapy if other agents are not tolerated.",
+      "page": null
+    },
+    {
+      "section": "9.2 Management of AF in Patients With HF",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF and HF with rapid ventricular rates in whom beta blockers or calcium channel blockers are contraindicated or ineffective, intravenous amiodarone is reasonable for acute rate control.",
+      "page": null
+    },
+    {
+      "section": "9.2 Management of AF in Patients With HF",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF, HFrEF (LVEF <50%), and refractory rapid ventricular response who are not candidates for or in whom rhythm control has failed, AVNA and biventricular pacing therapy can be useful to improve symptoms, QOL, and EF.",
+      "page": null
+    },
+    {
+      "section": "9.2 Management of AF in Patients With HF",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF, HF, and implanted biventricular pacing therapy in whom an effective pacing percentage cannot be achieved with pharmacological therapy, AVNA can be beneficial to improve functional class, reduce the risk of ICD shock, and improve survival.",
+      "page": null
+    },
+    {
+      "section": "9.2 Management of AF in Patients With HF",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF-induced cardiomyopathy who have recovered LV function, long-term surveillance can be beneficial to detect recurrent AF in view of the high risk of recurrence of arrhythmia-induced cardiomyopathy.",
+      "page": null
+    },
+    {
+      "section": "9.2 Management of AF in Patients With HF",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with suspected AF-induced cardiomyopathy or refractory HF symptoms undergoing pharmacological rate-control therapy for AF, a stricter rate-control strategy (target heart rate <80 bpm at rest and <110 bpm during moderate exercise) may be reasonable.",
+      "page": null
+    },
+    {
+      "section": "9.2 Management of AF in Patients With HF",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF and HFrEF who undergo AVNA, conduction system pacing of the His bundle or left bundle branch area may be reasonable as an alternative to biventricular pacing to improve symptoms, QOL, and LV function.",
+      "page": null
+    },
+    {
+      "section": "9.2 Management of AF in Patients With HF",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF and known LVEF <40%, nondihydropyridine calcium channel-blocking drugs should not be administered because of their potential to exacerbate HF.",
+      "page": null
+    },
+    {
+      "section": "9.2 Management of AF in Patients With HF",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "For patients with AF, dronedarone should not be administered for maintenance of sinus rhythm to those with NYHA class III and IV HF or patients who have had an episode of decompensated HF in the past 4 weeks, due to the risk of increased early mortality associated with worsening HF.",
+      "page": null
+    },
+    {
+      "section": "10.1 Management of Early Onset AF, Including Genetic Testing",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with an onset of unexplained AF before 30 years of age, electrophysiological study to evaluate and treat reentrant supraventricular tachyarrhythmias with a targeted ablation may be reasonable because of the high prevalence of reentrant arrhythmias in this group.",
+      "page": null
+    },
+    {
+      "section": "10.1 Management of Early Onset AF, Including Genetic Testing",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with an onset of AF before 45 years of age without obvious risk factors for AF, referral for genetic counseling, genetic testing for rare pathogenic variants, and surveillance for cardiomyopathy or arrhythmia syndromes may be reasonable.",
+      "page": null
+    },
+    {
+      "section": "10.2 Athletes",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In athletes who develop AF, catheter ablation with PVI is a reasonable strategy for rhythm control because of its effectiveness and low risk of detrimental effect on exercise capacity.",
+      "page": null
+    },
+    {
+      "section": "10.4 Anticoagulation Considerations in Patients With Class III Obesity",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF and class III obesity (BMI ≥ 40 kg/m 2), DOACs are reasonable to choose over warfarin for stroke risk reduction.",
+      "page": null
+    },
+    {
+      "section": "10.4 Anticoagulation Considerations in Patients With Class III Obesity",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF who have undergone bariatric surgery, warfarin may be reasonable to choose over DOACs for stroke risk reduction in view of concerns about DOAC drug absorption.",
+      "page": null
+    },
+    {
+      "section": "10.6 WPW and Preexcitation Syndromes",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Patients with AF with rapid anterograde conduction (preexcited AF), and hemodynamic instability should be treated with electrical cardioversion.",
+      "page": null
+    },
+    {
+      "section": "10.6 WPW and Preexcitation Syndromes",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with AF with rapid anterograde conduction (preexcited AF), catheter ablation of accessory pathways (APs) is recommended.",
+      "page": null
+    },
+    {
+      "section": "10.6 WPW and Preexcitation Syndromes",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with AF with rapid anterograde conduction (preexcited AF) and hemodynamic stability, pharmacological cardioversion with intravenous ibutilide or intravenous procainamide is recommended as an alternative to elective cardioversion.",
+      "page": null
+    },
+    {
+      "section": "10.6 WPW and Preexcitation Syndromes",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with AF with anterograde accessory pathway conduction (preexcited AF), pharmacological agents that block atrioventricular nodal conduction (verapamil, diltiazem, amiodarone, digoxin, adenosine, or beta blockers) are contraindicated due to risk of precipitating VF or hemodynamic deterioration.",
+      "page": null
+    },
+    {
+      "section": "10.8 ACHD",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In adults with congenital heart disease and AF, it is recommended to evaluate for and treat precipitating factors and reversible causes of AF, recognizing that residual hemodynamic sequelae may contribute to the occurrence of the arrhythmia.",
+      "page": null
+    },
+    {
+      "section": "10.8 ACHD",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In adults with AF and moderate or complex congenital heart disease, electrophysiological procedures should be performed by operators with expertise in ACHD procedures and in collaboration with an ACHD cardiologist, ideally in specialized centers, when available.",
+      "page": null
+    },
+    {
+      "section": "10.8 ACHD",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In adults with congenital heart disease and symptomatic or hemodynamically significant paroxysmal or persistent AF, an initial strategy of rhythm control is recommended regardless of lesion severity as AF in this population is often poorly tolerated.",
+      "page": null
+    },
+    {
+      "section": "10.8 ACHD",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In symptomatic patients with simple congenital heart disease with antiarrhythmic drug–refractory AF, it is reasonable to choose ablation over long-term antiarrhythmic therapies.",
+      "page": null
+    },
+    {
+      "section": "10.8 ACHD",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In adults with congenital heart disease with AF undergoing PVI, it may be reasonable to include an ablative strategy in the right atrium directed at reentrant arrhythmia secondary to atriotomy scars and the CTI.",
+      "page": null
+    },
+    {
+      "section": "10.8 ACHD",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In adults with AF and moderate or severe forms of congenital heart disease, particularly those with low-flow states such as Fontan circulation, blind-ending cardiac chambers, and cyanosis, it may be reasonable to treat with anticoagulation independent of conventional risk score to reduce risk of thromboembolic events.",
+      "page": null
+    },
+    {
+      "section": "10.9.1 Prevention of AF After Cardiac Surgery",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients undergoing cardiac surgery who are at high risk for postoperative AF, it is reasonable to administer short-term prophylactic beta blockers or amiodarone to reduce the incidence of postoperative AF.",
+      "page": null
+    },
+    {
+      "section": "10.9.1 Prevention of AF After Cardiac Surgery",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients undergoing CABG, aortic valve, or ascending aortic aneurysm operations, it is reasonable to perform concomitant posterior left pericardiotomy to reduce the incidence of postoperative AF.",
+      "page": null
+    },
+    {
+      "section": "10.9.2 Treatment of AF After Cardiac Surgery",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "A",
+      "text": "In postoperative cardiac surgery patients, beta blockers are recommended to achieve rate control for AF unless contraindicated or ineffective in which case a nondihydropyridine calcium channel blocker is recommended. (LOE A applies to the beta-blocker data; B-R applies to the nondihydropyridine calcium channel blocker data.)",
+      "page": null
+    },
+    {
+      "section": "10.9.2 Treatment of AF After Cardiac Surgery",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In hemodynamically stable cardiac surgery patients with postoperative AF, rate-control (target heart rate, <100 bpm) and/or rhythm-control medications are recommended as initial therapy, with the choice of strategy according to patient symptoms, hemodynamic consequences of the arrhythmia, and physician preference.",
+      "page": null
+    },
+    {
+      "section": "10.9.2 Treatment of AF After Cardiac Surgery",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients who develop poorly tolerated AF after cardiac surgery, direct current cardioversion in combination with antiarrhythmic drug therapy is recommended, with consideration of imaging to rule out left appendage thrombus before cardioversion in those patients in whom AF has been present >48 hours and who have not been on anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "10.9.2 Treatment of AF After Cardiac Surgery",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients who develop postoperative AF after cardiac surgery, it is reasonable to administer anticoagulation when deemed safe in regard to surgical bleeding for 60 days after surgery unless complications develop and to reevaluate the need for longer term anticoagulation at that time.",
+      "page": null
+    },
+    {
+      "section": "10.9.2 Treatment of AF After Cardiac Surgery",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients who develop AF after cardiac surgery and who are treated with rate-control strategy, at 30- to 60-day follow-up it is reasonable to perform rhythm assessment and, if AF does not revert to sinus rhythm spontaneously, consider cardioversion after an adequate duration of anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "10.10 Acute Medical Illness or Surgery (Including AF in Critical Care)",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "Patients with AF who are identified in the setting of acute medical illness or surgery should be counseled about the significant risk of recurrent AF after the acute illness is resolved.",
+      "page": null
+    },
+    {
+      "section": "10.10 Acute Medical Illness or Surgery (Including AF in Critical Care)",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF who are identified in the setting of acute medical illness or surgery, outpatient follow-up for thromboembolic risk stratification and decision-making on OAC initiation or continuation, as well as AF surveillance, can be beneficial given a high risk of AF recurrence.",
+      "page": null
+    },
+    {
+      "section": "10.10 Acute Medical Illness or Surgery (Including AF in Critical Care)",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with AF who are identified in the setting of critical illness due to sepsis, the benefits of anticoagulation during critical illness for stroke prevention are uncertain.",
+      "page": null
+    },
+    {
+      "section": "10.11 Hyperthyroidism",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with hyperthyroidism and AF who have an elevated risk of stroke based on a standard clinical risk score, anticoagulation is recommended until thyroid function has returned to normal and sinus rhythm can be maintained.",
+      "page": null
+    },
+    {
+      "section": "10.12 Pulmonary Disease",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-R",
+      "text": "In patients with AF and COPD, it is reasonable to use cardioselective beta blockers for rate control of AF, especially where other indications exist (eg, MI and HF).",
+      "page": null
+    },
+    {
+      "section": "10.12 Pulmonary Disease",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In patients with pulmonary hypertension (PH) with pulmonary vascular disease and AF or AFL, a rhythm-control strategy is reasonable to improve functional status and potentially prolong survival.",
+      "page": null
+    },
+    {
+      "section": "10.13 Pregnancy",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In pregnant patients with AF, DCCV is safe to the patient and fetus and should be performed in the same manner as in patients who are not pregnant.",
+      "page": null
+    },
+    {
+      "section": "10.13 Pregnancy",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In pregnant individuals with structurally normal hearts and hemodynamically stable AF, pharmacological cardioversion with agents with history of safe use in pregnancy, such as intravenous procainamide, may be considered.",
+      "page": null
+    },
+    {
+      "section": "10.13 Pregnancy",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In pregnant individuals with AF and without structural heart disease, antiarrhythmic agents with history of safe use in pregnancy (eg, flecainide and sotalol) are reasonable for maintenance of sinus rhythm.",
+      "page": null
+    },
+    {
+      "section": "10.13 Pregnancy",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In pregnant individuals with persistent AF, rate-control agents with a record of safety in pregnancy, such as beta blockers (eg, propranolol or metoprolol) and digoxin, either alone or in combination with beta blockers, are reasonable as first-line agents.",
+      "page": null
+    },
+    {
+      "section": "10.13 Pregnancy",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "Pregnant individuals with AF and elevated risk of stroke may be considered for anticoagulation with the recognition that no anticoagulation strategy is completely safe for both the mother and fetus, and an SDM discussion should take place regarding risks to both mother and fetus (Table 28).",
+      "page": null
+    },
+    {
+      "section": "10.14 Cardio-Oncology and Anticoagulation Considerations",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients with cancer and AF, multidisciplinary communication including cardiology, oncology and other clinicians, and SDM with the patient is recommended to optimize cancer and AF treatment and to reduce the risk of drug-drug interactions, QTc prolongation, proarrhythmia, bleeding, and thromboembolism.",
+      "page": null
+    },
+    {
+      "section": "10.14 Cardio-Oncology and Anticoagulation Considerations",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "C-LD",
+      "text": "In patients who are to be initiated on cancer therapies associated with an increased risk of developing AF, increased vigilance for incident AF and treatment of contributing factors is reasonable to decrease morbidity.",
+      "page": null
+    },
+    {
+      "section": "10.14 Cardio-Oncology and Anticoagulation Considerations",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "In most patients with AF and cancer (remote history or receiving active cancer treatment), DOACs are reasonable to choose over VKAs for stroke risk reduction.",
+      "page": null
+    },
+    {
+      "section": "10.16 Anticoagulation Use in Patients With Liver Disease",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with AF who are at increased risk of systemic thromboembolism and mild or moderate liver disease (Child-Pugh class A or B), OAC therapy is reasonable in the absence of clinically significant liver disease–induced coagulopathy or thrombocytopenia.",
+      "page": null
+    },
+    {
+      "section": "10.16 Anticoagulation Use in Patients With Liver Disease",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For patients with AF who are at increased risk of systemic thromboembolism and mild or moderate liver disease (Child-Pugh class A or B) and who are deemed to be candidates for anticoagulation, it is reasonable to prescribe DOACs (Child-Pugh class A: any DOAC; Child-Pugh class B: apixaban, dabigatran, or edoxaban) over warfarin.",
+      "page": null
+    },
+    {
+      "section": "10.16 Anticoagulation Use in Patients With Liver Disease",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "C-LD",
+      "text": "For patients with AF and moderate liver disease (Child-Pugh class B) at increased risk of systemic thromboembolism, rivaroxaban is contraindicated due to the potentially increased risk of bleeding.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "ACC/AHA"
 }

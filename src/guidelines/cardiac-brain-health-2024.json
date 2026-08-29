@@ -9,76 +9,270 @@
   "pmid": "39387123",
   "recommendations": [
     {
-      "section": "Heart Failure",
+      "section": "Heart Failure: Frequency of Cognitive Impairment in HF",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Heart failure is associated with increased stroke risk and high prevalence of silent brain infarction; cardioembolism is a common subtype.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "Heart failure is associated with cognitive decline, affecting self-care, medication compliance, disease management, and frailty in older adults. In a large systematic review, the prevalence of cognitive impairment in heart failure cohorts was 43%. Attention, language and verbal fluency, processing speed, working memory, and executive function are commonly affected cognitive domains.",
+      "page": null
     },
     {
-      "section": "Heart Failure",
+      "section": "Heart Failure: Frequency of Cognitive Impairment in HF",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Cognitive impairment in HFrEF is linked to reduced cerebral blood flow and neurohormonal/inflammatory pathways.",
-      "page": 3
+      "levelOfEvidence": "Ungraded",
+      "text": "The different heart failure phenotypes are independently associated with brain injury; the frequency of cognitive dysfunction appears to be greater in heart failure with reduced ejection fraction than in heart failure with preserved ejection fraction in some studies, but not in others. There are insufficient findings for heart failure with midrange ejection fraction.",
+      "page": null
     },
     {
-      "section": "Heart Failure",
+      "section": "Heart Failure: Mechanisms Whereby HF May Cause Brain Injury and Cognitive Impairment",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Screen for cognitive impairment before advanced HF interventions (e.g., mechanical support or transplant).",
-      "page": 4
+      "levelOfEvidence": "Ungraded",
+      "text": "Data from the CARDIA study show that midlife diastolic dysfunction and abnormal cardiac structure, represented by increased left ventricular mass index and left atrial volume index over 25 years, but not decreased left ventricular ejection fraction, are associated with cognitive decline; these associations remained after accounting for vascular risk factors and history of atrial fibrillation, coronary heart disease, or stroke.",
+      "page": null
     },
     {
-      "section": "Atrial Fibrillation",
+      "section": "Heart Failure: Sympathetic Nervous System Activity, Inflammation, Hypoperfusion, and Brain Infarction",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "AF is associated with increased risk of cognitive impairment and dementia; anticoagulation reduces dementia risk in AF.",
-      "page": 5
+      "levelOfEvidence": "Ungraded",
+      "text": "The different heart failure phenotypes share increased sympathetic nerve activity, an activated renin-angiotensin system, and systemic inflammation, all of which have been associated with cognitive impairment. Circulating cytokines and inflammatory proteins can cross the blood-brain barrier and activate microglia to a proinflammatory form.",
+      "page": null
     },
     {
-      "section": "Atrial Fibrillation",
+      "section": "Heart Failure: Sympathetic Nervous System Activity, Inflammation, Hypoperfusion, and Brain Infarction",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Subclinical AF is common; wearables and implantable devices improve detection and may refine brain health risk estimates.",
-      "page": 4
+      "levelOfEvidence": "Ungraded",
+      "text": "Abnormal flow and blood constituents, along with abnormalities in cardiac and vessel walls, predispose to thromboembolic stroke, with rates up to 2.23 events per 100 person-years compared with 1.17 in patients without heart failure. Silent brain infarction is common in both ischemic and nonischemic cardiomyopathy, with a prevalence much greater than for frank stroke. Overall, cardioembolism is the most common stroke subtype in heart failure.",
+      "page": null
     },
     {
-      "section": "Atrial Fibrillation",
+      "section": "Heart Failure: Sympathetic Nervous System Activity, Inflammation, Hypoperfusion, and Brain Infarction",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "CHA2DS2-VASc is associated with dementia risk; AF burden may contribute to cognitive decline beyond overt stroke.",
-      "page": 5
+      "levelOfEvidence": "Ungraded",
+      "text": "Worsening cognition in heart failure with reduced ejection fraction has been primarily associated with a reduction of cerebral blood flow, with the association being stronger in older adults. Hypoperfusion leads to oxidative stress, inflammation, glial activation, brain mitochondrial dysfunction, dendritic spine loss, and neuronal apoptosis.",
+      "page": null
     },
     {
-      "section": "Coronary Heart Disease",
+      "section": "Heart Failure: Vascular and Related Factors",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "CHD is associated with cognitive decline and higher burden of cerebral small vessel disease; microvascular dysfunction links heart and brain.",
-      "page": 7
+      "levelOfEvidence": "Ungraded",
+      "text": "Although there is some reduction in cerebral blood flow in heart failure with preserved ejection fraction from diastolic dysfunction, cognitive decline in this case appears more related to comorbid vascular risk factors. Obesity and sleep-disordered breathing, both commonly seen in patients with heart failure, are associated with cognitive decline, and reduced brain volume and white matter integrity are increasingly recognized in people with sleep-disordered breathing.",
+      "page": null
     },
     {
-      "section": "Prevention",
+      "section": "Heart Failure: Neurodegeneration and Genetic Factors",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Control vascular risk factors per guideline-based CHD and AF management; cognitive benefits are plausible but not yet definitive.",
-      "page": 7
+      "levelOfEvidence": "Ungraded",
+      "text": "Serum levels of biomarkers of neurodegeneration, including phospho-tau, neurofilament light chain, and amyloid-beta 40, are associated with cardiac dysfunction. Variations in PSEN1 and PSEN2, both genes associated with Alzheimer disease, have been associated with heart failure, and intramyocardial deposits of amyloid-beta 40 and 42 have been observed in patients with Alzheimer disease. This evidence is emerging, and additional studies are needed to substantiate these observations.",
+      "page": null
     },
     {
-      "section": "Heart-Brain Axis",
+      "section": "Heart Failure: Prospects for Prevention and Treatment of HF to Maintain Brain Health",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Shared risk factors, inflammation, and microvascular dysfunction drive the heart-brain axis; cardiovascular trials should incorporate cognitive outcomes.",
-      "page": 8
+      "levelOfEvidence": "Ungraded",
+      "text": "It is expected that the implementation of evidence-based approaches to improve stroke volume and ejection fraction may improve brain health; however, the long-term effect of these treatments on brain health measures, particularly cognitive performance, has not been demonstrated completely.",
+      "page": null
+    },
+    {
+      "section": "Heart Failure: Prospects for Prevention and Treatment of HF to Maintain Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke is a relatively frequent complication of surgical interventions used in patients with severe heart failure, with an incidence of approximately 10% at 1 year for both durable mechanical circulatory support and heart transplantation. Thus, screening for cognitive impairment is recommended before surgical interventions.",
+      "page": null
+    },
+    {
+      "section": "Atrial Fibrillation: Frequency of Cognitive Impairment in AF",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In a large meta-analysis, atrial fibrillation was associated with a 39% increased risk of cognitive impairment in the general population. Although controversial, some studies suggest that women may face a higher susceptibility to cognitive impairment compared with men; observational data suggest that women with atrial fibrillation may be undertreated with anticoagulation and have an increased risk of atrial fibrillation-associated stroke.",
+      "page": null
+    },
+    {
+      "section": "Atrial Fibrillation: Frequency of Cognitive Impairment in AF",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The use of implantable devices confirms that subclinical paroxysmal atrial fibrillation is particularly prevalent in the general population as well as in patients with silent (or covert) and cryptogenic stroke; thus current estimates likely do not accurately capture the contribution of atrial fibrillation to cognitive decline.",
+      "page": null
+    },
+    {
+      "section": "Atrial Fibrillation: VRFs and Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke is a strong predictor of cognitive impairment in patients with atrial fibrillation, and the CHA2DS2-VASc score is directly associated with risk of dementia. Oral anticoagulation reduces the risk of dementia in patients with atrial fibrillation by approximately 50%. However, incident atrial fibrillation is associated with dementia even after censoring for stroke, with an approximately 1.4- to 2.2-fold increase in risk among individuals without a history of stroke.",
+      "page": null
+    },
+    {
+      "section": "Atrial Fibrillation: Cerebral Microhemorrhages",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Microhemorrhages are more commonly seen in patients with ischemic stroke and atrial fibrillation than in patients without atrial fibrillation, are a risk factor for intracerebral hemorrhage, and their burden has a direct relationship with cognitive decline as well as vascular and neurodegenerative dementias. Microhemorrhages have been observed more commonly in patients with atrial fibrillation treated with warfarin, particularly among patients with international normalized ratio variability, although further studies are needed to confirm whether these observations extend to direct oral anticoagulants.",
+      "page": null
+    },
+    {
+      "section": "Atrial Fibrillation: Cardiac Output",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cognitive impairment in patients with atrial fibrillation may also be due to reduced cardiac output without overt clinical symptoms of heart failure, which can compromise cerebral blood flow specifically in areas involved in cognitive function such as the temporal lobes. As such, one would not expect atrial fibrillation-related cognitive dysfunction from this mechanism to be responsive to systemic anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "Atrial Fibrillation: Inflammation and AD",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Atrial fibrillation and Alzheimer disease are associated with systemic inflammation, and similar profiles of proinflammatory and anti-inflammatory mediators have been described in both conditions. Inflammation is associated with endothelial dysfunction, platelet activation, and upregulation of coagulation pathways leading to thrombosis and cerebrovascular injury, identifying the proinflammatory milieu in atrial fibrillation as a potential target for preventing cognitive impairment.",
+      "page": null
+    },
+    {
+      "section": "Atrial Fibrillation: Prospects for Prevention and Treatment of AF to Maintain Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It has been hypothesized that treatment of the hypercoagulable state associated with atrial fibrillation using anticoagulation, or reducing atrial fibrillation burden by rhythm control or catheter ablation, may decrease the risk of dementia. There is indirect evidence that effective treatment of atrial fibrillation reduces the risk of cognitive impairment, and future clinical trials will investigate this hypothesis.",
+      "page": null
+    },
+    {
+      "section": "Atrial Fibrillation: Prospects for Prevention and Treatment of AF to Maintain Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Retrospective analysis suggests that atrial fibrillation suppression with catheter ablation may result in a greater reduction in dementia risk compared with antiarrhythmic therapy alone; however, these results should be interpreted with caution because individuals with cognitive decline are less likely to be referred for catheter ablation, and the quality of the evidence in this area is relatively weak.",
+      "page": null
+    },
+    {
+      "section": "Atrial Fibrillation: Prospects for Prevention and Treatment of AF to Maintain Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The ABC pathway for management of atrial fibrillation comprises: A, avoiding stroke by using risk stratification tools (such as the CHA2DS2-VASc score) to identify individuals at high risk of stroke and systemic embolism who are candidates for anticoagulation or left atrial appendage closure; B, better rate and rhythm control using pharmacologic or nonpharmacologic approaches (eg, ablation or electrical cardioversion), or both; and C, optimal control of risk factors, including cardiovascular risk factors and other comorbidities, and lifestyle modifications.",
+      "page": null
+    },
+    {
+      "section": "Coronary Heart Disease: Frequency of Cognitive Impairment in CHD",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In a large systematic review including >1 million participants, the relative risk of dementia among participants with a history of coronary heart disease was 1.27 (95% CI, 1.07-1.50) compared with those without coronary heart disease. In MESA, elevated coronary artery calcium was associated with a hazard ratio for dementia of 1.24, and this association was not completely explained by underlying vascular risk factors, APOE4 genotype, or history of stroke.",
+      "page": null
+    },
+    {
+      "section": "Coronary Heart Disease: VRFs, Inflammation, BBB, and Related Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Coronary heart disease and associated atherosclerosis contribute to inflammation, which can affect the cerebral macro- and microcirculations. Hypertension affects the cerebrovascular endothelium, increasing blood-brain barrier permeability and allowing potentially harmful substances to enter brain tissue and cause neuroinflammation, particularly in the white matter. The pathogenesis of vascular injury and neurodegeneration, once considered distinct disease processes, are intimately intertwined.",
+      "page": null
+    },
+    {
+      "section": "Coronary Heart Disease: Microvascular Circulation and Cardiac Sequelae",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Coronary microvascular dysfunction is associated with cerebral small vessel disease and reduced cerebral blood flow. In the C3 study, patients with abnormal coronary flow reserve <2.0 had a higher burden of white matter hyperintensities (43.2% versus 20.0%); low coronary flow reserve was also associated with abnormal cerebral blood flow hemodynamics on transcranial Doppler and worse cognitive test scores.",
+      "page": null
+    },
+    {
+      "section": "Coronary Heart Disease: Microvascular Circulation and Cardiac Sequelae",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Silent cerebral infarcts are more prevalent in patients with coronary heart disease (odds ratio, 2.83 [95% CI, 1.38-5.82]). Unrecognized myocardial infarction in men was associated with an increase in white matter disease volume and asymptomatic strokes, both of which lead to cognitive impairment.",
+      "page": null
+    },
+    {
+      "section": "Coronary Heart Disease: Prospects for Prevention and Treatment of CHD to Maintain Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The beneficial effect of vascular risk factor control on cognitive performance in specific groups of individuals with coronary heart disease has not been established conclusively. In SPRINT-MIND, a systolic blood pressure goal of <120 mm Hg did not reduce the incidence of probable dementia compared with a goal of <140 mm Hg, but intensive blood pressure control reduced the occurrence of mild cognitive impairment and the composite of mild cognitive impairment and probable dementia.",
+      "page": null
+    },
+    {
+      "section": "Coronary Heart Disease: Prospects for Prevention and Treatment of CHD to Maintain Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In an individual patient data meta-analysis including approximately 28 000 individuals, a blood pressure reduction of 10/4 mm Hg was associated with a reduced risk of incident dementia (odds ratio, 0.87 [95% CI, 0.75-0.99]).",
+      "page": null
+    },
+    {
+      "section": "Coronary Heart Disease: Prospects for Prevention and Treatment of CHD to Maintain Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Studies investigating the effect of diabetes control on cognition have provided mixed results. Randomization to statins in adults without coronary heart disease did not alter cognitive outcomes in HOPE-3, and in ASPREE statin therapy did not modify the risk of incident dementia, mild cognitive impairment, or cognitive decline, nor did the use of aspirin.",
+      "page": null
+    },
+    {
+      "section": "Coronary Heart Disease: Prospects for Prevention and Treatment of CHD to Maintain Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Because vascular risk factors can contribute to cognitive impairment through multiple pathways, individual interventions may be insufficient to preserve cognitive vitality, and multidomain interventions and precision medicine techniques may be needed. In PreDIVA and MAPT, cognitive outcomes did not differ between the multidomain intervention and standard care; in contrast, in FINGER there was a benefit in neurocognitive performance at 2 years in favor of multidomain intervention including diet, exercise, cognitive training, and vascular risk factor control.",
+      "page": null
+    },
+    {
+      "section": "Coronary Heart Disease: Prospects for Prevention and Treatment of CHD to Maintain Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although coronary artery bypass graft surgery has been believed to contribute to cognitive decline and dementia, subsequent studies identified that cognitive decline after coronary artery bypass grafting was primarily driven by the underlying vascular risk factors rather than the surgical intervention; cognitive outcomes are comparable for patients receiving coronary artery bypass grafting or percutaneous coronary intervention.",
+      "page": null
+    },
+    {
+      "section": "Discussion and Future Perspectives",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The cumulative evidence confirms that the trajectories of cardiac health and brain health are inextricably intertwined through modifiable and nonmodifiable factors. Observational data show that cerebral microstructural changes, covert brain infarction, stroke, and hypoperfusion are associated with the development of brain pathology in people with cardiac disease, and preclinical evidence confirms that upregulation of proinflammatory pathways, oxidative stress, blood-brain barrier dysfunction, and microvascular dysregulation also contribute.",
+      "page": null
+    },
+    {
+      "section": "Discussion and Future Perspectives",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Several procedures used for patients with advanced cardiovascular disease, including coronary artery bypass graft, transplantation, and transcatheter aortic valve replacement, are associated with iatrogenic stroke, with a possible negative effect on cognitive performance. Understanding the ultimate effect of these and other treatments on brain health requires the incorporation of standardized cognitive and functional outcomes in cardiovascular trials and the use of extended follow-up.",
+      "page": null
+    },
+    {
+      "section": "Discussion and Future Perspectives",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The interpretation and generalizability of the studies described are confounded by disparate methodologies, including small sample sizes, cross-sectional designs, and underrepresentation of Black individuals, Hispanic individuals, and other underrepresented populations.",
+      "page": null
+    },
+    {
+      "section": "Discussion and Future Perspectives",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "From a public health standpoint, consistent epidemiologic evidence supports the notion that prevention and early treatment of cardiac diseases are effective strategies to maintain age-dependent cognition. Culturally and age-tailored education campaigns promoting early adoption of healthy lifestyles may reduce the burden of dementia in the general population.",
+      "page": null
+    },
+    {
+      "section": "Discussion and Future Perspectives",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "From a clinical perspective, the early implementation of strategies to monitor and promote cardiovascular health, such as Life's Essential 8, and the adoption of evidence-based guidelines for the management of patients with cardiovascular diseases constitute important steps to tackling the public health challenges associated with the expanding prevalence of cognitively impairing disorders.",
+      "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

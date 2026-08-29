@@ -10,12 +10,270 @@
   "society": "AAN",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Practice Recommendations - Diagnosis of Functional Seizures",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "This guideline provides evidence-based recommendations for clinicians, patients, and other stakeholders on the management of functional seizures. Following a National Academy of Medicine-compliant process, a multidisciplinary panel conducted a systematic review and integrated the findings with the authors' clinical experience to develop recommendations. A systematic review of the available evidence from first published articles to February 25, 2025, identified 12 Class II-III studies.",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "1A. Clinicians should include functional seizures in the differential diagnosis and in the initial workup of patients presenting with seizure-like or syncope-like episodes to make a prompt and accurate diagnosis. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Diagnosis of Functional Seizures",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "1B. When evaluating patients with seizure-like or syncope-like episodes, clinicians should seek historical and semiological information from both patients and witnesses when available to support a prompt and accurate diagnosis. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Diagnosis of Functional Seizures",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "1C. When acutely evaluating patients with prolonged seizure-like episodes in emergency settings, clinicians should perform a brief ictal physical examination to support a prompt and accurate diagnosis. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Diagnosis of Functional Seizures",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "1D. When diagnostic ambiguity exists between epileptic and functional seizures after review of historical and semiological features including available video and EEG data, clinicians may obtain VEEG of typical seizure-like episodes where feasible to confirm the diagnosis with the greatest possible level of clinical certainty. (Level C)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Diagnosis of Functional Seizures",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "1E. When diagnostic ambiguity exists between syncope and functional seizures after review of historical and semiological features, clinicians should evaluate blood pressure and cardiac rhythm during episodes using ECG monitoring and/or tilt-table testing where available to confirm the diagnosis with the greatest possible level of clinical certainty. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Diagnosis of Functional Seizures",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "1F. Where VEEG, ECG, and/or tilt-table capture of typical seizure-like or syncope-like episodes are not feasible, clinicians should use ambulatory EEG, interictal EEG, interictal ECG if available, smartphone video of typical seizure-like episodes, and historical and semiological features to make a diagnosis with the greatest possible level of clinical certainty. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Diagnosis of Functional Seizures",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "1G. When diagnosing a patient with functional seizures, clinicians should screen and evaluate for other functional neurologic symptoms, to support prompt treatment. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Diagnosis of Functional Seizures",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "1H. When diagnosis or management of functional or epileptic seizures is beyond the clinician's scope of practice or expertise, they should refer patients with seizures to an appropriate specialist to support a prompt and accurate diagnosis. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Assessment of Psychiatric Comorbidities and Epilepsy",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "2A. Clinicians should evaluate patients diagnosed with functional seizures for co-occurring psychiatric disorders (including affective, trauma-related, personality, and substance use disorders) to facilitate treatment of both co-occurring disorders and functional seizures. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Assessment of Psychiatric Comorbidities and Epilepsy",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "2B. Clinicians should offer patients diagnosed with functional seizures and active co-occurring psychiatric disorders, who do not already receive mental health care, a referral to a mental health specialist for appropriate evidence-based treatment of their co-occurring psychiatric disorders. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Assessment of Psychiatric Comorbidities and Epilepsy",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "3A. Clinicians should evaluate patients diagnosed with functional seizures for co-occurring epilepsy to deliver appropriate treatment. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Assessment of Psychiatric Comorbidities and Epilepsy",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "3B. Clinicians should use history, semiology, and - where feasible - VEEG to help patients with co-occurring functional and epileptic seizures to accurately identify and distinguish different seizure types to deliver appropriate treatment. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Assessment of Psychiatric Comorbidities and Epilepsy",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "3C. Clinicians should counsel patients with functional seizures and co-occurring epilepsy about the risks and benefits of antiseizure medications for the treatment of epileptic seizures, as well as their lack of efficacy in the treatment of functional seizures. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Assessment of Psychiatric Comorbidities and Epilepsy",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "3D. Clinicians should prescribe appropriate antiseizure treatments for epileptic seizures for patients with functional seizures and co-occurring epilepsy. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - General Principles of Management",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "4A. Neurologists and mental health clinicians should collaborate in the assessment and treatment of functional seizures to facilitate evidence-based treatment. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - General Principles of Management",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "4B. Clinicians should adhere to universal standards of care for patients, including speaking respectfully, refraining from unnecessary harm, and avoiding stigmatizing behavior to prevent harm to patients. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - General Principles of Management",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "4C. Clinicians should provide a specific diagnostic label and the rationale for the diagnosis to patients and caregivers in a manner that is clear, empathetic, supportive, and takes into account the patient's cultural context to facilitate patient understanding of the diagnosis and treatment. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - General Principles of Management",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "4D. Clinicians should engage in shared decision making regarding the treatment plan, taking into account the patient's understanding of the diagnosis, to facilitate patient engagement with treatment. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - General Principles of Management",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "4E. Clinicians should counsel patients and caregivers on how to manage an acute functional seizure episode, to enhance patients' control and decrease vulnerability. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - General Principles of Management",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "4F. Clinicians should ask patients of driving age about driving and provide advice appropriate to the regulations of the region of practice to facilitate adherence to relevant regulations. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - General Principles of Management",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "4G. Clinicians should ask about the impact of functional seizures on occupational and social functioning to assess patients' psychosocial needs. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - General Principles of Management",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "4H. Clinicians should provide or direct the patient and caregivers to resources for learning and support, such as patient and professional advocacy organizations, to promote self-management and self-efficacy. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - General Principles of Management",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "4I. Clinicians should provide continuity of care to individuals diagnosed with functional seizures to facilitate treatment and increase patient satisfaction. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Psychological Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "5A. When psychological interventions for the treatment of functional seizures are indicated and accessible, clinicians should counsel patients regarding the potential benefits and risks of such interventions to facilitate shared decision making. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Psychological Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "5B. When caring for patients with functional seizures, clinicians whose scope of practice does not include counseling patients regarding the possible benefits and demands of psychological interventions should refer patients to a clinician knowledgeable about modalities of psychological treatment to facilitate evidence-based treatment. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Psychological Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "5C. Clinicians should refer interested and appropriate patients diagnosed with functional seizures to psychological interventions for the treatment of functional seizures to improve frequency of functional seizures, health-related quality of life, and psychosocial functioning. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Psychological Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "5D. Clinicians should, with patient permission, involve family, caregivers, or others in the social support network in the psychological treatment of adults with functional seizures to improve treatment outcomes. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Psychological Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "5E. Clinicians should involve family in the psychological treatment of children with functional seizures to improve treatment outcomes. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Pharmacologic Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "6A. Clinicians should counsel patients with functional seizures without co-occurring epilepsy or another indication for benzodiazepines regarding the potential risks and lack of evidence of benefit for functional seizures associated with benzodiazepines. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Pharmacologic Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "6B. Clinicians should not prescribe benzodiazepines for acute abortive treatment in patients with functional seizures without co-occurring epilepsy, anxiety disorders, or another indication, to reduce the risk of adverse effects. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Pharmacologic Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "6C. Clinicians should counsel patients with functional seizures and without co-occurring epilepsy or another indication for an antiseizure medication about the lack of benefit and the potential risks of taking antiseizure medications for the treatment of functional seizures. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Pharmacologic Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "6D. Clinicians should not prescribe antiseizure medications to patients with functional seizures without co-occurring epilepsy or another indication for antiseizure medications, to reduce the risk of adverse effects. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Pharmacologic Interventions",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "6E. Clinicians should taper off antiseizure medications for patients with functional seizures and without another indication for antiseizure medications to reduce the risk of adverse effects. (Level B)",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "ungraded"
 }

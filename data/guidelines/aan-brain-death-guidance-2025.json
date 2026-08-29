@@ -10,12 +10,222 @@
   "society": "AAN",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Overarching AAN position",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "This position statement provides updated member guidance from the American Academy of Neurology (AAN) regarding (1) communication with surrogate decision makers about brain death/death by neurologic criteria (BD/DNC), (2) management of surrogate decision-maker objections to BD/DNC, (3) the ethical considerations associated with BD/DNC determination in a pregnant person, and (4) enhancing public trust in BD/DNC.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The AAN recommends consideration of the guidance provided in this statement when writing and revising institutional BD/DNC determination policies and in clinical practice.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Communication With Surrogate Decision Makers About BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Communication about BD/DNC requires sensitivity and empathy to establish a relationship of trust, with careful attention to language, cultural and religious sensitivity, and presentation style.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Communication With Surrogate Decision Makers About BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When discussing BD/DNC, it may be helpful to enlist support for surrogate decision makers and a person's family/friends from social workers, care management personnel, chaplains or other religious leaders from the institution or community, mental health professionals, or palliative care specialists.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Communication With Surrogate Decision Makers About BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Before discussing the plan to perform a BD/DNC evaluation with a person's surrogate decision maker, clinicians should explain the etiology and severity of the person's neurologic injury, the neurologic examination and relevant imaging, and/or other diagnostic tests.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Communication With Surrogate Decision Makers About BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Surrogate decision makers should be told that the history, examination, imaging, and diagnostic testing findings indicate that the person has sustained a catastrophic brain injury that could be consistent with permanent loss of function of the brain as a whole, resulting in (1) permanent coma, (2) loss of all brainstem reflexes, and (3) inability to breathe spontaneously in the setting of an adequate stimulus, and that a BD/DNC evaluation is the next appropriate step in the person's medical care.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Communication With Surrogate Decision Makers About BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Surrogate decision makers should be given the opportunity to hear about the details of a BD/DNC evaluation, with particular emphasis on the fact that it is a standardized, meticulous process designed to prevent inaccurate or inappropriate determinations of death.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Communication With Surrogate Decision Makers About BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Surrogate decision makers should be told that although the BD/DNC evaluation is being performed because the clinical suspicion for BD/DNC is high, the evaluation is carefully designed to look for any signs of brain function that would indicate that the person is alive.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Communication With Surrogate Decision Makers About BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is important to emphasize to surrogate decision makers that even if the BD/DNC evaluation does not result in BD/DNC declaration, owing to the circumstances that prompted the BD/DNC evaluation, the person has still suffered a catastrophic permanent brain injury and would require medical interventions to prolong their life (e.g., tracheostomy and mechanical ventilation, and gastrostomy tube for nutrition) indefinitely unless a decision were made to withdraw this support.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Communication With Surrogate Decision Makers About BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Surrogate decision makers should be educated that BD/DNC is medical and legal death and is legally equivalent to death by circulatory-respiratory criteria. If the person fulfills criteria for BD/DNC, technological support will be removed after the declaration of death, and the heart and lungs will subsequently cease functioning.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Management of Surrogate Decision-Maker Objections to BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Clinicians who are adequately trained and competent in death determination, owing to either irreversible cessation of circulatory and respiratory functions, or irreversible cessation of all functions of the entire brain, including the brainstem, are professionally obligated to make this determination in a timely and accurate manner.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Management of Surrogate Decision-Maker Objections to BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Every objection to BD/DNC is unique and requires a sensitive and empathetic approach to understand the perspective of surrogate decision makers, with the goal of reconciling differences in a manner satisfactory to surrogate decision makers, the health care team, and the institution.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Management of Surrogate Decision-Maker Objections to BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is no ethical obligation to provide medical treatment to a deceased person. In addition, in the United States, with the exception of New Jersey, there is no legal obligation to provide indefinite accommodation of objections to BD/DNC through continued provision of organ support (in New Jersey, death may not be declared on the basis of neurologic criteria if \"such a declaration would violate the personal religious beliefs of the individual\").",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Management of Surrogate Decision-Maker Objections to BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Management of objections to BD/DNC should be coordinated by the health care team in conjunction with relevant institutional administrative, ethics, and legal teams.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Management of Surrogate Decision-Maker Objections to BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It may be helpful for surrogate decision makers, a person's family/friends, and the health care team to seek support from individuals with mediation skills (e.g., chaplains or other religious leaders from the institution or community and palliative care or ethics consultants).",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Management of Surrogate Decision-Maker Objections to BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "If the surrogate decision maker requests transfer to another facility, the health care team should inform them that they will present the relevant information to the identified facility but the request may not be granted based on the person's condition.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Management of Surrogate Decision-Maker Objections to BD/DNC",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When lawful, feasible, and compatible with institutional policy, unilateral withdrawal of organ support should be considered as a last resort if there is no other means to resolve conflict related to BD/DNC between the health care team and surrogate decision makers or a person's family/friends. This should only be considered after unsuccessful attempts to reconcile the conflict by the health care team; individuals with mediation skills; and institutional administrative, ethics, and legal teams using the aforementioned guidance regarding communication about BD/DNC.",
+      "page": null
+    },
+    {
+      "section": "AAN Guidance to Its Members Regarding the Ethical Considerations Associated With BD/DNC Determination in a Pregnant Person",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "After BD/DNC determination in a pregnant person, the ethical analysis should largely focus on the welfare of the fetus, taking into consideration relevant law and anticipated fetal outcome (which is often uncertain). If the pregnant person executed an advance directive expressing wishes regarding care of the fetus in the event of BD/DNC, the matter should be resolved based on legal advice.",
+      "page": null
+    },
+    {
+      "section": "AAN Guidance to Its Members Regarding the Ethical Considerations Associated With BD/DNC Determination in a Pregnant Person",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Prolonged continuation of organ support after BD/DNC determination in the setting of pregnancy of any gestational age can be considered for the sake of the fetus, although it should be clearly explained that the pregnant person is medically and legally dead and that organ support will be discontinued after completion of the pregnancy.",
+      "page": null
+    },
+    {
+      "section": "AAN Guidance to Its Members Regarding the Ethical Considerations Associated With BD/DNC Determination in a Pregnant Person",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The potential for fetal demise or severe fetal injury even if organ support is continued should be assessed and explained to the family.",
+      "page": null
+    },
+    {
+      "section": "AAN Guidance to Its Members Regarding the Ethical Considerations Associated With BD/DNC Determination in a Pregnant Person",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Where state law allows, the AAN believes that it is appropriate to adhere to the authorized decision maker's request to withdraw organ support after determination of BD/DNC in a pregnant person.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Enhancing Public Trust in BD/DNC — key points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The AAN endorses efforts to promote uniform BD/DNC determination policies across institutions.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Enhancing Public Trust in BD/DNC — key points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The AAN supports the mandatory inclusion of education about BD/DNC determination within neurology and other relevant training programs with the goal of establishing uniform competence in BD/DNC determination.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Enhancing Public Trust in BD/DNC — key points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The AAN endorses credentialing requirements for clinicians involved in BD/DNC determination.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Enhancing Public Trust in BD/DNC — key points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The AAN encourages the development of programs to facilitate professional and public education regarding BD/DNC.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Enhancing Public Trust in BD/DNC — key points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although the AAN strongly endorses the beneficence provided by organ donation, it must always be kept in mind that the primary professional responsibility of its members is to their patients.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Enhancing Public Trust in BD/DNC — key points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The AAN supports research to enhance knowledge related to BD/DNC and the accuracy and consistency of BD/DNC determination.",
+      "page": null
+    },
+    {
+      "section": "AAN Member Guidance Regarding Enhancing Public Trust in BD/DNC — narrative text (not part of the bulleted key-points list)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The AAN endorses legislation modeled after Nevada's Determination of Death Act, which was enacted in 2017 and specifically identifies the BD/DNC guidelines written by the AAN and SCCM, or their successor organizations, as the accepted medical standards for BD/DNC determination.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "advisory",
+  "gradingSystem": "ungraded"
 }

@@ -10,36 +10,62 @@
   "pmid": "31008333",
   "recommendations": [
     {
-      "section": "Tight glycaemic control with intravenous insulin",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "Ischemic stroke (PICO 1-5) - Recommendation",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
       "levelOfEvidence": "Low certainty",
-      "text": "The guideline suggests against the routine use of tight glycaemic control with intravenous insulin as a means to improve outcomes in patients with acute ischaemic or haemorrhagic stroke.",
+      "text": "In patients with acute IS, we suggest against the routine use of IV insulin to achieve a tight glycaemic control as a means to improve functional outcome, survival or infarct growth. (Quality of evidence: Low; Strength of recommendation: Weak.)",
       "page": null
     },
     {
-      "section": "Trial evidence for tight glycaemic control",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Low certainty",
-      "text": "Low-quality evidence was found from clinical trials in ischaemic or haemorrhagic stroke exploring intravenous insulin aimed at tight glycaemic control with different glucose level targets. None of these trials, nor their meta-analysis, demonstrated any significant benefit of tight glycaemic control on functional outcome or survival, and they showed an increased risk of hypoglycaemia.",
+      "section": "Ischemic stroke - Additional comments for clinical practice",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Additional comment for clinical practice (not a GRADE-graded recommendation): taking into account the clear risk of functional dependence and mortality associated with hyperglycaemia, the lack of evidence of any benefit of tight glucose reduction with IV insulin (due to the poor quality of the clinical trials developed to date) does not prevent that ischaemic stroke patients with hyperglycaemia could be treated as any other in-hospitalised patient with hyperglycaemia aiming at standard glycaemic control.",
       "page": null
     },
     {
-      "section": "Strength of the recommendations",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The currently available data about the management of glycaemia in patients with acute stroke are limited and the strengths of the recommendations are therefore weak. The guideline notes that this does not prevent hyperglycaemia in acute stroke patients from being treated as in any other hospitalised patient.",
+      "section": "Ischemic stroke - Additional comments for clinical practice",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Additional comment for clinical practice (citing external expert-based recommendations, not GRADE-graded here): expert-based recommendations suggest as the preferable approach for hyperglycaemia management in critically ill patients like acute stroke the use of IV insulin therapy titrated to achieve a target glucose level between 7.8 and 10.0 mmol/L, avoiding more intensive targets that can result in a higher risk of hypoglycaemia.",
       "page": null
     },
     {
-      "section": "Background",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Hyperglycaemia is a frequent complication in acute stroke that has been shown to be independently associated with larger infarct size, haematoma growth, poor clinical outcome and mortality.",
+      "section": "Ischemic stroke - Additional comments for clinical practice",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "Additional comment for clinical practice (citing external expert-based recommendations, not GRADE-graded here): there is a general recommendation against the use of SC sliding-scale insulin, or the so-called correction insulin based on the use of rapid-acting insulin, in critically ill patients as the sole regimen, as it is not evidence based and ineffective in the majority of patients. Non-insulin agents are also considered inappropriate in most hospitalised patients.",
+      "page": null
+    },
+    {
+      "section": "Ischemic stroke - Additional comments for clinical practice",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Additional comment for clinical practice (citing external expert-based recommendations, not GRADE-graded here): after the acute phase of stroke when the patient is considered to be clinically stable, basal insulin or a basal plus bolus correction insulin regimen is the preferred treatment for patients with poor oral intake, whilst basal, nutritional and correction components is the preferred strategy for non critically ill patients with good nutritional intake.",
+      "page": null
+    },
+    {
+      "section": "Haemorrhagic stroke (PICO 6-10) - Recommendation",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with acute haemorrhagic stroke, we suggest against the routine use of IV insulin to achieve a tight glycaemic control as a means to improve functional outcome or survival. (Quality of evidence: Very low; Strength of recommendation: Weak.)",
+      "page": null
+    },
+    {
+      "section": "Haemorrhagic stroke - Additional comments for clinical practice",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Additional comment for clinical practice (not a GRADE-graded recommendation): the lack of evidence of any benefit of tight control IV insulin on functional outcome or survival, and the high risk of hypoglycaemic events that this specific treatment carries, does not prevent that haemorrhagic stroke patients with hyperglycaemia could be treated as any other in-hospitalised patient with hyperglycaemia.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

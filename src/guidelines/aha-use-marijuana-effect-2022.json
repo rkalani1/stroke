@@ -10,12 +10,254 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Introduction",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Marijuana is perceived as a harmless drug, and its recreational use has gained popularity among young individuals. The concentration of active ingredients in recreational formulations has gradually increased over time, and high-potency illicit cannabinomimetics have become available. Thus, the consumption of cannabis in the general population is rising.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "An estimated 183 million people worldwide used marijuana in 2014 and 22 million met criteria for cannabis use disorder in 2016; in the United States, past-year marijuana use among people over 12 years of age rose from 11% in 2002 to 18% in 2019, with approximately 36% of 12th graders and 43% of college students reporting past-year use, while the THC potency of US cannabis products increased from about 4% in 1995 to 15% in 2018.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cannabinoid receptors are expressed in high density in brain areas involved in executive function and memory such as the hippocampus, amygdala, and prefrontal cortex, particularly during periods of active brain development; experimental data also show that cannabinoids can regulate different cytochrome P450 isoforms and uridine 5'-diphospho-glucuronosyltransferases, creating a potential risk for drug-to-drug interactions with medications commonly used by the elderly such as warfarin, antiarrhythmic agents, sedatives, and anticonvulsants.",
+      "page": null
+    },
+    {
+      "section": "Cannabis and Endocannabinoids",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The endocannabinoid system comprises the cannabinoid receptors CB1 and CB2, endogenous ligands (anandamide and 2-arachidonoyl-glycerol, synthesized on demand rather than stored in vesicles), and the enzymes involved in their production and degradation.",
+      "page": null
+    },
+    {
+      "section": "Cannabis and Endocannabinoids",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "More than 100 phytocannabinoids have been extracted from cannabis plants, with THC and cannabidiol (CBD) the most abundant; relative concentrations vary by strain, and cultivars can be classified as chemotype I (THC rich), II (THC/CBD balanced), III (CBD rich), IV (cannabigerol rich), or V (cannabinoid free).",
+      "page": null
+    },
+    {
+      "section": "Cannabis and Endocannabinoids",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "THC is a psychoactive alkaloid signaling through CB1 and CB2; CB1 is expressed mainly in presynaptic membranes of excitatory and inhibitory neurons where it regulates vesicular release of dopamine, GABA, and glutamate, whereas CB2 is expressed mainly in immune cells including microglia. CBD is a nonpsychoactive cannabinoid with antioxidant and anti-inflammatory properties that does not activate CB1 or CB2 and is thought to underlie the benefit of phytocannabinoids in Dravet syndrome and Lennox-Gastaut syndrome.",
+      "page": null
+    },
+    {
+      "section": "Neurobiological Actions of Cannabis in Animal Models",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "THC disrupts endocannabinoid signaling pathways and affects synaptic plasticity; in the short term this affects the strength of interneuronal connections, and in the long term it leads to changes in the functioning of neuronal networks.",
+      "page": null
+    },
+    {
+      "section": "Neurobiological Actions of Cannabis in Animal Models",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "THC may disrupt memory and learning through its differential effect on neurotransmitter release: it activates CB1 receptors on GABAergic interneurons (which represent nearly three-quarters of brain CB1 receptors) and astrocytes resulting in hippocampal glutamate release, affects acetylcholine, adenosine, and serotonin transmission, and activates mitochondrial CB1 receptors leading to decreased cellular respiration and ATP supply, which might contribute to THC-induced cognitive deficits.",
+      "page": null
+    },
+    {
+      "section": "Neurobiological Actions of Cannabis in Animal Models",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Exposure to THC during adolescence can lead to structural, molecular, and functional alterations of brain circuits, particularly in areas involved in cognition and behavior such as the prefrontal cortex and hippocampus; long-term THC exposure induces CB1 receptor downregulation and desensitization that appear more intense and widespread after adolescent than adult exposure, and may disrupt glutamatergic and GABAergic systems leading to excessive synaptic pruning, long-term dysfunction in prefrontal excitatory/inhibitory balance, and desynchronization of prefrontal cortex neuronal networks.",
+      "page": null
+    },
+    {
+      "section": "Neurobiological Actions of Cannabis in Animal Models",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Long-term THC exposure activates microglia and astrocytes to produce inflammatory cytokines; long-term administration during adolescence increased microglial expression of tumor necrosis factor-alpha, inducible nitric oxide synthase, and cyclooxygenase-2 by 60%, 130%, and 80% respectively and reduced interleukin-10 by 30% in the prefrontal cortex, with the resulting neuroinflammatory response associated with memory impairment during adulthood.",
+      "page": null
+    },
+    {
+      "section": "Neurobiological Actions of Cannabis in Animal Models",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Most studies describe detrimental effects of THC in models of heavy cannabis use in middle adolescence; however, even lower doses may produce these same effects when administered earlier in adolescence.",
+      "page": null
+    },
+    {
+      "section": "Effect of Prenatal Exposure to Cannabinoid Agonists",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In a sample of 11 489 youth, self-reported maternal cannabis use during pregnancy was associated with various adverse outcomes among youth at 9 to 10 years of age, including poorer performance on tests of neurocognitive functioning and total intracranial volumes, even after controlling for potential confounders.",
+      "page": null
+    },
+    {
+      "section": "Effect of Prenatal Exposure to Cannabinoid Agonists",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In preclinical models, THC disrupts the normal signaling of the endocannabinoid system during development and throughout ontogenesis and results in abnormal neurotransmission; prenatal THC affects neuroanatomic areas associated with cognition and emotional regulation, including the prefrontal cortex, limbic system, and ventral tegmentum of the midbrain.",
+      "page": null
+    },
+    {
+      "section": "Effect of Prenatal Exposure to Cannabinoid Agonists",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Prenatal cannabis exposure leads to dysregulation of monoaminergic pathways and stress response systems, hampering the maturation of monoamines and producing an offspring endophenotype with protracted dysregulation of stress responsivity not explained by glucocorticoid levels; susceptibility to acute and chronic stress is tied to many psychiatric disorders ranging from depressed mood and psychosis to substance use disorders and anxiety.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Human Cognition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Acute intoxication from marijuana is associated with impairment of working and episodic memory, behavioral disinhibition, and impulsivity, which can affect performance in real-world activities; a 2016 meta-analysis showed the odds of being involved in a motor vehicle accident was increased 36% in cannabis users relative to nonusers.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Human Cognition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In a 2020 crossover clinical trial of on-road driving, the SD of lateral position was 20.29 cm at 40 to 100 minutes after inhalation of THC-dominant cannabis and 21.09 cm after a THC/CBD mixture, whereas after CBD-dominant cannabis it was similar to placebo (18.21 versus 18.26 cm), illustrating the differential short-term effect of THC and CBD on cognition; short-term effects of cannabinoids are transient and can be influenced by tolerance development and use of other drugs.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Human Cognition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A 2020 meta-analysis of adult near-daily cannabis use for more than 2 years found global neurocognition among users (n=849) to be about one-quarter of an SD worse than nonusers (n=764), with significant effects in 4 of 7 domains (decision-making, verbal learning, retention, executive function; Hedges g -0.52 to -0.18); a meta-analysis of users under 26 years of age (n=2152 versus 6575 nonusers) also showed a one-quarter SD difference in global neurocognitive performance with more specific domains affected, albeit with a smaller effect size. Neither found that age at onset of cannabis use influenced the association between exposure and cognitive performance.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Human Cognition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the CARDIA study (3385 participants 18 to 30 years of age at inception), cumulative years of exposure to marijuana was associated with worse verbal memory (0.13 lower SD in the verbal memory test for each additional 5 years of exposure) over 25 years of follow-up; however, longitudinal co-twin studies found that declines in vocabulary and general knowledge were associated with being a cannabis user but not with amount consumed, twins discordant for cannabis use showed no differences in IQ declines, and lower IQ predated cannabis use with no evidence of actual IQ decline, suggesting shared risk factors.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Human Cognition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Neuroimaging studies have shown structural changes in cannabis users; however, the results are inconsistent. A longitudinal study of 1598 adolescent MRIs found a dose-dependent association between cannabis use and prefrontal cortex thinning, and a meta-analysis found smaller hippocampal and medial and lateral orbitofrontal volumes, but brain volumes were not associated with use duration or dosage and other large twin (n=474 US, n=622 Australia) and multisite (n=262) studies reported null effects.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Human Cognition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Functional MRI studies report more robust effects, particularly after prolonged cannabis use: adult users showed greater activation in superior and posterior transverse temporal and inferior frontal gyri and less activation in striatum, insula, and middle frontal gyrus, and adolescent users greater activation in inferior parietal gyrus and putamen, suggesting compensatory neuroadaptive mechanisms; these functional abnormalities persist despite cessation and beyond the period when THC metabolites are detectable, with abstinent adolescent users (>25 days) still exhibiting greater right inferior frontal gyrus activation.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Human Cognition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In specific clinical populations, a study of 215 adults with chronic pain given daily herbal cannabis containing 12.5% THC for 1 year found no significant neurocognitive differences versus 216 control subjects, and a study of patients with multiple sclerosis given oral dronabinol found no significant differences in MRI-derived measures, including annual percentage of brain volume change and occurrence of new lesions, after 12 months; these clinical trials suggest no significant adverse effect of THC on neurocognitive symptoms in these specific clinical populations.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Cerebrovascular Risk and Disease - Cerebrovascular Risk Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Evidence that marijuana consumption increases the prevalence of specific cerebrovascular risk factors and disease is limited by a preponderance of observational studies, cross-sectional studies, case reports, and case series prone to publication and other biases; postulated adverse effects include sympathetic nervous system activation, blood pressure changes, platelet activation, and electrophysiological effects.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Cerebrovascular Risk and Disease - Cerebrovascular Risk Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "With marijuana use the most common acute reaction in humans is a decrease in blood pressure; nevertheless NHANES data showed a modest association of recent cannabis use with higher systolic blood pressure and higher prevalence of hypertension among current users 30 to 59 years of age, and heavy users (use on more than 20 of the past 30 days) had higher odds of abnormal blood pressure than never-users, although this was no longer statistically significant after additional adjustment for current tobacco and binge alcohol use (adjusted odds ratio 1.47 [95% CI, 0.99-2.16]).",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Cerebrovascular Risk and Disease - Cerebrovascular Risk Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Risk of myocardial infarction was elevated 4.8-fold within an hour after smoking marijuana compared with periods of nonuse, demonstrating the potential role of marijuana as an acute trigger for cardiovascular disease; however over 25 years of follow-up in 5113 CARDIA participants, cumulative or recent marijuana use was not associated with coronary heart disease, stroke, or cardiovascular disease mortality, in contrast to a database study observing increased 3-year cumulative incidence of myocardial infarction among marijuana users (1.37% versus 0.54%; relative risk 2.54 [95% CI, 2.45-2.61]).",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Cerebrovascular Risk and Disease - Cerebrovascular Risk Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Marijuana use appears to be a trigger for atrial fibrillation: Nationwide Inpatient Sample data show the percentage of individuals with cannabis use disorder discharged in the postlegalization period (2010-2014) with a diagnosis of arrhythmia increased 31%; however among patients hospitalized for heart failure, marijuana users had reduced odds of atrial fibrillation compared with nonusers (adjusted odds ratio 0.87 [95% CI, 0.77-0.98]), and simultaneous use of cocaine, stimulants, and other drugs may be responsible for observations of atrial fibrillation among marijuana users.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Cerebrovascular Risk and Disease - Risk of Stroke and Transient Ischemic Attack",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Several case reports and case series, mostly in young individuals, suggest a relationship between recent and heavy cannabis use and risk of stroke, but findings among case-control, population-based, outpatient and inpatient database, and electronic health record studies have been equivocal depending on study design, covariates, and source population. In one case-control study using cannabis urine screens in subjects 18 to 55 years of age the association with ischemic stroke and transient ischemic attack was not significant when tobacco use was included as a covariate (adjusted odds ratio 1.59 [95% CI, 0.71-3.70]), and a Swedish cohort found no association after adjustment for cigarette smoking and alcohol use over up to 38 years of follow-up.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Cerebrovascular Risk and Disease - Risk of Stroke and Transient Ischemic Attack",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Data from population survey studies indicate that the pattern (heavy versus less) and frequency of cannabis use may increase the risk of stroke: heavy use in the past year was associated with increased risk of nonfatal stroke and transient ischemic attack, and recent (within the past 30 days) and frequent (more than 10 days per month) use was associated with increased risk of stroke compared with nonuse, whereas less frequent use (10 days per month or less, or less than weekly in the past year) was not.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Cerebrovascular Risk and Disease - Risk of Stroke and Transient Ischemic Attack",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A Nationwide Inpatient Sample study of patients hospitalized between 2004 and 2011 found cannabis use associated with a 17% increased relative risk for acute ischemic stroke in multivariable-adjusted analysis, rising to 31% with concomitant tobacco use, and a separate Nationwide Inpatient Sample study (2009-2010) observed higher odds of stroke among cannabis users (odds ratio 1.24 [95% CI, 1.14-1.34]); in contrast, single-center electronic health record data (2015-2017) found testing positive for cannabis was not associated with ischemic stroke risk after adjustment for age, cigarette smoking, and comorbidities. Cigarette smoking is common in cannabis users and may be an important modifier or confounder of the relationship between cannabis use and stroke risk.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Cerebrovascular Risk and Disease - Risk of Stroke and Transient Ischemic Attack",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In a Canadian cohort of more than 1 million pregnant women (1989-2019) with follow-up at 30 years, cannabis use disorder was associated with a doubling of risk for hemorrhagic stroke (hazard ratio 2.08 [95% CI, 1.07-4.05]) but no increased risk for ischemic or other cerebrovascular disease; cannabis has been implicated in reversible cerebral vasoconstriction syndrome (6 of 24 nonidiopathic cases at one Colorado stroke center) and in stroke from intracranial arterial stenosis in young users 18 to 45 years of age. Acute cardiovascular events and stroke have also been reported with synthetic cannabinoids, with Spice associated with idiopathic thrombocytopenic purpura and intracranial hemorrhage linked to the superwarfarin adulterant brodifacoum.",
+      "page": null
+    },
+    {
+      "section": "Effects of Marijuana Use on Cerebrovascular Risk and Disease - Key Summary Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Differences among some study findings may be attributable to the years in which population cohorts were studied or recruited, because most population cohorts were assembled before 2012; over the past decade cannabis strains have evolved toward high THC concentrations and some preparations may contain synthetic cannabinoids such as Spice, which may influence the association of cannabis use with stroke.",
+      "page": null
+    },
+    {
+      "section": "Education and Future Directions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Observational studies have produced conflicting results regarding marijuana and hypertension, atrial fibrillation, myocardial infarction, and cognition, for several methodological reasons: historical underreporting of use as an illicit drug; associated behaviors such as tobacco smoking and alcohol use that influence stroke risk and brain connectivity; inconsistent reporting of timing, frequency, and bioavailability of exposure; the differing pharmacological effects of THC and CBD across strains and extraction methods; the gradual increase in recreational marijuana potency that limits the relevance of older studies; and ethical and blinding barriers to long-term placebo-controlled trials.",
+      "page": null
+    },
+    {
+      "section": "Education and Future Directions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Emerging evidence questions the widely accepted belief that marijuana is innocuous and suggests that cannabis, particularly THC, negatively affects brain health through direct and indirect mechanisms. Health care professionals and consumers should receive education on the potential beneficial and harmful effects associated with the use of marijuana, including the increased risk of stroke and cognitive decline. Public health efforts should be considered to raise awareness, including the use of standardized concentrations of biologically active components and health warning labels on available formulations; the use of marijuana should be individualized and closely monitored, and it may be important for professionals to monitor cognitive performance of marijuana users and to review their medications to identify potential drug-to-drug interactions.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

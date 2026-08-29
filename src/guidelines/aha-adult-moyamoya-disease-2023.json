@@ -10,12 +10,230 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Definitions - Moyamoya Disease",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Adult moyamoya disease and syndrome are rare disorders with significant morbidity and mortality. A writing group of experts was selected to conduct a literature search, summarize the current knowledge on the topic, and provide a road map for future investigation. The document presents an update in the definitions of moyamoya disease and syndrome, modern methods for diagnosis, and updated information on pathophysiology, epidemiology, and both medical and surgical treatment.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Moyamoya disease (MMD) is a cerebrovascular steno-occlusive condition characterized by progressive stenosis of the terminal portion of the internal carotid artery and the formation of an abnormal network of dilated, fragile perforators at the base of the brain. The most recent (2021) Research Committee on Moyamoya Disease criteria define MMD as steno-occlusive involvement of the arteries centered on the terminal portion of the intracranial carotid artery in the absence of other causes; proximal middle cerebral artery or anterior cerebral artery involvement suffices, and unilateral disease is acceptable to make the diagnosis.",
+      "page": null
+    },
+    {
+      "section": "Definitions - Moyamoya Syndrome",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When a patient meets the diagnostic criteria for MMD but has other comorbidities that are associated with the vasculopathy, the condition is designated moyamoya syndrome (MMS). Associated disorders include autoimmune disease (systemic lupus erythematosus, antiphospholipid syndrome, polyarteritis nodosa, Sjogren syndrome), meningitis, brain tumors (meningioma, hemangioblastoma, craniopharyngioma, glioma), Down syndrome, neurofibromatosis type 1, head irradiation, and sickle cell disease. The term moyamoya vasculopathy is used when referring nonspecifically to either MMD or MMS.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In Japan the incidence of MMD is 0.35 to 0.94 per 100 000 person-years with a prevalence of 3.16 per 100 000; the women-to-men ratio is up to 1.9:1 and 11% to 12% have a family history. In the United States the incidence is 0.57 per 100 000 people per year, mean age at diagnosis 32 years, women-to-men ratio 2.6:1. All these studies were based on International Classification of Diseases codes, and no data exist on the sensitivity and specificity of such codes in differentiating MMD and MMS.",
+      "page": null
+    },
+    {
+      "section": "Genetics - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Relatives of affected patients have increased risk of having MMD compared with the general population.",
+      "page": null
+    },
+    {
+      "section": "Genetics - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "RNF213 is a susceptibility gene for MMD in both East Asian and non-East Asian individuals. RNF213 R4810K is a major founder variant for East Asians, especially Japanese and Korean, whereas non-R4810K variants increase the risk of MMD in non-East Asian and certain Chinese populations.",
+      "page": null
+    },
+    {
+      "section": "Genetics - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The role of genetic testing for diagnosis and for genetic counseling is limited because of the low penetrance of MMD and the distinct variants depending on the population (East Asians and others). Penetrance of MMD in heterozygotes of the RNF213 R4810K variant is as low as 1 per 150 (0.67%), whereas penetrance in homozygotes is greater than 78%.",
+      "page": null
+    },
+    {
+      "section": "Genetics - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Both genetic and nongenetic factors, such as autoimmunity, radiation, and infection, predispose to the development of moyamoya vasculopathy.",
+      "page": null
+    },
+    {
+      "section": "Genetics - Genetic Screening Justification and Populations at Risk",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with moyamoya vasculopathy and evidence of manifestations concerning for a systemic disease should undergo genetic testing for the associated disease: patients with achalasia should undergo screening for GUCY1A3, those with features of Down syndrome should undergo chromosomal analysis, Noonan syndrome-like symptoms should prompt PTPN11 and CBL screening, and those with manifestations of neurofibromatosis type I should undergo NF-1 gene testing.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis and Evaluation - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although ischemic and hemorrhagic strokes are hallmark features of moyamoya presentation, patients may also present with neurocognitive impairments and specific headache syndromes.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis and Evaluation - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Digital subtraction angiography is the gold standard imaging modality for the diagnosis of moyamoya. Required findings are stenosis or occlusion in the arteries centered on the terminal portion of the intracranial internal carotid artery, and moyamoya vessels (abnormal vascular networks) in the vicinity of the occlusive or stenotic lesions in the arterial phase; unilateral and bilateral involvement both satisfy the diagnostic criteria.",
+      "page": null
+    },
+    {
+      "section": "Diagnosis and Evaluation - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Advanced hemodynamic imaging techniques are important to assess cerebrovascular reserve capacity and hemodynamic status of brain parenchyma. MRI-based hemodynamic imaging, including arterial spin labeling and blood oxygenation level-dependent MRI using a vasoactive stimulus, can assess autoregulatory exhaustion and hemodynamic impairment, but their ability to predict clinical outcomes has not been validated in large prospective cohorts of MMD or MMS.",
+      "page": null
+    },
+    {
+      "section": "Natural History - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Information regarding natural history is mainly limited to retrospective studies. In symptomatic patients in the United States managed conservatively, the 5-year risk of recurrent ischemic events has been reported as high as 65% in patients with unilateral disease and 82% in those with bilateral involvement.",
+      "page": null
+    },
+    {
+      "section": "Natural History - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Recurrent ischemia is more common in adults with MMD in the United States, whereas recurrent hemorrhage is more common in Japanese adults with MMD with conservative management (approximately 30% to 60% over long-term follow-up).",
+      "page": null
+    },
+    {
+      "section": "Natural History - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with angiographic patterns of posterior circulation involvement have been associated with worse clinical presentation and higher recurrent hemorrhages.",
+      "page": null
+    },
+    {
+      "section": "Natural History",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Limited data suggest an annual risk of cerebrovascular events in asymptomatic patients in the range of 5%, and of disease progression in 20% over a mean follow-up of 6 years. These data support the need for serial follow-up, but the optimal management of asymptomatic MMD, and the role of hemodynamic assessment in identifying high-risk patients who may warrant early intervention, remains uncertain.",
+      "page": null
+    },
+    {
+      "section": "Medical Treatment - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Antiplatelet use for prevention of ischemic events in surgical and nonsurgical patients with ischemic moyamoya vasculopathy may be reasonable, per the AHA/American Stroke Association 2021 Guideline, which assigned Class of Recommendation 2b and Level of Evidence C-LD to aspirin monotherapy in patients with MMD and a history of ischemic stroke or TIA. This scientific statement itself assigns no class of recommendation or level of evidence.",
+      "page": null
+    },
+    {
+      "section": "Medical Treatment - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Compared with other antiplatelet drugs, the vasodilator cilostazol may improve survival, cerebral blood flow, and cognition, but this needs to be further validated.",
+      "page": null
+    },
+    {
+      "section": "Medical Treatment - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Headaches in moyamoya vasculopathy are common and often migraine-like, but migraine therapies that cause vasoconstriction (triptans, ergots), inhibit vasodilation (calcitonin gene-related peptide-targeted therapies), or lower blood pressure (beta-blockers, calcium channel blockers) should be avoided.",
+      "page": null
+    },
+    {
+      "section": "Medical Treatment - Management of Additional Vascular Risk Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The control of additional cerebrovascular stroke risk factors is important in the medical management of MMD. Diabetes is an independent predictor of recurrent ischemic stroke in nonsurgical and surgically treated patients, and hypertension and dyslipidemia are known risk factors for cerebrovascular events in patients with initially asymptomatic MMD.",
+      "page": null
+    },
+    {
+      "section": "Medical Treatment - Antiplatelet Regimens in Ischemic MMD",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Studies of perioperative use of aspirin with surgical revascularization have demonstrated an increased rate of bypass patency without elevation of bleeding risk and, in some studies, improved functional outcome; however, no benefit in the prevention of recurrent ischemia has been demonstrated. Addition of intravenous heparin for perioperative management increases the risk of hemorrhage without improving bypass patency.",
+      "page": null
+    },
+    {
+      "section": "Surgical Treatment - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with symptomatic MMD should be referred for consideration of revascularization therapy.",
+      "page": null
+    },
+    {
+      "section": "Surgical Treatment - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is sufficient evidence and a Class 2a recommendation from the AHA/American Stroke Association Guidelines for surgical revascularization in adult patients with symptomatic MMD. That class was assigned by the 2021 guideline, not by this scientific statement.",
+      "page": null
+    },
+    {
+      "section": "Surgical Treatment - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Intraoperative anesthetic management should ensure maintenance of normotension (relative to the patient's baseline blood pressure), normocapnia (end-tidal carbon dioxide between 35 and 45 mm Hg), and normovolemia to reduce risk of intraoperative ischemic events; systolic blood pressure above 180 mm Hg and mannitol should be avoided.",
+      "page": null
+    },
+    {
+      "section": "Surgical Treatment - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cerebral hyperperfusion syndrome (CHS) is a postoperative condition associated with direct and combined bypasses that requires prompt recognition and management. Reported overall incidence is 16.5% (19.9% in adults); CHS may be mitigated with strict blood pressure control, typically systolic blood pressure below 130 mm Hg.",
+      "page": null
+    },
+    {
+      "section": "Surgical Treatment - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Endovascular treatment with stent or angioplasty is not advisable for ischemic moyamoya; it has been associated with a low rate of success (25%) and high complication rates, including devastating hemorrhage in 7%, without evidence of improvement in natural history.",
+      "page": null
+    },
+    {
+      "section": "Surgical Treatment - Considerations for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hemorrhagic aneurysms of moyamoya vessels can be treated either endovascularly or with revascularization surgery, both safe options with success rates of approximately 80%.",
+      "page": null
+    },
+    {
+      "section": "Surgical Treatment - Surgical Interventions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The Japan Adult Moyamoya trial, the only randomized controlled trial, examined bilateral direct bypass versus medical therapy for hemorrhagic moyamoya and demonstrated a reduction in rebleeding with surgery (2.7%/y versus 7.6%/y; P=0.04); posterior hemorrhages were at higher risk of rebleeding and obtained greater benefit from surgery. No prospective randomized controlled trials have addressed revascularization surgery for ischemic stroke prevention in moyamoya, and no strong conclusions can be made regarding direct versus indirect bypass in ischemic moyamoya.",
+      "page": null
+    },
+    {
+      "section": "Conclusions and Future Research Directions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "MMD and MMS should be considered rare diseases, requiring cohesive national and international efforts including development of high-quality, sustainable, dynamic registries and data sharing. Barriers to current knowledge include limited models to replicate the disease process, absence of universally accepted terminology and diagnostic criteria, limited sample sizes in therapeutic studies, selection bias in comparative therapeutic studies, scarcity of patient-oriented outcome measurements with impartial evaluators, and the need to validate appropriate surrogate markers.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

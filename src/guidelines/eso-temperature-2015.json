@@ -10,36 +10,30 @@
   "pmid": "26148223",
   "recommendations": [
     {
-      "section": "Treating established hyperthermia",
-      "classOfRec": "Statement",
-      "classNote": null,
+      "section": "PICO1: In hyperthermic patients with acute ischemic stroke, does treatment of hyperthermia compared with no treatment of hyperthermia improve functional outcome and/or survival?",
+      "classOfRec": "Conditional",
+      "classNote": "Weak (ESO wording); no direction assigned — summary table symbol is '?' — For",
       "levelOfEvidence": "Low certainty",
-      "text": "Only low-quality evidence was found, and therefore no recommendation could be made for treating hyperthermia as a means to improve functional outcome and/or survival in patients with acute ischaemic stroke and hyperthermia.",
+      "text": "In patients with acute ischemic stroke and hyperthermia, we cannot make any recommendation for treating hyperthermia as a means to improve functional outcome and/or survival.",
       "page": null
     },
     {
-      "section": "Routine antipyretic prophylaxis in normothermic patients",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "PICO2: In normothermic patients with acute ischemic stroke, does prevention of hyperthermia with antipyretics compared with no prevention of hyperthermia improve functional outcome and/or survival?",
+      "classOfRec": "Conditional",
+      "classNote": "Against (Weak against intervention, ↓?)",
       "levelOfEvidence": "Moderate certainty",
-      "text": "Moderate evidence was found to suggest against routine prevention of hyperthermia with antipyretics as a means to improve functional outcome and/or survival in patients with acute ischaemic stroke who are normothermic.",
+      "text": "In patients with acute ischemic stroke and normothermia, we do not recommend routine prevention of hyperthermia with antipyretics as a means to improve functional outcome and/or survival.",
       "page": null
     },
     {
-      "section": "Induced hypothermia",
-      "classOfRec": "Statement",
-      "classNote": "Conditional recommendation",
+      "section": "PICO3: In patients with acute ischemic stroke, does induction of hypothermia compared with no induction of hypothermia improve functional outcome and/or survival?",
+      "classOfRec": "Conditional",
+      "classNote": "Against (Weak against intervention, ↓?)",
       "levelOfEvidence": "Very low certainty",
-      "text": "Very low-quality evidence was found to suggest against routine induction of hypothermia as a means to improve functional outcome and/or survival in patients with acute ischaemic stroke.",
-      "page": null
-    },
-    {
-      "section": "Strength of the recommendations",
-      "classOfRec": "Statement",
-      "classNote": null,
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The currently available data about the management of temperature in patients with acute ischaemic stroke are limited and the strengths of the recommendations are therefore weak. The guideline calls for new randomised controlled trials as well as recruitment of eligible patients to ongoing randomised controlled trials.",
+      "text": "In patients with acute ischemic stroke, we do not recommend induction of hypothermia as a means to improve functional outcome and/or survival.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

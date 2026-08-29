@@ -9,12 +9,288 @@
   "pmid": "42095755",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "PICO 1 - Standardised diagnostic criteria for SAP",
       "classOfRec": "Statement",
-      "classNote": "Source grading: GRADE / consensus.",
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Stroke-associated pneumonia occurs in approximately 12% of patients and is the most frequent infectious complication after acute stroke and a major contributor to morbidity and mortality. High-quality evidence to guide diagnosis, prediction, prevention and treatment remains limited, so recommendations are largely structured consensus.",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with acute ischaemic or haemorrhagic stroke (non-ventilated) within 7 days of stroke symptom onset, no studies were identified addressing whether use of any standardised diagnostic criteria for SAP, compared to non-standardised clinician-based diagnosis, improves clinical outcomes. No evidence-based recommendation is possible; there is continued uncertainty over the most accurate approach for diagnosing SAP because of the lack of a validated gold standard.",
+      "page": null
+    },
+    {
+      "section": "PICO 1 - Standardised diagnostic criteria for SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Standardised, algorithm-based diagnostic criteria (adapted CDC criteria as proposed by the PISCES group) are recommended for the diagnosis of stroke-associated pneumonia. Probable SAP is defined as fulfilment of the CDC criteria without typical chest X-ray findings despite repeated imaging, whereas definite (confirmed) SAP requires fulfilment of the CDC criteria including typical chest X-ray changes. Given the limited sensitivity of chest X-ray, particularly in the early stages of SAP, empirical antibiotic therapy should be initiated promptly in both probable and definite cases.",
+      "page": null
+    },
+    {
+      "section": "PICO 2 - Chest ultrasound or computed tomography for diagnosis of SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with acute ischaemic or haemorrhagic stroke (non-ventilated) within 7 days of stroke symptom onset, evidence on chest ultrasound or computed tomography compared with chest X-ray alone is limited to small observational studies and does not support a specific recommendation. The diagnostic accuracy and clinical utility of lung ultrasonography in this setting remain uncertain, and the utility of chest X-ray or CT was not related to outcome.",
+      "page": null
+    },
+    {
+      "section": "PICO 2 - Chest ultrasound or computed tomography for diagnosis of SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Chest CT may be considered as an adjunct in selected cases with suspected SAP, for example where chest radiography is inconclusive or cannot be performed with adequate image quality. Chest X-ray has limited diagnostic accuracy for SAP (sensitivity 58.3%, specificity 73.9%, PPV 53.8%, NPV 77.2% against pulmonary CT as reference standard), and there is no universally accepted gold standard for SAP diagnosis.",
+      "page": null
+    },
+    {
+      "section": "PICO 3 - Diagnostic blood biomarkers for SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with acute ischaemic or haemorrhagic stroke (non-ventilated) within 7 days of stroke symptom onset, the evidence on incorporation of any diagnostic (blood) biomarker compared with not using diagnostic biomarkers is insufficient for an evidence-based recommendation. The single included study (ex vivo synthesised cytokines: IL-12, IP-10, plasma IL-6 multimarker score, sensitivity 0.89, specificity 0.88) reported no relationship of these cytokines to clinical outcomes, and their clinical value remains unclear.",
+      "page": null
+    },
+    {
+      "section": "PICO 3 - Diagnostic blood biomarkers for SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Plasma C-reactive protein may be considered as an adjunct within a standardised diagnostic algorithm for SAP, using a cut-off value between 30 and 40 mg/L, particularly in afebrile patients. External validation is required, including confirmation of clinical utility and evidence of impact on patient-related outcomes.",
+      "page": null
+    },
+    {
+      "section": "PICO 4 - Clinical prediction scores and biomarkers for prediction of SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Validated clinical prediction scores (A2DS2 pooled AUC 0.800; modified A2DS2 0.881; ISAN 0.779; AIS-APS 0.783; PANTHERIS 0.725; PASS 0.745) and blood biomarkers (NLR 0.803, CRP 0.800, IL-6 0.808, neutrophils 0.787) show moderate to good discrimination for identifying patients who will develop SAP, but are currently not part of routine clinical practice. They may be used to identify patients at highest risk of SAP and as inclusion criteria in trials of SAP prevention; their future routine use will depend on the availability of effective risk-adapted preventive strategies. Adding biomarkers to prediction scores increases discrimination only modestly (0.02-0.10) and lacks external validation.",
+      "page": null
+    },
+    {
+      "section": "PICO 5 - Biomarker- or score-guided antibiotic treatment",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with stroke-associated pneumonia (ischaemic or haemorrhagic stroke; non-ventilated) within 7 days of stroke symptom onset, routine use of procalcitonin-guided (or other biomarker- or prediction-score-guided) antibiotic treatment is not supported. The only RCT (STRAWINSKI, n = 227) found that high-sensitive PCT-guided therapy did not improve 3-month functional outcome (OR 0.79, 95% CI 0.45-1.35; P = .47), did not reduce pneumonia rates or mortality, and was associated with increased antibiotic use (63% vs 45%).",
+      "page": null
+    },
+    {
+      "section": "PICO 6 - Preventive (prophylactic) antibiotic therapy",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with acute ischaemic or haemorrhagic stroke (non-ventilated) within 7 days of stroke symptom onset, we recommend against the use of prophylactic (preventive) antibiotic therapy to prevent SAP, as it does not reduce SAP incidence nor improve clinical outcomes. Across 6 RCTs (5941 participants) preventive antibiotic therapy did not reduce physician-diagnosed pneumonia (8.3% vs 8.2%; OR 0.92, 95% CI 0.69-1.10), panel-diagnosed pneumonia (OR 0.81, 95% CI 0.42-1.57), favourable functional outcome (mRS 0-2) at 90 days (OR 0.96, 95% CI 0.85-1.09), ordinal mRS at 90 days (adjusted OR 1.0, 95% CI 0.87-1.21) or mortality at 90 days (OR 1.07, 95% CI 0.9-1.26). Prophylactic antibiotic use is not warranted, even in the framework of antibiotic stewardship. (Certainty was moderate for mRS 0-2, which allowed a strong recommendation.)",
+      "page": null
+    },
+    {
+      "section": "PICO 6 - Preventive (prophylactic) antibiotic therapy",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Antibiotic therapy should be initiated promptly upon confirmed diagnosis of SAP.",
+      "page": null
+    },
+    {
+      "section": "PICO 7 - Antiemetics for prevention of SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with acute ischaemic or haemorrhagic stroke (non-ventilated) within 7 days of stroke symptom onset, antiemetics cannot be recommended for SAP prevention. Meta-analysis of 4 RCTs (1622 participants; metoclopramide or domperidone, 4-21 days) showed no significant reduction in pneumonia (OR 0.38, 95% CI 0.08-1.91) or mortality. Although the GRADE assessment is weakly in favour of antiemetics, given very substantial heterogeneity (Tau2 = 2.45, I2 = 94%) the evidence is considered insufficient for a recommendation.",
+      "page": null
+    },
+    {
+      "section": "PICO 7 - Beta-blockers for prevention of SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "No RCTs and no prospective observational studies of beta-blockers started after stroke were identified. Meta-analysis of mostly retrospective studies showed no significant difference in SAP between patients treated and not treated with beta-blockers (OR 0.51, 95% CI 0.20-1.29), although mortality was lower (OR 0.46, 95% CI 0.24-0.91), with considerable heterogeneity. There is no consistent evidence to support the use of beta-blockers for SAP prevention.",
+      "page": null
+    },
+    {
+      "section": "PICO 7 - Statins for prevention of SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Only one retrospective study of de novo statin therapy in the acute phase of stroke was identified; the association with lower SAP frequency (19.4% vs 34.6%) was no longer significant in multivariate analysis (OR 1.51, 95% CI 0.85-2.67). Although meta-analysis including studies of pre-existing statin use suggested reduced SAP (OR 0.54, 95% CI 0.36-0.81) with no difference in death (OR 0.78, 95% CI 0.51-1.19), no firm conclusions could be drawn about the utility of statins for SAP prevention given the observational, mostly retrospective design, variable treatment timing and varied diagnostic criteria.",
+      "page": null
+    },
+    {
+      "section": "PICO 7 - Other preventive medications (ACE inhibitors/ARBs, acid suppression, benzodiazepines)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "No RCTs specifically addressing angiotensin-converting enzyme inhibitors or angiotensin receptor blockers, gastric acid suppressants or benzodiazepines for SAP prevention were identified, and no meta-analysis was performed given the heterogeneity and absence of a shared mechanism of action. No evidence-based recommendation is possible.",
+      "page": null
+    },
+    {
+      "section": "PICO 7 - Other preventive medications (acid-suppressive therapy)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Acid-suppressive therapy (histamine-2 receptor antagonists and/or proton pump inhibitors) may paradoxically increase pneumonia risk after stroke and should not be prescribed without a clear clinical indication. Other pharmacological approaches (antiemetics, beta-blockers, statins or acid-suppressive therapy) are not recommended for SAP prevention.",
+      "page": null
+    },
+    {
+      "section": "PICO 8 - Intermittent versus continuous nasogastric tube feeding",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with acute ischaemic or haemorrhagic stroke (non-ventilated) within 7 days of stroke symptom onset who require nasogastric feeding, the evidence (3 RCTs and 1 observational study, 255 patients) is not considered sufficient to recommend intermittent over continuous nasogastric feeding. While the GRADE assessment is weak in favour of intermittent feeding, there is significant risk of bias in all 4 studies, heterogeneity (I2 = 42%), and all but one study was conducted in Eastern Asia where feeding practice may not reflect European preferences.",
+      "page": null
+    },
+    {
+      "section": "PICO 8 - Intermittent versus continuous nasogastric tube feeding",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Pending new evidence, clinicians should use the nasogastric feeding pattern (intermittent or continuous) they are most comfortable with; nutritional strategies may be tailored to local expertise and patient needs.",
+      "page": null
+    },
+    {
+      "section": "PICO 9 - Physical treatments to improve lung function (respiratory physiotherapy)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with acute ischaemic or haemorrhagic stroke (non-ventilated) within 7 days of stroke symptom onset, despite a GRADE assessment weak in favour of the intervention, the evidence is insufficient to make an evidence-based recommendation on physical treatments to improve lung function, as there are only 2 small RCTs with unclear timing of the intervention (acute rather than within 7 days), small sample size, significant heterogeneity and high risk of bias.",
+      "page": null
+    },
+    {
+      "section": "PICO 9 - Physical treatments to improve lung function (respiratory physiotherapy)",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Respiratory physiotherapy may be considered as part of an early post-stroke rehabilitation programme. The available data provide no reason to avoid this intervention.",
+      "page": null
+    },
+    {
+      "section": "PICO 10 - Early mobilisation",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with acute ischaemic or haemorrhagic stroke (non-ventilated) within 7 days of stroke symptom onset, early mobilisation in bed and/or out of bed within 48 hours of stroke onset is suggested to reduce SAP frequency. Meta-analysis of 4 studies (1011 participants) showed pneumonia in 24/445 (5.4%) with early mobilisation vs 74/566 (13.1%) controls (OR 0.41, 95% CI 0.18-0.96; P = .04), an approximately 60% relative reduction, with moderate heterogeneity (I2 = 50%), moderate risk of bias and low to very low GRADE certainty.",
+      "page": null
+    },
+    {
+      "section": "PICO 10 - Early mobilisation",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Very early, frequent and intensive out-of-bed mobilisation within the first 24 hours after stroke onset should be avoided in patients with severe stroke, as it was not associated with lower mortality, better recovery or fewer complications and was associated with worse outcomes in those with severe strokes (AVERT II); approximately 24 hours after onset appears to be the optimal time to start.",
+      "page": null
+    },
+    {
+      "section": "PICO 11 - Positioning in patients with reduced level of consciousness",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with acute ischaemic or haemorrhagic stroke (non-ventilated) within 7 days of stroke symptom onset who have a reduced level of consciousness, no studies comparing the recovery position with no specific positioning were identified. No evidence-based recommendation is possible.",
+      "page": null
+    },
+    {
+      "section": "PICO 11 - Positioning in patients with reduced level of consciousness",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Turn the patient from the supine to the left and right lateral recumbent position every 2 hours, where possible, together with regular passive mobilisation of all joints. This is based on a single small trial (turn-mob, mobilisation and repositioning within 48 hours of admission, pneumonia 14/111 [12.6%] vs 30/112 [36.8%], P = .008) and current clinical practice in the European context.",
+      "page": null
+    },
+    {
+      "section": "PICO 11 - Positioning during enteral feeding",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients fed via enteral tubes, a 30-45 degree head-up position during feeding is recommended to prevent reflux and aspiration; this is based on clinical practice rather than evidence. An exception applies to patients awaiting mechanical thrombectomy, in whom 30 degree head-up positioning was associated with significantly more neurological deterioration than flat (0 degree) positioning.",
+      "page": null
+    },
+    {
+      "section": "PICO 12 - Duration of antibiotic treatment for SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with stroke-associated pneumonia (ischaemic or haemorrhagic stroke; non-ventilated) within 7 days of stroke symptom onset, there are no clinical studies comparing longer duration (>7 days) with standard duration (<=7 days) of antibiotic treatment. No evidence-based recommendation is possible.",
+      "page": null
+    },
+    {
+      "section": "PICO 12 - Duration of antibiotic treatment for SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Antibiotic treatment duration for SAP should be guided by clinical response, with a minimum of 5 days, with extension reserved for complicated infections, delayed clinical response or difficult-to-treat pathogens. If it becomes clear that the diagnosis of SAP is incorrect, treatment should be stopped earlier for reasons of antibiotic stewardship. Excessive antibiotic exposure has been associated with increased in-hospital mortality in intracerebral haemorrhage.",
+      "page": null
+    },
+    {
+      "section": "PICO 13 - Broad-spectrum versus narrow-spectrum antibiotics",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with SAP (ischaemic or haemorrhagic stroke; non-ventilated) within 7 days of stroke symptom onset, there are no clinical studies comparing broad-spectrum with narrow-spectrum antibiotics (including choice of specific subclasses). The current evidence base is insufficient to guide the selection of optimal antibiotic regimens in SAP; no evidence-based recommendation is possible.",
+      "page": null
+    },
+    {
+      "section": "PICO 13 - Broad-spectrum versus narrow-spectrum antibiotics",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "SAP occurring within the first 7 days after stroke should be classified primarily as aspiration pneumonia rather than community-acquired pneumonia. Empirical antibiotic selection should follow local protocols targeting aspiration-associated organisms (predominantly aerobic Gram-negative bacilli and Gram-positive cocci), using a beta-lactam/beta-lactamase inhibitor combination (eg, co-amoxiclav) as first-line therapy; in penicillin allergy a fluoroquinolone such as levofloxacin or moxifloxacin, or amoxicillin plus metronidazole, is appropriate. Routine coverage of atypical pathogens and of anaerobes is not indicated except in cases of massive aspiration. MRSA coverage (vancomycin or linezolid) should be added in patients with relevant risk factors; combination therapy is reserved for septic shock or high risk of multidrug-resistant pathogens, with monotherapy preferred in most cases. For SAP with onset beyond 7 days after stroke onset, empirical antibiotic therapy should follow institutional hospital-acquired pneumonia protocols.",
+      "page": null
+    },
+    {
+      "section": "PICO 13 - Adjunctive corticosteroids",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Although systemic corticosteroids are recommended for severe community-acquired pneumonia, their routine use in patients with acute stroke is not advised. In the absence of stroke-specific evidence of benefit, and given risks of hyperglycaemia, infection and gastrointestinal complications, corticosteroids should only be used if there are compelling clinical indications.",
+      "page": null
+    },
+    {
+      "section": "PICO 14 - Microbiology-guided versus empirical antibiotic treatment",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with SAP (ischaemic or haemorrhagic stroke; non-ventilated) within 7 days of stroke symptom onset, there are no clinical studies comparing antibiotic therapy targeted by identification of the microbiological cause with empirical antibiotic therapy. No evidence-based recommendation is possible.",
+      "page": null
+    },
+    {
+      "section": "PICO 14 - Microbiology-guided versus empirical antibiotic treatment",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Once SAP is clinically diagnosed (definite or probable according to PISCES criteria), empirical antibiotic therapy should be initiated promptly and guided by local protocols. Microbiological samples should be obtained prior to treatment initiation wherever feasible to enable subsequent de-escalation. The urgency of therapy depends on severity: in sepsis without shock antimicrobial therapy should start within 3 hours of recognition, and in septic shock immediately, ideally within 1 hour.",
+      "page": null
+    },
+    {
+      "section": "PICO 14 - Viral pathogens in SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "It is unclear whether and to what extent viral pathogens play a role in SAP, as no relevant data are available. Therefore, no treatment recommendations can be given with regard to viral pathogens.",
+      "page": null
+    },
+    {
+      "section": "PICO 15 - Adjuncts in the treatment of SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "In hospitalised adults with SAP (ischaemic or haemorrhagic stroke; non-ventilated) within 7 days of stroke symptom onset, there are no clinical studies investigating adjuncts (eg, cough-assist device, breathing therapy) in the treatment of SAP and their impact on stroke outcome. No evidence-based recommendation is possible.",
+      "page": null
+    },
+    {
+      "section": "PICO 15 - Adjuncts in the treatment of SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Adjunctive interventions such as cough-assist devices and respiratory physiotherapy are not part of standard care and are not routinely recommended for SAP, but may be considered in selected patients, particularly those with relevant respiratory comorbidities such as chronic lung disease.",
+      "page": null
+    },
+    {
+      "section": "PICO 15 - Oxygen therapy and monitoring in SAP",
+      "classOfRec": "Statement",
+      "classNote": "Summarised from the article text — not the published recommendation box",
+      "levelOfEvidence": "Ungraded",
+      "text": "Routine oxygen supplementation is not indicated in non-hypoxic patients after stroke, as demonstrated in the Stroke Oxygen Trial (>8000 patients). SpO2 should be monitored regularly in stroke units, with oxygen administered only to correct hypoxia (target value >=94%); continuous SpO2 monitoring in the early phase is essential to ensure prompt detection and management of hypoxia.",
       "page": null
     }
-  ]
+  ],
+  "extractionStatus": "source-not-machine-readable",
+  "extractionNote": "Every recommendation box in this guideline is published as an image, so no verbatim GRADE wording, strength label or certainty rating is machine-readable. The statements below are drawn from the article's running text, where the panel states its conclusions explicitly. Consult the source for the exact recommendations and their grades.",
+  "documentType": "guideline",
+  "gradingSystem": "ungraded"
 }
