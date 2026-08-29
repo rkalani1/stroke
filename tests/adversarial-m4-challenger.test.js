@@ -167,7 +167,7 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
       const coreAssets = eval(arrayString); // Evaluates array of string paths safely
 
       // Floor guards against the precache being gutted. Lowered from 50 in
-      // v6.23.0, which deliberately dropped 31 data/*.json agent-API entries
+      // v6.24.0, which deliberately dropped 31 data/*.json agent-API entries
       // (nothing in src/ fetches them) and 8 large infographic PNGs
       // (lazy-loaded; the precached SVG is the onError fallback) — 9.26 MB of
       // install payload down to 4.68 MB. Both groups still cache on first

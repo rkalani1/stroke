@@ -275,7 +275,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.23.0';
+const APP_VERSION = '6.24.0';
 
 // P0 evidence-locked calculators exposed for browser-console QA testing and future UI wiring.
 // These are pure functions with PMID/DOI citations in their source; running e.g.

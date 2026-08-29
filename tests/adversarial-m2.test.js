@@ -146,7 +146,7 @@ describe('Milestone 2 Adversarial Verification & Stress Harness', () => {
       }
 
       // Inventory count, not a safety assertion — it moves whenever Protocols cards are added
-      // or removed. It is 139 after v6.23.0 moved the Guideline Library's two accordion
+      // or removed. It is 139 after v6.24.0 moved the Guideline Library's two accordion
       // levels onto <LazyDetails> (which mounts its body on first open — a closed <details>
       // otherwise builds and retains all of its children, and that route was constructing
       // 862 recommendations to show ~89 collapsed headers).
