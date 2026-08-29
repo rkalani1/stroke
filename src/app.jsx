@@ -27958,14 +27958,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </button>
                       </div>
                       {encounterReadiness.required.length > 0 ? (
-                        <div className="rounded-md border border-dashed border-crit-300 bg-crit-50 p-4 text-sm text-crit-900 dark:border-crit-800 dark:bg-crit-950 dark:text-crit-300" role="status">
-                          <p className="font-semibold">Preview locked</p>
-                          <p className="mt-1 text-xs">Complete {encounterReadiness.required.map((field) => field.name).join(', ')} with synthetic information to reveal the handoff preview.</p>
+                        <div className="rounded-md border border-dashed border-warn-300 bg-warn-50 p-4 text-sm text-warn-900 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300" role="status">
+                          <p className="font-semibold">Incomplete — preview and copy still available</p>
+                          <p className="mt-1 text-xs">Still to fill: {encounterReadiness.required.map((field) => field.name).join(', ')}. The preview below and the copy button use whatever is entered so far.</p>
                           <button type="button" onClick={jumpToNextRequiredEncounterField} className="mt-3 min-h-[44px] rounded-md border border-crit-300 bg-white px-3 py-2 text-xs font-semibold text-crit-800 dark:border-crit-800 dark:bg-card dark:text-crit-300">
                             Go to {encounterReadiness.nextField}
                           </button>
                         </div>
-                      ) : (() => {
+                      ) : null}
+                      {(() => {
                         const fields = getHandoffSummaryFields();
                         const cards = [
                           { label: 'Dx', value: fields.diagnosis },
