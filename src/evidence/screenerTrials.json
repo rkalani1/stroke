@@ -14,7 +14,7 @@
     "externalMetadata": {
       "nct": "NCT06289985",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06289985",
-      "verificationDate": "2026-05-28"
+      "verificationDate": "2026-08-30"
     },
     "conciseBedsideSummary": "Optimizes endovascular therapy for low NIHSS LVOs or non-dominant MVOs. Excludes dominant M2 branch.",
     "pathway": "Consult Stroke Research Coordinator / On-Call Stroke Fellow or Endovascular Coordinator",
@@ -36,10 +36,34 @@
     },
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "==", "value": "ischemic", "error": "Requires Ischemic Stroke", "matchedLabel": "Ischemic Stroke classification selected" },
-        { "field": "onsetHours", "operator": "<=", "value": 24, "error": "Presentation > 24 hours after last known well", "matchedLabel": "Within the 24-hour presentation window" },
-        { "field": "aspects", "operator": ">=", "value": 6, "error": "CT ASPECTS < 6 / MRI ASPECTS < 7", "matchedLabel": "ASPECTS is {value} (meets CT ≥ 6 threshold)" },
-        { "field": "preMrs", "operator": "<=", "value": 2, "error": "Pre-stroke mRS > 2", "matchedLabel": "Pre-stroke mRS is {value} (meets ≤ 2)" },
+        {
+          "field": "classification",
+          "operator": "==",
+          "value": "ischemic",
+          "error": "Requires Ischemic Stroke",
+          "matchedLabel": "Ischemic Stroke classification selected"
+        },
+        {
+          "field": "onsetHours",
+          "operator": "<=",
+          "value": 24,
+          "error": "Presentation > 24 hours after last known well",
+          "matchedLabel": "Within the 24-hour presentation window"
+        },
+        {
+          "field": "aspects",
+          "operator": ">=",
+          "value": 6,
+          "error": "CT ASPECTS < 6 / MRI ASPECTS < 7",
+          "matchedLabel": "ASPECTS is {value} (meets CT ≥ 6 threshold)"
+        },
+        {
+          "field": "preMrs",
+          "operator": "<=",
+          "value": 2,
+          "error": "Pre-stroke mRS > 2",
+          "matchedLabel": "Pre-stroke mRS is {value} (meets ≤ 2)"
+        },
         {
           "operator": "or",
           "error": "Does not meet Branch 1 (NIHSS 0-5 + ICA/M1) or Branch 2 (NIHSS ≥ 8 + non-dominant/co-dominant M2/M3)",
@@ -47,25 +71,63 @@
             {
               "label": "Meets Branch 1 (Low NIHSS LVO: NIHSS 0-5 + ICA/M1)",
               "criteria": [
-                { "field": "vessel", "operator": "==", "value": "ica_m1" },
-                { "field": "nihss", "operator": "<=", "value": 5 }
+                {
+                  "field": "vessel",
+                  "operator": "==",
+                  "value": "ica_m1"
+                },
+                {
+                  "field": "nihss",
+                  "operator": "<=",
+                  "value": 5
+                }
               ]
             },
             {
               "label": "Meets Branch 2 (Severe MVO: NIHSS ≥ 8 + non-dominant M2/M3)",
               "criteria": [
-                { "field": "vessel", "operator": "==", "value": "m2_m3_nd" },
-                { "field": "nihss", "operator": ">=", "value": 8 }
+                {
+                  "field": "vessel",
+                  "operator": "==",
+                  "value": "m2_m3_nd"
+                },
+                {
+                  "field": "nihss",
+                  "operator": ">=",
+                  "value": 8
+                }
               ]
             }
           ]
         }
       ],
       "exclusions": [
-        { "field": "vessel", "operator": "==", "value": "dominant_m2", "error": "Excludes dominant M2 occlusion" },
-        { "field": "vessel", "operator": "==", "value": "dominant_m3", "error": "Excludes dominant M3 occlusion" },
-        { "field": "exMultipleTerritories", "operator": "==", "value": true, "error": "Excludes acute occlusions in multiple vascular territories", "pendingLabel": "Confirm no acute occlusions in multiple territories" },
-        { "field": "exTandem", "operator": "==", "value": true, "error": "Excludes tandem occlusions", "pendingLabel": "Confirm no tandem occlusions" }
+        {
+          "field": "vessel",
+          "operator": "==",
+          "value": "dominant_m2",
+          "error": "Excludes dominant M2 occlusion"
+        },
+        {
+          "field": "vessel",
+          "operator": "==",
+          "value": "dominant_m3",
+          "error": "Excludes dominant M3 occlusion"
+        },
+        {
+          "field": "exMultipleTerritories",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes acute occlusions in multiple vascular territories",
+          "pendingLabel": "Confirm no acute occlusions in multiple territories"
+        },
+        {
+          "field": "exTandem",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes tandem occlusions",
+          "pendingLabel": "Confirm no tandem occlusions"
+        }
       ],
       "manualPending": [
         "Confirm vessel anatomy on CTA/MRA (no dominant M2/M3 branch)",
@@ -88,7 +150,7 @@
     "externalMetadata": {
       "nct": "NCT05911568",
       "registryUrl": "https://clinicaltrials.gov/study/NCT05911568",
-      "verificationDate": "2026-05-28"
+      "verificationDate": "2026-08-30"
     },
     "conciseBedsideSummary": "Cohort study comparing EVT to Medical Management in LVO-AIS with pre-stroke mRS 3-4.",
     "pathway": "Consult Stroke Research Coordinator / Stroke Neurology",
@@ -111,16 +173,71 @@
     },
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "==", "value": "ischemic", "error": "Requires Ischemic Stroke", "matchedLabel": "Ischemic Stroke classification selected" },
-        { "field": "vessel", "operator": "in", "value": ["ica_m1", "dominant_m2"], "error": "Requires ICA, M1, or dominant M2 occlusion", "matchedLabel": "Vessel is {value}" },
-        { "field": "preMrs", "operator": "in", "value": [3, 4], "error": "Pre-stroke mRS must be exactly 3 or 4", "matchedLabel": "Pre-stroke mRS is {value}" },
-        { "field": "nihss", "operator": ">=", "value": 6, "error": "NIHSS < 6", "matchedLabel": "NIHSS is {value} (meets ≥ 6)" },
-        { "field": "aspects", "operator": ">=", "value": 3, "error": "CT ASPECTS < 3 / MRI ASPECTS < 4", "matchedLabel": "ASPECTS is {value} (meets CT ≥ 3 threshold)" },
-        { "field": "onsetHours", "operator": "<=", "value": 24, "error": "Presentation > 24 hours after last known well", "matchedLabel": "Within the 24-hour presentation window" },
-        { "field": "presentedWithin24h", "operator": "==", "value": true, "error": "Did not present within 24h of onset", "matchedLabel": "Presented to study hospital within 24h of LKW", "pendingLabel": "Confirm patient arrived at the facility within 24 hours of stroke onset (presented within 24h)" }
+        {
+          "field": "classification",
+          "operator": "==",
+          "value": "ischemic",
+          "error": "Requires Ischemic Stroke",
+          "matchedLabel": "Ischemic Stroke classification selected"
+        },
+        {
+          "field": "vessel",
+          "operator": "in",
+          "value": [
+            "ica_m1",
+            "dominant_m2"
+          ],
+          "error": "Requires ICA, M1, or dominant M2 occlusion",
+          "matchedLabel": "Vessel is {value}"
+        },
+        {
+          "field": "preMrs",
+          "operator": "in",
+          "value": [
+            3,
+            4
+          ],
+          "error": "Pre-stroke mRS must be exactly 3 or 4",
+          "matchedLabel": "Pre-stroke mRS is {value}"
+        },
+        {
+          "field": "nihss",
+          "operator": ">=",
+          "value": 6,
+          "error": "NIHSS < 6",
+          "matchedLabel": "NIHSS is {value} (meets ≥ 6)"
+        },
+        {
+          "field": "aspects",
+          "operator": ">=",
+          "value": 3,
+          "error": "CT ASPECTS < 3 / MRI ASPECTS < 4",
+          "matchedLabel": "ASPECTS is {value} (meets CT ≥ 3 threshold)"
+        },
+        {
+          "field": "onsetHours",
+          "operator": "<=",
+          "value": 24,
+          "error": "Presentation > 24 hours after last known well",
+          "matchedLabel": "Within the 24-hour presentation window"
+        },
+        {
+          "field": "presentedWithin24h",
+          "operator": "==",
+          "value": true,
+          "error": "Did not present within 24h of onset",
+          "matchedLabel": "Presented to study hospital within 24h of LKW",
+          "pendingLabel": "Confirm patient arrived at the facility within 24 hours of stroke onset (presented within 24h)"
+        }
       ],
       "exclusions": [
-        { "field": "exTerminalIllness", "operator": "==", "value": true, "error": "Excludes terminal illness", "pendingLabel": "Confirm no terminal illness" }
+        {
+          "field": "exTerminalIllness",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes terminal illness",
+          "pendingLabel": "Confirm no terminal illness"
+        }
       ],
       "manualPending": [
         "Confirm pre-stroke disability has been stable for at least 3 months",
@@ -131,37 +248,40 @@
   {
     "acronym": "MINUTE",
     "exactFullStudyName": "Minimally Invasive Neuroendoscopic Ultra-Early Targeted ICH Evacuation",
-    "sourceHypothesisText": "Public demo screen for early/ultra-early SCUBA evacuation in selected basal-ganglia hemorrhage patients; the June 2026 ICH algorithm uses >=15 mL (or close by ABC/2) and arrival/evaluation <=15 hours from last known well as the operational screen.",
+    "sourceHypothesisText": "Prospective randomized trial evaluating the clinical utility of ultra-early SCUBA neuroendoscopic evacuation of basal-ganglia hemorrhages with volume >=20 mL by ABC/2 randomized <=16 hours from last known well.",
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
       "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this public demo.",
-      "CT.gov overall status as of 2026-07-03: RECRUITING (updated from NOT_YET_RECRUITING); listed study start date 2026-07-15.",
-      "June 2026 algorithm screen requires CTA/MRA without vascular lesion and no clear standard-of-care surgical indication; detailed registry criteria, activation rules, and consent requirements must be verified through the active protocol."
+      "CT.gov requires spontaneous non-traumatic basal ganglia ICH >=20 mL by ABC/2, pre-ICH mRS 0-2, randomization <=16 hours from LKW, and surgery initiated <120 min from randomization.",
+      "CTA/MRA without underlying vascular lesion and goals of care to pursue life-saving therapies (no early withdrawal of care <7 days); detailed registry criteria, coagulation labs (INR <=1.4, aPTT <=40s, platelets >=100k), and consent requirements must be verified through the active protocol."
     ],
     "timeCategory": "hyperacute",
-    "enrollmentWindowText": "<=15 hours",
+    "enrollmentWindowText": "<=16 hours",
     "externalMetadata": {
       "nct": "NCT07260916",
       "registryUrl": "https://clinicaltrials.gov/study/NCT07260916",
-      "verificationDate": "2026-07-03"
+      "verificationDate": "2026-08-30"
     },
-    "conciseBedsideSummary": "Ultra-early SCUBA endoscopic evacuation screen for basal-ganglia hemorrhage >=15 mL or close by ABC/2 within 15h.",
+    "conciseBedsideSummary": "Ultra-early SCUBA endoscopic evacuation for basal-ganglia hemorrhage >=20 mL by ABC/2 randomized within 16h of LKW.",
     "pathway": "Consult Stroke Research Coordinator / On-Call Neurosurgery Service",
     "noContactInfo": true,
     "exactInclusionCriteria": [
       "Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH",
-      "Volume >=15 mL by ABC/2, or close enough to prompt screening",
-      "Arrival/evaluation <=15 hours since last known well",
+      "Volume >=20 mL by ABC/2",
+      "Randomization <=16 hours since last known well (surgery anticipated <120 min from randomization)",
       "NIHSS >=6",
       "Age 18-80 years",
       "CTA or MRA performed without an underlying vascular lesion",
-      "No clear standard-of-care surgical indication"
+      "Pre-ICH mRS 0-2",
+      "Patient/LAR goals of care to pursue life-saving therapies (no early withdrawal of care <7 days)"
     ],
     "exactExclusionCriteria": [
       "Suspected secondary cause for ICH",
       "Infratentorial or thalamic hemorrhage",
       "Midbrain extension/involvement",
+      "Coagulopathy (INR > 1.4, aPTT > 40s, DOAC/LMWH at onset, platelets < 100k)",
+      "GCS < 7 at presentation",
       "Clear standard-of-care surgical indication"
     ],
     "optimisticDefaults": {
@@ -169,16 +289,67 @@
     },
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "==", "value": "ich", "error": "Requires ICH", "matchedLabel": "ICH classification selected" },
-        { "field": "ichLocation", "operator": "==", "value": "bg", "error": "Requires deep Basal Ganglia location", "matchedLabel": "Basal Ganglia location confirmed" },
-        { "field": "volume", "operator": "==", "value": "bg_large", "error": "Requires hematoma volume >=15 mL or close by ABC/2", "matchedLabel": "Volume >=15 mL or close by ABC/2 confirmed" },
-        { "field": "onsetHours", "operator": "<=", "value": 15, "error": "Arrival/evaluation >15 hours since last known well", "matchedLabel": "Arrival/evaluation is <=15h since last known well" },
-        { "field": "nihss", "operator": ">=", "value": 6, "error": "NIHSS < 6", "matchedLabel": "NIHSS is {value} (meets ≥ 6)" },
-        { "field": "age", "operator": "between", "value": [18, 80], "error": "Age must be 18-80 years", "matchedLabel": "Age is {value} (meets 18-80)" }
+        {
+          "field": "classification",
+          "operator": "==",
+          "value": "ich",
+          "error": "Requires ICH",
+          "matchedLabel": "ICH classification selected"
+        },
+        {
+          "field": "ichLocation",
+          "operator": "==",
+          "value": "bg",
+          "error": "Requires deep Basal Ganglia location",
+          "matchedLabel": "Basal Ganglia location confirmed"
+        },
+        {
+          "field": "volume",
+          "operator": "==",
+          "value": "bg_large",
+          "error": "Requires hematoma volume >=20 mL by ABC/2",
+          "matchedLabel": "Volume >=20 mL by ABC/2 confirmed"
+        },
+        {
+          "field": "onsetHours",
+          "operator": "<=",
+          "value": 16,
+          "error": "Randomization >16 hours since last known well",
+          "matchedLabel": "Randomization is <=16h since last known well"
+        },
+        {
+          "field": "nihss",
+          "operator": ">=",
+          "value": 6,
+          "error": "NIHSS < 6",
+          "matchedLabel": "NIHSS is {value} (meets ≥ 6)"
+        },
+        {
+          "field": "age",
+          "operator": "between",
+          "value": [
+            18,
+            80
+          ],
+          "error": "Age must be 18-80 years",
+          "matchedLabel": "Age is {value} (meets 18-80)"
+        }
       ],
       "exclusions": [
-        { "field": "exSecondaryIch", "operator": "==", "value": true, "error": "Excludes suspected secondary cause", "pendingLabel": "Confirm no secondary cause (AVM, aneurysm, tumor, SAH)" },
-        { "field": "exMidbrain", "operator": "==", "value": true, "error": "Excludes midbrain extension", "pendingLabel": "Confirm no midbrain extension/involvement" }
+        {
+          "field": "exSecondaryIch",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes suspected secondary cause",
+          "pendingLabel": "Confirm no secondary cause (AVM, aneurysm, tumor, SAH)"
+        },
+        {
+          "field": "exMidbrain",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes midbrain extension",
+          "pendingLabel": "Confirm no midbrain extension/involvement"
+        }
       ],
       "manualPending": [
         "Confirm CTA/MRA shows no underlying vascular lesion and that there is no clear standard-of-care surgical indication",
@@ -202,7 +373,7 @@
     "externalMetadata": {
       "nct": "NCT07174414",
       "registryUrl": "https://clinicaltrials.gov/study/NCT07174414",
-      "verificationDate": "2026-05-28"
+      "verificationDate": "2026-08-30"
     },
     "conciseBedsideSummary": "Phase 3 trial of cilostazol in stroke or TIA within 180 days while taking aspirin or clopidogrel, but not both.",
     "pathway": "Consult Stroke Research Coordinator / Stroke Neurology",
@@ -219,14 +390,55 @@
     ],
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "in", "value": ["ischemic", "tia"], "error": "Requires Ischemic Stroke or TIA", "matchedLabel": "Ischemic stroke or TIA classification selected", "pendingLabel": "Confirm event type is Ischemic Stroke or TIA" },
-        { "field": "onsetDays", "operator": "<=", "value": 180, "error": "Stroke/TIA occurred > 180 days ago", "matchedLabel": "Matches the CT.gov event-window criterion: stroke or TIA within 180 days" },
-        { "field": "age", "operator": ">=", "value": 40, "error": "Age < 40", "matchedLabel": "Age is {value} (meets ≥ 40)" },
-        { "field": "singleAntiplateletSoc", "operator": "==", "value": true, "error": "Requires standard-of-care single antiplatelet (Aspirin or Clopidogrel)", "matchedLabel": "Taking single antiplatelet (aspirin/clopidogrel)", "pendingLabel": "Confirm patient is on aspirin or clopidogrel, but not both" }
+        {
+          "field": "classification",
+          "operator": "in",
+          "value": [
+            "ischemic",
+            "tia"
+          ],
+          "error": "Requires Ischemic Stroke or TIA",
+          "matchedLabel": "Ischemic stroke or TIA classification selected",
+          "pendingLabel": "Confirm event type is Ischemic Stroke or TIA"
+        },
+        {
+          "field": "onsetDays",
+          "operator": "<=",
+          "value": 180,
+          "error": "Stroke/TIA occurred > 180 days ago",
+          "matchedLabel": "Matches the CT.gov event-window criterion: stroke or TIA within 180 days"
+        },
+        {
+          "field": "age",
+          "operator": ">=",
+          "value": 40,
+          "error": "Age < 40",
+          "matchedLabel": "Age is {value} (meets ≥ 40)"
+        },
+        {
+          "field": "singleAntiplateletSoc",
+          "operator": "==",
+          "value": true,
+          "error": "Requires standard-of-care single antiplatelet (Aspirin or Clopidogrel)",
+          "matchedLabel": "Taking single antiplatelet (aspirin/clopidogrel)",
+          "pendingLabel": "Confirm patient is on aspirin or clopidogrel, but not both"
+        }
       ],
       "exclusions": [
-        { "field": "exBrainBleed2y", "operator": "==", "value": true, "error": "Excludes spontaneous brain hemorrhage within the last 2 years", "pendingLabel": "Confirm no spontaneous brain bleed in the past 2 years" },
-        { "field": "exCongestiveHeartFailure", "operator": "==", "value": true, "error": "Excludes moderate-to-severe heart failure / congestive heart failure", "pendingLabel": "Confirm no moderate/severe congestive heart failure" }
+        {
+          "field": "exBrainBleed2y",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes spontaneous brain hemorrhage within the last 2 years",
+          "pendingLabel": "Confirm no spontaneous brain bleed in the past 2 years"
+        },
+        {
+          "field": "exCongestiveHeartFailure",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes moderate-to-severe heart failure / congestive heart failure",
+          "pendingLabel": "Confirm no moderate/severe congestive heart failure"
+        }
       ],
       "manualPending": [
         "Wait for trial enrollment to officially open"
@@ -248,7 +460,7 @@
     "externalMetadata": {
       "nct": "NCT05723926",
       "registryUrl": "https://clinicaltrials.gov/study/NCT05723926",
-      "verificationDate": "2026-05-28"
+      "verificationDate": "2026-08-30"
     },
     "conciseBedsideSummary": "Bilateral carotid filters in patients with clinical AF and an ischemic stroke with positive neuroimaging within 52 weeks; planned OAC is required.",
     "pathway": "Consult Stroke Research Coordinator / Stroke Neurology",
@@ -271,16 +483,62 @@
     },
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "==", "value": "ischemic", "error": "Requires ischemic stroke with positive neuroimaging (does not match TIA alone)", "matchedLabel": "Ischemic Stroke classification selected" },
-        { "field": "onsetDays", "operator": "<=", "value": 365, "error": "Stroke onset > 365 days ago", "matchedLabel": "Onset within past year" },
-        { "field": "afibHistory", "operator": "==", "value": true, "error": "Requires clinical atrial fibrillation history", "matchedLabel": "AFib history confirmed" }
+        {
+          "field": "classification",
+          "operator": "==",
+          "value": "ischemic",
+          "error": "Requires ischemic stroke with positive neuroimaging (does not match TIA alone)",
+          "matchedLabel": "Ischemic Stroke classification selected"
+        },
+        {
+          "field": "onsetDays",
+          "operator": "<=",
+          "value": 365,
+          "error": "Stroke onset > 365 days ago",
+          "matchedLabel": "Onset within past year"
+        },
+        {
+          "field": "afibHistory",
+          "operator": "==",
+          "value": true,
+          "error": "Requires clinical atrial fibrillation history",
+          "matchedLabel": "AFib history confirmed"
+        }
       ],
       "exclusions": [
-        { "field": "exPriorIchHistory", "operator": "==", "value": true, "error": "Excludes history of ICH", "pendingLabel": "Confirm no history of spontaneous ICH" },
-        { "field": "exSaptContraindication", "operator": "==", "value": true, "error": "Excludes patients with SAPT contraindication", "pendingLabel": "Confirm patient can tolerate 6 months of add-on single antiplatelet" },
-        { "field": "exCarotidStenosis50", "operator": "==", "value": true, "error": "Excludes carotid/vertebral/subclavian/intracranial stenosis ≥50%", "pendingLabel": "Confirm no untreated carotid/vertebral/intracranial stenosis ≥50%" },
-        { "field": "exPregnancy", "operator": "==", "value": true, "error": "Excludes pregnancy" },
-        { "field": "exTerminalIllness", "operator": "==", "value": true, "error": "Excludes life expectancy < 2 years" }
+        {
+          "field": "exPriorIchHistory",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes history of ICH",
+          "pendingLabel": "Confirm no history of spontaneous ICH"
+        },
+        {
+          "field": "exSaptContraindication",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes patients with SAPT contraindication",
+          "pendingLabel": "Confirm patient can tolerate 6 months of add-on single antiplatelet"
+        },
+        {
+          "field": "exCarotidStenosis50",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes carotid/vertebral/subclavian/intracranial stenosis ≥50%",
+          "pendingLabel": "Confirm no untreated carotid/vertebral/intracranial stenosis ≥50%"
+        },
+        {
+          "field": "exPregnancy",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes pregnancy"
+        },
+        {
+          "field": "exTerminalIllness",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes life expectancy < 2 years"
+        }
       ],
       "manualPending": [
         "Confirm CT.gov OAC timing group, planned VKA/DOAC duration, and bilateral carotid anatomy requirements"
@@ -298,7 +556,11 @@
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "≤ 180 days",
-    "externalMetadata": { "nct": "", "registryUrl": "", "verificationDate": "2026-05-28" },
+    "externalMetadata": {
+      "nct": "",
+      "registryUrl": "",
+      "verificationDate": "2026-08-30"
+    },
     "conciseBedsideSummary": "Local study summary is not ClinicalTrials.gov-verified; do not use this public demo to screen or refer until an approved source/NCT is attached.",
     "pathway": "Registry/source verification required before use",
     "noContactInfo": true,
@@ -317,15 +579,61 @@
     },
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "==", "value": "ischemic", "error": "Requires Ischemic Stroke", "matchedLabel": "Ischemic Stroke classification selected" },
-        { "field": "etiology", "operator": "in", "value": ["esus", "cardioembolic", "laa"], "error": "Etiology must be ESUS, cardioembolic, or LAA", "matchedLabel": "Etiology matches: {value} (Trial accepts ESUS, Cardioembolic, or LAA to study reclassification)" },
-        { "field": "onsetDays", "operator": "<=", "value": 180, "error": "Scan cannot be completed within 6 months of onset", "matchedLabel": "Scan feasible within 6 months of onset" },
-        { "field": "age", "operator": ">=", "value": 35, "error": "Age < 35", "matchedLabel": "Age is {value} (meets ≥ 35)" }
+        {
+          "field": "classification",
+          "operator": "==",
+          "value": "ischemic",
+          "error": "Requires Ischemic Stroke",
+          "matchedLabel": "Ischemic Stroke classification selected"
+        },
+        {
+          "field": "etiology",
+          "operator": "in",
+          "value": [
+            "esus",
+            "cardioembolic",
+            "laa"
+          ],
+          "error": "Etiology must be ESUS, cardioembolic, or LAA",
+          "matchedLabel": "Etiology matches: {value} (Trial accepts ESUS, Cardioembolic, or LAA to study reclassification)"
+        },
+        {
+          "field": "onsetDays",
+          "operator": "<=",
+          "value": 180,
+          "error": "Scan cannot be completed within 6 months of onset",
+          "matchedLabel": "Scan feasible within 6 months of onset"
+        },
+        {
+          "field": "age",
+          "operator": ">=",
+          "value": 35,
+          "error": "Age < 35",
+          "matchedLabel": "Age is {value} (meets ≥ 35)"
+        }
       ],
       "exclusions": [
-        { "field": "exEgfr35", "operator": "==", "value": true, "error": "eGFR < 35", "pendingLabel": "Confirm eGFR is ≥ 35 ml/min/1.73m²" },
-        { "field": "exMriContraindication", "operator": "==", "value": true, "error": "Excludes MRI/gadolinium contraindications", "pendingLabel": "Confirm no MRI or gadolinium contrast contraindications" },
-        { "field": "exRecentSurgery30d", "operator": "==", "value": true, "error": "Excludes surgery within 30 days prior to stroke onset", "pendingLabel": "Confirm no surgery within 30 days prior to stroke onset" }
+        {
+          "field": "exEgfr35",
+          "operator": "==",
+          "value": true,
+          "error": "eGFR < 35",
+          "pendingLabel": "Confirm eGFR is ≥ 35 ml/min/1.73m²"
+        },
+        {
+          "field": "exMriContraindication",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes MRI/gadolinium contraindications",
+          "pendingLabel": "Confirm no MRI or gadolinium contrast contraindications"
+        },
+        {
+          "field": "exRecentSurgery30d",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes surgery within 30 days prior to stroke onset",
+          "pendingLabel": "Confirm no surgery within 30 days prior to stroke onset"
+        }
       ]
     }
   },
@@ -340,7 +648,11 @@
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "≤ 120 days",
-    "externalMetadata": { "nct": "", "registryUrl": "", "verificationDate": "2026-05-28" },
+    "externalMetadata": {
+      "nct": "",
+      "registryUrl": "",
+      "verificationDate": "2026-08-30"
+    },
     "conciseBedsideSummary": "Local study summary is not ClinicalTrials.gov-verified; do not use this public demo to screen or refer until an approved source/NCT is attached.",
     "pathway": "Registry/source verification required before use",
     "noContactInfo": true,
@@ -359,15 +671,57 @@
     },
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "==", "value": "ischemic", "error": "Requires Ischemic Stroke", "matchedLabel": "Ischemic Stroke classification selected" },
-        { "field": "etiology", "operator": "==", "value": "esus", "error": "Requires ESUS etiology", "matchedLabel": "ESUS etiology confirmed" },
-        { "field": "onsetDays", "operator": "<=", "value": 120, "error": "Scan cannot be completed within 4 months of onset", "matchedLabel": "Scan feasible within 4 months of onset" },
-        { "field": "age", "operator": ">=", "value": 35, "error": "Age < 35", "matchedLabel": "Age is {value} (meets ≥ 35)" }
+        {
+          "field": "classification",
+          "operator": "==",
+          "value": "ischemic",
+          "error": "Requires Ischemic Stroke",
+          "matchedLabel": "Ischemic Stroke classification selected"
+        },
+        {
+          "field": "etiology",
+          "operator": "==",
+          "value": "esus",
+          "error": "Requires ESUS etiology",
+          "matchedLabel": "ESUS etiology confirmed"
+        },
+        {
+          "field": "onsetDays",
+          "operator": "<=",
+          "value": 120,
+          "error": "Scan cannot be completed within 4 months of onset",
+          "matchedLabel": "Scan feasible within 4 months of onset"
+        },
+        {
+          "field": "age",
+          "operator": ">=",
+          "value": 35,
+          "error": "Age < 35",
+          "matchedLabel": "Age is {value} (meets ≥ 35)"
+        }
       ],
       "exclusions": [
-        { "field": "exEgfr35", "operator": "==", "value": true, "error": "eGFR < 35", "pendingLabel": "Confirm eGFR is ≥ 35 ml/min/1.73m²" },
-        { "field": "exMriContraindication", "operator": "==", "value": true, "error": "Excludes MRI/gadolinium contraindications", "pendingLabel": "Confirm no MRI or gadolinium contrast contraindications" },
-        { "field": "exBilateralCarotidRevasc", "operator": "==", "value": true, "error": "Excludes history of bilateral carotid artery revascularization", "pendingLabel": "Confirm no history of bilateral carotid endarterectomy or stenting" }
+        {
+          "field": "exEgfr35",
+          "operator": "==",
+          "value": true,
+          "error": "eGFR < 35",
+          "pendingLabel": "Confirm eGFR is ≥ 35 ml/min/1.73m²"
+        },
+        {
+          "field": "exMriContraindication",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes MRI/gadolinium contraindications",
+          "pendingLabel": "Confirm no MRI or gadolinium contrast contraindications"
+        },
+        {
+          "field": "exBilateralCarotidRevasc",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes history of bilateral carotid artery revascularization",
+          "pendingLabel": "Confirm no history of bilateral carotid endarterectomy or stenting"
+        }
       ]
     }
   },
@@ -386,7 +740,7 @@
     "externalMetadata": {
       "nct": "NCT03907046",
       "registryUrl": "https://clinicaltrials.gov/study/NCT03907046",
-      "verificationDate": "2026-05-28"
+      "verificationDate": "2026-08-30"
     },
     "conciseBedsideSummary": "Apixaban vs Aspirin in patients with recent ICH (randomized 14-180 days post-onset) and non-valvular AFib.",
     "pathway": "Consult Stroke Research Coordinator / Stroke Neurology Service",
@@ -406,15 +760,60 @@
     },
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "==", "value": "ich", "error": "Requires ICH", "matchedLabel": "ICH classification selected" },
-        { "field": "afibHistory", "operator": "==", "value": true, "error": "Requires clinical atrial fibrillation history", "matchedLabel": "AFib history confirmed" },
-        { "field": "onsetDays", "operator": "between", "value": [14, 180], "error": "LKW-to-randomization not 14-180 days", "matchedLabel": "Onset within 14-180 days window" }
+        {
+          "field": "classification",
+          "operator": "==",
+          "value": "ich",
+          "error": "Requires ICH",
+          "matchedLabel": "ICH classification selected"
+        },
+        {
+          "field": "afibHistory",
+          "operator": "==",
+          "value": true,
+          "error": "Requires clinical atrial fibrillation history",
+          "matchedLabel": "AFib history confirmed"
+        },
+        {
+          "field": "onsetDays",
+          "operator": "between",
+          "value": [
+            14,
+            180
+          ],
+          "error": "LKW-to-randomization not 14-180 days",
+          "matchedLabel": "Onset within 14-180 days window"
+        }
       ],
       "exclusions": [
-        { "field": "exSecondaryIch", "operator": "==", "value": true, "error": "Excludes suspected secondary cause", "pendingLabel": "Confirm no secondary cause (AVM, aneurysm, tumor, SAH)" },
-        { "field": "exPriorIch12m", "operator": "==", "value": true, "error": "Excludes prior ICH within 12 months", "pendingLabel": "Confirm no other ICH in past 12 months" },
-        { "field": "exClearAnticoagulationIndication", "operator": "==", "value": true, "error": "Excludes patients with clear indication for OAC", "pendingLabel": "Confirm no mandatory indication for anticoagulation (e.g. mechanical valve, DVT/PE)" },
-        { "field": "exClearAntiplateletIndication", "operator": "==", "value": true, "error": "Excludes patients with clear indication for antiplatelet", "pendingLabel": "Confirm no mandatory indication for antiplatelets (e.g. recent coronary stent)" }
+        {
+          "field": "exSecondaryIch",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes suspected secondary cause",
+          "pendingLabel": "Confirm no secondary cause (AVM, aneurysm, tumor, SAH)"
+        },
+        {
+          "field": "exPriorIch12m",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes prior ICH within 12 months",
+          "pendingLabel": "Confirm no other ICH in past 12 months"
+        },
+        {
+          "field": "exClearAnticoagulationIndication",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes patients with clear indication for OAC",
+          "pendingLabel": "Confirm no mandatory indication for anticoagulation (e.g. mechanical valve, DVT/PE)"
+        },
+        {
+          "field": "exClearAntiplateletIndication",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes patients with clear indication for antiplatelet",
+          "pendingLabel": "Confirm no mandatory indication for antiplatelets (e.g. recent coronary stent)"
+        }
       ]
     }
   },
@@ -433,7 +832,7 @@
     "externalMetadata": {
       "nct": "NCT03936361",
       "registryUrl": "https://clinicaltrials.gov/study/NCT03936361",
-      "verificationDate": "2026-06-30"
+      "verificationDate": "2026-08-30"
     },
     "conciseBedsideSummary": "Statin continuation vs discontinuation after spontaneous lobar ICH (within 7 days) in patients taking a statin at onset.",
     "pathway": "Consult Stroke Research Coordinator / Stroke Neurology Service",
@@ -458,18 +857,78 @@
     },
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "==", "value": "ich", "error": "Requires ICH", "matchedLabel": "ICH classification selected" },
-        { "field": "ichLocation", "operator": "==", "value": "lobar", "error": "Requires Lobar ICH", "matchedLabel": "Lobar ICH location confirmed" },
-        { "field": "onsetDays", "operator": "<=", "value": 7, "error": "LKW-to-randomization > 7 days", "matchedLabel": "Onset within 7 days window" },
-        { "field": "age", "operator": ">=", "value": 50, "error": "Age < 50", "matchedLabel": "Age meets ≥ 50" },
-        { "field": "statin", "operator": "==", "value": true, "error": "Requires patient to be taking a statin at onset", "matchedLabel": "Taking statin drug at onset" },
-        { "field": "preMrs", "operator": "<=", "value": 3, "error": "Pre-stroke mRS > 3", "matchedLabel": "Pre-stroke mRS ≤ 3" }
+        {
+          "field": "classification",
+          "operator": "==",
+          "value": "ich",
+          "error": "Requires ICH",
+          "matchedLabel": "ICH classification selected"
+        },
+        {
+          "field": "ichLocation",
+          "operator": "==",
+          "value": "lobar",
+          "error": "Requires Lobar ICH",
+          "matchedLabel": "Lobar ICH location confirmed"
+        },
+        {
+          "field": "onsetDays",
+          "operator": "<=",
+          "value": 7,
+          "error": "LKW-to-randomization > 7 days",
+          "matchedLabel": "Onset within 7 days window"
+        },
+        {
+          "field": "age",
+          "operator": ">=",
+          "value": 50,
+          "error": "Age < 50",
+          "matchedLabel": "Age meets ≥ 50"
+        },
+        {
+          "field": "statin",
+          "operator": "==",
+          "value": true,
+          "error": "Requires patient to be taking a statin at onset",
+          "matchedLabel": "Taking statin drug at onset"
+        },
+        {
+          "field": "preMrs",
+          "operator": "<=",
+          "value": 3,
+          "error": "Pre-stroke mRS > 3",
+          "matchedLabel": "Pre-stroke mRS ≤ 3"
+        }
       ],
       "exclusions": [
-        { "field": "exSecondaryIch", "operator": "==", "value": true, "error": "Excludes suspected secondary cause", "pendingLabel": "Confirm no secondary cause (AVM, aneurysm, tumor, SAH)" },
-        { "field": "exIchScore3", "operator": "==", "value": true, "error": "Excludes ICH score > 3", "pendingLabel": "Confirm clinical ICH score is ≤ 3" },
-        { "field": "exRecentMi3m", "operator": "==", "value": true, "error": "Excludes MI within past 3 months", "pendingLabel": "Confirm no Myocardial Infarction in the past 3 months" },
-        { "field": "exTerminalIllness", "operator": "==", "value": true, "error": "Excludes life expectancy < 2 years", "pendingLabel": "Confirm life expectancy is ≥ 2 years" }
+        {
+          "field": "exSecondaryIch",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes suspected secondary cause",
+          "pendingLabel": "Confirm no secondary cause (AVM, aneurysm, tumor, SAH)"
+        },
+        {
+          "field": "exIchScore3",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes ICH score > 3",
+          "pendingLabel": "Confirm clinical ICH score is ≤ 3"
+        },
+        {
+          "field": "exRecentMi3m",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes MI within past 3 months",
+          "pendingLabel": "Confirm no Myocardial Infarction in the past 3 months"
+        },
+        {
+          "field": "exTerminalIllness",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes life expectancy < 2 years",
+          "pendingLabel": "Confirm life expectancy is ≥ 2 years"
+        }
       ]
     }
   },
@@ -488,7 +947,7 @@
     "externalMetadata": {
       "nct": "NCT06393712",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06393712",
-      "verificationDate": "2026-05-28"
+      "verificationDate": "2026-08-30"
     },
     "conciseBedsideSummary": "Intrathecal ALN-APP in sporadic probable CAA or Dutch-type CAA; prior clinical ICH is not required by the public CT.gov inclusion criteria.",
     "pathway": "Consult Stroke Research Coordinator / Stroke Neurology",
@@ -505,20 +964,56 @@
     ],
     "eligibility": {
       "criteria": [
-        { "field": "age", "operator": ">=", "value": 30, "error": "Age < 30 (requires ≥ 50 for sporadic CAA or ≥ 30 for Dutch-type CAA)", "matchedLabel": "Age is {value} (meets criteria)" },
+        {
+          "field": "age",
+          "operator": ">=",
+          "value": 30,
+          "error": "Age < 30 (requires ≥ 50 for sporadic CAA or ≥ 30 for Dutch-type CAA)",
+          "matchedLabel": "Age is {value} (meets criteria)"
+        },
         {
           "operator": "or",
           "error": "Prior clinical ICH onset < 90 days before anticipated randomization",
           "matchedLabel": "No clinical ICH within 90 days identified in entered fields",
           "branches": [
-            { "label": "No intracerebral hemorrhage selected", "criteria": [{ "field": "classification", "operator": "!=", "value": "ich" }] },
-            { "label": "Prior ICH at least 90 days before anticipated randomization", "criteria": [{ "field": "onsetDays", "operator": ">=", "value": 90 }] }
+            {
+              "label": "No intracerebral hemorrhage selected",
+              "criteria": [
+                {
+                  "field": "classification",
+                  "operator": "!=",
+                  "value": "ich"
+                }
+              ]
+            },
+            {
+              "label": "Prior ICH at least 90 days before anticipated randomization",
+              "criteria": [
+                {
+                  "field": "onsetDays",
+                  "operator": ">=",
+                  "value": 90
+                }
+              ]
+            }
           ]
         }
       ],
       "exclusions": [
-        { "field": "exSevereAphasiaCognitive", "operator": "==", "value": true, "error": "Excludes moderate-to-severe cognitive impairment / Alzheimer's", "pendingLabel": "Confirm no moderate/severe cognitive impairment or Alzheimer's" },
-        { "field": "exEgfr30", "operator": "==", "value": true, "error": "eGFR < 30", "pendingLabel": "Confirm eGFR is ≥ 30 ml/min/1.73m²" }
+        {
+          "field": "exSevereAphasiaCognitive",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes moderate-to-severe cognitive impairment / Alzheimer's",
+          "pendingLabel": "Confirm no moderate/severe cognitive impairment or Alzheimer's"
+        },
+        {
+          "field": "exEgfr30",
+          "operator": "==",
+          "value": true,
+          "error": "eGFR < 30",
+          "pendingLabel": "Confirm eGFR is ≥ 30 ml/min/1.73m²"
+        }
       ],
       "manualPending": [
         "Confirm sporadic probable CAA by Boston Criteria Version 2.0 or Dutch-type CAA with known E693Q APP mutation",
@@ -541,7 +1036,7 @@
     "externalMetadata": {
       "nct": "NCT06722755",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06722755",
-      "verificationDate": "2026-05-28"
+      "verificationDate": "2026-08-30"
     },
     "conciseBedsideSummary": "Among stroke survivors with OSA undergoing inpatient rehabilitation, intensive CPAP support compared with standard support.",
     "pathway": "EPIC Chat Stroke Rehab Team / Stroke Research Coordinator",
@@ -562,18 +1057,86 @@
     ],
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "in", "value": ["ischemic", "ich"], "error": "Requires Ischemic Stroke or ICH", "matchedLabel": "Ischemic Stroke or ICH classification selected" },
-        { "field": "age", "operator": ">=", "value": 18, "error": "Age < 18", "matchedLabel": "Age is {value} (meets ≥ 18)" },
-        { "field": "onsetDays", "operator": "<=", "value": 30, "error": "Stroke occurred > 30 days ago", "matchedLabel": "Onset within 30 days window" },
-        { "field": "rehab", "operator": "==", "value": "yes", "error": "Must have inpatient rehabilitation placement and expected length of stay ≥ 5 nights", "matchedLabel": "Inpatient rehabilitation placement confirmed", "pendingLabel": "Confirm inpatient rehabilitation placement and anticipated length of stay at least 5 nights" },
-        { "field": "language", "operator": "in", "value": ["english", "spanish"], "error": "Must be English or Spanish speaking", "matchedLabel": "Language is English or Spanish", "pendingLabel": "Confirm patient speaks English or Spanish" }
+        {
+          "field": "classification",
+          "operator": "in",
+          "value": [
+            "ischemic",
+            "ich"
+          ],
+          "error": "Requires Ischemic Stroke or ICH",
+          "matchedLabel": "Ischemic Stroke or ICH classification selected"
+        },
+        {
+          "field": "age",
+          "operator": ">=",
+          "value": 18,
+          "error": "Age < 18",
+          "matchedLabel": "Age is {value} (meets ≥ 18)"
+        },
+        {
+          "field": "onsetDays",
+          "operator": "<=",
+          "value": 30,
+          "error": "Stroke occurred > 30 days ago",
+          "matchedLabel": "Onset within 30 days window"
+        },
+        {
+          "field": "rehab",
+          "operator": "==",
+          "value": "yes",
+          "error": "Must have inpatient rehabilitation placement and expected length of stay ≥ 5 nights",
+          "matchedLabel": "Inpatient rehabilitation placement confirmed",
+          "pendingLabel": "Confirm inpatient rehabilitation placement and anticipated length of stay at least 5 nights"
+        },
+        {
+          "field": "language",
+          "operator": "in",
+          "value": [
+            "english",
+            "spanish"
+          ],
+          "error": "Must be English or Spanish speaking",
+          "matchedLabel": "Language is English or Spanish",
+          "pendingLabel": "Confirm patient speaks English or Spanish"
+        }
       ],
       "exclusions": [
-        { "field": "exIncarcerated", "operator": "==", "value": true, "error": "Excludes incarcerated patients", "pendingLabel": "Confirm no prisoner/incarcerated status" },
-        { "field": "exPregnancy", "operator": "==", "value": true, "error": "Excludes pregnant patients", "pendingLabel": "Confirm not pregnant" },
-        { "field": "exTrach", "operator": "==", "value": true, "error": "Excludes mechanical ventilation, tracheostomy, or supplemental oxygen > 4 L/min", "pendingLabel": "Confirm no mechanical ventilation, tracheostomy, or supplemental oxygen > 4 L/min" },
-        { "field": "exCpapUse14d", "operator": "==", "value": true, "error": "Excludes prior CPAP use within 14 days pre-CVA", "pendingLabel": "Confirm no prior CPAP use within 14 days pre-stroke" },
-        { "field": "exSecondaryIchOrSah", "operator": "==", "value": true, "error": "Excludes stroke related to tumor, vascular malformation, or SAH", "pendingLabel": "Confirm stroke was not caused by tumor, vascular malformation, or SAH" }
+        {
+          "field": "exIncarcerated",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes incarcerated patients",
+          "pendingLabel": "Confirm no prisoner/incarcerated status"
+        },
+        {
+          "field": "exPregnancy",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes pregnant patients",
+          "pendingLabel": "Confirm not pregnant"
+        },
+        {
+          "field": "exTrach",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes mechanical ventilation, tracheostomy, or supplemental oxygen > 4 L/min",
+          "pendingLabel": "Confirm no mechanical ventilation, tracheostomy, or supplemental oxygen > 4 L/min"
+        },
+        {
+          "field": "exCpapUse14d",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes prior CPAP use within 14 days pre-CVA",
+          "pendingLabel": "Confirm no prior CPAP use within 14 days pre-stroke"
+        },
+        {
+          "field": "exSecondaryIchOrSah",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes stroke related to tumor, vascular malformation, or SAH",
+          "pendingLabel": "Confirm stroke was not caused by tumor, vascular malformation, or SAH"
+        }
       ]
     }
   },
@@ -592,7 +1155,7 @@
     "externalMetadata": {
       "nct": "NCT05338697",
       "registryUrl": "https://clinicaltrials.gov/study/NCT05338697",
-      "verificationDate": "2026-05-28"
+      "verificationDate": "2026-08-30"
     },
     "conciseBedsideSummary": "TMS and MRI predictors of upper extremity recovery. Requires consent within 24-96h of LNW.",
     "pathway": "Consult Rehab Research Coordinator / Inpatient Rehab Team",
@@ -614,19 +1177,94 @@
     ],
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "==", "value": "ischemic", "error": "Requires Ischemic Stroke", "matchedLabel": "Ischemic Stroke classification selected" },
-        { "field": "unilateralSymptomatic", "operator": "==", "value": true, "error": "Requires unilateral symptomatic AIS", "matchedLabel": "Unilateral symptomatic AIS confirmed", "pendingLabel": "Confirm unilateral symptomatic AIS" },
-        { "field": "exUeWeakness", "operator": "==", "value": true, "error": "Requires upper extremity motor weakness", "matchedLabel": "Upper extremity motor deficit confirmed" },
-        { "field": "self_consent", "operator": "==", "value": true, "error": "Patient must be able to self-consent", "matchedLabel": "Patient able to self-consent", "pendingLabel": "Confirm patient is able to self-consent" },
-        { "field": "onsetHours", "operator": "between", "value": [24, 96], "error": "LKW-to-consent window not 24-96h", "matchedLabel": "LKW-to-consent is in 24-96h window" },
-        { "field": "language", "operator": "in", "value": ["english", "spanish"], "error": "Must be English or Spanish speaking", "matchedLabel": "Language is English or Spanish", "pendingLabel": "Confirm patient speaks English or Spanish" }
+        {
+          "field": "classification",
+          "operator": "==",
+          "value": "ischemic",
+          "error": "Requires Ischemic Stroke",
+          "matchedLabel": "Ischemic Stroke classification selected"
+        },
+        {
+          "field": "unilateralSymptomatic",
+          "operator": "==",
+          "value": true,
+          "error": "Requires unilateral symptomatic AIS",
+          "matchedLabel": "Unilateral symptomatic AIS confirmed",
+          "pendingLabel": "Confirm unilateral symptomatic AIS"
+        },
+        {
+          "field": "exUeWeakness",
+          "operator": "==",
+          "value": true,
+          "error": "Requires upper extremity motor weakness",
+          "matchedLabel": "Upper extremity motor deficit confirmed"
+        },
+        {
+          "field": "self_consent",
+          "operator": "==",
+          "value": true,
+          "error": "Patient must be able to self-consent",
+          "matchedLabel": "Patient able to self-consent",
+          "pendingLabel": "Confirm patient is able to self-consent"
+        },
+        {
+          "field": "onsetHours",
+          "operator": "between",
+          "value": [
+            24,
+            96
+          ],
+          "error": "LKW-to-consent window not 24-96h",
+          "matchedLabel": "LKW-to-consent is in 24-96h window"
+        },
+        {
+          "field": "language",
+          "operator": "in",
+          "value": [
+            "english",
+            "spanish"
+          ],
+          "error": "Must be English or Spanish speaking",
+          "matchedLabel": "Language is English or Spanish",
+          "pendingLabel": "Confirm patient speaks English or Spanish"
+        }
       ],
       "exclusions": [
-        { "field": "exPriorUeCondition", "operator": "==", "value": true, "error": "Excludes prior UE condition limiting use", "pendingLabel": "Confirm no prior upper extremity condition limiting use" },
-        { "field": "exLegallyBlind", "operator": "==", "value": true, "error": "Excludes legally blind patients", "pendingLabel": "Confirm not legally blind" },
-        { "field": "exDenseSensoryLoss", "operator": "==", "value": true, "error": "Excludes dense sensory loss (NIHSS sensory=2)", "pendingLabel": "Confirm NIHSS sensory score is < 2 (not dense sensory loss)" },
-        { "field": "exRecentStroke30d", "operator": "==", "value": true, "error": "Excludes symptomatic stroke within 30 days prior", "pendingLabel": "Confirm no symptomatic stroke in prior 30 days" },
-        { "field": "exSeizures", "operator": "==", "value": true, "error": "Excludes seizure since stroke onset", "pendingLabel": "Confirm no seizures since stroke onset" }
+        {
+          "field": "exPriorUeCondition",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes prior UE condition limiting use",
+          "pendingLabel": "Confirm no prior upper extremity condition limiting use"
+        },
+        {
+          "field": "exLegallyBlind",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes legally blind patients",
+          "pendingLabel": "Confirm not legally blind"
+        },
+        {
+          "field": "exDenseSensoryLoss",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes dense sensory loss (NIHSS sensory=2)",
+          "pendingLabel": "Confirm NIHSS sensory score is < 2 (not dense sensory loss)"
+        },
+        {
+          "field": "exRecentStroke30d",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes symptomatic stroke within 30 days prior",
+          "pendingLabel": "Confirm no symptomatic stroke in prior 30 days"
+        },
+        {
+          "field": "exSeizures",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes seizure since stroke onset",
+          "pendingLabel": "Confirm no seizures since stroke onset"
+        }
       ]
     }
   },
@@ -645,7 +1283,7 @@
     "externalMetadata": {
       "nct": "NCT06506279",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06506279",
-      "verificationDate": "2026-05-28"
+      "verificationDate": "2026-08-30"
     },
     "conciseBedsideSummary": "Invasive cortical stimulation in chronic stroke patients (stroke > 6 months prior, post-stroke mRS 3-4, available for 54 weeks).",
     "pathway": "Consult Rehab Research Coordinator",
@@ -671,24 +1309,123 @@
     },
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "==", "value": "ischemic", "error": "Requires Ischemic Stroke", "matchedLabel": "Ischemic Stroke classification selected" },
-        { "field": "onsetMonths", "operator": ">=", "value": 6, "error": "Requires chronic phase > 6 months post-stroke", "matchedLabel": "Stroke occurred > 6 months ago" },
-        { "field": "age", "operator": "between", "value": [22, 75], "error": "Requires age 22-75", "matchedLabel": "Age is {value} (meets 22-75)" },
-        { "field": "preMrs", "operator": "in", "value": [3, 4], "error": "Current (post-stroke) mRS must be 3 or 4", "matchedLabel": "Current mRS is {value}" },
-        { "field": "exUeWeakness", "operator": "==", "value": true, "error": "Requires moderate unilateral upper extremity weakness", "matchedLabel": "Unilateral upper extremity weakness confirmed" },
-        { "field": "availability_54w", "operator": "==", "value": true, "error": "Requires availability for 54 weeks of visits", "matchedLabel": "Available for 54-week in-person visits", "pendingLabel": "Confirm availability for 54 weeks of in-person follow-up visits" },
-        { "field": "self_consent", "operator": "==", "value": true, "error": "Patient must be able to self-consent", "matchedLabel": "Patient able to self-consent", "pendingLabel": "Confirm patient is able to self-consent" }
+        {
+          "field": "classification",
+          "operator": "==",
+          "value": "ischemic",
+          "error": "Requires Ischemic Stroke",
+          "matchedLabel": "Ischemic Stroke classification selected"
+        },
+        {
+          "field": "onsetMonths",
+          "operator": ">=",
+          "value": 6,
+          "error": "Requires chronic phase > 6 months post-stroke",
+          "matchedLabel": "Stroke occurred > 6 months ago"
+        },
+        {
+          "field": "age",
+          "operator": "between",
+          "value": [
+            22,
+            75
+          ],
+          "error": "Requires age 22-75",
+          "matchedLabel": "Age is {value} (meets 22-75)"
+        },
+        {
+          "field": "preMrs",
+          "operator": "in",
+          "value": [
+            3,
+            4
+          ],
+          "error": "Current (post-stroke) mRS must be 3 or 4",
+          "matchedLabel": "Current mRS is {value}"
+        },
+        {
+          "field": "exUeWeakness",
+          "operator": "==",
+          "value": true,
+          "error": "Requires moderate unilateral upper extremity weakness",
+          "matchedLabel": "Unilateral upper extremity weakness confirmed"
+        },
+        {
+          "field": "availability_54w",
+          "operator": "==",
+          "value": true,
+          "error": "Requires availability for 54 weeks of visits",
+          "matchedLabel": "Available for 54-week in-person visits",
+          "pendingLabel": "Confirm availability for 54 weeks of in-person follow-up visits"
+        },
+        {
+          "field": "self_consent",
+          "operator": "==",
+          "value": true,
+          "error": "Patient must be able to self-consent",
+          "matchedLabel": "Patient able to self-consent",
+          "pendingLabel": "Confirm patient is able to self-consent"
+        }
       ],
       "exclusions": [
-        { "field": "exAnticoagulation", "operator": "==", "value": true, "error": "Excludes patients taking anticoagulants", "pendingLabel": "Confirm not on anticoagulants (DOAC/warfarin/heparin)" },
-        { "field": "exHistoryDvtPe", "operator": "==", "value": true, "error": "Excludes history of DVT or pulmonary emboli", "pendingLabel": "Confirm no history of DVT or pulmonary emboli" },
-        { "field": "exSeizures", "operator": "==", "value": true, "error": "Excludes history of seizures/epilepsy", "pendingLabel": "Confirm no history of seizures or epilepsy" },
-        { "field": "exPriorIchHistory", "operator": "==", "value": true, "error": "Excludes history of spontaneous ICH", "pendingLabel": "Confirm no history of spontaneous ICH" },
-        { "field": "exPregnancy", "operator": "==", "value": true, "error": "Excludes pregnancy" },
-        { "field": "exSevereSpasticity", "operator": "==", "value": true, "error": "Excludes severe spasticity in target arm" },
-        { "field": "exArmInjury", "operator": "==", "value": true, "error": "Excludes arm fracture or orthopedic injury" },
-        { "field": "exSevereAphasiaCognitive", "operator": "==", "value": true, "error": "Excludes severe aphasia or cognitive impairment" },
-        { "field": "exSevereClaustrophobia", "operator": "==", "value": true, "error": "Excludes severe claustrophobia" }
+        {
+          "field": "exAnticoagulation",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes patients taking anticoagulants",
+          "pendingLabel": "Confirm not on anticoagulants (DOAC/warfarin/heparin)"
+        },
+        {
+          "field": "exHistoryDvtPe",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes history of DVT or pulmonary emboli",
+          "pendingLabel": "Confirm no history of DVT or pulmonary emboli"
+        },
+        {
+          "field": "exSeizures",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes history of seizures/epilepsy",
+          "pendingLabel": "Confirm no history of seizures or epilepsy"
+        },
+        {
+          "field": "exPriorIchHistory",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes history of spontaneous ICH",
+          "pendingLabel": "Confirm no history of spontaneous ICH"
+        },
+        {
+          "field": "exPregnancy",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes pregnancy"
+        },
+        {
+          "field": "exSevereSpasticity",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes severe spasticity in target arm"
+        },
+        {
+          "field": "exArmInjury",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes arm fracture or orthopedic injury"
+        },
+        {
+          "field": "exSevereAphasiaCognitive",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes severe aphasia or cognitive impairment"
+        },
+        {
+          "field": "exSevereClaustrophobia",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes severe claustrophobia"
+        }
       ],
       "manualPending": [
         "Confirm UEFM 25-45, corticospinal pathway preservation, and TMS motor output requirements"
@@ -710,7 +1447,7 @@
     "externalMetadata": {
       "nct": "NCT06682429",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06682429",
-      "verificationDate": "2026-05-28"
+      "verificationDate": "2026-08-30"
     },
     "conciseBedsideSummary": "6-week course of intensive home telerehabilitation in patients 90-150 days post-ischemic or hemorrhagic stroke.",
     "pathway": "Consult Rehab Coordinator",
@@ -735,18 +1472,88 @@
     },
     "eligibility": {
       "criteria": [
-        { "field": "classification", "operator": "in", "value": ["ischemic", "ich"], "error": "Requires Ischemic Stroke or ICH", "matchedLabel": "Ischemic Stroke or ICH classification selected" },
-        { "field": "onsetDays", "operator": "between", "value": [90, 150], "error": "LKW-to-randomization not 90-150 days", "matchedLabel": "Onset within 90-150 days window" },
-        { "field": "age", "operator": "between", "value": [18, 80], "error": "Requires age 18-80", "matchedLabel": "Age is {value} (meets 18-80)" },
-        { "field": "exUeWeakness", "operator": "==", "value": true, "error": "Requires moderate upper extremity weakness", "matchedLabel": "Upper extremity weakness confirmed" },
-        { "field": "self_consent", "operator": "==", "value": true, "error": "Patient must be able to self-consent", "matchedLabel": "Patient able to self-consent", "pendingLabel": "Confirm patient is able to self-consent" },
-        { "field": "preMrs", "operator": "<=", "value": 2, "error": "Pre-stroke mRS > 2", "matchedLabel": "Pre-stroke mRS is {value} (meets ≤ 2)" }
+        {
+          "field": "classification",
+          "operator": "in",
+          "value": [
+            "ischemic",
+            "ich"
+          ],
+          "error": "Requires Ischemic Stroke or ICH",
+          "matchedLabel": "Ischemic Stroke or ICH classification selected"
+        },
+        {
+          "field": "onsetDays",
+          "operator": "between",
+          "value": [
+            90,
+            150
+          ],
+          "error": "LKW-to-randomization not 90-150 days",
+          "matchedLabel": "Onset within 90-150 days window"
+        },
+        {
+          "field": "age",
+          "operator": "between",
+          "value": [
+            18,
+            80
+          ],
+          "error": "Requires age 18-80",
+          "matchedLabel": "Age is {value} (meets 18-80)"
+        },
+        {
+          "field": "exUeWeakness",
+          "operator": "==",
+          "value": true,
+          "error": "Requires moderate upper extremity weakness",
+          "matchedLabel": "Upper extremity weakness confirmed"
+        },
+        {
+          "field": "self_consent",
+          "operator": "==",
+          "value": true,
+          "error": "Patient must be able to self-consent",
+          "matchedLabel": "Patient able to self-consent",
+          "pendingLabel": "Confirm patient is able to self-consent"
+        },
+        {
+          "field": "preMrs",
+          "operator": "<=",
+          "value": 2,
+          "error": "Pre-stroke mRS > 2",
+          "matchedLabel": "Pre-stroke mRS is {value} (meets ≤ 2)"
+        }
       ],
       "exclusions": [
-        { "field": "exRecurrentStroke", "operator": "==", "value": true, "error": "Excludes recurrent stroke since index stroke", "pendingLabel": "Confirm no recurrent stroke since the index stroke" },
-        { "field": "exRecentStroke30d", "operator": "==", "value": true, "error": "Excludes separate stroke within 30 days prior", "pendingLabel": "Confirm no separate stroke within 30 days prior to the index stroke" },
-        { "field": "exLifeExpectancy9m", "operator": "==", "value": true, "error": "Excludes life expectancy < 9 months", "pendingLabel": "Confirm life expectancy is ≥ 9 months" },
-        { "field": "exBotoxVns3m", "operator": "==", "value": true, "error": "Excludes botulinum toxin to the paretic arm within 3 months, or expected by the 8-month visit", "pendingLabel": "Confirm no botulinum toxin to the paretic arm in prior 3 months or expected by the 8-month visit" }
+        {
+          "field": "exRecurrentStroke",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes recurrent stroke since index stroke",
+          "pendingLabel": "Confirm no recurrent stroke since the index stroke"
+        },
+        {
+          "field": "exRecentStroke30d",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes separate stroke within 30 days prior",
+          "pendingLabel": "Confirm no separate stroke within 30 days prior to the index stroke"
+        },
+        {
+          "field": "exLifeExpectancy9m",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes life expectancy < 9 months",
+          "pendingLabel": "Confirm life expectancy is ≥ 9 months"
+        },
+        {
+          "field": "exBotoxVns3m",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes botulinum toxin to the paretic arm within 3 months, or expected by the 8-month visit",
+          "pendingLabel": "Confirm no botulinum toxin to the paretic arm in prior 3 months or expected by the 8-month visit"
+        }
       ]
     }
   }

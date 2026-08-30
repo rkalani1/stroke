@@ -249,12 +249,12 @@ const TRIALS = {
     summary:
       'Prospective, randomized trial evaluating the clinical utility of ultra-early SCUBA neuroendoscopic evacuation of basal-ganglia hemorrhages.',
     eligibility: [
-      'Age 18–80',
+      'Age 18–80, Pre-ICH mRS 0–2',
       'Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH',
-      'Volume >=15 mL by ABC/2, or close enough to prompt screening',
-      'Arrival/evaluation <=15 hours since LKW',
-      'NIHSS >=6; CTA/MRA without underlying vascular lesion',
-      'No clear standard-of-care surgical indication'
+      'Volume ≥ 20 mL by ABC/2',
+      'Randomization ≤ 16 hours since LKW (surgery < 120 min from randomization)',
+      'NIHSS ≥ 6; CTA/MRA without underlying vascular lesion',
+      'No clear standard-of-care surgical indication; goals of care pursue life-saving therapy'
     ],
     exclusions: [
       'Suspected secondary cause, infratentorial/thalamic hemorrhage, or midbrain extension',

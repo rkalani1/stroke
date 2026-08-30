@@ -243,7 +243,7 @@ async function main() {
       }
       let expected;
       try {
-        expected = await fs.readFile(file, 'utf8');
+        expected = (await fs.readFile(file, 'utf8')).replace(/\r\n/g, '\n');
       } catch {
         failures.push(`${subtab}: baseline missing (${file}). Run with --update to create it, then review the diff.`);
         continue;
