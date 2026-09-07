@@ -10,12 +10,238 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The European Stroke Organisation (ESO) guidelines on Moyamoya Angiopathy (MMA), developed according to ESO standard operating procedure and Grading of Recommendations, Assessment, Development and Evaluation (GRADE) methodology, were compiled to assist clinicians in managing patients with MMA in their decision making.",
+      "section": "PICO 1 – Haemodynamic assessment (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For all patients with MMA we suggest performing haemodynamic assessment during the diagnostic workup in order to help decision-making. Collecting these data for further analysis may be useful in guiding future decisions in this rare disease. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 1 – Haemodynamic assessment (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with asymptomatic MMA, and in those where symptoms are not clearly associated with haemodynamically triggers, haemodynamic assessment should be performed to identify hemispheres at risk of stroke. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 1 – Haemodynamic assessment (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with clear haemodynamic triggered TIAs or watershed stroke in one cerebral artery territory, perfusion studies should be considered to identify other haemodynamically compromised yet asymptomatic brain territories. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 1 – Haemodynamic assessment (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For all patients in whom cerebral perfusion will be performed, we suggest using those imaging methods most familiar and available depending on individual institutions. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 2 – Assessment of posterior circulation involvement (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In all paediatric MMA patients, we suggest assessment of PCA or posterior circulation involvement (especially in children less than 5 years of age) to identify patients at higher risk of stroke and cognitive impairment. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 2 – Assessment of posterior circulation involvement (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult MMA patients, we suggest assessment of PCA or posterior circulation involvement to identify patients at risk of ischaemic or haemorrhagic stroke. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 3 – RNF213 genetic testing (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "In MMA patients, regardless of ethnicity, we suggest against systematic variant screening of RNF213 p.R4810K. Vote 8/10.",
+      "page": null
+    },
+    {
+      "section": "PICO 4 – Long-term antiplatelet therapy (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with non-haemorrhagic MMA, we suggest the use of long-term antiplatelet therapy to reduce the risk of embolic strokes without an increase in haemorrhagic strokes. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 5 – Revascularization surgery versus no surgery (adult patients, haemorrhagic presentation)",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In adult MMA patients with haemorrhagic presentation, we recommend revascularization surgery (evidence only for direct STA-MCA bypass) in case of cerebral haemodynamic impairment and the presence of choroidal collaterals. (Strength of recommendation: Weak for intervention ↑?; quality of evidence: Low ⊕⊕)",
+      "page": null
+    },
+    {
+      "section": "PICO 5 – Revascularization surgery versus no surgery (adult patients, expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult MMA patients with ischaemic presentation, we suggest that revascularization surgery should be considered in case of clinical symptoms and/or imaging markers of haemodynamic impairment. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 5 – Revascularization surgery versus no surgery (adult patients, expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For conservative management (i.e. against routine revascularization)",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult MMA asymptomatic patients, we suggest considering conservative treatment except in patients with both cerebral haemodynamic impairment and silent ischaemic lesions in the same cerebral region. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 5 – Revascularization surgery versus no surgery (adult patients, expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In symptomatic and asymptomatic adult MMA patients, we suggest that surgical revascularization is performed in a referral centre and by a neurosurgeon with significant experience in surgical revascularization techniques. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 5 – Revascularization surgery versus no surgery (paediatric patients, expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In paediatric MMA patients, we suggest revascularization surgery where there is evidence of ongoing ischaemic symptoms or cerebral haemodynamic impairment. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 5 – Revascularization surgery versus no surgery (paediatric patients, expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In paediatric MMA patients with recurrent TIA or recurrent ischaemic strokes, we suggest early revascularization surgery except in case of large territorial ischaemic lesion. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 5 – Revascularization surgery versus no surgery (paediatric patients, expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In paediatric MMA patients we suggest that surgical revascularization is performed in a referral centre and by neurosurgeons with significant experience in surgical revascularization techniques. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 6 – Direct/combined versus indirect revascularization (adult patients, expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult MMA patients, we suggest direct/combined revascularization instead of indirect strategies for reducing risk of stroke.",
+      "page": null
+    },
+    {
+      "section": "PICO 6 – Direct/combined versus indirect revascularization (paediatric patients, expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In paediatric MMA patients, we suggest combined revascularization instead of indirect strategies whenever technically possible, to decrease short term risk of stroke.",
+      "page": null
+    },
+    {
+      "section": "PICO 7 – Perioperative antiplatelet therapy (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with MMA, we suggest that, during bypass surgery continuation of antiplatelet treatment as monotherapy (aspirin) is safe. However, in case of discontinuation, we suggest restarting antiplatelet therapy 1–7 days after surgery, depending on the post-surgery CT scan. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 7 – Perioperative antiplatelet therapy (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In case of dual antiplatelet therapy (aspirin + clopidogrel or other antiplatelets), we suggest stopping clopidogrel, or the other second antiplatelet therapy, for 7 days before surgery. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 8 – Timing of revascularization surgery after an acute cerebrovascular event (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with MMA, we suggest waiting 6–12 weeks from an acute cerebrovascular event before performing surgery for MMA patients, to reduce the rate of postoperative complications. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 8 – Timing of revascularization surgery after an acute cerebrovascular event (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with MMA, we suggest avoiding trigger factors such as dehydration, fever, and hyperventilation as well as hypotension when waiting for surgery. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 8 – Timing of revascularization surgery after an acute cerebrovascular event (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with MMA, we suggest that waiting for surgery in children should be balanced against the risk of further stroke. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 8 – Timing of revascularization surgery after an acute cerebrovascular event (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with MMA, we suggest that early surgery could be considered in paediatric patients especially those with recurrent TIAs, single or recurrent ischaemic strokes with rapid and complete clinical recovery. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 9 – Long-term follow-up neuroimaging (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with MMA, we suggest that neuroimaging follow-up should not only be limited to post-operative evaluations of surgical efficacy but should include long-term follow-up to evaluate progression of angiopathy. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 9 – Long-term follow-up neuroimaging (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with initially diagnosed unilateral MMA, neuroimaging assessments should be carried out for early detection of progression. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 9 – Long-term follow-up neuroimaging (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In conservatively managed patients with MMA (asymptomatic and symptomatic patients with or without haemodynamic impairment), neuroimaging assessments should be carried out. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 9 – Long-term follow-up neuroimaging (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with MMA, the neuroimaging follow-up should include at least MRI-MRA and haemodynamic evaluation (MR perfusion, PET, SPECT). In experienced hands, transcranial duplex ultrasound may be useful. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 9 – Long-term follow-up neuroimaging (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with MMA, DSA should be performed preferentially when a vascular change is suspected and a therapeutic decision is to be made or when non-invasive techniques are not conclusive. Vote 9/9.",
+      "page": null
+    },
+    {
+      "section": "PICO 9 – Long-term follow-up neuroimaging (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Neutral / individualised",
+      "levelOfEvidence": "Ungraded",
+      "text": "The timing of follow-up assessments cannot be strictly suggested and should be individualised. Vote 9/9.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }
