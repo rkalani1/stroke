@@ -407,6 +407,58 @@ describe('patient-store', () => {
       expect(savedPatient.initials).toBe('FL');
     });
 
+    it('handles savePatient rejection gracefully during autoSave flush', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const error = new Error('Database write failure');
+
+      const mockDB = {
+        transaction: () => ({
+          objectStore: () => ({
+            put: () => {
+              const req = {};
+              setTimeout(() => {
+                req.error = error;
+                if (req.onerror) req.onerror();
+              }, 10);
+              return req;
+            }
+          })
+        })
+      };
+
+      vi.stubGlobal('indexedDB', {
+        open: () => {
+          const req = {};
+          setTimeout(() => {
+            req.result = mockDB;
+            if (req.onsuccess) req.onsuccess({ target: { result: mockDB } });
+          }, 10);
+          return req;
+        }
+      });
+
+      // Re-import module so dbPromise uses our mockDB
+      vi.resetModules();
+      const store = await import('../src/patient-store.js');
+
+      const patient = store.makePatientStub({ initials: 'ERR' });
+      const getPatientFn = vi.fn(() => patient);
+      const autoSaver = store.createAutoSaver(getPatientFn, 100);
+
+      const subscribeFn = vi.fn();
+      autoSaver.subscribe(subscribeFn);
+
+      // Save via flush
+      await autoSaver.flush();
+
+      expect(warnSpy).toHaveBeenCalledWith('autoSave failed', error);
+      expect(subscribeFn).not.toHaveBeenCalled();
+      expect(autoSaver.now()).toBeNull();
+
+      warnSpy.mockRestore();
+      vi.unstubAllGlobals();
+    });
+
     it('catches savePatient failure and logs warning without updating lastSaveAt or notifying', async () => {
       vi.resetModules();
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
@@ -456,25 +508,43 @@ describe('patient-store', () => {
     });
 
     it('does nothing when getPatient returns null or patient without id', async () => {
-      const getNullPatient = vi.fn(() => null);
-      const autoSaverNull = patientStore.createAutoSaver(getNullPatient);
-      const subscribeFnNull = vi.fn();
-      autoSaverNull.subscribe(subscribeFnNull);
+      const getPatientNull = vi.fn(() => null);
+      const autoSaverNull = patientStore.createAutoSaver(getPatientNull);
+
+      const subscribeFn = vi.fn();
+      autoSaverNull.subscribe(subscribeFn);
 
       await autoSaverNull.flush();
 
-      expect(subscribeFnNull).not.toHaveBeenCalled();
+      expect(subscribeFn).not.toHaveBeenCalled();
       expect(autoSaverNull.now()).toBeNull();
 
-      const getNoIdPatient = vi.fn(() => ({ initials: 'NOID' }));
-      const autoSaverNoId = patientStore.createAutoSaver(getNoIdPatient);
-      const subscribeFnNoId = vi.fn();
-      autoSaverNoId.subscribe(subscribeFnNoId);
+      const getPatientNoId = vi.fn(() => ({ initials: 'NOID' }));
+      const autoSaverNoId = patientStore.createAutoSaver(getPatientNoId);
+      autoSaverNoId.subscribe(subscribeFn);
 
       await autoSaverNoId.flush();
 
-      expect(subscribeFnNoId).not.toHaveBeenCalled();
+      expect(subscribeFn).not.toHaveBeenCalled();
       expect(autoSaverNoId.now()).toBeNull();
+    });
+
+    it('unsubscribes subscribers correctly', async () => {
+      const patient = patientStore.makePatientStub({ initials: 'UNS' });
+      const getPatientFn = vi.fn(() => patient);
+      const autoSaver = patientStore.createAutoSaver(getPatientFn);
+
+      const sub1 = vi.fn();
+      const sub2 = vi.fn();
+      const unsubscribe1 = autoSaver.subscribe(sub1);
+      autoSaver.subscribe(sub2);
+
+      unsubscribe1();
+
+      await autoSaver.flush();
+
+      expect(sub1).not.toHaveBeenCalled();
+      expect(sub2).toHaveBeenCalled();
     });
 
     it('allows unsubscribing from autoSaver notifications', async () => {
