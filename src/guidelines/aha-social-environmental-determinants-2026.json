@@ -10,12 +10,302 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Methods",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Stroke is a leading cause of death and disability worldwide, and the recovery process is significantly influenced by a multitude of factors beyond immediate medical treatment. Social and environmental determinants of health-conditions in which people are born, grow, work, live, and age-play a crucial role in the functional outcomes of stroke survivors, and addressing these factors is essential to ensure equitable care and optimal recovery.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In this scoping review, the writing group searched OVID Medline from January 2019 to October 2024 for studies related to social and environmental factors and their effects on stroke functional outcome (primary outcome) and secondary stroke prevention, allowing inclusion of important reviews or seminal studies published before 2019, and summarized potential strategies to reduce inequities. This scientific statement assigns no Class of Recommendation or Level of Evidence to any of its statements.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although many traditional risk factors are known to be associated with poststroke functional outcomes, social and environmental determinants of health also significantly influence stroke recovery. Compared with survivors of other acute illnesses such as myocardial infarction, stroke survivors often face even greater functional limitations, thus amplifying the effects of social and environmental determinants.",
+      "page": null
+    },
+    {
+      "section": "Association of Social and Environmental Factors With Functional Outcome — Sex and Gender",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Women with stroke have been reported to have greater odds of increased difficulty with activities of daily living and motor skills, worse health-related quality-of-life outcomes on the Stroke Impact Scale, greater likelihood of discharge to a skilled nursing facility rather than an inpatient rehabilitation facility, less frequent discharge home, prolonged hospital length of stay, and increased in-hospital mortality. On the other hand, some studies have noted better functional outcomes for women than men after stroke, or no difference. Findings are therefore mixed.",
+      "page": null
+    },
+    {
+      "section": "Sex and Gender — Commentary and Research Gaps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Possible reasons for worse outcomes in women include older age at the time of stroke, racial and ethnic inequities, lower prestroke function, lower social support, being widowed, and comorbidities, although this requires additional study. Different study designs and study populations might explain contradictory findings. More research is needed on stroke care and outcomes in transgender and nonbinary individuals, because much of what exists is in presumed cisgender individuals.",
+      "page": null
+    },
+    {
+      "section": "Association of Social and Environmental Factors With Functional Outcome — Race and Ethnicity",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Race and ethnicity, which are social constructs, are social determinants of health in which inequities can affect stroke functional outcome, and findings have been mixed. Several studies have reported that survivors in all racial and ethnic groups except White survivors (including Black, Asian, and Hispanic patients) fare worse, whereas other studies have not noted a link between race and ethnicity and functional outcome after stroke. In a multi-institutional database, non-Hispanic White and non-Hispanic Black patients were more likely to have a favorable 90-day functional outcome after endovascular thrombectomy (EVT) than Hispanic patients, while no significant differences in functional outcomes or mortality between non-Hispanic Black and non-Hispanic White patients after EVT were found in the NeuroVascular Quality Initiative–Quality Outcomes Database.",
+      "page": null
+    },
+    {
+      "section": "Race and Ethnicity — Commentary and Research Gaps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Proposed reasons for disparities include presence or comprehensiveness of insurance coverage, persistent racial bias, differences in levels of social support, presence of comorbidities, access to care, more life-sustaining procedures (eg, tracheostomies) being performed in patients in all racial and ethnic groups compared with White patients, and disparities in duration to hospital presentation and likelihood of receiving acute therapies such as intravenous thrombolysis and EVT. Population health equity frameworks (eg, R4P and the Health Equity Framework) may help explain the systemic and structural factors involved. Continued research into reasons for possible disparities among different races and ethnicities is warranted.",
+      "page": null
+    },
+    {
+      "section": "Association of Social and Environmental Factors — Socioeconomic and Insurance Status, Education, and Occupation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with higher socioeconomic status (SES) tend to have better outcomes. Among patients with acute ischemic stroke treated with EVT, those in the high neighborhood SES tertile were more likely to be functionally independent (modified Rankin Scale score 0–2) at 90 days than those in the low tertile, but this difference was no longer evident after accounting for race, ASPECTS on admission, admission NIHSS score, and distance from hospital.",
+      "page": null
+    },
+    {
+      "section": "Socioeconomic and Insurance Status, Education, and Occupation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Having private insurance may be associated with better stroke functional outcomes. Medicaid expansion was associated with lower functional improvements in 1 study despite being associated with greater access to rehabilitation facilities. In other studies, SES and insurance were not associated with stroke functional outcome. Lower SES has been associated with increased stroke recurrence in some studies but not others, and the association of insurance status with secondary stroke prevention is not consistent.",
+      "page": null
+    },
+    {
+      "section": "Socioeconomic and Insurance Status, Education, and Occupation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Lack of employment and low level of education have been associated with worse functional outcome after stroke, although other studies have found no association. Primary or lower education level has been associated with a 27% risk of stroke recurrence compared with 14% in patients with a university or higher education. Research exploring how various aspects of insurance may be tied to stroke recovery, and evaluating how resources available to stroke survivors with higher SES may be adapted to those with lower SES, is warranted.",
+      "page": null
+    },
+    {
+      "section": "Association of Social and Environmental Factors — Health Literacy, Self-Efficacy, and Access to Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Among stroke survivors, greater health literacy is associated with better physical function; among Swedish stroke survivors 1 year after hospital discharge, higher levels of health literacy were associated with higher levels of self-efficacy and higher levels of performing activities of daily living. Access to care can also affect stroke recovery: attending primary care outpatient visits has been associated with reduced recurrent stroke among veterans with housing instability. Relationships may be due to upstream social determinants of health; in-depth longitudinal studies are needed.",
+      "page": null
+    },
+    {
+      "section": "Association of Social and Environmental Factors — Psychosocial and Cultural Considerations and Language Barriers",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Mental illness such as schizophrenia and poststroke anxiety and depression may negatively affect stroke recovery and secondary stroke prevention, including adherence to medications. Social support has an inconsistent relationship with stroke recovery; perceived social support was demonstrated to mediate the relationship between perception of stroke recurrence and positive health behavior among Chinese patients with stroke.",
+      "page": null
+    },
+    {
+      "section": "Psychosocial and Cultural Considerations and Language Barriers",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Emotional stress such as stigma associated with stroke has been linked to worse functional outcome, and higher lifetime stress — which may be associated with negative social determinants of health such as poverty, lack of access to education, unhealthy housing, and unsafe environments — has been associated with higher poststroke acute stress and worse functional outcomes.",
+      "page": null
+    },
+    {
+      "section": "Psychosocial and Cultural Considerations and Language Barriers",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Few studies have addressed cultural influence on stroke outcomes. Cultural beliefs around stroke and disability may lead to delay in seeking care and decreased participation in rehabilitation, and decisions around palliative care and life-sustaining treatments may be affected by cultural considerations. Non-English language preferences in English-predominant health care settings may also negatively affect stroke recovery, but this is not demonstrated in all studies. The influence of culture on stroke recovery requires further investigation, including attitudes toward stroke care and recovery in various cultures and the potential influence of language barriers, in order to develop appropriate interventions.",
+      "page": null
+    },
+    {
+      "section": "Association of Social and Environmental Factors — Rural Versus Urban Environments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Rural areas present unique challenges, including increased distances to hospitals, limited availability of EVT, and few inpatient rehabilitation facilities. Distance to an acute care hospital or the need for interhospital transfer can lead to delays in treatment, resulting in poorer outcomes and higher mortality. Functional outcomes and quality of life after stroke are less favorable in rural-dwelling communities, in part because of stroke severity, and non–rural-dwelling patients may be more likely to quit smoking than rural-dwelling stroke survivors.",
+      "page": null
+    },
+    {
+      "section": "Rural Versus Urban Environments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Urban environments typically have more comprehensive stroke centers than their rural counterparts; nevertheless substantial differences in access to these stroke centers exist within urban areas, and individuals residing in areas with lower neighborhood SES tend to have worse recovery after stroke. Research is needed to clarify the factors preventing access and the best strategies for overcoming disparate outcomes, including the effect of telehealth on stroke functional outcomes.",
+      "page": null
+    },
+    {
+      "section": "Association of Social and Environmental Factors — Neighborhood and Environmental Determinants",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Air pollutants, especially fine particulate matter (<2.5 µm), are linked to cardiovascular mortality, indirectly to worse functional outcome, and to higher ischemic stroke mortality, with lower-income communities and Black communities facing greater exposure. Regional pollution and suboptimal air quality may further influence a person's ability to perform vigorous exercise outdoors.",
+      "page": null
+    },
+    {
+      "section": "Neighborhood and Environmental Determinants",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Violent crime rates in urban areas correlate with higher cardiovascular and stroke mortality rates. Residents in high-crime areas have limited access to outpatient rehabilitation and home health services and experience reluctance to use available services and to establish local exercise routines because of safety concerns.",
+      "page": null
+    },
+    {
+      "section": "Neighborhood and Environmental Determinants",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Aerobic exercise and strength training are important after stroke and enhance functional capacity; the built environment contributes to the safety of successfully implementing exercise regimens, especially for patients with adaptive equipment. Urban green spaces, including parks, gardens, and walking paths, can promote better cardiovascular health and reduce poststroke disability.",
+      "page": null
+    },
+    {
+      "section": "Neighborhood and Environmental Determinants",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Access to healthy foods is critical to reduce secondary stroke risk; a healthy diet after stroke requires a reduction in salt, sugar, and unhealthy fats and an increase in fresh vegetables, fruits, and nuts (eg, the Mediterranean and DASH diets). Highly processed foods are associated with increased population risk of atherosclerosis, a critical factor in secondary stroke prevention, and food \"swamps\" — regions with a high proportion of unhealthy food options such as fast food and quick marts — are associated with recurrent stroke and poor outcome after stroke.",
+      "page": null
+    },
+    {
+      "section": "Potential Strategies to Address Inequities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Social and environmental contributions to stroke outcomes could be addressed at the individual, community, and society levels. Given that multiple social determinants of health can affect and interact to influence stroke functional outcome, approaches that target several determinants may be of particular benefit. Stroke professionals must partner with individuals and families, other medical professionals, health care and community organizations, and policymakers at the society level to address unmet needs.",
+      "page": null
+    },
+    {
+      "section": "Potential Strategies — Risk-Informed and Risk-Targeted Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In social risk–informed care, traditional health care delivery is adjusted according to the presence of social risks without direct intervention to change those risks; examples include providing translation services, extending clinic hours, querying food insecurity before prescribing medications, increasing point-of-care testing, and instituting telehealth services for poststroke care (which requires the patient to have internet and phone access, computer literacy, and physical capability to access appointments).",
+      "page": null
+    },
+    {
+      "section": "Potential Strategies — Risk-Informed and Risk-Targeted Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Social risk–targeted care includes direct interventions aimed at reducing or resolving the social risk factors themselves, leveraging clinical encounters by screening for unmet social needs, providing culturally tailored education, and making referrals to community resources (eg, housing support services or food assistance programs). Without policy-level changes, community resources are unlikely to be accessed with high fidelity. Strategies would ideally be administered according to need; inequitable implementation is a major contributor to disparities in stroke outcomes.",
+      "page": null
+    },
+    {
+      "section": "Potential Strategies — Implementation Science",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Opportunities for applying implementation science to reduce inequities include (1) evaluating implementation in routine care and poststroke service delivery with a learning health system model and a robust data infrastructure to identify inequities in care delivery and actively remedy them; (2) improving adoption and implementation in poststroke service delivery by identifying contextual barriers; and (3) incorporating new innovations into clinical practice within an implementation science research framework to expedite translation. Frameworks such as the Consolidated Framework for Implementation Research could help identify and address barriers to equitable stroke outcome.",
+      "page": null
+    },
+    {
+      "section": "Potential Strategies — Evidence-Based Interventions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Evidence-based interventions can be developed only with input and feedback from topical and frontline experts, engagement with end users, iterative refinement, training with expected implementers and small tests of change, and use of implementation strategies feasible for a given context. Strategies such as culturally tailored multimedia education, use of telemedicine services, and active engagement of patients and their families in rehabilitation planning have shown promise in reducing inequities.",
+      "page": null
+    },
+    {
+      "section": "Potential Strategies — Evidence-Based Interventions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Case management–based poststroke care programs, one of which also involved home blood pressure telemonitoring compared with telemonitoring alone, were associated with reductions in end points such as systolic blood pressure and the composite of vascular death and stroke recurrence. Hip Hop Stroke, a school-based stroke education program, demonstrated significant improvement in sustained (at least 3 months) stroke preparedness for both parents and children in a randomized trial.",
+      "page": null
+    },
+    {
+      "section": "Potential Strategies — Evidence-Based Interventions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Other interventions have not been successful: a patient-centered transitional care program after stroke that evaluated social and functional determinants of health to create individualized care plans did not improve the primary outcome of functional status; a multimodal coordinated care intervention in hospitals serving low-income populations showed no significant vascular risk factor changes, with only 14.5% of the intervention group receiving the full intervention; and a culturally tailored skills-based educational intervention with telephone follow-up did not meet its primary outcome of systolic blood pressure reduction. These studies generally targeted downstream determinants such as access to care and self-management skills.",
+      "page": null
+    },
+    {
+      "section": "Potential Strategies — Evidence-Based Interventions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Improving access to research, use of artificial intelligence, and stroke rehabilitation trials could be leveraged to improve stroke outcomes, and there is some evidence that digital rehabilitation technologies such as digital and mobile applications, virtual reality, gamification, and inertial sensors could help with stroke recovery. Knowledge deficits reinforce the importance of funding and developing databases and registries that include social determinants of health.",
+      "page": null
+    },
+    {
+      "section": "Potential Strategies — Importance of Community Engagement",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Community engagement can (1) ensure that clinical care and research topics are identified as a community need and interventions are culturally congruent with the community; (2) build in sustainability from the start; and (3) facilitate academic and community bidirectional learning. Community engagement could help highlight and address health insurance challenges, assist in obtaining access to dieticians, identify ways to change the operational structure of local grocery stores, and facilitate secondary prevention strategies such as DASH diet strategies, in-home risk assessments after stroke, and CAPABLE-type programs to better enable exercise.",
+      "page": null
+    },
+    {
+      "section": "Potential Strategies — Addressing Inequities Through Policy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Systemic inequities, power imbalances, and income gaps are fundamental drivers of health disparities that affect stroke outcomes, and addressing these upstream social factors is essential for reducing inequities. Advocacy and policy measures at the local, state, and national levels are paramount in achieving equity by improving access to health care, enhancing insurance coverage, and reducing financial barriers to care. Policies that expand access to social services and create parks and more accessible neighborhoods may also help improve stroke recovery.",
+      "page": null
+    },
+    {
+      "section": "Key Strategies by Level (Table 2) — Sex and Gender",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patient-professional level: raise individual awareness for equitable treatment in stroke care; provide access to support programs for patients recovering from a stroke; increase screening and interventions to treat depression, anxiety, or poststroke adjustment. Community level: support initiatives addressing gender disparities in stroke awareness; provide childcare assistance for stroke survivors; create mental health support groups tailored to stroke survivors. Society level: fund research on sex- and gender-specific stroke risks and recovery; expand parental leave policies for stroke recovery; increase funding for mental health services after stroke; increase access to research trials for women.",
+      "page": null
+    },
+    {
+      "section": "Key Strategies by Level (Table 2) — Race and Ethnicity",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patient-professional level: individualize education and feedback to patients, including culturally tailored resources; establish caregiver professional support to assist stroke survivors. Community level: provide peer support and group education sessions; encourage increased racial and ethnic representation among professional stroke stakeholders; survey community leaders to assess needs in order to optimize stroke education and recovery. Society level: expand policies to ensure access to social services; ensure equitable access to stroke research studies for all races and ethnicities; fund EMS-led programs to improve timely access to care.",
+      "page": null
+    },
+    {
+      "section": "Key Strategies by Level (Table 2) — SES, Insurance Status, Education, and Occupation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patient-professional level: educate individuals about access to health care options, disability benefits, and programs to reduce financial strain; provide navigation for care transitions; access stroke-friendly meal delivery services or nutritional guidance; educate patients and families on the different levels of rehabilitation; use vocational rehabilitation programs to reenter the workforce. Community level: design community programs to assist low-income populations in accessing care; develop local job training and vocational reintegration programs; create community kitchens providing low-cost, heart-healthy meals; encourage local businesses to provide flexible, supportive work environments. Society level: expand policies to reduce financial barriers such as copayments to help achieve equitable access to stroke care services; advocate for equitable medical care and rehabilitation services; expand food assistance programs; promote laws supporting workplace accommodations for stroke survivors.",
+      "page": null
+    },
+    {
+      "section": "Key Strategies by Level (Table 2) — Health Literacy, Self-Efficacy, and Access to Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patient-professional level: encourage family involvement in setting recovery goals; train patients and families to use telehealth platforms, recovery apps, and online resources for better engagement and rehabilitation. Community level: advocate for community-wide stroke awareness campaigns. Society level: invest in accessible technology development for stroke care; fund initiatives that promote healthy habits and ways to mitigate stroke risk factors; implement case management–based poststroke care programs to help increase self-efficacy; expand policies for social services.",
+      "page": null
+    },
+    {
+      "section": "Key Strategies by Level (Table 2) — Psychosocial and Cultural Considerations and Language Barriers",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patient-professional level: empower individuals through culturally tailored education and resources; engage families in culturally relevant programs for better health outcomes. Community level: offer social reintegration activities and resources; develop community-based support groups. Society level: fund initiatives integrating cultural understanding into stroke care; use implementation science to determine effectiveness of stroke recovery programs; develop policies to improve awareness of stroke symptoms and the importance of early EMS notification.",
+      "page": null
+    },
+    {
+      "section": "Key Strategies by Level (Table 2) — Rural vs Urban Environments",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patient-professional level: use telemedicine for individual care and access to specialists; consider digital rehabilitation technologies to help with stroke recovery. Community level: deploy telestroke programs to underserved areas; provide technology access (including internet) for remote communities; enforce policies to ensure timely EMS prenotification in hospitals. Society level: advocate for policy on funding and promoting telemedicine infrastructure; develop policies for access to and payment for home-based rehabilitation technologies and services.",
+      "page": null
+    },
+    {
+      "section": "Key Strategies by Level (Table 2) — Neighborhood and Environmental Determinants",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patient-professional level: encourage individuals to adapt homes for accessibility, safety, and mobility (eg, ramps, grab bars); encourage exercise, including fitness classes; use home safety evaluations to improve accessibility at home. Community level: create affordable housing initiatives with accessibility in mind; advocate for policies and initiatives to increase green space; create community-wide fitness classes and other exercise opportunities. Society level: enforce regulations for accessible housing designs and fund retrofitting programs; promote laws enforcing accessibility standards in infrastructure and urban planning; promote policies designed to create green space, including parks.",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Removing inequities in functional outcomes after stroke requires a multifaceted approach that addresses both social and environmental determinants of health. Implementing evidence-based interventions, promoting community engagement, and ensuring accessible and supportive environments are key steps toward achieving equitable recovery and reintegration for all stroke survivors. Current gaps for future research include understanding how and which upstream determinants may affect stroke recovery and adoption of secondary stroke prevention strategies, understanding the interaction of these determinants with each other and with biological factors, and finding effective ways to address them in different environments.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

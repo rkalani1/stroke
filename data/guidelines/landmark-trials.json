@@ -698,6 +698,16 @@
       "outcomes": "ESPRIT: 9.7% vs 11.1% (HR 0.88, 95% CI 0.78-0.99, p=0.028), no heterogeneity by diabetes or prior stroke. BPROAD: 1.65 vs 2.09 per 100 person-years (HR 0.79, 95% CI 0.69-0.90, p<0.001).",
       "bottomLine": "Both support an SBP target <120 for vascular prevention, including in stroke survivors.",
       "teachingPoint": "Together they close the gaps SPRINT and ACCORD-BP left open — diabetes and prior stroke. ESPRIT found no subgroup heterogeneity, which is the key result for stroke clinicians. Balance against BPROAD’s excess symptomatic hypotension and hyperkalemia in frail patients."
+    },
+    {
+      "name": "SAVE",
+      "year": 2016,
+      "citation": "NEJM 2016;375:919-31 (PMID 27571048)",
+      "question": "Does CPAP reduce CV events in moderate-severe OSA?",
+      "design": "RCT, n=2717, CPAP vs usual care in established CV disease with OSA",
+      "outcomes": "Primary composite CV endpoint: no significant difference.",
+      "bottomLine": "CPAP does not reduce CV events in moderate-severe OSA without daytime sleepiness.",
+      "teachingPoint": "Doesn't mean don't treat OSA. Post-stroke OSA is common (50-70%), worsens neurologic function, treatment improves sleep quality, may improve BP. But SAVE tempers expectations for CV event reduction."
     }
   ],
   "antithrombotic": [
@@ -904,16 +914,6 @@
       "teachingPoint": "Treat post-stroke depression with SSRI if clinically indicated (sertraline often preferred). Do NOT use SSRI expecting motor recovery benefit."
     },
     {
-      "name": "SAVE",
-      "year": 2016,
-      "citation": "NEJM 2016;375:919-31 (PMID 27571048)",
-      "question": "Does CPAP reduce CV events in moderate-severe OSA?",
-      "design": "RCT, n=2717, CPAP vs usual care in established CV disease with OSA",
-      "outcomes": "Primary composite CV endpoint: no significant difference.",
-      "bottomLine": "CPAP does not reduce CV events in moderate-severe OSA without daytime sleepiness.",
-      "teachingPoint": "Doesn't mean don't treat OSA. Post-stroke OSA is common (50-70%), worsens neurologic function, treatment improves sleep quality, may improve BP. But SAVE tempers expectations for CV event reduction."
-    },
-    {
       "name": "VNS-REHAB",
       "year": 2021,
       "citation": "Lancet 2021;397:1545-53 (PMID 33894832)",
@@ -922,7 +922,9 @@
       "outcomes": "Change in Fugl-Meyer Upper Extremity the day after in-clinic therapy favoured paired VNS; FMA-UE response rate at 90 days also higher.",
       "bottomLine": "Paired VNS improved chronic upper-limb impairment versus sham — the basis for FDA clearance.",
       "teachingPoint": "Implanting EVERY participant, including controls, isolates the stimulation from the surgery — an unusually clean device design. The chronic population (≥9 months) matters too: spontaneous recovery has plateaued, so the gain is attributable to the pairing rather than natural history. Endpoint is impairment (FMA-UE), not activity or participation."
-    },
+    }
+  ],
+  "neurocriticalCare": [
     {
       "name": "INTREPID",
       "year": 2024,

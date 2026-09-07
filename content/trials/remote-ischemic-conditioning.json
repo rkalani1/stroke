@@ -1,0 +1,70 @@
+[
+  {
+    "id": "resist-ric",
+    "name": "RESIST",
+    "fullName": "Remote Ischemic Conditioning for Acute Stroke: The RESIST Randomized Clinical Trial",
+    "category": "remote-ischemic-conditioning",
+    "population": "n=1500, Median 71 y; 591 (41%) women, NIHSS Not reported in the abstract — patients were enrolled prehospital on symptoms alone, before any diagnostic imaging, Prehospital stroke symptoms for less than 4 h",
+    "finding": "DID NOT meet: median mRS 2 (IQR 1-3) with RIC vs 1 (IQR 1-3) with sham — RIC was not associated with improved functional outcome",
+    "teachingPoint": "Ambulance-initiated remote ischemic conditioning does not improve 90-day outcome and is not a prehospital intervention to adopt.",
+    "PMID": "37787796",
+    "year": 2023,
+    "citationIds": [
+      "cit-resist-2023"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "ricamis",
+    "name": "RICAMIS",
+    "fullName": "Effect of Remote Ischemic Conditioning vs Usual Care on Neurologic Function in Patients With Acute Moderate Ischemic Stroke: The RICAMIS Randomized Clinical Trial",
+    "category": "remote-ischemic-conditioning",
+    "population": "n=1893, Mean 65 y (SD 10.3); 606 (34.1%) women, NIHSS Acute moderate ischaemic stroke (the trial's severity band; the abstract does not give the numeric NIHSS range or median), Randomised within 48 h of symptom onset",
+    "finding": "MET: mRS 0-1 in 582 (67.4%) with RIC vs 566 (62.0%) with usual care — an absolute difference of 5.4 percentage points",
+    "teachingPoint": "Shows a 5.4-point absolute gain in excellent outcome with RIC in moderate stroke, but from an unblinded usual-care comparison the authors themselves say needs replication.",
+    "PMID": "35972485",
+    "year": 2022,
+    "citationIds": [
+      "cit-ricamis-2022"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "seric-evt",
+    "name": "SERIC-EVT",
+    "fullName": "Remote ischaemic conditioning improves outcomes of ischaemic stroke treated by endovascular thrombectomy: the SERIC-EVT trial",
+    "category": "remote-ischemic-conditioning",
+    "population": "n=498, Not reported in the abstract, NIHSS Not reported in the abstract, After endovascular thrombectomy for acute large-vessel occlusion",
+    "finding": "MET: mRS 0-2 in 61.1% with RIC vs 48.9% with sham RIC — note that the effect estimate reported in the abstract is UNADJUSTED",
+    "teachingPoint": "The first sham-controlled evidence that RIC after thrombectomy may improve 90-day independence — promising enough to justify confirmatory trials, not enough to change practice.",
+    "PMID": "40796242",
+    "year": 2026,
+    "citationIds": [
+      "cit-seric-evt-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "entrips",
+    "name": "EnTRIPS",
+    "fullName": "Remote Ischemic Postconditioning in Endovascular Thrombectomy for Stroke: The EnTRIPS Randomized Clinical Trial",
+    "category": "remote-ischemic-conditioning",
+    "population": "n=270, Mean 65.5 y (SD 16.8); 171 (63.8%) men, NIHSS Not reported in the abstract, Presentation within 24 h of onset; conditioning randomised and started within 6 h AFTER endovascular treatment",
+    "finding": "DID NOT meet: mRS 0-2 in 81/133 (60.9%) with RIPC vs 78/135 (57.8%) with control — no significant improvement in 90-day functional outcome",
+    "teachingPoint": "Ultra-early remote ischemic postconditioning after successful thrombectomy was safe but showed no functional benefit, so the RIC-after-EVT question remains open rather than answered.",
+    "PMID": "42267436",
+    "year": 2026,
+    "citationIds": [
+      "cit-entrips-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

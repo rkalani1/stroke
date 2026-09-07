@@ -15,5 +15,22 @@
     "certainty": "low",
     "lastReviewed": "2026-08-22",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "tencraos",
+    "name": "TenCRAOS",
+    "fullName": "A Randomized Trial of Tenecteplase in Acute Central Retinal Artery Occlusion",
+    "category": "crao-thrombolysis",
+    "population": "n=78, Adults, NIHSS n/a, ≤4.5 h",
+    "finding": "No significant difference: 20% (8/40) vs 24% (9/38)",
+    "teachingPoint": "No demonstrated visual-recovery benefit; serious safety concerns. This is an evidence summary, not a treatment recommendation.",
+    "PMID": "41604638",
+    "year": 2026,
+    "citationIds": [
+      "cit-tencraos-2025"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-09-06",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]
