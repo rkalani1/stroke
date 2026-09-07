@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "calculators",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.24.0",
-    "checksum": "sha256:4dbdb06ed75f4f0512b4ad0350758c81",
+    "appVersion": "6.25.0",
+    "checksum": "sha256:3a36b1313e098db5c7294498f82d2c5c",
     "count": 34,
     "source": "Calculator catalog bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -102,7 +102,7 @@
     },
     {
       "id": "andexanet",
-      "name": "Andexanet alfa dose",
+      "name": "Andexanet alfa (US sales ended; dosing disabled)",
       "category": "dosing",
       "fn": "calculateAndexanetDose"
     },

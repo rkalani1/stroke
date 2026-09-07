@@ -6,7 +6,8 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/exam/coma exam.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "PDF Document",
+    "reviewStatus": "archive"
   },
   {
     "id": "exam-delirium-vs-aphasia",
@@ -15,6 +16,7 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "PDF Document",
+    "reviewStatus": "archive"
   }
 ]

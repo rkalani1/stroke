@@ -11,7 +11,7 @@
     "pmid": "42507797",
     "doi": "10.1161/STR.0000000000000530",
     "citation": "Stroke. 2026;57(8):e461-e467",
-    "note": "A 7-page published correction (2026-07-27) amends this guideline; its itemized changes could not be retrieved in this environment and are NOT yet applied to these recommendations. Consult the correction at https://doi.org/10.1161/STR.0000000000000530 before relying on any COR/LOE here."
+    "note": "All 34 correction items checked for applicability to this library. Five recommendation changes applied; remaining items concern material not reproduced here. This does not represent a new clinical review of the full guideline."
   },
   "recommendations": [
     {
@@ -795,8 +795,9 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "In adult AIS patients presenting within 4.5 hours of symptom onset or last known well who are eligible for IVT, tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg is recommended to improve functional outcomes.",
-      "page": 42
+      "text": "In adult AIS patients presenting within 4.5 hours of symptom onset or last known well who are eligible for IVT, tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg) is recommended to improve functional outcomes.",
+      "page": 42,
+      "correctionSourceUrl": "https://doi.org/10.1161/STR.0000000000000530"
     },
     {
       "section": "Choice of Thrombolytic Agent",
@@ -819,8 +820,9 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "In AIS patients with salvageable ischemic penumbra on automated perfusion imaging who either awaken with stroke symptoms within 9 hours from midpoint of sleep or are 4.5-9 hours from last known well, IVT may be reasonable to improve functional outcomes.",
-      "page": 44
+      "text": "For AIS patients ineligible for EVT who have salvageable penumbra on automated perfusion imaging, IVT can be beneficial within 4.5–9 hours of last known well or within 9 hours of the midpoint of sleep for wake-up stroke.",
+      "page": 44,
+      "correctionSourceUrl": "https://doi.org/10.1161/STR.0000000000000530"
     },
     {
       "section": "Extended Time Windows for Intravenous",
@@ -1307,8 +1309,9 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "In AIS patients who fail or are unable to participate in bedside swallow screening due to neurological disabilities, it is reasonable to perform endoscopic examination of swallowing function to determine dysphagia severity and aspiration risk.",
-      "page": 74
+      "text": "In AIS patients who fail bedside screening or cannot participate because of neurological disabilities, an instrumental swallowing assessment (FEES or videofluoroscopic swallow study) is reasonable to evaluate dysphagia severity and aspiration risk.",
+      "page": 74,
+      "correctionSourceUrl": "https://doi.org/10.1161/STR.0000000000000530"
     },
     {
       "section": "Dysphagia",
@@ -1320,19 +1323,21 @@
     },
     {
       "section": "Dysphagia",
-      "classOfRec": "IIa",
+      "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "In stroke patients with dysphagia, pharyngeal electrical stimulation (PES) can be beneficial to reduce dysphagia severity and decrease aspiration risk.",
-      "page": 74
+      "text": "In non-tracheostomized stroke patients with dysphagia, pharyngeal electrical stimulation (PES) may be reasonable to improve swallowing function measured by instrumental/radiological assessment and clinical dysphagia scales.",
+      "page": 74,
+      "correctionSourceUrl": "https://doi.org/10.1161/STR.0000000000000530"
     },
     {
       "section": "Dysphagia",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "In severe stroke patients with dysphagia who required tracheotomy and mechanical ventilation, PES after ventilator weaning can be beneficial to decrease dysphagia severity, reduce aspiration risk, and expedite decannulation.",
-      "page": 74
+      "text": "In severe stroke with dysphagia requiring tracheotomy and mechanical ventilation, PES after ventilator weaning is reasonable to support decannulation readiness assessed by FEES.",
+      "page": 74,
+      "correctionSourceUrl": "https://doi.org/10.1161/STR.0000000000000530"
     },
     {
       "section": "Nutrition",
@@ -1576,5 +1581,23 @@
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "ACC/AHA"
+  "gradingSystem": "ACC/AHA",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "42507797",
+      "doi": "10.1161/str.0000000000000530",
+      "publisherUrl": "https://doi.org/10.1161/str.0000000000000530",
+      "status": "applied",
+      "note": "All 34 correction items checked for applicability to this library. Five recommendation changes applied; remaining items concern material not reproduced here. This does not represent a new clinical review of the full guideline.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": [
+        "ais-2026-98",
+        "ais-2026-101",
+        "ais-2026-162",
+        "ais-2026-164",
+        "ais-2026-165"
+      ]
+    }
+  ]
 }

@@ -7,6 +7,7 @@
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/lad/CREST-2 Trial - Dec 2025.pdf",
     "subtitle": "PDF Document",
+    "reviewStatus": "archive",
     "year": 2025
   },
   {
@@ -16,6 +17,7 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "PDF Document",
+    "reviewStatus": "archive"
   }
 ]

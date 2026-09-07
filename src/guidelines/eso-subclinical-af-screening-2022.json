@@ -107,5 +107,17 @@
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "GRADE"
+  "gradingSystem": "GRADE",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "37021192",
+      "doi": "10.1177/23969873221133924",
+      "publisherUrl": "https://doi.org/10.1177/23969873221133924",
+      "status": "not-applicable",
+      "note": "Adds an omitted informed-consent declaration; no clinical recommendation changes.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ]
 }

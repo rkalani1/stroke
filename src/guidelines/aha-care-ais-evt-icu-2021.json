@@ -289,5 +289,17 @@
     }
   ],
   "documentType": "scientific-statement",
-  "gradingSystem": "ungraded"
+  "gradingSystem": "ungraded",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "42507798",
+      "doi": "10.1161/str.0000000000000531",
+      "publisherUrl": "https://doi.org/10.1161/str.0000000000000531",
+      "status": "not-applicable",
+      "note": "Corrects a labetalol infusion typo in Table 4. The library names labetalol without reproducing the erroneous dose; use the corrected source for dosing.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ]
 }

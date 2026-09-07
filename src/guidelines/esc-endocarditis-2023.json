@@ -21,5 +21,37 @@
   "extractionStatus": "source-not-machine-readable",
   "extractionNote": "The publisher blocked automated retrieval of the full text, so the graded recommendations could not be read. Consult the source.",
   "documentType": "guideline",
-  "gradingSystem": "ungraded"
+  "gradingSystem": "ungraded",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "37738322",
+      "doi": "10.1093/eurheartj/ehad625",
+      "publisherUrl": "https://doi.org/10.1093/eurheartj/ehad625",
+      "status": "not-applicable",
+      "note": "Corrects antibiotic doses in Tables 7, 8 and 14 and supplemental Table S6. This library currently contains a source-only placeholder, not antibiotic recommendations.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    },
+    {
+      "type": "correction",
+      "pmid": "38086544",
+      "doi": "10.1093/eurheartj/ehad776",
+      "publisherUrl": "https://doi.org/10.1093/eurheartj/ehad776",
+      "status": "not-applicable",
+      "note": "Corrects a reference. The library contains a source-only placeholder and does not reproduce the reference list.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    },
+    {
+      "type": "correction",
+      "pmid": "39824219",
+      "doi": "10.1093/eurheartj/ehae877",
+      "publisherUrl": "https://doi.org/10.1093/eurheartj/ehae877",
+      "status": "not-applicable",
+      "note": "Corrects a pediatric antibiotic-prophylaxis dose in Table 6. The library contains a source-only placeholder and no dosing table.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ]
 }

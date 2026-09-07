@@ -1563,5 +1563,37 @@
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "ACC/AHA"
+  "gradingSystem": "ACC/AHA",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "38153996",
+      "doi": "10.1161/cir.0000000000001207",
+      "publisherUrl": "https://doi.org/10.1161/cir.0000000000001207",
+      "status": "not-applicable",
+      "note": "Trial-acronym, affiliation and disclosure corrections do not alter the extracted recommendations.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    },
+    {
+      "type": "correction",
+      "pmid": "38408149",
+      "doi": "10.1161/cir.0000000000001218",
+      "publisherUrl": "https://doi.org/10.1161/cir.0000000000001218",
+      "status": "not-applicable",
+      "note": "Corrects the PREVAIL trial expansion in supporting text; the library does not reproduce that expansion.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    },
+    {
+      "type": "correction",
+      "pmid": "38857333",
+      "doi": "10.1161/cir.0000000000001263",
+      "publisherUrl": "https://doi.org/10.1161/cir.0000000000001263",
+      "status": "not-applicable",
+      "note": "Corrects the ATRIA hypertension point in Table 8 and a Figure 17 footnote marker; neither table nor figure is reproduced in these entries.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ]
 }

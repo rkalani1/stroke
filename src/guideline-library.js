@@ -22,6 +22,7 @@ import aanDriverLicensure2025 from './guidelines/aan-driver-licensure-2025.json'
 import aanFunctionalSeizures2025 from './guidelines/aan-functional-seizures-2025.json';
 import aanNeuropalliative2022 from './guidelines/aan-neuropalliative-2022.json';
 import ahaAcuteBpManagement2024 from './guidelines/aha-acute-bp-management-2024.json';
+import ahaDyslipidemia2026 from './guidelines/aha-dyslipidemia-2026.json';
 import ahaAdultMoyamoyaDisease2023 from './guidelines/aha-adult-moyamoya-disease-2023.json';
 import ahaAfGuideline2023 from './guidelines/aha-af-guideline-2023.json';
 import ahaAggressiveLdlLowering2023 from './guidelines/aha-aggressive-ldl-lowering-2023.json';
@@ -115,6 +116,7 @@ export const GUIDELINE_LIBRARY = [
   maternalStroke2026,
   primaryPrevention2024,
   secondaryPrevention2021,
+  ahaDyslipidemia2026,
   svinLargeCore2025,
   cancerStroke2026,
   premorbidDisability2022,
@@ -218,24 +220,31 @@ export const GUIDELINE_LIBRARY = [
   ncsSccmAntithromboticReversal2016
 ];
 
-export const GUIDELINE_LIBRARY_INDEX = GUIDELINE_LIBRARY.map((guideline) => ({
-  ...guideline,
-  // Abstract-only stub marker, derived mechanically from the data
-  // shape: a dataset whose every recommendation is the single
-  // "Scope" abstract statement carries no graded recommendations of
-  // its own, so its search results must not read as guideline
-  // silence — the UI flags it "Summary only — see source".
-  summaryOnly: guideline.recommendations.length > 0 &&
-    guideline.recommendations.every((rec) => rec.section === 'Scope'),
-  // PubMed fallback for paywalled publisher links — projected only
-  // from the dataset's own pubmedUrl/pmid fields, never synthesized
-  // from anything else.
-  pubmedFallbackUrl: guideline.pubmedUrl ||
-    (guideline.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${guideline.pmid}/` : null),
-  recommendations: guideline.recommendations.map((rec, index) => ({
-    ...rec,
-    id: rec.id || `${guideline.id}-${index + 1}`,
-    sourceUrl: guideline.publisherUrl || guideline.pdfUrl,
-    pdfSourceUrl: rec.page && guideline.pdfUrl ? `${guideline.pdfUrl}#page=${rec.page}` : null
-  }))
-}));
+export const GUIDELINE_LIBRARY_INDEX = GUIDELINE_LIBRARY.map((guideline) => {
+  const sourceOnly = guideline.recommendations.length > 0 &&
+    guideline.recommendations.every((rec) => rec.section === 'Source not machine-readable');
+  return {
+    ...guideline,
+    // Keep source-only records and legacy Scope abstracts discoverable,
+    // without presenting missing extracted text as guideline silence.
+    summaryOnly: sourceOnly || (guideline.recommendations.length > 0 &&
+      guideline.recommendations.every((rec) => rec.section === 'Scope')),
+    sourceOnly,
+    partialExtraction: !sourceOnly && Boolean(guideline.extractionStatus),
+    recommendationCount: sourceOnly ? 0 : guideline.recommendations.length,
+    publicationUpdates: guideline.publicationUpdates || [],
+    hasUnresolvedUpdates: (guideline.publicationUpdates || []).some((update) =>
+      ['unresolved', 'partially-applied'].includes(update.status)),
+    // PubMed fallback for paywalled publisher links — projected only
+    // from the dataset's own pubmedUrl/pmid fields, never synthesized
+    // from anything else.
+    pubmedFallbackUrl: guideline.pubmedUrl ||
+      (guideline.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${guideline.pmid}/` : null),
+    recommendations: guideline.recommendations.map((rec, index) => ({
+      ...rec,
+      id: rec.id || `${guideline.id}-${index + 1}`,
+      sourceUrl: guideline.publisherUrl || guideline.pdfUrl,
+      pdfSourceUrl: rec.page && guideline.pdfUrl ? `${guideline.pdfUrl}#page=${rec.page}` : null
+    }))
+  };
+});

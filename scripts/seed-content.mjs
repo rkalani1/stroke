@@ -39,7 +39,7 @@ async function emit(relPath, text) {
   const abs = path.join(CONTENT, relPath);
   if (check) {
     let existing = null;
-    try { existing = await fs.readFile(abs, 'utf8'); } catch { /* new file */ }
+    try { existing = (await fs.readFile(abs, 'utf8')).replace(/\r\n/g, '\n'); } catch { /* new file */ }
     if (existing !== text) drift.push(relPath);
     return;
   }
@@ -195,7 +195,7 @@ const CALCULATOR_CATALOG = [
   { id: 'alteplase-dose', name: 'Alteplase dose (0.9 mg/kg)', category: 'dosing', fn: 'calculateAlteplaseDose' },
   { id: 'doac-start', name: 'DOAC start timing (post-stroke AF)', category: 'dosing', fn: 'calculateDOACStart' },
   { id: 'pcc-dose', name: '4F-PCC dose', category: 'dosing', fn: 'calculatePCCDose' },
-  { id: 'andexanet', name: 'Andexanet alfa dose', category: 'dosing', fn: 'calculateAndexanetDose' },
+  { id: 'andexanet', name: 'Andexanet alfa (US sales ended; dosing disabled)', category: 'dosing', fn: 'calculateAndexanetDose' },
   { id: 'enoxaparin', name: 'Enoxaparin dose', category: 'dosing', fn: 'calculateEnoxaparinDose' },
   { id: 'crcl', name: 'Creatinine clearance (Cockcroft-Gault)', category: 'dosing', fn: 'calculateCrCl' },
   { id: 'dawn', name: 'DAWN EVT eligibility', category: 'reperfusion', fn: 'evaluateDAWN' },
@@ -349,6 +349,7 @@ async function seedReferences() {
       if (isLink) record.url = doc.href;
       else record.path = String(doc.path || '').replace(/%20/g, ' ');
       if (doc.subtitle) record.subtitle = doc.subtitle;
+      if (doc.reviewStatus) record.reviewStatus = doc.reviewStatus;
       if (Number.isFinite(doc.year)) record.year = doc.year;
       seen.set(doc.id, record);
     }

@@ -650,5 +650,27 @@
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "ACC/AHA"
+  "gradingSystem": "ACC/AHA",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "39585937",
+      "doi": "10.1161/str.0000000000000482",
+      "publisherUrl": "https://doi.org/10.1161/str.0000000000000482",
+      "status": "unresolved",
+      "note": "The indexed correction was confirmed, but its substantive text could not be retrieved from the publisher or an authoritative alternative. Its applicability to these entries remains unresolved; consult the correction.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    },
+    {
+      "type": "correction",
+      "pmid": "39869715",
+      "doi": "10.1161/str.0000000000000486",
+      "publisherUrl": "https://doi.org/10.1161/str.0000000000000486",
+      "status": "unresolved",
+      "note": "The indexed correction was confirmed, but its substantive text could not be retrieved from the publisher or an authoritative alternative. Its applicability to these entries remains unresolved; consult the correction.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ]
 }

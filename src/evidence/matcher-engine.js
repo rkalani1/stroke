@@ -6,11 +6,10 @@
 // retirement of the inline TRIAL_ELIGIBILITY_CONFIG is concrete and
 // testable.
 //
-// Sprint posture: parallel-verification only. The live matcher in
-// src/app.jsx still reads from TRIAL_ELIGIBILITY_CONFIG; the engine runs
-// alongside (when the localStorage flag `strokeApp:matcherEngineCheck`
-// is set) and logs disagreements. After accumulated parity evidence,
-// the user can flip the canonical source in a follow-up sprint.
+// The encounter UI now uses evaluateAllTrialsViaEngine unconditionally;
+// the former inline evaluators have been retired. An internal 'eligible'
+// result means the modeled criteria passed, not that every registry/protocol
+// criterion, consent requirement or local activation rule was verified.
 //
 // Pure ES module; no React, no DOM, no React-state hooks. Imports only
 // the field-pick helpers that already exist in matcher-helpers.js and
@@ -25,6 +24,7 @@ import {
   premorbidOf
 } from './matcher-helpers.js';
 import { MATCHABLE_TRIAL_STATUS_VALUES } from './schema.js';
+import { recordedTreatmentDecision } from '../encounter-decision-status.js';
 
 // ---------- Field resolver ----------
 //
@@ -48,8 +48,8 @@ const fieldResolvers = {
   ichLocation: (d) => d?.ichLocation || '',
   onStatin: (d) => d?.onStatin,
   mrsScore: (d) => d?.mrsScore,
-  tnkRecommended: (d) => d?.telestrokeNote?.tnkRecommended,
-  evtRecommended: (d) => d?.telestrokeNote?.evtRecommended,
+  tnkRecommended: (d) => recordedTreatmentDecision(d?.telestrokeNote || {}, 'tnk'),
+  evtRecommended: (d) => recordedTreatmentDecision(d?.telestrokeNote || {}, 'evt'),
   // Exclusion-only fields. The legacy default evaluator was
   // `data[field] === true`, so all of these resolve as top-level
   // booleans on the data envelope.
@@ -71,14 +71,14 @@ const fieldResolvers = {
   // legitimate extensions of the field vocabulary and are documented in
   // docs/evidence-atlas-extension-guide.md.
   reperfusion: (d) => {
-    // When both decisions are undefined the encounter form has
-    // recorded neither TNK nor EVT yet; treat as unknown rather than
-    // false so trials with reperfusion == true criteria (e.g. RHAPSODY)
-    // surface as needs_info on a fresh form, not not_eligible.
-    const tnk = d?.telestrokeNote?.tnkRecommended;
-    const evt = d?.telestrokeNote?.evtRecommended;
-    if (tnk === undefined && evt === undefined) return null;
-    return tnk === true || evt === true;
+    // A positive decision establishes a plan; both explicitly negative
+    // decisions establish no plan. Any other combination remains unknown.
+    // This proxy does not itself confirm that treatment was administered.
+    const tnk = recordedTreatmentDecision(d?.telestrokeNote || {}, 'tnk');
+    const evt = recordedTreatmentDecision(d?.telestrokeNote || {}, 'evt');
+    if (tnk === true || evt === true) return true;
+    if (tnk === false && evt === false) return false;
+    return null;
   },
   // 'nihssDisabling' matches NIHSS ≥6, or NIHSS 4-5 paired
   // with a recorded disabling-deficit flag. Returns null (unknown) when neither
@@ -286,9 +286,8 @@ export function evaluateCriterion(criterion, data) {
 
 /**
  * Evaluate every criterion on a single active trial and return a result
- * shape that mirrors the legacy `evaluateTrialEligibility` output for
- * the parallel-verification path. Status semantics:
- *   - 'eligible'    — every required criterion met
+ * shape that retains the legacy UI contract. Internal status semantics:
+ *   - 'eligible'    — every modeled required criterion met
  *   - 'needs_info'  — at least one required criterion unknown, none not_met
  *   - 'not_eligible'— at least one required criterion not_met
  *   - 'pending'     — no criteria yet
@@ -437,6 +436,9 @@ export function evaluateAllTrialsViaEngine(activeTrialsList, data) {
         triggered: true
       })),
       status: eng.status,
+      screeningLabel: eng.status === 'eligible' ? 'Possible candidate' : eng.status === 'needs_info' ? 'Needs information' : 'Screen criteria not met',
+      screeningNote: 'Full protocol review required; confirm all inclusion and exclusion criteria, local activation, and consent with the study team.',
+      fullProtocolReviewRequired: true,
       metCount: eng.counts.met,
       notMetCount: eng.counts.not_met,
       unknownCount: eng.counts.unknown,

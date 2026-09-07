@@ -387,5 +387,17 @@
     }
   ],
   "documentType": "scientific-statement",
-  "gradingSystem": "ungraded"
+  "gradingSystem": "ungraded",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "37093973",
+      "doi": "10.1161/cir.0000000000001147",
+      "publisherUrl": "https://doi.org/10.1161/cir.0000000000001147",
+      "status": "not-applicable",
+      "note": "Corrects dabigatran renal/drug-interaction and apixaban dose-reduction criteria in a supplemental table; these dosing rows are not reproduced here.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ]
 }

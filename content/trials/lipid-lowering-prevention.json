@@ -32,5 +32,22 @@
     "certainty": "moderate",
     "lastReviewed": "2026-08-28",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "rocatis-1",
+    "name": "ROCATIS-1",
+    "fullName": "The impact of concomitant use of rosuvastatin or atorvastatin plus clopidogrel on the platelet inhibition and clinical outcomes in acute large-vessel minor stroke or TIA: A randomized controlled multi-center trial, the ROCATIS-1 trial",
+    "category": "lipid-lowering-prevention",
+    "population": "n=600, Adults, NIHSS See population criteria, Within 24 h",
+    "finding": "Reported change 54.4 vs 49.2; favored rosuvastatin",
+    "teachingPoint": "Requires double-blind multinational confirmation before changing statin selection.",
+    "PMID": "42662137",
+    "year": 2026,
+    "citationIds": [
+      "cit-rocatis-1-2026"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-09-06",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

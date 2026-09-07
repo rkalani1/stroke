@@ -6,7 +6,8 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/epidemiology/Diabetes and stroke.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "PDF Document",
+    "reviewStatus": "archive"
   },
   {
     "id": "epidemiology-lipids-and-cerebrovascular-disease",
@@ -15,6 +16,7 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/epidemiology/Lipids and Cerebrovascular Disease.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "PDF Document",
+    "reviewStatus": "archive"
   }
 ]

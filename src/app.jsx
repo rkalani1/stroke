@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import { createRoot } from 'react-dom/client';
+import { scoreSearchMatch, matchesSearchText } from './search-match.js';
+import { recordedTreatmentDecision, treatmentDecisionFields, treatmentCourseStatus, treatmentCourseSummary, treatmentAdministrationTime, hasRecordedTreatmentAdministration, hasRecordedNoTreatment, treatmentDocumentationComplete, documentedNihssValue } from './encounter-decision-status.js';
+import TreatmentDecisionControl from './components/TreatmentDecisionControl.jsx';
+import GuidelineProvenance from './components/GuidelineProvenance.jsx';
 import { createIcons, icons } from './lucide-subset.js';
 import {
   DOAC_PROTOCOLS,
@@ -210,8 +214,7 @@ const clearUnusedDiagnosisFields = (note, prevCategory, newCategory) => {
   const next = {};
 
   if (newCategory !== 'ischemic') {
-    next.tnkRecommended = false;
-    next.evtRecommended = false;
+    Object.assign(next, treatmentDecisionFields('tnk'), treatmentDecisionFields('evt'));
     next.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', evtConsentWith: '', transferConsentDiscussed: false };
     next.evtAccessSite = '';
     next.evtDevice = '';
@@ -275,7 +278,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.24.0';
+const APP_VERSION = '6.25.0';
 
 // P0 evidence-locked calculators exposed for browser-console QA testing and future UI wiring.
 // These are pure functions with PMID/DOI citations in their source; running e.g.
@@ -1432,7 +1435,7 @@ const REFERENCE_LIBRARY_SECTIONS = [
     title: 'Aneurysms & Vascular Malformations',
     matchTitle: 'Aneurysms & Vascular Malformations',
     items: [
-      { id: 'aneurysms-unruptured-cerebral-aneurysms', title: 'Unruptured Cerebral Aneurysms', subtitle: 'PDF Document', type: 'pdf', path: 'documents/aneurysms/Unruptured Cerebral Aneurysms.pdf' }
+      { id: 'aneurysms-unruptured-cerebral-aneurysms', title: 'Unruptured Cerebral Aneurysms', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/aneurysms/Unruptured Cerebral Aneurysms.pdf' }
     ]
   },
   {
@@ -1440,9 +1443,9 @@ const REFERENCE_LIBRARY_SECTIONS = [
     title: 'Antiplatelet Therapy',
     matchTitle: 'Antiplatelet Therapy',
     items: [
-      { id: 'antiplatelet-dapt-minor-stroke-tia-trials', title: 'DAPT Minor Stroke-TIA Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf' },
-      { id: 'antiplatelet-dapt-after-ischemic-stroke-tia', title: 'DAPT After Ischemic Stroke-TIA', subtitle: 'Infographic - Match Patient to Trial', type: 'image', icon: 'image', path: 'documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg' },
-      { id: 'antiplatelet-other-antithrombotics', title: 'Other Antithrombotics', subtitle: 'PDF Document — Cilostazol & Factor XIa Inhibition Trials', type: 'pdf', path: 'documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf' }
+      { id: 'antiplatelet-dapt-minor-stroke-tia-trials', title: 'DAPT Minor Stroke-TIA Trials', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf' },
+      { id: 'antiplatelet-dapt-after-ischemic-stroke-tia', title: 'DAPT After Ischemic Stroke-TIA', subtitle: 'Infographic - Match Patient to Trial', type: 'image', reviewStatus: 'archive', icon: 'image', path: 'documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg' },
+      { id: 'antiplatelet-other-antithrombotics', title: 'Other Antithrombotics', subtitle: 'PDF Document — Cilostazol & Factor XIa Inhibition Trials', type: 'pdf', reviewStatus: 'archive', path: 'documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf' }
     ]
   },
   {
@@ -1450,7 +1453,7 @@ const REFERENCE_LIBRARY_SECTIONS = [
     title: 'Cerebral Small Vessel Disease',
     matchTitle: 'Cerebral Small Vessel Disease',
     items: [
-      { id: 'csvd-lacunar-stroke', title: 'Lacunar Stroke', subtitle: 'PDF Document', type: 'pdf', path: 'documents/csvd/Lacunar Stroke 7.13.22.pdf', year: 2022 }
+      { id: 'csvd-lacunar-stroke', title: 'Lacunar Stroke', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/csvd/Lacunar Stroke 7.13.22.pdf', year: 2022 }
     ]
   },
   {
@@ -1458,7 +1461,7 @@ const REFERENCE_LIBRARY_SECTIONS = [
     title: 'Critical Appraisal',
     matchTitle: 'EBM',
     items: [
-      { id: 'ebm-interpretation-of-clinical-trials', title: 'Interpretation of Clinical Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/ebm/Interpretation of Clinical Trials.pdf' },
+      { id: 'ebm-interpretation-of-clinical-trials', title: 'Interpretation of Clinical Trials', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/ebm/Interpretation of Clinical Trials.pdf' },
       { id: 'ebm-cebm-oxford-resources', title: 'CEBM Oxford Resources', subtitle: 'Centre for Evidence-Based Medicine - University of Oxford', type: 'external-link', href: 'https://www.cebm.ox.ac.uk/resources', linkLabel: 'Visit' }
     ]
   },
@@ -1467,9 +1470,9 @@ const REFERENCE_LIBRARY_SECTIONS = [
     title: 'Endovascular Therapy',
     matchTitle: 'EVT',
     items: [
-      { id: 'evt-large-core-anterior-circulation-lvo-evt-trials', title: 'Large Core Anterior Circulation LVO EVT Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf' },
-      { id: 'evt-basilar-artery-occlusion-evt-trials', title: 'Basilar Artery Occlusion EVT Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/evt/Basilar Artery Occlusion EVT Trials.pdf' },
-      { id: 'evt-mevo-distal-vessel-occlusion-evt-trials', title: 'MeVO & Distal Vessel Occlusion EVT Trials', subtitle: 'PDF Document', type: 'pdf', path: 'documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf' }
+      { id: 'evt-large-core-anterior-circulation-lvo-evt-trials', title: 'Large Core Anterior Circulation LVO EVT Trials', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf' },
+      { id: 'evt-basilar-artery-occlusion-evt-trials', title: 'Basilar Artery Occlusion EVT Trials', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/evt/Basilar Artery Occlusion EVT Trials.pdf' },
+      { id: 'evt-mevo-distal-vessel-occlusion-evt-trials', title: 'MeVO & Distal Vessel Occlusion EVT Trials', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf' }
     ]
   },
   {
@@ -1480,15 +1483,15 @@ const REFERENCE_LIBRARY_SECTIONS = [
       {
         group: 'Atrial Fibrillation',
         docs: [
-          { id: 'afib-ac-timing-after-af-related-stroke', title: 'Timing of Anticoagulation after AF-Related Stroke', subtitle: 'PDF Document', type: 'pdf', path: 'documents/afib/AC timing after AF-related Stroke.pdf', emailTitle: 'AC timing after AF-related Stroke' },
-          { id: 'afib-af-secondary-stroke-prevention-july-2024', title: 'Atrial Fibrillation & Secondary Stroke Prevention', subtitle: 'PDF Document', type: 'pdf', path: 'documents/afib/AF & secondary stroke prevention July 2024.pdf', emailTitle: 'AF & secondary stroke prevention July 2024', year: 2024 },
+          { id: 'afib-ac-timing-after-af-related-stroke', title: 'Timing of Anticoagulation after AF-Related Stroke', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/afib/AC timing after AF-related Stroke.pdf', emailTitle: 'AC timing after AF-related Stroke' },
+          { id: 'afib-af-secondary-stroke-prevention-july-2024', title: 'Atrial Fibrillation & Secondary Stroke Prevention', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/afib/AF & secondary stroke prevention July 2024.pdf', emailTitle: 'AF & secondary stroke prevention July 2024', year: 2024 },
           { id: 'afib-aha-af-guidelines-2023', title: '2023 AHA AFib Guidelines', subtitle: 'External Link - AHA Journals', type: 'external-link', href: 'https://www.ahajournals.org/doi/10.1161/CIR.0000000000001193', year: 2023 },
           { id: 'afib-esc-af-guidelines-2024', title: '2024 ESC AFib Guidelines', subtitle: 'External Link - European Heart Journal', type: 'external-link', href: 'https://academic.oup.com/eurheartj/article/45/36/3314/7738779', year: 2024 },
-          { id: 'afib-afib-stroke-epi519', title: 'AFib Stroke EPI519', subtitle: 'PDF Document', type: 'pdf', path: 'documents/afib/AFib Stroke EPI519.pdf' }
+          { id: 'afib-afib-stroke-epi519', title: 'AFib Stroke EPI519', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/afib/AFib Stroke EPI519.pdf' }
         ]
       },
-      { id: 'epidemiology-diabetes-and-stroke', title: 'Diabetes and stroke', subtitle: 'PDF Document', type: 'pdf', path: 'documents/epidemiology/Diabetes and stroke.pdf' },
-      { id: 'epidemiology-lipids-and-cerebrovascular-disease', title: 'Lipids and Cerebrovascular Disease', subtitle: 'PDF Document', type: 'pdf', path: 'documents/epidemiology/Lipids and Cerebrovascular Disease.pdf' }
+      { id: 'epidemiology-diabetes-and-stroke', title: 'Diabetes and stroke', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/epidemiology/Diabetes and stroke.pdf' },
+      { id: 'epidemiology-lipids-and-cerebrovascular-disease', title: 'Lipids and Cerebrovascular Disease', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/epidemiology/Lipids and Cerebrovascular Disease.pdf' }
     ]
   },
   {
@@ -1496,7 +1499,7 @@ const REFERENCE_LIBRARY_SECTIONS = [
     title: 'Thrombolytic Therapy',
     matchTitle: 'Thrombolytic Therapy',
     items: [
-      { id: 'thrombolytic-therapy-ais-45-24h-rcts', title: 'Thrombolytic Therapy AIS 4.5-24h RCTs', subtitle: 'PDF Document', type: 'pdf', path: 'documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf' },
+      { id: 'thrombolytic-therapy-ais-45-24h-rcts', title: 'Thrombolytic Therapy AIS 4.5-24h RCTs', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf' },
       { id: 'thrombolytic-wake-up-trial', title: 'WAKE-UP Trial', subtitle: 'External Link - New England Journal of Medicine', type: 'external-link', href: 'https://www.nejm.org/doi/full/10.1056/NEJMoa1804355' }
     ]
   },
@@ -1505,8 +1508,8 @@ const REFERENCE_LIBRARY_SECTIONS = [
     title: 'Exam',
     matchTitle: 'Exam',
     items: [
-      { id: 'exam-delirium-vs-aphasia', title: 'Differentiating Acute Confusional State (Delirium) from Aphasia', subtitle: 'PDF Document', type: 'pdf', path: 'documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf' },
-      { id: 'exam-coma-exam', title: 'Coma Exam', subtitle: 'PDF Document', type: 'pdf', path: 'documents/exam/coma exam.pdf', emailTitle: 'coma exam' }
+      { id: 'exam-delirium-vs-aphasia', title: 'Differentiating Acute Confusional State (Delirium) from Aphasia', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf' },
+      { id: 'exam-coma-exam', title: 'Coma Exam', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/exam/coma exam.pdf', emailTitle: 'coma exam' }
     ]
   },
   {
@@ -1514,8 +1517,8 @@ const REFERENCE_LIBRARY_SECTIONS = [
     title: 'Large Artery Disease',
     matchTitle: 'Large Artery Disease',
     items: [
-      { id: 'lad-symptomatic-cervical-carotid-artery-stenosis', title: 'Symptomatic Cervical Carotid Artery Stenosis', subtitle: 'PDF Document', type: 'pdf', path: 'documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf' },
-      { id: 'lad-crest-2-trial-dec-2025', title: 'CREST-2 Trial (December 2025)', subtitle: 'PDF Document', type: 'pdf', path: 'documents/lad/CREST-2 Trial - Dec 2025.pdf', year: 2025 }
+      { id: 'lad-symptomatic-cervical-carotid-artery-stenosis', title: 'Symptomatic Cervical Carotid Artery Stenosis', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf' },
+      { id: 'lad-crest-2-trial-dec-2025', title: 'CREST-2 Trial (December 2025)', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/lad/CREST-2 Trial - Dec 2025.pdf', year: 2025 }
     ]
   },
   {
@@ -1527,7 +1530,7 @@ const REFERENCE_LIBRARY_SECTIONS = [
     title: 'Quick Reference Sheets',
     matchTitle: 'Quick Reference Sheets',
     anchorId: 'ref-quickrefs',
-    note: 'Generated in-repo quick reference sheets, also linked from the Educational Resources modules.',
+    note: 'Generated from the same teaching cards shown in Education; refreshed September 6, 2026. Use the original sources and approved local guidance for patient-specific decisions.',
     items: [
       { id: 'quickref-afib-doac-start-timing', title: 'AFib DOAC Start Timing', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/AFib DOAC Start Timing.pdf' },
       { id: 'quickref-brain-death-guidelines', title: 'Brain Death Guidelines', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Brain Death Guidelines.pdf' },
@@ -1713,9 +1716,11 @@ Clinician Name`;
             diagnosis: '',
             diagnosisCategory: '',
             tnkRecommended: false,
+            tnkDecisionRecorded: false,
             tnkAutoBlocked: false,
             tnkAutoBlockReason: '',
             evtRecommended: false,
+            evtDecisionRecorded: false,
             rationale: '',
             tnkConsentDiscussed: false,
             tnkConsentType: '',
@@ -2529,6 +2534,7 @@ Clinician Name`;
           const [aspectsScore, setAspectsScore] = useState(() => normalizeAspectsScore(loadFromStorage('aspectsScore', '')));
 
           const [searchQuery, setSearchQuery] = useState('');
+          const [readinessFieldsExpanded, setReadinessFieldsExpanded] = useState(false);
           const [copiedText, setCopiedText] = useState('');
           const [isMounted, setIsMounted] = useState(false);
           const [editableTemplate, setEditableTemplate] = useState(loadFromStorage('telestrokeTemplate', defaultTelestrokeTemplate));
@@ -2762,7 +2768,9 @@ Clinician Name`;
           // mermaidInitializedRef removed — no more mermaid diagrams
           const decisionStateRef = useRef({
             tnkRecommended: false,
+            tnkDecisionRecorded: false,
             evtRecommended: false,
+            evtDecisionRecorded: false,
             transferAccepted: false,
             tnkContraindicationReviewed: false,
             tnkConsentDiscussed: false,
@@ -3306,82 +3314,43 @@ Clinician Name`;
                                 name: "STEP-EVT Trial",
                                 nct: "NCT06289985",
                                 phase: "Adaptive Platform",
-                                status: "",
-                                description: "NIH StrokeNet adaptive platform trial optimizing endovascular therapy for mild stroke and medium/distal vessel occlusions",
+                                status: "Recruiting (registry); confirm local activation",
+                                description: "STEP EVT indication-expansion domain: thrombectomy in selected mild-deficit LVO or medium-vessel stroke. Registry checked 2026-09-06; this summary requires full protocol and local study-team confirmation.",
                                 inclusion: [
-                                    "Age ≥18 years",
-                                    "Acute ischemic stroke due to large vessel occlusion (LVO) or medium vessel occlusion (MVO)",
-                                    "Within 24 hours of last known well",
-                                    "For Low NIHSS Domain:",
-                                    "• NIHSS 0-5 with ICA or M1 occlusion",
-                                    "• Disabling symptoms despite low NIHSS",
-                                    "For Medium/Distal Vessel Occlusion Domain:",
-                                    "• M2, M3, or M4 occlusion",
-                                    "• A1, A2, or A3 occlusion",
-                                    "• P1, P2, or P3 occlusion",
-                                    "• Appropriate perfusion imaging criteria demonstrating salvageable tissue",
-                                    "Ability to start EVT within appropriate time window",
-                                    "Pre-stroke mRS ≤2 (able to live independently)",
-                                    "Informed consent from patient or legally authorized representative"
+                                    "Age ≥18; pre-stroke mRS 0–2; presentation within 24 hours of last known well",
+                                    "Mild-deficit LVO group: complete intracranial ICA or M1 occlusion and NIHSS 0–5; NIHSS 0 still requires an attributable focal deficit",
+                                    "MVO group: nondominant/codominant M2 supplying <50% of MCA territory, or M3; occlusion or qualifying Tmax >4s perfusion deficit; NIHSS ≥8",
+                                    "MVO beyond 6 hours: infarct core <50% of the affected vessel territory on qualifying imaging",
+                                    "Arterial puncture within 2 hours of qualifying imaging; repeat-imaging rules apply"
                                 ],
                                 exclusion: [
-                                    "Known pre-existing medical, neurological or psychiatric disease that would confound outcome evaluations",
-                                    "Known serious, advanced, or terminal illness with life expectancy <6 months",
-                                    "Unfavorable vascular anatomy limiting endovascular access to occluded artery",
-                                    "Acute occlusions in multiple vascular territories",
-                                    "Suspected septic embolus",
-                                    "Suspected bacterial endocarditis",
-                                    "Seizure at stroke onset with postictal residual impairments",
-                                    "Contrast allergy precluding EVT that cannot be adequately pre-medicated",
-                                    "Chronic total occlusion of target vessel",
-                                    "Known intracranial dissection",
-                                    "Known vasculitis",
-                                    "Known moyamoya disease or syndrome",
-                                    "Pregnancy or positive pregnancy test",
-                                    "Currently breastfeeding",
-                                    "Large core infarct (ASPECTS <3 or core volume >100cc depending on time window)",
-                                    "Evidence of intracranial hemorrhage on baseline imaging",
-                                    "Clinical suspicion of subarachnoid hemorrhage despite negative imaging",
-                                    "Known bleeding diathesis or coagulopathy",
-                                    "Platelet count <50,000/μL",
-                                    "INR >3.0",
-                                    "Blood glucose <50mg/dL",
-                                    "Refractory hypertension (SBP >185 or DBP >110 despite treatment)",
-                                    "Currently participating in another interventional clinical trial"
+                                    "EVT contraindication; incarceration; suspected ICAD; septic embolus/endocarditis; onset-to-enrollment seizure",
+                                    "Contrast anaphylaxis; chronic occlusion; intracranial dissection; vasculitis; pregnancy",
+                                    "Confounding disease, terminal illness or investigator-estimated survival <6 months",
+                                    "Platelets <100,000/μL; CT ASPECTS <6 or MRI ASPECTS <7",
+                                    "Inaccessible anatomy; multiple vascular territories; tandem occlusion; midline shift >5 mm; acute intracranial hemorrhage",
+                                    "Intracranial tumor except a small asymptomatic meningioma meeting protocol limits; review the complete domain criteria"
                                 ]
                             },
                             {
                                 name: "TESTED",
                                 nct: "NCT05911568",
                                 phase: "Comparative Effectiveness",
-                                status: "",
-                                description: "EVT vs medical therapy in LVO with pre-existing disability (mRS 3-4)",
+                                status: "Recruiting (registry); confirm local activation",
+                                description: "EVT versus medical therapy for acute LVO with established pre-stroke mRS 3–4. Registry checked 2026-09-06; this summary requires full protocol and local study-team confirmation.",
                                 inclusion: [
-                                    "Age ≥18 years",
-                                    "Pre-stroke mRS 3-4 for at least 3 months prior to index stroke",
-                                    "Large vessel occlusion:",
-                                    "• ICA terminus",
-                                    "• M1 segment of MCA",
-                                    "• Dominant/co-dominant M2 segment",
-                                    "Within 24 hours of last known well",
-                                    "NIHSS ≥6",
-                                    "ASPECTS ≥3 on non-contrast CT or ≥4 on MRI",
-                                    "For 6-24 hour window: evidence of salvageable tissue on perfusion imaging",
-                                    "Able to undergo groin puncture within time window",
-                                    "Informed consent from patient or legally authorized representative"
+                                    "Age ≥18 years; acute ischemic stroke",
+                                    "Pre-stroke mRS 3–4 for at least 3 months before stroke onset",
+                                    "Presentation to the study hospital within 24 hours of last known well",
+                                    "Causative intracranial ICA, M1, or dominant M2 occlusion on baseline CTA/MRA",
+                                    "Presenting CT ASPECTS ≥3 or MRI ASPECTS ≥4; presenting NIHSS ≥6",
+                                    "Consent from the competent patient or legally authorized representative"
                                 ],
                                 exclusion: [
-                                    "Pre-stroke mRS 0-2 or mRS 5-6",
-                                    "Life expectancy <6 months from non-stroke condition",
-                                    "Pre-stroke disability deemed temporary or reversible",
-                                    "Known pregnancy",
-                                    "Evidence of intracranial hemorrhage",
-                                    "Large established infarct (>1/3 MCA territory)",
-                                    "Bilateral strokes",
-                                    "Known vasculitis or moyamoya",
-                                    "Intracranial tumor",
-                                    "Currently participating in another stroke intervention trial",
-                                    "Inability to follow up at 90 days"
+                                    "Known terminal cancer or terminal illness at stroke onset",
+                                    "Unable to assess pre-stroke functional status during hospitalization",
+                                    "Investigator considers the pre-stroke disability temporary",
+                                    "Confirm the complete protocol and procedural suitability with the study team; no extra perfusion or six-month survival cutoff is specified in this registry summary"
                                 ]
                             }
                         ]
@@ -3393,86 +3362,62 @@ Clinician Name`;
                                 name: "VERIFY Study",
                                 nct: "NCT05338697",
                                 phase: "Observational",
-                                status: "",
-                                description: "Early TMS/MRI/clinical measures to predict upper extremity motor recovery",
+                                status: "Recruiting (registry); confirm local activation",
+                                description: "Observational study of TMS, MRI and motor assessments after ischemic stroke. Registry checked 2026-09-06; full protocol and local study-team confirmation required.",
                                 inclusion: [
-                                    "Age ≥18 years",
-                                    "Acute ischemic stroke within 7 days of onset",
-                                    "Upper extremity weakness (shoulder abduction and/or finger extension ≤4 on MRC scale)",
-                                    "Able to provide informed consent or has LAR",
-                                    "Able to participate in study assessments",
-                                    "Expected to survive at least 90 days"
+                                    "Age ≥18 years; unilateral symptomatic ischemic stroke (an asymptomatic contralateral acute stroke is permitted)",
+                                    "Affected-arm Shoulder Abduction and Finger Extension (SAFE) score ≤8/10 assessed 48–96 hours after onset or last known well",
+                                    "Participant provides signed consent 24–96 hours after onset or last known well",
+                                    "Fluent in English or Spanish; willing and available for all assessments, including an in-person Day 90 visit",
+                                    "Behavioral assessment at 48–120 hours; TMS at 72–168 hours and/or study MRI at 48–168 hours, per protocol"
                                 ],
                                 exclusion: [
-                                    "Contraindications to TMS:",
-                                    "• Implanted electronic devices (pacemaker, cochlear implant, etc.)",
-                                    "• Intracranial metal",
-                                    "• History of seizures",
-                                    "• Active psychiatric medication affecting cortical excitability",
-                                    "Contraindications to MRI",
-                                    "Unable to complete follow-up visits at 30 and 90 days",
-                                    "Pre-stroke mRS >2",
-                                    "Bilateral upper extremity weakness",
-                                    "Previous stroke affecting motor function",
-                                    "Other neurological conditions affecting motor function",
-                                    "Pregnancy"
+                                    "Cognitive or communication impairment that prevents the participant from giving informed consent",
+                                    "Pre-existing limitation of the paretic arm; legal blindness; dense sensory loss (NIHSS sensory item 2)",
+                                    "Unable to abduct the shoulder or extend the fingers of the non-paretic arm on verbal command",
+                                    "Isolated cerebellar stroke or another symptomatic stroke in the preceding 30 days",
+                                    "Competing acute-treatment or recovery intervention trial after VERIFY baseline assessments begin",
+                                    "Major condition affecting functional status, non-cerebrovascular condition with unlikely 90-day survival, or inability to complete follow-up",
+                                    "Pregnancy; MRI or TMS contraindications require the complete device, metal, seizure and safety checklist",
+                                    "Unable to perform required assessments in the protocol windows; confirm all remaining criteria with the study team"
                                 ]
                             },
                             {
                                 name: "CLARITY Trial",
                                 nct: "NCT07174414",
                                 phase: "Phase 3",
-                                status: "Not yet recruiting",
-                                description: "Cilostazol for Prevention of Recurrent Stroke Trial: adding cilostazol vs placebo to single antiplatelet therapy after recent stroke/TIA",
+                                status: "Not yet recruiting (registry); local activation unverified",
+                                description: "Cilostazol versus placebo added to aspirin or clopidogrel after recent stroke/TIA. Registry checked 2026-09-06; this summary requires full protocol and local study-team confirmation.",
                                 inclusion: [
-                                    "History of ischemic stroke OR transient ischemic attack (TIA) in the 180 days prior to enrollment",
-                                    "Currently taking antiplatelet medication as standard of care"
+                                    "Age ≥40 years",
+                                    "Stroke or TIA within 180 days",
+                                    "Taking aspirin or clopidogrel, but not both, for stroke prevention"
                                 ],
                                 exclusion: [
-                                    "History of spontaneous intracranial hemorrhage within the prior 2 years",
-                                    "Moderate to severe heart failure",
-                                    "Any condition that the investigator judges would pose significant hazard if investigational therapy is initiated"
+                                    "Spontaneous brain hemorrhage within 2 years",
+                                    "Moderate or severe heart failure",
+                                    "Life expectancy <6 months; confirm the full protocol before screening"
                                 ]
                             },
                             {
                                 name: "INTERCEPT Trial",
                                 nct: "NCT05723926",
                                 phase: "Not Applicable",
-                                status: "Recruiting",
-                                description: "Carotid Implants for PreveNtion of STrokE ReCurrEnce from Large Vessel Occlusion in atrial fibrillation patients treated with oral anticoagulation",
+                                status: "Recruiting (registry); confirm local activation",
+                                description: "Bilateral carotid implants plus oral anticoagulation versus anticoagulation alone after ischemic stroke in clinical AF. Registry checked 2026-09-06; this summary requires full protocol and local study-team confirmation.",
                                 inclusion: [
-                                    "Age >55 years",
-                                    "Ischemic stroke attributed to large vessel occlusion (LVO) with initial NIHSS >5",
-                                    "Neurological and functional status (NIHSS and mRS), assessed 4 weeks to 20 months after index stroke, is stable and reflects residual index-stroke disability",
-                                    "Residual disability from index stroke due to hemiparesis with mRS 2-4",
-                                    "On oral anticoagulation for atrial fibrillation (DOAC or VKA) with at least one high-risk recurrent stroke criterion:",
-                                    "• High-risk PFO by PASCAL",
-                                    "• Spontaneous echocardiographic contrast in LAA",
-                                    "• LAA peak flow velocity ≤20 cm/s",
-                                    "• Spontaneous echocardiographic contrast in left atrium",
-                                    "• Left atrial peak flow velocity ≤20 cm/s",
-                                    "Signed informed consent"
+                                    "Age ≥18 years; documented clinical AF and imaging-supported ischemic stroke",
+                                    "Index stroke <6 weeks before enrollment, whether or not taking OAC at onset; or 6–52 weeks before enrollment if taking OAC at onset",
+                                    "Planned VKA or DOAC throughout follow-up; able to tolerate an additional single antiplatelet for 6 months",
+                                    "Both common carotid arteries: diameter 5.3–8.8 mm, center ≤40 mm from skin, and implantation segment free of atherosclerosis",
+                                    "No carotid dissection/common-carotid stent or ≥50% internal-carotid stenosis; consent and full imaging assessment required"
                                 ],
                                 exclusion: [
-                                    "History of intracerebral hemorrhage prior to randomization",
-                                    "Severe disability before index stroke (mRS >4)",
-                                    "Neurological or non-neurological condition leading to severe pre-index-stroke disability (mRS >4)",
-                                    "Life expectancy <1 year",
-                                    "High bleeding risk (HAS-BLED score >3)",
-                                    "Other indication for oral anticoagulation apart from atrial fibrillation, including:",
-                                    "• Venous thromboembolism",
-                                    "• Prosthetic valve replacement",
-                                    "• Severe mitral stenosis",
-                                    "LAA anatomy unsuitable for closure device",
-                                    "Prior surgeries/procedures involving left atrial appendage, including:",
-                                    "• Prior surgical LAA closure or excision",
-                                    "• Prior transcatheter closure of PFO/ASD",
-                                    "Carotid artery stenosis >70% on the index-stroke side",
-                                    "Carotid artery stent on the index-stroke side",
-                                    "Existing indication for carotid intervention after randomization",
-                                    "Ischemic stroke due to cervical artery dissection",
-                                    "Inability to participate in follow-up program",
-                                    "Current participation in another interventional trial"
+                                    "Contraindication to OAC or the additional antiplatelet course",
+                                    "Untreated ≥50% stenosis/high-risk plaque in specified cervical or intracranial vessels; active arterial thrombus; specified intracranial aneurysm ≥6 mm",
+                                    "Surgery/radiation at the neck implantation segment; LAA occluder placed after the latest stroke or a planned LAA procedure",
+                                    "Pregnancy or lack of required contraception; systemic infection; nickel/titanium sensitivity",
+                                    "Competing investigational treatment trial or investigator-assessed safety/follow-up concern; confirm all detailed anatomy and protocol criteria"
                                 ]
                             }
                         ]
@@ -3482,43 +3427,28 @@ Clinician Name`;
                         trials: [
                             {
                                 name: "ESUS Imaging Study",
-                                nct: "NCT03820375",
+                                nct: "Registry identity not established",
                                 phase: "Observational",
-                                status: "",
-                                description: "Cardiac and intracranial vessel wall MRI to reclassify ESUS",
+                                status: "Unverified local study",
+                                description: "Proposed cardiac/intracranial vessel-wall MRI ESUS reclassification study. No matching registry identity or approved local protocol has been verified.",
                                 inclusion: [
-                                    "ESUS diagnosis",
-                                    "Age ≥18 years",
-                                    "Within 30 days of index stroke"
+                                    "Study-team confirmation of the study identity, approved protocol and screening criteria is required"
                                 ],
                                 exclusion: [
-                                    "MRI contraindications",
-                                    "Known stroke etiology"
+                                    "Do not use this placeholder for an eligibility or recruitment decision"
                                 ]
                             },
                             {
                                 name: "MOCHA Imaging",
-                                nct: "PMC8821414",
+                                nct: "Registry identity not established",
                                 phase: "Observational",
-                                status: "",
-                                description: "Automated intracranial vessel-wall analysis for non-stenotic ICAD detection",
+                                status: "Unverified local study",
+                                description: "Automated intracranial vessel-wall analysis research placeholder. A publication identifier does not establish an enrolling study or local protocol.",
                                 inclusion: [
-                                    "Atherosclerotic lesions within the cerebrovascular tree clinically detected based on stenosis presence on clinical luminal imaging",
-                                    "Presence of two or more atherosclerotic risk factors:",
-                                    "• Age >50 years for men or >60 years for women",
-                                    "• Hypertension",
-                                    "• Diabetes mellitus", 
-                                    "• Hyperlipidemia",
-                                    "• Obesity",
-                                    "• Smoking history",
-                                    "No clinical evidence for other intracranial vasculopathies",
-                                    "High-resolution MRI vessel wall imaging available"
+                                    "Study-team confirmation of the study identity, approved protocol and screening criteria is required"
                                 ],
                                 exclusion: [
-                                    "Poor MRI image quality limiting vessel wall analysis",
-                                    "Known intracranial vasculopathy (vasculitis, moyamoya, dissection)",
-                                    "Unable to undergo MRI scanning",
-                                    "Contraindications to MRI contrast if required for imaging protocol"
+                                    "Do not use this placeholder for an eligibility or recruitment decision"
                                 ]
                             }
                         ]
@@ -3536,102 +3466,65 @@ Clinician Name`;
                                 name: "SATURN Trial",
                                 nct: "NCT03936361",
                                 phase: "Phase 3",
-                                status: "",
-                                description: "Statins for intracerebral hemorrhage: continue vs discontinue after lobar ICH (also tests whether APOE genotype should guide the decision)",
+                                status: "Recruiting (registry); confirm local activation",
+                                description: "Continue versus discontinue statin therapy after spontaneous lobar ICH. Registry checked 2026-09-06; this summary requires full protocol and local study-team confirmation.",
                                 inclusion: [
-                                    "Age ≥50 years",
-                                    "Spontaneous lobar intracerebral hemorrhage confirmed by CT or MRI",
-                                    "Taking statin therapy at time of ICH onset",
-                                    "Pre-morbid mRS ≤3",
-                                    "Randomization within 7 days of ICH",
-                                    "Able to provide informed consent or has LAR (after consultation with statin prescriber)",
-                                    "Expected to survive at least 24 months"
+                                    "Age ≥50 years; spontaneous lobar ICH on CT/MRI",
+                                    "Taking a statin at ICH onset; randomization within 7 days",
+                                    "Patient/LAR agrees after consultation with the statin prescriber"
                                 ],
                                 exclusion: [
-                                    "Deep (non-lobar) ICH location",
-                                    "Secondary causes of ICH:",
-                                    "• Trauma",
-                                    "• Known brain tumor",
-                                    "• Known vascular malformation or aneurysm",
-                                    "• Hemorrhagic transformation of ischemic stroke",
-                                    "• Known or suspected CNS vasculitis",
-                                    "• Coagulopathy",
-                                    "ICH score >3 at presentation",
-                                    "Recent MI (<3 months) or unstable angina",
-                                    "Diabetes mellitus with prior MI or coronary revascularization",
-                                    "Familial hypercholesterolemia or PCSK9-inhibitor use",
-                                    "Severe dementia",
-                                    "Statin-related myopathy or rhabdomyolysis, or significant transaminase/CK elevation",
-                                    "Life expectancy <24 months from non-ICH condition",
-                                    "Woman of childbearing potential",
-                                    "Participation in another interventional trial"
+                                    "Secondary ICH cause, including vascular lesion, tumor, trauma, venous infarction or hemorrhagic transformation",
+                                    "MI or unstable angina within 3 months; diabetes with prior MI/revascularization; familial hypercholesterolemia; PCSK9-inhibitor use",
+                                    "Pre-morbid mRS >3; presenting ICH score >3; severe dementia",
+                                    "Statin contraindication, including significant CK/transaminase elevation or rhabdomyolysis",
+                                    "Terminal comorbidity with life expectancy <24 months; planned withdrawal of care for the index ICH",
+                                    "Woman of childbearing potential; unavailable consent, inability to comply, or concurrent experimental therapy; full protocol review required"
                                 ]
                             },
                             {
                                 name: "ASPIRE Trial",
                                 nct: "NCT03907046",
                                 phase: "Phase 3",
-                                status: "",
-                                description: "Apixaban vs aspirin for stroke prevention after ICH in atrial fibrillation",
+                                status: "Recruiting (registry); confirm local activation",
+                                description: "Apixaban vs aspirin after ICH in non-valvular atrial fibrillation/flutter. Registry checked 2026-09-06; full protocol and local study-team confirmation required.",
                                 inclusion: [
-                                    "Age ≥18 years",
-                                    "Spontaneous ICH confirmed by CT or MRI",
-                                    "Non-valvular atrial fibrillation (paroxysmal, persistent, or permanent)",
-                                    "CHA2DS2-VASc score ≥2",
-                                    "Randomization 14-180 days after ICH",
-                                    "Modified Rankin Scale ≤4 at randomization",
-                                    "Able to take oral medications",
-                                    "Informed consent obtained"
+                                    "Age ≥18 years; ICH, including primary intraventricular hemorrhage, confirmed by CT or MRI",
+                                    "Randomization 14–180 days after ICH onset",
+                                    "Non-valvular atrial fibrillation or flutter documented by ECG or physician-confirmed history",
+                                    "Signed consent from the patient or legally authorized representative",
+                                    "Highly effective contraception for females of reproductive potential"
                                 ],
                                 exclusion: [
-                                    "Clear indication for anticoagulation other than AF:",
-                                    "• Mechanical heart valve",
-                                    "• Recent DVT/PE requiring anticoagulation",
-                                    "• Left ventricular thrombus",
-                                    "Left atrial appendage closure device",
-                                    "Valvular AF (moderate-severe mitral stenosis, mechanical valve)",
-                                    "Secondary causes of ICH requiring specific treatment",
-                                    "Creatinine ≥2.5mg/dL or CrCl <25mL/min",
-                                    "Hepatic insufficiency (Child-Pugh B or C)",
-                                    "Active bleeding or high bleeding risk condition",
-                                    "Uncontrolled hypertension (BP ≥180/100 on multiple readings)",
-                                    "Platelet count <100,000/μL",
-                                    "Hemoglobin <8g/dL",
-                                    "Need for dual antiplatelet therapy",
-                                    "Contraindication to aspirin or apixaban",
-                                    "Pregnancy or breastfeeding",
-                                    "Life expectancy <1 year",
-                                    "Unable to adhere to study protocol",
-                                    "Participation in another antithrombotic trial"
+                                    "Index hemorrhagic transformation of infarction, hemorrhage into a tumor, or an unsecured AVM causing ICH",
+                                    "Earlier ICH in the preceding 12 months; active infective endocarditis",
+                                    "Separate mandatory indication for anticoagulation (such as DVT/PE) or antiplatelet therapy (such as a recent coronary stent)",
+                                    "Previous or planned left atrial appendage closure; clinically significant bleeding diathesis",
+                                    "Serum creatinine ≥2.5 mg/dL; active hepatitis or Child-Pugh B/C hepatic insufficiency",
+                                    "Chronic hemoglobin <8 g/dL or platelets <100,000/μL, as judged by the investigator",
+                                    "Persistent uncontrolled systolic BP ≥180 mm Hg",
+                                    "Pregnancy/breastfeeding; aspirin or apixaban allergy; competing trial",
+                                    "Investigator judges that a condition precludes safe or active participation; confirm all criteria with the study team"
                                 ]
                             },
                             {
                                 name: "MINUTE Trial",
                                 nct: "NCT07260916",
-                                phase: "Phase 2",
-                                status: "Enrolling",
-                                description: "Initial-evaluation screen for selected acute spontaneous non-traumatic basal-ganglia IPH candidates; confirm current enrollment status and contact route locally",
+                                phase: "Device study",
+                                status: "Recruiting (registry); confirm local activation",
+                                description: "Minimally invasive evacuation versus medical management for selected acute basal-ganglia ICH. Registry checked 2026-09-06; this summary requires full protocol and local study-team confirmation.",
                                 inclusion: [
-                                    "Age 18-80 years",
-                                    "Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH",
-                                    "IPH volume >=15 mL by ABC/2, or close enough to prompt screening",
-                                    "NIHSS >=6",
-                                    "Arrival/evaluation <=15 hours from last known well",
-                                    "CTA/MRA without underlying vascular lesion or anomaly",
-                                    "No clear standard-of-care surgical indication"
+                                    "Age 18–80; spontaneous non-traumatic, supratentorial, non-thalamic basal-ganglia ICH ≥20 mL by ABC/2",
+                                    "Presenting NIHSS ≥6 and pre-ICH mRS 0–2; CTA/MRA shows no underlying vascular lesion",
+                                    "Randomization ≤16 hours from last known well; surgery anticipated <120 minutes after randomization",
+                                    "Patient/LAR consent and intent to pursue lifesaving therapy rather than withdrawal within 7 days"
                                 ],
                                 exclusion: [
-                                    "Secondary cause of intracerebral hemorrhage, including:",
-                                    "• Trauma",
-                                    "• Aneurysm",
-                                    "• Arteriovenous malformation",
-                                    "• Dural arteriovenous fistula",
-                                    "• Brain tumor",
-                                    "• Hemorrhagic transformation of ischemic stroke",
-                                    "Thalamic, brainstem, cerebellar, infratentorial, or primary intraventricular hemorrhage",
-                                    "Underlying vascular lesion or anomaly on CTA/MRA",
-                                    "Need for immediate standard-of-care surgery at presentation",
-                                    "Unable to confirm timing or current protocol eligibility"
+                                    "Secondary ICH, thalamic/infratentorial hemorrhage or midbrain involvement; GCS <7",
+                                    "INR >1.4, aPTT >40 s, platelets <100,000/μL, platelet dysfunction or bleeding diathesis; coagulation reversal does not restore trial eligibility",
+                                    "DOAC or LMWH use at onset; IVH occupying >50% of either lateral ventricle",
+                                    "Active infection; pregnancy; severe dementia; pre-existing DNR/DNI",
+                                    "Competing interventional trial, inability to comply, or comorbidity compromising 365-day survival/follow-up; full protocol review required"
                                 ]
                             }
                         ]
@@ -3643,37 +3536,18 @@ Clinician Name`;
                                 name: "MIRROR Registry",
                                 nct: "NCT04494295",
                                 phase: "Observational Registry",
-                                status: "",
-                                description: "Minimally invasive endoscopic ICH evacuation using Aurora Surgiscope System",
+                                status: "Recruiting (registry); confirm local activation",
+                                description: "Observational registry of minimally invasive ICH evacuation with the Aurora Surgiscope System. Registry checked 2026-09-06; this summary requires full protocol and local study-team confirmation.",
                                 inclusion: [
-                                    "Age ≥18 years",
-                                    "Spontaneous supratentorial ICH confirmed by CT",
-                                    "Volume threshold is version-sensitive and must be checked against the active registry protocol",
-                                    "MIS possible within 24 hours of last known well, or within the qualifying wake-up hemorrhage window",
-                                    "NIHSS threshold must be verified against the active registry protocol",
-                                    "Premorbid mRS threshold must be verified against the active registry protocol",
-                                    "GCS range must be verified against the active registry protocol",
-                                    "No vascular lesion or anomaly",
-                                    "Ability to undergo general anesthesia",
-                                    "Informed consent from patient or authorized representative",
-                                    "When both MINUTE and MIRROR appear possible, prioritize MINUTE screening first"
+                                    "Age >18; CT-confirmed acute spontaneous primary supratentorial ICH >20 mL",
+                                    "Surgery can start within 24 hours of last known well, or within 24 hours of awakening with symptoms for qualifying wake-up ICH",
+                                    "NIHSS >5; baseline mRS ≤2; CTA shows no vascular malformation"
                                 ],
                                 exclusion: [
-                                    "Secondary ICH due to:",
-                                    "• Vascular lesion (AVM, aneurysm, dural fistula)",
-                                    "• Brain tumor",
-                                    "• Trauma",
-                                    "• Hemorrhagic transformation of ischemic stroke",
-                                    "• Moyamoya disease",
-                                    "Fixed and dilated pupils",
-                                    "Bilateral extensor posturing",
-                                    "Infratentorial or brainstem ICH",
-                                    "Intraventricular hemorrhage as primary pathology",
-                                    "Life expectancy <6 months from other condition",
-                                    "Uncorrectable coagulopathy (INR >1.4, platelets <100,000)",
-                                    "Known pregnancy",
-                                    "Prisoner or ward of state",
-                                    "Participation in another interventional trial"
+                                    "Causative vascular lesion; infratentorial/brainstem ICH",
+                                    "Fixed/dilated pupils or bilateral extensor posturing",
+                                    "Life expectancy <6 months; uncorrectable coagulopathy; mechanical heart valve",
+                                    "Pregnancy; concurrent interventional trial; inability to complete follow-up; full protocol and local review required"
                                 ]
                             },
                         ]
@@ -3686,38 +3560,22 @@ Clinician Name`;
                     {
                         name: "MR-PICS Study",
                         nct: "NCT06506279",
-                        phase: "Phase 2",
-                        status: "",
-                        description: "Motor Recovery through Plasticity-Inducing Cortical Stimulation using CorTec Brain Interchange System for chronic stroke recovery",
+                        phase: "Device study",
+                        status: "Recruiting (registry); confirm local activation",
+                        description: "Motor recovery using implanted plasticity-inducing cortical stimulation after chronic ischemic stroke. Registry checked 2026-09-06; this summary requires full protocol and local study-team confirmation.",
                         inclusion: [
-                            "Post-ischemic stroke patients with upper extremity deficit",
-                            "Chronic stroke (minimum 6 months post-stroke)",
-                            "Age 22-80 years",
-                            "Able to participate meaningfully in rehabilitation (Upper Extremity Fugl-Meyer score 25-45)",
-                            "Disability measured between 3-4 on modified Rankin Scale",
-                            "Minimum 30% preservation of corticospinal tract integrity",
-                            "Ability to provide informed consent",
-                            "Medically stable and cleared for neurosurgical procedure",
-                            "Willingness to comply with study protocol and follow-up visits",
-                            "Access to caregiver support during recovery period"
+                            "Age 22–75; at least 6 months after ischemic cortical stroke with upper-limb hemiparesis",
+                            "Upper-extremity Fugl-Meyer score 25–45; current mRS 3–4",
+                            "At least 30% corticospinal-pathway preservation on MRI and observable upper-limb motor response to cortical TMS",
+                            "Available for 54 weeks of assessments; eligibility assessed within 90 days before implantation, with the protocol MRI exception"
                         ],
                         exclusion: [
-                            "Seizure disorder or history of seizures",
-                            "Contraindications to neurosurgical procedures",
-                            "Contraindications to MRI scanning",
-                            "Active psychiatric condition that would interfere with participation",
-                            "Pregnancy or nursing",
-                            "Life expectancy less than 2 years",
-                            "Current participation in other interventional clinical trials",
-                            "Inability to stop anti-platelet medications 7 days before and 3 days after surgery",
-                            "Therapeutic anticoagulation that cannot be safely interrupted",
-                            "Active substance abuse or dependence",
-                            "Severe cognitive impairment preventing informed consent",
-                            "Glenohumeral subluxation, adhesive capsulitis, or upper extremity contractures with associated pain that would limit participation",
-                            "Implanted electronic devices incompatible with study procedures",
-                            "Prior brain surgery or cranial implants",
-                            "Hemorrhagic stroke (intracerebral hemorrhage excluded)",
-                            "Bilateral stroke or multiple stroke locations"
+                            "Cannot stop antiplatelet therapy 7 days before/3 days after surgery; therapeutic anticoagulation; prior unprovoked DVT or any PE",
+                            "Bleeding disorder or investigator-assessed thrombosis risk; any seizure history; pregnancy; spontaneous hemorrhagic-stroke history",
+                            "Protocol depression, cognition, suicidality or severe-neglect thresholds; communication or task-comprehension impairment",
+                            "Major medical/psychiatric/neurologic comorbidity, cardiac risk, active infection, other implanted devices, or inability to participate in rehabilitation",
+                            "Need for rehabilitation outside the study program; full safety and consent assessment required",
+                            "Shoulder subluxation, adhesive capsulitis or contractures require additional pain/ROM screening and clinician approval, not automatic exclusion"
                         ]
                     }
                 ]
@@ -3729,14 +3587,14 @@ Clinician Name`;
                         name: "CADASIL Registry",
                         nct: "NCT05567744",
                         phase: "Observational Registry",
-                        status: "",
-                        description: "Longitudinal registry for genetically confirmed or suspected CADASIL",
+                        status: "Recruiting (registry); confirm local activation",
+                        description: "Registry for adults with a loved one or family member with CADASIL, or who are at risk themselves. Registry checked 2026-09-06; this summary requires full protocol and local study-team confirmation.",
                         inclusion: [
-                            "Confirmed NOTCH3 mutation or suspected CADASIL",
-                            "Age ≥18 years"
+                            "Age ≥18 years",
+                            "A loved one/family member has CADASIL, or the participant is at risk for CADASIL"
                         ],
                         exclusion: [
-                            "Unable to provide consent"
+                            "Age <18 years; confirm the full registry participation and consent process locally"
                         ]
                     }
                 ]
@@ -4030,7 +3888,7 @@ Clinician Name`;
               medications: ['Labetalol 10-20 mg IV', 'Nicardipine 5 mg/hr IV'],
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
-                return cat === 'ischemic' && data.telestrokeNote?.evtRecommended && !data.telestrokeNote?.tnkRecommended;
+                return cat === 'ischemic' && data.telestrokeNote?.evtRecommended && hasRecordedNoTreatment(data.telestrokeNote, 'tnk');
               }
             },
             bp_post_tnk: {
@@ -4126,7 +3984,7 @@ Clinician Name`;
                 // No time gate: early non-lysis patients previously got NO BP
                 // guidance at all inside 4.5h. Lysis/EVT candidates are excluded
                 // via the recommendation flags; their cards carry their targets.
-                return isIschemic && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
+                return isIschemic && hasRecordedNoTreatment(data.telestrokeNote, 'tnk') && hasRecordedNoTreatment(data.telestrokeNote, 'evt');
               }
             },
 
@@ -4301,7 +4159,7 @@ Clinician Name`;
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 // Ischemic-only: high-risk TIA has its own DAPT card (tia_dapt),
                 // so the two no longer render together for the same TIA patient.
-                return cat === 'ischemic' && nihss !== null && nihss <= 3 && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
+                return cat === 'ischemic' && nihss !== null && nihss <= 3 && hasRecordedNoTreatment(data.telestrokeNote, 'tnk') && hasRecordedNoTreatment(data.telestrokeNote, 'evt');
               }
             },
             dapt_ticagrelor_nihss5: {
@@ -4319,7 +4177,7 @@ Clinician Name`;
                 const nihss = parseInt(data.telestrokeNote?.nihss, 10) || data.nihssScore || 0;
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
-                return isIschemic && nihss >= 4 && nihss <= 5 && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
+                return isIschemic && nihss >= 4 && nihss <= 5 && hasRecordedNoTreatment(data.telestrokeNote, 'tnk') && hasRecordedNoTreatment(data.telestrokeNote, 'evt');
               }
             },
             sicas_dapt: {
@@ -4408,14 +4266,14 @@ Clinician Name`;
               id: 'reversal_xa_inhibitor',
               category: 'Reversal',
               title: 'Factor Xa inhibitor reversal in ICH',
-              recommendation: 'For Xa inhibitor-associated ICH, andexanet alfa is reasonable when available (AHA/ASA 2022 Class IIa). 4F-PCC is an alternative when andexanet is unavailable or contraindicated.',
-              detail: 'AHA/ASA 2022 lists andexanet alfa as reasonable (Class IIa, LOE B-NR) for Xa inhibitor-associated ICH. ANNEXA-I (NEJM 2024) showed improved hemostatic efficacy with andexanet versus usual care, with thrombotic risk that requires monitoring. 4F-PCC remains commonly used when andexanet is not available, contraindicated, or impractical; use local hematology/neurocritical care protocol and document rationale.',
-              classOfRec: 'IIa',
-              levelOfEvidence: 'B-NR',
-              guideline: 'AHA/ASA Spontaneous ICH 2022 + ANNEXA-I 2024',
-              reference: 'Greenberg SM et al. Stroke. 2022;53:e282-e361. DOI: 10.1161/STR.0000000000000407. ANNEXA-I: NEJM 2024. DOI: 10.1056/NEJMoa2313040',
-              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407#page=19',
-              medications: ['Andexanet alfa (dose by agent/last-dose timing) per AHA/ASA 2022 Class IIa', '4F-PCC (Kcentra) 50 IU/kg IV when andexanet unavailable/contraindicated'],
+              recommendation: 'For factor Xa inhibitor-associated ICH, use the approved local reversal pathway. Andexanet is no longer manufactured or sold in the US following the December 2025 FDA safety action.',
+              detail: 'The 2022 guideline predates the December 18, 2025 FDA finding that serious thrombotic risks outweigh andexanet benefits. US manufacture and sales ended December 22, 2025. Do not apply the historical Class IIa recommendation as a current US availability recommendation. Review factor exposure, available laboratory assessment, contraindications and the locally approved PCC pathway with hematology/neurocritical care.',
+              classOfRec: 'Statement',
+              levelOfEvidence: 'Ungraded',
+              guideline: 'AHA/ASA ICH 2022; updated FDA safety status December 2025',
+              reference: 'FDA. Update on the Safety of Andexxa. December 18, 2025. AHA/ASA ICH guideline DOI: 10.1161/STR.0000000000000407.',
+              sourceUrl: 'https://www.fda.gov/vaccines-blood-biologics/safety-availability-biologics/update-safety-andexxa',
+              medications: ['Use the approved local factor Xa inhibitor reversal pathway; verify PCC indication, contraindications and dose with the treating team'],
               conditions: (data) => {
                 const meds = (data.telestrokeNote?.medications || '').toLowerCase();
                 const isICH = data.telestrokeNote?.diagnosisCategory === 'ich';
@@ -4780,7 +4638,7 @@ Clinician Name`;
               conditions: (data) => {
                 const vessels = data.telestrokeNote?.vesselOcclusion || [];
                 const hasLVO = vessels.some(v => /ica|m1|basilar/i.test(v));
-                return hasLVO && !!data.telestrokeNote?.evtRecommended && !data.telestrokeNote?.tnkRecommended;
+                return hasLVO && !!data.telestrokeNote?.evtRecommended && hasRecordedNoTreatment(data.telestrokeNote, 'tnk');
               }
             },
 
@@ -4851,7 +4709,7 @@ Clinician Name`;
               category: 'ICH',
               title: 'LAA occlusion after ICH with AF',
               recommendation: 'LAA occlusion may be reasonable for ICH survivors with AF at high thromboembolic risk when long-term anticoagulation is judged too hazardous — particularly lobar ICH with CAA features (AHA/ASA 2022 ICH: Class 2b).',
-              detail: 'Rationale: PRESTIGE-AF showed DOACs after ICH nearly eliminate ischemic stroke (HR 0.05, 95% CI 0.01-0.36) but at the cost of markedly more recurrent ICH (HR 10.89, 90% CI 1.95-60.72; ~5.0 vs 0.8 events per 100 patient-years) — LAAO offers stroke prevention without chronic anticoagulant exposure. Consider outpatient structural heart/EP referral. NOTE: a previously cited dedicated RCT in ICH survivors ("STROKE-CLOSE, Lancet 2024, HR 0.61") could not be verified in PubMed or ClinicalTrials.gov during the 2026-08 evidence audit and has been removed; the LAAO evidence base in ICH survivors remains observational/extrapolated (PROTECT-AF/PREVAIL/ASAP populations).',
+              detail: 'Rationale: PRESTIGE-AF found fewer ischemic strokes with DOACs after ICH (HR 0.05, 95% CI 0.01-0.36) but at the cost of markedly more recurrent ICH (HR 10.89, 90% CI 1.95-60.72; ~5.0 vs 0.8 events per 100 patient-years) — LAAO offers stroke prevention without chronic anticoagulant exposure. Consider outpatient structural heart/EP referral. NOTE: a previously cited dedicated RCT in ICH survivors ("STROKE-CLOSE, Lancet 2024, HR 0.61") could not be verified in PubMed or ClinicalTrials.gov during the 2026-08 evidence audit and has been removed; the LAAO evidence base in ICH survivors remains observational/extrapolated (PROTECT-AF/PREVAIL/ASAP populations).',
               classOfRec: 'IIb',
               levelOfEvidence: 'C-LD',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -5747,14 +5605,14 @@ Clinician Name`;
             mevo_evt_not_recommended: {
               id: 'mevo_evt_not_recommended',
               category: 'EVT',
-              title: 'MeVO/distal occlusion EVT: evidence now CONFLICTING (2026 guideline Class III: No Benefit, vs positive ORIENTAL-MeVO in NIHSS >=6)',
-              recommendation: 'The 2026 AHA/ASA guideline grades EVT for nondominant/codominant M2, distal MCA, ACA, and PCA occlusions as NOT recommended (COR III: No Benefit, LOE A), based on the neutral DISTAL and ESCAPE-MeVO trials plus a safety signal in ESCAPE-MeVO (90-day mortality aHR 1.82; sICH 5.4% vs 2.2%). THAT GRADING PREDATES ORIENTAL-MeVO (NEJM 2026, PMID 42127389), a positive randomized trial restricted to NIHSS ≥6, in which thrombectomy improved 90-day functional independence (58.6% vs 46.6%; adjusted rate ratio 1.24, 95% CI 1.07-1.44; P=0.004) with more sICH (4.7% vs 2.2%) but no excess mortality (11.1% vs 10.2%). For a moderate-to-severe MeVO deficit, do NOT treat the Class III grading as settled — individualize and discuss with neurointervention. EXCEPTION unchanged: dominant proximal M2 within 6h, mRS 0-1, NIHSS ≥6, ASPECTS ≥6, EVT is reasonable (COR IIa, AHA/ASA 2026).',
-              detail: 'Dominant proximal M2 within 6h: EVT is reasonable (Class IIa, LOE B-NR per AHA/ASA 2026) — benefits uncertain but reasonable to consider with favorable profile. Nondominant/codominant M2, M3-M4, ACA, PCA: EVT is NOT recommended (Class III, LOE A per AHA/ASA 2026). ESCAPE-MeVO (N=530): no functional improvement (ordinal mRS OR 0.90, NS) but showed increased 90-day mortality with EVT (13.3% vs 8.4%, aHR 1.82, 95% CI 1.06-3.12) and higher sICH (5.4% vs 2.2%). DISTAL (N=543): no functional benefit (adjusted common OR 0.90, 95% CI 0.67-1.22, P=0.50) with sICH 5.9% vs 2.6%; 12-MONTH outcomes (Lancet Neurol 2026;25:571-80, PMID 42105785) remained neutral (aOR 0.81, 95% CI 0.59-1.12, p=0.20). DISCOUNT (2025): negative for M2 thrombectomy. The 2026 guideline grades routine distal/nondominant-M2 EVT as Class III: No Benefit (LOE A) — DISTAL and ESCAPE-MeVO were neutral, not formally harmful, on their primary endpoints; the ESCAPE-MeVO mortality/sICH excess is a safety signal on top of that. CONFLICTING LATER EVIDENCE: ORIENTAL-MeVO (N Engl J Med 2026;394:1894-1904, PMID 42127389; n=563 at 48 Chinese centres, MeVO with NIHSS ≥6 within 24h) was POSITIVE — 90-day functional independence 58.6% vs 46.6% (adjusted rate ratio 1.24, 95% CI 1.07-1.44, P=0.004), sICH 4.7% vs 2.2%, mortality 11.1% vs 10.2%. The likeliest reconciliation is the deficit threshold: ORIENTAL-MeVO required NIHSS ≥6 while the neutral trials enrolled milder deficits. This trial postdates the guideline, so the Class III grading has not been re-examined against it. Flag eligible patients for clinical trial enrollment (for example STEP-EVT).',
+              title: 'MeVO/distal occlusion EVT: 2026 guideline and later randomized evidence',
+              recommendation: 'The 2026 AHA/ASA guideline grades EVT for nondominant/codominant M2, distal MCA, ACA, and PCA occlusions as Class III: No Benefit, LOE A. Later ORIENTAL-MeVO results were positive in its selected population (NIHSS ≥6, within 24 hours), whereas DISTAL, ESCAPE-MeVO and DISCOUNT had neutral primary outcomes. These differing trial results require specialist interpretation and do not independently revise the guideline recommendation. Dominant proximal M2 within 6 hours remains a separate Class IIa pathway with its specified clinical and imaging criteria.',
+              detail: 'ESCAPE-MeVO (n=530): 90-day mRS 0–1 occurred in 41.6% vs 43.1% (adjusted rate ratio 0.95, 95% CI 0.79–1.15, P=0.61); mortality was 13.3% vs 8.4% (adjusted HR 1.82, 95% CI 1.06–3.12), with sICH 5.4% vs 2.2%. DISTAL (n=543): the primary 90-day ordinal mRS outcome was neutral (common OR 0.90, 95% CI 0.67–1.22, P=0.50), with sICH 5.9% vs 2.6%; its separate 12-month follow-up remained neutral (common OR 0.81, 95% CI 0.59–1.12, P=0.20; PMID 42105785). DISCOUNT (2026, PMID 42485024; n=244): 90-day mRS 0–2 was 62% vs 68% (OR 0.73, 95% CI 0.40–1.31, P=0.29). ORIENTAL-MeVO (2026, PMID 42127389; n=563 at 48 Chinese centers; NIHSS ≥6 within 24 hours): 90-day mRS 0–2 was 58.6% vs 46.6% (adjusted rate ratio 1.24, 95% CI 1.07–1.44, P=0.004), with sICH 4.7% vs 2.2% and mortality 11.1% vs 10.2%. Differences in populations, vessel selection and methods do not establish NIHSS or another single factor as the explanation for the differing results.',
               classOfRec: 'III',
               levelOfEvidence: 'A',
-              guideline: 'AHA/ASA 2026 (Class III, LOE A); ESCAPE-MeVO (NEJM 2025); DISTAL (2025); DISCOUNT (2025); ORIENTAL-MeVO (NEJM 2026, positive in NIHSS >=6)',
-              reference: 'ESCAPE-MeVO: N Engl J Med. 2025. DOI: 10.1056/NEJMoa2411668. DISTAL and DISCOUNT: 2025 randomized MeVO/distal EVT trials. ORIENTAL-MeVO: N Engl J Med. 2026;394:1894-1904. DOI: 10.1056/NEJMoa2514120 (PMID 42127389).',
-              caveats: 'Local protocol may permit consideration of proximal M2 EVT in highly select cases. Discuss with neurointerventionalist. For NIHSS ≥6 the Class III grading conflicts with ORIENTAL-MeVO and should not be applied mechanically — pending physician review of local policy.',
+              guideline: 'AHA/ASA 2026 (Class III, LOE A); ESCAPE-MeVO and DISTAL (2025); DISCOUNT and ORIENTAL-MeVO (2026)',
+              reference: 'ESCAPE-MeVO: DOI 10.1056/NEJMoa2411668. DISTAL: DOI 10.1056/NEJMoa2408954; 12-month report PMID 42105785. DISCOUNT: PMID 42485024. ORIENTAL-MeVO: DOI 10.1056/NEJMoa2514120, PMID 42127389.',
+              caveats: 'Discuss clinical and imaging selection with neurointervention under current guidance and local policy. A first-pass STEP or other trial match requires full protocol review and confirmation of local activation; trial results alone do not establish individual treatment or enrollment eligibility.',
               conditions: (data) => {
                 const vessels = data.telestrokeNote?.vesselOcclusion || [];
                 // Fires only for ISOLATED medium/distal occlusion. A concurrent
@@ -5776,7 +5634,7 @@ Clinician Name`;
               category: 'EVT',
               title: 'Adjunctive intra-arterial lytic after successful EVT (CHOICE-2 / ANGEL-TNK) — investigational',
               recommendation: 'After successful thrombectomy (eTICI 2b50-3), adjunctive intra-arterial alteplase improved excellent outcomes in CHOICE-2 but with HIGHER 90-day mortality — investigational; discuss with neurointervention, ideally within a protocol.',
-              detail: 'CHOICE-2 (Renú, JAMA 2026;335:1859-69, PMID 42096239; LVO population, n=440 randomized / 433 analyzed): IA alteplase 0.225 mg/kg after successful EVT improved mRS 0-1 at 90d (57.5% vs 42.5%, adjusted RD 15.0%, P=.002) BUT 90-day mortality was higher (12.1% vs 6.4%, adjusted RD 5.9%, P=.03) — the authors flag the mortality signal as needing further study. ANGEL-TNK (JAMA 2025;334:582-91, PMID 40616323) tested IA tenecteplase post-EVT. Bridging IV TNK BEFORE late-window EVT is separately NEGATIVE (TNK-PLUS, JAMA 2026, PMID 42099212: mRS 0-2 44.2% vs 43.2%, P=.89; ATTENTION-LATE basilar: 30.3% vs 30.5%, presented ISC 2026, publication pending). No guideline class exists for adjunctive IA lytic.',
+              detail: 'CHOICE-2 (Renú, JAMA 2026;335:1859-69, PMID 42096239; LVO population, n=440 randomized / 433 analyzed): IA alteplase 0.225 mg/kg after successful EVT improved mRS 0-1 at 90d (57.5% vs 42.5%, adjusted RD 15.0%, P=.002) BUT 90-day mortality was higher (12.1% vs 6.4%, adjusted RD 5.9%, P=.03) — the authors flag the mortality signal as needing further study. ANGEL-TNK (JAMA 2025;334:582-91, PMID 40616323) tested IA tenecteplase post-EVT. Bridging IV TNK BEFORE late-window EVT is separately NEGATIVE (TNK-PLUS, JAMA 2026, PMID 42099212: mRS 0-2 44.2% vs 43.2%, P=.89). ATTENTION-LATE addresses IV TNK before basilar EVT at 4.5–24 hours; the primary publication verified here is a protocol (PMID 41946560), not an efficacy report. Its conference outcome claim remains unverified and is not used as treatment guidance.',
               classOfRec: 'N/A',
               levelOfEvidence: 'B-R',
               guideline: 'CHOICE-2 (JAMA 2026) — investigational; no guideline recommendation',
@@ -5803,7 +5661,7 @@ Clinician Name`;
                 if (cat !== 'ischemic') return false;
                 const vessels = data.telestrokeNote?.vesselOcclusion || [];
                 const noOcclusion = vessels.length === 0 || vessels.every(v => /^none$/i.test(String(v).trim()));
-                return noOcclusion && (data.telestrokeNote?.tnkAutoBlocked === true || data.telestrokeNote?.tnkRecommended === false);
+                return noOcclusion && hasRecordedNoTreatment(data.telestrokeNote, 'tnk') && hasRecordedNoTreatment(data.telestrokeNote, 'evt');
               }
             },
 
@@ -5840,7 +5698,7 @@ Clinician Name`;
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026; Suggested Protocol',
               reference: 'Prabhakaran S et al. Stroke. 2026.',
               conditions: (data) => {
-                return !!data.telestrokeNote?.evtRecommended;
+                return hasRecordedTreatmentAdministration(data.telestrokeNote, 'evt');
               }
             },
 
@@ -6028,7 +5886,7 @@ Clinician Name`;
                 const isIschemic = cat === 'ischemic' || cat === 'tia';
                 // Excluded for lysis/EVT candidates: their BP ceilings (185/110,
                 // 180/105) directly contradict a permissive framing.
-                return isIschemic && !data.telestrokeNote?.tnkRecommended && !data.telestrokeNote?.evtRecommended;
+                return isIschemic && hasRecordedNoTreatment(data.telestrokeNote, 'tnk') && hasRecordedNoTreatment(data.telestrokeNote, 'evt');
               }
             },
             // BASILAR ARTERY OCCLUSION EVT
@@ -6296,7 +6154,26 @@ Clinician Name`;
             navigateTo('trials');
           };
 
-          const navigateToTrialCard = (_trialName, category) => {
+          const navigateToCompletedTrial = (entry) => {
+            const completed = evidenceCompletedTrials.find((trial) => trial.id === entry.id || trial.shortName === entry.title || trial.shortName === entry.name);
+            setAtlasFilters({ topic: '', certainty: '', evidenceType: '', verificationStatus: '', query: completed?.shortName || entry.title || entry.name || '' });
+            setAtlasExpandAll(true);
+            navigateTo('research', { clearSearch: true, subTab: 'references' });
+            setTimeout(() => {
+              const section = document.getElementById('ref-trials');
+              if (!section) return;
+              section.open = true;
+              section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              section.querySelector('input[aria-label="Search completed trials"]')?.focus({ preventScroll: true });
+            }, 0);
+          };
+
+          const navigateToTrialCard = (trialName, category) => {
+            const completed = evidenceCompletedTrials.find((trial) => trial.shortName === trialName || trial.fullName === trialName);
+            if (completed) {
+              navigateToCompletedTrial({ id: completed.id });
+              return;
+            }
             updateTrialsView('screener');
             if (category) setTrialsCategory(category);
             navigateTo('trials');
@@ -7199,7 +7076,8 @@ Clinician Name`;
             const edArrival = safeParseDt(telestrokeNote.dtnEdArrival);
             const ctStarted = safeParseDt(telestrokeNote.dtnCtStarted);
             const ctRead = safeParseDt(telestrokeNote.dtnCtRead);
-            const tnkAdmin = safeParseDt(telestrokeNote.dtnTnkAdministered);
+            const recordedTnkTime = treatmentAdministrationTime(telestrokeNote, 'tnk');
+            const tnkAdmin = /^\d{4}-\d{2}-\d{2}T/.test(recordedTnkTime) ? safeParseDt(recordedTnkTime) : null;
 
             metrics.timestamps = {
               edArrival,
@@ -7763,6 +7641,9 @@ Clinician Name`;
             });
           };
 
+          const getDocumentedNihss = () => documentedNihssValue(telestrokeNote, nihssScore,
+            nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== null && patientData[item.id] !== ''));
+
           const buildEncounterTemplateContext = () => {
             const lkw = telestrokeNote.lkwDate && telestrokeNote.lkwTime
               ? `${telestrokeNote.lkwDate} ${telestrokeNote.lkwTime}`
@@ -7771,7 +7652,7 @@ Clinician Name`;
               PATIENT_ALIAS: telestrokeNote.alias || '',
               AGE: telestrokeNote.age || '',
               SEX: telestrokeNote.sex || '',
-              NIHSS: telestrokeNote.nihss || nihssScore || '',
+              NIHSS: getDocumentedNihss() || '',
               DIAGNOSIS: telestrokeNote.diagnosis || '',
               LVO: (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', '),
               WEIGHT_KG: telestrokeNote.weight || '',
@@ -7783,8 +7664,8 @@ Clinician Name`;
               CTA_RESULTS: telestrokeNote.ctaResults || '',
               CTP_RESULTS: telestrokeNote.ctpResults || '',
               ASPECTS: isValidAspectsScore(aspectsScore) ? aspectsScore : '',
-              TNK_STATUS: telestrokeNote.tnkRecommended ? (telestrokeNote.tnkAdminTime ? `Given at ${telestrokeNote.tnkAdminTime}` : 'Recommended') : 'Not given',
-              EVT_STATUS: telestrokeNote.evtRecommended ? 'Recommended' : 'Not recommended',
+              TNK_STATUS: treatmentCourseStatus(telestrokeNote, 'tnk'),
+              EVT_STATUS: treatmentCourseStatus(telestrokeNote, 'evt'),
               DISPOSITION: telestrokeNote.disposition || '',
               TRANSFER_STATUS: telestrokeNote.transferAccepted ? 'Accepted' : '',
               PENDING_ITEMS: telestrokeNote.recommendationsText || '',
@@ -8046,9 +7927,9 @@ Clinician Name`;
               age: telestrokeNote.age,
               sex: telestrokeNote.sex,
               diagnosis: telestrokeNote.diagnosis || 'No diagnosis',
-              nihss: telestrokeNote.nihss || nihssScore || 0,
-              tnk: telestrokeNote.tnkRecommended ? 'Yes' : 'No',
-              evt: telestrokeNote.evtRecommended ? 'Yes' : 'No',
+              nihss: getDocumentedNihss() || 'Unknown',
+              tnk: treatmentCourseStatus(telestrokeNote, 'tnk'),
+              evt: treatmentCourseStatus(telestrokeNote, 'evt'),
               consultationType
             };
             setEncounterHistory(prev => {
@@ -8587,10 +8468,9 @@ Clinician Name`;
             if (telestrokeNote.collateralGrade) imagingSummaryParts.push(`Collaterals: ${telestrokeNote.collateralGrade}`);
             const imagingSummary = imagingSummaryParts.join('; ');
             const tnkDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
-            const tnkStatus = telestrokeNote.tnkRecommended
-              ? `TNK recommended${tnkDose ? ` (${tnkDose.calculatedDose} mg, max 25 mg)` : ''}`
-              : 'TNK not recommended';
-            const evtStatus = telestrokeNote.evtRecommended ? 'EVT recommended' : 'EVT not recommended';
+            const tnkStatus = 'TNK: ' + treatmentCourseStatus(telestrokeNote, 'tnk') +
+              (telestrokeNote.tnkRecommended && !telestrokeNote.tnkAutoBlocked && tnkDose ? ` (${tnkDose.calculatedDose} mg, max 25 mg)` : '');
+            const evtStatus = 'EVT: ' + treatmentCourseStatus(telestrokeNote, 'evt');
             const disposition = telestrokeNote.disposition || '';
             const transferStatus = telestrokeNote.transferAccepted
               ? 'Transfer accepted'
@@ -8650,9 +8530,13 @@ Clinician Name`;
             const hasGlucose = Boolean(telestrokeNote.glucose);
             const hasCT = Boolean(telestrokeNote.ctResults);
             const hasCTA = Boolean(telestrokeNote.ctaResults);
-            const hasWeight = !telestrokeNote.tnkRecommended || Boolean(telestrokeNote.weight);
-            const tnkChecklist = !telestrokeNote.tnkRecommended || telestrokeNote.tnkContraindicationReviewed;
-            const consent = !telestrokeNote.tnkRecommended || telestrokeNote.tnkConsentDiscussed;
+            const tnkAdministered = hasRecordedTreatmentAdministration(telestrokeNote, 'tnk');
+            const tnkDecision = recordedTreatmentDecision(telestrokeNote, 'tnk');
+            const tnkNotRequired = !tnkAdministered && (tnkDecision === false || telestrokeNote.tnkAutoBlocked === true);
+            const tnkExpected = tnkAdministered || tnkDecision === true;
+            const hasWeight = tnkNotRequired || (tnkExpected && Boolean(telestrokeNote.weight));
+            const tnkChecklist = tnkNotRequired || (tnkExpected && telestrokeNote.tnkContraindicationReviewed === true);
+            const consent = tnkNotRequired || (tnkExpected && telestrokeNote.tnkConsentDiscussed === true);
 
             return [
               { id: 'onset', label: 'Onset time documented', complete: hasOnset },
@@ -8805,15 +8689,15 @@ Clinician Name`;
             const sp = data?.secondaryPrevention || {};
             const wake = data?.wakeUpStrokeWorkflow || {};
 
-            if (data?.tnkRecommended) parts.push('TNK 0.25 mg/kg pathway applied');
-            if (data?.evtRecommended) parts.push('post-reperfusion BP floor avoidance (<140) reinforced');
-            if (wake.isWakeUpStroke) parts.push('imaging-selected wake-up/extended-window workflow used');
+            if (data?.tnkRecommended) parts.push('TNK treatment recommended');
+            if (data?.evtRecommended) parts.push('post-EVT BP planning: avoid active intensive SBP lowering below 140 after successful reperfusion');
+            if (wake.isWakeUpStroke) parts.push('wake-up/extended-window imaging selection requires review');
 
             const ap = sp.antiplateletRegimen || '';
             if (ap === 'dapt-ticagrelor-30') parts.push('NIHSS <=5 ticagrelor-based DAPT pathway considered');
             else if (ap === 'dapt-21' || ap === 'dapt-cyp2c19') parts.push('short-course DAPT pathway documented');
 
-            if (data?.glucose) parts.push('inpatient glucose target 140-180 mg/dL emphasized');
+            if (data?.glucose) parts.push('inpatient glucose target for planning: 140-180 mg/dL');
             return parts.join('; ');
           };
 
@@ -8827,7 +8711,7 @@ Clinician Name`;
               'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
               'presentingBP', 'heartRate', 'spO2', 'temperature', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT', 'bpProtocolCheck',
               'glucose', 'plateletCount', 'inr', 'pt', 'ptt', 'creatinine', 'disablingDeficit',
-              'tnkRecommended', 'evtRecommended', 'tnkContraindicationChecklist',
+              'tnkRecommended', 'evtRecommended', 'tnkDecisionRecorded', 'evtDecisionRecorded', 'tnkContraindicationChecklist',
               'tnkContraindicationReviewed', 'tnkContraindicationReviewTime', 'tnkConsentDiscussed',
               'tnkConsentType', 'tnkConsentTime', 'tnkConsentWith',
               'patientFamilyConsent', 'presumedConsent', 'preTNKSafetyPause', 'tnkAutoBlocked', 'tnkAutoBlockReason',
@@ -9107,7 +8991,7 @@ Clinician Name`;
             brief += `${'='.repeat(40)}\n\n`;
             brief += `Patient: ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'M' : telestrokeNote.sex === 'F' ? 'F' : '***'}\n`;
             brief += `Diagnosis: ${telestrokeNote.diagnosis || '***'}\n`;
-            brief += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
+            brief += `NIHSS: ${getDocumentedNihss() || 'N/A'}`;
             const fuGCS = calculateGCS(gcsItems);
             if (fuGCS > 0) brief += ` | GCS: ${fuGCS}`;
             brief += `\n`;
@@ -9139,20 +9023,19 @@ Clinician Name`;
               if (fuLabs.length > 0) brief += `Labs: ${fuLabs.join(', ')}\n`;
             }
             brief += `\nACUTE COURSE:\n`;
-            if (telestrokeNote.tnkRecommended) {
+            if (telestrokeNote.tnkRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
               const fuDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
-              brief += `- TNK${fuDose ? ` ${fuDose.calculatedDose} mg` : ''} administered${telestrokeNote.tnkAdminTime ? ` at ${telestrokeNote.tnkAdminTime}` : ''}\n`;
+              brief += `- TNK: ${treatmentCourseStatus(telestrokeNote, 'tnk')}${fuDose ? ` (calculated dose ${fuDose.calculatedDose} mg)` : ''}\n`;
             }
-            if (telestrokeNote.evtRecommended) {
-              brief += `- EVT recommended/performed${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
+            if (telestrokeNote.evtRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'evt')) {
+              brief += `- EVT: ${treatmentCourseStatus(telestrokeNote, 'evt')}${telestrokeNote.ticiScore ? ` (recorded mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
               const fuEvtParts = [telestrokeNote.evtAccessSite, telestrokeNote.evtTechnique, telestrokeNote.evtNumberOfPasses && `${telestrokeNote.evtNumberOfPasses} passes`, telestrokeNote.evtDevice].filter(Boolean);
               if (fuEvtParts.length > 0) brief += `  (${fuEvtParts.join(', ')})\n`;
               if (telestrokeNote.reperfusionTime) brief += `  Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
             }
             if (telestrokeNote.transferAccepted) brief += `- Transferred to ${telestrokeNote.transferReceivingFacility || 'comprehensive stroke center'}\n`;
             if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
-              brief += `- Medical management`;
-              if (telestrokeNote.tnkAutoBlocked && telestrokeNote.tnkAutoBlockReason) brief += ` (TNK contraindicated: ${telestrokeNote.tnkAutoBlockReason})`;
+              brief += treatmentCourseSummary(telestrokeNote) + '\n';
               brief += `\n`;
             }
             if (telestrokeNote.rationale) brief += `- Rationale: ${telestrokeNote.rationale}\n`;
@@ -9488,7 +9371,7 @@ Clinician Name`;
           const generatePulsaraSummary = () => {
             const age = telestrokeNote.age || "***";
             const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
-            const pmh = telestrokeNote.pmh || "no PMH";
+            const pmh = telestrokeNote.pmh || "[PMH not documented]";
             const symptoms = telestrokeNote.symptoms || "***";
             const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
             const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
@@ -9501,8 +9384,8 @@ Clinician Name`;
             const vesselArr = telestrokeNote.vesselOcclusion || [];
             const vesselStr = vesselArr.length > 0 && !vesselArr.includes('None')
               ? ` Vessel occlusion: ${vesselArr.join(', ')}.` : "";
-            const tnkStatus = telestrokeNote.diagnosisCategory === 'sah' ? 'N/A (SAH)' : telestrokeNote.diagnosisCategory === 'ich' ? 'N/A (ICH)' : telestrokeNote.tnkRecommended ? "Recommended" : "Not Recommended";
-            const evtStatus = telestrokeNote.diagnosisCategory === 'sah' ? 'N/A (SAH)' : telestrokeNote.diagnosisCategory === 'ich' ? 'N/A (ICH)' : telestrokeNote.evtRecommended ? "Recommended" : "Not Recommended";
+            const tnkStatus = treatmentCourseStatus(telestrokeNote, 'tnk');
+            const evtStatus = treatmentCourseStatus(telestrokeNote, 'evt');
             const rationale = telestrokeNote.rationale || "[rationale]";
             // LKW unknown handling
             const lkwStr = telestrokeNote.lkwUnknown
@@ -9612,7 +9495,7 @@ Clinician Name`;
               } else {
                 note += `LKW: ${[formatDate(telestrokeNote.lkwDate), formatTime(telestrokeNote.lkwTime)].filter(Boolean).join(' ') || '___'}\n`;
               }
-              note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
+              note += `NIHSS: ${getDocumentedNihss() || 'N/A'}`;
               const transferGCS = calculateGCS(gcsItems);
               if (transferGCS > 0) note += ` | GCS: ${transferGCS}`;
               if (telestrokeNote.premorbidMRS) note += ` | Pre-mRS: ${telestrokeNote.premorbidMRS}`;
@@ -9732,9 +9615,9 @@ Clinician Name`;
                 }
               }
               note += `\nTreatment:\n`;
-              if (telestrokeNote.tnkRecommended) {
+              if (telestrokeNote.tnkRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
                 const transferDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
-                note += `- TNK 0.25 mg/kg${transferDose ? ` (${transferDose.calculatedDose} mg)` : ''} single IV bolus — ${telestrokeNote.tnkAdminTime ? 'administered at ' + (formatTime(telestrokeNote.tnkAdminTime) || '___') : 'recommended (not yet administered)'}\n`;
+                note += `- TNK: ${treatmentCourseStatus(telestrokeNote, 'tnk')}${transferDose ? ` (calculated dose ${transferDose.calculatedDose} mg)` : ''}\n`;
                 note += `  [TNK-first approach per AcT/TRACE-2/ESO 2023; alteplase if TNK unavailable]\n`;
                 if (telestrokeNote.tnkContraindicationReviewed) {
                   note += `- Contraindication review: completed${telestrokeNote.tnkContraindicationReviewTime ? ` at ${telestrokeNote.tnkContraindicationReviewTime}` : ''}\n`;
@@ -9747,11 +9630,11 @@ Clinician Name`;
                 }
                 if (telestrokeNote.preTNKSafetyPause) note += `- Pre-TNK safety pause: completed\n`;
                 if (telestrokeNote.disablingDeficit) {
-                  note += `- DISABLING DEFICIT: TNK recommended despite NIHSS ${telestrokeNote.nihss || nihssScore || '___'} based on significant functional impairment\n`;
+                  note += `- DISABLING DEFICIT: TNK recommended despite NIHSS ${getDocumentedNihss() || '___'} based on significant functional impairment\n`;
                 }
               }
-              if (telestrokeNote.evtRecommended) {
-                note += `- EVT recommended${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
+              if (telestrokeNote.evtRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'evt')) {
+                note += `- EVT: ${treatmentCourseStatus(telestrokeNote, 'evt')}${telestrokeNote.ticiScore ? ` (recorded mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
                 if (telestrokeNote.evtAccessSite) note += `  Access: ${telestrokeNote.evtAccessSite}\n`;
                 if (telestrokeNote.evtDevice) note += `  Device: ${telestrokeNote.evtDevice}\n`;
                 if (telestrokeNote.evtTechnique) note += `  Technique: ${telestrokeNote.evtTechnique}\n`;
@@ -9771,18 +9654,18 @@ Clinician Name`;
                 }
               }
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
-                note += `- Medical management`;
-                if (telestrokeNote.tnkAutoBlocked && telestrokeNote.tnkAutoBlockReason) note += ` (TNK contraindicated: ${telestrokeNote.tnkAutoBlockReason})`;
+                note += treatmentCourseSummary(telestrokeNote) + '\n';
                 note += `\n`;
               }
-              if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) note += formatDTNForNote();
-              else if (telestrokeNote.doorTime || telestrokeNote.needleTime) {
+              const transferTnkTime = treatmentAdministrationTime(telestrokeNote, 'tnk');
+              if (transferTnkTime.includes('T')) note += formatDTNForNote();
+              else if (telestrokeNote.doorTime || transferTnkTime) {
                 const dtnParts = [];
                 if (telestrokeNote.doorTime) dtnParts.push(`Door: ${telestrokeNote.doorTime}`);
-                if (telestrokeNote.needleTime) dtnParts.push(`Needle: ${telestrokeNote.needleTime}`);
-                if (telestrokeNote.doorTime && telestrokeNote.needleTime) {
+                if (transferTnkTime) dtnParts.push(`Needle: ${transferTnkTime}`);
+                if (/^(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/.test(telestrokeNote.doorTime || '') && transferTnkTime) {
                   const [dH, dM] = telestrokeNote.doorTime.split(':').map(Number);
-                  const [nH, nM] = telestrokeNote.needleTime.split(':').map(Number);
+                  const [nH, nM] = transferTnkTime.split(':').map(Number);
                   if (!isNaN(dH) && !isNaN(dM) && !isNaN(nH) && !isNaN(nM)) {
                     let dtnMin = (nH * 60 + nM) - (dH * 60 + dM);
                     if (dtnMin < 0) dtnMin += 1440;
@@ -9823,7 +9706,7 @@ Clinician Name`;
               if (telestrokeNote.transferFamilyNotified) txChecks.push('family notified');
               if (txChecks.length > 0) note += `Transfer readiness: ${txChecks.join(', ')}\n`;
               // Post-TNK Status
-              if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) {
+              if (hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
                 note += `\nPost-TNK Status:\n`;
                 const postTnkComps = [];
                 if (telestrokeNote.sichDetected) postTnkComps.push('sICH DETECTED');
@@ -9849,7 +9732,7 @@ Clinician Name`;
                 note += `- Hold antithrombotics x 24h post-TNK\n`;
               }
               // Hemorrhagic transformation (non-TNK patients)
-              if (!(telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime)) {
+              if (!hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
                 const htNonTnk = telestrokeNote.hemorrhagicTransformation || {};
                 if (htNonTnk.detected) {
                   note += `\nHemorrhagic Transformation:\n`;
@@ -10100,10 +9983,10 @@ Clinician Name`;
                   const txVteItems = [];
                   if (txVte.ipcApplied) txVteItems.push('IPC/SCDs in place');
                   if (txVte.pharmacoProphylaxis) txVteItems.push(`pharmacologic: ${txVte.pharmacoProphylaxis}${txVte.enoxaparinDose ? ` ${txVte.enoxaparinDose}` : ''}`);
-                  if (txVte.postTpaTimerStarted) txVteItems.push('post-TNK 24h hold in effect');
+                  if (txVte.postTpaTimerStarted) txVteItems.push('post-TNK 24h timer started');
                   note += `VTE prophylaxis: ${txVteItems.join('; ')}\n`;
-                } else if (telestrokeNote.tnkRecommended) {
-                  note += `VTE prophylaxis: pharmacologic held (post-TNK 24h) — IPC/SCDs recommended\n`;
+                } else if (telestrokeNote.tnkRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
+                  note += `VTE prophylaxis: plan not documented\n`;
                 }
               }
               // Nutritional/feeding status
@@ -10178,7 +10061,7 @@ Clinician Name`;
               note += '\n';
               if (telestrokeNote.affectedSide) note += `Affected side: ${telestrokeNote.affectedSide}\n`;
               if (telestrokeNote.weight) note += `Weight: ${telestrokeNote.weight} kg\n`;
-              note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
+              note += `NIHSS: ${getDocumentedNihss() || 'N/A'}`;
               if (telestrokeNote.dischargeNIHSS) {
                 const snAdmNIHSS = parseInt(telestrokeNote.nihss || nihssScore, 10);
                 const snDischNIHSS = parseInt(telestrokeNote.dischargeNIHSS, 10);
@@ -10269,10 +10152,10 @@ Clinician Name`;
                 }
               }
               note += '\n';
-              note += `Treatment given:\n`;
-              if (telestrokeNote.tnkRecommended) {
+              note += `Treatment decisions/course:\n`;
+              if (telestrokeNote.tnkRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
                 const signoutDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
-                note += `- TNK${signoutDose ? ` ${signoutDose.calculatedDose} mg` : ''} ${telestrokeNote.tnkAdminTime ? 'at ' + (formatTime(telestrokeNote.tnkAdminTime) || '___') : '(recommended, not yet administered)'}\n`;
+                note += `- TNK: ${treatmentCourseStatus(telestrokeNote, 'tnk')}${signoutDose ? ` (calculated dose ${signoutDose.calculatedDose} mg)` : ''}\n`;
                 if (telestrokeNote.doorTime && telestrokeNote.needleTime) {
                   const [sdH, sdM] = telestrokeNote.doorTime.split(':').map(Number);
                   const [snH, snM] = telestrokeNote.needleTime.split(':').map(Number);
@@ -10283,9 +10166,9 @@ Clinician Name`;
                   }
                 }
               }
-              if (telestrokeNote.tnkRecommended && telestrokeNote.disablingDeficit) note += `  DISABLING DEFICIT — TNK despite NIHSS ${telestrokeNote.nihss || nihssScore || '___'}\n`;
-              if (telestrokeNote.evtRecommended) {
-                note += `- EVT recommended/performed${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
+              if (telestrokeNote.tnkRecommended && telestrokeNote.disablingDeficit) note += `  DISABLING DEFICIT — TNK despite NIHSS ${getDocumentedNihss() || '___'}\n`;
+              if (telestrokeNote.evtRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'evt')) {
+                note += `- EVT: ${treatmentCourseStatus(telestrokeNote, 'evt')}${telestrokeNote.ticiScore ? ` (recorded mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
                 if (telestrokeNote.evtAccessSite) note += `  Access: ${telestrokeNote.evtAccessSite}\n`;
                 if (telestrokeNote.evtDevice) note += `  Device: ${telestrokeNote.evtDevice}\n`;
                 if (telestrokeNote.evtTechnique) note += `  Technique: ${telestrokeNote.evtTechnique}\n`;
@@ -10298,8 +10181,7 @@ Clinician Name`;
                 }
               }
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
-                note += `- Medical management`;
-                if (telestrokeNote.tnkAutoBlocked && telestrokeNote.tnkAutoBlockReason) note += ` (TNK contraindicated: ${telestrokeNote.tnkAutoBlockReason})`;
+                note += treatmentCourseSummary(telestrokeNote) + '\n';
                 note += `\n`;
               }
               {
@@ -10363,7 +10245,7 @@ Clinician Name`;
               }
               if (telestrokeNote.complicationNotes) note += `- Complication details: ${telestrokeNote.complicationNotes}\n`;
               // Post-TNK monitoring
-              if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) {
+              if (hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
                 const snPtm = telestrokeNote.postTNKMonitoring || {};
                 const snPtmItems = [];
                 if (snPtm.neuroChecksQ15min) snPtmItems.push('neuro checks q15min x2h');
@@ -10580,7 +10462,7 @@ Clinician Name`;
               if (telestrokeNote.medications) note += `Home Meds: ${telestrokeNote.medications}\n`;
               if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}${telestrokeNote.contrastAllergy ? ' **CONTRAST ALLERGY**' : ''}\n`;
               else if (telestrokeNote.contrastAllergy) note += `Allergies: **CONTRAST ALLERGY**\n`;
-              note += `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}\n`;
+              note += `NIHSS: ${getDocumentedNihss() || 'N/A'}\n`;
               if (telestrokeNote.creatinine) note += `Cr: ${telestrokeNote.creatinine}`;
               if (telestrokeNote.creatinine && telestrokeNote.age && telestrokeNote.weight && telestrokeNote.sex) {
                 const procCrcl = calculateCrCl(telestrokeNote.age, telestrokeNote.weight, telestrokeNote.sex, telestrokeNote.creatinine, telestrokeNote.height);
@@ -10626,14 +10508,14 @@ Clinician Name`;
                 if (telestrokeNote.lastDOACDose) note += ` (last dose: ${telestrokeNote.lastDOACDose})`;
                 note += '\n';
               }
-              if (telestrokeNote.tnkRecommended) {
+              if (telestrokeNote.tnkRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
                 const procDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
-                note += `IV TNK${procDose ? ` ${procDose.calculatedDose} mg` : ''} administered at ${formatTime(telestrokeNote.tnkAdminTime) || '___'}\n`;
+                note += `TNK: ${treatmentCourseStatus(telestrokeNote, 'tnk')}${procDose ? ` (calculated dose ${procDose.calculatedDose} mg)` : ''}\n`;
               }
               note += `\nPROCEDURE DETAILS:\n`;
               note += `Operator: ${telestrokeNote.attendingPhysician || '___'}\n`;
               note += `Anesthesia: ___ (general / conscious sedation / local)\n`;
-              note += `Procedure: Mechanical thrombectomy\n`;
+              note += `Procedure: Mechanical thrombectomy — ${treatmentCourseStatus(telestrokeNote, 'evt')}\n`;
               note += `Access: ${telestrokeNote.evtAccessSite || '___ (R/L femoral, R/L radial)'}\n`;
               note += `Guide catheter: ${telestrokeNote.evtDevice || '___'}\n`;
               note += `Technique: ${telestrokeNote.evtTechnique || '___ (aspiration, stent retriever, combined)'}\n`;
@@ -10711,7 +10593,7 @@ Clinician Name`;
                 note += `Vitals: ${pnVitals.join(' ')}\n`;
               }
               note += `I/O: ___\n`;
-              note += `NIHSS: ${telestrokeNote.dischargeNIHSS || telestrokeNote.nihss || nihssScore || '___'} (admission: ${telestrokeNote.nihss || nihssScore || '___'})\n`;
+              note += `NIHSS: ${telestrokeNote.dischargeNIHSS || getDocumentedNihss() || '___'} (admission: ${getDocumentedNihss() || '___'})\n`;
               note += `Neuro exam: ___\n\n`;
               note += `LABS/IMAGING:\n`;
               note += `- CT Head: ${telestrokeNote.ctResults || '___'}`;
@@ -10771,9 +10653,9 @@ Clinician Name`;
               note += `ASSESSMENT & PLAN:\n`;
               note += `1. Acute stroke management:\n`;
               if (telestrokeNote.tnkRecommended && telestrokeNote.disablingDeficit) {
-                note += `   - DISABLING DEFICIT: TNK administered despite NIHSS ${telestrokeNote.nihss || nihssScore || '___'} based on significant functional impairment\n`;
+                note += `   - DISABLING DEFICIT: TNK ${treatmentCourseStatus(telestrokeNote, 'tnk')} (NIHSS ${getDocumentedNihss() || '___'})\n`;
               }
-              if (telestrokeNote.tnkRecommended) {
+              if (hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
                 const prPtm = telestrokeNote.postTNKMonitoring || {};
                 const prPtmItems = [];
                 if (prPtm.neuroChecksQ15min) prPtmItems.push('neuro checks');
@@ -10782,9 +10664,9 @@ Clinician Name`;
                 if (prPtm.cardiacMonitoring) prPtmItems.push('cardiac monitoring');
                 note += prPtmItems.length > 0
                   ? `   - Post-TNK: ${prPtmItems.join(', ')} — ongoing\n`
-                  : `   - Post-TNK: monitoring complete / ongoing\n`;
+                  : `   - Post-TNK: monitoring status not documented\n`;
               }
-              if (telestrokeNote.evtRecommended) {
+              if (hasRecordedTreatmentAdministration(telestrokeNote, 'evt')) {
                 note += `   - Post-EVT: mTICI ${telestrokeNote.ticiScore || '___'}\n`;
                 const evtDetails = [telestrokeNote.evtAccessSite && `access ${telestrokeNote.evtAccessSite}`, telestrokeNote.evtTechnique && telestrokeNote.evtTechnique, telestrokeNote.evtNumberOfPasses && `${telestrokeNote.evtNumberOfPasses} passes`, telestrokeNote.evtDevice && telestrokeNote.evtDevice].filter(Boolean);
                 if (evtDetails.length > 0) note += `     (${evtDetails.join(', ')})\n`;
@@ -10849,7 +10731,7 @@ Clinician Name`;
                 if (prVte.ipcApplied) prVteItems.push('IPC/SCDs');
                 if (prVte.pharmacoProphylaxis) prVteItems.push(`${prVte.pharmacoProphylaxis}${prVte.enoxaparinDose ? ` ${prVte.enoxaparinDose}` : ''}`);
                 if (prVte.postTpaTimerStarted) prVteItems.push('post-TNK 24h hold');
-                note += `   - DVT prophylaxis: ${prVteItems.length > 0 ? prVteItems.join('; ') : telestrokeNote.tnkRecommended ? 'pharmacologic held (post-TNK 24h) — IPC/SCDs recommended' : '___'}\n`;
+                note += `   - DVT prophylaxis: ${prVteItems.length > 0 ? prVteItems.join('; ') : hasRecordedTreatmentAdministration(telestrokeNote, 'tnk') ? 'post-TNK prophylaxis plan not documented' : '___'}\n`;
               }
               note += `   - Dysphagia screening: ${telestrokeNote.dysphagiaScreening?.bedsideScreenPerformed ? 'completed' : 'pending'}\n`;
               // ICH-specific management
@@ -11027,8 +10909,8 @@ Clinician Name`;
               // Treatment history
               {
                 const txItems = [];
-                if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) txItems.push('a clot-dissolving medication (tenecteplase/TNK) through your IV');
-                if (telestrokeNote.evtRecommended) txItems.push('a catheter-based procedure to remove the blood clot (thrombectomy)');
+                if (hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) txItems.push('a clot-dissolving medication (tenecteplase/TNK) through your IV');
+                if (hasRecordedTreatmentAdministration(telestrokeNote, 'evt')) txItems.push('a catheter-based procedure to remove the blood clot (thrombectomy)');
                 if (telestrokeNote.diagnosisCategory === 'ich') txItems.push('treatment for bleeding in the brain including blood pressure control and monitoring');
                 if (isCVT) txItems.push('blood thinner (anticoagulation) to treat the blood clot in your brain veins');
                 if (isSAH) {
@@ -11196,7 +11078,7 @@ Clinician Name`;
               note += `\n`;
               note += `FACILITY COURSE:\n`;
               note += `${telestrokeNote.symptoms || '___'}\n`;
-              note += `Presenting NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
+              note += `Presenting NIHSS: ${getDocumentedNihss() || 'N/A'}`;
               const dischGCS = calculateGCS(gcsItems);
               if (dischGCS > 0) note += ` | GCS: ${dischGCS}`;
               note += `\n`;
@@ -11289,15 +11171,15 @@ Clinician Name`;
               }
               note += '\n';
               note += `ACUTE TREATMENT:\n`;
-              if (telestrokeNote.tnkRecommended) {
+              if (telestrokeNote.tnkRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
                 const dischDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
-                note += `- IV TNK ${dischDose ? dischDose.calculatedDose + ' mg' : ''} ${telestrokeNote.tnkAdminTime ? 'at ' + (formatTime(telestrokeNote.tnkAdminTime) || '___') : '(recommended, not yet administered)'}\n`;
+                note += `- TNK: ${treatmentCourseStatus(telestrokeNote, 'tnk')}${dischDose ? ` (calculated dose ${dischDose.calculatedDose} mg)` : ''}\n`;
                 if (telestrokeNote.tnkContraindicationReviewed) note += `- Contraindication review completed${telestrokeNote.tnkContraindicationReviewTime ? ` at ${telestrokeNote.tnkContraindicationReviewTime}` : ''}\n`;
-                if (telestrokeNote.disablingDeficit) note += `- DISABLING DEFICIT noted — TNK despite NIHSS ${telestrokeNote.nihss || nihssScore || '___'}\n`;
+                if (telestrokeNote.disablingDeficit) note += `- DISABLING DEFICIT noted — TNK despite NIHSS ${getDocumentedNihss() || '___'}\n`;
                 if (telestrokeNote.dtnTnkAdministered) note += formatDTNForNote();
               }
-              if (telestrokeNote.evtRecommended) {
-                note += `- Mechanical thrombectomy${telestrokeNote.ticiScore ? ` (mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
+              if (telestrokeNote.evtRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'evt')) {
+                note += `- EVT: ${treatmentCourseStatus(telestrokeNote, 'evt')}${telestrokeNote.ticiScore ? ` (recorded mTICI ${telestrokeNote.ticiScore})` : ''}\n`;
                 if (telestrokeNote.evtAccessSite) note += `  Access: ${telestrokeNote.evtAccessSite}\n`;
                 if (telestrokeNote.evtDevice) note += `  Device: ${telestrokeNote.evtDevice}\n`;
                 if (telestrokeNote.evtTechnique) note += `  Technique: ${telestrokeNote.evtTechnique}\n`;
@@ -11310,8 +11192,7 @@ Clinician Name`;
                 }
               }
               if (!telestrokeNote.tnkRecommended && !telestrokeNote.evtRecommended) {
-                note += `- Medical management`;
-                if (telestrokeNote.tnkAutoBlocked && telestrokeNote.tnkAutoBlockReason) note += ` (TNK contraindicated: ${telestrokeNote.tnkAutoBlockReason})`;
+                note += treatmentCourseSummary(telestrokeNote) + '\n';
                 note += `\n`;
               }
               if (telestrokeNote.rationale) note += `Clinical Rationale: ${telestrokeNote.rationale}\n`;
@@ -11716,7 +11597,7 @@ Clinician Name`;
                 note += `- Stroke or neurology clinic: 1-2 weeks (review imaging, labs, secondary prevention)\n`;
               }
               note += `- PCP: 1 week (BP, statin titration, medication reconciliation)\n`;
-              if (dcCw.extendedMonitoringType) note += `- Cardiology: cardiac monitoring review (${dcCw.extendedMonitoringType})\n`;
+              if (telestrokeNote.cardiacWorkup?.extendedMonitoringType) note += `- Cardiology: cardiac monitoring review (${telestrokeNote.cardiacWorkup.extendedMonitoringType})\n`;
               if (telestrokeNote.evtRecommended) note += `- Neurovascular: vascular imaging follow-up 3-6 months\n`;
               if (telestrokeNote.diagnosisCategory === 'ischemic' && telestrokeNote.toastClassification === 'large-artery') note += `- Carotid duplex or CTA neck in 3-6 months\n`;
               const isDissection = (telestrokeNote.ctaResults || '').toLowerCase().includes('dissect') || (telestrokeNote.toastClassification || '') === 'other-determined';
@@ -11830,7 +11711,7 @@ Clinician Name`;
             note = note.replace(/{plateletCount}/g, telestrokeNote.plateletCount || '___');
             note = note.replace(/{plateletsCoags}/g, telestrokeNote.plateletCount || '___');
             note = note.replace(/{creatinine}/g, telestrokeNote.creatinine || '___');
-            note = note.replace(/{nihss}/g, telestrokeNote.nihss || nihssScore || '');
+            note = note.replace(/{nihss}/g, getDocumentedNihss() || '');
             const gcsForNote = calculateGCS(gcsItems);
             note = note.replace(/{gcs}/g, gcsForNote > 0 ? `| GCS: ${gcsForNote} ` : '');
             note = note.replace(/{nihssDetails}/g, telestrokeNote.nihssDetails || '');
@@ -11879,15 +11760,16 @@ Clinician Name`;
               note = note.replace(/CTP:([^\n]*)\n/, `CTP:$1\nCollaterals: ${telestrokeNote.collateralGrade}\n`);
             }
             note = note.replace(/{diagnosis}/g, telestrokeNote.diagnosis || '');
-            note = note.replace(/{tnkAdminTime}/g, formatTime(telestrokeNote.tnkAdminTime));
+            note = note.replace(/{tnkAdminTime}/g, treatmentAdministrationTime(telestrokeNote, 'tnk'));
             note = note.replace(/{recommendationsText}/g, telestrokeNote.recommendationsText || '');
-            // Strip TNK narrative block if TNK was not recommended (prevents false clinical statements)
-            if (!telestrokeNote.tnkRecommended) {
+            note += '\n' + treatmentCourseSummary(telestrokeNote) + '\n';
+            // Administration narrative requires a recorded administration, not just a recommendation.
+            if (!hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
               note = note.replace(/After ensuring that there were no evident contraindications.*?brief time-out\.\n?/s, '');
               note = note.replace(/BP prior to TNK administration:.*?\n/g, '');
             }
             // Add EVT procedural details if performed
-            if (telestrokeNote.evtRecommended) {
+            if (telestrokeNote.evtRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'evt')) {
               let evtBlock = `\nEVT: Mechanical thrombectomy recommended${telestrokeNote.ticiScore ? ` — mTICI ${telestrokeNote.ticiScore}` : ''}`;
               const evtParts = [telestrokeNote.evtAccessSite && `Access: ${telestrokeNote.evtAccessSite}`, telestrokeNote.evtTechnique && `Technique: ${telestrokeNote.evtTechnique}`, telestrokeNote.evtDevice && `Device: ${telestrokeNote.evtDevice}`, telestrokeNote.evtNumberOfPasses && `Passes: ${telestrokeNote.evtNumberOfPasses}`, telestrokeNote.reperfusionTime && `Reperfusion: ${telestrokeNote.reperfusionTime}`].filter(Boolean);
               if (evtParts.length > 0) evtBlock += `\n${evtParts.join('; ')}`;
@@ -11936,15 +11818,16 @@ Clinician Name`;
             }
 
             // Add DTN metrics if TNK was administered
-            if (telestrokeNote.dtnTnkAdministered && telestrokeNote.tnkRecommended) {
+            const consultTnkTime = treatmentAdministrationTime(telestrokeNote, 'tnk');
+            if (consultTnkTime.includes('T')) {
               note += formatDTNForNote();
-            } else if (telestrokeNote.tnkRecommended && telestrokeNote.doorTime && telestrokeNote.needleTime) {
+            } else if (consultTnkTime && /^(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/.test(telestrokeNote.doorTime || '')) {
               const [cnDH, cnDM] = telestrokeNote.doorTime.split(':').map(Number);
-              const [cnNH, cnNM] = telestrokeNote.needleTime.split(':').map(Number);
+              const [cnNH, cnNM] = consultTnkTime.split(':').map(Number);
               if (!isNaN(cnDH) && !isNaN(cnDM) && !isNaN(cnNH) && !isNaN(cnNM)) {
                 let cnDtn = (cnNH * 60 + cnNM) - (cnDH * 60 + cnDM);
                 if (cnDtn < 0) cnDtn += 1440;
-                note += `\nDoor-to-Needle: ${cnDtn} min (Door: ${telestrokeNote.doorTime}, Needle: ${telestrokeNote.needleTime})\n`;
+                note += `\nDoor-to-Needle: ${cnDtn} min (Door: ${telestrokeNote.doorTime}, Needle: ${consultTnkTime})\n`;
               }
             }
 
@@ -12041,7 +11924,10 @@ Clinician Name`;
                 note += `- Anticoagulation: ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}\n`;
               }
               if (telestrokeNote.premorbidMRS != null) note += `- Pre-morbid mRS: ${telestrokeNote.premorbidMRS}\n`;
-              if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) note += `- TNK pre-treatment: administered at ${formatTime(telestrokeNote.tnkAdminTime)}\n`;
+              if (hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
+                const evtTnkAdminTime = treatmentAdministrationTime(telestrokeNote, 'tnk');
+                note += `- TNK pre-treatment: administered at ${evtTnkAdminTime.includes('T') ? evtTnkAdminTime : formatTime(evtTnkAdminTime)}\n`;
+              }
             }
 
             // Add TOAST classification and workup plan
@@ -12196,7 +12082,7 @@ Clinician Name`;
             }
 
             // Add post-thrombolysis complications
-            if (telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime) {
+            if (hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
               const complications = [];
               if (telestrokeNote.sichDetected) complications.push('symptomatic ICH');
               if (telestrokeNote.angioedemaDetected || telestrokeNote.angioedema?.detected) {
@@ -12228,7 +12114,7 @@ Clinician Name`;
             }
 
             // Non-TNK hemorrhagic transformation
-            if (!(telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime)) {
+            if (!hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
               const cnHtNonTnk = telestrokeNote.hemorrhagicTransformation || {};
               if (cnHtNonTnk.detected) {
                 note += `\nHemorrhagic Transformation: ${cnHtNonTnk.classification || 'unclassified'}${cnHtNonTnk.symptomatic ? ' (SYMPTOMATIC)' : ''}`;
@@ -12534,7 +12420,7 @@ Clinician Name`;
             const lkw = telestrokeNote.lkwDate && telestrokeNote.lkwTime
               ? `${telestrokeNote.lkwDate} ${telestrokeNote.lkwTime}`
               : 'unknown';
-            const nihss = telestrokeNote.nihss || nihssScore || 'unknown';
+            const nihss = getDocumentedNihss() || 'unknown';
             const ct = telestrokeNote.ctResults || 'CT pending';
             const cta = telestrokeNote.ctaResults || 'CTA pending';
             const inr = telestrokeNote.inr || '';
@@ -12569,22 +12455,8 @@ Clinician Name`;
                 sentences.push(`ICH management: ${ichActions.join(', ')}.`);
               }
             } else {
-              if (telestrokeNote.tnkRecommended) {
-                const tnkTime = telestrokeNote.tnkAdminTime ? ` at ${telestrokeNote.tnkAdminTime}` : '';
-                const tnkDoseInfo = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
-                const doseStr = tnkDoseInfo ? ` (${tnkDoseInfo.calculatedDose} mg)` : '';
-                sentences.push(`TNK recommended${doseStr}${tnkTime}.`);
-              } else if (telestrokeNote.tnkAutoBlocked) {
-                sentences.push(`TNK contraindicated: ${telestrokeNote.tnkAutoBlockReason || 'contraindication detected'}.`);
-              } else {
-                sentences.push('TNK not recommended based on current eligibility criteria.');
-              }
-
-              if (telestrokeNote.evtRecommended) {
-                sentences.push('EVT recommended; transfer/activation initiated.');
-              } else if (vessels.some(v => /ICA|M1|Basilar/i.test(v))) {
-                sentences.push('LVO identified; EVT evaluation recommended.');
-              }
+              sentences.push(`TNK: ${treatmentCourseStatus(telestrokeNote, 'tnk')}.`);
+              sentences.push(`EVT: ${treatmentCourseStatus(telestrokeNote, 'evt')}.`);
 
               if (telestrokeNote.toastClassification) {
   
@@ -13047,12 +12919,12 @@ Clinician Name`;
             if (n.tnkRecommended && parseInt(n.nihss, 10) === 0) {
               warnings.push({ id: 'tnk-nihss-zero', severity: 'error', msg: 'TNK recommended with NIHSS 0 — no neurological deficit documented. Verify clinical indication before proceeding.' });
             }
-            // Basilar EVT: ATTENTION/BAOCHE required NIHSS ≥10
+            // Basilar EVT: ATTENTION required NIHSS ≥10; BAOCHE permitted NIHSS ≥6.
             {
               const hasBasilar = (n.vesselOcclusion || []).some(v => /basilar/i.test(v));
               const evtNihss = parseInt(n.nihss, 10) || nihssScore || 0;
               if (n.evtRecommended && hasBasilar && evtNihss > 0 && evtNihss < 10) {
-                warnings.push({ id: 'basilar-evt-nihss', severity: 'error', msg: `EVT for basilar occlusion with NIHSS ${evtNihss} (<10) — ATTENTION/BAOCHE trials required NIHSS ≥10 for posterior circulation EVT eligibility. Do not proceed without confirming NIHSS ≥10.` });
+                warnings.push({ id: 'basilar-evt-nihss', severity: 'warn', msg: `EVT for basilar occlusion with NIHSS ${evtNihss} (<10) — ATTENTION required NIHSS ≥10, while BAOCHE permitted NIHSS ≥6. Trial entry thresholds differ from guideline recommendations. Review the current basilar-EVT guidance, imaging, disability and timing with neurointervention; this score alone does not establish treatment eligibility.` });
               }
             }
             if (n.evtRecommended && !hasLVO && (n.vesselOcclusion || []).length === 0) {
@@ -13061,7 +12933,7 @@ Clinician Name`;
             if (n.evtRecommended && !n.ctaResults) {
               warnings.push({ id: 'evt-no-cta', severity: 'error', msg: 'EVT recommended but CTA results not documented — vessel occlusion confirmation required before thrombectomy. Obtain CTA before transfer.' });
             }
-            if (hasLVO && !n.evtRecommended && n.diagnosisCategory === 'ischemic') {
+            if (hasLVO && hasRecordedNoTreatment(n, 'evt') && n.diagnosisCategory === 'ischemic') {
               warnings.push({ id: 'lvo-no-evt', severity: 'warn', msg: 'LVO detected but EVT not recommended — document reason (e.g., late window without perfusion imaging, patient/family declined, contraindication).' });
             }
             if (n.codeStatus && (n.codeStatus === 'DNR/DNI' || n.codeStatus === 'Comfort care') && (n.tnkRecommended || n.evtRecommended)) {
@@ -13387,7 +13259,7 @@ Clinician Name`;
             }
 
             // LVO identified but EVT not recommended — prompt documentation
-            if (hasLVO && n.evtRecommended === false) {
+            if (hasLVO && hasRecordedNoTreatment(n, 'evt')) {
               warnings.push({ id: 'lvo-no-evt', severity: 'warn', msg: 'LVO identified but EVT not pursued — document reason (e.g., ASPECTS <6, large core, premorbid mRS ≥3, goals of care, time window, access issues)' });
             }
 
@@ -13637,7 +13509,7 @@ Clinician Name`;
             const bundles = [];
 
             // BP Management - Pre-TNK
-            if (n.tnkRecommended && !n.tnkAdminTime) {
+            if (n.tnkRecommended && !hasRecordedTreatmentAdministration(n, 'tnk')) {
               bundles.push({
                 id: 'bp-pre-tnk',
                 label: 'Pre-TNK BP Orders',
@@ -13655,7 +13527,7 @@ Clinician Name`;
             }
 
             // BP Management - Post-TNK
-            if (n.tnkAdminTime && isIschemic) {
+            if (hasRecordedTreatmentAdministration(n, 'tnk') && isIschemic) {
               bundles.push({
                 id: 'bp-post-tnk',
                 label: 'Post-TNK BP Orders',
@@ -13665,7 +13537,7 @@ Clinician Name`;
                   'Target BP <180/105 mmHg x 24 hours post-TNK',
                   'Nicardipine 5 mg/hr IV (titrate by 2.5 mg/hr q5-15 min, max 15 mg/hr)',
                   'Monitor BP q15 min x 2h, then q30 min x 6h, then q1h x 16h',
-                  `TNK given at: ${n.tnkAdminTime}`,
+                  `TNK: ${treatmentCourseStatus(n, 'tnk')}`,
                   'Neuro checks q15min x 2h, q30min x 6h, q1h x 16h (call for any change)',
                   'If hemorrhagic transformation suspected: STAT CT Head, hold antithrombotics'
                 ]
@@ -13785,15 +13657,15 @@ Clinician Name`;
                   'Idarucizumab (Praxbind) 5g IV (2 x 2.5g, ≤15 min apart, each over 5-10 min)',
                   'If idarucizumab unavailable: 4F-PCC 50 IU/kg IV',
                   'If renal failure: consider emergent dialysis (dabigatran 65% dialyzable)',
-                  'REBOUND RISK: Idarucizumab t½ ~40 min; dabigatran levels may return within 24h. Recheck TT/dTT at 12h and 24h post-reversal. Consider anticoag restart timing 24-48h post-ICH if hemostasis achieved and indication (AF, VTE) is strong — discuss with Neurology/Hematology.'
+                  'REBOUND RISK: Idarucizumab t½ ~40 min; dabigatran levels may return within 24h. Recheck TT/dTT at 12h and 24h post-reversal. Do not infer anticoagulation restart timing from antidote use. Reassess hemorrhage stability and thrombotic risk with Neurology/Hematology before restarting.'
                 );
               } else if (onXaI) {
                 reversalOrders.push(
                   'Assessment: STAT Direct Xa Inhibitor Screen — normal excludes significant anticoagulant effect',
                   'If ingestion <2h: activated charcoal (oral)',
-                  'Andexanet alfa per dosing protocol (AHA/ASA 2022 Class IIa); if unavailable: 4F-PCC (Kcentra) 50 IU/kg IV',
+                  'Urgent factor Xa inhibitor reversal per the approved local PCC pathway; andexanet US manufacture and sales ended December 22, 2025 (FDA safety action)',
                   'Recheck Direct Xa Inhibitor screen after PCC',
-                  'Document reversal selection rationale (andexanet vs PCC) and involve Hematology/Neurocritical Care for complex cases',
+                  'Document exposure, laboratory assessment, reversal rationale and consultation with Hematology/Neurocritical Care',
                   'Dialysis is generally not an effective reversal strategy for Xa inhibitors',
                   'If PCC contraindicated: consult Hematology attending'
                 );
@@ -13873,7 +13745,7 @@ Clinician Name`;
             }
 
             // DAPT Loading
-            if (isIschemic && nihss <= 5 && !n.tnkRecommended && !n.evtRecommended) {
+            if (isIschemic && nihss <= 5 && treatmentDocumentationComplete(n) && !n.tnkRecommended && !n.evtRecommended && !hasRecordedTreatmentAdministration(n, 'tnk') && !hasRecordedTreatmentAdministration(n, 'evt')) {
               const daptOrders = nihss <= 3 ? [
                   'Aspirin 325 mg PO x1 (loading dose)',
                   'Clopidogrel 300 mg PO x1 (loading dose)',
@@ -13957,7 +13829,7 @@ Clinician Name`;
             // Glucose Management Bundle
             {
               const glucose = parseFloat(n.glucose);
-              if (glucose > 180 || n.tnkRecommended) {
+              if (glucose > 180 || hasRecordedTreatmentAdministration(n, 'tnk')) {
                 bundles.push({
                   id: 'glucose-mgmt',
                   label: 'Glucose Management',
@@ -13967,7 +13839,7 @@ Clinician Name`;
                     'Target blood glucose 140-180 mg/dL (AHA/ASA 2026; SHINE trial: intensive insulin <130 was harmful)',
                     `${glucose ? `Current glucose: ${glucose} mg/dL` : 'Check POC glucose on arrival'}`,
                     'BG checks: q6h routine; q1h if on insulin infusion',
-                    n.tnkRecommended ? 'Post-TNK: insulin drip preferred for tight control during monitoring period' : 'Sliding scale insulin for glucose >180 mg/dL',
+                    hasRecordedTreatmentAdministration(n, 'tnk') ? 'Post-TNK: insulin drip preferred for tight control during monitoring period' : 'Sliding scale insulin for glucose >180 mg/dL',
                     'AVOID: D5W fluids, glucose-containing IV solutions',
                     'Treat hypoglycemia (<70 mg/dL): 25 mL D50W IV push, recheck in 15 min',
                     'Call MD if: glucose <70 or >300 mg/dL despite treatment',
@@ -13978,7 +13850,7 @@ Clinician Name`;
             }
 
             // Post-EVT Groin/Access Site Care Orders
-            if (telestrokeNote.evtRecommended) {
+            if (hasRecordedTreatmentAdministration(telestrokeNote, 'evt')) {
               bundles.push({
                 id: 'post-evt-groin',
                 label: 'Post-EVT Groin/Access Site Care',
@@ -14047,19 +13919,28 @@ Clinician Name`;
             // Nursing Communication Parameter Sheet
             if (isIschemic || isICH || isSAH || cat === 'cvt') {
               const nursingOrders = [];
-              const bpTarget = isICH ? 'SBP 140 mmHg, range 130-150 when appropriate; avoid <130' : isSAH ? 'SBP <160 until aneurysm secured' :
-                cat === 'cvt' ? 'SBP <220 (permissive; <140 if hemorrhagic infarction)' :
-                n.tnkAdminTime ? 'SBP <180/105 x 24h post-lytic' : n.evtRecommended ? 'SBP <180, avoid <140 post-EVT' : 'SBP <220 (permissive HTN)';
-              nursingOrders.push(`BP target: ${bpTarget}`);
-              nursingOrders.push(`Neuro checks: ${n.tnkAdminTime ? 'q15min x 2h, q30min x 6h, q1h x 16h' : 'q1h'}`);
-              nursingOrders.push('Diet: NPO until formal swallow screen/SLP eval');
-              nursingOrders.push(`Activity: ${n.tnkAdminTime ? 'Bedrest HOB 30° x 24h post-lytic' : isSAH ? 'Bedrest HOB 30°, minimal stimulation' : 'Bedrest until stable neuro exam, then OOB with assist'}`);
-              nursingOrders.push(`DVT prophylaxis: SCDs on admission. ${n.tnkAdminTime ? 'Hold SQ heparin 24h post-TNK' : isICH ? 'Hold SQ heparin 24-48h' : 'Start enoxaparin 40mg SC daily if immobile'}`);
-              nursingOrders.push('IV: NS at 75 mL/hr (avoid D5W/hypotonic)');
-              nursingOrders.push(`Call MD if: NIHSS increase ≥2 points, SBP ${isICH ? '>140 or <110' : '>185 or <100'}, glucose <70 or >250 mg/dL, new headache/vomiting, any bleeding, O2 <94%, temperature >38°C, urine output <0.5 mL/kg/hr`);
+              const treatmentReady = !isIschemic || treatmentDocumentationComplete(n);
+              if (!treatmentReady) {
+                nursingOrders.push('NURSING PARAMETER DRAFT INCOMPLETE');
+                nursingOrders.push(treatmentCourseSummary(n));
+                nursingOrders.push('Document treatment decisions and, when treatment is recommended, the actual administration/procedure course before selecting treatment-dependent nursing parameters.');
+              } else {
+                const tnkAdministered = hasRecordedTreatmentAdministration(n, 'tnk');
+                const evtPerformed = hasRecordedTreatmentAdministration(n, 'evt');
+                const bpTarget = isICH ? 'SBP 140 mmHg, range 130-150 when appropriate; avoid <130' : isSAH ? 'SBP <160 until aneurysm secured' :
+                  cat === 'cvt' ? 'SBP <220 (permissive; <140 if hemorrhagic infarction)' :
+                  tnkAdministered ? 'SBP <180/105 x 24h post-lytic' : evtPerformed ? 'SBP <180, avoid <140 post-EVT' : 'SBP <220 (permissive HTN)';
+                nursingOrders.push(`BP target: ${bpTarget}`);
+                nursingOrders.push(`Neuro checks: ${tnkAdministered ? 'q15min x 2h, q30min x 6h, q1h x 16h' : 'q1h'}`);
+                nursingOrders.push('Diet: NPO until formal swallow screen/SLP eval');
+                nursingOrders.push(`Activity: ${tnkAdministered ? 'Bedrest HOB 30° x 24h post-lytic' : isSAH ? 'Bedrest HOB 30°, minimal stimulation' : 'Bedrest until stable neuro exam, then OOB with assist'}`);
+                nursingOrders.push(`DVT prophylaxis: SCDs on admission. ${tnkAdministered ? 'Hold SQ heparin 24h post-TNK' : isICH ? 'Hold SQ heparin 24-48h' : 'Start enoxaparin 40mg SC daily if immobile'}`);
+                nursingOrders.push('IV: NS at 75 mL/hr (avoid D5W/hypotonic)');
+                nursingOrders.push(`Call MD if: NIHSS increase ≥2 points, SBP ${isICH ? '>140 or <110' : '>185 or <100'}, glucose <70 or >250 mg/dL, new headache/vomiting, any bleeding, O2 <94%, temperature >38°C, urine output <0.5 mL/kg/hr`);
+              }
               bundles.push({
                 id: 'nursing-params',
-                label: 'Nursing Parameters Sheet',
+                label: treatmentReady ? 'Nursing Parameters Sheet' : 'Nursing Parameters — Incomplete',
                 icon: 'clipboard-check',
                 color: 'purple',
                 orders: nursingOrders
@@ -14180,9 +14061,10 @@ Clinician Name`;
           // Get guideline recommendations matching current patient data
           const getContextualRecommendations = () => {
             const timeFrom = calculateTimeFromLKW();
+            const documentedScore = getDocumentedNihss();
             const data = {
               telestrokeNote,
-              nihssScore,
+              nihssScore: documentedScore === '' ? null : Number(documentedScore),
               aspectsScore: isValidAspectsScore(aspectsScore) ? aspectsScore : null,
               gcsScore: calculateGCS(gcsItems),
               timeFromLKW: timeFrom,
@@ -14265,7 +14147,7 @@ Clinician Name`;
             const superseder = doc.supersededBy ? REFERENCE_DOC_BY_ID.get(doc.supersededBy) : null;
             const isExternal = doc.type === 'external-link';
             return (
-              <div key={doc.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
+              <div key={doc.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
                 <div className="flex items-center gap-3 flex-1">
                   {(doc.icon || isExternal) && (
                     <i aria-hidden="true" data-lucide={doc.icon || 'external-link'} className={`w-6 h-6 ${doc.icon === 'image' ? 'text-ok-600 dark:text-ok-300' : 'text-cobalt-600 dark:text-cobalt-300'}`}></i>
@@ -14283,6 +14165,9 @@ Clinician Name`;
                       )}
                     </HeadingTag>
                     <p className="text-xs text-slate-600 dark:text-mute">{doc.subtitle}</p>
+                    {doc.reviewStatus === 'archive' && (
+                      <p className="mt-1 text-xs text-warn-800 dark:text-warn-300">Teaching archive · Currentness not verified. Consult the current guideline or teaching card before applying clinical recommendations.</p>
+                    )}
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -14291,7 +14176,7 @@ Clinician Name`;
                       href={doc.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
+                      className="min-h-[44px] px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                     >
                       <i aria-hidden="true" data-lucide="external-link" className="w-4 h-4"></i>
                       {doc.linkLabel || 'Open Link'}
@@ -14302,7 +14187,7 @@ Clinician Name`;
                         href={doc.path}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
+                        className="min-h-[44px] px-3 py-2 bg-cobalt-600 text-white rounded-lg text-xs font-medium hover:bg-cobalt-700 transition-colors flex items-center gap-1"
                       >
                         <i aria-hidden="true" data-lucide="eye" className="w-4 h-4"></i>
                         View
@@ -14310,14 +14195,14 @@ Clinician Name`;
                       <a
                         href={doc.path}
                         download
-                        className="px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
+                        className="min-h-[44px] px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
                       >
                         <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                         Download
                       </a>
                       <button
                         onClick={() => emailDocument(doc.emailTitle || doc.title, doc.path)}
-                        className="px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                        className="min-h-[44px] px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
                         title="Email this document"
                       >
                         <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -14364,12 +14249,7 @@ Clinician Name`;
           // recommendations". Matching is a separate question from ranking:
           // every whitespace-separated token must appear as a substring of the
           // searched fields. rankText still orders whatever matches.
-          const matchesTextQuery = (query, parts = []) => {
-            const tokens = String(query || '').toLowerCase().split(/\s+/).filter(Boolean);
-            if (!tokens.length) return true;
-            const haystack = parts.filter(Boolean).join(' ').toLowerCase();
-            return tokens.every((token) => haystack.includes(token));
-          };
+          const matchesTextQuery = matchesSearchText;
 
           const guidelineQuickActions = [
             { id: 'tnk', label: 'TNK dosing', regex: /\b(tnk|tenecteplase)\b/i, target: { tab: 'encounter' } },
@@ -14463,7 +14343,7 @@ Clinician Name`;
           }, [guidelineLibraryQuery, guidelineLibraryGuideline, guidelineLibrarySection, guidelineLibraryClass]);
 
           const guidelineLibraryResultsCount = useMemo(() => {
-            return filteredGuidelineLibrary.reduce((sum, guideline) => sum + guideline.recommendations.length, 0);
+            return filteredGuidelineLibrary.reduce((sum, guideline) => sum + (guideline.sourceOnly ? 0 : guideline.recommendations.length), 0);
           }, [filteredGuidelineLibrary]);
 
           const encounterReadiness = useMemo(() => {
@@ -14607,8 +14487,8 @@ Clinician Name`;
             }
 
             const results = [];
-            const lowerQuery = query.toLowerCase();
-            const scoreFor = (parts, boost = 0) => rankText(lowerQuery, parts) + boost;
+            const lowerQuery = query.trim().toLowerCase();
+            const scoreFor = (parts, boost = 0) => scoreSearchMatch(lowerQuery, parts, boost);
 
             // Command-style shortcuts
             const nextFieldCommand = lowerQuery.match(/^(?:next(?:\s+(?:required|field|step))?|required)$/i);
@@ -14991,8 +14871,8 @@ Clinician Name`;
                 action: () => {
                   runEncounterOutput(() => {
                     let mdm = `ASSESSMENT: ${telestrokeNote.diagnosis || '***'}\n\nPLAN:\n`;
-                    mdm += `TNK: ${telestrokeNote.tnkRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
-                    mdm += `EVT: ${telestrokeNote.evtRecommended ? 'RECOMMENDED' : 'Not recommended'}\n`;
+                    mdm += `TNK: ${treatmentCourseStatus(telestrokeNote, 'tnk')}\n`;
+                    mdm += `EVT: ${treatmentCourseStatus(telestrokeNote, 'evt')}\n`;
                     if (telestrokeNote.disposition) mdm += `Disposition: ${telestrokeNote.disposition}\n`;
                     copyToClipboard(mdm, 'tel-mdm');
                     navigateTo('encounter', { clearSearch: true });
@@ -15104,7 +14984,7 @@ Clinician Name`;
               { name: 'Door-to-Needle Timer', keywords: ['dtn', 'door to needle', 'time', 'timer', 'workflow'], tab: 'encounter' },
               { name: 'CrCl Calculator', keywords: ['crcl', 'creatinine clearance', 'cockcroft', 'gault', 'renal'], tab: 'research', subTab: 'calculators' },
               { name: 'Enoxaparin Dosing', keywords: ['enoxaparin', 'lovenox', 'lmwh', 'dvt', 'vte'], tab: 'research', subTab: 'calculators' },
-              { name: 'Andexanet Dosing', keywords: ['andexanet', 'andexxa', 'reversal', 'factor xa'], tab: 'research', subTab: 'calculators' },
+              { name: 'Factor Xa reversal / andexanet status', keywords: ['andexanet', 'andexxa', 'reversal', 'factor xa'], tab: 'research', subTab: 'calculators' },
               { name: 'ICH Volume (ABC/2)', keywords: ['ich volume', 'abc', 'hematoma', 'volume'], tab: 'research', subTab: 'calculators' },
               { name: 'Contrast Allergy Protocol', keywords: ['contrast', 'allergy', 'premedication', 'ct angiography'], tab: 'management', subTab: 'ischemic' },
               { name: 'Posterior Circulation Stroke', keywords: ['posterior', 'basilar', 'vertebral', 'cerebellar', 'cannot miss', 'top of basilar', 'aica', 'wallenberg'], tab: 'management', subTab: 'ischemic' },
@@ -15212,7 +15092,7 @@ Clinician Name`;
             const CONTENT_TYPE_LABELS = { guideline: 'Guideline', trial: 'Trial', education: 'Education', calculator: 'Calculator', reference: 'Reference' };
             const contentNav = (entry) => ({
               guideline: () => navigateTo('research', { clearSearch: true, subTab: 'guidelines' }),
-              trial: () => navigateTo('trials', { clearSearch: true }),
+              trial: () => navigateToCompletedTrial(entry),
               education: () => navigateTo('research', { clearSearch: true, subTab: 'education', educationSubTab: entry.id }),
               calculator: () => navigateTo('research', { clearSearch: true, subTab: 'calculators' }),
               reference: () => navigateTo('research', { clearSearch: true, subTab: 'references' })
@@ -15229,6 +15109,42 @@ Clinician Name`;
               });
             });
 
+            GUIDELINE_LIBRARY_INDEX.forEach((guideline) => {
+              if (guideline.sourceOnly) {
+                const score = scoreFor([guideline.shortTitle, guideline.title, guideline.society, guideline.doi]);
+                if (score > 0) results.push({
+                  type: 'Guideline source',
+                  title: guideline.shortTitle || guideline.title,
+                  description: 'Source link only · extracted recommendations unavailable',
+                  score,
+                  action: () => {
+                    setGuidelineLibraryQuery('');
+                    setGuidelineLibraryGuideline(guideline.id);
+                    setGuidelineLibrarySection('');
+                    setGuidelineLibraryClass('');
+                    navigateTo('research', { clearSearch: true, subTab: 'guidelines' });
+                  }
+                });
+                return;
+              }
+              guideline.recommendations.forEach((rec) => {
+                const score = scoreFor([rec.text, rec.section, guideline.shortTitle, guideline.title]);
+                if (score <= 0) return;
+                results.push({
+                  type: 'Guideline',
+                  title: String(rec.text).slice(0, 90),
+                  description: (guideline.shortTitle || guideline.title) + ' · ' + rec.section,
+                  score,
+                  action: () => {
+                    setGuidelineLibraryQuery(query.trim());
+                    setGuidelineLibraryGuideline(guideline.id);
+                    setGuidelineLibrarySection(rec.section || '');
+                    setGuidelineLibraryClass('');
+                    navigateTo('research', { clearSearch: true, subTab: 'guidelines' });
+                  }
+                });
+              });
+            });
             const dedupedResults = [];
             const seenResultKeys = new Set();
             results
@@ -15783,8 +15699,8 @@ Clinician Name`;
               }
               const reasonStr = reasons.join('; ');
               setTelestrokeNote(prev => {
-                if (prev.tnkAutoBlocked && prev.tnkRecommended === false && prev.tnkAutoBlockReason === reasonStr) return prev;
-                return { ...prev, tnkRecommended: false, tnkAutoBlocked: true, tnkAutoBlockReason: reasonStr };
+                if (prev.tnkAutoBlocked && prev.tnkRecommended === false && prev.tnkDecisionRecorded === false && prev.tnkAutoBlockReason === reasonStr) return prev;
+                return { ...prev, ...treatmentDecisionFields('tnk'), tnkAutoBlocked: true, tnkAutoBlockReason: reasonStr };
               });
             } else {
               setTelestrokeNote(prev => prev.tnkAutoBlocked ? { ...prev, tnkAutoBlocked: false, tnkAutoBlockReason: '' } : prev);
@@ -15853,18 +15769,18 @@ Clinician Name`;
 
           // Auto-switch BP phase to post-TNK when TNK is administered
           useEffect(() => {
-            if (telestrokeNote.tnkAdminTime) {
+            if (hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
               setTelestrokeNote(prev => prev.bpPhase === 'pre-tnk' ? { ...prev, bpPhase: 'post-tnk' } : prev);
             }
-          }, [telestrokeNote.tnkAdminTime]);
+          }, [telestrokeNote.tnkAdminTime, telestrokeNote.dtnTnkAdministered, telestrokeNote.needleTime]);
 
           // Auto-switch only after an EVT procedure result is documented, never from
           // a recommendation alone.
           useEffect(() => {
-            if (telestrokeNote.evtRecommended && !telestrokeNote.tnkRecommended && (telestrokeNote.reperfusionTime || telestrokeNote.ticiScore)) {
+            if (hasRecordedTreatmentAdministration(telestrokeNote, 'evt') && !hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
               setTelestrokeNote(prev => prev.bpPhase === 'pre-tnk' ? { ...prev, bpPhase: 'post-evt' } : prev);
             }
-          }, [telestrokeNote.evtRecommended, telestrokeNote.tnkRecommended, telestrokeNote.reperfusionTime, telestrokeNote.ticiScore]);
+          }, [telestrokeNote.reperfusionTime, telestrokeNote.tnkAdminTime, telestrokeNote.dtnTnkAdministered, telestrokeNote.needleTime]);
 
           useEffect(() => {
             debouncedSave('telestrokeTemplate', editableTemplate);
@@ -16125,7 +16041,7 @@ Clinician Name`;
               telestrokeNote,
               strokeCodeForm,
               aspectsScore: isValidAspectsScore(aspectsScore) ? aspectsScore : null,
-              nihssScore,
+              nihssScore: getDocumentedNihss() || null,
               mrsScore,
               gcsScore: calculateGCS(gcsItems),
               hoursFromLKW,
@@ -16144,7 +16060,7 @@ Clinician Name`;
               const nextStr = JSON.stringify(results);
               return prevStr === nextStr ? prev : results;
             });
-          }, [telestrokeNote, strokeCodeForm, aspectsScore, nihssScore, mrsScore, gcsItems, lkwTime]);
+          }, [telestrokeNote, strokeCodeForm, aspectsScore, nihssScore, patientData, mrsScore, gcsItems, lkwTime]);
 
           // Monitor scroll position for Part 6 (Treatment Decision) visibility
 
@@ -16633,7 +16549,7 @@ Clinician Name`;
             const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '__';
             const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : '__';
             const sexDisplay = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '__';
-            const nihssDisplay = telestrokeNote.nihss || nihssScore || '__';
+            const nihssDisplay = getDocumentedNihss() || '__';
 
             return `HPI: ${telestrokeNote.age || '__'} year old ${sexDisplay} with PMH of ${telestrokeNote.pmh || '__'} presenting with ${telestrokeNote.symptoms || '__'} starting at ${lkw} on ${lkwDate} (${timeElapsed} ago). NIHSS ${nihssDisplay}.
 
@@ -16643,15 +16559,18 @@ IMAGING:
 - CTP: ${telestrokeNote.ctpResults || 'pending'}
 - ASPECTS: ${isValidAspectsScore(aspectsScore) ? aspectsScore : '__'}
 
-ASSESSMENT: ${telestrokeNote.diagnosis || 'Acute ischemic stroke'}, NIHSS ${nihssDisplay}
-${telestrokeNote.tnkRecommended ? `\nTNK: Recommended` : '\nTNK: Not Recommended'}
-${telestrokeNote.evtRecommended ? `EVT: Recommended` : 'EVT: Not Recommended'}`;
+ASSESSMENT: ${telestrokeNote.diagnosis || 'Diagnosis not documented'}, NIHSS ${nihssDisplay}
+TNK: ${treatmentCourseStatus(telestrokeNote, 'tnk')}
+EVT: ${treatmentCourseStatus(telestrokeNote, 'evt')}`;
           };
 
           const generateAdmissionOrders = () => {
-            const nihssDisplay = telestrokeNote.nihss || nihssScore || '__';
-            const receivedTNK = !!telestrokeNote.tnkRecommended;
-            const receivedEVT = !!telestrokeNote.evtRecommended;
+            if (!treatmentDocumentationComplete(telestrokeNote)) {
+              return 'ADMISSION ORDER DRAFT INCOMPLETE — document treatment decisions and administration/procedure status before selecting a treatment-dependent pathway.\n' + treatmentCourseSummary(telestrokeNote);
+            }
+            const nihssDisplay = getDocumentedNihss() || '__';
+            const receivedTNK = hasRecordedTreatmentAdministration(telestrokeNote, 'tnk');
+            const receivedEVT = hasRecordedTreatmentAdministration(telestrokeNote, 'evt');
             const diagCat = telestrokeNote.diagnosisCategory;
             const tnkDose = telestrokeNote.weight ? calculateTNKDose(telestrokeNote.weight) : null;
 
@@ -16672,7 +16591,7 @@ ${telestrokeNote.evtRecommended ? `EVT: Recommended` : 'EVT: Not Recommended'}`;
               : 'SBP <220, DBP <120 (if no thrombolysis)';
 
             const antiplatelet = receivedTNK
-              ? `Aspirin 325mg LOAD then 81mg daily — HOLD x 24h post-TNK${tnkDose ? ` (TNK ${tnkDose.calculatedDose} mg given)` : ''}`
+              ? `Aspirin 325mg LOAD then 81mg daily — HOLD x 24h post-TNK (TNK administration recorded; verify administered dose)`
               : diagCat === 'ich' ? 'Hold antiplatelets — discuss restart timing with attending'
               : 'Aspirin 325mg LOAD, then 81mg daily';
 
@@ -17035,6 +16954,17 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         aria-label="Search trials, management tools, and references"
                       />
                       <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-slate-500 dark:text-mute"></i>
+                      {searchQuery && (
+                        <button
+                          type="button"
+                          aria-label="Clear search"
+                          className="absolute right-0 top-0 min-h-[44px] min-w-[44px] text-xl text-mute rounded-lg"
+                          onClick={() => {
+                            setSearchQuery(''); setSearchResults([]); setSearchActiveIndex(-1);
+                            searchContainerRef.current?.querySelector('input')?.focus();
+                          }}
+                        >×</button>
+                      )}
                       {!searchQuery && (
                         <kbd
                           aria-hidden="true"
@@ -17050,24 +16980,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         </div>
                       )}
 
+
                       {searchOpen && searchContext === 'header' && searchResults.length > 0 && (
                         <div id="search-listbox" role="listbox" aria-label="Search results" className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white  rounded-lg border max-h-96 overflow-y-auto z-50 dark:bg-card">
-                          {(() => {
-                            let flatIdx = 0;
-                            return Object.entries(searchResults.reduce((acc, result) => {
-                              const key = result.type || 'Results';
-                              if (!acc[key]) acc[key] = [];
-                              acc[key].push(result);
-                              return acc;
-                            }, {})).map(([group, items]) => (
-                              <div key={group} role="group" aria-label={group}>
-                                <div className="px-3 py-1 text-xs uppercase tracking-wider text-slate-500 bg-slate-50 border-b dark:text-mute dark:bg-paper-2" role="presentation">
-                                  {group}
-                                </div>
-                                {items.map((result) => {
-                                  const idx = flatIdx++;
-                                  const isActive = idx === searchActiveIndex;
-                                  return (
+                          {searchResults.map((result, idx) => {
+                            const isActive = idx === searchActiveIndex;
+                            return (
                                     <button
                                       role="option"
                                       id={`search-opt-${idx}`}
@@ -17079,6 +16997,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     >
                                       <div className="flex items-start justify-between">
                                         <div className="flex-1">
+                                          <p className="text-[10px] uppercase tracking-wide text-mute">{result.type || 'Result'}</p>
                                           <p className="font-semibold text-sm">{result.title}</p>
                                           {result.description && (
                                             <p className="text-xs text-slate-600 mt-1 dark:text-ink-2">{result.description}</p>
@@ -17086,11 +17005,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         </div>
                                       </div>
                                     </button>
-                                  );
-                                })}
-                              </div>
-                            ));
-                          })()}
+                            );
+                          })}
                         </div>
                       )}
 
@@ -17164,7 +17080,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <div className="mobile-header-actions flex w-full flex-wrap items-center justify-center gap-2 lg:w-auto lg:justify-end">
                       {headerResourceChips.length > 0 && (
                         <nav
-                          className="flex flex-wrap items-center justify-center gap-1.5 lg:justify-end"
+                          className="clinical-resource-row flex flex-nowrap sm:flex-wrap items-center justify-start sm:justify-center gap-1.5 lg:justify-end"
                           aria-label="Clinical resources"
                         >
                           {headerResourceChips.map((link) => (
@@ -17637,12 +17553,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                            <h2 id="encounter-readiness-title" className="font-serif text-base text-ink">Encounter readiness</h2>
+                            <h2 id="encounter-readiness-title" className="font-serif text-base text-ink">
+                              <span className="hidden sm:inline">Encounter readiness</span>
+                              <button type="button" className="sm:hidden min-h-[44px] text-sm underline underline-offset-4"
+                                aria-expanded={readinessFieldsExpanded} aria-controls="encounter-completion-fields"
+                                onClick={() => setReadinessFieldsExpanded((value) => !value)}>
+                                {readinessFieldsExpanded ? 'Hide fields' : 'Review fields'}
+                              </button>
+                            </h2>
                             <span className="font-mono text-xs font-semibold text-cobalt-700 dark:text-cobalt-300">
                               {encounterReadiness.readinessPercent}% · {encounterReadiness.completedCount}/{encounterReadiness.trackedFields.length}
                             </span>
                           </div>
-                          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-overlay" aria-hidden="true">
+                          <div className="hidden sm:block mt-2 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-overlay" aria-hidden="true">
                             <div className="h-full rounded-full bg-cobalt-600 transition-[width]" style={{ width: `${encounterReadiness.readinessPercent}%` }}></div>
                           </div>
                         </div>
@@ -17657,7 +17580,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         )}
                       </div>
 
-                      <div className="mt-2 flex gap-1.5 overflow-x-auto pb-1" aria-label="Encounter completion fields">
+                      <div id="encounter-completion-fields" className={`mt-2 gap-1.5 overflow-x-auto pb-1 ${readinessFieldsExpanded ? 'flex' : 'hidden sm:flex'}`} aria-label="Encounter completion fields">
                         {encounterReadiness.trackedFields.map((field) => {
                           const isMissing = encounterReadiness.missing.some((item) => item.name === field.name);
                           const isRequired = encounterReadiness.required.some((item) => item.name === field.name);
@@ -17667,7 +17590,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               type="button"
                               onClick={() => jumpToEncounterField(field.name)}
                               aria-label={`${field.name}: ${isMissing ? (isRequired ? 'required and incomplete' : 'recommended and incomplete') : 'complete'}`}
-                              className={`min-h-[36px] shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-semibold ${
+                              className={`min-h-[44px] shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold ${
                                 isMissing
                                   ? isRequired
                                     ? 'border-crit-300 bg-crit-50 text-crit-800 dark:border-crit-800 dark:bg-crit-950 dark:text-crit-300'
@@ -17682,7 +17605,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
 
                       <div className="mt-2 flex flex-col gap-2 border-t border-line pt-2 sm:flex-row sm:items-center sm:justify-between">
-                        <p className="text-[11px] leading-snug text-mute" role="status" aria-live="polite">
+                        <p className="hidden sm:block text-[11px] leading-snug text-mute" role="status" aria-live="polite">
                           {encounterReadiness.missing.length === 0
                             ? 'All fields complete.'
                             : `${encounterReadiness.completedCount} of ${encounterReadiness.trackedFields.length} fields filled · templates ready.`}
@@ -17715,10 +17638,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                          post-TNK/post-EVT management note templates had become reachable only
                          deep in the gated telestroke flow. Institution-neutral educational
                          examples — verify against the approved local protocol before use. */}
-                    <details id="doc-templates-section" className="bg-card border border-line rounded-md">
-                      <summary className="cursor-pointer select-none px-4 py-3 text-section text-ink flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                    <details id="doc-templates-section" className="bg-card border border-line rounded-md compact-documentation">
+                      <summary className="cursor-pointer select-none px-3 py-2 min-h-[44px] text-base font-semibold text-ink flex flex-wrap items-center gap-x-2 gap-y-0.5">
                         Documentation templates
-                        <span className="text-xs font-sans text-mute font-normal">— risk-benefit discussion + post-reperfusion management (copy into EMR note)</span>
+                        <span className="hidden sm:inline text-xs font-sans text-mute font-normal">— risk-benefit discussion + post-reperfusion management (copy into EMR note)</span>
                       </summary>
                       <div className="px-4 pb-4">
                         <p className="text-xs text-mute mb-3">Educational examples only — not local policy. Verify against your approved local protocol before clinical use.</p>
@@ -18293,8 +18216,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             v6.0-03: demoted from amber→orange gradient to a quiet
                             section header with mono eyebrow, serif title, optional
                             secondary action. The LKW value renders mono tabular. */}
-                        <header className="bg-card border border-line border-l-[3px] border-l-caution rounded-md px-4 py-4">
-                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <header className="bg-card border border-line border-l-[3px] border-l-caution rounded-md px-3 py-3 sm:px-4 sm:py-4">
+                          <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4">
                             <div className="min-w-0">
                               <p className="font-mono uppercase text-eyebrow text-mute mb-1">Step 01 · Capture</p>
                               <h2 className="font-serif text-section text-ink">Telephone Consult</h2>
@@ -19491,30 +19414,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                             {telestrokeNote.diagnosisCategory === 'ischemic' && (
                             <div className="grid grid-cols-2 gap-3">
-                              <label className="flex items-center gap-2 p-2 bg-ok-50 border border-ok-200 rounded-lg cursor-pointer dark:bg-ok-950 dark:border-ok-800">
-                                <input
-                                  type="checkbox"
-                                  checked={telestrokeNote.tnkRecommended}
-                                  onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, tnkRecommended: c})); }}
-                                  disabled={telestrokeNote.tnkAutoBlocked}
-                                  className="w-4 h-4 text-ok-600 disabled:opacity-50 dark:text-ok-300"
-                                  aria-label={telestrokeNote.tnkAutoBlocked ? 'TNK Recommended — disabled due to contraindication' : 'TNK Recommended'}
-                                />
-                                <span className={`text-sm font-medium ${telestrokeNote.tnkAutoBlocked ? 'text-slate-500 line-through dark:text-mute' : 'text-ok-800 dark:text-ok-300'}`}>TNK Recommended</span>
-                                {telestrokeNote.tnkRecommended && telestrokeNote.weight && (() => {
-                                  const dose = calculateTNKDose(telestrokeNote.weight);
-                                  return dose ? <span className="ml-1 text-xs font-bold text-ok-700 bg-ok-100 px-1.5 py-0.5 rounded dark:text-ok-300 dark:bg-ok-900">{dose.calculatedDose} mg</span> : null;
-                                })()}
-                              </label>
-                              <label className="flex items-center gap-2 p-2 bg-cobalt-50 border border-cobalt-200 rounded-lg cursor-pointer dark:bg-cobalt-900 dark:border-cobalt-700">
-                                <input
-                                  type="checkbox"
-                                  checked={telestrokeNote.evtRecommended}
-                                  onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, evtRecommended: c})); }}
-                                  className="w-4 h-4 text-cobalt-600 dark:text-cobalt-300"
-                                />
-                                <span className="text-sm font-medium text-cobalt-800 dark:text-cobalt-300">EVT Recommended</span>
-                              </label>
+                              <TreatmentDecisionControl treatment="tnk" note={telestrokeNote} onChange={setTelestrokeNote} />
+                              <TreatmentDecisionControl treatment="evt" note={telestrokeNote} onChange={setTelestrokeNote} />
                             </div>
                             )}
                             {/* Inline sICH Risk at TNK Decision Point */}
@@ -19694,7 +19595,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             )}
 
-                            {telestrokeNote.tnkRecommended && (
+                            {(telestrokeNote.tnkRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) && (
                               <div>
                                 <label htmlFor="input-tnk-admin-time" className="block text-xs text-slate-600 mb-1 dark:text-ink-2">TNK Admin Time</label>
                                 <input
@@ -19704,11 +19605,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, tnkAdminTime: v})); }}
                                   className="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 dark:border-strong"
                                 />
-                                {telestrokeNote.tnkAdminTime && (() => {
-                                  const [h, m] = telestrokeNote.tnkAdminTime.split(':').map(Number);
-                                  if (isNaN(h) || isNaN(m)) return null;
+                                {hasRecordedTreatmentAdministration(telestrokeNote, 'tnk') && (() => {
+                                  const recordedTnkTime = treatmentAdministrationTime(telestrokeNote, 'tnk');
+                                  if (!/^\d{4}-\d{2}-\d{2}T/.test(recordedTnkTime)) return <div className="mt-1 text-xs text-slate-600 dark:text-ink-2">Elapsed time unavailable — record administration date and time in Timeline.</div>;
                                   const now = currentTime;
-                                  const tnkDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
+                                  const tnkDate = new Date(recordedTnkTime);
                                   const diffMin = Math.round((now - tnkDate) / 60000);
                                   if (isNaN(diffMin) || diffMin < 0 || diffMin > 1440) return null;
                                   const color = diffMin <= 60 ? 'text-ok-700 bg-ok-50 dark:text-ok-300 dark:bg-ok-950' : diffMin <= 180 ? 'text-warn-700 bg-warn-50 dark:text-warn-300 dark:bg-warn-950' : 'text-crit-700 bg-crit-50 dark:text-crit-300 dark:bg-crit-950';
@@ -20668,7 +20569,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                                 {(() => {
                                   const a = parseFloat(telestrokeNote.ptt);
-                                  if (a && a > 40) return <p id="aptt-error" role="alert" className="text-xs text-crit-700 font-medium mt-0.5 dark:text-crit-300">Elevated aPTT (>40s) — TNK auto-blocked until anticoagulant effect excluded</p>;
+                                  if (a && a > 40) return <p id="aptt-error" role="alert" className="text-xs text-crit-700 font-medium mt-0.5 dark:text-crit-300">Elevated aPTT (&gt;40s) — TNK auto-blocked until anticoagulant effect excluded</p>;
                                   return null;
                                 })()}
                               </div>
@@ -21036,7 +20937,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             // branches require a documented numeric ASPECTS (never inferred
                             // from a blank score). Large-core eligibility defers to the
                             // trial-criteria evaluator in calculators-extended.js.
-                            const largeCoreArgs = { age: telestrokeNote.age, nihss, aspects, coreMl: wakeEval.perfusion?.coreVolume, timeFromLKWh: hoursFromLKW, premorbidMRS: telestrokeNote.premorbidMRS };
+                            const largeCoreArgs = { age: telestrokeNote.age, nihss, aspects, coreMl: wakeEval.perfusion?.coreVolume, timeFromLKWh: hoursFromLKW, premorbidMRS: telestrokeNote.premorbidMRS, lvoLocation: occlusions.includes('ICA') ? 'ICA' : occlusions.includes('M1') ? 'M1' : undefined };
+                            const largeCoreRecommendation = () => {
+                              const lc = evaluateLargeCoreEVT(largeCoreArgs);
+                              if (!lc || lc.status === 'incomplete') {
+                                return { eligible: false, reason: `Incomplete large-core assessment. ${lc?.rationale || 'Document the required clinical and imaging criteria.'}`, confidence: 'low' };
+                              }
+                              return lc.eligible
+                                ? { eligible: true, reason: `ASPECTS ${aspects} — partial large-core screen overlaps ${lc.bestMatch}. ${lc.rationale}`, confidence: 'medium' }
+                                : { eligible: false, reason: `ASPECTS ${aspects} — partial large-core screen not met. ${lc.rationale}`, confidence: 'medium', reviewRequired: true };
+                            };
                             if (!hoursFromLKW) {
                               evtRec = { eligible: false, reason: 'Set LKW time to evaluate', confidence: 'low' };
                             } else if (hoursFromLKW > 24) {
@@ -21059,19 +20969,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               if (aspects >= 6) {
                                 evtRec = { eligible: true, reason: `Early window, NIHSS ${nihss}, ASPECTS ${aspects}`, confidence: 'high' };
                               } else {
-                                const lc = evaluateLargeCoreEVT(largeCoreArgs);
-                                evtRec = lc && lc.eligible
-                                  ? { eligible: true, reason: `Early window large core: ASPECTS ${aspects} — ${lc.bestMatch} trial criteria met (SVIN 2025 large-core pathway).`, confidence: 'medium' }
-                                  : { eligible: false, reason: `ASPECTS ${aspects} — large-core trial criteria not met.${lc && lc.rationale ? ` ${lc.rationale}` : ''}`, confidence: 'medium' };
+                                evtRec = largeCoreRecommendation();
                               }
                             } else {
                               if (aspects >= 6) {
                                 evtRec = { eligible: true, reason: 'Late window eligible (DAWN/DEFUSE-3 criteria likely met — confirm with perfusion imaging)', confidence: 'medium' };
                               } else {
-                                const lc = evaluateLargeCoreEVT(largeCoreArgs);
-                                evtRec = lc && lc.eligible
-                                  ? { eligible: true, reason: `Late window large core: ASPECTS ${aspects} — ${lc.bestMatch} trial criteria met (SVIN 2025 large-core pathway).`, confidence: 'medium' }
-                                  : { eligible: false, reason: `ASPECTS ${aspects} — late-window large-core trial criteria not met.${lc && lc.rationale ? ` ${lc.rationale}` : ''}`, confidence: 'medium' };
+                                evtRec = largeCoreRecommendation();
                               }
                             }
 
@@ -21107,7 +21011,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   {/* EVT Recommendation */}
                                   <div className={`p-3 rounded-lg border-2 ${
                                     evtRec.eligible ? 'bg-cobalt-100 border-cobalt-400 dark:bg-cobalt-900' :
-                                    evtRec.confidence === 'low' ? 'bg-slate-100 border-slate-300 dark:bg-paper-2 dark:border-strong' :
+                                    evtRec.confidence === 'low' || evtRec.reviewRequired ? 'bg-slate-100 border-slate-300 dark:bg-paper-2 dark:border-strong' :
                                     'bg-crit-50 border-crit-300 dark:bg-crit-950 dark:border-crit-800'
                                   }`}>
                                     <div className="flex items-center justify-between mb-2">
@@ -21116,6 +21020,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         <span className="px-2 py-1 bg-cobalt-500 text-white text-xs font-bold rounded dark:bg-cobalt-700">CONSIDER</span>
                                       ) : evtRec.confidence === 'low' ? (
                                         <span className="px-2 py-1 bg-slate-400 text-white text-xs font-bold rounded">PENDING</span>
+                                      ) : evtRec.reviewRequired ? (
+                                        <span className="px-2 py-1 bg-slate-500 text-white text-xs font-bold rounded">REVIEW</span>
                                       ) : (
                                         <span className="px-2 py-1 bg-crit-500 text-white text-xs font-bold rounded">NOT INDICATED</span>
                                       )}
@@ -21291,8 +21197,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               addToast(`TNK recommendation cleared — ${newCategory.toUpperCase()} diagnosis`, 'error');
                                             }
                                             if (newCategory !== 'ischemic') {
-                                              updated.tnkRecommended = false;
-                                              updated.evtRecommended = false;
+                                              Object.assign(updated, treatmentDecisionFields('tnk'), treatmentDecisionFields('evt'));
                                               updated.consentKit = { evtConsentDiscussed: false, evtConsentType: '', evtConsentTime: '', evtConsentWith: '', transferConsentDiscussed: false };
                                               updated.evtAccessSite = '';
                                               updated.evtDevice = '';
@@ -21719,7 +21624,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     setTimeout(() => addToast('Cannot proceed — absolute contraindication(s) detected. TNK is contraindicated.', 'error'), 0);
                                     return prev;
                                   }
-                                  return {...prev, tnkContraindicationReviewed: true, tnkContraindicationReviewTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }), tnkRecommended: true};
+                                  return {...prev, tnkContraindicationReviewed: true, tnkContraindicationReviewTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }), ...treatmentDecisionFields('tnk', true)};
                                 });
                               };
 
@@ -21857,15 +21762,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             })()}
 
                             {(telestrokeNote.diagnosisCategory === 'ischemic' || !telestrokeNote.diagnosisCategory) && (
-                            <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-ink-2">
-                              <input
-                                type="checkbox"
-                                checked={telestrokeNote.tnkRecommended}
-                                onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, tnkRecommended: c})); }}
-                                className="w-4 h-4"
-                              />
-                              TNK Recommended
-                            </label>
+                            <TreatmentDecisionControl treatment="tnk" note={telestrokeNote} onChange={setTelestrokeNote} />
                             )}
 
                             {telestrokeNote.tnkRecommended && (
@@ -22085,7 +21982,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   }
                                   const cdCollat = telestrokeNote.collateralGrade || null;
                                   const cdAnticoag = telestrokeNote.lastDOACType && telestrokeNote.lastDOACType !== 'none' ? `on ${ANTICOAGULANT_INFO[telestrokeNote.lastDOACType]?.name || telestrokeNote.lastDOACType}` : null;
-                                  const cdTnk = telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime ? `IV TNK administered at ${formatTime(telestrokeNote.tnkAdminTime)}` : null;
+                                  const cdTnkAdminTime = treatmentAdministrationTime(telestrokeNote, 'tnk');
+                                  const cdTnk = cdTnkAdminTime ? `IV TNK administered at ${cdTnkAdminTime}` : null;
                                   const cdMrs = telestrokeNote.premorbidMRS != null ? telestrokeNote.premorbidMRS : null;
                                   let cdClinical = '';
                                   cdClinical += `\nLKW: ${cdLkw}`;
@@ -22146,7 +22044,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             )}
 
                             {/* ===== POST-THROMBOLYSIS MONITORING ===== */}
-                            {telestrokeNote.tnkRecommended && telestrokeNote.tnkAdminTime && (
+                            {hasRecordedTreatmentAdministration(telestrokeNote, 'tnk') && (
                               <div className="bg-rose-50 border-2 border-rose-300 rounded-md p-4 space-y-3 dark:bg-rose-950 dark:border-rose-800">
                                 <h3 className="font-bold text-rose-900 flex items-center gap-2 dark:text-rose-300">
                                                                     Post-Thrombolysis Monitoring
@@ -22396,15 +22294,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </div>
                             </details>}
 
-                            <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-ink-2">
-                              <input
-                                type="checkbox"
-                                checked={telestrokeNote.evtRecommended}
-                                onChange={(e) => { const c = e.target.checked; setTelestrokeNote(prev => ({...prev, evtRecommended: c})); }}
-                                className="w-4 h-4"
-                              />
-                              EVT Recommended
-                            </label>
+                            <TreatmentDecisionControl treatment="evt" note={telestrokeNote} onChange={setTelestrokeNote} />
 
                             <div>
                               <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
@@ -22640,16 +22530,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <details className={'border-2 rounded-lg ' + (eligible.length > 0 ? 'bg-ok-50 border-ok-300 dark:bg-ok-950 dark:border-ok-800' : needsInfo.length > 0 ? 'bg-cobalt-50 border-cobalt-300 dark:bg-cobalt-900 dark:border-cobalt-700' : 'bg-slate-50 border-slate-300 dark:bg-paper-2 dark:border-strong')}>
                               <summary className="cursor-pointer p-3 font-semibold hover:bg-opacity-70 rounded-lg flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                  <span className={eligible.length > 0 ? 'text-ok-900 dark:text-ok-300' : 'text-cobalt-900 dark:text-cobalt-300'}>Trial Eligibility Auto-Matcher</span>
+                                  <span className={eligible.length > 0 ? 'text-ok-900 dark:text-ok-300' : 'text-cobalt-900 dark:text-cobalt-300'}>Trial Candidate Screen</span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                  {eligible.length > 0 && <span className="px-2 py-0.5 bg-ok-600 text-white rounded-full text-xs font-bold">{eligible.length} eligible</span>}
+                                  {eligible.length > 0 && <span className="px-2 py-0.5 bg-ok-600 text-white rounded-full text-xs font-bold">{eligible.length} possible candidate{eligible.length === 1 ? '' : 's'}</span>}
                                   {needsInfo.length > 0 && <span className="px-2 py-0.5 bg-warn-500 text-white rounded-full text-xs font-bold">{needsInfo.length} needs info</span>}
-                                  {notEligible.length > 0 && <span className="px-2 py-0.5 bg-slate-400 text-white rounded-full text-xs font-bold">{notEligible.length} not eligible</span>}
+                                  {notEligible.length > 0 && <span className="px-2 py-0.5 bg-slate-400 text-white rounded-full text-xs font-bold">{notEligible.length} screen criteria not met</span>}
                                 </div>
                               </summary>
                               <div className="p-3 space-y-2">
-                                <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">Auto-compared against patient data (age, NIHSS, LKW, imaging, diagnosis). Criteria update in real-time as you enter data.</p>
+                                <p className="text-xs text-slate-600 mb-2 dark:text-ink-2">First-pass comparison of the available patient data. Full protocol review required: confirm all inclusion and exclusion criteria, local activation, and consent with the study team. A possible candidate has met only the criteria evaluated here.</p>
                                 {sorted.map(trial => {
                                   // The engine result already exposes everything the UI consumes
                                   // (name, nct, quickDescription, lookingFor, keyTakeaways);
@@ -22664,7 +22554,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   };
                                   const statusColor = trial.status === 'eligible' ? 'border-ok-400 bg-ok-50 dark:bg-ok-950' : trial.status === 'needs_info' ? 'border-warn-400 bg-warn-50 dark:bg-warn-950' : 'border-slate-300 bg-slate-50 dark:border-strong dark:bg-paper-2';
                                   const statusBadge = trial.status === 'eligible' ? 'bg-ok-600 text-white' : trial.status === 'needs_info' ? 'bg-warn-500 text-white' : 'bg-slate-400 text-white';
-                                  const statusLabel = trial.status === 'eligible' ? '\u2713 Eligible' : trial.status === 'needs_info' ? '? Needs Info' : '\u2717 Not Eligible';
+                                  const statusLabel = trial.screeningLabel;
                                   const unknownCriteria = trial.criteria.filter(c => c.status === 'unknown');
                                   const metCriteria = trial.criteria.filter(c => c.status === 'met');
                                   const notMetCriteria = trial.criteria.filter(c => c.status === 'not_met');
@@ -22681,6 +22571,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       </summary>
                                       <div className="px-3 pb-3 space-y-2">
                                         <p className="text-xs text-slate-700 italic dark:text-ink-2">{config.quickDescription}</p>
+                                        <p className="text-xs font-semibold text-slate-700 dark:text-ink-2">{trial.screeningNote}</p>
 
                                         {/* Key takeaways */}
                                         {config.keyTakeaways && config.keyTakeaways.length > 0 && (
@@ -22808,7 +22699,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 {/* Looking For summary for eligible trials */}
                                 {eligible.length > 0 && (
                                   <div className="bg-ok-100 border border-ok-300 rounded-lg p-2 mt-2 dark:bg-ok-900 dark:border-ok-800">
-                                    <p className="text-xs font-bold text-ok-800 mb-1 dark:text-ok-300">&#10003; Patient may qualify for {eligible.length} trial{eligible.length > 1 ? 's' : ''} — consider discussing enrollment</p>
+                                    <p className="text-xs font-bold text-ok-800 mb-1 dark:text-ok-300">&#10003; Possible candidate for {eligible.length} trial{eligible.length > 1 ? 's' : ''} — full protocol review required</p>
                                     {eligible.map(t => (
                                       <p key={t.trialId} className="text-xs text-ok-700 dark:text-ok-300">&#8226; <strong>{t.trialName}:</strong> {t.quickDescription}</p>
                                     ))}
@@ -23855,7 +23746,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong">
                                       <option value="">Select</option>
                                       <option value="<130/80">&lt;130/80 (standard, Class I)</option>
-                                      <option value="<120/80">&lt;120/80 (intensive — SPS3, RESPECT-ESUS subgroup)</option>
+                                      <option value="<120/80">&lt;120/80 (individualized target; document rationale)</option>
                                       <option value="<140/90">&lt;140/90 (if tolerability concern)</option>
                                     </select>
                                   </div>
@@ -25122,7 +25013,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         className="w-full px-2 py-1 border border-slate-300 rounded text-xs dark:border-strong" rows="2" placeholder="Rationale for decision..." />
                                       {(telestrokeNote.ichAnticoagResumption || {}).caaFeatures && (
                                         <div className="p-1 bg-crit-100 rounded text-xs text-crit-700 dark:bg-crit-950 dark:text-crit-300">
-                                          CAA + AF: High risk of both recurrent ICH and stroke. LAAO may be preferred. PRESTIGE-AF: DOAC had higher ICH recurrence in CAA patients.
+                                          CAA + AF: High risk of both recurrent ICH and stroke. LAAO may be preferred. PRESTIGE-AF found more recurrent ICH with DOACs in the overall ICH-and-AF trial population; that result alone does not establish a CAA-specific treatment effect.
                                         </div>
                                       )}
                                     </div>
@@ -26783,7 +26674,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         )}
 
                         {/* Post-TNK Monitoring Protocol */}
-                        {telestrokeNote.tnkRecommended && telestrokeNote.diagnosisCategory === 'ischemic' && (
+                        {hasRecordedTreatmentAdministration(telestrokeNote, 'tnk') && telestrokeNote.diagnosisCategory === 'ischemic' && (
                           <div className="bg-white border-2 border-ok-300 rounded-md p-4 dark:bg-card dark:border-ok-800 ">
                             <h2 className="text-md font-bold text-ok-900 mb-2 flex items-center gap-2 dark:text-ok-300">
                                                             Post-Thrombolytic Monitoring Protocol
@@ -26891,7 +26782,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const age = telestrokeNote.age || '***';
                                 const sex = telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***';
                                 const dx = telestrokeNote.diagnosis || '[Diagnosis]';
-                                const nihss = telestrokeNote.nihss || nihssScore || '';
+                                const nihss = getDocumentedNihss();
                                 const bp = telestrokeNote.presentingBP || '';
                                 const ct = telestrokeNote.ctResults || '';
                                 const cta = telestrokeNote.ctaResults || '';
@@ -26938,18 +26829,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 // Pathway-specific summary
                                 if (pathwayType === 'ischemic') {
                                   note += `PLAN:\n`;
-                                  if (telestrokeNote.tnkRecommended) {
-                                    note += `- TNK 0.25 mg/kg IV bolus (max 25 mg) recommended and administered`;
-                                    if (telestrokeNote.weight) note += ` (weight: ${telestrokeNote.weight} kg${telestrokeNote.weightEstimated ? ' — ESTIMATED' : ''})`;
-
-                                    if (telestrokeNote.tnkAdminTime) note += ` at ${telestrokeNote.tnkAdminTime}`;
-                                    note += `.\n`;
-                                  } else {
-                                    note += `- IV TNK: Not recommended.\n`;
-                                  }
-                                  if (telestrokeNote.evtRecommended) {
-                                    note += `- EVT: Recommended. Transfer to ${telestrokeNote.transferReceivingFacility || 'EVT-capable center'}.\n`;
-                                  }
+                                  note += `- TNK: ${treatmentCourseStatus(telestrokeNote, 'tnk')}.\n`;
+                                  note += `- EVT: ${treatmentCourseStatus(telestrokeNote, 'evt')}.\n`;
+                                  if (telestrokeNote.transferReceivingFacility) note += `- Receiving facility: ${telestrokeNote.transferReceivingFacility}.\n`;
                                 } else if (pathwayType === 'ich') {
                                   note += `PLAN:\n`;
                                   if (telestrokeNote.ichBPManaged) note += `- BP management initiated (smooth control; target SBP 140/range 130-150 when appropriate; avoid <130).\n`;
@@ -27350,7 +27232,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   note += `\nCLINICAL TRIAL SCREEN (first-pass, unverified — confirm full registry record, local activation, and consent path before any recruitment action):\n`;
                                   // Engine result already carries nct (copied from activeTrial.nctId).
                                   eligibleTrials2.forEach(t => {
-                                    note += `- TRIAL SCREEN (first-pass, unverified): ${t.trialName} (${t.nct || ''}) — ${t.quickDescription}. Criteria met: ${t.metCount}/${t.criteria.length}.\n`;
+                                    note += `- POSSIBLE CANDIDATE (full protocol review required): ${t.trialName} (${t.nct || ''}) — ${t.quickDescription}. Evaluated criteria met: ${t.metCount}/${t.criteria.length}.\n`;
                                   });
                                   needsInfoTrials2.forEach(t => {
                                     const missing = t.criteria.reduce((acc, c) => c.status === 'unknown' ? (acc ? acc + ', ' + c.label : c.label) : acc, '');
@@ -31328,23 +31210,29 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               max="100"
                             />
                           </div>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
-                              className="text-cobalt-600 dark:text-cobalt-300"
-                              checked={!!ropeItems.largeShunt}
-                              onChange={(e) => setRopeItems(prev => ({...prev, largeShunt: e.target.checked}))}
-                            />
-                            <span className="text-sm">Large right-to-left shunt (PASCAL)</span>
+                          <label className="block text-sm">
+                            <span className="block mb-1">Large right-to-left shunt (PASCAL)</span>
+                            <select
+                              className="w-full px-3 py-1 border border-slate-300 rounded-md dark:border-strong"
+                              value={ropeItems.largeShunt === true ? 'present' : ropeItems.largeShunt === false ? 'absent' : 'unknown'}
+                              onChange={(e) => setRopeItems(prev => ({...prev, largeShunt: e.target.value === 'unknown' ? null : e.target.value === 'present'}))}
+                            >
+                              <option value="unknown">Unknown / not assessed</option>
+                              <option value="absent">Absent</option>
+                              <option value="present">Present</option>
+                            </select>
                           </label>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
-                              className="text-cobalt-600 dark:text-cobalt-300"
-                              checked={!!ropeItems.atrialSeptalAneurysm}
-                              onChange={(e) => setRopeItems(prev => ({...prev, atrialSeptalAneurysm: e.target.checked}))}
-                            />
-                            <span className="text-sm">Atrial septal aneurysm (PASCAL)</span>
+                          <label className="block text-sm">
+                            <span className="block mb-1">Atrial septal aneurysm (PASCAL)</span>
+                            <select
+                              className="w-full px-3 py-1 border border-slate-300 rounded-md dark:border-strong"
+                              value={ropeItems.atrialSeptalAneurysm === true ? 'present' : ropeItems.atrialSeptalAneurysm === false ? 'absent' : 'unknown'}
+                              onChange={(e) => setRopeItems(prev => ({...prev, atrialSeptalAneurysm: e.target.value === 'unknown' ? null : e.target.value === 'present'}))}
+                            >
+                              <option value="unknown">Unknown / not assessed</option>
+                              <option value="absent">Absent</option>
+                              <option value="present">Present</option>
+                            </select>
                           </label>
                         </div>
                       </div>
@@ -31354,7 +31242,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         if (!ageEntered) {
                           return <p className="text-xs text-slate-600 italic dark:text-mute">Enter age to compute the RoPE score (age is the largest contributor).</p>;
                         }
-                        const pascal = evaluatePASCAL({ ropeScore, largeShunt: !!ropeItems.largeShunt, atrialSeptalAneurysm: !!ropeItems.atrialSeptalAneurysm });
+                        const pascal = evaluatePASCAL({ ropeScore, largeShunt: ropeItems.largeShunt, atrialSeptalAneurysm: ropeItems.atrialSeptalAneurysm });
                         return (
                           <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
                             <p className="text-lg font-bold">RoPE Score: {ropeScore} / 10</p>
@@ -31619,39 +31507,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     </details>
 
-                    {/* Andexanet Alfa Dosing Calculator */}
+                    {/* Current US safety information; dosing remains disabled. */}
                     <details id="calc-andexanet" style={{ order: getCalculatorOrder('andexanet', 36) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                       <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
-                        <span>Andexanet Alfa (unavailable; dosing disabled)</span>
+                        <span>Andexanet Alfa (US sales ended; dosing disabled)</span>
                       </summary>
                       <div className="p-4">
-                        <div className="grid grid-cols-2 gap-3 mb-3">
-                          <div>
-                            <label htmlFor="select-andexanet-doac" className="text-xs text-slate-600 dark:text-ink-2">DOAC Type</label>
-                            <select id="select-andexanet-doac" value={(telestrokeNote.andexanetCalc || {}).doacType || ''}
-                              onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, andexanetCalc: {...(prev.andexanetCalc || {}), doacType: v}})); }}
-                              className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong">
-                              <option value="">Select DOAC</option>
-                              <option value="apixaban">Apixaban (Eliquis)</option>
-                              <option value="rivaroxaban">Rivaroxaban (Xarelto)</option>
-                              <option value="other">Other</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label className="text-xs text-slate-600 dark:text-ink-2">Hours since last DOAC dose</label>
-                            <input type="number" step="0.5" min="0" max="240" value={(telestrokeNote.andexanetCalc || {}).lastDoseHours || ''}
-                              onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, andexanetCalc: {...(prev.andexanetCalc || {}), lastDoseHours: v}})); }}
-                              className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" placeholder="hours" />
-                          </div>
-                        </div>
-                        <div className="mb-3">
-                          <label className="text-xs text-slate-600 dark:text-ink-2">DOAC dose (mg per dose)</label>
-                          <input type="number" step="0.5" min="0" max="60" value={(telestrokeNote.andexanetCalc || {}).doacDoseMg || ''}
-                            onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, andexanetCalc: {...(prev.andexanetCalc || {}), doacDoseMg: v}})); }}
-                            className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong" placeholder="e.g. 5 for apixaban 5mg BID" />
-                        </div>
-                        <div className="mt-2 p-2 bg-warn-50 border border-warn-200 rounded text-xs text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
-                          <strong>Institutional pathway:</strong> Andexanet alfa is unavailable. For apixaban-, rivaroxaban-, or edoxaban-associated ICH, give 4-factor PCC 2,000 units IV only when the Direct Xa Inhibitor screen is elevated and PCC has no contraindication; otherwise this card returns no actionable dose.
+                        <div className="p-3 bg-warn-50 border border-warn-200 rounded text-sm text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
+                          <strong>US safety update:</strong> The FDA concluded that serious thrombotic risks outweigh andexanet alfa's benefits. US manufacture and sales ended December 22, 2025. Dosing is disabled.
+                          <p className="mt-2">For urgent factor Xa inhibitor reversal, review the anticoagulant, timing, available laboratory assessment, contraindications and approved local PCC pathway with the treating team.</p>
+                          <a className="inline-flex items-center min-h-[44px] underline font-semibold" href="https://www.fda.gov/vaccines-blood-biologics/safety-availability-biologics/update-safety-andexxa" target="_blank" rel="noopener noreferrer">FDA safety communication (December 18, 2025)</a>
                         </div>
                       </div>
                     </details>
@@ -32174,9 +32039,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="p-4 flex flex-wrap items-center justify-between gap-2">
                         <div>
                           <h2 id="guideline-library-heading" className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Guideline Library</h2>
-                          <p className="text-xs text-slate-600 font-normal dark:text-ink-2">Full COR/LOE recommendations with direct publisher PDF links.</p>
+                          <p className="text-xs text-slate-600 font-normal dark:text-ink-2">Search extracted recommendations and statements. Coverage and correction notices appear with each source.</p>
                         </div>
-                        <span className="text-xs text-cobalt-700 font-medium dark:text-cobalt-300">{guidelineLibraryResultsCount} recommendations</span>
+                        <span className="text-xs text-cobalt-700 font-medium dark:text-cobalt-300">{guidelineLibraryResultsCount} extracted entries</span>
                       </div>
                       <div className="p-4 pt-0">
 
@@ -32251,17 +32116,23 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <>
                                     <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                                       <span>{guideline.shortTitle || guideline.title}</span>
-                                      {guideline.summaryOnly && (
-                                        <span className="px-1.5 py-0.5 rounded-full border border-warn-300 bg-warn-50 text-warn-800 text-[11px] font-semibold dark:border-warn-700 dark:bg-warn-950 dark:text-warn-300">Summary only — see source</span>
+                                      {(guideline.summaryOnly || guideline.sourceOnly || guideline.partialExtraction) && (
+                                        <span className="px-1.5 py-0.5 rounded-full border border-warn-300 bg-warn-50 text-warn-800 text-[11px] font-semibold dark:border-warn-700 dark:bg-warn-950 dark:text-warn-300">{guideline.sourceOnly ? 'Source link only' : 'Selected extracts'}</span>
                                       )}
                                     </span>
-                                    <span className="text-xs text-cobalt-600 shrink-0 dark:text-cobalt-300">{guideline.recommendations.length} recs</span>
+                                    <span className="flex flex-col items-end gap-1 text-xs text-cobalt-600 shrink-0 dark:text-cobalt-300">
+                                      <span>{guideline.sourceOnly ? 'Source only' : guideline.recommendations.length + ' entries'}</span>
+                                      {(guideline.publicationUpdates || []).some((update) => ['unresolved', 'partially-applied'].includes(update.status)) && (
+                                        <span className="text-warn-800 dark:text-warn-300">Correction notice</span>
+                                      )}
+                                    </span>
                                   </>
                                 )}
                               >
                                 {() => (
                                 <div className="p-3 pt-0 space-y-3">
-                                  {Object.entries(grouped).map(([section, recs]) => (
+                                  <GuidelineProvenance guideline={guideline} />
+                                  {Object.entries(guideline.sourceOnly ? {} : grouped).map(([section, recs]) => (
                                     <LazyDetails
                                       key={section}
                                       forceOpen={shouldExpand || guidelineLibrarySection === section}
@@ -32349,12 +32220,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </section>
 
                         {/* ===== GUIDELINES (external link grid) ===== */}
-                    <section aria-labelledby="research-guidelines-heading" className="space-y-4">
-                      <header>
-                        <p className="font-mono uppercase text-eyebrow text-mute mb-1">Reference</p>
-                        <h2 id="research-guidelines-heading" className="font-serif text-section text-ink">Guidelines</h2>
-                      </header>
-                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <LazyDetails
+                      className="rounded-lg border border-line bg-card"
+                      summaryClassName="cursor-pointer p-3 min-h-[44px] font-semibold text-ink"
+                      summary={<span>Publisher source links ({GUIDELINE_LIBRARY_INDEX.length})</span>}
+                    >
+                      {() => (
+                        <div className="p-3 pt-0"><ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {GUIDELINE_LIBRARY_INDEX.map((gl) => (
                           <li key={gl.id} className="v7-card t-prevent">
                             <a
@@ -32391,8 +32263,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             )}
                           </li>
                         ))}
-                      </ul>
-                    </section>
+                      </ul></div>
+                      )}
+                    </LazyDetails>
                       </div>
                     )}
 

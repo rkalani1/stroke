@@ -499,5 +499,17 @@
     }
   ],
   "documentType": "scientific-statement",
-  "gradingSystem": "ungraded"
+  "gradingSystem": "ungraded",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "33900839",
+      "doi": "10.1161/str.0000000000000373",
+      "publisherUrl": "https://doi.org/10.1161/str.0000000000000373",
+      "status": "not-applicable",
+      "note": "Corrects EEG wording, a residual-volume acronym, an NIHSS typo, the IPC expansion and an affiliation. Relevant library text already uses the corrected terms or does not reproduce the affected material.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ]
 }

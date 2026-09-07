@@ -21,5 +21,18 @@
   "extractionStatus": "source-not-machine-readable",
   "extractionNote": "The recommendation boxes in this guideline are published as images and no recommendation text was machine-readable from any open source. Consult the source directly.",
   "documentType": "guideline",
-  "gradingSystem": "ungraded"
+  "gradingSystem": "ungraded",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "35300261",
+      "doi": "10.1177/23969873221076951",
+      "publisherUrl": "https://doi.org/10.1177/23969873221076951",
+      "status": "not-applicable",
+      "note": "Restores missing recommendation boxes in the online supplement. This library remains source-only; consult the corrected supplement for recommendations.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ],
+  "supplementUrl": "https://journals.sagepub.com/doi/suppl/10.1177/23969873211042192/suppl_file/sj-pdf-2-eso-10.1177_23969873211042192.pdf"
 }

@@ -118,7 +118,7 @@ const TRIALS = {
     eligibility: [
       'AIS presenting to hospital within 24 hours of onset',
       'Occlusion of ICA, M1, or dominant M2',
-      'Pre-stroke mRS 3–4',
+      'Pre-stroke mRS 3–4 for at least 3 months',
       'NIHSS ≥ 6',
       'Presenting CT ASPECTS ≥ 3 or MRI ASPECTS ≥ 4'
     ],
@@ -232,13 +232,13 @@ const TRIALS = {
     summary:
       'Feasibility study assessing cortical stimulation via the CorTec Brain Interchange to induce neuroplasticity and improve motor-rehab outcomes.',
     eligibility: [
-      'Ischemic cortical stroke occurred > 6 months prior',
+      'Ischemic cortical stroke occurred at least 6 months prior',
       'Age 22–75 years with post-stroke mRS 3–4',
       'UEFM 25–45 with ≥ 30% corticospinal-pathway preservation and observable TMS motor output'
     ],
     exclusions: [
       'On therapeutic anticoagulation or history of seizure',
-      'History of deep-vein thrombosis, pulmonary emboli, or spontaneous ICH'
+      'History of unprovoked deep-vein thrombosis, any pulmonary embolus, or spontaneous ICH'
     ]
   },
   MINUTE: {
@@ -254,12 +254,12 @@ const TRIALS = {
       'Volume ≥ 20 mL by ABC/2',
       'Randomization ≤ 16 hours since LKW (surgery < 120 min from randomization)',
       'NIHSS ≥ 6; CTA/MRA without underlying vascular lesion',
-      'No clear standard-of-care surgical indication; goals of care pursue life-saving therapy'
+      'Goals of care pursue life-saving therapy; no early withdrawal of care within 7 days'
     ],
     exclusions: [
       'Suspected secondary cause, infratentorial/thalamic hemorrhage, or midbrain extension',
       'INR > 1.4, aPTT > 40 s, DOAC/LMWH use at onset, or platelet count < 100 × 10³/mm³',
-      'Clear standard-of-care surgical indication, active infection, pregnancy, pre-existing DNR/DNI, or severe dementia'
+      'GCS <7, intraventricular blood >50% of either lateral ventricle, active infection, pregnancy, pre-existing DNR/DNI, or severe dementia'
     ]
   },
   SATURN: {
@@ -309,8 +309,8 @@ const TRIALS = {
       'Randomized within 14–180 days of onset'
     ],
     exclusions: [
-      'Suspected secondary cause for ICH',
-      'Earlier ICH within 12 months, active infective endocarditis, or clear ongoing indication for anticoagulant/antiplatelet therapy',
+      'Hemorrhagic transformation or hemorrhage into a tumor',
+      'Earlier ICH within 12 months, active infective endocarditis, or a separate mandatory anticoagulant/antiplatelet indication (e.g., DVT/PE or recent coronary stent)',
       'Creatinine ≥ 2.5 mg/dL, uncontrolled SBP ≥ 180 mm Hg, unsecured AVM, pregnancy, or allergy to aspirin/apixaban'
     ]
   },
@@ -333,9 +333,9 @@ const TRIALS = {
   'CAPPRICORN-1': {
     acronym: 'CAPPRICORN-1',
     nct: 'NCT06393712',
-    status: 'enrolling',
+    status: 'closed',
     href: CTGOV('NCT06393712'),
-    summary: 'Randomized trial evaluating ALN-APP in patients with cerebral amyloid angiopathy (CAA).',
+    summary: 'ALN-APP trial in cerebral amyloid angiopathy (CAA). Active, not recruiting per ClinicalTrials.gov update 2026-09-03; no new enrollment.',
     eligibility: [
       'Sporadic CAA: age ≥ 50 with probable CAA by Boston Criteria Version 2.0',
       'Dutch-type CAA: age ≥ 30 with known E693Q APP mutation'

@@ -66,5 +66,22 @@
     "certainty": "high",
     "lastReviewed": "2026-08-28",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "strategy",
+    "name": "STRATEGY",
+    "fullName": "Tirofiban for Branch Atheromatous Disease-Related Stroke: The STRATEGY Randomized Clinical Trial",
+    "category": "acute-antithrombotic-adjuncts",
+    "population": "n=970, Adults, NIHSS See population criteria, Within 48 h",
+    "finding": "No significant difference: 17.1% vs 19.6%",
+    "teachingPoint": "No demonstrated reduction in the prespecified deterioration/recurrent-stroke composite in this selected population.",
+    "PMID": "42671865",
+    "year": 2026,
+    "citationIds": [
+      "cit-strategy-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-09-06",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

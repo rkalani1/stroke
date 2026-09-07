@@ -1,10 +1,10 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:eb743968ecceca8aaf93e6e34340d4f7",
+    "checksum": "sha256:1995dc88018d372725942a084f770ebe",
     "counts": {
       "guidelines": 11,
-      "trials": 237,
+      "trials": 242,
       "education": 41,
       "calculators": 34,
       "references": 32
@@ -424,6 +424,23 @@
       "provenance": "src/evidence/completedTrials.js"
     },
     {
+      "id": "strategy",
+      "name": "STRATEGY",
+      "fullName": "Tirofiban for Branch Atheromatous Disease-Related Stroke: The STRATEGY Randomized Clinical Trial",
+      "category": "acute-antithrombotic-adjuncts",
+      "population": "n=970, Adults, NIHSS See population criteria, Within 48 h",
+      "finding": "No significant difference: 17.1% vs 19.6%",
+      "teachingPoint": "No demonstrated reduction in the prespecified deterioration/recurrent-stroke composite in this selected population.",
+      "PMID": "42671865",
+      "year": 2026,
+      "citationIds": [
+        "cit-strategy-2026"
+      ],
+      "certainty": "moderate",
+      "lastReviewed": "2026-09-06",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
       "id": "direct-angio",
       "name": "DIRECT ANGIO",
       "fullName": "Direct versus Conventional Transfer to Angiography Suite in Patients with Severe Acute Stroke Treated with Thrombectomy (France)",
@@ -557,6 +574,23 @@
       ],
       "certainty": "moderate",
       "lastReviewed": "2026-08-28",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "y6-phase2",
+      "name": "Y-6 phase 2",
+      "fullName": "Efficacy and safety of sublingual cilostazol and dexborneol for the treatment of acute ischaemic stroke: a randomised phase 2 trial in China",
+      "category": "acute-neuroprotection",
+      "population": "n=300, 35-80, NIHSS See population criteria, Within 24 h",
+      "finding": "No active arm significantly improved the primary endpoint; high/low-dose Y-6 44.6%/46.0% vs 35.7% placebo",
+      "teachingPoint": "Exploratory adjunctive-treatment evidence; larger confirmatory studies are needed.",
+      "PMID": "42621146",
+      "year": 2026,
+      "citationIds": [
+        "cit-y6-phase2-2026"
+      ],
+      "certainty": "low",
+      "lastReviewed": "2026-09-06",
       "provenance": "src/evidence/completedTrials.js"
     },
     {
@@ -1036,6 +1070,23 @@
       "provenance": "src/evidence/completedTrials.js"
     },
     {
+      "id": "crhcp-seven-year",
+      "name": "CRHCP 7-year follow-up",
+      "fullName": "Long-Term Effectiveness of Intensive Blood Pressure Management Led by Nonphysician Community Healthcare Providers on Cardiovascular Events: 7-Year Follow-Up of a Cluster Randomized Trial",
+      "category": "bp-targets-prevention",
+      "population": "n=33995, ≥40, NIHSS See population criteria, Community hypertension management",
+      "finding": "2.4% vs 3.0% per person-year",
+      "teachingPoint": "Long-term program benefit persisted after some trial support ended; does not by itself set an acute-stroke BP target.",
+      "PMID": "42666029",
+      "year": 2026,
+      "citationIds": [
+        "cit-crhcp-seven-year-2026"
+      ],
+      "certainty": "moderate",
+      "lastReviewed": "2026-09-06",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
       "id": "iris-ipd-meta-analysis",
       "name": "IRIS IPD meta-analysis",
       "fullName": "Value of intravenous thrombolysis in endovascular treatment for large-vessel anterior circulation stroke: individual participant data meta-analysis of six randomised trials (IRIS)",
@@ -1510,6 +1561,23 @@
       ],
       "certainty": "low",
       "lastReviewed": "2026-08-22",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "tencraos",
+      "name": "TenCRAOS",
+      "fullName": "A Randomized Trial of Tenecteplase in Acute Central Retinal Artery Occlusion",
+      "category": "crao-thrombolysis",
+      "population": "n=78, Adults, NIHSS n/a, ≤4.5 h",
+      "finding": "No significant difference: 20% (8/40) vs 24% (9/38)",
+      "teachingPoint": "No demonstrated visual-recovery benefit; serious safety concerns. This is an evidence summary, not a treatment recommendation.",
+      "PMID": "41604638",
+      "year": 2026,
+      "citationIds": [
+        "cit-tencraos-2025"
+      ],
+      "certainty": "low",
+      "lastReviewed": "2026-09-06",
       "provenance": "src/evidence/completedTrials.js"
     },
     {
@@ -2212,10 +2280,10 @@
     {
       "id": "distal",
       "name": "DISTAL",
-      "fullName": "Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke — 12-Month Outcomes",
+      "fullName": "Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke — 90-Day and 12-Month Outcomes",
       "category": "evt-mevo",
       "population": "n=543, Median 77, NIHSS Median 6, ≤6 h, or 6-24 h with salvageable tissue",
-      "finding": "No difference (median mRS 2 vs 2)",
+      "finding": "No significant difference",
       "teachingPoint": "No long-term benefit of EVT in mild-to-moderate medium/distal vessel occlusion — routine thrombectomy not supported in this population.",
       "PMID": "39908430",
       "year": 2025,
@@ -2251,7 +2319,7 @@
       "category": "evt-mevo",
       "population": "n=563, Median 71, NIHSS Median 10 (range 3-36); NIHSS >=6 required, <=24 h from onset",
       "finding": "Benefit: 58.6% (280 patients) vs 46.6% (283 patients)",
-      "teachingPoint": "Supports considering thrombectomy for isolated medium vessel occlusion when the deficit is moderate-to-severe (NIHSS >=6), against a background of neutral trials in milder deficits. Individualize; do not read the older Class III grading as covering this population.",
+      "teachingPoint": "Positive functional-outcome result with more symptomatic hemorrhage; interpret with the neutral MeVO trials. This study summary does not independently revise guideline recommendations.",
       "PMID": "42127389",
       "year": 2026,
       "citationIds": [
@@ -2641,7 +2709,7 @@
       "fullName": "Intra-arterial Alteplase Following Successful Thrombectomy",
       "category": "ia-adjunct-after-evt",
       "population": "n=121, ≥18, NIHSS all, post-EVT",
-      "finding": "Favored alteplase: 59.0% vs 40.4%",
+      "finding": "Favored alteplase: 59.0% (36/61) vs 40.4% (21/52)",
       "teachingPoint": "IA alteplase after successful EVT may improve outcomes; not yet standard of care.",
       "PMID": "35143603",
       "year": 2022,
@@ -3331,6 +3399,23 @@
       ],
       "certainty": "moderate",
       "lastReviewed": "2026-08-28",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "rocatis-1",
+      "name": "ROCATIS-1",
+      "fullName": "The impact of concomitant use of rosuvastatin or atorvastatin plus clopidogrel on the platelet inhibition and clinical outcomes in acute large-vessel minor stroke or TIA: A randomized controlled multi-center trial, the ROCATIS-1 trial",
+      "category": "lipid-lowering-prevention",
+      "population": "n=600, Adults, NIHSS See population criteria, Within 24 h",
+      "finding": "Reported change 54.4 vs 49.2; favored rosuvastatin",
+      "teachingPoint": "Requires double-blind multinational confirmation before changing statin selection.",
+      "PMID": "42662137",
+      "year": 2026,
+      "citationIds": [
+        "cit-rocatis-1-2026"
+      ],
+      "certainty": "low",
+      "lastReviewed": "2026-09-06",
       "provenance": "src/evidence/completedTrials.js"
     },
     {
@@ -4433,7 +4518,7 @@
     {
       "id": "anticoagulation-reversal",
       "title": "Anticoagulation Reversal in Acute Hemorrhage",
-      "summary": "Agent-specific reversal for intracranial hemorrhage — 4F-PCC + vitamin K for warfarin, idarucizumab for dabigatran, andexanet alfa (with the actual ANNEXA-4 low/high-dose tiers, or 4F-PCC) for factor Xa inhibitors, and the distinct thrombolysis-associated sICH pathway (cryoprecipitate first-line + antifibrinolytic) — with the ANNEXA-I thrombotic caveat and parallel BP/neurosurgery steps.",
+      "summary": "Agent-specific reversal for intracranial hemorrhage, the FDA andexanet safety update and US sales cessation, PCC-based factor Xa reversal, and the distinct thrombolysis-associated hemorrhage pathway, with parallel BP and neurosurgical assessment.",
       "tags": [
         "pocket-card",
         "printable"
@@ -4476,9 +4561,9 @@
           "pmid": "26714677"
         }
       ],
-      "lastReviewed": "2026-08-22",
+      "lastReviewed": "2026-09-06",
       "provenance": "src/education.jsx",
-      "body": "Agent-specific reversal for intracranial hemorrhage — 4F-PCC + vitamin K for warfarin, idarucizumab for dabigatran, andexanet alfa (with the actual ANNEXA-4 low/high-dose tiers, or 4F-PCC) for factor Xa inhibitors, and the distinct thrombolysis-associated sICH pathway (cryoprecipitate first-line + antifibrinolytic) — with the ANNEXA-I thrombotic caveat and parallel BP/neurosurgery steps.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Agent-specific reversal for intracranial hemorrhage, the FDA andexanet safety update and US sales cessation, PCC-based factor Xa reversal, and the distinct thrombolysis-associated hemorrhage pathway, with parallel BP and neurosurgical assessment.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "antiepileptic-drugs",
@@ -5869,7 +5954,7 @@
     {
       "id": "pupillometry",
       "title": "Pupillometry & NPi Simulator",
-      "summary": "Bedside automated pupillometry simulator for adjusting pupil size, latency, and constriction velocity to calculate Neurological Pupil Index (NPi).",
+      "summary": "Teaching simulator for device-derived NPi, pupil size, constriction velocity, and asymmetry. Illustrates patterns without calculating a clinical NPi or estimating ICP.",
       "tags": [
         "simulators",
         "icu"
@@ -5897,9 +5982,9 @@
           "pmid": "33367973"
         }
       ],
-      "lastReviewed": "2026-05-30",
+      "lastReviewed": "2026-09-06",
       "provenance": "src/education.jsx",
-      "body": "Bedside automated pupillometry simulator for adjusting pupil size, latency, and constriction velocity to calculate Neurological Pupil Index (NPi).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Teaching simulator for device-derived NPi, pupil size, constriction velocity, and asymmetry. Illustrates patterns without calculating a clinical NPi or estimating ICP.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
     },
     {
       "id": "rcvs",
@@ -6376,7 +6461,7 @@
     },
     {
       "id": "andexanet",
-      "name": "Andexanet alfa dose",
+      "name": "Andexanet alfa (US sales ended; dosing disabled)",
       "category": "dosing",
       "fn": "calculateAndexanetDose",
       "module": "calculators"
@@ -6516,7 +6601,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/afib/AC timing after AF-related Stroke.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "afib-af-secondary-stroke-prevention-july-2024",
@@ -6526,6 +6612,7 @@
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/afib/AF & secondary stroke prevention July 2024.pdf",
       "subtitle": "PDF Document",
+      "reviewStatus": "archive",
       "year": 2024
     },
     {
@@ -6535,7 +6622,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/afib/AFib Stroke EPI519.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "aneurysms-unruptured-cerebral-aneurysms",
@@ -6544,7 +6632,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/aneurysms/Unruptured Cerebral Aneurysms.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "antiplatelet-dapt-after-ischemic-stroke-tia",
@@ -6553,7 +6642,8 @@
       "type": "image",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg",
-      "subtitle": "Infographic - Match Patient to Trial"
+      "subtitle": "Infographic - Match Patient to Trial",
+      "reviewStatus": "archive"
     },
     {
       "id": "antiplatelet-dapt-minor-stroke-tia-trials",
@@ -6562,7 +6652,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "antiplatelet-other-antithrombotics",
@@ -6571,7 +6662,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf",
-      "subtitle": "PDF Document — Cilostazol & Factor XIa Inhibition Trials"
+      "subtitle": "PDF Document — Cilostazol & Factor XIa Inhibition Trials",
+      "reviewStatus": "archive"
     },
     {
       "id": "csvd-lacunar-stroke",
@@ -6581,6 +6673,7 @@
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/csvd/Lacunar Stroke 7.13.22.pdf",
       "subtitle": "PDF Document",
+      "reviewStatus": "archive",
       "year": 2022
     },
     {
@@ -6599,7 +6692,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/ebm/Interpretation of Clinical Trials.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "epidemiology-diabetes-and-stroke",
@@ -6608,7 +6702,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/epidemiology/Diabetes and stroke.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "epidemiology-lipids-and-cerebrovascular-disease",
@@ -6617,7 +6712,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/epidemiology/Lipids and Cerebrovascular Disease.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "evt-basilar-artery-occlusion-evt-trials",
@@ -6626,7 +6722,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/evt/Basilar Artery Occlusion EVT Trials.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "evt-large-core-anterior-circulation-lvo-evt-trials",
@@ -6635,7 +6732,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "evt-mevo-distal-vessel-occlusion-evt-trials",
@@ -6644,7 +6742,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "exam-coma-exam",
@@ -6653,7 +6752,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/exam/coma exam.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "exam-delirium-vs-aphasia",
@@ -6662,7 +6762,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "lad-crest-2-trial-dec-2025",
@@ -6672,6 +6773,7 @@
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/lad/CREST-2 Trial - Dec 2025.pdf",
       "subtitle": "PDF Document",
+      "reviewStatus": "archive",
       "year": 2025
     },
     {
@@ -6681,7 +6783,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "quickref-afib-doac-start-timing",
@@ -6791,7 +6894,8 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "PDF Document",
+      "reviewStatus": "archive"
     },
     {
       "id": "thrombolytic-wake-up-trial",

@@ -6,7 +6,8 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/afib/AC timing after AF-related Stroke.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "PDF Document",
+    "reviewStatus": "archive"
   },
   {
     "id": "afib-af-secondary-stroke-prevention-july-2024",
@@ -16,6 +17,7 @@
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/afib/AF & secondary stroke prevention July 2024.pdf",
     "subtitle": "PDF Document",
+    "reviewStatus": "archive",
     "year": 2024
   },
   {
@@ -25,6 +27,7 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/afib/AFib Stroke EPI519.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "PDF Document",
+    "reviewStatus": "archive"
   }
 ]

@@ -165,7 +165,7 @@ const STATUS_MAP = {
     rail: 'bg-slate-200 dark:bg-slate-700'
   },
   closed: {
-    text: 'Closed',
+    text: 'Not enrolling',
     dot: 'bg-slate-300 dark:bg-slate-600',
     cls: 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-paper-2 dark:text-ink-2 dark:border-line',
     rail: 'bg-slate-200 dark:bg-slate-700'
@@ -830,7 +830,8 @@ const DB_FILTERS = [
   { id: 'all', label: 'All', match: () => true },
   { id: 'enrolling', label: 'Enrolling', match: (t) => t.status === 'enrolling' },
   { id: 'soon', label: 'Soon', match: (t) => t.status === 'soon' },
-  { id: 'unverified', label: 'Unverified', match: (t) => t.status === 'placeholder' }
+  { id: 'unverified', label: 'Unverified', match: (t) => t.status === 'placeholder' },
+  { id: 'closed', label: 'Not enrolling', match: (t) => t.status === 'closed' }
 ];
 
 export function StudyDatabase() {

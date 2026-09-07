@@ -6,7 +6,8 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "PDF Document",
+    "reviewStatus": "archive"
   },
   {
     "id": "thrombolytic-wake-up-trial",
