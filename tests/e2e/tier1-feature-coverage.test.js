@@ -54,11 +54,11 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   describe('Feature 1: 2026 AHA/ASA AIS Guidelines', () => {
     const aisData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/ais-2026.json'), 'utf8'));
 
-    it('F1-T1.1: Guideline metadata conforms to 2026 AHA/ASA AIS specification with 195 recommendations', () => {
+    it('F1-T1.1: Guideline metadata conforms to 2026 AHA/ASA AIS specification with 202 recommendations', () => {
       expect(aisData.id).toBe('ais-2026');
       expect(aisData.doi).toBe('10.1161/STR.0000000000000513');
       expect(aisData.publisherUrl).toContain('10.1161/STR.0000000000000513');
-      expect(aisData.recommendations.length).toBe(195);
+      expect(aisData.recommendations.length).toBe(202);
     });
 
     it('F1-T1.2: TNK 0.25 mg/kg is graded Class I recommendation for IV thrombolysis within 4.5h', () => {
@@ -345,13 +345,13 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   describe('Feature 7: Guideline Library & COR/LOE Catalog', () => {
     const indexData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/index.json'), 'utf8'));
 
-    it('F7-T1.1: Guideline index lists exactly 109 guideline datasets with 3550 indexed rows and 3547 extracted entries', () => {
+    it('F7-T1.1: Guideline index lists exactly 109 guideline datasets with 4113 searchable entries and one separate source-only record', () => {
       const activeDatasets = indexData.data.filter(g => g.id !== 'landmark-trials');
       expect(activeDatasets.length).toBe(109);
       const totalRecs = activeDatasets.reduce((sum, g) => sum + g.recommendationCount, 0);
-      expect(totalRecs).toBe(3550);
-      expect(GUIDELINE_LIBRARY_INDEX.filter((guideline) => guideline.sourceOnly)).toHaveLength(3);
-      expect(GUIDELINE_LIBRARY_INDEX.reduce((sum, guideline) => sum + guideline.recommendationCount, 0)).toBe(3547);
+      expect(totalRecs).toBe(4113);
+      expect(GUIDELINE_LIBRARY_INDEX.filter((guideline) => guideline.sourceOnly)).toHaveLength(1);
+      expect(GUIDELINE_LIBRARY_INDEX.reduce((sum, guideline) => sum + guideline.recommendationCount, 0)).toBe(4113);
     });
 
     it('F7-T1.2: Every guideline in index has valid title, shortTitle, doi, and publisherUrl', () => {
@@ -889,9 +889,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.25.0', () => {
+    it('F19-T1.5: package.json version matches latest release v6.26.0', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.25.0');
+      expect(pkg.version).toBe('6.26.0');
     });
   });
 });

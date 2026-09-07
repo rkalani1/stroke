@@ -1,18 +1,18 @@
 # Evidence Ops Index (Auto-generated)
 
-Generated: 2026-09-07T01:09:43.080Z
+Generated: 2026-09-07T02:28:45.794Z
 
 ## Current Artifacts
 | Artifact | Path | Generated | Key count |
 |---|---|---|---|
-| Watchlist | docs/evidence-watchlist.md | 2026-09-07T01:09:40.887Z | P0/P1 rows: 10 |
-| Promotion checklist | docs/evidence-promotion-checklist.md | 2026-09-07T01:09:41.485Z | Total queued: 10 |
-| Promotion template (all) | docs/evidence-promotion-template.md | 2026-09-07T01:09:42.020Z | Pending templates: 10 |
-| Promotion template (P0) | docs/evidence-promotion-template-p0.md | 2026-09-07T01:09:42.554Z | Pending templates: 0 |
+| Watchlist | docs/evidence-watchlist.md | 2026-09-07T02:28:41.103Z | P0/P1 rows: 10 |
+| Promotion checklist | docs/evidence-promotion-checklist.md | 2026-09-07T02:28:42.182Z | Total queued: 10 |
+| Promotion template (all) | docs/evidence-promotion-template.md | 2026-09-07T02:28:43.373Z | Pending templates: 10 |
+| Promotion template (P0) | docs/evidence-promotion-template-p0.md | 2026-09-07T02:28:44.515Z | Pending templates: 0 |
 | Watchlist history | docs/evidence-watch-history.json | n/a (JSON snapshot) | Entries: 10 |
 | Churn profiles | docs/evidence-churn-profiles.json | n/a (JSON config) | Profiles: 3 |
 | QA latency profiles | docs/qa-latency-profiles.json | n/a (JSON config) | Profiles: 2 |
-| QA latency history | docs/qa-latency-history.json | n/a (JSON snapshot) | Entries: 53 |
+| QA latency history | docs/qa-latency-history.json | n/a (JSON snapshot) | Entries: 56 |
 | QA latency recalibration | docs/qa-latency-recalibration.md | 2026-02-22T01:45:35.761Z | Windowed recommendations |
 | QA latency threshold suggestions | docs/qa-latency-threshold-suggestions.md | 2026-02-22T01:45:35.907Z | Current-vs-recommended deltas |
 

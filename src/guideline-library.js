@@ -1,3 +1,4 @@
+import { guidelineCoverage } from './guideline-coverage.js';
 import ais2026 from './guidelines/ais-2026.json';
 import cancerStroke2026 from './guidelines/cancer-stroke-2026.json';
 import cardiacBrainHealth2024 from './guidelines/cardiac-brain-health-2024.json';
@@ -220,18 +221,16 @@ export const GUIDELINE_LIBRARY = [
   ncsSccmAntithromboticReversal2016
 ];
 
+export const guidelineSearchFields = (rec, guideline) => [
+  rec.text, rec.section, guideline.title, guideline.shortTitle || '',
+  rec.sourceStatementId || '', rec.classNote || '', rec.currentEvidenceNote || '',
+  ...(rec.currentEvidenceSources || []).map(source => source.title)
+];
+
 export const GUIDELINE_LIBRARY_INDEX = GUIDELINE_LIBRARY.map((guideline) => {
-  const sourceOnly = guideline.recommendations.length > 0 &&
-    guideline.recommendations.every((rec) => rec.section === 'Source not machine-readable');
   return {
     ...guideline,
-    // Keep source-only records and legacy Scope abstracts discoverable,
-    // without presenting missing extracted text as guideline silence.
-    summaryOnly: sourceOnly || (guideline.recommendations.length > 0 &&
-      guideline.recommendations.every((rec) => rec.section === 'Scope')),
-    sourceOnly,
-    partialExtraction: !sourceOnly && Boolean(guideline.extractionStatus),
-    recommendationCount: sourceOnly ? 0 : guideline.recommendations.length,
+    ...guidelineCoverage(guideline),
     publicationUpdates: guideline.publicationUpdates || [],
     hasUnresolvedUpdates: (guideline.publicationUpdates || []).some((update) =>
       ['unresolved', 'partially-applied'].includes(update.status)),
@@ -243,8 +242,10 @@ export const GUIDELINE_LIBRARY_INDEX = GUIDELINE_LIBRARY.map((guideline) => {
     recommendations: guideline.recommendations.map((rec, index) => ({
       ...rec,
       id: rec.id || `${guideline.id}-${index + 1}`,
-      sourceUrl: guideline.publisherUrl || guideline.pdfUrl,
-      pdfSourceUrl: rec.page && guideline.pdfUrl ? `${guideline.pdfUrl}#page=${rec.page}` : null
+      sourceUrl: rec.sourceUrl || guideline.publisherUrl || guideline.pdfUrl,
+      // Printed journal page numbers and physical PDF pages can differ.
+      pdfSourceUrl: (rec.pdfPage || rec.page) && (guideline.coverage?.sourceDocument?.pdfUrl || guideline.pdfUrl)
+        ? `${guideline.coverage?.sourceDocument?.pdfUrl || guideline.pdfUrl}#page=${rec.pdfPage || rec.page}` : null
     }))
   };
 });

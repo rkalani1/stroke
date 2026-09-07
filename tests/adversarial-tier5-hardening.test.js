@@ -9,7 +9,7 @@
 //   2. Matcher Engine & Field Resolvers / Operators (src/evidence/matcher-engine.js)
 //   3. Guideline Recommendations Decision Logic & Edge Cases (src/app.jsx)
 //   4. Educational Accordion Architecture & Fuzzy Search (src/education.jsx)
-//   5. 109 Guideline Datasets & 3550 Indexed Rows (data/guidelines/)
+//   5. 109 Guideline Datasets & 4114 Indexed Rows (data/guidelines/)
 //   6. Landmark Trial Citations & Central Registry Integrity (src/evidence/citations.js)
 
 import { describe, it, expect } from 'vitest';
@@ -485,9 +485,9 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
   // =========================================================================
   // 5. 89 GUIDELINE DATASETS & 862 RECOMMENDATIONS ADVERSARIAL VALIDATION
   // =========================================================================
-  describe('5. 109 Guideline Datasets & 3550 Indexed Rows Invariant Hardening', () => {
+  describe('5. 109 Guideline Datasets & 4114 Indexed Rows Invariant Hardening', () => {
 
-    it('verifies all 109 guideline datasets parse with 3550 indexed rows and 3547 extracted entries', () => {
+    it('verifies all 109 guideline datasets parse with 4114 indexed rows and 4113 extracted entries', () => {
       const guidelineFiles = fs.readdirSync(GUIDELINES_DIR).filter(f => f.endsWith('.json') && f !== 'index.json' && f !== 'landmark-trials.json');
       expect(guidelineFiles.length).toBe(109);
 
@@ -538,16 +538,16 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         }
       }
 
-      expect(totalRecs).toBe(3550);
-      expect(GUIDELINE_LIBRARY_INDEX.filter((guideline) => guideline.sourceOnly)).toHaveLength(3);
-      expect(GUIDELINE_LIBRARY_INDEX.reduce((sum, guideline) => sum + guideline.recommendationCount, 0)).toBe(3547);
+      expect(totalRecs).toBe(4114);
+      expect(GUIDELINE_LIBRARY_INDEX.filter((guideline) => guideline.sourceOnly)).toHaveLength(1);
+      expect(GUIDELINE_LIBRARY_INDEX.reduce((sum, guideline) => sum + guideline.recommendationCount, 0)).toBe(4113);
     });
 
-    it('verifies 2026 AHA/ASA AIS guideline dataset contains 195 recommendations', () => {
+    it('verifies 2026 AHA/ASA AIS guideline dataset contains 202 recommendations', () => {
       const aisPath = path.join(GUIDELINES_DIR, 'ais-2026.json');
       expect(fs.existsSync(aisPath)).toBe(true);
       const ais = JSON.parse(fs.readFileSync(aisPath, 'utf8'));
-      expect(ais.recommendations.length).toBe(195);
+      expect(ais.recommendations.length).toBe(202);
 
       // Check TNK Class I and 0.4 mg/kg Class III harm statements
       const tnkRec = ais.recommendations.find(r => /Tenecteplase.*0\.25 mg\/kg/i.test(r.text));

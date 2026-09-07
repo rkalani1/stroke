@@ -103,11 +103,11 @@ separate reviewed `npm run test:protocol-snapshot:update` commit.
 
 ### September 2026 evidence and usability review
 
-The non-Protocol review includes 109 source documents and 3,547 extracted
-entries excluding three source-only placeholders. Coverage varies by document.
-Six correction notices remain explicitly unresolved because their full text
-could not be retrieved. See [the review record](docs/reviews/2026-09-06-non-protocol-review.md)
-for the scope, sources, changes, checks and limitations.
+The Guidelines collection includes 109 source documents and 4,113 searchable
+recommendations/statements. This update reconciles full source inventories for
+24 documents and retains one source-only record plus five unresolved correction
+notices. See the [completeness review](docs/reviews/2026-09-06-guidelines-completeness.md)
+for exact scope, sources, improvements and remaining limits.
 
 Teaching PDFs are generated from the same React cards as the live Education
 view. After an authored teaching change, run `node scripts/generate-pdfs.mjs`

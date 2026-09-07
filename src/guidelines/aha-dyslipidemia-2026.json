@@ -1,7 +1,7 @@
 {
   "id": "aha-dyslipidemia-2026",
   "title": "2026 ACC/AHA/AACVPR/ABC/ACPM/ADA/AGS/APhA/ASPC/NLA/PCNA Guideline on the Management of Dyslipidemia",
-  "shortTitle": "Dyslipidemia 2026 — selected ASCVD prevention summary",
+  "shortTitle": "Dyslipidemia 2026",
   "doi": "10.1161/CIR.0000000000001423",
   "publisherUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000001423",
   "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/CIR.0000000000001423",
@@ -10,44 +10,2331 @@
   "society": "ACC/AHA",
   "documentType": "guideline",
   "gradingSystem": "ACC/AHA",
-  "extractionStatus": "partial-extraction",
-  "extractionNote": "Selected summaries of sections 2.1 and 4.2.6 and Table 1, focused on secondary ASCVD prevention. This is not the complete guideline; consult the source for individual recommendation wording and COR/LOE. Confirm the full ASCVD risk category before selecting a treatment goal.",
   "recommendations": [
     {
-      "id": "aha-dyslipidemia-2026-risk-category",
-      "section": "2.1. Definitions; Figure 10 — very-high-risk ASCVD",
-      "classOfRec": "Statement",
-      "classNote": "Selected guideline summary",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Very-high-risk ASCVD requires ≥2 major ASCVD events, or 1 major event plus ≥2 high-risk features. Ischemic stroke counts as a major event. High-risk features include age ≥65, coronary bypass/PCI, current smoking, diabetes, heart failure, hypertension, or LDL-C ≥100 mg/dL despite maximally tolerated statin plus ezetimibe.",
-      "page": null
+      "id": "aha-dyslipidemia-2026-3-1-1",
+      "section": "3.1. Screening in Children and Adults",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Begin adult lipid-profile screening at age 19 and repeat at least every 5 years; screen more frequently when additional ASCVD risk factors are present.",
+      "page": 11,
+      "pdfPage": 11,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.1",
+      "sourceStatementType": "recommendation"
     },
     {
-      "id": "aha-dyslipidemia-2026-ascvd-target",
-      "section": "4.2.6. Secondary ASCVD Prevention; Table 1 — not at very high risk",
-      "classOfRec": "Statement",
-      "classNote": "Selected guideline summary",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "For adults with clinical ASCVD not at very high risk, use high-intensity statin therapy targeting ≥50% LDL-C reduction, LDL-C <70 mg/dL and non-HDL-C <100 mg/dL.",
-      "page": null
+      "id": "aha-dyslipidemia-2026-3-1-2",
+      "section": "3.1. Screening in Children and Adults",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Screen previously untested children at ages 9–11 with a lipid profile to identify familial hypercholesterolemia (FH) and other important lipid disorders.",
+      "page": 11,
+      "pdfPage": 11,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "3.1",
+      "sourceStatementType": "recommendation"
     },
     {
-      "id": "aha-dyslipidemia-2026-very-high-risk-target",
-      "section": "4.2.6. Secondary ASCVD Prevention; Table 1 — at very high risk",
-      "classOfRec": "Statement",
-      "classNote": "Selected guideline summary",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "For very-high-risk ASCVD, target LDL-C <55 mg/dL and non-HDL-C <85 mg/dL. Add ezetimibe and/or a PCSK9 monoclonal antibody to maximally tolerated statin therapy according to the reduction needed and patient preference.",
-      "page": null
+      "id": "aha-dyslipidemia-2026-3-1-3",
+      "section": "3.1. Screening in Children and Adults",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Lipid-profile cascade screening from age 2 is reasonable when a first- or second-degree relative has premature ASCVD, severe hypercholesterolemia, or FH.",
+      "page": 11,
+      "pdfPage": 11,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "3.1",
+      "sourceStatementType": "recommendation"
     },
     {
-      "id": "aha-dyslipidemia-2026-additional-lowering",
-      "section": "4.2.6. Secondary ASCVD Prevention; Table 1 — additional lowering",
-      "classOfRec": "Statement",
-      "classNote": "Selected guideline summary",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "For ASCVD not at very high risk, further lowering toward LDL-C <55 mg/dL and non-HDL-C <85 mg/dL with ezetimibe, a PCSK9 monoclonal antibody or bempedoic acid can also be reasonable on maximally tolerated statin therapy after considering treatment needs and preferences.",
-      "page": null
+      "id": "aha-dyslipidemia-2026-3-2-1",
+      "section": "3.2. Measurement of TC, LDL-C, HDL-C, TG, and Non-HDL-C",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Use a standard fasting or nonfasting lipid profile in adults and children to establish baseline lipids, estimate ASCVD risk, and guide lipid-lowering therapy (LLT).",
+      "page": 13,
+      "pdfPage": 13,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-3-2-2",
+      "section": "3.2. Measurement of TC, LDL-C, HDL-C, TG, and Non-HDL-C",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Obtain a fasting lipid profile when there is familial dyslipidemia or premature ASCVD, a known or suspected triglyceride-metabolism disorder, or nonfasting TG ≥400 mg/dL, to improve LDL-C estimation.",
+      "page": 13,
+      "pdfPage": 13,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "3.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-3-2-3",
+      "section": "3.2. Measurement of TC, LDL-C, HDL-C, TG, and Non-HDL-C",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For adults and children, estimate LDL-C using Martin/Hopkins or Sampson/NIH rather than the Friedewald equation.",
+      "page": 13,
+      "pdfPage": 13,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "3.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-3-2-4",
+      "section": "3.2. Measurement of TC, LDL-C, HDL-C, TG, and Non-HDL-C",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For adults and children, Martin/Hopkins or Sampson/NIH LDL-C estimates are preferred to direct LDL-C assays other than beta-quantification.",
+      "page": 13,
+      "pdfPage": 13,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "3.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-3-2-5",
+      "section": "3.2. Measurement of TC, LDL-C, HDL-C, TG, and Non-HDL-C",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Report non-HDL-C with the standard lipid profile to guide risk assessment, treatment initiation, and monitoring.",
+      "page": 13,
+      "pdfPage": 13,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "3.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-3-2-6",
+      "section": "3.2. Measurement of TC, LDL-C, HDL-C, TG, and Non-HDL-C",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-NR",
+      "text": "Do not routinely use advanced lipoprotein-subclass or particle-size testing to estimate ASCVD risk or decide whether to start LLT.",
+      "page": 13,
+      "pdfPage": 13,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "3.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-3-3-1",
+      "section": "3.3. Measurement of ApoB",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "In adults receiving LLT, measuring apoB is reasonable to assess further treatment intensification after LDL-C and/or non-HDL-C goals are reached, especially with ASCVD, CKM syndrome, type 2 diabetes, or elevated TG.",
+      "page": 14,
+      "pdfPage": 14,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-3-3-2",
+      "section": "3.3. Measurement of ApoB",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "In untreated adults, apoB measurement may help refine ASCVD risk, decisions about starting LLT, and characterization of inherited lipid disorders.",
+      "page": 14,
+      "pdfPage": 14,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "3.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-3-4-1",
+      "section": "3.4. Measurement of Lp(a)",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Measure Lp(a) at least once in every adult to assess ASCVD risk.",
+      "page": 15,
+      "pdfPage": 15,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-3-4-2",
+      "section": "3.4. Measurement of Lp(a)",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Offer Lp(a) cascade testing to first-degree relatives of people with FH, premature ASCVD, or high Lp(a).",
+      "page": 15,
+      "pdfPage": 15,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "3.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-3-4-3",
+      "section": "3.4. Measurement of Lp(a)",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Use an Lp(a) assay that is insensitive to apo(a) isoform size and traceable to recognized reference standards.",
+      "page": 15,
+      "pdfPage": 15,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "3.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-3-5-1",
+      "section": "3.5. Monitoring and Follow-Up",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Check a lipid profile 4–12 weeks after starting or changing LLT, then every 6–12 months, to assess response and adherence.",
+      "page": 16,
+      "pdfPage": 16,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-1-1-1",
+      "section": "4.1.1. Primordial Prevention of Dyslipidemia: Childhood Through Adulthood",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Promote lifelong healthy diet, activity, weight, sleep, stress management, and avoidance of tobacco in children and healthy adults to prevent dyslipidemia and ASCVD.",
+      "page": 18,
+      "pdfPage": 18,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.1.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-1-2-1-1",
+      "section": "4.1.2.1. Dietary Management of LDL-C Disorders",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "In adults and children, with or without ASCVD, emphasize fruit, vegetables, nuts, legumes, whole grains, and fiber, replacing saturated and trans fats with mono- and polyunsaturated fats to lower LDL-C and ASCVD risk.",
+      "page": 18,
+      "pdfPage": 18,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.1.2.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-1-2-2-1",
+      "section": "4.1.2.2. Lifestyle Management of Hypertriglyceridemia",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "For fasting TG 150–499 mg/dL, reduce added sugars, refined carbohydrates, and saturated fat and minimize alcohol to lower TG and ASCVD risk.",
+      "page": 19,
+      "pdfPage": 19,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.1.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-1-2-2-2",
+      "section": "4.1.2.2. Lifestyle Management of Hypertriglyceridemia",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For fasting TG 500–999 mg/dL, reduce added sugars, refined carbohydrates, and saturated fat, eliminate alcohol, and individualize total-fat restriction to lower TG, ASCVD risk, and pancreatitis risk.",
+      "page": 20,
+      "pdfPage": 20,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.1.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-1-2-2-3",
+      "section": "4.1.2.2. Lifestyle Management of Hypertriglyceridemia",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For fasting TG ≥1000 mg/dL, use a very-low-fat diet, limit refined carbohydrates, and eliminate added sugars and alcohol to lower TG and pancreatitis risk.",
+      "page": 20,
+      "pdfPage": 20,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.1.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-1-2-2-4",
+      "section": "4.1.2.2. Lifestyle Management of Hypertriglyceridemia",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For fasting TG ≥150 or nonfasting TG ≥175 mg/dL, address obesity and CKM factors with 5–10% weight loss, ≥150 minutes/week of moderate-to-vigorous activity, and resistance exercise twice weekly.",
+      "page": 20,
+      "pdfPage": 20,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "4.1.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-1-3-1",
+      "section": "4.1.3. Attainment and Maintenance of a Healthy Weight in Dyslipidemia",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Offer counseling and treatment for weight reduction and sustained healthy weight in people with overweight or obesity and dyslipidemia.",
+      "page": 21,
+      "pdfPage": 21,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.1.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-1-4-1",
+      "section": "4.1.4. Physical Activity",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Recommend ≥150 minutes/week of moderate-to-vigorous aerobic activity plus upper- and lower-body resistance exercise on 2 days/week for dyslipidemia and cardiovascular health.",
+      "page": 21,
+      "pdfPage": 21,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.1.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-1-5-1",
+      "section": "4.1.5. Dietary Supplements",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-R",
+      "text": "Do not recommend dietary supplements to lower LDL-C or TG; evidence for lipid and ASCVD benefit is inconsistent or limited.",
+      "page": 22,
+      "pdfPage": 22,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.1.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-1-6-1",
+      "section": "4.1.6. When to Refer to a Registered Dietitian Nutritionist",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For fasting TG ≥1000 mg/dL, refer to a registered dietitian nutritionist for an individualized plan to reduce TG and pancreatitis risk.",
+      "page": 23,
+      "pdfPage": 23,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.1.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-1-6-2",
+      "section": "4.1.6. When to Refer to a Registered Dietitian Nutritionist",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For fasting TG 150–999 mg/dL with CKM features, dietitian referral for evidence-based dietary counseling can improve lipoproteins and reduce pancreatitis risk.",
+      "page": 23,
+      "pdfPage": 23,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.1.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-1-1",
+      "section": "4.2.3.1. Role of the Individualized Benefit-Risk Discussion",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Use an individualized clinician–patient discussion covering ASCVD risk, lifestyle, expected LLT benefit, harms and drug interactions, cost, preferences, and further evaluation when needed.",
+      "page": 29,
+      "pdfPage": 29,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.3.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-2-1",
+      "section": "4.2.3.2. PREVENT-ASCVD Equations",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For adults aged 30–79 without ASCVD or subclinical atherosclerosis and with LDL-C 70–189 mg/dL, use PREVENT-ASCVD to classify 10-year risk as low <3%, borderline 3–<5%, intermediate 5–<10%, or high ≥10%.",
+      "page": 30,
+      "pdfPage": 30,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.3.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-3-1",
+      "section": "4.2.3.3. Risk Enhancers",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For primary prevention at borderline PREVENT-ASCVD risk 3–<5%, considering risk enhancers is reasonable when deciding whether to add LLT to lifestyle measures.",
+      "page": 33,
+      "pdfPage": 33,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.3.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-3-2",
+      "section": "4.2.3.3. Risk Enhancers",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "At borderline PREVENT-ASCVD risk 3–<5%, high-intensity statin therapy can help when hsCRP is ≥2 mg/L on two occasions without another identifiable cause.",
+      "page": 33,
+      "pdfPage": 33,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.3.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-4-1",
+      "section": "4.2.3.4. Reproductive Risk Markers",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Consider early menopause before age 45 and adverse pregnancy outcomes—gestational hypertension, preeclampsia, gestational diabetes, or preterm delivery—to personalize primary-prevention risk and LLT decisions.",
+      "page": 36,
+      "pdfPage": 36,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.3.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-6-1",
+      "section": "4.2.3.6. Selective Imaging of Subclinical Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For intermediate-risk and selected borderline-risk adults without ASCVD, use coronary artery calcium (CAC) scoring when the decision to start LLT remains uncertain.",
+      "page": 36,
+      "pdfPage": 36,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.3.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-6-2",
+      "section": "4.2.3.6. Selective Imaging of Subclinical Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "With CAC 0 and a preference to avoid medication, deferring LLT and repeating CAC in 3–7 years is reasonable if higher-risk conditions are absent: FH or severe hypercholesterolemia, diabetes after age 40, smoking, or strong premature-ASCVD family history.",
+      "page": 37,
+      "pdfPage": 37,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.3.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-6-3",
+      "section": "4.2.3.6. Selective Imaging of Subclinical Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For intermediate-risk and selected borderline-risk adults, CAC >0 supports starting LLT, particularly CAC ≥100 Agatston units or ≥75th standardized percentile.",
+      "page": 37,
+      "pdfPage": 37,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.3.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-6-4",
+      "section": "4.2.3.6. Selective Imaging of Subclinical Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For intermediate- or high-risk adults without ASCVD, CAC can help set goals and decide treatment intensification when LLT intensity remains uncertain.",
+      "page": 37,
+      "pdfPage": 37,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "4.2.3.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-6-5",
+      "section": "4.2.3.6. Selective Imaging of Subclinical Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Include incidental CAC found on noncardiac CT in decisions to start or intensify LLT in adults without prior ASCVD.",
+      "page": 37,
+      "pdfPage": 37,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "4.2.3.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-6-6",
+      "section": "4.2.3.6. Selective Imaging of Subclinical Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Selective coronary CT angiography may help assess risk and LLT intensity when noncalcified plaque burden is likely high, such as inflammatory disorders, HIV, or diabetes without prior ASCVD.",
+      "page": 37,
+      "pdfPage": 37,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "4.2.3.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-7-1",
+      "section": "4.2.3.7. Primary Prevention in Adults 30–79 Years With LDL-C 70–189 mg/dL",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "For primary ASCVD prevention, provide health-behavior guidance together with the benefit–risk discussion about LLT.",
+      "page": 39,
+      "pdfPage": 39,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.3.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-7-2",
+      "section": "4.2.3.7. Primary Prevention in Adults 30–79 Years With LDL-C 70–189 mg/dL",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "At ages 30–59 with 10-year ASCVD risk <3%, LDL-C <160 mg/dL, and 30-year risk <10%, recommend healthy behaviors to lower LDL-C and ASCVD risk.",
+      "page": 39,
+      "pdfPage": 39,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.3.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-7-3",
+      "section": "4.2.3.7. Primary Prevention in Adults 30–79 Years With LDL-C 70–189 mg/dL",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "At ages 30–59 with 10-year risk <3% but LDL-C 160–189 mg/dL or 30-year ASCVD risk ≥10%, a moderate-intensity statin is reasonable to reduce cumulative atherogenic exposure.",
+      "page": 39,
+      "pdfPage": 39,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.3.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-7-4",
+      "section": "4.2.3.7. Primary Prevention in Adults 30–79 Years With LDL-C 70–189 mg/dL",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "At borderline 10-year risk 3–<5%, when a statin is chosen, moderate-intensity therapy targeting 30–49% LDL-C reduction is reasonable.",
+      "page": 39,
+      "pdfPage": 39,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "4.2.3.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-7-5",
+      "section": "4.2.3.7. Primary Prevention in Adults 30–79 Years With LDL-C 70–189 mg/dL",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "At intermediate 10-year risk 5–<10%, recommend at least moderate-intensity statin therapy for 30–49% LDL-C reduction; toward the upper end, high-intensity therapy can provide ≥50% reduction and further risk reduction.",
+      "page": 39,
+      "pdfPage": 39,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "4.2.3.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-7-6",
+      "section": "4.2.3.7. Primary Prevention in Adults 30–79 Years With LDL-C 70–189 mg/dL",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "When initiating statin therapy at borderline or intermediate risk, LDL-C <100 and non-HDL-C <130 mg/dL are reasonable treatment goals.",
+      "page": 39,
+      "pdfPage": 39,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "4.2.3.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-7-7",
+      "section": "4.2.3.7. Primary Prevention in Adults 30–79 Years With LDL-C 70–189 mg/dL",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "At high 10-year ASCVD risk ≥10%, use high-intensity statin therapy targeting ≥50% LDL-C reduction when starting primary-prevention LLT.",
+      "page": 39,
+      "pdfPage": 39,
+      "sourceRecommendationNumber": 7,
+      "sourceSection": "4.2.3.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-7-8",
+      "section": "4.2.3.7. Primary Prevention in Adults 30–79 Years With LDL-C 70–189 mg/dL",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "At high 10-year risk ≥10%, LDL-C <70 and non-HDL-C <100 mg/dL are reasonable goals after choosing statin therapy.",
+      "page": 39,
+      "pdfPage": 39,
+      "sourceRecommendationNumber": 8,
+      "sourceSection": "4.2.3.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-7-9",
+      "section": "4.2.3.7. Primary Prevention in Adults 30–79 Years With LDL-C 70–189 mg/dL",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "At high 10-year risk ≥10%, adding ezetimibe is reasonable if maximally tolerated statin therapy does not achieve LDL-C <70 and non-HDL-C <100 mg/dL.",
+      "page": 39,
+      "pdfPage": 39,
+      "sourceRecommendationNumber": 9,
+      "sourceSection": "4.2.3.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-7-10",
+      "section": "4.2.3.7. Primary Prevention in Adults 30–79 Years With LDL-C 70–189 mg/dL",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "At high 10-year risk ≥10%, adding a PCSK9 monoclonal antibody or bempedoic acid may be considered if maximally tolerated statin, with or without ezetimibe, does not achieve LDL-C <70 and non-HDL-C <100 mg/dL.",
+      "page": 39,
+      "pdfPage": 39,
+      "sourceRecommendationNumber": 10,
+      "sourceSection": "4.2.3.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-7-11",
+      "section": "4.2.3.7. Primary Prevention in Adults 30–79 Years With LDL-C 70–189 mg/dL",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "When life expectancy is <1 year, stopping primary-prevention LLT may be reasonable to reduce unnecessary medication and adverse effects.",
+      "page": 39,
+      "pdfPage": 39,
+      "sourceRecommendationNumber": 11,
+      "sourceSection": "4.2.3.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-3-7-12",
+      "section": "4.2.3.7. Primary Prevention in Adults 30–79 Years With LDL-C 70–189 mg/dL",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-NR",
+      "text": "Primary-prevention LLT is unlikely to reduce ASCVD risk when untreated LDL-C is <70 and non-HDL-C <100 mg/dL and there are no additional ASCVD risk factors.",
+      "page": 39,
+      "pdfPage": 39,
+      "sourceRecommendationNumber": 12,
+      "sourceSection": "4.2.3.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-1-1",
+      "section": "4.2.4.1. Role of Risk Assessment in Heterozygous Familial Hypercholesterolemia",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "FH-specific risk scores may help estimate short-term ASCVD risk in adults with heterozygous FH (HeFH).",
+      "page": 44,
+      "pdfPage": 44,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.4.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-1-2",
+      "section": "4.2.4.1. Role of Risk Assessment in Heterozygous Familial Hypercholesterolemia",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "C-EO",
+      "text": "Do not use general-population 10- or 30-year risk calculators for people with HeFH.",
+      "page": 44,
+      "pdfPage": 44,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.4.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-2-1",
+      "section": "4.2.4.2. Genetic Testing for Familial Hypercholesterolemia",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For possible, probable, or definite FH in adults, panel-based genetic testing for pathogenic or likely pathogenic variants helps identify high risk and enable cascade screening.",
+      "page": 44,
+      "pdfPage": 44,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.4.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-2-2",
+      "section": "4.2.4.2. Genetic Testing for Familial Hypercholesterolemia",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For LDL-C ≥190 mg/dL without a secondary cause, FH genetic testing can identify adults with genetically mediated higher ASCVD risk.",
+      "page": 44,
+      "pdfPage": 44,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.4.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-2-3",
+      "section": "4.2.4.2. Genetic Testing for Familial Hypercholesterolemia",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For LDL-C 160–189 mg/dL without a secondary cause, FH genetic testing may be considered to identify inherited high risk.",
+      "page": 44,
+      "pdfPage": 44,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.4.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-3-1",
+      "section": "4.2.4.3. Severe Hypercholesterolemia With LDL-C ≥190 mg/dL",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "When LDL-C is ≥190 mg/dL, investigate and address secondary causes of severe hypercholesterolemia.",
+      "page": 45,
+      "pdfPage": 45,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.4.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-3-2",
+      "section": "4.2.4.3. Severe Hypercholesterolemia With LDL-C ≥190 mg/dL",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Treat adults with LDL-C ≥190 mg/dL using a maximally tolerated statin to lower LDL-C and ASCVD risk.",
+      "page": 45,
+      "pdfPage": 45,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.4.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-3-3",
+      "section": "4.2.4.3. Severe Hypercholesterolemia With LDL-C ≥190 mg/dL",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "With LDL-C ≥190 mg/dL but no ASCVD, additional ASCVD risk factors, HeFH, or subclinical atherosclerosis, add ezetimibe, a PCSK9 antibody, and/or bempedoic acid to maximally tolerated statin as needed for LDL-C <100 and non-HDL-C <130 mg/dL.",
+      "page": 45,
+      "pdfPage": 45,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.4.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-3-4",
+      "section": "4.2.4.3. Severe Hypercholesterolemia With LDL-C ≥190 mg/dL",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "With LDL-C ≥190 mg/dL and no clinical ASCVD but with HeFH, additional risk factors, or coronary calcification, add ezetimibe, a PCSK9 antibody, and/or bempedoic acid to maximally tolerated statin for LDL-C <70 and non-HDL-C <100 mg/dL.",
+      "page": 46,
+      "pdfPage": 46,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "4.2.4.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-3-5",
+      "section": "4.2.4.3. Severe Hypercholesterolemia With LDL-C ≥190 mg/dL",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "With LDL-C ≥190 mg/dL and clinical ASCVD, add ezetimibe, a PCSK9 antibody, and/or bempedoic acid to maximally tolerated statin for LDL-C <55 and non-HDL-C <85 mg/dL.",
+      "page": 46,
+      "pdfPage": 46,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "4.2.4.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-3-6",
+      "section": "4.2.4.3. Severe Hypercholesterolemia With LDL-C ≥190 mg/dL",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "In severe hypercholesterolemia, with or without ASCVD, inclisiran is reasonable when LDL-C remains ≥100 mg/dL on maximally tolerated statin with or without ezetimibe. This recommendation concerns LDL-C reduction; cardiovascular outcome trials were incomplete at publication.",
+      "page": 46,
+      "pdfPage": 46,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "4.2.4.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-4-1",
+      "section": "4.2.4.4. Severe Hypercholesterolemia With Clinical or Genetic Confirmation of Homozygous FH",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For clinically or genetically confirmed homozygous FH (HoFH), consult a lipid specialist about advanced LDL-C therapies and/or lipoprotein apheresis.",
+      "page": 49,
+      "pdfPage": 49,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.4.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-4-2",
+      "section": "4.2.4.4. Severe Hypercholesterolemia With Clinical or Genetic Confirmation of Homozygous FH",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Use a maximally tolerated statin in adults with confirmed HoFH to reduce ASCVD risk.",
+      "page": 49,
+      "pdfPage": 49,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.4.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-4-3",
+      "section": "4.2.4.4. Severe Hypercholesterolemia With Clinical or Genetic Confirmation of Homozygous FH",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "In HoFH on maximally tolerated statin therapy, adding ezetimibe, a PCSK9 antibody, and/or bempedoic acid is reasonable to lower LDL-C.",
+      "page": 49,
+      "pdfPage": 49,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.4.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-4-4",
+      "section": "4.2.4.4. Severe Hypercholesterolemia With Clinical or Genetic Confirmation of Homozygous FH",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For HoFH with LDL-C ≥100 mg/dL despite maximally tolerated statin, ezetimibe, and a PCSK9 antibody, evinacumab may be added to lower LDL-C.",
+      "page": 49,
+      "pdfPage": 49,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "4.2.4.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-4-4-5",
+      "section": "4.2.4.4. Severe Hypercholesterolemia With Clinical or Genetic Confirmation of Homozygous FH",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "For HoFH with LDL-C ≥100 mg/dL despite maximally tolerated statin, ezetimibe, and a PCSK9 antibody, lomitapide may be added with regular hepatic-safety monitoring.",
+      "page": 49,
+      "pdfPage": 49,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "4.2.4.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-5-1",
+      "section": "4.2.5. Diabetes in Adults Without Established ASCVD",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "For diabetes at ages 40–75 without ASCVD, use moderate-intensity statin therapy for 30–49% LDL-C reduction, LDL-C <100, and non-HDL-C <130 mg/dL.",
+      "page": 51,
+      "pdfPage": 51,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-5-2",
+      "section": "4.2.5. Diabetes in Adults Without Established ASCVD",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For adults with diabetes who experience statin-attributed adverse effects, start ezetimibe and/or bempedoic acid or a PCSK9 antibody to lower LDL-C and ASCVD risk.",
+      "page": 51,
+      "pdfPage": 51,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-5-3",
+      "section": "4.2.5. Diabetes in Adults Without Established ASCVD",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For diabetes at ages 40–75 with multiple ASCVD risk factors, high-intensity statin therapy is reasonable for ≥50% LDL-C reduction, LDL-C <70, and non-HDL-C <100 mg/dL.",
+      "page": 51,
+      "pdfPage": 51,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-5-4",
+      "section": "4.2.5. Diabetes in Adults Without Established ASCVD",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For diabetes without ASCVD but with additional ASCVD risk factors, fasting TG 150–499 mg/dL, and LDL-C <100 mg/dL on statin therapy, adding icosapent ethyl may be considered to reduce ASCVD risk.",
+      "page": 51,
+      "pdfPage": 51,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "4.2.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-5-5",
+      "section": "4.2.5. Diabetes in Adults Without Established ASCVD",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "For diabetes with PREVENT-ASCVD 10-year risk ≥10%, adding ezetimibe or a PCSK9 antibody to maximally tolerated statin may be reasonable for LDL-C <70 and non-HDL-C <100 mg/dL.",
+      "page": 51,
+      "pdfPage": 51,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "4.2.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-5-6",
+      "section": "4.2.5. Diabetes in Adults Without Established ASCVD",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "For diabetes after age 75 with life expectancy ≥2.5 years, starting a moderate-intensity statin may be reasonable after discussion of benefits and risks.",
+      "page": 51,
+      "pdfPage": 51,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "4.2.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-5-7",
+      "section": "4.2.5. Diabetes in Adults Without Established ASCVD",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "At ages 20–39 with diabetes lasting ≥10 years for type 2 or ≥20 years for type 1, albuminuria ≥30 µg/mg, eGFR <60, retinopathy, neuropathy, or ankle-brachial index <0.9, a moderate-intensity statin may be reasonable.",
+      "page": 51,
+      "pdfPage": 51,
+      "sourceRecommendationNumber": 7,
+      "sourceSection": "4.2.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-6-1",
+      "section": "4.2.6. Secondary ASCVD Prevention",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "For clinical ASCVD that is not very high risk, initiate high-intensity statin therapy for ≥50% LDL-C reduction, LDL-C <70, and non-HDL-C <100 mg/dL.",
+      "page": 55,
+      "pdfPage": 55,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-6-2",
+      "section": "4.2.6. Secondary ASCVD Prevention",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For ASCVD not at very high risk on maximally tolerated statin, adding ezetimibe, a PCSK9 antibody, or bempedoic acid is reasonable for LDL-C <70 and non-HDL-C <100 mg/dL; choose according to reduction needed and preferences.",
+      "page": 55,
+      "pdfPage": 55,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-6-3",
+      "section": "4.2.6. Secondary ASCVD Prevention",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For ASCVD not at very high risk on maximally tolerated statin, additional ezetimibe, a PCSK9 antibody, or bempedoic acid toward LDL-C <55 and non-HDL-C <85 mg/dL is also reasonable after considering reduction needed and preferences.",
+      "page": 55,
+      "pdfPage": 55,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-6-4",
+      "section": "4.2.6. Secondary ASCVD Prevention",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "For very-high-risk ASCVD, initiate high-intensity statin therapy for ≥50% LDL-C reduction, LDL-C <55, and non-HDL-C <85 mg/dL. Very high risk requires ≥2 major ASCVD events, or 1 major event plus ≥2 high-risk conditions; ischemic stroke is a major event.",
+      "page": 55,
+      "pdfPage": 55,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "4.2.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-6-5",
+      "section": "4.2.6. Secondary ASCVD Prevention",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "For very-high-risk ASCVD on maximally tolerated statin, add ezetimibe and/or a PCSK9 antibody as needed for LDL-C <55 and non-HDL-C <85 mg/dL, considering reduction needed and patient preferences.",
+      "page": 55,
+      "pdfPage": 55,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "4.2.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-6-6",
+      "section": "4.2.6. Secondary ASCVD Prevention",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For very-high-risk ASCVD on maximally tolerated statin, adding bempedoic acid, with or without ezetimibe and/or a PCSK9 antibody, is reasonable for LDL-C <55 and non-HDL-C <85 mg/dL.",
+      "page": 55,
+      "pdfPage": 55,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "4.2.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-6-7",
+      "section": "4.2.6. Secondary ASCVD Prevention",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For very-high-risk ASCVD on maximally tolerated statin with or without ezetimibe, inclisiran is reasonable if evolocumab or alirocumab cannot be tolerated or obtained, or less frequent dosing is strongly preferred, toward LDL-C <55 and non-HDL-C <85 mg/dL. Cardiovascular outcome trials were incomplete at publication; this is an LDL-C-lowering recommendation.",
+      "page": 55,
+      "pdfPage": 55,
+      "sourceRecommendationNumber": 7,
+      "sourceSection": "4.2.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-6-8",
+      "section": "4.2.6. Secondary ASCVD Prevention",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For HFrEF due to ischemic heart disease, a 3–5-year life expectancy, and no statin already prescribed for ASCVD, a moderate-intensity statin may be considered to reduce ASCVD events.",
+      "page": 55,
+      "pdfPage": 55,
+      "sourceRecommendationNumber": 8,
+      "sourceSection": "4.2.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-7-1",
+      "section": "4.2.7. Management of Adults With Subclinical Coronary Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For CAC ≥1000, recommend LDL-C-lowering therapy, generally a statin first, for ≥50% LDL-C reduction, LDL-C <55, and non-HDL-C <85 mg/dL.",
+      "page": 60,
+      "pdfPage": 60,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-7-2",
+      "section": "4.2.7. Management of Adults With Subclinical Coronary Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For CAC 300–999, recommend LDL-C-lowering therapy, generally a statin first, for ≥50% LDL-C reduction, LDL-C <70, and non-HDL-C <100 mg/dL.",
+      "page": 60,
+      "pdfPage": 60,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-7-3",
+      "section": "4.2.7. Management of Adults With Subclinical Coronary Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For CAC 100–299 or ≥75th standardized percentile, recommend LLT, generally a statin first, for ≥50% LDL-C reduction, LDL-C <70, and non-HDL-C <100 mg/dL.",
+      "page": 60,
+      "pdfPage": 60,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-7-4",
+      "section": "4.2.7. Management of Adults With Subclinical Coronary Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For CAC 1–99 below the 75th percentile, or mild incidental CAC, moderate-intensity statin therapy is reasonable for 30–49% LDL-C reduction, LDL-C <100, and non-HDL-C <130 mg/dL.",
+      "page": 60,
+      "pdfPage": 60,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "4.2.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-7-5",
+      "section": "4.2.7. Management of Adults With Subclinical Coronary Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For CAC 300–999, intensifying the statin and, if needed, adding ezetimibe, a PCSK9 antibody, or bempedoic acid is reasonable toward LDL-C <55 and non-HDL-C <85 mg/dL.",
+      "page": 60,
+      "pdfPage": 60,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "4.2.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-7-6",
+      "section": "4.2.7. Management of Adults With Subclinical Coronary Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Without prior ASCVD, moderate-to-severe incidental coronary atherosclerosis on noncardiac CT supports high-intensity statin therapy for ≥50% LDL-C reduction and goals <70/<100 mg/dL for LDL-C/non-HDL-C; mild incidental CAC supports moderate-intensity therapy for 30–49% reduction and goals <100/<130.",
+      "page": 60,
+      "pdfPage": 60,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "4.2.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-1-1",
+      "section": "4.2.8.1. Children and Adolescents",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Use lifestyle management for lipid abnormalities in children and adolescents to improve LDL-C, TG, and non-HDL-C.",
+      "page": 63,
+      "pdfPage": 63,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.8.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-1-2",
+      "section": "4.2.8.1. Children and Adolescents",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For children or adolescents aged ≥8 with persistent LDL-C ≥160 mg/dL and a presentation consistent with FH despite 3–6 months of lifestyle treatment, start a statin and other LLT as needed.",
+      "page": 63,
+      "pdfPage": 63,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.8.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-1-3",
+      "section": "4.2.8.1. Children and Adolescents",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "In children and adolescents with a presentation consistent with FH, genetic testing for pathogenic or likely pathogenic variants can guide diagnosis, cascade testing, and treatment.",
+      "page": 63,
+      "pdfPage": 63,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.8.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-2-1",
+      "section": "4.2.8.2. Young Adults Ages >18–39 Years",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For young adults older than 18 through age 39, recommend diet, physical activity, and weight optimization to reduce lifetime atherogenic exposure and ASCVD risk.",
+      "page": 65,
+      "pdfPage": 65,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.8.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-3-1",
+      "section": "4.2.8.3. Older Adults",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "When considering stopping LLT in older adults, discuss priorities, function, multimorbidity, frailty, polypharmacy, and life expectancy; chronological age alone should not decide treatment.",
+      "page": 65,
+      "pdfPage": 65,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.8.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-3-2",
+      "section": "4.2.8.3. Older Adults",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "After age 75 with life expectancy ≥2.5 years, starting a moderate-intensity statin may be reasonable after a benefits-and-risks discussion.",
+      "page": 66,
+      "pdfPage": 66,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.8.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-3-3",
+      "section": "4.2.8.3. Older Adults",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "When life expectancy is <1 year, stopping LDL-C-lowering therapy may be reasonable to reduce medication burden and adverse effects.",
+      "page": 66,
+      "pdfPage": 66,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.8.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-3-4",
+      "section": "4.2.8.3. Older Adults",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "After age 75 with life expectancy ≥2.5 years and an uncertain LLT decision, CAC testing may help identify zero or minimal CAC (1–10) that supports avoiding LLT.",
+      "page": 66,
+      "pdfPage": 66,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "4.2.8.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-4-1",
+      "section": "4.2.8.4. Management of Dyslipidemia When Planning Pregnancy, During Pregnancy, or While Lactating",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "For people planning pregnancy who have hypercholesterolemia without high ASCVD risk, stop statins 1–2 months before trying to conceive, or as soon as pregnancy is recognized.",
+      "page": 67,
+      "pdfPage": 67,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.8.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-4-2",
+      "section": "4.2.8.4. Management of Dyslipidemia When Planning Pregnancy, During Pregnancy, or While Lactating",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Lipoprotein apheresis is reasonable during pregnancy or lactation in HoFH to lower LDL-C and ASCVD risk.",
+      "page": 67,
+      "pdfPage": 67,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.8.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-4-3",
+      "section": "4.2.8.4. Management of Dyslipidemia When Planning Pregnancy, During Pregnancy, or While Lactating",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For severe fasting hypertriglyceridemia ≥500 mg/dL in pregnancy, fibrates after the first trimester or high-dose omega-3 ethyl esters are reasonable adjuncts to lifestyle treatment to reduce pancreatitis risk.",
+      "page": 67,
+      "pdfPage": 67,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.8.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-4-4",
+      "section": "4.2.8.4. Management of Dyslipidemia When Planning Pregnancy, During Pregnancy, or While Lactating",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "For hypercholesterolemia without hypertriglyceridemia during pregnancy or lactation, bile acid sequestrants are a reasonable LDL-C-lowering option.",
+      "page": 67,
+      "pdfPage": 67,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "4.2.8.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-4-5",
+      "section": "4.2.8.4. Management of Dyslipidemia When Planning Pregnancy, During Pregnancy, or While Lactating",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "For pregnancy with FH or prior ASCVD, continuing a statin may be reasonable after an individualized benefit–risk discussion. If benefit outweighs risk, consider a hydrophilic statin such as pravastatin.",
+      "page": 67,
+      "pdfPage": 67,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "4.2.8.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-6-1",
+      "section": "4.2.8.6. Adults With Heart Failure",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "A",
+      "text": "Do not start LLT solely to reduce events or mortality in HFrEF without clinical ASCVD or another lipid-treatment indication.",
+      "page": 69,
+      "pdfPage": 69,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.8.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-8-1",
+      "section": "4.2.8.8. Adults With CKD—Stage 3 or Higher",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For adults aged 40–75 with CKD stage ≥3 and LDL-C 70–189 mg/dL, recommend a moderate-intensity statin, alone or with ezetimibe, to reduce ASCVD risk.",
+      "page": 70,
+      "pdfPage": 70,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.8.8",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-8-2",
+      "section": "4.2.8.8. Adults With CKD—Stage 3 or Higher",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For CKD stage ≥3 with ASCVD, use high-intensity statin therapy with or without ezetimibe and/or a PCSK9 antibody for ≥50% LDL-C reduction, LDL-C <55, and non-HDL-C <85 mg/dL.",
+      "page": 70,
+      "pdfPage": 70,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.8.8",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-8-3",
+      "section": "4.2.8.8. Adults With CKD—Stage 3 or Higher",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "For maintenance hemodialysis, continuing an existing statin may be reasonable; individualize according to expected survival, comorbidities, and ASCVD severity.",
+      "page": 70,
+      "pdfPage": 70,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.8.8",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-9-1",
+      "section": "4.2.8.9. Persons Living With HIV",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For people with HIV aged 40–75 on stable combination antiretroviral therapy, recommend statin therapy to prevent a first ASCVD event and slow coronary atherosclerosis progression.",
+      "page": 71,
+      "pdfPage": 71,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.8.9",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-10-1",
+      "section": "4.2.8.10. Adults With Cancer or History of Cancer",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Cancer survivors with life expectancy ≥2 years who qualify for LLT should receive treatment similarly to people without cancer.",
+      "page": 72,
+      "pdfPage": 72,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.8.10",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-10-2",
+      "section": "4.2.8.10. Adults With Cancer or History of Cancer",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Continue existing statin therapy during active cancer unless a specific interaction is concerning or life expectancy is <1 year.",
+      "page": 72,
+      "pdfPage": 72,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.8.10",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-8-10-3",
+      "section": "4.2.8.10. Adults With Cancer or History of Cancer",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Starting a statin during active cancer may be considered to prevent anthracycline-related cardiotoxicity.",
+      "page": 72,
+      "pdfPage": 72,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.8.10",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-9-1",
+      "section": "4.2.9. Management of Hypertriglyceridemia",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For persistent TG ≥150 mg/dL, investigate and treat secondary causes, then use lifestyle measures first: limit added sugar, alcohol, and saturated fat; exercise; and lose 5–10% of weight if overweight or obese.",
+      "page": 74,
+      "pdfPage": 74,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.9",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-9-2",
+      "section": "4.2.9. Management of Hypertriglyceridemia",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For ASCVD on maximally tolerated statin with TG 150–999 mg/dL, LDL-C ≥55, and non-HDL-C ≥85 mg/dL, intensify LDL-C-lowering therapy to reduce ASCVD risk.",
+      "page": 75,
+      "pdfPage": 75,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.9",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-9-3",
+      "section": "4.2.9. Management of Hypertriglyceridemia",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For familial chylomicronemia syndrome with fasting TG ≥1000 mg/dL, add olezarsen to dietary treatment to lower TG and pancreatitis risk.",
+      "page": 75,
+      "pdfPage": 75,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.9",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-9-4",
+      "section": "4.2.9. Management of Hypertriglyceridemia",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "At age ≥50 with ASCVD or diabetes plus ≥1 ASCVD risk factor, persistent TG 150–499 mg/dL, and LDL-C <100 mg/dL on maximally tolerated statin, adding icosapent ethyl may be reasonable.",
+      "page": 75,
+      "pdfPage": 75,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "4.2.9",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-9-5",
+      "section": "4.2.9. Management of Hypertriglyceridemia",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "At ages 40–75 without ASCVD or diabetes and with persistent TG 150–499 mg/dL, calculate PREVENT-ASCVD 10-year risk to guide discussion of diet, lifestyle, and possible statin treatment.",
+      "page": 75,
+      "pdfPage": 75,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "4.2.9",
+      "sourceFigure": 16,
+      "correctionSourceUrl": "https://doi.org/10.1161/CIR.0000000000001457",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-9-6",
+      "section": "4.2.9. Management of Hypertriglyceridemia",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For persistent TG 500–999 mg/dL, particularly ≥1000, despite dietary treatment, a fibrate or prescription omega-3 fatty acid is reasonable to lower TG and pancreatitis risk.",
+      "page": 75,
+      "pdfPage": 75,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "4.2.9",
+      "sourceFigure": 17,
+      "correctionSourceUrl": "https://doi.org/10.1161/CIR.0000000000001457",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-9-7",
+      "section": "4.2.9. Management of Hypertriglyceridemia",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "When TG is ≥150 mg/dL, use non-HDL-C or apoB preferentially to LDL-C for treatment decisions.",
+      "page": 75,
+      "pdfPage": 75,
+      "sourceRecommendationNumber": 7,
+      "sourceSection": "4.2.9",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-10-1",
+      "section": "4.2.10. Approach to Patients With Elevated Lp(a)",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For Lp(a) ≥125 nmol/L or ≥50 mg/dL, optimize modifiable cardiovascular risk factors early to reduce ASCVD risk.",
+      "page": 81,
+      "pdfPage": 81,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.10",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-10-2",
+      "section": "4.2.10. Approach to Patients With Elevated Lp(a)",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For ASCVD with elevated Lp(a) and LDL-C/non-HDL-C goals unmet on maximally tolerated statin, add a PCSK9 antibody with demonstrated cardiovascular benefit.",
+      "page": 81,
+      "pdfPage": 81,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.10",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-11-1",
+      "section": "4.2.11. Management of Statin-Attributed Muscle Symptoms",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "For statin-attributed muscle symptoms, assess secondary causes; severe myalgia or weakness warrants objective strength assessment and CK measurement.",
+      "page": 82,
+      "pdfPage": 82,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "4.2.11",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-11-2",
+      "section": "4.2.11. Management of Statin-Attributed Muscle Symptoms",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Acknowledge muscle-symptom concerns, explain the increased ASCVD risk of stopping a statin, and offer alternative lipid-treatment options.",
+      "page": 82,
+      "pdfPage": 82,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "4.2.11",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-11-3",
+      "section": "4.2.11. Management of Statin-Attributed Muscle Symptoms",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For ASCVD with statin-attributed muscle symptoms after excluding secondary causes and with treatment goals unmet, use a tolerable lower statin dose and add bempedoic acid, ezetimibe, or a PCSK9 antibody, alone or together.",
+      "page": 82,
+      "pdfPage": 82,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "4.2.11",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-11-4",
+      "section": "4.2.11. Management of Statin-Attributed Muscle Symptoms",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Without ASCVD, after excluding secondary causes of statin muscle symptoms, add bempedoic acid and/or ezetimibe for LDL-C <70 and non-HDL-C <100 mg/dL when PREVENT-ASCVD risk is ≥10%, CAC is ≥300, or diabetes accompanies age >65 in women or >60 in men.",
+      "page": 82,
+      "pdfPage": 82,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "4.2.11",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-11-5",
+      "section": "4.2.11. Management of Statin-Attributed Muscle Symptoms",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Without ASCVD, when statin muscle symptoms limit recommended therapy and secondary causes are excluded, add a PCSK9 antibody if goals remain unmet and PREVENT-ASCVD risk is ≥10%, CAC is ≥300, or diabetes is present.",
+      "page": 82,
+      "pdfPage": 82,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "4.2.11",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-11-6",
+      "section": "4.2.11. Management of Statin-Attributed Muscle Symptoms",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For ASCVD with statin muscle symptoms, secondary causes excluded, and goals unmet on bempedoic acid with or without ezetimibe, inclisiran is reasonable if evolocumab or alirocumab is unavailable or intolerable, or infrequent dosing is strongly preferred; goals are LDL-C <55 and non-HDL-C <85 mg/dL.",
+      "page": 82,
+      "pdfPage": 82,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "4.2.11",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-11-7",
+      "section": "4.2.11. Management of Statin-Attributed Muscle Symptoms",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Without ASCVD, after excluding secondary causes of statin muscle symptoms, CAC scoring may guide an uncertain decision about ezetimibe and/or bempedoic acid at PREVENT-ASCVD risk 3–<10%.",
+      "page": 82,
+      "pdfPage": 82,
+      "sourceRecommendationNumber": 7,
+      "sourceSection": "4.2.11",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-4-2-11-8",
+      "section": "4.2.11. Management of Statin-Attributed Muscle Symptoms",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Without ASCVD, after excluding secondary causes of statin muscle symptoms, adding ezetimibe and/or bempedoic acid may be reasonable at PREVENT-ASCVD risk 3–<10%, toward LDL-C <100 and non-HDL-C <130 mg/dL.",
+      "page": 82,
+      "pdfPage": 82,
+      "sourceRecommendationNumber": 8,
+      "sourceSection": "4.2.11",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-5-1-1",
+      "section": "5.1. Medication Safety and Therapy-Associated Side Effects",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Before starting lipid-lowering medication, discuss individual benefits and risks to support engagement and adherence.",
+      "page": 85,
+      "pdfPage": 85,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-5-1-2",
+      "section": "5.1. Medication Safety and Therapy-Associated Side Effects",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Continue statin therapy in people at increased diabetes risk or with new diabetes, emphasizing adherence, net benefit, and lifestyle management.",
+      "page": 85,
+      "pdfPage": 85,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-5-1-3",
+      "section": "5.1. Medication Safety and Therapy-Associated Side Effects",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For elevated ASCVD risk with stable chronic liver disease, including metabolic dysfunction-associated steatotic liver disease, statin treatment is reasonable.",
+      "page": 85,
+      "pdfPage": 85,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-5-1-4",
+      "section": "5.1. Medication Safety and Therapy-Associated Side Effects",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-R",
+      "text": "Do not routinely use coenzyme Q10 to prevent or treat statin-attributed muscle symptoms.",
+      "page": 85,
+      "pdfPage": 85,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-5-1-5",
+      "section": "5.1. Medication Safety and Therapy-Associated Side Effects",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "A",
+      "text": "Routine CK testing is not useful for statin safety when severe muscle symptoms are absent.",
+      "page": 85,
+      "pdfPage": 85,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-5-1-6",
+      "section": "5.1. Medication Safety and Therapy-Associated Side Effects",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "B-NR",
+      "text": "Routine liver-function testing is not useful for statin safety without severe symptoms suggesting hepatotoxicity, such as jaundice, pruritus, fatigue, nausea/vomiting, or abdominal pain.",
+      "page": 85,
+      "pdfPage": 85,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-dyslipidemia-2026-5-2-1",
+      "section": "5.2. Statin-Cardiovascular Drug Interactions",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Before starting a statin, review concomitant medicines and potential interactions with cardiovascular drugs to reduce adverse effects.",
+      "page": 88,
+      "pdfPage": 88,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.2",
+      "sourceStatementType": "recommendation"
+    }
+  ],
+  "coverage": {
+    "status": "complete",
+    "scope": "All formal recommendations and good-practice/consensus statements",
+    "checkedAt": "2026-09-06",
+    "sourceRecommendationCount": 131,
+    "sourceConsensusCount": 0,
+    "sourceSections": [
+      {
+        "id": "3.1",
+        "title": "Screening in Children and Adults",
+        "sourceTable": "Recommendations for Screening in Children and Adults",
+        "rowCount": 3,
+        "pageRange": [
+          11,
+          11
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "3.2",
+        "title": "Measurement of TC, LDL-C, HDL-C, TG, and Non-HDL-C",
+        "sourceTable": "Recommendations for Measurement of TC, LDL-C, HDL-C, TG, and Non–HDL-C",
+        "rowCount": 6,
+        "pageRange": [
+          13,
+          13
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "3.3",
+        "title": "Measurement of ApoB",
+        "sourceTable": "Recommendations for Measurement of ApoB",
+        "rowCount": 2,
+        "pageRange": [
+          14,
+          14
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "3.4",
+        "title": "Measurement of Lp(a)",
+        "sourceTable": "Recommendations for Measurement of Lp(a)",
+        "rowCount": 3,
+        "pageRange": [
+          15,
+          15
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "3.5",
+        "title": "Monitoring and Follow-Up",
+        "sourceTable": "Recommendation for Monitoring and Follow-Up",
+        "rowCount": 1,
+        "pageRange": [
+          16,
+          16
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "4.1.1",
+        "title": "Primordial Prevention of Dyslipidemia: Childhood Through Adulthood",
+        "sourceTable": "Recommendation for Primordial Prevention of Dyslipidemia: Childhood Through Adulthood",
+        "rowCount": 1,
+        "pageRange": [
+          18,
+          18
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "4.1.2.1",
+        "title": "Dietary Management of LDL-C Disorders",
+        "sourceTable": "Recommendation for Dietary Management of LDL-C Disorders",
+        "rowCount": 1,
+        "pageRange": [
+          18,
+          18
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "4.1.2.2",
+        "title": "Lifestyle Management of Hypertriglyceridemia",
+        "sourceTable": "Recommendations for Lifestyle Management of Hypertriglyceridemia",
+        "rowCount": 4,
+        "pageRange": [
+          19,
+          20
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "4.1.3",
+        "title": "Attainment and Maintenance of a Healthy Weight in Dyslipidemia",
+        "sourceTable": "Recommendation for Attainment and Maintenance of a Healthy Weight in Dyslipidemia",
+        "rowCount": 1,
+        "pageRange": [
+          21,
+          21
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "4.1.4",
+        "title": "Physical Activity",
+        "sourceTable": "Recommendation for Physical Activity",
+        "rowCount": 1,
+        "pageRange": [
+          21,
+          21
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "4.1.5",
+        "title": "Dietary Supplements",
+        "sourceTable": "Recommendation for Dietary Supplements",
+        "rowCount": 1,
+        "pageRange": [
+          22,
+          22
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "4.1.6",
+        "title": "When to Refer to a Registered Dietitian Nutritionist",
+        "sourceTable": "Recommendations for When to Refer to a Registered Dietitian Nutritionist",
+        "rowCount": 2,
+        "pageRange": [
+          23,
+          23
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "4.2.3.1",
+        "title": "Role of the Individualized Benefit-Risk Discussion",
+        "sourceTable": "Recommendation for Role of the Individualized Benefit-Risk Discussion",
+        "rowCount": 1,
+        "pageRange": [
+          29,
+          29
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "4.2.3.2",
+        "title": "PREVENT-ASCVD Equations",
+        "sourceTable": "Recommendation for PREVENT-ASCVD Equations",
+        "rowCount": 1,
+        "pageRange": [
+          30,
+          30
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "4.2.3.3",
+        "title": "Risk Enhancers",
+        "sourceTable": "Recommendations for Risk Enhancers",
+        "rowCount": 2,
+        "pageRange": [
+          33,
+          33
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "4.2.3.4",
+        "title": "Reproductive Risk Markers",
+        "sourceTable": "Recommendation for Reproductive Risk Markers",
+        "rowCount": 1,
+        "pageRange": [
+          36,
+          36
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "4.2.3.6",
+        "title": "Selective Imaging of Subclinical Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+        "sourceTable": "Recommendations for Selective Imaging of Subclinical Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+        "rowCount": 6,
+        "pageRange": [
+          36,
+          37
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "4.2.3.7",
+        "title": "Primary Prevention in Adults 30–79 Years With LDL-C 70–189 mg/dL",
+        "sourceTable": "Recommendations for Primary Prevention in Adults 30 to 79 Years With LDL-C Levels 70 to 189 mg/dL (1.8-4.9 mmol/L)",
+        "rowCount": 12,
+        "pageRange": [
+          39,
+          39
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      },
+      {
+        "id": "4.2.4.1",
+        "title": "Role of Risk Assessment in Heterozygous Familial Hypercholesterolemia",
+        "sourceTable": "Recommendations for Role of Risk Assessment in HeFH",
+        "rowCount": 2,
+        "pageRange": [
+          44,
+          44
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "4.2.4.2",
+        "title": "Genetic Testing for Familial Hypercholesterolemia",
+        "sourceTable": "Recommendations for Genetic Testing for FH",
+        "rowCount": 3,
+        "pageRange": [
+          44,
+          44
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "4.2.4.3",
+        "title": "Severe Hypercholesterolemia With LDL-C ≥190 mg/dL",
+        "sourceTable": "Recommendations for Severe Hypercholesterolemia With LDL-C ≥190 mg/dL (4.9 mmol/L)*",
+        "rowCount": 6,
+        "pageRange": [
+          45,
+          46
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "4.2.4.4",
+        "title": "Severe Hypercholesterolemia With Clinical or Genetic Confirmation of Homozygous FH",
+        "sourceTable": "Recommendations for Severe Hypercholesterolemia With Clinical or Genetic Confirmation of Homozygous FH",
+        "rowCount": 5,
+        "pageRange": [
+          49,
+          49
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "id": "4.2.5",
+        "title": "Diabetes in Adults Without Established ASCVD",
+        "sourceTable": "Recommendations for Adults With Diabetes Without Established ASCVD",
+        "rowCount": 7,
+        "pageRange": [
+          51,
+          51
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "id": "4.2.6",
+        "title": "Secondary ASCVD Prevention",
+        "sourceTable": "Recommendations for Secondary ASCVD Prevention",
+        "rowCount": 8,
+        "pageRange": [
+          55,
+          55
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "id": "4.2.7",
+        "title": "Management of Adults With Subclinical Coronary Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+        "sourceTable": "Recommendations for Management of Adults With Subclinical Coronary Atherosclerosis (Men ≥40 or Women ≥45 Years)",
+        "rowCount": 6,
+        "pageRange": [
+          60,
+          60
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "4.2.8.1",
+        "title": "Children and Adolescents",
+        "sourceTable": "Recommendations for Children and Adolescents",
+        "rowCount": 3,
+        "pageRange": [
+          63,
+          63
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "4.2.8.2",
+        "title": "Young Adults Ages >18–39 Years",
+        "sourceTable": "Recommendation for Young Adults Ages >18 to 39 Years of Age",
+        "rowCount": 1,
+        "pageRange": [
+          65,
+          65
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "4.2.8.3",
+        "title": "Older Adults",
+        "sourceTable": "Recommendations for Older Adults",
+        "rowCount": 4,
+        "pageRange": [
+          65,
+          66
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "4.2.8.4",
+        "title": "Management of Dyslipidemia When Planning Pregnancy, During Pregnancy, or While Lactating",
+        "sourceTable": "Recommendations for Management of Dyslipidemia in Persons Planning Pregnancy, During Pregnancy, or While Lactating",
+        "rowCount": 5,
+        "pageRange": [
+          67,
+          67
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "id": "4.2.8.6",
+        "title": "Adults With Heart Failure",
+        "sourceTable": "Recommendation for Adults With Heart Failure",
+        "rowCount": 1,
+        "pageRange": [
+          69,
+          69
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "4.2.8.8",
+        "title": "Adults With CKD—Stage 3 or Higher",
+        "sourceTable": "Recommendations for Adults With CKD—Stage 3 or Higher",
+        "rowCount": 3,
+        "pageRange": [
+          70,
+          70
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "4.2.8.9",
+        "title": "Persons Living With HIV",
+        "sourceTable": "Recommendation for Persons Living With HIV",
+        "rowCount": 1,
+        "pageRange": [
+          71,
+          71
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "4.2.8.10",
+        "title": "Adults With Cancer or History of Cancer",
+        "sourceTable": "Recommendations for Adults With Cancer or History of Cancer",
+        "rowCount": 3,
+        "pageRange": [
+          72,
+          72
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "4.2.9",
+        "title": "Management of Hypertriglyceridemia",
+        "sourceTable": "Recommendations for Management of Hypertriglyceridemia",
+        "rowCount": 7,
+        "pageRange": [
+          74,
+          75
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "id": "4.2.10",
+        "title": "Approach to Patients With Elevated Lp(a)",
+        "sourceTable": "Recommendations for the Approach to Patients With Elevated Lp(a)",
+        "rowCount": 2,
+        "pageRange": [
+          81,
+          81
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "4.2.11",
+        "title": "Management of Statin-Attributed Muscle Symptoms",
+        "sourceTable": "Recommendations for Management of Statin-Attributed Muscle Symptoms",
+        "rowCount": 8,
+        "pageRange": [
+          82,
+          82
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "id": "5.1",
+        "title": "Medication Safety and Therapy-Associated Side Effects",
+        "sourceTable": "Recommendations for Medication Safety and Therapy-Associated Side Effects",
+        "rowCount": 6,
+        "pageRange": [
+          85,
+          85
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "5.2",
+        "title": "Statin-Cardiovascular Drug Interactions",
+        "sourceTable": "Recommendation for Managing Statin-Cardiovascular Drug Interactions",
+        "rowCount": 1,
+        "pageRange": [
+          88,
+          88
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      }
+    ],
+    "sourceDocument": {
+      "doi": "10.1161/CIR.0000000000001423",
+      "edition": "Complete Circulation ahead-of-print PDF, 123 pages; PDF pagination is used, not final journal pagination. June 2026 correction reviewed separately.",
+      "pdfUrl": "https://www.cardiosur.org/_files/ugd/80eeaf_23f1593b78dd483a87b4a091485c4056.pdf",
+      "pageCount": 123
+    },
+    "note": "All 131 numbered COR/LOE recommendations across 38 unique tables are represented once, including expert-opinion recommendations. No separately designated ungraded good-practice or consensus statements are present. Supporting narrative, figures, reference tables, and duplicate What Is New/Take-Home summaries are not additional recommendation rows."
+  },
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "42330109",
+      "doi": "10.1161/CIR.0000000000001457",
+      "publisherUrl": "https://doi.org/10.1161/CIR.0000000000001457",
+      "status": "applied",
+      "note": "Reviewed the full June 2026 correction: the ApoB take-home TG threshold is ≥150 mg/dL; hypertriglyceridemia recommendations 5 and 6 refer to Figures 16 and 17, respectively; two reviewer-name spellings are corrected. Recommendation summaries do not reproduce the erroneous figure links or take-home threshold. Formal recommendation COR/LOE and treatment wording are unchanged.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": [
+        "aha-dyslipidemia-2026-4-2-9-5",
+        "aha-dyslipidemia-2026-4-2-9-6"
+      ]
     }
   ]
 }

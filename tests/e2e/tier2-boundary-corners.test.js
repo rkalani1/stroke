@@ -74,7 +74,7 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
       expect(isEligibleBP(160, 95)).toBe(true);
     });
 
-    it('F1-T2.4: AIS recommendation taxonomy completeness: all 195 recommendations have defined COR and text', () => {
+    it('F1-T2.4: AIS recommendation taxonomy completeness: all 202 recommendations have defined COR and text', () => {
       for (const rec of aisData.recommendations) {
         expect(rec.classOfRec).toBeDefined();
         expect(rec.text).toBeTruthy();
@@ -350,7 +350,7 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
   describe('Feature 7 Boundary & Corner Cases', () => {
     const indexData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/index.json'), 'utf8'));
 
-    it('F7-T2.1: Search query filtering across all 3550 indexed guideline rows handles case-insensitivity', () => {
+    it('F7-T2.1: Search query filtering across all 4114 indexed guideline rows handles case-insensitivity', () => {
       const active = indexData.data.filter(x => x.id !== 'landmark-trials');
       let total = 0;
       let matches = 0;
@@ -360,7 +360,7 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
         total += recs.length;
         matches += recs.filter(r => /thromboly|alteplase|tenecteplase|stroke|prevention|management/i.test(r.text)).length;
       }
-      expect(total).toBe(3550);
+      expect(total).toBe(4114);
       expect(matches).toBeGreaterThan(100);
     });
 
@@ -883,9 +883,11 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
       expect(sw).toContain('CORE_ASSETS');
     });
 
-    it('F18-T2.5: ESBuild target compatibility: bundle specifies es2018 target in package.json build script', () => {
+    it('F18-T2.5: ESBuild target compatibility: browser build retains the es2018 target', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.scripts['build:js']).toContain('--target=es2018');
+      expect(pkg.scripts['build:js']).toBe('node ./scripts/build-browser.mjs');
+      const builder = fs.readFileSync(path.join(ROOT, 'scripts/build-browser.mjs'), 'utf8');
+      expect(builder).toMatch(/target:\s*'es2018'/);
     });
   });
 

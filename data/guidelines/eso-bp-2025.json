@@ -9,192 +9,343 @@
   "pmid": "42095756",
   "recommendations": [
     {
-      "section": "PICO 1 — Pre-hospital BP lowering in suspected acute stroke",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
-      "levelOfEvidence": "Ungraded",
-      "text": "In patients with suspected stroke, we suggest against routine blood pressure lowering in the pre-hospital setting.",
-      "page": null
+      "id": "eso-bp-2025-pico1-r1",
+      "section": "PICO 1: Prehospital suspected stroke",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Routine prehospital blood pressure reduction is not recommended in suspected acute stroke.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 1 recommendation 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 1; recommendation 1"
     },
     {
-      "section": "PICO 1 — Pre-hospital BP lowering in suspected acute stroke (expert consensus statement, vote 10/10)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
+      "id": "eso-bp-2025-pico1-c1",
+      "section": "PICO 1: Prehospital drug selection",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Due to the potential harm to patients with ICH, treatment with transdermal glyceryl trinitrate should be avoided. Intravenous urapidil or labetalol could be the treatment of choice.",
-      "page": null
+      "text": "Avoid transdermal glyceryl trinitrate because it may harm patients with ICH. Intravenous urapidil or labetalol may be preferred if blood pressure treatment is used. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 1 consensus 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 1; consensus 1"
     },
     {
-      "section": "PICO 2 — Hospitalised AIS not treated with reperfusion therapies (IVT or MT)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
-      "levelOfEvidence": "Ungraded",
-      "text": "In hospitalised patients with acute ischaemic stroke and blood pressure < 220/110 mmHg not treated with intravenous thrombolysis or mechanical thrombectomy, we suggest against the routine use of blood pressure-lowering agents at least in the first 24 h following symptom onset, unless this is necessary for a specific comorbid condition that requires blood pressure lowering.",
-      "page": null
+      "id": "eso-bp-2025-pico2-r1",
+      "section": "PICO 2: AIS without reperfusion",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For hospitalised AIS with blood pressure <220/110 mmHg and no IVT or thrombectomy, avoid routine blood pressure reduction during at least the first 24 hours after onset unless a specific comorbidity requires it.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 2 recommendation 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 2; recommendation 1"
     },
     {
-      "section": "PICO 2 — Hospitalised AIS not treated with reperfusion therapies (expert consensus statement, vote 10/10)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
+      "id": "eso-bp-2025-pico2-c1",
+      "section": "PICO 2: Marked hypertension without reperfusion",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "In hospitalised patients with acute ischaemic stroke and blood pressure > 220/120 mmHg not treated with intravenous thrombolysis or mechanical thrombectomy, careful blood pressure reduction (< 15% systolic blood pressure reduction in 24 h) is reasonable and likely to be safe. No specific blood pressure-lowering agent can be recommended.",
-      "page": null
+      "text": "For AIS without IVT or thrombectomy and blood pressure >220/120 mmHg, cautious reduction by <15% in systolic pressure over 24 hours is reasonable and likely safe. No particular agent is supported. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 2 consensus 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 2; consensus 1"
     },
     {
-      "section": "PICO 3 — Hospitalised AIS undergoing intravenous thrombolysis (with or without mechanical thrombectomy)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
-      "levelOfEvidence": "Ungraded",
-      "text": "In hospitalised patients with acute ischaemic stroke and undergoing intravenous thrombolysis (with or without mechanical thrombectomy), we suggest maintaining blood pressure below 185/110 mmHg before bolus, and below 180/105 mmHg after bolus and for 24 h. No specific blood pressure-lowering agent can be recommended.",
-      "page": null
+      "id": "eso-bp-2025-pico3-r1",
+      "section": "PICO 3: IV thrombolysis blood pressure limits",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For AIS receiving IVT, with or without thrombectomy, maintain blood pressure <185/110 mmHg before the bolus and <180/105 mmHg afterward for 24 hours. Evidence does not identify a preferred agent.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 3 recommendation 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 3; recommendation 1"
     },
     {
-      "section": "PICO 3 — Hospitalised AIS undergoing intravenous thrombolysis (with or without mechanical thrombectomy)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
-      "levelOfEvidence": "Ungraded",
-      "text": "In hospitalised patients with acute ischaemic stroke and undergoing intravenous thrombolysis (with or without mechanical thrombectomy), we suggest against lowering systolic blood pressure to a target of 130–140 mmHg compared to < 180 mmHg during the first 72 h following symptom onset.",
-      "page": null
+      "id": "eso-bp-2025-pico3-r2",
+      "section": "PICO 3: Intensive reduction after IVT",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "After IVT, with or without thrombectomy, avoid targeting systolic pressure 130–140 mmHg rather than <180 mmHg during the first 72 hours after stroke onset.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 3 recommendation 2",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 3; recommendation 2"
     },
     {
-      "section": "PICO 4 — AIS caused by LVO undergoing mechanical thrombectomy (with or without IVT)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
-      "levelOfEvidence": "Ungraded",
-      "text": "In patients with acute ischaemic stroke caused by LVO and undergoing mechanical thrombectomy (with or without intravenous thrombolysis), we suggest keeping blood pressure below 180/105 mmHg during, and for 24 h after, mechanical thrombectomy. No specific blood pressure-lowering agent can be recommended.",
-      "page": null
+      "id": "eso-bp-2025-pico4-r1",
+      "section": "PICO 4: Thrombectomy blood pressure ceiling",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "During thrombectomy for AIS due to LVO, with or without IVT, and for 24 hours afterward, keep blood pressure <180/105 mmHg; no specific drug is preferred. The source labels this recommendation weak against intervention.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 4 recommendation 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 4; recommendation 1"
     },
     {
-      "section": "PICO 4 — AIS caused by LVO undergoing mechanical thrombectomy (with or without IVT)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
-      "levelOfEvidence": "Ungraded",
-      "text": "In patients with acute ischaemic stroke caused by LVO and undergoing mechanical thrombectomy (with or without intravenous thrombolysis), we suggest against individualised blood pressure management (guided by pre-procedural blood pressure levels) during mechanical thrombectomy.",
-      "page": null
+      "id": "eso-bp-2025-pico4-r2",
+      "section": "PICO 4: Individualised procedural pressure targets",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Avoid individualised blood pressure management guided by pre-procedural pressure values during thrombectomy for AIS due to LVO, with or without IVT.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 4 recommendation 2",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 4; recommendation 2"
     },
     {
-      "section": "PICO 4 — AIS caused by LVO undergoing mechanical thrombectomy (with or without IVT)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
-      "levelOfEvidence": "Ungraded",
-      "text": "In patients with acute ischaemic stroke caused by LVO and undergoing mechanical thrombectomy (with or without intravenous thrombolysis), we recommend against actively reducing systolic blood pressure < 140 mmHg for the first 24 h following successful mechanical thrombectomy.",
-      "page": null
+      "id": "eso-bp-2025-pico4-r3",
+      "section": "PICO 4: Intensive reduction after successful thrombectomy",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "High certainty",
+      "text": "Do not actively lower systolic pressure to <140 mmHg in the first 24 hours after successful thrombectomy for AIS due to LVO, with or without IVT.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 4 recommendation 3",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 4; recommendation 3"
     },
     {
-      "section": "PICO 4 — AIS caused by LVO undergoing mechanical thrombectomy (with or without IVT)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
-      "levelOfEvidence": "Ungraded",
-      "text": "In patients with acute ischaemic stroke caused by LVO and undergoing mechanical thrombectomy (with or without intravenous thrombolysis), systolic blood pressure drops should be avoided.",
-      "page": null
+      "id": "eso-bp-2025-pico4-r4",
+      "section": "PICO 4: Avoid pressure drops during thrombectomy",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "Avoid systolic blood pressure drops in AIS due to LVO undergoing thrombectomy, with or without IVT.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 4 recommendation 4",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 4; recommendation 4"
     },
     {
-      "section": "PICO 4 — AIS caused by LVO undergoing mechanical thrombectomy (expert consensus statement, vote 10/10)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
+      "id": "eso-bp-2025-pico4-c1",
+      "section": "PICO 4: Complete reperfusion and induced hypertension",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "In patients with acute ischaemic stroke due to LVO who achieve successful reperfusion defined as modified thrombolysis in cerebral infarction grade of 3 following mechanical thrombectomy, we suggest against induced hypertension.",
-      "page": null
+      "text": "Do not induce hypertension after thrombectomy for AIS due to LVO when successful reperfusion is mTICI 3. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 4 consensus 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 4; consensus 1"
     },
     {
-      "section": "PICO 5 — AIS not treated with reperfusion therapies and with clinical deterioration: induced hypertension",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
-      "levelOfEvidence": "Ungraded",
-      "text": "In patients with acute ischaemic stroke not treated with reperfusion therapies (intravenous thrombolysis or mechanical thrombectomy) and with clinical deterioration, we suggest against the routine use of vasopressor drugs to increase blood pressure.",
-      "page": null
+      "id": "eso-bp-2025-pico5-r1",
+      "section": "PICO 5: Deterioration without reperfusion",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "Do not routinely use vasopressors to raise pressure in deteriorating AIS patients who have not received IVT or thrombectomy.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 5 recommendation 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 5; recommendation 1"
     },
     {
-      "section": "PICO 5 — AIS not treated with reperfusion therapies and with clinical deterioration (expert consensus statement, vote 10/10)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
+      "id": "eso-bp-2025-pico5-c1",
+      "section": "PICO 5: Suspected haemodynamic deterioration",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "In patients with acute ischaemic stroke not treated with reperfusion therapies (intravenous thrombolysis or mechanical thrombectomy) and with clinical deterioration where a haemodynamic mechanism is suspected or shown to be directly responsible for the deterioration, we suggest: stopping existing blood pressure-lowering therapy; administering intravenous fluids; and introducing non-pharmacological procedures to raise blood pressure — before considering careful use of vasopressor agents to increase blood pressure with close monitoring of blood pressure values.",
-      "page": null
+      "text": "If deterioration without IVT or thrombectomy is suspected or shown to be haemodynamic, first stop pressure-lowering drugs, give intravenous fluids and use nonpharmacological pressure-raising measures. Only then consider cautious vasopressors with close blood pressure monitoring. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 5 consensus 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 5; consensus 1"
     },
     {
-      "section": "PICO 6 — AIS: continuing vs temporarily stopping previous oral BP-lowering therapy",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
-      "levelOfEvidence": "Ungraded",
-      "text": "In patients with acute ischaemic stroke, we suggest against routinely continuing previous oral blood pressure-lowering therapy.",
-      "page": null
+      "id": "eso-bp-2025-pico6-r1",
+      "section": "PICO 6: Previous oral antihypertensives in AIS",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "Do not routinely continue pre-existing oral blood pressure treatment during acute ischaemic stroke.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 6 recommendation 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 6; recommendation 1"
     },
     {
-      "section": "PICO 6 — AIS: continuing vs temporarily stopping previous oral BP-lowering therapy (expert consensus statement, vote 10/10)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
+      "id": "eso-bp-2025-pico6-c1",
+      "section": "PICO 6: AIS with dysphagia",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "In patients with acute ischaemic stroke, we suggest stopping previous oral blood pressure-lowering therapy in patients with dysphagia until swallowing is restored or a nasogastric tube is in place.",
-      "page": null
+      "text": "In AIS with dysphagia, withhold previous oral antihypertensives until swallowing recovers or a nasogastric tube is available. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 6 consensus 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 6; consensus 1"
     },
     {
-      "section": "PICO 7 — Acute ICH: intensive blood pressure lowering vs control",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
-      "levelOfEvidence": "Ungraded",
-      "text": "For patients with acute spontaneous ICH and systolic blood pressure of 150–220 mmHg, the overall balance of beneficial and adverse effects is uncertain, so we recommend recruitment to ongoing randomised controlled trials. (Strength of recommendation: none assigned.)",
-      "page": null
+      "id": "eso-bp-2025-pico7-r1",
+      "section": "PICO 7: Intensive reduction in spontaneous ICH",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "For acute spontaneous ICH with systolic pressure 150–220 mmHg, the net benefit of intensive lowering remains uncertain. Recruit to ongoing randomised trials; no recommendation strength is assigned.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 7 recommendation 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 7; recommendation 1"
     },
     {
-      "section": "PICO 7 — Acute ICH: intensive blood pressure lowering (expert consensus statement, vote 10/10)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
+      "id": "eso-bp-2025-pico7-c1",
+      "section": "PICO 7: Small or moderate ICH pressure target",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "We suggest lowering systolic blood pressure below 140 mmHg within 6 h of symptom onset in minor or moderate ICH (haematoma volume < 30 mL) to reduce haematoma expansion.",
-      "page": null
+      "text": "For minor or moderate ICH with haematoma volume <30 mL, lower systolic pressure to <140 mmHg within 6 hours of symptom onset to limit haematoma expansion. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 7 consensus 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 7; consensus 1"
     },
     {
-      "section": "PICO 7 — Acute ICH: intensive blood pressure lowering (expert consensus statement, vote 10/10)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
+      "id": "eso-bp-2025-pico7-c2",
+      "section": "PICO 7: ICH reduction safeguards",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "For patients with spontaneous ICH, we suggest avoiding a reduction in systolic blood pressure of more than 70 mmHg from baseline and avoiding active reduction of systolic blood pressure below 110 mmHg. Caution is advised when lowering very high systolic blood pressure (> 220 mmHg), in patients with large haematoma volumes (> 30 mL) or when haematoma evacuation is planned.",
-      "page": null
+      "text": "In spontaneous ICH, avoid lowering systolic pressure by >70 mmHg from baseline or actively below 110 mmHg. Be cautious with initial systolic pressure >220 mmHg, haematoma volume >30 mL or planned haematoma evacuation. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 7 consensus 2",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 7; consensus 2"
     },
     {
-      "section": "PICO 7 — Acute ICH: intensive blood pressure lowering (expert consensus statement, vote 10/10)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
+      "id": "eso-bp-2025-pico7-c3",
+      "section": "PICO 7: Target-based ICH treatment",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "In patients with acute ICH, blood pressure target–based interventions should be preferred over interventions based on fixed antihypertensive agents.",
-      "page": null
+      "text": "In acute ICH, favour treatment directed at a blood pressure target over regimens defined by a fixed antihypertensive agent. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 7 consensus 3",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 7; consensus 3"
     },
     {
-      "section": "PICO 7 — Acute ICH: intensive blood pressure lowering (expert consensus statement, vote 10/10)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
+      "id": "eso-bp-2025-pico7-c4",
+      "section": "PICO 7: ICH treatment timing and maintenance",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "For patients with spontaneous minor or moderate ICH (haematoma volume < 30 mL), we suggest applying the following aspects: initiating antihypertensive treatment as early as possible, ideally within the first 2 h following the onset of symptoms (acute phase): lower systolic blood pressure to < 140 mmHg and minimise variability in blood pressure fluctuations. After lowering systolic blood pressure below the target threshold (up to 7 days, sub-acute phase): maintain systolic blood pressure below 140 mmHg.",
-      "page": null
+      "text": "For spontaneous ICH <30 mL, begin antihypertensive treatment as early as possible, ideally within 2 hours of onset. Reduce systolic pressure to <140 mmHg while limiting variability; maintain <140 mmHg in the subacute period up to 7 days. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 7 consensus 4",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 7; consensus 4"
     },
     {
-      "section": "PICO 8 — Acute ICH: continuing vs temporarily stopping previous oral antihypertensive therapy",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
-      "levelOfEvidence": "Ungraded",
-      "text": "In patients with acute ICH there is continued uncertainty over the benefits and risks (advantages/disadvantages) of continuing vs temporarily stopping previous oral blood pressure-lowering therapy. (Strength of recommendation: none assigned.)",
-      "page": null
+      "id": "eso-bp-2025-pico8-r1",
+      "section": "PICO 8: Previous oral antihypertensives in ICH",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In acute ICH, the benefits and risks of continuing versus temporarily stopping previous oral blood pressure therapy remain uncertain; no recommendation strength is assigned.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 8 recommendation 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 8; recommendation 1"
     },
     {
-      "section": "PICO 8 — Acute ICH: continuing vs temporarily stopping previous oral antihypertensive therapy (expert consensus statement, vote 10/10)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
+      "id": "eso-bp-2025-pico8-c1",
+      "section": "PICO 8: ICH with preserved swallowing",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "In patients with acute ICH who need blood pressure-lowering therapy to maintain blood pressure within the recommended range and who do not have swallowing problems, we suggest continuation of prior oral antihypertensive agents.",
-      "page": null
+      "text": "If acute ICH requires pressure control and swallowing is intact, continue prior oral antihypertensives to maintain the recommended range. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 8 consensus 1",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 8; consensus 1"
     },
     {
-      "section": "PICO 8 — Acute ICH: continuing vs temporarily stopping previous oral antihypertensive therapy (expert consensus statement, vote 10/10)",
-      "classOfRec": "Statement",
-      "classNote": "Summarised from the article text — not the published recommendation box",
+      "id": "eso-bp-2025-pico8-c2",
+      "section": "PICO 8: ICH with dysphagia or impaired consciousness",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "In patients with acute ICH who need blood pressure-lowering therapy to maintain blood pressure within the recommended range and who have dysphagia or decreased level of consciousness, we suggest temporarily stopping previous oral hypertensive therapy and using intravenous antihypertensive agents until swallowing is restored or a nasogastric tube is in place.",
-      "page": null
+      "text": "If acute ICH requires pressure control but dysphagia or reduced consciousness prevents oral use, temporarily withhold previous oral antihypertensives and use intravenous agents until swallowing recovers or a nasogastric tube is available. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 8 consensus 2",
+      "sourceReference": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes; PICO 8; consensus 2"
     }
   ],
-  "extractionStatus": "source-not-machine-readable",
-  "extractionNote": "The recommendation boxes are published as images. The statements below are drawn from the article's running text; grades are recorded only where the text states them explicitly. Consult the source for exact wording.",
   "documentType": "guideline",
-  "gradingSystem": "ungraded"
+  "gradingSystem": "GRADE",
+  "coverage": {
+    "status": "complete",
+    "scope": "All formal recommendations and good-practice/consensus statements",
+    "checkedAt": "2026-09-06",
+    "sourceRecommendationCount": 12,
+    "sourceConsensusCount": 11,
+    "sourceSections": [
+      "PICO 1",
+      "PICO 2",
+      "PICO 3",
+      "PICO 4",
+      "PICO 5",
+      "PICO 6",
+      "PICO 7",
+      "PICO 8"
+    ],
+    "sourceTable": "Table 11, images aakag004fx26-1.jpg through aakag004fx26-3.jpg; individual PICO boxes",
+    "countingNote": "Separately graded recommendation/no-recommendation statements and separately numbered consensus statements are individual entries. Unnumbered consensus boxes retain every clause within one entry.",
+    "inventory": [
+      {
+        "section": "PICO 1",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 2",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 3",
+        "recommendationCount": 2,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 4",
+        "recommendationCount": 4,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 5",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 6",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 7",
+        "recommendationCount": 1,
+        "consensusCount": 4
+      },
+      {
+        "section": "PICO 8",
+        "recommendationCount": 1,
+        "consensusCount": 2
+      }
+    ]
+  }
 }
