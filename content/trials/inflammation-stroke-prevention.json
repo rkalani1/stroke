@@ -49,5 +49,22 @@
     "certainty": "high",
     "lastReviewed": "2026-08-15",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "anti-inflammatory-cv-meta-2026",
+    "name": "Anti-inflammatory CV meta-analysis",
+    "fullName": "Effects of anti-inflammatory agents on cardiovascular outcomes: a systematic review and meta-analysis of randomised controlled trials",
+    "category": "inflammation-stroke-prevention",
+    "population": "n=82208, not reported in the abstract — trial-level meta-analysis, NIHSS not applicable, Medline, Embase and Cochrane searched from inception to 8 October 2024; trials required at least 100 patient-years of follow-up per treatment arm",
+    "finding": "The effect on MACE VARIED BY DRUG CLASS rather than being uniform — driven by colchicine (RR 0.76, moderate certainty) and canakinumab (RR 0.88, moderate certainty), with NO benefit observed for other agents",
+    "teachingPoint": "Reframes anti-inflammatory vascular prevention as class- and population-specific rather than general, and supplies the reason the neutral cerebrovascular colchicine trials should be taken at face value rather than explained away.",
+    "PMID": "42291081",
+    "year": 2026,
+    "citationIds": [
+      "cit-anti-inflammatory-cv-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

@@ -59,5 +59,11 @@ describe('getAllRecommendationIds', () => {
       expect(typeof rec.id).toBe('string');
       expect(idsSet.has(rec.id)).toBe(true);
     }
+
+    for (const id of idsSet) {
+      expect(typeof id).toBe('string');
+      expect(id.length).toBeGreaterThan(0);
+      expect(getRecommendation(id)).not.toBeNull();
+    }
   });
 });

@@ -6,9 +6,11 @@ import vm from 'node:vm';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
+const version = JSON.parse(readFileSync(join(repoRoot, 'package.json'), 'utf8')).version;
+const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-');
 const workerSource = readFileSync(join(repoRoot, 'service-worker.js'), 'utf8');
 
-function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-cache-v6-22-0', 'stroke-cache-v6-23-0']) {
+function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-cache-v6-22-0', currentCache]) {
   const handlers = new Map();
   const deletedCaches = [];
   const postedMessages = [];
@@ -119,9 +121,9 @@ describe('service worker update lifecycle', () => {
     expect(worker.claimCount).toBe(0);
     expect(worker.deletedCaches).toContain('stroke-cache-v6-21-0');
     expect(worker.deletedCaches).toContain('stroke-cache-v6-22-0');
-    expect(worker.deletedCaches).not.toContain('stroke-cache-v6-23-0');
+    expect(worker.deletedCaches).not.toContain(currentCache);
     expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-update-ready', version: '6.23.0' });
+    expect(worker.postedMessages).toContainEqual({ type: 'sw-update-ready', version });
   });
 
   it('stays silent on a first install so new visitors are not told about an update', async () => {
@@ -143,7 +145,7 @@ describe('service worker update lifecycle', () => {
     await worker.dispatch('install');
     await worker.dispatch('activate');
 
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-update-ready', version: '6.23.0' });
+    expect(worker.postedMessages).toContainEqual({ type: 'sw-update-ready', version });
   });
 
   it('stays silent when only unrelated caches exist', async () => {
@@ -162,7 +164,7 @@ describe('service worker update lifecycle', () => {
 
     expect(worker.claimCount).toBe(1);
     expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version: '6.23.0' });
+    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version });
   });
 
   it('claims clients and requests reload for legacy SKIP_WAITING messages', async () => {
@@ -172,7 +174,7 @@ describe('service worker update lifecycle', () => {
 
     expect(worker.claimCount).toBe(1);
     expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version: '6.23.0' });
+    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version });
   });
 
   it('precaches the app shell and the config the app actually fetches', () => {
@@ -226,7 +228,12 @@ describe('service worker update lifecycle', () => {
       return sum + (existsSync(join(repoRoot, rel)) ? statSync(join(repoRoot, rel)).size : 0);
     }, 0);
     // 9.26 MB before the trim. The budget is what stops it drifting back.
-    expect(total).toBeLessThan(6 * 1024 * 1024);
+    // Raised 6 -> 8 MB on 2026-08-29 with the guideline-library rebuild: 108
+    // datasets went from placeholder scope lines to 3547 real recommendations,
+    // and app.jsx guarantees the Guidelines tab works fully offline, so that
+    // payload has to be precached. See the budget history in
+    // scripts/check-asset-budget.mjs for why splitting does not avoid this.
+    expect(total).toBeLessThan(8 * 1024 * 1024);
   });
 
   it('includes iOS splash screens in precache list', () => {

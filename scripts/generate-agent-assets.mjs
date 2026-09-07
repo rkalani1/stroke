@@ -25,6 +25,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import process from 'node:process';
 import { pathToFileURL } from 'node:url';
+import { guidelineCoverage } from '../src/guideline-coverage.js';
 
 const ROOT = process.cwd();
 const DATA = path.join(ROOT, 'data');
@@ -86,7 +87,7 @@ const stalePaths = [];
 
 export async function generatedFileIsCurrent(abs, expected) {
   try {
-    return await fs.readFile(abs, 'utf8') === expected;
+    return (await fs.readFile(abs, 'utf8')).replace(/\r\n/g, '\n') === expected.replace(/\r\n/g, '\n');
   } catch (error) {
     if (error?.code === 'ENOENT') return false;
     throw error;
@@ -184,7 +185,8 @@ async function main() {
     gindex.push({
       id: g.id || derivedId, title: g.title || humanTitle, shortTitle: g.shortTitle, doi: g.doi,
       publisherUrl: g.publisherUrl, pdfUrl: g.pdfUrl,
-      recommendationCount: Array.isArray(g.recommendations) ? g.recommendations.length : 0,
+      ...guidelineCoverage(g),
+      ...(g.coverage ? { coverage: g.coverage } : {}),
       url: `${BASE_URL}/data/guidelines/${f}`,
     });
   }

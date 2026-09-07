@@ -1,0 +1,155 @@
+[
+  {
+    "id": "iris-ipd-meta-analysis",
+    "name": "IRIS IPD meta-analysis",
+    "fullName": "Value of intravenous thrombolysis in endovascular treatment for large-vessel anterior circulation stroke: individual participant data meta-analysis of six randomised trials (IRIS)",
+    "category": "bridging-ivt-before-evt",
+    "population": "n=2313, adults; pooled from six randomised trials, NIHSS large-vessel anterior-circulation occlusion, IVT-eligible time windows of the six contributing trials",
+    "finding": "DID NOT establish non-inferiority of EVT alone: median mRS 3 (IQR 1-5) with EVT alone vs 2 (IQR 1-4) with IVT plus EVT. The CI crosses both the 0.82 non-inferiority boundary and 1.00, so this is an INDETERMINATE result — it neither establishes non-inferiority of skipping the lytic nor demonstrates superiority of bridging.",
+    "teachingPoint": "Teaches the difference between a negative trial and an inconclusive one: the pooled data cannot exclude a meaningful loss of benefit from skipping the lytic, which is why bridging remained the default for an IVT-eligible patient presenting directly to a thrombectomy centre.",
+    "PMID": "37640037",
+    "year": 2023,
+    "citationIds": [
+      "cit-iris-ipd-2023"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "iris-time-dependency",
+    "name": "IRIS time-dependency analysis",
+    "fullName": "Time to Treatment With Intravenous Thrombolysis Before Thrombectomy and Functional Outcomes in Acute Ischemic Stroke: A Meta-Analysis",
+    "category": "bridging-ivt-before-evt",
+    "population": "n=2313, median 71 years (IQR 62-78); 44.3% female, NIHSS anterior-circulation large-vessel occlusion (2313 of 2334 pooled participants), median time from symptom onset to EXPECTED administration of IVT 2 h 28 min (IQR 1 h 46 min to 3 h 17 min)",
+    "finding": "Statistically significant interaction: the benefit of adding IVT falls as the interval from onset to expected IVT lengthens. Adjusted common OR for a 1-step mRS shift toward improvement 1.49 at 1 hour, 1.25 at 2 hours, 1.04 at 3 hours.",
+    "teachingPoint": "Reframes the bridging debate as a clock question rather than a yes/no question: the added value of a lytic before thrombectomy is large very early and shrinks toward nothing by roughly two and a half hours from onset — a gradient, not a threshold.",
+    "PMID": "38324409",
+    "year": 2024,
+    "citationIds": [
+      "cit-iris-time-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "direct-mt",
+    "name": "DIRECT-MT",
+    "fullName": "Endovascular Thrombectomy with or without Intravenous Alteplase in Acute Stroke",
+    "category": "bridging-ivt-before-evt",
+    "population": "n=656, adults, NIHSS acute ischaemic stroke from anterior-circulation large-vessel occlusion, alteplase administered within 4.5 h of symptom onset",
+    "finding": "MET non-inferiority within its prespecified 0.8 margin: thrombectomy alone was non-inferior to alteplase plus thrombectomy. The authors' own conclusion states this holds 'within a 20% margin of confidence.'",
+    "teachingPoint": "The canonical worked example of why a non-inferiority margin must be read before the conclusion — a 'non-inferior' label that tolerates a 20% relative loss of benefit is a different claim from equivalence.",
+    "PMID": "32374959",
+    "year": 2020,
+    "citationIds": [
+      "cit-direct-mt-2020"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "skip-trial",
+    "name": "SKIP",
+    "fullName": "Effect of Mechanical Thrombectomy Without vs With Intravenous Thrombolysis on Functional Outcome Among Patients With Acute Ischemic Stroke: The SKIP Randomized Clinical Trial",
+    "category": "bridging-ivt-before-evt",
+    "population": "n=204, median 74 years; 62.7% men, NIHSS median NIHSS 18, IVT-eligible acute large-vessel occlusion; enrolment January 2017 to July 2019, final follow-up October 2019",
+    "finding": "DID NOT demonstrate non-inferiority: 60/101 (59.4%) with thrombectomy alone vs 59/103 (57.3%) with low-dose alteplase plus thrombectomy. The authors explicitly add that the wide confidence intervals also did NOT allow a conclusion of inferiority — an inconclusive trial, not a negative one.",
+    "teachingPoint": "Illustrates that an underpowered non-inferiority trial answers nothing — SKIP excluded neither benefit nor harm from omitting the lytic, and its comparator was Japan's low-dose alteplase, not the 0.9 mg/kg used elsewhere.",
+    "PMID": "33464334",
+    "year": 2021,
+    "citationIds": [
+      "cit-skip-2021"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "devt",
+    "name": "DEVT",
+    "fullName": "Effect of Endovascular Treatment Alone vs Intravenous Alteplase Plus Endovascular Treatment on Functional Independence in Patients With Acute Ischemic Stroke: The DEVT Randomized Clinical Trial",
+    "category": "bridging-ivt-before-evt",
+    "population": "n=234, mean 68 years; 102 women (43.6%), NIHSS proximal anterior-circulation intracranial occlusion, within 4.5 h of symptom onset and eligible for intravenous thrombolysis",
+    "finding": "MET the prespecified non-inferiority threshold: 63/116 (54.3%) with EVT alone vs 55/118 (46.6%) with combined treatment. The trial was STOPPED EARLY for efficacy after 234 of a planned 970 randomisations — 24% of the intended sample. The authors state the findings 'should be interpreted in the context of the clinical acceptability of the selected noninferiority threshold.'",
+    "teachingPoint": "A worked example of two appraisal traps at once — early stopping for efficacy and a permissive non-inferiority margin — in a trial whose headline reads as a green light to skip the lytic.",
+    "PMID": "33464335",
+    "year": 2021,
+    "citationIds": [
+      "cit-devt-2021"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "mr-clean-no-iv",
+    "name": "MR CLEAN-NO IV",
+    "fullName": "A Randomized Trial of Intravenous Alteplase before Endovascular Treatment for Stroke",
+    "category": "bridging-ivt-before-evt",
+    "population": "n=539, adults, NIHSS acute ischaemic stroke eligible for both intravenous alteplase and endovascular treatment, IVT-eligible window; patients presenting directly to an EVT-capable hospital",
+    "finding": "DID NOT show either: median mRS 3 (IQR 2-5) with EVT alone vs 2 (IQR 2-5) with alteplase plus EVT. EVT alone was neither superior nor non-inferior — an indeterminate result on both prespecified questions.",
+    "teachingPoint": "Teaches that an inconclusive trial is not a licence to change practice — MR CLEAN-NO IV left the door open in both directions, which is precisely why bridging remained standard.",
+    "PMID": "34758251",
+    "year": 2021,
+    "citationIds": [
+      "cit-mrclean-no-iv-2021"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "swift-direct",
+    "name": "SWIFT DIRECT",
+    "fullName": "Thrombectomy alone versus intravenous alteplase plus thrombectomy in patients with stroke: an open-label, blinded-outcome, randomised non-inferiority trial",
+    "category": "bridging-ivt-before-evt",
+    "population": "n=408, adults, NIHSS stroke due to large-vessel occlusion confirmed on CT or MR angiography, IVT-eligible patients admitted to endovascular centres",
+    "finding": "DID NOT show non-inferiority: 114/201 (57%) with thrombectomy alone vs 135/207 (65%) with alteplase plus thrombectomy. The lower limit of the one-sided 95% CI was -15.1%, crossing the -12% margin.",
+    "teachingPoint": "In an IVT-eligible patient already at a thrombectomy centre, omitting alteplase was not shown to be non-inferior and cost reperfusion — a concrete reason the bridging default survived.",
+    "PMID": "35810756",
+    "year": 2022,
+    "citationIds": [
+      "cit-swift-direct-2022"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "direct-safe",
+    "name": "DIRECT-SAFE",
+    "fullName": "Endovascular thrombectomy versus standard bridging thrombolytic with endovascular thrombectomy within 4.5 h of stroke onset: an open-label, blinded-endpoint, randomised non-inferiority trial",
+    "category": "bridging-ivt-before-evt",
+    "population": "n=295, adults, NIHSS large-vessel occlusion of the intracranial internal carotid artery, MCA (M1 or M2), or basilar artery, confirmed on non-contrast CT plus vascular imaging, presented within 4.5 h of stroke onset",
+    "finding": "DID NOT show non-inferiority of direct thrombectomy: 80/146 (55%) direct vs 89/147 (61%) bridging. The authors conclude the study should inform guidelines to recommend bridging therapy as standard treatment.",
+    "teachingPoint": "A second, geographically independent trial reaching the same verdict — within 4.5 h, bridging remains the default for the IVT-eligible patient, including basilar occlusion.",
+    "PMID": "35810757",
+    "year": 2022,
+    "citationIds": [
+      "cit-direct-safe-2022"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "tnk-plus",
+    "name": "TNK-PLUS",
+    "fullName": "Intravenous Tenecteplase Prior to Endovascular Treatment for Ischemic Stroke at 4.5 to 24 Hours: The TNK-PLUS Randomized Clinical Trial",
+    "category": "bridging-ivt-before-evt",
+    "population": "n=391, median 68 years (IQR 59-75); 155 (39.6%) female, NIHSS MCA-M1 or proximal M2 occlusion, 4.5 to 24 h after last known to be well",
+    "finding": "DID NOT meet superiority — a null result: 88/199 (44.2%) with tenecteplase before EVT vs 83/192 (43.2%) with EVT alone. Bridging tenecteplase did not improve clinical outcomes in the 4.5-24 h window.",
+    "teachingPoint": "Sets the boundary on the positive early-window bridging result: beyond 4.5 h, adding tenecteplase before thrombectomy did not improve 90-day independence in a perfusion-selected proximal MCA population.",
+    "PMID": "42099212",
+    "year": 2026,
+    "citationIds": [
+      "cit-tnk-plus-2026"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

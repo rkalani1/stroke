@@ -277,7 +277,7 @@ export const LateWindowEVTCalculator = ({ defaults = {} }) => {
           { k: 'age', label: 'Age' },
           { k: 'nihss', label: 'NIHSS' },
           { k: 'coreMl', label: 'Core (mL)' },
-          { k: 'penumbraMl', label: 'Penumbra (mL)' },
+          { k: 'penumbraMl', label: 'Total hypoperfused (mL)' },
           { k: 'timeFromLKWh', label: 'LKW (h)' }
         ].map(({ k, label }) => (
           <label key={k} className="block">

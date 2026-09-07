@@ -24,10 +24,10 @@ export const EXCLUSION_ITEMS = [
   { id: 'exMultipleTerritories', label: 'Acute occlusions in multiple vascular territories', classifications: ['ischemic'], trials: ['STEP'] },
   { id: 'exTandem', label: 'Tandem occlusions (cervical + intracranial)', classifications: ['ischemic'], trials: ['STEP'] },
   { id: 'exTerminalIllness', label: 'Terminal illness or life expectancy < 2y', classifications: ['ischemic', 'ich'], trials: ['TESTED', 'SATURN'] },
-  { id: 'exSecondaryIch', label: 'Suspected secondary cause for ICH (AVM, aneurysm, tumor, SAH)', classifications: ['ich'], trials: ['MINUTE', 'ASPIRE', 'SATURN'] },
+  { id: 'exSecondaryIch', label: 'Suspected secondary cause for ICH (AVM, aneurysm, tumor, SAH)', classifications: ['ich'], trials: ['MINUTE', 'SATURN'] },
   { id: 'exMidbrain', label: 'Midbrain extension or infratentorial/thalamic location', classifications: ['ich'], trials: ['MINUTE'] },
   { id: 'exPriorIch12m', label: 'Prior ICH in past 12 months', classifications: ['ich'], trials: ['ASPIRE'] },
-  { id: 'exClearAnticoagulationIndication', label: 'Clear baseline indication for anticoagulation', classifications: ['ich'], trials: ['ASPIRE'] },
+  { id: 'exClearAnticoagulationIndication', label: 'Separate mandatory anticoagulation indication (e.g., DVT/PE)', classifications: ['ich'], trials: ['ASPIRE'] },
   { id: 'exClearAntiplateletIndication', label: 'Clear baseline indication for antiplatelet therapy', classifications: ['ich'], trials: ['ASPIRE'] },
   { id: 'exIchScore3', label: 'Clinical ICH Score > 3', classifications: ['ich'], trials: ['SATURN'] },
   { id: 'exRecentMi3m', label: 'Myocardial Infarction within past 3 months', classifications: ['ich'], trials: ['SATURN'] },
@@ -51,14 +51,11 @@ export const EXCLUSION_ITEMS = [
   { id: 'exSeizures', label: 'Seizures since stroke onset / history of epilepsy', classifications: ['ischemic', 'ich'], trials: ['VERIFY', 'MR-PICS'] },
   { id: 'exBotoxVns3m', label: 'Botulinum toxin to paretic arm within past 3 months or expected by 8-month visit', classifications: ['ischemic', 'ich'], trials: ['TELE-REHAB-2'] },
   { id: 'exAnticoagulation', label: 'Currently taking anticoagulants', classifications: ['ischemic'], trials: ['MR-PICS'] },
-  { id: 'exHistoryDvtPe', label: 'History of DVT or pulmonary emboli (PE)', classifications: ['ischemic'], trials: ['MR-PICS'] },
+  { id: 'exHistoryDvtPe', label: 'History of unprovoked DVT or any pulmonary embolus', classifications: ['ischemic'], trials: ['MR-PICS'] },
   { id: 'exRecurrentStroke', label: 'Recurrent stroke since the index stroke', classifications: ['ischemic', 'ich'], trials: ['TELE-REHAB-2'] },
   { id: 'exLifeExpectancy9m', label: 'Life expectancy < 9 months', classifications: ['ischemic', 'ich'], trials: ['TELE-REHAB-2'] },
   { id: 'exCongestiveHeartFailure', label: 'Congestive Heart Failure (moderate/severe)', classifications: ['ischemic', 'tia'], trials: ['CLARITY'] },
   { id: 'exSevereAphasiaCognitive', label: 'Moderate-to-severe cognitive impairment, dementia, or severe aphasia', classifications: ['ischemic', 'ich'], trials: ['MR-PICS', 'CAPPRICORN-1'] },
-  { id: 'exSevereSpasticity', label: 'Severe spasticity in target arm', classifications: ['ischemic'], trials: ['MR-PICS'] },
-  { id: 'exArmInjury', label: 'Arm fracture or orthopedic injury', classifications: ['ischemic'], trials: ['MR-PICS'] },
-  { id: 'exSevereClaustrophobia', label: 'Severe claustrophobia', classifications: ['ischemic'], trials: ['MR-PICS'] },
   { id: 'exEgfr30', label: 'eGFR < 30 ml/min/1.73m²', classifications: ['ich'], trials: ['CAPPRICORN-1'] }
 ];
 
@@ -127,6 +124,7 @@ export function createInitialScreenerState() {
     aspects: 'unselected',
     gcs: 'unselected',
     preMrs: 'unselected',
+    currentMrs: 'unselected',
     vessel: 'unselected',
     etiology: 'unselected',
     ichLocation: 'unselected',
@@ -168,6 +166,7 @@ export function buildScreenerParams(state) {
     aspects: state.aspects,
     gcs: state.gcs,
     preMrs: state.preMrs,
+    currentMrs: state.currentMrs ?? 'unselected',
     vessel: state.vessel,
     etiology: state.etiology,
     ichLocation: state.ichLocation,
@@ -204,11 +203,11 @@ export function evaluateTrialEligibility(trial, p) {
   }
 
   const pessP = { ...p };
-  const UNSELECTED_MAP = { age: 17, nihss: -1, aspects: -1, gcs: -1, preMrs: 6, vessel: 'none', etiology: 'none', ichLocation: 'none', volume: 'none', statin: false, afibHistory: false, takingOac: false, language: 'other', rehab: 'none', self_consent: false, availability_54w: false, exUeWeakness: false, unilateralSymptomatic: false, anteriorCirculation: false, presentedWithin24h: false, singleAntiplateletSoc: false };
+  const UNSELECTED_MAP = { age: 17, nihss: -1, aspects: -1, gcs: -1, preMrs: 6, currentMrs: 6, vessel: 'none', etiology: 'none', ichLocation: 'none', volume: 'none', statin: false, afibHistory: false, takingOac: false, language: 'other', rehab: 'none', self_consent: false, availability_54w: false, exUeWeakness: false, unilateralSymptomatic: false, anteriorCirculation: false, presentedWithin24h: false, singleAntiplateletSoc: false };
   Object.keys(UNSELECTED_MAP).forEach(k => { if (pessP[k] === 'unselected') pessP[k] = UNSELECTED_MAP[k]; });
 
   const optP = { ...p };
-  const OPT_DEFAULTS = { age: 65, nihss: 8, aspects: 8, gcs: 15, preMrs: 0, vessel: 'none', etiology: 'other', ichLocation: 'bg', volume: 'small', statin: false, afibHistory: false, takingOac: false, language: 'english', rehab: 'yes', self_consent: true, availability_54w: true, exUeWeakness: true, unilateralSymptomatic: true, anteriorCirculation: true, presentedWithin24h: true, singleAntiplateletSoc: true };
+  const OPT_DEFAULTS = { age: 65, nihss: 8, aspects: 8, gcs: 15, preMrs: 0, currentMrs: 3, vessel: 'none', etiology: 'other', ichLocation: 'bg', volume: 'small', statin: false, afibHistory: false, takingOac: false, language: 'english', rehab: 'yes', self_consent: true, availability_54w: true, exUeWeakness: true, unilateralSymptomatic: true, anteriorCirculation: true, presentedWithin24h: true, singleAntiplateletSoc: true };
   const trialDefaults = trial.optimisticDefaults || {};
   Object.keys(OPT_DEFAULTS).forEach(k => { if (optP[k] === 'unselected') optP[k] = trialDefaults[k] !== undefined ? trialDefaults[k] : OPT_DEFAULTS[k]; });
 
@@ -263,7 +262,7 @@ export function evaluateTrialEligibility(trial, p) {
 
   const pendingFields = [];
   const fieldsToTest = [
-    { key: 'age', label: 'Age' }, { key: 'nihss', label: 'NIHSS Score' }, { key: 'aspects', label: 'ASPECTS Score' }, { key: 'gcs', label: 'GCS Score' }, { key: 'preMrs', label: 'mRS / functional status' }, { key: 'vessel', label: 'Vessel status' }, { key: 'etiology', label: 'Stroke Subtype' }, { key: 'ichLocation', label: 'Hemorrhage Location' }, { key: 'volume', label: 'Hematoma Volume' }, { key: 'statin', label: 'Statin at onset' }, { key: 'afibHistory', label: 'Atrial Fibrillation history' }, { key: 'takingOac', label: 'Anticoagulation status' }, { key: 'language', label: 'Language spoken' }, { key: 'rehab', label: 'Rehab unit placement' }, { key: 'self_consent', label: 'Patient able to self-consent' }, { key: 'availability_54w', label: '54-week visits availability' }, { key: 'exUeWeakness', label: 'Upper extremity weakness' }, { key: 'unilateralSymptomatic', label: 'Unilateral symptomatic AIS' }, { key: 'anteriorCirculation', label: 'Anterior circulation' }, { key: 'presentedWithin24h', label: 'Presented within 24h' }, { key: 'singleAntiplateletSoc', label: 'Single antiplatelet SOC' }
+    { key: 'age', label: 'Age' }, { key: 'nihss', label: 'NIHSS Score' }, { key: 'aspects', label: 'ASPECTS Score' }, { key: 'gcs', label: 'GCS Score' }, { key: 'preMrs', label: 'Pre-stroke mRS' }, { key: 'currentMrs', label: 'Current post-stroke mRS' }, { key: 'vessel', label: 'Vessel status' }, { key: 'etiology', label: 'Stroke Subtype' }, { key: 'ichLocation', label: 'Hemorrhage Location' }, { key: 'volume', label: 'Hematoma Volume' }, { key: 'statin', label: 'Statin at onset' }, { key: 'afibHistory', label: 'Atrial Fibrillation history' }, { key: 'takingOac', label: 'Anticoagulation status' }, { key: 'language', label: 'Language spoken' }, { key: 'rehab', label: 'Rehab unit placement' }, { key: 'self_consent', label: 'Patient able to self-consent' }, { key: 'availability_54w', label: '54-week visits availability' }, { key: 'exUeWeakness', label: 'Upper extremity weakness' }, { key: 'unilateralSymptomatic', label: 'Unilateral symptomatic AIS' }, { key: 'anteriorCirculation', label: 'Anterior circulation' }, { key: 'presentedWithin24h', label: 'Presented within 24h' }, { key: 'singleAntiplateletSoc', label: 'Single antiplatelet SOC' }
   ];
 
   fieldsToTest.forEach((f) => {

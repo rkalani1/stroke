@@ -18,6 +18,7 @@ const TRIAL_CATEGORIES = [
   { key: 'secondaryPrevention', label: 'Secondary Prevention', color: 'emerald' },
   { key: 'antithrombotic', label: 'Antithrombotic', color: 'amber' },
   { key: 'rehabilitation', label: 'Rehabilitation & Recovery', color: 'pink' },
+  { key: 'neurocriticalCare', label: 'Neurocritical Care', color: 'orange' },
   { key: 'sahCvt', label: 'SAH / CVT', color: 'violet' }
 ];
 
