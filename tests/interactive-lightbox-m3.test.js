@@ -52,7 +52,7 @@ describe('Milestone M3-1: Interactive Lightbox & Visual Asset Integration', () =
     });
   });
 
-  // v6.23.0 changed this contract deliberately. The 8 infographic PNGs are
+  // v6.24.0 changed this contract deliberately. The 8 infographic PNGs are
   // 2400x1800 and total ~3.6 MB — 39% of what a first-time visitor used to
   // download before the app was offline-ready — and they are lazy-loaded, so
   // most visitors never open one. They now cache on first view via the

@@ -4,6 +4,7 @@
 
 import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
+import { GUIDELINE_LIBRARY_INDEX } from '../../src/guideline-library.js';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
@@ -53,11 +54,11 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   describe('Feature 1: 2026 AHA/ASA AIS Guidelines', () => {
     const aisData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/ais-2026.json'), 'utf8'));
 
-    it('F1-T1.1: Guideline metadata conforms to 2026 AHA/ASA AIS specification with 195 recommendations', () => {
+    it('F1-T1.1: Guideline metadata conforms to 2026 AHA/ASA AIS specification with 202 recommendations', () => {
       expect(aisData.id).toBe('ais-2026');
       expect(aisData.doi).toBe('10.1161/STR.0000000000000513');
       expect(aisData.publisherUrl).toContain('10.1161/STR.0000000000000513');
-      expect(aisData.recommendations.length).toBe(195);
+      expect(aisData.recommendations.length).toBe(202);
     });
 
     it('F1-T1.2: TNK 0.25 mg/kg is graded Class I recommendation for IV thrombolysis within 4.5h', () => {
@@ -344,11 +345,13 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   describe('Feature 7: Guideline Library & COR/LOE Catalog', () => {
     const indexData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/index.json'), 'utf8'));
 
-    it('F7-T1.1: Guideline index lists exactly 89 clinical guideline datasets totaling 862 recommendations', () => {
+    it('F7-T1.1: Guideline index lists exactly 109 guideline datasets with 4113 searchable entries and one separate source-only record', () => {
       const activeDatasets = indexData.data.filter(g => g.id !== 'landmark-trials');
-      expect(activeDatasets.length).toBe(89);
+      expect(activeDatasets.length).toBe(109);
       const totalRecs = activeDatasets.reduce((sum, g) => sum + g.recommendationCount, 0);
-      expect(totalRecs).toBe(862);
+      expect(totalRecs).toBe(4113);
+      expect(GUIDELINE_LIBRARY_INDEX.filter((guideline) => guideline.sourceOnly)).toHaveLength(1);
+      expect(GUIDELINE_LIBRARY_INDEX.reduce((sum, guideline) => sum + guideline.recommendationCount, 0)).toBe(4113);
     });
 
     it('F7-T1.2: Every guideline in index has valid title, shortTitle, doi, and publisherUrl', () => {
@@ -580,10 +583,10 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       const json = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/bundle.json'), 'utf8'));
       const { guidelines, trials, education, calculators, references } = json._meta.counts;
       expect(guidelines).toBe(11);
-      expect(trials).toBe(131);
+      expect(trials).toBe(242);
       expect(education).toBeGreaterThanOrEqual(32);
       expect(calculators).toBe(34);
-      expect(references).toBe(28); // 18 + 9 quick-reference sheets + 1 parenthesized-path PDF (seed regex fix)
+      expect(references).toBe(32); // 28 repo-local documents + 4 external links (registry-driven seeding)
       expect(guidelines + trials + education + calculators + references).toBeGreaterThanOrEqual(166);
     });
 
@@ -650,19 +653,19 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(result.stdout).toContain('Evidence Atlas validation passed');
     });
 
-    it('F14-T1.2: Evidence Atlas contains exactly 9 active trials and 131 completed trials', () => {
+    it('F14-T1.2: Evidence Atlas contains exactly 9 active trials and 242 completed trials', () => {
       expect(activeTrials.length).toBe(9);
-      expect(completedTrials.length).toBe(131);
+      expect(completedTrials.length).toBe(242);
     });
 
-    it('F14-T1.3: Matcher engine coverage achieves 100% (42/42 criteria and 14/14 exclusions)', () => {
+    it('F14-T1.3: Matcher engine coverage achieves 100% (44/44 criteria and 14/14 exclusions)', () => {
       const result = spawnSync('node', [path.join(ROOT, 'scripts/evidence-validate.mjs')], { cwd: ROOT, encoding: 'utf8' });
-      expect(result.stdout).toContain('42/42 criteria (100%)');
+      expect(result.stdout).toContain('44/44 criteria (100%)');
       expect(result.stdout).toContain('14/14 exclusions (100%)');
     });
 
-    it('F14-T1.4: Evidence index exports 87 citations and 11 guideline recommendations', () => {
-      expect(citations.length).toBeGreaterThanOrEqual(87);
+    it('F14-T1.4: Evidence index exports 378 citations and 11 guideline recommendations', () => {
+      expect(citations.length).toBe(378);
       expect(recommendations.length).toBe(11);
     });
 
@@ -886,9 +889,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.23.0', () => {
+    it('F19-T1.5: package.json version matches latest release v6.26.0', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.23.0');
+      expect(pkg.version).toBe('6.26.0');
     });
   });
 });

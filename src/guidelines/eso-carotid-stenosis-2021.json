@@ -10,12 +10,134 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Atherosclerotic stenosis of the internal carotid artery is an important cause of stroke. The aim of this guideline is to analyse the evidence pertaining to medical, surgical and endovascular treatment of patients with carotid stenosis. These guidelines were developed based on the ESO standard operating procedure and followed the Grading of Recommendations, Assessment, Development, and Evaluation (GRADE) approach.",
+      "section": "Endarterectomy or medical therapy for asymptomatic carotid stenosis",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In patients with >=60% asymptomatic carotid artery stenosis considered to be at increased risk of stroke on best medical therapy alone, we recommend carotid endarterectomy. (Strength of recommendation: Strong for carotid endarterectomy)",
+      "page": null
+    },
+    {
+      "section": "Endarterectomy or medical therapy for asymptomatic carotid stenosis",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In selected patients 75 years of age or older with >=60% asymptomatic carotid artery stenosis and an expected survival of at least five years, who are considered to be at an increased risk of stroke on best medical therapy alone, carotid endarterectomy is suggested after careful consideration of the risks and benefits at a multi-disciplinary team meeting. (12/12 experts)",
+      "page": null
+    },
+    {
+      "section": "Stenting or medical therapy for asymptomatic carotid stenosis",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with asymptomatic carotid stenosis, we recommend against carotid artery stenting as a routine alternative to best medical therapy alone. (Strength of recommendation: Weak against carotid stenting)",
+      "page": null
+    },
+    {
+      "section": "Stenting or endarterectomy for asymptomatic carotid stenosis",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In patients with asymptomatic carotid stenosis in whom revascularisation is considered to be appropriate, we suggest endarterectomy as the current treatment of choice. (Strength of recommendation: Weak for carotid endarterectomy)",
+      "page": null
+    },
+    {
+      "section": "Stenting or endarterectomy for asymptomatic carotid stenosis",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with asymptomatic carotid stenosis in whom revascularisation is considered to be appropriate and who are less suitable for surgery, stenting may be suggested. We recommend careful consideration of the risks and benefits at a multi-disciplinary team meeting. (12/12 experts)",
+      "page": null
+    },
+    {
+      "section": "Stenting or endarterectomy for asymptomatic carotid stenosis",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "The independently assessed risk of in-hospital stroke or death following endarterectomy or stenting for asymptomatic carotid stenosis should be as low as possible, ideally below 2%. (12/12 experts)",
+      "page": null
+    },
+    {
+      "section": "Endarterectomy or medical therapy for symptomatic carotid stenosis",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In patients with severe (70–99%) symptomatic carotid artery stenosis, we recommend carotid endarterectomy. (Strength of recommendation: Strong for carotid endarterectomy)",
+      "page": null
+    },
+    {
+      "section": "Endarterectomy or medical therapy for symptomatic carotid stenosis",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with moderate (50–69%) symptomatic carotid artery stenosis, we suggest carotid endarterectomy. (Strength of recommendation: Weak for carotid endarterectomy)",
+      "page": null
+    },
+    {
+      "section": "Endarterectomy or medical therapy for symptomatic carotid stenosis",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with mild (<50%) symptomatic carotid artery stenosis, we recommend against carotid endarterectomy. (Strength of recommendation: Strong against carotid endarterectomy)",
+      "page": null
+    },
+    {
+      "section": "Endarterectomy or medical therapy for symptomatic carotid stenosis",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "High certainty",
+      "text": "In patients with 50–99% symptomatic carotid stenosis in whom surgery is considered appropriate, we recommend early endarterectomy, ideally within two weeks of the last neurological event. (Strength of recommendation: Strong for carotid endarterectomy)",
+      "page": null
+    },
+    {
+      "section": "Stenting or endarterectomy for symptomatic carotid stenosis",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In patients with symptomatic carotid artery stenosis requiring revascularisation, we recommend endarterectomy as the treatment of choice. (Strength of recommendation: Strong for carotid endarterectomy)",
+      "page": null
+    },
+    {
+      "section": "Stenting or endarterectomy for symptomatic carotid stenosis",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with symptomatic carotid stenosis <70 years old requiring revascularisation, we suggest that stenting may be considered as an alternative to endarterectomy. (Strength of recommendation: Weak for carotid stenting)",
+      "page": null
+    },
+    {
+      "section": "Stenting or endarterectomy for symptomatic carotid stenosis",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "The suitability of a patient with symptomatic carotid stenosis for carotid endarterectomy versus stenting should also take into account the interval since their last ischaemic cerebrovascular event, as well as anatomical and morphological features, including the atherosclerotic burden of the aortic arch. (12/12 experts)",
+      "page": null
+    },
+    {
+      "section": "Stenting or endarterectomy for symptomatic carotid stenosis",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "The independently assessed risk of in-hospital stroke or death following endarterectomy or stenting for symptomatic carotid stenosis should be as low as possible, ideally below 4%. (11/12 experts)",
+      "page": null
+    },
+    {
+      "section": "Stenting or endarterectomy for symptomatic carotid stenosis",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Where possible, the indication for carotid endarterectomy or carotid artery stenting should be discussed at a multi-disciplinary team meeting. Consensus decisions can be made in between meetings, in order not to delay urgent revascularisations. (12/12 experts)",
+      "page": null
+    },
+    {
+      "section": "Stenting or endarterectomy for symptomatic carotid stenosis",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "The establishment of validated local, regional or national registries, including audit systems for carotid interventions to monitor complication rates in patients with asymptomatic and symptomatic carotid stenosis, is recommended. (12/12 experts)",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }
