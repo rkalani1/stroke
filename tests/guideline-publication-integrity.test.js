@@ -39,42 +39,46 @@ describe('published guideline corrections', () => {
   it('excludes the superseded comparison-column recommendation from current hypertension guidance', () => {
     const hypertension = document('aha-hypertension-guideline-2025');
     expect(hypertension.recommendations.some((entry) => /superseded 2017/.test(entry.section))).toBe(false);
-    expect(hypertension.recommendations.some((entry) => /RAASi/.test(entry.text) && /either with ACEi or ARB but not both/.test(entry.text))).toBe(true);
-    expect(hypertension.partialExtraction).toBe(true);
+    expect(hypertension.recommendations.some((entry) => /ACE inhibitor or ARB, but not both/.test(entry.text))).toBe(true);
+    expect(hypertension.partialExtraction).toBe(false);
+    expect(hypertension.coverage.sourceRecommendationCount).toBe(108);
   });
 });
 
 describe('guideline extraction and publication integrity', () => {
-  it('qualifies the new dyslipidemia targets by ASCVD risk and labels the partial summary', () => {
+  it('preserves risk-specific lipid targets within all 131 graded recommendations', () => {
     const dyslipidemia = document('aha-dyslipidemia-2026');
-    expect(dyslipidemia.partialExtraction).toBe(true);
+    expect(dyslipidemia.partialExtraction).toBe(false);
     expect(dyslipidemia.sourceOnly).toBe(false);
     expect(dyslipidemia.pmid).toBe('41824552');
-    expect(dyslipidemia.recommendations.every((entry) => entry.levelOfEvidence === 'Guideline Summary')).toBe(true);
+    expect(dyslipidemia.recommendations).toHaveLength(131);
+    expect(dyslipidemia.recommendations.every((entry) => entry.levelOfEvidence !== 'Guideline Summary')).toBe(true);
     const byId = (suffix) => dyslipidemia.recommendations.find((entry) => entry.id === `aha-dyslipidemia-2026-${suffix}`);
-    expect(byId('risk-category').text).toMatch(/≥2 major ASCVD events, or 1 major event plus ≥2 high-risk features/);
-    expect(byId('ascvd-target').text).toMatch(/not at very high risk/);
-    expect(byId('ascvd-target').text).toContain('LDL-C <70 mg/dL');
-    expect(byId('very-high-risk-target').text).toContain('LDL-C <55 mg/dL');
-    expect(byId('additional-lowering').text).toContain('can also be reasonable');
+    expect(byId('4-2-6-4').text).toMatch(/≥2 major ASCVD events, or 1 major event plus ≥2 high-risk conditions/);
+    expect(byId('4-2-6-1').text).toMatch(/not very high risk/);
+    expect(byId('4-2-6-1').text).toContain('LDL-C <70');
+    expect(byId('4-2-6-4').text).toContain('LDL-C <55');
+    expect(byId('4-2-6-3').text).toContain('also reasonable');
   });
 
   it('distinguishes source-only placeholders from searchable recommendations', () => {
-    for (const id of ['esc-endocarditis-2023', 'eso-ean-poststroke-cognition-2021', 'aha-stroke-rehabilitation-2026']) {
+    for (const id of ['aha-stroke-rehabilitation-2026']) {
       expect(document(id).sourceOnly, id).toBe(true);
       expect(document(id).summaryOnly, id).toBe(true);
       expect(document(id).recommendationCount, id).toBe(0);
     }
-    expect(document('eso-sah-2026').partialExtraction).toBe(true);
+    expect(document('eso-ean-poststroke-cognition-2021').recommendationCount).toBe(40);
+    expect(document('eso-ean-poststroke-cognition-2021').sourceOnly).toBe(false);
+    expect(document('eso-sah-2026').partialExtraction).toBe(false);
     expect(document('eso-sah-2026').sourceOnly).toBe(false);
   });
 
   it('retains traceable status for every identified correction', () => {
     const affected = GUIDELINE_LIBRARY_INDEX.filter((entry) => entry.publicationUpdates.length);
     const updates = affected.flatMap((entry) => entry.publicationUpdates);
-    expect(affected).toHaveLength(21);
-    expect(updates).toHaveLength(28);
-    expect(new Set(updates.map((entry) => entry.pmid)).size).toBe(28);
+    expect(affected).toHaveLength(22);
+    expect(updates).toHaveLength(29);
+    expect(new Set(updates.map((entry) => entry.pmid)).size).toBe(29);
     for (const guideline of affected) for (const update of guideline.publicationUpdates) {
       expect(update.type).toBe('correction');
       expect(update.pmid).toMatch(/^\d{7,9}$/);
@@ -91,7 +95,7 @@ describe('guideline extraction and publication integrity', () => {
   it('keeps all source identifiers, entries and evidence-grade vocabularies valid', () => {
     const ids = new Set();
     const classes = ['I', 'IIa', 'IIb', 'III', 'Strong', 'Conditional', 'Expert Consensus', 'Statement', 'No recommendation'];
-    const levels = ['A', 'B-R', 'B-NR', 'C-LD', 'C-EO', 'High certainty', 'Moderate certainty', 'Low certainty', 'Very low certainty', 'Ungraded', 'Guideline Summary'];
+    const levels = ['A', 'B', 'C', 'B-R', 'B-NR', 'C-LD', 'C-EO', 'High certainty', 'Moderate certainty', 'Low certainty', 'Very low certainty', 'Ungraded', 'Guideline Summary'];
     expect(GUIDELINE_LIBRARY).toHaveLength(109);
     for (const guideline of GUIDELINE_LIBRARY_INDEX) {
       expect(guideline.pmid).toMatch(/^\d{7,9}$/);

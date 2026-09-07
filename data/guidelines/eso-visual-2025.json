@@ -9,110 +9,413 @@
   "pmid": "40401755",
   "recommendations": [
     {
-      "section": "PICO 1: for adults with visual problems due to stroke, does routine use of vision screening, compared to no routine vision screening, improve detection rate?",
+      "id": "eso-visual-2025-pico1-r1",
+      "section": "PICO 1: Vision screening",
       "classOfRec": "Conditional",
-      "classNote": "For (Weak for intervention, ↑?) — QUADAS-2 medium risk of bias",
+      "classNote": "For; QUADAS-2 medium risk of bias; no GRADE certainty assigned",
       "levelOfEvidence": "Ungraded",
-      "text": "In adults with stroke, we suggest vision screening to improve detection of visual problems. Vision screening should be undertaken using a validated vision screening tool or by specialist eye team assessment. Vision screening versus routine stroke screening improves the detection rate of presence of visual impairment while specialist visual assessment further improves the accuracy of detection of visual impairment.",
-      "page": null
+      "text": "Screen adults after stroke with a validated vision tool or specialist eye assessment. Compared with routine stroke screening, vision screening detects more visual impairment; specialist examination further improves detection accuracy.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 1 recommendation 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 1; recommendation 1"
     },
     {
-      "section": "PICO 2: for adults with visual problems due to stroke, does early assessment within 1 week of stroke admission, compared to later assessment, improve activities and quality of daily life?",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For; ESO recorded quality of evidence Low ⊕⊕ but strength of recommendation Not assessable (–), so the operative guidance is the 10/10 expert consensus statement",
+      "id": "eso-visual-2025-pico2-r1",
+      "section": "PICO 2: Early vision assessment evidence",
+      "classOfRec": "No recommendation",
+      "classNote": null,
       "levelOfEvidence": "Low certainty",
-      "text": "For adults with visual problems due to stroke, there are insufficient data to make an evidence-based recommendation on the use of early vision screening (quality of evidence low; strength of recommendation not assessable). Expert consensus statement, 10 of 10 experts suggest: (1) In adults with stroke, early vision screening should be undertaken to detect their visual problems. This is feasible and acceptable within 3-4 days post onset of stroke. The majority can be assessed within 1 week post-stroke onset. (2) Vision screening should be undertaken by specialist eye team assessment or at least by using a validated vision screening tool.",
-      "page": null
+      "text": "For adults with stroke-related visual problems, evidence is insufficient to recommend early vision screening on activities or quality-of-life outcomes. The source strength is not assessable.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 2 recommendation 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 2; recommendation 1"
     },
     {
-      "section": "PICO 3: for adults with visual field loss due to stroke, does identification of visual field loss by vision screening or specialist eye team, compared to routine stroke screen, improve detection rate and activities/quality of life?",
+      "id": "eso-visual-2025-pico2-c1",
+      "section": "PICO 2: Early vision screening timing",
       "classOfRec": "Expert Consensus",
-      "classNote": "For; strength of recommendation Not assessable (–) — QUADAS-2 medium risk of bias",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "For adults with visual field loss due to stroke, there are insufficient data to make an evidence-based recommendation on the use of vision screening or specialist eye team assessment compared to routine stroke screen (strength of recommendation not assessable). Expert consensus statement, 10 of 10 experts suggest: (1) In adults with stroke, early vision screening should be undertaken to detect visual field loss. This is feasible and acceptable within 3-4 days post onset of stroke. The majority can be assessed within 1 week post onset. Visual field loss screening should be undertaken by specialist eye team assessment or at least by using a validated vision screening tool. (2) Vision screening versus routine stroke screening improves the detection rate of presence of visual field loss while specialist visual assessment further improves the accuracy of detection of visual impairment.",
-      "page": null
+      "text": "Screen vision early after stroke. Assessment is feasible and acceptable around days 3–4, and most patients can be assessed within one week. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 2 consensus 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 2; consensus 1"
     },
     {
-      "section": "PICO 4: for adults with central vision impairment due to stroke, does identification of visual acuity loss by vision screening or specialist eye team, compared to routine stroke screen, improve detection rate and activities/quality of life?",
+      "id": "eso-visual-2025-pico2-c2",
+      "section": "PICO 2: Vision-screening method",
       "classOfRec": "Expert Consensus",
-      "classNote": "For; strength of recommendation Not assessable (–) — QUADAS-2 medium risk of bias",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "For adults with central vision impairment due to stroke, there are insufficient data to make an evidence-based recommendation on the use of vision screening or specialist eye team assessment compared to routine stroke screen (strength of recommendation not assessable). Expert consensus statement, 10 of 10 experts suggest: (1) In adults with stroke, early vision screening should be undertaken to detect central vision impairment. This is feasible and acceptable within 3-4 days post onset of stroke. The majority can be assessed within 1 week post onset. Visual acuity loss screening should be undertaken by specialist eye team assessment or at least by using a validated vision screening tool. (2) Vision screening versus routine stroke screening improves the detection rate of presence of central vision impairment while specialist visual assessment further improves the accuracy of detection of visual impairment.",
-      "page": null
+      "text": "Use specialist eye-team assessment or, at minimum, a validated vision-screening tool. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 2 consensus 2",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 2; consensus 2"
     },
     {
-      "section": "PICO 5: for adults with eye movement disorders due to stroke, does identification of strabismus and/or ocular motility deficit loss by vision screening or specialist eye team, compared to routine stroke screen, improve detection rate and activities/quality of life?",
+      "id": "eso-visual-2025-pico3-r1",
+      "section": "PICO 3: Visual-field detection evidence",
+      "classOfRec": "No recommendation",
+      "classNote": "QUADAS-2 medium risk of bias; no GRADE certainty assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "For stroke-related visual-field loss, evidence is insufficient to recommend vision screening or specialist eye assessment over routine stroke screening for detection and daily-life outcomes. Recommendation strength is not assessable.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 3 recommendation 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 3; recommendation 1"
+    },
+    {
+      "id": "eso-visual-2025-pico3-c1",
+      "section": "PICO 3: Early visual-field screening",
       "classOfRec": "Expert Consensus",
-      "classNote": "For; strength of recommendation Not assessable (–) — QUADAS-2 medium risk of bias",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "For adults with eye movement disorders due to stroke, there are insufficient data to make an evidence-based recommendation on the use of vision screening or specialist eye team assessment compared to routine stroke screen (strength of recommendation not assessable). Expert consensus statement, 10 of 10 experts suggest: (1) In adults with stroke, early vision screening should be undertaken to detect eye movement disorders. This is feasible and acceptable within 3-4 days post onset of stroke. The majority can be assessed within 1 week post onset. Screening for eye movement disorders should be undertaken by specialist eye team assessment or at least by using a validated vision screening tool. (2) Vision screening versus routine stroke screening improves the detection rate of presence of eye movement disorders while specialist visual assessment further improves the accuracy of detection of visual impairment.",
-      "page": null
+      "text": "Screen early for visual-field loss, using specialist eye assessment or at least a validated tool. Assessment around days 3–4 is feasible; most patients can be assessed within one week. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 3 consensus 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 3; consensus 1"
     },
     {
-      "section": "PICO 6: for adults with visual perceptual disorders due to stroke, does identification of visual perceptual disorders by screening proforma/tool or specialist team, compared to routine stroke screen, improve detection rate and activities/quality of life?",
+      "id": "eso-visual-2025-pico3-c2",
+      "section": "PICO 3: Visual-field detection accuracy",
       "classOfRec": "Expert Consensus",
-      "classNote": "For; strength of recommendation Not assessable (–) — QUADAS-2 medium risk of bias",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "For adults with visual perceptual disorders due to stroke, there are insufficient data to make an evidence-based recommendation on the use of vision screening or specialist eye team assessment compared to routine stroke screen (strength of recommendation not assessable). Expert consensus statement, 10 of 10 experts suggest: (1) In adults with stroke, early vision screening should be undertaken to detect visual perceptual disorders. This is feasible and acceptable within 3-4 days post onset of stroke. The majority can be assessed within 1 week post onset. Screening for visual perceptual disorders should be undertaken by specialist eye team assessment or at least by using a validated vision screening tool. (2) Vision screening versus routine stroke screening improves the detection rate of presence of visual perceptual disorders while specialist visual assessment further improves the accuracy of detection of visual impairment.",
-      "page": null
+      "text": "Dedicated vision screening improves visual-field-loss detection compared with routine stroke screening, and specialist assessment further improves accuracy. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 3 consensus 2",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 3; consensus 2"
     },
     {
-      "section": "PICO 7: for adults with visual neglect due to stroke, does identification of visual neglect by screening proforma/tool or specialist team, compared to routine stroke screen, improve detection rate and activities/quality of life?",
-      "classOfRec": "Conditional",
-      "classNote": "For (Weak for intervention, ↑?) — QUADAS-2 high risk of bias",
+      "id": "eso-visual-2025-pico4-r1",
+      "section": "PICO 4: Visual-acuity detection evidence",
+      "classOfRec": "No recommendation",
+      "classNote": "QUADAS-2 medium risk of bias; no GRADE certainty assigned",
       "levelOfEvidence": "Ungraded",
-      "text": "In adults with stroke, we suggest vision screening to improve detection of visual neglect. Vision screening versus routine stroke screening improves the detection rate of presence of visual neglect while specialist visual assessment and use of a battery of tests further improves the accuracy of detection of visual neglect.",
-      "page": null
+      "text": "For stroke-related central visual impairment, evidence is insufficient to recommend vision screening or specialist eye assessment over routine stroke screening for detection and daily-life outcomes. Strength is not assessable.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 4 recommendation 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 4; recommendation 1"
     },
     {
-      "section": "PICO 8: for adults with homonymous visual field loss due to stroke, does compensatory, substitute or restitutive intervention, compared to no intervention, improve activities and quality of daily life?",
-      "classOfRec": "Conditional",
-      "classNote": "For (Weak for intervention, ↑?)",
-      "levelOfEvidence": "Very low certainty",
-      "text": "In adults with visual field loss due to stroke, we suggest compensatory interventions of visual scanning/visual search to aid adaptation to visual field loss after stroke. We suggest early commencement of treatment as soon as is feasible and acceptable to the patient.",
-      "page": null
-    },
-    {
-      "section": "PICO 9: for adults with ocular stroke, does compensatory, substitute or restitutive intervention, compared to no intervention, improve activities and quality of daily life?",
-      "classOfRec": "Conditional",
-      "classNote": "For (Weak for intervention, ↑?)",
-      "levelOfEvidence": "Very low certainty",
-      "text": "In adults with ocular stroke (central retinal artery occlusion), we suggest thrombolysis within 4.5 h of stroke onset to aid recovery of visual function after stroke.",
-      "page": null
-    },
-    {
-      "section": "PICO 10: for adults with central vision impairment due to stroke, does compensatory, substitute or restitutive intervention, compared to no intervention, improve activities and quality of daily life?",
+      "id": "eso-visual-2025-pico4-c1",
+      "section": "PICO 4: Early acuity screening",
       "classOfRec": "Expert Consensus",
-      "classNote": "For; ESO recorded quality of evidence Very low ⊕ but strength of recommendation Not assessable (–)",
-      "levelOfEvidence": "Very low certainty",
-      "text": "For adults with central vision impairment due to stroke, there are insufficient data to make an evidence-based recommendation on the use of compensatory, substitutive or restitutive interventions (quality of evidence very low; strength of recommendation not assessable). Expert consensus statement, 10 of 10 experts suggest: (1) For adults with central vision impairment due to stroke, early management options to improve visual acuity should be offered as soon as possible after stroke onset. (2) Stroke survivors should wear their prescribed spectacles and these should be updated promptly if lost/broken or old. Clinicians should signpost to appropriate information, resource materials and vision aids.",
-      "page": null
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Screen early for central vision or visual-acuity loss through specialist eye assessment or a validated screening tool. Days 3–4 are feasible, and most patients can be assessed within one week. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 4 consensus 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 4; consensus 1"
     },
     {
-      "section": "PICO 11: for adults with eye movement disorders due to stroke, does compensatory, substitute or restitutive intervention, compared to no intervention, improve activities and quality of daily life?",
-      "classOfRec": "Conditional",
-      "classNote": "For (Weak for intervention, ↑?)",
-      "levelOfEvidence": "Very low certainty",
-      "text": "In adults with eye movement disorders due to stroke, we suggest individualised intervention targeted at the specific type of eye movement problem that has arisen. We suggest referral to specialist eye services for the targeted management of eye movement disorders. Prior to/while awaiting specialist eye care, alleviation of troublesome diplopia can be achieved using partial or total occlusion (eye patching) with a caveat of caution where total occlusion is used, thus rendering the patient monocular with potential impact from loss of visual input from the occluded eye.",
-      "page": null
+      "id": "eso-visual-2025-pico4-c2",
+      "section": "PICO 4: Central-vision detection accuracy",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Dedicated screening detects central visual impairment better than routine stroke screening; specialist visual assessment further improves accuracy. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 4 consensus 2",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 4; consensus 2"
     },
     {
-      "section": "PICO 12: for adults with visual neglect due to stroke, does compensatory, substitute or restitutive intervention, compared to no intervention, improve activities and quality of daily life?",
-      "classOfRec": "Conditional",
-      "classNote": "For (Weak for intervention, ↑?)",
-      "levelOfEvidence": "Very low certainty",
-      "text": "In adults with visual neglect due to stroke, we suggest individualised intervention targeted at the specific type of neglect syndrome that has arisen. We suggest close collaboration between stroke teams (particularly occupational therapy), neuropsychology and eye care teams (orthoptics, ophthalmology) for their targeted management of visual neglect.",
-      "page": null
+      "id": "eso-visual-2025-pico5-r1",
+      "section": "PICO 5: Eye-movement detection evidence",
+      "classOfRec": "No recommendation",
+      "classNote": "QUADAS-2 medium risk of bias; no GRADE certainty assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "For post-stroke eye-movement disorders, evidence is insufficient to recommend vision screening or specialist eye assessment over routine stroke screening for detection and daily-life outcomes. Strength is not assessable.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 5 recommendation 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 5; recommendation 1"
     },
     {
-      "section": "PICO 13: for adults with other visual perceptual disorders due to stroke, does compensatory, substitute or restitutive intervention, compared to no intervention, improve activities and quality of daily life?",
+      "id": "eso-visual-2025-pico5-c1",
+      "section": "PICO 5: Early eye-movement screening",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Screen for eye-movement disorders early using specialist assessment or a validated tool. Assessment around days 3–4 is feasible, with most patients assessed within one week. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 5 consensus 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 5; consensus 1"
+    },
+    {
+      "id": "eso-visual-2025-pico5-c2",
+      "section": "PICO 5: Eye-movement detection accuracy",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Vision screening detects eye-movement disorders better than routine stroke screening, while specialist visual assessment improves accuracy further. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 5 consensus 2",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 5; consensus 2"
+    },
+    {
+      "id": "eso-visual-2025-pico6-r1",
+      "section": "PICO 6: Visual-perception detection evidence",
+      "classOfRec": "No recommendation",
+      "classNote": "QUADAS-2 medium risk of bias; no GRADE certainty assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "For stroke-related visual perceptual disorders, evidence is insufficient to recommend screening or specialist eye assessment over routine stroke screening for detection and daily-life outcomes. Strength is not assessable.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 6 recommendation 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 6; recommendation 1"
+    },
+    {
+      "id": "eso-visual-2025-pico6-c1",
+      "section": "PICO 6: Early visual-perception screening",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Screen early for visual perceptual problems through specialist assessment or a validated vision tool. Days 3–4 are feasible and most patients can be assessed within one week. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 6 consensus 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 6; consensus 1"
+    },
+    {
+      "id": "eso-visual-2025-pico6-c2",
+      "section": "PICO 6: Visual-perception detection accuracy",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Dedicated screening improves detection of visual perceptual disorders compared with routine stroke screening; specialist assessment improves accuracy further. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 6 consensus 2",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 6; consensus 2"
+    },
+    {
+      "id": "eso-visual-2025-pico7-r1",
+      "section": "PICO 7: Visual-neglect detection",
       "classOfRec": "Conditional",
-      "classNote": "For (Weak for intervention, ↑?)",
+      "classNote": "For; QUADAS-2 high risk of bias; no GRADE certainty assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Screen adults after stroke for visual neglect. Dedicated vision screening detects more neglect than routine stroke screening; specialist visual assessment and a battery of tests further improve diagnostic accuracy.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 7 recommendation 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 7; recommendation 1"
+    },
+    {
+      "id": "eso-visual-2025-pico8-r1",
+      "section": "PICO 8: Homonymous visual-field loss rehabilitation",
+      "classOfRec": "Conditional",
+      "classNote": "For",
       "levelOfEvidence": "Very low certainty",
-      "text": "In adults with visual perceptual disorders due to stroke, we suggest individualised intervention targeted at the specific type of perceptual problem that has arisen. Clinicians should signpost to appropriate vision information and resource materials. We suggest close collaboration between stroke teams (particularly occupational therapy), neuropsychology and eye care teams (orthoptics, ophthalmology) for their targeted management of visual perceptual disorders.",
-      "page": null
+      "text": "Use compensatory visual-scanning or visual-search training to support adaptation to post-stroke visual-field loss. Begin as soon as feasible and acceptable to the patient.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 8 recommendation 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 8; recommendation 1"
+    },
+    {
+      "id": "eso-visual-2025-pico9-r1",
+      "section": "PICO 9: Central retinal artery occlusion",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "The 2025 guideline suggests thrombolysis within 4.5 hours of onset for central retinal artery occlusion to aid visual recovery; this is a weak recommendation based on very-low-certainty evidence.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 9 recommendation 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 9; recommendation 1",
+      "currentEvidenceNote": "Newer evidence reviewed 2026-09-06: THEIA (2025) did not demonstrate a significant visual benefit from alteplase and was underpowered. TenCRAOS (2026) found no significant visual-recovery benefit from tenecteplase versus aspirin, with serious safety concerns including fatal intracranial haemorrhage. The source guideline's 2025 weak suggestion is historical and should not be read as a current endorsement of routine CRAO thrombolysis.",
+      "currentEvidenceCheckedAt": "2026-09-06",
+      "currentEvidenceSources": [
+        {
+          "title": "THEIA (Lancet Neurology, 2025)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41109232/",
+          "pmid": "41109232",
+          "doi": "10.1016/S1474-4422(25)00308-4"
+        },
+        {
+          "title": "TenCRAOS (NEJM, 2026)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41604638/",
+          "pmid": "41604638",
+          "doi": "10.1056/NEJMoa2508515"
+        }
+      ]
+    },
+    {
+      "id": "eso-visual-2025-pico10-r1",
+      "section": "PICO 10: Central-vision treatment evidence",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "For central visual impairment after stroke, evidence is insufficient to recommend compensatory, substitutive or restorative interventions. Recommendation strength is not assessable.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 10 recommendation 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 10; recommendation 1"
+    },
+    {
+      "id": "eso-visual-2025-pico10-c1",
+      "section": "PICO 10: Early acuity management",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Offer measures to improve visual acuity as soon as possible after stroke onset. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 10 consensus 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 10; consensus 1"
+    },
+    {
+      "id": "eso-visual-2025-pico10-c2",
+      "section": "PICO 10: Spectacles and visual resources",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Ensure stroke survivors use their prescribed spectacles; promptly replace or update lost, broken or outdated glasses. Direct patients to suitable information, resources and visual aids. Consensus 10/10.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 10 consensus 2",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 10; consensus 2"
+    },
+    {
+      "id": "eso-visual-2025-pico11-r1",
+      "section": "PICO 11: Eye-movement disorder treatment",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "Individualise treatment to the specific eye-movement disorder and refer to specialist eye services. While awaiting care, partial or total eye occlusion may relieve troublesome diplopia; use total occlusion cautiously because monocular vision loses visual input from the covered eye.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 11 recommendation 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 11; recommendation 1"
+    },
+    {
+      "id": "eso-visual-2025-pico12-r1",
+      "section": "PICO 12: Visual-neglect rehabilitation",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "Individualise treatment to the neglect syndrome, with close collaboration among the stroke team, particularly occupational therapy, neuropsychology and eye services including orthoptics and ophthalmology.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 12 recommendation 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 12; recommendation 1"
+    },
+    {
+      "id": "eso-visual-2025-pico13-r1",
+      "section": "PICO 13: Visual-perceptual rehabilitation",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "Individualise treatment to the specific perceptual problem and direct patients to relevant vision information and resources. Coordinate stroke care, particularly occupational therapy, with neuropsychology, orthoptics and ophthalmology.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 13 recommendation 1",
+      "sourceReference": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements; PICO 13; recommendation 1"
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "GRADE"
+  "gradingSystem": "GRADE",
+  "coverage": {
+    "status": "complete",
+    "scope": "All formal recommendations and good-practice/consensus statements",
+    "checkedAt": "2026-09-06",
+    "sourceRecommendationCount": 13,
+    "sourceConsensusCount": 12,
+    "sourceSections": [
+      "PICO 1",
+      "PICO 2",
+      "PICO 3",
+      "PICO 4",
+      "PICO 5",
+      "PICO 6",
+      "PICO 7",
+      "PICO 8",
+      "PICO 9",
+      "PICO 10",
+      "PICO 11",
+      "PICO 12",
+      "PICO 13"
+    ],
+    "sourceTable": "Table 14, table27-23969873251314693; PICO 1–13 formal and numbered consensus statements",
+    "countingNote": "13 formal/no-recommendation statements plus 12 individually numbered consensus statements (two each in PICOs 2–6 and 10). QUADAS-2 risk of bias is retained as source grading and is not converted to GRADE certainty.",
+    "inventory": [
+      {
+        "section": "PICO 1",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 2",
+        "recommendationCount": 1,
+        "consensusCount": 2
+      },
+      {
+        "section": "PICO 3",
+        "recommendationCount": 1,
+        "consensusCount": 2
+      },
+      {
+        "section": "PICO 4",
+        "recommendationCount": 1,
+        "consensusCount": 2
+      },
+      {
+        "section": "PICO 5",
+        "recommendationCount": 1,
+        "consensusCount": 2
+      },
+      {
+        "section": "PICO 6",
+        "recommendationCount": 1,
+        "consensusCount": 2
+      },
+      {
+        "section": "PICO 7",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 8",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 9",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 10",
+        "recommendationCount": 1,
+        "consensusCount": 2
+      },
+      {
+        "section": "PICO 11",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 12",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 13",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      }
+    ]
+  }
 }

@@ -1,6 +1,6 @@
 # Evidence Watchlist (Auto-generated)
 
-Generated: 2026-09-07T01:09:40.887Z
+Generated: 2026-09-07T02:28:41.103Z
 
 Purpose: highlight potentially relevant **uncited** PubMed evidence for 2021-2026 stroke workflows.
 Baseline cited PMIDs: 23

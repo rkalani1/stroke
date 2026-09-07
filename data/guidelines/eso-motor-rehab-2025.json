@@ -9,62 +9,163 @@
   "pmid": "40401760",
   "recommendations": [
     {
-      "section": "PICO 1 – Dose of repetitive upper limb practice",
+      "id": "eso-motor-rehab-2025-pico1-r1",
+      "section": "PICO 1: Additional upper-limb practice",
       "classOfRec": "Conditional",
       "classNote": "For",
       "levelOfEvidence": "Very low certainty",
-      "text": "For clinical practice, we suggest considering adding additional time of repetitive upper limb practice to existing stroke rehabilitation programmes. The exact amount of additional practice time is unclear but will likely be at least 20 h, commonly delivered 3–5 times per week over 4–6 weeks. (Strength of recommendation: Weak for intervention ↑?; quality of evidence: Very low ⊕)",
-      "page": null
+      "text": "Consider adding repetitive upper-limb practice to stroke rehabilitation. The optimal extra dose is unknown but likely ≥20 hours, commonly delivered 3–5 times weekly over 4–6 weeks.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 1 recommendation 1",
+      "sourceReference": "Table 4, full primary PMC article PMC12098312; PICO 1–6 recommendation and consensus columns; PICO 1; recommendation 1"
     },
     {
-      "section": "PICO 2 – Dose of gait training (expert consensus statement)",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
+      "id": "eso-motor-rehab-2025-pico2-r1",
+      "section": "PICO 2: Additional walking-practice dose",
+      "classOfRec": "No recommendation",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Based on the overall available evidence, 13 out of 17 MWG members (76%) suggest that additional time spent in walking practice can improve walking capacity in people with stroke. The exact amount of the additional practice time is unclear but will likely be at least 20 h, commonly delivered 3–5 times per week over 4–6 weeks. Thus, for clinical practice, we suggest considering adding extra time of walking practice to existing stroke rehabilitation programmes, preferably at least 20 h. (Due to the limited evidence of only a single RCT, no evidence-based recommendation could be made; quality of evidence and strength of recommendation are not assigned.)",
-      "page": null
+      "text": "Only one eligible trial informs this question; no overall recommendation can be made that a particular extra amount of walking practice improves walking capacity after stroke.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 2 recommendation 1",
+      "sourceReference": "Table 4, full primary PMC article PMC12098312; PICO 1–6 recommendation and consensus columns; PICO 2; recommendation 1"
     },
     {
-      "section": "PICO 3 – High-intensity walking training (walking endurance)",
+      "id": "eso-motor-rehab-2025-pico2-c1",
+      "section": "PICO 2: Additional walking practice in clinical care",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Consider adding walking practice to stroke rehabilitation, preferably ≥20 extra hours. The exact dose is uncertain; available evidence commonly uses 3–5 sessions weekly for 4–6 weeks. Consensus 13/17 members, 76%.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 2 consensus 1",
+      "sourceReference": "Table 4, full primary PMC article PMC12098312; PICO 1–6 recommendation and consensus columns; PICO 2; consensus 1"
+    },
+    {
+      "id": "eso-motor-rehab-2025-pico3-r1",
+      "section": "PICO 3: High-intensity walking and endurance",
       "classOfRec": "Strong",
       "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
-      "text": "In people in the chronic stage of stroke with stable cardiovascular status, we recommend high-intensity walking training rather than duration-matched walking training at a lower intensity to improve walking endurance. (Strength of recommendation: Strong for intervention ↑↑; quality of evidence: Moderate ⊕⊕⊕)",
-      "page": null
+      "text": "In chronic stroke with stable cardiovascular status, use high-intensity rather than equal-duration lower-intensity walking training to improve walking endurance.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 3 recommendation 1",
+      "sourceReference": "Table 4, full primary PMC article PMC12098312; PICO 1–6 recommendation and consensus columns; PICO 3; recommendation 1"
     },
     {
-      "section": "PICO 3 – High-intensity walking training (comfortable and maximum walking speed)",
+      "id": "eso-motor-rehab-2025-pico3-r2",
+      "section": "PICO 3: High-intensity walking and speed",
       "classOfRec": "Conditional",
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
-      "text": "In people in the chronic stage of stroke with stable cardiovascular status, we suggest high-intensity walking training rather than duration-matched walking training at a lower intensity to improve comfortable and maximum walking speed. (Strength of recommendation: Weak for intervention ↑?; quality of evidence: Low ⊕⊕)",
-      "page": null
+      "text": "In chronic stroke with stable cardiovascular status, consider high-intensity rather than equal-duration lower-intensity walking training to improve comfortable and maximum walking speed.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 3 recommendation 2",
+      "sourceReference": "Table 4, full primary PMC article PMC12098312; PICO 1–6 recommendation and consensus columns; PICO 3; recommendation 2"
     },
     {
-      "section": "PICO 4 – Behavioural transfer package with upper limb task-specific training (expert consensus statement)",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
+      "id": "eso-motor-rehab-2025-pico4-r1",
+      "section": "PICO 4: Upper-limb behavioural transfer package",
+      "classOfRec": "No recommendation",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Acknowledging the current lack of evidence for this PICO, 13 out of 17 MWG members (76%) suggest considering a transfer package when providing repetitive upper limb task-specific training, when aiming to achieve a transfer from treatment to daily life. The transfer package would include daily evaluation, a patient-kept daily diary, problem-solving, behavioural contract, home practice of specified exercises, and weekly follow-up contacts. (Due to the limited evidence, based only on a single RCT, no evidence-based recommendation could be made.)",
-      "page": null
+      "text": "With only one eligible trial, no overall evidence-based recommendation can be made that adding a behavioural transfer package to equal-duration upper-limb task practice improves activity capacity or performance.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 4 recommendation 1",
+      "sourceReference": "Table 4, full primary PMC article PMC12098312; PICO 1–6 recommendation and consensus columns; PICO 4; recommendation 1"
     },
     {
-      "section": "PICO 5 – Group (at least 1:2 therapist–patient ratio) versus time-matched one-to-one task-specific training",
+      "id": "eso-motor-rehab-2025-pico4-c1",
+      "section": "PICO 4: Transferring upper-limb gains to daily life",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Consider a transfer package with repetitive task-specific upper-limb training to carry gains into daily life. Components include daily evaluation and a patient diary, problem-solving, a behavioural contract, specified home exercises and weekly follow-up contacts. Consensus 13/17 members, 76%.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 4 consensus 1",
+      "sourceReference": "Table 4, full primary PMC article PMC12098312; PICO 1–6 recommendation and consensus columns; PICO 4; consensus 1"
+    },
+    {
+      "id": "eso-motor-rehab-2025-pico5-r1",
+      "section": "PICO 5: Group lower-limb training",
       "classOfRec": "Conditional",
       "classNote": "For",
       "levelOfEvidence": "Very low certainty",
-      "text": "For clinical practice, group-based lower limb training could be offered to improve lower limb activity capacity, but a reasonable ratio between patients and therapists is required to ensure safety and supervision as well as offering additional individualised therapy to address patients’ goals and preferences. (Strength of recommendation: Weak for intervention ↑?; quality of evidence: Very low ⊕. This was a non-inferiority analysis: group-based therapy was found equally – not less – effective than time-matched one-to-one therapy for balance capacity, gait speed and walking endurance.)",
-      "page": null
+      "text": "Group-based lower-limb task training may improve activity capacity, with a patient-to-therapist ratio that permits safety and supervision. Provide additional individualised therapy for personal goals and preferences. The PICO compared groups with ≥1:2 therapist-to-patient ratios against time-matched 1:1 training.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 5 recommendation 1",
+      "sourceReference": "Table 4, full primary PMC article PMC12098312; PICO 1–6 recommendation and consensus columns; PICO 5; recommendation 1"
     },
     {
-      "section": "PICO 6 – Additional sit-to-stand training on top of usual care",
+      "id": "eso-motor-rehab-2025-pico6-r1",
+      "section": "PICO 6: Additional sit-to-stand practice",
       "classOfRec": "Conditional",
       "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
-      "text": "For clinical practice, additional sit-to-stand training on top of usual care could be provided but the additional training should include sufficient repetitions, training sessions and adequate duration and content of training. What these parameters are is currently unclear. (Strength of recommendation: Weak for intervention ↑?; quality of evidence: Moderate ⊕⊕⊕; outcome: postural balance capacity.)",
-      "page": null
+      "text": "Consider sit-to-stand training in addition to usual care. It needs sufficient repetitions, sessions, duration and appropriate content, but the optimal parameters remain unknown.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 6 recommendation 1",
+      "sourceReference": "Table 4, full primary PMC article PMC12098312; PICO 1–6 recommendation and consensus columns; PICO 6; recommendation 1"
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "GRADE"
+  "gradingSystem": "GRADE",
+  "coverage": {
+    "status": "complete",
+    "scope": "All formal recommendations and good-practice/consensus statements",
+    "checkedAt": "2026-09-06",
+    "sourceRecommendationCount": 7,
+    "sourceConsensusCount": 2,
+    "sourceSections": [
+      "PICO 1",
+      "PICO 2",
+      "PICO 3",
+      "PICO 4",
+      "PICO 5",
+      "PICO 6"
+    ],
+    "sourceTable": "Table 4, full primary PMC article PMC12098312; PICO 1–6 recommendation and consensus columns",
+    "countingNote": "Separately graded recommendation/no-recommendation statements and separately numbered consensus statements are individual entries. Unnumbered consensus boxes retain every clause within one entry.",
+    "inventory": [
+      {
+        "section": "PICO 1",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 2",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 3",
+        "recommendationCount": 2,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 4",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 5",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 6",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      }
+    ]
+  }
 }

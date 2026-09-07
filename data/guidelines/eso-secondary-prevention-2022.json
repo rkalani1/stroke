@@ -15,7 +15,11 @@
       "classNote": "For",
       "levelOfEvidence": "High certainty",
       "text": "In people with previous ischaemic stroke or TIA, we recommend blood pressure lowering treatment to reduce the risk of recurrent stroke. (Quality of evidence: High; Strength of recommendation: Strong for intervention.)",
-      "page": null
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 1 recommendation 1",
+      "sourceReference": "Table 11; PICO 1; recommendation 1",
+      "id": "eso-secondary-prevention-2022-pico1-r1"
     },
     {
       "section": "PICO question 2: Out of office blood pressure measurement",
@@ -23,7 +27,11 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "Expert consensus statement: In people with previous ischaemic stroke or TIA, we support the use of out of office blood pressure measurements wherever feasible, to achieve better long-term control of blood pressure.",
-      "page": null
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 2 consensus 1",
+      "sourceReference": "Table 11; PICO 2; consensus 1",
+      "id": "eso-secondary-prevention-2022-pico2-c1"
     },
     {
       "section": "PICO question 3: Intensive versus less intensive blood pressure target",
@@ -31,7 +39,11 @@
       "classNote": "For (printed as 'Weak for intervention')",
       "levelOfEvidence": "Moderate certainty",
       "text": "In people with previous ischaemic stroke or TIA, we suggest aiming for a blood pressure target of <130/80 mmHg to reduce the risk of recurrent stroke. (Quality of evidence: Moderate; Strength of recommendation: Weak for intervention.)",
-      "page": null
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 3 recommendation 1",
+      "sourceReference": "Table 11; PICO 3; recommendation 1",
+      "id": "eso-secondary-prevention-2022-pico3-r1"
     },
     {
       "section": "PICO question 4: Initiation of two blood pressure lowering medications versus monotherapy",
@@ -39,7 +51,11 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "Expert consensus statement: In people with ischaemic stroke or TIA, we support initiation of a combination of two blood pressure lowering drugs to reduce the risk of recurrent stroke, with consideration of monotherapy where there are potential risks of hypotension, such as in frail, elderly people and people with borderline hypertension.",
-      "page": null
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 4 consensus 1",
+      "sourceReference": "Table 11; PICO 4; consensus 1",
+      "id": "eso-secondary-prevention-2022-pico4-c1"
     },
     {
       "section": "PICO question 5: HMGCoA reductase inhibitor (statin) therapy",
@@ -47,7 +63,11 @@
       "classNote": "For",
       "levelOfEvidence": "High certainty",
       "text": "In people with previous ischaemic stroke or TIA we recommend use of a HMGCoA reductase inhibitor to reduce the risk of recurrent ischaemic stroke. (Quality of evidence: High; Strength of recommendation: Strong for intervention.)",
-      "page": null
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 5 recommendation 1",
+      "sourceReference": "Table 11; PICO 5; recommendation 1",
+      "id": "eso-secondary-prevention-2022-pico5-r1"
     },
     {
       "section": "PICO question 6: Intensive cholesterol treatment target",
@@ -55,7 +75,11 @@
       "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
       "text": "In people with ischaemic stroke or TIA, we recommend aiming for an LDL cholesterol level of <1.8 mmol/l (70 mg/dl) to reduce the risk of major cardiovascular events. (Quality of evidence: Moderate; Strength of recommendation: Strong for intervention.)",
-      "page": null
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 6 recommendation 1",
+      "sourceReference": "Table 11; PICO 6; recommendation 1",
+      "id": "eso-secondary-prevention-2022-pico6-r1"
     },
     {
       "section": "PICO question 7: Ezetimibe and/or PCSK9-inhibitor added to a statin",
@@ -63,7 +87,11 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "Expert consensus statement: In people with ischaemic stroke or TIA who do not achieve the recommended LDL-C targets despite taking maximally tolerated dose of a HMGCoA reductase inhibitor for at least 6 weeks, we support the addition of ezetimibe as an option to reduce the risk of recurrent major cardiovascular events.",
-      "page": null
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 7 consensus 1",
+      "sourceReference": "Table 11; PICO 7; consensus 1",
+      "id": "eso-secondary-prevention-2022-pico7-c1"
     },
     {
       "section": "PICO question 8: Long-term antiplatelet therapy",
@@ -71,7 +99,11 @@
       "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
       "text": "In people with previous ischaemic stroke or TIA, we recommend long-term use of antiplatelet therapy to reduce the risk of recurrent stroke. (Quality of evidence: Moderate; Strength of recommendation: Strong for intervention.)",
-      "page": null
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 8 recommendation 1",
+      "sourceReference": "Table 11; PICO 8; recommendation 1",
+      "id": "eso-secondary-prevention-2022-pico8-r1"
     },
     {
       "section": "PICO question 9: Dual antiplatelet therapy for longer than 90 days",
@@ -79,7 +111,11 @@
       "classNote": "Against — printed as 'Weak against intervention' even though the statement is worded 'we recommend against'",
       "levelOfEvidence": "Very low certainty",
       "text": "In people with previous ischaemic stroke or TIA, we recommend against use of dual antiplatelet therapy with aspirin and clopidogrel in the long-term and recommend use of single antiplatelet to reduce the risk of recurrent stroke. (Quality of evidence: Very Low; Strength of recommendation: Weak against intervention.)",
-      "page": null
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 9 recommendation 1",
+      "sourceReference": "Table 11; PICO 9; recommendation 1",
+      "id": "eso-secondary-prevention-2022-pico9-r1"
     },
     {
       "section": "PICO question 10: Antiplatelet plus low-dose direct oral anticoagulant in atherosclerosis",
@@ -87,7 +123,11 @@
       "classNote": "For in people with coronary or peripheral arterial disease; explicitly against in those without",
       "levelOfEvidence": "Ungraded",
       "text": "Expert consensus statement: The use of antiplatelet therapy combined with a low-dose direct oral anticoagulant (rivaroxaban) can be considered to optimise treatment of coronary artery disease or peripheral arterial disease in people with a history of ischaemic stroke or TIA more than 1 month previously. It should not be considered in people with ischaemic stroke or TIA who do not have coronary artery disease or peripheral arterial disease.",
-      "page": null
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 10 consensus 1",
+      "sourceReference": "Table 11; PICO 10; consensus 1",
+      "id": "eso-secondary-prevention-2022-pico10-c1"
     },
     {
       "section": "PICO question 11: Direct oral anticoagulant versus antiplatelet in embolic stroke of undetermined source (ESUS)",
@@ -95,15 +135,23 @@
       "classNote": "Against the DOAC (printed as 'Weak against intervention'; the intervention assessed was the DOAC, so the statement favours antiplatelet therapy)",
       "levelOfEvidence": "Low certainty",
       "text": "In people with an embolic stroke of undetermined source, we suggest use of antiplatelet therapy and not a DOAC to reduce the risk of recurrent stroke. (Quality of evidence: Low; Strength of recommendation: Weak against intervention.)",
-      "page": null
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 11 recommendation 1",
+      "sourceReference": "Table 11; PICO 11; recommendation 1",
+      "id": "eso-secondary-prevention-2022-pico11-r1"
     },
     {
       "section": "PICO question 12: Intensive versus less intensive HbA1c control in diabetes mellitus",
       "classOfRec": "Expert Consensus",
-      "classNote": "For",
+      "classNote": "For; HbA1c expressed in mmol/mol and %, without treating estimated average glucose as an HbA1c unit",
       "levelOfEvidence": "Ungraded",
-      "text": "Expert consensus statement: In people with ischaemic stroke or TIA and diabetes mellitus, we support aiming for an HbA1c level of <53 mmol/mol (7%, 154 mg/dl) to reduce risk of microvascular and macrovascular complications. However, this target may need to be individualised based on duration of diabetes, age and comorbidities.",
-      "page": null
+      "text": "Expert consensus statement: In people with ischaemic stroke or TIA and diabetes mellitus, we support aiming for an HbA1c level of <53 mmol/mol (7%) to reduce risk of microvascular and macrovascular complications. However, this target may need to be individualised based on duration of diabetes, age and comorbidities.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 12 consensus 1",
+      "sourceReference": "Table 11; PICO 12; consensus 1",
+      "id": "eso-secondary-prevention-2022-pico12-c1"
     },
     {
       "section": "PICO question 13: Pioglitazone",
@@ -111,9 +159,103 @@
       "classNote": "For (printed as 'Weak for intervention')",
       "levelOfEvidence": "Moderate certainty",
       "text": "In people with ischaemic stroke or TIA, who have insulin resistance or type 2 diabetes mellitus, we suggest pioglitazone be used to reduce risk of recurrent stroke. (Quality of evidence: Moderate; Strength of recommendation: Weak for intervention.)",
-      "page": null
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 13 recommendation 1",
+      "sourceReference": "Table 11; PICO 13; recommendation 1",
+      "id": "eso-secondary-prevention-2022-pico13-r1"
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "GRADE"
+  "gradingSystem": "GRADE",
+  "coverage": {
+    "status": "complete",
+    "scope": "All formal recommendations and good-practice/consensus statements",
+    "checkedAt": "2026-09-06",
+    "sourceRecommendationCount": 8,
+    "sourceConsensusCount": 5,
+    "sourceSections": [
+      "PICO 1",
+      "PICO 2",
+      "PICO 3",
+      "PICO 4",
+      "PICO 5",
+      "PICO 6",
+      "PICO 7",
+      "PICO 8",
+      "PICO 9",
+      "PICO 10",
+      "PICO 11",
+      "PICO 12",
+      "PICO 13"
+    ],
+    "sourceTable": "Table 11",
+    "inventory": [
+      {
+        "section": "PICO 1",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 2",
+        "recommendationCount": 0,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 3",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 4",
+        "recommendationCount": 0,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 5",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 6",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 7",
+        "recommendationCount": 0,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 8",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 9",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 10",
+        "recommendationCount": 0,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 11",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 12",
+        "recommendationCount": 0,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 13",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      }
+    ]
+  }
 }

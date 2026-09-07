@@ -1,6 +1,6 @@
 {
   "name": "stroke",
-  "version": "6.25.0",
+  "version": "6.26.0",
   "description": "A client-side clinical decision support toolkit for stroke management with encounter workflows, calculators, protocols, trials, and evidence references.",
   "main": "service-worker.js",
   "scripts": {
@@ -56,7 +56,7 @@
     "qa:wait-for-live-pages": "node ./scripts/wait-for-live-pages.mjs",
     "qa:latency-adaptive-strict": "npm run validate:citations && npm run validate:evidence-churn-profiles && npm run validate:qa-latency-profiles && npm run validate:evidence-promotion && node ./scripts/qa-smoke.mjs --latency-profile adaptive --latency-profiles-file docs/qa-latency-profiles.json --enforce-latency-thresholds",
     "build:css": "tailwindcss -i ./src/styles.css -o ./tailwind.css --minify",
-    "build:js": "esbuild ./src/app.jsx --bundle --format=iife --target=es2018 --minify --outfile=./app.js",
+    "build:js": "node ./scripts/build-browser.mjs",
     "build:compress": "node ./scripts/compress-assets.mjs",
     "agent:assets": "node ./scripts/generate-agent-assets.mjs",
     "agent:assets:check": "node ./scripts/generate-agent-assets.mjs --check",

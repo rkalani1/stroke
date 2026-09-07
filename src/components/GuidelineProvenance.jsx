@@ -5,6 +5,17 @@ export default function GuidelineProvenance({ guideline }) {
     update.status === 'unresolved' || update.status === 'partially-applied');
   return (
     <div className="space-y-2 text-xs text-ink-2">
+      {guideline.coverageComplete && (
+        <p>
+          Complete recommendation coverage: {guideline.coverage.sourceRecommendationCount} recommendations
+          {guideline.coverage.sourceConsensusCount > 0 ? ` and ${guideline.coverage.sourceConsensusCount} consensus statements` : ''}.
+          {(guideline.coverage.sourcePracticeStatementCount || guideline.coverage.sourcePracticePointCount) > 0
+            ? ` Also includes ${guideline.coverage.sourcePracticeStatementCount || guideline.coverage.sourcePracticePointCount} ungraded practice statements.` : ''}
+          {guideline.coverage.sourceValueStatementCount > 0
+            ? ` Also includes ${guideline.coverage.sourceValueStatementCount} economic-value statement.` : ''}
+          {' '}Checked against the full source on {guideline.coverage.checkedAt}.
+        </p>
+      )}
       {(guideline.sourceOnly || guideline.partialExtraction || guideline.summaryOnly) && (
         <p className="rounded-md border border-warn-300 bg-warn-50 p-2 text-warn-900 dark:border-warn-700 dark:bg-warn-950 dark:text-warn-200">
           {guideline.sourceOnly

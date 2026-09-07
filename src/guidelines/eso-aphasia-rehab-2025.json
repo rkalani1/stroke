@@ -9,102 +9,223 @@
   "pmid": "40401776",
   "recommendations": [
     {
-      "section": "PICO 1: Dose of speech and language therapy",
+      "id": "eso-aphasia-rehab-2025-pico1-r1",
+      "section": "PICO 1: Total speech-language therapy dose",
       "classOfRec": "Strong",
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
-      "text": "In people with aphasia post-stroke, we recommend high dose SLT interventions (>=20 hours) rather than lower dose SLT (<20 hours) should be offered.",
-      "page": null
+      "text": "Offer people with post-stroke aphasia at least 20 total hours of speech-language therapy (SLT), rather than a lower total dose.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 1 recommendation 1",
+      "sourceReference": "Table 4, table4-23969873241311025; PICO 6(a–f) full-text consensus paragraph and Supplement 21 voting; PICO 1; recommendation 1"
     },
     {
-      "section": "PICO 2: Intensity of speech and language therapy",
+      "id": "eso-aphasia-rehab-2025-pico2-r1",
+      "section": "PICO 2: Weekly SLT intensity",
       "classOfRec": "Conditional",
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
-      "text": "In people with aphasia post-stroke, we suggest high intensity SLT (>=3 hours per week) rather than lower intensity should be offered.",
-      "page": null
+      "text": "For post-stroke aphasia, favour SLT of at least 3 hours per week rather than a lower weekly intensity.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 2 recommendation 1",
+      "sourceReference": "Table 4, table4-23969873241311025; PICO 6(a–f) full-text consensus paragraph and Supplement 21 voting; PICO 2; recommendation 1"
     },
     {
-      "section": "PICO 3: Frequency of speech and language therapy",
+      "id": "eso-aphasia-rehab-2025-pico3-r1",
+      "section": "PICO 3: SLT frequency",
       "classOfRec": "Conditional",
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
-      "text": "In people with aphasia post-stroke, we suggest high frequency SLT (>=4 days per week) should be offered rather than lower frequency SLT (<4 days per week).",
-      "page": null
+      "text": "For post-stroke aphasia, favour SLT on at least 4 days per week rather than fewer days.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 3 recommendation 1",
+      "sourceReference": "Table 4, table4-23969873241311025; PICO 6(a–f) full-text consensus paragraph and Supplement 21 voting; PICO 3; recommendation 1"
     },
     {
-      "section": "PICO 4a: Digitally-delivered versus in-person SLT",
+      "id": "eso-aphasia-rehab-2025-pico4a-r1",
+      "section": "PICO 4a: Digital versus in-person SLT",
       "classOfRec": "Conditional",
       "classNote": "For",
       "levelOfEvidence": "Very low certainty",
-      "text": "In people with aphasia after stroke, we suggest using either in-person or digitally-delivered SLT. (Weak recommendation that digitally delivered and in-person SLT interventions lead to similar gains.)",
-      "page": null
+      "text": "Either digitally delivered or in-person SLT may be used after stroke; the weak recommendation reflects similar language and communication gains.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 4a recommendation 1",
+      "sourceReference": "Table 4, table4-23969873241311025; PICO 6(a–f) full-text consensus paragraph and Supplement 21 voting; PICO 4a; recommendation 1"
     },
     {
-      "section": "PICO 4b: In-person SLT plus digital augmentation",
+      "id": "eso-aphasia-rehab-2025-pico4b-r1",
+      "section": "PICO 4b: Digital augmentation of in-person SLT",
       "classOfRec": "Conditional",
       "classNote": "For",
       "levelOfEvidence": "Very low certainty",
-      "text": "In people with aphasia after stroke, we suggest in-person SLT plus digital augmentation should be offered rather than usual in-person SLT.",
-      "page": null
+      "text": "For post-stroke aphasia, consider adding digital therapy to in-person SLT rather than providing usual in-person therapy alone.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 4b recommendation 1",
+      "sourceReference": "Table 4, table4-23969873241311025; PICO 6(a–f) full-text consensus paragraph and Supplement 21 voting; PICO 4b; recommendation 1"
     },
     {
-      "section": "PICO 5a: Group versus one-to-one SLT",
+      "id": "eso-aphasia-rehab-2025-pico5a-r1",
+      "section": "PICO 5a: Group versus individual SLT",
       "classOfRec": "Conditional",
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
-      "text": "In people with aphasia post-stroke, we suggest using either one-to-one or group therapy. (Weak recommendation that one-to-one and group SLT interventions lead to similar gains.)",
-      "page": null
+      "text": "Either group or one-to-one SLT may be used for post-stroke aphasia; the weak recommendation reflects similar gains.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 5a recommendation 1",
+      "sourceReference": "Table 4, table4-23969873241311025; PICO 6(a–f) full-text consensus paragraph and Supplement 21 voting; PICO 5a; recommendation 1"
     },
     {
-      "section": "PICO 5b: One-to-one plus group SLT versus one-to-one SLT alone",
+      "id": "eso-aphasia-rehab-2025-pico5b-r1",
+      "section": "PICO 5b: Combined group and individual SLT",
       "classOfRec": "No recommendation",
       "classNote": null,
       "levelOfEvidence": "Very low certainty",
-      "text": "In people with aphasia post-stroke, the benefits of providing one-to-one plus group SLT compared to one-to-one SLT alone are uncertain and therefore we cannot make a recommendation. (The document records the strength of recommendation for this PICO as '-'.)",
-      "page": null
+      "text": "The added benefit of combining group with one-to-one SLT rather than one-to-one therapy alone remains uncertain; no evidence-based recommendation can be made.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 5b recommendation 1",
+      "sourceReference": "Table 4, table4-23969873241311025; PICO 6(a–f) full-text consensus paragraph and Supplement 21 voting; PICO 5b; recommendation 1"
     },
     {
-      "section": "PICO 5b: One-to-one plus group SLT versus one-to-one SLT alone",
+      "id": "eso-aphasia-rehab-2025-pico5b-c1",
+      "section": "PICO 5b: Group SLT when individual access is limited",
       "classOfRec": "Expert Consensus",
-      "classNote": "For",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Expert consensus statement (12/12, 100% of writing group members agreed): In people with aphasia following stroke where access to one-to-one therapy is constrained by resource availability, we suggest that group therapy delivered in addition to one-to-one SLT may facilitate increased therapy time, provide additional opportunities to use language in a social context and enhance communication confidence. We also suggest that the therapy timing and format should follow other recommendations in this clinical guideline, aiming to enhance language recovery, communication, participation, and quality of life.",
-      "page": null
+      "text": "When resources limit one-to-one SLT, adding group sessions may increase therapy time, social language use and communication confidence. Follow this guideline's timing and delivery recommendations to support language recovery, communication, participation and quality of life. Consensus 12/12.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 5b consensus 1",
+      "sourceReference": "Table 4, table4-23969873241311025; PICO 6(a–f) full-text consensus paragraph and Supplement 21 voting; PICO 5b; consensus 1"
     },
     {
-      "section": "PICO 6 (a)-(f): SLT plus transcranial direct current stimulation (tDCS)",
+      "id": "eso-aphasia-rehab-2025-pico6(a–f)-r1",
+      "section": "PICO 6(a–f): tDCS added to SLT",
       "classOfRec": "No recommendation",
       "classNote": null,
       "levelOfEvidence": "Very low certainty",
-      "text": "In people with aphasia post-stroke, the benefits of SLT plus tDCS compared to SLT plus sham tDCS are uncertain and therefore we cannot make a recommendation. (The document records the strength of recommendation for this PICO as '-'.)",
-      "page": null
+      "text": "The benefit of SLT plus transcranial direct current stimulation compared with SLT plus sham stimulation remains uncertain; no evidence-based recommendation can be made.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 6(a–f) recommendation 1",
+      "sourceReference": "Table 4, table4-23969873241311025; PICO 6(a–f) full-text consensus paragraph and Supplement 21 voting; PICO 6(a–f); recommendation 1"
     },
     {
-      "section": "PICO 6 (a)-(f): SLT plus transcranial direct current stimulation (tDCS)",
+      "id": "eso-aphasia-rehab-2025-pico6(a–f)-c1",
+      "section": "PICO 6(a–f): tDCS in clinical care and trials",
       "classOfRec": "Expert Consensus",
-      "classNote": "Against",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Expert consensus statement (10/12 agreed the first statement, 12/12 the remainder): In people with aphasia following stroke, we suggest that in the clinical context, SLT should be delivered alone, rather than SLT alongside tDCS. Individualised tDCS protocols for post-stroke aphasia may be beneficial, but further evidence is required. Left- or right-sided cortical or cerebellar tDCS (anodal or cathodal) should only be delivered alongside SLT in a high-quality trial context, where validated outcome measurement instruments are used, participant demographics are fully described and adverse events (even if none are observed) are reported.",
-      "page": null
+      "text": "In clinical care, prefer SLT alone to SLT plus tDCS. Individualised tDCS may have benefit but needs further evidence. Cortical or cerebellar tDCS, either side and either polarity, should accompany SLT only in high-quality trials using validated outcomes, fully described participants and adverse-event reporting even when none occur. The clinical-care statement had 10/12 agreement; the remaining statements had 12/12.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 6(a–f) consensus 1",
+      "sourceReference": "Table 4, table4-23969873241311025; PICO 6(a–f) full-text consensus paragraph and Supplement 21 voting; PICO 6(a–f); consensus 1"
     },
     {
-      "section": "PICO 7a: SLT individually tailored by functional relevance",
+      "id": "eso-aphasia-rehab-2025-pico7a-r1",
+      "section": "PICO 7a: Functional relevance of SLT",
       "classOfRec": "Conditional",
       "classNote": "For",
       "levelOfEvidence": "Very low certainty",
-      "text": "In people with aphasia post-stroke, we suggest tailored SLT by functional relevance rather than non-tailored SLT by functional relevance should be offered.",
-      "page": null
+      "text": "Offer SLT tailored to the individual's functional communication needs rather than therapy lacking that functional tailoring.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 7a recommendation 1",
+      "sourceReference": "Table 4, table4-23969873241311025; PICO 6(a–f) full-text consensus paragraph and Supplement 21 voting; PICO 7a; recommendation 1"
     },
     {
-      "section": "PICO 7b: SLT individually tailored by level of language task difficulty",
+      "id": "eso-aphasia-rehab-2025-pico7b-r1",
+      "section": "PICO 7b: Language-task difficulty",
       "classOfRec": "Conditional",
       "classNote": "For",
       "levelOfEvidence": "Very low certainty",
-      "text": "In people with aphasia post-stroke, we suggest that SLT individually-tailored by level of language task difficulty should be offered.",
-      "page": null
+      "text": "Tailor SLT language-task difficulty to the individual with post-stroke aphasia.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 7b recommendation 1",
+      "sourceReference": "Table 4, table4-23969873241311025; PICO 6(a–f) full-text consensus paragraph and Supplement 21 voting; PICO 7b; recommendation 1"
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "GRADE"
+  "gradingSystem": "GRADE",
+  "coverage": {
+    "status": "complete",
+    "scope": "All formal recommendations and good-practice/consensus statements",
+    "checkedAt": "2026-09-06",
+    "sourceRecommendationCount": 10,
+    "sourceConsensusCount": 2,
+    "sourceSections": [
+      "PICO 1",
+      "PICO 2",
+      "PICO 3",
+      "PICO 4a",
+      "PICO 4b",
+      "PICO 5a",
+      "PICO 5b",
+      "PICO 6(a–f)",
+      "PICO 7a",
+      "PICO 7b"
+    ],
+    "sourceTable": "Table 4, table4-23969873241311025; PICO 6(a–f) full-text consensus paragraph and Supplement 21 voting",
+    "countingNote": "Separately graded recommendation/no-recommendation statements and separately numbered consensus statements are individual entries. Unnumbered consensus boxes retain every clause within one entry.",
+    "inventory": [
+      {
+        "section": "PICO 1",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 2",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 3",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 4a",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 4b",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 5a",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 5b",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 6(a–f)",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 7a",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 7b",
+        "recommendationCount": 1,
+        "consensusCount": 0
+      }
+    ]
+  }
 }

@@ -1,165 +1,1417 @@
 {
   "id": "aha-hypertension-guideline-2025",
   "title": "2025 AHA/ACC/AANP/AAPA/ABC/ACCP/ACPM/AGS/AMA/ASPC/NMA/PCNA/SGIM Guideline for the Prevention, Detection, Evaluation and Management of High Blood Pressure in Adults: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines",
-  "shortTitle": "2025 AHA/ACC/AANP/AAPA/ABC/ACCP/ACPM/AGS/AMA/ASPC/NMA/PCNA/SGIM Guideline",
+  "shortTitle": "Hypertension 2025",
   "doi": "10.1161/HYP.0000000000000249",
   "publisherUrl": "https://doi.org/10.1161/HYP.0000000000000249",
-  "pdfUrl": null,
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/HYP.0000000000000249",
   "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/40811516/",
   "pmid": "40811516",
-  "society": "AHA/ASA",
+  "society": "AHA/ACC",
   "recommendations": [
     {
+      "id": "aha-hypertension-guideline-2025-2-1-1",
+      "section": "2.1. Definition of High BP",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Classify adult BP as normal, elevated, stage 1 hypertension, or stage 2 hypertension to guide prevention and treatment.",
+      "page": 11,
+      "pdfPage": 11,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "2.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-1-1-1",
+      "section": "3.1.1. Accurate Measurement of In-Office BP",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "Use standardized techniques to measure and document office BP accurately when diagnosing or treating adult hypertension.",
+      "page": 13,
+      "pdfPage": 13,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.1.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-1-1-2",
+      "section": "3.1.1. Accurate Measurement of In-Office BP",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "An automated oscillometric device is a reasonable choice over auscultatory measurement for adult office BP.",
+      "page": 13,
+      "pdfPage": 13,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "3.1.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-1-2-1",
+      "section": "3.1.2. Laboratory Tests and Other Diagnostic Procedures",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "At adult hypertension diagnosis, obtain CBC, electrolytes, creatinine, lipids, glucose or HbA1c, TSH, urinalysis, urine albumin/creatinine ratio, and a 12-lead ECG to guide management.",
+      "page": 15,
+      "pdfPage": 15,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.1.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-1-4-1",
+      "section": "3.1.4. ABPM and HBPM",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Confirm suspected adult hypertension with ambulatory BP monitoring (ABPM) or home BP monitoring (HBPM).",
+      "page": 16,
+      "pdfPage": 16,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.1.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-1-4-2",
+      "section": "3.1.4. ABPM and HBPM",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Use HBPM to guide antihypertensive titration, together with patient education, telehealth counseling, and clinical follow-up.",
+      "page": 16,
+      "pdfPage": 16,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "3.1.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-1-4-1-1",
+      "section": "3.1.4.1. Cuffless BP Devices",
+      "classOfRec": "III",
+      "classNote": "No Benefit",
+      "levelOfEvidence": "C-LD",
+      "text": "Cuffless BP devices should not be used to diagnose or manage hypertension in adults.",
+      "page": 17,
+      "pdfPage": 17,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.1.4.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-2-1",
+      "section": "3.2.2. White-Coat Hypertension and Masked Hypertension, and White-Coat Effect and Masked Uncontrolled Hypertension",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Before diagnosing hypertension in untreated adults with office SBP ≥130 or DBP ≥80 mm Hg, but neither SBP ≥160 nor DBP ≥100, out-of-office monitoring is reasonable to exclude white-coat hypertension.",
+      "page": 18,
+      "pdfPage": 18,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-2-2",
+      "section": "3.2.2. White-Coat Hypertension and Masked Hypertension, and White-Coat Effect and Masked Uncontrolled Hypertension",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For white-coat or masked hypertension, out-of-office monitoring is reasonable to identify progression to sustained hypertension.",
+      "page": 18,
+      "pdfPage": 18,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "3.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-2-3",
+      "section": "3.2.2. White-Coat Hypertension and Masked Hypertension, and White-Coat Effect and Masked Uncontrolled Hypertension",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "In apparent resistant hypertension diagnosed by office readings, out-of-office monitoring is reasonable to exclude a white-coat effect causing pseudoresistance.",
+      "page": 18,
+      "pdfPage": 18,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "3.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-2-4",
+      "section": "3.2.2. White-Coat Hypertension and Masked Hypertension, and White-Coat Effect and Masked Uncontrolled Hypertension",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "In treated adults with office SBP ≥130 or DBP ≥80 mm Hg, without resistant hypertension and without SBP ≥160 or DBP ≥100, out-of-office monitoring is reasonable to exclude white-coat effect.",
+      "page": 18,
+      "pdfPage": 18,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "3.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-2-5",
+      "section": "3.2.2. White-Coat Hypertension and Masked Hypertension, and White-Coat Effect and Masked Uncontrolled Hypertension",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "In untreated adults with office BP <130/80 mm Hg, out-of-office monitoring may be considered to exclude masked hypertension.",
+      "page": 18,
+      "pdfPage": 18,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "3.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-2-6",
+      "section": "3.2.2. White-Coat Hypertension and Masked Hypertension, and White-Coat Effect and Masked Uncontrolled Hypertension",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "In treated adults with office BP <130/80 mm Hg, out-of-office monitoring may be considered to exclude masked uncontrolled hypertension.",
+      "page": 18,
+      "pdfPage": 18,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "3.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-3-1",
       "section": "3.2.3. Secondary Forms of Hypertension",
       "classOfRec": "I",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "In adults with resistant hypertension, screening for primary aldosteronism is recommended regardless of whether hypokalemia is present to increase rates of detection, diagnosis, and specific targeted therapy.",
-      "page": null
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "Investigate specific secondary causes when clinical findings raise suspicion in an adult with hypertension.",
+      "page": 20,
+      "pdfPage": 20,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.2.3",
+      "sourceStatementType": "recommendation"
     },
     {
+      "id": "aha-hypertension-guideline-2025-3-2-3-2",
+      "section": "3.2.3. Secondary Forms of Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Screen adults with resistant hypertension for primary aldosteronism even when potassium is normal.",
+      "page": 20,
+      "pdfPage": 20,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "3.2.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-3-3",
+      "section": "3.2.3. Secondary Forms of Hypertension",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "After a positive secondary-hypertension screen, referral to a clinician with expertise in that disorder is reasonable for confirmation and treatment.",
+      "page": 20,
+      "pdfPage": 20,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "3.2.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-3-1-1",
       "section": "3.2.3.1. Primary Aldosteronism",
       "classOfRec": "I",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "In adults with an indication for screening for primary aldosteronism, it is recommended to continue most antihypertensive medications (other than MRA) prior to initial screening to minimize barriers to or delays in screening.",
-      "page": null
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "Screen for primary aldosteronism when hypertension coexists with resistance, spontaneous or diuretic-related hypokalemia, OSA, an incidental adrenal mass, family history of early hypertension, or stroke before age 40.",
+      "page": 22,
+      "pdfPage": 22,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.2.3.1",
+      "sourceStatementType": "recommendation"
     },
     {
+      "id": "aha-hypertension-guideline-2025-3-2-3-1-2",
+      "section": "3.2.3.1. Primary Aldosteronism",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "Primary aldosteronism screening may also be considered in stage 2 hypertension.",
+      "page": 22,
+      "pdfPage": 22,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "3.2.3.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-3-1-3",
+      "section": "3.2.3.1. Primary Aldosteronism",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "For an indicated primary aldosteronism screen, measure plasma aldosterone, plasma renin activity, and their ratio.",
+      "page": 23,
+      "pdfPage": 23,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "3.2.3.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-3-1-4",
+      "section": "3.2.3.1. Primary Aldosteronism",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "Continue most antihypertensive medications before the initial aldosteronism screen; mineralocorticoid receptor antagonists (MRAs) are the exception.",
+      "page": 23,
+      "pdfPage": 23,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "3.2.3.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-3-1-5",
+      "section": "3.2.3.1. Primary Aldosteronism",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "Refer to a hypertension specialist or endocrinologist after a positive aldosteronism screen or persistent suspicion from suppressed renin or disproportionate target-organ injury.",
+      "page": 23,
+      "pdfPage": 23,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "3.2.3.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-3-2-1",
+      "section": "3.2.3.2. Renal Artery Stenosis",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Use medical therapy for hypertension with atherosclerotic renal artery stenosis to reduce renal and cardiovascular morbidity and mortality.",
+      "page": 26,
+      "pdfPage": 26,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.2.3.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-3-2-2",
+      "section": "3.2.3.2. Renal Artery Stenosis",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "Referral for renal angioplasty and/or stenting is reasonable when medical therapy for atherosclerotic renal artery stenosis fails, such as resistant hypertension, worsening renal function, or acute heart failure.",
+      "page": 26,
+      "pdfPage": 26,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "3.2.3.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-3-2-3",
+      "section": "3.2.3.2. Renal Artery Stenosis",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "Referral for renal angioplasty may be considered for hypertension due to nonatherosclerotic renal artery stenosis, including fibromuscular dysplasia.",
+      "page": 26,
+      "pdfPage": 26,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "3.2.3.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-3-3-1",
+      "section": "3.2.3.3. OSA",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "In overweight or obese adults with hypertension and OSA, weight-loss treatment combined with CPAP can lower SBP.",
+      "page": 27,
+      "pdfPage": 27,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "3.2.3.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-3-2-3-3-2",
+      "section": "3.2.3.3. OSA",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "CPAP can help lower BP in resistant hypertension with moderate-to-severe OSA.",
+      "page": 27,
+      "pdfPage": 27,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "3.2.3.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-1-1",
+      "section": "5.1. Lifestyle and Psychosocial Approaches",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "For overweight or obesity, aim for ≥5% weight reduction to prevent or treat elevated BP and hypertension.",
+      "page": 28,
+      "pdfPage": 28,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-1-2",
+      "section": "5.1. Lifestyle and Psychosocial Approaches",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Recommend a heart-healthy dietary pattern, such as DASH, whether or not hypertension is present.",
+      "page": 28,
+      "pdfPage": 28,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-1-3",
+      "section": "5.1. Lifestyle and Psychosocial Approaches",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Reduce dietary sodium to <2300 mg/day, progressing toward an ideal <1500 mg/day, to prevent or treat elevated BP.",
+      "page": 28,
+      "pdfPage": 28,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-1-4",
       "section": "5.1. Lifestyle and Psychosocial Approaches",
       "classOfRec": "IIa",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "In adults with or without hypertension, potassium-based salt substitutes can be useful to prevent or treat elevated BP and hypertension, particularly for patients in whom salt intake is related mostly to food preparation or flavoring at home, except in the presence of CKD or use of drugs that reduce potassium excretion where additional monitoring is probably indicated.",
-      "page": null
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Potassium-containing salt substitutes can help prevent or treat elevated BP, particularly when home preparation or seasoning supplies most salt. In CKD or with medicines that impair potassium excretion, monitor serum potassium.",
+      "page": 28,
+      "pdfPage": 28,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
     },
     {
+      "id": "aha-hypertension-guideline-2025-5-1-5",
+      "section": "5.1. Lifestyle and Psychosocial Approaches",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "For elevated BP or hypertension, recommend moderate potassium supplementation, preferably through food. Moderate supplementation means <80 mmol (mEq)/day; CKD or medicines limiting potassium excretion require serum potassium monitoring.",
+      "page": 28,
+      "pdfPage": 28,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-1-6",
+      "section": "5.1. Lifestyle and Psychosocial Approaches",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Advise people who drink alcohol to aim for abstinence, or at least limit intake to ≤1 drink/day for women and ≤2 for men, to prevent or treat elevated BP.",
+      "page": 28,
+      "pdfPage": 28,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-1-7",
+      "section": "5.1. Lifestyle and Psychosocial Approaches",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Recommend more physical activity through structured aerobic exercise and/or resistance training to prevent or treat elevated BP.",
+      "page": 28,
+      "pdfPage": 28,
+      "sourceRecommendationNumber": 7,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-1-8",
+      "section": "5.1. Lifestyle and Psychosocial Approaches",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Transcendental meditation may be considered as an adjunct to lifestyle measures or medication for BP prevention or treatment.",
+      "page": 28,
+      "pdfPage": 28,
+      "sourceRecommendationNumber": 8,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-1-9",
+      "section": "5.1. Lifestyle and Psychosocial Approaches",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Other stress-management methods, including controlled breathing or yoga, may be considered as adjuncts to lifestyle measures or BP medication.",
+      "page": 28,
+      "pdfPage": 28,
+      "sourceRecommendationNumber": 9,
+      "sourceSection": "5.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-2-1",
       "section": "5.2.2. BP Treatment Threshold and the Use of CVD Risk Estimation to Guide Drug Treatment of Hypertension",
       "classOfRec": "I",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "In adults with hypertension without clinical CVD but with diabetes or CKD or at increased 10-year CVD risk (ie, >=7.5% based on PREVENT), initiation of medications to lower BP is recommended when average SBP is >=130 mm Hg and average DBP is >=80 mm Hg to reduce the risk of CVD events and total mortality.",
-      "page": null
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Start BP-lowering medication in adults with hypertension when average SBP is ≥140 mm Hg to reduce cardiovascular events and mortality.",
+      "page": 32,
+      "pdfPage": 32,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.2.2",
+      "sourceStatementType": "recommendation"
     },
     {
+      "id": "aha-hypertension-guideline-2025-5-2-2-2",
       "section": "5.2.2. BP Treatment Threshold and the Use of CVD Risk Estimation to Guide Drug Treatment of Hypertension",
       "classOfRec": "I",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "In adults with hypertension without clinical CVD and with estimated 10-year CVD risk <7.5% based on PREVENT, initiation of medications to lower BP is recommended if average SBP remains >=130 mm Hg or average DBP remains >=80 mm Hg after a 3- to 6-month trial of lifestyle intervention to prevent target organ damage and mitigate further increases in BP.",
-      "page": null
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Start BP-lowering medication in adults with hypertension when average DBP is ≥90 mm Hg to reduce cardiovascular events and mortality.",
+      "page": 32,
+      "pdfPage": 32,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.2.2",
+      "sourceStatementType": "recommendation"
     },
     {
+      "id": "aha-hypertension-guideline-2025-5-2-2-3",
+      "section": "5.2.2. BP Treatment Threshold and the Use of CVD Risk Estimation to Guide Drug Treatment of Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "With hypertension and established cardiovascular disease, start medication when average SBP is ≥130 mm Hg.",
+      "page": 32,
+      "pdfPage": 32,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "5.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-2-4",
+      "section": "5.2.2. BP Treatment Threshold and the Use of CVD Risk Estimation to Guide Drug Treatment of Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "With hypertension and established cardiovascular disease, start medication when average DBP is ≥80 mm Hg.",
+      "page": 32,
+      "pdfPage": 32,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "5.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-2-5",
+      "section": "5.2.2. BP Treatment Threshold and the Use of CVD Risk Estimation to Guide Drug Treatment of Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Without clinical cardiovascular disease, start medication at average SBP ≥130 mm Hg when hypertension accompanies diabetes, CKD, or PREVENT 10-year CVD risk ≥7.5%.",
+      "page": 33,
+      "pdfPage": 33,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "5.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-2-6",
+      "section": "5.2.2. BP Treatment Threshold and the Use of CVD Risk Estimation to Guide Drug Treatment of Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "Without clinical cardiovascular disease, start medication at average DBP ≥80 mm Hg when hypertension accompanies diabetes, CKD, or PREVENT 10-year CVD risk ≥7.5%.",
+      "page": 33,
+      "pdfPage": 33,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "5.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-2-7",
+      "section": "5.2.2. BP Treatment Threshold and the Use of CVD Risk Estimation to Guide Drug Treatment of Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Without clinical cardiovascular disease and with PREVENT 10-year CVD risk <7.5%, start medication if SBP remains ≥130 mm Hg after 3–6 months of lifestyle treatment.",
+      "page": 33,
+      "pdfPage": 33,
+      "sourceRecommendationNumber": 7,
+      "sourceSection": "5.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-2-8",
+      "section": "5.2.2. BP Treatment Threshold and the Use of CVD Risk Estimation to Guide Drug Treatment of Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Without clinical cardiovascular disease and with PREVENT 10-year CVD risk <7.5%, start medication if DBP remains ≥80 mm Hg after 3–6 months of lifestyle treatment.",
+      "page": 33,
+      "pdfPage": 33,
+      "sourceRecommendationNumber": 8,
+      "sourceSection": "5.2.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-3-1",
+      "section": "5.2.3. Initial Medication Selection for Treatment of Primary Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "First-line antihypertensive options are thiazide-type diuretics, long-acting dihydropyridine calcium channel blockers, ACE inhibitors, or ARBs.",
+      "page": 36,
+      "pdfPage": 36,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.2.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-4-1",
+      "section": "5.2.4. Choice of Initial Monotherapy Versus Initial Combination Drug Therapy",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For stage 2 hypertension, begin two first-line agents from different classes, preferably as one combination pill, to improve control and adherence.",
+      "page": 36,
+      "pdfPage": 36,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.2.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-4-2",
+      "section": "5.2.4. Choice of Initial Monotherapy Versus Initial Combination Drug Therapy",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "For stage 1 hypertension, starting one first-line agent is reasonable, with dose titration and sequential addition of medications as needed.",
+      "page": 36,
+      "pdfPage": 36,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.2.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-4-3",
+      "section": "5.2.4. Choice of Initial Monotherapy Versus Initial Combination Drug Therapy",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "A",
+      "text": "Do not combine ACE inhibitors, ARBs, and/or direct renin inhibitors with each other for hypertension because of harm.",
+      "page": 36,
+      "pdfPage": 36,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "5.2.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-5-1",
+      "section": "5.2.5. Antihypertensive Medication Adherence Strategies",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Once-daily antihypertensive dosing improves adherence compared with multiple daily doses.",
+      "page": 40,
+      "pdfPage": 40,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.2.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-5-2",
+      "section": "5.2.5. Antihypertensive Medication Adherence Strategies",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Use a single-pill combination instead of separate pills when appropriate to reduce pill burden and improve adherence.",
+      "page": 40,
+      "pdfPage": 40,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.2.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-5-3",
+      "section": "5.2.5. Antihypertensive Medication Adherence Strategies",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Medication reminders, education, and self-management support can improve antihypertensive adherence.",
+      "page": 40,
+      "pdfPage": 40,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "5.2.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-7-1",
+      "section": "5.2.7. BP Goal for Patients With Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "For confirmed hypertension with increased CVD risk, target SBP <130 mm Hg and encourage achieving <120 to reduce cardiovascular events and mortality. This table defines increased risk as PREVENT 10-year CVD risk ≥7.5%.",
+      "page": 41,
+      "pdfPage": 41,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.2.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-7-2",
+      "section": "5.2.7. BP Goal for Patients With Hypertension",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For confirmed hypertension without increased CVD risk, targeting SBP <130 mm Hg and encouraging <120 may be reasonable to prevent further BP elevation.",
+      "page": 41,
+      "pdfPage": 41,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.2.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-7-3",
+      "section": "5.2.7. BP Goal for Patients With Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For confirmed hypertension with increased CVD risk, target DBP <80 mm Hg to reduce cardiovascular events and mortality.",
+      "page": 41,
+      "pdfPage": 41,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "5.2.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-2-7-4",
+      "section": "5.2.7. BP Goal for Patients With Hypertension",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For confirmed hypertension without increased CVD risk, a DBP goal <80 mm Hg may be reasonable to reduce cardiovascular events.",
+      "page": 41,
+      "pdfPage": 41,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "5.2.7",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-1-1",
       "section": "5.3.1. Diabetes",
       "classOfRec": "I",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "In adults with diabetes and hypertension, ACEi or ARB are recommended in the presence of CKD as identified by eGFR <60 mL/min/1.73 m2 or albuminuria >=30 mg/g and should be considered when mild albuminuria (<30 mg/g) is present to delay progression of diabetic kidney disease.",
-      "page": null
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "In type 2 diabetes with hypertension, start medication at SBP ≥130 mm Hg; target <130 and encourage <120 to reduce cardiovascular morbidity and mortality.",
+      "page": 46,
+      "pdfPage": 46,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.3.1",
+      "sourceStatementType": "recommendation"
     },
     {
-      "section": "5.3.8. Hypertension Treatment in Patients With Chronic Kidney Disease",
+      "id": "aha-hypertension-guideline-2025-5-3-1-2",
+      "section": "5.3.1. Diabetes",
       "classOfRec": "I",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "For adults with hypertension and CKD as identified by eGFR <60 mL/min/1.73 m2 with albuminuria of >=30 mg/g, RAASi (either with ACEi or ARB but not both) is recommended to decrease CVD and delay progression of kidney disease.",
-      "page": null
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "In type 2 diabetes with hypertension, start medication at DBP ≥80 mm Hg and target <80.",
+      "page": 46,
+      "pdfPage": 46,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.3.1",
+      "sourceStatementType": "recommendation"
     },
     {
+      "id": "aha-hypertension-guideline-2025-5-3-1-3",
+      "section": "5.3.1. Diabetes",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Thiazide-type diuretics, long-acting calcium channel blockers, ACE inhibitors, and ARBs are effective first-line BP-lowering agents in type 2 diabetes.",
+      "page": 46,
+      "pdfPage": 46,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "5.3.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-1-4",
+      "section": "5.3.1. Diabetes",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "With diabetes and hypertension, use an ACE inhibitor or ARB when eGFR is <60 mL/min/1.73 m² or albuminuria is ≥30 mg/g; consider these agents with lesser albuminuria to slow diabetes-related kidney disease.",
+      "page": 46,
+      "pdfPage": 46,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "5.3.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-2-1",
+      "section": "5.3.2. Obesity and Metabolic Syndrome",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For hypertension with BMI ≥27 kg/m², incretin mimetics such as GLP-1 receptor agonists used for weight management may also help lower BP.",
+      "page": 47,
+      "pdfPage": 47,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.3.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-2-2",
+      "section": "5.3.2. Obesity and Metabolic Syndrome",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "For hypertension with BMI ≥35 kg/m², bariatric surgery considered for weight loss may improve BP when combined with behavioral and antihypertensive treatment.",
+      "page": 47,
+      "pdfPage": 47,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.3.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-4-1",
+      "section": "5.3.4. the Prevention of HF in Adults With Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Treat SBP to <130 mm Hg in adults with hypertension to reduce incident heart failure.",
+      "page": 48,
+      "pdfPage": 48,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.3.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-4-2",
+      "section": "5.3.4. the Prevention of HF in Adults With Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Treat DBP to <80 mm Hg in adults with hypertension to reduce incident heart failure.",
+      "page": 48,
+      "pdfPage": 48,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.3.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-8-1",
+      "section": "5.3.8. Hypertension Treatment in Patients With CKD",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "With hypertension and CKD defined by eGFR <60 mL/min/1.73 m² or albuminuria ≥30 mg/g, target SBP <130 mm Hg to reduce all-cause mortality.",
+      "page": 50,
+      "pdfPage": 50,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.3.8",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-8-2",
+      "section": "5.3.8. Hypertension Treatment in Patients With CKD",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "With hypertension, eGFR <60 mL/min/1.73 m², and albuminuria ≥30 mg/g, use an ACE inhibitor or ARB, but not both, to reduce CVD and slow kidney disease.",
+      "page": 50,
+      "pdfPage": 50,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.3.8",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-9-1-1",
       "section": "5.3.9.1. Acute Intracerebral Hemorrhage",
       "classOfRec": "IIa",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "For adult patients with acute spontaneous ICH who present with SBP between 150 and 220 mm Hg, it can be beneficial to immediately lower SBP to 130 to <140 mm Hg for at least 7 days after ICH to improve functional outcomes, but stop antihypertensive medications if SBP <130 mm Hg.",
-      "page": null
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "For acute spontaneous ICH presenting with SBP 150–220 mm Hg, immediate reduction to 130–<140 for at least 7 days can improve function; stop BP-lowering medication if SBP falls below 130.",
+      "page": 52,
+      "pdfPage": 52,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.3.9.1",
+      "sourceStatementType": "recommendation"
     },
     {
+      "id": "aha-hypertension-guideline-2025-5-3-9-1-2",
       "section": "5.3.9.1. Acute Intracerebral Hemorrhage",
       "classOfRec": "IIa",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "In adults with acute spontaneous ICH requiring acute BP lowering, careful titration to ensure smooth, nonlabile, and sustained control of BP, avoiding peaks and large variability in SBP, can be beneficial for improving functional outcomes.",
-      "page": null
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "When lowering BP acutely after spontaneous ICH, smooth sustained control with careful titration and avoidance of large SBP swings can improve functional outcomes.",
+      "page": 52,
+      "pdfPage": 52,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.3.9.1",
+      "sourceStatementType": "recommendation"
     },
     {
+      "id": "aha-hypertension-guideline-2025-5-3-9-1-3",
+      "section": "5.3.9.1. Acute Intracerebral Hemorrhage",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-NR",
+      "text": "For spontaneous ICH presenting with SBP >220 mm Hg, avoid reducing SBP below 130 because of adverse events.",
+      "page": 52,
+      "pdfPage": 52,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "5.3.9.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-9-2-1",
+      "section": "5.3.9.2. Acute Ischemic Stroke",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "Correct hypotension and hypovolemia in acute ischemic stroke to maintain systemic perfusion and organ function.",
+      "page": 52,
+      "pdfPage": 52,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.3.9.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-9-2-2",
+      "section": "5.3.9.2. Acute Ischemic Stroke",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Before IV thrombolysis, lower elevated BP to <185/110 mm Hg; maintain BP below 180/105 for at least 24 hours after starting treatment.",
+      "page": 52,
+      "pdfPage": 52,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.3.9.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-9-2-3",
+      "section": "5.3.9.2. Acute Ischemic Stroke",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "During endovascular stroke treatment and for 24 hours afterward, maintaining BP ≤180/105 mm Hg is reasonable.",
+      "page": 52,
+      "pdfPage": 52,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "5.3.9.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-9-2-4",
+      "section": "5.3.9.2. Acute Ischemic Stroke",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "If BP is ≥220/120 mm Hg and neither IV thrombolysis nor EVT was given, with no other indication for urgent BP treatment, a 15% reduction during the first 24 hours after stroke may be reasonable.",
+      "page": 52,
+      "pdfPage": 52,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "5.3.9.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-9-2-5",
       "section": "5.3.9.2. Acute Ischemic Stroke",
       "classOfRec": "III",
-      "classNote": "Harm — Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "In patients undergoing successful brain reperfusion with endovascular treatment for a large vessel occlusion, lowering SBP <140 mm Hg within the first 24 to 72 hours after reperfusion can worsen long-term functional outcome.",
-      "page": null
+      "classNote": "No Benefit",
+      "levelOfEvidence": "A",
+      "text": "When BP is <220/120 mm Hg after ischemic stroke without IV thrombolysis, EVT, or another urgent BP indication, starting or restarting antihypertensives within 48–72 hours does not prevent death or disability.",
+      "page": 53,
+      "pdfPage": 53,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "5.3.9.2",
+      "sourceStatementType": "recommendation"
     },
     {
-      "section": "5.3.9.4. Mild Cognitive Impairment and Dementia",
-      "classOfRec": "I",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "In adults with hypertension, a goal of <130 mm Hg SBP is recommended to prevent mild cognitive impairment and dementia.",
-      "page": null
-    },
-    {
-      "section": "5.5. Hypertension and Pregnancy",
-      "classOfRec": "I",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "Pregnant individuals with SBP >=160 mm Hg or DBP >=110 mm Hg confirmed on repeat measurement within 15 minutes should receive antihypertensive medication to lower BP to <160/<110 mm Hg within 30 to 60 minutes to prevent adverse events.",
-      "page": null
-    },
-    {
-      "section": "5.5. Hypertension and Pregnancy",
-      "classOfRec": "I",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "Pregnant individuals with chronic hypertension (defined as prepregnancy hypertension or SBP 140-159 mm Hg and/or DBP 90-109 mm Hg prior to 20 weeks gestation) should receive antihypertensive therapy to achieve BP <140/90 mm Hg to prevent maternal and perinatal morbidity and mortality.",
-      "page": null
-    },
-    {
-      "section": "5.5. Hypertension and Pregnancy",
-      "classOfRec": "I",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "Individuals with hypertension who are planning a pregnancy or who become pregnant should be counseled about the benefits of low-dose aspirin to reduce the risk of preeclampsia and its sequelae.",
-      "page": null
-    },
-    {
-      "section": "5.5. Hypertension and Pregnancy",
+      "id": "aha-hypertension-guideline-2025-5-3-9-2-6",
+      "section": "5.3.9.2. Acute Ischemic Stroke",
       "classOfRec": "III",
-      "classNote": "Harm — Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "Individuals with hypertension who are planning a pregnancy or who become pregnant should not be treated with atenolol, ACEi, ARB, direct renin inhibitors, nitroprusside, or MRA to avoid fetal harm.",
-      "page": null
+      "classNote": "Harm",
+      "levelOfEvidence": "A",
+      "text": "After successful EVT reperfusion of a large-vessel occlusion, lowering SBP below 140 mm Hg during the first 24–72 hours can worsen long-term function.",
+      "page": 53,
+      "pdfPage": 53,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "5.3.9.2",
+      "sourceStatementType": "recommendation"
     },
     {
-      "section": "5.6. Resistant Hypertension and Renal Denervation",
+      "id": "aha-hypertension-guideline-2025-5-3-9-3-1",
+      "section": "5.3.9.3. Secondary Stroke Prevention",
       "classOfRec": "I",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "In adults with resistant hypertension, a more detailed evaluation for secondary causes, to include careful review of all medications and removal of those with interfering effects on BP, is beneficial for lowering BP and simplifying treatment.",
-      "page": null
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "After ischemic stroke, TIA, or ICH in patients with hypertension, use a thiazide-type diuretic, ACE inhibitor, or ARB to lower BP and recurrent stroke risk.",
+      "page": 54,
+      "pdfPage": 54,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.3.9.3",
+      "sourceStatementType": "recommendation"
     },
     {
-      "section": "5.6. Resistant Hypertension and Renal Denervation",
+      "id": "aha-hypertension-guideline-2025-5-3-9-3-2",
+      "section": "5.3.9.3. Secondary Stroke Prevention",
       "classOfRec": "I",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "All patients with hypertension who are being considered for RDN should be evaluated by a multidisciplinary team with expertise in resistant hypertension and RDN.",
-      "page": null
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "After ischemic stroke, TIA, or ICH with hypertension, target office BP <130/80 mm Hg to reduce recurrent stroke, ICH, and other vascular events.",
+      "page": 54,
+      "pdfPage": 54,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.3.9.3",
+      "sourceStatementType": "recommendation"
     },
     {
-      "section": "5.6. Resistant Hypertension and Renal Denervation",
+      "id": "aha-hypertension-guideline-2025-5-3-9-3-3",
+      "section": "5.3.9.3. Secondary Stroke Prevention",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "After ischemic stroke, TIA, or ICH without previously diagnosed hypertension, antihypertensive treatment can help when average office BP is ≥130/80 mm Hg.",
+      "page": 54,
+      "pdfPage": 54,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "5.3.9.3",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-3-9-4-1",
+      "section": "5.3.9.4. Prevention of Mild Cognitive Impairment and Dementia",
       "classOfRec": "I",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "For patients with hypertension for whom RDN is contemplated, the benefits of lowering BP and potential procedural risks compared with continuing medical therapy should be discussed as part of a shared decision-making process to ensure patients choose the therapy that meets their expectations.",
-      "page": null
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "For adults with hypertension, target SBP <130 mm Hg to prevent mild cognitive impairment and dementia.",
+      "page": 55,
+      "pdfPage": 55,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.3.9.4",
+      "sourceStatementType": "recommendation"
     },
     {
-      "section": "6.2. Hypertensive Emergencies and Severe Hypertension for Nonpregnant and Nonstroke Patients",
+      "id": "aha-hypertension-guideline-2025-5-4-1",
+      "section": "5.4. Plan of Care for Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Use team-based care to achieve sustained control in adults with uncontrolled hypertension.",
+      "page": 56,
+      "pdfPage": 56,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-4-2",
+      "section": "5.4. Plan of Care for Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "Use an evidence-based plan combining HBPM and team-based care that addresses adverse social determinants of health in uncontrolled hypertension.",
+      "page": 56,
+      "pdfPage": 56,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-4-3",
+      "section": "5.4. Plan of Care for Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Integrate accurate BP measurement, timely treatment, patient engagement, and ongoing review of home readings to improve uncontrolled hypertension.",
+      "page": 56,
+      "pdfPage": 56,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "5.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-4-4",
+      "section": "5.4. Plan of Care for Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "After starting or intensifying medication for uncontrolled hypertension, review adherence and response monthly until BP is controlled.",
+      "page": 56,
+      "pdfPage": 56,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "5.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-4-5",
+      "section": "5.4. Plan of Care for Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Incorporate synchronous or asynchronous health information technology into uncontrolled-hypertension care, including medication titration, to improve control, access, and adherence to care standards.",
+      "page": 56,
+      "pdfPage": 56,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "5.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-4-6",
+      "section": "5.4. Plan of Care for Hypertension",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Use electronic health records and registries to identify undiagnosed or uncontrolled hypertension and direct additional care.",
+      "page": 56,
+      "pdfPage": 56,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "5.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-4-7",
+      "section": "5.4. Plan of Care for Hypertension",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Telehealth interventions can help lower BP and improve office BP control in uncontrolled hypertension.",
+      "page": 56,
+      "pdfPage": 56,
+      "sourceRecommendationNumber": 7,
+      "sourceSection": "5.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-5-1",
+      "section": "5.5. Individuals With Hypertension and Pregnancy",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "For hypertension when pregnancy is planned or established, labetalol and extended-release nifedipine are preferred agents to minimize fetal risk.",
+      "page": 58,
+      "pdfPage": 58,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-5-2",
+      "section": "5.5. Individuals With Hypertension and Pregnancy",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Counsel people with hypertension who plan pregnancy or become pregnant about low-dose aspirin 81 mg/day to reduce preeclampsia and its consequences.",
+      "page": 58,
+      "pdfPage": 58,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-5-3",
+      "section": "5.5. Individuals With Hypertension and Pregnancy",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "In pregnancy, confirm SBP ≥160 or DBP ≥110 mm Hg within 15 minutes and provide medication to reach <160/<110 within 30–60 minutes.",
+      "page": 58,
+      "pdfPage": 58,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "5.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-5-4",
+      "section": "5.5. Individuals With Hypertension and Pregnancy",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Treat chronic hypertension in pregnancy to <140/90 mm Hg to reduce maternal and perinatal morbidity and mortality. Chronic hypertension includes prepregnancy hypertension or SBP 140–159 and/or DBP 90–109 before 20 weeks.",
+      "page": 58,
+      "pdfPage": 58,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "5.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-5-5",
+      "section": "5.5. Individuals With Hypertension and Pregnancy",
       "classOfRec": "III",
-      "classNote": "Harm — Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "For adults with severe hypertension (>180/120 mm Hg) who are hospitalized for noncardiac conditions without evidence of acute target organ damage, intermittent use of additional intravenous or oral antihypertensive medications are not recommended to acutely reduce BP.",
-      "page": null
+      "classNote": "Harm",
+      "levelOfEvidence": "C-LD",
+      "text": "Avoid atenolol, ACE inhibitors, ARBs, direct renin inhibitors, nitroprusside, and MRAs in people planning pregnancy or who are pregnant because of fetal harm.",
+      "page": 58,
+      "pdfPage": 58,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "5.5",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-6-1",
+      "section": "5.6. Resistant Hypertension and Renal Denervation",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "In resistant hypertension, reassess secondary causes, review all medications, and remove medicines that interfere with BP control when possible.",
+      "page": 63,
+      "pdfPage": 63,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "5.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-6-2",
+      "section": "5.6. Resistant Hypertension and Renal Denervation",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "If resistant hypertension remains uncontrolled on optimal ACE inhibitor or ARB plus calcium channel blocker and thiazide-like diuretic, add an MRA when eGFR is ≥45 mL/min/1.73 m².",
+      "page": 63,
+      "pdfPage": 63,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "5.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-6-3",
+      "section": "5.6. Resistant Hypertension and Renal Denervation",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "When an MRA is contraindicated or not tolerated in resistant hypertension, adding amiloride, a beta blocker, alpha blocker, central sympatholytic, dual endothelin-receptor antagonist, or direct vasodilator is reasonable.",
+      "page": 63,
+      "pdfPage": 63,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "5.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-6-4",
+      "section": "5.6. Resistant Hypertension and Renal Denervation",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Renal denervation may be considered as an adjunct in selected patients with office SBP 140–180 and DBP ≥90 mm Hg, eGFR ≥40 mL/min/1.73 m², and resistance despite optimal therapy or intolerable adverse effects from additional medications.",
+      "page": 63,
+      "pdfPage": 63,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "5.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-6-5",
+      "section": "5.6. Resistant Hypertension and Renal Denervation",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "A multidisciplinary team experienced in resistant hypertension and renal denervation should evaluate all candidates for renal denervation.",
+      "page": 63,
+      "pdfPage": 63,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "5.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-5-6-6",
+      "section": "5.6. Resistant Hypertension and Renal Denervation",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "Before renal denervation, use shared decision-making to compare BP benefits and procedural risks with continued medication and the patient's expectations.",
+      "page": 63,
+      "pdfPage": 63,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "5.6",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-6-1-1",
+      "section": "6.1. Management of OH",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "Improve BP control in adults with hypertension to reduce the risk of orthostatic hypotension.",
+      "page": 66,
+      "pdfPage": 66,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "6.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-6-1-2",
+      "section": "6.1. Management of OH",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "A",
+      "text": "In adults receiving intensive BP treatment who have asymptomatic orthostatic hypotension, an SBP goal <130 mm Hg remains reasonable for cardiovascular and mortality benefit.",
+      "page": 66,
+      "pdfPage": 66,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "6.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-6-1-3",
+      "section": "6.1. Management of OH",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "When starting or adding antihypertensives toward SBP <130 mm Hg, assessing symptomatic orthostatic hypotension is reasonable to detect other chronic conditions.",
+      "page": 66,
+      "pdfPage": 66,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "6.1",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-6-2-1",
+      "section": "6.2. Hypertensive Emergencies and Severe Hypertension in Nonpregnant and Nonstroke Patients",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "For a hypertensive emergency with BP >180 and/or >120 mm Hg and acute target-organ injury, admit to intensive care for continuous BP/organ monitoring and consideration of parenteral treatment. This table excludes pregnancy and acute stroke.",
+      "page": 67,
+      "pdfPage": 67,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "6.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-6-2-2",
+      "section": "6.2. Hypertensive Emergencies and Severe Hypertension in Nonpregnant and Nonstroke Patients",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "For hypertensive emergencies with a compelling condition, lower SBP to <140 mm Hg for most conditions or <120 for aortic dissection during the first hour, while monitoring other organ function.",
+      "page": 67,
+      "pdfPage": 67,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "6.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-6-2-3",
+      "section": "6.2. Hypertensive Emergencies and Severe Hypertension in Nonpregnant and Nonstroke Patients",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "Without a compelling condition, lower SBP by no more than 25% in hour 1; if stable, reach <160/100 over the next 2–6 hours, then cautiously 130–140 over 24–48 hours.",
+      "page": 67,
+      "pdfPage": 67,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "6.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-6-2-4",
+      "section": "6.2. Hypertensive Emergencies and Severe Hypertension in Nonpregnant and Nonstroke Patients",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-NR",
+      "text": "For severe hypertension >180/120 mm Hg during hospitalization for a noncardiac condition without acute target-organ injury, do not use intermittent extra IV or oral antihypertensives to acutely lower BP.",
+      "page": 67,
+      "pdfPage": 67,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "6.2",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-6-4-1",
+      "section": "6.4. Patients Scheduled for Surgical Procedures",
+      "classOfRec": "I",
+      "classNote": "",
+      "levelOfEvidence": "B-NR",
+      "text": "Continue chronic beta blockers throughout the perioperative period in patients with hypertension undergoing major surgery.",
+      "page": 70,
+      "pdfPage": 70,
+      "sourceRecommendationNumber": 1,
+      "sourceSection": "6.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-6-4-2",
+      "section": "6.4. Patients Scheduled for Surgical Procedures",
+      "classOfRec": "IIa",
+      "classNote": "",
+      "levelOfEvidence": "C-EO",
+      "text": "Continuing most antihypertensives through elective major surgery is reasonable.",
+      "page": 70,
+      "pdfPage": 70,
+      "sourceRecommendationNumber": 2,
+      "sourceSection": "6.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-6-4-3",
+      "section": "6.4. Patients Scheduled for Surgical Procedures",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "B-R",
+      "text": "Holding an ACE inhibitor or ARB before major surgery may be considered to reduce intraoperative hypotension.",
+      "page": 70,
+      "pdfPage": 70,
+      "sourceRecommendationNumber": 3,
+      "sourceSection": "6.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-6-4-4",
+      "section": "6.4. Patients Scheduled for Surgical Procedures",
+      "classOfRec": "IIb",
+      "classNote": "",
+      "levelOfEvidence": "C-LD",
+      "text": "For elective major surgery with SBP ≥180 or DBP ≥110 mm Hg, deferral may be considered, especially in high-risk patients.",
+      "page": 70,
+      "pdfPage": 70,
+      "sourceRecommendationNumber": 4,
+      "sourceSection": "6.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-6-4-5",
+      "section": "6.4. Patients Scheduled for Surgical Procedures",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-NR",
+      "text": "Abrupt preoperative withdrawal of a beta blocker or clonidine can cause rebound hypertension and harm.",
+      "page": 70,
+      "pdfPage": 70,
+      "sourceRecommendationNumber": 5,
+      "sourceSection": "6.4",
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "aha-hypertension-guideline-2025-6-4-6",
+      "section": "6.4. Patients Scheduled for Surgical Procedures",
+      "classOfRec": "III",
+      "classNote": "Harm",
+      "levelOfEvidence": "B-R",
+      "text": "Do not start a beta blocker on the day of surgery in a patient not already receiving one because postoperative mortality can increase.",
+      "page": 70,
+      "pdfPage": 70,
+      "sourceRecommendationNumber": 6,
+      "sourceSection": "6.4",
+      "sourceStatementType": "recommendation"
     }
   ],
   "documentType": "guideline",
@@ -180,10 +1432,11 @@
       "pmid": "41984986",
       "doi": "10.1161/hyp.0000000000000262",
       "publisherUrl": "https://doi.org/10.1161/hyp.0000000000000262",
-      "status": "unresolved",
-      "note": "The indexed correction was confirmed, but its substantive text could not be retrieved from the publisher or an authoritative alternative. Its applicability to these entries remains unresolved; consult the correction.",
+      "status": "not-applicable",
+      "note": "Full primary notice reviewed: Table 16 had lithium and thiazide-type diuretics/RAS blockers in the wrong column. The correction identifies the antihypertensive drugs as thiazides/RAS blockers and lithium as the interacting drug. This drug-interaction reference table is not reproduced among the 108 formal recommendations; none requires alteration.",
       "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "affectedRecommendationIds": [],
+      "verificationSourceUrl": "https://www.ahajournals.org/doi/pdf/10.1161/HYP.0000000000000262"
     },
     {
       "type": "correction",
@@ -191,11 +1444,493 @@
       "doi": "10.1161/hyp.0000000000000264",
       "publisherUrl": "https://doi.org/10.1161/hyp.0000000000000264",
       "status": "not-applicable",
-      "note": "Corrects the labetalol IV injection interval in Table 26. Drug dosing from this table is not reproduced in the library.",
+      "note": "Table 26 corrects the interval between slow IV labetalol injections from every 2 minutes to 10-minute intervals. This dosing reference table is not reproduced among the 108 formal recommendations; none requires alteration.",
       "checkedAt": "2026-09-06",
       "affectedRecommendationIds": []
     }
   ],
-  "extractionStatus": "partial-extraction",
-  "extractionNote": "Selected new or revised recommendations from the 2025 comparison table are included; this is not the full guideline. Levels of evidence were not extracted and must be checked in the source."
+  "coverage": {
+    "status": "complete",
+    "scope": "All formal recommendations and good-practice/consensus statements",
+    "checkedAt": "2026-09-06",
+    "sourceRecommendationCount": 108,
+    "sourceConsensusCount": 0,
+    "sourceSections": [
+      {
+        "id": "2.1",
+        "title": "Definition of High BP",
+        "sourceTable": "Recommendation for Definition of High BP",
+        "rowCount": 1,
+        "pageRange": [
+          11,
+          11
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "3.1.1",
+        "title": "Accurate Measurement of In-Office BP",
+        "sourceTable": "Recommendations for Accurate Measurement of In-Office BP",
+        "rowCount": 2,
+        "pageRange": [
+          13,
+          13
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "3.1.2",
+        "title": "Laboratory Tests and Other Diagnostic Procedures",
+        "sourceTable": "Recommendation for Laboratory Tests and Other Diagnostic Procedures",
+        "rowCount": 1,
+        "pageRange": [
+          15,
+          15
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "3.1.4",
+        "title": "ABPM and HBPM",
+        "sourceTable": "Recommendations for ABPM and HBPM",
+        "rowCount": 2,
+        "pageRange": [
+          16,
+          16
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "3.1.4.1",
+        "title": "Cuffless BP Devices",
+        "sourceTable": "Recommendation for Cuffless BP Devices",
+        "rowCount": 1,
+        "pageRange": [
+          17,
+          17
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "3.2.2",
+        "title": "White-Coat Hypertension and Masked Hypertension, and White-Coat Effect and Masked Uncontrolled Hypertension",
+        "sourceTable": "Recommendations for White-Coat Hypertension and Masked Hypertension, and White-Coat Effect and Masked Uncontrolled Hypertension",
+        "rowCount": 6,
+        "pageRange": [
+          18,
+          18
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "3.2.3",
+        "title": "Secondary Forms of Hypertension",
+        "sourceTable": "Recommendations for Secondary Forms of Hypertension",
+        "rowCount": 3,
+        "pageRange": [
+          20,
+          20
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "3.2.3.1",
+        "title": "Primary Aldosteronism",
+        "sourceTable": "Recommendations for Primary Aldosteronism",
+        "rowCount": 5,
+        "pageRange": [
+          22,
+          23
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "id": "3.2.3.2",
+        "title": "Renal Artery Stenosis",
+        "sourceTable": "Recommendations for Renal Artery Stenosis",
+        "rowCount": 3,
+        "pageRange": [
+          26,
+          26
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "3.2.3.3",
+        "title": "OSA",
+        "sourceTable": "Recommendations for OSA",
+        "rowCount": 2,
+        "pageRange": [
+          27,
+          27
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "5.1",
+        "title": "Lifestyle and Psychosocial Approaches",
+        "sourceTable": "Recommendations for Lifestyle and Psychosocial Approaches",
+        "rowCount": 9,
+        "pageRange": [
+          28,
+          28
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "id": "5.2.2",
+        "title": "BP Treatment Threshold and the Use of CVD Risk Estimation to Guide Drug Treatment of Hypertension",
+        "sourceTable": "Recommendations for BP Treatment Threshold and the Use of CVD Risk Estimation to Guide Drug Treatment of Hypertension",
+        "rowCount": 8,
+        "pageRange": [
+          32,
+          33
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "id": "5.2.3",
+        "title": "Initial Medication Selection for Treatment of Primary Hypertension",
+        "sourceTable": "Recommendation for Initial Medication Selection for Treatment of Primary Hypertension",
+        "rowCount": 1,
+        "pageRange": [
+          36,
+          36
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "5.2.4",
+        "title": "Choice of Initial Monotherapy Versus Initial Combination Drug Therapy",
+        "sourceTable": "Recommendations for Choice of Initial Monotherapy Versus Initial Combination Drug Therapy",
+        "rowCount": 3,
+        "pageRange": [
+          36,
+          36
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "5.2.5",
+        "title": "Antihypertensive Medication Adherence Strategies",
+        "sourceTable": "Recommendations for Antihypertensive Medication Adherence Strategies",
+        "rowCount": 3,
+        "pageRange": [
+          40,
+          40
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "5.2.7",
+        "title": "BP Goal for Patients With Hypertension",
+        "sourceTable": "Recommendations for BP Goal for Patients With Hypertension",
+        "rowCount": 4,
+        "pageRange": [
+          41,
+          41
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "5.3.1",
+        "title": "Diabetes",
+        "sourceTable": "Recommendations for Diabetes",
+        "rowCount": 4,
+        "pageRange": [
+          46,
+          46
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "5.3.2",
+        "title": "Obesity and Metabolic Syndrome",
+        "sourceTable": "Recommendations for Obesity and Metabolic Syndrome",
+        "rowCount": 2,
+        "pageRange": [
+          47,
+          47
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "5.3.4",
+        "title": "the Prevention of HF in Adults With Hypertension",
+        "sourceTable": "Recommendations for the Prevention of HF in Adults With Hypertension",
+        "rowCount": 2,
+        "pageRange": [
+          48,
+          48
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "5.3.8",
+        "title": "Hypertension Treatment in Patients With CKD",
+        "sourceTable": "Recommendations for Hypertension Treatment in Patients With CKD",
+        "rowCount": 2,
+        "pageRange": [
+          50,
+          50
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "5.3.9.1",
+        "title": "Acute Intracerebral Hemorrhage",
+        "sourceTable": "Recommendations for Acute Intracerebral Hemorrhage",
+        "rowCount": 3,
+        "pageRange": [
+          52,
+          52
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "5.3.9.2",
+        "title": "Acute Ischemic Stroke",
+        "sourceTable": "Recommendations for Acute Ischemic Stroke",
+        "rowCount": 6,
+        "pageRange": [
+          52,
+          53
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "5.3.9.3",
+        "title": "Secondary Stroke Prevention",
+        "sourceTable": "Recommendations for Secondary Stroke Prevention",
+        "rowCount": 3,
+        "pageRange": [
+          54,
+          54
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "5.3.9.4",
+        "title": "Prevention of Mild Cognitive Impairment and Dementia",
+        "sourceTable": "Recommendation for Prevention of Mild Cognitive Impairment and Dementia",
+        "rowCount": 1,
+        "pageRange": [
+          55,
+          55
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "5.4",
+        "title": "Plan of Care for Hypertension",
+        "sourceTable": "Recommendations for Plan of Care for Hypertension",
+        "rowCount": 7,
+        "pageRange": [
+          56,
+          56
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "id": "5.5",
+        "title": "Individuals With Hypertension and Pregnancy",
+        "sourceTable": "Recommendations for Individuals With Hypertension and Pregnancy",
+        "rowCount": 5,
+        "pageRange": [
+          58,
+          58
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "id": "5.6",
+        "title": "Resistant Hypertension and Renal Denervation",
+        "sourceTable": "Recommendations for Resistant Hypertension and Renal Denervation",
+        "rowCount": 6,
+        "pageRange": [
+          63,
+          63
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "6.1",
+        "title": "Management of OH",
+        "sourceTable": "Recommendations for Management of OH",
+        "rowCount": 3,
+        "pageRange": [
+          66,
+          66
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "6.2",
+        "title": "Hypertensive Emergencies and Severe Hypertension in Nonpregnant and Nonstroke Patients",
+        "sourceTable": "Recommendations for Hypertensive Emergencies and Severe Hypertension in Nonpregnant and Nonstroke Patients",
+        "rowCount": 4,
+        "pageRange": [
+          67,
+          67
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "6.4",
+        "title": "Patients Scheduled for Surgical Procedures",
+        "sourceTable": "Recommendations for Patients Scheduled for Surgical Procedures",
+        "rowCount": 6,
+        "pageRange": [
+          70,
+          70
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    ],
+    "sourceDocument": {
+      "doi": "10.1161/CIR.0000000000001356",
+      "edition": "Complete Circulation co-publication, ahead-of-print PDF, 105 pages; PDF pagination is used, not final journal pagination.",
+      "pdfUrl": "https://www.nefro.cl/web/docs/AHA_Hypertension_Guidelines_2025%5B1%5D.pdf",
+      "pageCount": 105
+    },
+    "note": "All 108 numbered COR/LOE recommendation rows across 30 unique tables are represented once, including expert-opinion recommendations. No separately designated ungraded good-practice or consensus statements are present. Narrative supporting text, drug-dose reference tables, figures, and duplicate What Is New/Take-Home summaries are not additional recommendation rows. All three identified Hypertension correction notices were reviewed against these entries; none changes a formal recommendation row."
+  }
 }

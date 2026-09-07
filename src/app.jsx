@@ -144,7 +144,7 @@ import {
   bootstrapTheme as v7BootstrapTheme,
 } from './design/theme.js';
 // Patient-store is consumed by components.jsx, no direct imports needed here.
-import { GUIDELINE_LIBRARY, GUIDELINE_LIBRARY_INDEX } from './guideline-library.js';
+import { GUIDELINE_LIBRARY, GUIDELINE_LIBRARY_INDEX, guidelineSearchFields } from './guideline-library.js';
 // Acute Stroke Pathways — de-identified, evidence-bound management cards. Pure
 // static data (bundled at build time, no runtime fetch) rendered at the top of
 // the Ischemic protocols sub-tab. See src/management-guidance.js.
@@ -278,7 +278,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.25.0';
+const APP_VERSION = '6.26.0';
 
 // P0 evidence-locked calculators exposed for browser-console QA testing and future UI wiring.
 // These are pure functions with PMID/DOI citations in their source; running e.g.
@@ -14309,9 +14309,7 @@ Clinician Name`;
           const filteredGuidelineLibrary = useMemo(() => {
             const query = guidelineLibraryQuery.trim().toLowerCase();
             const classPriority = { I: 0, IIa: 1, IIb: 2, III: 3, Statement: 4 };
-            const recSearchFields = (rec, guideline) => (
-              [rec.text, rec.section, guideline.title, guideline.shortTitle || '']
-            );
+            const recSearchFields = guidelineSearchFields;
             const getRecScore = (rec, guideline) => {
               if (!query) return 0;
               return rankText(query, recSearchFields(rec, guideline));
@@ -15128,7 +15126,7 @@ Clinician Name`;
                 return;
               }
               guideline.recommendations.forEach((rec) => {
-                const score = scoreFor([rec.text, rec.section, guideline.shortTitle, guideline.title]);
+                const score = scoreFor(guidelineSearchFields(rec, guideline));
                 if (score <= 0) return;
                 results.push({
                   type: 'Guideline',
@@ -32038,10 +32036,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <section aria-labelledby="guideline-library-heading" className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
                       <div className="p-4 flex flex-wrap items-center justify-between gap-2">
                         <div>
-                          <h2 id="guideline-library-heading" className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Guideline Library</h2>
-                          <p className="text-xs text-slate-600 font-normal dark:text-ink-2">Search extracted recommendations and statements. Coverage and correction notices appear with each source.</p>
+                          <h2 id="guideline-library-heading" className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Guidelines</h2>
+                          <p className="text-xs text-slate-600 font-normal dark:text-ink-2">Recommendations and consensus statements, organized by source and clinical topic.</p>
                         </div>
-                        <span className="text-xs text-cobalt-700 font-medium dark:text-cobalt-300">{guidelineLibraryResultsCount} extracted entries</span>
+                        <span className="text-xs text-cobalt-700 font-medium dark:text-cobalt-300">{guidelineLibraryResultsCount} recommendations and statements</span>
                       </div>
                       <div className="p-4 pt-0">
 
@@ -32116,6 +32114,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <>
                                     <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                                       <span>{guideline.shortTitle || guideline.title}</span>
+                                      {guideline.coverageComplete && (
+                                        <span className="px-1.5 py-0.5 rounded-full border border-cobalt-200 text-cobalt-800 text-[11px] font-medium dark:border-cobalt-700 dark:text-cobalt-200">Complete coverage</span>
+                                      )}
                                       {(guideline.summaryOnly || guideline.sourceOnly || guideline.partialExtraction) && (
                                         <span className="px-1.5 py-0.5 rounded-full border border-warn-300 bg-warn-50 text-warn-800 text-[11px] font-semibold dark:border-warn-700 dark:bg-warn-950 dark:text-warn-300">{guideline.sourceOnly ? 'Source link only' : 'Selected extracts'}</span>
                                       )}
@@ -32153,18 +32154,28 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           const quickActions = getGuidelineQuickActions(rec.text);
                                           return (
                                             <div key={rec.id} id={`gl-rec-${rec.id}`} className="border border-cobalt-100 rounded-lg p-2 bg-cobalt-50/50 dark:bg-cobalt-900/50">
-                                              <div className="flex items-start gap-2">
-                                                <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold shrink-0 ${GUIDELINE_CLASS_COLORS[normalizeGuidelineClass(recClass, rec.classNote)] || 'bg-slate-500 text-white'}`}>
+                                              <div className="flex flex-col sm:flex-row items-start gap-2">
+                                                <span className={`inline-flex items-center max-w-full px-1.5 py-0.5 rounded text-xs font-bold sm:max-w-[12rem] sm:shrink-0 ${GUIDELINE_CLASS_COLORS[normalizeGuidelineClass(recClass, rec.classNote)] || 'bg-slate-500 text-white'}`}>
                                                   {recClass}/{recLevel}
                                                 </span>
                                                 <div className="flex-1 min-w-0">
                                                   <p className="text-sm text-slate-800 dark:text-ink">{rec.text}</p>
+                                                  {rec.currentEvidenceNote && (
+                                                    <div className="mt-2 rounded-md border border-warn-300 bg-warn-50 p-2 text-xs text-warn-900 dark:border-warn-700 dark:bg-warn-950 dark:text-warn-200">
+                                                      <p>{rec.currentEvidenceNote}</p>
+                                                      <div className="flex flex-wrap gap-2">
+                                                        {(rec.currentEvidenceSources || []).map(source => (
+                                                          <a key={source.doi || source.url} href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center underline font-semibold">{source.title}</a>
+                                                        ))}
+                                                      </div>
+                                                    </div>
+                                                  )}
                                                   {rec.classNote && (
                                                     <p className="text-xs italic text-slate-600 mt-1 dark:text-mute">Note: {rec.classNote}</p>
                                                   )}
                                                   <p className="text-xs text-slate-600 mt-1 dark:text-mute">
-                                                    {guideline.title}
-                                                    {rec.page ? ` · p. ${rec.page}` : ''}
+                                                    {rec.sourceStatementId || (rec.sourceRecommendationNumber ? `Source recommendation ${rec.sourceRecommendationNumber}` : guideline.title)}
+                                                    {rec.pdfPage ? ` · PDF p. ${rec.pdfPage}` : rec.page ? ` · p. ${rec.page}` : ''}
                                                   </p>
                                                   <div className="flex flex-wrap items-center gap-2 mt-1 text-xs">
                                                     {rec.sourceUrl && (
@@ -32176,7 +32187,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                     {rec.pdfSourceUrl && (
                                                       <a href={rec.pdfSourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-link-600 dark:text-link-400 hover:text-link-700 hover:underline font-medium">
                                                         <i aria-hidden="true" data-lucide="external-link" className="w-3 h-3"></i>
-                                                        <span>PDF p.{rec.page}</span>
+                                                        <span>PDF p. {rec.pdfPage || rec.page}</span>
                                                       </a>
                                                     )}
                                                     {guideline.pubmedFallbackUrl && (
@@ -33284,7 +33295,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         deep links) landing somewhere meaningful. */}
                     <div id="ref-guidelines" className="bg-white border border-cobalt-200 rounded-lg p-4 flex flex-wrap items-center justify-between gap-3 dark:bg-card dark:border-cobalt-700">
                       <div>
-                        <h2 className="text-base font-semibold text-cobalt-800 dark:text-cobalt-300">Guideline Library</h2>
+                        <h2 className="text-base font-semibold text-cobalt-800 dark:text-cobalt-300">Guidelines</h2>
                         <p className="text-xs text-slate-600 dark:text-ink-2">Moved to the Guidelines sub-tab — the searchable COR/LOE recommendation catalog now lives there.</p>
                       </div>
                       <button
