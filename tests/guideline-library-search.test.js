@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { matchesSearchText as matchesTextQuery } from '../src/search-match.js';
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 const appSource = readFileSync(join(repoRoot, 'src/app.jsx'), 'utf8');
@@ -35,14 +36,6 @@ const fuzzyScore = (query, target) => {
     ti = idx + 1;
   }
   return score;
-};
-
-// Mirrors src/app.jsx matchesTextQuery — the match predicate added by the fix.
-const matchesTextQuery = (query, parts = []) => {
-  const tokens = String(query || '').toLowerCase().split(/\s+/).filter(Boolean);
-  if (!tokens.length) return true;
-  const haystack = parts.filter(Boolean).join(' ').toLowerCase();
-  return tokens.every((token) => haystack.includes(token));
 };
 
 const IRRELEVANT_RECS = [
@@ -102,8 +95,9 @@ describe('Guideline Library search', () => {
   });
 
   describe('wiring in src/app.jsx', () => {
-    it('defines matchesTextQuery', () => {
-      expect(appSource).toContain('const matchesTextQuery = (query, parts = []) => {');
+    it('uses the shared predicate for header and guideline-library matches', () => {
+      expect(appSource).toMatch(/import \{[^}]*matchesSearchText[^}]*\} from '\.\/search-match\.js'/);
+      expect(appSource).toContain('const matchesTextQuery = matchesSearchText;');
     });
 
     it('filters the library with the match predicate, not the score', () => {

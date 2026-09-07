@@ -2,10 +2,10 @@
   {
     "id": "distal",
     "name": "DISTAL",
-    "fullName": "Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke — 12-Month Outcomes",
+    "fullName": "Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke — 90-Day and 12-Month Outcomes",
     "category": "evt-mevo",
     "population": "n=543, Median 77, NIHSS Median 6, ≤6 h, or 6-24 h with salvageable tissue",
-    "finding": "No difference (median mRS 2 vs 2)",
+    "finding": "No significant difference",
     "teachingPoint": "No long-term benefit of EVT in mild-to-moderate medium/distal vessel occlusion — routine thrombectomy not supported in this population.",
     "PMID": "39908430",
     "year": 2025,
@@ -41,7 +41,7 @@
     "category": "evt-mevo",
     "population": "n=563, Median 71, NIHSS Median 10 (range 3-36); NIHSS >=6 required, <=24 h from onset",
     "finding": "Benefit: 58.6% (280 patients) vs 46.6% (283 patients)",
-    "teachingPoint": "Supports considering thrombectomy for isolated medium vessel occlusion when the deficit is moderate-to-severe (NIHSS >=6), against a background of neutral trials in milder deficits. Individualize; do not read the older Class III grading as covering this population.",
+    "teachingPoint": "Positive functional-outcome result with more symptomatic hemorrhage; interpret with the neutral MeVO trials. This study summary does not independently revise guideline recommendations.",
     "PMID": "42127389",
     "year": 2026,
     "citationIds": [

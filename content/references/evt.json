@@ -6,7 +6,8 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/evt/Basilar Artery Occlusion EVT Trials.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "PDF Document",
+    "reviewStatus": "archive"
   },
   {
     "id": "evt-large-core-anterior-circulation-lvo-evt-trials",
@@ -15,7 +16,8 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "PDF Document",
+    "reviewStatus": "archive"
   },
   {
     "id": "evt-mevo-distal-vessel-occlusion-evt-trials",
@@ -24,6 +26,7 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "PDF Document",
+    "reviewStatus": "archive"
   }
 ]

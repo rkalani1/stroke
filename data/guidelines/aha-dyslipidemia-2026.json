@@ -1,0 +1,53 @@
+{
+  "id": "aha-dyslipidemia-2026",
+  "title": "2026 ACC/AHA/AACVPR/ABC/ACPM/ADA/AGS/APhA/ASPC/NLA/PCNA Guideline on the Management of Dyslipidemia",
+  "shortTitle": "Dyslipidemia 2026 — selected ASCVD prevention summary",
+  "doi": "10.1161/CIR.0000000000001423",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000001423",
+  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/CIR.0000000000001423",
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41824552/",
+  "pmid": "41824552",
+  "society": "ACC/AHA",
+  "documentType": "guideline",
+  "gradingSystem": "ACC/AHA",
+  "extractionStatus": "partial-extraction",
+  "extractionNote": "Selected summaries of sections 2.1 and 4.2.6 and Table 1, focused on secondary ASCVD prevention. This is not the complete guideline; consult the source for individual recommendation wording and COR/LOE. Confirm the full ASCVD risk category before selecting a treatment goal.",
+  "recommendations": [
+    {
+      "id": "aha-dyslipidemia-2026-risk-category",
+      "section": "2.1. Definitions; Figure 10 — very-high-risk ASCVD",
+      "classOfRec": "Statement",
+      "classNote": "Selected guideline summary",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "Very-high-risk ASCVD requires ≥2 major ASCVD events, or 1 major event plus ≥2 high-risk features. Ischemic stroke counts as a major event. High-risk features include age ≥65, coronary bypass/PCI, current smoking, diabetes, heart failure, hypertension, or LDL-C ≥100 mg/dL despite maximally tolerated statin plus ezetimibe.",
+      "page": null
+    },
+    {
+      "id": "aha-dyslipidemia-2026-ascvd-target",
+      "section": "4.2.6. Secondary ASCVD Prevention; Table 1 — not at very high risk",
+      "classOfRec": "Statement",
+      "classNote": "Selected guideline summary",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "For adults with clinical ASCVD not at very high risk, use high-intensity statin therapy targeting ≥50% LDL-C reduction, LDL-C <70 mg/dL and non-HDL-C <100 mg/dL.",
+      "page": null
+    },
+    {
+      "id": "aha-dyslipidemia-2026-very-high-risk-target",
+      "section": "4.2.6. Secondary ASCVD Prevention; Table 1 — at very high risk",
+      "classOfRec": "Statement",
+      "classNote": "Selected guideline summary",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "For very-high-risk ASCVD, target LDL-C <55 mg/dL and non-HDL-C <85 mg/dL. Add ezetimibe and/or a PCSK9 monoclonal antibody to maximally tolerated statin therapy according to the reduction needed and patient preference.",
+      "page": null
+    },
+    {
+      "id": "aha-dyslipidemia-2026-additional-lowering",
+      "section": "4.2.6. Secondary ASCVD Prevention; Table 1 — additional lowering",
+      "classOfRec": "Statement",
+      "classNote": "Selected guideline summary",
+      "levelOfEvidence": "Guideline Summary",
+      "text": "For ASCVD not at very high risk, further lowering toward LDL-C <55 mg/dL and non-HDL-C <85 mg/dL with ezetimibe, a PCSK9 monoclonal antibody or bempedoic acid can also be reasonable on maximally tolerated statin therapy after considering treatment needs and preferences.",
+      "page": null
+    }
+  ]
+}

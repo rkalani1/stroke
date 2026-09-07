@@ -1306,5 +1306,17 @@
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "ACC/AHA"
+  "gradingSystem": "ACC/AHA",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "34181456",
+      "doi": "10.1161/str.0000000000000383",
+      "publisherUrl": "https://doi.org/10.1161/str.0000000000000383",
+      "status": "not-applicable",
+      "note": "Corrects the PFO take-home summary, diagnostic algorithm and a trial acronym. Extracted PFO criteria and diagnostic recommendation grades already reflect the corrected recommendations; the algorithm and acronym are not reproduced.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ]
 }

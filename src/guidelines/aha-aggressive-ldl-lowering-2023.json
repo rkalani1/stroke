@@ -227,5 +227,17 @@
     }
   ],
   "documentType": "scientific-statement",
-  "gradingSystem": "ungraded"
+  "gradingSystem": "ungraded",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "37878679",
+      "doi": "10.1161/atv.0000000000000165",
+      "publisherUrl": "https://doi.org/10.1161/atv.0000000000000165",
+      "status": "not-applicable",
+      "note": "Corrects the ASCOT-LLA LDL value in a supporting evidence table; the affected value is not reproduced in the library.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ]
 }

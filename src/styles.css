@@ -151,6 +151,16 @@
   }
 
   @media (max-width: 767px) {
+    .clinical-resource-row {
+      width: 100%;
+      max-width: calc(100vw - 2rem);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      padding-block: 2px;
+      scrollbar-width: thin;
+    }
+    .app-header .mobile-header-brand { display: none; }
+    .clinical-resource-row > a { flex-shrink: 0; }
     .app-header.is-mobile-compact {
       padding-block: 0.4rem;
       margin-bottom: 0.55rem !important;

@@ -320,5 +320,17 @@
     }
   ],
   "documentType": "scientific-statement",
-  "gradingSystem": "ungraded"
+  "gradingSystem": "ungraded",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "42044236",
+      "doi": "10.1161/str.0000000000000522",
+      "publisherUrl": "https://doi.org/10.1161/str.0000000000000522",
+      "status": "unresolved",
+      "note": "The indexed correction was confirmed, but its substantive text could not be retrieved from the publisher or an authoritative alternative. Its applicability to these entries remains unresolved; consult the correction.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ]
 }

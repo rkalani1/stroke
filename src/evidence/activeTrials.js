@@ -4,16 +4,14 @@
 // in src/app.jsx so the matcher logic and the Trials tab UI read from a single
 // structured source.
 //
-// matcherCriteria is a *declarative* mirror of the legacy keyCriteria. Live
-// matching still happens in src/app.jsx (the encounter form holds state there);
-// this file is the source of truth for what each criterion means and how it
-// binds to encounter form fields. The legacyMatcherKey field maps each entry
-// back to its key in TRIAL_ELIGIBILITY_CONFIG so refactors can find their way
-// home.
+// matcherCriteria is executed by matcher-engine.js; app.jsx supplies the
+// encounter state. These are partial registry summaries, not complete study
+// protocols. The legacyMatcherKey preserves the UI's stable lookup keys after
+// the inline evaluators were retired.
 
 import { makeActiveTrial } from './schema.js';
 
-const lr = '2026-08-22'; // every record re-verified against live ClinicalTrials.gov this date
+const lr = '2026-09-06'; // Registry status and core eligibility checked; full protocol/local activation remain unverified.
 
 export const activeTrials = [
   makeActiveTrial({
@@ -152,7 +150,8 @@ export const activeTrials = [
     ],
     exclusionCriteria: [
       'Pre-stroke mRS 0-2 or 5-6',
-      'Life expectancy <6 months from non-stroke condition'
+      'Known terminal cancer or terminal illness at the time of stroke',
+      'Pre-stroke function cannot be assessed during hospitalization, or disability is temporary'
     ],
     matcherCriteria: [
       { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
@@ -193,8 +192,9 @@ export const activeTrials = [
     rationale: 'Could enable precision rehabilitation by matching therapy intensity to predicted recovery potential.',
     inclusionCriteria: [
       'Age ≥18 y',
-      'AIS within 7 days of onset',
-      'Upper-extremity weakness (shoulder abduction or finger extension MRC ≤4)'
+      'Unilateral symptomatic AIS; signed consent within 24-96 hours of onset/LKW',
+      'Affected-arm SAFE score ≤8 measured within 48-96 hours',
+      'English or Spanish; willing and available for the in-person day-90 visit'
     ],
     exclusionCriteria: [
       'Contraindications to TMS (implanted electronics, intracranial metal, seizures)',
@@ -203,7 +203,7 @@ export const activeTrials = [
     matcherCriteria: [
       { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
       { field: 'symptoms', operator: 'present', value: ['arm', 'upper', 'hand', 'weakness'], label: 'Upper-extremity weakness' },
-      { field: 'premorbidMRS', operator: '<=', value: 2, label: 'Pre-stroke mRS ≤2' }
+      { field: 'hoursFromLKW', operator: 'between', value: [24, 96], label: 'Consent window 24-96 h from onset/LKW' }
     ],
     matcherExclusions: [
       { id: 'seizures', field: 'seizures', operator: '==', value: true, label: 'History of seizures' },
@@ -216,11 +216,11 @@ export const activeTrials = [
     category: 'ischemic',
     keyTakeaways: [
       "Uses TMS + MRI biomarkers to predict upper extremity motor recovery trajectory",
-      "Observational — enrollment is straightforward with minimal patient burden",
+      "Observational; requires SAFE assessment, MRI/TMS screening and in-person follow-up",
       "Could establish precision rehab: matching therapy intensity to predicted recovery potential"
     ],
     lookingFor: [
-      "Acute ischemic stroke within 7 days",
+      "Consent within 24-96 hours of acute ischemic stroke onset/LKW",
       "Upper extremity weakness",
       "Inpatient enrollment opportunity"
     ],
@@ -408,6 +408,7 @@ export const activeTrials = [
       { field: 'age', operator: '>=', value: 50, label: 'Age ≥50' },
       { field: 'ichLocation', operator: 'present', value: ['lobar', 'cortical'], label: 'Lobar ICH location' },
       { field: 'onStatin', operator: '==', value: true, label: 'On statin at ICH onset' },
+      { field: 'hoursFromLKW', operator: '<=', value: 168, label: 'Randomization within 7 days of ICH onset' },
       { field: 'premorbidMRS', operator: '<=', value: 3, label: 'Pre-morbid mRS ≤3' }
     ],
     matcherExclusions: [
@@ -451,24 +452,27 @@ export const activeTrials = [
       'Randomization possible 14-180 days after ICH onset'
     ],
     exclusionCriteria: [
-      'Mechanical heart valve'
+      'Separate mandatory anticoagulation or antiplatelet indication (e.g., DVT/PE or recent coronary stent)',
+      'Hemorrhagic transformation, hemorrhage into tumor, or unsecured AVM',
+      'Other renal, hepatic, hematologic, blood-pressure and protocol exclusions require confirmation'
     ],
     matcherCriteria: [
       { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
       { field: 'diagnosisCategory', operator: '==', value: 'ich', label: 'ICH confirmed' },
+      { field: 'hoursFromLKW', operator: 'between', value: [336, 4320], label: 'Randomization 14-180 days after ICH onset' },
       { field: 'pmh', operator: 'present', value: ['afib', 'atrial fib', 'af ', 'a-fib'], label: 'Atrial fibrillation' }
     ],
     matcherExclusions: [
       { id: 'mechValve', field: 'mechValve', operator: '==', value: true, label: 'Mechanical heart valve' },
     ],
-    relatedCompletedTrialIds: ['averroes', 'artesia'],
+    relatedCompletedTrialIds: ['prestige-af', 'sostart', 'apache-af', 'cocroach'],
     link: 'https://clinicaltrials.gov/study/NCT03907046',
     lastReviewed: lr,
     verificationStatus: 'verified-clinicaltrials-gov',
     category: 'ich',
     keyTakeaways: [
       "ICH patients with AF face a dilemma: anticoagulation prevents ischemic stroke but may cause recurrent ICH",
-      "PRESTIGE-AF showed non-inferiority of DOAC vs no anticoag; ASPIRE directly compares apixaban to aspirin",
+      "PRESTIGE-AF reduced ischemic stroke but did NOT meet non-inferiority for recurrent ICH; ASPIRE compares apixaban with aspirin",
       "Enrollment window is 14-180 days post-ICH — flag for outpatient follow-up"
     ],
     lookingFor: [

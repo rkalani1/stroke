@@ -86,7 +86,7 @@ const stalePaths = [];
 
 export async function generatedFileIsCurrent(abs, expected) {
   try {
-    return await fs.readFile(abs, 'utf8') === expected;
+    return (await fs.readFile(abs, 'utf8')).replace(/\r\n/g, '\n') === expected.replace(/\r\n/g, '\n');
   } catch (error) {
     if (error?.code === 'ENOENT') return false;
     throw error;

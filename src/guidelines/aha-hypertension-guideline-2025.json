@@ -160,16 +160,42 @@
       "levelOfEvidence": "Ungraded",
       "text": "For adults with severe hypertension (>180/120 mm Hg) who are hospitalized for noncardiac conditions without evidence of acute target organ damage, intermittent use of additional intravenous or oral antihypertensive medications are not recommended to acutely reduce BP.",
       "page": null
-    },
-    {
-      "section": "5.3.8. Hypertension Treatment in Patients With Chronic Kidney Disease (superseded 2017 wording retained in Table 1 comparison column)",
-      "classOfRec": "IIa",
-      "classNote": "Ungraded",
-      "levelOfEvidence": "Ungraded",
-      "text": "In adults with hypertension and CKD (stage 3 or higher or stage 1 and 2 with albuminuria >=300 mg/d, or >=300 mg/g albumin-to-creatinine ratio or the equivalent in the first morning void), treatment with an ACEi is reasonable to slow kidney disease progression.",
-      "page": null
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "ACC/AHA"
+  "gradingSystem": "ACC/AHA",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "41259465",
+      "doi": "10.1161/hyp.0000000000000257",
+      "publisherUrl": "https://doi.org/10.1161/hyp.0000000000000257",
+      "status": "not-applicable",
+      "note": "Corrects comparison/grading-table presentation and aprocitentan supporting text and figure notes. The affected clinical material is not reproduced in the extracted entries.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    },
+    {
+      "type": "correction",
+      "pmid": "41984986",
+      "doi": "10.1161/hyp.0000000000000262",
+      "publisherUrl": "https://doi.org/10.1161/hyp.0000000000000262",
+      "status": "unresolved",
+      "note": "The indexed correction was confirmed, but its substantive text could not be retrieved from the publisher or an authoritative alternative. Its applicability to these entries remains unresolved; consult the correction.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    },
+    {
+      "type": "correction",
+      "pmid": "42160500",
+      "doi": "10.1161/hyp.0000000000000264",
+      "publisherUrl": "https://doi.org/10.1161/hyp.0000000000000264",
+      "status": "not-applicable",
+      "note": "Corrects the labetalol IV injection interval in Table 26. Drug dosing from this table is not reproduced in the library.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ],
+  "extractionStatus": "partial-extraction",
+  "extractionNote": "Selected new or revised recommendations from the 2025 comparison table are included; this is not the full guideline. Levels of evidence were not extracted and must be checked in the source."
 }

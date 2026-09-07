@@ -117,5 +117,22 @@
     "certainty": "moderate",
     "lastReviewed": "2026-08-28",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "y6-phase2",
+    "name": "Y-6 phase 2",
+    "fullName": "Efficacy and safety of sublingual cilostazol and dexborneol for the treatment of acute ischaemic stroke: a randomised phase 2 trial in China",
+    "category": "acute-neuroprotection",
+    "population": "n=300, 35-80, NIHSS See population criteria, Within 24 h",
+    "finding": "No active arm significantly improved the primary endpoint; high/low-dose Y-6 44.6%/46.0% vs 35.7% placebo",
+    "teachingPoint": "Exploratory adjunctive-treatment evidence; larger confirmatory studies are needed.",
+    "PMID": "42621146",
+    "year": 2026,
+    "citationIds": [
+      "cit-y6-phase2-2026"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-09-06",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

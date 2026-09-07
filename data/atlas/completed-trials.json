@@ -2,9 +2,9 @@
   "_meta": {
     "endpoint": "completed-trials",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.24.0",
-    "checksum": "sha256:0caf6f19ba198e8e5d602e8a7d6ab51b",
-    "count": 237,
+    "appVersion": "6.25.0",
+    "checksum": "sha256:a6ee7f493308673b34a19498acb730a3",
+    "count": 242,
     "source": "Evidence atlas completed-trials bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
@@ -1000,9 +1000,9 @@
       "primaryEndpoint": {
         "definition": "mRS 0-1 at 90 d",
         "timepoint": "90 d",
-        "result": "Favored alteplase: 59.0% vs 40.4%",
-        "effectSize": "Adjusted RR 1.59",
-        "confidenceInterval": "95% CI 1.07 to 2.36",
+        "result": "Favored alteplase: 59.0% (36/61) vs 40.4% (21/52)",
+        "effectSize": "Adjusted risk difference 18.4 percentage points",
+        "confidenceInterval": "95% CI 0.3 to 36.4 percentage points",
         "pValue": "p=0.047"
       },
       "secondaryEndpoints": [],
@@ -1013,7 +1013,7 @@
       },
       "imagingCriteria": "",
       "applicabilityNotes": "Hypothesis-generating; replication ongoing.",
-      "limitations": "Small; stopped early.",
+      "limitations": "Small; stopped early. 121 randomized, but 113 treated as randomized in the primary analysis.",
       "certainty": "moderate",
       "evidenceType": "rct",
       "citationIds": [
@@ -1074,6 +1074,55 @@
       "promotedDate": "2026-08-22",
       "verificationStatus": "verified-pubmed",
       "verificationNotes": "Primary endpoint numbers re-verified against PubMed 2026-08-22 (Lancet Neurol 2025;24(11):909-919, PMID 41109232): 19/29 (66%) vs 13/27 (48%), adjusted OR 1.1, p=0.95 — neutral."
+    },
+    {
+      "id": "tencraos",
+      "shortName": "TenCRAOS",
+      "fullName": "A Randomized Trial of Tenecteplase in Acute Central Retinal Artery Occlusion",
+      "topic": "crao-thrombolysis",
+      "diseaseArea": [
+        "crao-thrombolysis"
+      ],
+      "population": {
+        "n": 78,
+        "ageRange": "Adults",
+        "nihssRange": "n/a",
+        "timeWindow": "≤4.5 h",
+        "keyInclusion": [
+          "Acute nonarteritic CRAO"
+        ],
+        "keyExclusion": []
+      },
+      "intervention": "IV tenecteplase 0.25 mg/kg with oral placebo",
+      "comparator": "Oral aspirin 300 mg with IV placebo",
+      "primaryEndpoint": {
+        "definition": "Affected-eye BCVA ≤0.7 logMAR (≥20/100)",
+        "timepoint": "30 days",
+        "result": "No significant difference: 20% (8/40) vs 24% (9/38)",
+        "effectSize": "Risk difference −3.7 percentage points",
+        "confidenceInterval": "95% CI −22.0 to 14.7",
+        "pValue": "P=.69"
+      },
+      "secondaryEndpoints": [],
+      "safetyFindings": {
+        "sich": "One fatal intracranial hemorrhage in the tenecteplase group",
+        "mortality": "",
+        "other": "More adverse events with tenecteplase"
+      },
+      "imagingCriteria": "Ophthalmic confirmation of CRAO",
+      "applicabilityNotes": "Phase 3, double-blind, double-dummy trial at 16 sites in six countries.",
+      "limitations": "Small trial; wide confidence interval. Abstract-level review; detailed exclusions require the full protocol.",
+      "certainty": "low",
+      "evidenceType": "rct",
+      "citationIds": [
+        "cit-tencraos-2025"
+      ],
+      "relatedActiveTrialIds": [],
+      "practiceImpact": "No demonstrated visual-recovery benefit; serious safety concerns. This is an evidence summary, not a treatment recommendation.",
+      "lastReviewed": "2026-09-06",
+      "promotedDate": "2026-09-06",
+      "verificationStatus": "verified-pubmed",
+      "verificationNotes": ""
     },
     {
       "id": "interact3",
@@ -2813,7 +2862,7 @@
     {
       "id": "distal",
       "shortName": "DISTAL",
-      "fullName": "Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke — 12-Month Outcomes",
+      "fullName": "Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke — 90-Day and 12-Month Outcomes",
       "topic": "evt-mevo",
       "diseaseArea": [
         "acute-ischemic-stroke",
@@ -2832,22 +2881,22 @@
       "intervention": "Endovascular treatment + best medical treatment",
       "comparator": "Best medical treatment alone",
       "primaryEndpoint": {
-        "definition": "Disability on ordinal mRS (scores 5-6 combined)",
-        "timepoint": "12 mo",
-        "result": "No difference (median mRS 2 vs 2)",
-        "effectSize": "Adjusted common OR 0.81",
-        "confidenceInterval": "95% CI 0.59 to 1.12",
-        "pValue": "p=0.20"
+        "definition": "Original trial primary outcome: disability on ordinal mRS",
+        "timepoint": "90 d",
+        "result": "No significant difference",
+        "effectSize": "Common OR for improvement 0.90",
+        "confidenceInterval": "95% CI 0.67 to 1.22",
+        "pValue": "p=0.50"
       },
       "secondaryEndpoints": [
         {
-          "name": "Overall survival",
-          "result": "HR 1.46 (0.93-2.30), p=0.10"
+          "name": "12-month follow-up mRS distribution (2026 report)",
+          "result": "No significant difference: adjusted common OR 0.81 (95% CI 0.59-1.12), p=0.20; median mRS 2 in both groups"
         }
       ],
       "safetyFindings": {
-        "sich": "",
-        "mortality": "Survival similar (HR 1.46, NS)",
+        "sich": "5.9% vs 2.6% at 90 d",
+        "mortality": "90-day mortality 15.5% vs 14.0%; 12-month survival HR 1.46 (95% CI 0.93-2.30), p=0.10",
         "other": ""
       },
       "imagingCriteria": "Salvageable tissue required for 6-24 h window",
@@ -2975,7 +3024,7 @@
         "other": "Higher symptomatic intracranial haemorrhage with thrombectomy; no mortality signal, in contrast to ESCAPE-MeVO"
       },
       "imagingCriteria": "CTA/MRA-confirmed medium vessel occlusion",
-      "applicabilityNotes": "The first POSITIVE randomized trial of MeVO thrombectomy, and it conflicts with the neutral DISTAL / ESCAPE-MeVO / DISCOUNT trials that underpin the 2026 guideline Class III (No Benefit) grading. The most likely reconciler is the deficit threshold: ORIENTAL-MeVO required NIHSS >=6, whereas the neutral trials enrolled milder deficits. Published after the 2026 AIS guideline, so that guideline predates this evidence. Single-country (China), open-label with blinded outcome assessment.",
+      "applicabilityNotes": "A positive trial in a selected NIHSS ≥6 population, alongside neutral DISTAL, ESCAPE-MeVO and DISCOUNT results. Differences in selection, geography and treatment may matter, but cross-trial comparisons cannot establish that NIHSS alone explains the discordance. Single-country (China), open-label with blinded outcome assessment.",
       "limitations": "Open-label; conducted entirely in China; the prespecified mRS-shift primary analysis could not be used because the proportional-odds assumption was violated.",
       "certainty": "moderate",
       "evidenceType": "rct",
@@ -2983,7 +3032,7 @@
         "cit-oriental-mevo-2026"
       ],
       "relatedActiveTrialIds": [],
-      "practiceImpact": "Supports considering thrombectomy for isolated medium vessel occlusion when the deficit is moderate-to-severe (NIHSS >=6), against a background of neutral trials in milder deficits. Individualize; do not read the older Class III grading as covering this population.",
+      "practiceImpact": "Positive functional-outcome result with more symptomatic hemorrhage; interpret with the neutral MeVO trials. This study summary does not independently revise guideline recommendations.",
       "lastReviewed": "2026-08-22",
       "promotedDate": "2026-08-22",
       "verificationStatus": "verified-pubmed",
@@ -14431,6 +14480,216 @@
       "practiceImpact": "Frames pediatric thrombectomy honestly: feasible, with complication rates not detectably worse than in adult trials, but supported only by a 73-child uncontrolled series because the sole randomized pediatric thrombolysis trial closed after enrolling one child — so it remains an off-label, case-by-case extrapolation from adult evidence.",
       "lastReviewed": "2026-08-28",
       "promotedDate": "2026-08-28",
+      "verificationStatus": "verified-pubmed",
+      "verificationNotes": ""
+    },
+    {
+      "id": "strategy",
+      "shortName": "STRATEGY",
+      "fullName": "Tirofiban for Branch Atheromatous Disease-Related Stroke: The STRATEGY Randomized Clinical Trial",
+      "topic": "acute-antithrombotic-adjuncts",
+      "diseaseArea": [
+        "acute-antithrombotic-adjuncts"
+      ],
+      "population": {
+        "n": 970,
+        "ageRange": "Adults",
+        "nihssRange": "See population criteria",
+        "timeWindow": "Within 48 h",
+        "keyInclusion": [
+          "MRI-confirmed branch atheromatous disease-related ischemic stroke"
+        ],
+        "keyExclusion": []
+      },
+      "intervention": "IV tirofiban plus aspirin",
+      "comparator": "Placebo plus aspirin",
+      "primaryEndpoint": {
+        "definition": "Early neurological deterioration within 7 days or new stroke within 90 days",
+        "timepoint": "7/90 days",
+        "result": "No significant difference: 17.1% vs 19.6%",
+        "effectSize": "HR 0.88",
+        "confidenceInterval": "95% CI 0.65 to 1.19",
+        "pValue": "P=.39"
+      },
+      "secondaryEndpoints": [],
+      "safetyFindings": {
+        "sich": "",
+        "mortality": "",
+        "other": "Moderate/severe bleeding: 1/486 (0.2%) vs 0; P>.99"
+      },
+      "imagingCriteria": "See primary report",
+      "applicabilityNotes": "Double-blind study at 38 Chinese hospitals; NCT05310968.",
+      "limitations": "Primary result is neutral; very few bleeding events cannot establish equivalence in safety. Abstract-level review.",
+      "certainty": "moderate",
+      "evidenceType": "rct",
+      "citationIds": [
+        "cit-strategy-2026"
+      ],
+      "relatedActiveTrialIds": [],
+      "practiceImpact": "No demonstrated reduction in the prespecified deterioration/recurrent-stroke composite in this selected population.",
+      "lastReviewed": "2026-09-06",
+      "promotedDate": "2026-09-06",
+      "verificationStatus": "verified-pubmed",
+      "verificationNotes": ""
+    },
+    {
+      "id": "rocatis-1",
+      "shortName": "ROCATIS-1",
+      "fullName": "The impact of concomitant use of rosuvastatin or atorvastatin plus clopidogrel on the platelet inhibition and clinical outcomes in acute large-vessel minor stroke or TIA: A randomized controlled multi-center trial, the ROCATIS-1 trial",
+      "topic": "lipid-lowering-prevention",
+      "diseaseArea": [
+        "lipid-lowering-prevention"
+      ],
+      "population": {
+        "n": 600,
+        "ageRange": "Adults",
+        "nihssRange": "See population criteria",
+        "timeWindow": "Within 24 h",
+        "keyInclusion": [
+          "First large-vessel minor ischemic stroke or TIA"
+        ],
+        "keyExclusion": []
+      },
+      "intervention": "Rosuvastatin plus clopidogrel-based antiplatelet treatment",
+      "comparator": "Atorvastatin with the same antiplatelet treatment",
+      "primaryEndpoint": {
+        "definition": "Change in ADP-induced platelet maximum aggregation",
+        "timepoint": "3 months",
+        "result": "Reported change 54.4 vs 49.2; favored rosuvastatin",
+        "effectSize": "",
+        "confidenceInterval": "",
+        "pValue": "P=.003"
+      },
+      "secondaryEndpoints": [
+        {
+          "name": "Stroke/MI/vascular death composite",
+          "result": "7.3% vs 13.3%; HR 0.52 (95% CI 0.33-0.81)"
+        },
+        {
+          "name": "Recurrent stroke",
+          "result": "4.0% vs 6.3%; HR 0.60 (95% CI 0.32-1.10); not significant"
+        }
+      ],
+      "safetyFindings": {
+        "sich": "",
+        "mortality": "",
+        "other": "No significant difference in drug-related adverse effects reported"
+      },
+      "imagingCriteria": "See primary report",
+      "applicabilityNotes": "Single-blind trial in an African population.",
+      "limitations": "Platelet assay primary outcome; clinical endpoints are secondary. Authors describe findings as hypothesis-generating. Abstract-level review.",
+      "certainty": "low",
+      "evidenceType": "rct",
+      "citationIds": [
+        "cit-rocatis-1-2026"
+      ],
+      "relatedActiveTrialIds": [],
+      "practiceImpact": "Requires double-blind multinational confirmation before changing statin selection.",
+      "lastReviewed": "2026-09-06",
+      "promotedDate": "2026-09-06",
+      "verificationStatus": "verified-pubmed",
+      "verificationNotes": ""
+    },
+    {
+      "id": "y6-phase2",
+      "shortName": "Y-6 phase 2",
+      "fullName": "Efficacy and safety of sublingual cilostazol and dexborneol for the treatment of acute ischaemic stroke: a randomised phase 2 trial in China",
+      "topic": "acute-neuroprotection",
+      "diseaseArea": [
+        "acute-neuroprotection"
+      ],
+      "population": {
+        "n": 300,
+        "ageRange": "35-80",
+        "nihssRange": "See population criteria",
+        "timeWindow": "Within 24 h",
+        "keyInclusion": [
+          "Anterior-circulation LVO treated with EVT; NIHSS 7-25"
+        ],
+        "keyExclusion": []
+      },
+      "intervention": "Two doses of sublingual cilostazol/dexborneol (Y-6) or cilostazol alone",
+      "comparator": "Placebo",
+      "primaryEndpoint": {
+        "definition": "mRS 0-1 at 90 days",
+        "timepoint": "90 days",
+        "result": "No active arm significantly improved the primary endpoint; high/low-dose Y-6 44.6%/46.0% vs 35.7% placebo",
+        "effectSize": "RR 1.25/1.29 for high/low-dose Y-6",
+        "confidenceInterval": "95% CI 0.79-1.97 / 0.83-2.00",
+        "pValue": "P=.34/.25"
+      },
+      "secondaryEndpoints": [],
+      "safetyFindings": {
+        "sich": "28-day sICH: 1.8%/4.8% for high/low-dose Y-6 vs 3.6% placebo",
+        "mortality": "",
+        "other": "No significant safety difference; small groups"
+      },
+      "imagingCriteria": "See primary report",
+      "applicabilityNotes": "Double-blind five-arm trial at 33 Chinese centers; 294 received treatment; NCT06138834.",
+      "limitations": "Phase 2; no significant primary efficacy result. Abstract-level review.",
+      "certainty": "low",
+      "evidenceType": "rct",
+      "citationIds": [
+        "cit-y6-phase2-2026"
+      ],
+      "relatedActiveTrialIds": [],
+      "practiceImpact": "Exploratory adjunctive-treatment evidence; larger confirmatory studies are needed.",
+      "lastReviewed": "2026-09-06",
+      "promotedDate": "2026-09-06",
+      "verificationStatus": "verified-pubmed",
+      "verificationNotes": ""
+    },
+    {
+      "id": "crhcp-seven-year",
+      "shortName": "CRHCP 7-year follow-up",
+      "fullName": "Long-Term Effectiveness of Intensive Blood Pressure Management Led by Nonphysician Community Healthcare Providers on Cardiovascular Events: 7-Year Follow-Up of a Cluster Randomized Trial",
+      "topic": "bp-targets-prevention",
+      "diseaseArea": [
+        "bp-targets-prevention"
+      ],
+      "population": {
+        "n": 33995,
+        "ageRange": "≥40",
+        "nihssRange": "See population criteria",
+        "timeWindow": "Community hypertension management",
+        "keyInclusion": [
+          "Hypertension or high cardiovascular risk in rural China"
+        ],
+        "keyExclusion": []
+      },
+      "intervention": "Nonphysician provider-led intensive BP-management program",
+      "comparator": "Usual care",
+      "primaryEndpoint": {
+        "definition": "MI, stroke, heart-failure hospitalization or cardiovascular death composite",
+        "timepoint": "7 years",
+        "result": "2.4% vs 3.0% per person-year",
+        "effectSize": "HR 0.76",
+        "confidenceInterval": "95% CI 0.72 to 0.81",
+        "pValue": "P<.0001"
+      },
+      "secondaryEndpoints": [
+        {
+          "name": "Years 4-7 after trial-support components ended",
+          "result": "Composite HR 0.79 (95% CI 0.73-0.85)"
+        }
+      ],
+      "safetyFindings": {
+        "sich": "",
+        "mortality": "",
+        "other": "Higher hypotension (RR 1.58) and mild hypokalemia (RR 1.38)"
+      },
+      "imagingCriteria": "See primary report",
+      "applicabilityNotes": "326-village cluster trial; 31,334 entered posttrial follow-up; NCT03527719.",
+      "limitations": "General cardiovascular prevention population, not a post-stroke-specific target trial. Follow-up of an existing trial, not an independent new randomization. Abstract-level review.",
+      "certainty": "moderate",
+      "evidenceType": "rct",
+      "citationIds": [
+        "cit-crhcp-seven-year-2026"
+      ],
+      "relatedActiveTrialIds": [],
+      "practiceImpact": "Long-term program benefit persisted after some trial support ended; does not by itself set an acute-stroke BP target.",
+      "lastReviewed": "2026-09-06",
+      "promotedDate": "2026-09-06",
       "verificationStatus": "verified-pubmed",
       "verificationNotes": ""
     }

@@ -147,5 +147,17 @@
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "GRADE"
+  "gradingSystem": "GRADE",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "37021160",
+      "doi": "10.1177/23969873221133905",
+      "publisherUrl": "https://doi.org/10.1177/23969873221133905",
+      "status": "not-applicable",
+      "note": "Adds omitted ethical-approval and informed-consent declarations; no clinical recommendation changes.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ]
 }

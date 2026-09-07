@@ -156,7 +156,8 @@ describe('Milestone 2 Adversarial Verification & Stress Harness', () => {
       // first '>' anywhere after it and swallows any <details> in between. Reformatting
       // nearby JSX therefore moves this number without changing how many accordions exist.
       // The safety assertion is openDetails === 0, immediately below.
-      expect(totalDetails).toBe(139);
+      // v6.25.0 adds the initially closed reviewed-publication-corrections disclosure.
+      expect(totalDetails).toBe(140);
       expect(openDetails).toBe(0);
 
       const indexHtml = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');

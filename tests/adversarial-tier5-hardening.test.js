@@ -9,11 +9,12 @@
 //   2. Matcher Engine & Field Resolvers / Operators (src/evidence/matcher-engine.js)
 //   3. Guideline Recommendations Decision Logic & Edge Cases (src/app.jsx)
 //   4. Educational Accordion Architecture & Fuzzy Search (src/education.jsx)
-//   5. 108 Guideline Datasets & 3547 Recommendations (data/guidelines/)
+//   5. 109 Guideline Datasets & 3550 Indexed Rows (data/guidelines/)
 //   6. Landmark Trial Citations & Central Registry Integrity (src/evidence/citations.js)
 
 import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
+import { GUIDELINE_LIBRARY_INDEX } from '../src/guideline-library.js';
 import path from 'node:path';
 
 // Import modules under test
@@ -196,8 +197,8 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
 
     it('verifies 100% field and operator coverage across all 9 active trials with 0 gaps', () => {
       const report = coverageReport(activeTrials);
-      expect(report.total).toBe(42);
-      expect(report.covered).toBe(42);
+      expect(report.total).toBe(44);
+      expect(report.covered).toBe(44);
       expect(report.percent).toBe(100);
       expect(report.exclusionsTotal).toBe(14);
       expect(report.exclusionsCovered).toBe(14);
@@ -225,7 +226,8 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       expect(resolveField('reperfusion', {})).toBeNull();
       expect(resolveField('reperfusion', { telestrokeNote: { tnkRecommended: true } })).toBe(true);
       expect(resolveField('reperfusion', { telestrokeNote: { evtRecommended: true } })).toBe(true);
-      expect(resolveField('reperfusion', { telestrokeNote: { tnkRecommended: false, evtRecommended: false } })).toBe(false);
+      expect(resolveField('reperfusion', { telestrokeNote: { tnkRecommended: false, evtRecommended: false } })).toBeNull();
+      expect(resolveField('reperfusion', { telestrokeNote: { tnkRecommended: false, evtRecommended: false, tnkDecisionRecorded: true, evtDecisionRecorded: true } })).toBe(false);
 
       // Derived field: nihssDisabling
       expect(resolveField('nihssDisabling', {})).toBeNull();
@@ -483,11 +485,11 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
   // =========================================================================
   // 5. 89 GUIDELINE DATASETS & 862 RECOMMENDATIONS ADVERSARIAL VALIDATION
   // =========================================================================
-  describe('5. 108 Guideline Datasets & 3547 Recommendations Invariant Hardening', () => {
+  describe('5. 109 Guideline Datasets & 3550 Indexed Rows Invariant Hardening', () => {
 
-    it('verifies all 108 guideline datasets exist and parse valid JSON with 3547 recommendations', () => {
+    it('verifies all 109 guideline datasets parse with 3550 indexed rows and 3547 extracted entries', () => {
       const guidelineFiles = fs.readdirSync(GUIDELINES_DIR).filter(f => f.endsWith('.json') && f !== 'index.json' && f !== 'landmark-trials.json');
-      expect(guidelineFiles.length).toBe(108);
+      expect(guidelineFiles.length).toBe(109);
 
       let totalRecs = 0;
       const validCORs = new Set([
@@ -536,7 +538,9 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         }
       }
 
-      expect(totalRecs).toBe(3547);
+      expect(totalRecs).toBe(3550);
+      expect(GUIDELINE_LIBRARY_INDEX.filter((guideline) => guideline.sourceOnly)).toHaveLength(3);
+      expect(GUIDELINE_LIBRARY_INDEX.reduce((sum, guideline) => sum + guideline.recommendationCount, 0)).toBe(3547);
     });
 
     it('verifies 2026 AHA/ASA AIS guideline dataset contains 195 recommendations', () => {
@@ -725,7 +729,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         cwd: REPO_ROOT,
         encoding: 'utf8'
       });
-      expect(res).toContain('42/42 criteria (100%)');
+      expect(res).toContain('44/44 criteria (100%)');
       expect(res).toContain('14/14 exclusions (100%)');
       expect(res).toContain('Evidence Atlas validation passed');
     });

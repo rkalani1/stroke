@@ -209,5 +209,17 @@
     }
   ],
   "documentType": "scientific-statement",
-  "gradingSystem": "ungraded"
+  "gradingSystem": "ungraded",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "41871197",
+      "doi": "10.1161/str.0000000000000519",
+      "publisherUrl": "https://doi.org/10.1161/str.0000000000000519",
+      "status": "not-applicable",
+      "note": "Adds the American Academy of Neurology affirmation; no extracted clinical statement changes.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ]
 }

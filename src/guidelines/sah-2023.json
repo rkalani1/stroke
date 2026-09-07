@@ -658,5 +658,17 @@
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "ACC/AHA"
+  "gradingSystem": "ACC/AHA",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "38011240",
+      "doi": "10.1161/str.0000000000000449",
+      "publisherUrl": "https://doi.org/10.1161/str.0000000000000449",
+      "status": "not-applicable",
+      "note": "Corrects seizure-section reference numbering without changing recommendation text or grades; the library does not reproduce numbered citations.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ]
 }

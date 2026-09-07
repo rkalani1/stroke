@@ -2,9 +2,9 @@
   "_meta": {
     "endpoint": "guidelines-index",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.24.0",
-    "checksum": "sha256:99227a1b83c819d1ca7534454c850d41",
-    "count": 108,
+    "appVersion": "6.25.0",
+    "checksum": "sha256:ca9856f121f7d98aaa6ba4e9192f6555",
+    "count": 109,
     "source": "Guideline metadata bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
@@ -231,13 +231,23 @@
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-creating-virtual-networks-2025.json"
     },
     {
+      "id": "aha-dyslipidemia-2026",
+      "title": "2026 ACC/AHA/AACVPR/ABC/ACPM/ADA/AGS/APhA/ASPC/NLA/PCNA Guideline on the Management of Dyslipidemia",
+      "shortTitle": "Dyslipidemia 2026 — selected ASCVD prevention summary",
+      "doi": "10.1161/CIR.0000000000001423",
+      "publisherUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000001423",
+      "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/CIR.0000000000001423",
+      "recommendationCount": 4,
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-dyslipidemia-2026.json"
+    },
+    {
       "id": "aha-hypertension-guideline-2025",
       "title": "2025 AHA/ACC/AANP/AAPA/ABC/ACCP/ACPM/AGS/AMA/ASPC/NMA/PCNA/SGIM Guideline for the Prevention, Detection, Evaluation and Management of High Blood Pressure in Adults: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines",
       "shortTitle": "2025 AHA/ACC/AANP/AAPA/ABC/ACCP/ACPM/AGS/AMA/ASPC/NMA/PCNA/SGIM Guideline",
       "doi": "10.1161/HYP.0000000000000249",
       "publisherUrl": "https://doi.org/10.1161/HYP.0000000000000249",
       "pdfUrl": null,
-      "recommendationCount": 20,
+      "recommendationCount": 19,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-hypertension-guideline-2025.json"
     },
     {
