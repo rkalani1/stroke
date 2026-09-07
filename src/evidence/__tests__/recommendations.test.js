@@ -50,9 +50,15 @@ describe('getAllRecommendationIds', () => {
     const idsSet = getAllRecommendationIds();
     expect(idsSet).toBeInstanceOf(Set);
     expect(idsSet.size).toBe(recommendations.length);
+    expect(idsSet.size).toBeGreaterThan(0);
 
-    const expectedIds = recommendations.map((rec) => rec.id);
+    const expectedIds = recommendations.map((r) => r.id);
     expect(Array.from(idsSet)).toEqual(expectedIds);
+
+    for (const rec of recommendations) {
+      expect(typeof rec.id).toBe('string');
+      expect(idsSet.has(rec.id)).toBe(true);
+    }
 
     for (const id of idsSet) {
       expect(typeof id).toBe('string');
