@@ -1,9 +1,18 @@
 import { describe, it, expect } from 'vitest';
 import { classifyHints, DEFAULT_FINDINGS } from '../src/simulators/HintsSimulator.jsx';
 
+const PERIPHERAL_FINDINGS = { hit: 'abnormal', nystagmus: 'uni', skew: 'none', hearing: 'normal' };
+
 describe('HINTS+ simulator — classifier', () => {
-  it('classifies the peripheral defaults as PERIPHERAL (no central finding)', () => {
+  it('starts with an incomplete exam instead of a reassuring result', () => {
     const r = classifyHints(DEFAULT_FINDINGS);
+    expect(r.complete).toBe(false);
+    expect(r.tone).toBe('warn');
+    expect(r.profile).toContain('INCOMPLETE');
+  });
+
+  it('classifies a fully documented peripheral pattern', () => {
+    const r = classifyHints(PERIPHERAL_FINDINGS);
     expect(r.isCentral).toBe(false);
     expect(r.tone).toBe('ok');
     expect(r.profile).toBe('PERIPHERAL VESTIBULAR PROFILE');
@@ -18,7 +27,7 @@ describe('HINTS+ simulator — classifier', () => {
   });
 
   it('does NOT flag central when the head-impulse is abnormal (peripheral)', () => {
-    const r = classifyHints({ ...DEFAULT_FINDINGS, hit: 'abnormal' });
+    const r = classifyHints({ ...PERIPHERAL_FINDINGS, hit: 'abnormal' });
     expect(r.isCentralHIT).toBe(false);
     expect(r.isCentral).toBe(false);
   });

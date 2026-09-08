@@ -32,5 +32,22 @@
     "certainty": "high",
     "lastReviewed": "2026-08-15",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "crhcp-seven-year",
+    "name": "CRHCP 7-year follow-up",
+    "fullName": "Long-Term Effectiveness of Intensive Blood Pressure Management Led by Nonphysician Community Healthcare Providers on Cardiovascular Events: 7-Year Follow-Up of a Cluster Randomized Trial",
+    "category": "bp-targets-prevention",
+    "population": "n=33995, ≥40, NIHSS See population criteria, Community hypertension management",
+    "finding": "2.4% vs 3.0% per person-year",
+    "teachingPoint": "Long-term program benefit persisted after some trial support ended; does not by itself set an acute-stroke BP target.",
+    "PMID": "42666029",
+    "year": 2026,
+    "citationIds": [
+      "cit-crhcp-seven-year-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-09-06",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

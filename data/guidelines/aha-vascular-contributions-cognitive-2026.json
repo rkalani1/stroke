@@ -10,12 +10,222 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Clinical Update: Vascular Risk Factors",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "This scientific statement updates the first American Heart Association and American Stroke Association scientific statement published in 2011, which presented evidence for vascular contributions to cognitive impairment and dementia and positioned vascular risk factors as therapeutic targets in the causal pathway of neurodegenerative disorders.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The same factors that heighten cardiovascular disease risk are now accepted to adversely affect brain health. The AHA's Life's Simple 7 and Life's Essential 8 serve as actionable checklists for assessing and improving cardiovascular and brain health, encompassing 5 ideal health behaviors (nonsmoking, physical activity at goal levels, healthy diet, body mass index <25 kg/m2, and 7-9 hours of sleep) and 3 ideal health factors (untreated blood pressure <120/<80 mm Hg, total cholesterol <200 mg/dL, and fasting blood glucose <100 mg/dL), and recognizing the roles of social determinants of health and psychological well-being.",
+      "page": null
+    },
+    {
+      "section": "Clinical Update: Vascular Risk Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The 2024 Lancet Commission expanded its list of modifiable risk factors for dementia to 14 by adding untreated vision loss and high low-density lipoprotein. Half of the factors are modifiable traditional cardiovascular risks (high cholesterol, physical inactivity, smoking, excessive alcohol consumption, hypertension, obesity, and diabetes). Together, the 14 factors account for 45% of the population attributable fraction for dementia.",
+      "page": null
+    },
+    {
+      "section": "Clinical Update: Vascular Risk Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Studies of vascular risk trajectories in childhood, adolescence, and young adulthood (Young Finns Study, STAR, KHANDLE, CARDIA, Bogalusa Heart Study) suggest that unhealthy cardiovascular risk profiles in early life adversely affect the brain as early as young adulthood, indicating potentially new time windows to target for maintenance of brain health reserve. Variability or fluctuation in vascular risk factors over the course of life may also influence risks of brain injury.",
+      "page": null
+    },
+    {
+      "section": "Clinical Update: Multidomain and Other Interventions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In SPRINT MIND, intensive blood pressure lowering did not significantly reduce the primary outcome of probable dementia, but the nonprimary outcomes of mild cognitive impairment and the composite of mild cognitive impairment and probable dementia were significantly reduced. SPRINT MIND also showed that intensive blood pressure control slowed the accumulation of white matter lesions, although it was associated with modest brain volume loss (eg, in the hippocampus).",
+      "page": null
+    },
+    {
+      "section": "Clinical Update: Multidomain and Other Interventions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The FINGER trial's multidomain intervention (diet, exercise, cognitive training, and vascular risk monitoring) in older adults with elevated cardiovascular risk showed improvements in overall cognitive performance over 2 years. The recently completed US POINTER trial provides further support that a structured moderate- to high-intensity multidomain lifestyle intervention resulted in a statistically significant greater improvement in global cognition over 2 years relative to a lower-intensity self-guided intervention.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Poorly controlled components of the Life's Essential 8 converge on the same final common pathways: oxidative stress, chronic inflammation, endothelial dysfunction, cellular senescence, and maladaptive remodeling. This convergence explains why they are multiplicatively synergistic in defining brain and cardiovascular health and why optimizing all 8 simultaneously yields exponentially greater benefits than addressing any single factor alone.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although promising, single-domain and multidomain interventions show that even optimizing all the components of the Life's Essential 8 does not fully restore brain health. Vascular risk factor reduction needs to be complemented with interventions that target the pathological mechanisms triggered by vascular risk factors.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms of Injury: Hypoperfusion and Circulating Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Traditional vascular risk factors and harmful circulating molecules alter systemic blood vessels and reduce organ perfusion. Ischemic organs (heart, kidney, liver) can further compromise brain perfusion or release harmful factors that trigger immune activation and chronic inflammation, directly injuring vessels and their cellular components. In the brain, such injury disrupts endothelial function, neurovascular coupling, and the blood-brain barrier, showing that systemic vascular health affects brain integrity beyond simple reductions in blood flow.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms of Injury: Cell Type and Susceptibility to Injury",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All cellular components of the brain and its vessels are vulnerable to vascular dysfunction, whether due to hypoperfusion, inflammation, or blood-brain barrier disruption. Neurons and oligodendrocytes are particularly sensitive, resulting in impaired firing and demyelination, although astrocytes and glial cells are also vulnerable; microglia respond rapidly to vascular insults and exacerbate oligodendrocyte injury; damage to ependymal cells impairs cerebrospinal fluid flow; and endothelial cells and pericytes are injured both by ischemia and by harmful circulating systemic factors to which they are directly exposed.",
+      "page": null
+    },
+    {
+      "section": "Central Nervous System Mechanisms: Mitochondrial/Metabolic Function",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Age-related mitochondrial defects (mitochondrial DNA damage, respiratory chain complex defects, reduced adenosine triphosphate synthesis) lead to oxidative stress and the release of oxidized molecules and damage-associated molecular patterns, driving chronic low-grade inflammation (inflammaging). Vascular risk factors compound this stress, eventually overwhelming adaptive mechanisms and triggering cell death pathways; persistent mitochondrial dysfunction and oxidative stress halt neuronal firing and myelin repair in energy-demanding neurons and oligodendrocytes.",
+      "page": null
+    },
+    {
+      "section": "Central Nervous System Mechanisms: Proteostasis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Protein homeostasis declines with age, and vascular dysfunction further impairs the proteostasis network, accelerating buildup of misfolded, oxidized, or ubiquitinated proteins. In sporadic cerebral small-vessel disease, proteomic studies reveal consistent accumulation of extracellular proteins; some (serum amyloid P component, tissue inhibitor of metalloproteinases 3, vitronectin) are deleterious, whereas others (apolipoprotein E, clusterin, HTRA1) may be protective under normal conditions but become harmful with prolonged vascular dysfunction.",
+      "page": null
+    },
+    {
+      "section": "Central Nervous System Mechanisms: Endothelial Nitric Oxide Bioavailability",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Aging and endothelial senescence reduce nitric oxide through reactive oxygen species sequestration, causing impaired vasoregulation, increased platelet aggregation and leukocyte adhesion, plaque formation, tau hyperphosphorylation, amyloid-beta accumulation, microglial activation, and impaired astrocyte glycolysis. In humans, genetic variants of endothelial nitric oxide synthase and soluble guanylate cyclase have been linked to lower risks of stroke and other vascular diseases, providing a genetic basis for resilience to age-related nitric oxide deficiency.",
+      "page": null
+    },
+    {
+      "section": "Brain Processes: Blood-Brain Barrier",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Vascular risk factors, oxidative stress, chronic inflammation, and endothelial senescence disrupt the blood-brain barrier by upregulating matrix metalloproteinases (MMP2, MMP3, MMP9), degrading the basement membrane, and causing loss of tight junction proteins. A leaky blood-brain barrier exposes brain cells to neurotoxic blood products and inflammatory mediators such as fibrinogen and red blood cells, which generate more reactive oxygen species; ultimately resilience mechanisms are exhausted and the brain is left vulnerable to endogenous and exogenous insults.",
+      "page": null
+    },
+    {
+      "section": "Brain Processes: White Matter Connectivity",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cerebral white matter, because of its low vascular density, fewer astrocytes, less robust blood-brain barrier, and sparse microglia, is especially vulnerable to aging and vascular risk factors, and therefore highly susceptible to vascular dysfunction, hypoxic ischemic injury, toxic circulating factors, and inflammation. As repair mechanisms fail, late myelinated fibers, which are particularly fragile, degenerate, leading to the clinical manifestations of VCID.",
+      "page": null
+    },
+    {
+      "section": "Repair and Recovery Mechanisms: Angiogenesis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Aging undermines angiogenesis: proangiogenic signals decline, endothelial cells become senescent, basement membranes thicken, and extracellular matrix changes hinder new vessel growth. Capillary rarefaction and dysfunctional neovessels accumulate, and elevated proangiogenic factors (vascular endothelial growth factor, placental growth factor, angiopoietins) paradoxically coexist with reduced capillary density, increased permeability, and vessel regression. Human transcriptomic studies show that in VCID, injury and cell death pathways overwhelm angiogenic pathways.",
+      "page": null
+    },
+    {
+      "section": "Repair and Recovery Mechanisms: Myelination",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Age-related alterations in remyelination and imbalances in proinflammatory and anti-inflammatory signals hinder myelin repair and disrupt brain connectivity. Oligodendrocyte precursor cells become fewer and less able to differentiate, leading to incomplete repair with thinner, disorganized myelin sheaths; microglia and monocyte-derived macrophages remove myelin debris but secrete transforming growth factor-beta, interleukin-1beta, and tumor necrosis factor-alpha, which inhibit oligodendrocyte precursor cell differentiation.",
+      "page": null
+    },
+    {
+      "section": "Repair and Recovery Mechanisms: Myelination",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Apolipoprotein E4 provides poor lipidation and cholesterol delivery, whereas apolipoprotein E2, despite impaired lipidation, appears protective by reducing amyloid-beta processing, modulating glia, preventing tau propagation, and stabilizing vessel walls. Cholesterol and amyloid-beta dysmetabolism can therefore influence myelin repair, and apolipoprotein E isoforms exemplify genetic heterogeneity that affects resilience.",
+      "page": null
+    },
+    {
+      "section": "Repair and Recovery Mechanisms: Central Nervous System Clearance",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hypertension leads to thickening of basement membranes, altering perivascular spaces, stiffening arteries, and reducing pulsatility, which impair glymphatic and intramural periarterial drainage and decrease waste clearance. Cerebral small-vessel disease due to amyloid-beta deposition (cerebral amyloid angiopathy) similarly appears to impair vasomotion. Age-related mitochondrial dysfunction, oxidative stress, sleep architecture changes, vascular stiffness, and astrocytic aquaporin-4 depolarization further disrupt glymphatic clearance.",
+      "page": null
+    },
+    {
+      "section": "Repair and Recovery Mechanisms: Neurogenesis and Synaptogenesis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Neurogenesis and synaptogenesis drive brain plasticity but decline with age. Mitochondrial dysfunction and oxidative stress impair neurogenesis in the hippocampal dentate gyrus and subventricular zone through neural stem cell senescence, chronic inflammation, reduced Wnt/beta-catenin signaling, and loss of neurotrophic factors. These deficits are characteristic of normal aging and are exacerbated by vascular dysfunction, accelerating neurodegeneration in VCID.",
+      "page": null
+    },
+    {
+      "section": "Status of Fluid and Neuroimaging-Based Biomarkers",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Vascular-focused biomarker research is yielding promising candidates in VCID: CSF or plasma neurofilament light and glial fibrillary acidic protein, plasma placental growth factor, and CSF soluble platelet-derived growth factor receptor-beta, MMP9, interleukin-6, vascular endothelial growth factor, albumin quotient, fibrinogen, von Willebrand factor, and blood-based blood-brain barrier- and inflammation-linked microRNAs.",
+      "page": null
+    },
+    {
+      "section": "Status of Fluid and Neuroimaging-Based Biomarkers",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Promising neuroimaging biomarkers include white matter hyperintensities, microinfarcts, diffusion tensor imaging measures of tissue ultrastructure, free-water mapping, peak skeletonized mean diffusivity, cerebrovascular reactivity, and arteriolosclerosis scores. Although current biomarkers will significantly advance diagnostic tools and clinical trials, they do not yet capture the dynamic biological heterogeneity of VCID.",
+      "page": null
+    },
+    {
+      "section": "Prevention of Cognitive Impairment and Maintenance of Brain Health: Hallmarks and Knowledge Gaps",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Vascular risk factors significantly accelerate age-related cognitive impairment and contribute to loss of brain health. Modifying vascular risk factors is critical to reducing the impact of ongoing injury but is not sufficient to preserve or restore brain health in everyone; prevention of cognitive impairment and maintenance of brain health also require targeting resilience, repair, and recovery mechanisms.",
+      "page": null
+    },
+    {
+      "section": "Prevention of Cognitive Impairment and Maintenance of Brain Health: Assessing Capacity and Early Intervention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Functional capacity can be gauged by profiling circulating factors; by establishing normative trajectories across the life span, clinicians can identify deviations caused by vascular factors. For instance, early elevation of oxidized molecules may warrant targeting oxidative stress alongside hypertension, whereas later changes in inflammatory or proteostasis markers might signal the need for additional interventions. Effective therapies should reverse mitochondrial dysfunction, reduce oxidative stress, dampen inflammation, and restore proteostasis.",
+      "page": null
+    },
+    {
+      "section": "Prevention of Cognitive Impairment and Maintenance of Brain Health: Timing Repair Mechanisms",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Interventions must address the temporal course of failure in angiogenesis, myelination, neurogenesis, and synaptogenesis. Circulating markers of endothelial dysfunction, blood-brain barrier leakiness, and impaired clearance are promising indicators that may guide the timing of an intervention for maximal efficacy. Treatments should restore endothelial integrity, enhance central nervous system clearance, and promote angiogenesis, myelin repair, and neurogenesis.",
+      "page": null
+    },
+    {
+      "section": "Prevention of Cognitive Impairment and Maintenance of Brain Health: Insights From Resilient Individuals",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Circulating profiles of individuals resilient or resistant to VCID may reveal adaptive mechanisms that mitigate vascular risk factors and preserve cognition while exposing biological heterogeneity of repair capacity or resistance to injury. Additional clues can be drawn from accelerated vascular aging models and from stored blood samples in vascular risk factor modification trials.",
+      "page": null
+    },
+    {
+      "section": "Prevention of Cognitive Impairment and Maintenance of Brain Health: Toward Precision Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Ultimately, vascular risk factor modification will need to be complemented by treatments guided by circulating factor profiles to enhance cellular health and resist or repair injury at appropriate times. This personalized approach aims to reduce VCID and maintain brain health even when vascular risk factors cannot be successfully treated or prevented.",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cognitive impairment as we age is a multiple-cause process (ie, mixed or coexisting brain pathologies) and thus must be multimechanistic in origin. Until mechanistic therapies are available, intensifying control of modifiable vascular risk factors, such as increasing physical activity, remains the most effective strategy to preserve brain health.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

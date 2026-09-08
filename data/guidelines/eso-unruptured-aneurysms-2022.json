@@ -10,12 +10,230 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Unruptured intracranial aneurysms (UIA) occur in around 3% of the population. Important management questions concern if and how to perform preventive UIA occlusion; if, how and when to perform follow up imaging and non-interventional means to reduce the risk of rupture. Using the Standard Operational Procedure of ESO we prepared guidelines according to GRADE methodology.",
+      "section": "PICO 1: does any type of microsurgical or endovascular aneurysm occlusion compared to no aneurysm occlusion improve outcomes?",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients in whom the estimated 5-year risk of aneurysm rupture is higher than the risk of the preventive treatment modality, we suggest preventive aneurysm repair with the treatment modality that is most effective and safe for that particular aneurysm.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: does any type of microsurgical or endovascular aneurysm occlusion compared to no aneurysm occlusion improve outcomes?",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with growth of a UIA detected at follow up imaging, we suggest preventive aneurysm repair. However, despite an increased risk of rupture in such patients, this risk remains to be weighed against the risk of treatment complications.",
+      "page": null
+    },
+    {
+      "section": "PICO 1 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adult patients with UIA we suggest assessing such patients within a multidisciplinary setting (i.e. neurosurgery, interventional neuroradiology, neurology) at large volume centres (consulting at least 100 UIA patients per year).",
+      "page": null
+    },
+    {
+      "section": "PICO 1 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adult patients with UIA we suggest that the recommendation for versus against preventive aneurysm repair by the multidisciplinary team should be based on: aneurysm-related risk factors for rupture, that is, UIA size, location and lobulation; risk factors for rupture, that is, previous SAH from a different aneurysm, family history for UIA or SAH, smoking and hypertension; UIA growth (1 mm in any diameter) or de novo formation on serial imaging; life expectancy; risk factors for treatment complications, that is, patient age and comorbid disease, aneurysm morphology and complexity and estimated risk of treatment.",
+      "page": null
+    },
+    {
+      "section": "PICO 1 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with UIA who present with clinical symptoms, such as cranial nerve deficits, mass effect and thromboembolic events, we suggest preventive aneurysm repair, taking into account life expectancy and risk of treatment complications.",
+      "page": null
+    },
+    {
+      "section": "PICO 1 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "In asymptomatic adult UIA patients with significant comorbid diseases and/or reduced life expectancy (<5 years), we suggest no preventive aneurysm repair.",
+      "page": null
+    },
+    {
+      "section": "PICO 1 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with UIA we suggest that the final management decision is made in a shared decision-making process between the physician and the patient, based on the recommendation by the multidisciplinary team and patient-related psycho-sociological factors.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: does any type of microsurgical occlusion compared to any type of endovascular occlusion improve outcome?",
+      "classOfRec": "No recommendation",
+      "classNote": "Evidence-based recommendation column; ESO assigned no strength of recommendation (Strength of recommendation: –). Not an expert consensus statement.",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with UIA, we cannot make an overall recommendation that states which UIA treatment modality (either endovascular or microsurgical) is preferred based on the current data.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: does any type of microsurgical occlusion compared to any type of endovascular occlusion improve outcome?",
+      "classOfRec": "No recommendation",
+      "classNote": "Evidence-based recommendation column; ESO assigned no strength of recommendation (Strength of recommendation: –). Not an expert consensus statement.",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with UIA, we suggest to take into account, in the choice between endovascular and microsurgical treatment, the following conditions which impact on the risk/benefit profile of the procedures: increasing age (increased risk of complications for microsurgical treatment); female sex (slightly increased risk for endovascular therapy, strongly decreased risk for microsurgical treatment); indication for anticoagulation (strongly increased for microsurgical treatment); a broad neck of the aneurysm (increased risk for endovascular treatment); aneurysm calcification (increased risk for microsurgical treatment); location on the posterior circulation (slightly increased risk for endovascular therapy and strongly increased risk for microsurgical treatment).",
+      "page": null
+    },
+    {
+      "section": "PICO 2: does any type of microsurgical occlusion compared to any type of endovascular occlusion improve outcome?",
+      "classOfRec": "Conditional",
+      "classNote": "Against (Weak against intervention, ↓?)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with UIA, we suggest flow diverting stents as a treatment option only if no other endovascular or microsurgical options to occlude the aneurysm (complete occlusion or neck remnant only) at a risk lower than the expected 5-year risk of rupture are available and if the risk of rupture outweighs the risk of treatment with flow diverting stents.",
+      "page": null
+    },
+    {
+      "section": "PICO 2 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with UIA we suggest that the choice between microsurgical and endovascular treatment should be made in a multidisciplinary setting where the chance of complete aneurysm occlusion and risk of complications of microsurgical and endovascular treatment are openly discussed and compared.",
+      "page": null
+    },
+    {
+      "section": "PICO 2 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with UIA we suggest that preventive UIA repair should only be done in centres performing aneurysm treatment in more than 100 patients with ruptured and unruptured aneurysms per year and performing the proposed treatment modality (endovascular or microsurgery) in more than 30 patients with aneurysms (ruptured and unruptured) per year per neurosurgeon or neurointerventionalist.",
+      "page": null
+    },
+    {
+      "section": "PICO 2 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with UIA in the posterior circulation we suggest endovascular treatment as the first option to consider.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: does any type and frequency of follow-up imaging followed by aneurysm occlusion in case of aneurysm growth or other change compared to no follow-up imaging improve outcome?",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with a UIA in whom the risk of treatment complications is higher than the 5-year risk of rupture, we recommend radiological monitoring to detect future UIA growth or morphological change for patients in whom treatment remains an option that were initially observed.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: does any type and frequency of follow-up imaging followed by aneurysm occlusion in case of aneurysm growth or other change compared to no follow-up imaging improve outcome?",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with a UIA that shows recent growth during radiological monitoring, we suggest preventive aneurysm repair. However, despite an increased risk of rupture in such patients, this risk remains to be weighed against the risk of treatment complications.",
+      "page": null
+    },
+    {
+      "section": "PICO 3 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with UIA undergoing radiological monitoring to detect potential aneurysm growth or morphological change, we suggest that the frequency and duration of follow-up imaging should be based on aneurysm- and patient-related risk factors of growth or rupture and risk of treatment. This should be agreed upon in a shared decision-making process between physician and patient based on the recommendation by the multidisciplinary team and patient-related psycho-sociological factors.",
+      "page": null
+    },
+    {
+      "section": "PICO 3 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with UIA undergoing radiological monitoring to detect potential aneurysm growth or morphological change, we suggest that radiological follow-up should be continued as long as preventive treatment remains an option.",
+      "page": null
+    },
+    {
+      "section": "PICO 3 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In adult patients with UIA undergoing radiological monitoring to detect potential aneurysm growth or morphological change, we suggest that radiological follow-up should be performed with MRA or CTA.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: does any life-style modification or any medical treatment in comparison to no treatment improve outcome?",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with UIA who smoke, we recommend smoking cessation.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: does any life-style modification or any medical treatment in comparison to no treatment improve outcome?",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with UIA and hypertension, we recommend treatment of increased blood pressure.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: does any life-style modification or any medical treatment in comparison to no treatment improve outcome?",
+      "classOfRec": "No recommendation",
+      "classNote": "Wording is against starting acetylsalicylic acid; ESO assigned no strength of recommendation (Strength of recommendation: –). Not an expert consensus statement.",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with UIA, we suggest to not start treatment with acetylsalicylic acid to decrease the risk of aneurysm growth or rupture.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: does any life-style modification or any medical treatment in comparison to no treatment improve outcome?",
+      "classOfRec": "No recommendation",
+      "classNote": "Wording is against starting statins; ESO assigned no strength of recommendation (Strength of recommendation: –). Not an expert consensus statement.",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with UIA, we suggest to not start treatment with statins to decrease the risk of aneurysm growth or rupture.",
+      "page": null
+    },
+    {
+      "section": "PICO 4 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adult patients with an UIA who do not undergo preventive occlusion, we suggest that there is no contra-indication for platelet aggregation inhibitors if needed for another indication.",
+      "page": null
+    },
+    {
+      "section": "PICO 4 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adult patients with an UIA who do not undergo preventive occlusion, we suggest keeping blood pressure <130/80 mm Hg.",
+      "page": null
+    },
+    {
+      "section": "PICO 4 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "For adult patients with an UIA who do not undergo preventive occlusion, we suggest that no restrictions should be imposed regarding sexual activity or any physical or sporting activity.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: in adult patients with occluded unruptured aneurysms, does any type and frequency of follow-up imaging compared to no follow-up imaging improve outcome?",
+      "classOfRec": "Conditional",
+      "classNote": "For (Weak for intervention, ↑?)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For adult patients with a treated UIA in whom aneurysm re-treatment remains an option, we suggest an initial radiological follow-up 3 to 12 months after UIA repair to detect potential UIA remnants or recurrence.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: in adult patients with occluded unruptured aneurysms, does any type and frequency of follow-up imaging compared to no follow-up imaging improve outcome?",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adult patients with a treated UIA and recurrence of the aneurysm, we recommend that the pros and cons of re-treatment in the short-term versus a future radiological follow-up are agreed upon in a shared decision-making process between the physician and patient based on the recommendation by the multidisciplinary team and patient-related psycho-sociological factors.",
+      "page": null
+    },
+    {
+      "section": "PICO 5 (expert consensus statement)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that MR-angiography should be the primary tool for follow up imaging of endovascularly treated aneurysms, CTA for microsurgically treated aneurysms, and that DSA should only be considered if MRA and CTA are not conclusive.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

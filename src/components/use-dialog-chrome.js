@@ -98,9 +98,9 @@ export function useDialogChrome({ dialogRef, initialFocusRef, onClose }) {
       const prev = previousActiveElementRef.current;
       if (prev && prev.isConnected && typeof prev.focus === 'function') prev.focus();
     };
-    // Mount-once: see onCloseRef above. dialogRef/initialFocusRef are stable refs.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // dialogRef and initialFocusRef are stable ref objects created via useRef in caller.
+    // onClose is kept in onCloseRef to prevent re-running on inline arrow functions.
+  }, [dialogRef, initialFocusRef]);
 }
 
 export default useDialogChrome;

@@ -46,7 +46,7 @@ describe('matcher engine — operators', () => {
 
   describe('==', () => {
     it('boolean equality', () => {
-      expect(evaluateCriterion({ field: 'tnkRecommended', operator: '==', value: false }, { telestrokeNote: { tnkRecommended: false } })).toBe('met');
+      expect(evaluateCriterion({ field: 'tnkRecommended', operator: '==', value: false }, { telestrokeNote: { tnkRecommended: false, tnkDecisionRecorded: true } })).toBe('met');
       expect(evaluateCriterion({ field: 'tnkRecommended', operator: '==', value: false }, { telestrokeNote: { tnkRecommended: true } })).toBe('not_met');
       expect(evaluateCriterion({ field: 'tnkRecommended', operator: '==', value: false }, {})).toBe('unknown');
       expect(evaluateCriterion({ field: 'reperfusion', operator: '==', value: true }, { telestrokeNote: { tnkRecommended: true } })).toBe('met');
@@ -124,8 +124,8 @@ describe('matcher engine — operators', () => {
       // Bug-fix sprint: empty telestrokeNote (no decisions yet) → null (unknown),
       // not false. Lets RHAPSODY surface as needs_info on a fresh form.
       expect(resolveField('reperfusion', { telestrokeNote: {} })).toBeNull();
-      // Definitive false-false → false (no reperfusion plan recorded).
-      expect(resolveField('reperfusion', { telestrokeNote: { tnkRecommended: false, evtRecommended: false } })).toBe(false);
+      // Both decisions explicitly recorded negative → no reperfusion plan.
+      expect(resolveField('reperfusion', { telestrokeNote: { tnkRecommended: false, tnkDecisionRecorded: true, evtRecommended: false, evtDecisionRecorded: true } })).toBe(false);
       // STEP MVO domain (NCT06289985) requires non-dominant M2/M3 AND NIHSS ≥8;
       // M2/M3 alone (low or unknown NIHSS) must NOT match — that false positive
       // was the pre-fix bug.
@@ -241,8 +241,10 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
         premorbidMRS: '1',
         ctaResults: 'tandem extracranial carotid + intracranial M1 occlusion',
         // Registry inclusion #10: must be ineligible for or have failed IV
-        // t-PA — a documented decision NOT to give TNK satisfies the gate.
-        tnkRecommended: false
+        // t-PA — the modeled gate uses an explicitly recorded negative;
+        // full registry eligibility still requires manual confirmation.
+        tnkRecommended: false,
+        tnkDecisionRecorded: true
       },
       hoursFromLKW: 8,
       aspectsScore: 8
@@ -270,7 +272,8 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
     const data = {
       telestrokeNote: { age: '72', premorbidMRS: '2' },
       ichLocation: 'lobar parietal',
-      onStatin: true
+      onStatin: true,
+      hoursFromLKW: 24
     };
     const r = evaluateActiveTrial(getActiveTrial('saturn'), data);
     expect(r.status).toBe('eligible');
@@ -283,7 +286,8 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
         diagnosisCategory: 'ich',
         pmh: 'long history of afib, htn, dm'
       },
-      mrsScore: 3
+      mrsScore: 3,
+      hoursFromLKW: 24 * 30
     };
     const r = evaluateActiveTrial(getActiveTrial('aspire'), data);
     expect(r.status).toBe('eligible');

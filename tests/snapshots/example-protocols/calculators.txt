@@ -279,7 +279,13 @@ Nonsmoker
 Cortical infarct
 Age (years)
 Large right-to-left shunt (PASCAL)
+Unknown / not assessed
+Absent
+Present
 Atrial septal aneurysm (PASCAL)
+Unknown / not assessed
+Absent
+Present
 Enter age to compute the RoPE score (age is the largest contributor).
 Sources: Kent DM et al. Neurology 2013;81:619-25 (RoPE, PMID 23864310); Kent DM et al. JAMA 2021;326:2277-86 (PASCAL, PMID 34905030).
 RCVS² Score
@@ -335,16 +341,11 @@ C: Slices x thickness (cm)
 Enter A, B, and C measurements from CT to calculate ICH volume.
 ABC/2 method: A = largest diameter, B = perpendicular diameter on same slice, C = number of slices with ICH x slice thickness.
 Source: Kothari RU et al. Stroke 1996;27:1304-5 (ABC/2, PMID 8711791).
-Andexanet Alfa (unavailable; dosing disabled)
-DOAC Type
-Select DOAC
-Apixaban (Eliquis)
-Rivaroxaban (Xarelto)
-Other
-Hours since last DOAC dose
-DOAC dose (mg per dose)
-Institutional pathway:
-Andexanet alfa is unavailable. For apixaban-, rivaroxaban-, or edoxaban-associated ICH, give 4-factor PCC 2,000 units IV only when the Direct Xa Inhibitor screen is elevated and PCC has no contraindication; otherwise this card returns no actionable dose.
+Andexanet Alfa (US sales ended; dosing disabled)
+US safety update:
+The FDA concluded that serious thrombotic risks outweigh andexanet alfa's benefits. US manufacture and sales ended December 22, 2025. Dosing is disabled.
+For urgent factor Xa inhibitor reversal, review the anticoagulant, timing, available laboratory assessment, contraindications and approved local PCC pathway with the treating team.
+FDA safety communication (December 18, 2025)
 Creatinine Clearance (Cockcroft-Gault)
 Age
 Weight (kg)

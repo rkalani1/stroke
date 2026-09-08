@@ -9,6 +9,7 @@ export default defineConfig({
     exclude: [
       ...configDefaults.exclude, // node_modules, dist, .git, .cache, etc.
       '.claude/**',
+      '.agents/**',
       '.discovery/**',
       'mcp/**',
       'output/**',
