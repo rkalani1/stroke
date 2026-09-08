@@ -58,7 +58,7 @@ const SCENARIOS = {
     label: 'VOR Deficit (Peripheral)',
     tone: 'ok',
     anim: 'hint-anim-hit-peripheral',
-    text: 'Head Impulse Test (Peripheral / VOR deficit): the head rotates right, but the vestibulo-ocular reflex fails — the eyes ride along with the head, then a quick corrective catch-up saccade snaps them back onto the target. An ABNORMAL HIT (refixation saccade) is the PERIPHERAL/benign sign (vestibular neuritis).'
+    text: 'Head Impulse Test (VOR deficit): the eyes move with the head, then make a corrective saccade back to the target. This supports peripheral vestibular dysfunction in the full HINTS+ pattern, but an abnormal HIT alone does not exclude stroke, including AICA territory ischemia.'
   },
   'hit-central': {
     group: 'Head Impulse Test (HIT)',
@@ -74,7 +74,7 @@ const SCENARIOS = {
     label: 'Unidirectional (Peripheral)',
     tone: 'ok',
     anim: 'hint-anim-nys-uni',
-    text: 'Unidirectional Nystagmus (Peripheral): spontaneous fast phase that beats in ONE direction regardless of gaze — slow drift one way, fast snap the other. Direction does not change with gaze. Peripheral / benign.'
+    text: 'Unidirectional Nystagmus: the fast phase beats in one direction across gaze positions. This can support a peripheral pattern when the other findings agree, but alone does not exclude a central cause.'
   },
   'nys-bi': {
     group: 'Nystagmus (N)',
@@ -138,7 +138,11 @@ const GROUPS = [
    PORTED EXACTLY from the source. Do NOT "fix" the counterintuitive HIT
    rule: in the Acute Vestibular Syndrome a NORMAL head-impulse is the
    CENTRAL/stroke sign. */
-export function classifyHints({ hit, nystagmus, skew, hearing }) {
+export function classifyHints({ hit, nystagmus, skew, hearing } = {}) {
+  const complete = ['normal', 'abnormal'].includes(hit)
+    && ['uni', 'bi'].includes(nystagmus)
+    && ['none', 'skew'].includes(skew)
+    && ['normal', 'loss'].includes(hearing);
   const isCentralHIT = hit === 'normal';        // intact VOR (no saccade) → central
   const isCentralNystagmus = nystagmus === 'bi'; // direction-changing / vertical → central
   const isCentralSkew = skew === 'skew';         // skew deviation present → central
@@ -154,18 +158,19 @@ export function classifyHints({ hit, nystagmus, skew, hearing }) {
 
   return {
     isCentral,
+    complete,
     isCentralHIT,
     isCentralNystagmus,
     isCentralSkew,
     isCentralHearing,
     reasons,
-    profile: isCentral ? 'CENTRAL WARNING PATTERN - URGENT STROKE EVALUATION' : 'PERIPHERAL VESTIBULAR PROFILE',
-    tone: isCentral ? 'crit' : 'ok'
+    profile: isCentral ? 'CENTRAL WARNING PATTERN - URGENT STROKE EVALUATION' : complete ? 'PERIPHERAL VESTIBULAR PROFILE' : 'EXAM INCOMPLETE — NO CLASSIFICATION',
+    tone: isCentral ? 'crit' : complete ? 'ok' : 'warn'
   };
 }
 
-/* Default findings — all peripheral. */
-export const DEFAULT_FINDINGS = { hit: 'abnormal', nystagmus: 'uni', skew: 'none', hearing: 'normal' };
+/* A new exam must not silently start with four reassuring findings. */
+export const DEFAULT_FINDINGS = { hit: '', nystagmus: '', skew: '', hearing: '' };
 
 /* INFARCT mnemonic rows. */
 const INFARCT = [
@@ -523,18 +528,21 @@ export function HintsSimulator() {
                 <strong>Alert — central warning pattern.</strong> Central finding(s): <strong>{result.reasons.join('; ')}</strong>.
                 Treat as urgent stroke evaluation in the right clinical setting; activate local stroke pathways and obtain appropriate neuroimaging.
               </p>
+            ) : !result.complete ? (
+              <p className="mt-1.5 text-xs leading-relaxed">
+                Record all four findings before interpreting a peripheral pattern. An untestable or equivocal examination requires clinical reassessment and appropriate imaging; it is not a negative test.
+              </p>
             ) : (
               <p className="mt-1.5 text-xs leading-relaxed">
-                All four steps are benign (abnormal HIT, unidirectional nystagmus, no skew, normal
-                hearing) — consistent with acute peripheral vestibulopathy (e.g. vestibular neuritis).
-                Manage symptomatically and reassess.
+                The recorded pattern supports peripheral vestibulopathy when obtained by a trained examiner in continuous AVS with nystagmus.
+                Reassess discordant symptoms, severe gait impairment, or other neurologic findings; this teaching aid does not independently exclude stroke.
               </p>
             )}
           </div>
 
           <button type="button" onClick={() => setFindings(DEFAULT_FINDINGS)}
             className="px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-xs font-semibold bg-slate-200 text-slate-800 hover:bg-slate-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 dark:bg-overlay dark:text-ink dark:hover:bg-overlay">
-            Reset to peripheral defaults
+            Clear exam findings
           </button>
         </section>
       </div>

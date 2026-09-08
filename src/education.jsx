@@ -22,95 +22,7 @@ import {
   EVIDENCE_TYPE_LABELS
 } from './evidence/index.js';
 
-import ais2026 from './guidelines/ais-2026.json';
-import cancerStroke2026 from './guidelines/cancer-stroke-2026.json';
-import cardiacBrainHealth2024 from './guidelines/cardiac-brain-health-2024.json';
-import cvt2024 from './guidelines/cvt-2024.json';
-import ich2022 from './guidelines/ich-2022.json';
-import maternalStroke2026 from './guidelines/maternal-stroke-2026.json';
-import perioperativeStroke2021 from './guidelines/perioperative-stroke-2021.json';
-import poststrokeCognitive2023 from './guidelines/poststroke-cognitive-2023.json';
-import poststrokePrimaryCare2021 from './guidelines/poststroke-primary-care-2021.json';
-import poststrokeSpasticity2026 from './guidelines/poststroke-spasticity-2026.json';
-import primaryPrevention2024 from './guidelines/primary-prevention-2024.json';
-import premorbidDisability2022 from './guidelines/premorbid-disability-2022.json';
-import secondaryPrevention2021 from './guidelines/secondary-prevention-2021.json';
-import sah2023 from './guidelines/sah-2023.json';
-import systemicComplications2024 from './guidelines/systemic-complications-2024.json';
-import svinLargeCore2025 from './guidelines/svin-large-core-2025.json';
-import tiaEd2023 from './guidelines/tia-ed-2023.json';
-import aanAsmWithdrawal2021 from './guidelines/aan-asm-withdrawal-2021.json';
-import aanBrainDeathGuidance2025 from './guidelines/aan-brain-death-guidance-2025.json';
-import aanConsentAis2022 from './guidelines/aan-consent-ais-2022.json';
-import aanDriverLicensure2025 from './guidelines/aan-driver-licensure-2025.json';
-import aanFunctionalSeizures2025 from './guidelines/aan-functional-seizures-2025.json';
-import aanNeuropalliative2022 from './guidelines/aan-neuropalliative-2022.json';
-import ahaAcuteBpManagement2024 from './guidelines/aha-acute-bp-management-2024.json';
-import ahaAdultMoyamoyaDisease2023 from './guidelines/aha-adult-moyamoya-disease-2023.json';
-import ahaAfGuideline2023 from './guidelines/aha-af-guideline-2023.json';
-import ahaAggressiveLdlLowering2023 from './guidelines/aha-aggressive-ldl-lowering-2023.json';
-import ahaAntiamyloidImmunotherapy2024 from './guidelines/aha-antiamyloid-immunotherapy-2024.json';
-import ahaAtrialFibrillationOccurring2023 from './guidelines/aha-atrial-fibrillation-occurring-2023.json';
-import ahaBrainHealthLifeSpan2026 from './guidelines/aha-brain-health-life-span-2026.json';
-import ahaCadasil2023 from './guidelines/aha-cadasil-2023.json';
-import ahaCareAisEvtIcu2021 from './guidelines/aha-care-ais-evt-icu-2021.json';
-import ahaCareAisPosthyperacute2021 from './guidelines/aha-care-ais-posthyperacute-2021.json';
-import ahaCareAisPrehospital2021 from './guidelines/aha-care-ais-prehospital-2021.json';
-import ahaCervicalArteryDissection2024 from './guidelines/aha-cervical-artery-dissection-2024.json';
-import ahaClinicalPerformanceMeasures2021 from './guidelines/aha-clinical-performance-measures-2021.json';
-import ahaCrao2021 from './guidelines/aha-crao-2021.json';
-import ahaCreatingVirtualNetworks2025 from './guidelines/aha-creating-virtual-networks-2025.json';
-import ahaHypertensionGuideline2025 from './guidelines/aha-hypertension-guideline-2025.json';
-import ahaIchPerformanceMeasures2024 from './guidelines/aha-ich-performance-measures-2024.json';
-import ahaIdealFoundationalRequirements2023 from './guidelines/aha-ideal-foundational-requirements-2023.json';
-import ahaImpactSleepDisorders2024 from './guidelines/aha-impact-sleep-disorders-2024.json';
-import ahaImprovingAccessRehabilitation2025 from './guidelines/aha-improving-access-rehabilitation-2025.json';
-import ahaInHospitalStroke2022 from './guidelines/aha-in-hospital-stroke-2022.json';
-import ahaLvSystolicDysfunction2026 from './guidelines/aha-lv-systolic-dysfunction-2026.json';
-import ahaNursingRolePsychosocial2024 from './guidelines/aha-nursing-role-psychosocial-2024.json';
-import ahaPalliativeEndLife2024 from './guidelines/aha-palliative-end-life-2024.json';
-import ahaPrimaryAgendaBrain2021 from './guidelines/aha-primary-agenda-brain-2021.json';
-import ahaRecommendationsRegionalDestination2021 from './guidelines/aha-recommendations-regional-destination-2021.json';
-import ahaRuralStrokeCare2024 from './guidelines/aha-rural-stroke-care-2024.json';
-import ahaSexGenderEvt2022 from './guidelines/aha-sex-gender-evt-2022.json';
-import ahaSocialEnvironmentalDeterminants2026 from './guidelines/aha-social-environmental-determinants-2026.json';
-import ahaStandardsPostacuteRehabilitation2025 from './guidelines/aha-standards-postacute-rehabilitation-2025.json';
-import ahaTargetedNursingInterventions2025 from './guidelines/aha-targeted-nursing-interventions-2025.json';
-import ahaTransitionsOfCare2024 from './guidelines/aha-transitions-of-care-2024.json';
-import ahaUseMarijuanaEffect2022 from './guidelines/aha-use-marijuana-effect-2022.json';
-import ahaVascularContributionsCognitive2026 from './guidelines/aha-vascular-contributions-cognitive-2026.json';
-import esoArteryDissection2021 from './guidelines/eso-artery-dissection-2021.json';
-import esoCarotidStenosis2021 from './guidelines/eso-carotid-stenosis-2021.json';
-import esoCovertCsvd2021 from './guidelines/eso-covert-csvd-2021.json';
-import esoDysphagia2021 from './guidelines/eso-dysphagia-2021.json';
-import esoEanPoststrokeCognition2021 from './guidelines/eso-ean-poststroke-cognition-2021.json';
-import esoEsmintThrombectomy2022 from './guidelines/eso-esmint-thrombectomy-2022.json';
-import esoIntracranialAtherosclerosis2022 from './guidelines/eso-intracranial-atherosclerosis-2022.json';
-import esoMobileStrokeUnits2022 from './guidelines/eso-mobile-stroke-units-2022.json';
-import esoMoyamoya2023 from './guidelines/eso-moyamoya-2023.json';
-import esoSecondaryPrevention2022 from './guidelines/eso-secondary-prevention-2022.json';
-import esoShortTermDapt2021 from './guidelines/eso-short-term-dapt-2021.json';
-import esoSpaceOccupyingInfarction2021 from './guidelines/eso-space-occupying-infarction-2021.json';
-import esoStrokeInWomen2022 from './guidelines/eso-stroke-in-women-2022.json';
-import esoSubclinicalAfScreening2022 from './guidelines/eso-subclinical-af-screening-2022.json';
-import esoTenecteplase2023 from './guidelines/eso-tenecteplase-2023.json';
-import esoTia2021 from './guidelines/eso-tia-2021.json';
-import esoUnrupturedAneurysms2022 from './guidelines/eso-unruptured-aneurysms-2022.json';
-import svinDsaCollaterals2025 from './guidelines/svin-dsa-collaterals-2025.json';
-import svinLabConsensus2025 from './guidelines/svin-lab-consensus-2025.json';
-import svinMevoDvoEvt2026 from './guidelines/svin-mevo-dvo-evt-2026.json';
-import esoBp2025 from './guidelines/eso-bp-2025.json';
-import esoIch2025 from './guidelines/eso-ich-2025.json';
-import esoSah2026 from './guidelines/eso-sah-2026.json';
-import esoBao2024 from './guidelines/eso-bao-2024.json';
-import esoPfo2024 from './guidelines/eso-pfo-2024.json';
-import esoLacunar2024 from './guidelines/eso-lacunar-2024.json';
-import esoSap2026 from './guidelines/eso-sap-2026.json';
-import esoPacns2023 from './guidelines/eso-pacns-2023.json';
-import esoAphasiaRehab2025 from './guidelines/eso-aphasia-rehab-2025.json';
-import esoMotorRehab2025 from './guidelines/eso-motor-rehab-2025.json';
-import esoVisual2025 from './guidelines/eso-visual-2025.json';
-import aanSicas2022 from './guidelines/aan-sicas-2022.json';
+import { GUIDELINE_LIBRARY, GUIDELINE_LIBRARY_INDEX } from './guideline-library.js';
 
 // =====================================================================
 // ERROR BOUNDARY FOR SIMULATORS
@@ -142,107 +54,6 @@ class ErrorBoundary extends React.Component {
 // =====================================================================
 // GUIDELINE LIBRARY & SEARCH HELPERS
 // =====================================================================
-const GUIDELINE_LIBRARY = [
-  ais2026,
-  ich2022,
-  sah2023,
-  cvt2024,
-  maternalStroke2026,
-  primaryPrevention2024,
-  secondaryPrevention2021,
-  svinLargeCore2025,
-  cancerStroke2026,
-  premorbidDisability2022,
-  tiaEd2023,
-  systemicComplications2024,
-  poststrokeCognitive2023,
-  poststrokeSpasticity2026,
-  poststrokePrimaryCare2021,
-  perioperativeStroke2021,
-  cardiacBrainHealth2024,
-  aanAsmWithdrawal2021,
-  aanBrainDeathGuidance2025,
-  aanConsentAis2022,
-  aanDriverLicensure2025,
-  aanFunctionalSeizures2025,
-  aanNeuropalliative2022,
-  ahaAcuteBpManagement2024,
-  ahaAdultMoyamoyaDisease2023,
-  ahaAfGuideline2023,
-  ahaAggressiveLdlLowering2023,
-  ahaAntiamyloidImmunotherapy2024,
-  ahaAtrialFibrillationOccurring2023,
-  ahaBrainHealthLifeSpan2026,
-  ahaCadasil2023,
-  ahaCareAisEvtIcu2021,
-  ahaCareAisPosthyperacute2021,
-  ahaCareAisPrehospital2021,
-  ahaCervicalArteryDissection2024,
-  ahaClinicalPerformanceMeasures2021,
-  ahaCrao2021,
-  ahaCreatingVirtualNetworks2025,
-  ahaHypertensionGuideline2025,
-  ahaIchPerformanceMeasures2024,
-  ahaIdealFoundationalRequirements2023,
-  ahaImpactSleepDisorders2024,
-  ahaImprovingAccessRehabilitation2025,
-  ahaInHospitalStroke2022,
-  ahaLvSystolicDysfunction2026,
-  ahaNursingRolePsychosocial2024,
-  ahaPalliativeEndLife2024,
-  ahaPrimaryAgendaBrain2021,
-  ahaRecommendationsRegionalDestination2021,
-  ahaRuralStrokeCare2024,
-  ahaSexGenderEvt2022,
-  ahaSocialEnvironmentalDeterminants2026,
-  ahaStandardsPostacuteRehabilitation2025,
-  ahaTargetedNursingInterventions2025,
-  ahaTransitionsOfCare2024,
-  ahaUseMarijuanaEffect2022,
-  ahaVascularContributionsCognitive2026,
-  esoArteryDissection2021,
-  esoCarotidStenosis2021,
-  esoCovertCsvd2021,
-  esoDysphagia2021,
-  esoEanPoststrokeCognition2021,
-  esoEsmintThrombectomy2022,
-  esoIntracranialAtherosclerosis2022,
-  esoMobileStrokeUnits2022,
-  esoMoyamoya2023,
-  esoSecondaryPrevention2022,
-  esoShortTermDapt2021,
-  esoSpaceOccupyingInfarction2021,
-  esoStrokeInWomen2022,
-  esoSubclinicalAfScreening2022,
-  esoTenecteplase2023,
-  esoTia2021,
-  esoUnrupturedAneurysms2022,
-  svinDsaCollaterals2025,
-  svinLabConsensus2025,
-  svinMevoDvoEvt2026,
-  esoBp2025,
-  esoIch2025,
-  esoSah2026,
-  esoBao2024,
-  esoPfo2024,
-  esoLacunar2024,
-  esoSap2026,
-  esoPacns2023,
-  esoAphasiaRehab2025,
-  esoMotorRehab2025,
-  esoVisual2025,
-  aanSicas2022
-];
-
-const GUIDELINE_LIBRARY_INDEX = GUIDELINE_LIBRARY.map((guideline) => ({
-  ...guideline,
-  recommendations: guideline.recommendations.map((rec, index) => ({
-    ...rec,
-    id: rec.id || `${guideline.id}-${index + 1}`,
-    sourceUrl: guideline.publisherUrl || guideline.pdfUrl,
-    pdfSourceUrl: rec.page && guideline.pdfUrl ? `${guideline.pdfUrl}#page=${rec.page}` : null
-  }))
-}));
 
 const GUIDELINE_CLASS_COLORS = {
   I: 'bg-ok-600 text-white',
@@ -459,10 +270,10 @@ const EDUCATION_MODULES = [
   {
     id: 'pupillometry',
     title: 'Pupillometry & NPi Simulator',
-    purpose: 'Bedside automated pupillometry simulator for adjusting pupil size, latency, and constriction velocity to calculate Neurological Pupil Index (NPi).',
+    purpose: 'Teaching simulator for device-derived NPi, pupil size, constriction velocity, and asymmetry. Illustrates patterns without calculating a clinical NPi or estimating ICP.',
     actions: 'pupillometry npi pupil size constriction velocity latency early herniation icp shift anisocoria pupillometer interactive',
     categories: ['simulators', 'icu'],
-    lastReviewed: '2026-05-30',
+    lastReviewed: '2026-09-06',
     references: [
       { label: 'ORANGE Cohort', citation: 'Oddo M, et al. The Neurological Pupil index for outcome prognostication in people with acute brain injury (ORANGE): a prospective, observational, multicentre cohort study. Lancet Neurol. 2023;22(10):925-933.', pmid: '37652068' },
       { label: 'NPi vs ICP (ORANGE Secondary)', citation: 'Petrosino M, et al. Neurological Pupil Index and Intracranial Hypertension in Patients With Acute Brain Injury: A Secondary Analysis of the ORANGE Study. JAMA Neurol. 2025;82(2):176-184.', pmid: '39652324' },
@@ -657,10 +468,10 @@ const EDUCATION_MODULES = [
   {
     id: 'anticoagulation-reversal',
     title: 'Anticoagulation Reversal in Acute Hemorrhage',
-    purpose: 'Agent-specific reversal for intracranial hemorrhage — 4F-PCC + vitamin K for warfarin, idarucizumab for dabigatran, andexanet alfa (with the actual ANNEXA-4 low/high-dose tiers, or 4F-PCC) for factor Xa inhibitors, and the distinct thrombolysis-associated sICH pathway (cryoprecipitate first-line + antifibrinolytic) — with the ANNEXA-I thrombotic caveat and parallel BP/neurosurgery steps.',
-    actions: 'anticoagulation reversal ich hemorrhage warfarin vka 4f-pcc pcc vitamin k dabigatran idarucizumab factor xa apixaban rivaroxaban edoxaban andexanet annexa-4 annexa-i reverse-ad low dose high dose 400 mg 800 mg patch platelet desmopressin thrombolysis alteplase tenecteplase sich fibrinolytic coagulopathy cryoprecipitate fibrinogen tranexamic acid aminocaproic yaghi bp control neurosurgery',
+    purpose: 'Agent-specific reversal for intracranial hemorrhage, the FDA andexanet safety update and US sales cessation, PCC-based factor Xa reversal, and the distinct thrombolysis-associated hemorrhage pathway, with parallel BP and neurosurgical assessment.',
+    actions: 'anticoagulation reversal ich hemorrhage warfarin vka 4f-pcc pcc vitamin k dabigatran idarucizumab factor xa apixaban rivaroxaban edoxaban andexanet annexa-4 annexa-i FDA discontinued withdrawal unavailable reverse-ad patch platelet desmopressin thrombolysis alteplase tenecteplase sich fibrinolytic coagulopathy cryoprecipitate fibrinogen tranexamic acid aminocaproic yaghi bp control neurosurgery',
     categories: ['pocket-card', 'printable'],
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-06',
     references: [
       { label: 'ANNEXA-4', citation: 'Connolly SJ, et al. Full Study Report of Andexanet Alfa for Bleeding Associated with Factor Xa Inhibitors. N Engl J Med. 2019;380(14):1326-1335.', pmid: '30730782' },
       { label: 'ANNEXA-I', citation: 'Connolly SJ, et al. Andexanet for Factor Xa Inhibitor–Associated Acute Intracerebral Hemorrhage. N Engl J Med. 2024;390(19):1745-1755.', pmid: '38749032' },
@@ -1156,6 +967,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
 function ScaledCardWrapper({ children, isLandscape }) {
   const containerRef = React.useRef(null);
   const [scale, setScale] = useState(1);
+  const [readingView, setReadingView] = useState(false);
   const origWidth = isLandscape ? 1275 : 825;
   const origHeight = isLandscape ? 825 : 1275;
 
@@ -1174,12 +986,48 @@ function ScaledCardWrapper({ children, isLandscape }) {
   }, [origWidth]);
 
   return (
+    <div className={`education-card-reader${readingView ? ' education-card-readable' : ''}`}>
+      <div className="flex flex-wrap items-center gap-2 mb-3 print:hidden" role="group" aria-label="Teaching card display">
+        <button type="button" aria-pressed={!readingView} onClick={() => setReadingView(false)} className="min-h-[44px] px-3 rounded-lg border border-line text-sm font-semibold focus-visible:ring-2 focus-visible:ring-teal-500">Fit card</button>
+        <button type="button" aria-pressed={readingView} onClick={() => setReadingView(true)} className="min-h-[44px] px-3 rounded-lg border border-line text-sm font-semibold focus-visible:ring-2 focus-visible:ring-teal-500">Reading view</button>
+        <span className="text-xs text-mute">Reading view enlarges text and reflows columns.</span>
+      </div>
+      <style>{`
+        @media screen {
+          .education-card-readable .bedside-card-view,
+          .education-card-readable .card-wrapper,
+          .education-card-readable .landscape-card,
+          .education-card-readable .card-container,
+          .education-card-readable .card-content,
+          .education-card-reader.education-card-readable .bedside-card-view.screen-layout .landscape-card,
+          .education-card-reader.education-card-readable .bedside-card-view.screen-layout .landscape-card .card-container {
+            width: 100% !important; max-width: 100% !important;
+            height: auto !important; min-height: 0 !important;
+            min-width: 0 !important; overflow: visible !important;
+          }
+          .education-card-reader.education-card-readable .bedside-card-view .card-container { padding: 16px !important; }
+          .education-card-readable .card-content :is(div, p, li, ul, ol, td, th, span, a, label) {
+            font-size: 15px !important; line-height: 1.55 !important;
+          }
+          .education-card-readable .card-content strong { font-size: inherit !important; }
+          .education-card-readable .card-content h1 { font-size: 24px !important; }
+          .education-card-readable .card-content :is(h2, h3, h4) { font-size: 18px !important; line-height: 1.35 !important; }
+          .education-card-readable :is([style*="grid-template-columns"], .toast-grid, .checklist-grid) { grid-template-columns: minmax(0, 1fr) !important; }
+          .education-card-readable .card-content table {
+            display: block; max-width: 100%; overflow-x: auto; width: 100%;
+            font-size: 14px !important; -webkit-overflow-scrolling: touch;
+          }
+          .education-card-readable .card-content :is(th, td) { min-width: 120px; padding: 8px !important; }
+          .education-card-readable .card-content img { max-width: 100%; height: auto; }
+          .education-card-readable .card-content .ref-citation { overflow-wrap: anywhere; margin-top: 16px !important; }
+        }
+      `}</style>
     <div 
       ref={containerRef} 
       style={{ 
         width: '100%', 
-        height: `${origHeight * scale}px`, 
-        overflow: 'hidden',
+        height: readingView ? 'auto' : `${origHeight * scale}px`,
+        overflow: readingView ? 'visible' : 'auto',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'flex-start'
@@ -1187,15 +1035,16 @@ function ScaledCardWrapper({ children, isLandscape }) {
     >
       <div 
         style={{ 
-          transform: `scale(${scale})`, 
+          transform: readingView ? 'none' : `scale(${scale})`,
           transformOrigin: 'top center',
-          width: `${origWidth}px`,
-          height: `${origHeight}px`,
+          width: readingView ? '100%' : `${origWidth}px`,
+          height: readingView ? 'auto' : `${origHeight}px`,
           flexShrink: 0
         }}
       >
         {children}
       </div>
+    </div>
     </div>
   );
 }
@@ -3674,7 +3523,7 @@ export function PostStrokeRecoveryCard() {
 
 
 /* Bedside clinical pocket cards scoped styling */
-const BedsidePocketCardsStyles = () => (
+export const BedsidePocketCardsStyles = () => (
   <style>{`
     .bedside-card-view {
       --ink:         #1a1b20;
@@ -4739,12 +4588,11 @@ export function AfibAnticoagTimingCard() {
       <path d="M 287.5 45 L 287.5 60" stroke="var(--red)" strokeWidth="1"/>
       
       
-      <rect x="608.5" y="61" width="106.5" height="22" rx="3" fill="var(--red)" opacity="0.25"/>
-      <rect x="608.5" y="61" width="106.5" height="22" rx="3" fill="none" stroke="var(--red)" strokeWidth="1.5" strokeDasharray="3,2"/>
-      <text x="661.7" y="70" fill="var(--red-deep)" fontSize="6.0pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">SEVERE +</text>
-      <text x="661.7" y="79" fill="var(--red-deep)" fontSize="6.0pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PH-2 HEMORRHAGE</text>
-      <path d="M 661.7 83 L 661.7 93" stroke="var(--red)" strokeWidth="1" strokeDasharray="2,2"/>
-      <text x="661.7" y="137" fill="var(--red-deep)" fontSize="5.8pt" fontFamily="IBM Plex Sans" fontWeight="600" textAnchor="middle">Delay initiation to Day 12-14</text>
+      <g role="group" aria-label="PH2 hemorrhage requires individualized review; no established start day">
+        <rect x="480" y="15" width="250" height="30" rx="4" fill="white" stroke="var(--red)" strokeWidth="1.5"/>
+        <text x="605" y="27" fill="var(--red-deep)" fontSize="6.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">PH2: INDIVIDUALIZED REVIEW</text>
+        <text x="605" y="38" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">No established start day</text>
+      </g>
       
       
       <text x="367" y="134" fill="var(--ink-mute)" fontSize="7pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle">DOAC INITIATION TIMELINE AXIS (DAYS POST-AIS)</text>
@@ -4787,8 +4635,8 @@ export function AfibAnticoagTimingCard() {
           <tr>
             <td style={{fontWeight: '700', padding: '4px 6px', color: 'var(--purple-deep)'}}>Edoxaban (Savaysa)</td>
             <td style={{padding: '6px 8px'}}>60 mg daily</td>
-            <td style={{padding: '6px 8px', color: 'var(--ink-soft)'}}><strong>Reduce to 30 mg daily</strong> if CrCl is 15–50 mL/min or weight ≤ 60 kg.
-              <br/><span style={{color: 'var(--red)'}}>Avoid if CrCl &gt; 95 mL/min</span> (high renal clearance reduces efficacy).
+            <td style={{padding: '6px 8px', color: 'var(--ink-soft)'}}><strong>Reduce to 30 mg daily</strong> if CrCl is 15–50 mL/min (US NVAF label).
+              <br/><span style={{color: 'var(--red)'}}>Avoid if CrCl &gt;95 or &lt;15 mL/min</span>. Weight ≤60 kg alone is a US VTE, not NVAF, dose-reduction criterion.
             </td>
           </tr>
         </tbody>
@@ -4799,6 +4647,7 @@ export function AfibAnticoagTimingCard() {
     <div className="ref-citation" style={{marginTop: '0', padding: '6px 10px', fontSize: '7.5pt', lineHeight: '1.45'}}>
       <strong>ELAN Trial:</strong> Fischer U et al. <em>N Engl J Med</em>. 2023;388:2411-2421. <a href="https://pubmed.ncbi.nlm.nih.gov/37222476/" target="_blank">PMID: 37222476</a><br/>
       <strong>CATALYST Meta-Analysis:</strong> Dehbi HM et al. <a href="https://pubmed.ncbi.nlm.nih.gov/40570866/" target="_blank"><em>Lancet</em> 2025; PMID: 40570866</a>. Pooled data (n=5,441) from <a href="https://pubmed.ncbi.nlm.nih.gov/37222476/" target="_blank">ELAN (PMID: 37222476)</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/39491870/" target="_blank">OPTIMAS (<em>Lancet</em> 2024; PMID: 39491870)</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/36065821/" target="_blank">TIMING (<em>Circulation</em> 2022; PMID: 36065821)</a>, and <a href="https://pubmed.ncbi.nlm.nih.gov/40163159/" target="_blank">START (<em>JAMA Neurol</em> 2025; PMID: 40163159)</a>. Early DOAC (median Day 2) vs delayed (median Day 7-8) showed no excess sICH (0.4% vs 0.4%) and fewer recurrent ischemic events in pooled data.<br/>
+      <strong>US dosing label:</strong> <a href="https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=e77d3400-56ad-11e3-949a-0800200c9a66" target="_blank" rel="noopener noreferrer">Savaysa §2.1 (NVAF)</a>; check each current label for interactions and renal dosing.<br/>
       <strong>AFib Guidelines:</strong> Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. <em>Circulation</em>. 2024;149:e1-e156. <a href="https://pubmed.ncbi.nlm.nih.gov/38033089/" target="_blank">PMID: 38033089</a>
     </div>
   </div>
@@ -5458,6 +5307,9 @@ function BinaryToggle({ label, desc, value, onChange, colorClass = "bg-purple" }
       </div>
       <button
         type="button"
+        role="switch"
+        aria-label={label}
+        aria-checked={value}
         onClick={() => onChange(!value)}
         className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
           value ? colorClass : 'bg-slate-200 dark:bg-slate-700'
@@ -5568,7 +5420,8 @@ export function getIchRisk(score) {
     case 2: return "26%";
     case 3: return "72%";
     case 4: return "97%";
-    default: return "100%";
+    case 5: return "100%";
+    default: return "Not estimated";
   }
 }
 
@@ -5650,6 +5503,7 @@ function AstralCalculatorTab() {
                 <div className="flex items-center gap-1.5">
                   <input
                     type="number" step="0.1" value={astralGlucose}
+                    aria-label={`Acute Glucose level (${astralGlucoseUnit === 'mgdl' ? 'mg/dL' : 'mmol/L'})`}
                     onChange={(e) => setAstralGlucose(e.target.value)}
                     className="w-16 px-1.5 py-0.5 text-xs text-right font-semibold rounded border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-cobalt-600"
                   />
@@ -6040,7 +5894,7 @@ function IchCalculatorTab() {
                 </div>
               </div>
               <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
-                • <strong>Risk Classification</strong>: {ichTotal === 0 ? 'Very low risk (0%)' : ichTotal === 1 ? 'Mild risk (13%)' : ichTotal === 2 ? 'Moderate risk (26%)' : ichTotal === 3 ? 'Severe risk (72%)' : 'Extremely high risk (94-100%)'}.
+                • <strong>Historical cohort estimate</strong>: {ichRisk}. This is not an individual prognosis; no percentage is assigned here to score 6.
                 <br/>• <strong>Clinical Context</strong>: AHA/ASA guidelines emphasize that the ICH Score is a communication aid and must <strong>never</strong> be used as the sole basis for withholding care or making early DNR decisions. Provide full aggressive care for at least the first 24–48 hours.
               </p>
             </div>
@@ -6235,8 +6089,9 @@ export function StrokePrognosisCard() {
                   <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>2</strong><br/><span className="badge-pill badge-pill-warn">26%</span></div>
                   <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>3</strong><br/><span className="badge-pill badge-pill-crit">72%</span></div>
                   <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>4</strong><br/><span className="badge-pill badge-pill-crit">97%</span></div>
-                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>5-6</strong><br/><span className="badge-pill badge-pill-crit">100%</span></div>
+                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>5</strong><br/><span className="badge-pill badge-pill-crit">100%</span></div>
                 </div>
+                <p style={{marginTop: '4px', fontSize: '7.2pt'}}>Historical cohort rates, not individual predictions. No percentage is assigned here to score 6; do not extrapolate a certain fatal outcome.</p>
               </div>
 
               {/* Modified Rankin Scale (mRS) Card */}
@@ -6859,7 +6714,7 @@ export function BrainDeathCard() {
               <rect x="365" y="15" width="145" height="60" rx="6" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.5" />
               <text x="437.5" y="32" fill="var(--amber-deep)" fontSize="7.5pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">3. APNEA TESTING</text>
               <text x="437.5" y="48" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Absence of Resp Drive</text>
-              <text x="437.5" y="60" fill="var(--ink-soft)" fontSize="6pt" fontFamily="IBM Plex Sans" textAnchor="middle">PaCO2 ≥60 &amp; pH &lt;7.30</text>
+              <text x="437.5" y="60" fill="var(--ink-soft)" fontSize="5pt" fontFamily="IBM Plex Sans" textAnchor="middle">PaCO2 ≥60, Δ≥20; pH &lt;7.30</text>
 
               {/* Arrow 3 */}
               <path d="M 510 45 L 540 45" stroke="var(--purple)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-bd)" />
@@ -6877,43 +6732,7 @@ export function BrainDeathCard() {
               </defs>
             </svg>
 
-            {/* Generated Image Banner */}
-            <div 
-              style={{
-                width: '100%', 
-                height: '150px', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                background: 'var(--fill-soft)', 
-                borderRadius: '8px', 
-                border: '1.5px solid var(--rule-soft)', 
-                overflow: 'hidden', 
-                boxSizing: 'border-box', 
-                marginBottom: '8px'
-              }}
-              title="Cranial Nerve Reflexes &amp; Apnea Test Setup"
-            >
-              <div 
-                className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full h-full"
-                onClick={() => setLightboxImage({ src: 'assets/brain_death_evaluation.png', alt: 'Brain Death Evaluation Pathway', title: 'Brainstem Reflexes &amp; Apnea Test Setup' })}
-              >
-                <img 
-                  src="assets/brain_death_evaluation.png" 
-                  loading="lazy"
-                  decoding="async"
-                  alt="Brain Death Evaluation Pathway" 
-                  style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
-                  className="transition-transform duration-200 group-hover:scale-[1.02]"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
-                  <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
-                    <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
-                  </span>
-                </div>
-              </div>
-            </div>
-
+            {/* Historical image omitted: its PaCO2 OR threshold predates 2023. */}
             {/* Grid for Prerequisites & Exam */}
             <div className="toast-grid" style={{marginBottom: '10px'}}>
               {/* Column 1: Prerequisites & Stability */}
@@ -6921,17 +6740,14 @@ export function BrainDeathCard() {
                 <div className="toast-card primary" style={{padding: '10px 12px'}}>
                   <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--purple-deep)', marginBottom: '3px'}}>1. Prerequisites &amp; Stability</h3>
                   <ul className="toast-card-list" style={{fontSize: '7.8pt', lineHeight: '1.4'}}>
-                    <li><strong>Etiology:</strong> Known, irreversible, catastrophic brain injury.</li>
+                    <li><strong>Etiology:</strong> Catastrophic, permanent brain injury with a known cause and concordant imaging. Primary posterior fossa injury requires imaging evidence of catastrophic supratentorial injury.</li>
+                    <li><strong>Age/observation:</strong> Do not evaluate below 37 weeks corrected gestational age. Under 24 months: wait ≥48 h after acute injury; age ≥24 months after hypoxic-ischemic injury: ≥24 h. Other injuries/interventions require sufficient observation for permanence.</li>
                     <li><strong>Core Temp:</strong> <strong>&ge; 36.0°C (96.8°F)</strong>. Warm if hypothermic.</li>
                     <li><strong>Hemodynamics:</strong>
                       <br/>• Adults: SBP <strong>&ge; 100 mmHg</strong> <strong>and</strong> MAP <strong>&ge; 75 mmHg</strong> (2023 AAN/AAP/CNS/SCCM)
-                      <br/>• Pediatrics (Age-specific SBP):
-                        <br/>&nbsp;&nbsp;– Term newborn to 30 days: <strong>&ge; 60 mmHg</strong>
-                        <br/>&nbsp;&nbsp;– Infants 31 days to 1 year: <strong>&ge; 70 mmHg</strong>
-                        <br/>&nbsp;&nbsp;– Children 1 to 10 years: <strong>&ge; 70 + (2 &times; age) mmHg</strong>
-                        <br/>&nbsp;&nbsp;– Adolescents &gt; 10 years: <strong>&ge; 90 mmHg</strong>
+                      <br/>• Children: <strong>SBP and MAP ≥5th percentile for age</strong>; use the guideline age table. Individualize for a substantially different known chronic baseline.
                     </li>
-                    <li><strong>Exclusions:</strong> Exclude CNS depressants (&ge;5 half-lives) and neuromuscular blockade (TOF 4/4 twitch present).</li>
+                    <li><strong>Exclusions:</strong> Exclude intoxication and CNS depressants using levels when available; if unavailable, allow ≥5 half-lives, longer with impaired clearance, obesity, or hypothermia. Pentobarbital must be &lt;5 μg/mL or undetectable. Exclude paralysis with train-of-four or preserved deep tendon reflexes.</li>
                     <li><strong>Metabolic:</strong> Correct severe endocrine or electrolyte derangements.</li>
                   </ul>
                 </div>
@@ -6940,12 +6756,13 @@ export function BrainDeathCard() {
                   <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--teal-deep)', marginBottom: '3px'}}>2. Neurological Examination</h3>
                   <ul className="toast-card-list" style={{fontSize: '7.8pt', lineHeight: '1.4'}}>
                     <li><strong>Coma:</strong> Complete absence of arousal. No motor responses to pain (spinal reflexes like triple flexion allowed).</li>
-                    <li><strong>Pupils:</strong> Mid-sized/dilated (4–9 mm), completely unresponsive to intense light bilaterally.</li>
+                    <li><strong>Pupils:</strong> No response to bright light in either eye; a fixed pupil diameter is not a criterion.</li>
                     <li><strong>Corneal Reflex:</strong> No blink to cotton swab contact.</li>
                     <li><strong>Oculocephalic (Doll's Eyes):</strong> No eye deviation with head turn (ensure C-spine cleared).</li>
                     <li><strong>Oculovestibular (Cold Calorics):</strong> No eye movement for &ge;1 min after 50 mL ice-water irrigation (confirm intact tympanic membrane).</li>
                     <li><strong>Gag &amp; Cough:</strong> Absent gag (pharyngeal stim) and cough (tracheal suction catheter stim).</li>
                     <li><strong>Facial Motor:</strong> No grimace to TMJ or supraorbital pressure.</li>
+                    <li><strong>Infants &lt;6 months:</strong> No sucking or rooting reflex.</li>
                   </ul>
                 </div>
               </div>
@@ -6955,30 +6772,31 @@ export function BrainDeathCard() {
                 <div className="toast-card alert-orange" style={{padding: '10px 12px'}}>
                   <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--amber-deep)', marginBottom: '3px'}}>3. Apnea Testing Protocol</h3>
                   <ul className="toast-card-list" style={{fontSize: '7.8pt', lineHeight: '1.4'}}>
-                    <li><strong>Preparation:</strong> Pre-oxygenate with 100% O2 for &ge;10 mins. Baseline arterial pCO2 must be 35–45 mmHg, pH 7.35–7.45.</li>
-                    <li><strong>Procedure:</strong> Deliver passive O2 via CPAP (preferred, 100% O2 at 4-6 L/min) to maintain oxygenation while ventilator is paused.</li>
-                    <li><strong>ECMO Tip:</strong> Decrease sweep gas flow to 0.5–1.0 L/min with 100% O2; monitor closely for any chest rise.</li>
-                    <li><strong>Observation:</strong> Monitor for spontaneous respiratory effort for 8–10 mins.</li>
-                    <li><strong>Target:</strong> Final pCO2 <strong>&ge; 60 mmHg</strong> AND <strong>&ge; 20 mmHg above baseline</strong>, with pH <strong>&lt; 7.30</strong>.</li>
+                    <li><strong>Preparation:</strong> Correct hypoxemia, hypotension and hypovolemia. Preoxygenate with 100% O2 ≥10 min to PaO2 &gt;200 mmHg; obtain baseline ABG. Without chronic hypercarbia, PaCO2 35–45 and pH 7.35–7.45.</li>
+                    <li><strong>Oxygenation:</strong> Stop mandatory breaths and provide 100% O2 by ventilator CPAP or a flow-inflating bag with functioning PEEP valve. Adult tracheal oxygen-insufflation technique differs; follow the full guideline and local checklist.</li>
+                    <li><strong>Chronic hypercarbia:</strong> Start at the known chronic baseline PaCO2. If suspected but baseline unknown, use the estimated baseline and require ancillary testing even if apnea criteria are reached.</li>
+                    <li><strong>ECMO:</strong> Use the specialist protocol in recommendation 26, including cannula-specific ABG sampling. For VA ECMO, both patient and postoxygenator PaCO2/pH must meet criteria.</li>
+                    <li><strong>Observation/target:</strong> No spontaneous breaths; ABG at 8–10 min. PaCO2 <strong>≥60 mmHg AND ≥20 above baseline</strong> (known chronic baseline if hypercarbic), and <strong>pH &lt;7.30</strong>. Unmet targets require guideline-directed continuation/repeat or ancillary testing.</li>
                   </ul>
                   <div style={{marginTop: '4px', borderTop: '1px dashed rgba(217,134,11,0.3)', paddingTop: '4px', fontSize: '7.6pt', color: 'var(--red-deep)', lineHeight: '1.3'}}>
-                    <strong>Abort/Stop Criteria:</strong> Abruptly stop and draw ABG if:
-                    <br/>• SBP &lt; 100 mmHg <strong>and/or</strong> MAP &lt; 75 mmHg.
-                    <br/>• SpO2 &lt; 85%.
-                    <br/>• New significant cardiac arrhythmias occur.
+                    <strong>Abort:</strong> Any spontaneous breath means BD/DNC criteria are not met. Also stop for:
+                    <br/>• Adult SBP &lt;100 or MAP &lt;75; child SBP or MAP &lt;5th percentile despite support.
+                    <br/>• Progressive oxygen-saturation decline below 85%.
+                    <br/>• Arrhythmia with hemodynamic instability.
+                    <br/>If instability makes abortion imminent, obtain an ABG before reconnecting when feasible; do not delay rescue.
                   </div>
                 </div>
 
                 <div className="toast-card alert-red" style={{padding: '10px 12px'}}>
                   <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--red-deep)', marginBottom: '3px'}}>4. Ancillary Testing Guidelines</h3>
                   <p style={{fontSize: '7.6pt', color: 'var(--ink-soft)', marginBottom: '4px', lineHeight: '1.3'}}>
-                    Used <strong>only</strong> when clinical exam or apnea test cannot be completed safely (e.g. severe hypoxemia, facial trauma).
+                    Use for an incomplete/uninterpretable exam or apnea test, or specified situations such as uncorrectable metabolic confounders. Complete all assessable elements. <strong>Do not bypass hypothermia, high sedative levels, or any brain-mediated activity with an ancillary test.</strong>
                   </p>
                   <div style={{display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '8px', fontSize: '7.6pt', lineHeight: '1.3'}}>
                     <div>
                       <strong style={{color: 'var(--teal-deep)', fontSize: '7.6pt', textTransform: 'uppercase', display: 'block', marginBottom: '2px'}}>Accepted Tests</strong>
                       • <strong>Conventional 4-Vessel DSA:</strong> Confirms absence of intracerebral blood flow.<br/>
-                      • <strong>SPECT Perfusion:</strong> Shows absence of cerebral uptake.<br/>
+                      • <strong>Radionuclide Perfusion:</strong> SPECT or planar radionuclide angiography using guideline-appropriate tracers.<br/>
                       • <strong>TCD:</strong> (Transcranial Doppler) <strong>Adults only</strong>; must show oscillating flow or spikes.
                     </div>
                     <div>
@@ -6998,19 +6816,19 @@ export function BrainDeathCard() {
               <div className="checklist-grid" style={{fontSize: '7.8pt', gap: '4px 10px'}}>
                 <div className="checklist-item">
                   <div className="checklist-dot">✓</div>
-                  <div><strong>Adults:</strong> One clinical exam and apnea test is sufficient (per 2023 AAN).</div>
+                  <div><strong>Adults:</strong> Minimum one examination and one apnea test after the final examination; follow local policy and applicable law.</div>
                 </div>
                 <div className="checklist-item">
                   <div className="checklist-dot">✓</div>
-                  <div><strong>Pediatrics:</strong> Two separate exams &amp; apnea tests required (intervals: 24h for newborns; 12h for infants/children).</div>
+                  <div><strong>Pediatrics:</strong> Two independent exams at least 12 hours apart, each followed by an apnea test (2023 guideline).</div>
                 </div>
                 <div className="checklist-item">
                   <div className="checklist-dot">✓</div>
-                  <div><strong>Rewarming Period:</strong> Wait &ge;24 hours after rewarming from therapeutic hypothermia before testing.</div>
+                  <div><strong>Rewarming Period:</strong> If core temperature was ≤35.5°C, wait ≥24 hours after rewarming to ≥36°C before evaluation.</div>
                 </div>
                 <div className="checklist-item">
                   <div className="checklist-dot">✓</div>
-                  <div><strong>Time of Death:</strong> Recorded when pCO2 meets target or when the ancillary test result is officially read.</div>
+                  <div><strong>Time of Death:</strong> When final apnea-test ABG results are reported meeting both PaCO2 and pH criteria, with the clinical criteria met. If ancillary testing is required, use the time the attending documents a result consistent with BD/DNC.</div>
                 </div>
               </div>
             </div>
@@ -8136,25 +7954,25 @@ export function AnticoagulationReversalCard() {
                   </tr>
                   <tr>
                     <td><strong>Factor Xa inhibitors</strong> (apixaban, rivaroxaban, edoxaban)</td>
-                    <td><strong>Andexanet alfa</strong> (low/high dose by agent, dose, timing); <strong>4F-PCC ~50 U/kg</strong> if unavailable</td>
-                    <td>ANNEXA-4: good hemostatic efficacy. <strong>ANNEXA-I</strong> (RCT in acute ICH): better hemostasis / less hematoma expansion vs usual care <strong>but more thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%)</strong> — weigh carefully.</td>
+                    <td><strong>4F-PCC</strong> according to the approved local reversal pathway, exposure assessment, and pharmacy guidance</td>
+                    <td><strong>Andexanet is unavailable in the US.</strong> ANNEXA-4 was single-arm. <strong>ANNEXA-I</strong> improved hemostasis but increased thrombosis, including ischemic stroke; the FDA subsequently concluded that serious risks outweigh benefits.</td>
                   </tr>
                   <tr>
                     <td><strong>Antiplatelets</strong></td>
                     <td>Platelet transfusion <strong>not</strong> recommended (PATCH)</td>
-                    <td>Exception: peri-neurosurgery. Consider desmopressin.</td>
+                    <td>Aspirin-treated patients needing emergency neurosurgery are a separate consideration. Desmopressin benefit remains uncertain.</td>
                   </tr>
                 </tbody>
               </table>
               <div style={{ marginTop: '6px', border: '1px solid var(--teal)', borderRadius: '6px', padding: '5px 8px', background: '#ffffff', fontSize: '7pt', lineHeight: '1.38', color: 'var(--ink-soft)' }}>
-                <strong style={{ color: 'var(--teal-deep)' }}>Andexanet alfa dosing (ANNEXA-4 protocol):</strong> <strong>Low dose</strong> = 400 mg IV bolus (~15 min) then 480 mg infusion over 2 h &mdash; for <strong>apixaban</strong> (any dose/timing) or <strong>rivaroxaban given &gt;7 h before</strong>. <strong>High dose</strong> = 800 mg IV bolus (~30 min) then 960 mg infusion over 2 h &mdash; for <strong>edoxaban, enoxaparin, or rivaroxaban given &le;7 h before</strong> (or unknown timing). Higher agent dose / more recent intake &rarr; high-dose tier.
+                <strong style={{ color: 'var(--teal-deep)' }}>FDA safety update — December 18, 2025:</strong> Andexxa was no longer manufactured for or sold in the US after December 22, 2025. This card therefore provides no andexanet regimen. <a href="https://www.fda.gov/vaccines-blood-biologics/safety-availability-biologics/update-safety-andexxa" target="_blank" rel="noopener noreferrer">Read the FDA communication.</a>
               </div>
             </CardSection>
 
             {/* §3 Parallel steps & BP targets (red) */}
             <CardSection color="red" title="3. Parallel Steps & BP Targets" style={{ marginBottom: '6px' }}>
               <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
-                <li><strong>BP target (INTERACT2 / ATACH-2):</strong> Smooth, rapid lowering to <strong>SBP &lt;140 mmHg</strong> (target range 130–150; avoid acute drops &lt;130 mmHg &mdash; Class III: Harm). First-line IV nicardipine, clevidipine, or labetalol.</li>
+                <li><strong>BP (AHA/ASA 2022):</strong> In mild-to-moderate spontaneous ICH presenting with SBP 150–220, a target of <strong>140 mmHg with maintenance at 130–150</strong> may be reasonable; avoid lowering below 130. Large/severe ICH and surgical candidates require individualized management.</li>
                 <li><strong>Neurosurgery consult:</strong> Urgent for cerebellar ICH with brainstem compression / hydrocephalus, large lobar ICH with mass effect, or intraventricular hemorrhage with EVD need.</li>
                 <li><strong>Hold all antithrombotics:</strong> Re-evaluate resumption timeline based on indication (AFib vs mechanical valve) and ICH expansion stability.</li>
               </ul>
@@ -9921,7 +9739,7 @@ export function IchBloodPressureCard() {
         <rect x="114" y="58" width="108" height="54" rx="3" fill="#fff5f5" stroke="var(--red)" strokeWidth="1" />
         <text x="6" y="70" fill="var(--red-deep)" fontSize="5.0pt" fontFamily="Outfit" fontWeight="800">4. Rapid Reversal</text>
         <text x="6" y="80" fill="var(--ink)" fontSize="4.3pt" fontFamily="IBM Plex Sans">4F-PCC + Vit K (VKA)</text>
-        <text x="6" y="90" fill="var(--ink)" fontSize="4.3pt" fontFamily="IBM Plex Sans">Andexanet / Praxbind</text>
+        <text x="6" y="90" fill="var(--ink)" fontSize="4.3pt" fontFamily="IBM Plex Sans">PCC (Xa) / idarucizumab (DTI)</text>
         <text x="6" y="100" fill="var(--red-deep)" fontSize="4.0pt" fontFamily="IBM Plex Sans" fontWeight="700">Door-to-needle &lt;60m</text>
       </g>
 
@@ -10066,7 +9884,7 @@ export function IchBloodPressureCard() {
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>Anticoagulation Reversal Speed</strong>
                   <br />&bull; <strong>Warfarin:</strong> 4F-PCC (25–50 IU/kg) + Vitamin K 10 mg IV.
-                  <br />&bull; <strong>Factor Xa Inhibitors:</strong> Andexanet alfa or 4F-PCC (50 IU/kg).
+                  <br />&bull; <strong>Factor Xa inhibitors:</strong> 4F-PCC per the approved local reversal pathway. Andexanet US sales ended in December 2025 after the FDA safety update.
                   <br />&bull; <strong>Dabigatran:</strong> Idarucizumab 5 g IV. Door-to-needle target &lt;60 min.
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>

@@ -10,12 +10,230 @@
   "society": "AAN",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Driver Licensing Determinations",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "This consensus position statement of the American Academy of Neurology, American Epilepsy Society, and Epilepsy Foundation of America updates prior 1994 and 2007 position statements on seizures, driver licensure, and medical reporting.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Driver licensing decisions should be made by appropriate governmental regulatory bodies, rather than by treating practitioners. In the United States, recommended national driving standards promulgated through a system such as the Uniform Law Commission would reduce confusion and improve adherence with driving standards among both individuals with seizures and health care practitioners. Such national standards should include individualized assessments of cases by medical advisory boards and adhere to evidence-based recommendations. In the absence of national driving standards, states should enact enabling legislation allowing the Departments of Motor Vehicles, medical advisory boards, and consultants to establish driver-licensing and appeals processes that include individualized assessments by medical advisory boards. Such legislation should protect practitioners involved in the licensing process who are acting in good faith from liability.",
+      "page": null
+    },
+    {
+      "section": "Driver Licensing Determinations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Licensing criteria for each medical condition should appear in regulations and guidelines rather than being prescribed by statute. Such criteria should be developed by a medical advisory board including health care practitioners with expertise in the particular medical condition, working in collaboration with the DMV.",
+      "page": null
+    },
+    {
+      "section": "Driver Licensing Determinations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Licensing criteria should be equitable, nondiscriminatory, objective, and compatible with comparable risks in other populations.",
+      "page": null
+    },
+    {
+      "section": "Driver Licensing Determinations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In general, policies and regulations related to driving and seizures should not be based on single incidents. Rather, policies and regulations should take into account relevant research, consensus statements such as this one, and individualized assessments with input from medical advisory boards wherever possible. Individualized assessments by medical advisory boards and treating practitioners are vital to mitigate public safety risks while preserving the rights and liberties of individuals.",
+      "page": null
+    },
+    {
+      "section": "Driver Licensing Determinations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The treating practitioner should be responsible for reporting the pertinent medical facts on forms provided by the DMV. These forms should be detailed and precise and should offer an opportunity for the treating practitioner to make a recommendation about whether the patient should be licensed and to give narrative commentary. However, the practitioner should not be required to offer any recommendation or commentary. When treating practitioners do submit a recommendation, the ultimate responsibility and final decision should still reside with the medical advisory board.",
+      "page": null
+    },
+    {
+      "section": "Driver Licensing Determinations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A road test should not be required for determining a person's fitness to drive due to seizures unless other relevant medical conditions or symptoms such as cognitive impairment are in question.",
+      "page": null
+    },
+    {
+      "section": "Seizure-Free Intervals",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A minimum seizure-free interval should be prescribed for individuals seeking a new license and for previously licensed individuals resuming driving after a seizure. The seizure-free interval should apply after the first life-time seizure and after recurrent seizures, and should be considered for individuals who have seizures even when they do not meet criteria for epilepsy (e.g., a single unprovoked seizure, or recurrent seizures caused by a recurring provoking factor such as alcohol withdrawal).",
+      "page": null
+    },
+    {
+      "section": "Seizure-Free Intervals",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Individuals with exclusively provoked seizures attributable to provoking factors that are unlikely to recur in the future (e.g., a major systemic infection with high fever) may not require a seizure-free interval before resumption of driving. Because they are likely to recur in future, factors such as sleep deprivation, fatigue, high levels of stress, or alcohol withdrawal preceding a seizure should not be a cause for exception to the requirement of a seizure-free interval. A medical advisory board, with input of treating clinicians, can make an individualized assessment as to whether a putative provoking factor adequately explains a specific seizure and whether it is likely to recur.",
+      "page": null
+    },
+    {
+      "section": "Seizure-Free Intervals",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Individuals with previously well controlled epilepsy may experience seizures due to short-term interruptions in therapy occurring during hospitalizations or practitioner-directed changes in treatment (for example, during a stay in a hospital's epilepsy monitoring unit). Individuals in such cases may not require a seizure-free interval after restarting their previously effective medication levels before resumption of driving.",
+      "page": null
+    },
+    {
+      "section": "Seizure-Free Intervals",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Three months of seizure freedom is preferred as a minimum requirement, starting from the date of the most recent seizure. Evidence suggests that universal requirements for seizure-free intervals longer than 3 months do not reduce MVAs or fatalities. The 3-month minimum may be extended based on individualized consideration of favorable and unfavorable factors, ideally assessed by a medical advisory board with input from treating practitioners; individualized restrictions longer than 3 months may be appropriate based on factors such as treatment resistance or nonadherence with medications. Many states require different seizure-free intervals ranging from 3 to 18 months, and individualization of these intervals is recommended whenever possible, ideally based on assessment by a medical advisory board with input from treating practitioners. Practitioners and individuals with seizures should adhere to state laws and regulations even when those conflict with evidence-based recommendations, and may consider advocating for legal reform.",
+      "page": null
+    },
+    {
+      "section": "Seizure-Free Intervals",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Seizure-free intervals, with individualized assessment of favorable and unfavorable modifying factors, should be considered after each seizure, and not only after the first seizure of life.",
+      "page": null
+    },
+    {
+      "section": "Factors Affecting the Seizure-Free Interval - Favorable Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Favorable factors that may be considered by a medical review board when determining the seizure-free period required for resumption of driving: (1) seizures during practitioner-directed medication changes; (2) focal seizures without impaired awareness (e.g., focal aware seizures) that do not interfere with motor control; (3) established pattern of seizures occurring exclusively during sleep (\"nocturnal seizures\"); (4) seizures secondary to provoking factors that are unlikely to recur (such as metabolic, toxic, or infectious conditions, or other acute illnesses).",
+      "page": null
+    },
+    {
+      "section": "Factors Affecting the Seizure-Free Interval - Favorable Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Auras and seizures occurring during sleep deprivation are no longer considered as reliable favorable factors as they were in the past, given conflicting evidence of their benefit in averting MVAs.",
+      "page": null
+    },
+    {
+      "section": "Factors Affecting the Seizure-Free Interval - Unfavorable Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Unfavorable factors that may be considered by a medical review board: (1) unambiguous nonadherence with medications or medical visits; (2) seizures related to substance use disorder; (3) prior crashes due to seizures; (4) prior record of MVAs or violations of driving regulations (if driving record is available); (5) increasing number of seizures in the recent past from prior baseline; (6) seizures refractory to multiple antiseizure treatments; (7) frequent seizures after a seizure-free period; (8) individual is having recurrent seizures of which they are unaware; (9) structural brain lesion (e.g., stroke, cortical dysplasia, or tumor) or a brain disease likely to worsen over time (e.g., Alzheimer disease or malignancy).",
+      "page": null
+    },
+    {
+      "section": "Antiseizure Medications and Medical Cannabis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients and practitioners should also consider limiting driving during tapering and following discontinuation of antiseizure medications if another such medication is not introduced.",
+      "page": null
+    },
+    {
+      "section": "Antiseizure Medications and Medical Cannabis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Individuals whose cognition or coordination is impaired due to medications used to prevent seizures should refrain from driving. This includes medical cannabis (where legally permitted). Such medications are not exempt from legal restrictions simply because they are being used to treat epilepsy. It may be appropriate to use field sobriety tests to ascertain whether a patient who has used such medications is impaired and unable to drive. Patients and clinicians should be aware that laboratory tests for metabolites of cannabidiol or medical cannabis may remain positive for days after use and should consider legal ramifications of their use.",
+      "page": null
+    },
+    {
+      "section": "Reporting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with seizures should be responsible for self-reporting the condition to the DMV when initially diagnosed as well as on the recurrence of seizures. This requirement should apply even between license applications and renewals. Individuals should be informed that if they experience a seizure they should cease driving, consult their practitioners, and promptly notify the DMV. The obligation to self-report should be stated in writing on the license application and renewal forms.",
+      "page": null
+    },
+    {
+      "section": "Reporting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Practitioners should counsel patients to follow legal restrictions on driving in the setting of seizures and to comply with rules requiring self-reporting in the patient's state of licensure. Practitioners should assess patients with seizures for driving safety, optimize treatment to control seizures, and counsel these patients about the risks to themselves and others associated with driving. Patient-practitioner conversations relating to driving should be documented in the medical record. Practitioners may direct patients to resources (e.g., DMV and Epilepsy Foundation website) where they can obtain information on legal restrictions on driving, self-reporting, and other issues relating to driving and seizures. If a practitioner believes the patient has not self-reported and is endangering the public by driving, the practitioner should be legally authorized to report the patient, and immunized from liability for doing so, but should not be mandated to report or be exposed to liability for failing to do so. Practitioners should inform patients before reporting and should document such interactions in the patient's medical record.",
+      "page": null
+    },
+    {
+      "section": "Reporting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend that practitioners not be mandated to report seizure activity. We do recommend that practitioners be permitted to report seizures to licensing authorities, especially in cases where they have reason to believe that a patient is engaging in unsafe driving practices against medical advice. We recommend that practitioners exercising their clinical judgement in good faith should be shielded from legal liability for either reporting or not reporting seizures or unsafe driving practices. In accordance with AAN quality measures, we recommend that practitioners counsel patients about state regulations regarding driving with seizures and document these conversations in the medical record.",
+      "page": null
+    },
+    {
+      "section": "Case Review",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In circumstances where the state requires individual drivers to report seizures to the DMV, requires regular license renewals, and assesses during the license renewal process whether the licensee has had lapses of consciousness or loss of motor control since the prior renewal, a periodic case review may not be necessary and applicants may be discharged from the periodic case review. However, there should also be a mechanism by which the DMV may require an individual to undergo more frequent reevaluation if the practitioner or medical advisory board recommends it because of special circumstances.",
+      "page": null
+    },
+    {
+      "section": "Practitioner Immunity",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "To protect the practitioner-patient relationship, practitioners should be immunized from liability for deciding not to report a patient to the DMV, if in their best judgment there is no indication to do so. In addition, practitioners should have immunity for reporting or not reporting patients who have seizures or other episodes involving loss of consciousness or bodily control. The immunity clause should also cover the contents of the report and should prohibit the report from being used in other legal proceedings.",
+      "page": null
+    },
+    {
+      "section": "Medical Advisory Boards",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A medical advisory board or a similar body should be established in every state. At least 1 member of the board should be a health care practitioner with expertise and experience in treating epilepsy and episodic disorders of consciousness and motor function. Boards should consider consulting with individuals or organizations representing the interests or rights of individuals with epilepsy and other disabilities.",
+      "page": null
+    },
+    {
+      "section": "Medical Advisory Boards",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The medical advisory board should promulgate guidelines and implement policies relating to medical illnesses and driving, and should assist in conducting individualized assessments of favorable and unfavorable mitigating factors that may affect duration of seizure-free intervals required before return to driving. Individualized assessments should be conducted in a timely manner so that administrative delays do not extend the required seizure-free intervals beyond medically appropriate periods. The board should (1) set the medical standards for driver licensing in collaboration with the DMV, (2) coordinate efforts to educate practitioners, patients, and the public about the medical aspects of driver licensing, (3) review complex cases that cannot be dealt with by the DMV according to the established protocol, and (4) continue to monitor the process and periodically review the guidelines.",
+      "page": null
+    },
+    {
+      "section": "Voluntary Surrender of Licenses",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A mechanism should be in place to allow voluntary surrender of licenses by drivers, and replacement legal identification should be made available to individuals surrendering their licenses.",
+      "page": null
+    },
+    {
+      "section": "Hearing and Appeal Rights",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Notice and opportunity for hearing or voluntary surrender of license should be available before a license is suspended. If imminent danger is apparent, the license may be suspended and a hearing held in a timely manner. In the event that a recommendation is filed to lift a suspension, the time to review the recommendation should be reasonably short because administrative time adds to the driving suspension, which may not be warranted.",
+      "page": null
+    },
+    {
+      "section": "Professional or Commercial Driving",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Because professional drivers (including those licensed to drive commercial trucks, buses, ambulances, or taxis, as well as those contracting with ride-share networks) are likely to spend more time driving and to drive larger vehicles and/or vehicles with multiple passengers, federal and state regulations on professional driving after seizure occurrence are stricter than those imposed on private drivers. The Epilepsy Foundation maintains a directory of state regulations on both private and commercial driving licensure requirements that clinicians and patients can access.",
+      "page": null
+    },
+    {
+      "section": "Functional Seizures (Also Known as Psychogenic Nonepileptic Seizures)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Given the limited data, we recommend that individuals with functional seizures involving alterations in responsiveness and/or involuntary movements potentially affecting their ability to control a vehicle receive driving counseling and restriction similar to that given to individuals with epileptic seizures. In parallel to individuals with epileptic seizures, we also recommend that individuals with functional seizures (with a semiology likely to disrupt driving) be restricted from driving until free of functional seizures for a minimum of 3 months (or the relevant state's required seizure-free interval for epileptic seizures), with the required interval subject to modification based on individualized review by the treating clinician and/or medical advisory board, and with more stringent restrictions for individuals seeking licensure as professional drivers.",
+      "page": null
+    },
+    {
+      "section": "Accommodations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nations, states, and municipalities should provide alternative methods of transportation and accommodations for individuals whose driving privileges are restricted due to medical conditions. Alternatives might include remote work accommodations, public transportation, and subsidized transportation. Governments and medical advisory boards should consult patient advocacy organizations to ensure that services provided meet the needs of individuals with epilepsy.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

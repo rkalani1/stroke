@@ -10,12 +10,190 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Post-stroke dysphagia (PSD) is present in more than 50% of acute stroke patients, increases the risk of complications, in particular aspiration pneumonia, malnutrition and dehydration, and is linked to poor outcome and mortality. The aim of this guideline is to assist all members of the multidisciplinary team in their management of patients with PSD.",
+      "section": "Part 1: Impact of post-stroke dysphagia on stroke outcome",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Conclusion: In patients with acute and/or subacute stroke, the presence of dysphagia has an adverse effect on functional outcome and mortality, increases the risk of pneumonia, malnutrition, PEG-feeding, and discharge to institutional care and prolongs hospital length-of-stay. (Stated by the guideline as Quality of evidence: Moderate (Expert consensus); no strength of recommendation was assigned.)",
+      "page": null
+    },
+    {
+      "section": "Part 2: Dysphagia and nutritional screening - Dysphagia screening",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Recommendation 1: In all patients with acute stroke, we recommend a formal dysphagia screening test to prevent post-stroke pneumonia and decrease risk of early mortality. We recommend to screen the patients as fast as possible after admission. For screening, either water-swallow-tests or multiple-consistency tests may be used.",
+      "page": null
+    },
+    {
+      "section": "Part 2: Dysphagia and nutritional screening - Dysphagia screening",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Recommendation 2: In patients with acute stroke, we recommend no administration of any food or liquid items, including oral medication, until a dysphagia screening has been done and swallowing was judged to be safe.",
+      "page": null
+    },
+    {
+      "section": "Part 2: Dysphagia and nutritional screening - Nutritional screening",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Expert opinion: There is consensus among the guideline group (15/15) that patients with acute stroke should be screened for nutritional risk within the first days after hospital admission using validated screening tools. (No comparative studies were found for this PICO question; no GRADE strength or quality was assigned.)",
+      "page": null
+    },
+    {
+      "section": "Part 3: Dysphagia assessment",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "Recommendation 3: We suggest a dysphagia assessment in all stroke patients failing a dysphagia screen and/or showing other clinical predictors of post-stroke dysphagia, in particular a severe facial palsy, severe dysarthria, severe aphasia or an overall severe neurological deficit (NIH-SS >= 10 points). Dysphagia assessment should be done as soon as possible. In addition to the clinical swallow examination, VFSS or, preferentially, FEES should be available.",
+      "page": null
+    },
+    {
+      "section": "Part 3: Dysphagia assessment",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "Recommendation 4: We suggest that in acute stroke patients swallowing of tablets should routinely be evaluated as part of dysphagia assessment in addition to assessing the swallowing of liquid and different food consistencies and quantities.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Dietary interventions",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "Recommendation 5: In patients with post-stroke dysphagia, we suggest that texture modified diets and/or thickened liquids may be used to reduce the risk of pneumonia.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Dietary interventions",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "Recommendation 6: In patients with post-stroke dysphagia, we recommend that texture modified diets and/or thickened liquids are prescribed only based on an appropriate assessment of swallowing.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Dietary interventions",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Recommendation 7: In stroke patients put on texture modified diet and/or thickened liquids we recommend to monitor fluid balance and nutritional intake.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Behavioural interventions",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Recommendation 8: In patients with post-stroke dysphagia, we suggest behavioural swallowing exercises to rehabilitate swallowing function.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Behavioural interventions",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Recommendation 9: In patients with post-stroke dysphagia, we suggest that behavioural interventions should not be limited to one specific manoeuvre or training, but the treatment should be tailored to the specific swallowing impairment of the individual patient based on a careful assessment of dysphagia.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Behavioural interventions",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Recommendation 10: In patients with post-stroke dysphagia, we suggest that acupuncture may be used to rehabilitate swallowing function.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Nutritional interventions",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Recommendation 11: In unselected stroke patients, we suggest to avoid routine use of oral nutritional supplementation. (Strength of recommendation: Weak against intervention.)",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Nutritional interventions",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "Recommendation 12: In stroke patients who tolerate an oral diet and present with a risk of malnutrition or with manifest malnutrition, we suggest to consider the use of oral nutritional supplementation.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Nutritional interventions",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Recommendation 13: In patients with post-stroke dysphagia and insufficient oral intake we suggest an early enteral nutrition via a nasogastric tube.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Interventions to improve oral health",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "Recommendation 14: In stroke patients we suggest to implement oral health care interventions to reduce the risk of pneumonia.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Pharmacological treatment",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "Recommendation 15: We recommend that due to the limited evidence available with regards to clinical endpoints, pharmacological treatment of post-stroke dysphagia should be preferably used within clinical trial settings.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Pharmacological treatment",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "High certainty",
+      "text": "Recommendation 16: We recommend that preventive antimicrobial treatment is not used in stroke patients. (Strength of recommendation: Strong against intervention.)",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Pharmacological treatment",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "Recommendation 17: In stroke patients with post-stroke dysphagia and an impaired swallow response, we suggest to consider TRPV1 agonists and dopaminergic agents to improve swallowing safety.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Pharmacological treatment",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "Recommendation 18: In stroke patients fed via a nasogastric tube, we suggest to use metoclopramide to promote gastric emptying and reduce the risk of esophago-pharyngeal regurgitation with subsequent aspiration.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Neurostimulation treatment",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "Recommendation 19: In patients with post-stroke dysphagia, we recommend that treatment with neurostimulation techniques should preferably be conducted within a clinical trial setting.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Neurostimulation treatment",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Recommendation 20: In patients with post-stroke dysphagia, we suggest treatment with rTMS, TES, tDCS and PES as adjunct to conventional dysphagia treatments to improve swallowing function.",
+      "page": null
+    },
+    {
+      "section": "Treatment of post-stroke dysphagia - Neurostimulation treatment",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "High certainty",
+      "text": "Recommendation 21: In tracheotomized stroke patients with severe dysphagia, we suggest treatment with pharyngeal electrical stimulation to accelerate decannulation.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

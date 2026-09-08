@@ -1,0 +1,47 @@
+{
+  "id": "eso-vte-prophylaxis-2016",
+  "title": "European Stroke Organisation (ESO) guidelines for prophylaxis for venous thromboembolism in immobile patients with acute ischaemic stroke",
+  "shortTitle": "ESO VTE Prophylaxis in Immobile Stroke 2016",
+  "society": "ESO",
+  "doi": "10.1177/2396987316628384",
+  "publisherUrl": "https://doi.org/10.1177/2396987316628384",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/31008263/",
+  "pmid": "31008263",
+  "recommendations": [
+    {
+      "section": "Graduated compression stockings",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "We recommend that graduated compression stockings should not be used in patients with ischaemic stroke. (Quality of evidence: Moderate; Strength of recommendation: Strong against)",
+      "page": null
+    },
+    {
+      "section": "Intermittent pneumatic compression",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "We recommend that intermittent pneumatic compression (IPC) (thigh-length, sequential) should be used for immobile patients with ischaemic stroke. It should not be used in patients with open wounds on the legs and should be used with caution in those with existing DVT, heart failure, severe peripheral vascular disease or confusion where attempts to mobilise when unsupervised could lead to falls and injury. (Quality of evidence: Moderate; Strength of recommendation: Strong for)",
+      "page": null
+    },
+    {
+      "section": "Anticoagulants",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Prophylactic anticoagulation with unfractionated heparin (UFH) (5000U x2, or x3 daily) or low molecular weight heparin (LMWH) or heparinoid should be considered in immobile patients with ischaemic stroke in whom the benefits of reducing the risk of venous thromboembolism is high enough to offset the increased risks of intracranial and extracranial bleeding associated with their use. (Quality of evidence: Moderate; Strength of recommendation: Weak for)",
+      "page": null
+    },
+    {
+      "section": "LMWHs or heparinoids or UFH",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "Where a judgement has been made that prophylactic anticoagulation is indicated LMWH or heparinoid should be considered instead of UFH because of its greater reduction in risk of DVT, the greater convenience, reduced staff costs and patient comfort associated single daily dose vs. multiple daily injections but these advantages should be weighed against the higher risk of extracranial bleeding, higher drug costs and risks in elderly patients with poor renal function. (Quality of evidence: Moderate; Strength of recommendation: Weak for)",
+      "page": null
+    }
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
+}

@@ -1,0 +1,156 @@
+[
+  {
+    "id": "re-align",
+    "name": "RE-ALIGN",
+    "fullName": "Dabigatran versus Warfarin in Patients with Mechanical Heart Valves (RE-ALIGN)",
+    "category": "cardiac-source-stroke",
+    "population": "n=252, adults; age distribution not reported in the abstract, NIHSS not applicable - anticoagulation trial, no index stroke required for entry, two strata: mechanical valve replacement within the past 7 days, and replacement at least 3 months earlier",
+    "finding": "STOPPED EARLY for harm after 252 patients, because of an excess of BOTH thromboembolic and bleeding events on dabigatran. Ischemic or unspecified stroke occurred in 9 dabigatran patients (5%) and in 0 warfarin patients; major bleeding in 7 (4%) vs 2 (2%). Dose adjustment or discontinuation of dabigatran was required in 52 of 162 patients (32%) to reach the trough target",
+    "teachingPoint": "Teaches why a direct thrombin inhibitor is not an option for a mechanical heart valve: dabigatran produced more strokes and more bleeding than warfarin and the trial was halted for harm.",
+    "PMID": "23991661",
+    "year": 2013,
+    "citationIds": [
+      "cit-re-align-2013"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "proact-xa",
+    "name": "PROACT Xa",
+    "fullName": "Apixaban or Warfarin in Patients with an On-X Mechanical Aortic Valve (PROACT Xa)",
+    "category": "cardiac-source-stroke",
+    "population": "n=863, adults; age distribution not reported in the abstract, NIHSS not applicable - anticoagulation trial, no index stroke required for entry, On-X aortic valve implanted at least 3 months before enrollment",
+    "finding": "DID NOT meet non-inferiority and DID NOT meet the OPC success criterion. The trial was STOPPED EARLY after 863 participants because of an excess of thromboembolic events on apixaban. 26 primary events occurred: 20 events in 16 apixaban participants (4.2%/patient-year) vs 6 events in 6 warfarin participants (1.3%/patient-year)",
+    "teachingPoint": "Teaches that no direct oral anticoagulant has been shown safe for a mechanical heart valve, including the On-X aortic valve - the one prosthesis for which the question was formally randomized, and the trial was halted for excess thromboembolism.",
+    "PMID": "38320162",
+    "year": 2023,
+    "citationIds": [
+      "cit-proact-xa-2023"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "bhf-protect-tavi",
+    "name": "BHF PROTECT-TAVI",
+    "fullName": "British Heart Foundation Randomised Trial of Routine Cerebral Embolic Protection during Transcatheter Aortic-Valve Implantation (BHF PROTECT-TAVI)",
+    "category": "cardiac-source-stroke",
+    "population": "n=7635, adults with aortic stenosis undergoing TAVI; mean age 81.0 years in the 3535-participant cognitive cohort, NIHSS not applicable - procedural stroke-prevention trial, randomized before TAVI; primary outcome within 72 h of the procedure or before discharge",
+    "finding": "NEUTRAL - routine cerebral embolic protection DID NOT reduce stroke: 81 of 3795 (2.1%) with CEP vs 82 of 3799 (2.2%) without",
+    "teachingPoint": "Teaches that routine filter-based cerebral embolic protection does not reduce stroke or preserve cognition at TAVI - counselling should centre on the roughly 2% procedural stroke risk itself rather than on device selection.",
+    "PMID": "40162661",
+    "year": 2025,
+    "citationIds": [
+      "cit-bhf-protect-tavi-2025",
+      "cit-protect-tavi-cog-2025"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "protected-tavr",
+    "name": "PROTECTED TAVR",
+    "fullName": "Cerebral Embolic Protection during Transcatheter Aortic-Valve Replacement (PROTECTED TAVR)",
+    "category": "cardiac-source-stroke",
+    "population": "n=3000, adults with aortic stenosis; age distribution not reported in the abstract, NIHSS not applicable - procedural stroke-prevention trial, randomized before transfemoral TAVR; primary outcome within 72 h or before discharge",
+    "finding": "DID NOT show a significant effect: 2.3% with CEP vs 2.9% without. The authors state explicitly that, on the basis of the 95% confidence interval, the result may NOT rule out a benefit of CEP - this is an indeterminate trial, not a demonstrated null",
+    "teachingPoint": "Supplies the source of the persistent 'disabling stroke 0.5% vs 1.3%' claim for cerebral embolic protection, and the teaching that this trial could not exclude benefit while the later, larger BHF PROTECT-TAVI could.",
+    "PMID": "36121045",
+    "year": 2022,
+    "citationIds": [
+      "cit-protected-tavr-2022"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "warfarin-resumption-ich-mechanical-valve",
+    "name": "Warfarin resumption after ICH with a mechanical valve (meta-analysis)",
+    "fullName": "Resumption of Warfarin After Intracranial Hemorrhage in Patients With Mechanical Heart Valves: A Systematic Review and Meta-Analysis",
+    "category": "cardiac-source-stroke",
+    "population": "n=788, adults; age distribution not reported in the abstract, NIHSS not applicable - intracranial hemorrhage cohort, from the index intracranial hemorrhage through the interruption and resumption period, as reported by the included studies",
+    "finding": "While off anticoagulation, 32 patients had an ischemic stroke - pooled event rate 5.23%, with a pooled average time to stroke of 8.08 days. After anticoagulation was resumed, 73 patients had a hemorrhagic recurrence - pooled event rate 10.95%. The authors conclude that withholding anticoagulation for up to 7 days appears relatively safe, while stating that the included studies were observational and carried SERIOUS OR CRITICAL risk of bias and that randomized trials are needed",
+    "teachingPoint": "Puts numbers on the mechanical-valve ICH dilemma for teaching: about 5% have an ischemic stroke while off anticoagulation, clustering around day 8, versus about 11% rebleeding after resumption - all from observational studies at serious or critical risk of bias.",
+    "PMID": "41823243",
+    "year": 2026,
+    "citationIds": [
+      "cit-warfarin-ich-mhv-2026"
+    ],
+    "certainty": "very-low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "lv-thrombus-doac-rct-meta",
+    "name": "DOACs vs warfarin for LV thrombus (RCT meta-analysis)",
+    "fullName": "Direct oral anticoagulants or warfarin in left ventricular thrombus: an updated systematic review and meta-analysis of randomized trials",
+    "category": "cardiac-source-stroke",
+    "population": "n=554, adults; age distribution not reported in the abstract, NIHSS not applicable - anticoagulation trials in LV thrombus, not a stroke cohort, thrombus resolution assessed at 1 month and 3 months",
+    "finding": "NEUTRAL at both timepoints - no significant difference between DOACs and warfarin: OR 1.69 at 1 month and OR 1.39 at 3 months. The authors conclude DOACs showed comparable efficacy and safety and are a reasonable alternative to warfarin, while calling for further large-scale trials",
+    "teachingPoint": "Teaches that across all 7 randomized trials and 554 patients, DOACs and warfarin are statistically indistinguishable for LV thrombus - but that the intervals on stroke and bleeding are far too wide to call this proven equivalence.",
+    "PMID": "41359218",
+    "year": 2025,
+    "citationIds": [
+      "cit-lvt-doac-meta-2025"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "rivawar",
+    "name": "RIVAWAR",
+    "fullName": "Rivaroxaban vs Warfarin in Acute Left Ventricular Thrombus Following Myocardial Infarction (RIVAWAR): An Open-Label Randomised Controlled Trial",
+    "category": "cardiac-source-stroke",
+    "population": "n=261, adults; groups similar in age, sex and MI subtype, but the age range is not given in the abstract, NIHSS not applicable - LV thrombus cohort, not a stroke cohort, LV thrombus diagnosed during the index myocardial-infarction admission; treatment for 12 weeks",
+    "finding": "Resolution was HIGHER with rivaroxaban at 4 weeks (20% vs 8%) and EQUIVALENT at 12 weeks (95.8% vs 96.6%). By the 12-week endpoint both arms exceeded 95% resolution",
+    "teachingPoint": "Teaches that rivaroxaban clears post-MI LV thrombus faster than warfarin at 4 weeks but that both exceed 95% resolution by 12 weeks - and that both endpoints are imaging surrogates in a trial with no power for stroke or death.",
+    "PMID": "40706143",
+    "year": 2025,
+    "citationIds": [
+      "cit-rivawar-2025"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "aries-hm3",
+    "name": "ARIES-HM3",
+    "fullName": "Aspirin and Hemocompatibility Events With a Left Ventricular Assist Device in Advanced Heart Failure: The ARIES-HM3 Randomized Clinical Trial",
+    "category": "cardiac-source-stroke",
+    "population": "n=628, adults with advanced heart failure; age range not reported in the abstract. Of the 589 analysed, 77% were men, one third were Black and 61% were White, NIHSS not applicable - device antithrombotic trial; stroke is a component of the composite, enrolled July 2020 to September 2022; median follow-up 14 months; primary endpoint at 12 months",
+    "finding": "Placebo (aspirin avoidance) MET non-inferiority: 74% of the placebo group vs 68% of the aspirin group were alive and free of hemocompatibility events at 12 months",
+    "teachingPoint": "Teaches that on a HeartMate 3 with a vitamin K antagonist, adding aspirin does not protect against stroke or pump thrombosis and increases nonsurgical bleeding - a rare instance where less antithrombotic therapy is the evidence-supported answer.",
+    "PMID": "37950897",
+    "year": 2023,
+    "citationIds": [
+      "cit-aries-hm3-2023"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "ecmo-lv-venting-brain-injury",
+    "name": "ELSO LV venting and acute brain injury",
+    "fullName": "Impact of Left Ventricular Venting on Acute Brain Injury in Patients With Cardiogenic Shock: An Extracorporeal Life Support Organization Registry Analysis",
+    "category": "cardiac-source-stroke",
+    "population": "n=13276, median 58.2 years; 69.9% male, NIHSS not applicable - registry cohort of critically ill patients on mechanical circulatory support, most of whom are sedated, peripheral venoarterial ECMO runs recorded 2013-2024",
+    "finding": "Acute brain injury occurred in 525 of 13,276 patients (4.0%). LV-vented patients had HIGHER adjusted odds of acute brain injury (aOR 1.67) with NO difference in hospital mortality (aOR 1.07). In a propensity-matched comparison of the two venting strategies there was no difference between an intra-aortic balloon pump and a microaxial flow pump",
+    "teachingPoint": "Gives the base rate for neurological injury on venoarterial ECMO - about 4% of adults supported for cardiogenic shock - and flags left ventricular venting as a marker of higher neurological risk, on registry data that cannot establish cause.",
+    "PMID": "41104911",
+    "year": 2025,
+    "citationIds": [
+      "cit-ecmo-lv-venting-abi-2025"
+    ],
+    "certainty": "very-low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]

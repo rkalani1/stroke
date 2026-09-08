@@ -10,12 +10,214 @@
   "society": "AAN",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Informed Consent and Decisional Capacity - Elements of Informed Consent",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "This position statement briefly reviews the principle of informed consent, the elements of decisional capacity, and how acute stroke may affect this capacity. It further reviews the role of surrogate decision-making, including advance directives, next of kin, physician orders for life-sustaining treatment, and guardianship. In some cases of acute stroke in which the patient lacks decisional capacity and no advance directives or surrogates are available, consent to treatment may be presumed.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Elements of informed consent include the disclosure of relevant information, recommendation of a plan, and the patient's authorization (or refusal) of the recommended course of action in the absence of coercion.",
+      "page": null
+    },
+    {
+      "section": "Informed Consent and Decisional Capacity - Elements of Informed Consent",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Decisional capacity is commonly framed in 4 parts: understanding (a grasp of the basic facts surrounding a decision, including the nature of the condition, the proposed intervention, and the alternatives, risks, and benefits); appreciation (recognition of how the information applies to one's own case); reasoning (the ability to compare options and consistently infer the consequences of one's choices); and choice (expressing a decision, which should be reasonably stable in the absence of new information).",
+      "page": null
+    },
+    {
+      "section": "Informed Consent and Decisional Capacity - Stroke-Related Challenges to the Consent Process",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Obtaining informed consent in acute stroke can be encumbered by the sudden, unanticipated onset of the inability to fulfill one or more of these elements, coupled with the necessity to make decisions rapidly about thrombolysis, thrombectomy, and other high-stakes interventions: understanding is often impaired in Wernicke aphasia; appreciation may be absent in anosognosia and hemineglect; reasoning can be diminished by prefrontal or parietal injury; and patients with Broca aphasia or reduced consciousness from brainstem ischemia may be unable to consistently express a choice.",
+      "page": null
+    },
+    {
+      "section": "Informed Consent and Decisional Capacity - Cultural Considerations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Medical decision-making in the United States largely emphasizes autonomy, but some cultural traditions within the United States and abroad place greater weight on considerations of community and solidarity. Decisional capacity should be assessed with particular care when such differences are observed, understanding that fully exploring, validating, and applying them to the informed consent process may not be possible in the time-constrained acute stroke setting. In the context of interventions such as hemicraniectomy and research, where time constraints are often not as limiting, cultural perspectives may play a greater role.",
+      "page": null
+    },
+    {
+      "section": "Surrogate Decision-making - Advance Directives",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Surrogate decision-makers' ethical imperative is to give priority to patient preferences expressed premorbidly, when patients retained decisional capacity, such as in an advance directive or a clear oral statement.",
+      "page": null
+    },
+    {
+      "section": "Surrogate Decision-making - Advance Directives",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When no explicit statement of the patient's preferences exists, surrogates are expected to apply \"substituted judgment,\" attempting to determine what the patient would have wanted, given their general knowledge of the patient's values and beliefs. Even when made in good faith, multiple studies have demonstrated that such judgments about patient wishes by family members and clinicians are imperfect.",
+      "page": null
+    },
+    {
+      "section": "Surrogate Decision-making - Advance Directives",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When the patient's wishes are unknown, surrogate decision-makers and the clinicians counseling them attempt to arrive at treatment decisions based on the patient's \"best interests\" - often relying on a prediction of the patient's likely quality of life with and without the available treatments. One danger in such judgments is that healthy people tend to systematically underrate the quality of life of patients with chronic disabilities, such as those that are often sequelae of stroke.",
+      "page": null
+    },
+    {
+      "section": "Surrogate Decision-making - Next of Kin",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "If the patient has not executed an advance directive, or it is not available, some (but not all) states have enacted statutes authorizing a next of kin to make surrogate decisions for patients who lack decisional capacity, with family members hierarchically arranged (usually spouse, then adult children, parents, siblings). If no statutorily authorized next of kin is available, some state laws empower hospital ethics committees to designate a willing person sufficiently familiar with the patient's wishes and values to make a substituted judgment, thereby avoiding the need to seek judicial involvement.",
+      "page": null
+    },
+    {
+      "section": "Surrogate Decision-making - Physician Orders for Life-Sustaining Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In acute stroke, reperfusion therapies aim to preserve functional independence rather than prolong life, so the options designated in POLST forms do not directly apply to decisions about these interventions. However, for decisions regarding hemicraniectomy for malignant hemispheric stroke, a POLST order for \"Full treatments\" (i.e., \"Attempt to sustain life by all medically effective means\") could be action-guiding.",
+      "page": null
+    },
+    {
+      "section": "Surrogate Decision-making - Guardianship",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Unless guardianship happened to be in place already for other reasons, the time required to pursue it would generally be incompatible with the urgency of acute stroke treatments. For patients already under guardianship, neurologists should be aware that some states expressly limit the authority of the guardian to withhold or withdraw life-sustaining treatments; acute reperfusion therapies are function- rather than life-preserving, but hemicraniectomy might fall under the purview of such guardianship laws.",
+      "page": null
+    },
+    {
+      "section": "Surrogate Decision-making - Institutional Resources",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For clinical decisions that are less urgent (e.g., when considering hemicraniectomy within some hours), many institutions have ethics committees that can aid in decision-making for unrepresented patients. Advance directives, POLST, and guardianship procedures are governed by state law and vary by jurisdiction; neurologists should be familiar with the laws relevant to these entities in their jurisdictions of practice and, when appropriate, seek legal consultation regarding their application.",
+      "page": null
+    },
+    {
+      "section": "Emergency Treatment for Acute Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When rapid treatment for acute stroke is indicated, the patient lacks decisional capacity, no determinative advance directive governs the situation, and no authorized surrogates are available, interventions may be provided based on the ethical and common law presumption of consent - that is, the rationale that reasonable people would consent to treatment if they could be asked. Whereas this presumption is most easily appreciated in life-threatening emergencies, the imminent risk of significant disability - not just death - also justifies emergent treatment in these circumstances.",
+      "page": null
+    },
+    {
+      "section": "Emergency Treatment for Acute Stroke - IV Thrombolysis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When patients retain decision-making capacity (or surrogates are available), they should be quickly but clearly informed about: (1) the stroke diagnosis and rationale for thrombolytic therapy; (2) the patient's prospects for achieving a good functional outcome with and without treatment; and (3) risks of treatment, including intracerebral hemorrhage and angioedema.",
+      "page": null
+    },
+    {
+      "section": "Emergency Treatment for Acute Stroke - IV Thrombolysis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Alteplase treatment within the 3-hour window is approved by the Food and Drug Administration, whereas treatment of selected patients within the 4.5-hour window is scientifically recommended but remains off-label. The treating neurologist should discuss this, when possible, with the patient or surrogate.",
+      "page": null
+    },
+    {
+      "section": "Emergency Treatment for Acute Stroke - IV Thrombolysis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "With a cognitively intact patient or the help of a family member, the treating neurologist can engage in a careful discussion of individual risks and benefits of treatment where relative contraindications exist. When the balance of these risks and benefits is uncertain, and the patient lacks decisional capacity and lacks a surrogate, then the neurologist should adhere more closely to guideline-based inclusion and exclusion criteria.",
+      "page": null
+    },
+    {
+      "section": "Emergency Treatment for Acute Stroke - IV Thrombolysis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Verbal consent (or refusal) to treatment should be obtained and documented in the medical record by the treating physician. Some institutions and jurisdictions, such as the Veterans Health Administration, require written consent for thrombolysis; acute stroke protocols at such facilities should therefore take into account the potential for treatment delays.",
+      "page": null
+    },
+    {
+      "section": "Emergency Treatment for Acute Stroke - IV Thrombolysis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When an appropriately designated surrogate decision-maker is present, neurologists should be prepared to engage them in a discussion of the risks and benefits of new interventions (e.g., alternative thrombolytic medications or multimodal imaging in expanded time windows). When surrogates are not present, it may be reasonable to proceed with treatment on the presumption of consent when patients' cases fit extant inclusion/exclusion criteria, contraindications (particularly absolute contraindications) are absent, and the overall balance of risks and benefits strongly favors intervention.",
+      "page": null
+    },
+    {
+      "section": "Emergency Treatment for Acute Stroke - Neuroendovascular Intervention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients who meet established criteria for endovascular therapy but who lack both decisional capacity and a surrogate decision-maker should be treated on an emergency basis. The patient or surrogate should later be informed about what was done and how the time-sensitive circumstance precluded the usual consent process. The further outside of published criteria that a patient's condition falls, the less justified would be emergency treatment absent patient or surrogate consent.",
+      "page": null
+    },
+    {
+      "section": "Emergency Treatment for Acute Stroke - Decompressive Craniectomy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When patients with large-territory ischemic strokes are admitted to the hospital, the possibility of developing malignant edema should be anticipated and communicated to patients who retain decisional capacity (as may be the case in cerebellar lesions) or to their surrogates (as will typically be necessary for large hemispheric strokes that impair decisional capacity). Such discussions can prompt earlier consideration about the course of action that will best promote the patient's values and may help avoid hasty and emotionally fraught decisions at the time of clinical decompensation.",
+      "page": null
+    },
+    {
+      "section": "Emergency Treatment for Acute Stroke - Decompressive Craniectomy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In counseling patients with large cerebellar infarcts (or their surrogates), suboccipital craniectomy for cerebellar edema can be generally recommended when necessary in the absence of surgical contraindications or other functionally limiting conditions, because decompression is generally beneficial, often preserving life and usually resulting in a modified Rankin Scale score of 2 or less. In the case of a patient lacking surrogate decision-makers, surgical treatment on the presumption of consent is often justified given the favorable balance of risks and benefits.",
+      "page": null
+    },
+    {
+      "section": "Emergency Treatment for Acute Stroke - Decompressive Craniectomy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Decision-making is more difficult for malignant cerebral hemispheric edema, as (particularly for older patients) hemicraniectomy involves a tradeoff between mortality and major dependency. It remains controversial whether the prospective or retrospective perspective should be given priority; this challenging decision must be guided as much as possible by consideration of the patient's own health-related values, and the patient's premorbid functional status and life expectancy may be informative.",
+      "page": null
+    },
+    {
+      "section": "Pediatric Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Many therapies, including alteplase and mechanical thrombectomy, are not FDA-approved in children and are used off-label. Parents or legal guardians are the legally authorized decision-makers for children and are expected to use the best interest standard when making medical decisions for them. The time constraints of obtaining informed consent for acute stroke therapies make this process challenging, especially given the lack of data for these high-risk procedures.",
+      "page": null
+    },
+    {
+      "section": "Pediatric Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Institutions should create acute stroke treatment protocols and involve the appropriately qualified clinicians, namely physicians with experience and expertise in treating children with stroke. In the absence of a strong body of empirical data, physicians should rely on these opinion-based institutional standards and published guidance documents to counsel families and treat children with acute strokes.",
+      "page": null
+    },
+    {
+      "section": "Consent Issues in Acute Stroke Research",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "While impaired decisional capacity poses ethical challenges, the inclusion of patients with impaired decisional capacity in research is itself an ethical priority. Limiting clinical trials only to patients able to consent for themselves would restrict the generalizability of research by excluding patients with more severe strokes - the patients for whom new therapies and improved systems of stroke care are most urgently needed.",
+      "page": null
+    },
+    {
+      "section": "Consent Issues in Acute Stroke Research",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Laws governing surrogate decision-making for clinical research vary by jurisdiction. Many states lack explicit provisions for surrogate research consent; the 2017 revised Common Rule clarifies that in these states, individuals empowered to make clinical care decisions for patients can also serve as surrogate decision-makers for research. Designated surrogates may have more difficulty extrapolating from the patient's known wishes and beliefs to decisions about clinical research than to decisions about medical treatment, and enrollment generally cannot be justified purely by appeal to patients' \"best interests,\" as clinical trials typically involve exposing participants to unproven interventions in the interest of producing generalizable knowledge.",
+      "page": null
+    },
+    {
+      "section": "Consent Issues in Acute Stroke Research",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients without decisional capacity who also lack available surrogates, US regulations recognize 2 conditions for enrollment without patient or surrogate consent: institutional review boards may waive informed consent for minimal-risk research (a threshold that may be met by some systems-level interventions or qualitative studies of care delivery but is unlikely to be met by physiologic interventions directed at reperfusion or neuroprotection), and investigators may apply to the FDA for an Exception From Informed Consent, which involves additional safeguards such as public disclosure and community consultation.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }
