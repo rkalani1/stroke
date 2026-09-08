@@ -122,11 +122,11 @@ describe('Tier 3: Cross-Feature Combinations (Pairwise Interactions)', () => {
   });
 
   // 7. F1 x F7: AIS 2026 Guidelines & Guideline Library Index
-  it('F1xF7: AIS 2026 guideline dataset is correctly registered in the Guideline Library index with 195 statements', () => {
+  it('F1xF7: AIS 2026 guideline dataset is correctly registered in the Guideline Library index with 202 statements', () => {
     const indexData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/index.json'), 'utf8'));
     const aisEntry = indexData.data.find(g => g.id === 'ais-2026');
     expect(aisEntry).toBeDefined();
-    expect(aisEntry.recommendationCount).toBe(195);
+    expect(aisEntry.recommendationCount).toBe(202);
     expect(aisEntry.doi).toBe('10.1161/STR.0000000000000513');
   });
 

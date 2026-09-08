@@ -10,12 +10,150 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Introduction",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Evidence-based rehabilitation and secondary prevention interventions improve poststroke functional recovery and reduce secondary complications. However, stroke rehabilitation expertise, processes of care, and educational resources vary among sites where postacute care (PAC) is delivered. The American Heart Association developed quality standards based on the American Heart Association 2016 Guidelines for Adult Stroke Rehabilitation and Recovery to address these gaps.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Targeted, high-quality poststroke recovery, rehabilitation, and secondary prevention interventions can improve recovery of function and reduce the risk of secondary effects and recurrent stroke; intensive rehabilitation has been found to be associated with lower poststroke mortality rates and better functional outcomes.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Across the United States, 47% of all stroke survivors leaving the hospital are discharged home, with the remainder going to skilled nursing facilities (27%), hospital-level inpatient rehabilitation facilities (24%), and long-term care facilities (1%); these percentages vary geographically, rural areas provide fewer postacute options, and geographic proximity has been shown to substantially influence the selection of poststroke facilities and level of care.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Inpatient rehabilitation facilities typically provide at least 3 hours of rehabilitation therapy services per day, frequent physician visits, and 24-hour care by registered nurses; in skilled nursing facilities, physician or advanced practice provider visits are less frequent, nursing care may not include a registered nurse on-site continuously, and the amount of therapy, while varying widely, is generally much lower on average, and these more limited resources may contribute to hospital readmissions and suboptimal care coordination and outcomes.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The American Heart Association chartered a working group to develop quality standards for postacute stroke rehabilitation, based on the 2016 AHA Guidelines for Adult Stroke Rehabilitation and Recovery, that are intended to be relevant and achievable in a broad array of postacute care settings, including smaller and more rural facilities with fewer resources, supporting the AHA Mission: Lifeline Stroke Initiative.",
+      "page": null
+    },
+    {
+      "section": "Phase 1 - Summary of PAC Stroke Program Standards (Table 1): Program management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Program management: includes recommendations for the systematic and operational oversight of the stroke rehabilitation program by an interprofessional committee.",
+      "page": null
+    },
+    {
+      "section": "Phase 1 - Summary of PAC Stroke Program Standards (Table 1): Personnel education",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Personnel education: details essential education components to ensure that staff have the experience and training necessary to monitor and manage stroke rehabilitation patients.",
+      "page": null
+    },
+    {
+      "section": "Phase 1 - Summary of PAC Stroke Program Standards (Table 1): Patient/caregiver education and support",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patient/caregiver education and support: outlines essential education topics and highlights the importance of performing a learning needs assessment and employing the teach-back method.",
+      "page": null
+    },
+    {
+      "section": "Phase 1 - Summary of PAC Stroke Program Standards (Table 1): Care coordination",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Care coordination: emphasizes the importance of well-established processes to facilitate transitions to and from any level of care and implements a team-based approach to care during the patient's admission at the postacute care facility.",
+      "page": null
+    },
+    {
+      "section": "Phase 1 - Summary of PAC Stroke Program Standards (Table 1): Medical management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Medical management: addresses availability of key professionals for providing stroke rehabilitation and the necessity of incorporating protocol-driven current evidence-based assessments, screenings, and treatment.",
+      "page": null
+    },
+    {
+      "section": "Phase 1 - Summary of PAC Stroke Program Standards (Table 1): Quality improvement",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Quality improvement: specifies standardized performance measures and outcome metrics that should be tracked for the stroke rehabilitation population and used to drive performance improvement efforts.",
+      "page": null
+    },
+    {
+      "section": "Phase 1 - National landscape survey",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The national landscape survey of 719 postacute care facilities demonstrated that most sites do not meet the proposed standards: 78% fall short on stroke program oversight structure, 70% on stroke rehabilitation leadership, 61% on stroke-specific order sets/protocols, and 66% on policies requiring staff stroke education. Only 22% overall had an interprofessional committee managing the stroke program (68% of IRFs, 29% of critical access hospitals, 17% of SNFs), and only 4% overall held certifications/accreditations specific to stroke rehabilitation (62% of IRFs versus 1% of critical access hospitals and 2% of SNFs).",
+      "page": null
+    },
+    {
+      "section": "Phase 1 - National landscape survey methods and limitations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The 81-item survey was distributed to a nationally representative stratified sample of postacute care facilities from November 2019 to January 2020, with responses received from only 6.5% of facilities queried after 4 rounds of distribution; the low response rates for both facility types, and the small sample size for inpatient rehabilitation facilities (n=25), limit the reliability of the quantitative findings.",
+      "page": null
+    },
+    {
+      "section": "Phase 2 - Montana learning collaborative",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Among the 18 Montana postacute care sites, 41% reported no mechanisms for quality improvement specific to their stroke rehabilitation programs and 59% did not use standardized tools for performance improvement initiatives; other areas falling short of the draft standards included availability of speech/language therapy at least 5 days per week (38% not meeting), availability of a consulting psychologist (43% not meeting), and performing a screening swallowing evaluation within 24 hours of admission (64% not meeting). With adequate support and resources, most sites indicated it would be feasible or very feasible to meet the proposed standards.",
+      "page": null
+    },
+    {
+      "section": "Phase 2 - Finalization of the standards",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The writing committee finalized the Post-Acute Care Stroke Program Standards manual in April 2023, incorporating survey and beta-testing feedback; the manual was reviewed and approved by the AHA Office of Science and Medicine on June 2, 2023, and comprises 6 categories of standards, with detailed standards provided in the Supplemental Material.",
+      "page": null
+    },
+    {
+      "section": "Phase 3 - Field testing",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Skilled nursing facilities, critical access hospitals, and inpatient rehabilitation facilities in Iowa, Montana, Nebraska, and North Dakota are implementing the Post-Acute Care Stroke Program Standards as part of the Mission: Lifeline Stroke Post-Acute Care Initiative; over 75 facilities were recruited to implement the standards over a 3-year timeframe from July 2022 to June 2025, with the major focus on SNFs and critical access hospitals given their lower baseline compliance and more limited resources.",
+      "page": null
+    },
+    {
+      "section": "Phase 3 - Measures tracked",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Participating facilities collect data quarterly on 6 clinical measures and 3 outcome metrics outlined in the PAC Stroke Standards manual, largely sourced from the AHA Clinical Performance Measures for Stroke Rehabilitation: patients with aphasia receiving speech therapy, timing of admission assessments, patient education, depression screenings, venous thromboembolism prophylaxis, and follow-up after discharge; facilities also track the number of stroke rehabilitation survivors, length of stay, and discharge disposition.",
+      "page": null
+    },
+    {
+      "section": "Discussion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "These standards and the experience gained through field testing informed the AHA's development of a stroke rehabilitation certification program for skilled nursing facilities, launched in February 2024; the 3-year certification validates that facilities are implementing and meeting the PAC Stroke Program Standards, and there is future opportunity to expand these standards into stroke rehabilitation certifications at other levels of care.",
+      "page": null
+    },
+    {
+      "section": "Discussion - Calibrating stringency",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When developing standards for practice there is a balance in calibrating stringency: standards that are easily achieved do not drive meaningful improvement, whereas aspirational best-practice standards are not broadly feasible; the ideal standards are stringent but substantially achievable by most organizations, and all such standards should be regarded as snapshots in time requiring continuing updates to avoid obsolescence.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

@@ -519,9 +519,9 @@ async function auditView(browser, target, viewport) {
       await page.waitForTimeout(150);
     }
 
-    const evtRecommendedCheckbox = page.getByRole('checkbox', { name: /EVT Recommended/i }).first();
+    const evtRecommendedCheckbox = page.getByRole('combobox', { name: 'EVT treatment decision' }).first();
     if ((await evtRecommendedCheckbox.count()) > 0) {
-      await evtRecommendedCheckbox.check();
+      await evtRecommendedCheckbox.selectOption('yes');
       await page.waitForTimeout(100);
     }
 
@@ -862,9 +862,9 @@ async function auditView(browser, target, viewport) {
         await page.waitForTimeout(100);
       }
 
-      const evtRecommendedCheckbox = page.getByRole('checkbox', { name: /EVT Recommended/i }).first();
+      const evtRecommendedCheckbox = page.getByRole('combobox', { name: 'EVT treatment decision' }).first();
       if ((await evtRecommendedCheckbox.count()) > 0) {
-        await evtRecommendedCheckbox.check();
+        await evtRecommendedCheckbox.selectOption('yes');
         await page.waitForTimeout(100);
       }
 

@@ -9,28 +9,462 @@
   "pmid": "41603019",
   "recommendations": [
     {
-      "section": "Imaging",
+      "section": "Introduction",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Do not delay neuroimaging for suspected maternal stroke; CT/CTA or MRI are acceptable, and lead shielding is not recommended because it can increase radiation exposure.",
-      "page": 11
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke affects approximately 20 to 40 of every 100 000 pregnancies and accounts for 4% to 6% of maternal deaths in the United States. Unlike the general population, in whom approximately 85% of strokes are ischemic, approximately half of pregnancy-associated strokes are hemorrhagic. Most occur during the peripartum or postpartum periods, with a median time to postpartum stroke readmission after delivery discharge of approximately 8 days.",
+      "page": null
     },
     {
-      "section": "Acute Reperfusion",
+      "section": "Physiology and Pathophysiology of Pregnancy: Physiology of Pregnancy",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Pregnancy should not delay evidence-based reperfusion; IV thrombolysis may be considered when benefits outweigh risks, and mechanical thrombectomy is appropriate for eligible LVO.",
-      "page": 10
+      "levelOfEvidence": "Ungraded",
+      "text": "The physiological hypercoagulable state of pregnancy, characterized by increased factors VII, VIII, and X, von Willebrand factor, and fibrinogen, decreased protein S, and increased plasminogen activator inhibitors 1 and 2, contributes to stroke risk. Combined with pregnancy-related dehydration, venous stasis from uterine compression of the pelvic veins, and potential vascular trauma during delivery, these changes heighten the risk of arterial ischemic stroke, paradoxical embolism, and cerebral venous thrombosis. Even young pregnant and postpartum individuals face a higher stroke risk than their nonpregnant counterparts.",
+      "page": null
     },
     {
-      "section": "Secondary Prevention",
+      "section": "Physiology and Pathophysiology of Pregnancy: Physiology of Pregnancy",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Low-dose aspirin is considered safe for most pregnant patients with prior ischemic stroke or TIA; LMWH is typically recommended for high-risk cardioembolic or thrombophilia scenarios.",
-      "page": 9
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with underlying autoimmune conditions such as systemic lupus erythematosus face a 2- to 3-fold higher risk of stroke, particularly at younger ages. Infections during pregnancy, particularly genitourinary infections and sepsis, have been linked to increased stroke risk: one case-control study found that infection on admission for delivery doubled the odds of stroke, with odds 2 to 3 times higher for genitourinary infections (including chorioamnionitis) and 10-fold higher for sepsis.",
+      "page": null
+    },
+    {
+      "section": "Physiology and Pathophysiology of Pregnancy: Hypertensive Disorders of Pregnancy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hypertensive disorders of pregnancy, including gestational hypertension, preeclampsia/eclampsia, and chronic hypertension with superimposed preeclampsia, affect approximately 10% of pregnancies and increase stroke risk by up to 5-fold. Nearly half of all pregnancy-associated stroke hospitalizations in the United States occur in the setting of hypertensive disorders of pregnancy, and these strokes are often more severe with higher rates of complications. Hypertensive disorders of pregnancy are also associated with an increased risk of stroke later in life.",
+      "page": null
+    },
+    {
+      "section": "Physiology and Pathophysiology of Pregnancy: Chronic Medical Comorbidities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "As in the nonpregnant population, diabetes and obesity are associated with elevated stroke risk. Active migraine, particularly with aura, is also associated with elevated stroke risk during pregnancy (odds ratio range, 7.9-30.7).",
+      "page": null
+    },
+    {
+      "section": "Physiology and Pathophysiology of Pregnancy: Social Determinants of Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Black pregnant individuals experience disproportionately high rates of stroke, twice the risk of their White counterparts, even after adjustment for socioeconomic factors, likely a result of the impact of social determinants of health.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms of Maternal Stroke: Hemorrhagic Stroke (ICH and SAH)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hemorrhagic stroke types, including intracerebral hemorrhage and subarachnoid hemorrhage, are more common in pregnant individuals than in age-matched nonpregnant women (adjusted incidence risk ratio, 1.4 [95% CI, 1.2-1.8]). The risk is highest during the peripartum and postpartum periods, largely in association with hypertensive disorders of pregnancy. Effective blood pressure control around the time of delivery is essential; mortality for pregnancy-associated hemorrhagic stroke can reach 20%.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms of Maternal Stroke: Hemorrhagic Stroke (ICH and SAH)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cerebrovascular malformations, including aneurysms, arteriovenous malformations, and cavernous malformations, are known causes of hemorrhagic stroke; although data on pregnancy-related rupture risk are mixed, hypertension is a significant contributor to bleeding. Aneurysmal subarachnoid hemorrhage is associated with maternal mortality rates up to 50% and fetal mortality rates of approximately 17%. However, most pregnancy-related subarachnoid hemorrhages are nonaneurysmal.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms of Maternal Stroke: Hemorrhagic Stroke (ICH and SAH)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Reversible cerebral vasoconstriction syndrome and posterior reversible encephalopathy syndrome are also implicated in pregnancy-associated intracerebral hemorrhage and subarachnoid hemorrhage; both involve disruption to cerebral autoregulation, and preeclampsia and eclampsia are highly associated with both syndromes.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms of Maternal Stroke: Ischemic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Most pregnancy-associated ischemic strokes are classified as cryptogenic (57%). Identifiable causes include cervical artery dissection (11%), cardioembolism (13%), and prothrombotic disorders (6%). Cervical artery dissections are more common in the postpartum period, with risk estimated to be >5 times higher in pregnant and postpartum women than in the general population.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms of Maternal Stroke: Ischemic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cardioembolic stroke may occur in patients with underlying cardiac conditions or peripartum cardiomyopathy. In patients with structural cardiac abnormalities such as unrepaired atrial septal defects, the physiological hemodynamic changes of pregnancy can lead to transient shunt reversal, resulting in increased arrhythmias (4%-5%) or paradoxical emboli (2%-5%). A patent foramen ovale, present in up to 73% of young patients with cryptogenic stroke and without vascular risk factors, can serve as a conduit for paradoxical embolism, particularly in the setting of pregnancy-related hypercoagulability.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms of Maternal Stroke: Cerebral Venous Thrombosis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Compared with nonpregnant women, the risk of pregnancy-associated cerebral venous thrombosis is increased >8-fold (incidence risk ratio, 8.1 [95% CI, 6.5-10.1]). Cerebral venous thrombosis is most commonly diagnosed postpartum (80% of cases), and one study reported a 19-fold increase in risk during the first 6 weeks postpartum.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention of Pregnancy-Related Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Prevention of pregnancy-related stroke begins before conception with optimization of prepregnancy health. General primary stroke prevention strategies should be followed for all pregnancy-capable individuals, in line with the 2024 AHA/ASA Guideline for the Primary Prevention of Stroke, using the Life's Essential 8 framework, including screening for modifiable behaviors, medical conditions, and social determinants of health such as food insecurity or lack of transportation.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Hypertensive Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Severe hypertension in pregnancy (persistent systolic blood pressure >=160 mm Hg or diastolic blood pressure >=110 mm Hg, confirmed within 15 minutes) or postpartum is a medical emergency and, if left untreated, significantly increases the risk of intracerebral hemorrhage. The majority of fatal maternal strokes (usually due to intracerebral hemorrhage) have been deemed preventable with earlier and more aggressive blood pressure control.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Hypertensive Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The use of algorithms to manage acute hypertension in pregnancy and postpartum is suggested, such as those published by the American College of Obstetricians and Gynecologists as part of their Identifying and Managing Obstetric Emergencies in Nonobstetric Settings initiative.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Hypertensive Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Evidence supports treating chronic hypertension in pregnancy before it reaches severe levels, targeting a goal blood pressure <140/90 mm Hg. For individuals with gestational hypertension and preeclampsia, American College of Obstetricians and Gynecologists and Society for Maternal-Fetal Medicine guidelines currently do not recommend treatment of mild range hypertension, whereas some international societies extrapolate findings from the CHAP trial to recommend a treatment threshold for all hypertensive disorders of pregnancy.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Hypertensive Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Optimal blood pressure targets in the early postpartum period are not well defined. Observational data suggest a correlation between tighter blood pressure control in the early postpartum period and decreased rates of postpartum emergency department visits and readmissions. Multidisciplinary care incorporating home blood pressure monitoring in the postpartum period is a promising strategy for the prevention of hypertension-associated postpartum maternal morbidity in individuals with hypertensive disorders of pregnancy.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Hypertensive Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Magnesium sulfate for seizure prevention and antihypertensive medications to lower stroke risk remain the cornerstones of management for preeclampsia and eclampsia. Daily low-dose aspirin has been shown in meta-analysis to significantly reduce the risk of preeclampsia in high-risk individuals compared with placebo (pooled risk ratio, 0.85 [95% CI, 0.75-0.95]).",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Hypertensive Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "First-line antihypertensive agents for hypertension in pregnancy are labetalol (start 200 mg 2-3 times a day, maximum 2400 mg/d) and nifedipine XL (start 30 mg daily, maximum 120 mg/d); alternative agents include alpha methyldopa, clonidine, hydrochlorothiazide, and hydralazine. Angiotensin-converting enzyme inhibitors, angiotensin receptor blockers, direct renin inhibitors, and mineralocorticoid receptor antagonists are contraindicated in pregnancy because of the potential for fetal harm.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Hypertensive Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For postpartum treatment of hypertension, first-line agents compatible with lactation include nifedipine XL, enalapril, amlodipine, and labetalol; alternative agents include hydrochlorothiazide, furosemide, hydralazine, spironolactone, verapamil, carvedilol, metoprolol tartrate, bisoprolol, chlorthalidone, eplerenone, lisinopril, losartan, valsartan, and clonidine. Relative infant dose levels <10% are considered safe.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Cardiac Conditions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the absence of data to guide primary stroke prevention in pregnant patients across the spectrum of congenital heart disease, the use and choice of antiplatelet and antithrombotic agents should be guided by a cardio-obstetrics collaborative team. Patients with an indication for therapeutic anticoagulation (eg, mechanical prosthetic valve) should be followed up carefully with medication adjustments to avoid teratogenicity and excessive bleeding risks around the time of delivery.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Cardiac Conditions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with congenital heart disease with known right-to-left shunt, the use of filtered intravenous lines is a reasonable precaution to reduce the risk of paradoxical air embolism.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Peripartum Cardiomyopathy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Peripartum cardiomyopathy is associated with increased stroke risk; stroke risk was highest at the time of diagnosis but remained elevated throughout the first postpartum year, and stroke is seen more frequently in patients with significantly reduced left ventricular ejection fraction (<35%) or left ventricular thrombus. In the absence of a definitive indication for therapeutic anticoagulation, prophylactic anticoagulation can be considered in patients at heightened risk, although data for optimal patient selection and duration of therapy are lacking.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Hematologic Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Inherited thrombophilias and antiphospholipid syndrome can increase the risk of pregnancy-associated ischemic stroke by as much as 16-fold. Aspirin is recommended for primary prevention of stroke in patients with antiphospholipid syndrome, regardless of pregnancy status, depending on the individual risk profile of the patient. In some cases prophylactic anticoagulation in pregnancy and postpartum may be added in consultation with a hematologist; however, no randomized trials have tested this strategy for stroke prevention in pregnancy.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Aneurysms and AVMs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is no definitive evidence that the risk of aneurysm rupture increases during pregnancy or the postpartum period, and the risk of arteriovenous malformation hemorrhage in pregnancy remains controversial. No data suggest that elective cesarean delivery decreases the risk of arteriovenous malformation or aneurysm rupture. Care of patients with aneurysms or arteriovenous malformations during pregnancy should involve a multidisciplinary team to guide individualized prevention and management strategies, as well as recommendations on delivery mode.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Moyamoya Disease",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Women diagnosed with moyamoya disease before pregnancy who underwent revascularization were significantly less likely to experience cerebrovascular events during pregnancy compared with those who did not. In women without prior cerebrovascular symptoms, the mode of delivery (vaginal versus cesarean) does not appear to significantly affect maternal or fetal outcomes. To reduce the risk of ischemic events it is essential to avoid dehydration and hypotension during the antepartum, intrapartum, and postpartum periods, and low-dose aspirin throughout the pregnancy may offer additional protection against ischemic complications.",
+      "page": null
+    },
+    {
+      "section": "Primary Prevention: Other Arteriopathies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For other arteriopathies (fibromuscular dysplasia, collagen vascular diseases such as vascular Ehlers-Danlos and Marfan syndromes, and inflammatory arteritides such as Takayasu arteritis), management should be individualized and focused on prevention and early treatment of hypertension. No data suggest that cesarean delivery prevents stroke in patients with arteriopathies; assisted second-stage delivery (forceps or vacuum assisted) is a reasonable option to consider in patients felt to be at high risk for Valsalva.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention in Pregnancy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The absolute risk of recurrent stroke during pregnancy remains low. Secondary prevention strategies are guided by stroke mechanism. Low-dose aspirin is considered safe for most pregnant patients with prior ischemic stroke or transient ischemic attack.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention in Pregnancy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For high-risk situations such as patients with antiphospholipid syndrome, mechanical valves, or prior cardioembolic stroke, therapeutic anticoagulation with low-molecular-weight heparin during pregnancy is typically recommended. In patients with cryptogenic stroke and patent foramen ovale, closure may be considered before a future pregnancy when the Risk of Paradoxical Embolism score is >=7.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention in Pregnancy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Preconception counseling includes stroke risk review, evaluation of medication safety, and lifestyle counseling, including smoking cessation and weight management. Close monitoring of blood pressure, especially in the peripartum and early postpartum periods, is essential.",
+      "page": null
+    },
+    {
+      "section": "Treatment of Acute Stroke: Presenting Signs and Symptoms and Members of Maternal Stroke Team",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Pregnant and postpartum individuals presenting with new neurological deficits or severe headache, especially in the context of elevated blood pressures, require immediate evaluation for possible stroke. The presence of hypertensive disorders of pregnancy significantly increases stroke risk and should heighten clinical suspicion.",
+      "page": null
+    },
+    {
+      "section": "Treatment of Acute Stroke: Presenting Signs and Symptoms and Members of Maternal Stroke Team",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "History, blood pressure assessment, and neurological examination are necessary to evaluate for ischemic stroke, intracerebral hemorrhage, cerebral venous thrombosis, subarachnoid hemorrhage, reversible cerebral vasoconstriction syndrome, or posterior reversible encephalopathy syndrome. Cervical artery dissection often presents with headache and neck pain; reversible cerebral vasoconstriction syndrome typically presents with thunderclap headache and segmental vasoconstriction; posterior reversible encephalopathy syndrome is marked by vasogenic edema, progressive headaches, and seizures; and cerebral venous thrombosis often presents with progressive, positional headaches that are new, more severe, or associated with neurological deficits.",
+      "page": null
+    },
+    {
+      "section": "Treatment of Acute Stroke: Presenting Signs and Symptoms and Members of Maternal Stroke Team",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that all clinical staff who care for pregnant individuals, including obstetricians, family medicine practitioners, nurses, and advanced practice clinicians, be trained to recognize stroke symptoms and activate a stroke alert. We suggest augmentation of current stroke systems of care to facilitate mobilization of a multidisciplinary maternal stroke team that includes vascular neurology, emergency medicine, maternal-fetal medicine or obstetrics, obstetric anesthesiology, and, when appropriate, neonatology.",
+      "page": null
+    },
+    {
+      "section": "Treatment of Acute Stroke: Presenting Signs and Symptoms and Members of Maternal Stroke Team",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Evaluation by a vascular neurologist is suggested either in person or, more commonly, through telestroke consultation to complete the neurological evaluation and guide acute stroke treatment. In lower-resource settings where telestroke consultation is not available, telephone consultation with a vascular neurologist is recommended, and transfer to a higher level of care may be necessary. An obstetrician or maternal-fetal medicine specialist should also be consulted by telemedicine or telephone to help guide initial hyperacute management.",
+      "page": null
+    },
+    {
+      "section": "Treatment of Acute Stroke: Neuroimaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the setting of acute stroke, neuroimaging should never be withheld because of pregnancy. Both computed tomography (with or without contrast) and magnetic resonance imaging (without contrast) are considered safe during pregnancy or lactation, with use of contrast when benefits outweigh risks.",
+      "page": null
+    },
+    {
+      "section": "Treatment of Acute Stroke: Neuroimaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Current guidelines do not recommend lead shielding of the gravid uterus for computed tomography scans because shielding may interfere with computed tomography machine sensors that adjust the amount of radiation used and could result in more radiation exposure to the fetus or reduce the quality of the examination.",
+      "page": null
+    },
+    {
+      "section": "Treatment of Acute Stroke: Neuroimaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For gadolinium-based contrast agents, the FDA recommendation is to use only when a contrast-enhanced study cannot be delayed and is essential to maternal care and well-being. No interruption of breastfeeding is required after iodinated or gadolinium contrast per American College of Obstetricians and Gynecologists guidance. Magnetic field strength <=3 T has been found to be safe.",
+      "page": null
+    },
+    {
+      "section": "Treatment of Acute Stroke: Thrombolysis and Mechanical Thrombectomy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Pregnancy should not delay evidence-based treatments for acute stroke. US-based guidelines support the use of intravenous alteplase during pregnancy when the potential benefits (eg, prevention of long-term disability) outweigh the risks (eg, uterine bleeding). The risks and benefits of systemic thrombolysis must be carefully weighed when surgery such as cesarean delivery is anticipated or planned, and decisions during the early postpartum period should be individualized, especially in patients with recent cesarean delivery or neuraxial anesthesia due to bleeding risk.",
+      "page": null
+    },
+    {
+      "section": "Treatment of Acute Stroke: Thrombolysis and Mechanical Thrombectomy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Safety data support the use of hyperacute reperfusion therapies in the peripartum period: a registry of 40 pregnant or postpartum women treated with intravenous thrombolysis or thrombectomy showed no in-hospital deaths, with outcomes comparable to those in nonpregnant women, although the rate of symptomatic intracerebral hemorrhage was slightly higher.",
+      "page": null
+    },
+    {
+      "section": "Treatment of Acute Stroke: Thrombolysis and Mechanical Thrombectomy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Alteplase and tenecteplase do not cross the placenta, and case reports suggest good fetal outcomes after treatment; however, data on tenecteplase use in pregnancy remain limited.",
+      "page": null
+    },
+    {
+      "section": "Treatment of Acute Stroke: Thrombolysis and Mechanical Thrombectomy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Current guidelines recommend mechanical thrombectomy for select large-vessel occlusions, which may be used alone or in combination with thrombolytics. For pregnant patients, a transradial approach is preferred for endovascular procedures whenever possible. Continuous fetal monitoring should be strongly considered during neurosurgical or endovascular procedures in the third trimester, with preparation for urgent delivery should a maternal or fetal indication arise.",
+      "page": null
+    },
+    {
+      "section": "Treatment of Acute Stroke: ICH and SAH",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Management of hemorrhagic stroke in pregnancy requires a multidisciplinary approach. When brain arteriovenous malformations or aneurysms are present, individualized delivery planning and neurosurgical consultation are critical. A ruptured aneurysm can be secured by craniotomy clipping or coil embolization; if suitable, coil embolization is less stressful for the mother and fetus, and transradial approaches may reduce fetal radiation exposure. In arteriovenous malformation-related hemorrhage, embolization or surgical obliteration may be necessary during the second or third trimester or postponed until after delivery, depending on lesion severity and maternal stability.",
+      "page": null
+    },
+    {
+      "section": "Delivery Considerations After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A multidisciplinary team including maternal-fetal medicine, neurology/neurocritical care, anesthesiology, neonatology, and nursing is essential to optimize care for pregnant patients who deliver while recovering from an acute stroke. Stabilization of the mother takes precedence over delivery unless the delivery is necessary to support maternal resuscitation, such as resuscitative cesarean delivery in the setting of maternal deterioration or cardiac arrest.",
+      "page": null
+    },
+    {
+      "section": "Delivery Considerations After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Blood pressure fluctuations can worsen outcomes in the immediate poststroke period for both ischemic and hemorrhagic strokes; therefore close hemodynamic monitoring and strict adherence to blood pressure targets are critical. Patients with more remote stroke histories may be evaluated prenatally by the appropriate specialists in the outpatient setting, with telemedicine consultations as needed, to determine an appropriate plan for delivery.",
+      "page": null
+    },
+    {
+      "section": "Delivery Considerations After Stroke: Timing of Delivery",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke alone is not an indication for immediate delivery. If the maternal condition is stable and the fetus is preterm, continuation of pregnancy is preferred to allow fetal maturation. However, if maternal neurological or cardiovascular status deteriorates, expedited delivery may be warranted. In patients with hypertensive disorders of pregnancy, delivery timing should follow standard obstetric indications and be guided by maternal benefit, as well as fetal benefit once the mother is stable.",
+      "page": null
+    },
+    {
+      "section": "Delivery Considerations After Stroke: Mode of Delivery",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Vaginal delivery is preferred when feasible because it avoids the surgical risks and hemodynamic stress associated with cesarean delivery. Epidural analgesia is beneficial for minimizing pain-induced blood pressure spikes. Assisted vaginal delivery with vacuum or forceps may be considered to shorten the second stage and reduce the Valsalva effort in patients for whom pushing could pose a risk (eg, cervical artery dissection or large stroke with mass effect).",
+      "page": null
+    },
+    {
+      "section": "Delivery Considerations After Stroke: Mode of Delivery",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cesarean delivery should be reserved for standard obstetric indications (eg, nonreassuring fetal status, arrest of labor) or when specific conditions preclude labor such as large infarct, active intracranial hemorrhage, elevated intracranial pressure, or recent neurosurgical intervention when straining is contraindicated and assisted vaginal delivery is not possible.",
+      "page": null
+    },
+    {
+      "section": "Delivery Considerations After Stroke: Anesthesia Considerations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Neuraxial anesthesia (epidural or spinal) is generally safe in patients with ischemic stroke without coagulopathy. In hemorrhagic stroke with increased intracranial pressure or in patients receiving anticoagulation, careful risk assessment is needed because of the potential for spinal hematoma. General anesthesia may increase blood pressure variability and cerebral injury, necessitating close hemodynamic monitoring. Patients taking aspirin may receive neuraxial anesthesia; those on anticoagulation require timing review of their last dose and coagulation status.",
+      "page": null
+    },
+    {
+      "section": "Delivery Considerations After Stroke: Postpartum Monitoring and Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Close monitoring for pregnant or postpartum patients is suggested for at least 24 to 72 hours after an acute stroke in a high-acuity setting (intensive care unit or step-down unit). Blood pressures should be tightly controlled to prevent hypotension and hypertension, and blood pressure targets may be individualized according to the type of stroke.",
+      "page": null
+    },
+    {
+      "section": "Delivery Considerations After Stroke: Postpartum Monitoring and Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Postpartum patients with stroke may be at higher risk for cerebral vasospasm, especially those with preeclampsia, reversible cerebral vasoconstriction syndrome, recent subarachnoid hemorrhage, or recent mechanical thrombectomy. We suggest avoiding sympathomimetics, serotonergic medications, and ergot derivatives (eg, methylergonovine) in these patients if possible and monitoring for recurrent neurological symptoms, including severe headache or focal neurological deficits.",
+      "page": null
+    },
+    {
+      "section": "Stroke Recovery: Rehabilitation Considerations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Depending on the type and severity of stroke, at least one-third of pregnant or postpartum patients will experience residual deficits, including physical impairments, cognitive challenges, and psychosocial challenges such as depression or anxiety, compounded by the demands of new parenthood. A population-based cohort study from Finland found that 90% of maternal stroke survivors were functionally independent as measured by the modified Rankin Scale, highlighting the potential for recovery.",
+      "page": null
+    },
+    {
+      "section": "Stroke Recovery: Rehabilitation Considerations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Current guidelines for stroke rehabilitation recommend a multidisciplinary team approach including vascular neurology, stroke nursing, physical therapy, occupational therapy, speech-language pathology, psychology, nutrition, social work, and physiatry. Engaging family members, caregivers, and support networks in rehabilitation planning and goal setting is important. Although early and intensive rehabilitation improves functional recovery, postpartum patients may face barriers such as separation from their newborn, and these factors should be considered when planning discharge and follow-up care.",
+      "page": null
+    },
+    {
+      "section": "Stroke Recovery: Rehabilitation Considerations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Longitudinal follow-up care with a vascular neurologist is important to support recovery. Screening for poststroke complications common in younger adults, such as cognitive impairments, lethargy, and seizures, can support more compatible recovery.",
+      "page": null
+    },
+    {
+      "section": "Stroke Recovery: Lactation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Breastfeeding and pumping breastmilk are often feasible for lactating stroke survivors but may require adaptations; collaboration with physical therapy, occupational therapy, and lactation specialists can help ensure success. When prescribing secondary stroke prevention medications, clinicians should consider the patient's lactation goals, and shared decision-making is essential. Most stroke-related medications, including antiseizure medications and some anticoagulants, are compatible with breastfeeding.",
+      "page": null
+    },
+    {
+      "section": "Stroke Recovery: Contraception",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Estrogen-containing contraceptives (pill, patch, ring) are associated with an increased stroke risk, particularly in individuals with additional risk factors such as tobacco use, hypertension, diabetes, hypercholesterolemia, migraines, obesity, and thrombophilia. Progestin-only methods (oral, intrauterine device, or implant) have not been shown to significantly increase the risk of arterial or venous thrombosis or subsequent stroke. Nonhormonal options such as a copper intrauterine device or barrier methods may also be considered.",
+      "page": null
+    },
+    {
+      "section": "Stroke Recovery: Anxiety, Depression, Sexual Dysfunction, and Sleep Disturbances",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Routine screening with validated tools (eg, General Anxiety Disorder-7, Patient Health Questionnaire-9, Edinburgh Postnatal Depression Scale) for anxiety and depression is suggested. We advise screening for insomnia, restless legs, obstructive sleep apnea, and other sleep disorders in pregnant and postpartum stroke survivors. Sexual dysfunction affects more than half of stroke survivors but is often overlooked; addressing sexual health and intimacy concerns can improve quality of life.",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The disproportionate burden of stroke on high-risk populations, particularly those with hypertensive disorders of pregnancy and preexisting comorbidities and those from historically marginalized communities, underscores the urgent need for equitable, evidence-based care models. Continued research, including inclusive clinical trials, is urgently needed to refine stroke risk assessment, to expand treatment options, and to improve maternal outcomes.",
+      "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

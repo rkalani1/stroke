@@ -9,12 +9,278 @@
   "pmid": "38380638",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: GRADE.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "A quarter of ischaemic strokes are lacunar subtype, typically neurologically mild and usually resulting from intrinsic cerebral small vessel pathology, with risk-factor profiles and outcome rates differing from other stroke subtypes. This guideline provides evidence-based recommendations for management of lacunar ischaemic stroke.",
+      "section": "PICO 1: Thrombolytic treatment in suspected lacunar ischaemic stroke",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "We suggest that patients with suspected acute lacunar ischaemic stroke should be assessed for and receive treatment with 0.9 mg/kg alteplase according to current guidelines for the treatment of acute ischaemic stroke, since the limited data available suggest that the outcomes for patients with lacunar ischaemic stroke are consistent with the overall results of alteplase trials.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Thrombolysis - Expert consensus statement 1 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Twelve of twelve MWG members agreed that in patients with suspected acute lacunar ischaemic stroke, with no contraindication to thrombolytic treatment according to current clinical guidelines for thrombolytic treatment (including wake up stroke), there is no evidence for withholding thrombolytic treatment. Therefore these patients should receive intravenous alteplase at standard dose (0.9 mg/kg) as quickly as possible according to current clinical guidelines.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Thrombolysis - Expert consensus statement 2 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "Twelve of 12 MWG members agreed that in patients with suspected acute lacunar ischaemic stroke there are insufficient data to support use of thrombolytic drugs other than alteplase, or a lower dose of alteplase, at the present time.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Acute antiplatelet treatment",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with suspected acute lacunar ischaemic stroke, there is continued uncertainty about a specific combination of antiplatelet therapy over monotherapy. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Acute antiplatelet treatment - Expert consensus statement 1 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Twelve of 12 experts agree to the statement that in patients with suspected lacunar ischaemic stroke, initiation of antiplatelet therapy should be started as soon as possible after stroke onset.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Immediate antihypertensive treatment (BP <220/110 mmHg, no thrombolysis)",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In hospitalised patients with suspected acute lacunar ischaemic stroke and BP <220/110 mmHg, not treated with intravenous thrombolysis, we suggest against the routine use of blood pressure lowering agents in the hyperacute phase, unless this is necessary for a specific comorbid condition.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Blood pressure during intravenous thrombolysis",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with suspected acute lacunar ischaemic stroke undergoing intravenous thrombolysis we suggest following the same guideline as in acute ischaemic stroke at large, that is, maintaining BP below 185/110 mmHg before bolus and below 180/105 mmHg after bolus, and for 24 hours after alteplase infusion.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Stopping versus continuing prior blood pressure lowering therapy",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with suspected acute lacunar ischaemic stroke there is continued uncertainty over the benefits and risks of temporarily stopping versus continuing previous BP lowering therapy. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Blood pressure - Expert consensus statement 1 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "Twelve of twelve MWG members agreed that there is insufficient evidence at present to provide a precise timeframe during which BP lowering agents should be avoided in patients with suspected acute lacunar ischaemic stroke. Based on current limited evidence, blood pressure lowering therapy should be avoided for at least 24 hours after symptom onset.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Blood pressure - Expert consensus statement 2 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "When antihypertensive drugs need to be used in patients with suspected acute lacunar ischaemic stroke undergoing intravenous thrombolysis and with BP >180/105 mmHg, twelve of 12 MWG members agreed that there is no advantage/disadvantage of one antihypertensive medication over another, hence any antihypertensive drug may be used, as long as blood pressure is closely monitored.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Blood pressure - Expert consensus statement 3 (11/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Eleven of twelve MWG members agreed that in patients with suspected acute lacunar ischaemic stroke not treated with intravenous thrombolysis and blood pressure >220/120 mmHg, careful blood pressure reduction (<15% systolic blood reduction in 24 hours) is reasonable. No specific blood pressure lowering agent can be recommended.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Progressive symptoms (early neurological deterioration, capsular warning syndrome)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "There is continued uncertainty regarding intervention with antiplatelets, anticoagulants, thrombolysis or other agents in patients with suspected lacunar ischaemic stroke and progressive symptoms, including early neurological deterioration, stuttering/fluctuating symptoms and capsular warning syndrome. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Progressive symptoms - Expert consensus statement 1 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Twelve of 12 MWG members agreed that in patients with suspected lacunar ischaemic stroke and progressive symptoms, there is no evidence to recommend any particular antiplatelet regimen (intensive or single), BP management regimen (raising or lowering), rt-PA, anticoagulation, statin, or other treatment. (Statement of absent evidence in either direction - it does not recommend for or against any of these treatments.)",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Progressive symptoms - Expert consensus statement 2 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Twelve of 12 MWG members agreed that patients with suspected lacunar ischaemic stroke and progressive symptoms should be included in all trials in acute lacunar ischaemic stroke but identified as a specific subgroup with prespecified planned analysis of the treatment effect in this subgroup.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Progressive symptoms - Expert consensus statement 3 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Twelve of 12 MWG members agreed that in patients with suspected lacunar ischaemic stroke and progressive symptoms, there is an urgent need to agree a consensus definition for progressive symptoms.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Magnesium for acute treatment",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with suspected acute lacunar ischaemic stroke, there is continued uncertainty over the benefits and risks of magnesium for acute treatment. (Quality of evidence: Low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Cilostazol for acute treatment",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with suspected acute lacunar ischaemic stroke, there is continued uncertainty over the benefits and risks of cilostazol for acute treatment. (Quality of evidence: Low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Glyceryl trinitrate",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In patients with acute lacunar ischaemic stroke, we suggest against the use of glyceryl trinitrate to reduce dependency.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Therapeutic low molecular weight heparin/heparinoid",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In patients with acute lacunar ischaemic stroke, we recommend against the use of therapeutic LMW heparin/heparinoid to reduce dependency. (Strength of recommendation as printed: Weak against intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Xueshuantong",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with acute lacunar ischaemic stroke, there is continued uncertainty over the benefits and risks of Xueshuantong to reduce dependency. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Other acute agents",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the absence of RCTs, we cannot make recommendations on the use of any other agents, such as phosphodiesterase-3 inhibitors, anti-inflammatory agents, anticoagulants, nitric oxide donors, phosphodiesterase-5 inhibitors or otherwise not mentioned in PICO 1-4, for acute treatment in patients with lacunar ischaemic stroke, to reduce any recurrent stroke, recurrent ischaemic stroke, dependency, death, cognitive impairment or dementia, haemorrhagic stroke, MACE, mobility or gait disorder, and mood disorders. (Quality of evidence: not assigned; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Long-term antiplatelet treatment",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In patients with suspected lacunar ischaemic stroke, for secondary prevention of long-term adverse outcomes, we recommend long term single antiplatelet therapy with aspirin or clopidogrel from 2-4 weeks after stroke onset. (Strength of recommendation as printed: Weak for intervention.)",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Long-term antiplatelet treatment - Expert consensus statement 1 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with suspected lacunar ischaemic stroke twelve of 12 MWG members recommend against the use of long-term (defined as more than 2-4 weeks) dual or triple antiplatelet therapy. Instead, single antiplatelet therapy should be used as per the Evidence Based Recommendation, unless other conditions warrant a combination of these medications.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Long-term antiplatelet treatment - Expert consensus statement 2 (11/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with suspected lacunar ischaemic stroke, eleven of 12 MWG members agreed that the current evidence was inadequate to recommend routine use of cilostazol to prevent adverse long term outcomes.",
+      "page": null
+    },
+    {
+      "section": "PICO 7: Long-term antihypertensive treatment",
+      "classOfRec": "Strong",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with suspected lacunar ischaemic stroke we recommend the use of antihypertensive treatment to prevent recurrent stroke and MACE.",
+      "page": null
+    },
+    {
+      "section": "PICO 7: Long-term antihypertensive treatment - Expert consensus statement 1 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Twelve of twelve MWG members suggest that BP should be appropriately monitored and well controlled, when possible through use of out of office blood pressure measurements. We cannot advise any specific antihypertensive treatment.",
+      "page": null
+    },
+    {
+      "section": "PICO 7: Long-term antihypertensive treatment - Expert consensus statement 2 (11/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Eleven of twelve MWG members agree that aiming for BP <130/80 mmHg as generally recommended for patients with previous ischaemic stroke or TIA may be reasonable, but that drastic BP reductions and important BP variability should be avoided, probably targeting SBP between 125 and 130 mmHg and DBP between 70 and 80 mmHg.",
+      "page": null
+    },
+    {
+      "section": "PICO 8: Lipid lowering agents",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "There is continued uncertainty regarding the effect of lipid lowering specific to lacunar stroke. However we recognise that lipid lowering is effective in reducing clinically adverse outcomes in patients with undifferentiated ischaemic stroke. (Quality of evidence: Low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 8: Lipid lowering - Expert consensus statement 1 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Twelve of 12 MWG members agreed that patients with lacunar ischaemic stroke should receive lipid lowering therapy given there is some evidence of benefit and no clear evidence of harm.",
+      "page": null
+    },
+    {
+      "section": "PICO 9: Lifestyle interventions",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with lacunar stroke, there is continued uncertainty to indicate that any specific lifestyle interventions prevent adverse clinical outcomes. (Quality of evidence: Very low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 9: Lifestyle interventions - Expert consensus statement 1 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "Despite lack of direct evidence, twelve of 12 MWG members suggest that it is advisable to promote healthy lifestyle modifications in patients with lacunar stroke as recommended in secondary prevention for stroke and VCI. These include regular physical exercise, maintaining healthy body weight, avoiding smoking and excess alcohol, and eating a healthy balanced diet with low sodium intake.",
+      "page": null
+    },
+    {
+      "section": "PICO 10: Other agents for secondary prevention",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "There is continued uncertainty on the use of any other agents, such as phosphodiesterase-3 inhibitors, anti-inflammatory agents, anticoagulants, nitric oxide donors, phosphodiesterase-5 inhibitors or otherwise not mentioned in PICO 6-8, for secondary prevention in patients with lacunar ischaemic stroke, to reduce recurrent ischaemic stroke, death, cognitive impairment or dementia, haemorrhagic stroke, MACE, mobility or gait disorder, and mood disorders. (Quality of evidence: Low; Strength of recommendation: not assigned.)",
+      "page": null
+    },
+    {
+      "section": "PICO 10: Secondary prevention - Expert consensus statement 1 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with lacunar ischaemic stroke without AF, twelve of 12 MWG members recommend against the use of anticoagulation for secondary prevention, if there is no other indication.",
+      "page": null
+    },
+    {
+      "section": "PICO 10: Secondary prevention - Expert consensus statement 2 (12/12)",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with lacunar ischaemic stroke and AF, twelve of 12 MWG members recommend the use of anticoagulation for secondary prevention. The evidence for efficacy of anticoagulants over antiplatelet is strong in patients with AF, overruling stroke subtype. However, since the risk of ICH is increased in patients with lacunar stroke and severe SVD, we recommend strict risk factors control.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }
