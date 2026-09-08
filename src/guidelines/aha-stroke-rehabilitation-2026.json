@@ -1,0 +1,40 @@
+{
+  "id": "aha-stroke-rehabilitation-2026",
+  "title": "2026 Guideline for Adult Stroke Rehabilitation and Recovery: A Guideline From the American Heart Association and American Stroke Association",
+  "shortTitle": "2026 AHA/ASA Stroke Rehabilitation Guideline",
+  "doi": "10.1161/STR.0000000000000536",
+  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000536",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42657476/",
+  "pmid": "42657476",
+  "society": "AHA/ASA",
+  "recommendations": [
+    {
+      "section": "Source not machine-readable",
+      "classOfRec": "Statement",
+      "classNote": "Recommendations not machine-readable",
+      "levelOfEvidence": "Ungraded",
+      "text": "The 27 August 2026 AHA/ASA guideline is confirmed by AHA and PubMed (PMID 42657476; DOI 10.1161/STR.0000000000000536). Full recommendation tables could not be retrieved: the publisher blocked full-text/PDF access in this review. Official chapter resources provide selected key recommendations without a complete graded inventory. No complete extraction or clinical-currentness claim is made; the full 2026 primary article is required to finish this record.",
+      "page": null
+    }
+  ],
+  "extractionStatus": "source-not-machine-readable",
+  "extractionNote": "The 27 August 2026 AHA/ASA guideline is confirmed by AHA and PubMed (PMID 42657476; DOI 10.1161/STR.0000000000000536). Full recommendation tables could not be retrieved: the publisher blocked full-text/PDF access in this review. Official chapter resources provide selected key recommendations without a complete graded inventory. No complete extraction or clinical-currentness claim is made; the full 2026 primary article is required to finish this record.",
+  "documentType": "guideline",
+  "gradingSystem": "ungraded",
+  "coverage": {
+    "status": "source-unavailable",
+    "scope": "Full formal recommendations and good-practice statements await the primary article",
+    "checkedAt": "2026-09-06",
+    "sourceRecommendationCount": null,
+    "sourceConsensusCount": null,
+    "sourceSections": []
+  },
+  "sourceAccess": {
+    "identityVerifiedAt": "2026-09-06",
+    "officialGuidelineHub": "https://professional.heart.org/en/science-news/2026-guideline-for-adult-stroke-rehabilitation-and-recovery",
+    "officialSelectedChapterResources": "https://www.stroke.org/en/professionals/stroke-resource-library/post-stroke-care/professional-rehab-resources",
+    "fullTextStatus": "Publisher retrieval blocked; no verified full recommendation inventory available",
+    "requiredNextStep": "Obtain the full 2026 primary guideline PDF and reconcile every graded and good-practice statement."
+  }
+}
