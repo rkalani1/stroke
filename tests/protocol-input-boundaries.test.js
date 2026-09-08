@@ -38,6 +38,9 @@ const ischemicProtocolsSnapshot = fs.readFileSync(
 );
 
 function sourceBetween(source, startMarker, endMarker) {
+  // Git's Windows checkout may use CRLF; source markers describe logical lines.
+  // Keep both marker-existence assertions and all behavioral/rendered checks.
+  source = source.replace(/\r\n/g, '\n');
   const start = source.indexOf(startMarker);
   const end = source.indexOf(endMarker, start + startMarker.length);
   expect(start, `missing source marker: ${startMarker}`).toBeGreaterThanOrEqual(0);

@@ -10,12 +10,182 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The aim of the present European Stroke Organisation guideline is to provide clinically useful evidence-based recommendations on the management of patients with intracranial atherosclerotic disease (ICAD). The guidelines were prepared following the Standard Operational Procedure of the European Stroke Organisation guidelines and according to GRADE methodology.",
+      "section": "PICO 1: Screening for intracranial atherosclerosis in stroke-free subjects",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Low certainty",
+      "text": "In adult stroke-free subjects, the benefits of screening programs to detect the presence of asymptomatic intracranial atherosclerosis are uncertain and therefore we cannot make a recommendation regarding routine screening for ICAD. (Quality of evidence: Low; Strength of recommendation: not assigned)",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Screening for intracranial atherosclerosis - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "Against",
+      "levelOfEvidence": "Ungraded",
+      "text": "Screening for asymptomatic ICAD in stroke-free individuals to help assess their vascular risk is not suggested as a prevention strategy.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: Screening for intracranial atherosclerosis - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "The detection of asymptomatic intracranial atherosclerosis or calcification as an incidental finding on neuroimaging exams implies a significantly higher risk for future major vascular events including stroke. Therefore, patients with asymptomatic intracranial atherosclerosis or calcification may need to be recognized as harboring a high vascular risk.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Antiplatelet treatment in asymptomatic intracranial atherosclerosis",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In subjects with asymptomatic intracranial atherosclerosis, whether antiplatelet treatment lowers the risk of MACE including ischemic stroke is still uncertain. Therefore, we cannot make a recommendation regarding antiplatelet therapy. (Quality of evidence: not assigned; Strength of recommendation: not assigned)",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Antiplatelet treatment in asymptomatic ICAD - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest antiplatelet treatment in subjects with asymptomatic intracranial atherosclerosis after appropriate assessment of the benefit/risk profile on an individual basis. As factors favoring the indication of antiplatelet therapy, we suggest to consider: high or very high vascular risk, presence of severe and/or multiple intracranial stenosis, progression of ICAD, and detection of covert infarctions within the brain territory distal to an intracranial stenosis. As factors against, we suggest to consider those associated with an increased systemic and/or intracranial bleeding risk under antiplatelet therapy.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Glycoprotein IIb/IIIa inhibitors after mechanical thrombectomy for ICAD-related occlusion",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients undergoing mechanical thrombectomy for an acute ischemic stroke due to an ICAD-related intracranial arterial occlusion, the benefit of the additional infusion of glycoprotein IIb/IIIa inhibitors after initial mechanical thrombectomy remains uncertain. Therefore, we cannot make a recommendation regarding the routine use of glycoprotein IIb/IIIa inhibitors in this context based on current evidence. We suggest enrolling patients in a dedicated randomized-controlled clinical trial whenever possible. (Quality of evidence: Very low; Strength of recommendation: not assigned)",
+      "page": null
+    },
+    {
+      "section": "PICO 3: Glycoprotein IIb/IIIa inhibitors after thrombectomy - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that if inclusion in a dedicated randomized-controlled clinical trial is not possible, glycoprotein IIb/IIIa inhibitors may be used as a rescue strategy after assessing the bleeding risk for patients with an acute ischemic stroke suspected to be caused by an underlying ICAD in case of unsuccessful mechanical thrombectomy.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Angioplasty and/or stenting after mechanical thrombectomy for ICAD-related occlusion",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients undergoing mechanical thrombectomy for an acute ischemic stroke due to an ICAD-related intracranial arterial occlusion, whether angioplasty and/or stenting after initial mechanical thrombectomy improves outcome remains unknown. Therefore, we cannot make a recommendation regarding the use of angioplasty and/or stenting in this context based on current evidence. We suggest enrolling patients in a dedicated randomized-controlled clinical trial whenever possible. (Quality of evidence: Very low; Strength of recommendation: not assigned)",
+      "page": null
+    },
+    {
+      "section": "PICO 4: Angioplasty and/or stenting after thrombectomy - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that if inclusion in a dedicated randomized-controlled clinical trial is not possible, angioplasty and/or stenting may be used as a rescue therapy after unsuccessful mechanical thrombectomy in patients with an acute ischemic stroke suspected to be caused by underlying ICAD. This suggestion needs to be considered with caution, since the referred studies with angioplasty and/or stenting in ICAD-related LVO were focused mainly on Asian patients and their results might not necessarily be generalizable to other populations.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Permissive or induced hypertension in high-grade ICAD with haemodynamic compromise",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In patients with an acute ischemic stroke or transient ischemic attack related to high-grade intracranial atherosclerosis causing severe hemodynamic compromise, we cannot make a recommendation regarding the use of permissive or induced hypertension over conventional blood pressure management (target normotension) during the acute phase, based on current evidence. (Quality of evidence: Moderate; Strength of recommendation: not assigned)",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Blood pressure management - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with high-grade symptomatic intracranial stenosis and clinical or imaging signs of hemodynamic compromise we suggest considering induced arterial hypertension as a rescue treatment option, only after other more conservative measures to improve cerebral hemodynamics have been tried.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: Blood pressure management - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In the absence of specific evidence for ICAD patients, we suggest staying aligned with the expert consensus statement of ESO general guidelines on acute BP management. In patients with acute ischemic stroke not treated with reperfusion therapies (intravenous thrombolysis or mechanical thrombectomy) and with clinical deterioration where a hemodynamic mechanism is suspected or shown to be directly responsible for the deterioration, we suggest: stopping existing blood pressure lowering therapy; administering intravenous fluids; and introducing non-pharmacological procedures to raise blood pressure, before considering careful use of vasopressor agents to increase blood pressure with close monitoring of blood pressure values.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: Anticoagulant versus antiplatelet therapy in high-grade intracranial atherostenosis",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In patients with an ischemic stroke or transient ischemic attack due to high-grade stenosis related to ICAD we recommend against oral anticoagulation over aspirin, unless there is another formal indication for it.",
+      "page": null
+    },
+    {
+      "section": "PICO 7: Dual versus single antiplatelet therapy in symptomatic intracranial atherostenosis",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with an ischemic stroke or transient ischemic attack related to intracranial stenosis due to ICAD we suggest dual antiplatelet therapy over single antiplatelet therapy. Regarding the duration of the dual antiplatelet therapy, we refer to the additional information.",
+      "page": null
+    },
+    {
+      "section": "PICO 7: Duration of dual antiplatelet therapy - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with symptomatic ICAD, the optimal duration of DAPT is not clear according to current evidence. We suggest prolonging DAPT up to day 90 after the index event.",
+      "page": null
+    },
+    {
+      "section": "PICO 8: Angioplasty and/or stenting plus best medical treatment for high-grade intracranial atherostenosis",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with an ischemic stroke or transient ischemic attack related to a high-grade stenosis due to ICAD, we recommend against angioplasty and/or stenting added to best medical treatment as first-line treatment.",
+      "page": null
+    },
+    {
+      "section": "PICO 8: Angioplasty and/or stenting - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest considering endovascular treatment (angioplasty and/or stenting) as a rescue therapy in selected patients with symptomatic high-grade ICAS after clinical recurrence despite best medical treatment.",
+      "page": null
+    },
+    {
+      "section": "PICO 9: Neurosurgical intervention plus best medical treatment for high-grade intracranial atherostenosis",
+      "classOfRec": "Strong",
+      "classNote": "Against",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with an ischemic stroke or transient ischemic attack related to a high-grade stenosis due to ICAD, we recommend against neurosurgical procedures.",
+      "page": null
+    },
+    {
+      "section": "PICO 10: Remote ischemic pre-conditioning plus best medical treatment",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with an ischemic stroke or transient ischemic attack related to a high-grade stenosis due to ICAD, we suggest considering ischemic pre-conditioning as an adjuvant to best medical treatment. We suggest enrolling patients in a dedicated randomized-controlled clinical trial whenever possible.",
+      "page": null
+    },
+    {
+      "section": "PICO 11: Aggressive vascular risk factor control including lipid management",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with an ischemic stroke or transient ischemic attack related to an intracranial atherostenosis, we suggest aggressive vascular risk factor control, including lipid management and lifestyle changes (i.e. increased physical activity), in order to improve outcomes, although uncertainty exists regarding target levels of BP and LDL in this specific population.",
+      "page": null
+    },
+    {
+      "section": "PICO 11: Vascular risk factor control - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that patients with symptomatic ICAS should be considered as a very-high-risk population and target levels of LDL cholesterol should be achieved according to ESC/EAS guidelines (LDL < 55 mg/dl).",
+      "page": null
+    },
+    {
+      "section": "PICO 11: Vascular risk factor control - Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that even in the subacute phase of stroke due to ICAS, strict BP control probably should be initiated to prevent recurrence and stenosis progression. Regarding the optimal BP target in ICAD patients, we refer the readers to ESO stroke secondary prevention guidelines, since there is no specific evidence-based recommendation for ICAD patients.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

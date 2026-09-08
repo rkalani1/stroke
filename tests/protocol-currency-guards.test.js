@@ -194,23 +194,32 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(JSON.stringify(genericMinute)).not.toMatch(/>=15 mL|or close|Pre-ICH mRS|GCS\s*</i);
   });
 
-  it('does not publish stale MIRROR registry mRS/GCS thresholds as settled criteria', () => {
-    expect(texts['src/app.jsx']).toMatch(/Premorbid mRS threshold must be verified against the active registry protocol/);
-    expect(texts['src/app.jsx']).toMatch(/GCS range must be verified against the active registry protocol/);
-    expect(texts['src/app.jsx']).not.toMatch(/Baseline mRS ≤2/);
-    expect(texts['src/app.jsx']).not.toMatch(/GCS ≥5/);
+  it('preserves verified MIRROR registry criteria without inventing a GCS threshold', () => {
+    // NCT04494295, checked 2026-09-06: >20 mL, NIHSS >5, baseline mRS <=2.
+    // Scope these assertions to the public trial profile; local Protocols criteria remain separate.
+    for (const file of ['src/app.jsx', 'app.js']) {
+      const start = texts[file].indexOf('MIRROR Registry');
+      const end = texts[file].indexOf('MR-PICS Study', start);
+      expect(start, `${file}: MIRROR trial profile exists`).toBeGreaterThanOrEqual(0);
+      expect(end, `${file}: MIRROR trial profile boundary exists`).toBeGreaterThan(start);
+      const profile = texts[file].slice(start, end)
+        .replace(/\\u([0-9a-f]{4})/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
+      expect(profile).toContain('NCT04494295');
+      expect(profile).toContain('Registry checked 2026-09-06');
+      expect(profile).toContain('Age >18');
+      expect(profile).toContain('ICH >20 mL');
+      expect(profile).toContain('NIHSS >5; baseline mRS ≤2');
+      expect(profile).toContain('within 24 hours of last known well');
+      expect(profile).toContain('full protocol and local review required');
+      expect(profile).not.toMatch(/GCS\s*(?:≥|>=|>|:|range)|5-15|9-15/);
+      expect(profile).not.toMatch(/Premorbid mRS 0-1|Volume threshold is version-sensitive/);
+    }
     expect(texts['src/institutional-protocols.js']).not.toMatch(/Premorbid mRS 0-1/);
     expect(texts['data/generic-protocols.json']).not.toMatch(/Premorbid mRS 0-1/);
     expect(texts['app.js']).not.toMatch(/Premorbid mRS 0-1/);
     expect(texts['src/institutional-protocols.js']).not.toMatch(/Baseline GCS:?\s*5-15/);
     expect(texts['data/generic-protocols.json']).not.toMatch(/Baseline GCS:?\s*5-15/);
     expect(texts['app.js']).not.toMatch(/Baseline GCS:?\s*5-15/);
-    expect(texts['src/app.jsx']).not.toMatch(/ICH volume >20mL/);
-    expect(texts['app.js']).not.toMatch(/ICH volume >20mL/);
-    expect(texts['app.js']).not.toMatch(/Baseline mRS ≤2/);
-    expect(texts['app.js']).not.toMatch(/GCS ≥5/);
-    expect(texts['src/app.jsx']).toMatch(/Volume threshold is version-sensitive and must be checked against the active registry protocol/);
-    expect(texts['app.js']).toMatch(/Volume threshold is version-sensitive and must be checked against the active registry protocol/);
   });
 
   it('does not publish private service-line sentinels on public surfaces', () => {
