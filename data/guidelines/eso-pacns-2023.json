@@ -9,12 +9,262 @@
   "pmid": "37903069",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: GRADE.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Guideline to assist clinicians in the diagnostic and treatment pathway for primary angiitis of the central nervous system, developed under ESO standard operating procedures and GRADE by a working group of vascular neurologists and allied specialists.",
+      "section": "PICO 1: CSF analysis for pleocytosis/hyperproteinorrachia in suspected PACNS — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with suspected PACNS, there is uncertainty over the utility of CSF examination for pleocytosis and/or hyperproteinorrachia as a diagnostic tool.",
+      "page": null
+    },
+    {
+      "section": "PICO 1: CSF analysis in suspected PACNS — Expert Consensus Statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For adults with a clinical suspicion of PACNS, we suggest CSF examination during the diagnostic workup to provide information relevant to the exclusion of conditions to be considered in the differential diagnosis (e.g. post-infectious vasculitis). CSF analyses should not be limited to determination of cell count and protein concentration. Normal CSF analyses cannot, by themselves, exclude the diagnosis of PACNS.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Predefined patterns of parenchymal abnormality on brain MRI — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with suspected PACNS there is uncertainty regarding the clinical utility of identifying predefined patterns of parenchymal signal change to improve the diagnostic accuracy of PACNS and for differentiating SV-PACNS from LV-PACNS.",
+      "page": null
+    },
+    {
+      "section": "PICO 2: Predefined patterns of parenchymal abnormality on brain MRI — Expert Consensus Statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with definite or probable PACNS, we suggest reporting neuroimaging findings in a standardized way, according to the described patterns of parenchymal involvement and contrast enhancement on MRI to collect relevant data prospectively. Given potential selection bias in those undergoing biopsy (i.e. those with tumefactive or contrast enhancing lesions), we suggest to be cautious in attributing some patterns (e.g. tumefactive patterns) to SV-PACNS or LV-PACNS.",
+      "page": null
+    },
+    {
+      "section": "PICO 3: MRI leptomeningeal enhancement in suspected PACNS — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –). No Expert Consensus Statement was issued for PICO 3.",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with suspected PACNS, the presence of leptomeningeal enhancement on MRI is not a specific neuroimaging sign and its role in increasing confidence in the diagnosis of PACNS and in differentiating between SV-PACNS and LV-PACNS is uncertain.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: CTA or MRA with a high-probability angiographic pattern versus DSA — Evidence-based recommendation",
+      "classOfRec": "Strong",
+      "classNote": "Against intervention (↓↓)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with suspected PACNS, we do not recommend using MRA routinely in place of DSA. No recommendations can be drawn for CTA.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: CTA or MRA versus DSA — Expert Consensus Statement 1",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The clinical utility of CTA in PACNS has not been formally compared to MRA and DSA although it is widely used in the assessment of cerebrovascular disorders. We suggest that it could be non-inferior to MRA if multislice (>128) technique is employed.",
+      "page": null
+    },
+    {
+      "section": "PICO 4: CTA or MRA versus DSA — Expert Consensus Statement 2",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "DSA has a higher sensitivity and specificity in detection of medium-sized vessel involvement in PACNS and it is less invasive than brain biopsy. It is suggested that DSA is considered in patients with clinical suspicion of PACNS, when the MRA/CTA are not diagnostic for a high probability pattern.",
+      "page": null
+    },
+    {
+      "section": "PICO 5: DSA in suspected PACNS with a normal MRA — Evidence-based recommendation",
+      "classOfRec": "Conditional",
+      "classNote": "For intervention (↑?)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In adults with suspected PACNS, a single study suggests that concordance of MRA and DSA in medium vessel involvement is globally low, so we suggest considering performing a DSA if the MRA is normal.",
+      "page": null
+    },
+    {
+      "section": "PICO 6: HRVWI-MRI versus DSA in probable LV-PACNS — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with probable LV-PACNS, there are insufficient data on improvement of diagnosis by using HRVWI-MRI to determine whether the technique improves the diagnostic accuracy of PACNS when used versus DSA.",
+      "page": null
+    },
+    {
+      "section": "PICO 7: Performing versus not performing HRVWI-MRI in suspected PACNS — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with suspected PACNS, there are insufficient data to assess the change in diagnostic accuracy of performing versus not performing HRVWI-MRI.",
+      "page": null
+    },
+    {
+      "section": "PICO 6 and 7: HRVWI-MRI — Expert Consensus Statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "HRVWI-MRI is a promising but not yet validated technique. We suggest that it should be investigated and validated in prospective multi-center trials. In the meantime, we suggest that use of HRVWI-MRI should be limited to expert centers and the interpretation of a positive finding should not be the sole neuroimaging modality supporting the diagnosis of PACNS.",
+      "page": null
+    },
+    {
+      "section": "PICO 8: High-probability angiographic pattern (DSA/CTA/MRA) versus biopsy in definite PACNS — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with definite PACNS there is uncertainty on the diagnostic utility of comparing the presence of a high probability angiographic pattern with any technique (DSA/CTA/MRA) with biopsy for diagnostic accuracy.",
+      "page": null
+    },
+    {
+      "section": "PICO 8: Angiographic pattern versus biopsy — Expert Consensus Statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although the interpretation of data is biased since patients with angiographic demonstration of vascular stenosis are less likely addressed for CNS biopsy, we suggest to propose CNS biopsy in patients with suspicion of SV-PACNS, i.e. with normal angiogram. We suggest that the possibility of medium vessel involvement is addressed using DSA, even in patients with normal MRA or CTA, before brain biopsy, unless biopsy is considered to have additional clinical utility in the exclusion of differential diagnoses. In patients with vascular abnormalities on DSA, CTA or MRA, we suggest that the possibility of a CNS biopsy should be individually discussed in a multidisciplinary team with relevant expertise and/or an expert in the diagnosis and management of PACNS.",
+      "page": null
+    },
+    {
+      "section": "PICO 9: MRI leptomeningeal enhancement versus biopsy in definite PACNS — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with definite PACNS there is persistent uncertainty regarding the effect on diagnostic accuracy of the presence of MRI leptomeningeal enhancement (LME) versus biopsy.",
+      "page": null
+    },
+    {
+      "section": "PICO 9: Leptomeningeal enhancement versus biopsy — Expert Consensus Statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest proceeding to biopsy where there is clinical suspicion of PACNS, leptomeningeal enhancement and normal findings on DSA. If there is no leptomeningeal enhancement, we suggest that targeted biopsy of gadolinium-enhanced lesions may increase the diagnostic accuracy of the biopsy in comparison to blind biopsy.",
+      "page": null
+    },
+    {
+      "section": "PICO 10: Autopsy versus biopsy alone in definite PACNS — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with definite PACNS there is uncertainty regarding the diagnostic accuracy of biopsy when compared with autopsy findings.",
+      "page": null
+    },
+    {
+      "section": "PICO 10: Autopsy versus biopsy — Expert Consensus Statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest proposing autopsy in patients who have had a fatal outcome in the context of a high suspicion of PACNS and inconclusive investigations in life, e.g. a non-diagnostic brain biopsy. Review of these cases may yield new knowledge to improve future management of the condition.",
+      "page": null
+    },
+    {
+      "section": "PICO 11: Lymphocytic versus granulomatous/necrotizing histological pattern and outcome — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with definite PACNS, there is uncertainty regarding the prognostic significance of the lymphocytic histological pattern versus a granulomatous/necrotizing histological pattern.",
+      "page": null
+    },
+    {
+      "section": "PICO 11: Histological pattern and prognosis — Expert Consensus Statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Acknowledging the low quality of evidence, we suggest that lymphocytic vasculitis seems to be a relatively more benign condition characterized by lower disability and mortality when compared with necrotizing and granulomatous vasculitis. Moreover, we suggest that the histological pattern should not be used to guide treatment decisions.",
+      "page": null
+    },
+    {
+      "section": "PICO 12: Glucocorticoids plus an immunosuppressive drug versus glucocorticoids alone — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with probable/definite PACNS there is uncertainty regarding the clinical benefit associated with use of immunosuppressive drugs in addition to glucocorticoids.",
+      "page": null
+    },
+    {
+      "section": "PICO 12: Glucocorticoids plus immunosuppressant — Expert Consensus Statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Given the potential severity of PACNS, the relapsing course of the disease, and the well-known glucocorticoid-related side effects in long-term administration, we suggest consideration of adding an immunosuppressant to glucocorticoid therapy in most patients with PACNS. We also suggest that the treatment protocol should be discussed in a multidisciplinary team with relevant expertise and/or an expert in the diagnosis and management of PACNS. In this context, the use of glucocorticoids alone might be considered, in particular in milder disease phenotypes.",
+      "page": null
+    },
+    {
+      "section": "PICO 13: Mycophenolate mofetil plus glucocorticoids versus cyclophosphamide plus glucocorticoids — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with PACNS, there is uncertainty regarding the optimal induction therapy (CYC or MMF) to be used in conjunction with glucocorticoids.",
+      "page": null
+    },
+    {
+      "section": "PICO 13: Induction immunosuppression (MMF versus CYC) — Expert Consensus Statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In all patients with PACNS, we suggest commencing therapy with either CYC (orally or intravenously delivered) or MMF when an immunosuppressant agent is considered in the induction phase in conjunction with glucocorticoids. We suggest that the decision to start with CYC and glucocorticoids or MMF and glucocorticoids for initial therapy should be made based on the physician's experience, the severity of the disease and the patient's preferences. MMF should be considered for maintenance therapy to reduce the toxicity of long-term treatment with CYC.",
+      "page": null
+    },
+    {
+      "section": "PICO 14: Antiplatelet versus no antiplatelet therapy in probable/definite PACNS — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with PACNS, there is uncertainty regarding the routine use of antiplatelets.",
+      "page": null
+    },
+    {
+      "section": "PICO 14: Antiplatelet therapy — Expert Consensus Statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Aspirin may have a beneficial effect in PACNS due to a combined antithrombotic and anti-inflammatory effect and its possible complementary action with glucocorticoid therapy. In patients with large/medium vessel involvement, we suggest including aspirin therapy.",
+      "page": null
+    },
+    {
+      "section": "PICO 15: Long-term immunosuppression versus no long-term immunosuppression — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with probable/definite PACNS there is uncertainty regarding the use of long-term immunosuppression.",
+      "page": null
+    },
+    {
+      "section": "PICO 15: Maintenance immunosuppression — Expert Consensus Statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest initiating maintenance therapy when no recurrence has been registered after the induction therapy. We suggest continuing maintenance therapy for at least 2 years before considering cessation in patients without recurrences.",
+      "page": null
+    },
+    {
+      "section": "PICO 16: Intravenous thrombolysis in PACNS with acute ischaemic stroke — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with probable/definite PACNS and acute ischemic stroke, there is uncertainty regarding the use of IVT.",
+      "page": null
+    },
+    {
+      "section": "PICO 16: Intravenous thrombolysis — Expert Consensus Statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "IVT has been proven a powerful and safe treatment for acute ischemic stroke, and in the absence of absolute contraindications, we suggest considering IVT even in patients with a history of PACNS presenting with symptoms of acute ischemic stroke. In the absence of relevant data, we suggest adherence to the inclusion and exclusion criteria for IVT as per acute ischemic stroke.",
+      "page": null
+    },
+    {
+      "section": "PICO 17: Endovascular thrombectomy in PACNS with acute ischaemic stroke — no evidence-based recommendation possible (Quality of evidence: –; Strength of recommendation: –)",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In adults with probable/definite PACNS and acute ischemic stroke, there is uncertainty regarding the use of EVT.",
+      "page": null
+    },
+    {
+      "section": "PICO 17: Endovascular thrombectomy — Expert Consensus Statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Since large vessel occlusion is typically associated with devastating strokes and that in the hyperacute phase a different cause for the LVO-related stroke cannot be excluded, even in patients with known PACNS, we suggest that EVT is reasonable in patients with a history of PACNS presenting within the early or extended (by using advanced imaging) time windows for EVT.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

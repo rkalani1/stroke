@@ -10,12 +10,174 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Introduction",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Health care teams along the stroke recovery continuum have a responsibility to support care transitions and return to the community. Ideally, individualized care will consider patient and family preferences, best available evidence, and health care professional input. Person-centered care can improve patient-practitioner interactions through shared decision-making in which health professionals and institutions are sensitive to those for whom they provide care.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Clinical practice guidelines state that all members of health care teams working across the stroke recovery continuum have a responsibility to support successful transitions of care and return to the community after stroke; common pathways after acute stroke include direct discharge home by the acute hospital team, transfer from hospital to community-based rehabilitation, and transfer from the acute hospital team to other inpatient settings including inpatient rehabilitation.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Underrepresented racial and ethnic groups have a higher burden of stroke and experience worse outcomes, which may be due to a higher prevalence of risk factors, greater burden of recurrent stroke, and higher level of functional impairment after stroke, as well as health inequities and the negative consequences of structural racism.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "National surveys estimate 1 in 4 adults is caring for a community-residing family member or friend living with a disability; the greatest prevalence of caregiver burden was reported after a period of 6 to 12 months, highlighting the ongoing adjustment of care transitions after stroke.",
+      "page": null
+    },
+    {
+      "section": "Introduction - Person-centered care domain 1",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The mission, vision, values, leadership, and quality improvement of the system are aligned with patients' goals.",
+      "page": null
+    },
+    {
+      "section": "Introduction - Person-centered care domain 2",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Care is collaborative, coordinated, and accessible. Care is provided at the right time and in the right place.",
+      "page": null
+    },
+    {
+      "section": "Introduction - Person-centered care domain 3",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Care focuses on physical comfort and emotional well-being.",
+      "page": null
+    },
+    {
+      "section": "Introduction - Person-centered care domain 4",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patient and family preferences, values, cultural traditions, and socioeconomic conditions are respected and valued.",
+      "page": null
+    },
+    {
+      "section": "Introduction - Person-centered care domain 5",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patient and family are an expected part of the care team and play a role in decisions at the patient and system levels.",
+      "page": null
+    },
+    {
+      "section": "Introduction - Person-centered care domain 6",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Family presence is welcome in care settings and is encouraged and facilitated.",
+      "page": null
+    },
+    {
+      "section": "Introduction - Person-centered care domain 7",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Information is shared fully and in a timely manner so that patients and family members can make informed decisions.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The World Health Organization definition reflects a broader lens: people-centred care extends the concept of patient-centred care to individuals, families, communities and society, encompassing clinical encounters and including attention to the health of people in their communities and their crucial role in shaping health policy and health services.",
+      "page": null
+    },
+    {
+      "section": "Approach",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The writing group undertook a secondary analysis of the 17 randomized controlled trials included in the 2022 systematic review and meta-analysis by O'Callaghan and colleagues of support interventions at the transition from structured stroke services to independent living at home, evaluating the extent to which each intervention explicitly addressed the 7 domains of person-centered care.",
+      "page": null
+    },
+    {
+      "section": "Insights From Review",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All 17 included studies were randomized controlled trials from 8 geographic locations (China n=6, United Kingdom n=3, United States n=3, Australia, Netherlands, Thailand, Canada, and Hong Kong), with a total sample size of 8783, mean participant age ranging from 60 to 76 years, and female representation ranging from 17% to 63%.",
+      "page": null
+    },
+    {
+      "section": "Insights From Review",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Only 3 of the 17 studies specifically mentioned testing a patient-centered intervention in stroke transition care (COMPASS, MISTT, and Chen et al), 2 of which were funded by patient-centered outcome research grants; the authors of the remaining 14 articles did not explicitly state their intention to provide a patient- or person-centered intervention.",
+      "page": null
+    },
+    {
+      "section": "Insights From Review",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "No articles explicitly mentioned all 7 domains of person-centered care, and only 3 of 17 (reported as 17.7%) addressed 4 or more domains; one study explicitly stated the most domains with 5 of 7, whereas 4 articles had no explicit statements of person-centered domains in their methods. The domain of patient and family preferences, values, cultural traditions, and socioeconomic conditions being respected and valued had no explicit statements in any included article (0/17), although sufficient detail in 13 of 17 articles allowed an inference.",
+      "page": null
+    },
+    {
+      "section": "Discussion and Implications for Research and Practice - Delineation of Person-Centered Care Components in Reports of Interventions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The standard CONSORT system of reporting randomized controlled trial results does not include the domains of person-centered care, although CONSORT-Social and Psychological Interventions (2018) inquires about stakeholder involvement in intervention development and CONSORT-Equity (2017) asks for reporting on outcome relevance to the population and details on partnerships with the population and communities; the development of person-centered care operational definitions and a checklist for reporting person-centered care characteristics within studies is an important future research activity.",
+      "page": null
+    },
+    {
+      "section": "Discussion and Implications for Research and Practice - Delineation of Person-Centered Care Components in Reports of Interventions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Because few explicit statements captured the 7 domains, much of the writing group's determination relied on coding for inferred person-centeredness within the methods, which carries an increased potential for reviewer confirmation bias whereby readers may judge the presence or absence of person-centeredness according to their own training, assumptions, discipline, or position within the stroke system of care rather than content explicitly presented.",
+      "page": null
+    },
+    {
+      "section": "Discussion and Implications for Research and Practice - Transparent Reporting of Social and Cultural Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Data for ethnicity, support system, urban/rural status, and communication status were reported inconsistently across trials, making assessment of social determinants of health difficult; health care professionals and hospital systems must work to tailor care to account for this variability and to ensure that care is equitable and person centered, and integrating a patient's social context as part of person-centered care across the continuum of stroke care and transitions promotes person-centeredness and health equity for diverse and underrepresented racial and ethnic groups.",
+      "page": null
+    },
+    {
+      "section": "Discussion and Implications for Research and Practice - Specify the Role of Caregivers in Interventions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Details on caregiver engagement in the reviewed interventions were inconsistent, with some studies explicitly excluding caregivers, which does not align with the concept of person-centered care nor reflect current knowledge about the role and importance of caregivers in stroke transitions; the needs of caregivers who support people living with stroke must also be assessed and addressed for the mutual well-being of those affected by stroke, given the negative impact caregiving can have on caregiver well-being including depression, anxiety, and social restrictions, and a need remains to widely adopt standard clinical practices to prepare family members for the caregiving role.",
+      "page": null
+    },
+    {
+      "section": "Limitations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Limitations include the lack of operational definitions of person-centered care, which made objective assessment difficult and required the authors to use their professional understanding of the domains; reliance on a secondary analysis of a single prior systematic review, so that literature not included by O'Callaghan et al may have provided additional insights; and the exclusive inclusion of randomized controlled trials, whose structured reporting formats and word limits may have constrained explicit reporting of person-centered care domains.",
+      "page": null
+    },
+    {
+      "section": "Conclusion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is a need for explicit reporting of person-centered care domains, and future studies of interventions for stroke transitions in care would benefit from more explicitly delineating the extent to which the domains of person-centered care are addressed.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

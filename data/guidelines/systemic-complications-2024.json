@@ -9,28 +9,278 @@
   "pmid": "39633600",
   "recommendations": [
     {
-      "section": "Fever and Infection",
+      "section": "Introduction",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Monitor for poststroke fever, evaluate common infectious sources, and treat fever per current AIS/ICH/SAH guideline protocols.",
-      "page": 4
+      "levelOfEvidence": "Ungraded",
+      "text": "The reported frequency of poststroke systemic complications varies between 13.9% and 95%. A disproportionately high frequency of these events occurs shortly after a stroke, constitutes a leading cause of early stroke mortality, and is associated with long-term disability. Patients cared for in stroke units were more likely to have established processes of care to manage complications, had fewer complications, and had lower odds of severe disability or death.",
+      "page": null
     },
     {
-      "section": "Stroke-Associated Pneumonia",
+      "section": "Introduction",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Prevent stroke-associated pneumonia with early dysphagia screening, aspiration precautions, and oral hygiene; routine prophylactic antibiotics have not improved outcomes.",
-      "page": 4
+      "levelOfEvidence": "Ungraded",
+      "text": "The multicenter QASC randomized trial of protocol-based care targeting fever, hyperglycemia, and swallowing assessment across stroke units showed significantly better outcomes in the intervention compared with the routine care group, with an effect size comparable to that for intravenous thrombolysis.",
+      "page": null
     },
     {
-      "section": "Cardiac Complications",
+      "section": "Fever and Infections: Fever",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Screen for cardiac complications (ECG/telemetry, troponin when indicated) and manage arrhythmia or heart failure promptly during acute stroke care.",
-      "page": 5
+      "levelOfEvidence": "Ungraded",
+      "text": "Elevated body temperature is observed in 60% of patients with acute ischemic stroke to 90% of patients with intracerebral hemorrhage within 72 hours of stroke onset, and epidemiological data indicate a consistent relationship between magnitude of body temperature elevation and poor outcomes in both ischemic and hemorrhagic strokes. Patients with greater stroke severity and presence of ICH and intraventricular hemorrhage are at higher risk for developing fever.",
+      "page": null
+    },
+    {
+      "section": "Fever and Infections: Fever",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We recommend following the current American Heart Association guidelines on acute ischemic stroke, intracerebral hemorrhage, and subarachnoid hemorrhage in terms of fever control. Despite the association between temperature elevation and poor outcomes, the utility of fever treatment in improving outcomes remains inconsistent; surface cooling devices and invasive endovascular cooling have not led to clinical improvement despite better temperature control.",
+      "page": null
+    },
+    {
+      "section": "Fever and Infections: Fever",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Noninfectious causes of poststroke fever include malignancy, autoimmune disorders, drug reaction, venous thromboembolism, or central fever. Poststroke infections occur in almost 30% of all patients with acute stroke, two-thirds attributed to pneumonia and urinary tract infections.",
+      "page": null
+    },
+    {
+      "section": "Fever and Infections: Stroke-Associated Pneumonia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Almost 1 in 10 patients develop pneumonia after stroke during hospitalization. Pneumonia is a leading cause of early stroke mortality, worsens stroke outcome, and increases the risk of stroke recurrence. Diagnosis is challenging; chest x-ray accuracy approaches only 68%, and standardized diagnostic algorithms can enhance accuracy.",
+      "page": null
+    },
+    {
+      "section": "Fever and Infections: Stroke-Associated Pneumonia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Randomized trials of systemic preventive antibiotics in acute ischemic stroke have been ineffective in preventing pneumonia or improving clinical outcomes, and routine preventive antibiotics are not recommended. We advocate concerted efforts through prompt swallow assessment and oral health care to avoid stroke-associated pneumonia. Patient mobilization, head positioning, and chest physical therapy may play a role but require further investigation. In the absence of definitive evidence, aligning antibiotic treatment for stroke-associated pneumonia with consensus recommendations may be helpful.",
+      "page": null
+    },
+    {
+      "section": "Fever and Infections: Oral Health Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest using a standardized oral assessment tool on stroke admission, twice-daily brushing with nonfoaming toothpaste in an upright position, and targeted suctioning for patients with high-risk aspiration. Individualized approaches for issues such as dry mouth can be determined by nursing staff, with pathways established for staff education, training, and dental referrals.",
+      "page": null
+    },
+    {
+      "section": "Fever and Infections: Oral Health Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with stroke have a higher prevalence of poor oral health, which increases risk of stroke-associated pneumonia from aspiration of oral biofilm and contributes to poor nutrition, pain, and reduced quality of life. Assessing oral health in patients with acute stroke is important for establishing a baseline, identifying hygiene requirements, devising care plans, and arranging dental referrals; a Cochrane review of oral health care interventions, conducted predominantly in rehabilitation settings, failed to demonstrate benefit.",
+      "page": null
+    },
+    {
+      "section": "Fever and Infections: Urinary Tract Infection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The pooled incidence of urinary tract infection in hospitalized patients with stroke is 10%, making it one of the most common poststroke infections. The most common risk factor is indwelling urinary catheters; higher stroke severity, advanced age, female sex, and urinary retention also augment risk. Adopting measures for managing urinary retention and incontinence, good perineal care, and good hand hygiene can help reduce the risk for poststroke urinary tract infection.",
+      "page": null
+    },
+    {
+      "section": "Fever and Infections: Urinary Tract Infection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Specific criteria for diagnosing symptomatic urinary tract infection, catheter-associated urinary tract infection, and asymptomatic bacteriuria emphasize the presence of urinary symptoms combined with culture data, in order to avoid antibiotic overuse. Diagnosis after stroke poses unique challenges because of the difficulty of eliciting symptoms from patients with coexisting communication or cognitive deficits.",
+      "page": null
+    },
+    {
+      "section": "Respiratory Complications: Venous Thromboembolism",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The incidence of pulmonary embolism within the first month after stroke was estimated to be approximately 1%; despite its low incidence it is a major cause of early mortality after stroke. Prestroke disability, high stroke severity, leg weakness, dehydration, and elevated D-dimer, C-reactive protein, and homocysteine levels are known risk factors for poststroke venous thromboembolism. Clinical decision rules including D-dimer have not been validated in hospitalized patients with stroke.",
+      "page": null
+    },
+    {
+      "section": "Respiratory Complications: Venous Thromboembolism",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is strongly recommended that an early assessment of pulmonary embolism risk severity be made in all patients with suspected pulmonary embolism. Patients with high-risk pulmonary embolism should be identified promptly because they face high mortality and require immediate critical care support and reperfusion therapy. Prompt consultation with a local critical care team for management of intermediate- and high-risk stroke-associated pulmonary embolism should be considered.",
+      "page": null
+    },
+    {
+      "section": "Respiratory Complications: Venous Thromboembolism",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Systemic thrombolysis, recommended by current pulmonary embolism guidelines, carries a high risk of intracranial hemorrhage in most patients with acute-subacute stroke and is rarely used in this population. Catheter-assisted pulmonary thrombectomy and surgical embolectomy are viable options but have not been systematically investigated in the stroke population.",
+      "page": null
+    },
+    {
+      "section": "Respiratory Complications: Venous Thromboembolism",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Most patients with poststroke pulmonary embolism should be evaluated for systemic anticoagulation, with individualized treatment decisions weighing bleeding risk; use of short-acting, easily reversible anticoagulants is preferable although not evaluated in this population. Low-molecular-weight heparin has been recommended as the initial anticoagulant of choice depending on renal function. Inferior vena cava filter placement has been recommended in patients with lower-extremity deep venous thromboses and in those unable to receive systemic anticoagulation because of higher bleeding risks. Most patients require therapeutic anticoagulation for at least 3 months, with reassessment for extended therapy beyond 3 months based on the risk for recurrent deep venous thrombosis.",
+      "page": null
+    },
+    {
+      "section": "Respiratory Complications: Breathing Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "More than 70% of stroke survivors experience sleep-disordered breathing within a month of stroke onset, with one-third having severe sleep-disordered breathing. Obstructive sleep apnea is associated with worse functional outcomes, increased stroke recurrence, and higher mortality. CPAP use in patients with acute stroke poses risks including increased intracranial pressure and aspiration. Routine screening for sleep-disordered breathing in patients with acute stroke lacks conclusive evidence, and current acute ischemic stroke guidelines recommend against screening.",
+      "page": null
+    },
+    {
+      "section": "Respiratory Complications: Breathing Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Management of stroke-related breathing disorders requires a structured approach with careful monitoring of respiratory status and gas exchange. Patients with acute hypoxemia should receive oxygen supplementation to maintain oxygen saturation >94%, taking care to avoid oxygen toxicity and hypercapnia. It is crucial to treat contributory causes such as pulmonary edema, pneumonia, or atelectasis; some patients may respond to proper positioning including elevation of the head of the bed, and chest physiotherapy may help mobilize secretions and prevent atelectasis.",
+      "page": null
+    },
+    {
+      "section": "Gastrointestinal Complications: Dysphagia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Current stroke guidelines recommend dysphagia screening in all patients with stroke before the initiation of oral feeds or medications. Dysphagia screening should be conducted as soon as possible after hospital admission, with rescreening if there is a change in the patient's neurological status.",
+      "page": null
+    },
+    {
+      "section": "Gastrointestinal Complications: Dysphagia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "No single dysphagia screening tool stands out as superior; diagnostic accuracy, ease of use, and available resources should guide the choice of screening instrument. Use of an internally developed, nonvalidated dysphagia screening tool is discouraged. All personnel involved in dysphagia screening should receive adequate training in tool use and recognizing dysphagia signs. Patients who fail screening require a formal dysphagia assessment by a speech-language pathologist.",
+      "page": null
+    },
+    {
+      "section": "Gastrointestinal Complications: Nutritional Support",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Current acute ischemic stroke guidelines recommend initiating a diet for all patients with stroke within 7 days of hospital admission, starting nasogastric feeds within a week for patients unable to safely swallow, with transition to percutaneous gastrostomy (PEG) tubes for those anticipated to have prolonged dysphagia (>2-3 weeks). Nutritional supplementation is advisable for patients at risk of malnutrition, especially those with swallowing impairment.",
+      "page": null
+    },
+    {
+      "section": "Gastrointestinal Complications: Nutritional Support",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest a consensus-driven approach for decisions on PEG placement because of its profound impact on the patient's quality of life and uncertain clinical benefit. Shared decision-making involving patients or their surrogates and clinicians is essential, prioritizing the patient's preferences and values. In the FOOD trial, PEG placement was associated with increased risk of poor outcomes, and other observational data show significantly higher rates of institutionalization, pneumonia, sepsis, and death.",
+      "page": null
+    },
+    {
+      "section": "Gastrointestinal Complications: Gastrointestinal Bleeding",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Gastrointestinal bleeding is relatively uncommon after acute stroke (reported incidence 1.3% to 5%) but was associated with more than tripling of the risk for recurrent in-hospital stroke, death, and severe disability in a large cohort, and increased the risk of recurrent stroke 1.5-fold at 3 months in another study. Preexisting peptic ulcer disease poses the strongest risk.",
+      "page": null
+    },
+    {
+      "section": "Gastrointestinal Complications: Gastrointestinal Bleeding",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Ensuring hemodynamic stability with volume resuscitation is the first priority in poststroke gastrointestinal bleeding. Transfusion decisions are individualized and can be guided by hemodynamic parameters and the presence of ongoing bleeding; in hemodynamically stable patients with stroke, a hemoglobin target between 7 and 8 g/dL may be appropriate but requires further study. Proton pump inhibitors are used in confirmed or suspected cases of upper gastrointestinal bleeding.",
+      "page": null
+    },
+    {
+      "section": "Gastrointestinal Complications: Gastrointestinal Bleeding",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Determining whether to discontinue anticoagulant therapy or reverse its effects needs to be tailored according to the risk for stroke recurrence and gastrointestinal bleeding. The American College of Gastroenterology provides conditional recommendations against withholding aspirin monotherapy in patients with acute gastrointestinal bleeding and for temporary discontinuation of P2Y12 receptor inhibitors in patients on dual antiplatelets; the risks of withholding dual antiplatelets should be carefully considered in patients at high thrombotic risk such as those with recent arterial stent placement. The timing for safe resumption of anticoagulant therapy is currently unclear.",
+      "page": null
+    },
+    {
+      "section": "Gastrointestinal Complications: Gastrointestinal Bleeding",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Management of poststroke gastrointestinal bleeding requires a multidisciplinary approach, and gastroenterology evaluation is important to determine the need and timing for additional investigations. The American College of Gastroenterology recommends early endoscopy (within 24 hours) for most patients with acute upper gastrointestinal bleeding and colonoscopy within 24 to 36 hours for suspected lower gastrointestinal bleeding; endoscopy appears safe in the early aftermath of a stroke and may reduce mortality.",
+      "page": null
+    },
+    {
+      "section": "Gastrointestinal Complications: Constipation and Diarrhea",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Constipation is common after stroke, likely because of immobility, diet changes, medications, and impaired neuronal modulation of colonic motility. Nurses play a key role by monitoring stool consistency and frequency; commonly advocated strategies include encouraging mobility, avoiding medications with anticholinergic properties, and using stool softeners. Structured bowel programs and nurse-led interventions in bowel care can be effective in improving bowel evacuation.",
+      "page": null
+    },
+    {
+      "section": "Gastrointestinal Complications: Fecal Incontinence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The prevalence of new-onset poststroke fecal incontinence was 30% at 7 to 10 days and 11% at 3 months and 1 year. There is no evidence to support routine testing with anorectal manometry or ultrasound; instead, a structured review of fluid, diet, and medications to identify contributory factors may be effective. Treating concomitant diarrhea, constipation, and fecal impaction is important, along with maintaining perianal skin hygiene and using barrier creams. Raising awareness about fecal incontinence in caregivers and screening all patients with stroke for it are important aspects of stroke care.",
+      "page": null
+    },
+    {
+      "section": "Renal and Urinary Complications: Acute Kidney Injury",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Acute kidney injury has a reported pooled incidence of almost 20% after stroke and is independently associated with increased mortality and disability, cardiac complications, and extended hospitalization. Risk factors include preexisting renal disease, older age, higher stroke severity, congestive heart failure, and ischemic heart disease.",
+      "page": null
+    },
+    {
+      "section": "Renal and Urinary Complications: Acute Kidney Injury",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Intravenous iodinated contrast for stroke imaging has a low incidence of causing contrast-associated acute kidney injury, but preexisting renal impairment can increase the risk after endovascular thrombectomy. The risks of contrast-associated acute kidney injury should be decided on a case-by-case basis. Volume expansion with either isotonic sodium chloride or sodium bicarbonate is recommended in patients at increased risk. Other potential risks for developing poststroke acute kidney injury include the use of nephrotoxic drugs and osmotherapeutic agents (hypertonic saline and mannitol).",
+      "page": null
+    },
+    {
+      "section": "Renal and Urinary Complications: Acute Kidney Injury",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Existing guidelines for acute kidney injury management recommend monitoring serum creatinine and urine output, identifying underlying causes, avoiding nephrotoxic agents, and using isotonic crystalloids for intravascular volume expansion in at-risk patients or patients with acute kidney injury. Caution is advised with blood pressure reduction in patients with acute intracerebral hemorrhage because rapid lowering can precipitate acute renal failure.",
+      "page": null
+    },
+    {
+      "section": "Renal and Urinary Complications: Urinary Incontinence and Retention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest screening every hospitalized patient with stroke for urinary incontinence and retention. A bladder scan revealing a postvoid residual >150 cm3 indicates incomplete emptying. Detailed assessment should explore cognitive awareness, communication abilities, and access to toileting facilities to individualize management plans.",
+      "page": null
+    },
+    {
+      "section": "Renal and Urinary Complications: Urinary Incontinence and Retention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Indwelling catheters are best avoided to prevent catheter-associated urinary tract infection; when needed, catheter insertion must be aseptic and involve proper catheter care. Urodynamic studies and medications such as antimuscarinic agents or alpha-blockers offer limited benefit. Behavioral techniques such as bladder training and nurse-driven interventions such as scheduled voiding with postvoid residual monitoring and intermittent catheterization can be effective.",
+      "page": null
+    },
+    {
+      "section": "Transitions of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Many poststroke systemic complications require ongoing care based on close coordination among clinicians, patients, and caregivers. Interdisciplinary teams that may include internists, neurologists, nurses, trained rehabilitation specialists, and social workers with access to other specialists and health care infrastructure are prerequisites. Poststroke disability, communication and cognitive difficulties, transportation issues, variation in discharge destination, caregiver support, food and housing insecurity, and financial resources can be major impediments to receiving appropriate care.",
+      "page": null
+    },
+    {
+      "section": "Conclusions and Future Directions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Interdisciplinary teams including physicians and nonphysician practitioners with experience in stroke, rehabilitation, and hospital medicine; neuroscience nurses; and trained rehabilitation specialists are critically important in the identification and management of poststroke complications. These endeavors should be coupled with implementation strategies that facilitate their uptake in diverse clinical settings, to design better systems of care and develop standard-of-care metrics for hospitalized patients with stroke.",
+      "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

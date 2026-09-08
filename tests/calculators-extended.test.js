@@ -51,33 +51,33 @@ describe('evaluateDEFUSE3', () => {
     expect(r.mismatchRatio).toBeCloseTo(2.4, 1);
   });
   it('fails when core >70', () => {
-    expect(evaluateDEFUSE3({ coreMl: 80, penumbraMl: 150, timeFromLKWh: 10 }).meetsCore).toBe(false);
+    expect(evaluateDEFUSE3({ coreMl: 80, penumbraMl: 150, timeFromLKWh: 10, age: 65, nihss: 12 }).meetsCore).toBe(false);
   });
   it('fails when mismatch volume <15', () => {
-    expect(evaluateDEFUSE3({ coreMl: 50, penumbraMl: 60, timeFromLKWh: 10 }).eligible).toBe(false);
+    expect(evaluateDEFUSE3({ coreMl: 50, penumbraMl: 60, timeFromLKWh: 10, age: 65, nihss: 12 }).eligible).toBe(false);
   });
   it('fails when outside 6-16h window', () => {
-    expect(evaluateDEFUSE3({ coreMl: 30, penumbraMl: 90, timeFromLKWh: 20 }).eligible).toBe(false);
+    expect(evaluateDEFUSE3({ coreMl: 30, penumbraMl: 90, timeFromLKWh: 20, age: 65, nihss: 12 }).eligible).toBe(false);
   });
 });
 
 describe('recommendAcuteDAPT', () => {
   it('recommends CHANCE/POINT for minor stroke (NIHSS<=3)', () => {
-    const r = recommendAcuteDAPT({ nihss: 3, abcd2: '', strokeType: 'ischemic' });
+    const r = recommendAcuteDAPT({ nihss: 3, abcd2: '', strokeType: 'ischemic', timeFromOnsetH: 12 });
     expect(r.regimen).toBe('clopidogrel+ASA');
     expect(r.duration).toBe('21 days');
   });
   it('recommends THALES for atherosclerotic NIHSS 4', () => {
-    const r = recommendAcuteDAPT({ nihss: 4, strokeType: 'ischemic', atherosclerotic: true });
+    const r = recommendAcuteDAPT({ nihss: 4, strokeType: 'ischemic', atherosclerotic: true, timeFromOnsetH: 12 });
     expect(r.regimen).toBe('ticagrelor+ASA');
     expect(r.duration).toBe('30 days');
   });
   it('recommends very-high-risk TIA → THALES when ABCD2 ≥6', () => {
-    const r = recommendAcuteDAPT({ nihss: 0, abcd2: 6, strokeType: 'tia' });
+    const r = recommendAcuteDAPT({ nihss: 0, abcd2: 6, strokeType: 'tia', timeFromOnsetH: 12 });
     expect(r.regimen).toBe('ticagrelor+ASA');
   });
   it('CHANCE-2 (ticagrelor+ASA) for CYP2C19 LOF minor stroke', () => {
-    const r = recommendAcuteDAPT({ nihss: 2, strokeType: 'ischemic', cyp2c19LOF: true });
+    const r = recommendAcuteDAPT({ nihss: 2, strokeType: 'ischemic', cyp2c19LOF: true, timeFromOnsetH: 12 });
     expect(r.regimen).toMatch(/ticagrelor/);
     expect(r.duration).toBe('21 days');
   });
@@ -86,7 +86,7 @@ describe('recommendAcuteDAPT', () => {
     expect(r.regimen).toBe('single-antiplatelet');
   });
   it('NIHSS >5 falls back to single antiplatelet', () => {
-    const r = recommendAcuteDAPT({ nihss: 10, strokeType: 'ischemic' });
+    const r = recommendAcuteDAPT({ nihss: 10, strokeType: 'ischemic', timeFromOnsetH: 12 });
     expect(r.regimen).toBe('single-antiplatelet');
   });
 });
@@ -323,7 +323,7 @@ describe('SEDAN direction regression (from app.jsx)', () => {
 });
 
 describe('evaluateCRAOTreatment', () => {
-  it('recommends lytic when all CRAO criteria are met <= 4.5h', () => {
+  it('does not recommend routine lysis even when historical CRAO screen features are met', () => {
     const r = evaluateCRAOTreatment({
       onsetHours: 2.5,
       visualAcuity: 'count-fingers',
@@ -331,8 +331,10 @@ describe('evaluateCRAOTreatment', () => {
       ivtContraindicated: false,
       age: 65
     });
-    expect(r.eligible).toBe(true);
-    expect(r.recommendation).toMatch(/Eligible for acute IV thrombolysis/);
+    expect(r.eligible).toBe(false);
+    expect(r.meetsHistoricalScreen).toBe(true);
+    expect(r.recommendation).toMatch(/does not recommend routine IV thrombolysis/);
+    expect(r.sources).toMatch(/TenCRAOS/);
     expect(r.sources).toMatch(/THEIA Trial/);
   });
 
@@ -381,7 +383,7 @@ describe('evaluateCRAOTreatment', () => {
         ivtContraindicated: false
       });
       expect(r.visualAcuityOk).toBe(true);
-      expect(r.eligible).toBe(true);
+      expect(r.eligible).toBe(false);
     });
     expect(evaluateCRAOTreatment({ onsetHours: 2.0, visualAcuity: '20/50', fundusHemorrhage: false, ivtContraindicated: false }).visualAcuityOk).toBe(false);
   });
