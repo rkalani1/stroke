@@ -1,6 +1,8 @@
-// AUTO-GENERATED inline snapshot of expected engine output for every
-// (scenario, trial) pair. Frozen at retirement-sprint commit time.
-// Regenerate via: node /tmp/gen-snapshot.mjs.
+// Engine scenario baseline.
+// 2026-09-06: only VERIFY (24-96 h) and ASPIRE (14-180 d) expectations
+// updated for source-verified registry windows; missing onset cannot establish eligibility.
+// The PICASSO scenario also leaves EVT undecided, so the historical RHAPSODY
+// reperfusion criterion is unknown rather than false after decision provenance fixes.
 export const EXPECTED_SNAPSHOT = {
   "empty form": {
     "step-evt": {
@@ -54,7 +56,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "most": {
@@ -74,7 +76,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "aspire": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     }
   },
@@ -92,7 +94,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "most": {
@@ -112,7 +114,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "aspire": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     }
   },
@@ -150,7 +152,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "aspire": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     }
   },
@@ -168,7 +170,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "most": {
@@ -180,7 +182,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -188,7 +190,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "aspire": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     }
   },
@@ -206,7 +208,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "most": {
@@ -226,7 +228,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "aspire": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     }
   },
@@ -264,7 +266,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "aspire": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     }
   },
@@ -340,7 +342,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "aspire": {
-      "status": "eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     }
   },
@@ -434,7 +436,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "most": {
@@ -454,7 +456,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "aspire": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     }
   },
@@ -472,7 +474,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "most": {
@@ -492,7 +494,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "aspire": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     }
   },

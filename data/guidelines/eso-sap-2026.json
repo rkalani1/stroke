@@ -9,12 +9,541 @@
   "pmid": "42095755",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Source grading: GRADE / consensus.",
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Stroke-associated pneumonia occurs in approximately 12% of patients and is the most frequent infectious complication after acute stroke and a major contributor to morbidity and mortality. High-quality evidence to guide diagnosis, prediction, prevention and treatment remains limited, so recommendations are largely structured consensus.",
-      "page": null
+      "id": "eso-sap-2026-pico1-r1",
+      "section": "PICO 1: Standardised SAP diagnosis",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For hospitalised, non-ventilated adults within 7 days of ischaemic or haemorrhagic stroke onset, evidence is insufficient to determine whether standardised pneumonia criteria improve clinical outcomes compared with clinician diagnosis alone.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 1 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 1; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico1-c1",
+      "section": "PICO 1: Diagnostic algorithm",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In this acute, non-ventilated stroke population, use an algorithm such as PISCES with agreed minimum criteria to diagnose stroke-associated pneumonia (SAP). Observational and secondary trial evidence suggests improved accuracy, but clinical-practice evaluation is needed. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 1 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 1; consensus 1"
+    },
+    {
+      "id": "eso-sap-2026-pico2-r1",
+      "section": "PICO 2: Chest ultrasound or CT",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For non-ventilated adults within 7 days of stroke onset, diagnostic accuracy and clinical-outcome benefit remain uncertain for chest ultrasound or CT compared with chest radiography alone; no evidence-based recommendation can be made.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 2 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 2; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico2-c1",
+      "section": "PICO 2: Selective chest CT",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Consider chest CT if SAP is suspected but diagnosis is uncertain, particularly when the result could guide antimicrobial or other treatment or exclude alternatives such as pulmonary embolism. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 2 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 2; consensus 1"
+    },
+    {
+      "id": "eso-sap-2026-pico3-r1",
+      "section": "PICO 3: Diagnostic blood biomarkers",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For non-ventilated adults within 7 days of stroke onset, evidence is insufficient to recommend inflammatory or stress biomarkers for SAP diagnosis.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 3 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 3; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico3-c1",
+      "section": "PICO 3: CRP in afebrile patients",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Consider adding C-reactive protein to a standardised SAP diagnostic algorithm to improve accuracy in afebrile patients. Available data suggest cut-offs between 30 and 40 mg/L. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 3 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 3; consensus 1"
+    },
+    {
+      "id": "eso-sap-2026-pico4-r1",
+      "section": "PICO 4: Prediction scores and biomarkers",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In non-ventilated adults within 7 days of stroke onset, clinical scores and selected biomarkers can identify increased SAP risk with moderate-to-good discrimination. Routine addition of biomarkers to existing scores is not established; usefulness depends on feasible, effective preventive interventions.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 4 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 4; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico4-c1",
+      "section": "PICO 4: Targeting prevention by risk",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Use validated scores or biomarkers to identify higher-risk patients and target standard SAP-prevention measures. Their limited discrimination constrains current utility; greater value may depend on more effective preventive treatments. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 4 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 4; consensus 1"
+    },
+    {
+      "id": "eso-sap-2026-pico5-r1",
+      "section": "PICO 5: Scores or biomarkers to guide antibiotics",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For SAP in non-ventilated adults within 7 days of stroke onset, evidence is insufficient to recommend routine prediction scores or biomarkers to guide antibiotic treatment.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 5 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 5; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico5-c1",
+      "section": "PICO 5: Antibiotic decisions and biomarkers",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Do not use clinical prediction scores or biomarkers to guide SAP antibiotic treatment on current evidence. Use the guideline's separate recommendations on timing, duration, drug choice and microbiological testing. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 5 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 5; consensus 1"
+    },
+    {
+      "id": "eso-sap-2026-pico6-r1",
+      "section": "PICO 6: Preventive antibiotics and SAP incidence",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For non-ventilated adults within 7 days of stroke onset, avoid preventive antibiotics to reduce SAP incidence: trials have not shown a reduction in pneumonia.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 6 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 6; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico6-r2",
+      "section": "PICO 6: Preventive antibiotics and clinical outcomes",
+      "classOfRec": "Conditional",
+      "classNote": "Against",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "For non-ventilated adults within 7 days of stroke onset, avoid preventive antibiotics to improve clinical outcomes: benefit has not been demonstrated. The published strength is weak against despite stronger wording in the recommendation sentence.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 6 recommendation 2",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 6; recommendation 2"
+    },
+    {
+      "id": "eso-sap-2026-pico7-r1",
+      "section": "PICO 7: Antiemetics for SAP prevention",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Evidence is insufficient to recommend antiemetics for preventing SAP in non-ventilated adults within 7 days of stroke onset.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 7 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 7; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico7-c1",
+      "section": "PICO 7: Antiemetic indications",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Do not use antiemetics solely to prevent SAP outside clinical trials in acute non-ventilated stroke. They remain appropriate for nausea or vomiting according to local guidance and clinical judgement. The guideline notes an ongoing phase 3 metoclopramide prevention trial at publication. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 7 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 7; consensus 1"
+    },
+    {
+      "id": "eso-sap-2026-pico7-r2",
+      "section": "PICO 7: Beta-blockers for SAP prevention",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "No randomised or observational evidence establishes that initiating beta-blockers after stroke prevents pneumonia; no recommendation can be made for this indication in the acute non-ventilated population.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 7 recommendation 2",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 7; recommendation 2"
+    },
+    {
+      "id": "eso-sap-2026-pico7-c2",
+      "section": "PICO 7: Beta-blocker indications",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Do not initiate beta-blockers solely to prevent SAP within 7 days of stroke. Continue them when already used for another indication: there is no pneumonia-related reason to stop and weak evidence of lower mortality. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 7 consensus 2",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 7; consensus 2"
+    },
+    {
+      "id": "eso-sap-2026-pico7-r3",
+      "section": "PICO 7: Statins for SAP prevention",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Evidence is insufficient to recommend statins for preventing SAP in non-ventilated adults within 7 days of stroke onset.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 7 recommendation 3",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 7; recommendation 3"
+    },
+    {
+      "id": "eso-sap-2026-pico7-c3",
+      "section": "PICO 7: Statin indications",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Do not start a statin specifically to prevent SAP in acute non-ventilated stroke; continue treatment started for another indication. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 7 consensus 3",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 7; consensus 3"
+    },
+    {
+      "id": "eso-sap-2026-pico7-r4",
+      "section": "PICO 7: Other preventive medications",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "Evidence is insufficient to recommend either use or avoidance of ACE inhibitors, ARBs, antacids, proton-pump inhibitors, H2 blockers or benzodiazepines specifically for SAP prevention in acute non-ventilated stroke.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 7 recommendation 4",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 7; recommendation 4"
+    },
+    {
+      "id": "eso-sap-2026-pico7-c4",
+      "section": "PICO 7: Concomitant medication review",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Other-indication medicines may affect SAP risk: acid suppression may increase risk, while ACE inhibitors or ARBs in ICH may reduce pneumonia and mortality. Evidence is limited; consider these effects while prescribing strictly for primary indications, such as peptic-ulcer prevention/treatment or hypertension. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 7 consensus 4",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 7; consensus 4"
+    },
+    {
+      "id": "eso-sap-2026-pico8-r1",
+      "section": "PICO 8: Nasogastric feeding mode",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For non-ventilated adults requiring nasogastric feeding within 7 days of stroke, the balance of benefits and harms of intermittent versus continuous feeding remains uncertain.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 8 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 8; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico8-c1",
+      "section": "PICO 8: Choosing enteral delivery",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "With no clear evidence favouring intermittent or continuous nasogastric feeding, use the mode with which the treating team is most familiar. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 8 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 8; consensus 1"
+    },
+    {
+      "id": "eso-sap-2026-pico9-r1",
+      "section": "PICO 9: Respiratory physical treatments",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For non-ventilated adults within 7 days of stroke, evidence is insufficient to recommend physical respiratory interventions to prevent SAP or improve clinical outcome.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 9 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 9; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico9-c1",
+      "section": "PICO 9: Respiratory physiotherapy",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Consider respiratory physiotherapy within early post-stroke rehabilitation to prevent SAP. Supporting evidence mainly concerns programmes over several weeks during rehabilitation, often combined with other interventions; two small studies suggest reduced SAP and mortality. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 9 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 9; consensus 1"
+    },
+    {
+      "id": "eso-sap-2026-pico10-r1",
+      "section": "PICO 10: Early mobilisation",
+      "classOfRec": "Conditional",
+      "classNote": "For",
+      "levelOfEvidence": "Very low certainty",
+      "text": "For non-ventilated adults within 7 days of stroke, begin mobilisation in or out of bed early, within 48 hours, to help prevent SAP.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 10 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 10; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico10-c1",
+      "section": "PICO 10: Safe mobilisation timing",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Mobilise within 48 hours for SAP prevention, but avoid very early, within 24 hours, prolonged out-of-bed mobilisation in severe stroke because AVERT associated that approach with worse outcomes. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 10 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 10; consensus 1"
+    },
+    {
+      "id": "eso-sap-2026-pico11-r1",
+      "section": "PICO 11: Recovery positioning",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For non-ventilated adults within 7 days of stroke with reduced consciousness, no clinical evidence establishes whether the recovery position prevents SAP; no evidence-based recommendation can be made.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 11 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 11; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico11-c1",
+      "section": "PICO 11: Positioning and enteral feeds",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients unable to reposition themselves, including those with reduced consciousness, alternate supine and left/right lateral positions every 2 hours during daytime and mobilise passively in bed. Use 30–45° head elevation during and after enteral feeds. Alert patients with mild stroke and no enteral tube may use any comfortable position. Consensus 8/8; turning advice derives from one small study.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 11 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 11; consensus 1"
+    },
+    {
+      "id": "eso-sap-2026-pico12-r1",
+      "section": "PICO 12: Antibiotic duration",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For SAP within 7 days of stroke in non-ventilated adults, effects of >7 versus ≤7 days of antibiotics on clinical outcomes remain uncertain; no evidence-based duration recommendation can be made.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 12 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 12; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico12-c1",
+      "section": "PICO 12: Duration according to response",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Tailor SAP antibiotic duration to clinical response; treatment should generally last at least 5 days. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 12 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 12; consensus 1"
+    },
+    {
+      "id": "eso-sap-2026-pico13-r1",
+      "section": "PICO 13: Antibiotic spectrum",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For SAP within 7 days of stroke in non-ventilated adults, clinical evidence does not establish whether broad-spectrum rather than narrow-spectrum antibiotics improve outcomes.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 13 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 13; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico13-c1",
+      "section": "PICO 13: Empiric antibiotic choice",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For SAP, follow local or regional aspiration-pneumonia guidance targeting aerobic Gram-negative bacilli and Gram-positive cocci. Dysphagia or confirmed aspiration alone does not justify broader coverage. Include Pseudomonas coverage when relevant risk factors exist. For pneumonia beginning >7 days after stroke, follow local hospital-acquired-pneumonia guidance. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 13 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 13; consensus 1"
+    },
+    {
+      "id": "eso-sap-2026-pico14-r1",
+      "section": "PICO 14: Microbiology-directed treatment",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For SAP within 7 days of stroke in non-ventilated adults, evidence does not establish whether microbiology-directed rather than empiric antibiotics improve clinical outcomes.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 14 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 14; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico14-c1",
+      "section": "PICO 14: Prompt antibiotics and cultures",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Start empiric SAP antibiotics promptly, ideally within a few hours of clinical diagnosis. When feasible, obtain routine microbiology, such as sputum culture, before antibiotics so subsequent therapy can target an identified pathogen. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 14 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 14; consensus 1"
+    },
+    {
+      "id": "eso-sap-2026-pico15-r1",
+      "section": "PICO 15: Adjunctive respiratory treatments",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For SAP within 7 days of stroke in non-ventilated adults, clinical-outcome benefits of adjuncts such as cough-assist devices or breathing therapy remain uncertain.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 15 recommendation 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 15; recommendation 1"
+    },
+    {
+      "id": "eso-sap-2026-pico15-c1",
+      "section": "PICO 15: Selective respiratory adjuncts",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "An interdisciplinary stroke-unit team may consider cough-assist devices or breathing therapies individually, although these are not standard SAP treatment. Patients with relevant comorbidities, including COPD, may benefit particularly. Consensus 8/8.",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 15 consensus 1",
+      "sourceReference": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg; PICO 15; consensus 1"
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE",
+  "coverage": {
+    "status": "complete",
+    "scope": "All formal recommendations and good-practice/consensus statements",
+    "checkedAt": "2026-09-06",
+    "sourceRecommendationCount": 19,
+    "sourceConsensusCount": 17,
+    "sourceSections": [
+      "PICO 1",
+      "PICO 2",
+      "PICO 3",
+      "PICO 4",
+      "PICO 5",
+      "PICO 6",
+      "PICO 7",
+      "PICO 8",
+      "PICO 9",
+      "PICO 10",
+      "PICO 11",
+      "PICO 12",
+      "PICO 13",
+      "PICO 14",
+      "PICO 15"
+    ],
+    "sourceTable": "Table 8 images aakag044fx39-1.jpg through aakag044fx39-7.jpg (first panel duplicated); individual PICO boxes aakag044fx4.jpg through aakag044fx38.jpg",
+    "countingNote": "15 PICO questions; PICO 6 has two differently graded antibiotic-prevention outcomes and PICO 7 four medication categories. Unnumbered consensus boxes retain all clinical and research qualifications in one entry.",
+    "inventory": [
+      {
+        "section": "PICO 1",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 2",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 3",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 4",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 5",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 6",
+        "recommendationCount": 2,
+        "consensusCount": 0
+      },
+      {
+        "section": "PICO 7",
+        "recommendationCount": 4,
+        "consensusCount": 4
+      },
+      {
+        "section": "PICO 8",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 9",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 10",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 11",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 12",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 13",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 14",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      },
+      {
+        "section": "PICO 15",
+        "recommendationCount": 1,
+        "consensusCount": 1
+      }
+    ]
+  }
 }

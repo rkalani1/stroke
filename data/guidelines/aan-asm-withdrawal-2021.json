@@ -10,12 +10,118 @@
   "society": "AAN",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Practice Recommendations - Recommendations Related to Adults",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "To update a 1996 American Academy of Neurology practice parameter. The authors systematically reviewed literature published from January 1991 to March 2020. The long-term (24-60 months) risk of seizure recurrence is possibly higher among adults who have been seizure-free for 2 years and taper antiseizure medications (ASMs) vs those who do not taper ASMs (15% vs 7% per the 1 Class I article addressing this issue).",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 1a: In adults who are seizure-free for at least 2 years, there should be a discussion between the clinician and the patient or caregiver, if any, about the risks and benefits of ASM withdrawal, which specifically includes and documents that: (1) there is possibly higher seizure recurrence in patients who had ASM withdrawal; and (2) if seizures recur during or after withdrawal, there is a small chance they will no longer respond to medications. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Recommendations Related to Adults",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 1b: When discussing either ASM withdrawal or continuation with patients, because there is no statistically significant evidence to support either option, clinicians may consider individual patient characteristics and preferences. (Level C)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Recommendations Related to Adults",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 1c: Counseling must include discussion that there is not strong evidence regarding the relationship between ASM withdrawal and changes in the risk of mortality and status epilepticus, and, as such, these risks have not been excluded by the evidence. (Level A)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Recommendations Related to Adults",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 1d: Clinicians should counsel that recurrent seizures put people at risk for status epilepticus and death (Level B), although existing data do not suggest an increased risk of status epilepticus or death after ASM withdrawal.",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Recommendations Related to Adults",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 1e: Clinicians must explore contributors to the quality of life of individual patients as part of shared decision-making regarding ASM discontinuation. (Level A)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Recommendations Related to Adults",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 1f: Clinicians should discuss with seizure-free patients that it is unknown if EEG or imaging studies inform the decision to withdraw ASMs. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Recommendations Related to Adults",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 2: Clinicians may discuss that the risk of seizure recurrence with ASM withdrawal in patients who have had epilepsy surgery and are seizure-free is uncertain due to the lack of evidence. (Level C)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Recommendations Related to Children",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 3a: In children who are seizure-free for at least 18-24 months, who do not have an electroclinical syndrome suggesting otherwise, there should be a discussion about the risks and benefits of ASM withdrawal that specifically includes and documents that if seizures recur during either withdrawal or after withdrawal, there is a small chance they will no longer respond to medication. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Recommendations Related to Children",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 3b: Clinicians should discuss with children and their families that ASM withdrawal can be considered because withdrawal of ASMs does not clearly increase risk of seizure recurrence. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Recommendations Related to Children",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 3c: Clinicians should counsel that recurrent seizures put children at risk for status epilepticus and death (Level B), although existing data do not suggest an increased risk of status epilepticus or death after ASM withdrawal.",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Recommendations Related to Children",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 3d: Clinicians should explore contributors to quality of life for individual patients as part of shared decision-making regarding ASM withdrawal. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Recommendations Related to Children",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 3e: In children seizure-free for at least 18-24 months, if there is agreement among the physician, patient, and family to pursue consideration of ASM withdrawal, an EEG should be ordered. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Recommendations Related to Children",
+      "classOfRec": "Statement",
+      "classNote": "Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 3f: In children seizure-free for at least 18-24 months, in whom there is agreement among the physician, patient, and family to pursue consideration of ASM withdrawal, if the EEG does not show epileptiform activity, ASM withdrawal should be offered, at a rate no faster than 25% every 10-14 days. (Level B)",
+      "page": null
+    },
+    {
+      "section": "Practice Recommendations - Recommendations Related to Children",
+      "classOfRec": "Statement",
+      "classNote": "no low to moderate risk of bias evidence — Not assigned",
+      "levelOfEvidence": "Ungraded",
+      "text": "Recommendation Statement 3g: Clinicians must take into account the known natural history of the specific electroclinical syndrome when counseling about ASM withdrawal in children. (Level A [no low to moderate risk of bias evidence])",
       "page": null
     }
-  ]
+  ],
+  "documentType": "advisory",
+  "gradingSystem": "ungraded"
 }
