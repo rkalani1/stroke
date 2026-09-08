@@ -93,7 +93,8 @@
         "vesselOcclusion": [
           "M1"
         ],
-        "tnkRecommended": false
+        "tnkRecommended": false,
+        "tnkDecisionRecorded": true
       },
       "strokeCodeForm": {
         "age": "",
@@ -134,7 +135,9 @@
         "nihss": "10",
         "premorbidMRS": "0",
         "tnkRecommended": false,
+        "tnkDecisionRecorded": true,
         "evtRecommended": false,
+        "evtDecisionRecorded": true,
         "ctpResults": "mismatch",
         "vesselOcclusion": [
           "M1"

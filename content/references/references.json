@@ -1,74 +1,83 @@
 [
   {
-    "id": "references-afib-doac-start-timing",
+    "id": "quickref-afib-doac-start-timing",
     "title": "AFib DOAC Start Timing",
     "category": "references",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/AFib DOAC Start Timing.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   },
   {
-    "id": "references-brain-death-guidelines",
+    "id": "quickref-brain-death-guidelines",
     "title": "Brain Death Guidelines",
     "category": "references",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/Brain Death Guidelines.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   },
   {
-    "id": "references-cervical-artery-dissection",
+    "id": "quickref-cervical-artery-dissection",
     "title": "Cervical Artery Dissection",
     "category": "references",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/Cervical Artery Dissection.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   },
   {
-    "id": "references-dapt-guidelines",
+    "id": "quickref-dapt-guidelines",
     "title": "DAPT Guidelines",
     "category": "references",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/DAPT Guidelines.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   },
   {
-    "id": "references-external-ventricular-drain",
+    "id": "quickref-external-ventricular-drain",
     "title": "External Ventricular Drain",
     "category": "references",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/External Ventricular Drain.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   },
   {
-    "id": "references-intracranial-hypertension-herniation",
+    "id": "quickref-intracranial-hypertension-herniation",
     "title": "Intracranial Hypertension & Herniation",
     "category": "references",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/Intracranial Hypertension & Herniation.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   },
   {
-    "id": "references-malignant-infarction",
+    "id": "quickref-malignant-infarction",
     "title": "Malignant Infarction",
     "category": "references",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/Malignant Infarction.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   },
   {
-    "id": "references-stroke-prognosis",
+    "id": "quickref-stroke-prognosis",
     "title": "Stroke Prognosis",
     "category": "references",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/Stroke Prognosis.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   },
   {
-    "id": "references-toast-stroke-classification",
+    "id": "quickref-toast-stroke-classification",
     "title": "TOAST Stroke Classification",
     "category": "references",
     "type": "pdf",
+    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/TOAST Stroke Classification.pdf",
-    "provenance": "src/app.jsx reference library"
+    "subtitle": "PDF Document"
   }
 ]
