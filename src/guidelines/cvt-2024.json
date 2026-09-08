@@ -9,44 +9,310 @@
   "pmid": "38284265",
   "recommendations": [
     {
-      "section": "Diagnosis",
+      "section": "Key Points for Clinical Practice",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Diagnosis of CVT is primarily based on MRI/MRV or CT/CTV; contrast-enhanced MRV or susceptibility-weighted imaging helps confirm cortical vein thrombosis.",
-      "page": 6
+      "levelOfEvidence": "Ungraded",
+      "text": "Cerebral venous thrombosis requires a high level of suspicion among patients presenting with common symptoms and known predisposing conditions (pregnancy, puerperium, use of oral contraceptives, thrombophilia) or demographic factors (young women).",
+      "page": null
     },
     {
-      "section": "Anticoagulation (Acute)",
+      "section": "Key Points for Clinical Practice",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Initial therapy: LMWH is preferred over UFH, and venous hemorrhage is not a contraindication to anticoagulation in CVT.",
-      "page": 6
+      "levelOfEvidence": "Ungraded",
+      "text": "New predisposing conditions (obesity, COVID-19, vaccine-induced thrombocytopenia) were identified since the 2011 American Heart Association statement.",
+      "page": null
     },
     {
-      "section": "Anticoagulation (Long-Term)",
+      "section": "Key Points for Clinical Practice",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Transition to VKA (INR 2-3) for 3-12 months for transient risk factors or indefinite therapy for chronic/recurrent risk; DOACs may be reasonable in selected patients.",
-      "page": 6
+      "levelOfEvidence": "Ungraded",
+      "text": "MRI/MRV is the recommended noninvasive study of the cerebral venous system to confirm the diagnosis. CT/CTV is a reasonable alternative in centers with limited resources or if the pretest probability is low.",
+      "page": null
     },
     {
-      "section": "Endovascular Therapy",
+      "section": "Key Points for Clinical Practice",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Endovascular therapy may be considered as rescue for clinical deterioration or failed/contraindicated anticoagulation; evidence for a superior technique is limited.",
-      "page": 8
+      "levelOfEvidence": "Ungraded",
+      "text": "Contrast-enhanced MRV, gradient-recalled echo, or susceptibility-weighted imaging sequences are the recommended techniques for the diagnosis of cortical venous thrombosis.",
+      "page": null
     },
     {
-      "section": "Surgical Decompression",
+      "section": "Key Points for Clinical Practice",
       "classOfRec": "Statement",
       "classNote": null,
-      "levelOfEvidence": "Expert Consensus",
-      "text": "Decompressive craniectomy should be offered for severe CVT with parenchymal lesions and impending herniation as lifesaving therapy.",
-      "page": 8
+      "levelOfEvidence": "Ungraded",
+      "text": "The mainstream initial treatment of cerebral venous thrombosis includes parenteral heparin followed by transition to oral vitamin K antagonists for 3 to 12 months, depending on the underlying cause, or indefinitely in the presence of thrombophilia or recurrent venous thromboembolism.",
+      "page": null
+    },
+    {
+      "section": "Key Points for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Direct oral anticoagulants appear to be a safe and effective alternative option to vitamin K antagonists according to open-label retrospective and prospective randomized studies.",
+      "page": null
+    },
+    {
+      "section": "Key Points for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The strategy of identifying venous recanalization in subsequent CTV or MRV to guide the duration of anticoagulation remains uncertain.",
+      "page": null
+    },
+    {
+      "section": "Key Points for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Given the lack of controlled studies (and poorer outcomes in meta-analyses), endovascular therapies are reserved for patients with evidence of thrombus propagation, for individuals with neurological deterioration despite medical therapy, or for those with contraindications to anticoagulation.",
+      "page": null
+    },
+    {
+      "section": "Key Points for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Despite the low level of evidence, decompressive surgery is a lifesaving procedure that may result in improved functional outcomes among patients with advanced clinical signs of herniation.",
+      "page": null
+    },
+    {
+      "section": "Key Points for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For women with cerebral venous thrombosis during pregnancy, low-molecular-weight heparin in full anticoagulant doses should be continued throughout pregnancy, and low-molecular-weight heparin or a vitamin K antagonist with a target international normalized ratio of 2.0 to 3.0 should be continued for at least 6 weeks postpartum (for a total minimum duration of therapy of 3 months).",
+      "page": null
+    },
+    {
+      "section": "Key Points for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is reasonable to advise women with a history of cerebral venous thrombosis that future pregnancy is not contraindicated. Prophylaxis with low-molecular-weight heparin during future pregnancies and the postpartum period is usually recommended.",
+      "page": null
+    },
+    {
+      "section": "Key Points for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cerebral venous thrombosis in the pediatric population is more common in neonates than children, usually among those exposed to infections, dehydration, iron deficiency, anemia, or head trauma. Parenteral anticoagulation is also the first-line treatment, followed by low-molecular-weight heparin, vitamin K antagonist, or rivaroxaban for at least 6 weeks.",
+      "page": null
+    },
+    {
+      "section": "Key Points for Clinical Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Vaccine-induced immune thrombotic thrombocytopenia and cerebral venous thrombosis may occur (rarely) days or a few weeks after an individual receives adenovirus-based SARS-CoV-2 vaccines, usually presenting with new onset of headaches and thrombocytopenia; it requires the expert management of a hematologist and multidisciplinary team.",
+      "page": null
+    },
+    {
+      "section": "Clinical Presentation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Headache is the most common symptom of cerebral venous thrombosis, occurring in nearly 90% of cases. Approximately 20% to 40% have seizures at presentation, 20% to 50% have focal neurological deficits, and encephalopathy and coma have been reported in up to 20%. Symptoms tend to occur more insidiously than in other stroke types, and the majority will present >48 hours after onset.",
+      "page": null
+    },
+    {
+      "section": "Predisposing Factors",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Rates of cerebral venous thrombosis are highest in younger women, with both oral contraception and pregnancy/puerperium being major risk factors. Oral contraception and hormonal therapies (primarily estrogen-based formulations) may increase the odds of cerebral venous thrombosis nearly 8-fold, with possible additional synergistic effects with obesity. Other well-established risk factors include acquired thrombophilias such as antiphospholipid antibody syndrome, JAK2 mutations, malignancy (particularly myeloproliferative disorders), and autoimmune disease including Behcet and inflammatory bowel disease.",
+      "page": null
+    },
+    {
+      "section": "Long-Term Symptoms and CVT Recurrence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Overall, 80% to 90% of patients with cerebral venous thrombosis achieve functional independence (modified Rankin Scale score 0-2). However, several studies reported a high prevalence of residual symptoms related to cognition, mood, fatigue, and headache, which may impede return to previous level of activity; in one retrospective study 42% had not returned to work or school at 6 months despite 87% reaching functional independence.",
+      "page": null
+    },
+    {
+      "section": "Long-Term Symptoms and CVT Recurrence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Epilepsy may affect >10% of individuals with cerebral venous thrombosis, with risk factors including seizures at the time of onset, decreased level of consciousness or focal deficits, hemorrhagic lesions at baseline or superior sagittal sinus involvement, and craniectomy.",
+      "page": null
+    },
+    {
+      "section": "Long-Term Symptoms and CVT Recurrence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The incidence of recurrent venous thromboembolism after cerebral venous thrombosis ranges from 1% to 4% per year, with rates of cerebral venous thrombosis recurrence generally reported as <1% to 2% per year. A higher risk of recurrence has been reported in individuals with severe thrombophilia (including malignancy), those with a history of venous thromboembolism, individuals with events without identified precipitants, and, inconsistently, male individuals.",
+      "page": null
+    },
+    {
+      "section": "Brain and Vascular Imaging for the Diagnosis of CVT",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cerebral venous thrombosis on CT or MRI may be suspected by (1) direct visualization of the thrombus, (2) the absence of venous filling, and (3) imaging of the consequences of venous obstruction at the tissue level (venous infarction, edema and hemorrhagic transformation, intracranial hypertension and hydrocephalus) and at the vascular level (dilated veins).",
+      "page": null
+    },
+    {
+      "section": "Brain and Vascular Imaging for the Diagnosis of CVT",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In a meta-analysis of 27 publications with 2812 cases, CT had a sensitivity of 0.79 (95% CI, 0.76-0.82) and specificity of 0.90 (95% CI, 0.89-0.91), lower than previously reported in the 2011 American Heart Association statement. A meta-analysis of 21 studies with 1773 patients showed conventional MRI sequences to have a sensitivity of 0.82 (95% CI, 0.78-0.85) and specificity of 0.92 (95% CI, 0.91-0.94).",
+      "page": null
+    },
+    {
+      "section": "Brain and Vascular Imaging for the Diagnosis of CVT",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Because early thrombus may be isointense or hypointense on T2 and time-of-flight MRV is susceptible to misdiagnosis, it is often helpful to corroborate findings with gradient-recalled echo, susceptibility-weighted imaging sequences, or contrast-enhanced MRV. Thrombosed blood creates a blooming artifact on gradient-recalled echo or susceptibility-weighted imaging that is especially useful for thrombosed cortical veins, where sensitivity and specificity approach 100%.",
+      "page": null
+    },
+    {
+      "section": "Confirming the Diagnosis of CVT",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "CT venography and MRV are the optimal tests to confirm a diagnosis of cerebral venous thrombosis. Digital subtraction angiography is typically used only when invasive treatments are considered. Compared with MRI, CTV has a lower sensitivity for cortical vein thrombosis.",
+      "page": null
+    },
+    {
+      "section": "Confirming the Diagnosis of CVT",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Time-of-flight MRV is especially useful in situations that may preclude gadolinium administration such as in pregnant or breastfeeding patients or in patients with severe renal failure; compared with 3-dimensional time-of-flight, 2-dimensional time-of-flight has higher sensitivity in the setting of slow flow. Contrast-enhanced MRV has a sensitivity and specificity comparable to that of CTV but allows better characterization between the low-flow state and hypoplastic sinus (flow gaps).",
+      "page": null
+    },
+    {
+      "section": "Therapeutic Advances in the Management of CVT: Oral Anticoagulation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The objectives of anticoagulation therapy in cerebral venous thrombosis are to prevent thrombus growth, to facilitate recanalization, and to prevent recurrent venous thromboembolism events. Low-molecular-weight heparin is favored over unfractionated heparin in the acute treatment of cerebral venous thrombosis given more practical administration, more predictable anticoagulation effect, lower risk of thrombocytopenia, and trends toward better outcomes in meta-analyses.",
+      "page": null
+    },
+    {
+      "section": "Therapeutic Advances in the Management of CVT: Oral Anticoagulation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The presence of venous hemorrhage does not constitute a contraindication for anticoagulation. Whether degree of venous recanalization should inform duration of anticoagulation remains an area of uncertainty.",
+      "page": null
+    },
+    {
+      "section": "Therapeutic Advances in the Management of CVT: Oral Anticoagulation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "From the current available evidence, it is reasonable to transition to a direct oral anticoagulant or vitamin K antagonist after a period of lead-in parenteral anticoagulation, but whether 5 to 15 days is a safer or more effective strategy than shorter periods is not known.",
+      "page": null
+    },
+    {
+      "section": "Therapeutic Advances in the Management of CVT: Oral Anticoagulation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Direct oral anticoagulants are not suitable in women who are pregnant (both direct oral anticoagulants and warfarin are contraindicated; only low-molecular-weight heparin is recommended) or breastfeeding (direct oral anticoagulants are contraindicated). Direct oral anticoagulants have also been associated with higher risks of recurrent thromboembolic events compared with warfarin in individuals with antiphospholipid antibody syndrome.",
+      "page": null
+    },
+    {
+      "section": "Therapeutic Advances in the Management of CVT: Oral Anticoagulation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is limited evidence on the role of antiplatelet agents after discontinuation of oral anticoagulation in cerebral venous thrombosis. Studies focused on secondary prevention of venous thromboembolism showed aspirin was more effective than placebo (hazard ratio, 0.68 [95% CI, 0.51-0.90]), but potential benefits should be carefully considered along with individual patient characteristics in shared decision-making.",
+      "page": null
+    },
+    {
+      "section": "Therapeutic Advances in the Management of CVT: Reperfusion Therapies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The randomized TO-ACT trial showed that patients with severe cerebral venous thrombosis did not benefit clinically from endovascular treatment compared with patients receiving standard anticoagulation therapy, and larger studies and meta-analyses showed that endovascular treatment is associated with higher mortality and no evidence of benefit.",
+      "page": null
+    },
+    {
+      "section": "Therapeutic Advances in the Management of CVT: Reperfusion Therapies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Currently, endovascular treatment is used as a rescue treatment for patients who are experiencing clinical deterioration or who failed or have contraindications to standard therapy. There is no current evidence to determine which endovascular technique (eg, stent retriever, microcatheters, aspiration catheters, aspiration pump systems) is superior to other therapeutic strategies.",
+      "page": null
+    },
+    {
+      "section": "Therapeutic Advances in the Management of CVT: Decompressive Craniectomy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Decompressive craniectomy should be offered to patients with acute severe cerebral venous thrombosis and parenchymal lesions with impending herniation as a lifesaving therapeutic approach. Factors associated with poorer outcomes included age >50 years, midline shift >10 mm, and total effacement of basal cisterns. There are no randomized controlled trials of this surgical approach; a systematic review and meta-analysis of 51 studies with 483 patients showed that surgery within 48 hours of admission may decrease mortality (odds ratio, 0.26 [95% CI, 0.10-0.69]) and result in improved functional outcomes.",
+      "page": null
+    },
+    {
+      "section": "CVT in Special Populations: Pediatric Population",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The key to successful management in children is to consider the diagnosis early in acute presentations with headache, seizures, focal neurological deficits, or coma and in typical situations such as sepsis (including mastoiditis, Lemierre syndrome, COVID-19, and meningitis), head trauma (including abuse), hypoxia, and dehydration. Awareness is especially important in children with preexisting conditions such as congenital heart disease, cancer and its treatment, anemia due to iron deficiency or hemoglobinopathies, and inflammatory conditions.",
+      "page": null
+    },
+    {
+      "section": "CVT in Special Populations: Pediatric Population",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The management of acute cerebral venous thrombosis in children typically involves low-molecular-weight heparin or unfractionated heparin. Anticoagulation in the acute phase is more controversial in premature and term neonates but is reasonable because there is no evidence of posttreatment hemorrhage, whereas lack of anticoagulation may lead to thrombus propagation.",
+      "page": null
+    },
+    {
+      "section": "CVT in Special Populations: Pediatric Population",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the Kids-DOTT trial, in individuals 4 months to 20.9 years of age, 6 weeks of anticoagulation was noninferior to 3 months for recurrent venous thromboembolism and bleeding events in provoked venous thromboembolism (including 25% with cerebral venous thrombosis). In EINSTEIN-Jr, none of 73 children treated with rivaroxaban versus 1 of 41 treated with standard anticoagulation had symptomatic recurrent venous thromboembolism.",
+      "page": null
+    },
+    {
+      "section": "CVT in Special Populations: CVT During Pregnancy and Puerperium",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The greatest risk periods for cerebral venous thrombosis include the third trimester and the first 6 postpartum weeks; approximately 80% of pregnancy-related cerebral venous thrombosis cases occur after delivery. Cesarean delivery appears to be associated with a higher risk (odds ratio, 3.10 [95% CI, 2.26-4.24]).",
+      "page": null
+    },
+    {
+      "section": "CVT in Special Populations: CVT During Pregnancy and Puerperium",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Vitamin K antagonists, including warfarin, are associated with fetal embryopathy and bleeding in the fetus and neonate and thus are contraindicated in pregnancy. Therefore, anticoagulation for cerebral venous thrombosis during pregnancy and early in the puerperium consists of low-molecular-weight heparin in the majority of women. As in nonpregnant women, thrombolysis and thrombectomy are reserved for patients with neurological deterioration or propagation of the thrombus despite medical therapy.",
+      "page": null
+    },
+    {
+      "section": "CVT in Special Populations: Future Pregnancies and Recurrence",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "According to the available evidence, cerebral venous thrombosis is not a contraindication for future pregnancies. Considering the additional risk that pregnancy confers to women with a history of cerebral venous thrombosis, prophylaxis with low-molecular-weight heparin during future pregnancies and the postpartum period is probably beneficial.",
+      "page": null
+    },
+    {
+      "section": "CVT in Special Populations: VITT and CVT",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In cases of suspected vaccine-induced thrombotic thrombocytopenia, laboratory testing for platelet factor 4 antibodies is recommended. Despite the lack of evidence, given the similarity to autoimmune heparin-induced thrombocytopenia, avoidance of heparin products, intravenous immunoglobulin 1 g/kg body weight daily for 2 days, and administration of steroids have been advised. Platelet transfusions are not recommended. Nonheparin parenteral anticoagulants (argatroban, fondaparinux) are typically used first, with transition to an oral anticoagulant (ie, direct oral anticoagulant) once there is full platelet count recovery.",
+      "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

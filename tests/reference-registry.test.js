@@ -139,7 +139,7 @@ describe('Guideline Library relocation and References TOC (P4-2a / P4-4c)', () =
   });
 });
 
-describe('Summary-only stub rule (P4-2e) against src/guidelines data', () => {
+describe('No-stub rule (P4-2e) against src/guidelines data', () => {
   const dir = path.join(ROOT, 'src', 'guidelines');
   const files = fs.readdirSync(dir).filter(
     (f) => f.endsWith('.json') && f !== 'index.json' && f !== 'landmark-trials.json'
@@ -149,25 +149,49 @@ describe('Summary-only stub rule (P4-2e) against src/guidelines data', () => {
     (g) => (g.recommendations || []).length > 0 && g.recommendations.every((r) => r.section === 'Scope')
   );
 
-  it('the mechanical rule flags the abstract-only stub datasets', () => {
-    // 67 of the 89 datasets are abstract-only stubs at the time of writing;
-    // keep a floor rather than an exact count so adding full datasets never
-    // breaks this guard.
-    expect(summaryOnly.length).toBeGreaterThanOrEqual(60);
-    expect(summaryOnly.length).toBeLessThan(datasets.length);
+  // This guard used to assert that stubs EXISTED (a floor of 60, when 67 of 89
+  // datasets were a single abstract-quoting "Scope" line). The library has since
+  // been rebuilt from the published full text, so the invariant is inverted: no
+  // dataset may go back to being abstract-only.
+  it('no dataset is an abstract-only stub', () => {
+    const ids = summaryOnly.map((g) => g.id);
+    expect(ids, `abstract-only stub datasets have reappeared: ${ids.join(', ')}`).toEqual([]);
   });
 
-  it('every summary-only dataset carries a pmid, so "see source" always has a PubMed target', () => {
-    const missing = summaryOnly.filter((g) => !g.pmid && !g.pubmedUrl).map((g) => g.id);
-    expect(missing, `stub datasets without pmid/pubmedUrl: ${missing.join(', ')}`).toEqual([]);
+  it('every dataset declares documentType and gradingSystem', () => {
+    const missing = datasets
+      .filter((g) => !g.documentType || !g.gradingSystem)
+      .map((g) => g.id);
+    expect(missing, `datasets missing documentType/gradingSystem: ${missing.join(', ')}`).toEqual([]);
   });
 
-  it('full datasets are never flagged (mixed datasets keep their graded recommendations visible)', () => {
-    const flaggedIds = new Set(summaryOnly.map((g) => g.id));
-    // eso-ich-2025 carries one Scope statement plus graded recommendations —
-    // it must NOT be flagged as summary-only.
-    expect(flaggedIds.has('eso-ich-2025')).toBe(false);
-    expect(flaggedIds.has('ais-2026')).toBe(false);
-    expect(flaggedIds.has('ich-2022')).toBe(false);
+  // Six documents publish their recommendation boxes as images or sit behind a
+  // subscription. They carry what was recoverable plus an explicit caveat, and
+  // must never be given a grade their source did not state.
+  it('documents whose source is not machine-readable say so, and claim no grades', () => {
+    const flagged = datasets.filter((g) => g.extractionStatus === 'source-not-machine-readable');
+    for (const g of flagged) {
+      expect(g.extractionNote, `${g.id} lacks an extractionNote`).toBeTruthy();
+      expect(g.gradingSystem, `${g.id} must be ungraded`).toBe('ungraded');
+      for (const r of g.recommendations || []) {
+        expect(r.classOfRec, `${g.id} claims a grade it could not read`).toBe('Statement');
+        expect(r.levelOfEvidence, `${g.id} claims a level it could not read`).toBe('Ungraded');
+      }
+    }
+  });
+
+  it('every dataset carries a pmid, so "see source" always has a PubMed target', () => {
+    const missing = datasets.filter((g) => !g.pmid && !g.pubmedUrl).map((g) => g.id);
+    expect(missing, `datasets without pmid/pubmedUrl: ${missing.join(', ')}`).toEqual([]);
+  });
+
+  it('the flagship graded guidelines keep their class distribution', () => {
+    const byId = new Map(datasets.map((g) => [g.id, g]));
+    for (const id of ['ais-2026', 'ich-2022', 'secondary-prevention-2021', 'sah-2023']) {
+      const g = byId.get(id);
+      expect(g, `${id} missing`).toBeTruthy();
+      const graded = (g.recommendations || []).filter((r) => ['I', 'IIa', 'IIb', 'III'].includes(r.classOfRec));
+      expect(graded.length, `${id} lost its ACC/AHA classes`).toBeGreaterThan(50);
+    }
   });
 });

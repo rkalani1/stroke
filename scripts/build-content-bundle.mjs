@@ -32,7 +32,7 @@ function readDomain(domain) {
       const data = JSON.parse(fs.readFileSync(file, 'utf8'));
       for (const rec of Array.isArray(data) ? data : [data]) records.push(rec);
     } else if (name.endsWith('.md')) {
-      const { data, body } = parseFrontmatter(fs.readFileSync(file, 'utf8'));
+      const { data, body } = parseFrontmatter(fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n'));
       records.push({ ...data, body: body.trim() });
     }
   }
@@ -66,7 +66,7 @@ const text = JSON.stringify(bundle, null, 2) + '\n';
 
 if (check) {
   let existing = null;
-  try { existing = fs.readFileSync(outPath, 'utf8'); } catch { /* new */ }
+  try { existing = fs.readFileSync(outPath, 'utf8').replace(/\r\n/g, '\n'); } catch { /* new */ }
   if (existing !== text) {
     console.error('build-content-bundle --check: content/bundle.json is stale. Run `npm run content:bundle`.');
     process.exit(1);
