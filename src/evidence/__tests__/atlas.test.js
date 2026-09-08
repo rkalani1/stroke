@@ -1597,3 +1597,41 @@ describe('makeTopic factory', () => {
     });
   });
 });
+
+describe('makeTopic in schema.js', () => {
+  it('makeTopic produces expected object with defaults and custom fields', () => {
+    const defaultTopic = schema.makeTopic();
+    expect(defaultTopic).toEqual({
+      id: '',
+      label: '',
+      parentId: '',
+      notes: ''
+    });
+
+    const customTopic = schema.makeTopic({
+      id: 'extended-window-ivt',
+      label: 'Extended-window IV thrombolysis',
+      parentId: 'acute-ischemic-stroke',
+      notes: 'Includes WAKE-UP and EXTEND evidence'
+    });
+    expect(customTopic).toEqual({
+      id: 'extended-window-ivt',
+      label: 'Extended-window IV thrombolysis',
+      parentId: 'acute-ischemic-stroke',
+      notes: 'Includes WAKE-UP and EXTEND evidence'
+    });
+
+    const nonStringInputTopic = schema.makeTopic({
+      id: 123,
+      label: null,
+      parentId: undefined,
+      notes: {}
+    });
+    expect(nonStringInputTopic).toEqual({
+      id: '',
+      label: '',
+      parentId: '',
+      notes: ''
+    });
+  });
+});
