@@ -10,12 +10,286 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Introduction",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Considerable variation exists in the delivery of acute stroke care and stroke outcomes across settings and population groups. This is attributable in part to variation in resources among emergency departments in the United States, most notably in rural regions.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Rural patients with stroke have higher mortality rates relative to urban patients, with reduced access to treatment and worse functional outcomes. Improving stroke outcomes and reducing rural health care disparities requires investment in these sites as anchors of the stroke chain of survival for their residents. This scientific statement identifies best practices and does not assign a Class of Recommendation or Level of Evidence.",
+      "page": null
+    },
+    {
+      "section": "The Coordinated Stroke System of Care — Role for Coordinated Systems of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Coordinated systems of stroke care involve early incorporation of and collaboration among all stakeholders, including those directly involved with providing stroke care in prehospital, acute, and postacute phases, as well as hospital administrators, regulatory agencies, payers, patients, caregivers, policymakers, and advocacy organizations. Coordinated regional stroke systems of care have a pivotal role in optimizing patient outcomes; this can be particularly challenging in rural settings, which may be underresourced and have limitations imposed by geography.",
+      "page": null
+    },
+    {
+      "section": "The Coordinated Stroke System of Care — Prehospital Setting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "People living in rural communities have lower odds of arrival by EMS for stroke, despite the association with improved care and outcomes. Behavior theory–informed, user-centered public campaigns considering characteristics of target populations and strategies for motivating behavior change may be worth exploring; improved ambulance availability is also needed in rural settings.",
+      "page": null
+    },
+    {
+      "section": "The Coordinated Stroke System of Care — Prehospital Setting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Decentralized US EMS organization has contributed to variation in the quality and accessibility of EMS, including variation in the existence and use of mandated statewide stroke assessment tools; rural and lower-resource settings are more dependent on less-trained volunteer EMS clinicians, with more than half of EMS directors in small rural areas reporting volunteer-only staffing. Potential solutions include the development of policy for implementation of stroke assessment tools, routing and bypass decisions, and standardized methodology for collection of EMS data.",
+      "page": null
+    },
+    {
+      "section": "The Coordinated Stroke System of Care — Prehospital Setting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Recent innovations for advancing prehospital management may be of particular value in rural settings and warrant further research, including prehospital telemedicine, smartphone applications and artificial intelligence for improved stroke and large vessel occlusion (LVO) detection, live geomapping-based algorithms, and optimized prehospital routing decisions. Models using mobile stroke units for prehospital triage in rural areas in collaboration with another ambulance or the transferring ED could also be effective in some geographic areas. Priorities include establishing and standardizing prehospital protocols and regulation, developing effective behavioral theory–informed training strategies, and evolving methods of funding EMS in lower-resource settings.",
+      "page": null
+    },
+    {
+      "section": "Prehospital Setting — Potential Strategies (Table 1)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Strategies to address distance from expert care and increased travel times to stroke-capable hospitals include supporting hospitals' transition to certified Acute Stroke Ready Hospitals (ASRHs) or stroke centers, using air transport, and implementing telestroke for remote specialist access, with championing from foundations such as the AHA and state departments of public health.",
+      "page": null
+    },
+    {
+      "section": "Thrombolysis and ED Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Rural EDs less often have the resources and expertise of an ASRH or stroke center, contributing to lower use of thrombolysis and differences in quality of care delivery. Challenges include shortages of board-certified emergency medicine physicians, variability in neurologic training in emergency medicine residencies, staffing shortages (eg, an on-call versus on-site CT technologist), high reliance on per diem or traveler staffing, and low annual stroke volumes. Mock stroke codes or simulation exercises may be useful for sites with low annual stroke volumes.",
+      "page": null
+    },
+    {
+      "section": "Thrombolysis and ED Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "An essential strategy to enhance rural, resource-limited stroke systems is to grow the number of certified ASRHs, stroke centers, and Get With The Guidelines–Stroke participating sites by supporting them in the process (eg, through the American Heart Association Rural Health Initiative). Local, regional, and statewide stroke system policy changes and legislation may also increase the number of certified centers. Treatment rates, diagnostic errors, compliance with care measures, and overall outcomes are likely to be improved with stroke center certification and registry participation.",
+      "page": null
+    },
+    {
+      "section": "Thrombolysis and ED Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Other societies, such as the American College of Emergency Physicians E-QUAL Network, offer no-cost quality improvement resources for the ED phase of care to a large number of community EDs, including educational opportunities, toolkits, data collection for feedback based on measures aligned with Get With The Guidelines–Stroke and the Joint Commission, and opportunities for obtaining merit-based incentive payment system credits.",
+      "page": null
+    },
+    {
+      "section": "Enhanced Partnerships of Rural Centers With Their Hub Hospitals and Increased Telestroke Use",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Enhanced partnerships of rural centers with their hub hospitals and increased telestroke use may support improved educational and communication efforts, direct local interventions, and tracking of quality and registry data with dedicated feedback and mentoring, helping overcome structural and personnel barriers to research participation. Other strategies include ensuring written and accessible site protocols for stroke care and locally formulated initiatives (eg, recruitment of stroke champions, staff certification in Emergency Neurological Life Support protocols, mock codes). The US Department of Veterans Affairs National Telestroke Program is an example of a successful nationally scaled telestroke intervention.",
+      "page": null
+    },
+    {
+      "section": "Engagement Opportunities for Receiving Hospitals to Improve Care at Satellite Sites (Table 2)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Education and communication opportunities for receiving (hub) hospitals include performing general multidisciplinary educational activities (eg, conferences, code stroke simulation, staff huddles); providing specialized training of community clinicians to improve skills (eg, shadowing); streamlining transfers by immediately linking not only the sending and receiving physicians but also bed navigators and aerial and ground transport coordinators; sharing electronic medical record and radiology images through a smartphone application; and providing timely feedback to the transferring facility through electronic platforms or registries of aggregate data.",
+      "page": null
+    },
+    {
+      "section": "Engagement Opportunities for Receiving Hospitals to Improve Care at Satellite Sites (Table 2)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Direct local interventions for receiving hospitals include organizing transition of care of patients with stroke to their community to ensure adherence with secondary prevention interventions including adequate blood pressure management; identifying a local champion to advance and support initiatives, including stroke certification; subsidizing the cost of stroke certification and a stroke coordinator with regulatory and organizational support; establishing teleneurology systems of care that include local telestroke support; and engaging spokes as active participants in decisions affecting the local system of care (eg, bypass of suspected large vessel strokes, early repatriation of patients).",
+      "page": null
+    },
+    {
+      "section": "Engagement Opportunities for Receiving Hospitals to Improve Research at Satellite Sites (Table 3)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Research engagement opportunities include performing education through research activities to disseminate data from existing trials among spoke clinicians; promoting electronic medical record tools to identify patients for clinical trials; facilitating inclusion of small rural hospitals into existing research networks (eg, StrokeNet); coordinating with tertiary-based institutional review boards to support hospitals that lack an IRB; using electronic consent platforms or telestroke video communications to consent and enroll patients; and using tertiary-based air medical crews as coinvestigators to enroll patients during helicopter interhospital transfer or upon arrival.",
+      "page": null
+    },
+    {
+      "section": "Interhospital Transfers",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Transfer decisions are often based on factors beyond distance or quality, including shared affiliation, competition, hospital reputation, and patient insurance, and the benefit of transfer for improved access varies by patient race and insurance. Other transfer-related challenges include ambulance availability in rural areas, capacity and bed availability at receiving hospitals, inconsistent strategies for data and image sharing between sending and receiving sites, and nonstandardized supportive care during transfer.",
+      "page": null
+    },
+    {
+      "section": "Interhospital Transfers",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Improved coordination of the stroke system of care must be part of the solution, including improved configuration of health care systems and addressing policies that reinforce legacies of segregation and inequitable access. An active national bed availability board may be of value for sending sites in need of available receiving hospitals. Use of 9-1-1 services for interfacility transfer, although not generalizable to many rural areas because of resource constraints, may be considered where feasible and has been associated with reduced transfer times in other time-sensitive diseases.",
+      "page": null
+    },
+    {
+      "section": "Interhospital Transfers",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is a lack of standardized supportive care protocols to prevent and treat hemodynamic, respiratory, and neurologic complications during transfer, which are particularly important for patients after thrombolysis and those with an LVO and must account for longer transport distances from rural areas. Development, standardization, and sharing of transfer protocols may be beneficial, including identification of optimal regionalization strategies (eg, drip-and-ship versus bypass) with attention to local context.",
+      "page": null
+    },
+    {
+      "section": "Thrombectomy Access",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Only 20% of the population has access to a thrombectomy-capable center within 15 minutes and 31% within 30 minutes, with timely access challenges even more pronounced in rural areas; rural patients more often present to gap hospitals that do not transfer patients for thrombectomy. One potential solution is to create a live map for EMS and hospitals giving the location of available thrombectomy-capable centers, which may include traffic and weather conditions and operator availability.",
+      "page": null
+    },
+    {
+      "section": "Thrombectomy Access",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Increasing access to thrombectomy depends on improved early identification of LVO stroke. Training in stroke severity assessment and consistent use of tools can improve identification and prenotification, improving ED preparedness and in-hospital workflow, and is paramount in settings with bypass protocols. In the ED, clinical and imaging protocols that include simultaneous vascular imaging improve LVO identification; for resource-limited sites lacking experienced 24/7 radiology staff, triaging patients to receive rapid CT angiography on the basis of a focused LVO scale examination could be implemented. Early identification must be combined with parallel engagement of tertiary sites, including activation of the transfer process.",
+      "page": null
+    },
+    {
+      "section": "Thrombectomy Access",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Strategies to improve door-in-door-out times for transferred patients to ensure timely thrombectomy include established transfer agreements with receiving hospitals and transferring ambulances, performing many steps of the transfer process (including arranging transport) in parallel with identifying an accepting hospital, and rapid centralized sharing of images with the receiving hospital team. Keeping the initial transporting ambulance on standby until the CT angiography is complete may facilitate faster door-in-door-out times when feasible. In more remote settings with longer distances, air transportation should be considered, and depending on resources a mobile interventional stroke team traveling to the primary site could be developed.",
+      "page": null
+    },
+    {
+      "section": "Thrombectomy Access",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients in rural areas are more likely to receive thrombectomy at primary stroke centers, which have lower performance and outcomes than accredited thrombectomy centers — the latter being required to collect and report quality metrics pertaining to mechanical thrombectomy and to maintain capabilities including a 24/7 neurointerventional team, neurointensive care unit, and advanced neuroimaging. Additional support of thrombectomy-capable centers located more proximally to regions remote from Comprehensive Stroke Centers would be beneficial.",
+      "page": null
+    },
+    {
+      "section": "Inpatient Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with stroke in rural hospitals have higher mortality rates than those in urban hospitals, with potential explanations including lower receipt of reperfusion, lower odds of care at a stroke center, lack of infrastructure for stroke imaging and neuromonitoring, lack of stroke expertise, lack of dedicated stroke units and neurocritical care, and possible differences in access to acute inpatient rehabilitation.",
+      "page": null
+    },
+    {
+      "section": "Inpatient Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Telestroke has been a key strategy to improve access to neurologic expertise and is associated with increased administration of thrombolytic therapy and improved patient outcomes; extending the use of telemedicine throughout the hospital stay may help address the lack of neurologic expertise in inpatient care. Other opportunities for rural hospitals include investing in annual comprehensive stroke education programs, partnering with certified stroke centers, and using stroke care coordinators and nurse navigators. Secondary stroke prevention measures, including antithrombotics, anticoagulation, statin use, and smoking cessation, are also important.",
+      "page": null
+    },
+    {
+      "section": "Postacute Care Transitions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Fragmented and disorganized postacute care contributes to poor patient outcomes, increased hospital readmission, decreased functional status, and increased caregiver burden. Among patients discharged home, the development of transitional stroke clinics could help bridge the gap between acute hospitalization and discharge disposition but would need to account for accessibility and travel distances. Stroke survivors in rural settings may also benefit from home-based interventions such as blood pressure monitoring and telerehabilitation, virtual support groups, and other forms of online support; community partnerships with churches or other local organizations may be opportunities to develop informal support groups.",
+      "page": null
+    },
+    {
+      "section": "Cross-Cutting System Issues — Strategies Related to Designation and Improving Delivery of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The delivery of stroke care in rural areas may be improved by promoting stroke center designation through formal certification; evidence-based components of primary stroke center designation are associated with higher quality of care and better patient outcomes. Barriers in rural areas include low stroke volume and lack of neurologist coverage or financial resources for pursuing telemedicine.",
+      "page": null
+    },
+    {
+      "section": "Cross-Cutting System Issues — Strategies Related to Designation and Improving Delivery of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Expansion of ASRH and primary stroke center certification in rural areas may be facilitated by the availability of statewide or regional champions for stroke systems of care. State-based certification has been associated with lower performance and worse outcomes compared with standard national designations; use of nationally recognized certifying bodies remains preferable. Any future expansion of ASRHs or PSCs in rural areas should be geographically efficient, considering population density and proximity of resources, and it is important to ensure an equitable distribution of certified thrombectomy centers to ensure rural population coverage.",
+      "page": null
+    },
+    {
+      "section": "Cross-Cutting System Issues — Data Integration",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Many strategies aimed at improving access, quality, and outcomes depend on interoperable if not fully integrated data systems: real-time patient status information and imaging need to be available to the consulting or receiving hospital; availability of a patient's full clinical data can improve measurement and allow decision support integration; and for transitions of care after hospitalization, data integration is crucial to ensuring handoffs preserve continuity and care plans. Follow-up instructions (eg, pending laboratory tests, planned medication uptitration, progress toward rehabilitation goals) should be communicated from the admitting hospital to the rehabilitation facility with high fidelity. Potential solutions include creation of a shared electronic medical record platform, a standardized reporting form, and greater use of stroke registries.",
+      "page": null
+    },
+    {
+      "section": "Cross-Cutting System Issues — Data Integration",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke registries provide the foundation for local, regional, or statewide continuous quality improvement initiatives, and stroke center certification requires hospital-based registries. Although registry data collection may be challenging to support at resource-limited rural centers, it is essential for understanding the quality of care being provided. Statewide registries may identify outcome differences or geographic or demographic health disparities; the most expansive example is the Get With The Guidelines–Stroke registry, which has a rural hospital recognition program and EMS data integration.",
+      "page": null
+    },
+    {
+      "section": "Cross-Cutting System Issues — QI and Quality Measurement",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Quality improvement programs designed for rural settings must take into account their challenges and resource limitations. A program that has graduated, lowered, or waived enrollment fees, has specific recognition criteria for rural hospitals, is provided at no cost to the sites, or requires abstraction on a limited number of patients with stroke (eg, 25 per year) may be more accessible.",
+      "page": null
+    },
+    {
+      "section": "Cross-Cutting System Issues — QI and Quality Measurement",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A more network-oriented approach may be valuable: regional referral centers could be included in quality improvement development and implementation at the sites frequently sending patients to them through educational initiatives or similar investments. Multiple online resources developed by professional societies — the Advanced Stroke Life Support course (AHA), the Emergency Neurological Life Support course (Neurocritical Care Society), and the Advanced Stroke Emergency Support course (Society of Vascular and Interventional Neurology) — could be used for this purpose.",
+      "page": null
+    },
+    {
+      "section": "Cross-Cutting System Issues — QI and Quality Measurement",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Quality measurement approaches must consider the particular setting and limitations of lower-resourced rural sites. Smaller-volume centers may not have enough patients with stroke in a reporting period for process or outcome-based measures for public reporting, although evaluating such measures locally for internal quality improvement may still be of value. Structural measures (eg, presence of a stroke protocol) may be more suitable for broad use provided they adequately account for variation in resource availability. During measure development, particular attention should be given to transferred patients, who are often excluded from measure denominators as outliers but represent more vulnerable patients; how transferred patients are attributed, whether to the sending or receiving site, should be decided on a measure-by-measure basis.",
+      "page": null
+    },
+    {
+      "section": "Cross-Cutting System Issues — Policy Solutions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "First, patients in rural areas must be recognized as an underserved population vulnerable to inefficient care and poor outcomes unless policies address specific workforce shortages. This may include supporting training programs to enhance rural clinicians' ability to provide high-quality stroke care. Scope of practice laws, which differ substantially by state, may need to be different in rural versus urban areas to accommodate the realities of staffing remote facilities, and cross-state licensure systems could be updated to facilitate telehealth delivery.",
+      "page": null
+    },
+    {
+      "section": "Cross-Cutting System Issues — Policy Solutions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Second, policies aimed at enhancing access to and use of telehealth could be considered, including assistance with broadband access or satellite technology, dedicated infrastructure and equipment, and capital investments at small facilities through expansion of existing grant programs, state or federal payment programs, or waiver programs accessible through Medicaid or Medicare. Because many small hospitals cannot afford video capabilities, emergency phone consultation and imaging assessment should be considered forms of telestroke deserving appropriate reimbursement.",
+      "page": null
+    },
+    {
+      "section": "Cross-Cutting System Issues — Policy Solutions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Third, policies may be developed to facilitate data sharing and integration. Requiring hospitals to participate in real-time data sharing consistently and systematically, rather than intermittently as required in many federal and state programs, could result in rural patients receiving more seamless care; this may require infrastructure funding for small rural facilities. Statewide or regional work groups may also support improved data sharing and transfer processes within local contexts.",
+      "page": null
+    },
+    {
+      "section": "Cross-Cutting System Issues — Policy Solutions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Fourth, greater attention to investment and partnership for historically disinvested communities in rural settings, particularly those with a high proportion of individuals marginalized or disenfranchised on the basis of race, ethnicity, or income level, could have substantial effect. Integration of rural systems of care across disciplines (eg, trauma, pediatrics, obstetrics, cardiac care) may enable more effective advocacy for systematic investments in shared resources such as telehealth infrastructure, coordinators, or training opportunities.",
+      "page": null
+    },
+    {
+      "section": "Summary and Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Identified strategies include expansion of ASRH and primary stroke center certification in rural areas, facilitated by statewide or regional stroke system champions, and engagement in and mentorship of rural hospitals by Comprehensive Stroke Centers with which they are connected through patient transfer. Multistakeholder collaboration including clinicians, health system leaders, public health leaders, policymakers, and research funding organizations is required, and efforts should enhance public awareness, impart staff training, build stroke infrastructure, enhance access to clinical expertise, streamline data management, and implement quality assessment and improvement programs taking into account the challenges and needs of the rural setting.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

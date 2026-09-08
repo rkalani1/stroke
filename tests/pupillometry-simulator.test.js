@@ -14,30 +14,30 @@ describe('Pupillometry simulator — interpretation cascade (ORDER MATTERS)', ()
     expect(r.tone).toBe('ok');
   });
 
-  it('flags HERNIATION CRISIS at NPi ≤ 1.0 (code threshold, not 0.0)', () => {
-    expect(interpretPupillometry({ ...normal, npi: 0.5 }).status).toBe('HERNIATION CRISIS (CRITICAL)');
-    expect(interpretPupillometry({ ...normal, npi: 1.0 }).status).toBe('HERNIATION CRISIS (CRITICAL)');
+  it('flags markedly abnormal pupils without diagnosing herniation', () => {
+    expect(interpretPupillometry({ ...normal, npi: 0.5 }).status).toBe('MARKEDLY ABNORMAL — URGENT REASSESSMENT');
+    expect(interpretPupillometry({ ...normal, npi: 1.0 }).status).toBe('MARKEDLY ABNORMAL — URGENT REASSESSMENT');
     const r = interpretPupillometry({ ...normal, npi: 0.5 });
     expect(r.tone).toBe('crit');
   });
 
   it('does NOT call herniation just above 1.0 (1.1 falls to severe via NPi < 2.8)', () => {
     const r = interpretPupillometry({ ...normal, npi: 1.1 });
-    expect(r.status).toBe('SEVERE SHIFT ALARM');
+    expect(r.status).toBe('ABNORMAL / ASYMMETRIC — REASSESS');
   });
 
   it('flags SEVERE SHIFT ALARM at NPi 2.5 (NPi < 2.8)', () => {
     const r = interpretPupillometry({ ...normal, npi: 2.5 });
-    expect(r.status).toBe('SEVERE SHIFT ALARM');
+    expect(r.status).toBe('ABNORMAL / ASYMMETRIC — REASSESS');
     expect(r.tone).toBe('gold');
   });
 
   it('flags SEVERE SHIFT ALARM on inter-eye diff ≥ 0.7 even with normal NPi', () => {
-    expect(interpretPupillometry({ ...normal, diff: 0.7 }).status).toBe('SEVERE SHIFT ALARM');
+    expect(interpretPupillometry({ ...normal, diff: 0.7 }).status).toBe('ABNORMAL / ASYMMETRIC — REASSESS');
   });
 
   it('flags SEVERE SHIFT ALARM on CV < 0.5 even with normal NPi', () => {
-    expect(interpretPupillometry({ ...normal, cv: 0.4 }).status).toBe('SEVERE SHIFT ALARM');
+    expect(interpretPupillometry({ ...normal, cv: 0.4 }).status).toBe('ABNORMAL / ASYMMETRIC — REASSESS');
   });
 
   it('flags EARLY CLINICAL ALARM at NPi 2.9 (NPi < 3.0 but ≥ 2.8)', () => {
@@ -57,7 +57,7 @@ describe('Pupillometry simulator — interpretation cascade (ORDER MATTERS)', ()
   it('herniation wins over severe/early (cascade order)', () => {
     // diff ≥ 0.7 would be severe, but NPi ≤ 1.0 short-circuits first.
     expect(interpretPupillometry({ npi: 0.0, cv: 0.0, change: 0, diff: 2.0 }).status)
-      .toBe('HERNIATION CRISIS (CRITICAL)');
+      .toBe('MARKEDLY ABNORMAL — URGENT REASSESSMENT');
   });
 });
 

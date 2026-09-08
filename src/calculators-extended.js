@@ -13,26 +13,26 @@
 //   Group A: age >=80, NIHSS >=10, core <21 mL
 //   Group B: age <80, NIHSS >=10, core <31 mL
 //   Group C: age <80, NIHSS >=20, core <51 mL
-export const evaluateDAWN = ({ age, nihss, coreMl, timeFromLKWh }) => {
+export const evaluateDAWN = ({ age, nihss, coreMl, timeFromLKWh } = {}) => {
   const a = parseFloat(age);
   const n = parseFloat(nihss);
   const c = parseFloat(coreMl);
   const t = parseFloat(timeFromLKWh);
-  if (![a, n, c].every(Number.isFinite)) return null;
+  if (![a, n, c, t].every(Number.isFinite) || a <= 0 || a > 120 || !Number.isInteger(n) || n < 0 || n > 42 || c < 0 || t < 0) return null;
   if (Number.isFinite(t) && (t < 6 || t > 24)) {
     return { eligible: false, tier: null, reason: `Outside DAWN window (6-24h); LKW ${t}h`, meetsImaging: false, meetsClinical: false };
   }
   let tier = null; let reason = '';
   if (a >= 80 && n >= 10 && c < 21) tier = 'A';
-  else if (a < 80 && n >= 10 && c < 31) tier = 'B';
-  else if (a < 80 && n >= 20 && c < 51) tier = 'C';
+  else if (a >= 18 && a < 80 && n >= 10 && c < 31) tier = 'B';
+  else if (a >= 18 && a < 80 && n >= 20 && c < 51) tier = 'C';
   else reason = `No tier met (age ${a}, NIHSS ${n}, core ${c} mL)`;
   return {
     eligible: tier !== null,
     tier,
     meetsImaging: Number.isFinite(c) && c < 51,
     meetsClinical: Number.isFinite(n) && n >= 10,
-    reason: tier ? `DAWN Group ${tier} criteria met` : reason,
+    reason: tier ? `DAWN Group ${tier} age/severity/core screen met. Confirm ICA/proximal MCA occlusion, baseline function, and remaining trial criteria; this is not complete EVT eligibility.` : `${reason}. Failure to meet DAWN does not exclude EVT under newer evidence.`,
     window: '6-24h',
     endpointNNT: 2.8,
     source: 'Nogueira NEJM 2018;378:11-21 (NCT02142283)'
@@ -41,23 +41,25 @@ export const evaluateDAWN = ({ age, nihss, coreMl, timeFromLKWh }) => {
 
 // DEFUSE-3 inclusion calculator (Albers et al., NEJM 2018;378:708-18)
 // Window: 6-16h after last known well.
-// Inclusion: core <=70 mL, mismatch volume >=15 mL, mismatch ratio >=1.8.
-export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, timeFromLKWh, nihss, age }) => {
+// Inclusion: core <70 mL, mismatch volume >=15 mL, mismatch ratio >=1.8.
+// Hypoperfused volume is TOTAL Tmax >6s volume, including the core.
+// `penumbraMl` is a legacy name for that total, not salvageable-only volume.
+export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLKWh, nihss, age } = {}) => {
   const c = parseFloat(coreMl);
-  const p = parseFloat(penumbraMl);
+  const p = parseFloat(hypoperfusedMl ?? penumbraMl);
   const t = parseFloat(timeFromLKWh);
   const n = parseFloat(nihss);
   const a = parseFloat(age);
-  if (![c, p].every(Number.isFinite)) return null;
+  if (![c, p, t, n, a].every(Number.isFinite) || c < 0 || p < c || t < 0 || !Number.isInteger(n) || n < 0 || n > 42 || a <= 0 || a > 120) return null;
   if (Number.isFinite(t) && (t < 6 || t > 16)) {
-    return { eligible: false, reason: `Outside DEFUSE-3 window (6-16h); LKW ${t}h`, meetsCore: c <= 70, meetsMismatch: false };
+    return { eligible: false, reason: `Outside DEFUSE-3 window (6-16h); LKW ${t}h`, meetsCore: c < 70, meetsMismatch: false };
   }
   const mismatchVolume = p - c;
   const mismatchRatio = c > 0 ? p / c : Infinity;
-  const coreOk = c <= 70;
+  const coreOk = c < 70;
   const ratioOk = mismatchRatio >= 1.8;
   const volumeOk = mismatchVolume >= 15;
-  const clinicalOk = (!Number.isFinite(n) || n >= 6) && (!Number.isFinite(a) || a >= 18);
+  const clinicalOk = n >= 6 && a >= 18 && a <= 90;
   const eligible = coreOk && ratioOk && volumeOk && clinicalOk;
   return {
     eligible,
@@ -69,8 +71,8 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, timeFromLKWh, nihss, age }
     mismatchVolumeMl: mismatchVolume,
     mismatchRatio,
     reason: eligible
-      ? 'DEFUSE-3 imaging + clinical criteria met'
-      : `${!coreOk ? `Core ${c} mL > 70; ` : ''}${!ratioOk ? `Mismatch ratio ${mismatchRatio.toFixed(1)} < 1.8; ` : ''}${!volumeOk ? `Mismatch volume ${mismatchVolume.toFixed(1)} mL < 15; ` : ''}${!clinicalOk ? 'Clinical criteria unmet; ' : ''}`.trim(),
+      ? 'DEFUSE-3 age/severity/perfusion screen met. Confirm ICA/proximal MCA occlusion, baseline function, and all exclusions; this is not complete EVT eligibility.'
+      : `${!coreOk ? `Core ${c} mL ≥70; ` : ''}${!ratioOk ? `Mismatch ratio ${mismatchRatio.toFixed(1)} < 1.8; ` : ''}${!volumeOk ? `Mismatch volume ${mismatchVolume.toFixed(1)} mL < 15; ` : ''}${!clinicalOk ? 'Age 18–90 and NIHSS ≥6 required; ' : ''}Failure to meet DEFUSE-3 does not exclude EVT under newer evidence.`.trim(),
     window: '6-16h',
     endpointNNT: 3.6,
     source: 'Albers NEJM 2018;378:708-18 (NCT02586415)'
@@ -99,14 +101,14 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, timeFromLKWh, nihss, age }
 //   lvdSymptomatic   — boolean: SYMPTOMATIC intra-/extracranial stenosis >=50% (INSPIRES qualifier)
 //   cyp2c19LOF       — boolean: known *2/*3 LOF carrier (CHANCE-2)
 //   ichRisk          — 'high' to suppress DAPT
-//   timeFromOnsetH   — number of hours from symptom onset (default 24); INSPIRES requires <=72h
-export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, lvdSymptomatic, cyp2c19LOF, ichRisk, timeFromOnsetH }) => {
+//   timeFromOnsetH   — required number of hours from symptom onset; INSPIRES requires <=72h
+export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, lvdSymptomatic, cyp2c19LOF, ichRisk, timeFromOnsetH } = {}) => {
   const n = parseFloat(nihss);
   const ab = parseFloat(abcd2);
-  const tH = Number.isFinite(parseFloat(timeFromOnsetH)) ? parseFloat(timeFromOnsetH) : 24;
+  const tH = parseFloat(timeFromOnsetH);
   const isTIA = strokeType === 'tia';
-  const isMinor = Number.isFinite(n) && n <= 3;
-  const isUpToModerate = Number.isFinite(n) && n <= 5;
+  const isMinor = !isTIA && Number.isInteger(n) && n >= 0 && n <= 3;
+  const isUpToModerate = !isTIA && Number.isInteger(n) && n >= 0 && n <= 5;
   const inInspiresWindow = tH <= 72;
   const inLegacyWindow = tH <= 24;
   const highRisk = Number.isFinite(ab) && ab >= 4;
@@ -122,17 +124,18 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
   // NOT assert a conclusion ("DAPT not indicated") from non-existent input.
   // Show a neutral prompt instead. Once a valid NIHSS (or ABCD² for TIA) is
   // entered, the branches below compute normally.
-  if (!Number.isFinite(n) && !Number.isFinite(ab)) {
+  const severityValid = isTIA ? Number.isInteger(ab) && ab >= 0 && ab <= 7 : Number.isInteger(n) && n >= 0 && n <= 42;
+  if (!severityValid || !Number.isFinite(tH) || tH < 0) {
     return {
       regimen: '—',
-      rationale: 'Enter NIHSS (or ABCD² for a TIA) to assess DAPT eligibility.',
+      rationale: 'Enter valid NIHSS (0–42) for stroke or ABCD² (0–7) for TIA and hours since onset. Confirm noncardioembolic mechanism, hemorrhage exclusion, and reperfusion/bleeding considerations separately.',
       duration: null,
       source: null
     };
   }
 
   // THALES: ticagrelor+ASA for moderate stroke w/ atherosclerotic etiology OR very-high-risk TIA, within 24h.
-  if (((isUpToModerate && isAtherosclerotic) || veryHighRisk) && inLegacyWindow) {
+  if (((isUpToModerate && isAtherosclerotic) || (isTIA && veryHighRisk)) && inLegacyWindow) {
     return {
       regimen: 'ticagrelor+ASA',
       duration: '30 days',
@@ -141,12 +144,12 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
         ? `Atherosclerotic minor-to-moderate stroke (NIHSS ≤5) within 24h: THALES showed 17% RRR in stroke/death at 30 d. ${lvdSymptomatic ? 'Symptomatic LVD ≥50% → INSPIRES (clopi+ASA) is an alternative option (Gao NEJM 2023).' : ''}`.trim()
         : `Very-high-risk TIA (ABCD² ${ab} ≥6): escalate to ticagrelor+ASA × 30d.`,
       source: 'Johnston NEJM 2020;383:207-17 (THALES); INSPIRES NEJM 2023;389:2413-24 alternative for atherosclerotic LVD',
-      class: 'Class 2a (AHA/ASA 2021 secondary prevention); atherosclerotic-LVD branch supported by INSPIRES (Gao NEJM 2023), not yet in an AHA/ASA guideline update'
+      class: 'Class 2b (AHA/ASA 2021 secondary prevention) for selected ticagrelor-aspirin patients; discuss bleeding risk and alternatives'
     };
   }
 
   // INSPIRES branch: NIHSS 4-5 within 72h (extended window beyond CHANCE/POINT), or atherosclerotic LVD ≥50%.
-  if (Number.isFinite(n) && n >= 4 && n <= 5 && inInspiresWindow) {
+  if (isAtherosclerotic && inInspiresWindow && ((isUpToModerate && n >= 4) || (tH > 24 && (isMinor || (isTIA && highRisk))))) {
     const useTicagrelor = cyp2c19LOF === true;
     return {
       regimen: useTicagrelor ? 'ticagrelor+ASA (CYP2C19 LOF — CHANCE-2 extrapolation)' : 'clopidogrel+ASA',
@@ -154,7 +157,7 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
       dosing: useTicagrelor
         ? 'Ticagrelor 180 mg load then 90 mg BID + ASA 75-100 mg daily (off-label INSPIRES extrapolation)'
         : 'Clopidogrel 300-600 mg load then 75 mg daily + ASA 75-100 mg daily',
-      rationale: `INSPIRES eligibility: NIHSS ${n} (4-5) within ${tH}h (≤72h). DAPT × 21d reduces 90-d stroke recurrence (HR 0.79). ${lvdSymptomatic ? 'Includes symptomatic LVD ≥50% per INSPIRES.' : ''}`.trim(),
+      rationale: `INSPIRES-style screen: ${isTIA ? `high-risk TIA (ABCD² ${ab})` : `NIHSS ${n}`} within ${tH}h and presumed atherosclerotic cause. Verify qualifying stenosis/multiple infarcts, age 35–80, and no thrombolysis/thrombectomy. Aspirin was given for 21 days and clopidogrel through day 90; bleeding increased.`,
       source: 'Gao NEJM 2023;389:2413-24 (INSPIRES, PMID 38157499); CYP2C19 branch CHANCE-2 NEJM 2021',
       class: 'INSPIRES-supported (Gao NEJM 2023); DAPT for high-risk TIA/minor stroke is Class 1 in the 2021 AHA/ASA secondary-prevention guideline (no 2024 AHA/ASA antiplatelet update exists)'
     };
@@ -178,14 +181,13 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
   }
 
   // Fall-throughs that signal "missed-window" or "above-threshold"
-  if (((isTIA && highRisk) || isMinor || (Number.isFinite(n) && n <= 5)) && tH > 72) {
+  if (((isTIA && highRisk) || isUpToModerate) && tH > 72) {
     return {
-      regimen: 'single-antiplatelet',
-      duration: 'long-term',
-      dosing: 'ASA 81 mg daily OR clopidogrel 75 mg daily',
-      rationale: `Outside DAPT initiation window (${tH}h > 72h). INSPIRES/CHANCE/POINT eligibility closed; transition to single antiplatelet for long-term secondary prevention.`,
-      source: 'Kleindorfer AHA/ASA Stroke 2021; INSPIRES 2023 window guidance',
-      class: 'Class 1'
+      regimen: 'individualized-review',
+      duration: null,
+      rationale: `Outside the trial windows modeled here (${tH}h >72h). This is not a blanket DAPT contraindication: the 2021 secondary-prevention guideline allows initiation within 7 days for selected minor noncardioembolic stroke/high-risk TIA. Review current guidance, mechanism, and bleeding risk.`,
+      source: 'AHA/ASA 2021 secondary-prevention guideline (doi: 10.1161/STR.0000000000000375); INSPIRES 2023',
+      class: 'Trial screen limitation; individualized clinical review'
     };
   }
 
@@ -193,7 +195,7 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
     regimen: 'single-antiplatelet',
     duration: 'long-term',
     dosing: 'ASA 81 mg daily OR clopidogrel 75 mg daily',
-    rationale: `${isTIA ? 'Low-risk TIA' : `NIHSS ${Number.isFinite(n) ? n : '?'} above DAPT inclusion (>5)`} — DAPT not indicated; single antiplatelet per secondary-prevention guidelines.`,
+    rationale: `No DAPT trial branch modeled here is met (${isTIA ? `TIA ABCD² ${ab}` : `NIHSS ${n}`}, ${tH}h). Use mechanism-appropriate prevention; this partial screen does not establish a contraindication to DAPT.`,
     source: 'Kleindorfer AHA/ASA Stroke 2021',
     class: 'Class 1'
   };
@@ -601,7 +603,7 @@ export const computeLKWCountdown = (lkwIso, nowMs = Date.now()) => {
 //   TENSION (Bendszus Lancet 2023;402:1753-63, PMID 37837989) — ASPECTS 3-5, ≤12h. cOR 2.58.
 //   TESLA (Yoo JAMA 2024;332:1355-66, PMID 39374319) — ASPECTS 2-5 NCCT-only, ≤24h. Bayesian primary missed; trend favorable.
 //   LASTE (Costalat NEJM 2024;390:1677-89, PMID 38718358) — ASPECTS 0-5 (incl 0-2), ≤6.5h. mRS 0-3 31% vs 12.5%, mortality 36% vs 55%.
-// AHA/ASA 2024: Class IIa for ASPECTS 3-5 within 24h. SVIN 2025 Large-Core guideline endorses.
+// Review complete 2026 AHA/ASA vessel, imaging, time, and baseline-function criteria.
 //
 // Inputs:
 //   age           — number
@@ -611,7 +613,7 @@ export const computeLKWCountdown = (lkwIso, nowMs = Date.now()) => {
 //   timeFromLKWh  — hours from last known well
 //   premorbidMRS  — modified Rankin pre-stroke (most trials excluded mRS ≥3 except LASTE allowed up to 4)
 //   lvoLocation   — 'ICA' | 'M1' | 'M2-prox' | other
-export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh, premorbidMRS, lvoLocation }) => {
+export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh, premorbidMRS, lvoLocation } = {}) => {
   const a = parseFloat(age);
   const n = parseFloat(nihss);
   const asp = parseFloat(aspects);
@@ -619,7 +621,11 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
   const t = parseFloat(timeFromLKWh);
   const pm = parseFloat(premorbidMRS);
 
-  if (!Number.isFinite(t)) return null;
+  const loc = (lvoLocation || '').trim().toUpperCase();
+  if (![a, n, t, pm].every(Number.isFinite) || t < 0 || a < 18 || !Number.isInteger(n) || n < 0 || n > 42 || !Number.isInteger(pm) || pm < 0 || pm > 6 || !loc || (!Number.isFinite(asp) && !Number.isFinite(c)) || (Number.isFinite(asp) && (!Number.isInteger(asp) || asp < 0 || asp > 10)) || (Number.isFinite(c) && c < 0)) {
+    return { eligible: false, status: 'incomplete', matchingTrials: [], rationale: 'Enter valid age, NIHSS, time, premorbid mRS, vessel, and ASPECTS or core volume before applying this partial large-core trial screen.' };
+  }
+  if (!['ICA', 'M1', 'ICA-TERMINUS'].includes(loc)) return { eligible: false, status: 'outside-modeled-anatomy', matchingTrials: [], rationale: 'This large-core trial screen models ICA/M1 occlusion. Other vessels require their own evidence and clinical assessment.' };
 
   const trial = [];
   let eligible = false;
@@ -627,15 +633,15 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
   const reasons = [];
 
   // Age gate (most trials 18-85; SELECT-2/ANGEL allowed up to 85)
-  const ageOk = !Number.isFinite(a) || (a >= 18 && a <= 85);
+  const ageOk = a >= 18 && a <= 85;
   if (!ageOk) reasons.push(`Age ${a} outside 18-85`);
 
   // NIHSS gate (most trials required ≥6, ANGEL-ASPECT ≥6, SELECT-2 ≥6, TENSION ≥6, LASTE ≥6)
-  const nihssOk = !Number.isFinite(n) || n >= 6;
+  const nihssOk = n >= 6;
   if (!nihssOk) reasons.push(`NIHSS ${n} <6 (below trial thresholds)`);
 
   // Premorbid mRS (most ≤2 except LASTE allowed ≤4)
-  const pmOk = !Number.isFinite(pm) || pm <= 2;
+  const pmOk = pm <= 1;
 
   // ASPECTS / core volume tiers
   const aspects35 = Number.isFinite(asp) && asp >= 3 && asp <= 5;
@@ -645,7 +651,7 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
   const coreGT100 = Number.isFinite(c) && c > 100;
 
   // LASTE — ASPECTS 0-2 within 6.5h
-  if (aspects02 && t <= 6.5 && nihssOk && ageOk && pmOk) {
+  if (aspects02 && t <= 6.5 && nihssOk && a < 80 && pmOk) {
     trial.push('LASTE'); bestMatch = 'LASTE'; eligible = true;
   }
   // RESCUE-Japan LIMIT — ASPECTS 3-5, ≤6h
@@ -653,7 +659,7 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
     trial.push('RESCUE-Japan LIMIT'); bestMatch = bestMatch || 'RESCUE-Japan LIMIT'; eligible = true;
   }
   // TENSION — ASPECTS 3-5, ≤12h
-  if (aspects35 && t <= 12 && nihssOk && ageOk && pmOk) {
+  if (aspects35 && t <= 12 && n < 26 && a >= 18 && pm <= 2) {
     trial.push('TENSION'); bestMatch = bestMatch || 'TENSION'; eligible = true;
   }
   // SELECT-2 — ASPECTS 3-5 OR core ≥50, ≤24h
@@ -661,7 +667,7 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
     trial.push('SELECT-2'); bestMatch = bestMatch || 'SELECT-2'; eligible = true;
   }
   // ANGEL-ASPECT — ASPECTS 3-5 OR core 70-100, ≤24h
-  if ((aspects35 || core70_100) && t <= 24 && nihssOk && ageOk && pmOk) {
+  if ((aspects35 || (aspects02 && core70_100) || (asp > 5 && core70_100 && t >= 6)) && t <= 24 && nihssOk && n <= 30 && a <= 80 && pmOk) {
     trial.push('ANGEL-ASPECT'); bestMatch = bestMatch || 'ANGEL-ASPECT'; eligible = true;
   }
   // TESLA — ASPECTS 2-5 NCCT, ≤24h (note: primary missed Bayesian threshold, trend favorable)
@@ -669,12 +675,8 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
     trial.push('TESLA'); bestMatch = bestMatch || 'TESLA';
   }
 
-  if (coreGT100) reasons.push(`Core volume ${c} mL >100 (above trial-supported range)`);
-
-  // SELECT-2 had no explicit upper bound but was powered with median core ~80 mL;
-  // core >100 mL is extrapolation. Surface the safety nuance in the rationale
-  // (the eligible-branch was previously silent — `reasons` only printed in not-eligible).
-  const beyondTrialRange = eligible && coreGT100;
+  // SELECT2 and LASTE did not impose a universal 100-mL upper core limit.
+  const beyondTrialRange = false;
 
   return {
     eligible,
@@ -685,11 +687,12 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
     coreMl: Number.isFinite(c) ? c : null,
     nihss: Number.isFinite(n) ? n : null,
     timeFromLKWh: t,
+    status: eligible ? 'partial-screen-met' : 'screen-not-met',
     rationale: eligible
-      ? `Patient meets ${bestMatch} criteria (and ${trial.length > 1 ? trial.slice(1).join(', ') + ' also met' : 'no other trials'}). ASPECTS ${asp ?? '-'}, core ${c ?? '-'} mL, NIHSS ${n ?? '-'}, ${t}h from LKW. Counsel re: sICH risk (~6-7% in large-core trials, vs ~3% standard EVT).${beyondTrialRange ? ` ⚠ Core volume ${c} mL exceeds the ~100 mL upper end of trial-supported range — benefit is extrapolation; document shared decision-making and futility considerations.` : ''}`
-      : `Not currently meeting large-core EVT trial criteria. ${reasons.length ? reasons.join('; ') : 'Verify ASPECTS/core, NIHSS, timing, premorbid mRS.'}`,
-    sichCounseling: 'Large-core EVT trials reported sICH 6-7% (vs ~3% standard EVT) and futility-adjusted mortality benefit (LASTE 36% vs 55%). Discuss with family.',
-    guidelineClass: 'AHA/ASA 2024: Class IIa for ASPECTS 3-5 within 24h; SVIN 2025 endorses LASTE for ASPECTS 0-2 ≤6h.',
+      ? 'Partial age/severity/imaging/time screen overlaps ' + trial.join(', ') + '. Confirm all remaining imaging exclusions, time definitions, baseline function, and 2026 guideline criteria with the stroke team. This does not establish complete trial or EVT eligibility.' + (coreGT100 ? ' A core above 100 mL is not outside all trial evidence; uncertainty increases with very extensive injury.' : '')
+      : 'No modeled positive-trial branch is met. ' + reasons.join('; ') + ' This partial screen is not a contraindication to EVT; review the 2026 guideline and complete imaging.',
+    sichCounseling: 'Large-core EVT improves disability outcomes in selected patients, while substantial disability may persist. Symptomatic-hemorrhage rates and definitions differ across trials; use trial-specific absolute risks instead of a pooled 6–7% assumption.',
+    guidelineClass: 'Use the 2026 AHA/ASA AIS guideline section 4.7.2 and complete patient criteria; no single recommendation class applies to every large-core profile.',
     sources: 'NEJM 2022 (LIMIT, PMID 35138767); NEJM 2023 (SELECT-2 36762865; ANGEL-ASPECT 36762852); Lancet 2023 (TENSION 37837989); JAMA 2024 (TESLA, PMID 39374319); NEJM 2024 (LASTE 38718358)'
   };
 };
@@ -699,7 +702,7 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
 // =====================================================================
 // TRACE-III (Xiong NEJM 2024;391:203-12, PMID 38884324): Phase 3 RCT, n=516, China.
 //   Inclusion: AIS with anterior LVO (ICA/M1), 4.5-24h from LKW, perfusion mismatch
-//   (core <70 mL, mismatch ratio ≥1.8 OR mismatch volume ≥15 mL), NIHSS 6-25, age 18-80,
+//   (core <70 mL, mismatch ratio ≥1.8 AND mismatch volume ≥15 mL), NIHSS 6-25, age 18-80,
 //   NO planned EVT (most spokes don't have it). TNK 0.25 mg/kg (max 25 mg) vs standard care.
 //   Result: mRS 0-1 at 90d 33.0% vs 24.2% (RR 1.37). sICH 3.0% vs 0.8%.
 // TIMELESS (NEJM 2024, PMID 38329148) was negative when most patients got EVT —
@@ -714,45 +717,31 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
 //   coreMl       — number, core volume (CTP rCBF<30% or DWI)
 //   mismatchRatio — penumbra/core ratio
 //   mismatchVolumeMl — penumbra - core
-export const recommendLateWindowLytic = ({ timeFromLKWh, evtAvailable, lvo, nihss, age, coreMl, mismatchRatio, mismatchVolumeMl }) => {
-  const t = parseFloat(timeFromLKWh);
-  const n = parseFloat(nihss);
-  const a = parseFloat(age);
-  const c = parseFloat(coreMl);
-  const r = parseFloat(mismatchRatio);
-  const v = parseFloat(mismatchVolumeMl);
-
-  if (!Number.isFinite(t)) return null;
-  if (t <= 4.5) return { eligible: false, reason: 'Standard 0-4.5h window — use routine TNK 0.25 mg/kg (max 25 mg).', source: 'AHA/ASA 2026 AIS guideline' };
-  if (t > 24) return { eligible: false, reason: 'Beyond 24h — outside any thrombolysis evidence.', source: null };
-  if (lvo !== true) return { eligible: false, reason: 'TRACE-III enrolled only anterior LVO (ICA/M1). Non-LVO late-window IV lysis not supported by trial evidence.', source: 'TRACE-III NEJM 2024;391:203-12' };
-  if (evtAvailable === true) return { eligible: false, reason: 'EVT is available — proceed to thrombectomy. TRACE-III applies only when EVT cannot be performed; TIMELESS was negative when most patients got EVT.', source: 'Xiong NEJM 2024 (TRACE-III); Albers NEJM 2024 (TIMELESS, PMID 38329148)' };
-
-  const ageOk = !Number.isFinite(a) || (a >= 18 && a <= 80);
-  const nihssOk = !Number.isFinite(n) || (n >= 6 && n <= 25);
-  const coreOk = !Number.isFinite(c) || c < 70;
-  const mismatchOk = (Number.isFinite(r) && r >= 1.8) || (Number.isFinite(v) && v >= 15) || (!Number.isFinite(r) && !Number.isFinite(v));
-  const mismatchKnown = Number.isFinite(r) || Number.isFinite(v);
-
+export const recommendLateWindowLytic = ({ timeFromLKWh, evtAvailable, lvo, nihss, age, coreMl, mismatchRatio, mismatchVolumeMl } = {}) => {
+  const [t, n, a, c, r, v] = [timeFromLKWh, nihss, age, coreMl, mismatchRatio, mismatchVolumeMl].map(parseFloat);
+  const source = 'TRACE-III NEJM 2024 (doi: 10.1056/NEJMoa2310392); AHA/ASA 2026 AIS guideline (doi: 10.1161/STR.0000000000000513)';
+  if (!Number.isFinite(t) || t < 0) return { eligible: false, status: 'incomplete', reason: 'Enter a valid non-negative interval from last known well.', source };
+  if (t <= 4.5) return { eligible: false, reason: 'Within the standard IVT window: assess the complete acute thrombolysis criteria. This extended-window screen does not determine standard-window eligibility.', source };
+  if (t > 24) return { eligible: false, reason: 'Outside the 4.5–24h TRACE-III window modeled here; this screen is not a comprehensive assessment of all thrombolysis evidence.', source };
+  if (lvo === false) return { eligible: false, reason: 'TRACE-III is an anterior-LVO trial. Other extended-window imaging-based IVT pathways require separate assessment under the 2026 guideline.', source };
+  if (evtAvailable === true) return { eligible: false, reason: 'Urgently evaluate EVT and transfer. TRACE-III studied patients who did not have access to EVT; this screen does not settle adjunctive extended-window IVT for EVT candidates.', source };
+  if (![n, a, c, r, v].every(Number.isFinite) || !Number.isInteger(n) || n < 0 || n > 42 || a <= 0 || c < 0 || r < 0 || v < 0 || lvo !== true || evtAvailable !== false) {
+    return { eligible: false, status: 'incomplete', rationale: 'Confirm age, NIHSS, core volume, BOTH mismatch ratio and volume, anterior LVO, and lack of EVT access. Missing criteria are not presumed satisfied.', source };
+  }
   const blockers = [];
-  if (!ageOk) blockers.push(`Age ${a} outside 18-80`);
-  if (!nihssOk) blockers.push(`NIHSS ${n} outside 6-25 (TRACE-III range)`);
-  if (!coreOk) blockers.push(`Core ${c} mL ≥70 (TRACE-III excluded)`);
-  if (!mismatchOk) blockers.push(`Mismatch insufficient (ratio ${r} <1.8 AND volume ${v} <15 mL)`);
-
-  const eligible = blockers.length === 0 && mismatchKnown;
-
+  if (a < 18 || a > 80) blockers.push('Age outside 18–80');
+  if (n < 6 || n > 25) blockers.push('NIHSS outside 6–25');
+  if (c >= 70) blockers.push('Core must be <70 mL');
+  if (r < 1.8 || v < 15) blockers.push('Both mismatch ratio ≥1.8 AND mismatch volume ≥15 mL are required');
+  const eligible = blockers.length === 0;
   return {
     eligible,
-    regimen: eligible ? 'Tenecteplase 0.25 mg/kg IV bolus (max 25 mg)' : null,
-    rationale: eligible
-      ? `TRACE-III pathway: anterior LVO with perfusion mismatch, ${t}h from LKW, no EVT available. Single TNK bolus reduces 90-d disability (mRS 0-1 33% vs 24%). Counsel sICH ~3%.`
-      : !mismatchKnown
-        ? 'Need perfusion imaging (CTP or MRI DWI/PWI) to confirm mismatch before late-window TNK; defer until imaging.'
-        : `Not meeting TRACE-III criteria: ${blockers.join('; ')}.`,
-    sichRisk: '3.0% sICH per TRACE-III (vs 0.8% standard care).',
-    source: 'Xiong NEJM 2024;391:203-12 (TRACE-III, PMID 38884324)',
-    guidelineClass: 'Pending formal AHA/ASA classification; emerging Class IIa for spoke facilities 4.5-24h LVO mismatch when EVT unavailable.'
+    status: eligible ? 'partial-screen-met' : 'screen-not-met',
+    regimen: eligible ? 'Review the tenecteplase extended-window pathway with the stroke specialist after the full contraindication assessment.' : null,
+    rationale: eligible ? 'TRACE-III clinical/perfusion screen met; this is not complete thrombolysis eligibility. Confirm the vessel, imaging method, all exclusions, and appropriate local pathway. The trial found mRS 0–1 at 90d in 33.0% vs 24.2%.' : 'TRACE-III screen not met: ' + blockers.join('; '),
+    sichRisk: 'TRACE-III reported sICH in 3.0% vs 0.8%.',
+    source,
+    guidelineClass: 'Partial trial screen; consult the 2026 guideline for the applicable extended-window recommendation.'
   };
 };
 
@@ -761,72 +750,41 @@ export const recommendLateWindowLytic = ({ timeFromLKWh, evtAvailable, lvo, nihs
 // =====================================================================
 // ENCHANTED2/MT (Yang Lancet 2022;400:1585-96, PMID 36341753): RCT n=821 successful EVT
 //   (mTICI ≥2b). Intensive SBP <120 vs standard <140-180. STOPPED FOR HARM — intensive arm
-//   worse mRS shift (cOR 1.37). Concluded SBP <140 NOT recommended post-recan.
+//   worse mRS shift (cOR 1.37). Tested an active intensive-lowering strategy, not an obligatory lower BP bound.
 // OPTIMAL-BP (Nam JAMA 2023;330:832-42): Stopped early, intensive worse.
-// AHA/ASA 2024: Maintain SBP 140-180 after successful recanalization (Class IIa).
+// AHA/ASA 2026: post-EVT ceiling ≤180/105; intensive SBP <140 after successful reperfusion is harmful.
 //
 // Inputs:
 //   recanalized   — boolean (mTICI ≥2b)
 //   currentSBP    — current systolic BP
 //   ivLyticGiven  — boolean: did patient receive IV lytic (changes the rules for first 24h)
 //   hasHemorrhage — boolean: post-procedure ICH on imaging?
-export const recommendPostEVTBP = ({ recanalized, currentSBP, ivLyticGiven, hasHemorrhage }) => {
+export const recommendPostEVTBP = ({ recanalized, currentSBP, ivLyticGiven, hasHemorrhage, evtPerformed } = {}) => {
   const sbp = parseFloat(currentSBP);
-
-  if (hasHemorrhage === true) {
-    return {
-      target: '<140 mmHg',
-      lowerBound: null,
-      upperBound: 140,
-      rationale: 'Post-procedure ICH detected — apply ICH BP targeting (130-140) per AHA/ASA 2022 ICH (INTERACT3 bundle).',
-      source: 'INTERACT3 (Lancet 2023, PMID 37245517); AHA/ASA 2022 ICH',
-      class: 'Class 2a'
-    };
-  }
-
-  if (recanalized === true) {
-    if (ivLyticGiven === true) {
-      return {
-        target: '140-180 mmHg (do NOT drive SBP <140)',
-        lowerBound: 140,
-        upperBound: 180,
-        rationale: 'Successful recanalization (mTICI ≥2b) WITH IV lytic — maintain SBP 140-180 to preserve perfusion of penumbra. Intensive lowering (<120 or <140) caused harm in ENCHANTED2/MT and OPTIMAL-BP. Sustain target ≥24h.',
-        source: 'Yang Lancet 2022;400:1585-96 (ENCHANTED2/MT, PMID 36341753); Nam JAMA 2023;330:832-42 (OPTIMAL-BP)',
-        class: 'Class 2a (AHA/ASA 2024)',
-        currentBP: Number.isFinite(sbp) ? sbp : null,
-        actionable: Number.isFinite(sbp) ? (sbp < 140 ? 'SBP <140 — permissive; consider stopping antihypertensive' : sbp > 180 ? 'SBP >180 — initiate gentle BP reduction (labetalol 10 mg IV; avoid >40-60 mmHg drop)' : 'SBP within target — continue current management') : null
-      };
-    }
-    return {
-      target: '140-180 mmHg post-recanalization',
-      lowerBound: 140,
-      upperBound: 180,
-      rationale: 'Successful EVT recanalization without IV lytic — same 140-180 target. ENCHANTED2/MT showed harm with SBP <120; AHA/ASA 2024 endorses SBP 140-180 sustained ≥24h.',
-      source: 'Yang Lancet 2022 (ENCHANTED2/MT, PMID 36341753)',
-      class: 'Class 2a',
-      currentBP: Number.isFinite(sbp) ? sbp : null
-    };
-  }
-
-  // Failed/unsuccessful recanalization OR no EVT performed
-  if (ivLyticGiven === true) {
-    return {
-      target: '<180/105 mmHg (post-IV-lytic standard, x 24h)',
-      lowerBound: null,
-      upperBound: 180,
-      rationale: 'Post-IV lytic (no successful recan) — keep SBP <180 and DBP <105 for 24h to minimize sICH risk.',
-      source: 'AHA/ASA 2019 AIS guideline (Powers, Stroke 2019; PMID 31662037)',
-      class: 'Class 1'
-    };
-  }
-
+  const source = 'AHA/ASA 2026 AIS guideline, BP management (doi: 10.1161/STR.0000000000000513)';
+  if (hasHemorrhage === true) return {
+    target: 'Individualize for post-procedure intracranial hemorrhage', lowerBound: null, upperBound: null,
+    rationale: 'Reassess hemorrhage severity, reperfusion, ICP, and systemic needs urgently. The spontaneous mild-to-moderate ICH target should not be assigned automatically to every post-procedure hemorrhage.',
+    source: 'AHA/ASA 2022 ICH guideline (doi: 10.1161/STR.0000000000000407)', class: 'Individualized assessment'
+  };
+  if (recanalized === true || evtPerformed === true) return {
+    target: '≤180/105 mmHg during and for 24h after EVT', lowerBound: null, upperBound: 180,
+    rationale: recanalized === true ? 'After successful anterior-circulation reperfusion (mTICI 2b–3), actively targeting SBP <140 for the first 72h is harmful when no other BP indication exists. This is not a mandatory SBP floor or a reason to induce hypertension in an otherwise stable patient.' : 'Maintain the post-EVT ceiling and individualize perfusion support; incomplete reperfusion requires separate clinical assessment.',
+    currentBP: Number.isFinite(sbp) && sbp > 0 ? sbp : null,
+    actionable: Number.isFinite(sbp) && sbp > 0 ? 'Assess both SBP and DBP, trends, examination, volume status, and competing indications before treatment changes.' : null,
+    source, class: 'Post-EVT ceiling Class 2a B-NR; intensive SBP <140 after successful reperfusion Class 3 Harm A'
+  };
+  if (ivLyticGiven === true) return {
+    target: '<180/105 mmHg for at least 24h after IVT', lowerBound: null, upperBound: 180,
+    rationale: 'Use the post-thrombolysis ceiling and avoid hypotension; complete the post-IVT monitoring pathway.', source, class: 'Class 1 B-R'
+  };
+  if (evtPerformed !== false || ivLyticGiven !== false) return {
+    target: 'Confirm reperfusion-treatment status', lowerBound: null, upperBound: null,
+    rationale: 'Specify whether EVT and IVT were performed before choosing a BP pathway.', source, class: 'Incomplete inputs'
+  };
   return {
-    target: 'Permissive HTN <220/110 (no reperfusion therapy)',
-    lowerBound: null,
-    upperBound: 220,
-    rationale: 'No IV lytic, no successful EVT — permissive HTN to <220/110 unless end-organ damage. Do not lower aggressively in first 24-48h.',
-    source: 'AHA/ASA 2019 AIS guideline (Powers, Stroke 2019)',
-    class: 'Class 2b'
+    target: 'No routine early lowering below 220/120 mmHg without another urgent indication', lowerBound: null, upperBound: 220,
+    rationale: 'For AIS without IVT or EVT, distinguish the 220/120 treatment threshold from a target. At or above it, or with an urgent comorbid indication, individualize cautious lowering. Avoid abrupt reductions and correct hypotension.', source, class: 'Clinical context and timing determine the recommendation'
   };
 };
 
@@ -836,32 +794,25 @@ export const recommendPostEVTBP = ({ recanalized, currentSBP, ivLyticGiven, hasH
 // 2025 RCTs in DMVO have been NEGATIVE:
 //   ESCAPE-MeVO (Goyal ISC 2025, n~530) — no benefit vs medical.
 //   DISTAL (n~530) — negative for primary mRS shift in M2/M3/A2/A3/P2.
-//   DISCOUNT (France, n~488) — negative; signal of harm in subgroups.
-// Conclusion: routine EVT for distal occlusions NOT supported. Reserve for severely
-// disabling deficits at expert centers, ideally in trial.
-export const dmvoEVTAdvisory = ({ occlusionLocation, nihss, deficitDisabling }) => {
-  const loc = (occlusionLocation || '').toUpperCase().replace(/[\s_]+/g, '-');
-  // Accept common synonyms for distal-M2: M2-DIST, M2-DISTAL, M2D, DISTAL-M2.
-  // M3/M4/A2/A3/P2/P3 are unambiguous segment names.
-  const dmvoTokens = ['M2-DIST', 'M2-DISTAL', 'M2D', 'DISTAL-M2', 'M3', 'M4', 'A2', 'A3', 'P2', 'P3'];
-  const isDmvo = dmvoTokens.some(x => loc.includes(x));
-  const n = parseFloat(nihss);
-
-  if (!isDmvo) {
+// 2026 AHA/ASA now provides a Class 3: No Benefit vessel-specific recommendation.
+export const dmvoEVTAdvisory = ({ occlusionLocation } = {}) => {
+  const loc = (occlusionLocation || '').trim().toUpperCase().replace(/[\s_]+/g, '-');
+  const dmvoTokens = ['M2-DIST', 'M2-DISTAL', 'M2D', 'DISTAL-M2', 'M2-NONDOMINANT', 'NONDOMINANT-M2', 'M2-CODOMINANT', 'CODOMINANT-M2', 'M3', 'M4', 'A1', 'A2', 'A3', 'P1', 'P2', 'P3'];
+  if (!loc) return { isDmvo: null, advisory: 'Confirm the vessel and, for proximal M2, division dominance before applying vessel-specific evidence.', proceed: 'incomplete' };
+  if (!dmvoTokens.includes(loc)) {
     return {
       isDmvo: false,
-      advisory: null,
-      proceed: true
+      advisory: 'This vessel label is not classified by the distal-vessel screen. Assess standard EVT criteria; an unclassified vessel is not an eligibility result. Dominant proximal M2 has separate 2026 guidance.',
+      proceed: 'review-standard-EVT-criteria'
     };
   }
-
   return {
     isDmvo: true,
-    advisory: '2025 RCTs (DISTAL, ESCAPE-MeVO, DISCOUNT) failed to show DMVO thrombectomy benefit. Routine EVT for M2-distal/M3/M4/A2/A3/P2/P3 occlusions is NOT supported. Reserve for severely disabling deficits (aphasia, hemianopia, dominant-hand weakness) where IV TNK fails and a low-risk catheter route is feasible — ideally in trial enrollment.',
-    proceed: deficitDisabling === true && Number.isFinite(n) && n >= 6 ? 'consider-only-if-disabling' : 'no',
-    nextSteps: 'Give IV TNK 0.25 mg/kg (max 25 mg) per standard ≤4.5h pathway. Reassess at 1h post-bolus; if neurological deterioration in territory of dominant function, re-discuss case-by-case with neurointervention.',
-    sources: 'DISTAL/ESCAPE-MeVO/DISCOUNT — 2025 conference and primary publications; AHA/ASA position pending formal statement',
-    class: 'No formal class; AHA/ASA & ESO position: routine DMVO EVT not recommended outside trials.'
+    advisory: 'The 2026 AHA/ASA guideline does not recommend EVT to improve functional outcomes for proximal nondominant/codominant M2 or distal MCA, ACA, or PCA occlusions. DISTAL and ESCAPE-MeVO did not show benefit. A disabling deficit or NIHSS threshold alone does not override these results.',
+    proceed: 'no-routine-EVT',
+    nextSteps: 'Urgently assess IV thrombolysis using complete time, imaging, disability, and contraindication criteria. Continue stroke-unit surveillance and investigate deterioration promptly. This advisory does not prescribe lysis or a wait-and-see interval. Research enrollment requires the full trial criteria.',
+    sources: 'AHA/ASA 2026 AIS guideline §4.7.2 recommendation 8 (doi: 10.1161/STR.0000000000000513); DISTAL and ESCAPE-MeVO NEJM 2025',
+    class: 'Class 3: No Benefit, Level A (2026 AHA/ASA; vessel-specific recommendation)'
   };
 };
 
@@ -913,86 +864,70 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
 // June 2026 operational screen exposed on the public ICH page:
 // spontaneous lobar ICH, 30-80 mL, age 18-80, NIHSS >5, GCS 5-14, no lesion.
 // Minimally invasive parafascicular surgery (BrainPath/Myriad-Artemis) + medical vs medical alone.
-// Primary: utility-weighted mRS at 180d. RESULT: 0.458 vs 0.374 (posterior prob superiority >0.999).
+// Primary: utility-weighted mRS at 180d. RESULT: 0.458 vs 0.374 (posterior probability 0.981).
 // Benefit DRIVEN BY LOBAR subgroup (basal ganglia stratum dropped after futility analysis).
 // Implication: lobar ICH ≥30 mL → call neurosurgery early for MIS evaluation.
-export const evaluateENRICHEligibility = ({ icHLocation, volumeMl, timeFromOnsetH, gcs, premorbidMRS, age }) => {
-  const v = parseFloat(volumeMl);
-  const g = parseFloat(gcs);
-  const a = parseFloat(age);
-  const loc = (icHLocation || '').toLowerCase();
-
-  if (!Number.isFinite(v)) return null;
-
-  const isLobar = loc.includes('lobar') || loc.includes('cortical');
-  const volumeOk = v >= 30 && v <= 80;
-  const ageOk = !Number.isFinite(a) || (a >= 18 && a <= 80);
-  const gcsOk = !Number.isFinite(g) || (g >= 5 && g <= 14);
-
+export const evaluateENRICHEligibility = ({ icHLocation, volumeMl, timeFromOnsetH, gcs, premorbidMRS, age, nihss } = {}) => {
+  const [v, g, a, t, pm, n] = [volumeMl, gcs, age, timeFromOnsetH, premorbidMRS, nihss].map(parseFloat);
+  const loc = (icHLocation || '').trim().toLowerCase();
+  if (![v, g, a, t, pm, n].every(Number.isFinite) || !loc || v < 0 || t < 0 || !Number.isInteger(g) || g < 3 || g > 15 || !Number.isInteger(pm) || pm < 0 || pm > 6 || !Number.isInteger(n) || n < 0 || n > 42 || a <= 0) {
+    return { eligible: false, status: 'incomplete', rationale: 'Enter valid location, volume, age, GCS, NIHSS, premorbid mRS, and hours since onset before applying the ENRICH screen.' };
+  }
+  const isLobar = ['lobar', 'cortical'].includes(loc);
   const blockers = [];
-  if (!volumeOk) blockers.push(`Volume ${v} mL outside 30-80`);
-  if (!ageOk) blockers.push(`Age ${a} outside 18-80`);
-  if (!gcsOk) blockers.push(`GCS ${g} outside 5-14`);
-
-  const eligible = volumeOk && ageOk && gcsOk && isLobar;
-
+  if (v < 30 || v > 80) blockers.push(`Volume ${v} mL outside 30–80`);
+  if (a < 18 || a > 80) blockers.push(`Age ${a} outside 18–80`);
+  if (g < 5 || g > 14) blockers.push(`GCS ${g} outside 5–14`);
+  if (t > 24) blockers.push(`${t}h exceeds 24h treatment window`);
+  if (pm > 1) blockers.push(`Premorbid mRS ${pm} >1`);
+  if (n <= 5) blockers.push(`NIHSS ${n} ≤5`);
+  if (!isLobar) blockers.push('The lobar-benefit screen requires confirmed lobar location');
+  const eligible = blockers.length === 0;
   return {
     eligible,
+    status: eligible ? 'partial-screen-met' : 'screen-not-met',
     bestCandidate: isLobar,
     rationale: eligible
-      ? `Lobar ICH ${v} mL — June 2026 MIE screen-positive. Lobar ENRICH subgroup drove benefit (utility-weighted mRS 0.458 vs 0.374). Call neurosurgery for MIS evaluation and confirm timing/detailed exclusions.`
-      : isLobar && blockers.length === 0 ? 'Likely candidate — confirm with neurosurgery.'
-        : `Not currently meeting the June 2026 MIE screen: ${blockers.join('; ')}.${!isLobar ? ' Location not lobar for this operational screen.' : ''}`,
-    nextSteps: 'If screen-positive: consult neurosurgery; obtain CTA/MRA to rule out vascular lesion; verify operative timing and detailed exclusions against the active protocol.',
-    source: 'Pradilla NEJM 2024;390:1277-89 (ENRICH, PMID 38598795)',
-    class: 'AHA/ASA 2022 was Class 2b for MIS pre-ENRICH; updated guidance expected to elevate to Class 2a for lobar ≥30 mL.'
+      ? 'Lobar ENRICH demographic/severity/time screen met. Confirm surgery can begin within 24h and all imaging, coagulopathy, and other exclusions with neurosurgery. This is not complete surgical eligibility. Overall utility-weighted mRS was 0.458 vs 0.374; benefit was attributable to the lobar subgroup.'
+      : `Lobar-benefit ENRICH screen not met: ${blockers.join('; ')}.`,
+    nextSteps: 'Neurosurgical review and complete source criteria are required, including secondary lesion exclusion and thalamic/intraventricular extension. Failure to meet this partial ENRICH screen does not exclude other surgical indications.',
+    source: 'Pradilla NEJM 2024;390:1277-89 (ENRICH, PMID 38598795; doi: 10.1056/NEJMoa2308440)',
+    class: 'ENRICH trial screen; no predicted future guideline class assigned'
   };
 };
 
 // =====================================================================
 // SWITCH eligibility — early decompressive craniectomy for deep ICH
 // =====================================================================
-// SWITCH (Beck Lancet 2024;403:2395-404, PMID 38761811): International RCT, n=201.
-// Deep supratentorial ICH ≥30 mL with reduced consciousness (GCS 8-13), <66h.
-// Early DC + best medical vs best medical alone. Primary mRS 0-4 at 6mo: 44% vs 30%
-// (adjusted RR 1.50, 95% CI 1.04-2.18, p=0.024). Stopped early for funding/COVID.
-// Caveat: more severe-disability survivors. Pending guideline integration.
-export const evaluateSWITCHEligibility = ({ icHLocation, volumeMl, gcs, timeFromOnsetH, age, premorbidMRS, herniationRisk }) => {
-  const v = parseFloat(volumeMl);
-  const g = parseFloat(gcs);
-  const t = parseFloat(timeFromOnsetH);
-  const a = parseFloat(age);
-  const pm = parseFloat(premorbidMRS);
-  const loc = (icHLocation || '').toLowerCase();
-
-  if (!Number.isFinite(v) || !Number.isFinite(g)) return null;
-
-  const isDeep = loc.includes('basal') || loc.includes('thalamus') || loc.includes('deep') || loc.includes('putam');
-  const volumeOk = v >= 30;
-  const gcsOk = g >= 8 && g <= 13;
-  const timeOk = !Number.isFinite(t) || t <= 66;
-  const ageOk = !Number.isFinite(a) || (a >= 18 && a <= 75);
-  const pmOk = !Number.isFinite(pm) || pm <= 1;
-
+// SWITCH: 201 randomized; stopped early for funding. Primary mRS 5–6 at 180d
+// 44% vs 58%, aRR 0.77 (95% CI 0.59–1.01), p=0.057: weak evidence, not proof.
+export const evaluateSWITCHEligibility = ({ icHLocation, volumeMl, gcs, timeFromOnsetH, age, premorbidMRS, nihss, clotStable } = {}) => {
+  const [v, g, t, a, pm, n] = [volumeMl, gcs, timeFromOnsetH, age, premorbidMRS, nihss].map(parseFloat);
+  const loc = (icHLocation || '').trim().toLowerCase();
+  if (![v, g, t, a, pm, n].every(Number.isFinite) || !loc || v < 0 || t < 0 || a <= 0 || !Number.isInteger(g) || g < 3 || g > 15 || !Number.isInteger(n) || n < 0 || n > 42 || !Number.isInteger(pm) || pm < 0 || pm > 6 || typeof clotStable !== 'boolean') {
+    return { eligible: false, status: 'incomplete', rationale: 'Confirm location, volume, GCS, NIHSS, onset time, age, premorbid mRS, and clot stability before applying the SWITCH screen.' };
+  }
+  const isDeep = ['basal ganglia', 'thalamus', 'thalamic', 'putamen', 'putaminal', 'deep'].includes(loc);
   const blockers = [];
-  if (!isDeep) blockers.push('Not deep supratentorial (lobar → consider ENRICH MIS instead)');
-  if (!volumeOk) blockers.push(`Volume ${v} mL <30`);
-  if (!gcsOk) blockers.push(`GCS ${g} outside 8-13 (SWITCH range)`);
-  if (!timeOk) blockers.push(`${t}h >66h`);
-  if (!ageOk) blockers.push(`Age ${a} outside 18-75`);
-  if (!pmOk) blockers.push(`Premorbid mRS ${pm} >1`);
-
+  if (!isDeep) blockers.push('Requires deep basal-ganglia/thalamic ICH');
+  if (v < 30 || v > 100) blockers.push(`Volume ${v} mL outside 30–100`);
+  if (g < 8 || g > 13) blockers.push(`GCS ${g} outside 8–13`);
+  if (n < 10 || n > 30) blockers.push(`NIHSS ${n} outside 10–30`);
+  if (t >= 66) blockers.push(`${t}h is not <66h for randomization`);
+  if (a < 18 || a > 75) blockers.push(`Age ${a} outside 18–75`);
+  if (pm > 1) blockers.push(`Premorbid mRS ${pm} >1`);
+  if (!clotStable) blockers.push('Clot stability not established');
   const eligible = blockers.length === 0;
-
   return {
     eligible,
+    status: eligible ? 'partial-screen-met' : 'screen-not-met',
     rationale: eligible
-      ? `Deep supratentorial ICH ${v} mL, GCS ${g}, ${Number.isFinite(t) ? t + 'h' : 'time?'} — SWITCH-eligible. Decompressive craniectomy improves 6mo mRS 0-4 (44% vs 30%). ${herniationRisk === true ? 'Herniation risk elevated — escalate urgency.' : ''} COUNSEL FAMILY: more severe-disability survivors despite mortality reduction.`
-      : `Not meeting SWITCH criteria: ${blockers.join('; ')}.`,
-    nextSteps: 'If eligible: emergent neurosurgery consult; family discussion re: trade-off (survival vs disability burden); ICU bed/EVD readiness.',
-    counseling: 'SWITCH showed improved survival but more severe disability among survivors. Frame discussion around quality-of-life expectations, not mortality alone.',
-    source: 'Beck Lancet 2024;403:2395-404 (SWITCH, PMID 38761811)',
-    class: 'Pending formal guideline upgrade; AHA/ASA 2022 Class 2b for DC in non-malignant ICH.'
+      ? 'SWITCH demographic/severity/imaging screen met; this is not complete surgical eligibility. Confirm operative timing and all exclusions with neurosurgery.'
+      : `SWITCH screen not met: ${blockers.join('; ')}. This does not exclude other surgical indications.`,
+    nextSteps: 'Confirm stable clot, INR <1.5, platelets >100×10⁹/L, no secondary structural lesion or other exclusions, and surgery within 6h of randomization. Discuss treatment goals and expected disability with the family.',
+    counseling: 'SWITCH primary mRS 5–6 at 180d occurred in 44% with decompression vs 58% with medical care (aRR 0.77, 95% CI 0.59–1.01; p=0.057). The trial stopped early for funding and provides weak evidence of benefit. Severe disability remained common in both groups; do not present this as proven functional independence or survival benefit.',
+    source: 'Beck Lancet 2024;403:2395–2404 (doi: 10.1016/S0140-6736(24)00702-5); SWITCH protocol doi: 10.1177/23969873241231047',
+    class: 'Trial-based partial screen; no projected guideline upgrade'
   };
 };
 
@@ -1082,23 +1017,24 @@ export const ichCareBundleCheck = ({ sbpAtArrival, sbpAt1h, glucose, glucoseUnit
 // Kent JAMA 2021;326:2277-86 (PMID 34905030).
 // Combines RoPE score with PFO morphology (large shunt or atrial septal aneurysm).
 // Categories: Unlikely / Possible / Probable. Closure benefit concentrated in Probable.
-export const evaluatePASCAL = ({ ropeScore, largeShunt, atrialSeptalAneurysm }) => {
+export const evaluatePASCAL = ({ ropeScore, largeShunt, atrialSeptalAneurysm } = {}) => {
   const rope = parseFloat(ropeScore);
-  if (!Number.isFinite(rope)) return null;
+  if (!Number.isInteger(rope) || rope < 0 || rope > 10) return null;
+  if (largeShunt !== true && atrialSeptalAneurysm !== true && (largeShunt !== false || atrialSeptalAneurysm !== false)) return { category: 'Incomplete', recommendation: 'Confirm shunt size and atrial septal aneurysm status before assigning a PASCAL category.', nnt: null };
   const highRiskMorphology = largeShunt === true || atrialSeptalAneurysm === true;
   let category, recommendation, nnt;
 
   if (rope >= 7 && highRiskMorphology) {
     category = 'Probable';
-    recommendation = 'PFO closure recommended (Class 1) — closure benefit highest. NNT ~17 over 5 years. Discuss with structural cardiology.';
-    nnt = '~17 over 5 years';
+    recommendation = 'Probable PFO-related stroke: closure can benefit appropriately selected patients. Confirm age, nonlacunar infarction, complete etiologic evaluation, anatomy, and alternatives with the stroke/structural-heart team.';
+    nnt = null;
   } else if (rope >= 7 || highRiskMorphology) {
     category = 'Possible';
-    recommendation = 'Shared decision-making — closure benefit modest (NNT ~37 over 5 years). Discuss alternatives (antiplatelets vs anticoagulation) and patient preferences.';
-    nnt = '~37 over 5 years';
+    recommendation = 'Possible PFO-related stroke: discuss potential closure benefit, procedural/AF risk, alternatives, and patient preferences after completing eligibility assessment.';
+    nnt = null;
   } else {
     category = 'Unlikely';
-    recommendation = 'Closure NOT recommended — PFO unlikely causal. Standard secondary prevention with antiplatelet therapy.';
+    recommendation = 'Unlikely PFO-related stroke: routine closure is generally discouraged. Review competing mechanisms and any unusual evidence of high causal probability before an individualized decision.';
     nnt = 'No demonstrated benefit';
   }
 
@@ -1111,7 +1047,7 @@ export const evaluatePASCAL = ({ ropeScore, largeShunt, atrialSeptalAneurysm }) 
     nnt,
     ageEligibility: 'PFO closure trials enrolled age 18-60. For age >60, individualize with shared decision-making; data sparser.',
     source: 'Kent JAMA 2021;326:2277-86 (PASCAL, PMID 34905030); CLOSE/REDUCE/RESPECT/DEFENSE-PFO RCTs',
-    class: 'Class 1 for Probable; Class 2a for Possible (AAN 2020 PFO practice advisory; 2021 AHA/ASA secondary-prevention guideline)'
+    class: 'PASCAL is a causal-likelihood classification, not a stand-alone recommendation class. See AHA/ASA 2021 and ESO 2024 PFO guidance.'
   };
 };
 
@@ -1122,33 +1058,33 @@ export const evaluatePASCAL = ({ ropeScore, largeShunt, atrialSeptalAneurysm }) 
 // — stenting INFERIOR to aggressive medical for 70-99% intracranial stenosis.
 // Aggressive medical = DAPT × 90d, LDL <70, SBP <140 (consider <130), intensive lifestyle.
 // Cilostazol: TOSS-2 (Stroke 2011), CSPS.com (Lancet Neurol 2019, PMID 31122494) — adds benefit.
-export const icadMedicalRegimen = ({ stenosisPercent, location, recurrentEvent, onCurrentDAPT }) => {
+export const icadMedicalRegimen = ({ stenosisPercent, symptomatic, daysSinceEvent, lowHemorrhagicRisk, recurrentEvent, onCurrentDAPT } = {}) => {
   const s = parseFloat(stenosisPercent);
-  if (!Number.isFinite(s) || s < 50) {
-    return { applicable: false, message: 'ICAD pathway applies to ≥50% intracranial stenosis.' };
+  const days = parseFloat(daysSinceEvent);
+  if (!Number.isFinite(s) || s < 50 || s > 99) {
+    return { applicable: false, message: 'Enter confirmed 50–99% intracranial atherosclerotic stenosis; complete occlusion and nonatherosclerotic disease require separate assessment.' };
   }
-
   const severe = s >= 70;
+  const dapt90Appropriate = severe && symptomatic === true && Number.isFinite(days) && days >= 0 && days <= 30 && lowHemorrhagicRisk === true;
   const regimen = [
-    { drug: 'Aspirin 81 mg PO daily', duration: 'lifelong' },
-    { drug: 'Clopidogrel 75 mg PO daily (DAPT)', duration: '90 days, then drop to single antiplatelet' },
-    { drug: 'High-intensity statin (atorvastatin 80 mg or rosuvastatin 40 mg)', duration: 'lifelong; LDL goal <70 mg/dL' },
-    { drug: 'BP target <130/80 (SPS3, ESPRIT)', duration: 'lifelong; ACEi/ARB + thiazide first-line' },
-    { drug: 'Lifestyle: smoking cessation, Mediterranean diet, ≥150 min/wk moderate exercise', duration: 'lifelong' }
+    { drug: 'Mechanism-appropriate antiplatelet therapy after hemorrhage and anticoagulation indications are assessed', duration: 'long-term; symptomatic ICAD guidance uses aspirin 325 mg/day' },
+    { drug: 'Maximally tolerated statin and additional LDL lowering as needed', duration: 'long-term; LDL <70 mg/dL for ASCVD, <55 if the complete very-high-risk category applies (2026)' },
+    { drug: 'BP control with avoidance of hypotension and hypoperfusion', duration: 'long-term; individualize acute versus stable outpatient targets' },
+    { drug: 'Smoking cessation, physical activity, Mediterranean-style diet, and adherence review', duration: 'long-term' }
   ];
-
-  if (recurrentEvent === true) {
-    regimen.push({ drug: 'Cilostazol 100 mg PO BID (add-on)', duration: 'long-term', evidence: 'CSPS.com (Lancet Neurol 2019, PMID 31122494) — HR 0.49 for recurrence' });
-  }
-
+  if (dapt90Appropriate) regimen.unshift({ drug: 'Add clopidogrel 75 mg/day to aspirin', duration: 'up to 90 days for recent symptomatic 70–99% ICAD; then single antiplatelet', evidence: 'AHA/ASA 2021 §5.1.1, Class 2a, B-NR' });
   return {
     applicable: true,
     severe,
+    dapt90Appropriate,
+    missingAssessment: symptomatic !== true || !Number.isFinite(days) || lowHemorrhagicRisk !== true,
+    daptNote: dapt90Appropriate ? 'The modeled recent severe symptomatic ICAD criteria are met; confirm remaining contraindications.' : 'Stenosis alone does not establish a 90-day DAPT indication. Confirm event attribution, onset within 30 days, 70–99% severity, and acceptable bleeding risk. Other short-DAPT indications require their own criteria.',
     regimen,
+    recurrentEventReview: recurrentEvent === true ? `Reassess mechanism, adherence, risk-factor control, and bleeding risk with a stroke specialist. Cilostazol combined with aspirin OR clopidogrel is a selected Class 2b option; do not automatically add a third antiplatelet.${onCurrentDAPT === true ? ' Current DAPT must be reconciled before any change.' : ''}` : null,
     avoidStenting: 'Stenting NOT recommended outside refractory cases. SAMMPRIS and VISSIT showed net harm; CASSISS showed no benefit even with experienced operators and delayed treatment (8.0% vs 7.2%, HR 1.10, 95% CI 0.52-2.35, P=.82).',
-    submaximalAngioplasty: severe ? 'Submaximal angioplasty without stent — observational data only; consider only at high-volume center for refractory cases or in trial.' : null,
-    source: 'SAMMPRIS NEJM 2011/2014 (PMID 21899409); CASSISS JAMA 2022 (PMID 35943472); CSPS.com Lancet Neurol 2019 (PMID 31122494)',
-    class: 'DAPT 90d Class 1; LDL <70 Class 1; cilostazol Class 2a for refractory'
+    submaximalAngioplasty: severe ? 'BASIS (JAMA 2024) was a positive randomized trial of submaximal balloon angioplasty plus medical management in selected patients aged 35–80 with 70–99% symptomatic ICAD (TIA within 90d or stroke 14–90d). Its composite included revascularization; procedural complications and generalizability require specialist review. It does not establish routine angioplasty for every stenosis.' : null,
+    source: 'AHA/ASA 2021 secondary prevention §5.1.1 (doi: 10.1161/STR.0000000000000375); BASIS JAMA 2024 (doi: 10.1001/jama.2024.12829); ACC/AHA 2026 dyslipidemia (doi: 10.1161/CIR.0000000000001423)',
+    class: 'Recent severe symptomatic ICAD: clopidogrel plus aspirin up to 90d Class 2a; selected cilostazol dual therapy Class 2b (2021)'
   };
 };
 
@@ -1157,14 +1093,14 @@ export const icadMedicalRegimen = ({ stenosisPercent, location, recurrentEvent, 
 // =====================================================================
 // SPS3 (Lancet 2013, PMID 23726159), SPRINT-MIND (JAMA 2019, PMID 30688979),
 // ESPRIT (Lancet 2024, PMID 38945140).
-// AHA 2024 SPS focused update: <130/80 (Class 1); ESC 2024: <130/80, <120 SBP if tolerated.
+// AHA/ACC 2025 hypertension guideline §5.3.9.3: outpatient goal <130/80.
 export const bpTargetPostStroke = ({ strokeSubtype, age, orthostatic, ckd, currentSBP, currentDBP }) => {
   const a = parseFloat(age);
   const sbp = parseFloat(currentSBP);
   const dbp = parseFloat(currentDBP);
 
-  const baseTarget = '<130/80 mmHg (Class 1, AHA 2024)';
-  const aggressiveTarget = '<120/80 mmHg (consider in tolerated patients per ESPRIT 2024)';
+  const baseTarget = '<130/80 mmHg (AHA/ACC 2025; neurologically stable outpatient)';
+  const aggressiveTarget = 'Lower targets require individualized assessment of tolerance; do not apply this outpatient target during acute stroke treatment.';
 
   let target = baseTarget;
   let lowerLimit = null;
@@ -1172,22 +1108,23 @@ export const bpTargetPostStroke = ({ strokeSubtype, age, orthostatic, ckd, curre
 
   // SPS3: small-vessel/lacunar — intensive (<130) trended benefit; ICH HR 0.37
   if ((strokeSubtype || '').toLowerCase().includes('lacun') || (strokeSubtype || '').toLowerCase().includes('small')) {
-    target = '<130/80 mmHg (consider <120 SBP per SPS3 lacunar-stroke subgroup; ICH HR 0.37)';
+    target = '<130/80 mmHg (SPS3 tested SBP <130, not <120)';
   }
 
   if (orthostatic === true) {
-    cautions.push('Orthostatic hypotension — relax target (consider <140/80) to avoid falls');
-    target = '<140/80 mmHg with orthostatic monitoring';
+    cautions.push('Orthostatic hypotension — check standing BP and symptoms; individualize the target and regimen to avoid falls.');
+    target = 'Individualize because of orthostatic hypotension';
   }
   if (Number.isFinite(a) && a >= 80) {
     cautions.push('Age ≥80 — individualize; SPRINT/ESPRIT enrolled fewer very-elderly. Consider <140/80 if frail.');
   }
   if (ckd === true) {
-    cautions.push('CKD — ATACH-2 showed renal AEs in intensive arm of acute ICH; same caution applies long-term.');
+    cautions.push('CKD — monitor creatinine, potassium, and volume status during treatment adjustment. Acute ICH trial targets do not define chronic BP goals.');
   }
 
   const firstLine = ['ACEi or ARB (lisinopril, losartan)', 'Thiazide diuretic (chlorthalidone preferred over HCTZ)', 'Calcium channel blocker (amlodipine)'];
-  const drugClassNote = 'AHA 2024 SPS: ACEi/ARB + thiazide most evidence; avoid beta-blocker as first-line for stroke prevention unless other indication.';
+  const drugClassNote = 'AHA/ACC 2025: thiazide-type diuretic, ACE inhibitor, or ARB reduce recurrent stroke risk; tailor the regimen to comorbidities and tolerance.';
+  const completeBP = Number.isFinite(sbp) && sbp > 0 && Number.isFinite(dbp) && dbp > 0;
 
   return {
     target,
@@ -1195,14 +1132,13 @@ export const bpTargetPostStroke = ({ strokeSubtype, age, orthostatic, ckd, curre
     cautions,
     firstLine,
     drugClassNote,
-    currentBP: Number.isFinite(sbp) && Number.isFinite(dbp) ? `${sbp}/${dbp} mmHg` : null,
-    actionable: Number.isFinite(sbp)
-      ? sbp >= 140 ? 'Above target — initiate or escalate antihypertensive'
-        : sbp >= 130 ? 'Approaching target — small uptitration if tolerated'
-          : sbp >= 120 ? 'At target — continue current regimen'
-            : 'SBP <120 — verify not hypotensive; consider de-escalation if symptomatic'
+    currentBP: completeBP ? `${sbp}/${dbp} mmHg` : null,
+    actionable: completeBP
+      ? orthostatic === true ? 'Review standing BP and symptoms before medication adjustment.'
+        : sbp >= 130 || dbp >= 80 ? 'Above outpatient target — confirm average BP, adherence, and tolerance before adjusting treatment.'
+          : 'Below 130/80 — continue monitoring and assess symptoms and tolerance.'
       : null,
-    source: 'AHA 2024 SPS focused update; SPS3 Lancet 2013 (PMID 23726159); ESPRIT Lancet 2024 (PMID 38945140)',
+    source: 'AHA/ACC 2025 hypertension guideline §5.3.9.3 (doi: 10.1161/CIR.0000000000001356); SPS3 Lancet 2013 (PMID 23726159)',
     class: 'Class 1 for <130/80'
   };
 };
@@ -1212,24 +1148,26 @@ export const bpTargetPostStroke = ({ strokeSubtype, age, orthostatic, ckd, curre
 // =====================================================================
 // TST (NEJM 2020, PMID 31738483): post-stroke LDL <70 vs 90-110, MACE HR 0.78.
 // SPARCL: atorva 80 baseline. FOURIER (PCSK9): stroke HR 0.79; no ICH increase.
-// CLEAR Outcomes (NEJM 2023, PMID 36876740): bempedoic acid stroke HR 0.85.
-// ESC 2024: very-high-risk LDL <55; AHA 2024 SPS: LDL <70 Class 1, <55 reasonable for high-risk.
-export const lipidsTargetPostStroke = ({ strokeSubtype, currentLDL, onStatin, statinIntolerant, additionalCV, ckd }) => {
+// CLEAR Outcomes reduced composite events; stroke alone was not significant.
+// ACC/AHA 2026: ASCVD LDL <70; very-high-risk ASCVD LDL <55.
+export const lipidsTargetPostStroke = ({ strokeSubtype, currentLDL, onStatin, statinIntolerant, additionalCV, ckd, veryHighRiskASCVD }) => {
   const ldl = parseFloat(currentLDL);
   const isAtherosclerotic = ['atherosclerotic', 'lvd', 'icad', 'carotid', 'stenosis'].some(x =>
     (strokeSubtype || '').toLowerCase().includes(x)
   );
-  const veryHighRisk = isAtherosclerotic || additionalCV === true;
-  const target = veryHighRisk ? '<55 mg/dL (very-high-risk)' : '<70 mg/dL (post-stroke standard)';
+  // Atherosclerotic stroke alone does not establish the complete very-high-risk
+  // definition. Require a clinician's explicit assessment of that category.
+  const veryHighRisk = veryHighRiskASCVD === true;
+  const target = veryHighRisk ? '<55 mg/dL (very-high-risk ASCVD)' : '<70 mg/dL (ASCVD; assess whether very-high-risk criteria apply)';
 
   const tier = [];
   tier.push({ step: 1, agent: 'High-intensity statin: atorvastatin 80 mg OR rosuvastatin 40 mg', evidence: 'SPARCL NEJM 2006 (PMID 16899775); TST NEJM 2020 (PMID 31738483)' });
   tier.push({ step: 2, agent: 'Add ezetimibe 10 mg PO daily', evidence: 'IMPROVE-IT NEJM 2015 (PMID 26040320)' });
   if (statinIntolerant) {
-    tier.push({ step: 3, agent: 'Bempedoic acid 180 mg PO daily (statin-intolerant)', evidence: 'CLEAR Outcomes NEJM 2023 (PMID 36876740) — stroke HR 0.85' });
+    tier.push({ step: 3, agent: 'Bempedoic acid 180 mg PO daily (statin-intolerant)', evidence: 'CLEAR Outcomes NEJM 2023 (PMID 36876740): composite benefit; stroke alone not significantly reduced' });
   }
-  tier.push({ step: 4, agent: 'PCSK9 inhibitor: evolocumab 140 mg SC q2wk OR alirocumab 75-150 mg SC q2wk', evidence: 'FOURIER stroke subgroup Lancet Neurol 2020 (PMID 32702332)' });
-  tier.push({ step: 5, agent: 'Inclisiran 284 mg SC twice yearly (after initial loading)', evidence: 'ORION-9/10/11 NEJM 2020' });
+  tier.push({ step: 4, agent: 'PCSK9 inhibitor: evolocumab 140 mg SC q2wk OR alirocumab 75-150 mg SC q2wk', evidence: 'FOURIER stroke analysis, Stroke 2020 (PMID 32312223)' });
+  tier.push({ step: 5, agent: 'Inclisiran 284 mg SC initially, at 3 months, then every 6 months', evidence: 'LDL lowering established; cardiovascular outcome benefit not yet established in the 2026 dyslipidemia guideline' });
 
   return {
     target,
@@ -1237,10 +1175,10 @@ export const lipidsTargetPostStroke = ({ strokeSubtype, currentLDL, onStatin, st
     currentLDL: Number.isFinite(ldl) ? ldl : null,
     atTarget: Number.isFinite(ldl) ? (veryHighRisk ? ldl < 55 : ldl < 70) : null,
     tier,
-    rationale: `Post-stroke LDL goal ${target}. ${isAtherosclerotic ? 'Atherosclerotic mechanism and/or additional CV disease — pursue <55 mg/dL.' : 'Standard post-stroke target <70.'} Tiered escalation: statin → ezetimibe → PCSK9i/bempedoic acid/inclisiran.`,
-    pcskISafetyInStroke: 'FOURIER showed no ICH increase with evolocumab; PCSK9i are SAFE in post-stroke patients with prior ICH.',
-    source: 'TST NEJM 2020 (PMID 31738483); FOURIER Lancet Neurol 2020 (PMID 32702332); CLEAR Outcomes NEJM 2023 (PMID 36876740)',
-    class: 'Class 1 for LDL <70; Class 2a for <55 in very-high-risk'
+    rationale: `LDL goal ${target}. Confirm ASCVD and the full very-high-risk definition; do not assign <55 solely from stroke subtype. Use maximally tolerated statin and select additional therapy by the LDL reduction needed, outcome evidence, tolerance, and access.`,
+    pcskISafetyInStroke: 'FOURIER found no significant increase in hemorrhagic stroke in its study population. This does not establish safety after prior ICH; individualize lipid therapy in that population.',
+    source: 'ACC/AHA 2026 dyslipidemia guideline (doi: 10.1161/CIR.0000000000001423); TST NEJM 2020 (PMID 31738483); FOURIER Stroke 2020 (PMID 32312223); CLEAR Outcomes NEJM 2023 (PMID 36876740)',
+    class: '2026 ACC/AHA ASCVD targets; assess the complete risk category'
   };
 };
 
@@ -1261,21 +1199,21 @@ export const arcadiaAdvisory = ({ ptfv1, ntProBNP, laVolumeIndex, laDiameterCmM2
 
   const cardiopathyMarker = (Number.isFinite(ptf) && ptf > 5000)
     || (Number.isFinite(bnp) && bnp > 250)
-    || (Number.isFinite(lavi) && lavi >= 34)
     || (Number.isFinite(lad) && lad >= 3);
 
   return {
     cardiopathyPresent: cardiopathyMarker,
+    leftAtrialEnlargement: Number.isFinite(lavi) ? lavi > 34 : null,
     recommendDOAC: false,
     rationale: cardiopathyMarker
-      ? 'Atrial cardiopathy markers present (PTFV1 >5000 µV·ms, NT-proBNP >250 pg/mL, LAVI ≥34 mL/m², or LA diameter ≥3 cm/m²). HOWEVER ARCADIA (2024) and ATTICUS (2023) both showed NO benefit of empiric apixaban over aspirin. Markers indicate ICM/prolonged monitoring need, NOT direct OAC indication.'
-      : 'No atrial cardiopathy markers documented.',
+      ? 'At least one ARCADIA entry biomarker is present (PTFV1 >5000 µV·ms, NT-proBNP >250 pg/mL, or indexed LA diameter ≥3 cm/m²). ARCADIA showed no recurrent-stroke benefit from empiric apixaban without AF. LAVI was not an ARCADIA entry criterion.'
+      : 'No ARCADIA entry biomarker documented; missing measurements do not exclude atrial disease. LAVI is not an ARCADIA entry criterion.',
     nextSteps: cardiopathyMarker
-      ? '1) Implant ICM (Reveal LINQ or equivalent) — STROKE-AF showed AF in 12.1% even of non-cardioembolic strokes. 2) Continue antiplatelet (aspirin 81 mg). 3) Switch to OAC ONLY if AF detected with burden >24h or daily episodes.'
+      ? 'Continue mechanism-appropriate secondary prevention and arrange prolonged rhythm monitoring; consider an ICM when appropriate. If AF is confirmed, assess anticoagulation from stroke risk and bleeding context. Do not require 24 hours of AF for clinically diagnosed AF.'
       : 'Standard secondary prevention (antiplatelet + statin + BP). Consider ICM if other clinical features suggest paroxysmal AF (elevated HAVOC score, atrial cardiopathy, recurrent embolic pattern, frequent palpitations).',
-    afBurdenThreshold: 'ARTESIA showed apixaban benefit in subclinical AF ≥6 min (mostly hours), but with bleeding cost. NOAH-AFNET 6 was neutral. Practical: trigger OAC at sustained AF >24h or daily episodes; shorter-burst subclinical AF = uncertain benefit.',
-    source: 'ARCADIA JAMA 2024;331:573-81 (Kamel et al., PMID 38324415); ATTICUS NEJM Evid 2023 (PMID 38320511); STROKE-AF JAMA 2021 (PMID 34061145)',
-    class: 'Class 3 (no benefit) for empiric OAC based on cardiopathy markers alone'
+    afBurdenThreshold: 'Device-detected AHRE without prior AF: consider duration together with CHA₂DS₂-VASc and bleeding risk. The 2023 AF guideline supports shared decisions for ≥24h with score ≥2 (2a), or 5 min–24h with score ≥3 (2b); <5 min alone is not an OAC indication. ARTESiA and NOAH show the benefit/bleeding tradeoff.',
+    source: 'ARCADIA JAMA 2024;331:573-81 (PMID 38324415); ATTICUS NEJM Evid 2024 (PMID 38320511); 2023 ACC/AHA/ACCP/HRS AF guideline (doi: 10.1161/CIR.0000000000001193)',
+    class: 'ARCADIA trial finding: no benefit from empiric apixaban for atrial cardiopathy without AF'
   };
 };
 
@@ -1294,8 +1232,8 @@ export const afDetectionStrategy = ({ havocScore, strokeSubtype, hasICMAccess })
   } else if (isCryptogenic) {
     strategy = hasICMAccess === false
       ? '30-day external loop monitor or 14-day ECG patch (Zio); escalate to ICM if negative.'
-      : 'ICM at 90 days post-stroke (Class 2a). Bridge with 30-d external monitor if delay.';
-    evidence = 'CRYSTAL-AF (NEJM 2014, PMID 24963567) — 12.4% AF detection vs 2.0%; AHA 2024 SPS Class 2a for cryptogenic.';
+      : 'Initial rhythm monitoring, with extended monitoring and an ICM if needed; no required 90-day delay.';
+    evidence = 'CRYSTAL-AF (NEJM 2014, PMID 24963567): AF detection at 12 months 12.4% vs 2.0%. The 2023 AF guideline supports initial and, if needed, extended monitoring with an ICM after stroke/TIA of undetermined cause.';
   } else if (Number.isFinite(score) && score >= 1) {
     strategy = '30-day external monitor first; ICM if negative and clinical suspicion remains.';
     evidence = 'STROKE-AF (JAMA 2021, PMID 34061145) — even non-cardioembolic strokes show 12.1% AF.';
@@ -1307,10 +1245,10 @@ export const afDetectionStrategy = ({ havocScore, strokeSubtype, hasICMAccess })
   return {
     strategy,
     evidence,
-    burdenThreshold: 'AF burden threshold for OAC initiation: sustained ≥24h or daily episodes (per ARTESIA/NOAH-AFNET 6 nuance). Shorter-burst subclinical AF = individualized.',
-    nextSteps: 'If AF detected with burden ≥24h: initiate DOAC per ELAN/OPTIMAS timing (≤4d for minor/moderate stroke; 6-7d for major). Do not bridge with heparin.',
-    source: 'CRYSTAL-AF NEJM 2014; STROKE-AF JAMA 2021; PER DIEM JAMA 2021; ARTESIA NEJM 2024 (PMID 37952132); NOAH-AFNET 6 NEJM 2023 (PMID 37622677)',
-    class: 'Class 2a for ICM in cryptogenic (AHA 2024)'
+    burdenThreshold: 'Confirmed clinical AF: use thromboembolic risk regardless of paroxysmal/persistent pattern. Device-detected AHRE without prior AF: assess duration and risk together (≥24h and CHA₂DS₂-VASc ≥2, or 5 min–24h and score ≥3); these are shared decisions, not automatic treatment triggers.',
+    nextSteps: 'Review the tracing to confirm AF. If anticoagulation is indicated after stroke, individualize timing using infarct size, hemorrhagic transformation, imaging, and bleeding risk; avoid routine heparin bridging.',
+    source: '2023 ACC/AHA/ACCP/HRS AF guideline (doi: 10.1161/CIR.0000000000001193); CRYSTAL-AF NEJM 2014; ARTESiA NEJM 2024 (PMID 37952132); NOAH-AFNET 6 NEJM 2023 (PMID 37622677)',
+    class: 'Class 2a: initial monitoring and, if needed, extended monitoring with ICM after stroke/TIA of undetermined cause (2023 AF guideline)'
   };
 };
 
@@ -1327,9 +1265,10 @@ export const afDetectionStrategy = ({ havocScore, strokeSubtype, hasICMAccess })
 // cause. POSSIBLE CAA: 1 strictly lobar hemorrhagic lesion OR 1 white-matter
 // feature. vs autopsy: sensitivity 74.5% (65.4-82.4), specificity 95.0%
 // (83.1-99.4) for probable CAA.
-export const evaluateBostonCAA20 = ({ age, lobarICH, corticalSiderosis, lobarMicrobleeds, lobarHemorrhagicLesionCount, csoPVSSevere, multispotWMH, otherCause }) => {
+export const evaluateBostonCAA20 = ({ age, lobarICH, corticalSiderosis, lobarMicrobleeds, lobarHemorrhagicLesionCount, csoPVSSevere, multispotWMH, otherCause, deepHemorrhagicLesions, qualifyingPresentation } = {}) => {
   const a = parseFloat(age);
-  const meetsAge = !Number.isFinite(a) || a >= 50;
+  if (!Number.isFinite(a) || a <= 0) return { category: 'Incomplete', rationale: 'Enter a valid age before applying Boston v2.0.' };
+  const meetsAge = a >= 50;
   const hasOtherCause = otherCause === true;
 
   if (!meetsAge) {
@@ -1346,11 +1285,21 @@ export const evaluateBostonCAA20 = ({ age, lobarICH, corticalSiderosis, lobarMic
     };
   }
 
+  if (deepHemorrhagicLesions === true || qualifyingPresentation === false) {
+    return { category: 'Not applicable', rationale: 'MRI-based Boston v2.0 requires a qualifying presentation (spontaneous ICH, transient focal neurological episodes, or cognitive impairment/dementia) and no deep ICH or deep microbleeds. Cerebellar hemorrhagic lesions count as neither lobar nor deep.' };
+  }
+  if (deepHemorrhagicLesions !== false || otherCause !== false || qualifyingPresentation !== true) {
+    return { category: 'Incomplete', rationale: 'Confirm a qualifying clinical presentation, absence of deep hemorrhagic lesions, and exclusion of other causes before assigning a Boston v2.0 category.' };
+  }
+
   // Count of strictly lobar hemorrhagic LESIONS (each ICH, each microbleed,
   // and each focus of cortical superficial siderosis counts individually).
   // Prefer the explicit count; otherwise derive a LOWER BOUND from the
   // boolean marker flags.
   const explicitCount = parseFloat(lobarHemorrhagicLesionCount);
+  if (lobarHemorrhagicLesionCount !== undefined && lobarHemorrhagicLesionCount !== '' && (!Number.isInteger(explicitCount) || explicitCount < 0)) {
+    return { category: 'Incomplete', rationale: 'Lobar hemorrhagic lesion count must be a non-negative whole number.' };
+  }
   const derivedMinCount = (lobarICH === true ? 1 : 0) + (corticalSiderosis === true ? 1 : 0) + (lobarMicrobleeds === true ? 1 : 0);
   const lesionCount = Number.isFinite(explicitCount) ? explicitCount : derivedMinCount;
   const wmFeatures = (csoPVSSevere === true ? 1 : 0) + (multispotWMH === true ? 1 : 0);
@@ -1360,13 +1309,13 @@ export const evaluateBostonCAA20 = ({ age, lobarICH, corticalSiderosis, lobarMic
     // >=2 strictly lobar hemorrhagic lesions qualifies as Probable even
     // WITHOUT a symptomatic lobar ICH (e.g., two lobar microbleeds).
     category = 'Probable CAA';
-    action = 'Meets Boston v2.0 Probable CAA. Anticoagulation decisions require caution — weigh recurrent-ICH risk; consider LAA occlusion for AF (shared decision); BP <130/80; statins were not associated with increased ICH in FOURIER.';
+    action = 'Meets MRI-based Boston v2.0 probable CAA criteria with the supplied exclusions. This is a diagnostic classification; antithrombotic and lipid decisions require a separate individualized assessment.';
   } else if (lesionCount === 1 || wmFeatures >= 1) {
     category = 'Possible CAA';
     action = 'One strictly lobar hemorrhagic lesion OR one white-matter feature. Not diagnostic — document markers, obtain/repeat susceptibility-weighted MRI, and reassess.';
   } else {
-    category = 'CAA Unlikely';
-    action = 'No strictly lobar hemorrhagic lesions or CAA white-matter features; pursue alternative etiology workup.';
+    category = 'Criteria not met';
+    action = 'No qualifying markers were supplied. Failure to meet MRI-based criteria does not exclude CAA; verify MRI completeness and consider alternative etiologies.';
   }
 
   return {
@@ -1414,13 +1363,14 @@ export const getAIConfiguration = () => {
 };
 
 // =====================================================================
-// CRAO Acute Thrombolysis Decision Tool (AHA 2021 / THEIA 2025)
+// CRAO emergency assessment (THEIA 2025 / TenCRAOS 2026)
 // =====================================================================
-// Evaluates acute IV thrombolysis eligibility for Central Retinal Artery Occlusion.
+// Describes historical research-screen features; never establishes IVT eligibility.
 // AHA Statement 2021 (Mac Grory, Stroke 2021;52:e282-e294, PMID 33677974);
 // THEIA trial (Préterre et al., Lancet Neurol 2025;24(11):909-919, PMID 41109232):
 // NEUTRAL — visual improvement 66% vs 48%, adjusted OR 1.1 (95% CI 0.07-18.39),
-// p=0.95; n=70, underpowered. Do not present THEIA as supporting CRAO lysis.
+// p=0.95; n=70, underpowered. TenCRAOS (NEJM 2026, PMID 41604638)
+// found no significant visual benefit and serious safety concerns, including fatal ICH.
 export const evaluateCRAOTreatment = ({
   onsetHours,
   visualAcuity,
@@ -1429,7 +1379,7 @@ export const evaluateCRAOTreatment = ({
   age
 } = {}) => {
   const t = parseFloat(onsetHours);
-  const a = Number.isFinite(parseFloat(age)) ? parseFloat(age) : 18;
+  const a = parseFloat(age);
   if (!Number.isFinite(t)) return null;
 
   const windowOk = t >= 0 && t <= 4.5;
@@ -1440,43 +1390,43 @@ export const evaluateCRAOTreatment = ({
     visionOk = visualAcuity;
   } else if (typeof visualAcuity === 'string') {
     const v = visualAcuity.toLowerCase().trim();
-    const snellenMatch = v.match(/20\/(\d+)/);
+    const snellenMatch = v.match(/^20\/(\d+)$/);
     if (snellenMatch) {
       const denom = parseInt(snellenMatch[1], 10);
       visionOk = denom >= 200;
     } else {
-      visionOk = ['no-light-perception', 'light-perception', 'hand-motion', 'count-fingers', 'severe', 'nlp', 'lp', 'hm', 'cf'].some(k => v.includes(k));
+      visionOk = ['no-light-perception', 'light-perception', 'hand-motion', 'count-fingers', 'severe', 'nlp', 'lp', 'hm', 'cf'].includes(v);
     }
   } else {
-    visionOk = true;
+    visionOk = false;
   }
 
   const noHemorrhage = fundusHemorrhage === false;
   const noContraindication = ivtContraindicated === false;
 
-  const eligible = windowOk && ageOk && visionOk && noHemorrhage && noContraindication;
+  const meetsHistoricalScreen = windowOk && ageOk && visionOk && noHemorrhage && noContraindication;
 
   const contraindications = [];
-  if (!windowOk) contraindications.push(`Onset ${t}h exceeds 4.5h window`);
-  if (!ageOk) contraindications.push(`Age ${a} < 18 years`);
+  if (!windowOk) contraindications.push(t < 0 ? 'Onset interval must not be negative' : `Onset ${t}h exceeds 4.5h window`);
+  if (!ageOk) contraindications.push(Number.isFinite(a) ? `Age ${a} < 18 years` : 'Age not documented');
   if (!visionOk) contraindications.push('Visual acuity not meeting severe vision loss criteria (<= 20/200 / count fingers / light perception)');
-  if (!noHemorrhage) contraindications.push('Retinal hemorrhage present on fundoscopy / OCT');
-  if (!noContraindication) contraindications.push('Systemic contraindications to IV thrombolysis present');
+  if (!noHemorrhage) contraindications.push(fundusHemorrhage === true ? 'Retinal hemorrhage present on fundoscopy / OCT' : 'Retinal examination not confirmed');
+  if (!noContraindication) contraindications.push(ivtContraindicated === true ? 'Systemic contraindications to IV thrombolysis present' : 'Systemic contraindication assessment incomplete');
 
   return {
-    eligible,
+    eligible: false,
+    actionable: false,
+    meetsHistoricalScreen,
     onsetHours: t,
-    age: a,
+    age: Number.isFinite(a) ? a : null,
     visualAcuityOk: visionOk,
     noHemorrhage,
     noContraindications: noContraindication,
     contraindications,
-    recommendation: eligible
-      ? 'Eligible for acute IV thrombolysis (TNK 0.25 mg/kg max 25 mg OR alteplase 0.9 mg/kg max 90 mg) within 4.5h of sudden painless monocular vision loss. Perform urgent ophthalmology / fundoscopy consult to confirm CRAO and rule out retinal hemorrhage prior to lytic infusion.'
-      : `Ineligible for IV thrombolysis in CRAO: ${contraindications.join('; ')}.`,
-    dosingInfo: 'IV Tenecteplase 0.25 mg/kg (max 25 mg) single IV bolus OR Alteplase 0.9 mg/kg (10% bolus, remainder over 60 min, max 90 mg).',
-    sources: 'AHA Scientific Statement (Mac Grory Stroke 2021, PMID 33677974); THEIA Trial (Préterre Lancet Neurol 2025;24:909-919, PMID 41109232 — NEUTRAL, underpowered)',
-    class: 'AHA 2021 statement frames CRAO IVT as an option in selected patients; the only completed RCT (THEIA 2025) was neutral — treat as unproven and individualized, ideally within a trial'
+    recommendation: 'Suspected CRAO is an emergency: obtain urgent stroke and ophthalmology assessment, confirm the diagnosis, evaluate arteritic causes when indicated, and initiate cause-directed prevention. This screen does not recommend routine IV thrombolysis: THEIA was neutral and TenCRAOS found no significant visual benefit with serious safety concerns.',
+    dosingInfo: 'No routine CRAO thrombolytic dose is provided. Any exceptional treatment discussion requires specialist assessment of current evidence and local governance.',
+    sources: 'AHA Scientific Statement (Mac Grory Stroke 2021, PMID 33677974); THEIA Trial (Préterre Lancet Neurol 2025, PMID 41109232); TenCRAOS (Ryan NEJM 2026;394:442-450, PMID 41604638; doi: 10.1056/NEJMoa2508515)',
+    class: 'Research-screen features are not an evidence-based treatment indication; current randomized trials do not establish routine CRAO IVT benefit'
   };
 };
 

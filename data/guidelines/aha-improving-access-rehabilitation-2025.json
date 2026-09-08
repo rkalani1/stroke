@@ -10,12 +10,702 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Table 1. AHA Consensus Guidelines for Adult Stroke Rehabilitation Through the Continuum - Quality of care",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Stroke rehabilitation is an integral component of comprehensive stroke care. Inequities in access to stroke rehabilitation can further widen the disability gap and disproportionately affect underinsured patients, patients living in rural areas, and patients from underrepresented races and ethnicities. However, even insured patients face obstacles to receiving stroke rehabilitation.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Early rehabilitation for hospitalized patients with stroke should be provided in environments with organized, interprofessional stroke care. (Acute care; reproduced from the 2016 AHA/ASA Adult Stroke Rehabilitation and Recovery Guideline as Class 1, Level of Evidence A.)",
+      "page": null
+    },
+    {
+      "section": "Table 1. AHA Consensus Guidelines for Adult Stroke Rehabilitation Through the Continuum - Quality of care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with stroke who are candidates for postacute rehabilitation should receive organized, coordinated, interprofessional care. (Postacute care; reproduced from the 2016 guideline as Class 1, Level of Evidence A.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Screening",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Early dysphagia screening is recommended for patients with acute stroke to identify dysphagia or aspiration, which can lead to pneumonia, malnutrition, dehydration, and other complications. (Reproduced from the 2016 guideline as Class 1, Level of Evidence B.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Screening",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Screening for cognitive deficits is recommended for all patients with stroke before discharge home. (Reproduced from the 2016 guideline as Class 1, Level of Evidence B.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Screening",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Communication assessment should consist of interview, conversation, observation, standardized tests, or nonstandardized items; assess speech, language, cognitive communication, pragmatics, reading, and writing; identify communicative strengths and weaknesses; and identify helpful compensatory strategies. (Reproduced from the 2016 guideline as Class 1, Level of Evidence B.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Screening",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All individuals with stroke should be provided a formal assessment of activities of daily living and instrumental activities of daily living, communication abilities, and functional mobility before discharge from acute care hospitalization, and the findings should be incorporated into the care transition and discharge planning process. (Reproduced from the 2016 guideline as Class 1, Level of Evidence B.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Screening",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All individuals with stroke discharged to independent community living from postacute rehabilitation or skilled nursing facilities should receive activities of daily living and instrumental activities of daily living assessment directly related to their discharge living setting. (Reproduced from the 2016 guideline as Class 1, Level of Evidence B.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Screening",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "After successful screening, an individually tailored exercise program is indicated to enhance cardiorespiratory fitness (Class 1, Level of Evidence A in the 2016 guideline) and to reduce the risk of stroke recurrence (Class 1, Level of Evidence B in the 2016 guideline).",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Screening",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Individuals with stroke should be evaluated for balance, balance confidence, and fall risk. (Reproduced from the 2016 guideline as Class 1, Level of Evidence C.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Formal assessment of rehabilitation needs and disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Enriched environments to increase engagement with cognitive activities are recommended. (Reproduced from the 2016 guideline as Class 1, Level of Evidence A.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Formal assessment of rehabilitation needs and disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A functional assessment by a clinician with expertise in rehabilitation is recommended for patients with an acute stroke with residual functional deficits. (Reproduced from the 2016 guideline as Class 1, Level of Evidence C.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Formal assessment of rehabilitation needs and disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Determination of postacute stroke rehabilitation needs should be based on assessments of residual neurologic deficits; activity limitations; cognitive, communicative, and psychologic status; swallowing ability; previous functional ability and medical comorbidities; level of family/caregiver support; capacity of family/caregiver to meet the care needs of the stroke survivor; likelihood of returning to community living; and ability to participate in rehabilitation. (Reproduced from the 2016 guideline as Class 1, Level of Evidence C.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Formal assessment of rehabilitation needs and disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with stroke receiving comprehensive activities of daily living, instrumental activities of daily living, and mobility assessments, including evaluation of the discharge living setting, should be considered candidates for community or home-based rehabilitation when feasible; exclusions include individuals who require daily nursing services, regular medical interventions, specialized equipment, or interprofessional expertise. (Reproduced from the 2016 guideline as Class 1, Level of Evidence A.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Formal assessment of rehabilitation needs and disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke survivors who qualify for and have access to inpatient rehabilitation facility care should receive treatment in an inpatient rehabilitation facility in preference to a skilled nursing facility. (Reproduced from the 2016 guideline as Class 1, Level of Evidence B.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Formal assessment of rehabilitation needs and disposition",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke survivors should receive rehabilitation at an intensity commensurate with anticipated benefit and tolerance. (Reproduced from the 2016 guideline as Class 1, Level of Evidence B.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Resources",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Acute care hospitals and rehabilitation facilities should maintain up-to-date inventories of community resources. (Reproduced from the 2016 guideline as Class 1, Level of Evidence C.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Resources",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patient and family/caregiver preferences for resources should be considered. (Reproduced from the 2016 guideline as Class 1, Level of Evidence C.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Resources",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Information about local resources should be provided to the patient and family. (Reproduced from the 2016 guideline as Class 1, Level of Evidence C.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Resources",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Contact with community resources should be offered through formal or informal referral. (Reproduced from the 2016 guideline as Class 1, Level of Evidence C.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Resources",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Follow-up is recommended to ensure that the patient and family receive the necessary services. (Reproduced from the 2016 guideline as Class 1, Level of Evidence C.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Individuals with stroke should be provided a formal fall prevention program during hospitalization. (Reproduced from the 2016 guideline as Class 1, Level of Evidence A.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Individuals with stroke who have poor balance, low balance confidence, and fear of falls or are at risk for falls should be provided with a balance training program. (Reproduced from the 2016 guideline as Class 1, Level of Evidence A.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Prevention",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Functional tasks should be practiced; that is, task-specific training, in which tasks are graded to challenge individual capabilities, practiced repeatedly, and progressed in difficulty on a frequent basis. (Reproduced from the 2016 guideline as Class 1, Level of Evidence A.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Therapy approach and management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Intensive, repetitive mobility task training is recommended for all individuals with gait limitations after stroke. (Reproduced from the 2016 guideline as Class 1, Level of Evidence A.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Therapy approach and management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All individuals with stroke should receive activities of daily living training tailored to individual needs and eventual discharge setting. (Reproduced from the 2016 guideline as Class 1, Level of Evidence A.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Therapy approach and management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All individuals with stroke should receive instrumental activities of daily living training tailored to individual needs and eventual discharge setting. (Reproduced from the 2016 guideline as Class 1, Level of Evidence B.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Therapy approach and management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "After completion of formal stroke rehabilitation, participation in a program of exercise or physical activity at home or in the community is recommended. (Reproduced from the 2016 guideline as Class 1, Level of Evidence A.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Therapy approach and management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Individuals with stroke discharged to the community should participate in exercise programs with balance training to reduce falls. (Reproduced from the 2016 guideline as Class 1, Level of Evidence B.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Therapy approach and management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Individuals with stroke should be prescribed and fit with an assistive device or orthosis if appropriate to improve balance. (Reproduced from the 2016 guideline as Class 1, Level of Evidence A.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Therapy approach and management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "An ankle foot orthosis is recommended for individuals with remediable gait impairments (eg, foot drop) to compensate for foot drop and to improve mobility and paretic ankle and knee kinematics, kinetics, and energy cost of walking. (Reproduced from the 2016 guideline as Class 1, Level of Evidence A.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Therapy approach and management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Organized community-based and coordinated interprofessional rehabilitation care is recommended in outpatient or home-based settings. (Reproduced from the 2016 guideline as Class 1, Level of Evidence C.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Therapy approach and management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Speech and language therapy is recommended for individuals with aphasia. (Reproduced from the 2016 guideline as Class 1, Level of Evidence A.)",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Therapy approach and management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Treatment for aphasia should include communication partner training. (Reproduced from the 2016 guideline as Class 1, Level of Evidence B.)",
+      "page": null
+    },
+    {
+      "section": "Provision of Quality Stroke Rehabilitation - Postacute Care Setting and Referrals",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is expected that acute care clinicians consult physical therapy, occupational therapy, speech and language pathology, and rehabilitation specialists early in the hospital course to assist with evaluation, management, and determination of the appropriate disposition plan. Discharge destination and rehabilitation access should be driven solely by the stroke survivor's needs, yet numerous studies show that factors unrelated to those needs determine access to postacute rehabilitation.",
+      "page": null
+    },
+    {
+      "section": "Provision of Quality Stroke Rehabilitation - Postacute Care Setting and Referrals",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Inpatient rehabilitation facility care consists of an intensive multidisciplinary therapy program of at least 3 hours a day 5 days per week of physical therapy plus occupational therapy or speech-language pathology, with orthotic services if indicated, rehabilitation physician face-to-face visits at least 3 days a week, 24-hour rehabilitation nursing by a registered nurse, and weekly physician-led multidisciplinary team conferences; the inpatient rehabilitation facility is the preferred location to facilitate improvements in poststroke impairments in populations with appropriate activity tolerance.",
+      "page": null
+    },
+    {
+      "section": "Provision of Quality Stroke Rehabilitation - Postacute Care Setting and Referrals",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke survivors deemed unable to tolerate 15 hours of therapy per week and with barriers to home discharge may be considered for rehabilitation at a skilled nursing facility, which requires an initial physician evaluation within the first 30 days, weekly medical oversight by a physician or advanced practice clinician, and 24-hour licensed nursing with 8 consecutive hours of registered nurse care per day.",
+      "page": null
+    },
+    {
+      "section": "Provision of Quality Stroke Rehabilitation - Postacute Care Setting and Referrals",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Other postacute settings include long-term acute care hospitals (ongoing physician management of complex medical conditions with rehabilitation within the confines of medical acuity), home health rehabilitation for medically stable homebound patients with adequate caregiver support, day rehabilitation programs, outpatient rehabilitation services, and telerehabilitation. At the end of COVID-19 public health emergency orders some states discontinued cross-state licensing waivers, preventing provision of telehealth services across state lines.",
+      "page": null
+    },
+    {
+      "section": "Unmet Needs in Rehabilitation and Recovery Services",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke survivors and their families should be educated during the acute hospitalization about available postacute care options, with clear and accurate explanations relative to their insurance coverage, medical acuity, and activity tolerance provided early in the acute care stay so survivors, caregivers, and families can make informed decisions; explanations can be provided by nurses, social workers, or care coordination professionals with written documentation in the electronic medical record.",
+      "page": null
+    },
+    {
+      "section": "Unmet Needs in Rehabilitation and Recovery Services",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There should be consistent follow-up at 30 and 90 days with the stroke survivor and their caregivers that includes documentation of the modified Rankin Scale score.",
+      "page": null
+    },
+    {
+      "section": "Unmet Needs in Rehabilitation and Recovery Services",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Caregivers require skills training in care domains including activities of daily living and instrumental activities of daily living assistance, prevention of skin breakdown, safe transfers, and fall prevention; a large proportion of this training is provided in postacute care settings, reinforcing the importance of stroke survivors receiving appropriate postacute care services.",
+      "page": null
+    },
+    {
+      "section": "Unmet Needs in Rehabilitation and Recovery Services",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Consideration of the emotional and mental health status of stroke survivors, caregivers, and families is vital; more than half of US residents live in areas with a shortage of mental health professionals, insurance coverage for these conditions may be limited or unavailable, and many mental health professionals lack training to support people with aphasia, which is present in up to 30% of stroke survivors.",
+      "page": null
+    },
+    {
+      "section": "Unmet Needs in Rehabilitation and Recovery Services",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Consistent sick leave benefits and short-term disability insurance are needed to mitigate the negative financial effects of stroke for patients, caregivers, and families; only 43% of US private sector workers had access to short-term disability insurance through their employer, and only 40% of employees in the bottom 10% of wage earners had sick leave.",
+      "page": null
+    },
+    {
+      "section": "Development of Performance Measures for Stroke Rehabilitation and Recovery",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Thirteen performance measures based on the Class I recommendations of the 2016 AHA/ASA Guidelines for Adult Stroke Rehabilitation and Recovery have been published, emphasizing processes of rehabilitation care and identifying the relevant settings for each measure (acute hospital, postacute facility, home health, and outpatient). These should lead to benchmarks and recovery targets that improve implementation of rehabilitation recommendations and assure better outcomes.",
+      "page": null
+    },
+    {
+      "section": "Development of Performance Measures for Stroke Rehabilitation and Recovery",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Additional performance measures assessing long-term outcomes after rehabilitation - including poststroke cognitive assessment and treatment, aphasia management screening, rehabilitation for hemispatial neglect and visual field deficits, and provision for goal-appropriate vocational rehabilitation - need to be developed and adopted.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Public Policy Options - Develop the relationship between functional outcomes and payment models in postacute settings",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Ensure full transparency in payer databases on the rehabilitation services patients with stroke receive and their outcomes, shared with patients, families, caregivers, and health systems.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Public Policy Options - Develop the relationship between functional outcomes and payment models in postacute settings",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Ensure payer transparency around prior authorization, patient and health care professional appeal processes, and the rate of denials.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Develop and implement the most effective quality and performance measures that incentivize getting patients to the most appropriate rehabilitation program",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Adopt performance measures from the AHA/ASA Adult Guidelines for Stroke Rehabilitation and Recovery, with benchmarks for postacute disposition and treatment.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Develop and implement the most effective quality and performance measures that incentivize getting patients to the most appropriate rehabilitation program",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Encourage implementation of benchmarks by the Joint Commission for Stroke Certification and other certifying bodies.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Develop and implement the most effective quality and performance measures that incentivize getting patients to the most appropriate rehabilitation program",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The National Committee for Quality Assurance, Centers for Medicare & Medicaid Services, and other relevant organizations/agencies should integrate these performance and quality measures to incentivize use by payers, health systems, and clinicians.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Develop and implement the most effective quality and performance measures that incentivize getting patients to the most appropriate rehabilitation program",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Financial incentives for the highest quality of care should be explicit.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Assure that patients receive the most appropriate level of acute rehabilitative care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Eliminate payment caps, increasing access to therapy services.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Assure that patients receive mental health services",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Provide more long-term coverage for comprehensive mental health and support services for patients, families, and caregivers across the continuum of care, including the chronic phase of stroke, to adjust to life change (ie, support groups).",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Address the needs of families and caregivers of patients with stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Establish and implement robust Paid Family and Medical Leave policies at the state and federal level.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Address the needs of families and caregivers of patients with stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Implement tax credits for expenses incurred by family caregivers for caregiving services necessary for maintaining employment, which may include obtaining household services, respite care, or other needed assistance.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Address the needs of families and caregivers of patients with stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Elevate the prominence of informal caregivers as partners in care delivery by requiring hospitals to be accountable for recording the name of the family caregiver in the patient's medical record, informing the family caregiver when the patient is to be discharged, and providing education and instruction on medical tasks they will need to perform at home.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Address the needs of families and caregivers of patients with stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Ensure appropriations at the state and federal levels that aid access to programs and services, respite care to temporarily relieve caregivers, and supplemental services such as a personal emergency response system, home-delivered meals, and transportation.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Address the needs of families and caregivers of patients with stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Develop and deploy a national caregiving strategy: implement the consensus recommendations of the National Academies of Sciences, Engineering and Medicine's caregiving expert committee calling for the departments of Health and Human Services, Labor, and Veterans Affairs to work with private-sector stakeholders on a national caregiving strategic action plan to preserve caregiver health, well-being, and financial security.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Address the needs of families and caregivers of patients with stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Expand access to palliative care.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Address the needs of families and caregivers of patients with stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Embed caregiver engagement and outcomes in performance and payment reforms.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Address the needs of families and caregivers of patients with stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Invest in caregiving research at the state and federal levels.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Address the postacute rehabilitation needs of patients who are under- or uninsured and do not qualify for Medicaid",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Increase appropriations to facilitate access to appropriate evidence-based stroke rehabilitation services for those who are uninsured.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Address the postacute rehabilitation needs of patients who are under- or uninsured and do not qualify for Medicaid",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All hospitals including nonprofit hospitals should be transparent about how they are delivering patient care to those who are uninsured.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Address the postacute rehabilitation needs of patients who are under- or uninsured and do not qualify for Medicaid",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Provide immediate approval for federal aid for patients with acute stroke to be covered for at least 6 months to address postacute care.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Address the postacute rehabilitation needs of patients who are under- or uninsured and do not qualify for Medicaid",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All patients with stroke who continue to have medical needs and functional impairment after 6 months should be able to transition to long-term Medicare (patients currently must be on disability for 2 years to receive Medicare).",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Support telerehabilitation services for patients with stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Include evidence-based telehealth rehabilitation services in health insurance coverage.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Minimize state-to-state Medicaid variability in health care coverage for patients with stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Standardize evidence-based care services that patients with stroke need for optimal rehabilitation and recovery.",
+      "page": null
+    },
+    {
+      "section": "Table 2 - Minimize state-to-state Medicaid variability in health care coverage for patients with stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Increase Medicaid expansion across states that do not participate.",
+      "page": null
+    },
+    {
+      "section": "Summary of Key Challenges Affecting Access, Quality, and Effectiveness of Rehabilitation Care After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke survivors and families are not informed regarding the quality of postacute rehabilitation services.",
+      "page": null
+    },
+    {
+      "section": "Summary of Key Challenges Affecting Access, Quality, and Effectiveness of Rehabilitation Care After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is a deficit of publicly available data on the quality of rehabilitation facilities, including the resources CMS provides to locate health care professionals.",
+      "page": null
+    },
+    {
+      "section": "Summary of Key Challenges Affecting Access, Quality, and Effectiveness of Rehabilitation Care After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The transition to postacute rehabilitation care is not patient- or caregiver-centered, and there is a lack of informed decision-making regarding access to postacute care for patients and their support system.",
+      "page": null
+    },
+    {
+      "section": "Summary of Key Challenges Affecting Access, Quality, and Effectiveness of Rehabilitation Care After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Clinical stakeholders (eg, acute care physicians, social workers, patients) lack adequate education regarding the levels of stroke rehabilitation care.",
+      "page": null
+    },
+    {
+      "section": "Summary of Key Challenges Affecting Access, Quality, and Effectiveness of Rehabilitation Care After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is misalignment between health system and payer incentives, with health systems incentivized to decrease length of stay and to discharge patients regardless of patient and family readiness.",
+      "page": null
+    },
+    {
+      "section": "Summary of Key Challenges Affecting Access, Quality, and Effectiveness of Rehabilitation Care After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The prior authorization process for Medicare Advantage and commercial insurance is causing delays in postacute care access.",
+      "page": null
+    },
+    {
+      "section": "Summary of Key Challenges Affecting Access, Quality, and Effectiveness of Rehabilitation Care After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is a lack of cost-effectiveness data comparing alternate postacute care settings.",
+      "page": null
+    },
+    {
+      "section": "Priorities That Would Inform Research and Public Policy for Improving Access to Stroke Rehabilitation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Increase resources dedicated to health services research of stroke rehabilitation and establish a mechanism to ensure that the research questions addressed directly reflect the practical, day-to-day challenges faced by clinicians, families, and patients who need poststroke rehabilitation.",
+      "page": null
+    },
+    {
+      "section": "Priorities That Would Inform Research and Public Policy for Improving Access to Stroke Rehabilitation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Create an open-access comprehensive surveillance system collecting ongoing data across the full spectrum of stroke type, stroke severity, demographics, health systems, hospitals, and payer sources to understand use of rehabilitation and other postacute care services, direct and indirect costs, and patient outcomes at the population level.",
+      "page": null
+    },
+    {
+      "section": "Priorities That Would Inform Research and Public Policy for Improving Access to Stroke Rehabilitation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Conduct health services research to understand how variability in rehabilitation care is influenced by health systems, hospitals, type of insurance, and alternative payment models, focusing on variation in access, quality of rehabilitation care, and patient outcomes across hospitals, health systems, regions, populations, and care settings.",
+      "page": null
+    },
+    {
+      "section": "Priorities That Would Inform Research and Public Policy for Improving Access to Stroke Rehabilitation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Conduct a comprehensive inventory of the stated coverage policies of all major payers/insurers in the United States, and conduct field surveys of acute hospital discharge planners to determine the type and prevalence of barriers preventing patients from getting access to the recommended level of care and whether stated coverage policies are implemented as stated.",
+      "page": null
+    },
+    {
+      "section": "Priorities That Would Inform Research and Public Policy for Improving Access to Stroke Rehabilitation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Assess the comparative effectiveness of alternative strategies, preferably with randomized controlled trials, including formal cost-effectiveness studies where feasible, to identify optimal rehabilitation strategies for patients with stroke in the United States.",
+      "page": null
+    },
+    {
+      "section": "Priorities That Would Inform Research and Public Policy for Improving Access to Stroke Rehabilitation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Collect a comprehensive set of patient-reported outcomes measured 90 days, 6 months, and 1 year after the index stroke event for a representative sample of all stroke events; outcomes should include survival, function, well-being, quality of life, satisfaction, return to home, return to work, return to community and social engagement, and unmet needs.",
+      "page": null
+    },
+    {
+      "section": "Priorities That Would Inform Research and Public Policy for Improving Access to Stroke Rehabilitation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Understand and optimize the care and outcomes of patients with stroke as they transition back to home to improve patient recovery.",
+      "page": null
+    },
+    {
+      "section": "Priorities That Would Inform Research and Public Policy for Improving Access to Stroke Rehabilitation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Expand clinical training programs for acute hospital staff, including neurologists, internists, nurses, care coordinators, acute stroke center managers, and social workers, with greater emphasis on understanding patient, family, and caregiver needs after hospital discharge, including the role of social determinants of health.",
+      "page": null
+    },
+    {
+      "section": "Priorities That Would Inform Research and Public Policy for Improving Access to Stroke Rehabilitation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Research optimal communication within and between health care professionals and postacute rehabilitation settings with better incorporation of CMS outcome measures.",
+      "page": null
+    },
+    {
+      "section": "Priorities That Would Inform Research and Public Policy for Improving Access to Stroke Rehabilitation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Explore innovative models of care targeted at the hospital system level that optimize acute stroke rehabilitation and recovery.",
+      "page": null
+    },
+    {
+      "section": "Priorities That Would Inform Research and Public Policy for Improving Access to Stroke Rehabilitation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Understand and optimize emotional and mental health status as a key recovery outcome.",
+      "page": null
+    },
+    {
+      "section": "Conclusion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Access to equitable, high-quality stroke rehabilitation care that is based on the patient's functional impairments and needs and is designed to prevent complications of stroke, facilitate recovery, and limit disability should be a requirement for all stroke survivors in the United States.",
+      "page": null
+    },
+    {
+      "section": "Conclusion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with stroke must receive appropriate care and intensity of rehabilitation services provided by an interdisciplinary team, in the right setting, based on individual patient needs and not driven by factors such as health insurance limitations, managed care organization coverage policy, or financial incentives that benefit health systems.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "advisory",
+  "gradingSystem": "ungraded"
 }

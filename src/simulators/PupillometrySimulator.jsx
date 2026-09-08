@@ -20,15 +20,14 @@
  *
  * Clinical model (values are load-bearing — see app build spec):
  *   • Interpretation cascade (evaluated top → bottom; first match wins):
- *       1. NPi ≤ 1.0                              → HERNIATION CRISIS (crit)
- *       2. NPi < 2.8 OR diff ≥ 0.7 OR cv < 0.5    → SEVERE SHIFT ALARM (gold/orange)
+ *       1. NPi ≤ 1.0                              → MARKEDLY ABNORMAL (crit)
+ *       2. NPi < 2.8 OR diff ≥ 0.7 OR cv < 0.5    → ABNORMAL / ASYMMETRIC (gold)
  *       3. NPi < 3.0 OR cv < 0.8 OR %change < 10  → EARLY CLINICAL ALARM (warn/amber)
  *       4. else                                   → NORMAL PROFILE (ok/green)
  *     Numeric "risk %" values were removed: they had no derivation and no
  *     source, and a displayed "100% risk" is unsupportable.
- *     NOTE: the source UI text said "NPi=0.0" for herniation but its CODE
- *     triggered at ≤ 1.0. We follow the CODE (≤ 1.0) — the herniation card
- *     reads "NPi ≤ 1.0 (areflexic / near-areflexic)". Flagged in the report.
+ *     These teaching tiers are not validated thresholds for diagnosing
+ *     herniation, raised ICP, or a need for surgery or osmotherapy.
  *   • The millimetre midline-shift estimator was REMOVED. It converted an
  *     inter-eye NPi difference into a radiographic shift off a single uncited
  *     regression, one arm of which was not statistically significant (p=0.07).
@@ -83,15 +82,17 @@ export function contralateralInitialSize(size, diff) {
 }
 
 
-/* Interpretation cascade — ORDER MATTERS, first match wins.
-   Ported from the source CODE (not its UI text — see herniation note). */
-export function interpretPupillometry({ npi, cv, change, diff }) {
-  // 1 · Herniation crisis (critical). CODE triggers at ≤ 1.0, not = 0.0.
+/* Teaching interpretation cascade; first match wins. */
+export function interpretPupillometry({ npi, cv, change, diff } = {}) {
+  if (![npi, cv, change, diff].every(Number.isFinite) || npi < 0 || npi > 5 || cv < 0 || change < 0 || change > 100 || diff < 0 || diff > 5) {
+    return { status: 'INCOMPLETE OR INVALID MEASUREMENTS', tone: 'warn', summary: 'Enter valid measurements before interpreting the pupil profile.', steps: ['Verify the measurement and device output.'] };
+  }
+  // 1 · Markedly abnormal measurements require reassessment.
   if (npi <= 1.0) {
     return {
-      status: 'HERNIATION CRISIS (CRITICAL)',
+      status: 'MARKEDLY ABNORMAL — URGENT REASSESSMENT',
       tone: 'crit',
-      summary: `NPi is areflexic / near-areflexic (${npi.toFixed(1)}), which is strongly associated with brainstem compression and poor outcome. Treat as a time-critical finding requiring immediate re-examination and imaging — not as a standalone trigger for osmotherapy.`,
+      summary: `Very low NPi (${npi.toFixed(1)}) warrants prompt re-examination and clinical correlation. It does not diagnose herniation or raised ICP and is not a standalone osmotherapy trigger.`,
       steps: [
         'Prompts immediate bedside re-examination and urgent non-contrast head CT.',
         'Escalate to the Stroke Fellow and Neurocritical Care Attending now.',
@@ -100,16 +101,16 @@ export function interpretPupillometry({ npi, cv, change, diff }) {
       ]
     };
   }
-  // 2 · Severe shift alarm (high danger).
+  // 2 · Abnormal or asymmetric measurements require reassessment.
   if (npi < 2.8 || diff >= 0.7 || cv < 0.5) {
     return {
-      status: 'SEVERE SHIFT ALARM',
+      status: 'ABNORMAL / ASYMMETRIC — REASSESS',
       tone: 'gold',
-      summary: 'Markedly abnormal pupillary profile (NPi < 2.8, NPi diff ≥ 0.7, or CV < 0.5 mm/s). Highly specific for impending clinical deterioration from midline shift or expanding mass effect.',
+      summary: 'This teaching profile uses NPi <2.8, difference ≥0.7, or CV <0.5 mm/s to prompt reassessment. These cutoffs do not establish midline shift or predict an individual need for surgery; review trends, examination, medications, ocular factors, and imaging.',
       steps: [
         'Notify the Stroke Fellow and Neurocritical Care Attending immediately.',
         'Obtain an urgent non-contrast head CT to check for hematoma expansion or malignant edema.',
-        'Prepare and consent for potential emergency hemicraniectomy (ischemic) or surgical drainage (ICH).',
+        'Discuss neurosurgical evaluation when supported by the clinical and imaging findings.',
         'Assess sedation depth and review invasive ICP-monitor readings if active.'
       ]
     };
@@ -132,9 +133,9 @@ export function interpretPupillometry({ npi, cv, change, diff }) {
   return {
     status: 'NORMAL PROFILE',
     tone: 'ok',
-    summary: 'Pupillary parameters are within normal limits. Normal NPi (> 3.0) and CV (> 0.8 mm/s) suggest absence of active brainstem compression — but normal pupillometry CANNOT safely exclude elevated ICP and cannot replace invasive monitoring (Petrosino 2025).',
+    summary: 'No abnormal threshold is crossed in this teaching profile. Normal pupillometry does not exclude elevated ICP or replace the neurologic exam and indicated invasive monitoring (Petrosino 2025).',
     steps: [
-      'Continue baseline serial assessments every 4 hours.',
+      'Continue serial assessments at the frequency appropriate to illness severity and the care plan.',
       'Ensure nursing staff are calibrated on device use.',
       'Document values in the flowsheet and track the NPi trend over time.'
     ]
@@ -369,10 +370,7 @@ export function PupillometrySimulator() {
 
       <p className="text-sm text-slate-600 dark:text-ink-2">
         Quantitative infrared pupillometry reports the <strong>Neurological Pupil Index (NPi, 0.0–5.0)</strong>, a
-        standardized composite of pupillary-light-reflex kinetics benchmarked against &gt; 24,000 healthy pupils. It is a
-        bedside surrogate for the integrity of the superficial parasympathetic fibers on the oculomotor nerve (CN III) and
-        can fall up to <strong>24 hours</strong> before a pupil visibly dilates. Drive the sliders and run the light reflex
-        to see how NPi, constriction velocity, and inter-eye asymmetry shift the clinical interpretation.
+        device-derived composite of the pupil light reflex. This simulator uses a selected NPi as an input; it does not calculate a clinical NPi or estimate ICP. Adjust the sliders to explore illustrative patterns, then interpret real measurements with the examination and imaging.
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -416,15 +414,15 @@ export function PupillometrySimulator() {
               scale={['0 (areflexic)', '3.0 (abnormal)', '5.0 (normal)']} />
             <Slider label="Constriction Velocity (CV)" value={cv} min={0} max={2.5} step={0.1}
               display={`${cv.toFixed(1)} mm/s`} onChange={setCv}
-              scale={['0.0', '0.8 (ICP threshold)', '2.5']} />
+              scale={['0.0', '0.8 (study cutoff)', '2.5']} />
             <Slider label="Pupil Size (initial)" value={size} min={1} max={8} step={0.5}
               display={`${size.toFixed(1)} mm`} onChange={setSize} />
             <Slider label="% Constriction" value={change} min={0} max={50} step={5}
               display={`${change}%`} onChange={setChange}
-              scale={['0%', '10% (ICP threshold)', '50%']} />
+              scale={['0%', '10% (study cutoff)', '50%']} />
             <Slider label="Inter-eye Asymmetry (NPi diff)" value={diff} min={0} max={2} step={0.1}
               display={diff.toFixed(1)} onChange={setDiff}
-              scale={['0.0', '0.7 (mass effect)', '2.0']} />
+              scale={['0.0', '0.7 (asymmetry)', '2.0']} />
           </div>
         </section>
 

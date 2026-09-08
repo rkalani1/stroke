@@ -10,12 +10,366 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Abstract: 5 Core Elements to Optimize In-Hospital Stroke Care",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "This scientific statement describes a path to optimizing care for patients who experience an in-hospital stroke. Although these patients are in a monitored environment, their evaluation and treatment are often delayed compared with patients presenting to the emergency department, contributing to higher rates of morbidity and mortality. Reducing delays and optimizing treatment for patients with in-hospital stroke could improve outcomes.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Deliver stroke training to all hospital staff, including how to activate in-hospital stroke alerts.",
+      "page": null
+    },
+    {
+      "section": "Abstract: 5 Core Elements to Optimize In-Hospital Stroke Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Create rapid response teams with dedicated stroke training and immediate access to neurological expertise.",
+      "page": null
+    },
+    {
+      "section": "Abstract: 5 Core Elements to Optimize In-Hospital Stroke Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Standardize the evaluation of patients with potential in-hospital stroke with physical assessment and imaging.",
+      "page": null
+    },
+    {
+      "section": "Abstract: 5 Core Elements to Optimize In-Hospital Stroke Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Address barriers to treatment, potentially including interfacility transfer to advanced stroke treatment.",
+      "page": null
+    },
+    {
+      "section": "Abstract: 5 Core Elements to Optimize In-Hospital Stroke Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Establish an in-hospital stroke quality oversight program delivering data-driven performance feedback and driving targeted quality improvement efforts.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Roughly 2% to 4% of patients with stroke have their event during a hospitalization for another condition.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Almost half of all in-hospital stroke events are the result of a vascular procedure (eg, coronary artery bypass grafting, transcatheter aortic valve replacement, cerebral angiography, carotid stent, or endarterectomy), occurring within 24 hours of the procedure.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Risk factors for spontaneous in-hospital stroke include hemodynamic, rheologic, and inflammatory/prothrombotic conditions associated with the acute illness.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Discontinuation of antithrombotic medications can increase the risk of periprocedural stroke.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients admitted for transient ischemic attack are at risk for in-hospital stroke.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with in-hospital stroke have more comorbidities, are older, and have lower premorbid functioning and more cardioembolic strokes than patients with community-onset stroke; these features may affect treatment risks and risk-to-benefit calculations.",
+      "page": null
+    },
+    {
+      "section": "In-Hospital Stroke Mimics - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Suspected stroke symptoms in hospitalized patients are often nonfocal and can be confounded by medications, metabolic encephalopathy, and comorbid illness. Altered mental status without focal symptoms is more likely to be a stroke mimic.",
+      "page": null
+    },
+    {
+      "section": "In-Hospital Stroke Mimics - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Approximately half of all in-hospital stroke alerts are ultimately determined to be a stroke mimic; toxic-metabolic encephalopathy, sedative medications (particularly opioids and benzodiazepines), seizure, syncope, and sepsis are the most frequently encountered in-hospital mimics, and commonly observed mimics are listed in Table 1 (alteration in mental status/nonfocal impairment, hemodynamic disorders, somatoform disorders, primary neurological disorders, and peripheral neuropathy).",
+      "page": null
+    },
+    {
+      "section": "Evaluation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Components of an effective in-hospital stroke protocol include (1) staff education on in-hospital stroke, (2) a simplified assessment method, (3) a defined in-hospital stroke alert activation process, and (4) a dedicated team to respond to these in-hospital stroke alerts.",
+      "page": null
+    },
+    {
+      "section": "Evaluation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hospitals should educate members of their staff to recognize a potential stroke and empower the staff to take action (ie, activate a stroke code, stabilize the patient, begin diagnostic workup). At many hospitals this includes all physicians, advanced practice clinicians, and nurses; some hospitals extend this to additional staff with patient contact. Educational tools and formats include online video learning, simulation laboratories, bedside training, or a combination; recurrent education and testing should happen at regular intervals.",
+      "page": null
+    },
+    {
+      "section": "Evaluation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Examples of individuals responding to in-hospital stroke alerts include a neurologist (or other physician), an advanced practice clinician or nurse with education in stroke and neurological evaluation, stroke coordinators, pharmacy personnel, and individuals providing transport; some hospitals may also include a respiratory therapist, phlebotomist, or nursing aide. Involvement of the patient's primary care team and prompt communication of the care plan are paramount. Telemedicine can be used in house to evaluate patients with suspected in-hospital stroke, particularly where neurological expertise is not immediately available.",
+      "page": null
+    },
+    {
+      "section": "Evaluation",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The 2CAN score has 4 risk factors independently predicting stroke: clinical deficit score akin to the Cincinnati Prehospital Stroke Score (score 1, 1 point; score >=2, 3 points), recent cardiac procedure (1 point), history of atrial fibrillation (1 point), and being a new patient (<24 hours from admission, 1 point); a score >=2 had sensitivity 92%, specificity 70%, positive predictive value 62%, and negative predictive value 94% in a retrospective single-center study. Other quality improvement projects have educated inpatient staff using less complex scales (eg, FAST or BE-FAST); the NIHSS is a widely recognized severity assessment but is not typically used by frontline inpatient staff as a screening tool.",
+      "page": null
+    },
+    {
+      "section": "Evaluation - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Time from symptom onset to stroke alert is delayed in in-hospital stroke; patients with in-hospital stroke have a significantly longer interval from symptom recognition to neuroimaging compared with patients with stroke in the emergency department (4.5 hours versus 1.2 hours).",
+      "page": null
+    },
+    {
+      "section": "Evaluation - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Standardized protocols can reduce delays and optimize response.",
+      "page": null
+    },
+    {
+      "section": "Evaluation - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although there is insufficient evidence to recommend a specific initial assessment tool, educating staff on the use of rapid screening tools may improve accurate evaluation of patients suspected of in-hospital stroke.",
+      "page": null
+    },
+    {
+      "section": "Evaluation - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Figure 1 outlines a stroke code response process using a defined response team within an organizational milieu that includes education, training, and feedback with data-driven oversight.",
+      "page": null
+    },
+    {
+      "section": "Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Imaging/tissue-based selection strategies (eg, MRI diffusion/FLAIR mismatch as in WAKE-UP, and perfusion-based imaging out to 9 hours) may provide a unique opportunity for patients with in-hospital stroke when time of symptom onset is not clear, such as those awakening from anesthesia with a focal deficit, patients with unclear documentation of baseline status, or postprocedural patients after sedation. Opportunities and barriers in obtaining acute MRI in the hospital setting should be considered when developing clinical pathways for in-hospital stroke with uncertain onset time.",
+      "page": null
+    },
+    {
+      "section": "Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hospitals (with or without imaging capabilities) lacking endovascular expertise need to establish protocols for safe and time-efficient transfer; engaging hospital leadership to evaluate institutional and regulatory constraints for interfacility patient transfer is critical.",
+      "page": null
+    },
+    {
+      "section": "Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The principles of management of in-hospital ICH are the same as those for spontaneous ICH per the AHA/ASA ICH guideline: initial management should include blood pressure control and reversal of anticoagulation following standardized protocols depending on the agent, and other underlying coagulopathy or thrombocytopenia should be addressed promptly with appropriate transfusion. Hemorrhagic transformation of ischemic stroke may require cautious blood pressure control to balance hematoma expansion against worsening ischemia; mass effect and neurological deterioration require consideration for surgical intervention. For ICH after cerebral revascularization, cerebral hyperperfusion syndrome is primarily implicated and is best avoided with strict periprocedural blood pressure control, and the risks and benefits of stopping antiplatelet therapy must be carefully weighed, especially with extracranial or intracranial stents.",
+      "page": null
+    },
+    {
+      "section": "Treatment - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with suspected in-hospital stroke require acute management in accordance with current AHA/American Stroke Association treatment guidelines.",
+      "page": null
+    },
+    {
+      "section": "Treatment - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hospitals unable to provide acute stroke treatment in the inpatient setting need to engage leadership, identify key barriers, and develop the appropriate pathways to facilitate and expedite necessary transfer to a higher level of care.",
+      "page": null
+    },
+    {
+      "section": "Outcomes - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with in-hospital stroke have worse outcomes than patients with stroke in the community. The reasons may include increased comorbid conditions, greater stroke severity, infrequent care on stroke units, and perhaps influence of delays in care.",
+      "page": null
+    },
+    {
+      "section": "Outcomes - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with in-hospital stroke receiving rapid systemic intravenous thrombolysis or endovascular therapy appear to derive benefit commensurate with strokes that occur in the community.",
+      "page": null
+    },
+    {
+      "section": "Challenges, Limitations, and Stroke Systems of Care - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Barriers to appropriate treatment options may include limited resources at the primary hospital.",
+      "page": null
+    },
+    {
+      "section": "Challenges, Limitations, and Stroke Systems of Care - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All hospital staff should be empowered to activate stroke alerts in the inpatient setting. Nurses activate in-hospital stroke alerts significantly earlier than physicians or advanced practice clinicians (median, 2.0 hours versus 4.9 hours from last known well).",
+      "page": null
+    },
+    {
+      "section": "Challenges, Limitations, and Stroke Systems of Care - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Regional stroke systems of care should include protocols and algorithms for the transfer and treatment of patients with in-hospital stroke from spoke to hub hospitals. When in-hospital stroke occurs in hospitals lacking resources to provide sophisticated stroke care, it is recommended that patients be transferred to a primary or comprehensive stroke center; hospitals can stage mock in-hospital stroke alerts for such transfers, monitor transfer times, and use this information for focused quality improvement.",
+      "page": null
+    },
+    {
+      "section": "Challenges, Limitations, and Stroke Systems of Care - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Telemedicine should be considered for in-hospital stroke code evaluation when adequate, timely expertise is unavailable.",
+      "page": null
+    },
+    {
+      "section": "Education and Feedback - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Real-time feedback after each stroke code activation should be multidirectional and allow input from all individuals involved. Feedback should be solicited after each inpatient stroke code activation and reviewed in aggregate on at least a semiannual basis in a nonpunitive and constructive fashion.",
+      "page": null
+    },
+    {
+      "section": "Education and Feedback - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For monitoring and feedback purposes, it is beneficial to track and report each component of the stroke alert protocol individually (Figure 2).",
+      "page": null
+    },
+    {
+      "section": "Education and Feedback - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Information should be used to refine the process and generate a culture of accountability and continuous improvement. Adopting a more liberal approach to stroke code activation may increase the false-positive rate of stroke alerts, and the stroke program should monitor this metric.",
+      "page": null
+    },
+    {
+      "section": "Education and Feedback - Key Points",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Table 2 factors hampering rapid assessment and proposed solutions: for limited neurology expertise of the primary team or nurse - periodic education on signs and symptoms of stroke, readily accessible information on how to activate the stroke alert, case simulation, and a scale or score adoption system; for nonfocal neurological symptoms - adopt a liberal approach to stroke code activation and evaluate historical data with targeted education for high-risk populations; for unclear last known well or confounders of the examination (sedatives, coexisting medical conditions affecting sensorium, intubation) - identify high-risk patients and perform serial neurological assessments, favor short-acting sedatives and hold sedatives at regular intervals to allow neurological evaluation; for unfamiliarity or inconsistent adherence to the protocol - develop checklists, periodic education on the stroke alert process including roles and responsibilities, and real-time feedback to stakeholders; for uncertainty about what tests to order - develop in-hospital stroke-dedicated protocols and order sets; for delays in transportation and imaging - adopt clear time goals for CT completion and reported results and develop a rapid transportation protocol; for inconsistent adherence to quality improvement metrics - monitor the use of stroke order sets for in-hospital strokes and review metrics and establish benchmarking for the in-hospital stroke response team.",
+      "page": null
+    },
+    {
+      "section": "Teams, Processes, and Oversight",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A stroke quality oversight committee should regularly review organizational performance specific to patients with in-hospital stroke with regard to treatment times and adherence to process measures, because hospital metrics for acute ischemic stroke may not routinely include or discretely analyze the in-hospital stroke population.",
+      "page": null
+    },
+    {
+      "section": "Teams, Processes, and Oversight",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There are insufficient data to inform an evidence-based recommendation on the composition or design of in-hospital stroke response teams across all settings. Written hospital protocols defining processes and responsibilities should be established in accordance with AHA guidelines and hospital policy. Reviewing metrics such as the number of in-hospital stroke alerts, true stroke rates with subtypes, response times, imaging acquisition times, treatment rates, treatment times, and outcomes will support quality improvement.",
+      "page": null
+    },
+    {
+      "section": "Teams, Processes, and Oversight - Key Point",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Institutions should develop a plan for in-patient stroke response teams that includes education, quality review, and specified oversight.",
+      "page": null
+    },
+    {
+      "section": "Call for Ongoing Quality Improvement and Tracking - Key Point",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Focused efforts are needed to improve adherence to consensus quality metrics for in-hospital stroke. Efforts to increase the recognition and timely treatment of in-hospital stroke need to be balanced by measures that ensure stroke codes are used appropriately.",
+      "page": null
+    },
+    {
+      "section": "Discussion: Key Components to Optimize Evaluation and Management of In-Hospital Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Education: ongoing stroke education for all hospital staff should include recognition of stroke symptoms and how to activate a stroke alert.",
+      "page": null
+    },
+    {
+      "section": "Discussion: Key Components to Optimize Evaluation and Management of In-Hospital Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In-hospital stroke teams: response teams should include members trained to homogeneously care for patients with stroke.",
+      "page": null
+    },
+    {
+      "section": "Discussion: Key Components to Optimize Evaluation and Management of In-Hospital Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Process and protocols: written protocols are recommended to expedite treatment and ensure consistency. Necessary resources may include expedited transport, access to rapid imaging, thrombolytic drug availability, and staffing capable of rapidly delivering medical/endovascular/surgical treatment at any time.",
+      "page": null
+    },
+    {
+      "section": "Discussion: Key Components to Optimize Evaluation and Management of In-Hospital Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Challenges, barriers, and limitations: key barriers within the hospital or health care system should be identified and addressed, and a pathway for interfacility patient transfer should be established when appropriate.",
+      "page": null
+    },
+    {
+      "section": "Discussion: Key Components to Optimize Evaluation and Management of In-Hospital Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Quality improvement: in-hospital stroke performance and quality data should be examined specifically and used to drive focused quality improvement efforts. Reporting all in-hospital stroke cases to a registry may help with monitoring the true incidence of in-hospital stroke and provide data for future research.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }
