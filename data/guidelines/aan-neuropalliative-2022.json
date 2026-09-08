@@ -10,12 +10,294 @@
   "society": "AAN",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Introduction",
       "classOfRec": "Statement",
-      "classNote": "No abstract is indexed on PubMed for this document; consult the linked source for its full guidance.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Summary only — abstract not indexed; see source document.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In a 1996 position statement, the AAN Ethics and Humanities Subcommittee declared that the provision of primary palliative care is the responsibility of all neurologists, and this position remains unchanged. Primary palliative care is provided by all clinicians who care for patients with serious illness, regardless of subspecialty.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Palliative care is an approach to medical care that aims to improve quality of life for patients with life-altering illness and their families, through prevention and management of physical, psychosocial, and spiritual suffering. Whereas primary palliative care is provided by all clinicians, specialty palliative care is provided by interdisciplinary teams. Palliative care does not seek to hasten the end of life, but to help patients have the best quality of life for as long as possible, while recognizing the inevitability of death and providing comfort and dignity.",
+      "page": null
+    },
+    {
+      "section": "Palliative Care for Patients With Neurologic Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Evidence has demonstrated a benefit for palliative care in serious neurologic illnesses due to the high symptom burden, functional neurologic decline, high caregiver needs, prognostic uncertainty, and the need for complex decision-making throughout the course of illness. The neurologist has an ethical imperative to apply the principles of palliative medicine for these patients and refer to specialty palliative care when appropriate.",
+      "page": null
+    },
+    {
+      "section": "Palliative Care for Patients With Neurologic Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Early palliative care consultation should be considered to maximize symptom management and to facilitate rapport-building and engagement in advance care planning and goals of care setting. Potential triggers for inpatient and outpatient palliative care consultation have been proposed but a standard of care is yet to be established.",
+      "page": null
+    },
+    {
+      "section": "Pediatric Neuropalliative Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Neonatal neuropalliative care deserves extra consideration as one-third of pediatric deaths occur in the neonatal period, most often in the neonatal intensive care unit and after withdrawal of life-sustaining interventions. Integration of antenatal and perinatal neuropalliative care can be helpful to women continuing pregnancy despite severe fetal neurologic abnormalities; antenatal neuropalliative care focuses on diagnostic information, family-centered communication, prognostication, shared decision-making, and pain and symptom management.",
+      "page": null
+    },
+    {
+      "section": "Pediatric Neuropalliative Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "End-of-life decision-making in pediatric neurologic disorders must consider the cognitive abilities of the child, the diagnosis, the perceived level of suffering, parental values, and the family's understanding of the prognosis. Physician-hastened death in assenting adolescents with decision-making capacities is impermissible in the United States and most other countries, and the importance of neuropalliative care should be recognized as a viable option for care.",
+      "page": null
+    },
+    {
+      "section": "Communication",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Given the high prevalence of life-altering neurologic conditions, neurologists need training in serious illness communication. Necessary communication skills include delivering bad news, assessment, explaining prognosis, assisting patients and families in the process of decision-making, and setting limits when certain types of care are objectively futile. All neurologists should attend to their patients' palliative needs and be able to recognize when the demands of the situation require assistance from palliative care specialists.",
+      "page": null
+    },
+    {
+      "section": "Communication",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Discussions of prognosis are critical to facilitating disease understanding and empowering patients and surrogates in the decision-making process to achieve care consistent with established goals of care. Neurologists often cite prognostic uncertainty as the reason they feel uncomfortable discussing decision-making, but the literature supports that patients desire prognostic information even when prognosis is uncertain and appreciate when their physicians disclose the presence of that uncertainty.",
+      "page": null
+    },
+    {
+      "section": "Communication",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Clinicians are at risk of overestimating prognosis (when they have a longstanding relationship with a patient) or underestimating prognosis (when withdrawal bias is present) and must remember to use evidence-based estimates and explore personal biases when offering prognostic assessments. Statistical language is easily misinterpreted by patients and families, whose low numeracy can lead to discordant surrogate prognostic estimates.",
+      "page": null
+    },
+    {
+      "section": "Communication",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Established strategies for making decisions in the setting of prognostic uncertainty include describing the best case/worst case scenario and most likely functional outcomes for a particular illness, and gauging the acceptability of each outcome based on a patient's known wishes. It is also helpful to frame predictions of longevity in time intervals (hours to days, days to weeks, weeks to months, months to years, or many years), rather than more specific time frames, to enhance accuracy and flexibility.",
+      "page": null
+    },
+    {
+      "section": "Communication",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Goals of care conversations should take place at routine intervals and be triggered by sentinel events unique to each disease process. Addressing goals of care as routine may destigmatize conversations around the potential for worsening illness and help patients and families be more prepared to make decisions when clinical deterioration occurs.",
+      "page": null
+    },
+    {
+      "section": "Communication",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is critical that clinicians engage in a shared decision-making model with patients and families rather than placing the entire burden of decision-making on the affected parties. This approach requires the physician to elicit a patient's goals, make recommendations based on whether medical treatments are likely to achieve those goals, and work with patients and families to finalize a treatment plan.",
+      "page": null
+    },
+    {
+      "section": "Communication",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In cases of lost cognitive capacity, it is important to honor patient autonomy by referring to advance care planning documents, if they exist, and guiding surrogate decision-makers in the use of substituted judgement to make decisions the patient would have made based on prior written or expressed wishes or previously exhibited attitudes or behaviors, rather than choices solely in line with the family members' own preferences. The appropriate surrogate should be guiding decisions, whether designated by a durable power of attorney for health care or governed by state law.",
+      "page": null
+    },
+    {
+      "section": "Communication",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When prognosis is uncertain, time-limited trials can be recommended to allow maximal recovery before further decisions are made. A prolonged period of aggressive life-prolonging care should not be pursued if the surrogate is confident that this type of care would not be in line with the patient's preferences, even if a degree of recovery is believed to be possible.",
+      "page": null
+    },
+    {
+      "section": "Communication",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When treatments are physiologically futile (i.e., incapable of achieving a desired physiologic goal), it is the clinician's responsibility to remove the burden of decision-making entirely by explaining that such interventions will not be offered. It is counter to the principle of nonmaleficence to offer such treatments, as they may cause harm in the absence of potential benefit; a specific neurologic example is cardiopulmonary resuscitation in the setting of cardiac arrest due to irreversible herniation.",
+      "page": null
+    },
+    {
+      "section": "Communication",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When encountering hesitance from patients and families for serious illness communication, the clinician should explore the reasons for such resistance, demonstrate humility and an interest in individual cultural beliefs, and seek to meet patients and families where they are in order to facilitate ongoing discussions. When language barriers are present, multilingual family members should not be relied upon to translate serious illness conversations; formal interpreters should be invited to facilitate discussions.",
+      "page": null
+    },
+    {
+      "section": "Communication",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Once communication has taken place, it is important to document care preferences as clearly as possible, both in the medical record so that other providers are aware of care preferences, and in durable medicolegal documentation to guide surrogates and emergency care providers in the setting of future lost capacity. In assisting patients with completion of these documents, the neurologist can help elicit broad preferences and focus documentation specifically on anticipated complications of a disease process; disease-specific advance directives have been developed for diseases such as dementia and ALS.",
+      "page": null
+    },
+    {
+      "section": "Communication",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Whereas disease course can sometimes be anticipated, consistency of patient preferences may not be predictable, as these may change over the course of illness. In the disability paradox, patients may perceive future states as being unacceptable but may find these states acceptable once they become a reality, because of adaptability or shifting priorities during the disease course. For this reason, advance care planning and related documentation should be a dynamic process, revisited at intervals together by the patient and provider.",
+      "page": null
+    },
+    {
+      "section": "Transitions to End-of-Life Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Physicians have strong ethical obligations to sustain life, when possible and desired by the patient. When neurologic prognosis is poor, however, these ethical obligations should be carefully evaluated in the context of balancing the benefits and burdens of medical interventions, relief of suffering, and respect for patient autonomy. When life-prolonging care is no longer available or desired by a patient or surrogates, the clinician has an obligation to shift the focus of care to preserving quality of life and comfort as much as possible at the end of life.",
+      "page": null
+    },
+    {
+      "section": "Transitions to End-of-Life Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Hospice referral guidelines suggest that a patient should be referred if anticipated survival is 6 months or less, but this can be challenging to assess in chronic progressive diseases such as dementia, Parkinson disease, or multiple sclerosis, risking delayed referral. From an ethical standpoint, when the goals of care are in line with hospice services, a clinician can and should err on the side of hospice referral, recognizing that the hospice will reassess prognosis every few months and will continue enrollment if the estimate of 6 months still appears accurate or disenroll the patient if prognosis appears to be improving.",
+      "page": null
+    },
+    {
+      "section": "Transitions to End-of-Life Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Many hospice clinicians are not familiar with the nuances of end-of-life care for patients with neurologic conditions, so collaboration between the referring neurologist and the accepting hospice clinician is key. Any physician can serve as the hospice attending of record, and neurologists should consider serving in that role for their patients if they are able.",
+      "page": null
+    },
+    {
+      "section": "Ethical Considerations for Neuropalliative Care in Specific Neurologic Disorders - Disorders of Consciousness",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The possibility of misdiagnosis and inaccurate prognostication are significant matters of concern for disorders of consciousness - on the patient side because of limitations in motor function, impaired cognition, and fluctuations in vigilance, and on the physician side because of indeterminate neurologic assessments. When neurologic diagnosis and prognosis are uncertain, serial examinations are necessary to reevaluate levels of cognition, psychological state, decision-making capacity, and disease trajectory.",
+      "page": null
+    },
+    {
+      "section": "Acute Neurologic Illness - Locked-In Syndrome",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Without careful examination, patients with locked-in syndrome but preserved consciousness may be mistaken as having a disorder of consciousness and are at risk for having their decisional capacity and autonomy ignored. These patients may need assistance from speech pathologists to identify techniques to enhance communication, such as careful \"yes/no\" questioning, communication boards, or advanced eye-gaze technology. Even when properly diagnosed, they are at risk for having their preferences overridden and for unrecognized pain and suffering due to inability to communicate their experiences.",
+      "page": null
+    },
+    {
+      "section": "Acute Neurologic Illness - Stroke (Severe Acute Brain Injury)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Those experiencing an acute stroke will benefit from serial assessments of recovery, a best-case/worst-case prognostic framework, time-limited trials of 3 to 6 months when in line with goals of care, efforts to enhance communication ability, and support for surrogates when capacity is lost. Surrogates mistrust clinicians' prognostic estimates, and being as general as possible while providing a range of best and worst outcomes improves communication and decision-making about complex supportive care measures.",
+      "page": null
+    },
+    {
+      "section": "Acute Neurologic Illness - Stroke (Severe Acute Brain Injury)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A minority of patients with first stroke have completed advance care directives and formally designated a substitute decision-maker in case they are unable to communicate their own health care choices. Neurologists should encourage stroke patients with retained decision-making capacity to complete advance care planning given the risk of recurrent stroke and loss of capacity in the future.",
+      "page": null
+    },
+    {
+      "section": "Acute Neurologic Illness - Minimally Conscious State",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients should be allowed adequate recovery time before prognostic estimates and health care decisions are made. Physicians have heightened obligations to these patients because of their profound disabilities, loss of decisional capacity, and the irreversible nature of decisions to de-escalate life-sustaining care. Physicians should make reasonable attempts to enhance the ability of patients with such severe disabilities to communicate their feelings, needs, and values; when patients lack capacity, it is imperative to rely on advance care planning documents (when available) and the substituted judgement of surrogate decision-makers. Because prognosis may become clear over a period of several months, a time-limited trial may be offered.",
+      "page": null
+    },
+    {
+      "section": "Progressive Neurologic Diseases",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients diagnosed with a progressive neurologic disease, gradual loss of physical and cognitive function may be anticipated; for these patients, early advance care planning conversations are recommended shortly after the time of diagnosis and before cognitive capacity is lost.",
+      "page": null
+    },
+    {
+      "section": "Progressive Neurologic Diseases - Neuro-oncology",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients diagnosed with low-grade and malignant brain tumors want prognostic information even though this can be difficult and unreliable. Caregiver and psychosocial support are essential given the high rates of distress and burnout in caregivers of patients with primary CNS malignancies, compounded by frequent loss of language and cognitive abilities and common cortical neglect syndromes that can lead to significant family conflict.",
+      "page": null
+    },
+    {
+      "section": "Progressive Neurologic Diseases - Dementia",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Dementia progression gradually leads to a level of cognitive impairment wherein patients are unable to understand medical information and to make important health care decisions. Proper and timely diagnosis can help patients and their families prepare for the consequences of cognitive dysfunction and loss of autonomy while respecting their identified values.",
+      "page": null
+    },
+    {
+      "section": "Progressive Neurologic Diseases - ALS and Frontotemporal Degeneration",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with disorders such as ALS and other progressive conditions, efforts should be made to elicit and document goals and treatment preferences prior to extreme weakness and aphonia, anticipating patient preferences for future disability-specific decisions (e.g., feeding tubes, mechanical ventilation). When patients are considering these life-sustaining interventions, it is also important to identify the patient's minimal acceptable outcome, especially as tracheostomy and mechanical ventilation prolong life despite disease progression such that many patients may become locked-in and have difficulty expressing a desire to shift the focus of care.",
+      "page": null
+    },
+    {
+      "section": "Progressive Neurologic Diseases - ALS and Frontotemporal Degeneration",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There is increasing recognition of the prevalence of cognitive impairment and dementia in patients with ALS. Given the poor prognosis of patients with ALS-frontotemporal degeneration and their need for additional care and medical services, it is crucial to identify such patients at an early stage.",
+      "page": null
+    },
+    {
+      "section": "Progressive Neurologic Diseases - Parkinson Disease and Related Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Several trials have demonstrated benefit for patients with Parkinson disease and related disorders receiving palliative care intervention, though the appropriate timing of integration of specialty palliative care is not yet clear. Primary neurologists must strive to anticipate and treat symptoms, recognize and address psychosocial and spiritual distress and caregiver burden, engage patients and families in advance care planning prior to the onset of cognitive impairment, and identify opportunities for specialty palliative care intervention on a case-by-case basis.",
+      "page": null
+    },
+    {
+      "section": "Additional Ethical Considerations - Refusal/Withdrawal of Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Under the ethical principle of respect for autonomy, competent patients have the right to refuse any imposed life-prolonging treatment to permit a natural and peaceful death to occur; such an action is in accordance with the highest ethical standards of medical practice. In conscious patients with progressive neurologic disease, physicians have ethical obligations to ascertain that a patient's decision to refuse treatment has been reached with full knowledge of the consequences, appropriate consideration of treatment alternatives, consistent perspectives over time, and the absence of impulsive or reactive decision-making. If a physician has a moral objection to carrying out the patient's or surrogate's decision to remove life-support systems, the physician should not be forced to act against conscience but is obligated to transfer the care of the patient to another physician.",
+      "page": null
+    },
+    {
+      "section": "Additional Ethical Considerations - Management of Severe Refractory Symptoms at End of Life",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Under the principle of double effect and proportionate reason, it is ethical to treat pain or suffering, as the primary intent is relief and not to hasten the end of the patient's life, even if the patient's death may be a foreseeable side effect. Physicians should be willing to administer adequate doses of medications such as opiates or benzodiazepines to reduce pain, dyspnea, anxiety, and other sources of acute discomfort in dying patients, even if these medications secondarily contribute to respiratory depression, coma, or death. Physicians may not initiate or escalate morphine or other medications out of proportion to symptoms with the intention of speeding up the dying process.",
+      "page": null
+    },
+    {
+      "section": "Education and Training",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "There remains a gap in neurology training programs and we must advocate for more education in palliative care skills. Formal assessment of communication skills during family meetings, use of standardized patients, and increased attention to pain and symptom management are strategies to supplement didactic lectures, and a formal rotation on the palliative care consult service should also be encouraged, if available.",
+      "page": null
+    },
+    {
+      "section": "Discussion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "As the field of neuropalliative care evolves, we must make a concerted effort to not only recognize the obligation that all neurologic clinicians have to attend to palliative needs, but also learn to identify when challenging cases will benefit from the assistance of specialists in the field.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

@@ -67,7 +67,26 @@ export const topics = [
   makeTopic({ id: 'neurocritical-care', label: 'Neurocritical care of severe stroke (fever, airway, tracheostomy)' }),
   makeTopic({ id: 'ec-ic-bypass', label: 'EC-IC bypass for symptomatic occlusion', parentId: 'icas-prevention' }),
   makeTopic({ id: 'cognitive-trajectories', label: 'Post-stroke cognitive trajectories' }),
-  makeTopic({ id: 'special-populations', label: 'Special populations (pregnancy, cancer, pediatrics)' })
+  makeTopic({ id: 'special-populations', label: 'Special populations (pregnancy, cancer, pediatrics)' }),
+  makeTopic({ id: 'stroke-unit-care', label: 'Stroke-unit care and the admission bundle (VTE, dysphagia, oxygen, glucose, positioning, mobilisation)', parentId: 'acute-ischemic-stroke' }),
+  makeTopic({ id: 'systems-quality', label: 'Systems of care, transfer benchmarks, quality measurement and AI triage', parentId: 'prehospital-stroke-care' }),
+  makeTopic({ id: 'bp-acute-ischemic', label: 'Acute BP management (non-reperfused ischaemic stroke)', parentId: 'acute-ischemic-stroke' }),
+  makeTopic({ id: 'bridging-ivt-before-evt', label: 'Bridging IV thrombolysis before thrombectomy', parentId: 'acute-ischemic-stroke' }),
+  makeTopic({ id: 'cardiac-source-stroke', label: 'Non-AF cardiac sources of stroke (prosthetic valves, LV thrombus, TAVR, LVAD, ECMO)', parentId: 'secondary-prevention' }),
+  makeTopic({ id: 'endocarditis-stroke', label: 'Infective endocarditis and stroke', parentId: 'cardiac-source-stroke' }),
+  makeTopic({ id: 'evt-anesthesia', label: 'Anesthesia strategy for thrombectomy (general anesthesia vs conscious sedation)', parentId: 'acute-ischemic-stroke' }),
+  makeTopic({ id: 'ich-seizure-prophylaxis', label: 'Seizure prophylaxis after intracerebral hemorrhage', parentId: 'ich' }),
+  makeTopic({ id: 'caa-diagnosis', label: 'Cerebral amyloid angiopathy — diagnosis & recurrence risk', parentId: 'ich' }),
+  makeTopic({ id: 'acute-neuroprotection', label: 'Acute neuroprotection / cytoprotection', parentId: 'acute-ischemic-stroke' }),
+  makeTopic({ id: 'remote-ischemic-conditioning', label: 'Remote ischemic conditioning', parentId: 'acute-ischemic-stroke' }),
+  makeTopic({ id: 'lipid-lowering-prevention', label: 'Lipid lowering for vascular prevention (statins, PCSK9, LDL targets)', parentId: 'secondary-prevention' }),
+  makeTopic({ id: 'glp1-metabolic-prevention', label: 'GLP-1 receptor agonists & metabolic therapy for vascular prevention', parentId: 'secondary-prevention' }),
+  makeTopic({ id: 'sleep-apnea-stroke', label: 'Sleep-disordered breathing after stroke', parentId: 'secondary-prevention' }),
+  makeTopic({ id: 'cervical-dissection', label: 'Cervical artery dissection', parentId: 'secondary-prevention' }),
+  makeTopic({ id: 'young-stroke-workup', label: 'Young-stroke workup and diagnostic yield', parentId: 'acute-ischemic-stroke' }),
+  makeTopic({ id: 'hormonal-contraception-stroke', label: 'Hormonal contraception and stroke risk' }),
+  makeTopic({ id: 'pregnancy-stroke', label: 'Stroke in pregnancy and the puerperium', parentId: 'special-populations' }),
+  makeTopic({ id: 'pediatric-stroke', label: 'Pediatric and childhood stroke', parentId: 'special-populations' }),
 ];
 
 const topicById = new Map(topics.map((t) => [t.id, t]));
