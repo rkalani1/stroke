@@ -2065,4 +2065,5 @@ describe('makeGuideline factory', () => {
       expect(g.url).toBe('');
       expect(g.citationId).toBe('');
     });
-  }
+  });
+
