@@ -6,7 +6,7 @@ import {
 } from '../src/calculators-extended.js';
 
 describe('Empirical Stress Testing — evaluateCRAOTreatment', () => {
-  test('Baseline valid eligible CRAO patient', () => {
+  test('Historical CRAO screen features do not establish treatment eligibility', () => {
     const result = evaluateCRAOTreatment({
       onsetHours: 2.5,
       visualAcuity: 'hand-motion',
@@ -15,16 +15,16 @@ describe('Empirical Stress Testing — evaluateCRAOTreatment', () => {
       age: 62
     });
     expect(result).not.toBeNull();
-    expect(result.eligible).toBe(true);
+    expect(result.eligible).toBe(false);
     expect(result.contraindications).toHaveLength(0);
   });
 
   test('Onset hours boundary conditions and extreme values', () => {
     // 0h: boundary start
-    expect(evaluateCRAOTreatment({ onsetHours: 0, visualAcuity: true, fundusHemorrhage: false, ivtContraindicated: false, age: 50 }).eligible).toBe(true);
+    expect(evaluateCRAOTreatment({ onsetHours: 0, visualAcuity: true, fundusHemorrhage: false, ivtContraindicated: false, age: 50 }).eligible).toBe(false);
     
     // 4.5h: exact upper limit
-    expect(evaluateCRAOTreatment({ onsetHours: 4.5, visualAcuity: true, fundusHemorrhage: false, ivtContraindicated: false, age: 50 }).eligible).toBe(true);
+    expect(evaluateCRAOTreatment({ onsetHours: 4.5, visualAcuity: true, fundusHemorrhage: false, ivtContraindicated: false, age: 50 }).eligible).toBe(false);
     
     // 4.5001h: just above window
     const resultOver = evaluateCRAOTreatment({ onsetHours: 4.5001, visualAcuity: true, fundusHemorrhage: false, ivtContraindicated: false, age: 50 });
@@ -34,7 +34,7 @@ describe('Empirical Stress Testing — evaluateCRAOTreatment', () => {
     // Negative onset hours (-1h)
     const resultNeg = evaluateCRAOTreatment({ onsetHours: -1, visualAcuity: true, fundusHemorrhage: false, ivtContraindicated: false, age: 50 });
     expect(resultNeg.eligible).toBe(false);
-    expect(resultNeg.contraindications).toContain('Onset -1h exceeds 4.5h window');
+    expect(resultNeg.contraindications).toContain('Onset interval must not be negative');
 
     // Invalid / missing onset hours
     expect(evaluateCRAOTreatment({ onsetHours: 'invalid' })).toBeNull();
@@ -46,7 +46,7 @@ describe('Empirical Stress Testing — evaluateCRAOTreatment', () => {
 
   test('Age boundary conditions', () => {
     // Age 18 (boundary ok)
-    expect(evaluateCRAOTreatment({ onsetHours: 2, age: 18, visualAcuity: true, fundusHemorrhage: false, ivtContraindicated: false }).eligible).toBe(true);
+    expect(evaluateCRAOTreatment({ onsetHours: 2, age: 18, visualAcuity: true, fundusHemorrhage: false, ivtContraindicated: false }).eligible).toBe(false);
     
     // Age 17.9 (underage)
     const resPed = evaluateCRAOTreatment({ onsetHours: 2, age: 17.9, visualAcuity: true, fundusHemorrhage: false, ivtContraindicated: false });
@@ -57,19 +57,19 @@ describe('Empirical Stress Testing — evaluateCRAOTreatment', () => {
     const resZeroAge = evaluateCRAOTreatment({ onsetHours: 2, age: 0, visualAcuity: true, fundusHemorrhage: false, ivtContraindicated: false });
     expect(resZeroAge.eligible).toBe(false);
 
-    // Omitted age defaults to 18
-    expect(evaluateCRAOTreatment({ onsetHours: 2, visualAcuity: true, fundusHemorrhage: false, ivtContraindicated: false }).age).toBe(18);
+    // Missing age remains unknown
+    expect(evaluateCRAOTreatment({ onsetHours: 2, visualAcuity: true, fundusHemorrhage: false, ivtContraindicated: false }).age).toBeNull();
   });
 
   test('Remediated: Visual acuity string matching accepts severe acuity worse than 20/200', () => {
     const baseParams = { onsetHours: 2, fundusHemorrhage: false, ivtContraindicated: false, age: 50 };
 
-    expect(evaluateCRAOTreatment({ ...baseParams, visualAcuity: 'count-fingers' }).eligible).toBe(true);
-    expect(evaluateCRAOTreatment({ ...baseParams, visualAcuity: 'hand-motion' }).eligible).toBe(true);
-    expect(evaluateCRAOTreatment({ ...baseParams, visualAcuity: 'light-perception' }).eligible).toBe(true);
-    expect(evaluateCRAOTreatment({ ...baseParams, visualAcuity: 'no-light-perception' }).eligible).toBe(true);
-    expect(evaluateCRAOTreatment({ ...baseParams, visualAcuity: '20/200' }).eligible).toBe(true);
-    expect(evaluateCRAOTreatment({ ...baseParams, visualAcuity: '20/400' }).eligible).toBe(true);
+    expect(evaluateCRAOTreatment({ ...baseParams, visualAcuity: 'count-fingers' }).eligible).toBe(false);
+    expect(evaluateCRAOTreatment({ ...baseParams, visualAcuity: 'hand-motion' }).eligible).toBe(false);
+    expect(evaluateCRAOTreatment({ ...baseParams, visualAcuity: 'light-perception' }).eligible).toBe(false);
+    expect(evaluateCRAOTreatment({ ...baseParams, visualAcuity: 'no-light-perception' }).eligible).toBe(false);
+    expect(evaluateCRAOTreatment({ ...baseParams, visualAcuity: '20/200' }).eligible).toBe(false);
+    expect(evaluateCRAOTreatment({ ...baseParams, visualAcuity: '20/400' }).eligible).toBe(false);
     
     // 20/800, 20/500, 20/1000 — severe vision loss worse than 20/200 correctly evaluates visualAcuityOk = true!
     const res20800 = evaluateCRAOTreatment({ ...baseParams, visualAcuity: '20/800' });

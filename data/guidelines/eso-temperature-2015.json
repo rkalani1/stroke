@@ -1,0 +1,39 @@
+{
+  "id": "eso-temperature-2015",
+  "title": "European Stroke Organisation (ESO) guidelines for the management of temperature in patients with acute ischemic stroke",
+  "shortTitle": "ESO Temperature Management 2015",
+  "society": "ESO",
+  "doi": "10.1111/ijs.12579",
+  "publisherUrl": "https://doi.org/10.1111/ijs.12579",
+  "pdfUrl": null,
+  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/26148223/",
+  "pmid": "26148223",
+  "recommendations": [
+    {
+      "section": "PICO1: In hyperthermic patients with acute ischemic stroke, does treatment of hyperthermia compared with no treatment of hyperthermia improve functional outcome and/or survival?",
+      "classOfRec": "Conditional",
+      "classNote": "Weak (ESO wording); no direction assigned — summary table symbol is '?' — For",
+      "levelOfEvidence": "Low certainty",
+      "text": "In patients with acute ischemic stroke and hyperthermia, we cannot make any recommendation for treating hyperthermia as a means to improve functional outcome and/or survival.",
+      "page": null
+    },
+    {
+      "section": "PICO2: In normothermic patients with acute ischemic stroke, does prevention of hyperthermia with antipyretics compared with no prevention of hyperthermia improve functional outcome and/or survival?",
+      "classOfRec": "Conditional",
+      "classNote": "Against (Weak against intervention, ↓?)",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "In patients with acute ischemic stroke and normothermia, we do not recommend routine prevention of hyperthermia with antipyretics as a means to improve functional outcome and/or survival.",
+      "page": null
+    },
+    {
+      "section": "PICO3: In patients with acute ischemic stroke, does induction of hypothermia compared with no induction of hypothermia improve functional outcome and/or survival?",
+      "classOfRec": "Conditional",
+      "classNote": "Against (Weak against intervention, ↓?)",
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with acute ischemic stroke, we do not recommend induction of hypothermia as a means to improve functional outcome and/or survival.",
+      "page": null
+    }
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
+}

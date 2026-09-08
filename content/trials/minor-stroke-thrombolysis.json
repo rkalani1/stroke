@@ -1,5 +1,22 @@
 [
   {
+    "id": "tempo-2",
+    "name": "TEMPO-2",
+    "fullName": "Tenecteplase versus Standard of Care for Minor Ischaemic Stroke with Proven Occlusion (TEMPO-2)",
+    "category": "minor-stroke-thrombolysis",
+    "population": "n=886, adults, NIHSS 0-5 (minor), ≤12 h",
+    "finding": "No benefit: 72% (309/432) tenecteplase vs 75% (338/452) control",
+    "teachingPoint": "Argues against routine thrombolysis for minor non-disabling stroke solely because an occlusion is present; keep the disabling-deficit gate.",
+    "PMID": "38768626",
+    "year": 2024,
+    "citationIds": [
+      "cit-tempo-2-2024"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-07-06",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
     "id": "aramis",
     "name": "ARAMIS",
     "fullName": "Dual Antiplatelet Therapy vs Alteplase for Patients With Minor Nondisabling Acute Ischemic Stroke",
