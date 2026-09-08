@@ -111,7 +111,7 @@ let origin;
 
 beforeAll(async () => {
   server = createServer((req, res) => {
-    const rel = normalize(decodeURIComponent(req.url.split('?')[0])).replace(/^[/\\]+/, '');
+    const rel = normalize(decodeURIComponent(req.url.split('?')[0])).replace(/^[/\\]+/, '').replaceAll('\\', '/');
     if (overrides.has(rel)) {
       res.writeHead(200);
       res.end(overrides.get(rel));

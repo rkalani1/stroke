@@ -10,12 +10,214 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Epidemiology/Risk Factors",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Cervical artery dissection is an important cause of stroke, particularly in young adults. Data conflict on the diagnostic evaluation and treatment of patients with suspected cervical artery dissection, leading to variability in practice. We aim to provide an overview of cervical artery dissection in the setting of minor or no reported mechanical trigger with a focus on summarizing the available evidence and providing suggestions on the diagnostic evaluation, treatment approaches, and outcomes.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cervical artery dissection is a common cause of stroke in younger adults and is caused by the interplay between comorbidities, genetic or congenital factors, anatomic factors, and environmental triggers.",
+      "page": null
+    },
+    {
+      "section": "Challenges in Diagnosis: Clinical Diagnostic Challenges",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is reasonable to perform urgent cervical vascular imaging with CTA or MRI with MRA in patients with headache or neck pain associated with symptoms of ischemia or a partial Horner syndrome, and to consider it in those with new or worsening headache or neck pain, especially when there is a history of minor cervical trauma or other risk factors for cervical artery dissection.",
+      "page": null
+    },
+    {
+      "section": "Challenges in Diagnosis: Diagnostic Imaging Tools and Their Yield",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with suspected cervical artery dissection, an MRA or CTA is a reasonable test to consider.",
+      "page": null
+    },
+    {
+      "section": "Challenges in Diagnosis: Diagnostic Imaging Tools and Their Yield",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with negative CTA and continued clinical concern for cervical artery dissection, MRA with fat-suppressed images may be considered, given the high sensitivity to visualize a mural hematoma.",
+      "page": null
+    },
+    {
+      "section": "Challenges in Diagnosis: Diagnostic Imaging Tools and Their Yield",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "DSA should be avoided as a first-line diagnostic tool but may be considered in patients with clinical concern and negative MRA and CTA. Ultrasound might be useful for follow-up assessments of arterial remodeling.",
+      "page": null
+    },
+    {
+      "section": "Challenges in Diagnosis: Imaging Diagnostic Challenges",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Imaging signs of dissection include a tapering stenosis or occlusion, intramural hematoma, dissecting aneurysm, double lumen, and dissection flap. It is crucial to carefully review the cervical vascular imaging studies of patients with 1 or more signs of dissection present and to recognize dissection mimics such as carotid artery web, fenestrated artery, pseudo-occlusion, and imaging artifacts.",
+      "page": null
+    },
+    {
+      "section": "Additional Diagnostic Testing: Screening for Connective Tissue Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is reasonable to screen patients with cervical artery dissection for clinical signs of monogenic connective tissue disorders (eg, recurrent dissection, family history, physical examination) and to perform appropriate genetic counseling and testing based on those screening tools.",
+      "page": null
+    },
+    {
+      "section": "Additional Diagnostic Testing: Screening for Connective Tissue Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Routine genetic testing in the absence of signs or symptoms of monogenic connective tissue disorder is not suggested because of its increased cost and low yield but may be considered in patients with recurrent dissection. A referral to genetics for genetic counseling may be reasonable in patients with suspected connective tissue disorder and in those with multiple or recurrent dissection.",
+      "page": null
+    },
+    {
+      "section": "Additional Diagnostic Testing: Utility of Intracranial Vascular Imaging, Aortic Imaging, and Renovascular Imaging",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with cervical artery dissection, it is reasonable to screen for cerebral aneurysm and aortic root dilation. In those with hypertension or evidence of fibromuscular dysplasia, screening for renal artery stenosis with a renovascular Doppler is reasonable. In patients with cervical artery dissection and evidence of fibromuscular dysplasia, referral to a vascular specialist with expertise in fibromuscular dysplasia may be considered.",
+      "page": null
+    },
+    {
+      "section": "Predictors and Timing of Ischemic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The early ischemic stroke risk supports the timely recognition, diagnosis, and initiation of optimal antithrombotic treatment for cervical artery dissection. Clinicians can use demographics, clinical characteristics, and imaging findings to predict which patients are at higher risk of developing an ischemic stroke after cervical artery dissection. Predictors present in more than 1 study include male sex, smoking, vertebral artery involvement, multiple or early recurrent dissection, high-grade stenosis or occlusion, and intraluminal thrombus.",
+      "page": null
+    },
+    {
+      "section": "Hyperacute Treatment: Intravenous Thrombolysis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the absence of data suggesting safety concerns and given the proven efficacy of IVT in otherwise eligible patients with acute ischemic stroke, it is reasonable to consider IVT for patients with acute ischemic stroke with cervical artery dissection if they meet other standard criteria, as recommended by current guidelines. For patients with intracranial extension of the dissection, the risks and benefits of IVT are not well established.",
+      "page": null
+    },
+    {
+      "section": "Hyperacute Treatment: Mechanical Thrombectomy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is reasonable to perform mechanical thrombectomy in otherwise eligible patients with a large-vessel occlusion in the setting of cervical artery dissection.",
+      "page": null
+    },
+    {
+      "section": "Hyperacute Treatment: Acute Stenting",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stenting of a stenotic or occluded dissected segment of the vessel can be considered to improve distal perfusion in patients with neurological deficits due to hypoperfusion. Given the observational and retrospective nature of the supporting studies and their small sample size and limited generalizability, acute stenting of the dissected artery in the absence of hypoperfusion remains controversial.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention and Other Treatment Indications: Antithrombotic Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Because most ischemic events occur within the first several days after diagnosis, optimizing antithrombotic treatment (when safe) early is of paramount importance. It is reasonable that clinicians start immediate antithrombotic treatment if deemed safe.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention and Other Treatment Indications: Antithrombotic Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Parenteral followed by oral anticoagulation may be considered in particular in patients at low risk of intracranial hemorrhage (small infarct size, no intradural extension, and no intracranial hemorrhage) but at high risk for ischemic stroke (eg, intraluminal thrombus, occlusive dissection).",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention and Other Treatment Indications: Antithrombotic Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although the evidence for use in cervical artery dissection is weak, a short course of dual antiplatelet therapy with a loading dose (followed by a single antiplatelet agent) might be preferred over monotherapy when deemed safe, particularly in patients who would have qualified for the dual antiplatelet trials for early prevention after minor stroke/TIA; a short course of 21 to 90 days is described. Otherwise, antiplatelet monotherapy could be used.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention and Other Treatment Indications: Antithrombotic Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In the absence of a general superiority of any antithrombotic regimen, it is reasonable that clinicians individualize treatment on the basis of the risk of ischemic stroke and ICH, as well as a shared decision-making process with their patients. The presence of radiographic high-risk features for ischemic stroke (severe stenosis or occlusion, intraluminal thrombus) in patients with low bleeding risk may warrant anticoagulation; patients without high-risk features or with elevated risk of hemorrhage (large infarct size, hemorrhagic transformation, intradural extension) may be better suited for antiplatelet therapy.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention and Other Treatment Indications: Antithrombotic Treatment",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although the risk of bleeding with antithrombotic treatment is low, if it occurs, it is reasonable to hold antithrombotic treatment and to weigh the risks and benefits of anticoagulation reversal, considering the risk of recurrent stroke and the risk of worsening hemorrhage.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention and Other Treatment Indications: Duration of Antithrombotic Therapy",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is reasonable that the duration of antithrombotic therapy in patients with cervical artery dissection be 3 to 6 months. Decisions to extend antithrombotic therapy past the 6-month mark may be considered in the context of an individual's overall vascular risk factor profile and in the context of neuroimaging features as remodeling occurs.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention and Other Treatment Indications: Subacute Endovascular Treatment of Dissection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients with cervical artery dissection with significant stenosis causing distal hemodynamic compromise AND recurrent ischemic stroke despite optimal medical treatment AND who can withstand surgery may be considered for stenting as a measure for secondary stroke prevention.",
+      "page": null
+    },
+    {
+      "section": "Secondary Stroke Prevention and Other Treatment Indications: Subacute Endovascular Treatment of Dissection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Endovascular intervention could be considered in the rare case of clinically symptomatic disruption of cerebral perfusion despite best medical management, including hemodynamic optimization and antithrombotic use. When angioplasty and stenting are not feasible, vessel sacrifice may be considered in patients with recurrent ischemic stroke but adequate compensatory circulation.",
+      "page": null
+    },
+    {
+      "section": "Risk and Predictors of Recurrent Dissection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The risk of recurrent cervical artery dissection is 1% to 2% per year but is particularly increased in the first few months after the initial cervical artery dissection. Younger age and fibromuscular dysplasia are risk factors for dissection recurrence.",
+      "page": null
+    },
+    {
+      "section": "Lifestyle Modifications to Avoid Recurrent/Worsening Dissection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Because the risk of recurrent or worsening dissection is highest in the first few months after the initial dissection, it is reasonable that all patients with cervical artery dissection avoid activities that increase the risk of cervical injury for 1 to 6 months from diagnosis and until healing of the index dissection.",
+      "page": null
+    },
+    {
+      "section": "Lifestyle Modifications to Avoid Recurrent/Worsening Dissection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although there are no proven precautions to reduce the long-term risk of recurrent dissection, it is reasonable for health care clinicians to suggest that patients with cervical artery dissection who are at high risk for recurrent cervical dissection (eg, known connective tissue disorder, recurrent dissection) avoid such activities lifelong.",
+      "page": null
+    },
+    {
+      "section": "Follow-Up Imaging and Recanalization of the Dissection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Recanalization of cervical artery dissections occurs mostly in the first 12 months after diagnosis. Cervical artery-dissecting aneurysms infrequently increase in size, become symptomatic, and require treatment. Recanalization and development or resolution of cervical artery-dissecting aneurysms do not seem to be affected by antithrombotic treatment regimens.",
+      "page": null
+    },
+    {
+      "section": "Follow-Up Imaging and Recanalization of the Dissection",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Cervical artery-dissecting aneurysms causing significant mass effect often require treatment with stent-assisted coiling or flow diversion or complete sacrifice to cure the aneurysm and reduce associated mass effect. Coiling may be favored if there is concern for aneurysm rupture or rerupture, but dense coil packing may exacerbate mass effect, in which case flow diversion alone without coiling may be more effective in achieving vessel reconstruction.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

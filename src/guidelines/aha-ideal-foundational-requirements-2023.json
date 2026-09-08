@@ -10,12 +10,326 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Foundational Stroke Center Components",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Stroke center certification has evolved at a rapid pace and is now available at 4 different levels of service in the United States. Although certification standards provide guidance on stroke center process elements, lack of guidance on structural components such as workforce, staffing, and unit operations has resulted in heterogeneous services among hospitals credentialed at the same stroke center level.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Standardization of structural criteria (workforce/staffing, equipment, and service environment) would improve program infrastructure and present a consistent blueprint to the public of capabilities, resources, and workforce, enhancing both system efficiency and patient outcomes. Certification standards currently address process elements but are largely silent on structure, producing heterogeneous services among hospitals credentialed at the same stroke center level.",
+      "page": null
+    },
+    {
+      "section": "Foundational Stroke Center Components",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke centers should be required to provide resources for the level of care that they are providing; for example, primary stroke centers providing mechanical thrombectomy or intracerebral hemorrhage management should be resourced at least at the level of a thrombectomy-capable stroke center.",
+      "page": null
+    },
+    {
+      "section": "Foundational Stroke Center Components",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Inherent to comprehensive stroke center designation is that these hospitals be fully operationalized with all required structural (workforce, equipment, nursing units) and process components without dependence on external resources or services. If systems with resource and workforce limitations were redesignated at appropriately lower levels (eg, thrombectomy-capable stroke center), this would not limit their provision of services more typically offered by a comprehensive stroke center and would incentivize administrators to improve program structure and resource allocation.",
+      "page": null
+    },
+    {
+      "section": "Table 1. Ideal Foundational Requirements for Stroke Centers - Stroke program leadership",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A stroke medical director is an ideal foundational requirement at all 4 levels: acute stroke-ready hospital (ASRH), primary stroke center (PSC), thrombectomy-capable stroke center (TSC), and comprehensive stroke center (CSC). Stroke advanced practice provider(s) are required at TSC and CSC; a dedicated stroke coordinator at PSC, TSC, and CSC.",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Personnel resources",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Personnel requirements by center level: stroke team, emergency physicians, registered nurses, and dedicated stroke data collector(s) at all levels (ASRH, PSC, TSC, CSC); fellowship-trained vascular neurologist(s) at TSC and CSC; emergency telestroke access as needed at ASRH, PSC, and TSC; inpatient telestroke access as needed at ASRH and PSC; telestroke responder as needed at CSC; neurosurgeon(s) and clinical pharmacist(s) at CSC; neurointerventionalist(s) and neurocritical care physician(s) at TSC and CSC; physical, occupational, and speech-language therapists and case managers/medical social workers at PSC, TSC, and CSC; physical medicine and rehabilitation physician(s) at TSC and CSC; complementary specialist medical services (cardiology, internal medicine, gastroenterology, vascular surgery) at PSC, TSC, and CSC.",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Neuroimaging capabilities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Neuroimaging requirements by center level: noncontrast CT and artificial intelligence-supported neuroimaging at all levels; CTA 24/7 and CTA interpretation within 20 min of completion at PSC, TSC, and CSC; CT perfusion 24/7 and MRI 24/7 at TSC and CSC; transcranial Doppler service at CSC.",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Procedural capabilities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Procedural requirements by center level: intravenous thrombolysis, hemorrhagic stroke emergency management, stroke mechanism workup, and prevention/management of poststroke complications at all levels; mechanical thrombectomy at TSC and CSC; hemorrhagic stroke admission and advanced endovascular and neurosurgical procedures (management of structural vascular lesions, carotid revascularization, surgical bypass, hemorrhage evacuation) at CSC.",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Hospital bed and transfer resources",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Bed and transfer requirements by center level: dedicated stroke unit at PSC, TSC, and CSC; dedicated beds for stroke at ASRH; neurocritical care unit at CSC; general critical care at TSC and CSC; transfer agreements and interfacility transfer contractor(s) at ASRH, PSC, and TSC; transfer center at TSC and CSC; transport teams (mobile stroke units, transfer teams, aeromedical or ground transport) at CSC.",
+      "page": null
+    },
+    {
+      "section": "Table 1 - Quality improvement, research, and system accountability",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A performance improvement plan, adopted stroke clinical practice guidelines/order sets, and initiatives to improve transitions of care are required at all center levels; clinical stroke research is required at TSC and CSC.",
+      "page": null
+    },
+    {
+      "section": "Stroke Program Leadership - Corporate Leadership",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Organizational charts should clearly illustrate the chain of command and reporting structure, demonstrating how stroke program performance is communicated from bedside clinicians to chief administrators, the chief executive officer, and ultimately the board of directors. Corporate leaders should be present during the stroke center certification onsite review, demonstrating their knowledge of stroke program initiatives, describing plans for program growth, and being responsive to suggestions for improvement.",
+      "page": null
+    },
+    {
+      "section": "Stroke Program Medical Director",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "PSC, TSC, and CSC hospitals should be supported by an official stroke medical leader to ensure that robust, evidence-based services are developed and implemented. Evidence of role competency may include vascular neurology fellowship training or board certification; annual participation in regional, national, or international stroke conferences; a stroke publication history at the time of appointment; and attainment of at least 8 hours of stroke continuing medical education annually.",
+      "page": null
+    },
+    {
+      "section": "Stroke Program Medical Director",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The stroke program medical director should hold morbidity-mortality meetings, monitor census and hospital diversion status, provide a forum for discussion of complex cases, examine bed throughput and allocation, assess performance on quality metrics, and deliver formal and informal education. Ideally the medical director should have control of stroke unit bed assignment, setting admission criteria to ensure availability and appropriate patient placement.",
+      "page": null
+    },
+    {
+      "section": "Stroke Program Medical Director",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke program medical directors should be provided with protected professional time and encouraged to attend annual national or international conferences; medical directors of TSC or CSC hospitals should also be encouraged to conduct research and produce scholarly contributions such as peer-reviewed publications.",
+      "page": null
+    },
+    {
+      "section": "Advance Practice Providers",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Advanced practice providers (nurse practitioners, physician assistants, clinical nurse specialists) ideally will have completed postgraduate vascular neurology fellowship training with certification as an advanced neurovascular practitioner. Stroke centers hiring advanced practice providers should work toward developing these clinicians to work to their full practice authority; use limited to completion of physicians' least desirable responsibilities results in significant role dissatisfaction with high rates of turnover.",
+      "page": null
+    },
+    {
+      "section": "Advance Practice Providers",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Common acute stroke advanced practice roles include emergency responders for acute stroke alerts, stroke medical management during hospitalization, first-assist neurointerventional and neurosurgical clinicians, provision of outpatient stroke clinic services, and researcher. Roles evolving because of the vascular neurology shortage include telemedicine emergency responders, ongoing daily telemedicine patient management in underserved hospitals, and mobile stroke unit onboard expert.",
+      "page": null
+    },
+    {
+      "section": "Stroke Coordinator",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Given the high volume of acute stroke quality measures and individualized program metrics, PSC, TSC, and CSC hospitals should employ a stroke coordinator; data collection/quality management staff are sufficient to support acute stroke-ready hospitals. Certification in the stroke coordinator role should be pursued to ensure role competence, and the coordinator should ideally have a reporting structure parallel to that of both the stroke program medical director and the neuroscience service line director.",
+      "page": null
+    },
+    {
+      "section": "Stroke Coordinator",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Table 3 role functions and responsibilities of stroke coordinators: responding to and supporting provision of excellent emergent acute stroke care; serving as a role model providing formal and informal bedside education ensuring clinical competency; developing and ensuring appropriate use of patient education materials; providing stroke community education; analyzing quality performance data; constructing and presenting stroke system quality reports and proposing organization-specific quality goals and outcome measures; developing evidence-based policies and procedures; performing gap analyses; leading preparation and attainment of certification; working with community stroke leaders to improve the overall system of care; and participating in ongoing professional development.",
+      "page": null
+    },
+    {
+      "section": "Stroke Coordinator",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke coordinators should be supported by data collectors responsible for compilation and entry of acute stroke quality indicator data. Data collection responsibilities may be combined with the stroke coordinator role only when 40 h/wk is sufficient to operationalize all aspects of stroke coordination; when data collection limits full execution of the role, the stroke coordinator title should not be used.",
+      "page": null
+    },
+    {
+      "section": "Personnel Resources",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All interprofessional stroke clinicians must take responsibility for the development of a healthy work environment, inventorying team performance against the 6 standards: skilled interprofessional communication, true collaboration, effective decision-making, appropriate staffing, meaningful recognition, and authentic leadership.",
+      "page": null
+    },
+    {
+      "section": "Personnel Resources - Vascular Neurologists",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Fellowship-trained vascular neurologists should support centers performing mechanical thrombectomy and other advanced endovascular and surgical procedures; onsite advanced practice providers, neurology residents, and fellows may supplement in-person vascular neurology presence. Vascular neurologists and all other physician specialists providing acute stroke services should complete at least 8 hours of related education annually.",
+      "page": null
+    },
+    {
+      "section": "Personnel Resources - Neurointerventionalists",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke centers performing thrombectomy and advanced endovascular procedures require neurointerventionalist physician leadership. Standard 2-year neurointerventional training with biplane angiography is the gold standard; abbreviated training requirements for provision of thrombectomy alone are highly controversial, of unknown quality, and lack data demonstrating widespread safety and effectiveness. Methods that ensure maintenance of procedural expertise should be prioritized.",
+      "page": null
+    },
+    {
+      "section": "Personnel Resources - Telestroke Responders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Clinicians serving as telestroke responders may come from various backgrounds, including emergency medicine and advanced practice, but should be vascular neurology fellowship trained. All telestroke responders must be both capable and willing to independently interpret neuroimaging instead of relying on local or remote radiologist interpretation. Telestroke oversight on off shifts does not define CSC-level services; instead, CSC hospitals may provide telestroke services for networked or affiliated facilities.",
+      "page": null
+    },
+    {
+      "section": "Personnel Resources - Clinical Pharmacists",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Advanced CSC services should be supported by clinical pharmacists, who respond to code stroke alerts to expedite coagulopathy reversal, reperfusion, and antihypertensive medication management, and who assist with medication prescribing, medication reconciliation during care transitions, development of evidence-based protocols, and education of the interprofessional team.",
+      "page": null
+    },
+    {
+      "section": "Personnel Resources - Nursing",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Ideally, all nurses assigned patients with stroke should be provided with at least 8 hours of education per year specific to acute stroke diagnosis, treatment, complication avoidance, and secondary prevention. Board certification in acute stroke nursing (Neurovascular Registered Nurse) or general stroke nursing (Stroke Certified Registered Nurse) should be encouraged.",
+      "page": null
+    },
+    {
+      "section": "Personnel Resources - Nursing",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When nurse-patient ratios exceeded 4 patients with stroke to 1 registered nurse, staffing-imposed immobility resulted, with stable patients spending significantly more time in bed; among existing certifying agencies only Det Norske Veritas examines adequacy of nurse staffing, requiring stroke unit staffing at 3 or 4 patients to 1 registered nurse.",
+      "page": null
+    },
+    {
+      "section": "Personnel Resources - Data Collection Staff",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Data collectors should undergo formal training to become knowledgeable of data definitions and collection procedures, with audit methods ensuring data reliability and accuracy. Stroke centers should staff the data collector role in a manner similar to trauma center requirements, limiting collection duties to no more than 500 patients with stroke annually.",
+      "page": null
+    },
+    {
+      "section": "Neuroimaging Capabilities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Computed tomographic angiography (arch, neck, and head) capabilities should ideally be available 24/7 at PSC, TSC, and CSC hospitals, completed immediately after the noncontrast CT and with interpretation times similar to that of the noncontrast CT. Artificial intelligence-integrated neuroimaging software should ideally be used at all levels of certified hospitals; similar considerations apply to centers using MRI for stroke triage imaging.",
+      "page": null
+    },
+    {
+      "section": "Procedural Capabilities - Emergency Management of Hemorrhagic Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Continuous intravenous infusion of antihypertensive drugs and antidotes for coagulopathic ICH should be available in the emergency department at all certified stroke centers; all stroke centers should be prepared to meet time metrics for blood pressure lowering and reversal within 60 to 90 minutes of arrival. All levels of stroke centers should be prepared to initiate cautious blood pressure control for aneurysmal subarachnoid hemorrhage while awaiting transfer, and telestroke clinicians must be competent to oversee management of hemorrhagic stroke awaiting transfer. Ideally, transfer and admission of patients with hemorrhagic stroke should be directed exclusively to CSC-certified hospitals.",
+      "page": null
+    },
+    {
+      "section": "Procedural Capabilities - Determination of Stroke Mechanism",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "All stroke centers admitting patients with acute stroke should exhaustively approach determination of the pathogenic mechanism so that appropriate secondary prevention strategies can be used, consulting practitioners from complementary specialties as needed, especially when a clear cause cannot be identified.",
+      "page": null
+    },
+    {
+      "section": "Hospital Bed Resources - Stroke Units",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Innovative approaches to stroke unit development should be considered, including the universal bed concept in which the patient is admitted to and remains in the same bed throughout hospitalization, with acuity and nurse staffing changing as indicated by patient needs. The United States remains one of the only countries that consistently overuses critical care for admission of noncritical patients receiving thrombolysis, driven largely by failure to institute specialty stroke units.",
+      "page": null
+    },
+    {
+      "section": "Hospital Bed Resources - Stroke Units",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Table 4 stroke unit structural components: a nursing unit that is called a stroke unit, with its own constant physical space marked with signage and a consistent number of beds, with bed volume determined by analyses of stroke admissions and length of stay and rarely requiring overflow (<5%) to another unit; a stroke unit medical director who is a vascular neurologist overseeing unit services, policies, and admission criteria; physicians staffed to cover the unit in person or remotely 24 h/d; a unit-based advanced practice provider; and registered nurses, assistive nursing personnel, and therapy staff hired, educated, and trained to work specifically on the stroke unit.",
+      "page": null
+    },
+    {
+      "section": "Hospital Bed Resources - Stroke Units",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Table 4 stroke unit staffing: registered nurses generally staffed at 1 RN to 3 or 4 patients depending on disability severity; reperfusion patients staffed at 1 RN to 2 patients for the first 24 h; RN staffing ensures care continuity (>=90%); assistive nursing personnel support basic patient care needs (bathing, feeding, mobility, positioning) on each shift; therapists, case managers, discharge planners, and social workers assigned to maintain a consistent therapeutic relationship (>=90% care continuity); all stroke unit interprofessional staff are members of the stroke team.",
+      "page": null
+    },
+    {
+      "section": "Hospital Bed Resources - Stroke Units",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Table 4 stroke unit admission criteria: admits a variety of noncritical (stable neurological, cardiovascular, and respiratory status) neurovascular diagnoses, including transient ischemic attack; ischemic stroke, including patients acutely treated with intravenous thrombolytic and with mechanical thrombectomy; vasculitis; intracerebral hemorrhage; and structural neurovascular anomalies.",
+      "page": null
+    },
+    {
+      "section": "Hospital Bed Resources - Stroke Units",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Table 4 stroke unit process components: registered nurses and physicians receive at least 8 h of stroke-specific continuing education annually and are trained to respond to and manage acute code stroke alerts; nurses are educated, clinically trained, and authorized to administer intravenous bolus drugs and infusions including thrombolytic, antihypertensive agents, and insulin; at least 50% of stroke unit RNs should maintain certification in acute stroke nursing (NVRN) or general stroke nursing (SCRN); therapists and other stroke clinicians receive at least 2 h of stroke-specific continuing education annually.",
+      "page": null
+    },
+    {
+      "section": "Hospital Bed Resources - Stroke Units",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Table 4 stroke unit standardized scales and rounds: the NIHSS is used by nurses and physicians in patients with ischemic and hemorrhagic stroke, with nurses and physicians maintaining NIHSS certification and frequent repetitive assessments in reperfusion or fluctuating patients including components associated with abnormal findings; a discharge modified Rankin Scale score is assigned to all patients; interprofessional rounds are conducted at least 3 times per week with available family members participating; and mobility rounds are conducted at least 3 times per day to maximize patient mobility in stable patients.",
+      "page": null
+    },
+    {
+      "section": "Transfer Resources",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Transfer agency response times and performance should be captured to enable meaningful feedback and support future contracting, and response times should be part of the contractual obligation of transfer agencies. TSC and CSC hospitals should use a transfer center to enhance communication and coordinate transfer teams, with transfer center performance followed by metrics. Ideally, CSC hospitals should possess transport resources that may include air or ground ambulances and mobile stroke units. Formalized mitigation strategies for emergency department overcrowding are needed to ensure timely access to stroke care.",
+      "page": null
+    },
+    {
+      "section": "Quality Improvement and Clinical Research - Stroke Program Quality Improvement",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Although some agencies allow collection of a minimum sample of cases, stroke centers should strive to collect data on 100% of admissions to prevent bias in case selection. Stroke programs must select and use a quality model to analyze program performance and should use tools such as control charts to examine the stability of new processes and outcomes. Mature programs should disseminate their work, and results of quality analyses should be shared with all areas of the hospital that provide stroke care.",
+      "page": null
+    },
+    {
+      "section": "Quality Improvement and Clinical Research - Clinical Research",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Comprehensive stroke center resources and workforce make annual publication of at least 3 scholarly works achievable. Research conducted by CSC interprofessional personnel may include basic science research but should include clinical research pertinent to the care of patients with acute stroke; research focused on key roles, unit organization, and operations within regional stroke systems is encouraged.",
+      "page": null
+    },
+    {
+      "section": "Stroke System Accountability",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Certified stroke centers should take a leadership role in examining stroke services across the continuum; patient transition processes and care continuity should be examined, allowing collection of data identifying lapses in care that warrant intervention. Stroke center hospitals are typically best resourced to oversee transition quality, but leadership from each sector of the care continuum should welcome and review quality improvement findings.",
+      "page": null
+    },
+    {
+      "section": "Conclusion",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The addition of structural details to stroke center standards would reduce variability in hospital workforce and resources and would further improve and strengthen stroke center services. Further research and dissemination are needed to define best practices in stroke center standardization.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

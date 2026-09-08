@@ -106,7 +106,7 @@
   },
   {
     "id": "andexanet",
-    "name": "Andexanet alfa dose",
+    "name": "Andexanet alfa (US sales ended; dosing disabled)",
     "category": "dosing",
     "fn": "calculateAndexanetDose",
     "module": "calculators"

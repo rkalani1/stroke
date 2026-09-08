@@ -10,12 +10,350 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Sleep and Sleep Disturbances - Sleep Duration",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Accumulating evidence supports a link between sleep disorders, disturbed sleep, and adverse brain health, ranging from stroke to subclinical cerebrovascular disease to cognitive outcomes, including the development of Alzheimer disease and Alzheimer disease-related dementias.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Sufficient sleep for adults is 7 to 9 hours per night for adults aged 18 to 64 years and 7 to 8 hours per night for older adults, and is associated with optimal health for most adults. Short sleep duration (<7 hours self-reported per night) is associated with weight gain, diabetes, hypertension, cardiovascular disease, and poorer acute cognitive function; long sleep duration (>9 hours per night) is associated with depression, polypharmacy, numerous morbidities, and mortality.",
+      "page": null
+    },
+    {
+      "section": "Sleep and Sleep Disturbances - Sleep Duration",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Sleep stages carry distinct significance: reduced REM sleep is associated with reduced declarative memory and emotional regulation and higher mortality and depression, and REM duration and timing can be altered by some medications.",
+      "page": null
+    },
+    {
+      "section": "Sleep Disorders and Disturbed Sleep - Table 2 Definitions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Insomnia is a perceived difficulty with sleep initiation, consolidation, duration, or quality despite an adequate opportunity to sleep, coupled with subsequent daytime impairment; some diagnostic criteria specify a minimum sleep onset duration (>=30 min) or waking after sleep onset (>=30 min at least 3 times per week). It is associated with elevated sympathetic activity, systemic inflammation, hypothalamic-pituitary-adrenal axis dysregulation, and increased risk of mood and anxiety disorders, weight gain, diabetes, hypertension, stroke, and dementia.",
+      "page": null
+    },
+    {
+      "section": "Sleep Disorders and Disturbed Sleep - Table 2 Definitions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Sleep fragmentation is repetitive interruption of sleep by arousal or periods of wakefulness, identified on EEG as an abrupt shift in EEG frequency lasting >=3 s; fragmented sleep is less restorative and may reduce memory consolidation, and is associated with adverse values of numerous brain health markers.",
+      "page": null
+    },
+    {
+      "section": "Sleep Disorders and Disturbed Sleep - Table 2 Definitions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Circadian rhythm disorders are problems with regularity or timing of the sleep/wake cycle in relation to the external light/dark cycle, arising from intrinsic (eg, genetic) or extrinsic (eg, light exposure, travel, shift work) factors; misalignment of the internal clock with the light/dark cycle can result in cardiovascular disease and may contribute to or result from neurological disease.",
+      "page": null
+    },
+    {
+      "section": "Sleep Disorders and Disturbed Sleep - Table 2 Definitions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Obstructive sleep apnea is defined by an apnea-hypopnea index (AHI) of >=5 to 15 with nocturnal symptoms (snoring, snorting, gasping, breathing pauses) or excessive daytime symptoms (sleepiness, fatigue) unexplained by other medical problems, or an AHI >=15 regardless of symptoms. Severity thresholds: normal AHI <5, mild 5-15, moderate 15-30, severe >=30. Severe OSA is often associated with sleep fragmentation, reduced N3 and REM sleep, and hypoxemia.",
+      "page": null
+    },
+    {
+      "section": "Sleep Disorders and Disturbed Sleep - Table 2 Definitions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Central sleep apnea is identified on polysomnography by a predominance (>50%) of central apneas or hypopneas with a central apnea-hypopnea index >=5; it is often associated with cardiac disease (heart failure, atrial fibrillation), stroke, or opioid use, and often occurs with Cheyne-Stokes respiration. Sleep-related hypoventilation is defined by elevated carbon dioxide during sleep (>55 mm Hg for >10 min, or an increase of >10 mm Hg from awake supine to a value >50 mm Hg for >10 min).",
+      "page": null
+    },
+    {
+      "section": "Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Alterations in brain health encompass the spectrum from subclinical to clinical disease, including cerebrovascular imaging changes, clinically apparent stroke, cognitive decline, and dementia. Subclinical cerebrovascular disease (silent infarcts, white matter hyperintensities, cerebral microbleeds, enlarged perivascular spaces, cerebral atrophy) is associated with cognitive decline and dementia, impaired gait, and increased stroke risk.",
+      "page": null
+    },
+    {
+      "section": "Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Brain health can be assessed by clinical signs (for stroke), cognitive measures, and psychiatric evaluation, and by imaging, blood, and cerebrospinal fluid biomarkers: amyloid-beta or tau PET, or blood or CSF phosphorylated tau or amyloid-beta levels may indicate underlying Alzheimer disease neuropathology, and neurofilament light chain may indicate nonspecific neurodegeneration.",
+      "page": null
+    },
+    {
+      "section": "Normal Physiology of Sleep and Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Sleep plays a central role in optimizing cognitive performance; experimental sleep deprivation adversely affects attention, executive function, and short-term memory, with prefrontal cortex-dependent processes particularly affected. Non-REM features (especially slow oscillations and sleep spindles) and REM sleep play overlapping and complementary roles in memory consolidation, in which new unstable memories are relocated from the hippocampus to the neocortex.",
+      "page": null
+    },
+    {
+      "section": "Normal Physiology of Sleep and Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The synaptic homeostasis hypothesis holds that N3 (slow-wave) activity during non-REM sleep downregulates synaptic strengths proportionately across all synapses, normalizing synaptic strengths throughout the brain and retaining energetic efficiency without compromising fidelity of synaptic neurotransmission.",
+      "page": null
+    },
+    {
+      "section": "Normal Physiology of Sleep and Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The glymphatic system is a perivascular transit passageway for cerebrospinal fluid to exchange with interstitial fluid, facilitating waste removal including amyloid-beta and tau. Its function depends on vascular pulsatility and vasomotion, aquaporin-4 water channels on glial end-feet, and perivenous egress, and critically on sleep state, with enhanced glymphatic activity during N3 sleep and under certain anesthetic regimens.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology: Associations of Sleep With Brain Health - Sleep and Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In a meta-analysis of 10 prospective studies, moderate-to-severe obstructive sleep apnea was associated with a doubling of stroke risk (hazard ratio, 2.02 [95% CI, 1.40-2.90]). In the Sleep Heart Health Study the association was stronger in men (hazard ratio 2.86 for AHI >=19 versus <=4) than in women (1.21).",
+      "page": null
+    },
+    {
+      "section": "Epidemiology: Associations of Sleep With Brain Health - Sleep and Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Both short and long sleep duration have been prospectively associated with greater stroke risk: long sleep duration was associated with approximately 45% greater risk of incident stroke in meta-analyses (adjusted hazard ratio 1.46 for >8 hours in EPIC-Norfolk), whereas the association with short sleep has generally been more modest (hazard ratio 1.15). Evidence also supports an association between symptoms of insomnia and greater stroke risk.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology - Sleep and Silent Cerebrovascular Disease",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A meta-analysis of mostly cross-sectional observational studies reported that obstructive sleep apnea was associated with higher odds of white matter hyperintensities (odds ratio, 2.13 [95% CI, 1.46-3.66]) and lacunar infarcts (odds ratio, 1.78 [1.06-3.01]); caution is needed because directionality is unclear in cross-sectional data. OSA is also associated with decreases in cerebral blood flow, particularly in medial temporal regions, an effect that appears reversible with CPAP.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology - Sleep and Silent Cerebrovascular Disease",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Insomnia has been linked with lower integrity of white matter fibers connecting subcortical nuclei and the prefrontal cortex; short self-reported sleep duration (<=6 versus 6-8 hours) predicted increased parietal white matter hyperintensities; and less N3 (slow-wave) sleep was associated with higher white matter hyperintensity volumes and lower cortical gray matter volumes, but not covert brain infarcts.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology - Sleep and Alzheimer Disease and Related Dementias",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A 2022 meta-analysis linked obstructive sleep apnea to a 34% increased risk of all-cause dementia, 28% increased risk of Alzheimer disease, and 54% increased risk of Parkinson disease dementia. OSA has also been linked to CSF and blood-based biomarkers of amyloid-beta and tau and to hippocampal volume loss.",
+      "page": null
+    },
+    {
+      "section": "Epidemiology - Sleep and Alzheimer Disease and Related Dementias",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Insomnia has been associated with a 53% increase in dementia risk; both short (<7 hours) and long (>9 hours) sleep duration have been linked to at least a doubling in dementia risk; and use of sleep medications has been associated with a 48% increase in dementia risk. Shorter and poorer-quality sleep, greater wakefulness after sleep onset, and lower sleep efficiency have all been linked to amyloid-beta deposition, whereas greater N3 activity and higher sleep efficiency may protect against amyloid accumulation.",
+      "page": null
+    },
+    {
+      "section": "Methodological Considerations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Reverse causation is a major concern because disease pathology may be present years before clinical symptoms; particular caution should be used when interpreting studies in which sleep and dementia were assessed simultaneously in older adults, because sleep and circadian disorders may be a manifestation of underlying brain pathology and thus a marker but not a direct cause of dementia risk. Studies are needed with sleep measured earlier in the life course.",
+      "page": null
+    },
+    {
+      "section": "Methodological Considerations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Measurement heterogeneity limits inference: studies often focus on a single sleep phenotype, assessment methods and cut points vary, few studies have repeated measures of sleep from midlife to late life, and many epidemiological studies define dementia using electronic health records with high specificity but low sensitivity. Few studies have been conducted in racially and ethnically diverse populations, limiting generalizability.",
+      "page": null
+    },
+    {
+      "section": "Methodological Considerations",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Confounding is an important threat to validity because sleep disorders and dementia share genetic (APOE-epsilon-4) and vascular risk factors. Because much of the epidemiological research on sleep and brain health has been observational, adequately powered randomized controlled trials may be required to determine causality and to rigorously test whether sleep interventions preserve brain health.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms - Traditional Vascular Risk Factors as Mediators",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Sleep disorders can contribute to the development of cardiovascular risk factors including obesity, hypertension, diabetes, and dyslipidemia; insomnia and OSA in particular are associated with increased prevalence of cardiovascular risk factors, and adequate sleep duration, quality, and regularity are emphasized for optimal cardiovascular health.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms - Traditional Vascular Risk Factors as Mediators",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Mechanisms linking sleep-disordered breathing with stroke include alterations in cerebral autoregulation, hypercoagulability, increased shunting through a patent foramen ovale if present, endothelial dysfunction, sympathetic hyperarousal, and sleep fragmentation. A circadian rhythmicity of stroke has been noted, with the highest frequency of onset in the morning hours.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms - Traditional Vascular Risk Factors as Mediators",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Longitudinal and mendelian randomization studies support causal associations of disturbed sleep and sleep disorders with hemoglobin A1c concentrations and development of ischemic heart disease and atrial fibrillation; treating OSA has been shown to modestly reduce blood pressure and prevent atrial fibrillation. Cerebrovascular disease may also mediate the association between OSA and other sleep disturbances and dementia.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms - Synaptic Homeostasis, Glymphatic Dysfunction, and Molecular Mechanisms of AD",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Excessive neuronal activity can increase amyloid-beta production and tau release, potentially leading to amyloid deposition and neurofibrillary tangle formation, whereas sleep deprivation in experimental rat models impaired axonal sprouting, synaptogenesis, and motor recovery after stroke.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms - Synaptic Homeostasis, Glymphatic Dysfunction, and Molecular Mechanisms of AD",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Because glymphatic efficiency is optimized in deeper stages of sleep, sleep disturbances or disorders may reduce glymphatic clearance of neurotoxic metabolites. Glymphatic dysfunction has been documented in aging, sleep deprivation, and neurodegenerative disease states including Alzheimer disease, cerebral small vessel disease, cerebral amyloid angiopathy, Parkinson disease, and normal pressure hydrocephalus; good sleep in the context of glymphatic waste clearance has emerged as a novel therapeutic target.",
+      "page": null
+    },
+    {
+      "section": "Mechanisms - Synaptic Homeostasis, Glymphatic Dysfunction, and Molecular Mechanisms of AD",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In transgenic mice, soluble amyloid-beta levels are lower during sleep, sleep deprivation increases soluble amyloid-beta in brain interstitial fluid, and chronic sleep restriction accelerates plaque formation; in humans CSF amyloid-beta fluctuates diurnally and the morning decrease is attenuated by prolonged wakefulness. Overnight sleep deprivation appears to promote tau phosphorylation isoforms seen in the earliest stages of Alzheimer disease pathogenesis, and other proteins released with neuronal activity or neuroaxonal injury (alpha-synuclein, total tau, neurofilament light) are increased with sleep deprivation and OSA.",
+      "page": null
+    },
+    {
+      "section": "Importance of Sleep in People With Impaired Brain Health - Poststroke Recovery",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Insomnia (38%), sleepiness (10%-15%), and long-duration sleep (35%-40%) are common among patients with stroke, and polysomnographic studies show poorer sleep efficiency, shorter total sleep time, and a lower percentage of slow-wave sleep compared with controls. Lower sleep efficiency, less total sleep time, and less N3 sleep shortly after stroke hospitalization have been associated with worse neurological status at discharge, and longer REM sleep latency measured days 6 to 10 poststroke was associated with worse functional outcome at 3 months.",
+      "page": null
+    },
+    {
+      "section": "Importance of Sleep in People With Impaired Brain Health - Poststroke Recovery",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Obstructive sleep apnea is common after stroke (prevalence approximately 70%) whereas central sleep apnea is uncommon (approximately 12%). OSA identified after stroke is associated with worse functional and cognitive outcomes and with increased risk of stroke recurrence and mortality; pilot CPAP trials suggest benefit on neurological and cognitive function, and OSA remains a possible treatment target to improve stroke recovery, a hypothesis being tested in Sleep SMART and the RISEUP study.",
+      "page": null
+    },
+    {
+      "section": "Importance of Sleep in People With Impaired Brain Health - AD and Other Dementing Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Among patients with Alzheimer disease, difficulty falling asleep, nighttime awakenings, and daytime sleepiness are commonly reported; 26% of people with dementia living at home and 38% of those in long-term care exhibit a sleep-related disturbance, and 70% of long-term care residents had poor sleep quality by actigraphy. Sleep problems in this population predict more severe cognitive and neuropsychiatric symptoms, poorer quality of life, higher caregiver burden, early institutionalization, and increased mortality.",
+      "page": null
+    },
+    {
+      "section": "Importance of Sleep in People With Impaired Brain Health - AD and Other Dementing Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Sleep-focused clinical trials have largely excluded patients with dementia, and uncertainty remains about the risks of sleep therapies used in Alzheimer disease. Although OSA is 5 times more common in Alzheimer disease than in age-matched controls (prevalence 33%-58%), the clinical relevance and effect of OSA treatment are unknown; small studies suggest CPAP may slow cognitive decline, but the largest prospective cohort of patients with mild-to-moderate AD and OSA without sleepiness did not demonstrate worse longitudinal outcomes.",
+      "page": null
+    },
+    {
+      "section": "Importance of Sleep in People With Impaired Brain Health - AD and Other Dementing Disorders",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "REM sleep behavior disorder, in which typical REM muscle atonia is lost and patients flail, move, and sometimes injure bedmates, is pathognomonic for the diagnosis of dementia with Lewy bodies and is likely a consequence of neurodegeneration in the basal forebrain.",
+      "page": null
+    },
+    {
+      "section": "Prevention and Treatment - Optimizing Sleep to Preserve Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Sleep's potential role in preventing cardiovascular disease was highlighted by the inclusion of optimal sleep duration as the 8th component of cardiovascular health in the 2022 American Heart Association presidential advisory Life's Essential 8. Beyond sleep duration, improving other aspects of sleep, such as reducing the prevalence of obstructive sleep apnea through primordial prevention of obesity, may also prevent adverse brain outcomes.",
+      "page": null
+    },
+    {
+      "section": "Prevention and Treatment - Optimizing Sleep to Preserve Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Theoretically beneficial nonvascular approaches include optimizing memory consolidation and synaptic homeostasis during sleep, reducing sleep fragmentation, regularizing daily rhythmicity, and identifying behavioral or pharmacological means to enhance N3 sleep or glymphatic waste clearance. Modifiable risk factors for poor brain health appear most effective at earlier stages in the life course, and optimizing sleep in earlier life stages may also preserve the brain, although additional data are needed.",
+      "page": null
+    },
+    {
+      "section": "Prevention and Treatment - Treatment of Sleep Disorders to Protect Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is unclear whether treating sleep disorders mitigates cerebrovascular alterations and improves brain health. CPAP may improve neurological function, quality of life, depression, language among stroke survivors, and cognition in community-based samples, but evidence is weak, results are mixed, and follow-up durations have been short (typically <=3 months). Commonly suggested CPAP adherence is at least 4 hours per night, a level difficult to achieve especially after stroke, where adherence is low but predicts outcomes.",
+      "page": null
+    },
+    {
+      "section": "Prevention and Treatment - Treatment of Sleep Disorders to Protect Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "More rigorously conducted long-term clinical trials are needed on the effects of treating OSA, insomnia, and short and fragmented sleep on dementia and Alzheimer disease biomarkers. Although treatments exist for other sleep disorders (eg, cognitive behavioral therapy for insomnia), there is insufficient evidence to demonstrate that such treatments can mitigate cognitive decline. There is still clinical equipoise for most sleep-related interventions, so placebo or no-treatment controlled trials may still be appropriate.",
+      "page": null
+    },
+    {
+      "section": "Reducing Disparities in Sleep and Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Disparities by social determinants of health exist in the prevalence of sleep disorders, with individuals of low socioeconomic status or people of underrepresented races and ethnicities having a higher likelihood of poor sleep quantity, quality, and sleep disorders; disproportionate sleep loss in Black adults versus White adults accounts for some observed disparities in cardiometabolic health. Women, Black adults, and Hispanic/Latino adults are often undiagnosed and remain untreated for OSA and other sleep disorders.",
+      "page": null
+    },
+    {
+      "section": "Reducing Disparities in Sleep and Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "To reduce sleep disparities, multilevel interventions are needed targeting (1) the individual and family levels (improved screening, referral, and follow-up in primary and specialty care; targeted sleep promotion education in clinics, daycare centers, schools, lay press, and social media); (2) the neighborhood and broader sociocultural context (improved urban planning to increase green space and reduce light and noise pollution and the urban heat island); (3) access to care (home sleep apnea testing, electronic prescribing, integrated services within primary care, proactive screening of high-risk patients); and (4) advocacy (insurance coverage for sleep-related services).",
+      "page": null
+    },
+    {
+      "section": "Reducing Disparities in Sleep and Brain Health",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Efforts to reduce the burden of sleep disorders on brain health require interdisciplinary effort focused on increasing awareness in community and primary care settings, providing consumer education on treatment strategies, and promoting treatment adherence, including public health awareness campaigns targeted to groups at highest risk (eg, older adults and those experiencing health inequities).",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Optimal sleep may play a crucial role in preserving brain health, with converging evidence from epidemiology, clinical investigation, and basic science; numerous distinct mechanistic pathways (eg, amyloid-beta production, glymphatic clearance) and shared underlying causes (aging, vascular risk factors, disruption of blood-brain barrier integrity, Alzheimer disease pathology) may contribute. Identifying opportunities to optimize sleep health and treat sleep disorders will require multilevel approaches that can improve brain health at both an individual and societal level.",
+      "page": null
+    },
+    {
+      "section": "Table 3. Future Directions - Interventional",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Identify scalable interventions to enhance aspects of sleep (eg, duration, slow-wave activity) that may benefit brain health; identify populations (by age, sex, race, ethnicity, socioeconomic status, biomarkers, comorbidity, genetics) most at risk of adverse brain outcomes from poor sleep so future randomized trials can be targeted; conduct randomized controlled trials including the very old and patients with dementia to determine whether treating prevalent sleep disorders such as insomnia and obstructive sleep apnea and short, fragmented, and irregular sleep improves brain health outcomes; and consider novel trial designs or causal modeling frameworks such as target trial emulation from existing observational data.",
+      "page": null
+    },
+    {
+      "section": "Table 3. Future Directions - Observational",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Conduct studies with deep phenotyping of markers of both sleep and brain health; develop better parameters, possibly incorporating wearables, to comprehensively evaluate sleep characteristics and brain health in large samples over time; use longitudinal studies and causal frameworks to establish the extent to which changes in sleep across the lifespan drive neurodegeneration and cognitive decline and the mechanisms by which neurodegeneration disrupts sleep; and examine how sleep disorders interact with circadian rhythm alterations to affect brain health.",
+      "page": null
+    },
+    {
+      "section": "Table 3. Future Directions - Mechanistic/Basic and Translational",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Understand the role of sleep and circadian rhythms in the mechanisms of neurodegenerative proteinopathies; use neuropathological studies to establish the regulation of sleep and sleep breathing and how they are disrupted by neurodegeneration; understand the relationship between age-related sleep disorders and impaired learning and memory consolidation; understand how sleep disorders alter synaptic homeostasis; learn how hypoxemia interacts with nonrespiratory sleep parameters; define drivers of increased glymphatic transport and waste clearance during sleep and the anatomical pathways and driving forces of solute clearance; understand the anatomical and functional coupling between the glymphatic and lymphatic systems; evaluate brain biomarkers or other surrogate measures of sleep and neurodegeneration; and increase the use of sleep-dependent tasks instead of traditional cognitive testing during wakefulness.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

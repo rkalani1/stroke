@@ -27,6 +27,7 @@
 
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
+import path from 'node:path';
 
 // Two different bases, deliberately. PUBLIC_BASE is the origin baked into the
 // data indexes, so it is what artifact URLs in those files are parsed against
@@ -54,8 +55,19 @@ const BASE_ARTIFACTS = [
   'sitemap.xml'
 ];
 
+const TEXT_EXTS = ['.html', '.css', '.js', '.json', '.txt', '.xml', '.md', '.svg'];
+
 const sha256 = (buf) => createHash('sha256').update(buf).digest('hex');
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+function getFileHash(filePath) {
+  const buf = readFileSync(filePath);
+  const ext = path.extname(filePath).toLowerCase();
+  if (TEXT_EXTS.includes(ext)) {
+    return sha256(Buffer.from(buf.toString('utf8').replace(/\r\n/g, '\n'), 'utf8'));
+  }
+  return sha256(buf);
+}
 
 function collectArtifacts() {
   const artifacts = new Set(BASE_ARTIFACTS);
@@ -100,7 +112,11 @@ async function matchesLive(artifact, expected, attempt) {
     const response = await fetch(url, { cache: 'no-store' });
     if (!response.ok) return false;
     const body = Buffer.from(await response.arrayBuffer());
-    return sha256(body) === expected;
+    const ext = path.extname(artifact).toLowerCase();
+    const liveHash = TEXT_EXTS.includes(ext)
+      ? sha256(Buffer.from(body.toString('utf8').replace(/\r\n/g, '\n'), 'utf8'))
+      : sha256(body);
+    return liveHash === expected;
   } catch {
     return false;
   }
@@ -119,7 +135,7 @@ async function main() {
   const deadline = Date.now() + TIMEOUT_MS;
 
   const expected = new Map(
-    artifacts.map((artifact) => [artifact, sha256(readFileSync(artifact))])
+    artifacts.map((artifact) => [artifact, getFileHash(artifact)])
   );
 
   // app.js first: it is the largest artifact and the last to settle, so gating

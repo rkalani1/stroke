@@ -1,0 +1,36 @@
+[
+  {
+    "id": "edinburgh-ct-caa-criteria",
+    "name": "Edinburgh CT criteria",
+    "fullName": "The Edinburgh CT and Genetic Diagnostic Criteria for Lobar Intracerebral Haemorrhage Associated with Cerebral Amyloid Angiopathy: Model Development and Diagnostic Test Accuracy Study",
+    "category": "caa-diagnosis",
+    "population": "n=110, Median 83 years (IQR 76-87); 49 (45%) men, NIHSS Not applicable — a diagnostic-accuracy study against a neuropathological reference standard, First-ever intracerebral haemorrhage diagnosed by CT; participants included between 1 June 2010 and 10 February 2016",
+    "finding": "Excellent discrimination, confirmed on internal bootstrap validation. Of 110 participants, ICH was lobar in 62 (56%), deep in 41 (37%) and infratentorial in 7 (6%); of the 62 lobar haemorrhages, 36 (58%) had moderate or severe CAA and 26 (42%) absent or mild CAA.",
+    "teachingPoint": "Gives a CT-only, and optionally CT-plus-APOE, way to grade the probability that a lobar haemorrhage is amyloid-related when MRI is unavailable — the input to how cautiously antithrombotics are restarted.",
+    "PMID": "29331631",
+    "year": 2018,
+    "citationIds": [
+      "cit-edinburgh-ct-caa-2018"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "edinburgh-ct-caa-recurrence-ipd",
+    "name": "Edinburgh criteria & ICH recurrence (IPD)",
+    "fullName": "Association Between the Edinburgh CT and Genetic Diagnostic Criteria for Cerebral Amyloid Angiopathy-Associated Lobar Intracerebral Haemorrhage and Recurrent Intracerebral Haemorrhage: An Individual Patient Data Meta-Analysis",
+    "category": "caa-diagnosis",
+    "population": "n=1705, Primary two-stage CT-only cohort (562 patients): median 76 years (IQR 68-82), 282 (50%) female, 280 (50%) male. One-stage CT-only cohort (1620): median 73 years (IQR 62-80), 763 (47%) female, 857 (53%) male. CT-APOE cohort (1006): median 71 years (IQR 58-79), 477 (47%) female, 529 (53%) male., NIHSS Not applicable — prognostic cohort analysis, Index spontaneous lobar intracerebral haemorrhage; recurrence counted only from 30 days after the index event",
+    "finding": "Higher Edinburgh strata were associated with more recurrent haemorrhage. In the primary two-stage CT-only analysis (562 patients from three European cohorts, 69 recurrences over 1381 person-years), 5-year recurrence occurred in 48/307 (16%) of the intermediate-and-high-risk group versus 21/255 (8%) of the low-risk group.",
+    "teachingPoint": "Lets a clinician grade recurrent-haemorrhage risk after a lobar ICH from the admission CT alone, when MRI-based Boston criteria are unavailable — a roughly threefold 5-year hazard between the high- and low-risk strata.",
+    "PMID": "40975099",
+    "year": 2025,
+    "citationIds": [
+      "cit-edinburgh-ct-recurrence-2025"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  }
+]
